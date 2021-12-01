@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg129"
+   viewBox="0 0 297 210"
+   height="210mm"
+   width="297mm"
+   version="1.1">
+  <metadata
+     id="metadata135">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs133" />
+  <g
+     style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4"
+     id="drawing-border">
+    <rect
+       id="rect2"
+       y="15"
+       x="7"
+       height="188"
+       width="283" />
+  </g>
+  <g
+     style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4"
+     id="titleblock-structure">
+    <rect
+       id="rect5"
+       y="169"
+       x="150"
+       height="34"
+       width="140" />
+    <path
+       id="path7"
+       d="m 150,177 h 140" />
+    <!-- upper horizontal Separator Titleblock -->
+    <path
+       id="path9"
+       d="m 150,195 h 87" />
+    <!-- lower horizontal Separator Document-Type -->
+    <path
+       id="path11"
+       d="m 150,199 h 140" />
+    <!-- lower horizontal Separator Copyright -->
+    <path
+       id="path13"
+       d="m 195,169 v 8" />
+    <!-- Separator Author / Owner -->
+    <path
+       id="path15"
+       d="m 237,169 v 30" />
+    <!-- Separator Title / Liste RH -->
+    <path
+       id="path17"
+       d="m 267,169 v 8" />
+    <!-- Separator Scale / Sheet -->
+    <path
+       id="path19"
+       d="m 237,185 h 53" />
+    <!-- Separator Part / Drawing-Nr -->
+    <path
+       id="path21"
+       d="m 237,191 h 53" />
+    <!-- Separator DRW-Info / Revision -->
+    <path
+       id="path23"
+       d="m 267,191 v 8" />
+    <!-- Separator Date / Revision -->
+  </g>
+  <g
+     style="font-size:3px;text-anchor:start;fill:#000000;font-family:tahoma"
+     id="titleblock-text-non-editable">
+    <text
+       id="text26"
+       y="172"
+       x="151">Author:</text>
+    <text
+       id="text28"
+       y="176"
+       x="151">Appr.:</text>
+    <text
+       id="text30"
+       y="172"
+       x="196">Legal owner:</text>
+    <text
+       id="text32"
+       y="181"
+       x="151">TITLE:</text>
+    <text
+       id="text34"
+       y="198"
+       x="151">Document type:</text>
+    <text
+       id="text36"
+       y="172"
+       x="268">Sheet:</text>
+    <text
+       id="text38"
+       y="176"
+       x="268">Size:</text>
+    <text
+       id="text40"
+       y="172"
+       x="238">Scale:</text>
+    <text
+       id="text42"
+       y="176"
+       x="238">Toler.:</text>
+    <text
+       id="text44"
+       y="180"
+       x="238">Part material:</text>
+    <text
+       id="text46"
+       y="184"
+       x="238">Part number:</text>
+    <text
+       id="text48"
+       y="189"
+       x="238">Drawing no.:</text>
+    <text
+       id="text50"
+       y="194"
+       x="238">Date:</text>
+    <text
+       id="text52"
+       y="194"
+       x="268">Revision:</text>
+  </g>
+  <g
+     style="font-size:3px;text-anchor:start;fill:#000000;font-family:tahoma"
+     id="titleblock-text-editable">
+    <text
+       id="text57"
+       y="172"
+       x="162"
+       freecad:editable="AUTHOR_NAME">
+      <tspan
+         id="tspan55">AUTHOR NAME</tspan>
+    </text>
+    <text
+       id="text61"
+       y="176"
+       x="162"
+       freecad:editable="APPROVER_NAME">
+      <tspan
+         id="tspan59">APPROVER NAME</tspan>
+    </text>
+    <text
+       id="text65"
+       y="176"
+       x="197"
+       freecad:editable="OWNER_NAME">
+      <tspan
+         id="tspan63">OWNER NAME</tspan>
+    </text>
+    <text
+       id="text69"
+       y="185"
+       x="152"
+       freecad:editable="TITLELINE-1">
+      <tspan
+         id="tspan67">FreeCAD</tspan>
+    </text>
+    <text
+       id="text73"
+       y="189"
+       x="152"
+       freecad:editable="TITLELINE-2">
+      <tspan
+         id="tspan71" />
+    </text>
+    <text
+       id="text77"
+       y="193"
+       x="152"
+       freecad:editable="TITLELINE-3">
+      <tspan
+         id="tspan75" />
+    </text>
+    <text
+       id="text81"
+       y="198"
+       x="174"
+       freecad:editable="DOCUMENT_TYPE"><tspan
+   id="tspan79">Mechanical assembly drawing</tspan>
+</text>
+    <text
+       id="text85"
+       y="172"
+       x="277"
+       freecad:editable="SHEET">
+      <tspan
+         id="tspan83">99 of 99</tspan>
+    </text>
+    <text
+       id="text89"
+       y="172"
+       x="247"
+       freecad:editable="SCALE">
+      <tspan
+         id="tspan87">M x:x</tspan>
+    </text>
+    <text
+       id="text93"
+       y="176"
+       x="247"
+       freecad:editable="TOLERANCE">
+      <tspan
+         id="tspan91">+/- ?</tspan>
+    </text>
+    <text
+       id="text97"
+       y="180"
+       x="257"
+       freecad:editable="PM">
+      <tspan
+         id="tspan95">PM</tspan>
+    </text>
+    <text
+       id="text101"
+       y="184"
+       x="257"
+       freecad:editable="PN">
+      <tspan
+         id="tspan99">PN</tspan>
+    </text>
+    <text
+       id="text105"
+       y="189"
+       x="257"
+       freecad:editable="DN">
+      <tspan
+         id="tspan103">DN</tspan>
+    </text>
+    <text
+       id="text109"
+       y="198"
+       x="239"
+       freecad:editable="DATE">
+      <tspan
+         id="tspan107">YYYY-MM-DD</tspan>
+    </text>
+    <text
+       id="text113"
+       y="198"
+       x="269"
+       freecad:editable="REVISION">
+      <tspan
+         id="tspan111">REV A</tspan>
+    </text>
+    <text
+       id="text117"
+       y="176"
+       x="277"
+       freecad:editable="SIZE">
+      <tspan
+         id="tspan115">A4</tspan>
+    </text>
+    <text
+       id="text121"
+       y="202"
+       x="151"
+       freecad:editable="RIGHTS">
+      <tspan
+         id="tspan119">(R) DO NOT DUPLICATE THIS DRAWING TO THIRD PARTIES WITHOUT OWNER'S PERMISSION !</tspan>
+    </text>
+  </g>
+  <!-- Set display:none to hide FreeCAD Logo or remove this and next 4 lines from this code -->
+  <g
+     fill="none"
+     stroke-width="0.35"
+     stroke="#000"
+     fill-rule="evenodd"
+     transform="translate(138,192)"
+     id="freecad-logo"
+     style="display:inline">
+    <path
+       id="path124"
+       d="m0.1524 0.15254v8.8549h1.9744v-3.4652h1.396v-1.3661h-1.396v-1.4745h3.4391v-2.5441l-5.4135-0.005z" />
+    <path
+       id="path126"
+       d="m7.7927 3.4504-0.50715-0.176-0.48387-1.2366-0.76115 0.04-0.34718 1.2787-0.4859 0.23269-1.2119-0.53015-0.51188 0.56882 0.65892 1.1485-0.18006 0.50567-1.2366 0.48387 0.044064 0.76263 1.2787 0.34718 0.23269 0.4859-0.53421 1.2104 0.56882 0.51188 1.1485-0.65891 0.50973 0.18155 0.4798 1.2351 0.7667-0.04258 0.34311-1.2802 0.4859-0.23269 1.2145 0.5357 0.51188-0.56882-0.65891-1.1485 0.17748-0.51122 1.2351-0.4798-0.03851-0.76521-1.2802-0.34311-0.23269-0.4859 0.53163-1.216-0.56881-0.51184zm-0.5715 1.2244 0.23576 0.13679 0.20426 0.18519 0.16353 0.22101 0.11763 0.24572 0.06916 0.26489 0.01146 0.27146-0.03921 0.27139-0.08948 0.25764-0.14234 0.23834-0.17964 0.20167-0.22101 0.16353-0.24572 0.11763-0.26489 0.06916-0.27295 0.01553-0.2719-0.04-0.2576-0.089-0.2383-0.143-0.2002-0.183-0.165-0.217-0.1177-0.246-0.0676-0.269-0.0156-0.273 0.039206-0.2714 0.089484-0.25764 0.14085-0.23427 0.18113-0.20574 0.22101-0.16352 0.24572-0.11763 0.26895-0.06768 0.27147-0.01146 0.27139 0.03921 0.25764 0.08948z" />
+  </g>
+</svg>

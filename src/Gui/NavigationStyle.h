@@ -36,9 +36,12 @@
 #include <QCursor>
 #include <QEvent>
 #include <Base/BaseClass.h>
+#include <Gui/Namespace.h>
+#include <FCGlobal.h>
 
 // forward declarations
 class SoEvent;
+class SoMouseWheelEvent;
 class SoMotion3Event;
 class SoQtViewer;
 class SoCamera;
@@ -98,10 +101,13 @@ public:
         Trackball
     };
 
-    enum RotationCenterMode {
-        ScenePointAtCursor,     /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
-        FocalPointAtCursor      /**< Find the point on the focal plane at the cursor position. */
+    enum class RotationCenterMode {
+        WindowCenter       = 0, /**< The center of the window */
+        ScenePointAtCursor = 1, /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
+        FocalPointAtCursor = 2, /**< Find the point on the focal plane at the cursor position. */
+        BoundingBoxCenter  = 4  /**< Find the center point of the bounding box of the scene. */
     };
+    Q_DECLARE_FLAGS(RotationCenterModes, RotationCenterMode)
 
 public:
     NavigationStyle();
@@ -111,11 +117,11 @@ public:
     void setViewer(View3DInventorViewer*);
 
     void setAnimationEnabled(const SbBool enable);
-    SbBool isAnimationEnabled(void) const;
+    SbBool isAnimationEnabled() const;
 
     void startAnimating(const SbVec3f& axis, float velocity);
-    void stopAnimating(void);
-    SbBool isAnimating(void) const;
+    void stopAnimating();
+    SbBool isAnimating() const;
 
     void setSensitivity(float);
     float getSensitivity() const;
@@ -130,10 +136,8 @@ public:
     SbBool isZoomAtCursor() const;
     void zoomIn();
     void zoomOut();
-    void setDragAtCursor(SbBool);
-    SbBool isDragAtCursor() const;
-    void setRotationCenterMode(RotationCenterMode);
-    RotationCenterMode getRotationCenterMode() const;
+    void setRotationCenterMode(RotationCenterModes);
+    RotationCenterModes getRotationCenterMode() const;
     void setRotationCenter(const SbVec3f& cnt);
     SbVec3f getFocalPoint() const;
 
@@ -149,15 +153,19 @@ public:
     int getViewingMode() const;
     virtual SbBool processEvent(const SoEvent * const ev);
     virtual SbBool processMotionEvent(const SoMotion3Event * const ev);
+    virtual SbBool processKeyboardEvent(const SoKeyboardEvent * const event);
+    virtual SbBool processClickEvent(const SoMouseButtonEvent * const event);
+    virtual SbBool processWheelEvent(const SoMouseWheelEvent * const event);
 
     void setPopupMenuEnabled(const SbBool on);
-    SbBool isPopupMenuEnabled(void) const;
+    SbBool isPopupMenuEnabled() const;
 
     void startSelection(AbstractMouseSelection*);
     void startSelection(SelectionMode = Lasso);
+    void abortSelection();
     void stopSelection();
     SbBool isSelecting() const;
-    const std::vector<SbVec2s>& getPolygon(SbBool* clip_inner=0) const;
+    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
@@ -166,13 +174,13 @@ protected:
     void initialize();
     void finalize();
 
-    void interactiveCountInc(void);
-    void interactiveCountDec(void);
-    int getInteractiveCount(void) const;
+    void interactiveCountInc();
+    void interactiveCountDec();
+    int getInteractiveCount() const;
 
-    SbBool isViewing(void) const;
+    SbBool isViewing() const;
     void setViewing(SbBool);
-    SbBool isSeekMode(void) const;
+    SbBool isSeekMode() const;
     void setSeekMode(SbBool enable);
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
@@ -187,9 +195,10 @@ protected:
                    const SbVec2f & current);
     void pan(SoCamera* camera);
     void panToCenter(const SbPlane & pplane, const SbVec2f & currpos);
+    int getDelta() const;
     void zoom(SoCamera * camera, float diffvalue);
     void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
-    void doZoom(SoCamera * camera, SbBool forward, const SbVec2f& pos);
+    void doZoom(SoCamera * camera, int wheeldelta, const SbVec2f& pos);
     void doZoom(SoCamera * camera, float logzoomfactor, const SbVec2f& pos);
     void doRotate(SoCamera * camera, float angle, const SbVec2f& pos);
     void spin(const SbVec2f & pointerpos);
@@ -206,9 +215,10 @@ protected:
     void syncWithEvent(const SoEvent * const ev);
     virtual void openPopupMenu(const SbVec2s& position);
 
-    void clearLog(void);
+    void clearLog();
     void addToLog(const SbVec2s pos, const SbTime time);
 
+    void syncModifierKeys(const SoEvent * const ev);
 
 protected:
     struct { // tracking mouse movement in a log
@@ -220,6 +230,7 @@ protected:
 
     View3DInventorViewer* viewer;
     ViewerMode currentmode;
+    SoMouseButtonEvent mouseDownConsumedEvent;
     SbVec2f lastmouseposition;
     SbVec2s globalPos;
     SbVec2s localPos;
@@ -238,7 +249,7 @@ protected:
     //@{
     AbstractMouseSelection* mouseSelection;
     std::vector<SbVec2s> pcPolygon;
-    SbBool clipInner;
+    SelectionRole selectedRole;
     //@}
 
     /** @name Spinning data */
@@ -251,6 +262,7 @@ protected:
     //@}
 
 private:
+    NavigationStyle(const NavigationStyle&);
     struct NavigationStyleP* pimpl;
     friend struct NavigationStyleP;
 };
@@ -261,7 +273,7 @@ private:
  * in the above dialog.
  * This mechanism is useful to implement special navigation styles which are
  * only needed for certain purposes. Thus, it should not be possible to be
- * choosable by the user 
+ * choosable by the user
  * @author Werner Mayer
  */
 class GuiExport UserNavigationStyle : public NavigationStyle {
@@ -288,9 +300,6 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
-
-private:
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport CADNavigationStyle : public UserNavigationStyle {
@@ -308,7 +317,6 @@ protected:
 
 private:
     SbBool lockButton1;
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport RevitNavigationStyle : public UserNavigationStyle {
@@ -326,7 +334,6 @@ protected:
 
 private:
     SbBool lockButton1;
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport BlenderNavigationStyle : public UserNavigationStyle {
@@ -344,7 +351,6 @@ protected:
 
 private:
     SbBool lockButton1;
-    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
@@ -364,7 +370,7 @@ protected:
     short mouseMoveThreshold;//setting. Minimum move required to consider it a move (in pixels).
     bool mouseMoveThresholdBroken;//a flag that the move threshold was surpassed since last mousedown.
     int mousedownConsumedCount;//a flag for remembering that a mousedown of button1/button2 was consumed.
-    SoMouseButtonEvent mousedownConsumedEvent[5];//the event that was consumed and is to be refired. 2 should be enough, but just for a case of the maximum 5 buttons...
+    SoMouseButtonEvent mousedownConsumedEvents[5];//the event that was consumed and is to be refired. 2 should be enough, but just for a case of the maximum 5 buttons...
     bool testMoveThreshold(const SbVec2s currentPos) const;
 
     bool thisClickIsComplex;//a flag that becomes set when a complex clicking pattern is detected (i.e., two or more mouse buttons were down at the same time).
@@ -383,34 +389,6 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
-
-private:
-    SoMouseButtonEvent mouseDownConsumedEvent;
-};
-
-class GuiExport GestureNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
-
-    TYPESYSTEM_HEADER();
-
-public:
-    GestureNavigationStyle();
-    ~GestureNavigationStyle();
-    const char* mouseButtons(ViewerMode);
-
-protected:
-    SbBool processSoEvent(const SoEvent * const ev);
-    bool isDraggerUnderCursor(SbVec2s pos);
-
-    SbVec2s mousedownPos;//the position where some mouse button was pressed (local pixel coordinates).
-    short mouseMoveThreshold;//setting. Minimum move required to consider it a move (in pixels).
-    bool mouseMoveThresholdBroken;//a flag that the move threshold was surpassed since last mousedown.
-    int mousedownConsumedCount;//a flag for remembering that a mousedown of button1/button2 was consumed.
-    SoMouseButtonEvent mousedownConsumedEvent[5];//the event that was consumed and is to be refired. 2 should be enough, but just for a case of the maximum 5 buttons...
-    bool testMoveThreshold(const SbVec2s currentPos) const;
-
-    bool thisClickIsComplex;//a flag that becomes set when a complex clicking pattern is detected (i.e., two or more mouse buttons were down at the same time).
-    bool inGesture; //a flag that is used to filter out mouse events during gestures.
 };
 
 class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {
@@ -425,11 +403,38 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
+};
 
-private:
-    SoMouseButtonEvent mouseDownConsumedEvent;
+class GuiExport OpenSCADNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    OpenSCADNavigationStyle();
+    ~OpenSCADNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+};
+
+class GuiExport TinkerCADNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    TinkerCADNavigationStyle();
+    ~TinkerCADNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
 };
 
 } // namespace Gui
 
-#endif // GUI_NAVIGATIONSTYLE_H 
+Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
+
+#endif // GUI_NAVIGATIONSTYLE_H

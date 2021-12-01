@@ -24,23 +24,27 @@
 #ifndef GUI_DIALOG_DLGMACROEXECUTEIMP_H
 #define GUI_DIALOG_DLGMACROEXECUTEIMP_H
 
-#include "ui_DlgMacroExecute.h"
 #include "Window.h"
+#include <QDialog>
+#include <memory>
+
+class QTreeWidgetItem;
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgMacroExecute;
 
 /**
  * The DlgMacroExecuteImp class implements a dialog to execute or edit a
- * recorded macro. 
+ * recorded macro.
  * \author Jürgen Riegel
  */
-class DlgMacroExecuteImp : public QDialog, public Ui_DlgMacroExecute, public Gui::WindowParameter
-{ 
+class DlgMacroExecuteImp : public QDialog, public Gui::WindowParameter
+{
     Q_OBJECT
 
 public:
-    DlgMacroExecuteImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+    DlgMacroExecuteImp( QWidget* parent = 0, Qt::WindowFlags fl =  Qt::WindowFlags() );
     ~DlgMacroExecuteImp();
 
     void accept();
@@ -51,6 +55,9 @@ public Q_SLOTS:
     void on_deleteButton_clicked();
     void on_editButton_clicked();
     void on_renameButton_clicked();
+    void on_duplicateButton_clicked();
+    void on_toolbarButton_clicked();
+    void on_addonsButton_clicked();
 
 protected Q_SLOTS:
     void on_userMacroListBox_currentItemChanged(QTreeWidgetItem*);
@@ -62,6 +69,9 @@ protected:
 
 protected:
     QString macroPath;
+
+private:
+    std::unique_ptr<Ui_DlgMacroExecute> ui;
 };
 
 } // namespace Dialog

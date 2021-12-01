@@ -25,8 +25,13 @@
 
 #include <QTreeView>
 #include <QListView>
+#include <QComboBox>
 #include <QAbstractListModel>
 #include "PropertyPage.h"
+
+#include <boost/foreach.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 class Command;
 class QPushButton;
@@ -62,7 +67,10 @@ namespace Gui
             void goButtonPress(int number);
             void goMacroRemoved(const QByteArray& macroName);
             void goClear();
+            void loadConfig(const char *RequiredDeviceName);
         private:
+            void load3DConnexionButtonMapping(boost::property_tree::ptree ButtonMapTree);
+            void load3DConnexionButtons(const char *RequiredDeviceName);
             ParameterGrp::handle spaceballButtonGroup() const;
             QString getLabel(const int &number) const;
         };
@@ -158,6 +166,7 @@ namespace Gui
             void setupCommandModelView();
             void setupLayout();
             void setMessage(const QString& message);
+            QStringList getModels();
 
             ButtonView *buttonView;
             ButtonModel *buttonModel;
@@ -165,6 +174,7 @@ namespace Gui
             CommandModel *commandModel;
             QPushButton *clearButton;
             QPushButton *printReference;
+            QComboBox *devModel;
         };
     }
 }

@@ -38,7 +38,7 @@ class DlgEvaluateSettings : public QDialog
     Q_OBJECT
 
 public:
-    DlgEvaluateSettings(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgEvaluateSettings(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgEvaluateSettings();
 
     void setNonmanifoldPointsChecked(bool);
@@ -47,8 +47,8 @@ public:
     void setFoldsChecked(bool);
     bool isFoldsChecked() const;
 
-    void setDegenratedFacetsChecked(bool);
-    bool isDegenratedFacetsChecked() const;
+    void setDegeneratedFacetsChecked(bool);
+    bool isDegeneratedFacetsChecked() const;
 
 private:
     Ui_DlgEvaluateSettings* ui;

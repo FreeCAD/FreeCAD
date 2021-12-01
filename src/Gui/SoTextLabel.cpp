@@ -65,6 +65,7 @@
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
 #include "BitmapFactory.h"
+#include "Tools.h"
 
 using namespace Gui;
 
@@ -94,7 +95,7 @@ App.ActiveDocument.addObject("App::InventorObject","iv").Buffer=s
 \endcode
 */
 
-SO_NODE_SOURCE(SoTextLabel);
+SO_NODE_SOURCE(SoTextLabel)
 
 void SoTextLabel::initClass()
 {
@@ -204,7 +205,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         }
 #else
         // Unfortunately, the required size (in pixels) is stored in a non-accessible way
-        // in the subclass SoText2. Thus, we try to get a satisfactory solution with Qt 
+        // in the subclass SoText2. Thus, we try to get a satisfactory solution with Qt
         // methods.
         // The font name is of the form "family:style". If 'style' is given it can be
         // 'Bold', 'Italic' or 'Bold Italic'.
@@ -281,7 +282,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         glPopClientAttrib();
         glPopAttrib();
         state->pop();
-          
+
         glPixelStorei(GL_UNPACK_ALIGNMENT,4);
         // Pop old GL matrix state.
         glMatrixMode(GL_PROJECTION);
@@ -297,7 +298,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(SoStringLabel);
+SO_NODE_SOURCE(SoStringLabel)
 
 void SoStringLabel::initClass()
 {
@@ -394,7 +395,7 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(SoFrameLabel);
+SO_NODE_SOURCE(SoFrameLabel)
 
 void SoFrameLabel::initClass()
 {
@@ -452,7 +453,7 @@ void SoFrameLabel::drawImage()
     QStringList lines;
     for (int i=0; i<num; i++) {
         QString line = QString::fromUtf8(s[i].getString());
-        w = std::max<int>(w, fm.width(line));
+        w = std::max<int>(w, QtTools::horizontalAdvance(fm, line));
         lines << line;
     }
 
@@ -569,7 +570,7 @@ void SoFrameLabel::GLRender(SoGLRenderAction *action)
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(TranslateManip);
+SO_NODE_SOURCE(TranslateManip)
 
 void
 TranslateManip::initClass()

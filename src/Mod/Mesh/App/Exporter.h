@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Ian Rees                  <ian.rees@gmail.com>     *
+ *   Copyright (c) 2017 Ian Rees <ian.rees@gmail.com>                      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,6 +24,7 @@
 #define MESH_EXPORTER_H
 
 #include <map>
+#include <vector>
 #include <ostream>
 
 #include "Base/Type.h"
@@ -42,8 +43,6 @@ namespace Mesh
  * Constructors of derived classes are expected to be required, for passing
  * in the name of output file.
  *
- * Objects are added using the addMeshFeat(), addPartFeat(), etc.
- *
  * If objects are meant to be combined into a single file, then the file should
  * be saved from the derived class' destructor.
  */
@@ -51,28 +50,26 @@ class Exporter
 {
     public:
         Exporter();
-
-        virtual bool addMeshFeat(App::DocumentObject *obj) = 0;
-        virtual bool addPartFeat(App::DocumentObject *obj, float tol) = 0;
-
-        /// Recursively adds objects from App::Part & App::DocumentObjectGroup
-        /*!
-         * \return true if all applicable objects within the group were
-         * added successfully.
-         */
-        bool addAppGroup(App::DocumentObject *obj, float tol);
-
-        bool addObject(App::DocumentObject *obj, float tol);
-
         virtual ~Exporter() = default;
+
+        /// Add object and all subobjects and links etc. Returns the number of stuff added.
+        /*!
+         * @param obj The object to export. If this is a group like object, its
+         *            sub-objects will be added.
+         * @param tol The tolerance/accuracy with which to generate the triangle mesh
+         * @return The number of objects/subobjects that was exported from the document.
+                   See the parameter `accuracy` of ComplexGeoData::getFaces
+         */
+        int addObject(App::DocumentObject *obj, float tol);
+
+        virtual bool addMesh(const char *name, const MeshObject & mesh) = 0;
 
     protected:
         /// Does some simple escaping of characters for XML-type exports
         static std::string xmlEscape(const std::string &input);
 
-        const Base::Type meshFeatId;
-        const Base::Type appPartId;
-        const Base::Type groupExtensionId;
+        std::map<const App::DocumentObject *, std::vector<std::string> > subObjectNameCache;
+        std::map<const App::DocumentObject *, MeshObject> meshCache;
 };
 
 /// Creates a single mesh, in a file, from one or more objects
@@ -82,11 +79,7 @@ class MergeExporter : public Exporter
         MergeExporter(std::string fileName, MeshCore::MeshIO::Format fmt);
         ~MergeExporter();
 
-        /// Directly adds a mesh feature
-        bool addMeshFeat(App::DocumentObject *obj) override;
-
-        /// Converts the a Part::Feature to a mesh, adds that mesh
-        bool addPartFeat(App::DocumentObject *obj, float tol) override;
+        bool addMesh(const char *name, const MeshObject & mesh) override;
 
     protected:
         MeshObject mergingMesh;
@@ -112,16 +105,8 @@ class AmfExporter : public Exporter
         /// Writes AMF footer
         ~AmfExporter();
 
-        bool addMeshFeat(App::DocumentObject *obj) override;
+        bool addMesh(const char *name, const MeshObject & mesh) override;
 
-        bool addPartFeat(App::DocumentObject *obj, float tol) override;
-
-        /*!
-         * meta is included for the AMF object created
-         */
-        bool addMesh(const MeshCore::MeshKernel &kernel,
-                     const std::map<std::string, std::string> &meta);
-        
     private:
         std::ostream *outputStreamPtr;
         int nextObjectIndex;

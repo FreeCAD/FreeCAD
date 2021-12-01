@@ -48,12 +48,18 @@ Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags
     ui->setupUi(this);
     ui->numPln->setRange(1, INT_MAX);
     ui->numPln->setValue(100);
-    ui->radCyl->setRange(0, INT_MAX);
+    ui->crvCyl->setRange(0, INT_MAX);
     ui->numCyl->setRange(1, INT_MAX);
     ui->numCyl->setValue(100);
-    ui->radSph->setRange(0, INT_MAX);
+    ui->crvSph->setRange(0, INT_MAX);
     ui->numSph->setRange(1, INT_MAX);
     ui->numSph->setValue(100);
+    ui->crv1Free->setRange(-INT_MAX, INT_MAX);
+    ui->crv2Free->setRange(-INT_MAX, INT_MAX);
+    ui->numFree->setRange(1, INT_MAX);
+    ui->numFree->setValue(100);
+
+    ui->checkBoxSmooth->setChecked(false);
 }
 
 Segmentation::~Segmentation()
@@ -77,17 +83,23 @@ void Segmentation::accept()
     MeshCore::MeshCurvature meshCurv(kernel);
     meshCurv.ComputePerVertex();
 
-    std::vector<MeshCore::MeshSurfaceSegment*> segm;
+    std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
+    if (ui->groupBoxFree->isChecked()) {
+        segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureFreeformSegment>
+            (meshCurv.GetCurvature(), ui->numFree->value(),
+             ui->tol1Free->value(), ui->tol2Free->value(),
+             ui->crv1Free->value(), ui->crv2Free->value()));
+    }
     if (ui->groupBoxCyl->isChecked()) {
-        segm.push_back(new MeshCore::MeshCurvatureCylindricalSegment
-            (meshCurv.GetCurvature(), ui->numCyl->value(), ui->tol1Cyl->value(), ui->tol2Cyl->value(), ui->radCyl->value().getValue()));
+        segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureCylindricalSegment>
+            (meshCurv.GetCurvature(), ui->numCyl->value(), ui->tol1Cyl->value(), ui->tol2Cyl->value(), ui->crvCyl->value()));
     }
     if (ui->groupBoxSph->isChecked()) {
-        segm.push_back(new MeshCore::MeshCurvatureSphericalSegment
-            (meshCurv.GetCurvature(), ui->numSph->value(), ui->tolSph->value(), ui->radSph->value().getValue()));
+        segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureSphericalSegment>
+            (meshCurv.GetCurvature(), ui->numSph->value(), ui->tolSph->value(), ui->crvSph->value()));
     }
     if (ui->groupBoxPln->isChecked()) {
-        segm.push_back(new MeshCore::MeshCurvaturePlanarSegment
+        segm.emplace_back(std::make_shared<MeshCore::MeshCurvaturePlanarSegment>
             (meshCurv.GetCurvature(), ui->numPln->value(), ui->tolPln->value()));
     }
     finder.FindSegments(segm);
@@ -102,7 +114,7 @@ void Segmentation::accept()
     std::string labelname = "Segments ";
     labelname += myMesh->Label.getValue();
     group->Label.setValue(labelname);
-    for (std::vector<MeshCore::MeshSurfaceSegment*>::iterator it = segm.begin(); it != segm.end(); ++it) {
+    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
         const std::vector<MeshCore::MeshSegment>& data = (*it)->GetSegments();
         for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
             Mesh::MeshObject* segment = mesh->meshFromSegment(*jt);
@@ -116,7 +128,6 @@ void Segmentation::accept()
             label << feaSegm->Label.getValue() << " (" << (*it)->GetType() << ")";
             feaSegm->Label.setValue(label.str());
         }
-        delete (*it);
     }
     document->commitTransaction();
 }

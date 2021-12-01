@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2015     *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -71,8 +70,6 @@
 # include <QRegExp>
 #endif
 
-#include <Inventor/sensors/SoTimerSensor.h>
-
 #include <App/Application.h>
 #include <Base/Console.h>
 #include "NavigationStyle.h"
@@ -88,7 +85,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::MayaGestureNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::MayaGestureNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::MayaGestureNavigationStyle, Gui::UserNavigationStyle)
 
 MayaGestureNavigationStyle::MayaGestureNavigationStyle()
 {
@@ -107,13 +104,13 @@ const char* MayaGestureNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
-        return QT_TR_NOOP("Tap. Or click left mouse button.");
+        return QT_TR_NOOP("Tap OR click left mouse button.");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Drag screen with two fingers. Or press ALT + middle mouse button.");
+        return QT_TR_NOOP("Drag screen with two fingers OR press ALT + middle mouse button.");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
+        return QT_TR_NOOP("Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.");
+        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.");
     default:
         return "No description";
     }
@@ -193,9 +190,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mismatches in state of the modifier keys happens if the user
     // presses or releases them outside the viewer window.
-    this->ctrldown = ev->wasCtrlDown();
-    this->shiftdown = ev->wasShiftDown();
-    this->altdown = ev->wasAltDown();
+    syncModifierKeys(ev);
     //before this block, mouse button states in NavigationStyle::buttonXdown reflected those before current event arrived.
     //track mouse button states
     if (evIsButton) {
@@ -314,7 +309,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //mode-independent spaceball/joystick handling
     if (evIsLoc3) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event * const>(ev);
+        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -346,13 +341,13 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 break;
             case SoKeyboardEvent::PAGE_UP:
                 if(press){
-                    doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
+                    doZoom(viewer->getSoRenderManager()->getCamera(), getDelta(), posn);
                 }
                 processed = true;
                 break;
             case SoKeyboardEvent::PAGE_DOWN:
                 if(press){
-                    doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
+                    doZoom(viewer->getSoRenderManager()->getCamera(), -getDelta(), posn);
                 }
                 processed = true;
                 break;
@@ -383,11 +378,11 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         this->mouseMoveThresholdBroken = false;
                         pan(viewer->getSoRenderManager()->getCamera());//set up panningplane
                         int &cnt = this->mousedownConsumedCount;
-                        this->mousedownConsumedEvent[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
+                        this->mousedownConsumedEvents[cnt] = *event;//hopefully, a shallow copy is enough. There are no pointers stored in events, apparently. Will lose a subclass, though.
                         cnt++;
                         assert(cnt<=2);
-                        if(cnt>static_cast<int>(sizeof(mousedownConsumedEvent))){
-                            cnt=sizeof(mousedownConsumedEvent);//we are in trouble
+                        if(cnt>static_cast<int>(sizeof(mousedownConsumedEvents))){
+                            cnt=sizeof(mousedownConsumedEvents);//we are in trouble
                         }
                         processed = true;//just consume this event, and wait for the move threshold to be broken to start dragging/panning
                     }
@@ -401,7 +396,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     if(! processed) {
                         //re-synthesize all previously-consumed mouseDowns, if any. They might have been re-synthesized already when threshold was broken.
                         for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                            inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
+                            inherited::processSoEvent(& (this->mousedownConsumedEvents[i]));//simulate the previously-comsumed mousedown.
                         }
                         this->mousedownConsumedCount = 0;
                         processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
@@ -413,7 +408,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 // starts PANNING mode
                 if(press & this->altdown){
                     setViewingMode(NavigationStyle::PANNING);
-                } else if(press){ 
+                } else if(press){
                     // if not PANNING then look at point
                     SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
                     if(!ret){
@@ -422,14 +417,6 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                             "No object under cursor! Can't set new center of rotation.\n");
                     }
                 }
-                processed = true;
-                break;
-            case SoMouseButtonEvent::BUTTON4: //(wheel?)
-                doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
-                processed = true;
-                break;
-            case SoMouseButtonEvent::BUTTON5: //(wheel?)
-                doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
                 processed = true;
                 break;
             }
@@ -454,7 +441,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     //no, we are not entering navigation.
                     //re-synthesize all previously-consumed mouseDowns, if any, and propagate this mousemove.
                     for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                        inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
+                        inherited::processSoEvent(& (this->mousedownConsumedEvents[i]));//simulate the previously-comsumed mousedown.
                     }
                     this->mousedownConsumedCount = 0;
                     processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
@@ -508,7 +495,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         //end of dragging/panning/whatever
                         setViewingMode(NavigationStyle::SELECTION);
                         processed = true;
-                    } //else of if (some bottons down)
+                    } //end of else (some buttons down)
                 break;
             } //switch(button)
         } //if(evIsButton)
@@ -549,7 +536,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 processed=true;
             } else if (gesture->state == SoGestureEvent::SbGSUpdate){
                 if(type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())){
-                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent* const>(ev);
+                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent*>(ev);
                     if (this->zoomAtCursor){
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                         SbVec2f panDist = this->normalizePixelPos(event->deltaCenter.getValue());
@@ -561,7 +548,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     processed = true;
                 }
                 if(type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())){
-                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent* const>(ev);
+                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent*>(ev);
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                     SbVec2f panDist = this->normalizePixelPos(event->deltaOffset);
                     NavigationStyle::panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, panDist, SbVec2f(0,0));
@@ -612,4 +599,3 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 finalize:
     return processed;
 }
-

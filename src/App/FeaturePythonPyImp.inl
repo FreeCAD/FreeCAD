@@ -49,11 +49,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     /* --- Functions to access object as input/output buffer ---------*/
     0,                                                /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
-#if PY_MAJOR_VERSION >= 3
     Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,           /*tp_flags */
-#else
-    Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_CLASS,        /*tp_flags */
-#endif
     "This is the father of all Feature classes",      /*tp_doc */
     0,                                                /*tp_traverse */
     0,                                                /*tp_clear */
@@ -81,8 +77,9 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_weaklist */
     0,                                                /*tp_del */
     0                                                 /*tp_version_tag */
-#if PY_MAJOR_VERSION >= 3
     ,0                                                /*tp_finalize */
+#if PY_VERSION_HEX >= 0x03080000
+    ,0                                                /*tp_vectorcall */
 #endif
 };
 
@@ -104,12 +101,8 @@ FeaturePythonPyT<FeaturePyT>::~FeaturePythonPyT()
 template<class FeaturePyT>
 int FeaturePythonPyT<FeaturePyT>::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 {
-    char *attr;
-#if PY_MAJOR_VERSION >= 3
+    const char *attr;
     attr = PyUnicode_AsUTF8(attro);
-#else
-    attr = PyString_AsString(attro);
-#endif
     // This overwrites PyObjectBase::__setattr because this actively disallows to delete an attribute
     //
 
@@ -127,7 +120,7 @@ int FeaturePythonPyT<FeaturePyT>::__setattro(PyObject *obj, PyObject *attro, PyO
 
 
 template<class FeaturePyT>
-int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
+int FeaturePythonPyT<FeaturePyT>::_setattr(const char *attr, PyObject *value)
 {
     App::Property *prop = FeaturePyT::getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop && !value) {
@@ -141,11 +134,7 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
         if (value) {
             if (PyFunction_Check(value)) {
                 PyErr_Clear();
-#if PY_MAJOR_VERSION < 3
-                dict_item = PyMethod_New(value, this, 0);
-#else
                 dict_item = PyMethod_New(value, this);
-#endif
                 returnValue = PyDict_SetItemString(dict_methods, attr, dict_item);
                 Py_XDECREF(dict_item);
             }
@@ -162,7 +151,7 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
 }
 
 template<class FeaturePyT>
-PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
+PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(const char *attr)
 {
     // See CallTipsList::extractTips
     if (Base::streq(attr, "__fc_template__")) {

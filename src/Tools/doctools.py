@@ -3,7 +3,7 @@
 # (c) 2010 Werner Mayer LGPL
 # FreeCAD Python script to work with the FCStd file format.
 
-import os,sys,string
+import os
 import xml.sax
 import xml.sax.handler
 import xml.sax.xmlreader
@@ -12,12 +12,13 @@ import zipfile
 # SAX handler to parse the Document.xml
 class DocumentHandler(xml.sax.handler.ContentHandler):
 	def __init__(self, dirname):
+		super().__init__()
 		self.files = []
 		self.dirname = dirname
 
 	def startElement(self, name, attributes):
 		item=attributes.get("file")
-		if item != None:
+		if item is not None:
 			self.files.append(os.path.join(self.dirname,str(item)))
 
 	def characters(self, data):

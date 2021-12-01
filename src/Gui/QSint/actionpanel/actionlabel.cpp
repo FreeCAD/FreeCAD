@@ -88,10 +88,8 @@ QSize ActionLabel::sizeHint() const
         s = QString::fromLatin1("XXXX");
     QFontMetrics fm = fontMetrics();
     QSize sz = fm.size(Qt::TextShowMnemonic, s);
-    if(!empty || !w)
-        w += sz.width();
-    if(!empty || !h)
-        h = qMax(h, sz.height());
+    w += sz.width();
+    h = qMax(h, sz.height());
     opt.rect.setSize(QSize(w, h)); // PM_MenuButtonIndicator depends on the height
 
     if (!icon().isNull()) {

@@ -82,7 +82,7 @@ PythonOnlineHelp::~PythonOnlineHelp()
 
 QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
 {
-    QString fn = filename;
+    QString fn;
     fn = filename.mid(1);
     QByteArray res;
 
@@ -116,7 +116,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         dict = PyDict_Copy(dict);
 
         QByteArray cmd =
-            "import string, os, sys, pydoc, pkgutil\n"
+            "import os, sys, pydoc, pkgutil\n"
             "\n"
             "class FreeCADDoc(pydoc.HTMLDoc):\n"
             "    def index(self, dir, shadowed=None):\n"
@@ -143,8 +143,8 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
             "'#ffffff', '#7799ee')\n"
             "def bltinlink(name):\n"
             "    return '<a href=\"%s.html\">%s</a>' % (name, name)\n"
-            "names = filter(lambda x: x != '__main__',\n"
-            "               sys.builtin_module_names)\n"
+            "names = list(filter(lambda x: x != '__main__',\n"
+            "               sys.builtin_module_names))\n"
             "contents = pydoc.html.multicolumn(names, bltinlink)\n"
             "indices = ['<p>' + pydoc.html.bigsection(\n"
             "    'Built-in Modules', '#ffffff', '#ee77aa', contents)]\n"
@@ -160,7 +160,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
             "    ret = pydoc.html.index(dir, seen)\n"
             "    if ret != None:\n"
             "        indices.append(ret)\n"
-            "contents = heading + string.join(indices) + '''<p align=right>\n"
+            "contents = heading + ' '.join(indices) + '''<p align=right>\n"
             "<font color=\"#909090\" face=\"helvetica, arial\"><strong>\n"
             "pydoc</strong> by Ka-Ping Yee &lt;ping@lfw.org&gt;</font>'''\n"
             "htmldocument=pydoc.html.page(title,contents)\n";
@@ -169,11 +169,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         if (result) {
             Py_DECREF(result);
             result = PyDict_GetItemString(dict, "htmldocument");
-#if PY_MAJOR_VERSION >= 3
             const char* contents = PyUnicode_AsUTF8(result);
-#else
-            const char* contents = PyString_AsString(result);
-#endif
             res.append("HTTP/1.0 200 OK\n");
             res.append("Content-type: text/html\n");
             res.append(contents);
@@ -195,7 +191,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         PyObject* main = PyImport_AddModule("__main__");
         PyObject* dict = PyModule_GetDict(main);
         dict = PyDict_Copy(dict);
-        QByteArray cmd = 
+        QByteArray cmd =
             "import pydoc\n"
             "object, name = pydoc.resolve(\"";
         cmd += name.toUtf8();
@@ -204,11 +200,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         if (result) {
             Py_DECREF(result);
             result = PyDict_GetItemString(dict, "page");
-#if PY_MAJOR_VERSION >= 3
             const char* page = PyUnicode_AsUTF8(result);
-#else
-            const char* page = PyString_AsString(result);
-#endif
             res.append("HTTP/1.0 200 OK\n");
             res.append("Content-type: text/html\n");
             res.append(page);
@@ -255,8 +247,7 @@ QByteArray PythonOnlineHelp::fileNotFound() const
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
     QString httpResponseHeader = http.arg(404).arg(QLatin1String("File not found")).arg(header);
 
-    QByteArray res;
-    res.append(httpResponseHeader);
+    QByteArray res = httpResponseHeader.toLatin1();
     return res;
 }
 
@@ -285,8 +276,7 @@ QByteArray PythonOnlineHelp::loadFailed(const QString& error) const
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
     QString httpResponseHeader = http.arg(404).arg(QLatin1String("File not found")).arg(header);
 
-    QByteArray res;
-    res.append(httpResponseHeader);
+    QByteArray res = httpResponseHeader.toLatin1();
     return res;
 }
 
@@ -295,11 +285,7 @@ HttpServer::HttpServer(QObject* parent)
 {
 }
 
-#if QT_VERSION >=0x050000
 void HttpServer::incomingConnection(qintptr socket)
-#else
-void HttpServer::incomingConnection(int socket)
-#endif
 {
     if (disabled)
         return;
@@ -377,7 +363,7 @@ void HttpServer::discardClient()
 StdCmdPythonHelp::StdCmdPythonHelp()
   : Command("Std_PythonHelp"), server(0)
 {
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Automatic python modules documentation");
     sToolTipText  = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
     sWhatsThis    = "Std_PythonHelp";
@@ -395,19 +381,19 @@ StdCmdPythonHelp::~StdCmdPythonHelp()
 
 void StdCmdPythonHelp::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     // try to open a connection over this port
     qint16 port = 7465;
     if (!this->server)
         this->server = new HttpServer();
 
     // if server is not yet running try to open one
-    if (this->server->isListening() || 
+    if (this->server->isListening() ||
         this->server->listen(QHostAddress(QHostAddress::LocalHost), port)) {
         // okay the server is running, now we try to open the system internet browser
         bool failed = true;
 
-        // The webbrowser Python module allows to start the system browser in an 
+        // The webbrowser Python module allows to start the system browser in an
         // OS-independent way
         Base::PyGILStateLocker lock;
         PyObject* module = PyImport_ImportModule("webbrowser");
@@ -419,10 +405,14 @@ void StdCmdPythonHelp::activated(int iMsg)
                 char szBuf[201];
                 snprintf(szBuf, 200, "http://localhost:%d", port);
                 PyObject* args = Py_BuildValue("(s)", szBuf);
+#if PY_VERSION_HEX < 0x03090000
                 PyObject* result = PyEval_CallObject(func,args);
+#else
+                PyObject* result = PyObject_CallObject(func,args);
+#endif
                 if (result)
                     failed = false;
-        
+
                 // decrement the args and module reference
                 Py_XDECREF(result);
                 Py_DECREF(args);
@@ -432,13 +422,13 @@ void StdCmdPythonHelp::activated(int iMsg)
 
         // print error message on failure
         if (failed) {
-            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Browser"), 
+            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Browser"),
                 QObject::tr("Unable to open your browser.\n\n"
                 "Please open a browser window and type in: http://localhost:%1.").arg(port));
         }
     }
     else {
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Server"), 
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Server"),
             QObject::tr("Unable to start the server to port %1: %2.").arg(port).arg(server->errorString()));
     }
 }
@@ -455,24 +445,28 @@ bool Gui::OpenURLInBrowser(const char * URL)
         PyObject* func = PyDict_GetItemString(dict, "open");
         if (func) {
             PyObject* args = Py_BuildValue("(s)", URL);
+#if PY_VERSION_HEX < 0x03090000
             PyObject* result = PyEval_CallObject(func,args);
+#else
+            PyObject* result = PyObject_CallObject(func,args);
+#endif
             if (result)
                 failed = false;
-        
+
             // decrement the args and module reference
             Py_XDECREF(result);
             Py_DECREF(args);
             Py_DECREF(module);
         }
-    } 
+    }
 
     // print error message on failure
     if (failed) {
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Browser"), 
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Browser"),
             QObject::tr("Unable to open your system browser."));
         return false;
     }
-  
+
     return true;
 }
 

@@ -1,6 +1,7 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,13 +21,15 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "_Base"
+__title__ = "FreeCAD FEM solver equation base object"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
+
 if FreeCAD.GuiUp:
     from pivy import coin
 
@@ -73,7 +76,7 @@ class HeatProxy(BaseProxy):
 class HeatViewProxy(BaseViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-equation-heat.svg"
+        return ":/icons/FEM_EquationHeat.svg"
 
 
 class ElasticityProxy(BaseProxy):
@@ -83,26 +86,36 @@ class ElasticityProxy(BaseProxy):
 class ElasticityViewProxy(BaseViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-equation-elasticity.svg"
+        return ":/icons/FEM_EquationElasticity.svg"
 
 
 class ElectrostaticViewProxy(BaseViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-equation-electrostatic.svg"
+        return ":/icons/FEM_EquationElectrostatic.svg"
 
 
 class ElectrostaticProxy(BaseProxy):
     pass
 
 
-class FluxsolverViewProxy(BaseViewProxy):
+class FluxViewProxy(BaseViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-equation-fluxsolver.svg"
+        return ":/icons/FEM_EquationFlux.svg"
 
 
-class FluxsolverProxy(BaseProxy):
+class FluxProxy(BaseProxy):
+    pass
+
+
+class ElectricforceViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationElectricforce.svg"
+
+
+class ElectricforceProxy(BaseProxy):
     pass
 
 
@@ -113,4 +126,6 @@ class FlowProxy(BaseProxy):
 class FlowViewProxy(BaseViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-equation-flow.svg"
+        return ":/icons/FEM_EquationFlow.svg"
+
+##  @}

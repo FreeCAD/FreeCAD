@@ -24,14 +24,20 @@
 #ifndef BASE_TOOLS_H
 #define BASE_TOOLS_H
 
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 #include <functional>
 #include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <vector>
 #include <string>
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 #include <QString>
+#include <QObject>
+
+// ----------------------------------------------------------------------------
 
 namespace Base
 {
@@ -149,34 +155,89 @@ private:
 
 // ----------------------------------------------------------------------------
 
+template<typename Flag=bool>
+struct FlagToggler {
+
+    Flag &flag;
+    bool toggled;
+
+    FlagToggler(Flag &_flag)
+        :flag(_flag),toggled(true)
+    {
+        flag = !flag;
+    }
+
+    FlagToggler(Flag &_flag, Flag check)
+        :flag(_flag),toggled(check==_flag)
+    {
+        if (toggled)
+            flag = !flag;
+    }
+
+    ~FlagToggler() {
+        if (toggled)
+            flag = !flag;
+    }
+};
+
+// ----------------------------------------------------------------------------
+
 template<typename Status, class Object>
 class ObjectStatusLocker
 {
 public:
-    ObjectStatusLocker(Status s, Object* o, bool st = true) : status(s), obj(o), state(st)
-    { obj->setStatus(status, state); }
+    ObjectStatusLocker(Status s, Object* o, bool value = true) : status(s), obj(o)
+    { old_value = obj->testStatus(status); obj->setStatus(status, value); }
     ~ObjectStatusLocker()
-    { obj->setStatus(status, !state); }
+    { obj->setStatus(status, old_value); }
 private:
     Status status;
     Object* obj;
-    bool state;
+    bool old_value;
+};
+
+// ----------------------------------------------------------------------------
+
+class StateLocker
+{
+public:
+    StateLocker(bool& flag, bool value = true) : lock(flag)
+    { old_value = lock; lock = value; }
+    ~StateLocker()
+    { lock = old_value; }
+private:
+    bool& lock;
+    bool old_value;
+};
+
+// ----------------------------------------------------------------------------
+
+template<typename T>
+class BitsetLocker
+{
+public:
+    BitsetLocker(T& flags, std::size_t flag, bool value = true)
+        : flags(flags), flag(flag)
+    { oldValue = flags.test(flag); flags.set(flag,value); }
+    ~BitsetLocker()
+    { flags.set(flag,oldValue); }
+private:
+    T &flags;
+    std::size_t flag;
+    bool oldValue;
 };
 
 // ----------------------------------------------------------------------------
 
 class ConnectionBlocker {
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
-    bool b;
-    Connection& c;
+    typedef boost::signals2::connection Connection;
+    typedef boost::signals2::shared_connection_block ConnectionBlock;
+    ConnectionBlock blocker;
 
 public:
-    ConnectionBlocker(Connection& c) : c(c) {
-        b = c.blocked();
-        c.block(true);
+    ConnectionBlocker(Connection& c) : blocker(c) {
     }
     ~ConnectionBlocker() {
-        c.block(b);
     }
 };
 
@@ -191,6 +252,11 @@ struct BaseExport Tools
     static std::string narrow(const std::wstring& str);
     static std::string escapedUnicodeFromUtf8(const char *s);
     static std::string escapedUnicodeToUtf8(const std::string& s);
+
+    static QString escapeEncodeString(const QString& s);
+    static std::string escapeEncodeString(const std::string& s);
+    static QString escapeEncodeFilename(const QString& s);
+    static std::string escapeEncodeFilename(const std::string& s);
 
     /**
      * @brief toStdString Convert a QString into a UTF-8 encoded std::string.

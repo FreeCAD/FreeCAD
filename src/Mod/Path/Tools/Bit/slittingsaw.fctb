@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "name": "Slitting Saw",
+  "shape": "slittingsaw.fcstd",
+  "parameter": {
+    "BladeThickness": "3.0000 mm",
+    "CapHeight": "3.0000 mm",
+    "CapDiameter": "8.0000 mm",
+    "Diameter": "76.2000 mm",
+    "Length": "50.0000 mm",
+    "ShankDiameter": "19.0500 mm"
+  },
+  "attribute": {}
+}

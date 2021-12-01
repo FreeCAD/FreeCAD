@@ -1,1388 +1,3691 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl" sourcelanguage="en">
+<TS version="2.1" language="nl" sourcelanguage="en">
+  <context>
+    <name>Cmd2LineCenterLine</name>
+    <message>
+      <source>Add Centerline between 2 Lines</source>
+      <translation>Voeg een middenlijn tussen 2 lijnen toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2PointCenterLine</name>
+    <message>
+      <source>Add Centerline between 2 Points</source>
+      <translation>Voeg een middenlijn tussen 2 punten toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMidpoints</name>
+    <message>
+      <source>Add Midpoint Vertices</source>
+      <translation>Voeg middelpunten toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdQuadrants</name>
+    <message>
+      <source>Add Quadrant Vertices</source>
+      <translation>Voeg kwadrantpunten toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDraw2LineCenterLine</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Add Centerline between 2 Lines</source>
+      <translation>Voeg een middenlijn tussen 2 lijnen toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDraw2PointCenterLine</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Add Centerline between 2 Points</source>
+      <translation>Voeg een middenlijn tussen 2 punten toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDraw2PointCosmeticLine</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Add Cosmetic Line Through 2 Points</source>
+      <translation>Voeg symbolische Lijn Door 2 Punten</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDraw3PtAngleDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert 3-Point Angle Dimension</source>
+      <translation>Voeg een 3-punts hoekmaat in</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawActiveView</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Active View (3D View)</source>
+      <translation>Voeg de actieve weergave in (3D-weergave)</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawAngleDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Angle Dimension</source>
+      <translation>Voeg een hoekmaat in</translation>
+    </message>
+  </context>
   <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="562"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="563"/>
-      <source>&amp;Annotation</source>
-      <translation>Aantekening </translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="564"/>
-      <location filename="../../Command.cpp" line="566"/>
-      <source>Inserts an Annotation in the active drawing</source>
-      <translation type="unfinished">Inserts an Annotation in the active drawing</translation>
+      <source>Insert Annotation</source>
+      <translation>Voeg een annotatie in</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="908"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="909"/>
-      <source>Insert an ArchView</source>
-      <translation type="unfinished">Insert an ArchView</translation>
+      <source>Insert Arch Workbench Object</source>
+      <translation>Voeg een Arch-werkbankobject in</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="910"/>
-      <location filename="../../Command.cpp" line="912"/>
-      <source>Inserts a view of an Arch Section Plane into the active drawing</source>
-      <translation type="unfinished">Inserts a view of an Arch Section Plane into the active drawing</translation>
+      <source>Insert a View of a Section Plane from Arch Workbench</source>
+      <translation>Voeg een aanzicht van een sectievlak in vanuit de Arch-werkbank</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawClip</name>
+    <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="603"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="604"/>
-      <source>&amp;Clip</source>
-      <translation>&amp;Clip</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="605"/>
-      <location filename="../../Command.cpp" line="607"/>
-      <source>Inserts a clip group in the active drawing</source>
-      <translation type="unfinished">Inserts a clip group in the active drawing</translation>
+      <source>Insert Balloon Annotation</source>
+      <translation>Voeg een ballonannotatie in</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawClipMinus</name>
+    <name>CmdTechDrawCenterLineGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="730"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="731"/>
-      <source>&amp;ClipMinus</source>
-      <translation type="unfinished">&amp;ClipMinus</translation>
+      <source>Insert Center Line</source>
+      <translation>Voeg een middenlijn in</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="732"/>
-      <location filename="../../Command.cpp" line="734"/>
-      <source>Remove a View from a clip group in the active drawing</source>
-      <translation type="unfinished">Remove a View from a clip group in the active drawing</translation>
+      <source>Add Centerline to Faces</source>
+      <translation>Voeg een middenlijn toe aan vlakken</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawClipPlus</name>
+    <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="642"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="643"/>
-      <source>&amp;ClipPlus</source>
-      <translation type="unfinished">&amp;ClipPlus</translation>
+      <source>Insert Clip Group</source>
+      <translation>Voeg een uitsnijdingsgroep in</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawClipGroupAdd</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="644"/>
-      <source>Add a View to a clip group in the active drawing</source>
-      <translation type="unfinished">Add a View to a clip group in the active drawing</translation>
+      <source>Add View to Clip Group</source>
+      <translation>Voeg een weergave toe aan uitsnijdingsgroep</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawClipGroupRemove</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="646"/>
-      <source>Adds a View into a clip group in the active drawing</source>
-      <translation type="unfinished">Adds a View into a clip group in the active drawing</translation>
+      <source>Remove View from Clip Group</source>
+      <translation>Verwijder een weergave van uitsnijdingsgroep</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawCosmeticEraser</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Remove Cosmetic Object</source>
+      <translation>Verwijder cosmetisch object</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawCosmeticVertex</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Add Cosmetic Vertex</source>
+      <translation>Voeg een cosmetisch eindpunt toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawCosmeticVertexGroup</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Cosmetic Vertex</source>
+      <translation>Voeg een cosmetisch eindpunt in</translation>
+    </message>
+    <message>
+      <source>Add Cosmetic Vertex</source>
+      <translation>Voeg een cosmetisch eindpunt toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawDecorateLine</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Change Appearance of Lines</source>
+      <translation>Verander uiterlijk van de lijnen</translation>
+    </message>
+    <message>
+      <source>Change Appearance of selected Lines</source>
+      <translation>Wijzig uiterlijk van geselecteerde lijnen</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawDetailView</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Detail View</source>
+      <translation>Voeg een detailweergave in</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawDiameterDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Diameter Dimension</source>
+      <translation>Voeg een diameterafmeting in</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Dimension</source>
+      <translation>Voeg een afmeting in</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="855"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="856"/>
-      <source>Insert a DraftView</source>
-      <translation type="unfinished">Insert a DraftView</translation>
+      <source>Insert Draft Workbench Object</source>
+      <translation>Voeg een schetswerkbankobject in</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="857"/>
-      <location filename="../../Command.cpp" line="859"/>
-      <source>Inserts a Draft WB object into the active drawing</source>
-      <translation type="unfinished">Inserts a Draft WB object into the active drawing</translation>
+      <source>Insert a View of a Draft Workbench object</source>
+      <translation>Voeg een aanzicht van een Draft Workbench object toe</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExportPage</name>
+    <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1024"/>
       <source>File</source>
       <translation>Bestand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1025"/>
-      <source>&amp;Export page...</source>
-      <translation>&amp;Exporteer pagina...</translation>
+      <source>Export Page as DXF</source>
+      <translation>Exporteer pagina als DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1026"/>
-      <location filename="../../Command.cpp" line="1028"/>
-      <source>Export a page to an SVG file</source>
-      <translation>Een pagina naar een SVG-bestand exporteren</translation>
+      <source>Save Dxf File</source>
+      <translation>Bewaar Dxf-bestand</translation>
+    </message>
+    <message>
+      <source>Dxf (*.dxf)</source>
+      <translation>Dxf (*.dxf)</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportPageSVG</name>
+    <message>
+      <source>File</source>
+      <translation>Bestand</translation>
+    </message>
+    <message>
+      <source>Export Page as SVG</source>
+      <translation>Exporteer pagina als DXF</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionCircleCenterLines</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Draw circle centerlines</source>
+      <translation>Teken cirkel diameter</translation>
+    </message>
+    <message>
+      <source>Draw circle centerline cross at circles
+    - select many circles or arcs
+    - click this button</source>
+      <translation>Teken cirkelvormige middenlijn in cirkels
+    - selecteer veel cirkels of bogen
+    - klik op deze knop</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionThreadBoltBottom</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Cosmetic thread bolt bottom view</source>
+      <translation>Cosmetische draadbout onderaanzicht</translation>
+    </message>
+    <message>
+      <source>Draw cosmetic screw thread ground view
+    - select many circles
+    - click this button</source>
+      <translation type="unfinished">Draw cosmetic screw thread ground view
+    - select many circles
+    - click this button</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionThreadBoltSide</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Cosmetic thread bolt side view</source>
+      <translation type="unfinished">Cosmetic thread bolt side view</translation>
+    </message>
+    <message>
+      <source>Draw cosmetic screw thread side view
+    - select two parallel lines
+    - click this button</source>
+      <translation type="unfinished">Draw cosmetic screw thread side view
+    - select two parallel lines
+    - click this button</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionThreadHoleBottom</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Cosmetic thread hole bottom view</source>
+      <translation type="unfinished">Cosmetic thread hole bottom view</translation>
+    </message>
+    <message>
+      <source>Draw cosmetic hole thread ground view
+    - select many circles
+    - click this button</source>
+      <translation type="unfinished">Draw cosmetic hole thread ground view
+    - select many circles
+    - click this button</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionThreadHoleSide</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Cosmetic thread hole side view</source>
+      <translation type="unfinished">Cosmetic thread hole side view</translation>
+    </message>
+    <message>
+      <source>Draw cosmetic thread hole side view
+    - select two parallel lines
+    - click this button</source>
+      <translation type="unfinished">Draw cosmetic thread hole side view
+    - select two parallel lines
+    - click this button</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtentGroup</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Extent Dimension</source>
+      <translation>Voeg een expansie-afmeting toe</translation>
+    </message>
+    <message>
+      <source>Horizontal Extent</source>
+      <translation>Horizontale expansie</translation>
+    </message>
+    <message>
+      <source>Vertical Extent</source>
+      <translation>Verticale expansie</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawFaceCenterLine</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Add Centerline to Faces</source>
+      <translation>Voeg een middenlijn toe aan vlakken</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawGeometricHatch</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Apply Geometric Hatch to Face</source>
+      <translation>Pas de geometrische arcering toe op een vlak</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawHatch</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Hatch a Face using Image File</source>
+      <translation>Arceer een vlak met behulp van een afbeeldingsbestand</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawHorizontalDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Horizontal Dimension</source>
+      <translation>Voeg een horizontale afmeting in</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawHorizontalExtentDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Horizontal Extent Dimension</source>
+      <translation>Voeg een horizontale expansie-afmeting in</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="212"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="213"/>
-      <source>Insert bitmap image</source>
-      <translation type="unfinished">Insert bitmap image</translation>
+      <source>Insert Bitmap Image</source>
+      <translation>Voeg een Bitmap-afbeelding in</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="214"/>
-      <location filename="../../CommandDecorate.cpp" line="216"/>
-      <source>Inserts a bitmap from a file in the active drawing</source>
-      <translation type="unfinished">Inserts a bitmap from a file in the active drawing</translation>
+      <source>Insert Bitmap from a file into a page</source>
+      <translation>Voeg een Bitmap in vanuit een bestand in een pagina</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="233"/>
       <source>Select an Image File</source>
-      <translation type="unfinished">Select an Image File</translation>
+      <translation>Kies een afbeeldingsbestand</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="235"/>
       <source>Image (*.png *.jpg *.jpeg)</source>
       <translation>Afbeelding (*.png *.jpg *.jpeg)</translation>
     </message>
   </context>
   <context>
+    <name>CmdTechDrawLandmarkDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Landmark Dimension - EXPERIMENTAL</source>
+      <translation>Voeg een oriëntatiepuntafmeting in - EXPERIMENTEEL</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawLeaderLine</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Add Leaderline to View</source>
+      <translation>Voeg een leiderslijn aan de weergave toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawLengthDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Length Dimension</source>
+      <translation>Voeg een lengteafmeting in</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="822"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="823"/>
-      <location filename="../../CommandCreateDims.cpp" line="824"/>
-      <source>Link a dimension to 3D geometry</source>
-      <translation type="unfinished">Link a dimension to 3D geometry</translation>
+      <source>Link Dimension to 3D Geometry</source>
+      <translation>Koppel een afmeting aan de 3D-geometrie</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawNewAngleDimension</name>
+    <name>CmdTechDrawMidpoints</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="733"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="734"/>
-      <source>Insert a new angle dimension into the drawing</source>
-      <translation type="unfinished">Insert a new angle dimension into the drawing</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="735"/>
-      <source>Insert a new angle dimension</source>
-      <translation type="unfinished">Insert a new angle dimension</translation>
+      <source>Add Midpoint Vertices</source>
+      <translation>Voeg middelpunten toe</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawNewDiameterDimension</name>
+    <name>CmdTechDrawPageDefault</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="323"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="324"/>
-      <source>Insert a new diameter dimension into the drawing</source>
-      <translation type="unfinished">Insert a new diameter dimension into the drawing</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="325"/>
-      <source>Insert a new diameter dimension feature for the selected view</source>
-      <translation type="unfinished">Insert a new diameter dimension feature for the selected view</translation>
+      <source>Insert Default Page</source>
+      <translation>Voeg een standaardpagina in</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawNewDimension</name>
+    <name>CmdTechDrawPageTemplate</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="110"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="111"/>
-      <source>Insert a dimension into the drawing</source>
-      <translation type="unfinished">Insert a dimension into the drawing</translation>
+      <source>Insert Page using Template</source>
+      <translation>Voeg een pagina in met behulp van een sjabloon</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="112"/>
-      <source>Insert a new dimension</source>
-      <translation type="unfinished">Insert a new dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawNewDistanceXDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="518"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="519"/>
-      <source>Insert a new horizontal dimension into the drawing</source>
-      <translation type="unfinished">Insert a new horizontal dimension into the drawing</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="520"/>
-      <source>Insert a new horizontal-distance dimension</source>
-      <translation type="unfinished">Insert a new horizontal-distance dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawNewDistanceYDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="626"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="627"/>
-      <source>Insert a new vertical dimension into the drawing</source>
-      <translation type="unfinished">Insert a new vertical dimension into the drawing</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="628"/>
-      <source>Insert a new vertical distance dimension</source>
-      <translation type="unfinished">Insert a new vertical distance dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawNewGeomHatch</name>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="142"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="143"/>
-      <location filename="../../CommandDecorate.cpp" line="144"/>
-      <source>Apply geometric hatch to a Face</source>
-      <translation type="unfinished">Apply geometric hatch to a Face</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawNewHatch</name>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="80"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../CommandDecorate.cpp" line="81"/>
-      <location filename="../../CommandDecorate.cpp" line="82"/>
-      <source>Hatch a Face using image file</source>
-      <translation type="unfinished">Hatch a Face using image file</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawNewLengthDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="410"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="411"/>
-      <source>Insert a new length dimension into the drawing</source>
-      <translation type="unfinished">Insert a new length dimension into the drawing</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="412"/>
-      <source>Insert a new length dimension</source>
-      <translation type="unfinished">Insert a new length dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawNewPage</name>
-    <message>
-      <location filename="../../Command.cpp" line="162"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="163"/>
-      <location filename="../../Command.cpp" line="164"/>
-      <source>Insert new drawing page from template</source>
-      <translation type="unfinished">Insert new drawing page from template</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="179"/>
       <source>Select a Template File</source>
-      <translation type="unfinished">Select a Template File</translation>
+      <translation>Selecteer een sjabloonbestand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="181"/>
       <source>Template (*.svg *.dxf)</source>
-      <translation type="unfinished">Template (*.svg *.dxf)</translation>
+      <translation>Sjabloon (*.svg *.dxf)</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawNewPageDef</name>
+    <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="92"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="93"/>
-      <location filename="../../Command.cpp" line="94"/>
-      <source>Insert new default drawing page</source>
-      <translation type="unfinished">Insert new default drawing page</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawNewRadiusDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="236"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="237"/>
-      <source>Insert a new radius dimension into the drawing</source>
-      <translation type="unfinished">Insert a new radius dimension into the drawing</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="238"/>
-      <source>Insert a new radius dimension feature for the selected view</source>
-      <translation type="unfinished">Insert a new radius dimension feature for the selected view</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawNewView</name>
-    <message>
-      <location filename="../../Command.cpp" line="242"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="243"/>
-      <source>Insert view in drawing</source>
-      <translation>Een weergave in de tekening invoegen</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="244"/>
-      <source>Insert a new View of a Part in the active drawing</source>
-      <translation>Een nieuwe weergave van een onderdeel in de actieve tekening invoegen</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawNewViewDetail</name>
-    <message>
-      <location filename="../../Command.cpp" line="371"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="372"/>
-      <source>Insert detail view in drawing</source>
-      <translation type="unfinished">Insert detail view in drawing</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="373"/>
-      <source>Insert a new Detail View of a Part in the active drawing</source>
-      <translation type="unfinished">Insert a new Detail View of a Part in the active drawing</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawNewViewSection</name>
-    <message>
-      <location filename="../../Command.cpp" line="302"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="303"/>
-      <source>Insert section view in drawing</source>
-      <translation type="unfinished">Insert section view in drawing</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="304"/>
-      <source>Insert a new Section View of a Part in the active drawing</source>
-      <translation type="unfinished">Insert a new Section View of a Part in the active drawing</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawProjGroup</name>
-    <message>
-      <location filename="../../Command.cpp" line="440"/>
-      <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="441"/>
       <source>Insert Projection Group</source>
-      <translation type="unfinished">Insert Projection Group</translation>
+      <translation>Voeg een projectiegroep in</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
-      <source>Insert multiple views of a single part into the active drawing</source>
-      <translation type="unfinished">Insert multiple views of a single part into the active drawing</translation>
+      <source>Insert multiple linked views of drawable object(s)</source>
+      <translation>Voeg meerdere gelinkte weergaven van het/de object(en) in</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawQuadrants</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Add Quadrant Vertices</source>
+      <translation>Voeg kwadrantpunten toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawRadiusDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Radius Dimension</source>
+      <translation>Voeg een straalafmeting in</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="311"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="312"/>
-      <location filename="../../CommandDecorate.cpp" line="313"/>
-      <source>Redraw a page</source>
-      <translation type="unfinished">Redraw a page</translation>
+      <source>Redraw Page</source>
+      <translation>Herteken pagina</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawSpreadsheet</name>
+    <name>CmdTechDrawRichTextAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="965"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="966"/>
-      <source>Spreadsheet</source>
-      <translation>Rekenblad</translation>
+      <source>Insert Rich Text Annotation</source>
+      <translation>Voeg een opgemaakte tekstannotatie</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawSectionView</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="967"/>
-      <location filename="../../Command.cpp" line="969"/>
-      <source>Inserts a view of a selected spreadsheet into a drawing</source>
-      <translation type="unfinished">Inserts a view of a selected spreadsheet into a drawing</translation>
+      <source>Insert Section View</source>
+      <translation>Voeg een sectieweergave in</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawShowAll</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Show/Hide Invisible Edges</source>
+      <translation>Onzichtbare randen weergeven/verbergen</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawSpreadsheetView</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Spreadsheet View</source>
+      <translation>Voeg een rekenbladweergave in</translation>
+    </message>
+    <message>
+      <source>Insert View to a spreadsheet</source>
+      <translation>Weergave toevoegen aan een rekenblad</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
-      <source>Insert SVG &amp;Symbol</source>
-      <translation type="unfinished">Insert SVG &amp;Symbol</translation>
+      <source>Insert SVG Symbol</source>
+      <translation>Vog een SVG-symbool in</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
-      <location filename="../../Command.cpp" line="809"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation type="unfinished">Inserts a symbol from a svg file in the active drawing</translation>
+      <source>Insert symbol from an SVG file</source>
+      <translation>Symbool invoegen van een SVG-bestand</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="264"/>
       <source>TechDraw</source>
-      <translation type="unfinished">TechDraw</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="265"/>
-      <location filename="../../CommandDecorate.cpp" line="266"/>
-      <source>Turn View Frames on or off</source>
-      <translation type="unfinished">Turn View Frames on or off</translation>
+      <source>Turn View Frames On/Off</source>
+      <translation>Zet View Frames aan of uit</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawVerticalDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Vertical Dimension</source>
+      <translation>Voeg een verticale afmeting in</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawVerticalExtentDimension</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert Vertical Extent Dimension</source>
+      <translation>Voeg een verticale expansie-afmeting in</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawView</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Insert View</source>
+      <translation>Weergave toevoegen</translation>
+    </message>
+    <message>
+      <source>Insert a View</source>
+      <translation>Weergave toevoegen</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawWeldSymbol</name>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>Add Welding Information to Leaderline</source>
+      <translation>Voeg lasinformatie toe aan leiderslijn</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Drawing create page</source>
+      <translation>Toekennen maken pagina</translation>
+    </message>
+    <message>
+      <source>Create view</source>
+      <translation>Weergave maken</translation>
+    </message>
+    <message>
+      <source>Create Projection Group</source>
+      <translation>Projectiegroep maken</translation>
+    </message>
+    <message>
+      <source>Create Clip</source>
+      <translation>Maak Doorsnede</translation>
+    </message>
+    <message>
+      <source>ClipGroupAdd</source>
+      <translation>DoorsnedeGroepToevoeger</translation>
+    </message>
+    <message>
+      <source>ClipGroupRemove</source>
+      <translation>DoorsnedeGroepVerwijder</translation>
+    </message>
+    <message>
+      <source>Create Symbol</source>
+      <translation>Maak Symbool</translation>
+    </message>
+    <message>
+      <source>Create DraftView</source>
+      <translation>Draftweergave maken</translation>
+    </message>
+    <message>
+      <source>Create ArchView</source>
+      <translation>Maak Arch Weergave</translation>
+    </message>
+    <message>
+      <source>Create spreadsheet view</source>
+      <translation>Rekenbladweergave maken</translation>
+    </message>
+    <message>
+      <source>Save page to dxf</source>
+      <translation>Pagina in dxf opslaan</translation>
+    </message>
+    <message>
+      <source>Add Midpont Vertices</source>
+      <translation type="unfinished">Add Midpont Vertices</translation>
+    </message>
+    <message>
+      <source>Add Quadrant Vertices</source>
+      <translation>Voeg kwadrantpunten toe</translation>
+    </message>
+    <message>
+      <source>Create Annotation</source>
+      <translation>Aantekening maken</translation>
+    </message>
+    <message>
+      <source>Create Dimension</source>
+      <translation>Dimensie maken</translation>
+    </message>
+    <message>
+      <source>Create Hatch</source>
+      <translation>Maar Arcering</translation>
+    </message>
+    <message>
+      <source>Create GeomHatch</source>
+      <translation>GeomHatch aanmaken</translation>
+    </message>
+    <message>
+      <source>Create Image</source>
+      <translation>Afbeelding maken</translation>
+    </message>
+    <message>
+      <source>Drag Balloon</source>
+      <translation>Sleep de ballon</translation>
+    </message>
+    <message>
+      <source>Drag Dimension</source>
+      <translation>Dimensie slepen</translation>
+    </message>
+    <message>
+      <source>Create Balloon</source>
+      <translation>Ballon maken</translation>
+    </message>
+    <message>
+      <source>Create ActiveView</source>
+      <translation>Maak Actiefweergave</translation>
+    </message>
+    <message>
+      <source>Create CenterLine</source>
+      <translation>Maak een middenlijn</translation>
+    </message>
+    <message>
+      <source>Create Cosmetic Line</source>
+      <translation>Cosmetische lijn maken</translation>
+    </message>
+    <message>
+      <source>Update CosmeticLine</source>
+      <translation>Symbolische lijn bijwerken</translation>
+    </message>
+    <message>
+      <source>Create Detail View</source>
+      <translation>Voeg een detailweergave in</translation>
+    </message>
+    <message>
+      <source>Update Detail</source>
+      <translation>Detail Bijwerken</translation>
+    </message>
+    <message>
+      <source>Create Leader</source>
+      <translation>Maak Leider</translation>
+    </message>
+    <message>
+      <source>Edit Leader</source>
+      <translation>Bewerk leider</translation>
+    </message>
+    <message>
+      <source>Create Anno</source>
+      <translation>Maak Annotatie</translation>
+    </message>
+    <message>
+      <source>Edit Anno</source>
+      <translation>Annotatie bewerken</translation>
+    </message>
+    <message>
+      <source>Apply Quick</source>
+      <translation>Snel toepassen</translation>
+    </message>
+    <message>
+      <source>Apply Aligned</source>
+      <translation>Pas uitgelijnd toe</translation>
+    </message>
+    <message>
+      <source>Create SectionView</source>
+      <translation>Sectie Weergave maken</translation>
+    </message>
+    <message>
+      <source>Create WeldSymbol</source>
+      <translation>Lassymbool maken</translation>
+    </message>
+    <message>
+      <source>Edit WeldSymbol</source>
+      <translation>Bewerk lassymbool</translation>
+    </message>
+    <message>
+      <source>Add Cosmetic Vertex</source>
+      <translation>Voeg een cosmetisch eindpunt toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>MRichTextEdit</name>
+    <message>
+      <source>Save changes</source>
+      <translation>Wijzigingen opslaan</translation>
+    </message>
+    <message>
+      <source>Close editor</source>
+      <translation>Sluit de editor</translation>
+    </message>
+    <message>
+      <source>Paragraph formatting</source>
+      <translation>Paragraafopmaak</translation>
+    </message>
+    <message>
+      <source>Undo (CTRL+Z)</source>
+      <translation>Ongedaan maken (CTRL+Z)</translation>
+    </message>
+    <message>
+      <source>Undo</source>
+      <translation>Ongedaan maken</translation>
+    </message>
+    <message>
+      <source>Redo</source>
+      <translation>Herstel ongedaan maken</translation>
+    </message>
+    <message>
+      <source>Cut (CTRL+X)</source>
+      <translation>Snijden (CTRL+X)</translation>
+    </message>
+    <message>
+      <source>Cut</source>
+      <translation>Snijden</translation>
+    </message>
+    <message>
+      <source>Copy (CTRL+C)</source>
+      <translation>Kopiëren (CTRL+C)</translation>
+    </message>
+    <message>
+      <source>Copy</source>
+      <translation>Kopie</translation>
+    </message>
+    <message>
+      <source>Paste (CTRL+V)</source>
+      <translation>Plakken (CTRL+V)</translation>
+    </message>
+    <message>
+      <source>Paste</source>
+      <translation>Plakken</translation>
+    </message>
+    <message>
+      <source>Link (CTRL+L)</source>
+      <translation>Link (CTRL+L)</translation>
+    </message>
+    <message>
+      <source>Link</source>
+      <translation>Link</translation>
+    </message>
+    <message>
+      <source>Bold</source>
+      <translation>Vet</translation>
+    </message>
+    <message>
+      <source>Italic (CTRL+I)</source>
+      <translation>Cursief (Ctrl + I)</translation>
+    </message>
+    <message>
+      <source>Italic</source>
+      <translation>Cursief</translation>
+    </message>
+    <message>
+      <source>Underline (CTRL+U)</source>
+      <translation>Onderstrepen (Ctrl+U)</translation>
+    </message>
+    <message>
+      <source>Underline</source>
+      <translation>Onderstrepen</translation>
+    </message>
+    <message>
+      <source>Strikethrough</source>
+      <translation>Doorhalen</translation>
+    </message>
+    <message>
+      <source>Strike Out</source>
+      <translation>Doorstrepen</translation>
+    </message>
+    <message>
+      <source>Bullet list (CTRL+-)</source>
+      <translation>Lijst met Opsommingstekens (Ctrl+-)</translation>
+    </message>
+    <message>
+      <source>Ordered list (CTRL+=)</source>
+      <translation>Gerangschikte lijst (CTRL+=)</translation>
+    </message>
+    <message>
+      <source>Decrease indentation (CTRL+,)</source>
+      <translation>Indrukking verkleinen (CTRL+,)</translation>
+    </message>
+    <message>
+      <source>Decrease indentation</source>
+      <translation>Indrukking verkleinen</translation>
+    </message>
+    <message>
+      <source>Increase indentation (CTRL+.)</source>
+      <translation>Indrukking vergroten (CTRL+.)</translation>
+    </message>
+    <message>
+      <source>Increase indentation</source>
+      <translation>Indrukking vergroten</translation>
+    </message>
+    <message>
+      <source>Text foreground color</source>
+      <translation>Voorgrondkleur van de tekst</translation>
+    </message>
+    <message>
+      <source>Text background color</source>
+      <translation>Achtergrondkleur van de tekst</translation>
+    </message>
+    <message>
+      <source>Background</source>
+      <translation>Achtergrond</translation>
+    </message>
+    <message>
+      <source>Font size</source>
+      <translation>Lettergrootte</translation>
+    </message>
+    <message>
+      <source>More functions</source>
+      <translation>Meer functies</translation>
+    </message>
+    <message>
+      <source>Standard</source>
+      <translation>Standaard</translation>
+    </message>
+    <message>
+      <source>Heading 1</source>
+      <translation>Kop 1</translation>
+    </message>
+    <message>
+      <source>Heading 2</source>
+      <translation>Kop 2</translation>
+    </message>
+    <message>
+      <source>Heading 3</source>
+      <translation>Kop 3</translation>
+    </message>
+    <message>
+      <source>Heading 4</source>
+      <translation>Kop 4</translation>
+    </message>
+    <message>
+      <source>Monospace</source>
+      <translation>Monospace</translation>
+    </message>
+    <message>
+      <source>Remove character formatting</source>
+      <translation>Verwijder de karakteropmaak</translation>
+    </message>
+    <message>
+      <source>Remove all formatting</source>
+      <translation>Verwijder alle opmaak</translation>
+    </message>
+    <message>
+      <source>Edit document source</source>
+      <translation>Bewerk de documentbron</translation>
+    </message>
+    <message>
+      <source>Document source</source>
+      <translation>Documentbron</translation>
+    </message>
+    <message>
+      <source>Create a link</source>
+      <translation>Maak een koppeling aan</translation>
+    </message>
+    <message>
+      <source>Link URL:</source>
+      <translation>URL van de koppeling:</translation>
+    </message>
+    <message>
+      <source>Select an image</source>
+      <translation>Kies een afbeelding</translation>
+    </message>
+    <message>
+      <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
+      <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="262"/>
-      <location filename="../../Command.cpp" line="320"/>
-      <location filename="../../Command.cpp" line="389"/>
-      <location filename="../../Command.cpp" line="460"/>
-      <location filename="../../Command.cpp" line="655"/>
-      <location filename="../../Command.cpp" line="671"/>
-      <location filename="../../Command.cpp" line="676"/>
-      <location filename="../../Command.cpp" line="685"/>
-      <location filename="../../Command.cpp" line="744"/>
-      <location filename="../../Command.cpp" line="764"/>
-      <location filename="../../Command.cpp" line="874"/>
-      <location filename="../../Command.cpp" line="926"/>
-      <location filename="../../Command.cpp" line="933"/>
-      <location filename="../../Command.cpp" line="978"/>
       <source>Wrong selection</source>
       <translation>Verkeerde selectie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="263"/>
-      <source>Can not make a View from this selection</source>
-      <translation type="unfinished">Can not make a View from this selection</translation>
+      <source>No Shapes, Groups or Links in this selection</source>
+      <translation>Geen vormen, groepen of links in deze selectie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="321"/>
-      <location filename="../../Command.cpp" line="390"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
-      <translation type="unfinished">Select at least 1 DrawViewPart object as Base.</translation>
+      <translation>Selecteer minstens 1 DrawViewPart-object als basis.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="461"/>
-      <source>Can not make a ProjectionGroup from this selection</source>
-      <translation type="unfinished">Can not make a ProjectionGroup from this selection</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="656"/>
-      <source>Select 1 DrawViewClip and 1 DrawView.</source>
-      <translation type="unfinished">Select 1 DrawViewClip and 1 DrawView.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="672"/>
-      <location filename="../../Command.cpp" line="745"/>
-      <source>Select exactly one Drawing View object.</source>
-      <translation type="unfinished">Select exactly one Drawing View object.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="677"/>
-      <source>Select exactly one Clip object.</source>
-      <translation type="unfinished">Select exactly one Clip object.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="686"/>
-      <source>Clip and View must be from same Page.</source>
-      <translation type="unfinished">Clip and View must be from same Page.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="765"/>
-      <source>View does not belong to a Clip</source>
-      <translation type="unfinished">View does not belong to a Clip</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="823"/>
-      <source>Choose an SVG file to open</source>
-      <translation>Kies een SVG-bestand om te openen</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="824"/>
-      <source>Scalable Vector Graphic</source>
-      <translation type="unfinished">Scalable Vector Graphic</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="875"/>
-      <source>Select at least one object.</source>
-      <translation type="unfinished">Select at least one object.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="927"/>
-      <source>Select exactly one Arch Section Plane object.</source>
-      <translation type="unfinished">Select exactly one Arch Section Plane object.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="934"/>
-      <source>The selected object is not an Arch Section Plane.</source>
-      <translation type="unfinished">The selected object is not an Arch Section Plane.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="979"/>
-      <source>Select exactly one Spreadsheet object.</source>
-      <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1048"/>
-      <source>No Drawing View</source>
-      <translation type="unfinished">No Drawing View</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1049"/>
-      <source>Open Drawing View before attempting export to SVG.</source>
-      <translation type="unfinished">Open Drawing View before attempting export to SVG.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="195"/>
-      <location filename="../../CommandCreateDims.cpp" line="281"/>
-      <location filename="../../CommandCreateDims.cpp" line="368"/>
-      <location filename="../../CommandCreateDims.cpp" line="477"/>
-      <location filename="../../CommandCreateDims.cpp" line="584"/>
-      <location filename="../../CommandCreateDims.cpp" line="692"/>
-      <location filename="../../CommandCreateDims.cpp" line="778"/>
-      <location filename="../../CommandCreateDims.cpp" line="862"/>
-      <location filename="../../CommandCreateDims.cpp" line="868"/>
-      <location filename="../../CommandDecorate.cpp" line="381"/>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <source>Incorrect Selection</source>
-      <translation type="unfinished">Incorrect Selection</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="196"/>
-      <source>Can&apos;t make a Dimension from this selection</source>
-      <translation type="unfinished">Can&apos;t make a Dimension from this selection</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="779"/>
-      <source>Can&apos;t make an angle Dimension from this selection</source>
-      <translation type="unfinished">Can&apos;t make an angle Dimension from this selection</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="863"/>
-      <source>There is no 3D object in your selection</source>
-      <translation type="unfinished">There is no 3D object in your selection</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="869"/>
-      <source>There are no 3D Edges or Vertices in your selection</source>
-      <translation type="unfinished">There are no 3D Edges or Vertices in your selection</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="914"/>
-      <location filename="../../CommandCreateDims.cpp" line="921"/>
-      <location filename="../../CommandCreateDims.cpp" line="928"/>
-      <location filename="../../CommandCreateDims.cpp" line="940"/>
-      <location filename="../../CommandCreateDims.cpp" line="957"/>
-      <location filename="../../CommandDecorate.cpp" line="360"/>
-      <location filename="../../CommandDecorate.cpp" line="367"/>
-      <location filename="../../CommandDecorate.cpp" line="374"/>
       <source>Incorrect selection</source>
-      <translation type="unfinished">Incorrect selection</translation>
+      <translation>Onjuiste selectie</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="915"/>
       <source>Select an object first</source>
-      <translation type="unfinished">Select an object first</translation>
+      <translation>Selecteer eerst een object</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="922"/>
       <source>Too many objects selected</source>
-      <translation type="unfinished">Too many objects selected</translation>
+      <translation>Te veel objecten geselecteerd</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="929"/>
-      <location filename="../../DrawGuiUtil.cpp" line="97"/>
-      <location filename="../../DrawGuiUtil.cpp" line="120"/>
       <source>Create a page first.</source>
       <translation>Maak eerst een pagina.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="941"/>
-      <location filename="../../CommandCreateDims.cpp" line="958"/>
-      <source>No DrawViewPart in selection.</source>
-      <translation type="unfinished">No DrawViewPart in selection.</translation>
+      <source>No View of a Part in selection.</source>
+      <translation>Geen aanzicht van een onderdeel in de selectie.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="288"/>
+      <source>Select one Clip group and one View.</source>
+      <translation>Selecteer één clipgroep en één weergave.</translation>
+    </message>
+    <message>
+      <source>Select exactly one View to add to group.</source>
+      <translation>Selecteer precies één Aanzicht om aan groep toe te voegen.</translation>
+    </message>
+    <message>
+      <source>Select exactly one Clip group.</source>
+      <translation>Selecteer precies één Clip groep.</translation>
+    </message>
+    <message>
+      <source>Clip and View must be from same Page.</source>
+      <translation>Clip en weergave moeten van dezelfde pagina zijn.</translation>
+    </message>
+    <message>
+      <source>Select exactly one View to remove from Group.</source>
+      <translation>Selecteer precies één Aanzicht om van groep te verwijderen.</translation>
+    </message>
+    <message>
+      <source>View does not belong to a Clip</source>
+      <translation>Weergave behoort niet tot een clip</translation>
+    </message>
+    <message>
+      <source>Choose an SVG file to open</source>
+      <translation>Kies een SVG-bestand om te openen</translation>
+    </message>
+    <message>
+      <source>Scalable Vector Graphic</source>
+      <translation>Schaalbare vectorafbeelding</translation>
+    </message>
+    <message>
+      <source>All Files</source>
+      <translation>Alle bestanden</translation>
+    </message>
+    <message>
+      <source>Select at least one object.</source>
+      <translation>Selecteer minstens één object.</translation>
+    </message>
+    <message>
+      <source>There were no DraftWB objects in the selection.</source>
+      <translation>Er waren geen DraftWB-objecten in de selectie.</translation>
+    </message>
+    <message>
+      <source>Please select only 1 Arch Section.</source>
+      <translation>Selecteer slechts 1 boogsectie.</translation>
+    </message>
+    <message>
+      <source>No Arch Sections in selection.</source>
+      <translation>Geen boogsecties in selectie.</translation>
+    </message>
+    <message>
+      <source>Select exactly one Spreadsheet object.</source>
+      <translation>Selecteer exact één Spreadsheet-object.</translation>
+    </message>
+    <message>
+      <source>No Drawing View</source>
+      <translation>Geen tekenweergave</translation>
+    </message>
+    <message>
+      <source>Open Drawing View before attempting export to SVG.</source>
+      <translation>Open de tekenweergave voordat u probeert te exporteren naar SVG.</translation>
+    </message>
+    <message>
+      <source>Can not export selection</source>
+      <translation>Selectie kan niet worden geëxporteerd</translation>
+    </message>
+    <message>
+      <source>Page contains DrawViewArch which will not be exported. Continue?</source>
+      <translation>Pagina bevat DrawViewArch die niet zal worden geëxporteerd. Doorgaan?</translation>
+    </message>
+    <message>
+      <source>Ellipse Curve Warning</source>
+      <translation>Waarschuwing Elliptische curve</translation>
+    </message>
+    <message>
+      <source>Selected edge is an Ellipse.  Radius will be approximate. Continue?</source>
+      <translation>Geselecteerde rand is een Ellips.  Straal zal approximatief zijn. Doorgaan?</translation>
+    </message>
+    <message>
+      <source>BSpline Curve Warning</source>
+      <translation>Waarschuwing BSpline curve</translation>
+    </message>
+    <message>
+      <source>Selected edge is a BSpline.  Radius will be approximate. Continue?</source>
+      <translation>Geselecteerde rand is een BSpline.  Straal zal approximatief zijn. Doorgaan?</translation>
+    </message>
+    <message>
+      <source>Incorrect Selection</source>
+      <translation>Onjuiste Selectie</translation>
+    </message>
+    <message>
+      <source>Selected edge is an Ellipse.  Diameter will be approximate. Continue?</source>
+      <translation>Geselecteerde rand is een Ellips. Diameter zal approximatief zijn. Doorgaan?</translation>
+    </message>
+    <message>
+      <source>Selected edge is a BSpline.  Diameter will be approximate. Continue?</source>
+      <translation>Geselecteerde rand is een BSpline.  Diameter zal approximatief zijn. Doorgaan?</translation>
+    </message>
+    <message>
+      <source>Need two straight edges to make an Angle Dimension</source>
+      <translation>Twee rechte randen zijn nodig om een hoekafmeting te verkrijgen</translation>
+    </message>
+    <message>
+      <source>Need three points to make a 3 point Angle Dimension</source>
+      <translation>3 ponten nodig voor het aanmaken van een Hoek dimensie</translation>
+    </message>
+    <message>
+      <source>There is no 3D object in your selection</source>
+      <translation>Er is geen 3D-object in uw selectie</translation>
+    </message>
+    <message>
+      <source>There are no 3D Edges or Vertices in your selection</source>
+      <translation>Er zijn geen 3D-randen of eindpunten in uw selectie</translation>
+    </message>
+    <message>
+      <source>Selection Error</source>
+      <translation>Selectiefout</translation>
+    </message>
+    <message>
+      <source>Please select a View [and Edges].</source>
+      <translation>Gelieve een weergave te selecteren [en randen].</translation>
+    </message>
+    <message>
+      <source>Select 2 point objects and 1 View. (1)</source>
+      <translation>Selecteer 2 punten en 1 aanzicht. (1)</translation>
+    </message>
+    <message>
+      <source>Select 2 point objects and 1 View. (2)</source>
+      <translation>Selecteer 2 punten en 1 aanzicht. (2)</translation>
+    </message>
+    <message>
+      <source>No Feature with Shape in selection.</source>
+      <translation>Geen functie met Vorm in Selectie.</translation>
+    </message>
+    <message>
+      <source>Task In Progress</source>
+      <translation>Taak in uitvoering</translation>
+    </message>
+    <message>
+      <source>Close active task dialog and try again.</source>
+      <translation>Sluit het actieve taakvenster en probeer opnieuw.</translation>
+    </message>
+    <message>
+      <source>Wrong Selection</source>
+      <translation>Verkeerde selectie</translation>
+    </message>
+    <message>
+      <source>Can not attach leader.  No base View selected.</source>
+      <translation>Kan de leider niet bijvoegen. Geen basisweergave geselecteerd.</translation>
+    </message>
+    <message>
+      <source>You must select a base View for the line.</source>
+      <translation>U moet een basisweergave voor deze lijn selecteren.</translation>
+    </message>
+    <message>
+      <source>No DrawViewPart objects in this selection</source>
+      <translation>Geen DrawViewPart-objecten in deze selectie</translation>
+    </message>
+    <message>
+      <source>No base View in Selection.</source>
+      <translation>Geen basisweergave in de selectie.</translation>
+    </message>
+    <message>
+      <source>You must select Faces or an existing CenterLine.</source>
+      <translation>U moet vlakken of een bestaand middenlijn selecteren.</translation>
+    </message>
+    <message>
+      <source>No CenterLine in selection.</source>
+      <translation>Geen middenlijn in selectie.</translation>
+    </message>
+    <message>
+      <source>Selection is not a CenterLine.</source>
+      <translation>Selectie is geen middenlijn.</translation>
+    </message>
+    <message>
+      <source>Selection not understood.</source>
+      <translation>Selectie niet begrepen.</translation>
+    </message>
+    <message>
+      <source>You must select 2 Vertexes or an existing CenterLine.</source>
+      <translation>U moet 2 eindpunten of een bestaande middenlijn selecteren.</translation>
+    </message>
+    <message>
+      <source>Need 2 Vertices or 1 CenterLine.</source>
+      <translation>Vereist 2 eindpunten of 1 middenlijn.</translation>
+    </message>
+    <message>
+      <source>Selection is empty.</source>
+      <translation>Selectie is leeg.</translation>
+    </message>
+    <message>
+      <source>Not enough points in selection.</source>
+      <translation>Niet genoeg punten in selectie.</translation>
+    </message>
+    <message>
+      <source>Selection is not a Cosmetic Line.</source>
+      <translation>Selectie is geen cosmetische lijn.</translation>
+    </message>
+    <message>
+      <source>You must select 2 Vertexes.</source>
+      <translation>U moet 2 hoekpunten selecteren.</translation>
+    </message>
+    <message>
+      <source>Nothing selected</source>
+      <translation>Niets geselecteerd</translation>
+    </message>
+    <message>
+      <source>At least 1 object in selection is not a part view</source>
+      <translation>Tenminste 1 object in de selectie is geen deelweergave</translation>
+    </message>
+    <message>
+      <source>Unknown object type in selection</source>
+      <translation>Onbekend objecttype in de selectie</translation>
+    </message>
+    <message>
+      <source>No View in Selection.</source>
+      <translation>Geen weergave in de selectie.</translation>
+    </message>
+    <message>
+      <source>You must select a View and/or lines.</source>
+      <translation>U moet een aanzicht en/of lijnen selecteren.</translation>
+    </message>
+    <message>
+      <source>No Part Views in this selection</source>
+      <translation>Geen deelweergaves in deze selectie</translation>
+    </message>
+    <message>
+      <source>Select exactly one Leader line or one Weld symbol.</source>
+      <translation>Selecteer precies een leiderslijn of een lassymbool.</translation>
+    </message>
+    <message>
+      <source>Replace Hatch?</source>
+      <translation>Arcering vervangen?</translation>
+    </message>
+    <message>
+      <source>Some Faces in selection are already hatched.  Replace?</source>
+      <translation>Sommige vlakken in de selectie zijn al gearceerd. Vervangen?</translation>
+    </message>
+    <message>
       <source>No TechDraw Page</source>
-      <translation type="unfinished">No TechDraw Page</translation>
+      <translation>Geen TechDraw-pagina</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="289"/>
       <source>Need a TechDraw Page for this command</source>
-      <translation type="unfinished">Need a TechDraw Page for this command</translation>
+      <translation>Dit commando vereist een TechDraw-pagina</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="361"/>
       <source>Select a Face first</source>
-      <translation type="unfinished">Select a Face first</translation>
+      <translation>Kies eerst een vlak</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="368"/>
       <source>No TechDraw object in selection</source>
-      <translation type="unfinished">No TechDraw object in selection</translation>
+      <translation>Geen TechDraw-object in de selectie</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="375"/>
       <source>Create a page to insert.</source>
       <translation>Maak een pagina om in te voegen.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="382"/>
-      <source>Can&apos;t make a Hatched area from this selection</source>
-      <translation type="unfinished">Can&apos;t make a Hatched area from this selection</translation>
+      <source>No Faces to hatch in this selection</source>
+      <translation>Geen vlakken om te arceren in deze sectie</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="388"/>
-      <source>No Face in this selection</source>
-      <translation type="unfinished">No Face in this selection</translation>
-    </message>
-    <message>
-      <location filename="../../DrawGuiUtil.cpp" line="96"/>
-      <location filename="../../DrawGuiUtil.cpp" line="119"/>
       <source>No page found</source>
       <translation>Geen pagina gevonden</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="101"/>
-      <location filename="../../DrawGuiUtil.cpp" line="109"/>
-      <source>Too many pages</source>
-      <translation type="unfinished">Too many pages</translation>
+      <source>No Drawing Pages in document.</source>
+      <translation>Geen tekenpagina's in het document.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="102"/>
+      <source>Which page?</source>
+      <translation>Welke pagina?</translation>
+    </message>
+    <message>
       <source>Can not determine correct page.</source>
-      <translation type="unfinished">Can not determine correct page.</translation>
+      <translation>Kan de juiste pagina niet bepalen.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="110"/>
-      <source>Select exactly 1 page.</source>
-      <translation type="unfinished">Select exactly 1 page.</translation>
+      <source>Too many pages</source>
+      <translation>Te veel pagina's</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="566"/>
+      <source>Select only 1 page.</source>
+      <translation>Selecteer slechts 1 pagina.</translation>
+    </message>
+    <message>
       <source>PDF (*.pdf)</source>
-      <translation type="unfinished">PDF (*.pdf)</translation>
+      <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="567"/>
-      <location filename="../../MDIViewPage.cpp" line="811"/>
       <source>All Files (*.*)</source>
       <translation>Alle bestanden (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="568"/>
       <source>Export Page As PDF</source>
-      <translation type="unfinished">Export Page As PDF</translation>
+      <translation>Exporteren als PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="810"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="812"/>
       <source>Export page as SVG</source>
-      <translation type="unfinished">Export page as SVG</translation>
+      <translation>Exporteren als SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1089"/>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
+      <source>Are you sure you want to continue?</source>
+      <translation>Weet u zeker dat u wilt doorgaan?</translation>
     </message>
     <message>
-      <location filename="../../QGVPage.cpp" line="579"/>
-      <source>FreeCAD SVG Export</source>
-      <translation type="unfinished">FreeCAD SVG Export</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPage.cpp" line="181"/>
       <source>Show drawing</source>
       <translation>Toon tekening</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="183"/>
       <source>Toggle KeepUpdated</source>
-      <translation type="unfinished">Toggle KeepUpdated</translation>
+      <translation>Schakel KeepUpdated aan/uit</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="44"/>
       <source>Click to update text</source>
-      <translation type="unfinished">Click to update text</translation>
+      <translation>Klik om de tekst te updaten</translation>
+    </message>
+    <message>
+      <source>New Leader Line</source>
+      <translation>Nieuwe leiderslijn</translation>
+    </message>
+    <message>
+      <source>Edit Leader Line</source>
+      <translation>Bewerk de leiderslijn</translation>
+    </message>
+    <message>
+      <source>Rich text creator</source>
+      <translation>Opgemaakte tekst-maker</translation>
+    </message>
+    <message>
+      <source>Rich text editor</source>
+      <translation>Opgemaakte tekst-editor</translation>
+    </message>
+    <message>
+      <source>New Cosmetic Vertex</source>
+      <translation>Nieuw cosmetisch eindpunt</translation>
+    </message>
+    <message>
+      <source>Select a symbol</source>
+      <translation>Selecteer een symbool</translation>
+    </message>
+    <message>
+      <source>ActiveView to TD View</source>
+      <translation>Actiefweergave naar TD-weergave</translation>
+    </message>
+    <message>
+      <source>Create Center Line</source>
+      <translation>Maak een middenlijn aan</translation>
+    </message>
+    <message>
+      <source>Edit Center Line</source>
+      <translation>Bewerk middenlijn</translation>
+    </message>
+    <message>
+      <source>Create Section View</source>
+      <translation>Voeg een sectieweergave in</translation>
+    </message>
+    <message>
+      <source>Select at first an orientation</source>
+      <translation>Selecteer eerst een oriëntatie</translation>
+    </message>
+    <message>
+      <source>Edit Section View</source>
+      <translation>Bewerk sectieweergave</translation>
+    </message>
+    <message>
+      <source>Operation Failed</source>
+      <translation>Bewerking mislukt</translation>
+    </message>
+    <message>
+      <source>Create Welding Symbol</source>
+      <translation>Maak een lassymbool aan</translation>
+    </message>
+    <message>
+      <source>Edit Welding Symbol</source>
+      <translation>Bewerk lassymbool</translation>
+    </message>
+    <message>
+      <source>Create Cosmetic Line</source>
+      <translation>Cosmetische lijn maken</translation>
+    </message>
+    <message>
+      <source>Edit Cosmetic Line</source>
+      <translation>Bewerk Cosmetische lijn</translation>
+    </message>
+    <message>
+      <source>New Detail View</source>
+      <translation>Nieuwe detailweergave</translation>
+    </message>
+    <message>
+      <source>Edit Detail View</source>
+      <translation>Bewerk detailweergave</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation>Bewerken %1</translation>
+    </message>
+    <message>
+      <source>TechDraw Circle Centerlines</source>
+      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+    </message>
+    <message>
+      <source>Selection is empty</source>
+      <translation type="unfinished">Selection is empty</translation>
+    </message>
+    <message>
+      <source>No object selected</source>
+      <translation type="unfinished">No object selected</translation>
+    </message>
+    <message>
+      <source>TechDraw Thread Hole Side</source>
+      <translation type="unfinished">TechDraw Thread Hole Side</translation>
+    </message>
+    <message>
+      <source>TechDraw Thread Bolt Side</source>
+      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+    </message>
+    <message>
+      <source>TechDraw Thread Hole Bottom</source>
+      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+    </message>
+    <message>
+      <source>TechDraw Tread Bolt Bottom</source>
+      <translation type="unfinished">TechDraw Tread Bolt Bottom</translation>
+    </message>
+    <message>
+      <source>Please select two straight lines</source>
+      <translation>Selecteer twee rechte lijnen</translation>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::DlgPrefsTechDraw2Imp</name>
+    <name>Std_Delete</name>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
-      <source>TechDraw 2</source>
-      <translation type="unfinished">TechDraw 2</translation>
+      <source>You cannot delete this leader line because
+it has a weld symbol that would become broken.</source>
+      <translation>U kunt deze leiderslijn niet verwijderen omdat het
+een Lassymbool heeft dat kapot zou gaan.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="20"/>
-      <source>Dimensions</source>
-      <translation>Dimensies</translation>
+      <source>Object dependencies</source>
+      <translation>Object afhankelijkheden</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="212"/>
-      <source>Arrow Style</source>
-      <translation type="unfinished">Arrow Style</translation>
+      <source>You cannot delete the anchor view of a projection group.</source>
+      <translation>U kunt de ankerweergave van een projectiegroep niet verwijderen.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="28"/>
-      <source>Show Units</source>
-      <translation type="unfinished">Show Units</translation>
+      <source>You cannot delete this view because it has a section view that would become broken.</source>
+      <translation>U kunt deze weergave niet verwijderen omdat deze een sectieweergave heeft die gebroken zou worden.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="41"/>
-      <source>Color</source>
-      <translation>Kleur</translation>
+      <source>You cannot delete this view because it has a detail view that would become broken.</source>
+      <translation>U kunt deze weergave niet verwijderen omdat deze een detailweergave heeft die gebroken zou worden.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="65"/>
-      <source>Font Size</source>
-      <translation type="unfinished">Font Size</translation>
+      <source>You cannot delete this view because it has a leader line that would become broken.</source>
+      <translation>U kunt deze weergave niet verwijderen omdat deze een leiderslijn heeft die gebroken zou worden.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="99"/>
-      <source>Diameter Symbol</source>
-      <translation type="unfinished">Diameter Symbol</translation>
-    </message>
-    <message utf8="true">
-      <location filename="../../DlgPrefsTechDraw2.ui" line="111"/>
-      <source>⌀</source>
-      <translation type="unfinished">⌀</translation>
+      <source>The page is not empty, therefore the
+following referencing objects might be lost:</source>
+      <translation>De pagina is niet leeg, daarom kunnen de
+de volgende verwijzingen naar objecten verloren gaan:</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
-      <source>Alternate Decimals</source>
-      <translation type="unfinished">Alternate Decimals</translation>
+      <source>The group cannot be deleted because its items have the following
+section or detail views, or leader lines that would get broken:</source>
+      <translation>De groep kan niet worden verwijderd omdat de items ervan de volgende
+sectie of detail weergave hebben, of leiderslijnen die kapot zouden worden:</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
-      <source>Use Global Decimals</source>
-      <translation type="unfinished">Use Global Decimals</translation>
+      <source>The projection group is not empty, therefore
+the following referencing objects might be lost:</source>
+      <translation>De projectiegroep is niet leeg, daarom
+de volgende gerefereerde objecten kunnen verloren gaan:</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="143"/>
-      <source>Preferred arrowhead style</source>
-      <translation type="unfinished">Preferred arrowhead style</translation>
+      <source>The following referencing object might break:</source>
+      <translation>Het volgende gerefereerde object kan breken:</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="159"/>
-      <source>0 - Filled Triangle</source>
-      <translation type="unfinished">0 - Filled Triangle</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="169"/>
-      <source>1 - Open Arrowhead</source>
-      <translation type="unfinished">1 - Open Arrowhead</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="179"/>
-      <source>2 - Tick</source>
-      <translation type="unfinished">2 - Tick</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="189"/>
-      <source>3 - Dot</source>
-      <translation type="unfinished">3 - Dot</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="199"/>
-      <source>4 - Open Circle</source>
-      <translation type="unfinished">4 - Open Circle</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="92"/>
-      <source>Arrow Size</source>
-      <translation type="unfinished">Arrow Size</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="235"/>
-      <source>Dimension font size in units</source>
-      <translation type="unfinished">Dimension font size in units</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="251"/>
-      <source>Dimension arrowhead size in units</source>
-      <translation type="unfinished">Dimension arrowhead size in units</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="272"/>
-      <source>Decorations</source>
-      <translation type="unfinished">Decorations</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="287"/>
-      <source>Round</source>
-      <translation type="unfinished">Round</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="292"/>
-      <source>Square</source>
-      <translation>Vierkant</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="300"/>
-      <source>Section Line Style</source>
-      <translation type="unfinished">Section Line Style</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="307"/>
-      <source>Center Line Style</source>
-      <translation type="unfinished">Center Line Style</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="314"/>
-      <source>Matting Style</source>
-      <translation type="unfinished">Matting Style</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="348"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="391"/>
-      <source>NeverShow</source>
-      <translation type="unfinished">NeverShow</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="468"/>
-      <source>Line Group</source>
-      <translation type="unfinished">Line Group</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="358"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="401"/>
-      <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="363"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="406"/>
-      <source>Dot</source>
-      <translation>punt</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="368"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="411"/>
-      <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="373"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="416"/>
-      <source>DashDotDot</source>
-      <translation type="unfinished">DashDotDot</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="353"/>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="396"/>
-      <source>Solid</source>
-      <translation>Solid</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="424"/>
-      <source>Center Line Color</source>
-      <translation type="unfinished">Center Line Color</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="431"/>
-      <source>Section Line Color</source>
-      <translation type="unfinished">Section Line Color</translation>
+      <source>You cannot delete this weld symbol because
+it has a tile weld that would become broken.</source>
+      <translation>Je kunt dit Lassymbool niet verwijderen omdat het
+een Lastegel heeft die kapot gaat.</translation>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::DlgPrefsTechDrawImp</name>
+    <name>TaskActiveView</name>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
-      <source>TechDraw 1</source>
-      <translation type="unfinished">TechDraw 1</translation>
+      <source>ActiveView to TD View</source>
+      <translation>Actiefweergave naar TD-weergave</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="20"/>
-      <source>General</source>
-      <translation>Algemeen</translation>
+      <source>Width</source>
+      <translation>Breedte</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="31"/>
-      <source>Projection Angle</source>
-      <translation type="unfinished">Projection Angle</translation>
+      <source>Width of generated view</source>
+      <translation>Breedte van gegenereerde weergave</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="45"/>
-      <source>First</source>
-      <translation>Eerste</translation>
+      <source>Height</source>
+      <translation>Hoogte</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="50"/>
-      <source>Third</source>
-      <translation>Derde</translation>
+      <source>Height of generated view</source>
+      <translation>Hoogte van gegenereerde weergave</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="58"/>
-      <location filename="../../DlgPrefsTechDraw.ui" line="336"/>
-      <source>Hidden Line</source>
-      <translation>Verborgen lijn</translation>
+      <source>Border</source>
+      <translation>Rand</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="78"/>
-      <source>NeverShow</source>
-      <translation type="unfinished">NeverShow</translation>
+      <source>Minimal distance of the object from
+the top and left view border</source>
+      <translation>Minimale afstand van het object vanaf
+de bovenste en linkerrand</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="83"/>
-      <source>Solid</source>
-      <translation>Solid</translation>
+      <source>Paint background yes/no</source>
+      <translation>Schilder achtergrond ja/nee</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="88"/>
-      <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="93"/>
-      <source>Dot</source>
-      <translation>punt</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="98"/>
-      <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="103"/>
-      <source>DashDotDot</source>
-      <translation type="unfinished">DashDotDot</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="114"/>
-      <source>Detect Faces</source>
-      <translation type="unfinished">Detect Faces</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="133"/>
-      <source>Show Section Edges</source>
-      <translation type="unfinished">Show Section Edges</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="149"/>
-      <source>Keep Pages Up to Date</source>
-      <translation type="unfinished">Keep Pages Up to Date</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="617"/>
-      <source>Font for View Labels</source>
-      <translation type="unfinished">Font for View Labels</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="635"/>
-      <source>Template Dot Size</source>
-      <translation type="unfinished">Template Dot Size</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="183"/>
-      <source>Colors</source>
-      <translation>Kleuren</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
-      <source>Style for hidden lines</source>
-      <translation type="unfinished">Style for hidden lines</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="111"/>
-      <source>Perform/skip face processing</source>
-      <translation type="unfinished">Perform/skip face processing</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="130"/>
-      <source>Debugging option</source>
-      <translation type="unfinished">Debugging option</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="146"/>
-      <source>Update Pages as scheduled or skip</source>
-      <translation type="unfinished">Update Pages as scheduled or skip</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="191"/>
-      <source>Section Hatch</source>
-      <translation type="unfinished">Section Hatch</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="198"/>
-      <source>Section Face</source>
-      <translation type="unfinished">Section Face</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="239"/>
-      <source>Normal</source>
-      <translation>Normaal</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="329"/>
-      <source>PreSelected</source>
-      <translation type="unfinished">PreSelected</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="360"/>
-      <source>Selected</source>
-      <translation>Geselecteerd</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="384"/>
       <source>Background</source>
       <translation>Achtergrond</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="391"/>
-      <source>Geom Hatch</source>
-      <translation type="unfinished">Geom Hatch</translation>
+      <source>Background color</source>
+      <translation>Achtergrond</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="433"/>
-      <source>Files</source>
-      <translation type="unfinished">Files</translation>
+      <source>Line Width</source>
+      <translation>Lijnbreedte</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="441"/>
-      <source>Template Directory</source>
-      <translation type="unfinished">Template Directory</translation>
+      <source>Width of lines in generated view</source>
+      <translation>Breedte van lijnen in de gegenereerde weergave</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="448"/>
-      <source>Default Template</source>
-      <translation type="unfinished">Default Template</translation>
+      <source>Render Mode</source>
+      <translation>Rendermodus</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="468"/>
-      <source>Hatch Image</source>
-      <translation type="unfinished">Hatch Image</translation>
+      <source>Drawing style - see SoRenderManager</source>
+      <translation>Tekenstijl - zie SoRenderManager</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="485"/>
-      <source>Location of default svg/png fill file</source>
-      <translation type="unfinished">Location of default svg/png fill file</translation>
+      <source>As is</source>
+      <translation>Als getekend</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="498"/>
-      <source>PAT File</source>
-      <translation type="unfinished">PAT File</translation>
+      <source>Wireframe</source>
+      <translation>Draadmodel</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="505"/>
-      <source>Default location for PAT file</source>
-      <translation type="unfinished">Default location for PAT file</translation>
+      <source>Points</source>
+      <translation>Punten</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="522"/>
-      <source>Default PAT pattern</source>
-      <translation type="unfinished">Default PAT pattern</translation>
+      <source>Wireframe overlay</source>
+      <translation>Draadframe weergave</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="535"/>
-      <source>Pattern Name</source>
-      <translation type="unfinished">Pattern Name</translation>
+      <source>Hidden Line</source>
+      <translation>Verborgen lijn</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="579"/>
+      <source>Bounding box</source>
+      <translation>Selectiekader</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskWeldingSymbol</name>
+    <message>
+      <source>Welding Symbol</source>
+      <translation>Lassymbool</translation>
+    </message>
+    <message>
+      <source>Text before arrow side symbol</source>
+      <translation>Tekst voor het zijdelingse pijlsymbool</translation>
+    </message>
+    <message>
+      <source>Text after arrow side symbol</source>
+      <translation>Tekst na het zijdelingse pijlsymbool</translation>
+    </message>
+    <message>
+      <source>Pick arrow side symbol</source>
+      <translation>Kies het zijdelingse pijlsymbool</translation>
+    </message>
+    <message>
+      <source>Symbol</source>
+      <translation>Symbool</translation>
+    </message>
+    <message>
+      <source>Text above arrow side symbol</source>
+      <translation>Tekst boven het zijdelingse pijlsymbool</translation>
+    </message>
+    <message>
+      <source>Pick other side symbol</source>
+      <translation>Kies ander zijsymbool</translation>
+    </message>
+    <message>
+      <source>Text below other side symbol</source>
+      <translation>Tekst onder ander zijsymbool</translation>
+    </message>
+    <message>
+      <source>Text after other side symbol</source>
+      <translation>Tekst na ander zijsymbool</translation>
+    </message>
+    <message>
+      <source>Flips the sides</source>
+      <translation>Spiegelt de zijden</translation>
+    </message>
+    <message>
+      <source>Flip Sides</source>
+      <translation>Zijden spiegelen</translation>
+    </message>
+    <message>
+      <source>Text before other side symbol</source>
+      <translation>Tekst voor ander zijsymbool</translation>
+    </message>
+    <message>
+      <source>Remove other side symbol</source>
+      <translation>Verwijder ander zij-symbool</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Verwijderen</translation>
+    </message>
+    <message>
+      <source>Adds the &apos;Field Weld&apos; symbol (flag)
+at the kink in the leader line</source>
+      <translation>Voegt het &apos;veld las&apos;symbool (vlag)
+toe aan de knik in de leiderslijn</translation>
+    </message>
+    <message>
+      <source>Field Weld</source>
+      <translation>Veldlas</translation>
+    </message>
+    <message>
+      <source>Adds the &apos;All Around&apos; symbol (circle)
+at the kink in the leader line</source>
+      <translation>Voegt het &apos;overal&apos;symbool (cirkel)
+toe aan de knik in de leiderslijn</translation>
+    </message>
+    <message>
+      <source>All Around</source>
+      <translation>Overal</translation>
+    </message>
+    <message>
+      <source>Offsets the lower symbol to indicate alternating welds</source>
+      <translation>Verschuift het onderste symbool om afwisselende lassen aan te geven</translation>
+    </message>
+    <message>
+      <source>Alternating</source>
+      <translation>Afwisselend</translation>
+    </message>
+    <message>
+      <source>Directory to welding symbols.
+This directory will be used for the symbol selection.</source>
+      <translation>Map naar de lassymbolen.
+Deze map wordt gebruikt voor de symboolselectie.</translation>
+    </message>
+    <message>
+      <source>*.svg</source>
+      <translation>*.svg</translation>
+    </message>
+    <message>
+      <source>Text at end of symbol</source>
+      <translation>Tekst aan het einde van het symbool</translation>
+    </message>
+    <message>
+      <source>Symbol Directory</source>
+      <translation>Symboolmap</translation>
+    </message>
+    <message>
+      <source>Tail Text</source>
+      <translation>Staarttekst</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::DlgPrefsTechDrawAdvancedImp</name>
+    <message>
+      <source>Advanced</source>
+      <translation>Geavanceerd</translation>
+    </message>
+    <message>
+      <source>Include 2D Objects in projection</source>
+      <translation>2D-objecten opnemen in de projectie</translation>
+    </message>
+    <message>
+      <source>Show Loose 2D Geom</source>
+      <translation>Toon losse 2D-geometrie</translation>
+    </message>
+    <message>
+      <source>Include edges with unexpected geometry (zero length etc.) in results</source>
+      <translation>Randen met een onverwachte geometrie (nullengte enz.) in de resultaten opnemen</translation>
+    </message>
+    <message>
+      <source>Allow Crazy Edges</source>
+      <translation>Gekke randen toestaan</translation>
+    </message>
+    <message>
+      <source>Edge Fuzz</source>
+      <translation>Rand Fuzz</translation>
+    </message>
+    <message>
+      <source>Override automatic dimension format</source>
+      <translation>Automatische afmetingsformaat overschrijven</translation>
+    </message>
+    <message>
+      <source>Shape of line end caps.
+Only change unless you know what you are doing!</source>
+      <translation>Vorm van lijneindkappen.
+Alleen veranderen tenzij u weet wat u doet!</translation>
+    </message>
+    <message>
+      <source>Round</source>
+      <translation>Rond</translation>
+    </message>
+    <message>
+      <source>Square</source>
+      <translation>Vierkant</translation>
+    </message>
+    <message>
+      <source>Flat</source>
+      <translation>Plat</translation>
+    </message>
+    <message>
+      <source>Perform a fuse operation on input shape(s) before Section view processing</source>
+      <translation>Voer een smeltbewerking uit op de inputvorm(en) voor de verwerking van de sectieweergave</translation>
+    </message>
+    <message>
+      <source>Fuse Before Section</source>
+      <translation>Smelt voor sectie</translation>
+    </message>
+    <message>
+      <source>Dimension Format</source>
+      <translation>Dimensieformaat</translation>
+    </message>
+    <message>
+      <source>Line End Cap Shape</source>
+      <translation>Vorm van lijneindkap</translation>
+    </message>
+    <message>
+      <source>Dump intermediate results during Detail view processing</source>
+      <translation>Dump tussentijdse resultaten tijdens de verwerking van de detailweergave</translation>
+    </message>
+    <message>
+      <source>Debug Detail</source>
+      <translation>Debugdetail</translation>
+    </message>
+    <message>
+      <source>Highlights border of section cut in section views</source>
+      <translation>Markeert de rand van de gesneden sectie in de sectieweergaven</translation>
+    </message>
+    <message>
+      <source>Show Section Edges</source>
+      <translation>Toon sectieranden</translation>
+    </message>
+    <message>
+      <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
+For large scalings you might get an error about to many SVG tiles.
+Then you need to increase the tile limit.</source>
+      <translation>Beperking van 64x64 pixel SVG-tegels die gebruikt worden om een enkel vlak te arceren.
+Voor grote schalen zou u een foutmelding kunnen krijgen over een te groot aantal SVG-tegels.
+Dan moet u de tegellimiet verhogen.</translation>
+    </message>
+    <message>
+      <source>Max SVG Hatch Tiles</source>
+      <translation>Max SVG-arceringstegels</translation>
+    </message>
+    <message>
+      <source>Max PAT Hatch Segments</source>
+      <translation>Maximale PAT-arceringssegmenten</translation>
+    </message>
+    <message>
+      <source>Maximum hatch line segments to use
+when hatching a face with a PAT pattern</source>
+      <translation>Maximale arceerlijnsegmenten om te gebruiken
+bij de arcering van een vlak met een PAT-patroon</translation>
+    </message>
+    <message>
+      <source>Dump intermediate results during Section view processing</source>
+      <translation>Dump tussentijdse resultaten tijdens de verwerking van de sectieweergave</translation>
+    </message>
+    <message>
+      <source>Debug Section</source>
+      <translation>Debugsectie</translation>
+    </message>
+    <message>
+      <source>If checked, TechDraw will attempt to build faces using the
+line segments returned by the hidden line removal algorithm.
+Faces must be detected in order to use hatching, but there
+can be a performance penalty in complex models.</source>
+      <translation>Indien aangevinkt, zal TechDraw proberen vlakken te bouwen met behulp van de
+lijnsegmenten die door het verborgen lijnverwijderingsalgoritme worden geretourneerd.
+Vlakken moeten gedetecteerd worden om gebruik te kunnen maken van arceringen, maar
+in complexe modellen kan er een prestatieboete worden opgelegd.</translation>
+    </message>
+    <message>
+      <source>Detect Faces</source>
+      <translation>Detecteer vlakken</translation>
+    </message>
+    <message>
+      <source>Mark Fuzz</source>
+      <translation>Markeer Fuzz</translation>
+    </message>
+    <message>
+      <source>Size of selection area around edges
+Each unit is approx. 0.1 mm wide</source>
+      <translation>Selectie vlak rond randen
+Elke eenheid is ca. 0,1 mm breed</translation>
+    </message>
+    <message>
+      <source>Selection area around center marks
+Each unit is approx. 0.1 mm wide</source>
+      <translation>Selectie vlak rond middenmarkeringen
+Elke eenheid is ca. 0,1 mm breed</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Opmerking:&lt;/span&gt; items in &lt;span style=&quot; font-style:italic;&quot;&gt;cursief&lt;/span&gt; zijn standaard waarden voor nieuwe objecten. Ze hebben geen effect op bestaande objecten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::DlgPrefsTechDrawAnnotationImp</name>
+    <message>
+      <source>Annotation</source>
+      <translation>Aantekening</translation>
+    </message>
+    <message>
+      <source>Center Line Style</source>
+      <translation>Stijl van de middenlijn</translation>
+    </message>
+    <message>
+      <source>Style for section lines</source>
+      <translation>Stijl voor sectielijnen</translation>
+    </message>
+    <message>
+      <source>NeverShow</source>
+      <translation>Nooit tonen</translation>
+    </message>
+    <message>
+      <source>Continuous</source>
+      <translation>Doorlopend</translation>
+    </message>
+    <message>
+      <source>Dash</source>
+      <translation>Streep</translation>
+    </message>
+    <message>
+      <source>Dot</source>
+      <translation>punt</translation>
+    </message>
+    <message>
+      <source>DashDot</source>
+      <translation>Streepstip</translation>
+    </message>
+    <message>
+      <source>DashDotDot</source>
+      <translation>Streepstipstip</translation>
+    </message>
+    <message>
+      <source>Section Line Standard</source>
+      <translation>Standaard van de sectielijn</translation>
+    </message>
+    <message>
+      <source>Section Cut Surface</source>
+      <translation>Sectiesnijoppervlak</translation>
+    </message>
+    <message>
+      <source>Default appearance of cut surface in section view</source>
+      <translation>Standaarduiterlijk van de snijoppervlak in de sectieweergave</translation>
+    </message>
+    <message>
+      <source>Hide</source>
+      <translation>Verbergen</translation>
+    </message>
+    <message>
+      <source>Solid Color</source>
+      <translation>Effen kleur</translation>
+    </message>
+    <message>
+      <source>SVG Hatch</source>
+      <translation>SVG-arcering</translation>
+    </message>
+    <message>
+      <source>PAT Hatch</source>
+      <translation>PAT-arcering</translation>
+    </message>
+    <message>
+      <source>Forces last leader line segment to be horizontal</source>
+      <translation>Forceert laatste leiderslijnsegment horizontaal te zijn</translation>
+    </message>
+    <message>
+      <source>Leader Line Auto Horizontal</source>
+      <translation>Leiderslijn automatisch horizontaal</translation>
+    </message>
+    <message>
+      <source>Length of balloon leader line kink</source>
+      <translation>Lengte van ballonleiderslijnkink</translation>
+    </message>
+    <message>
+      <source>Type for centerlines</source>
+      <translation>Type voor middellijnen</translation>
+    </message>
+    <message>
+      <source>Shape of balloon annotations</source>
+      <translation>Vorm van ballonaantekeningen</translation>
+    </message>
+    <message>
+      <source>Circular</source>
+      <translation>Rond</translation>
+    </message>
+    <message>
+      <source>None</source>
+      <translation>Geen</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Driehoek</translation>
+    </message>
+    <message>
+      <source>Inspection</source>
+      <translation>Inspectie</translation>
+    </message>
+    <message>
+      <source>Hexagon</source>
+      <translation>Zeshoek</translation>
+    </message>
+    <message>
+      <source>Square</source>
+      <translation>Vierkant</translation>
+    </message>
+    <message>
+      <source>Rectangle</source>
+      <translation>Rechthoek</translation>
+    </message>
+    <message>
+      <source>Balloon Leader End</source>
+      <translation>Leideruiteinde van ballon</translation>
+    </message>
+    <message>
+      <source>Standard to be used to draw section lines</source>
+      <translation>Standaard om sectielijnen te tekenen</translation>
+    </message>
+    <message>
+      <source>ANSI</source>
+      <translation>ANSI</translation>
+    </message>
+    <message>
+      <source>ISO</source>
+      <translation>ISO</translation>
+    </message>
+    <message>
+      <source>Outline shape for detail views</source>
+      <translation>Omlijnde vorm voor detailweergave</translation>
+    </message>
+    <message>
+      <source>Circle</source>
+      <translation>Cirkel</translation>
+    </message>
+    <message>
+      <source>Section Line Style</source>
+      <translation>Stijl van de sectielijn</translation>
+    </message>
+    <message>
+      <source>Show arc center marks in views</source>
+      <translation>Toon middenmarkeringen van de boog in weergaven</translation>
+    </message>
+    <message>
+      <source>Show Center Marks</source>
+      <translation>Toon middenmarkeringen</translation>
+    </message>
+    <message>
+      <source>Detail View Outline Shape</source>
+      <translation>Detailweergave van omlijningsvorm</translation>
+    </message>
+    <message>
+      <source>Style for balloon leader line ends</source>
+      <translation>Stijl voor de uiteinden van de ballonlijn</translation>
+    </message>
+    <message>
+      <source>Length of horizontal portion of Balloon leader</source>
+      <translation>Lengte van het horizontale gedeelte van de ballonleider</translation>
+    </message>
+    <message>
+      <source>Ballon Leader Kink Length</source>
+      <translation>Kinklengte van de ballonleider</translation>
+    </message>
+    <message>
+      <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
+      <translation>Beperk gevulde driehoekslinie-uiteinde naar verticale of horizontale richtingen</translation>
+    </message>
+    <message>
+      <source>Balloon Orthogonal Triangle</source>
+      <translation>Ballon met orthogonale driehoek</translation>
+    </message>
+    <message>
+      <source>Line group used to set line widths</source>
+      <translation>Lijn groep wordt gebruikt om lijnbreedtes in te stellen</translation>
+    </message>
+    <message>
+      <source>Line Width Group</source>
+      <translation>Lijn breedte groep</translation>
+    </message>
+    <message>
+      <source>Balloon Shape</source>
+      <translation>Ballonvorm</translation>
+    </message>
+    <message>
+      <source>Show arc centers in printed output</source>
+      <translation>Toon boogmidden in afgedrukte output</translation>
+    </message>
+    <message>
+      <source>Print Center Marks</source>
+      <translation>Middenmarkeringen afrukken</translation>
+    </message>
+    <message>
+      <source>Line style of detail highlight on base view</source>
+      <translation>Lijnstijl van detailmarkering op de basisweergave</translation>
+    </message>
+    <message>
+      <source>Detail Highlight Style</source>
+      <translation>Detailmarkeringstijl</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Opmerking:&lt;/span&gt; items in &lt;span style=&quot; font-style:italic;&quot;&gt;cursief&lt;/span&gt; zijn standaard waarden voor nieuwe objecten. Ze hebben geen effect op bestaande objecten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::DlgPrefsTechDrawColorsImp</name>
+    <message>
+      <source>Colors</source>
+      <translation>Kleuren</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normaal</translation>
+    </message>
+    <message>
+      <source>Normal line color</source>
+      <translation>Normale lijnkleur</translation>
+    </message>
+    <message>
+      <source>Hidden Line</source>
+      <translation>Verborgen lijn</translation>
+    </message>
+    <message>
+      <source>Hidden line color</source>
+      <translation>Verborgen lijnkleur</translation>
+    </message>
+    <message>
+      <source>Preselected</source>
+      <translation>Standaardcombinatie</translation>
+    </message>
+    <message>
+      <source>Preselection color</source>
+      <translation>Preselectiekleur</translation>
+    </message>
+    <message>
+      <source>Section Face</source>
+      <translation>Sectievlak</translation>
+    </message>
+    <message>
+      <source>Section face color</source>
+      <translation>Kleur van het sectievlak</translation>
+    </message>
+    <message>
+      <source>Selected</source>
+      <translation>Geselecteerd</translation>
+    </message>
+    <message>
+      <source>Selected item color</source>
+      <translation>Kleur van het geselecteerde item</translation>
+    </message>
+    <message>
+      <source>Section Line</source>
+      <translation>Sectielijn</translation>
+    </message>
+    <message>
+      <source>Section line color</source>
+      <translation>Kleur van de sectielijn</translation>
+    </message>
+    <message>
+      <source>Background</source>
+      <translation>Achtergrond</translation>
+    </message>
+    <message>
+      <source>Background color around pages</source>
+      <translation>Achtergrondkleur rond pagina's</translation>
+    </message>
+    <message>
+      <source>Hatch</source>
+      <translation>Arcering</translation>
+    </message>
+    <message>
+      <source>Hatch image color</source>
+      <translation>Afbeeldingskleur van arcering</translation>
+    </message>
+    <message>
+      <source>Dimension</source>
+      <translation>Afmeting</translation>
+    </message>
+    <message>
+      <source>Color of dimension lines and text.</source>
+      <translation>Kleur van afmetingslijnen en -teksten.</translation>
+    </message>
+    <message>
+      <source>Geometric Hatch</source>
+      <translation>Geometrische arcering</translation>
+    </message>
+    <message>
+      <source>Geometric hatch pattern color</source>
+      <translation>Patroonkleur van de geometrische arcering</translation>
+    </message>
+    <message>
+      <source>Centerline</source>
+      <translation>Middenlijn</translation>
+    </message>
+    <message>
+      <source>Centerline color</source>
+      <translation>Middenlijnkleur</translation>
+    </message>
+    <message>
+      <source>Vertex</source>
+      <translation type="unfinished">Vertex</translation>
+    </message>
+    <message>
+      <source>Color of vertices in views</source>
+      <translation>Kleur van de eindpunten in weergaven</translation>
+    </message>
+    <message>
+      <source>Object faces will be transparent</source>
+      <translation>Objectvlakken zullen transparant zijn</translation>
+    </message>
+    <message>
+      <source>Transparent Faces</source>
+      <translation>Transparante vlakken</translation>
+    </message>
+    <message>
+      <source>Face color (if not transparent)</source>
+      <translation>Vlakkleur (indien niet transparant)</translation>
+    </message>
+    <message>
+      <source>Detail Highlight</source>
+      <translation>Detailmarkering</translation>
+    </message>
+    <message>
+      <source>Leaderline</source>
+      <translation>Leiderslijn</translation>
+    </message>
+    <message>
+      <source>Default color for leader lines</source>
+      <translation>Standaardkleur voor Leidingslijnen</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Opmerking:&lt;/span&gt; items in &lt;span style=&quot; font-style:italic;&quot;&gt;cursief&lt;/span&gt; zijn standaard waarden voor nieuwe objecten. Ze hebben geen effect op bestaande objecten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::DlgPrefsTechDrawDimensionsImp</name>
+    <message>
+      <source>Dimensions</source>
+      <translation>Dimensies</translation>
+    </message>
+    <message>
+      <source>Standard to be used for dimensional values</source>
+      <translation>Standaard te gebruiken voor dimensionale waarden</translation>
+    </message>
+    <message>
+      <source>ISO Oriented</source>
+      <translation>ISO-georiënteerd</translation>
+    </message>
+    <message>
+      <source>ISO Referencing</source>
+      <translation>ISO-referentie</translation>
+    </message>
+    <message>
+      <source>ASME Inlined</source>
+      <translation>ASME-ingelijnd</translation>
+    </message>
+    <message>
+      <source>ASME Referencing</source>
+      <translation>ASME-referentie</translation>
+    </message>
+    <message>
+      <source>Arrow Style</source>
+      <translation>Pijltype</translation>
+    </message>
+    <message>
+      <source>Standard and Style</source>
+      <translation>Standaard en stijl</translation>
+    </message>
+    <message>
+      <source>Arrowhead style</source>
+      <translation>Pijlpunttype</translation>
+    </message>
+    <message>
+      <source>Arrow Size</source>
+      <translation>Pijlgrootte</translation>
+    </message>
+    <message>
+      <source>Character used to indicate diameter dimensions</source>
+      <translation>Gebruikt teken om de afmeting van de diameter aan te geven</translation>
+    </message>
+    <message>
+      <source>⌀</source>
+      <translation>⌀</translation>
+    </message>
+    <message>
+      <source>Append unit to dimension values</source>
+      <translation>Voeg eenheid toe aan de afmetingswaarden</translation>
+    </message>
+    <message>
+      <source>Show Units</source>
+      <translation>Eenheden weergeven</translation>
+    </message>
+    <message>
+      <source>Diameter Symbol</source>
+      <translation>Diametersymbool</translation>
+    </message>
+    <message>
+      <source>Use system setting for number of decimals</source>
+      <translation>Systeeminstelling gebruiken voor decimalen</translation>
+    </message>
+    <message>
+      <source>Use Global Decimals</source>
+      <translation>Gebruik globale decimalen</translation>
+    </message>
+    <message>
+      <source>Number of decimals if &apos;Use Global Decimals&apos; is not used</source>
+      <translation>Aantal decimalen als &apos;Gebruik globale decimalen&apos; niet wordt gebruikt</translation>
+    </message>
+    <message>
+      <source>Dimension text font size</source>
+      <translation>Lettergrootte van de afmeting</translation>
+    </message>
+    <message>
+      <source>Arrowhead size</source>
+      <translation>Pijlpuntgrootte</translation>
+    </message>
+    <message>
+      <source>Alternate Decimals</source>
+      <translation>Decimalen afwisselen</translation>
+    </message>
+    <message>
+      <source>Font Size</source>
+      <translation>Lettergrootte</translation>
+    </message>
+    <message>
+      <source>Tolerance Text Scale</source>
+      <translation>Tolerantie tekstschaal</translation>
+    </message>
+    <message>
+      <source>Tolerance text scale
+Multiplier of &apos;Font Size&apos;</source>
+      <translation>Tolerantie tekst schaal
+Vermenigvuldiger van &apos;lettergrootte&apos;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Opmerking:&lt;/span&gt; items in &lt;span style=&quot; font-style:italic;&quot;&gt;cursief&lt;/span&gt; zijn standaard waarden voor nieuwe objecten. Ze hebben geen effect op bestaande objecten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::DlgPrefsTechDrawGeneralImp</name>
+    <message>
+      <source>General</source>
+      <translation>Algemeen</translation>
+    </message>
+    <message>
+      <source>Drawing Update</source>
+      <translation>Tekenupdate</translation>
+    </message>
+    <message>
+      <source>Whether or not pages are updated every time the 3D model is changed</source>
+      <translation>Of de pagina's nu wel of niet worden geüpdatet bij elke wijziging van het 3D-model</translation>
+    </message>
+    <message>
+      <source>Update With 3D (global policy)</source>
+      <translation>Updaten met 3D (algemeen beleid)</translation>
+    </message>
+    <message>
+      <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
+can override the global &apos;Update With 3D&apos; parameter</source>
+      <translation>Of een pagina&apos;s &apos;Bewaar Bijgewerkt&apos; eigenschap
+de globale &apos;Update met 3D&apos; parameter kan overschrijven</translation>
+    </message>
+    <message>
+      <source>Allow Page Override (global policy)</source>
+      <translation>Pagina overschrijven toestaan (algemeen beleid)</translation>
+    </message>
+    <message>
+      <source>Keep drawing pages in sync with changes of 3D model in real time.
+This can slow down the response time.</source>
+      <translation>Houd de tekenpagina's synchroon met de wijzigingen van het 3D-model in real time.
+Dit kan de reactietijd vertragen.</translation>
+    </message>
+    <message>
+      <source>Keep Page Up To Date</source>
+      <translation>Pagina up-to-date houden</translation>
+    </message>
+    <message>
+      <source>Automatically distribute secondary views
+for ProjectionGroups</source>
+      <translation>Automatisch verdelen van secundaire weergaven
+voor ProjectieGroepen</translation>
+    </message>
+    <message>
+      <source>Auto-distribute Secondary Views</source>
+      <translation>Secundaire weergaven automatisch verspreiden</translation>
+    </message>
+    <message>
       <source>Labels</source>
-      <translation type="unfinished">Labels</translation>
+      <translation>Labels</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="603"/>
-      <source>Label Font</source>
-      <translation type="unfinished">Label Font</translation>
+      <source>* this font is also used for dimensions
+   Changes have no effect on existing dimensions.</source>
+      <translation>* dit lettertype wordt ook gebruikt voor afmetingen
+   wijzigingen hebben geen effect op bestaande afmetingen.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="668"/>
-      <source>View Label size in units</source>
-      <translation type="unfinished">View Label size in units</translation>
+      <source>Label Font*</source>
+      <translation>Label lettertype*</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="684"/>
-      <source>Green edit dot size in units</source>
-      <translation type="unfinished">Green edit dot size in units</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="610"/>
       <source>Label Size</source>
-      <translation type="unfinished">Label Size</translation>
+      <translation>Labelgrootte</translation>
+    </message>
+    <message>
+      <source>Font for labels</source>
+      <translation>Lettertype voor labels</translation>
+    </message>
+    <message>
+      <source>Label size</source>
+      <translation>Labelgrootte</translation>
+    </message>
+    <message>
+      <source>Conventions</source>
+      <translation>Conventies</translation>
+    </message>
+    <message>
+      <source>Projection Group Angle</source>
+      <translation>Projectiegroephoek</translation>
+    </message>
+    <message>
+      <source>Use first- or third-angle multiview projection convention</source>
+      <translation>Gebruik eerste- of derdehoeksprojectieconventie met meerdere perspectieven</translation>
+    </message>
+    <message>
+      <source>First</source>
+      <translation>Eerste</translation>
+    </message>
+    <message>
+      <source>Third</source>
+      <translation>Derde</translation>
+    </message>
+    <message>
+      <source>Page</source>
+      <translation>Pagina</translation>
+    </message>
+    <message>
+      <source>Hidden Line Style</source>
+      <translation>Verborgen lijnstijl</translation>
+    </message>
+    <message>
+      <source>Style for hidden lines</source>
+      <translation>Stijl voor verborgen lijnen</translation>
+    </message>
+    <message>
+      <source>Continuous</source>
+      <translation>Doorlopend</translation>
+    </message>
+    <message>
+      <source>Dashed</source>
+      <translation>Gestreept</translation>
+    </message>
+    <message>
+      <source>Files</source>
+      <translation>Bestanden</translation>
+    </message>
+    <message>
+      <source>Default Template</source>
+      <translation>Standaardsjabloon</translation>
+    </message>
+    <message>
+      <source>Default template file for new pages</source>
+      <translation>Standaardsjabloonbestand voor nieuwe pagina's</translation>
+    </message>
+    <message>
+      <source>Template Directory</source>
+      <translation>Sjabloonmap</translation>
+    </message>
+    <message>
+      <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
+      <translation>Startmap voor menu &apos;Pagina invoegen met behulp van sjabloon&apos;</translation>
+    </message>
+    <message>
+      <source>Hatch Pattern File</source>
+      <translation>Arceringspatroonbestand</translation>
+    </message>
+    <message>
+      <source>Default SVG or bitmap file for hatching</source>
+      <translation>Standaard-SVG- of bitmapbestand voor de arcering</translation>
+    </message>
+    <message>
+      <source>Line Group File</source>
+      <translation>Lijngroepbestand</translation>
+    </message>
+    <message>
+      <source>Alternate file for personal LineGroup definition</source>
+      <translation>Alternatief bestand voor persoonlijke LineGroep-definitie</translation>
+    </message>
+    <message>
+      <source>Welding Directory</source>
+      <translation>Lasmap</translation>
+    </message>
+    <message>
+      <source>Default directory for welding symbols</source>
+      <translation>Standaardmap voor lassymbolen</translation>
+    </message>
+    <message>
+      <source>PAT File</source>
+      <translation>PAT-bestand</translation>
+    </message>
+    <message>
+      <source>Default PAT pattern definition file for geometric hatching</source>
+      <translation>Standaard-PAT-patroon definitiebestand voor geometrische arcering</translation>
+    </message>
+    <message>
+      <source>Pattern Name</source>
+      <translation>Patroonnaam</translation>
+    </message>
+    <message>
+      <source>Name of the default PAT pattern</source>
+      <translation>Naam van het standaard-PAT-patroon</translation>
+    </message>
+    <message>
+      <source>Diamond</source>
+      <translation>Diamant</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Opmerking:&lt;/span&gt; items in &lt;span style=&quot; font-style:italic;&quot;&gt;cursief&lt;/span&gt; zijn standaard waarden voor nieuwe objecten. Ze hebben geen effect op bestaande objecten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::DlgPrefsTechDrawHLRImp</name>
+    <message>
+      <source>HLR</source>
+      <translation>HLR</translation>
+    </message>
+    <message>
+      <source>Hidden Line Removal</source>
+      <translation>Verwijdering van de verborgen lijn</translation>
+    </message>
+    <message>
+      <source>Visible</source>
+      <translation>Zichtbaar</translation>
+    </message>
+    <message>
+      <source>Number of ISO lines per face edge</source>
+      <translation>Aantal ISO-lijnen per vlakrand</translation>
+    </message>
+    <message>
+      <source>Show seam lines</source>
+      <translation>Toon naadlijnen</translation>
+    </message>
+    <message>
+      <source>Show Seam Lines</source>
+      <translation>Toon naadlijnen</translation>
+    </message>
+    <message>
+      <source>Show smooth lines</source>
+      <translation>Laat vloeiende lijnen zien</translation>
+    </message>
+    <message>
+      <source>Show Smooth Lines</source>
+      <translation>Toon vloeiende lijnen</translation>
+    </message>
+    <message>
+      <source>Use an approximation to find hidden lines.
+Fast, but result is a collection of short straight lines.</source>
+      <translation>Gebruik een benadering om verborgen lijnen te vinden.
+Snel, maar resulteert in een verzameling van korte rechte lijnen.</translation>
+    </message>
+    <message>
+      <source>Use Polygon Approximation</source>
+      <translation>Gebruik Polygoonbenadering</translation>
+    </message>
+    <message>
+      <source>Show hidden smooth edges</source>
+      <translation>Toon verborgen gladde randen</translation>
+    </message>
+    <message>
+      <source>Show hidden hard and outline edges</source>
+      <translation>Toon verborgen harde en omtrekranden</translation>
+    </message>
+    <message>
+      <source>Show Hard Lines</source>
+      <translation>Toon harde lijnen</translation>
+    </message>
+    <message>
+      <source>Show hard and outline edges (always shown)</source>
+      <translation>Toon harde en omtrekranden (altijd zichtbaar)</translation>
+    </message>
+    <message>
+      <source>Show hidden seam lines</source>
+      <translation>Toon verborgen naadlijnen</translation>
+    </message>
+    <message>
+      <source>Show hidden equal parameterization lines</source>
+      <translation>Toon verborgen gelijke parametreringslijnen</translation>
+    </message>
+    <message>
+      <source>Show UV ISO Lines</source>
+      <translation>Toon UV-ISO-lijnen</translation>
+    </message>
+    <message>
+      <source>Hidden</source>
+      <translation>Verborgen</translation>
+    </message>
+    <message>
+      <source>ISO Count</source>
+      <translation>ISO-telling</translation>
+    </message>
+    <message>
+      <source>Make lines of equal parameterization</source>
+      <translation>Lijnen gelijk maken aan parametrering</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Opmerking:&lt;/span&gt; items in &lt;span style=&quot; font-style:italic;&quot;&gt;cursief&lt;/span&gt; zijn standaard waarden voor nieuwe objecten. Ze hebben geen effect op bestaande objecten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::DlgPrefsTechDrawScaleImp</name>
+    <message>
+      <source>Scale</source>
+      <translation>Schalen</translation>
+    </message>
+    <message>
+      <source>Page Scale</source>
+      <translation>Paginaschaal</translation>
+    </message>
+    <message>
+      <source>Default scale for new pages</source>
+      <translation>Standaardschaal voor nieuwe pagina's</translation>
+    </message>
+    <message>
+      <source>View Scale Type</source>
+      <translation>Toon schaaltype</translation>
+    </message>
+    <message>
+      <source>Default scale for new views</source>
+      <translation>Standaardschaal voor nieuwe weergaven</translation>
+    </message>
+    <message>
+      <source>Page</source>
+      <translation>Pagina</translation>
+    </message>
+    <message>
+      <source>Auto</source>
+      <translation>Automatisch</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Eigen</translation>
+    </message>
+    <message>
+      <source>View Custom Scale</source>
+      <translation>Aangepaste schaal weergeven</translation>
+    </message>
+    <message>
+      <source>Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</source>
+      <translation>Standaardschaal voor weergaven als &apos;Schaaltype weergeven&apos; &apos;aangepast&apos; is</translation>
+    </message>
+    <message>
+      <source>Size Adjustments</source>
+      <translation>Aanpassingen grootte</translation>
+    </message>
+    <message>
+      <source>Vertex Scale</source>
+      <translation>Eindpuntschaal</translation>
+    </message>
+    <message>
+      <source>Size of template field click handles</source>
+      <translation>Grootte van het sjabloonveld klikhandvatten</translation>
+    </message>
+    <message>
+      <source>Center Mark Scale</source>
+      <translation>Centrale markeerschaal</translation>
+    </message>
+    <message>
+      <source>Size of center marks. Multiplier of vertex size.</source>
+      <translation>Grootte van de middenmarkeringen. Vermenigvuldiger van eindpuntgrootte.</translation>
+    </message>
+    <message>
+      <source>Template Edit Mark</source>
+      <translation>Sjabloon bewerkensmarkering</translation>
+    </message>
+    <message>
+      <source>Multiplier for size of welding symbols</source>
+      <translation>Vermenigvuldiger voor de grootte van de lassymbolen</translation>
+    </message>
+    <message>
+      <source>Welding Symbol Scale</source>
+      <translation>Schaal van lassymbool</translation>
+    </message>
+    <message>
+      <source>Scale of vertex dots. Multiplier of line width.</source>
+      <translation>Schaal van eindpunten. Vermenigvuldiger van de lijnbreedte.</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Opmerking:&lt;/span&gt; items in &lt;span style=&quot; font-style:italic;&quot;&gt;cursief&lt;/span&gt; zijn standaard waarden voor nieuwe objecten. Ze hebben geen effect op bestaande objecten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="111"/>
+      <source>Toggle &amp;Keep Updated</source>
+      <translation>Schakel &amp;KeepUpdated aan/uit</translation>
+    </message>
+    <message>
+      <source>Toggle &amp;Frames</source>
+      <translation>Schakel &amp;kaders aan/uit</translation>
+    </message>
+    <message>
       <source>&amp;Export SVG</source>
-      <translation type="unfinished">&amp;Export SVG</translation>
+      <translation>&amp;Exporteer SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="114"/>
-      <source>&amp;Native</source>
-      <translation>&amp;Eigen</translation>
+      <source>Export DXF</source>
+      <translation>Exporteer DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="118"/>
-      <source>&amp;OpenGL</source>
-      <translation>&amp;OpenGL</translation>
+      <source>Export PDF</source>
+      <translation>Exporteren als PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="121"/>
-      <source>&amp;Image</source>
-      <translation>&amp;Afbeelding</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="125"/>
-      <source>&amp;High Quality Antialiasing</source>
-      <translation>Hoge kwaliteit Antialiasing</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="144"/>
-      <source>dummy[*]</source>
-      <translation type="unfinished">dummy[*]</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="250"/>
-      <source>&amp;Renderer</source>
-      <translation>Renderer</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="646"/>
       <source>Different orientation</source>
-      <translation type="unfinished">Different orientation</translation>
+      <translation>Verschillende oriëntatie</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="647"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different orientation  than the drawing.
-Do you want to continue?</translation>
+      <translation>De printer gebruikt een andere richting dan de tekening.
+Wil je doorgaan?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="654"/>
-      <location filename="../../MDIViewPage.cpp" line="662"/>
       <source>Different paper size</source>
       <translation>Ander papierformaat</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="655"/>
-      <location filename="../../MDIViewPage.cpp" line="663"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>De printer gebruikt een ander papierfromaat dan de tekening. Wilt u toch doorgaan?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="674"/>
       <source>Opening file failed</source>
       <translation>Bestand openen mislukt</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="675"/>
-      <source>Can&apos;t open file %1 for writing.</source>
-      <translation type="unfinished">Can&apos;t open file %1 for writing.</translation>
+      <source>Can not open file %1 for writing.</source>
+      <translation>Kan bestand '%1' niet openen om te schrijven.</translation>
+    </message>
+    <message>
+      <source>Save Dxf File</source>
+      <translation>Bewaar Dxf-bestand</translation>
+    </message>
+    <message>
+      <source>Dxf (*.dxf)</source>
+      <translation>Dxf (*.dxf)</translation>
+    </message>
+    <message>
+      <source>Selected:</source>
+      <translation>Geselecteerd:</translation>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::QGVPage</name>
+    <name>TechDrawGui::QGIViewAnnotation</name>
     <message>
-      <location filename="../../QGVPage.cpp" line="564"/>
-      <source>Drawing page: </source>
-      <translation type="unfinished">Drawing page: </translation>
+      <source>Text</source>
+      <translation>Tekst</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::SymbolChooser</name>
+    <message>
+      <source>Symbol Chooser</source>
+      <translation>Symboolkiezer</translation>
     </message>
     <message>
-      <location filename="../../QGVPage.cpp" line="566"/>
-      <source> exported from FreeCAD document: </source>
-      <translation type="unfinished"> exported from FreeCAD document: </translation>
+      <source>Select a symbol that should be used</source>
+      <translation>Selecteer een symbool dat gebruikt moet worden</translation>
+    </message>
+    <message>
+      <source>Symbol Dir</source>
+      <translation>Symboolrichting</translation>
+    </message>
+    <message>
+      <source>Directory to welding symbols.</source>
+      <translation>Map naar lassymbolen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskBalloon</name>
+    <message>
+      <source>Balloon</source>
+      <translation>Ballon</translation>
+    </message>
+    <message>
+      <source>Text:</source>
+      <translation>Tekst:</translation>
+    </message>
+    <message>
+      <source>Text to be displayed</source>
+      <translation>Weer te geven tekst</translation>
+    </message>
+    <message>
+      <source>Text Color:</source>
+      <translation>Tekstkleur:</translation>
+    </message>
+    <message>
+      <source>Color for &apos;Text&apos;</source>
+      <translation>Kleur voor &apos;Tekst&apos;</translation>
+    </message>
+    <message>
+      <source>Font Size:</source>
+      <translation>Lettergrootte:</translation>
+    </message>
+    <message>
+      <source>Fontsize for &apos;Text&apos;</source>
+      <translation>Tekengrootte voor &apos;Tekst&apos;</translation>
+    </message>
+    <message>
+      <source>Bubble Shape:</source>
+      <translation>Balon Vorm:</translation>
+    </message>
+    <message>
+      <source>Shape of the balloon bubble</source>
+      <translation>Vorm van de ballonbubbel</translation>
+    </message>
+    <message>
+      <source>Circular</source>
+      <translation>Rond</translation>
+    </message>
+    <message>
+      <source>None</source>
+      <translation>Geen</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Driehoek</translation>
+    </message>
+    <message>
+      <source>Inspection</source>
+      <translation>Inspectie</translation>
+    </message>
+    <message>
+      <source>Hexagon</source>
+      <translation>Zeshoek</translation>
+    </message>
+    <message>
+      <source>Square</source>
+      <translation>Vierkant</translation>
+    </message>
+    <message>
+      <source>Rectangle</source>
+      <translation>Rechthoek</translation>
+    </message>
+    <message>
+      <source>Shape Scale:</source>
+      <translation>Vormschaal:</translation>
+    </message>
+    <message>
+      <source>Bubble shape scale factor</source>
+      <translation>Ballon vorm schaal factor</translation>
+    </message>
+    <message>
+      <source>End Symbol:</source>
+      <translation>Eindsymbool:</translation>
+    </message>
+    <message>
+      <source>End symbol for the balloon line</source>
+      <translation>Eindsymbool voor de ballonlijn</translation>
+    </message>
+    <message>
+      <source>End Symbol Scale:</source>
+      <translation>Eind Symbool Schaal:</translation>
+    </message>
+    <message>
+      <source>End symbol scale factor</source>
+      <translation>End-symbool schaal factor</translation>
+    </message>
+    <message>
+      <source>Line Visible:</source>
+      <translation>Lijn Zichtbaar:</translation>
+    </message>
+    <message>
+      <source>Whether the leader line is visible or not</source>
+      <translation>Of de leiderslijn zichtbaar is of niet</translation>
+    </message>
+    <message>
+      <source>False</source>
+      <translation>Onwaar</translation>
+    </message>
+    <message>
+      <source>True</source>
+      <translation>Waar</translation>
+    </message>
+    <message>
+      <source>Line Width:</source>
+      <translation>Lijnbreedte:</translation>
+    </message>
+    <message>
+      <source>Leader line width</source>
+      <translation>Leiderslijnbreedte</translation>
+    </message>
+    <message>
+      <source>Leader Kink Length:</source>
+      <translation>Leiderkinklengte:</translation>
+    </message>
+    <message>
+      <source>Length of balloon leader line kink</source>
+      <translation>Lengte van ballonleiderslijnkink</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskCenterLine</name>
+    <message>
+      <source>Center Line</source>
+      <translation>Centrale lijn</translation>
+    </message>
+    <message>
+      <source>Base View</source>
+      <translation>Basisweergave</translation>
+    </message>
+    <message>
+      <source>Elements</source>
+      <translation>Elementen</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Oriëntatie</translation>
+    </message>
+    <message>
+      <source>Top to Bottom line</source>
+      <translation>Van bovenste naar onderste lijn</translation>
+    </message>
+    <message>
+      <source>Vertical</source>
+      <translation>Verticaal</translation>
+    </message>
+    <message>
+      <source>Left to Right line</source>
+      <translation>Van linker- naar rechterlijn</translation>
+    </message>
+    <message>
+      <source>Horizontal</source>
+      <translation>Horizontaal</translation>
+    </message>
+    <message>
+      <source>centerline between
+- lines: in equal distance to the lines and with
+  half of the angle the lines have to each other
+- points: in equal distance to the points</source>
+      <translation>middenlijn tussen
+- lijnen: op gelijke afstand van de lijnen en met
+  de helft van de hoek hebben de lijnen ten opzichte van elkaar
+- punten: op gelijke afstand tot de punten</translation>
+    </message>
+    <message>
+      <source>Aligned</source>
+      <translation>Uitgelijnd</translation>
+    </message>
+    <message>
+      <source>Shift Horizontal</source>
+      <translation>Horizontaal verschuiven</translation>
+    </message>
+    <message>
+      <source>Move line -Left or +Right</source>
+      <translation>Verplaats lijn -Links of +Rechts</translation>
+    </message>
+    <message>
+      <source>Shift Vertical</source>
+      <translation>Verticaal verschuiven</translation>
+    </message>
+    <message>
+      <source>Move line +Up or -Down</source>
+      <translation>Verplaats lijn +Omhoog of -Omlaag</translation>
+    </message>
+    <message>
+      <source>Rotate</source>
+      <translation>Draaien</translation>
+    </message>
+    <message>
+      <source>Rotate line +CCW or -CW</source>
+      <translation>Draai lijn +CCW of -CW</translation>
+    </message>
+    <message>
+      <source>Extend By</source>
+      <translation>Uitbreiden met</translation>
+    </message>
+    <message>
+      <source>Make the line a little longer.</source>
+      <translation>Maak de lijn een beetje langer.</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Kleur</translation>
+    </message>
+    <message>
+      <source>Weight</source>
+      <translation>Gewicht</translation>
+    </message>
+    <message>
+      <source>Style</source>
+      <translation>Stijl</translation>
+    </message>
+    <message>
+      <source>Continuous</source>
+      <translation>Doorlopend</translation>
+    </message>
+    <message>
+      <source>Dash</source>
+      <translation>Streep</translation>
+    </message>
+    <message>
+      <source>Dot</source>
+      <translation>punt</translation>
+    </message>
+    <message>
+      <source>DashDot</source>
+      <translation>Streepstip</translation>
+    </message>
+    <message>
+      <source>DashDotDot</source>
+      <translation>Streepstipstip</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskCosVertex</name>
+    <message>
+      <source>Cosmetic Vertex</source>
+      <translation>Cosmetisch eindpunt</translation>
+    </message>
+    <message>
+      <source>Base View</source>
+      <translation>Basisweergave</translation>
+    </message>
+    <message>
+      <source>Point Picker</source>
+      <translation>Puntenkiezer</translation>
+    </message>
+    <message>
+      <source>Position from the view center</source>
+      <translation>Positie vanuit het weergavemiddelpunt</translation>
+    </message>
+    <message>
+      <source>Position</source>
+      <translation>Positie</translation>
+    </message>
+    <message>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <source>Pick a point for cosmetic vertex</source>
+      <translation>Kies een punt voor het cosmetisch eindpunt</translation>
+    </message>
+    <message>
+      <source>Left click to set a point</source>
+      <translation>Klik met de linkermuisknop om een punt in te stellen</translation>
+    </message>
+    <message>
+      <source>In progress edit abandoned. Start over.</source>
+      <translation>Bewerking in uitvoering stopgezet. Opnieuw beginnen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskCosmeticLine</name>
+    <message>
+      <source>Cosmetic Line</source>
+      <translation>Cosmetische lijn</translation>
+    </message>
+    <message>
+      <source>View</source>
+      <translation>Aanzicht</translation>
+    </message>
+    <message>
+      <source>2d Point</source>
+      <translation>2D punt</translation>
+    </message>
+    <message>
+      <source>3d Point</source>
+      <translation>3D-punt</translation>
+    </message>
+    <message>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDetail</name>
+    <message>
+      <source>Detail Anchor</source>
+      <translation>Detailanker</translation>
+    </message>
+    <message>
+      <source>Base View</source>
+      <translation>Basisweergave</translation>
+    </message>
+    <message>
+      <source>Detail View</source>
+      <translation>Gedetailleerde weergave</translation>
+    </message>
+    <message>
+      <source>Click to drag detail highlight to new position</source>
+      <translation>Klik om de detailmarkering naar een nieuwe positie te slepen</translation>
+    </message>
+    <message>
+      <source>Drag Highlight</source>
+      <translation>Sleep markering</translation>
+    </message>
+    <message>
+      <source>Reference</source>
+      <translation>Referentie</translation>
+    </message>
+    <message>
+      <source>x position of detail highlight within view</source>
+      <translation>x-positie van de detailmarkering binnen de weergave</translation>
+    </message>
+    <message>
+      <source>scale factor for detail view</source>
+      <translation>schaalfactor voor een detail aanzicht</translation>
+    </message>
+    <message>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <source>size of detail view</source>
+      <translation>grootte van detailweergave</translation>
+    </message>
+    <message>
+      <source>Scale Factor</source>
+      <translation>Schaalfactor</translation>
+    </message>
+    <message>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Straal</translation>
+    </message>
+    <message>
+      <source>reference label</source>
+      <translation>referentie label</translation>
+    </message>
+    <message>
+      <source>y position of detail highlight within view</source>
+      <translation>y-positie van de detailmarkering binnen de weergave</translation>
+    </message>
+    <message>
+      <source>Page: scale factor of page is used
+Automatic: if the detail view is larger than the page,
+                   it will be scaled down to fit into the page
+Custom: custom scale factor is used</source>
+      <translation>Pagina: schaal factor van pagina wordt gebruikt
+Automatisch: als het detail aanzicht groter is dan de pagina,
+                   Zal het worden verschaald om in de pagina te passen
+Aangepast: aangepaste schaalfactor wordt gebruikt</translation>
+    </message>
+    <message>
+      <source>Page</source>
+      <translation>Pagina</translation>
+    </message>
+    <message>
+      <source>Automatic</source>
+      <translation>Automatisch</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Eigen</translation>
+    </message>
+    <message>
+      <source>Scale Type</source>
+      <translation>Schaaltype</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDimension</name>
+    <message>
+      <source>Dimension</source>
+      <translation>Afmeting</translation>
+    </message>
+    <message>
+      <source>Tolerancing</source>
+      <translation>Toleranties</translation>
+    </message>
+    <message>
+      <source>If theoretical exact (basic) dimension</source>
+      <translation>Indien theoretische exact (basic) afmeting</translation>
+    </message>
+    <message>
+      <source>Theoretically Exact</source>
+      <translation>Theoretisch Exact</translation>
+    </message>
+    <message>
+      <source>Reverses usual direction of dimension line terminators</source>
+      <translation>Keert de gebruikelijke richting van de afmetingslijn terminators om</translation>
+    </message>
+    <message>
+      <source>Equal Tolerance</source>
+      <translation>Gelijke tolerantie</translation>
+    </message>
+    <message>
+      <source>Overtolerance:</source>
+      <translation>Overtolerantie:</translation>
+    </message>
+    <message>
+      <source>Overtolerance value
+If &apos;Equal Tolerance&apos; is checked this is also
+the negated value for &apos;Under Tolerance&apos;.</source>
+      <translation>Overtolerantie waarde
+Als &apos;Gelijke tolerantie&apos; is aangevinkt, is dit ook
+de waarde voor &apos;ondertolerantie &apos;.</translation>
+    </message>
+    <message>
+      <source>Undertolerance:</source>
+      <translation>Ondertolerantie:</translation>
+    </message>
+    <message>
+      <source>Undertolerance value
+If &apos;Equal Tolerance&apos; is checked it will be replaced
+by negative value of &apos;Over Tolerance&apos;.</source>
+      <translation>Overtolerantie waarde
+Als &apos;Gelijke tolerantie&apos; is aangevinkt, is dit ook
+de waarde voor &apos;overtolerantie &apos;.</translation>
+    </message>
+    <message>
+      <source>Formatting</source>
+      <translation>Opmaak</translation>
+    </message>
+    <message>
+      <source>Format Specifier:</source>
+      <translation>Opmaak Specificatie:</translation>
+    </message>
+    <message>
+      <source>Text to be displayed</source>
+      <translation>Weer te geven tekst</translation>
+    </message>
+    <message>
+      <source>If checked the content of &apos;Format Spec&apos; will
+be used instead if the dimension value</source>
+      <translation>Indien aangevinkt, dan zal de inhoud van &apos;Format Spec&apos; worden
+gebruikt in plaats van de maatwaarde</translation>
+    </message>
+    <message>
+      <source>Arbitrary Text</source>
+      <translation>Willekeurige tekst</translation>
+    </message>
+    <message>
+      <source>OverTolerance Format Specifier:</source>
+      <translation>Overtolerantie format Specificatie:</translation>
+    </message>
+    <message>
+      <source>Specifies the overtolerance format in printf() style, or arbitrary text</source>
+      <translation>Specificeert het overtolerantie formaat in printf() stijl, of willekeurige tekst</translation>
+    </message>
+    <message>
+      <source>UnderTolerance Format Specifier:</source>
+      <translation>Overtolerantie format Specificatie:</translation>
+    </message>
+    <message>
+      <source>Specifies the undertolerance format in printf() style, or arbitrary text</source>
+      <translation>Specificeert het overtolerantie formaat in printf() stijl, of willekeurige tekst</translation>
+    </message>
+    <message>
+      <source>Arbitrary Tolerance Text</source>
+      <translation>Willekeurige Tolerantie tekst</translation>
+    </message>
+    <message>
+      <source>Display Style</source>
+      <translation>Weergave stijl</translation>
+    </message>
+    <message>
+      <source>Flip Arrowheads</source>
+      <translation>Pijlkoppen Omdraaien</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Kleur:</translation>
+    </message>
+    <message>
+      <source>Color of the dimension</source>
+      <translation>Kleur van de afmeting</translation>
+    </message>
+    <message>
+      <source>Font Size:</source>
+      <translation>Lettergrootte:</translation>
+    </message>
+    <message>
+      <source>Fontsize for &apos;Text&apos;</source>
+      <translation>Tekengrootte voor &apos;Tekst&apos;</translation>
+    </message>
+    <message>
+      <source>Drawing Style:</source>
+      <translation>Tekenstijl:</translation>
+    </message>
+    <message>
+      <source>Standard and style according to which dimension is drawn</source>
+      <translation>Standaard en stijl afhankelijk van welke afmeting wordt getekend</translation>
+    </message>
+    <message>
+      <source>ISO Oriented</source>
+      <translation>ISO-georiënteerd</translation>
+    </message>
+    <message>
+      <source>ISO Referencing</source>
+      <translation>ISO-referentie</translation>
+    </message>
+    <message>
+      <source>ASME Inlined</source>
+      <translation>ASME-ingelijnd</translation>
+    </message>
+    <message>
+      <source>ASME Referencing</source>
+      <translation>ASME-referentie</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+      <source>Restore Invisible Lines</source>
+      <translation>Herstel onzichtbare lijnen</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::TaskGeomHatch</name>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="26"/>
       <source>Apply Geometric Hatch to Face</source>
-      <translation type="unfinished">Apply Geometric Hatch to Face</translation>
+      <translation>Pas de geometrische arcering toe op een vlak</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="38"/>
       <source>Define your pattern</source>
-      <translation type="unfinished">Define your pattern</translation>
+      <translation>Definieer uw patroon</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="52"/>
       <source>The PAT file containing your pattern</source>
-      <translation type="unfinished">The PAT file containing your pattern</translation>
+      <translation>Het PAT-bestand met uw patroon</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="59"/>
       <source>Pattern File</source>
-      <translation type="unfinished">Pattern File</translation>
+      <translation>Patroonbestand</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="70"/>
       <source>Pattern Name</source>
-      <translation type="unfinished">Pattern Name</translation>
+      <translation>Patroonnaam</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="77"/>
       <source>Line Weight</source>
-      <translation type="unfinished">Line Weight</translation>
+      <translation>Lijngewicht</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="84"/>
       <source>Pattern Scale</source>
-      <translation type="unfinished">Pattern Scale</translation>
+      <translation>Patroonschaal</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="104"/>
       <source>Line Color</source>
-      <translation type="unfinished">Line Color</translation>
+      <translation>Lijnkleur</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="111"/>
       <source>Name of pattern within file</source>
-      <translation type="unfinished">Name of pattern within file</translation>
+      <translation>Naam van het patroon binnen het bestand</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="118"/>
       <source>Color of pattern lines</source>
-      <translation type="unfinished">Color of pattern lines</translation>
+      <translation>Kleur van de patroonlijnen</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="125"/>
       <source>Enlarges/shrinks the pattern</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern</translation>
+      <translation>Vergroot/verkleint het patroon</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomHatch.ui" line="135"/>
       <source>Thickness of lines within the pattern</source>
-      <translation type="unfinished">Thickness of lines within the pattern</translation>
+      <translation>Dikte van de lijnen binnen het patroon</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskHatch</name>
+    <message>
+      <source>Apply Hatch to Face</source>
+      <translation>Arcering toepassen op vlak</translation>
+    </message>
+    <message>
+      <source>Define your pattern</source>
+      <translation>Definieer uw patroon</translation>
+    </message>
+    <message>
+      <source>The PAT file containing your pattern</source>
+      <translation>Het PAT-bestand met uw patroon</translation>
+    </message>
+    <message>
+      <source>Pattern File</source>
+      <translation>Patroonbestand</translation>
+    </message>
+    <message>
+      <source>Color of pattern lines</source>
+      <translation>Kleur van de patroonlijnen</translation>
+    </message>
+    <message>
+      <source>Line Color</source>
+      <translation>Lijnkleur</translation>
+    </message>
+    <message>
+      <source>Enlarges/shrinks the pattern</source>
+      <translation>Vergroot/verkleint het patroon</translation>
+    </message>
+    <message>
+      <source>Pattern Scale</source>
+      <translation>Patroonschaal</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskLeaderLine</name>
+    <message>
+      <source>Leader Line</source>
+      <translation>Leiderslijn</translation>
+    </message>
+    <message>
+      <source>Base View</source>
+      <translation>Basisweergave</translation>
+    </message>
+    <message>
+      <source>Discard Changes</source>
+      <translation>Wijzigingen negeren</translation>
+    </message>
+    <message>
+      <source>First pick the start point of the line,
+then at least a second point.
+You can pick further points to get line segments.</source>
+      <translation>Kies eerst het startpunt van de lijn,
+en dan ten minste een tweede punt.
+Je kan meer punten kiezen om lijnsegmenten te krijgen.</translation>
+    </message>
+    <message>
+      <source>Pick Points</source>
+      <translation>Kies punten</translation>
+    </message>
+    <message>
+      <source>Start Symbol</source>
+      <translation>Startsymbool</translation>
+    </message>
+    <message>
+      <source>End Symbol</source>
+      <translation>Eindsymbool</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Kleur</translation>
+    </message>
+    <message>
+      <source>Line color</source>
+      <translation>Lijnkleur</translation>
+    </message>
+    <message>
+      <source>Width</source>
+      <translation>Breedte</translation>
+    </message>
+    <message>
+      <source>Line width</source>
+      <translation>Lijndikte</translation>
+    </message>
+    <message>
+      <source>Style</source>
+      <translation>Stijl</translation>
+    </message>
+    <message>
+      <source>Line style</source>
+      <translation>Lijnstijl</translation>
+    </message>
+    <message>
+      <source>NoLine</source>
+      <translation>GeenLijn</translation>
+    </message>
+    <message>
+      <source>Continuous</source>
+      <translation>Doorlopend</translation>
+    </message>
+    <message>
+      <source>Dash</source>
+      <translation>Streep</translation>
+    </message>
+    <message>
+      <source>Dot</source>
+      <translation>punt</translation>
+    </message>
+    <message>
+      <source>DashDot</source>
+      <translation>Streepstip</translation>
+    </message>
+    <message>
+      <source>DashDotDot</source>
+      <translation>Streepstipstip</translation>
+    </message>
+    <message>
+      <source>Pick a starting point for leader line</source>
+      <translation>Kies een startpunt voor de leiderslijn</translation>
+    </message>
+    <message>
+      <source>Click and drag markers to adjust leader line</source>
+      <translation>Klik en sleep de markeringen om de leiderslijn aan te passen</translation>
+    </message>
+    <message>
+      <source>Left click to set a point</source>
+      <translation>Klik met de linkermuisknop om een punt in te stellen</translation>
+    </message>
+    <message>
+      <source>Press OK or Cancel to continue</source>
+      <translation>Druk op OK of Annuleren om verder te gaan</translation>
+    </message>
+    <message>
+      <source>In progress edit abandoned. Start over.</source>
+      <translation>Bewerking in uitvoering stopgezet. Opnieuw beginnen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskLineDecor</name>
+    <message>
+      <source>Line Decoration</source>
+      <translation>Lijndecoratie</translation>
+    </message>
+    <message>
+      <source>View</source>
+      <translation>Aanzicht</translation>
+    </message>
+    <message>
+      <source>Lines</source>
+      <translation>Lijnen</translation>
+    </message>
+    <message>
+      <source>Style</source>
+      <translation>Stijl</translation>
+    </message>
+    <message>
+      <source>Continuous</source>
+      <translation>Doorlopend</translation>
+    </message>
+    <message>
+      <source>Dash</source>
+      <translation>Streep</translation>
+    </message>
+    <message>
+      <source>Dot</source>
+      <translation>punt</translation>
+    </message>
+    <message>
+      <source>DashDot</source>
+      <translation>Streepstip</translation>
+    </message>
+    <message>
+      <source>DashDotDot</source>
+      <translation>Streepstipstip</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Kleur</translation>
+    </message>
+    <message>
+      <source>Weight</source>
+      <translation>Gewicht</translation>
+    </message>
+    <message>
+      <source>Thickness of pattern lines.</source>
+      <translation>Dikte van patronenlijnen.</translation>
+    </message>
+    <message>
+      <source>Visible</source>
+      <translation>Zichtbaar</translation>
+    </message>
+    <message>
+      <source>False</source>
+      <translation>Onwaar</translation>
+    </message>
+    <message>
+      <source>True</source>
+      <translation>Waar</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::TaskLinkDim</name>
     <message>
-      <location filename="../../TaskLinkDim.ui" line="26"/>
       <source>Link Dimension</source>
-      <translation type="unfinished">Link Dimension</translation>
+      <translation>Koppelingsafmeting</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkDim.ui" line="54"/>
       <source>Link This 3D Geometry</source>
-      <translation type="unfinished">Link This 3D Geometry</translation>
+      <translation>Koppel deze 3D-geometrie</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkDim.ui" line="80"/>
       <source>Feature2:</source>
-      <translation type="unfinished">Feature2:</translation>
+      <translation>Kenmerk2:</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkDim.ui" line="113"/>
       <source>Feature1:</source>
-      <translation type="unfinished">Feature1:</translation>
+      <translation>Kenmerk1:</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkDim.ui" line="133"/>
       <source>Geometry1:</source>
-      <translation type="unfinished">Geometry1:</translation>
+      <translation>Geometrie1:</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkDim.ui" line="140"/>
       <source>Geometry2: </source>
-      <translation type="unfinished">Geometry2: </translation>
+      <translation>Geometrie2: </translation>
     </message>
     <message>
-      <location filename="../../TaskLinkDim.ui" line="153"/>
       <source>To These Dimensions</source>
-      <translation type="unfinished">To These Dimensions</translation>
+      <translation>Naar deze afmetingen</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkDim.cpp" line="64"/>
       <source>Available</source>
-      <translation type="unfinished">Available</translation>
+      <translation>Beschikbaar</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkDim.cpp" line="65"/>
       <source>Selected</source>
       <translation>Geselecteerd</translation>
     </message>
@@ -1390,303 +3693,492 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskProjGroup</name>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="26"/>
       <source>Projection Group</source>
-      <translation type="unfinished">Projection Group</translation>
+      <translation>Projectiegroep</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="54"/>
       <source>Projection</source>
       <translation>Projectie</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="61"/>
       <source>First or Third Angle</source>
-      <translation type="unfinished">First or Third Angle</translation>
+      <translation>Eerste of de derde hoek</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="68"/>
-      <location filename="../../TaskProjGroup.ui" line="101"/>
-      <source>Page</source>
-      <translation>Pagina</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="73"/>
       <source>First Angle</source>
       <translation>Eerste hoek</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="78"/>
       <source>Third Angle</source>
       <translation>Derde hoek</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="90"/>
+      <source>Page</source>
+      <translation>Pagina</translation>
+    </message>
+    <message>
       <source>Scale</source>
       <translation>Schalen</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="97"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation type="unfinished">Scale Page/Auto/Custom</translation>
+      <translation>Paginaschaal/Automatisch/Aangepast</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="106"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automatisch</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="111"/>
       <source>Custom</source>
       <translation>Eigen</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="123"/>
       <source>Custom Scale</source>
-      <translation type="unfinished">Custom Scale</translation>
+      <translation>Aangepaste schaal</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="143"/>
       <source>Scale Numerator</source>
-      <translation type="unfinished">Scale Numerator</translation>
+      <translation>Schaal teller</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="156"/>
       <source>:</source>
-      <translation type="unfinished">:</translation>
+      <translation>:</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="163"/>
       <source>Scale Denominator</source>
-      <translation type="unfinished">Scale Denominator</translation>
+      <translation>Schaal noemer</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="196"/>
       <source>Adjust Primary Direction</source>
-      <translation type="unfinished">Adjust Primary Direction</translation>
+      <translation>Primaire richting aanpassen</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="230"/>
-      <source>Primary View Direction</source>
-      <translation type="unfinished">Primary View Direction</translation>
+      <source>Current primary view direction</source>
+      <translation>Huidige hoofd aanzicht richting</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="243"/>
       <source>Rotate right</source>
-      <translation type="unfinished">Rotate right</translation>
+      <translation>Rechtsom draaien</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="270"/>
       <source>Rotate up</source>
-      <translation type="unfinished">Rotate up</translation>
+      <translation>Naar boven draaien</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="291"/>
       <source>Rotate left</source>
-      <translation type="unfinished">Rotate left</translation>
+      <translation>Linksom draaien</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="315"/>
-      <source>This function is temporarily unavailable.</source>
-      <translation type="unfinished">This function is temporarily unavailable.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="318"/>
-      <source>Match 3D</source>
-      <translation type="unfinished">Match 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="325"/>
       <source>Rotate down</source>
-      <translation type="unfinished">Rotate down</translation>
+      <translation>Naar beneden draaien</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="346"/>
-      <source>Return Primary Direction to Initial Value</source>
-      <translation type="unfinished">Return Primary Direction to Initial Value</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="349"/>
-      <source>Reset</source>
-      <translation>Herstel</translation>
-    </message>
-    <message>
-      <location filename="../../TaskProjGroup.ui" line="367"/>
       <source>Secondary Projections</source>
-      <translation type="unfinished">Secondary Projections</translation>
+      <translation>Secundaire projecties</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="384"/>
       <source>Bottom</source>
       <translation>Onder</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="417"/>
       <source>Primary</source>
-      <translation type="unfinished">Primary</translation>
+      <translation>Primair</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="437"/>
       <source>Right</source>
       <translation>Rechts</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="467"/>
       <source>Left</source>
       <translation>Links</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="484"/>
       <source>LeftFrontBottom</source>
-      <translation type="unfinished">LeftFrontBottom</translation>
+      <translation>Linker Onderste Voorkant</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="501"/>
       <source>Top</source>
       <translation>Boven</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="518"/>
       <source>RightFrontBottom</source>
-      <translation type="unfinished">RightFrontBottom</translation>
+      <translation>Rechter Onderste Voorkant</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="535"/>
       <source>RightFrontTop</source>
-      <translation type="unfinished">RightFrontTop</translation>
+      <translation>Rechter Bovenste Voorkant</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="552"/>
       <source>Rear</source>
       <translation>Achter</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="569"/>
       <source>LeftFrontTop</source>
-      <translation type="unfinished">LeftFrontTop</translation>
+      <translation>Linker Bovenste Voorkant</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="609"/>
       <source>Spin CW</source>
-      <translation type="unfinished">Spin CW</translation>
+      <translation>Rechtsom draaien</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.ui" line="637"/>
       <source>Spin CCW</source>
-      <translation type="unfinished">Spin CCW</translation>
+      <translation>Linksom draaien</translation>
+    </message>
+    <message>
+      <source>Distributes projections automatically
+using the given X/Y Spacing</source>
+      <translation>Verdeelt projecties automatisch
+met behulp van de gegeven X/Y afstand</translation>
+    </message>
+    <message>
+      <source>Auto Distribute</source>
+      <translation>Automatisch verdelen</translation>
+    </message>
+    <message>
+      <source>Horizontal space between border of projections</source>
+      <translation>Horizontale afstand tussen de omtrek van projecties</translation>
+    </message>
+    <message>
+      <source>X Spacing</source>
+      <translation>X Spatiëring</translation>
+    </message>
+    <message>
+      <source>Y Spacing</source>
+      <translation>Y Spatiëring</translation>
+    </message>
+    <message>
+      <source>Vertical space between border of projections</source>
+      <translation>Verticale afstand tussen de omtrek van projecties</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskRestoreLines</name>
+    <message>
+      <source>Restore Invisible Lines</source>
+      <translation>Herstel onzichtbare lijnen</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>Alle</translation>
+    </message>
+    <message>
+      <source>Geometry</source>
+      <translation>Geometrie</translation>
+    </message>
+    <message>
+      <source>CenterLine</source>
+      <translation>Middenlijn</translation>
+    </message>
+    <message>
+      <source>Cosmetic</source>
+      <translation>Cosmetisch</translation>
+    </message>
+    <message>
+      <source>0</source>
+      <translation>0</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskRichAnno</name>
+    <message>
+      <source>Rich Text Annotation Block</source>
+      <translation>Aantekeningsblok voor de opgemaakte tekst</translation>
+    </message>
+    <message>
+      <source>Base Feature</source>
+      <translation>Basiskenmerk</translation>
+    </message>
+    <message>
+      <source>Max Width</source>
+      <translation>Max. Breedte</translation>
+    </message>
+    <message>
+      <source>Maximal width, if -1 then automatic width</source>
+      <translation>Maximale breedte, als -1 dan automatische breedte</translation>
+    </message>
+    <message>
+      <source>Start Rich Text Editor</source>
+      <translation>Start opgemaakte teksteditor</translation>
+    </message>
+    <message>
+      <source>Show Frame</source>
+      <translation>Toon frame</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Kleur</translation>
+    </message>
+    <message>
+      <source>Line color</source>
+      <translation>Lijnkleur</translation>
+    </message>
+    <message>
+      <source>Width</source>
+      <translation>Breedte</translation>
+    </message>
+    <message>
+      <source>Line width</source>
+      <translation>Lijndikte</translation>
+    </message>
+    <message>
+      <source>Style</source>
+      <translation>Stijl</translation>
+    </message>
+    <message>
+      <source>Line style</source>
+      <translation>Lijnstijl</translation>
+    </message>
+    <message>
+      <source>NoLine</source>
+      <translation>GeenLijn</translation>
+    </message>
+    <message>
+      <source>Continuous</source>
+      <translation>Doorlopend</translation>
+    </message>
+    <message>
+      <source>Dash</source>
+      <translation>Streep</translation>
+    </message>
+    <message>
+      <source>Dot</source>
+      <translation>punt</translation>
+    </message>
+    <message>
+      <source>DashDot</source>
+      <translation>Streepstip</translation>
+    </message>
+    <message>
+      <source>DashDotDot</source>
+      <translation>Streepstipstip</translation>
+    </message>
+    <message>
+      <source>Input the annotation text directly or start the rich text editor</source>
+      <translation>Voer de annotatietekst direct in of start de opgemaakte tekstverwerker</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::TaskSectionView</name>
     <message>
-      <location filename="../../TaskSectionView.ui" line="26"/>
-      <source>Quick Section Parameters</source>
-      <translation type="unfinished">Quick Section Parameters</translation>
+      <source>Section Parameters</source>
+      <translation>Sectieparameters</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="38"/>
-      <source>Define Your Section</source>
-      <translation type="unfinished">Define Your Section</translation>
+      <source>BaseView</source>
+      <translation>Basisweergave</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="46"/>
+      <source>Identifier</source>
+      <translation>Identificator</translation>
+    </message>
+    <message>
+      <source>Identifier for this section</source>
+      <translation>Identificator voor deze sectie</translation>
+    </message>
+    <message>
+      <source>Scale</source>
+      <translation>Schalen</translation>
+    </message>
+    <message>
+      <source>Scale factor for the section view</source>
+      <translation>Schaalfactor voor de sectieweergave</translation>
+    </message>
+    <message>
+      <source>Section Orientation</source>
+      <translation>Sectieoriëntatie</translation>
+    </message>
+    <message>
+      <source>Looking up</source>
+      <translation>Naar boven kijken</translation>
+    </message>
+    <message>
+      <source>Looking down</source>
+      <translation>Naar beneden kijken</translation>
+    </message>
+    <message>
+      <source>Looking left</source>
+      <translation>Naar links kijken</translation>
+    </message>
+    <message>
+      <source>Looking right</source>
+      <translation>Naar rechts kijken</translation>
+    </message>
+    <message>
+      <source>Position from the 3D origin of the object in the view</source>
+      <translation>Positie vanuit de 3D-oorsprong van het object in de weergave</translation>
+    </message>
+    <message>
+      <source>Section Plane Location</source>
+      <translation>Sectievlaklocatie</translation>
+    </message>
+    <message>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <source>TaskSectionView - bad parameters.  Can not proceed.</source>
+      <translation>TaskSectionView - verkeerde parameters. Kan niet doorgaan.</translation>
+    </message>
+    <message>
+      <source>Nothing to apply. No section direction picked yet</source>
+      <translation>Niets om toe te passen. Nog geen sectierichting gekozen</translation>
+    </message>
+    <message>
+      <source>Can not continue. Object * %1 * not found.</source>
+      <translation>Kan niet doorgaan. Object * %1 * niet gevonden.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskWeldingSymbol</name>
+    <message>
       <source>Symbol</source>
       <translation>Symbool</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="53"/>
-      <source>Identifier for this section</source>
-      <translation type="unfinished">Identifier for this section</translation>
+      <source>arrow</source>
+      <translation>pijl</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.ui" line="77"/>
-      <source>Origin Y</source>
-      <translation type="unfinished">Origin Y</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="84"/>
-      <location filename="../../TaskSectionView.ui" line="108"/>
-      <location filename="../../TaskSectionView.ui" line="118"/>
-      <source>Location of section plane</source>
-      <translation type="unfinished">Location of section plane</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="94"/>
-      <source>Origin X</source>
-      <translation type="unfinished">Origin X</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="101"/>
-      <source>Origin Z</source>
-      <translation type="unfinished">Origin Z</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="132"/>
-      <source>Looking down</source>
-      <translation type="unfinished">Looking down</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="169"/>
-      <source>Looking right</source>
-      <translation type="unfinished">Looking right</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="193"/>
-      <source>Looking left</source>
-      <translation type="unfinished">Looking left</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="217"/>
-      <source>Looking up</source>
-      <translation type="unfinished">Looking up</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="285"/>
-      <source>Calculated Values</source>
-      <translation type="unfinished">Calculated Values</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="296"/>
-      <source>Projection Direction</source>
-      <translation type="unfinished">Projection Direction</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="310"/>
-      <source>Section Normal</source>
-      <translation type="unfinished">Section Normal</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="337"/>
-      <source>Start over</source>
-      <translation type="unfinished">Start over</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSectionView.ui" line="340"/>
-      <source>Reset</source>
-      <translation>Herstel</translation>
+      <source>other</source>
+      <translation>andere</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::dlgTemplateField</name>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="17"/>
       <source>Change Editable Field</source>
-      <translation type="unfinished">Change Editable Field</translation>
+      <translation>Verander bewerkbaar veld</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="45"/>
       <source>Text Name:</source>
-      <translation type="unfinished">Text Name:</translation>
+      <translation>Tekstnaam:</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
       <source>TextLabel</source>
       <translation>Tekstbenaming</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="59"/>
       <source>Value:</source>
-      <translation type="unfinished">Value:</translation>
+      <translation>Waarde:</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_2LineCenterLine</name>
+    <message>
+      <source>Adds a Centerline between 2 Lines</source>
+      <translation>Voegt een middenlijn tussen 2 lijnen toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_2PointCenterLine</name>
+    <message>
+      <source>Adds a Centerline between 2 Points</source>
+      <translation>Voegt een middenlijn tussen 2 punten toe</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CosmeticVertex</name>
+    <message>
+      <source>Inserts a Cosmetic Vertex into a View</source>
+      <translation>Voegt een cosmetisch eindpunt in een weergave in</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_FaceCenterLine</name>
+    <message>
+      <source>Adds a Centerline to Faces</source>
+      <translation>Voegt een middenlijn toe aan vlakken</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_HorizontalExtent</name>
+    <message>
+      <source>Insert Horizontal Extent Dimension</source>
+      <translation>Voeg een horizontale expansie-afmeting in</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_Midpoints</name>
+    <message>
+      <source>Inserts Cosmetic Vertices at Midpoint of selected Edges</source>
+      <translation>Voegt cosmetische eindpunten toe aan het midden van de geselecteerde randen</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_Quadrants</name>
+    <message>
+      <source>Inserts Cosmetic Vertices at Quadrant Points of selected Circles</source>
+      <translation>Voegt cosmetische eindpunten toe aan de kwadrantpunten van geselecteerde cirkels</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_VerticalExtentDimension</name>
+    <message>
+      <source>Insert Vertical Extent Dimension</source>
+      <translation>Voeg een verticale expansie-afmeting in</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <source>Dimensions</source>
+      <translation>Dimensies</translation>
+    </message>
+    <message>
+      <source>Annotations</source>
+      <translation>Aantekeningen</translation>
+    </message>
+    <message>
+      <source>Add Lines</source>
+      <translation>Lijnen toevoegen</translation>
+    </message>
+    <message>
+      <source>Add Vertices</source>
+      <translation>Hoekpunten toevoegen</translation>
+    </message>
+    <message>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <source>TechDraw Pages</source>
+      <translation>TechDraw Pagina's</translation>
+    </message>
+    <message>
+      <source>TechDraw Views</source>
+      <translation>TechDraw Weergaven</translation>
+    </message>
+    <message>
+      <source>TechDraw Clips</source>
+      <translation>TechDraw Doorsneden</translation>
+    </message>
+    <message>
+      <source>TechDraw Dimensions</source>
+      <translation>TechDraw Dimensies</translation>
+    </message>
+    <message>
+      <source>TechDraw File Access</source>
+      <translation>TechDraw BestandsToegang</translation>
+    </message>
+    <message>
+      <source>TechDraw Decoration</source>
+      <translation>TechDraw Versiering</translation>
+    </message>
+    <message>
+      <source>TechDraw Annotation</source>
+      <translation>TechDraw Annotatie</translation>
+    </message>
+    <message>
+      <source>Views</source>
+      <translation>Weergaven</translation>
     </message>
   </context>
 </TS>

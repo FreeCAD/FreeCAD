@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)     *
+ *   Copyright (c) 2015 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef SKETCHERGUI_GEOMETRYCREATIONMODE_H
+#define SKETCHERGUI_GEOMETRYCREATIONMODE_H
 
 /***** Creation Mode ************/
 namespace SketcherGui
@@ -29,3 +31,5 @@ namespace SketcherGui
         Construction
     };
 }
+
+#endif //SKETCHERGUI_GEOMETRYCREATIONMODE_H

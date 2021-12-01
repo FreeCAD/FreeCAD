@@ -38,6 +38,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(App::DocumentObjectGroup, App::DocumentObject)
 DocumentObjectGroup::DocumentObjectGroup(void): DocumentObject(), GroupExtension() {
 
     GroupExtension::initExtension(this);
+    _GroupTouched.setStatus(App::Property::Output,true);
 }
 
 DocumentObjectGroup::~DocumentObjectGroup() {
@@ -57,7 +58,7 @@ PyObject *DocumentObjectGroup::getPyObject()
 // Python feature ---------------------------------------------------------
 
 namespace App {
-    
+
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(App::DocumentObjectGroupPython, App::DocumentObjectGroup)
 template<> const char* App::DocumentObjectGroupPython::getViewProviderName(void) const {

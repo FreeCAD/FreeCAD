@@ -1,5 +1,5 @@
-/***************************************************************************
-*   (c) Jürgen Riegel (juergen.riegel@web.de) 2014                        *
+/**************************************************************************
+*   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -29,14 +29,13 @@
 #include <map>
 #include "Tree.h"
 namespace App {
-	class DocumentObject;
+    class DocumentObject;
 }
 
 namespace Gui
 {
-
-	class Document;
-        class ViewProviderDocumentObject;
+    class Document;
+    class ViewProviderDocumentObject;
 
 	/** List of active or special objects
 	* This class holds a list of objects with a special name.
@@ -45,30 +44,45 @@ namespace Gui
 	* @see Gui::MDIViewer
 	* @author Jürgen Riegel
 	*/
-	class GuiExport ActiveObjectList 
-	{
+    class GuiExport ActiveObjectList
+    {
+    public:
+        ActiveObjectList(Document *doc)
+            :_Doc(doc)
+        {}
 
-	public:
-		template<typename _T>
-		inline _T getObject(const char* name) const
-		{
-			std::map<std::string, App::DocumentObject*>::const_iterator pos = _ObjectMap.find(name);
-			return  pos == _ObjectMap.end() ? 0 : dynamic_cast<_T>(pos->second);
-		}
-		void setObject(App::DocumentObject*, const char*, const Gui::HighlightMode& m = Gui::LightBlue);
-		bool hasObject(const char*)const;
-                void objectDeleted(const ViewProviderDocumentObject& viewProviderIn);
-	protected:
-		std::map<std::string, App::DocumentObject*> _ObjectMap;
+        template<typename _T>
+        inline _T getObject(const char* name, App::DocumentObject **parent=0, std::string *subname=0) const {
+            auto it = _ObjectMap.find(name);
+            if(it==_ObjectMap.end())
+                return 0;
+            return dynamic_cast<_T>(getObject(it->second,true,parent,subname));
+        }
+        void setObject(App::DocumentObject*, const char*, const char *subname=0,
+                const Gui::HighlightMode& m = HighlightMode::UserDefined);
+        bool hasObject(const char*)const;
+        void objectDeleted(const ViewProviderDocumentObject& viewProviderIn);
+        bool hasObject(App::DocumentObject *obj, const char *, const char *subname=0) const;
 
+    private:
+        struct ObjectInfo;
+        void setHighlight(const ObjectInfo &info, Gui::HighlightMode mode, bool enable);
+        App::DocumentObject *getObject(const ObjectInfo &info, bool resolve,
+                App::DocumentObject **parent=0, std::string *subname=0) const;
+        ObjectInfo getObjectInfo(App::DocumentObject *obj, const char *subname) const;
 
-	};
-
-
+    private:
+        struct ObjectInfo {
+            App::DocumentObject *obj;
+            std::string subname;
+        };
+        std::map<std::string, ObjectInfo> _ObjectMap;
+        Document *_Doc;
+    };
 
 } //namespace Gui
 
 static const char PDBODYKEY[] = "pdbody";
 static const char PARTKEY[] = "part";
 
-#endif 
+#endif

@@ -42,6 +42,7 @@ class SketcherWorkbench ( Workbench ):
         # load the module
         import SketcherGui
         import Sketcher
+
         try:
             import Profiles
         except ImportError:
@@ -51,3 +52,5 @@ class SketcherWorkbench ( Workbench ):
         return "SketcherGui::Workbench"
 
 Gui.addWorkbench(SketcherWorkbench())
+
+FreeCAD.__unit_test__ += [ "TestSketcherGui" ]

@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,7 +36,6 @@
 #include <QObject>
 #include <Base/Console.h>
 #include <App/DocumentObject.h>
-#include <QListWidgetItem>
 
 class Ui_TaskFemConstraintFixed;
 
@@ -51,16 +51,14 @@ public:
 
 private Q_SLOTS:
     void onReferenceDeleted(void);
-
     void addToSelection();
     void removeFromSelection();
-    void setSelection(QListWidgetItem* item);
 
 protected:
+    bool event(QEvent *e);
     void changeEvent(QEvent *e);
 
 private:
-    //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
     Ui_TaskFemConstraintFixed* ui;
 

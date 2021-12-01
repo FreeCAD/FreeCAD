@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -215,7 +215,7 @@ public:
     void finishEditing();
     /// Transform the real mesh data
     void transformGeometry(const Base::Matrix4D &rclMat);
-    void setPointIndices( const std::vector<std::pair<unsigned long, Base::Vector3f> >& );
+    void setPointIndices( const std::vector<std::pair<PointIndex, Base::Vector3f> >& );
     //@}
 
     /** @name Python interface */
@@ -257,4 +257,3 @@ private:
 } // namespace Mesh
 
 #endif // MESH_MESHPROPERTIES_H
-

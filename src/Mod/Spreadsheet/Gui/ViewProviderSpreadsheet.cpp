@@ -25,15 +25,18 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QFile>
 # include <QFileInfo>
 # include <QImage>
 # include <QString>
+# include <QMdiSubWindow>
 # include <QMenu>
 #endif
 
 #include "ViewProviderSpreadsheet.h"
 #include "SpreadsheetView.h"
+#include "ViewProviderSpreadsheetPy.h"
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <App/Range.h>
@@ -42,6 +45,8 @@
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/View3DInventor.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Console.h>
@@ -142,37 +147,14 @@ Sheet *ViewProviderSheet::getSpreadsheetObject() const
     return freecad_dynamic_cast<Sheet>(pcObject);
 }
 
-bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
+void ViewProviderSheet::beforeDelete()
 {
-    // If view is closed, delete the object
-    if (view.isNull())
-        return true;
-
-    // View is not closed, delete cell contents instead if it is active
-    if (Gui::Application::Instance->activeDocument()) {
-        Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        SpreadsheetGui::SheetView * sheetView = freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
-
-        if (sheetView) {
-            Sheet * sheet = sheetView->getSheet();
-            QModelIndexList selection = sheetView->selectedIndexes();
-
-            if (selection.size() > 0) {
-                Gui::Command::openCommand("Clear cell(s)");
-                std::vector<Range> ranges = sheetView->selectedRanges();
-                std::vector<Range>::const_iterator i = ranges.begin();
-
-                for (; i != ranges.end(); ++i) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.clear('%s')", sheet->getNameInDocument(),
-                                            i->rangeString().c_str());
-                }
-                Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-            }
-        }
-    }
-
-    return false;
+    ViewProviderDocumentObject::beforeDelete();
+    if(!view)
+        return;
+    if(view==Gui::getMainWindow()->activeWindow())
+        getDocument()->setActiveView(0,Gui::View3DInventor::getClassTypeId());
+    Gui::getMainWindow()->removeWindow(view);
 }
 
 SheetView *ViewProviderSheet::showSpreadsheetView()
@@ -190,8 +172,32 @@ SheetView *ViewProviderSheet::showSpreadsheetView()
     return view;
 }
 
+Gui::MDIView *ViewProviderSheet::getMDIView() const
+{
+    return const_cast<ViewProviderSheet*>(this)->showSpreadsheetView();
+}
+
 void ViewProviderSheet::updateData(const App::Property* prop)
 {
     if (view)
         view->updateCell(prop);
+}
+
+PyObject *ViewProviderSheet::getPyObject()
+{
+    if (!pyViewObject)
+        pyViewObject = new ViewProviderSpreadsheetPy(this);
+    pyViewObject->IncRef();
+    return pyViewObject;
+}
+
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(SpreadsheetGui::ViewProviderSheetPython, SpreadsheetGui::ViewProviderSheet)
+/// @endcond
+
+// explicit template instantiation
+template class SpreadsheetGuiExport ViewProviderPythonFeatureT<ViewProviderSheet>;
 }

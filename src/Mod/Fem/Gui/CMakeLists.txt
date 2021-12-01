@@ -1,3 +1,14 @@
+
+# Many warnings caused by vtk
+if(CMAKE_COMPILER_IS_CLANGXX)
+    add_compile_options(-Wno-pedantic) # needed for vtk headers
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.0)
+        add_compile_options(-Wno-inconsistent-missing-override)
+    endif()
+elseif(CMAKE_COMPILER_IS_GNUCXX)
+    add_compile_options(-Wno-pedantic) # needed for vtk headers
+endif()
+
 if(MSVC)
     add_definitions(-DFCGuiFem -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
 else(MSVC)
@@ -44,51 +55,6 @@ SET(Python_SRCS
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
-set(FemGui_MOC_HDRS
-    DlgSettingsFemCcxImp.h
-    DlgSettingsFemElmerImp.h
-    DlgSettingsFemExportAbaqusImp.h
-    DlgSettingsFemGeneralImp.h
-    DlgSettingsFemGmshImp.h
-    DlgSettingsFemInOutVtkImp.h
-    DlgSettingsFemMaterialImp.h
-    DlgSettingsFemZ88Imp.h
-    PropertyFemMeshItem.h
-    TaskObjectName.h
-    TaskCreateNodeSet.h
-    TaskDlgCreateNodeSet.h
-    TaskFemConstraint.h
-    TaskFemConstraintBearing.h
-    TaskFemConstraintFixed.h
-    TaskFemConstraintForce.h
-    TaskFemConstraintFluidBoundary.h
-    TaskFemConstraintPressure.h
-    TaskFemConstraintGear.h
-    TaskFemConstraintPulley.h
-    TaskFemConstraintDisplacement.h
-    TaskFemConstraintTemperature.h
-    TaskFemConstraintHeatflux.h
-    TaskFemConstraintInitialTemperature.h
-    TaskFemConstraintPlaneRotation.h
-    TaskFemConstraintContact.h
-    TaskFemConstraintTransform.h
-    TaskTetParameter.h
-    TaskAnalysisInfo.h
-    TaskDriver.h
-    TaskDlgAnalysis.h
-    TaskDlgMeshShapeNetgen.h
-)
-if(BUILD_FEM_VTK)
-    set(FemGui_MOC_HDRS
-        ${FemGui_MOC_HDRS}
-        TaskPostBoxes.h
-        ViewProviderFemPostFunction.h
-    )
-endif(BUILD_FEM_VTK)
-fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
-
-
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemElmer.ui
@@ -97,6 +63,7 @@ set(FemGui_UIC_SRCS
     DlgSettingsFemGmsh.ui
     DlgSettingsFemInOutVtk.ui
     DlgSettingsFemMaterial.ui
+    DlgSettingsFemMystran.ui
     DlgSettingsFemZ88.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
@@ -113,6 +80,7 @@ set(FemGui_UIC_SRCS
     TaskFemConstraintPlaneRotation.ui
     TaskFemConstraintContact.ui
     TaskFemConstraintTransform.ui
+    TaskFemConstraintSpring.ui
     TaskTetParameter.ui
     TaskAnalysisInfo.ui
     TaskDriver.ui
@@ -163,6 +131,9 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemMaterial.ui
     DlgSettingsFemMaterialImp.cpp
     DlgSettingsFemMaterialImp.h
+    DlgSettingsFemMystran.ui
+    DlgSettingsFemMystranImp.cpp
+    DlgSettingsFemMystranImp.h
     DlgSettingsFemZ88.ui
     DlgSettingsFemZ88Imp.cpp
     DlgSettingsFemZ88Imp.h
@@ -184,6 +155,9 @@ SET(FemGui_DLG_SRCS
     TaskFemConstraintPressure.ui
     TaskFemConstraintPressure.cpp
     TaskFemConstraintPressure.h
+    TaskFemConstraintSpring.ui
+    TaskFemConstraintSpring.cpp
+    TaskFemConstraintSpring.h
     TaskFemConstraintGear.cpp
     TaskFemConstraintGear.h
     TaskFemConstraintPulley.cpp
@@ -254,6 +228,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintFluidBoundary.h
     ViewProviderFemConstraintPressure.cpp
     ViewProviderFemConstraintPressure.h
+    ViewProviderFemConstraintSpring.cpp
+    ViewProviderFemConstraintSpring.h
     ViewProviderFemConstraintGear.cpp
     ViewProviderFemConstraintGear.h
     ViewProviderFemConstraintPulley.cpp
@@ -370,20 +346,24 @@ SET(FemGui_SRCS
     ${FemGui_SRCS_Post}
 )
 
-
-add_library(FemGui SHARED ${FemGui_SRCS})
-target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
-
-
-fc_target_copy_resource(FemGui
-    ${CMAKE_SOURCE_DIR}/src/Mod/Fem
-    ${CMAKE_BINARY_DIR}/Mod/Fem
-    )
-
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${FemGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(FemGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(FemGuiIcon_SVG
     Resources/icons/FemWorkbench.svg
 )
+
+add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG})
+target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
+
+# external SMESH doesn't support C++17 yet
+if(FREECAD_USE_EXTERNAL_SMESH)
+    set_target_properties(FemGui PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(FemGui PROPERTIES CXX_STANDARD 14)
+endif()
 
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
@@ -395,6 +375,9 @@ INSTALL(FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Re
 # Python modules ui files, they are copied as they are, thus the need not to be added to Fem.qrc
 # see https://forum.freecadweb.org/viewtopic.php?f=10&t=25833
 SET(FemGuiPythonUI_SRCS
+    Resources/ui/ConstraintCentrif.ui
+    Resources/ui/ConstraintTie.ui
+    Resources/ui/ConstraintSectionPrint.ui
     Resources/ui/ElectrostaticPotential.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
@@ -403,11 +386,13 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/FlowVelocity.ui
     Resources/ui/InitialFlowVelocity.ui
     Resources/ui/Material.ui
+    Resources/ui/MaterialReinforcement.ui
     Resources/ui/MeshBoundaryLayer.ui
     Resources/ui/MeshGmsh.ui
     Resources/ui/MeshGroup.ui
     Resources/ui/MeshGroupXDMFExport.ui
     Resources/ui/MeshRegion.ui
+    Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui
     Resources/ui/SolverCalculix.ui
 )

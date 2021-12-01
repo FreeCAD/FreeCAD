@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,6 +38,8 @@ public:
     void setValue() { }
 
     void setValue(int row, int height);
+
+    void setValues(const std::map<int,int> &);
 
     int getValue(int row) const {
         std::map<int, int>::const_iterator i = find(row);

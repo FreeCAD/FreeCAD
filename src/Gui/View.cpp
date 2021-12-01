@@ -33,7 +33,7 @@ using namespace Gui;
 // BaseView
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::BaseView,Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::BaseView,Base::BaseClass)
 
 
 BaseView::BaseView( Gui::Document* pcDocument)
@@ -86,7 +86,7 @@ void BaseView::setDocument(Gui::Document* pcDocument)
     if (_pcDocument)
         _pcDocument->detachView(this, true);
     if (pcDocument)
-        pcDocument->attachView(this,true);	
+        pcDocument->attachView(this,true);
 
     // set the new document as the active one
     _pcDocument = pcDocument;

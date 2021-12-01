@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
- 
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <fcntl.h>
@@ -58,7 +58,7 @@ App::DocumentObjectExecReturn *ImportStep::execute(void)
     }
 
     TopoShape aShape;
-    aShape.importStep((const Standard_CString)FileName.getValue());
+    aShape.importStep(FileName.getValue());
     this->Shape.setValue(aShape);
 
     return App::DocumentObject::StdReturn;

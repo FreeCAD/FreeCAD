@@ -36,7 +36,10 @@
 // so we need not to check the version (because we only support _MSC_VER >= 1100)!
 #pragma once
 
-#include <windows.h>
+#include <Windows.h>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 // special defines for VC5/6 (if no actual PSDK is installed):
 #if _MSC_VER < 1300
@@ -139,7 +142,7 @@ protected:
     CHAR loadedImageName[STACKWALK_MAX_NAMELEN];
   } CallstackEntry;
 
-  typedef enum CallstackEntryType {firstEntry, nextEntry, lastEntry};
+  /*typedef*/ enum CallstackEntryType {firstEntry, nextEntry, lastEntry};
 
   virtual void OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUserName);
   virtual void OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion);

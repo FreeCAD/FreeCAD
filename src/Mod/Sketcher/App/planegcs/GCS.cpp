@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Konstantinos Poulios      (logari81@gmail.com) 2011     *
+ *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,6 +28,7 @@
 //#define _GCS_DEBUG
 //#define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 //#define _DEBUG_TO_FILE // Many matrices surpass the report view string size.
+//#define PROFILE_DIAGNOSE
 #undef _GCS_DEBUG
 #undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 #undef _DEBUG_TO_FILE
@@ -37,7 +38,7 @@
 #ifdef _GCS_DEBUG
 #define     EIGEN_DEFAULT_IO_FORMAT   Eigen::IOFormat(3,0,",",",\n","[","]","[","]")
 /* Parameters:
- * 
+ *
  * StreamPrecision,
  * int _flags = 0,
  * const std::string &     _coeffSeparator = " ",
@@ -52,6 +53,7 @@
 #include <algorithm>
 #include <cfloat>
 #include <limits>
+#include <future>
 
 #include "GCS.h"
 #include "qp_eq.h"
@@ -61,9 +63,7 @@
 // until Eigen library fixes its own problem with the assertion (definitely not solved in 3.2.0 branch)
 // NOTE2: solved in eigen3.3
 
-#define EIGEN_VERSION (EIGEN_WORLD_VERSION * 10000 \
-+ EIGEN_MAJOR_VERSION * 100 \
-+ EIGEN_MINOR_VERSION)
+
 
 // Extraction of Q matrix for Debugging used to crash
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
@@ -72,9 +72,6 @@
 #endif
 #endif
 
-
-#if EIGEN_VERSION >= 30202
-#define EIGEN_SPARSEQR_COMPATIBLE
 #if EIGEN_VERSION > 30290   // This regulates that only starting in Eigen 3.3, the problem with
                             // http://forum.freecadweb.org/viewtopic.php?f=3&t=4651&start=40
                             // was solved in Eigen:
@@ -82,15 +79,13 @@
                             // https://forum.kde.org/viewtopic.php?f=74&t=129439
 #define EIGEN_STOCK_FULLPIVLU_COMPUTE
 #endif
-#endif
 
 //#undef EIGEN_SPARSEQR_COMPATIBLE
 
-#include <Eigen/QR>
+
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-#include <Eigen/Sparse>
-#include <Eigen/OrderingMethods>
+    #include <Eigen/OrderingMethods>
 #endif
 
 // _GCS_EXTRACT_SOLVER_SUBSYSTEM_ to be enabled in Constraints.h when needed.
@@ -103,188 +98,336 @@
 #include <FCConfig.h>
 #include <Base/Console.h>
 
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
 typedef Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType MatrixIndexType;
 
-#ifdef _GCS_DEBUG
-void LogMatrix(std::string str, Eigen::MatrixXd matrix )
-{
-#ifdef _DEBUG_TO_FILE
-    std::ofstream stream;
-    stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
-#else
-    // Debug code starts
-    std::stringstream stream;
-#endif
-
-    stream << '\n' << " " << str << " =" << '\n';
-    stream << "[" << '\n';
-    stream << matrix << '\n' ;
-    stream << "]" << '\n';
-
-#ifdef _DEBUG_TO_FILE
-    stream.flush();
-    stream.close();
-#else
-    const std::string tmp = stream.str();
-
-    Base::Console().Log(tmp.c_str());
-#endif
-}
-
-void LogMatrix(std::string str, MatrixIndexType matrix )
-{
-    #ifdef _DEBUG_TO_FILE
-    std::ofstream stream;
-    stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
-    #else
-    // Debug code starts
-    std::stringstream stream;
-    #endif
-
-    stream << '\n' << " " << str << " =" << '\n';
-    stream << "[" << '\n';
-    stream << matrix << '\n' ;
-    stream << "]" << '\n';
-
-    #ifdef _DEBUG_TO_FILE
-    stream.flush();
-    stream.close();
-    #else
-    const std::string tmp = stream.str();
-
-    Base::Console().Log(tmp.c_str());
-    #endif
-}
-#endif
-
-void LogString(std::string str)
-{
-    #ifdef _DEBUG_TO_FILE
-    std::ofstream stream;
-    stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
-    #else
-    // Debug code starts
-    std::stringstream stream;
-    #endif
-
-    stream << str << std::endl;
-
-    #ifdef _DEBUG_TO_FILE
-    stream.flush();
-    stream.close();
-    #else
-    const std::string tmp = stream.str();
-
-    Base::Console().Log(tmp.c_str());
-    #endif
-}
-
 #ifndef EIGEN_STOCK_FULLPIVLU_COMPUTE
 namespace Eigen {
 
-typedef Matrix<double,-1,-1,0,-1,-1> MatrixdType;
+    typedef Matrix<double,-1,-1,0,-1,-1> MatrixdType;
 
-template<>
-FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matrix)
-{
-  m_isInitialized = true;
-  m_lu = matrix;
-
-  const Index size = matrix.diagonalSize();
-  const Index rows = matrix.rows();
-  const Index cols = matrix.cols();
-
-  // will store the transpositions, before we accumulate them at the end.
-  // can't accumulate on-the-fly because that will be done in reverse order for the rows.
-  m_rowsTranspositions.resize(matrix.rows());
-  m_colsTranspositions.resize(matrix.cols());
-  Index number_of_transpositions = 0; // number of NONTRIVIAL transpositions, i.e. m_rowsTranspositions[i]!=i
-
-  m_nonzero_pivots = size; // the generic case is that in which all pivots are nonzero (invertible case)
-  m_maxpivot = RealScalar(0);
-  RealScalar cutoff(0);
-
-  for(Index k = 0; k < size; ++k)
-  {
-    // First, we need to find the pivot.
-
-    // biggest coefficient in the remaining bottom-right corner (starting at row k, col k)
-    Index row_of_biggest_in_corner, col_of_biggest_in_corner;
-    RealScalar biggest_in_corner;
-    biggest_in_corner = m_lu.bottomRightCorner(rows-k, cols-k)
-                        .cwiseAbs()
-                        .maxCoeff(&row_of_biggest_in_corner, &col_of_biggest_in_corner);
-    row_of_biggest_in_corner += k; // correct the values! since they were computed in the corner,
-    col_of_biggest_in_corner += k; // need to add k to them.
-
-    // when k==0, biggest_in_corner is the biggest coeff absolute value in the original matrix
-    if(k == 0) cutoff = biggest_in_corner * NumTraits<Scalar>::epsilon();
-
-    // if the pivot (hence the corner) is "zero", terminate to avoid generating nan/inf values.
-    // Notice that using an exact comparison (biggest_in_corner==0) here, as Golub-van Loan do in
-    // their pseudo-code, results in numerical instability! The cutoff here has been validated
-    // by running the unit test 'lu' with many repetitions.
-    if(biggest_in_corner < cutoff)
+    template<>
+    FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matrix)
     {
-      // before exiting, make sure to initialize the still uninitialized transpositions
-      // in a sane state without destroying what we already have.
-      m_nonzero_pivots = k;
-      for(Index i = k; i < size; ++i)
-      {
-        m_rowsTranspositions.coeffRef(i) = i;
-        m_colsTranspositions.coeffRef(i) = i;
-      }
-      break;
+        m_isInitialized = true;
+        m_lu = matrix;
+
+        const Index size = matrix.diagonalSize();
+        const Index rows = matrix.rows();
+        const Index cols = matrix.cols();
+
+        // will store the transpositions, before we accumulate them at the end.
+        // can't accumulate on-the-fly because that will be done in reverse order for the rows.
+        m_rowsTranspositions.resize(matrix.rows());
+        m_colsTranspositions.resize(matrix.cols());
+        Index number_of_transpositions = 0; // number of NONTRIVIAL transpositions, i.e. m_rowsTranspositions[i]!=i
+
+        m_nonzero_pivots = size; // the generic case is that in which all pivots are nonzero (invertible case)
+        m_maxpivot = RealScalar(0);
+        RealScalar cutoff(0);
+
+        for(Index k = 0; k < size; ++k)
+        {
+            // First, we need to find the pivot.
+
+            // biggest coefficient in the remaining bottom-right corner (starting at row k, col k)
+            Index row_of_biggest_in_corner, col_of_biggest_in_corner;
+            RealScalar biggest_in_corner;
+            biggest_in_corner = m_lu.bottomRightCorner(rows-k, cols-k)
+            .cwiseAbs()
+            .maxCoeff(&row_of_biggest_in_corner, &col_of_biggest_in_corner);
+            row_of_biggest_in_corner += k; // correct the values! since they were computed in the corner,
+            col_of_biggest_in_corner += k; // need to add k to them.
+
+            // when k==0, biggest_in_corner is the biggest coeff absolute value in the original matrix
+            if(k == 0) cutoff = biggest_in_corner * NumTraits<Scalar>::epsilon();
+
+            // if the pivot (hence the corner) is "zero", terminate to avoid generating nan/inf values.
+            // Notice that using an exact comparison (biggest_in_corner==0) here, as Golub-van Loan do in
+            // their pseudo-code, results in numerical instability! The cutoff here has been validated
+            // by running the unit test 'lu' with many repetitions.
+            if(biggest_in_corner < cutoff)
+            {
+                // before exiting, make sure to initialize the still uninitialized transpositions
+                // in a sane state without destroying what we already have.
+                m_nonzero_pivots = k;
+                for(Index i = k; i < size; ++i)
+                {
+                    m_rowsTranspositions.coeffRef(i) = i;
+                    m_colsTranspositions.coeffRef(i) = i;
+                }
+                break;
+            }
+
+            if(biggest_in_corner > m_maxpivot) m_maxpivot = biggest_in_corner;
+
+            // Now that we've found the pivot, we need to apply the row/col swaps to
+            // bring it to the location (k,k).
+
+            m_rowsTranspositions.coeffRef(k) = row_of_biggest_in_corner;
+            m_colsTranspositions.coeffRef(k) = col_of_biggest_in_corner;
+            if(k != row_of_biggest_in_corner) {
+                m_lu.row(k).swap(m_lu.row(row_of_biggest_in_corner));
+                ++number_of_transpositions;
+            }
+            if(k != col_of_biggest_in_corner) {
+                m_lu.col(k).swap(m_lu.col(col_of_biggest_in_corner));
+                ++number_of_transpositions;
+            }
+
+            // Now that the pivot is at the right location, we update the remaining
+            // bottom-right corner by Gaussian elimination.
+
+            if(k<rows-1)
+                m_lu.col(k).tail(rows-k-1) /= m_lu.coeff(k,k);
+            if(k<size-1)
+                m_lu.block(k+1,k+1,rows-k-1,cols-k-1).noalias() -= m_lu.col(k).tail(rows-k-1) * m_lu.row(k).tail(cols-k-1);
+        }
+
+        // the main loop is over, we still have to accumulate the transpositions to find the
+        // permutations P and Q
+
+        m_p.setIdentity(rows);
+        for(Index k = size-1; k >= 0; --k)
+            m_p.applyTranspositionOnTheRight(k, m_rowsTranspositions.coeff(k));
+
+        m_q.setIdentity(cols);
+        for(Index k = 0; k < size; ++k)
+            m_q.applyTranspositionOnTheRight(k, m_colsTranspositions.coeff(k));
+
+        m_det_pq = (number_of_transpositions%2) ? -1 : 1;
+        return *this;
     }
-
-    if(biggest_in_corner > m_maxpivot) m_maxpivot = biggest_in_corner;
-
-    // Now that we've found the pivot, we need to apply the row/col swaps to
-    // bring it to the location (k,k).
-
-    m_rowsTranspositions.coeffRef(k) = row_of_biggest_in_corner;
-    m_colsTranspositions.coeffRef(k) = col_of_biggest_in_corner;
-    if(k != row_of_biggest_in_corner) {
-      m_lu.row(k).swap(m_lu.row(row_of_biggest_in_corner));
-      ++number_of_transpositions;
-    }
-    if(k != col_of_biggest_in_corner) {
-      m_lu.col(k).swap(m_lu.col(col_of_biggest_in_corner));
-      ++number_of_transpositions;
-    }
-
-    // Now that the pivot is at the right location, we update the remaining
-    // bottom-right corner by Gaussian elimination.
-
-    if(k<rows-1)
-      m_lu.col(k).tail(rows-k-1) /= m_lu.coeff(k,k);
-    if(k<size-1)
-      m_lu.block(k+1,k+1,rows-k-1,cols-k-1).noalias() -= m_lu.col(k).tail(rows-k-1) * m_lu.row(k).tail(cols-k-1);
-  }
-
-  // the main loop is over, we still have to accumulate the transpositions to find the
-  // permutations P and Q
-
-  m_p.setIdentity(rows);
-  for(Index k = size-1; k >= 0; --k)
-    m_p.applyTranspositionOnTheRight(k, m_rowsTranspositions.coeff(k));
-
-  m_q.setIdentity(cols);
-  for(Index k = 0; k < size; ++k)
-    m_q.applyTranspositionOnTheRight(k, m_colsTranspositions.coeff(k));
-
-  m_det_pq = (number_of_transpositions%2) ? -1 : 1;
-  return *this;
-}
 
 } // Eigen
 #endif
 
 namespace GCS
 {
+
+class SolverReportingManager
+{
+public:
+    SolverReportingManager(SolverReportingManager const&) = delete;
+    SolverReportingManager(SolverReportingManager&&) = delete;
+    SolverReportingManager& operator=(SolverReportingManager const&) = delete;
+    SolverReportingManager& operator=(SolverReportingManager &&) = delete;
+
+    static SolverReportingManager& Manager();
+
+    inline void LogString(const std::string& str);
+
+    inline void LogToConsole(const std::string& str);
+
+    inline void LogToFile(const std::string& str);
+
+    void LogQRSystemInformation(const System &system, int paramsNum = 0, int constrNum = 0, int rank = 0);
+
+    void LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups);
+    void LogSetOfConstraints(const std::string & str,  std::set<Constraint *> constraintset);
+    void LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups);
+
+    void LogMatrix(const std::string str, Eigen::MatrixXd matrix);
+    void LogMatrix(const std::string str, MatrixIndexType matrix);
+
+private:
+    SolverReportingManager();
+    ~SolverReportingManager();
+
+    inline void initStream();
+    inline void flushStream();
+
+private:
+    #ifdef _DEBUG_TO_FILE
+    std::ofstream stream;
+    #endif
+};
+
+SolverReportingManager::SolverReportingManager()
+{
+    initStream();
+}
+
+SolverReportingManager::~SolverReportingManager()
+{
+    #ifdef _DEBUG_TO_FILE
+    stream.flush();
+    stream.close();
+    #endif
+}
+
+void SolverReportingManager::initStream()
+{
+    #ifdef _DEBUG_TO_FILE
+    if(!stream.is_open()) {
+        stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
+    }
+    #endif
+}
+
+void SolverReportingManager::flushStream()
+{
+    // Akwardly in some systems flushing does not force the write to the file, requiring a close
+    #ifdef _DEBUG_TO_FILE
+    stream.flush();
+    stream.close();
+    #endif
+}
+
+SolverReportingManager& SolverReportingManager::Manager()
+{
+    static SolverReportingManager theInstance;
+
+    return theInstance;
+}
+
+void SolverReportingManager::LogToConsole(const std::string& str)
+{
+    if(str.size() < Base::Console().BufferSize)
+        Base::Console().Log(str.c_str());
+    else
+        Base::Console().Log("SolverReportingManager - Too long string suppressed");
+}
+
+void SolverReportingManager::LogToFile(const std::string& str)
+{
+    #ifdef _DEBUG_TO_FILE
+    initStream();
+
+    stream << str << std::endl;
+
+    flushStream();
+    #else
+    (void)(str); // silence unused parameter
+    LogToConsole("Debugging to file not enabled!");
+    #endif
+}
+
+void SolverReportingManager::LogString(const std::string& str)
+{
+    LogToConsole(str);
+
+    #ifdef _DEBUG_TO_FILE
+    LogToFile(str);
+    #endif
+}
+
+void SolverReportingManager::LogQRSystemInformation(const System &system, int paramsNum, int constrNum, int rank)
+{
+
+    std::stringstream tempstream;
+
+    tempstream  << (system.qrAlgorithm==EigenSparseQR?"EigenSparseQR":(system.qrAlgorithm==EigenDenseQR?"DenseQR":""));
+
+    if (paramsNum > 0) {
+        tempstream
+        #ifdef EIGEN_SPARSEQR_COMPATIBLE
+        << ", Threads: " << Eigen::nbThreads()
+        #endif
+        #ifdef EIGEN_VECTORIZE
+        << ", Vectorization: On"
+        #endif
+        << ", Pivot Threshold: " << system.qrpivotThreshold
+        << ", Params: " << paramsNum
+        << ", Constr: " << constrNum
+        << ", Rank: "   << rank
+        << std::endl;
+    }
+    else {
+        tempstream
+        #ifdef EIGEN_SPARSEQR_COMPATIBLE
+        << ", Threads: " << Eigen::nbThreads()
+        #endif
+        #ifdef EIGEN_VECTORIZE
+        << ", Vectorization: On"
+        #endif
+        << ", Empty Sketch, nothing to solve"
+        << std::endl;
+    }
+
+    LogString(tempstream.str());
+
+}
+
+void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups)
+{
+    std::stringstream tempstream;
+
+    tempstream << str << ":" << '\n';
+
+    for(auto group : constraintgroups)  {
+        tempstream << "[";
+
+        for(auto c :group)
+            tempstream << c->getTag() << " ";
+
+        tempstream << "]" << '\n';
+    }
+
+    LogString(tempstream.str());
+}
+
+void SolverReportingManager::LogSetOfConstraints(const std::string & str,  std::set<Constraint *> constraintset)
+{
+    std::stringstream tempstream;
+
+    tempstream << str << ": [";
+
+    for(auto c : constraintset)
+        tempstream << c->getTag() << " ";
+
+    tempstream << "]" << '\n';
+
+    LogString(tempstream.str());
+}
+
+void SolverReportingManager::LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups)
+{
+    std::stringstream tempstream;
+
+    tempstream << str << ":" << '\n';
+
+    for(size_t i = 0; i < parametergroups.size(); i++)  {
+        tempstream << "[";
+
+        for(auto p : parametergroups[i])
+            tempstream << std::hex << p << " ";
+
+        tempstream << "]" << '\n';
+    }
+
+    LogString(tempstream.str());
+}
+
+#ifdef _GCS_DEBUG
+void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd matrix)
+{
+    std::stringstream tempstream;
+
+    tempstream << '\n' << " " << str << " =" << '\n';
+    tempstream << "[" << '\n';
+    tempstream << matrix << '\n';
+    tempstream << "]" << '\n';
+
+    LogString(tempstream.str());
+
+}
+
+void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType matrix)
+{
+    std::stringstream tempstream;
+
+    stream << '\n' << " " << str << " =" << '\n';
+    stream << "[" << '\n';
+    stream << matrix << '\n';
+    stream << "]" << '\n';
+
+    LogString(tempstream.str());
+}
+#endif
+
 
 typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> Graph;
 
@@ -296,7 +439,7 @@ typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> Gra
 System::System()
   : plist(0)
   , pdrivenlist(0)
-  , pdependentparameters(0)
+  , pDependentParameters(0)
   , clist(0)
   , c2p()
   , p2c()
@@ -307,6 +450,7 @@ System::System()
   , hasUnknowns(false)
   , hasDiagnosis(false)
   , isInit(false)
+  , emptyDiagnoseMatrix(true)
   , maxIter(100)
   , maxIterRedundant(100)
   , sketchSizeMultiplier(false)
@@ -419,19 +563,30 @@ void System::clear()
     plist.clear();
     pdrivenlist.clear();
     pIndex.clear();
-    pdependentparameters.clear();
+    pDependentParameters.clear();
+    pDependentParametersGroups.clear();
     hasUnknowns = false;
     hasDiagnosis = false;
+
+    emptyDiagnoseMatrix = true;
 
     redundant.clear();
     conflictingTags.clear();
     redundantTags.clear();
+    partiallyRedundantTags.clear();
 
     reference.clear();
     clearSubSystems();
     free(clist);
     c2p.clear();
     p2c.clear();
+}
+
+void System::invalidatedDiagnosis()
+{
+    hasDiagnosis=false;
+    pDependentParameters.clear();
+    pDependentParametersGroups.clear();
 }
 
 void System::clearByTag(int tagId)
@@ -880,20 +1035,22 @@ int System::addConstraintArcRadius(Arc &a, double *radius, int tagId, bool drivi
     return addConstraintEqual(a.rad, radius, tagId, driving);
 }
 
-int System::addConstraintCircleDiameter(Circle &c, double *radius, int tagId, bool driving)
+int System::addConstraintCircleDiameter(Circle &c, double *diameter, int tagId, bool driving)
 {
-    return addConstraintProportional(c.rad, radius, 0.5, tagId, driving);
+    return addConstraintProportional(c.rad, diameter, 0.5, tagId, driving);
 }
 
-int System::addConstraintArcDiameter(Arc &a, double *radius, int tagId, bool driving)
+int System::addConstraintArcDiameter(Arc &a, double *diameter, int tagId, bool driving)
 {
-    return addConstraintProportional(a.rad, radius, 0.5, tagId, driving);
+    return addConstraintProportional(a.rad, diameter, 0.5, tagId, driving);
 }
 
-int System::addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId, bool driving)
+int System::addConstraintEqualLength(Line &l1, Line &l2, int tagId, bool driving)
 {
-    addConstraintP2PDistance(l1.p1, l1.p2, length, tagId, driving);
-    return addConstraintP2PDistance(l2.p1, l2.p2, length, tagId, driving);
+    Constraint *constr = new ConstraintEqualLineLength(l1, l2);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
 }
 
 int System::addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId, bool driving)
@@ -914,7 +1071,7 @@ int System::addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId, bool dr
 int System::addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId, bool driving)
 {
     addConstraintEqual(a1.radmin, a2.radmin, tagId, driving);
-    
+
     Constraint *constr = new ConstraintEqualMajorAxesConic(&a1,&a2);
     constr->setTag(tagId);
     constr->setDriving(driving);
@@ -967,7 +1124,7 @@ int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, I
 {
     Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);
     constr->setTag(tagId);
-    constr->setDriving(driving);    
+    constr->setDriving(driving);
     return addConstraint(constr);
 }
 
@@ -1125,7 +1282,7 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, P
     double X_F1=*e.focus1.x;
     double Y_F1=*e.focus1.y;
     double b=*e.radmin;
-    
+
     // Same idea as for major above, but for minor
     // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
     double closertopositiveminor= pow(-X_1 + X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 - X_c, 2) +
@@ -1140,7 +1297,7 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, P
         b*(X_F1 - X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)) + (Y_F1 -
         Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,
         2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
-    
+
     if(closertopositiveminor<0){
         addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorX,tagId, driving);
         addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorY,tagId, driving);
@@ -1177,19 +1334,19 @@ int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle
 //points are supplied, p is used for first curve and p2 for second, yielding a
 //remote angle computation (this is useful when the endpoints haven't) been
 //made coincident yet
-double System::calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p)
+double System::calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p) const
 {
     return calculateAngleViaPoint(crv1, crv2, p, p);
 }
 
-double System::calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2)
+double System::calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p1, Point &p2) const
 {
     GCS::DeriVector2 n1 = crv1.CalculateNormal(p1);
     GCS::DeriVector2 n2 = crv2.CalculateNormal(p2);
     return atan2(-n2.x*n1.y+n2.y*n1.x, n2.x*n1.x + n2.y*n1.y);
 }
 
-void System::calculateNormalAtPoint(Curve &crv, Point &p, double &rtnX, double &rtnY)
+void System::calculateNormalAtPoint(const Curve &crv, const Point &p, double &rtnX, double &rtnY) const
 {
     GCS::DeriVector2 n1 = crv.CalculateNormal(p);
     rtnX = n1.x;
@@ -1474,7 +1631,7 @@ int System::solve_BFGS(SubSystem *subsys, bool /*isFine*/, bool isRedundantsolvi
     subsys->getParams(x);
     subsys->calcGrad(grad);
 
-    // Initial search direction oposed to gradient (steepest-descent)
+    // Initial search direction opposed to gradient (steepest-descent)
     xdir = -grad;
     lineSearch(subsys, xdir);
     double err = subsys->error();
@@ -1625,7 +1782,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
         // check error
         double err=e.squaredNorm();
-        if (err <= eps) { // error is small, Success
+        if (err <= eps*eps) { // error is small, Success
             stop = 1;
             break;
         }
@@ -3664,6 +3821,48 @@ void System::undoSolution()
     resetToReference();
 }
 
+void System::makeReducedJacobian(Eigen::MatrixXd &J,
+                                 std::map<int,int> &jacobianconstraintmap,
+                                 GCS::VEC_pD &pdiagnoselist,
+                                 std::map< int , int> &tagmultiplicity)
+{
+    // construct specific parameter list for diagonose ignoring driven constraint parameters
+    for (int j=0; j < int(plist.size()); j++) {
+        auto result1 = std::find(std::begin(pdrivenlist), std::end(pdrivenlist), plist[j]);
+
+        if (result1 == std::end(pdrivenlist)) {
+            pdiagnoselist.push_back(plist[j]);
+        }
+    }
+
+
+    J = Eigen::MatrixXd::Zero(clist.size(), pdiagnoselist.size());
+
+    int jacobianconstraintcount=0;
+    int allcount=0;
+    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr) {
+        (*constr)->revertParams();
+        ++allcount;
+        if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
+            jacobianconstraintcount++;
+            for (int j=0; j < int(pdiagnoselist.size()); j++) {
+                J(jacobianconstraintcount-1,j) = (*constr)->grad(pdiagnoselist[j]);
+            }
+
+            // parallel processing: create tag multiplicity map
+            if(tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end())
+                tagmultiplicity[(*constr)->getTag()] = 0;
+            else
+                tagmultiplicity[(*constr)->getTag()]++;
+
+            jacobianconstraintmap[jacobianconstraintcount-1] = allcount-1;
+        }
+    }
+
+    if(jacobianconstraintcount == 0) // only driven constraints
+        J.resize(0,0);
+}
+
 int System::diagnose(Algorithm alg)
 {
     // Analyses the constrainess grad of the system and provides feedback
@@ -3682,11 +3881,20 @@ int System::diagnose(Algorithm alg)
         return dofs;
     }
 
+#ifdef _DEBUG_TO_FILE
+SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
+#endif
+
+    // Input parameters' lists:
+    // plist            =>  list of all the parameters of the system, e.g. each coordinate of a point
+    // pdrivenlist      =>  list of the parameters that are driven by other parameters (e.g. value of driven constraints)
+
     // When adding an external geometry or a constraint on an external geometry the array 'plist' is empty.
     // So, we must abort here because otherwise we would create an invalid matrix and make the application
     // eventually crash. This fixes issues #0002372/#0002373.
     if (plist.empty() || (plist.size() - pdrivenlist.size()) == 0) {
         hasDiagnosis = true;
+        emptyDiagnoseMatrix = true;
         dofs = 0;
         return dofs;
     }
@@ -3694,106 +3902,304 @@ int System::diagnose(Algorithm alg)
     redundant.clear();
     conflictingTags.clear();
     redundantTags.clear();
+    partiallyRedundantTags.clear();
 
-    // construct specific parameter list for diagonose ignoring driven constraint parameters
+    // This QR diagnosis uses a reduced Jacobian matrix to calculate the rank of the system and identify
+    // conflicting and redundant constraints.
+    //
+    // reduced Jacobian matrix
+    // The Jacobian has been reduced to:
+    // 1. only contain driving constraints, but keep a full size (zero padded).
+    // 2. remove the parameters of the values of driven constraints.
+    Eigen::MatrixXd J;
+
+    // maps the index of the rows of the reduced jacobian matrix (solver constraints) to
+    // the index those constraints would have in a full size Jacobian matrix
+    std::map<int,int> jacobianconstraintmap;
+
+    // list of parameters to be diagnosed in this routine (removes value parameters from driven constraints)
     GCS::VEC_pD pdiagnoselist;
-    for (int j=0; j < int(plist.size()); j++) {
-        auto result1 = std::find(std::begin(pdrivenlist), std::end(pdrivenlist), plist[j]);
 
-        if (result1 == std::end(pdrivenlist))
-            pdiagnoselist.push_back(plist[j]);
-    }
-    
-    // map tag to a tag multiplicity (the number of solver constraints associated with the same tag)
+    // tag multiplicity gives the number of solver constraints associated with the same tag
+    // A tag generally corresponds to the Sketcher constraint index - There are special tag values, like 0 and -1.
     std::map< int , int> tagmultiplicity;
-    
-    Eigen::MatrixXd J(clist.size(), pdiagnoselist.size());
-    int count=0;
-    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr) {
-        (*constr)->revertParams();
-        if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
-            count++;
-            for (int j=0; j < int(pdiagnoselist.size()); j++) {
-                    J(count-1,j) = (*constr)->grad(pdiagnoselist[j]);
-            }
-            
-            // parallel processing: create tag multiplicity map
-            if(tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end())
-                tagmultiplicity[(*constr)->getTag()] = 0;
-            else
-                tagmultiplicity[(*constr)->getTag()]++;
-        }
-    }
 
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-    Eigen::SparseMatrix<double> SJ;
 
-    if(qrAlgorithm==EigenSparseQR){
-        // this creation is not optimized (done using triplets)
-        // however the time this takes is negligible compared to the
-        // time the QR decomposition itself takes
-        SJ = J.sparseView();
-        SJ.makeCompressed();
-    }
+    makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
 
-    Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
-#else
+    // this function will exit with a diagnosis and, unless overridden by functions below, with full DoFs
+    hasDiagnosis = true;
+    dofs = pdiagnoselist.size();
+
+    if(J.rows() > 0)
+        emptyDiagnoseMatrix = false;
+
+    // There is a legacy decision to use QR decomposition. I (abdullah) do not know all the
+    // consideration taken in that decisions. I see that:
+    // - QR decomposition is able to provide information about the rank and redundant/conflicting constraints
+    // - The QR decomposition of J and the QR decomposition of the transpose of J are unrelated (for reasons see below):
+    //   https://mathoverflow.net/questions/338729/translate-between-qr-decomposition-of-a-and-a-transpose
+    // - QR is cheaper than a SVD decomposition
+    // - QR is more expensive than a rank revealing LU factorization
+    // - QR is less stable than SVD with respect to rank
+    // - It is unclear whether it is possible to obtain information about redundancy with SVD and LU
+
+    // Given this legacy decision, the following is observed:
+    // - A = QR decomposition can be used for the diagonise of dependency of the "columns" of A. the
+    // reason is that matrix R is upper triangular with columns of A showing the dependencies.
+    // - The same does not apply to the "rows".
+    // - For this reason, to enable a full diagnose of constraints, a QR decomposition must be done on
+    // the transpose of the Jacobian matrix (J), this is JT.
+
+    // Eigen capabilities:
+    // - If Eigen full pivoting QR decomposition is used, it is possible to track the rows of JT during
+    //   the decomposition. This can be leveraged to identify a set of independent rows of JT (geometry)
+    //   that form a rank N basis. However, because the R matrix is of the JT decomposition and not the J
+    //   decomposition, it is not possible to reduce the system to identify exactly which rows are dependent.
+    // - The effect is that it provides a set of parameters of geometry that are not constraint, but it does not
+    //   identify ALL geometries that are not fixed.
+    // - If SpareQR is used, then it is not possible to track the rows of JT during decomposition. I do not know
+    //   if it is still possible to obtain geometry information at all from SparseQR. After several years these
+    //   questions remain open:
+    //      https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
+    //      https://forum.kde.org/viewtopic.php?f=74&t=151239
+    //
+    //
+    // Implementation below:
+    //
+    // Two QR decompositions are used below. One for diagnosis of constraints and a second one for diagnosis of parameters, i.e.
+    // to identify whether the parameter is fully constraint (independent) or not (i.e. it is dependent).
+
+    // QR decomposition method selection: SparseQR vs DenseQR
+
+#ifndef EIGEN_SPARSEQR_COMPATIBLE
     if(qrAlgorithm==EigenSparseQR){
         Base::Console().Warning("SparseQR not supported by you current version of Eigen. It requires Eigen 3.2.2 or higher. Falling back to Dense QR\n");
         qrAlgorithm=EigenDenseQR;
     }
 #endif
 
+    if(qrAlgorithm==EigenDenseQR){
+    #ifdef PROFILE_DIAGNOSE
+        Base::TimeInfo DenseQR_start_time;
+    #endif
+        if (J.rows() > 0) {
+            int rank = 0; // rank is not cheap to retrieve from qrJT in DenseQR
+            Eigen::MatrixXd R;
+            Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
+            // Here we give the system the possibility to run the two QR decompositions in parallel, depending on the load of the system
+            // so we are using the default std::launch::async | std::launch::deferred policy, as nobody better than the system
+            // nows if it can run the task in parallel or is oversubscribed and should deferred it.
+            // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
+            // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
+            // does not use Base::Console, or the launch policy is set to std::launch::deferred policy, as it is not thread-safe to use them
+            // in both at the same time.
+            //
+            // identifyDependentParametersDenseQR(J, jacobianconstraintmap, pdiagnoselist, true)
+            //
+            auto fut = std::async(&System::identifyDependentParametersDenseQR,this,J,jacobianconstraintmap, pdiagnoselist, true);
+
+            makeDenseQRDecomposition( J, jacobianconstraintmap, qrJT, rank, R);
+
+            int paramsNum = qrJT.rows();
+            int constrNum = qrJT.cols();
+
+            // This function is legacy code that was used to obtain partial geometry dependency information from a SINGLE Dense QR
+            // decomposition. I am reluctant to remove it from here until everything new is well tested.
+            //identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition( qrJT, pdiagnoselist, paramsNum, rank);
+
+            fut.wait(); // wait for the execution of identifyDependentParametersSparseQR to finish
+
+            dofs = paramsNum - rank; // unless overconstraint, which will be overridden below
+
+            // Detecting conflicting or redundant constraints
+            if (constrNum > rank) { // conflicting or redundant constraints
+
+                int nonredundantconstrNum;
+
+                identifyConflictingRedundantConstraints(alg, qrJT, jacobianconstraintmap, tagmultiplicity, pdiagnoselist,
+                                                        R, constrNum, rank, nonredundantconstrNum);
+
+                if (paramsNum == rank && nonredundantconstrNum > rank) // over-constrained
+                    dofs = paramsNum - nonredundantconstrNum;
+            }
+        }
+    #ifdef PROFILE_DIAGNOSE
+        Base::TimeInfo DenseQR_end_time;
+
+        auto SolveTime = Base::TimeInfo::diffTimeF(DenseQR_start_time,DenseQR_end_time);
+
+        Base::Console().Log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
+    #endif
+    }
+
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
+    else if(qrAlgorithm==EigenSparseQR){
+    #ifdef PROFILE_DIAGNOSE
+        Base::TimeInfo SparseQR_start_time;
+    #endif
+        if (J.rows() > 0) {
+            int rank = 0;
+            Eigen::MatrixXd R;
+            Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
+            // Here we give the system the possibility to run the two QR decompositions in parallel, depending on the load of the system
+            // so we are using the default std::launch::async | std::launch::deferred policy, as nobody better than the system
+            // nows if it can run the task in parallel or is oversubscribed and should deferred it.
+            // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
+            // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
+            // does not use Base::Console, or the launch policy is set to std::launch::deferred policy, as it is not thread-safe to use them
+            // in both at the same time.
+            //
+            // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
+            //
+            // Debug:
+            //auto fut = std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
+            auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, /*silent=*/true);
+
+            makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R, /*transposed=*/true, /*silent=*/false);
+
+            int paramsNum = SqrJT.rows();
+            int constrNum = SqrJT.cols();
+
+            fut.wait(); // wait for the execution of identifyDependentParametersSparseQR to finish
+
+            dofs = paramsNum - rank; // unless overconstraint, which will be overridden below
+
+            // Detecting conflicting or redundant constraints
+            if (constrNum > rank) { // conflicting or redundant constraints
+
+                int nonredundantconstrNum;
+
+                identifyConflictingRedundantConstraints(alg, SqrJT, jacobianconstraintmap, tagmultiplicity, pdiagnoselist,
+                                                        R, constrNum, rank, nonredundantconstrNum);
+
+                if (paramsNum == rank && nonredundantconstrNum > rank) // over-constrained
+                    dofs = paramsNum - nonredundantconstrNum;
+            }
+        }
+
+        #ifdef PROFILE_DIAGNOSE
+        Base::TimeInfo SparseQR_end_time;
+
+        auto SolveTime = Base::TimeInfo::diffTimeF(SparseQR_start_time,SparseQR_end_time);
+
+        Base::Console().Log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
+        #endif
+    }
+#endif
+
+    return dofs;
+}
+
+void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
+                                        const std::map<int,int> &jacobianconstraintmap,
+                                        Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
+                                        int &rank, Eigen::MatrixXd & R, bool transposeJ, bool silent)
+{
+
 #ifdef _GCS_DEBUG
-#ifdef _DEBUG_TO_FILE
-    std::ofstream stream;
-    stream.open("GCS_debug.txt", std::ofstream::out | std::ofstream::app);
-    stream << "GCS::System::diagnose()" << std::endl;
-    stream.flush();
-    stream.close();
+    if(!silent)
+        SolverReportingManager::Manager().LogMatrix("J",J);
 #endif
-
-    LogMatrix("J",J);
-#endif
-
-    Eigen::MatrixXd R;
 
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
     Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
 #endif
 
-    int paramsNum = 0;
-    int constrNum = 0;
-    int rank = 0;
-    Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
+    // For a transposed J SJG rows are paramsNum and cols are constrNum
+    // For a non-transposed J SJG rows are constrNum and cols are paramsNum
+    int rowsNum = 0;
+    int colsNum = 0;
 
-    if(qrAlgorithm==EigenDenseQR){
-        if (J.rows() > 0) {
-            qrJT.compute(J.topRows(count).transpose());
-            //Eigen::MatrixXd Q = qrJT.matrixQ ();
+    if (J.rows() > 0) {
+        Eigen::MatrixXd JG;
+        if(transposeJ)
+            JG = J.topRows(jacobianconstraintmap.size()).transpose();
+        else
+            JG = J.topRows(jacobianconstraintmap.size());
 
-            paramsNum = qrJT.rows();
-            constrNum = qrJT.cols();
+        if (JG.rows() > 0 && JG.cols() > 0) {
+
+            qrJT.compute(JG);
+
+            rowsNum = qrJT.rows();
+            colsNum = qrJT.cols();
             qrJT.setThreshold(qrpivotThreshold);
             rank = qrJT.rank();
 
-            if (constrNum >= paramsNum)
+            if (colsNum >= rowsNum)
                 R = qrJT.matrixQR().triangularView<Eigen::Upper>();
             else
-                R = qrJT.matrixQR().topRows(constrNum)
+                R = qrJT.matrixQR().topRows(colsNum)
                                 .triangularView<Eigen::Upper>();
+        }
+        else {
+            rowsNum = JG.rows();
+            colsNum = JG.cols();
+        }
 
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-            R2 = qrJT.matrixQR();
-            Q = qrJT.matrixQ();
+        R2 = qrJT.matrixQR();
+        Q = qrJT.matrixQ();
 #endif
-        }
     }
+
+    if(debugMode==IterationLevel && !silent) {
+        SolverReportingManager::Manager().LogQRSystemInformation(*this, rowsNum, colsNum, rank);
+    }
+
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    if (J.rows() > 0 && !silent) {
+        SolverReportingManager::Manager().LogMatrix("R", R);
+
+        SolverReportingManager::Manager().LogMatrix("R2", R2);
+
+        SolverReportingManager::Manager().LogMatrix("Q", Q);
+        SolverReportingManager::Manager().LogMatrix("RowTransp", qrJT.rowsTranspositions());
+    }
+#endif
+}
+
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-    else if(qrAlgorithm==EigenSparseQR){
-        if (SJ.rows() > 0) {
-            SqrJT.compute(SJ.topRows(count).transpose());
+void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
+                                        const std::map<int,int> &jacobianconstraintmap,
+                                        Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
+                                        int &rank, Eigen::MatrixXd & R, bool transposeJ, bool silent)
+{
+
+   Eigen::SparseMatrix<double> SJ;
+
+    // this creation is not optimized (done using triplets)
+    // however the time this takes is negligible compared to the
+    // time the QR decomposition itself takes
+    SJ = J.sparseView();
+    SJ.makeCompressed();
+
+    #ifdef _GCS_DEBUG
+    if(!silent)
+        SolverReportingManager::Manager().LogMatrix("J",J);
+    #endif
+
+    #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
+    Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
+    #endif
+
+    // For a transposed J SJG rows are paramsNum and cols are constrNum
+    // For a non-transposed J SJG rows are constrNum and cols are paramsNum
+    int rowsNum = 0;
+    int colsNum = 0;
+
+    if (SJ.rows() > 0) {
+        Eigen::SparseMatrix<double> SJG;
+        if(transposeJ)
+            SJG = SJ.topRows(jacobianconstraintmap.size()).transpose();
+        else
+            SJG = SJ.topRows(jacobianconstraintmap.size());
+
+        if (SJG.rows() > 0 && SJG.cols() > 0) {
+            SqrJT.compute(SJG);
             // Do not ask for Q Matrix!!
             // At Eigen 3.2 still has a bug that this only works for square matrices
             // if enabled it will crash
@@ -3801,375 +4207,408 @@ int System::diagnose(Algorithm alg)
             Q = SqrJT.matrixQ();
             //Q = QS;
             #endif
-            
-            paramsNum = SqrJT.rows();
-            constrNum = SqrJT.cols();
+
+            rowsNum = SqrJT.rows();
+            colsNum = SqrJT.cols();
             SqrJT.setPivotThreshold(qrpivotThreshold);
             rank = SqrJT.rank();
-            
-            if (constrNum >= paramsNum)
+
+            if (colsNum >= rowsNum)
                 R = SqrJT.matrixR().triangularView<Eigen::Upper>();
             else
-                R = SqrJT.matrixR().topRows(constrNum)
+                R = SqrJT.matrixR().topRows(colsNum)
                 .triangularView<Eigen::Upper>();
-            
+
             #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
             R2 = SqrJT.matrixR();
             #endif
         }
-    }
-#endif
-
-    if(debugMode==IterationLevel) {
-        std::stringstream stream;
-
-        stream  << (qrAlgorithm==EigenSparseQR?"EigenSparseQR":(qrAlgorithm==EigenDenseQR?"DenseQR":""));
-
-        if (J.rows() > 0) {
-            stream
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-                    << ", Threads: " << Eigen::nbThreads()
-#endif
-#ifdef EIGEN_VECTORIZE
-                    << ", Vectorization: On"
-#endif
-                    << ", Pivot Threshold: " << qrpivotThreshold
-                    << ", Params: " << paramsNum
-                    << ", Constr: " << constrNum
-                    << ", Rank: "   << rank;
-        }
         else {
-            stream
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-                    << ", Threads: " << Eigen::nbThreads()
-#endif
-#ifdef EIGEN_VECTORIZE
-                    << ", Vectorization: On"
-#endif
-                    << ", Empty Sketch, nothing to solve";
+            rowsNum = SJG.rows();
+            colsNum = SJG.cols();
         }
-
-        const std::string tmp = stream.str();
-
-        LogString(tmp);
-
     }
 
-    if (J.rows() > 0) {
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-        LogMatrix("R", R);
+    if(debugMode==IterationLevel && !silent)
+        SolverReportingManager::Manager().LogQRSystemInformation(*this, rowsNum, colsNum, rank);
 
-        LogMatrix("R2", R2);
+   #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    if (J.rows() > 0 && !silent) {
 
-        if(qrAlgorithm == EigenDenseQR){ // There is no rowsTranspositions in SparseQR. obtaining Q is buggy in Eigen for SparseQR
-            LogMatrix("Q", Q);
-            LogMatrix("RowTransp", qrJT.rowsTranspositions());
-        }
-#ifdef SPARSE_Q_MATRIX
-        else if(qrAlgorithm == EigenSparseQR) {
-            LogMatrix("Q", Q);
-        }
-#endif
-#endif
+        SolverReportingManager::Manager().LogMatrix("R", R);
 
-        // DETECTING CONSTRAINT SOLVER PARAMETERS
-        //
-        // NOTE: This is only true for dense QR with full pivoting, because solve parameters get reordered.
-        // I am unable to adapt it to Sparse QR. (abdullah). See:
-        //
-        // https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
-        // https://forum.kde.org/viewtopic.php?f=74&t=151239
-        //
-        // R (original version, not R here which is trimmed to not have empty rows)
-        // has paramsNum rows, the first "rank" rows correspond to parameters that are constraint
+        SolverReportingManager::Manager().LogMatrix("R2", R2);
 
-        // Calculate the Permutation matrix from the Transposition matrix
-        Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> rowPermutations;
-
-        rowPermutations.setIdentity(paramsNum);
-
-        if(qrAlgorithm==EigenDenseQR){ // P.J.P' = Q.R see https://eigen.tuxfamily.org/dox/classEigen_1_1FullPivHouseholderQR.html
-            const MatrixIndexType rowTranspositions = qrJT.rowsTranspositions();
-
-            for(int k = 0; k < rank; ++k)
-                rowPermutations.applyTranspositionOnTheRight(k, rowTranspositions.coeff(k));
-        }
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-        else if(qrAlgorithm==EigenSparseQR){ 
-            // J.P = Q.R, see https://eigen.tuxfamily.org/dox/classEigen_1_1SparseQR.html
-            // There is no rowsTransposition in this QR decomposition.
-            // TODO: This detection method won't work for SparseQR
-        }
-
-#endif
-
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-        std::stringstream stream;
-#endif
-
-// params (in the order of J) shown as independent from QR
-        std::set<int> indepParamCols;
-        std::set<int> depParamCols;
-
-        for (int j=0; j < rank; j++) {
-
-             int origRow = rowPermutations.indices()[j];
-
-             indepParamCols.insert(origRow);
-
-             // NOTE: Q*R = transpose(J), so the row of R corresponds to the col of J (the rows of transpose(J)).
-             // The cols of J are the parameters, the rows are the constraints.
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-             stream << "R row " << j << " = J col " << origRow << std::endl;
-#endif
-        }
-
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-        std::string tmp = stream.str();
-
-        LogString(tmp);
-#endif
-
-        // If not independent, must be dependent
-        for(int j=0; j < paramsNum; j++) {
-            auto result = std::find(indepParamCols.begin(), indepParamCols.end(), j);
-            if(result == indepParamCols.end()) {
-                depParamCols.insert(j);
-            }
-        }
-
-        // Last (NumParams-rank) rows of Q construct the dependent part of J
-        // in conjuntion with the R matrix
-        // Last (NumParams-rank) cols of Q never contribute as R is zero after the rank
-        /*std::set<int> associatedParamCols;
-        for(int i = rank; i < paramsNum; i++) {
-            for(int j = 0; j < rank; j++) {
-                if(fabs(Q(i,j))>1e-10) {
-                    for(int k = j; k < constrNum; k++) {
-                        if(fabs(R(j,k))>1e-10) {
-                            associatedParamCols.insert(k);
-                        }
-                    }
-                }
-            }
-        }
-
-        for( auto param : associatedParamCols) {
-            auto pos = indepParamCols.find(rowPermutations.indices()[param]);
-
-            if(pos!=indepParamCols.end()) {
-                indepParamCols.erase(pos);
-            }
-        }*/
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-        stream.flush();
-
-        stream << "Indep params: [";
-        for(auto indep :indepParamCols)
-            stream << indep;
-        stream << "]" << std::endl;
-
-        stream << "Dep params: [";
-        for(auto dep :depParamCols)
-            stream << dep;
-        stream << "]" << std::endl;
-
-        tmp = stream.str();
-        LogString(tmp);
-#endif
-        for( auto param : depParamCols) {
-            pdependentparameters.push_back(pdiagnoselist[param]);
-        }
-
-        // Detecting conflicting or redundant constraints
-        if (constrNum > rank) { // conflicting or redundant constraints
-            for (int i=1; i < rank; i++) {
-                // eliminate non zeros above pivot
-                assert(R(i,i) != 0);
-                for (int row=0; row < i; row++) {
-                    if (R(row,i) != 0) {
-                        double coef=R(row,i)/R(i,i);
-                        R.block(row,i+1,1,constrNum-i-1) -= coef * R.block(i,i+1,1,constrNum-i-1);
-                        R(row,i) = 0;
-                    }
-                }
-            }
-            std::vector< std::vector<Constraint *> > conflictGroups(constrNum-rank);
-            for (int j=rank; j < constrNum; j++) {
-                for (int row=0; row < rank; row++) {
-                    if (fabs(R(row,j)) > 1e-10) {
-                        int origCol = 0;
-
-                        if(qrAlgorithm==EigenDenseQR)
-                            origCol=qrJT.colsPermutation().indices()[row];
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-                        else if(qrAlgorithm==EigenSparseQR)
-                            origCol=SqrJT.colsPermutation().indices()[row];
-#endif
-
-                        conflictGroups[j-rank].push_back(clist[origCol]);
-                    }
-                }
-                int origCol = 0;
-
-                if(qrAlgorithm==EigenDenseQR)
-                    origCol=qrJT.colsPermutation().indices()[j];
-
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-                else if(qrAlgorithm==EigenSparseQR)
-                    origCol=SqrJT.colsPermutation().indices()[j];
-#endif
-
-                conflictGroups[j-rank].push_back(clist[origCol]);
-            }
-
-            // try to remove the conflicting constraints and solve the
-            // system in order to check if the removed constraints were
-            // just redundant but not really conflicting
-            std::set<Constraint *> skipped;
-            SET_I satisfiedGroups;
-            while (1) {
-                std::map< Constraint *, SET_I > conflictingMap;
-                for (std::size_t i=0; i < conflictGroups.size(); i++) {
-                    if (satisfiedGroups.count(i) == 0) {
-                        for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
-                            Constraint *constr = conflictGroups[i][j];
-                            if (constr->getTag() != 0) // exclude constraints tagged with zero
-                                conflictingMap[constr].insert(i);
-                        }
-                    }
-                }
-                if (conflictingMap.empty())
-                    break;
-
-                int maxPopularity = 0;
-                Constraint *mostPopular = NULL;
-                for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
-                     it != conflictingMap.end(); ++it) {
-                    if (static_cast<int>(it->second.size()) > maxPopularity ||
-                        (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                        tagmultiplicity[it->first->getTag()] < tagmultiplicity[mostPopular->getTag()]) ||
-
-                        (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                        tagmultiplicity[it->first->getTag()] == tagmultiplicity[mostPopular->getTag()] &&
-                         it->first->getTag() > mostPopular->getTag())
-                       
-                    ) {
-                        mostPopular = it->first;
-                        maxPopularity = it->second.size();
-                    }
-                }
-                if (maxPopularity > 0) {
-                    skipped.insert(mostPopular);
-                    for (SET_I::const_iterator it=conflictingMap[mostPopular].begin();
-                         it != conflictingMap[mostPopular].end(); ++it)
-                        satisfiedGroups.insert(*it);
-                }
-            }
-
-            std::vector<Constraint *> clistTmp;
-            clistTmp.reserve(clist.size());
-            for (std::vector<Constraint *>::iterator constr=clist.begin();
-                constr != clist.end(); ++constr) {
-                if (skipped.count(*constr) == 0)
-                    clistTmp.push_back(*constr);
-            }
-
-            SubSystem *subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
-            int res = solve(subSysTmp,true,alg,true);
-
-            if(debugMode==Minimal || debugMode==IterationLevel) {
-                std::string solvername;
-                switch (alg) {
-                    case 0:
-                        solvername = "BFGS";
-                        break;
-                    case 1: // solving with the LevenbergMarquardt solver
-                        solvername = "LevenbergMarquardt";
-                        break;
-                    case 2: // solving with the BFGS solver
-                        solvername = "DogLeg";
-                        break;
-                }
-
-                Base::Console().Log("Sketcher::RedundantSolving-%s-\n",solvername.c_str());
-            }
-
-            if (res == Success) {
-                subSysTmp->applySolution();
-                for (std::set<Constraint *>::const_iterator constr=skipped.begin();
-                     constr != skipped.end(); ++constr) {
-                    double err = (*constr)->error();
-                    if (err * err < convergenceRedundant)
-                        redundant.insert(*constr);
-                }
-                resetToReference();
-
-                if(debugMode==Minimal || debugMode==IterationLevel) {
-                    Base::Console().Log("Sketcher Redundant solving: %d redundants\n",redundant.size());
-                }
-
-                std::vector< std::vector<Constraint *> > conflictGroupsOrig=conflictGroups;
-                conflictGroups.clear();
-                for (int i=conflictGroupsOrig.size()-1; i >= 0; i--) {
-                    bool isRedundant = false;
-                    for (std::size_t j=0; j < conflictGroupsOrig[i].size(); j++) {
-                        if (redundant.count(conflictGroupsOrig[i][j]) > 0) {
-                            isRedundant = true;
-                            break;
-                        }
-                    }
-                    if (!isRedundant)
-                        conflictGroups.push_back(conflictGroupsOrig[i]);
-                    else
-                        constrNum--;
-                }
-            }
-            delete subSysTmp;
-
-            // simplified output of conflicting tags
-            SET_I conflictingTagsSet;
-            for (std::size_t i=0; i < conflictGroups.size(); i++) {
-                for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
-                    conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
-                }
-            }
-            conflictingTagsSet.erase(0); // exclude constraints tagged with zero
-            conflictingTags.resize(conflictingTagsSet.size());
-            std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(),
-                      conflictingTags.begin());
-
-            // output of redundant tags
-            SET_I redundantTagsSet;
-            for (std::set<Constraint *>::iterator constr=redundant.begin();
-                 constr != redundant.end(); ++constr)
-                redundantTagsSet.insert((*constr)->getTag());
-            // remove tags represented at least in one non-redundant constraint
-            for (std::vector<Constraint *>::iterator constr=clist.begin();
-                constr != clist.end(); ++constr) {
-                if (redundant.count(*constr) == 0)
-                    redundantTagsSet.erase((*constr)->getTag());
-            }
-            redundantTags.resize(redundantTagsSet.size());
-            std::copy(redundantTagsSet.begin(), redundantTagsSet.end(),
-                      redundantTags.begin());
-
-            if (paramsNum == rank && constrNum > rank) { // over-constrained
-                hasDiagnosis = true;
-                dofs = paramsNum - constrNum;
-                return dofs;
-            }
-        }
-
-        hasDiagnosis = true;
-        dofs = paramsNum - rank;
-        return dofs;
+        #ifdef SPARSE_Q_MATRIX
+        SolverReportingManager::Manager().LogMatrix("Q", Q);
+        #endif
     }
-
-    hasDiagnosis = true;
-    dofs = pdiagnoselist.size();
-    return dofs;
+    #endif //_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 }
+#endif // EIGEN_SPARSEQR_COMPATIBLE
+
+void System::identifyDependentParametersDenseQR( const Eigen::MatrixXd &J,
+                                                  const std::map<int,int> &jacobianconstraintmap,
+                                                  const GCS::VEC_pD &pdiagnoselist,
+                                                  bool silent)
+{
+    Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJ;
+    Eigen::MatrixXd Rparams;
+
+    int rank;
+
+    makeDenseQRDecomposition( J, jacobianconstraintmap, qrJ, rank, Rparams, false, true);
+
+    identifyDependentParameters(qrJ, Rparams, rank, pdiagnoselist, silent);
+}
+
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
+void System::identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
+                                                  const std::map<int,int> &jacobianconstraintmap,
+                                                  const GCS::VEC_pD &pdiagnoselist,
+                                                  bool silent)
+{
+    Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJ;
+    Eigen::MatrixXd Rparams;
+
+    int nontransprank;
+
+    makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJ, nontransprank, Rparams, false, true); // do not transpose allow to diagnose parameters
+
+    identifyDependentParameters(SqrJ, Rparams, nontransprank, pdiagnoselist, silent);
+}
+#endif
+
+template <typename T>
+void System::identifyDependentParameters(   T & qrJ,
+                                            Eigen::MatrixXd &Rparams,
+                                            int rank,
+                                            const GCS::VEC_pD &pdiagnoselist,
+                                            bool silent)
+{
+    (void) silent; // silent is only used in debug code, but it is important as Base::Console is not thread-safe. Removes warning in non Debug mode.
+
+    //int constrNum = SqrJ.rows(); // this is the other way around than for the transposed J
+    //int paramsNum = SqrJ.cols();
+
+    eliminateNonZerosOverPivotInUpperTriangularMatrix(Rparams, rank);
+
+#ifdef _GCS_DEBUG
+    if(!silent)
+        SolverReportingManager::Manager().LogMatrix("Rparams_nonzeros_over_pilot", Rparams);
+#endif
+
+    pDependentParametersGroups.resize(qrJ.cols()-rank);
+    for (int j=rank; j < qrJ.cols(); j++) {
+        for (int row=0; row < rank; row++) {
+            if (fabs(Rparams(row,j)) > 1e-10) {
+                int origCol = qrJ.colsPermutation().indices()[row];
+
+                pDependentParametersGroups[j-rank].push_back(pdiagnoselist[origCol]);
+                pDependentParameters.push_back(pdiagnoselist[origCol]);
+            }
+        }
+        int origCol = qrJ.colsPermutation().indices()[j];
+
+        pDependentParametersGroups[j-rank].push_back(pdiagnoselist[origCol]);
+        pDependentParameters.push_back(pdiagnoselist[origCol]);
+    }
+
+#ifdef _GCS_DEBUG
+    if(!silent) {
+        SolverReportingManager::Manager().LogMatrix("PermMatrix", (Eigen::MatrixXd)qrJ.colsPermutation());
+
+        SolverReportingManager::Manager().LogGroupOfParameters("ParameterGroups",pDependentParametersGroups);
+    }
+
+#endif
+}
+
+void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
+                        const Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
+                        const GCS::VEC_pD &pdiagnoselist,
+                        int paramsNum, int rank)
+{
+    // DETECTING CONSTRAINT SOLVER PARAMETERS
+    //
+    // NOTE: This is only true for dense QR with full pivoting, because solve parameters get reordered.
+    // I am unable to adapt it to Sparse QR. (abdullah). See:
+    //
+    // https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
+    // https://forum.kde.org/viewtopic.php?f=74&t=151239
+    //
+    // R (original version, not R here which is trimmed to not have empty rows)
+    // has paramsNum rows, the first "rank" rows correspond to parameters that are constraint
+
+    // Calculate the Permutation matrix from the Transposition matrix
+    Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> rowPermutations;
+
+    rowPermutations.setIdentity(paramsNum);
+
+    // P.J.P' = Q.R see https://eigen.tuxfamily.org/dox/classEigen_1_1FullPivHouseholderQR.html
+    const MatrixIndexType rowTranspositions = qrJT.rowsTranspositions();
+
+    for(int k = 0; k < rank; ++k)
+        rowPermutations.applyTranspositionOnTheRight(k, rowTranspositions.coeff(k));
+
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    std::stringstream stream;
+#endif
+
+    // params (in the order of J) shown as independent from QR
+    std::set<int> indepParamCols;
+    std::set<int> depParamCols;
+
+    for (int j=0; j < rank; j++) {
+
+            int origRow = rowPermutations.indices()[j];
+
+            indepParamCols.insert(origRow);
+
+            // NOTE: Q*R = transpose(J), so the row of R corresponds to the col of J (the rows of transpose(J)).
+            // The cols of J are the parameters, the rows are the constraints.
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+            stream << "R row " << j << " = J col " << origRow << std::endl;
+#endif
+    }
+
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    std::string tmp = stream.str();
+
+    SolverReportingManager::Manager().LogString(tmp);
+#endif
+
+    // If not independent, must be dependent
+    for(int j=0; j < paramsNum; j++) {
+        auto result = indepParamCols.find(j);
+        if(result == indepParamCols.end()) {
+            depParamCols.insert(j);
+        }
+    }
+
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    stream.flush();
+
+    stream << "Indep params: [";
+    for(auto indep :indepParamCols)
+        stream << indep;
+    stream << "]" << std::endl;
+
+    stream << "Dep params: [";
+    for(auto dep :depParamCols)
+        stream << dep;
+    stream << "]" << std::endl;
+
+    tmp = stream.str();
+    SolverReportingManager::Manager().LogString(tmp);
+#endif
+
+
+    for( auto param : depParamCols) {
+        pDependentParameters.push_back(pdiagnoselist[param]);
+    }
+
+}
+
+void System::eliminateNonZerosOverPivotInUpperTriangularMatrix( Eigen::MatrixXd &R, int rank)
+{
+    for (int i=1; i < rank; i++) {
+        // eliminate non zeros above pivot
+        assert(R(i,i) != 0);
+        for (int row=0; row < i; row++) {
+            if (R(row,i) != 0) {
+                double coef=R(row,i)/R(i,i);
+                R.block(row,i+1,1,R.cols()-i-1) -= coef * R.block(i,i+1,1,R.cols()-i-1);
+                R(row,i) = 0;
+            }
+        }
+    }
+}
+
+template <typename T>
+void System::identifyConflictingRedundantConstraints(   Algorithm alg,
+                                                        const T & qrJT,
+                                                        const std::map<int,int> &jacobianconstraintmap,
+                                                        const std::map< int , int> &tagmultiplicity,
+                                                        GCS::VEC_pD &pdiagnoselist,
+                                                        Eigen::MatrixXd &R,
+                                                        int constrNum, int rank,
+                                                        int &nonredundantconstrNum
+                                                    )
+{
+    eliminateNonZerosOverPivotInUpperTriangularMatrix(R, rank);
+
+    std::vector< std::vector<Constraint *> > conflictGroups(constrNum-rank);
+    for (int j=rank; j < constrNum; j++) {
+        for (int row=0; row < rank; row++) {
+            if (fabs(R(row,j)) > 1e-10) {
+                int origCol = qrJT.colsPermutation().indices()[row];
+
+                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
+            }
+        }
+        int origCol = qrJT.colsPermutation().indices()[j];
+
+        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
+    }
+
+    // Augment the information regarding the group of constraints that are conflicting or redundant.
+    if(debugMode==IterationLevel) {
+        SolverReportingManager::Manager().LogGroupOfConstraints("Analysing groups of constraints of special interest", conflictGroups);
+    }
+
+    // try to remove the conflicting constraints and solve the
+    // system in order to check if the removed constraints were
+    // just redundant but not really conflicting
+    std::set<Constraint *> skipped;
+    SET_I satisfiedGroups;
+    while (1) {
+        std::map< Constraint *, SET_I > conflictingMap;
+        for (std::size_t i=0; i < conflictGroups.size(); i++) {
+            if (satisfiedGroups.count(i) == 0) {
+                for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
+                    Constraint *constr = conflictGroups[i][j];
+                    if (constr->getTag() != 0) // exclude constraints tagged with zero
+                        conflictingMap[constr].insert(i);
+                }
+            }
+        }
+        if (conflictingMap.empty())
+            break;
+
+        int maxPopularity = 0;
+        Constraint *mostPopular = NULL;
+        for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
+                it != conflictingMap.end(); ++it) {
+            if (static_cast<int>(it->second.size()) > maxPopularity ||
+                (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
+                tagmultiplicity.at(it->first->getTag()) < tagmultiplicity.at(mostPopular->getTag())) ||
+
+                (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
+                tagmultiplicity.at(it->first->getTag()) == tagmultiplicity.at(mostPopular->getTag()) &&
+                    it->first->getTag() > mostPopular->getTag())
+
+            ) {
+                mostPopular = it->first;
+                maxPopularity = it->second.size();
+            }
+        }
+        if (maxPopularity > 0) {
+            skipped.insert(mostPopular);
+            for (SET_I::const_iterator it=conflictingMap[mostPopular].begin();
+                    it != conflictingMap[mostPopular].end(); ++it)
+                satisfiedGroups.insert(*it);
+        }
+    }
+
+    // Augment information regarding the choice made by popularity contest
+    if(debugMode==IterationLevel) {
+        SolverReportingManager::Manager().LogSetOfConstraints("Chosen redundants", skipped);
+    }
+
+    std::vector<Constraint *> clistTmp;
+    clistTmp.reserve(clist.size());
+    for (std::vector<Constraint *>::iterator constr=clist.begin();
+        constr != clist.end(); ++constr) {
+        if ((*constr)->isDriving() && skipped.count(*constr) == 0)
+            clistTmp.push_back(*constr);
+    }
+
+    SubSystem *subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
+    int res = solve(subSysTmp,true,alg,true);
+
+    if(debugMode==Minimal || debugMode==IterationLevel) {
+        std::string solvername;
+        switch (alg) {
+            case 0:
+                solvername = "BFGS";
+                break;
+            case 1: // solving with the LevenbergMarquardt solver
+                solvername = "LevenbergMarquardt";
+                break;
+            case 2: // solving with the BFGS solver
+                solvername = "DogLeg";
+                break;
+        }
+
+        Base::Console().Log("Sketcher::RedundantSolving-%s-\n",solvername.c_str());
+    }
+
+    if (res == Success) {
+        subSysTmp->applySolution();
+        for (std::set<Constraint *>::const_iterator constr=skipped.begin();
+                constr != skipped.end(); ++constr) {
+            double err = (*constr)->error();
+            if (err * err < convergenceRedundant)
+                redundant.insert(*constr);
+        }
+        resetToReference();
+
+        if(debugMode==Minimal || debugMode==IterationLevel) {
+            Base::Console().Log("Sketcher Redundant solving: %d redundants\n",redundant.size());
+        }
+
+        std::vector< std::vector<Constraint *> > conflictGroupsOrig=conflictGroups;
+        conflictGroups.clear();
+        for (int i=conflictGroupsOrig.size()-1; i >= 0; i--) {
+            bool isRedundant = false;
+            for (std::size_t j=0; j < conflictGroupsOrig[i].size(); j++) {
+                if (redundant.count(conflictGroupsOrig[i][j]) > 0) {
+                    isRedundant = true;
+
+                    if(debugMode==IterationLevel) {
+                        Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n", i,j, (conflictGroupsOrig[i][j])->getTag());
+                    }
+
+                    break;
+                }
+            }
+            if (!isRedundant)
+                conflictGroups.push_back(conflictGroupsOrig[i]);
+            else
+                constrNum--;
+        }
+    }
+    delete subSysTmp;
+
+    // simplified output of conflicting tags
+    SET_I conflictingTagsSet;
+    for (std::size_t i=0; i < conflictGroups.size(); i++) {
+        for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
+            conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
+        }
+    }
+    conflictingTagsSet.erase(0); // exclude constraints tagged with zero
+    conflictingTags.resize(conflictingTagsSet.size());
+    std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(),
+                conflictingTags.begin());
+
+    // output of redundant tags
+    SET_I redundantTagsSet, partiallyRedundantTagsSet;
+    for (std::set<Constraint *>::iterator constr=redundant.begin(); constr != redundant.end(); ++constr) {
+        redundantTagsSet.insert((*constr)->getTag());
+        partiallyRedundantTagsSet.insert((*constr)->getTag());
+    }
+
+    // remove tags represented at least in one non-redundant constraint
+    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr)
+        if (redundant.count(*constr) == 0)
+            redundantTagsSet.erase((*constr)->getTag());
+
+    redundantTags.resize(redundantTagsSet.size());
+    std::copy(redundantTagsSet.begin(), redundantTagsSet.end(),
+                redundantTags.begin());
+
+    for(auto r : redundantTagsSet)
+        partiallyRedundantTagsSet.erase(r);
+
+    partiallyRedundantTags.resize(partiallyRedundantTagsSet.size());
+    std::copy(partiallyRedundantTagsSet.begin(), partiallyRedundantTagsSet.end(),
+                partiallyRedundantTags.begin());
+
+    nonredundantconstrNum = constrNum;
+}
+
 
 void System::clearSubSystems()
 {

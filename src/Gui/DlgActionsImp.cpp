@@ -37,6 +37,7 @@
 #endif
 
 #include "DlgActionsImp.h"
+#include "ui_DlgActions.h"
 #include "Action.h"
 #include "Application.h"
 #include "Command.h"
@@ -56,9 +57,11 @@ using namespace Gui::Dialog;
  *  true to construct a modal dialog.
  */
 DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
-  : CustomizeActionPage(parent), bShown( false )
+  : CustomizeActionPage(parent)
+  , ui(new Ui_DlgCustomActions)
+  , bShown(false)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
     // search for all macros
     std::string cMacroPath = App::GetApplication().
         GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
@@ -66,25 +69,21 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
 
     QDir d(QString::fromUtf8(cMacroPath.c_str()), QLatin1String("*.FCMacro *.py"));
     for (unsigned int i=0; i<d.count(); i++ )
-        actionMacros->insertItem(0,d[i],QVariant(false));
+        ui->actionMacros->insertItem(0,d[i],QVariant(false));
 
-    QString systemMacroDirStr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+    QString systemMacroDirStr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
     d = QDir(systemMacroDirStr, QLatin1String("*.FCMacro *.py"));
     if (d.exists()) {
         for (unsigned int i=0; i<d.count(); i++ ) {
-            actionMacros->insertItem(0,d[i],QVariant(true));
+            ui->actionMacros->insertItem(0,d[i],QVariant(true));
         }
     }
 
     QStringList labels; labels << tr("Icons") << tr("Macros");
-    actionListWidget->setHeaderLabels(labels);
-    actionListWidget->header()->hide();
-    actionListWidget->setIconSize(QSize(32, 32));
-#if QT_VERSION >= 0x050000
-    actionListWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
-    actionListWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
+    ui->actionListWidget->setHeaderLabels(labels);
+    ui->actionListWidget->header()->hide();
+    ui->actionListWidget->setIconSize(QSize(32, 32));
+    ui->actionListWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 
     showActions();
 }
@@ -94,14 +93,14 @@ DlgCustomActionsImp::~DlgCustomActionsImp()
 {
 }
 
-/** 
+/**
  * Displays this page. If no macros were found a message box
  * appears.
  */
 void DlgCustomActionsImp::showEvent(QShowEvent* e)
 {
     QWidget::showEvent(e);
-    if (actionMacros->count() == 0 && bShown == false)
+    if (ui->actionMacros->count() == 0 && bShown == false)
     {
         bShown = true;
         QMessageBox::warning(this, tr("No macro"),tr("No macros found."));
@@ -122,18 +121,18 @@ bool DlgCustomActionsImp::event(QEvent* e)
             int index = topLevel->metaObject()->indexOfSignal( QMetaObject::normalizedSignature("addMacroAction(const QByteArray&)") );
             if ( index >= 0 ) {
                 if ( e->type() == QEvent::ParentChange ) {
-                    connect(this, SIGNAL(addMacroAction( const QByteArray& )), 
+                    connect(this, SIGNAL(addMacroAction( const QByteArray& )),
                             topLevel, SIGNAL(addMacroAction( const QByteArray& )));
-                    connect(this, SIGNAL(removeMacroAction( const QByteArray& )), 
+                    connect(this, SIGNAL(removeMacroAction( const QByteArray& )),
                             topLevel, SIGNAL(removeMacroAction( const QByteArray& )));
-                    connect(this, SIGNAL(modifyMacroAction( const QByteArray& )), 
+                    connect(this, SIGNAL(modifyMacroAction( const QByteArray& )),
                             topLevel, SIGNAL(modifyMacroAction( const QByteArray& )));
                 } else {
-                    disconnect(this, SIGNAL(addMacroAction( const QByteArray& )), 
+                    disconnect(this, SIGNAL(addMacroAction( const QByteArray& )),
                                topLevel, SIGNAL(addMacroAction( const QByteArray& )));
-                    disconnect(this, SIGNAL(removeMacroAction( const QByteArray& )), 
+                    disconnect(this, SIGNAL(removeMacroAction( const QByteArray& )),
                                topLevel, SIGNAL(removeMacroAction( const QByteArray& )));
-                    disconnect(this, SIGNAL(modifyMacroAction( const QByteArray& )), 
+                    disconnect(this, SIGNAL(modifyMacroAction( const QByteArray& )),
                                topLevel, SIGNAL(modifyMacroAction( const QByteArray& )));
                 }
             }
@@ -164,7 +163,7 @@ void DlgCustomActionsImp::showActions()
     std::vector<Command*> aclCurMacros = rclMan.getGroupCommands("Macros");
     for (std::vector<Command*>::iterator it = aclCurMacros.begin(); it != aclCurMacros.end(); ++it)
     {
-        QTreeWidgetItem* item = new QTreeWidgetItem(actionListWidget);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->actionListWidget);
         QByteArray actionName = (*it)->getName();
         item->setData(1, Qt::UserRole, actionName);
         item->setText(1, QString::fromUtf8((*it)->getMenuText()));
@@ -176,7 +175,7 @@ void DlgCustomActionsImp::showActions()
 
 void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *item)
 {
-    if (!item) 
+    if (!item)
         return; // no valid item
 
     // search for the command in the manager and if necessary in the temporary created ones
@@ -190,35 +189,35 @@ void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *ite
     {
         bool bFound = false;
         QString scriptName = QString::fromUtf8(pScript->getScriptName());
-        for (int i = 0; i<actionMacros->count(); i++)
+        for (int i = 0; i<ui->actionMacros->count(); i++)
         {
-            if (actionMacros->itemText(i).startsWith(scriptName, Qt::CaseSensitive))
+            if (ui->actionMacros->itemText(i).startsWith(scriptName, Qt::CaseSensitive))
             {
                 bFound = true;
-                actionMacros->setCurrentIndex(i);
+                ui->actionMacros->setCurrentIndex(i);
                 break;
             }
         }
 
         if (!bFound)
         {
-            QMessageBox::critical(this, tr("Macro not found"), 
+            QMessageBox::critical(this, tr("Macro not found"),
                     tr("Sorry, couldn't find macro file '%1'.").arg(scriptName));
         }
 
         // fill up labels with the command's data
-        actionWhatsThis -> setText(QString::fromUtf8(pScript->getWhatsThis()));
-        actionMenu      -> setText(QString::fromUtf8(pScript->getMenuText()));
-        actionToolTip   -> setText(QString::fromUtf8(pScript->getToolTipText()));
-        actionStatus    -> setText(QString::fromUtf8(pScript->getStatusTip()));
-        actionAccel     -> setText(QString::fromLatin1(pScript->getAccel()));
-        pixmapLabel->clear();
-        m_sPixmap = QString::null;
+        ui->actionWhatsThis -> setText(QString::fromUtf8(pScript->getWhatsThis()));
+        ui->actionMenu      -> setText(QString::fromUtf8(pScript->getMenuText()));
+        ui->actionToolTip   -> setText(QString::fromUtf8(pScript->getToolTipText()));
+        ui->actionStatus    -> setText(QString::fromUtf8(pScript->getStatusTip()));
+        ui->actionAccel     -> setText(QString::fromLatin1(pScript->getAccel()));
+        ui->pixmapLabel->clear();
+        m_sPixmap.clear();
         const char* name = pScript->getPixmap();
         if (name && std::strlen(name) > 2)
         {
             QPixmap p = Gui::BitmapFactory().pixmap(pScript->getPixmap());
-            pixmapLabel->setPixmap(p);
+            ui->pixmapLabel->setPixmap(p);
             m_sPixmap = QString::fromUtf8(name); // can also be a path
         }
     }
@@ -226,13 +225,13 @@ void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *ite
 
 void DlgCustomActionsImp::on_buttonAddAction_clicked()
 {
-    if (actionMacros-> currentText().isEmpty())
+    if (ui->actionMacros-> currentText().isEmpty())
     {
         QMessageBox::warning(this, tr("Empty macro"),tr("Please specify the macro first."));
         return;
     }
 
-    if (actionMenu->text().isEmpty())
+    if (ui->actionMenu->text().isEmpty())
     {
         QMessageBox::warning(this, tr("Empty text"),tr("Please specify the menu text first."));
         return;
@@ -241,46 +240,50 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     // search for the command in the manager
     QByteArray actionName = newActionName().toLatin1();
     CommandManager& rclMan = Application::Instance->commandManager();
-    MacroCommand* macro = new MacroCommand(actionName, actionMacros->itemData(actionMacros->currentIndex()).toBool());
+    MacroCommand* macro = new MacroCommand(actionName, ui->actionMacros->itemData(ui->actionMacros->currentIndex()).toBool());
     rclMan.addCommand( macro );
 
     // add new action
-    QTreeWidgetItem* item = new QTreeWidgetItem(actionListWidget);
+    QTreeWidgetItem* item = new QTreeWidgetItem(ui->actionListWidget);
     item->setData(1, Qt::UserRole, actionName);
-    item->setText(1, actionMenu->text());
+    item->setText(1, ui->actionMenu->text());
     item->setSizeHint(0, QSize(32, 32));
-    if (pixmapLabel->pixmap())
-        item->setIcon(0, *pixmapLabel->pixmap());
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    item->setIcon(0, ui->pixmapLabel->pixmap(Qt::ReturnByValue));
+#else
+    if (ui->pixmapLabel->pixmap())
+        item->setIcon(0, *ui->pixmapLabel->pixmap());
+#endif
 
     // Convert input text into utf8
-    if (!actionWhatsThis->text().isEmpty())
-        macro->setWhatsThis(actionWhatsThis->text().toUtf8());
-    actionWhatsThis->clear();
-  
-    if (!actionMacros-> currentText().isEmpty())
-        macro->setScriptName(actionMacros->currentText().toUtf8());
-  
-    if (!actionMenu->text().isEmpty())
-        macro->setMenuText(actionMenu->text().toUtf8());
-    actionMenu->clear();
+    if (!ui->actionWhatsThis->text().isEmpty())
+        macro->setWhatsThis(ui->actionWhatsThis->text().toUtf8());
+    ui->actionWhatsThis->clear();
 
-    if (!actionToolTip->text().isEmpty())
-        macro->setToolTipText(actionToolTip->text().toUtf8());
-    actionToolTip->clear();
+    if (!ui->actionMacros-> currentText().isEmpty())
+        macro->setScriptName(ui->actionMacros->currentText().toUtf8());
 
-    if (!actionStatus->text().isEmpty())
-        macro->setStatusTip(actionStatus->text().toUtf8());
-    actionStatus->clear();
+    if (!ui->actionMenu->text().isEmpty())
+        macro->setMenuText(ui->actionMenu->text().toUtf8());
+    ui->actionMenu->clear();
+
+    if (!ui->actionToolTip->text().isEmpty())
+        macro->setToolTipText(ui->actionToolTip->text().toUtf8());
+    ui->actionToolTip->clear();
+
+    if (!ui->actionStatus->text().isEmpty())
+        macro->setStatusTip(ui->actionStatus->text().toUtf8());
+    ui->actionStatus->clear();
 
     if (!m_sPixmap.isEmpty())
         macro->setPixmap(m_sPixmap.toLatin1());
-    pixmapLabel->clear();
-    m_sPixmap = QString::null;
+    ui->pixmapLabel->clear();
+    m_sPixmap.clear();
 
-    if (!actionAccel->text().isEmpty()) {
-        macro->setAccel(actionAccel->text().toLatin1());
+    if (!ui->actionAccel->text().isEmpty()) {
+        macro->setAccel(ui->actionAccel->text().toLatin1());
     }
-    actionAccel->clear();
+    ui->actionAccel->clear();
 
     // emit signal to notify the container widget
     addMacroAction(actionName);
@@ -288,14 +291,14 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
 
 void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
 {
-    QTreeWidgetItem* item = actionListWidget->currentItem();
+    QTreeWidgetItem* item = ui->actionListWidget->currentItem();
     if (!item)
     {
         QMessageBox::warning(this, tr("No item selected"),tr("Please select a macro item first."));
         return;
     }
 
-    if (actionMenu->text().isEmpty())
+    if (ui->actionMenu->text().isEmpty())
     {
         QMessageBox::warning(this, tr("Empty text"),tr("Please specify the menu text first."));
         return;
@@ -303,41 +306,41 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
 
     // search for the command in the manager
     QByteArray actionName = item->data(1, Qt::UserRole).toByteArray();
-    item->setText(1, actionMenu->text());
+    item->setText(1, ui->actionMenu->text());
     CommandManager& rclMan = Application::Instance->commandManager();
     Command* pCmd = rclMan.getCommandByName(actionName.constData());
     MacroCommand* macro = dynamic_cast<MacroCommand*>(pCmd);
     if (!macro)
         return;
 
-    if (!actionWhatsThis->text().isEmpty())
-        macro->setWhatsThis(actionWhatsThis->text().toUtf8());
-    actionWhatsThis->clear();
-  
-    if (!actionMacros-> currentText().isEmpty())
-        macro->setScriptName(actionMacros->currentText().toUtf8());
-  
-    if (!actionMenu->text().isEmpty())
-        macro->setMenuText(actionMenu->text().toUtf8());
-    actionMenu->clear();
+    if (!ui->actionWhatsThis->text().isEmpty())
+        macro->setWhatsThis(ui->actionWhatsThis->text().toUtf8());
+    ui->actionWhatsThis->clear();
 
-    if (!actionToolTip->text().isEmpty())
-        macro->setToolTipText(actionToolTip->text().toUtf8());
-    actionToolTip->clear();
+    if (!ui->actionMacros-> currentText().isEmpty())
+        macro->setScriptName(ui->actionMacros->currentText().toUtf8());
 
-    if (!actionStatus->text().isEmpty())
-        macro->setStatusTip(actionStatus->text().toUtf8());
-    actionStatus->clear();
+    if (!ui->actionMenu->text().isEmpty())
+        macro->setMenuText(ui->actionMenu->text().toUtf8());
+    ui->actionMenu->clear();
+
+    if (!ui->actionToolTip->text().isEmpty())
+        macro->setToolTipText(ui->actionToolTip->text().toUtf8());
+    ui->actionToolTip->clear();
+
+    if (!ui->actionStatus->text().isEmpty())
+        macro->setStatusTip(ui->actionStatus->text().toUtf8());
+    ui->actionStatus->clear();
 
     if (!m_sPixmap.isEmpty())
         macro->setPixmap(m_sPixmap.toLatin1());
-    pixmapLabel->clear();
-    m_sPixmap = QString::null;
+    ui->pixmapLabel->clear();
+    m_sPixmap.clear();
 
-    if (!actionAccel->text().isEmpty()) {
-        macro->setAccel(actionAccel->text().toLatin1());
+    if (!ui->actionAccel->text().isEmpty()) {
+        macro->setAccel(ui->actionAccel->text().toLatin1());
     }
-    actionAccel->clear();
+    ui->actionAccel->clear();
 
     // check whether the macro is already in use
     Action* action = macro->getAction();
@@ -356,12 +359,12 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
         if (!accel.isEmpty()) {
             // show shortcut inside tooltip
             QString ttip = QString::fromLatin1("%1 (%2)")
-                .arg(action->toolTip()).arg(accel);
+                .arg(action->toolTip(), accel);
             action->setToolTip(ttip);
 
             // show shortcut inside status tip
             QString stip = QString::fromLatin1("(%1)\t%2")
-                .arg(accel).arg(action->statusTip());
+                .arg(accel, action->statusTip());
             action->setStatusTip(stip);
         }
     }
@@ -377,11 +380,11 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
 void DlgCustomActionsImp::on_buttonRemoveAction_clicked()
 {
     // remove item from list view
-    QTreeWidgetItem* item = actionListWidget->currentItem();
-    if (!item) 
+    QTreeWidgetItem* item = ui->actionListWidget->currentItem();
+    if (!item)
         return;
-    int current = actionListWidget->indexOfTopLevelItem(item);
-    actionListWidget->takeTopLevelItem(current);
+    int current = ui->actionListWidget->indexOfTopLevelItem(item);
+    ui->actionListWidget->takeTopLevelItem(current);
     QByteArray actionName = item->data(1, Qt::UserRole).toByteArray();
     delete item;
 
@@ -497,13 +500,13 @@ void DlgCustomActionsImp::on_buttonChoosePixmap_clicked()
     dlg.setModal(true);
     dlg.exec();
 
-    pixmapLabel->clear();
-    m_sPixmap = QString::null;
+    ui->pixmapLabel->clear();
+    m_sPixmap.clear();
     if (dlg.result() == QDialog::Accepted) {
         QListWidgetItem* item = dlg.currentItem();
         if (item) {
             m_sPixmap = item->text();
-            pixmapLabel->setPixmap(item->icon().pixmap(QSize(32,32)));
+            ui->pixmapLabel->setPixmap(item->icon().pixmap(QSize(32,32)));
         }
     }
 }
@@ -539,10 +542,10 @@ QString DlgCustomActionsImp::newActionName()
 void DlgCustomActionsImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        this->retranslateUi(this);
-        actionListWidget->clear();
+        ui->retranslateUi(this);
+        ui->actionListWidget->clear();
         showActions();
-        actionAccel->setText(qApp->translate("Gui::AccelLineEdit", "none"));
+        ui->actionAccel->setText(qApp->translate("Gui::AccelLineEdit", "none"));
     }
     QWidget::changeEvent(e);
 }
@@ -680,4 +683,4 @@ QStringList IconFolders::getPaths() const
     return paths;
 }
 
-#include "moc_DlgActionsImp.cpp" 
+#include "moc_DlgActionsImp.cpp"

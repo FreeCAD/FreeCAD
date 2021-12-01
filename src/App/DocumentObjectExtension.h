@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2016     *
+ *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,10 +28,10 @@
 #include "DocumentObject.h"
 
 namespace App {
-    
+
 /**
  * @brief Extension with special document object calls
- * 
+ *
  */
 class AppExport DocumentObjectExtension : public App::Extension
 {
@@ -47,12 +47,12 @@ public:
 
     App::DocumentObject*       getExtendedObject();
     const App::DocumentObject* getExtendedObject() const;
-  
+
     //override if execution is necessary
     virtual short extensionMustExecute(void);
     virtual App::DocumentObjectExecReturn *extensionExecute(void);
-    
-    
+
+
     /// get called after setting the document
     virtual void onExtendedSettingDocument();
     /// get called after a document has been fully restored
@@ -61,12 +61,39 @@ public:
     virtual void onExtendedSetupObject();
     /// get called when object is going to be removed from the document
     virtual void onExtendedUnsetupObject();
-  
+
     virtual PyObject* getExtensionPyObject(void) override;
-    
-    /// returns the type name of the ViewProviderExtension which is automatically attached 
+
+    /// returns the type name of the ViewProviderExtension which is automatically attached
     /// to the viewprovider object when it is initiated
     virtual const char* getViewProviderExtensionName(void) const {return "";}
+
+    /** Get the sub object by name
+     * @sa DocumentObject::getSubObject()
+     *
+     * @return Return turn if handled, the sub object is returned in \c ret
+     */
+    virtual bool extensionGetSubObject( DocumentObject *&ret, const char *subname,
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const;
+
+    /** Get name references of all sub objects
+     * @sa DocumentObject::getSubObjects()
+     *
+     * @return Return turn if handled, the sub object is returned in \c ret
+     */
+    virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const;
+
+    /** Get the linked object
+     *  @sa DocumentObject::getLinkedObject()
+     *
+     * @return Return turn if handled, the linked object is returned in \c ret
+     */
+    virtual bool extensionGetLinkedObject(DocumentObject *&ret, bool recursive,
+            Base::Matrix4D *mat, bool transform, int depth) const;
+
+    virtual int extensionSetElementVisible(const char *, bool) {return -1;}
+    virtual int extensionIsElementVisible(const char *) {return -1;}
+    virtual bool extensionHasChildElement() const {return false;}
 };
 
 } //App

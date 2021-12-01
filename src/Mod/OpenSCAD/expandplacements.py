@@ -22,7 +22,7 @@
 
 __title__="FreeCAD OpenSCAD Workbench - expand placements and matrices functions"
 __author__ = "Sebastian Hoogen"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = ["https://www.freecadweb.org"]
 
 '''
 This Script includes python functions to shift all placements down the
@@ -31,7 +31,7 @@ feature tree to the most basic objects
 
 import FreeCAD
 from OpenSCADFeatures import *
-from OpenSCADUtils import isspecialorthogonalpython,isspecialorthogonal
+from OpenSCADUtils import isspecialorthogonal
 import replaceobj
 
 def likeprimitive(obj,extrusion=False):
@@ -99,7 +99,7 @@ def expandplacements(obj,placement):
     elif obj.isDerivedFrom('Part::Mirroring'):
         import OpenSCADUtils
         mm  = OpenSCADUtils.mirror2mat(obj.Normal,obj.Base)
-        #todo: set the base to 0,0,0
+        #TODO: set the base to 0,0,0
         innerp=FreeCAD.Placement(mm * ownplacement.toMatrix() *mm)
         expandplacements(obj.Source,innerp)
         obj.Placement=FreeCAD.Placement()

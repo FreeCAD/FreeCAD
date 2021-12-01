@@ -37,6 +37,9 @@
         </item>
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
+          <property name="toolTip">
+           <string>All dimensions in the file will be scaled with this factor</string>
+          </property>
           <property name="decimals">
            <number>4</number>
           </property>
@@ -68,7 +71,8 @@
         <item>
          <widget class="Gui::PrefComboBox" name="comboBox">
           <property name="toolTip">
-           <string>The mesher to use. If using netgen, make sure netgen is enabled in the Mesh module</string>
+           <string>Meshing program that should be used.
+If using Netgen, make sure that it is available.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ColladaMesher</cstring>
@@ -116,7 +120,7 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox_2">
           <property name="toolTip">
-           <string>The tessellation value to use with the builtin and mefisto meshers</string>
+           <string>Tessellation value to use with the Builtin and the Mefisto meshing program.</string>
           </property>
           <property name="decimals">
            <number>4</number>
@@ -155,7 +159,9 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox_3">
           <property name="toolTip">
-           <string>The grading value to use for netgen meshing</string>
+           <string>Grading value to use for meshing using Netgen.
+This value describes how fast the mesh size decreases.
+The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</string>
           </property>
           <property name="decimals">
            <number>4</number>
@@ -185,7 +191,7 @@
         <item>
          <widget class="Gui::PrefSpinBox" name="spinBox">
           <property name="toolTip">
-           <string>The maximum number of segments per edge</string>
+           <string>Maximum number of segments per edge</string>
           </property>
           <property name="minimum">
            <number>1</number>
@@ -215,7 +221,7 @@
         <item>
          <widget class="Gui::PrefSpinBox" name="spinBox_2">
           <property name="toolTip">
-           <string>The number of segments per radius</string>
+           <string>Number of segments per radius</string>
           </property>
           <property name="minimum">
            <number>1</number>
@@ -238,7 +244,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
-           <string>Allow second order</string>
+           <string>Allow a second order mesh</string>
           </property>
           <property name="text">
            <string>Second order</string>
@@ -281,7 +287,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
-           <string>Allow quad faces</string>
+           <string>Allow quadrilateral faces</string>
           </property>
           <property name="text">
            <string>Allow quads</string>

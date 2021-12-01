@@ -1,362 +1,498 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fi" sourcelanguage="en">
+<TS version="2.1" language="fi" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
-      <source>FreeCAD Start Center</source>
-      <translation>Trevetuloa FreeCAD -ohjelmaan</translation>
+      <location filename="TranslationTexts.py" line="42"/>
+      <source>Start</source>
+      <translation>Aloita</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
-      <source>Start a new project</source>
-      <translation>Aloita uusi projekti</translation>
+      <location filename="TranslationTexts.py" line="43"/>
+      <source>Documents</source>
+      <translation>Asiakirjat</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
-      <source>Recent Files</source>
+      <location filename="TranslationTexts.py" line="44"/>
+      <source>Help</source>
+      <translation>Ohje</translation>
+    </message>
+    <message>
+      <location filename="TranslationTexts.py" line="45"/>
+      <source>Activity</source>
+      <translation>Toiminta</translation>
+    </message>
+    <message>
+      <location filename="TranslationTexts.py" line="46"/>
+      <source>Recent files</source>
       <translation>Viimeisimmät tiedostot</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="96"/>
-      <source>Tutorials</source>
-      <translation>Käyttöoppaat</translation>
+      <location filename="TranslationTexts.py" line="47"/>
+      <source>Tip</source>
+      <translation>Vinkki</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
-      <source>FreeCAD Homepage</source>
-      <translation>FreeCAD kotisivu</translation>
+      <location filename="TranslationTexts.py" line="48"/>
+      <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
+      <translation>Säädä näytettävien viimeaikaisten tiedostojen kappalemäärä valikossa: Muokkaa -&gt; Asetukset -&gt; Yleinen -&gt; Viimeisimpien tiedostojen kappalemäärä</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
-      <source>Example projects</source>
-      <translation>Projektiesimerkit</translation>
+      <location filename="TranslationTexts.py" line="49"/>
+      <source>Examples</source>
+      <translation>Esimerkki</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
-      <source>Schenkel STEP file</source>
-      <translation>Schenkel STEP tiedosto</translation>
+      <location filename="TranslationTexts.py" line="50"/>
+      <source>General documentation</source>
+      <translation>Yleinen ohjeisto</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
-      <source>Load a PartDesign example</source>
-      <translation>Osan valmistus</translation>
+      <location filename="TranslationTexts.py" line="51"/>
+      <source>User hub</source>
+      <translation>Uuden käyttäjän sivu</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
-      <source>Load a Drawing extraction</source>
-      <translation>Mittapiirros</translation>
+      <location filename="TranslationTexts.py" line="52"/>
+      <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
+      <translation>Tässä osassa on FreeCADin käyttäjille yleihyödyllistä dokumentaatiota: luettelo kaikista työpenkeistä, yksityiskohtaiset ohjeet FreeCAD-sovelluksen asentamisesta ja käytöstä, ja kaikki mitä tarvitset päästäksesi alkuun.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>Load a Robot simulation example</source>
-      <translation>Robotti-simulointi</translation>
+      <location filename="TranslationTexts.py" line="53"/>
+      <source>Power users hub</source>
+      <translation>Edistyneen käyttäjän sivu</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
-      <source>Projects from the Web</source>
-      <translation>Projektit Webistä</translation>
+      <location filename="TranslationTexts.py" line="54"/>
+      <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
+      <translation>Tämä osa kerää dokumentaatiota edistyneille käyttäjille ja henkilöille, jotka ovat kiinnostuneita kirjoittamaan python skriptejä. Löydät sieltä myös makrojen varaston, ohjeet miten asentaa ja käyttää niitä, sekä lisää tietoa FreeCADin muokkaamisesta sinun erityistarpeisiisi.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-      <source>Schenkel STEP</source>
-      <translation>Schenkel STEP</translation>
+      <location filename="TranslationTexts.py" line="55"/>
+      <source>Developers hub</source>
+      <translation>Kehittäjien sivu</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
-      <source>Complex Part</source>
-      <translation>Monimutkainen osa</translation>
+      <location filename="TranslationTexts.py" line="56"/>
+      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
+      <translation>Tässä osiossa on kehittäjille tarkoitettua materiaalia: Miten koota FreeCAD itse, miten FreeCAD lähdekoodi on strukturoitu + miten navigoida siinä, miten kehittää uusia työpenkkejä ja/tai upottaa FreeCAD omaan sovellukseen.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
-      <source>Close this window after opening or creating a file</source>
-      <translation>Sulje tämä ikkuna avatessasi tai luodessasi tiedostoja</translation>
+      <location filename="TranslationTexts.py" line="57"/>
+      <source>Manual</source>
+      <translation>Käsikirja</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
-      <source>Don't show me this window again next time</source>
-      <translation>Älä näytä tätä ikkunaa uudelleen</translation>
+      <location filename="TranslationTexts.py" line="58"/>
+      <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
+      <translation>FreeCAD ohjeisto on toinen, linjakkaampi tapa esitellä tämän wikin sisältämät tiedot. Se on tehty luettavaksi kirjan tapaan, ja hellävaroen se esittelee sinulle monia muita sivuja, katso edeltä. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-kirjan versiot&lt;/a&gt; ovat myös saatavilla.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
-      <source>Designing parts</source>
-      <translation>Osien suunnitteleminen</translation>
+      <location filename="TranslationTexts.py" line="59"/>
+      <source>Workbenches documentation</source>
+      <translation>Työpenkkien dokumentaatio</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
-      <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>&lt;b&gt;Osien suunnittelu&lt;/b&gt; -työpöydän avulla voi luoda monimutkaisia kappaleita. Sen avulla voit piirtää 2D-linjoja, rajoittaa joitakin niiden osia ja pursottaa niistä muodostuvia 3D kappaleita.</translation>
+      <location filename="TranslationTexts.py" line="60"/>
+      <source>These are the help pages of all the workbenches currently installed on this computer.</source>
+      <translation>Nämä ovat ohjesivut kaikkii niihin työpenkkeihin, mitkä ovat nyt asennettuna tähän tietokoneeseen.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
-      <source>Example workflow</source>
-      <translation>Esimerkki työnkulusta</translation>
+      <location filename="TranslationTexts.py" line="61"/>
+      <source>Getting help from the community</source>
+      <translation>Haetaan apua yhteisöltä</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
-      <source>Part Design</source>
-      <translation>Osan Suunnittelu</translation>
+      <location filename="TranslationTexts.py" line="62"/>
+      <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD foorumi&lt;/a&gt; on loistava paikka saada apua muilta FreeCADin käyttäjiltä ja kehittäjiltä. Foorumissa on useita osioita, joissa käsitellään erityyppisiä aiheita ja keskustelunaiheita. Jos olet epävarma, lähetä yleisempään &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Käyttöapua FreeCAD&lt;/a&gt; -osion käyttöön.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
-      <source>Designing architectural elements</source>
-      <translation>Arkkitehtuurielementtien suunnittelu</translation>
+      <location filename="TranslationTexts.py" line="63"/>
+      <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
+      <translation>Jos tämä on ensimmäinen kerta, kun olet viestittelemässä foorumilla, muista &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;lukea ohjeet&lt;/a&gt; ensin!</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
-      <source>Working with Meshes</source>
-      <translation>Työskenteleminen ruudukkojen kanssa</translation>
+      <location filename="TranslationTexts.py" line="64"/>
+      <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
+      <translation>FreeCAD ylläpitää myös julkista &lt;a href="https://www.freecadweb.org/tracker"&gt;vikaseurantapalvelinta&lt;/a&gt;, jossa kuka tahansa voi lähettää vikotietoja ja ehdottaa uusia ominaisuuksia. Välttääksesi ylimääräistä työtä ja antaaksesi parhaat mahdollisuudet nähdä ilmoittamasi vian ratkaistun, varmista, että olet lukenut &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;vikailmoituksen oppaan&lt;/a&gt; ennen lähettämistä.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
-      <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>&lt;b&gt;Verkkopinta&lt;/b&gt; -työpöydän avulla voit työskennellä verkko-objektien kanssa. Verkot ovat yksinkertaisempia kolmiulotteisia kappaleita kuin osat ja ne ovat useimmiten yhteensopivia muiden 3D Cad -ohjelmien kanssa.</translation>
+      <location filename="TranslationTexts.py" line="65"/>
+      <source>Available addons</source>
+      <translation>Saatavilla olevat lisäosat</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
-      <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation>FreeCAD tarjoaa useita työkaluja verkko ja osa objektien muuntamiseen.</translation>
+      <location filename="TranslationTexts.py" line="66"/>
+      <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
+      <translation>Alla on luettelo käytettävissä olevista ylimääräisistä työpenkeistä, jotka voidaan lisätä FreeCAD asennukseen. Selaa ja asenna ne valikon Työkalut -&gt; Lisäosat -hallinnasta (Addons manager). Voit oppia lisää niistä klikkaamalla alla olevia linkkejä.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
-      <source>Work with Meshes</source>
-      <translation>Verkkopintojen avulla työskentely</translation>
+      <location filename="TranslationTexts.py" line="67"/>
+      <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
+      <translation>Jos se ei ole mukana FreeCAD-versiosi paketissa, asenna FreeCAD-dokumentaatiopaketti hakeaksesi dokumentaation sivuja, työpöydän ohjetta ja yksittäisten komentojen ohjetta ilman internet yhteyttä.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
-      <source>The complete workbench</source>
-      <translation>Kaikki työpöydät</translation>
+      <location filename="TranslationTexts.py" line="68"/>
+      <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
+      <translation>Tietoja ei voi noutaa GitHubista. &lt;a href="EnableDownload.py"&gt;Anna FreeCAD:lle yhteys internetiin&lt;/a&gt; ja lataa aloitussivu uudelleen.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
-      <source>FreeCAD Complete workbench</source>
-      <translation>FreeCAD täydellinen työpöytä</translation>
+      <location filename="TranslationTexts.py" line="69"/>
+      <source>Recent commits</source>
+      <translation>Viimeisimmät merkinnät</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="90"/>
-      <source>file size:</source>
-      <translation>tiedoston koko:</translation>
+      <location filename="TranslationTexts.py" line="70"/>
+      <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
+      <translation>Alla ovat viimeisimmät muutokset, jotka on lisätty &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD lähdekoodiin&lt;/a&gt;. Nämä muutokset eivät ehkä vielä heijasta FreeCAD-versiossa, jota parhaillaan käytät. Valitse &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;käytettävissä olevat vaihtoehdot&lt;/a&gt; jos haluat saada kehitysversion.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="91"/>
-      <source>creation time:</source>
-      <translation>luontiaika:</translation>
+      <location filename="TranslationTexts.py" line="71"/>
+      <source>See all commits on github</source>
+      <translation>Näytä kaikki githubissa olevat merkinnät</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
-      <source>last modified:</source>
-      <translation>viimeksi muokattu:</translation>
+      <location filename="TranslationTexts.py" line="72"/>
+      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
+      <translation>Voit määrittää mukautetun kansion tässä valikossa Muokkaa -&gt; Asetukset -&gt; Käynnistä -&gt; Näytä ylimääräinen kansio</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
-      <source>populated with some of the most commonly used tools.</source>
-      <translation>yleisimmin käytetyt työkalut näkyvät tässä.</translation>
+      <location filename="TranslationTexts.py" line="73"/>
+      <source>version</source>
+      <translation>Versio</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
-      <source>Latest videos</source>
-      <translation>Uusimmat videot</translation>
+      <location filename="TranslationTexts.py" line="74"/>
+      <source>build</source>
+      <translation>rakentaa</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
-      <source>On the web</source>
-      <translation>Webissä</translation>
+      <location filename="TranslationTexts.py" line="75"/>
+      <source>Create new...</source>
+      <translation>Luo uusi "...</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
-      <source>This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</source>
-      <translation>Tämä on FreeCAD-Kotisivu. Täällä voi löytää paljon tietoa FreeCAD:sta, mukaan lukien Opetusohjelmat, esimerkit ja käyttöoppaan.</translation>
+      <location filename="TranslationTexts.py" line="76"/>
+      <source>Unknown</source>
+      <translation>Tuntematon</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
-      <source>location:</source>
-      <translation>sijainti:</translation>
+      <location filename="TranslationTexts.py" line="77"/>
+      <source>Forum</source>
+      <translation>Foorumi</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="94"/>
-      <source>User manual</source>
-      <translation>Käyttöopas</translation>
+      <location filename="TranslationTexts.py" line="78"/>
+      <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
+      <translation>Viimeisimmät viestit &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD foorumilla&lt;/a&gt;:</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="97"/>
-      <source>Python resources</source>
-      <translation>Python-resurssit</translation>
+      <location filename="TranslationTexts.py" line="79"/>
+      <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
+      <translation>Avataksesi minkä tahansa yllä olevan linkin työpöytäselaimessasi, napsauta hiiren kakkospainikkeella -&gt; Avaa ulkoisessa selaimessa</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>File not found</source>
-      <translation>Tiedostoa ei löydy</translation>
+      <location filename="TranslationTexts.py" line="80"/>
+      <source>Creation date</source>
+      <translation>Luontipäivä</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="99"/>
-      <source>from &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</source>
-      <translation>&lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews:stä&lt;/a&gt;</translation>
+      <location filename="TranslationTexts.py" line="81"/>
+      <source>Last modification</source>
+      <translation>Viimeksi muokattu</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="100"/>
-      <source>The FreeCAD-tutorial blog</source>
-      <translation>Tutoriaaliblogi</translation>
+      <location filename="TranslationTexts.py" line="82"/>
+      <source>Notes</source>
+      <translation>Muistiinpanot</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
-      <source>from &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</source>
-      <translation>&lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews&lt;/a&gt; YouTubessa</translation>
+      <location filename="TranslationTexts.py" line="83"/>
+      <source>Open start page preferences</source>
+      <translation>Avaa aloitussivun asetukset</translation>
     </message>
+  </context>
+  <context>
+    <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
-      <source>This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.</source>
-      <translation>Tämä on FreeCADin virallinen käyttöohje jonka sisältö ja ylläpito perustuvat FreeCAD -yhteisön työhön.</translation>
+      <location filename="../../Workbench.cpp" line="75"/>
+      <source>Start page</source>
+      <translation>Aloitus sivu</translation>
     </message>
+  </context>
+  <context>
+    <name>CmdStartPage</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="103"/>
-      <source>The tutorials section on the FreeCAD website</source>
-      <translation>Tutoriaalit FreeCAD-kotivisulla</translation>
+      <location filename="../../Command.cpp" line="45"/>
+      <source>Start</source>
+      <translation>Aloita</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="105"/>
-      <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
-      <translation>Blogi omistettu FreeCAD:n opettamiselle, pääasiassa FreeCAD-yhteisön jäsenet ylläpitävät opetusta</translation>
+      <location filename="../../Command.cpp" line="46"/>
+      <source>Start Page</source>
+      <translation>Aloitussivu</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
-      <source>Getting started</source>
-      <translation>Ohjesivusto (wiki)</translation>
+      <location filename="../../Command.cpp" line="47"/>
+      <source>Displays the start page in a browser view</source>
+      <translation>Näyttää aloitussivun selaimen näkymässä</translation>
     </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
-      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation>FreeCADin käyttöliittymä on jaetty työpöytiin joista kukin sisältää erilaisiin tehtäviin sopivia työkaluja. Voit valita joko yksittäisen työpöydän tai näyttää kaikkien eri työpöytien työkalut samalla kertaa. Voit lukea lisää työpöytien käytöstä FreeCAD -sivustolta (englanniksi).</translation>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>Start page options</source>
+      <translation>Aloitussivun asetukset</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="109"/>
-      <source>Ship Design</source>
-      <translation>Suunnittele laiva</translation>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Start page template</source>
+      <translation>Aloitussivun malli</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
-      <source>Designing and calculating ships</source>
-      <translation>Laivojen suunnittelu</translation>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <source>An optional HTML template that will be used instead of the default start page.</source>
+      <translation>Valinnainen HTML-malli, jota käytetään oletuksena olevan aloitussivun sijaan.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="111"/>
-      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
-      <translation>&lt;b&gt;Laivan suunnittelumoduuli&lt;/b&gt; tarjoaa työkaluja joiden avulla on mahdollista tarkastella, mallintaa ja laskea laivan runkoprofiileja muita laivan runkoon liittyviä ominaisuuksia.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="42"/>
+      <source>Contents</source>
+      <translation>Sisältö</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="112"/>
-      <source>Load an Architectural example model</source>
-      <translation>Lataa arkkitehtuurin esimerkkimalli</translation>
+      <location filename="../../DlgStartPreferences.ui" line="48"/>
+      <source>Show forum</source>
+      <translation>Näytä foorumi</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
-      <source>Architectural Design</source>
-      <translation>Arkkitehtisuunnittelu</translation>
+      <location filename="../../DlgStartPreferences.ui" line="55"/>
+      <source>Show examples folder contents</source>
+      <translation>Näytä esimerkkien kansion sisältö</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
-      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation>FreeCAD-kotisivulta löydät yksityiskohtaisia esimerkkejä Python-kielellä kirjoitetuista skripteistä sekä API-komentojen listan.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="62"/>
+      <source>Show additional folder</source>
+      <translation>Näytä ylimääräinen kansio</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
-      <source>Your version of FreeCAD is up to date.</source>
-      <translation>FreeCAD -versiosi on ajan tasalla</translation>
+      <location filename="../../DlgStartPreferences.ui" line="69"/>
+      <source>If you want the examples to show on the first page</source>
+      <translation>Jos haluat, että esimerkit näytetään ensimmäisellä sivulla</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="116"/>
-      <source>There is a new release of FreeCAD available.</source>
-      <translation>FreeCAD:n uusi versio on saatavilla.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="91"/>
+      <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
+      <translation>Jos tämä on valittuna, viimeisimmät viestit FreeCAD foorumista näytetään aktiivisuusvälilehdessä</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
-      <source>Latest commits</source>
-      <translation>Viimeisimmät koodilisäykset</translation>
+      <location filename="../../DlgStartPreferences.ui" line="110"/>
+      <source>An optional custom folder to be displayed at the bottom of the first page.
+By using ";;" to separate paths, you can add several folders here</source>
+      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
+By using ";;" to separate paths, you can add several folders here</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="118"/>
-      <source>Obtain a development version</source>
-      <translation>Lataa kehitysversio</translation>
+      <location filename="../../DlgStartPreferences.ui" line="127"/>
+      <source>Show notepad</source>
+      <translation>Näytä muistio</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
-      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation>Ohjelman &lt;b&gt;kehitysversio&lt;/b&gt; sisältää kaikki uusimmat muutokset, mutta se sisältää myös virheitä.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="134"/>
+      <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
+      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
-      <source>See all commits</source>
-      <translation>Kaikki koodilisäykset</translation>
+      <location filename="../../DlgStartPreferences.ui" line="153"/>
+      <source>Show tips</source>
+      <translation type="unfinished">Show tips</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
-      <source>Load an FEM 3D example analysis</source>
-      <translation>Lataa FEM 3D-esimerkkianalyysi</translation>
+      <location filename="../../DlgStartPreferences.ui" line="163"/>
+      <source>Displays help tips in the Start workbench Documents tab</source>
+      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
-      <source>Load an FEM 2D example analysis</source>
-      <translation>Lataa FEM 2D-esimerkkianalyysi</translation>
+      <location filename="../../DlgStartPreferences.ui" line="185"/>
+      <source>Fonts and colors</source>
+      <translation>Kirjasimet ja värit</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
-      <source>http://www.freecadweb.org/wiki/Online_Help_Toc</source>
-      <translation>http://www.freecadweb.org/wiki/Online_Help_Toc</translation>
+      <location filename="../../DlgStartPreferences.ui" line="197"/>
+      <source>The background of the main start page area</source>
+      <translation>Aloituspääsivun tausta</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="113"/>
-      <source>http://www.freecadweb.org/wiki/Tutorials</source>
-      <translation>http://www.freecadweb.org/wiki/Tutorials</translation>
+      <location filename="../../DlgStartPreferences.ui" line="217"/>
+      <source>Background color</source>
+      <translation>Taustaväri</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="114"/>
-      <source>http://www.freecadweb.org/wiki/Power_users_hub</source>
-      <translation>http://www.freecadweb.org/wiki/Power_users_hub</translation>
+      <location filename="../../DlgStartPreferences.ui" line="229"/>
+      <source>in FreeCAD</source>
+      <translation>FreeCAD: ssä</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
-      <source>FreeCAD Standard File</source>
-      <translation>FreeCAD -standarditiedosto</translation>
+      <location filename="../../DlgStartPreferences.ui" line="248"/>
+      <source>In external browser</source>
+      <translation>Ulkoisessa selaimessa</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
-      <source>Author</source>
-      <translation>Kehittäjä</translation>
+      <location filename="../../DlgStartPreferences.ui" line="266"/>
+      <source>Background color down gradient</source>
+      <translation type="unfinished">Background color down gradient</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
-      <source>Company</source>
-      <translation>Yritys</translation>
+      <location filename="../../DlgStartPreferences.ui" line="279"/>
+      <source>The color of the version text</source>
+      <translation>Versiotekstin väri</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
-      <source>License</source>
-      <translation type="unfinished">License</translation>
+      <location filename="../../DlgStartPreferences.ui" line="299"/>
+      <source>Link color</source>
+      <translation>Linkkien väri</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation>&lt;b&gt;Arkkitehtuuri&lt;/b&gt; -työpöytä on suunniteltu erityisesti rakennusten, seinien ja ikkunoiden työstämiseen. Voit aloittaa piirtämällä 2D-muotoja ja käyttää niitä arkkitehtuurielementtien rakentamiseen.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="306"/>
+      <source>An optional image to display as background</source>
+      <translation>Valinnainen kuva näytetään taustakuvana</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
-      <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+      <location filename="../../DlgStartPreferences.ui" line="319"/>
+      <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
+      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
-      <source>Load an FEM 3D new solver example analysis</source>
-      <translation>Lataa uusi FEM 3D -esimerkkianalyysi</translation>
+      <location filename="../../DlgStartPreferences.ui" line="338"/>
+      <source>Page background color</source>
+      <translation>Sivun taustaväri</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
-      <source>Click here</source>
-      <translation type="unfinished">Click here</translation>
+      <location filename="../../DlgStartPreferences.ui" line="351"/>
+      <source>The color of the text on the main pages</source>
+      <translation>Pääsivuilla olevan tekstin väri</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
-      <source>to allow FreeCAD to access the internet</source>
-      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
+      <location filename="../../DlgStartPreferences.ui" line="371"/>
+      <source>Background image</source>
+      <translation>Taustakuva</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="378"/>
+      <source>Page text color</source>
+      <translation>Sivun tekstin väri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="391"/>
+      <source>The color of the links</source>
+      <translation>Linkkien väri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="417"/>
+      <source>The background color of the boxes inside the pages</source>
+      <translation>Sivujen sisällä olevien laatikoiden taustaväri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="437"/>
+      <source>Box background color</source>
+      <translation>Laatikon taustaväri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="450"/>
+      <source>The background color behind the panels</source>
+      <translation>Paneelien takana oleva taustaväri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
+      <source>The down gradient for the background color (currently unsupported)</source>
+      <translation>Värisävyn alennus taustavärille (ei tällä hetkellä tuettu)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
+      <source>Open links</source>
+      <translation>Avaa linkit</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="509"/>
+      <source>Background text color</source>
+      <translation>Taustan tekstin väri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="516"/>
+      <source>Use FreeCAD style sheet</source>
+      <translation>Käytä FreeCAD tyylilomaketta</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="523"/>
+      <source>Font family</source>
+      <translation type="unfinished">Font family</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="532"/>
+      <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
+      <translation>Aloitussivulla käytettävät kirjasimet (fontit). Se voi olla kirjasimen nimi tai pilkulla erotettu kirjasinten sarja</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="538"/>
+      <source>Arial,Helvetica,sans</source>
+      <translation>Arial,Helvetica,sans</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="551"/>
+      <source>The base font size to use for all texts of the Start page</source>
+      <translation>Peruskirjasimen koko, jota käytetään kaikkiin aloitussivun teksteihin</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="554"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="572"/>
+      <source>Use gradient for New File icon</source>
+      <translation>Käytä kaltevuutta (gradient) uuteen tiedostokuvakkeeseen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="579"/>
+      <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
+      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="601"/>
+      <source>Options</source>
+      <translation>Asetukset</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="607"/>
+      <source>Choose which workbench to switch to after the program launches</source>
+      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="614"/>
+      <source>If checked, will automatically close the Start page when FreeCAD launches</source>
+      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="633"/>
+      <source>Switch workbench after loading</source>
+      <translation>Vaihda työpöytä latauksen jälkeen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="640"/>
+      <source>Close start page after loading</source>
+      <translation>Sulje aloitussivu latauksen jälkeen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="647"/>
+      <source>Close and switch on opening file</source>
+      <translation type="unfinished">Close and switch on opening file</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="654"/>
+      <source>If application is started by opening a file, apply the two settings above</source>
+      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
     </message>
   </context>
 </TS>

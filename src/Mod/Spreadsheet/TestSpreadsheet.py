@@ -1,6 +1,23 @@
-# (c) 2016 Werner Mayer
-# (c) 2016 Eivind Kvedalen
-# LGPL
+#***************************************************************************
+#*   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+#*   Copyright (c) 2016 Eivind Kvedalen <eivind@kvedalen.name>             *
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU General Public License (GPL)            *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   FreeCAD is distributed in the hope that it will be useful,            *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with FreeCAD; if not, write to the Free Software        *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
+#***************************************************************************/
 
 import os
 import sys
@@ -107,7 +124,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.C4, 4)
         self.assertEqual(sheet.C5, 6)
 
-        self.assertEqual(sheet.D1, u'ERR: Invalid number of entries: at least two required.')
+        self.assertTrue(sheet.D1.startswith(u'ERR: Invalid number of entries: at least two required.'))
         self.assertEqual(sheet.D2, 0.7071067811865476)
         self.assertEqual(sheet.D3, 1.0)
         self.assertEqual(sheet.D4, 1.2909944487358056)
@@ -132,12 +149,12 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.G5, Units.Quantity('1 mm'))
         self.assertEqual(sheet.G6, Units.Quantity('15 mm'))
 
-        self.assertEqual(sheet.H1, u'ERR: Quantity::operator +=(): Unit mismatch in plus operation')
-        self.assertEqual(sheet.H2, u'ERR: Quantity::operator <(): quantities need to have same unit to compare')
-        self.assertEqual(sheet.H3, u'ERR: Quantity::operator >(): quantities need to have same unit to compare')
+        self.assertTrue(sheet.H1.startswith(u'ERR: Quantity::operator +=(): Unit mismatch in plus operation'))
+        self.assertTrue(sheet.H2.startswith(u'ERR: Quantity::operator <(): quantities need to have same unit to compare'))
+        self.assertTrue(sheet.H3.startswith(u'ERR: Quantity::operator >(): quantities need to have same unit to compare'))
         self.assertEqual(sheet.H4, 4)
-        self.assertEqual(sheet.H5, u'ERR: Quantity::operator +(): Unit mismatch in minus operation')
-        self.assertEqual(sheet.H6, u'ERR: Quantity::operator +=(): Unit mismatch in plus operation')
+        self.assertTrue(sheet.H5.startswith(u'ERR: Quantity::operator -(): Unit mismatch in minus operation'))
+        self.assertTrue(sheet.H6.startswith(u'ERR: Quantity::operator +=(): Unit mismatch in plus operation'))
 
     def assertMostlyEqual(self, a, b):
         if type(a) is Units.Quantity:
@@ -263,13 +280,13 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.C4,  Units.Quantity('3 mm'))
         self.assertMostlyEqual(sheet.A5,  math.exp(3))  # Exp
         self.assertMostlyEqual(sheet.B5,  math.exp(-3))
-        self.assertEqual(sheet.C5,  u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.C5.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A6,  math.log(3))    # Log
         self.assertTrue(math.isnan(sheet.B6))
-        self.assertEqual(sheet.C6,  u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.C6.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A7,  math.log10(10))  # Log10
         self.assertTrue(math.isnan(sheet.B7))
-        self.assertEqual(sheet.C7,  u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.C7.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A8,  3) # Round
         self.assertMostlyEqual(sheet.B8,  4)
         self.assertMostlyEqual(sheet.C8,  -3)
@@ -303,17 +320,17 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.G11, Units.Quantity('-4 mm'))
         self.assertMostlyEqual(sheet.H11, Units.Quantity('-4 mm'))
         self.assertMostlyEqual(sheet.A12, Units.Quantity('30 deg')) # Asin
-        self.assertEqual(sheet.B12, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B12.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A13, Units.Quantity('60 deg')) # Acos
-        self.assertEqual(sheet.B13, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B13.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A14, Units.Quantity('60 deg')) # Atan
-        self.assertEqual(sheet.B14, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B14.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A15, math.sinh(0.5)) # Sinh
-        self.assertEqual(sheet.B15, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B15.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A16, math.cosh(0.5)) # Cosh
-        self.assertEqual(sheet.B16, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B16.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A17, math.tanh(0.5)) # Tanh
-        self.assertEqual(sheet.B17, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B17.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A18, 2)   # Sqrt
         self.assertMostlyEqual(sheet.B18, Units.Quantity('2 mm'))
         self.assertMostlyEqual(sheet.A19, 3) # Mod
@@ -322,35 +339,35 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.D19, 3)
         self.assertMostlyEqual(sheet.A20, Units.Quantity('45 deg'))       # Atan2
         self.assertMostlyEqual(sheet.B20, Units.Quantity('-45 deg'))
-        self.assertEqual(sheet.C20, u'ERR: Units must be equal')
+        self.assertTrue(sheet.C20.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D20, Units.Quantity('45 deg'))
         self.assertMostlyEqual(sheet.A21, 2401) # Pow
         self.assertMostlyEqual(sheet.B21, 2401)
         self.assertMostlyEqual(sheet.C21, Units.Quantity('2401mm^4'))
-        self.assertEqual(sheet.D21, u'ERR: Exponent is not allowed to have a unit.')
+        self.assertTrue(sheet.D21.startswith(u'ERR: Exponent is not allowed to have a unit.'))
         self.assertMostlyEqual(sheet.A23, 5) # Hypot
         self.assertMostlyEqual(sheet.B23, 5)
-        self.assertEqual(sheet.C23, u'ERR: Units must be equal')
+        self.assertTrue(sheet.C23.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D23, Units.Quantity('5mm'))
 
         l = math.sqrt(3*3 + 4*4 + 5*5)
         self.assertMostlyEqual(sheet.A24, l) # Hypot
         self.assertMostlyEqual(sheet.B24, l)
-        self.assertEqual(sheet.C24, u'ERR: Units must be equal')
+        self.assertTrue(sheet.C24.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D24, Units.Quantity("7.07106781186548 mm"))
         self.assertMostlyEqual(sheet.A26, 4) # Cath
         self.assertMostlyEqual(sheet.B26, 4)
-        self.assertEqual(sheet.C26, u'ERR: Units must be equal')
+        self.assertTrue(sheet.C26.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D26, Units.Quantity('4mm'))
 
         l = math.sqrt(5 * 5 + 4*4 + 3*3)
         l = math.sqrt(l * l - 5*5 - 4*4)
         self.assertMostlyEqual(sheet.A27, l) # Cath
         self.assertMostlyEqual(sheet.B27, l)
-        self.assertEqual(sheet.C27, u'ERR: Units must be equal')
+        self.assertTrue(sheet.C27.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D27, Units.Quantity("3 mm"))
         FreeCAD.closeDocument(doc.Name)
-        
+
     def testRelationalOperators(self):
         """ Test relational operators """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -492,10 +509,17 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('A52', '=+(-1 + -1)')
 
         self.doc.addObject("Part::Cylinder", "Cylinder")
-        self.doc.addObject("Part::Thickness", "Pipe")
+        # We cannot use Thickness, as this feature requires a source shape,
+        # otherwise it will cause recomputation failure. The new logic of
+        # App::Document will not continue recompute any dependent objects
+
+        #  self.doc.addObject("Part::Thickness", "Pipe")
+        self.doc.addObject("Part::Box", "Box")
+        self.doc.Box.Length = 1
+
         sheet.set('B1', '101')
         sheet.set('A53', '=-(-(B1-1)/2)')
-        sheet.set('A54', '=-(Cylinder.Radius + Pipe.Value - 1"/2)')
+        sheet.set('A54', '=-(Cylinder.Radius + Box.Length - 1"/2)')
 
         self.doc.recompute()
         self.assertEqual(sheet.getContents("A1"), "=1 < 2 ? 3 : 4")
@@ -643,7 +667,24 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.A16, 1)
         self.assertEqual(sheet.A17, 0.5)
         self.assertEqual(sheet.A18, 0.5)
-        
+
+    def testQuantitiesAndFractionsAsNumbers(self):
+        """ Test quantities and simple fractions as numbers """
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '1mm')
+        sheet.set('A2', '1/2')
+        sheet.set('A3', '4mm/2')
+        sheet.set('A4', '2/mm')
+        sheet.set('A5', '4/2mm')
+        sheet.set('A6', '6mm/3s')
+        self.doc.recompute()
+        self.assertEqual(sheet.A1, Units.Quantity('1 mm'))
+        self.assertEqual(sheet.A2, 0.5)
+        self.assertEqual(sheet.A3, Units.Quantity('2 mm'))
+        self.assertEqual(sheet.A4, Units.Quantity('2 1/mm'))
+        self.assertEqual(sheet.A5, Units.Quantity('2 1/mm'))
+        self.assertEqual(sheet.A6, Units.Quantity('2 mm/s'))
+
     def testRemoveRows(self):
         """ Removing rows -- check renaming of internal cells """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -657,6 +698,9 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.set('B1', '=B2')
         sheet.set('B2', '124')
+        # Calling getContents() here activates ObjectIdentifier internal cache,
+        # which needs to be tested as well.
+        self.assertEqual(sheet.getContents("B1"),"=B2")
         sheet.insertRows('2', 1)
         self.assertEqual(sheet.getContents("B1"),"=B3")
 
@@ -700,8 +744,11 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.setAlias('B1', 'alias1')
         box = self.doc.addObject('Part::Box', 'Box')
         box.setExpression('Length', 'Spreadsheet.alias1')
+        box2 = self.doc.addObject('Part::Box', 'Box')
+        box2.setExpression('Length', '<<Spreadsheet>>.alias1')
         sheet.Label = "Params"
-        self.assertEqual(box.ExpressionEngine[0][1], "Params.alias1");
+        self.assertEqual(box.ExpressionEngine[0][1], "Spreadsheet.alias1");
+        self.assertEqual(box2.ExpressionEngine[0][1], "<<Params>>.alias1");
 
     def testAlias(self):
         """ Playing with aliases """
@@ -721,7 +768,7 @@ class SpreadsheetCases(unittest.TestCase):
         try:
             sheet.setAlias("A2","Test")
             self.fail("An ambiguous alias was set which shouldn't be allowed")
-        except:
+        except Exception:
             self.assertEqual(sheet.getAlias("A2"),None)
 
     def testClearAlias(self):
@@ -736,7 +783,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject("Spreadsheet::Sheet","Calc")
         try:
             sheet.setAlias("A1","B1")
-        except:
+        except Exception:
             self.assertEqual(sheet.getAlias("A1"),None)
         else:
             self.fail("A cell address was used as alias which shouldn't be allowed")
@@ -746,7 +793,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject("Spreadsheet::Sheet","Calc")
         try:
             sheet.setAlias("A1","mA")
-        except:
+        except Exception:
             self.assertEqual(sheet.getAlias("A1"), None)
         else:
             self.fail("A unit (reserved word) was used as alias which shouldn't be allowed")
@@ -755,7 +802,7 @@ class SpreadsheetCases(unittest.TestCase):
         """ Object name is equal to property name (bug #2389) """
         if not FreeCAD.GuiUp:
             return
-        
+
         import FreeCADGui
         o = self.doc.addObject("Part::FeaturePython","Placement")
         FreeCADGui.Selection.addSelection(o)
@@ -770,7 +817,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         sketch=self.doc.addObject('Sketcher::SketchObject','Sketch')
         sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
-        sketch.addConstraint(Sketcher.Constraint('Distance',0,65.285388)) 
+        sketch.addConstraint(Sketcher.Constraint('Distance',0,65.285388))
         sketch.setExpression('Constraints[0]', 'InvoluteGear.NumberOfTeeth')
         self.doc.recompute()
         self.assertIn('Up-to-date',sketch.State)
@@ -785,13 +832,13 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
 
         index=sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
-        sketch.addConstraint(Sketcher.Constraint('Distance',index,14.0)) 
+        sketch.addConstraint(Sketcher.Constraint('Distance',index,14.0))
         self.doc.recompute()
-        sketch.setExpression('Constraints[0]', u'Spreadsheet.Length')
+        sketch.setExpression('Constraints[0]', u'<<Spreadsheet>>.Length')
         self.doc.recompute()
         sheet.Label="Calc"
         self.doc.recompute()
-        self.assertEqual(sketch.ExpressionEngine[0][1],'Calc.Length')
+        self.assertEqual(sketch.ExpressionEngine[0][1],'<<Calc>>.Length')
         self.assertIn('Up-to-date',sketch.State)
 
     def testCrossDocumentLinks(self):
@@ -822,6 +869,150 @@ class SpreadsheetCases(unittest.TestCase):
 
         # Close second document
         FreeCAD.closeDocument(doc2.Name)
+
+    def testMatrix(self):
+        ''' Test Matrix/Vector/Placement/Rotation operations'''
+
+        def plm_equal(plm1, plm2):
+            from math import sqrt
+            qpair = zip(plm1.Rotation.Q, plm2.Rotation.Q)
+            qdiff1 = sqrt(sum([(v1 - v2)**2 for v1,v2 in qpair]))
+            qdiff2 = sqrt(sum([(v1 + v2)**2 for v1,v2 in qpair]))
+            return (plm1.Base-plm2.Base).Length < 1e-7 and (qdiff1 < 1e-12 or dqiff2 < 1e-12)
+
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+
+        mat = FreeCAD.Matrix()
+        mat.scale(2,1,2)
+        imat = mat.inverse()
+
+        vec = FreeCAD.Vector(2,1,2)
+
+        rot = FreeCAD.Rotation(FreeCAD.Vector(0,1,0),45)
+        irot = rot.inverted()
+
+        pla = FreeCAD.Placement(vec,rot)
+        ipla = pla.inverse()
+
+        sheet.set('A1', '=create(<<vector>>, 2, 1, 2)')
+
+        # different ways of calling mscale()
+        sheet.set('B1', '=mscale(create(<<matrix>>), A1)')
+        sheet.set('C1', '=mscale(create(<<matrix>>), tuple(2, 1, 2))')
+        sheet.set('A2', '=mscale(create(<<matrix>>), 2, 1, 2)')
+
+        # test matrix power operation
+        sheet.set('B2', '=A2^-2')
+        sheet.set('C2', '=A2^-1')
+        sheet.set('D2', '=A2^0')
+        sheet.set('E2', '=A2^1')
+        sheet.set('F2', '=A2^2')
+        sheet.set('G2', '=create(<<matrix>>, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)')
+        sheet.set('H2', '=G2^-1')
+
+        sheet.set('A3', '=create(<<rotation>>, create(<<vector>>, 0, 1, 0), 45)')
+
+        # test rotation power operation
+        sheet.set('B3', '=A3^-2')
+        sheet.set('C3', '=A3^-1')
+        sheet.set('D3', '=A3^0')
+        sheet.set('E3', '=A3^1')
+        sheet.set('F3', '=A3^2')
+
+        sheet.set('A4', '=create(<<placement>>, A1, A3)')
+
+        # test placement power operation
+        sheet.set('B4', '=A4^-2')
+        sheet.set('C4', '=A4^-1')
+        sheet.set('D4', '=A4^0')
+        sheet.set('E4', '=A4^1')
+        sheet.set('F4', '=A4^2')
+
+        # vector transformation with mixing matrix and placement and rotation
+        sheet.set('A5', '=A2*A3*A4*A1')
+        sheet.set('B5', '=B2*B4*B3*A1')
+        sheet.set('C5', '=C3*C2*C4*A1')
+        sheet.set('D5', '=D3*D4*D2*A1')
+        sheet.set('E5', '=E4*E2*E3*A1')
+        sheet.set('F5', '=F3*F4*F2*A1')
+
+        # inverse of the above transformation with power -1 and minvert()
+        sheet.set('A6', '=A4^-1 * minvert(A3) * A2^-1 * A5')
+        sheet.set('B6', '=minvert(B3) * B4^-1 * minvert(B2) * B5')
+        sheet.set('C6', '=C4^-1 * C2^-1 * C3^-1 * C5')
+        sheet.set('D6', '=minvert(D4*D2) * minvert(D3) * D5')
+        sheet.set('E6', '=(E2 * E3)^-1 * E4^-1 * E5')
+        sheet.set('F6', '=(F3*F4*F2)^-1 * F5')
+
+        self.doc.recompute()
+
+        self.assertEqual(sheet.A1,vec)
+
+        self.assertEqual(sheet.B1,mat)
+        self.assertEqual(sheet.C1,mat)
+        self.assertEqual(sheet.A2,mat)
+
+        self.assertEqual(sheet.B2,imat*imat)
+        self.assertEqual(sheet.B2,mat**-2)
+        self.assertEqual(sheet.C2,imat)
+        self.assertEqual(sheet.C2,mat**-1)
+        self.assertEqual(sheet.D2,FreeCAD.Matrix())
+        self.assertEqual(sheet.D2,mat**0)
+        self.assertEqual(sheet.E2,mat)
+        self.assertEqual(sheet.E2,mat**1)
+        self.assertEqual(sheet.F2,mat*mat)
+        self.assertEqual(sheet.F2,mat**2)
+
+        self.assertTrue(sheet.H2.startswith(u'ERR: Cannot invert singular matrix'))
+
+        self.assertEqual(sheet.A3,rot)
+
+        rtol = 1e-12
+        self.assertTrue(sheet.B3.isSame(irot*irot,rtol))
+        self.assertTrue(sheet.B3.isSame(rot**-2,rtol))
+        self.assertTrue(sheet.C3.isSame(irot,rtol))
+        self.assertTrue(sheet.C3.isSame(rot**-1,rtol))
+        self.assertTrue(sheet.D3.isSame(FreeCAD.Rotation(),rtol))
+        self.assertTrue(sheet.D3.isSame(rot**0,rtol))
+        self.assertTrue(sheet.E3.isSame(rot,rtol))
+        self.assertTrue(sheet.E3.isSame(rot**1,rtol))
+        self.assertTrue(sheet.F3.isSame(rot*rot,rtol))
+        self.assertTrue(sheet.F3.isSame(rot**2,rtol))
+
+        self.assertEqual(sheet.A4,pla)
+
+        self.assertTrue(plm_equal(sheet.B4,ipla*ipla))
+        self.assertTrue(plm_equal(sheet.B4,pla**-2))
+        self.assertTrue(plm_equal(sheet.C4,ipla))
+        self.assertTrue(plm_equal(sheet.C4,pla**-1))
+        self.assertTrue(plm_equal(sheet.D4,FreeCAD.Placement()))
+        self.assertTrue(plm_equal(sheet.D4,pla**0))
+        self.assertTrue(plm_equal(sheet.E4,pla))
+        self.assertTrue(plm_equal(sheet.E4,pla**1))
+        self.assertTrue(plm_equal(sheet.F4,pla*pla))
+        self.assertTrue(plm_equal(sheet.F4,pla**2))
+
+        tol = 1e-10
+
+        self.assertLess(sheet.A5.distanceToPoint(
+            sheet.A2.multiply(sheet.A3.Matrix).multiply(sheet.A4.Matrix).multVec(vec)),tol)
+        self.assertLess(sheet.B5.distanceToPoint(
+            sheet.B2.multiply(sheet.B4.Matrix).multiply(sheet.B3.Matrix).multVec(vec)),tol)
+        self.assertLess(sheet.C5.distanceToPoint(
+            sheet.C3.Matrix.multiply(sheet.C2).multiply(sheet.C4.Matrix).multVec(vec)),tol)
+        self.assertLess(sheet.D5.distanceToPoint(
+            sheet.D3.Matrix.multiply(sheet.D4.Matrix).multiply(sheet.D2).multVec(vec)),tol)
+        self.assertLess(sheet.E5.distanceToPoint(
+            sheet.E4.Matrix.multiply(sheet.E2).multiply(sheet.E3.Matrix).multVec(vec)),tol)
+        self.assertLess(sheet.F5.distanceToPoint(
+            sheet.F3.Matrix.multiply(sheet.F4.Matrix).multiply(sheet.F2).multVec(vec)),tol)
+
+        self.assertLess(sheet.A6.distanceToPoint(vec),tol)
+        self.assertLess(sheet.B6.distanceToPoint(vec),tol)
+        self.assertLess(sheet.C6.distanceToPoint(vec),tol)
+        self.assertLess(sheet.D6.distanceToPoint(vec),tol)
+        self.assertLess(sheet.E6.distanceToPoint(vec),tol)
+        self.assertLess(sheet.F6.distanceToPoint(vec),tol)
 
     def testIssue3128(self):
         """ Regression test for issue 3128; mod should work with arbitrary units for both arguments """
@@ -860,6 +1051,97 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         self.assertEqual(sheet.get('C1'), Units.Quantity('3 mm'))
 
+    def testIssue4156(self):
+        """ Regression test for issue 4156; necessarily use of leading '=' to enter an expression, creates inconsistent behavior depending on the spreadsheet state"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A3', 'A1')
+        sheet.set('A1', '1000')
+        self.doc.recompute()
+        sheet.set('A3', '')
+        sheet.set('A3', 'A1')
+        self.assertEqual(sheet.getContents('A3'), 'A1')
+
+    def testInsertRowsAlias(self):
+        """ Regression test for issue 4429; insert rows to sheet with aliases"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A3', '1')
+        sheet.setAlias('A3', 'alias1')
+        sheet.set('A4', '=alias1 + 1')
+        sheet.setAlias('A4', 'alias2')
+        sheet.set('A5', '=alias2 + 1')
+        self.doc.recompute()
+        sheet.insertRows('1', 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.A6, 3)
+
+    def testInsertColumnsAlias(self):
+        """ Regression test for issue 4429; insert columns to sheet with aliases"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('C1', '1')
+        sheet.setAlias('C1', 'alias1')
+        sheet.set('D1', '=alias1 + 1')
+        sheet.setAlias('D1', 'alias2')
+        sheet.set('E1', '=alias2 + 1')
+        self.doc.recompute()
+        sheet.insertColumns('A', 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.F1, 3)
+
+    def testRemoveRowsAlias(self):
+        """ Regression test for issue 4429; remove rows from sheet with aliases"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A3', '1')
+        sheet.setAlias('A3', 'alias1')
+        sheet.set('A5', '=alias1 + 1')
+        sheet.setAlias('A5', 'alias2')
+        sheet.set('A4', '=alias2 + 1')
+        self.doc.recompute()
+        sheet.removeRows('1', 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.A3, 3)
+
+    def testRemoveRowsAliasReuseName(self):
+        """ Regression test for issue 4492; deleted aliases remains in database"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('B2', 'test')
+        self.doc.recompute()
+        sheet.removeRows('2', 1)
+        sheet.setAlias('B3','test')
+
+    def testRemoveColumnsAlias(self):
+        """ Regression test for issue 4429; remove columns from sheet with aliases"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('C1', '1')
+        sheet.setAlias('C1', 'alias1')
+        sheet.set('E1', '=alias1 + 1')
+        sheet.setAlias('E1', 'alias2')
+        sheet.set('D1', '=alias2 + 1')
+        self.doc.recompute()
+        sheet.removeColumns('A', 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.C1, 3)
+
+    def testRemoveColumnsAliasReuseName(self):
+        """ Regression test for issue 4492; deleted aliases remains in database"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('B2', 'test')
+        self.doc.recompute()
+        sheet.removeColumns('B', 1)
+        sheet.setAlias('C3','test')
+
+    def testUndoAliasCreationReuseName(self):
+        """ Test deleted aliases by undo remains in database"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+
+        self.doc.UndoMode = 1
+        self.doc.openTransaction("create alias")
+        sheet.setAlias('B2', 'test')
+        self.doc.commitTransaction()
+        self.doc.recompute()
+
+        self.doc.undo()
+        self.doc.recompute()
+        sheet.setAlias('C3','test')
 
     def tearDown(self):
         #closing doc

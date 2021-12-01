@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen (eivind@kvedalen.name)             *
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,8 +41,10 @@
 #include <Gui/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
+#include "DlgSettingsImp.h"
 #include "Workbench.h"
 #include "ViewProviderSpreadsheet.h"
 #include "SpreadsheetView.h"
@@ -73,17 +75,19 @@ public:
 private:
     Py::Object open(const Py::Tuple& args)
     {
-        const char* Name;
+        char* Name;
         const char* DocName=0;
-        if (!PyArg_ParseTuple(args.ptr(), "s|s",&Name,&DocName))
+        if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
             throw Py::Exception();
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
 
         try {
-            Base::FileInfo file(Name);
+            Base::FileInfo file(EncodedName);
             App::Document *pcDoc = App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
             Spreadsheet::Sheet *pcSheet = static_cast<Spreadsheet::Sheet *>(pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
 
-            pcSheet->importFromFile(Name, '\t', '"', '\\');
+            pcSheet->importFromFile(EncodedName, '\t', '"', '\\');
             pcSheet->execute();
         }
         catch (const Base::Exception& e) {
@@ -114,8 +118,13 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     CreateSpreadsheetCommands();
 
     SpreadsheetGui::ViewProviderSheet::init();
+    SpreadsheetGui::ViewProviderSheetPython::init();
     SpreadsheetGui::Workbench::init();
-//    SpreadsheetGui::SheetView::init();
+    SpreadsheetGui::SheetView::init();
+    SpreadsheetGui::SheetViewPy::init_type();
+
+    // register preference page
+    new Gui::PrefPageProducer<SpreadsheetGui::DlgSettingsImp> ("Spreadsheet");
 
     // add resources and reloads the translators
     loadSpreadsheetResource();

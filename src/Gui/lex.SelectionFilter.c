@@ -1,3 +1,23 @@
+/***************************************************************************
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
 #line 2 "lex.SelectionFilter.c"
 
 #line 4 "lex.SelectionFilter.c"
@@ -506,7 +526,7 @@ char *SelectionFiltertext;
 #line 1 "SelectionFilter.l"
 #line 2 "SelectionFilter.l"
 /* Lexer for the FreeCAD selection filter language */
-/* (c) 2010 Juergen Riegel  LGPL                    */
+/* Copyright (c) 2010 Jürgen Riegel  LGPL          */
 
 /*  flex -o lex.SelectionFilter.c SelectionFilter.l */
 
@@ -836,7 +856,7 @@ case 8:
 YY_RULE_SETUP
 #line 41 "SelectionFilter.l"
 {
-       yylval.string = new std::string(SelectionFiltertext);
+       yylval.string = StringFactory::New(SelectionFiltertext);
        return TIDENTIFIER;
       }
 	YY_BREAK

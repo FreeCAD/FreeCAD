@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -26,10 +25,10 @@ import FreeCADGui
 import PathScripts
 from PySide import QtCore
 
-"""Path SimpleCopy command"""
+__doc__ = """Path SimpleCopy command"""
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -37,7 +36,7 @@ def translate(context, text, disambig=None):
 class CommandPathSimpleCopy:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-SimpleCopy',
+        return {'Pixmap': 'Path_SimpleCopy',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SimpleCopy", "Simple Copy"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SimpleCopy", "Creates a non-parametric copy of another path")}
 
@@ -47,7 +46,7 @@ class CommandPathSimpleCopy:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except:
+        except Exception: # pylint: disable=broad-except
             return False
 
     def Activated(self):
@@ -68,8 +67,7 @@ class CommandPathSimpleCopy:
 
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.addModule("PathScripts.PathCustom")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","' + selection[0].Name + '_SimpleCopy")')
-        FreeCADGui.doCommand('PathScripts.PathCustom.ObjectCustom(obj)')
+        FreeCADGui.doCommand('obj = PathScripts.PathCustom.Create("' + selection[0].Name + '_SimpleCopy")')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
         FreeCADGui.doCommand('obj.Gcode = [c.toGCode() for c in srcpath.Commands]')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')

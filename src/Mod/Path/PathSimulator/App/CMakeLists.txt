@@ -44,12 +44,6 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 add_library(PathSimulator SHARED ${PathSimulator_SRCS})
 target_link_libraries(PathSimulator ${PathSimulator_LIBS})
 
-
-fc_target_copy_resource(PathSimulator 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Path
-    ${CMAKE_BINARY_DIR}/Mod/Path
-    Init.py)
-
 SET_BIN_DIR(PathSimulator PathSimulator /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(PathSimulator)
 

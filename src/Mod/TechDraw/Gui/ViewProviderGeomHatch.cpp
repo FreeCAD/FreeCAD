@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2017 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -55,10 +55,12 @@
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "TaskGeomHatch.h"
+#include "PreferencesGui.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderGeomHatch.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderGeomHatch, Gui::ViewProviderDocumentObject)
 
@@ -67,12 +69,13 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderGeomHatch, Gui::ViewProviderDocumentObj
 
 ViewProviderGeomHatch::ViewProviderGeomHatch()
 {
-    sPixmap = "actions/techdraw-geomhatch";
+    sPixmap = "actions/TechDraw_GeometricHatch";
 
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(ColorPattern,(0),vgroup,App::Prop_None,"The color of the pattern");
-    ADD_PROPERTY_TYPE(WeightPattern,(0),vgroup,App::Prop_None,"GeomHatch pattern line thickness");
+    ADD_PROPERTY_TYPE(ColorPattern,(TechDraw::DrawGeomHatch::prefGeomHatchColor()),
+                        vgroup,App::Prop_None,"Color of the pattern");
+    ADD_PROPERTY_TYPE(WeightPattern,(0),vgroup,App::Prop_None,"GeometricHatch pattern line thickness");
 
     getParameters();
 
@@ -181,24 +184,33 @@ void ViewProviderGeomHatch::updateGraphic(void)
    }
 }
 
-
 void ViewProviderGeomHatch::getParameters(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Hatch", 0x00FF0000));
-    ColorPattern.setValue(fcColor);
-
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     double weight = lg->getWeight("Graphic");
     delete lg;                                                    //Coverity CID 174667
     WeightPattern.setValue(weight);
 }
 
+bool ViewProviderGeomHatch::canDelete(App::DocumentObject *obj) const
+{
+    // deletion of hatches don't destroy anything
+    // thus we can pass this action
+    Q_UNUSED(obj)
+    return true;
+}
+
 TechDraw::DrawGeomHatch* ViewProviderGeomHatch::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawGeomHatch*>(pcObject);
+}
+
+Gui::MDIView *ViewProviderGeomHatch::getMDIView() const
+{
+    auto obj = getViewObject();
+    if(!obj) return 0;
+    auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());
+    if(!vp) return 0;
+    return vp->getMDIView();
 }

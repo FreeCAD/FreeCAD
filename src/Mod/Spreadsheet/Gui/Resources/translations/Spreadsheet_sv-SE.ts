@@ -1,26 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sv-SE" sourcelanguage="en">
+<TS version="2.1" language="sv-SE" sourcelanguage="en">
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkylark</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Verkställ</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation type="unfinished">Apply the changes to the current cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Radera</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation type="unfinished">Deletes the contents of the current cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Beräkna</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation type="unfinished">Updates the values handled by controllers</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Skapa kalkylark</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkylark</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+    </message>
+  </context>
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Create spreadsheet</source>
-      <translation>Skapa kalkylblad</translation>
+      <translation>Skapa kalkylark</translation>
     </message>
     <message>
       <source>Create a new spreadsheet</source>
-      <translation>Skapa ett nytt kalkylblad</translation>
+      <translation>Skapa ett nytt kalkylark</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Align bottom</source>
@@ -35,7 +132,7 @@
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Align center</source>
@@ -50,7 +147,7 @@
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Align left</source>
@@ -65,7 +162,7 @@
     <name>CmdSpreadsheetAlignRight</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Align right</source>
@@ -80,7 +177,7 @@
     <name>CmdSpreadsheetAlignTop</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Align top</source>
@@ -88,29 +185,29 @@
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Topjustera innehållet i markerade celler</translation>
+      <translation>Toppjustera innehållet i markerade celler</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Vertically center-align</source>
       <translation>Centrera vertikalt</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Centrera vertikalt innehållet i markerade celler</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Centrera innehållet i markerade celler vertikalt</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Export spreadsheet</source>
@@ -125,7 +222,7 @@
     <name>CmdSpreadsheetImport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Import spreadsheet</source>
@@ -140,22 +237,22 @@
     <name>CmdSpreadsheetMergeCells</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Merge cells</source>
       <translation>Sammanfoga celler</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Sammanfoga markerade celler i kalkylark</translation>
+      <source>Merge selected cells</source>
+      <translation>Sammanfoga markerade celler</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Set alias</source>
@@ -170,67 +267,150 @@
     <name>CmdSpreadsheetSplitCell</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Split cell</source>
-      <translation>Dela upp cell</translation>
+      <translation>Dela cell</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Dela upp tidigare sammanfogade celler i kalkylark</translation>
+      <source>Split previously merged cells</source>
+      <translation>Dela sammanslagna celler</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Bold text</source>
       <translation>Fet text</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Gör texten fet i markerade celler</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Gör texten i markerade celler fet</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Italic text</source>
       <translation>Kursiv text</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Gör texten kursiv i markerade celler</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Gör texten i markerade celler kursiv</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <source>Underline text</source>
       <translation>Understruken text</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Stryk under text i markerade celler</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Gör texten i markerade celler understruken</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Anpassad</translation>
+      <source>Custom Color</source>
+      <translation>Anpassad färg</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Sammanfoga celler</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Dela cell</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Vänsterjustera cell</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Centrera cell</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Högerjustera cell</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Toppjustera cell</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Bottenjustera cell</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Centrera celler vertikalt</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Ställ in fet stil</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Ställ in kursiv text</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Ställ in understruken text</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Skapa kalkylark</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Ange cellegenskaper</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Redigera cell</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Infoga rader</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Ta bort rader</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Infoga kolumner</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Rensa cell(er)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Ställ in förgrundsfärg</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Ställ in bakgrundsfärg</translation>
     </message>
   </context>
   <context>
@@ -265,7 +445,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation>Mitten</translation>
+      <translation>Centrum</translation>
     </message>
     <message>
       <source>Right</source>
@@ -301,11 +481,11 @@
     </message>
     <message>
       <source>&amp;Display unit</source>
-      <translation>Displayenhet</translation>
+      <translation>Visningsenhet</translation>
     </message>
     <message>
       <source>Unit string</source>
-      <translation>Enhetssträng</translation>
+      <translation>Enhetstext</translation>
     </message>
     <message>
       <source>A&amp;lias</source>
@@ -331,28 +511,48 @@
       <translation>Exportera fil</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Cellinnehåll</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Visa kalkylark</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Ange förgrundsfärg för cell(er)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Anger förgrundsfärgen för cellen/cellerna</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Ange bakgrundsfärg för cell(er)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Anger bakgrundsfärgen för cellen/cellerna</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Kalkylark</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation>Kalkylbladet stöder inte markering av intervall när du klistrar in.
+Välj endast en cell.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation>Kopiera och klistra in misslyckades</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Alias innehåller ogiltiga tecken!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Referera till cellen via alias, till exempel
+Spreadsheet.my_alias_name, istället för Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -403,7 +603,7 @@
     </message>
     <message>
       <source>Dark magenta</source>
-      <translation>Mörk-magenta</translation>
+      <translation>Mörkmagenta</translation>
     </message>
     <message>
       <source>Yellow</source>
@@ -426,8 +626,8 @@
       <translation>Ljusgrå</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Anpassad</translation>
+      <source>Custom Color</source>
+      <translation>Anpassad färg</translation>
     </message>
   </context>
   <context>
@@ -437,8 +637,73 @@
       <translation>Form</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Innehåll</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Innehåll:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>Alias ​​</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Referera till cellen via alias, till exempel
+Spreadsheet.my_alias_name, istället för Spreadsheet.B1</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Kalkylark</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation type="unfinished">Import/Export Settings</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation type="unfinished">Delimiter Character: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation type="unfinished">\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation type="unfinished">Escape Character: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation type="unfinished">tab</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation type="unfinished">Quote Character: </translation>
     </message>
   </context>
   <context>
@@ -451,31 +716,71 @@
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Infoga rader</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Ta bort rader</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Infoga kolumner</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Radera kolumner</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Egenskaper...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Ta bort kolumn</numerusform>
+        <numerusform>Ta bort kolumner</numerusform>
+      </translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
   </context>
 </TS>

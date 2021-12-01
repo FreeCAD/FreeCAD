@@ -26,7 +26,7 @@
 
 
 #include <string>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include "DocumentObject.h"
 #include "PropertyStandard.h"
@@ -42,17 +42,19 @@ public:
     using TextSlot = TextSignal::slot_type;
 
     PropertyString Text;
-    PropertyBool ReadOnly;
 
     TextDocument();
-    ~TextDocument() {};
+    ~TextDocument() {}
 
     void onChanged(const Property* prop);
     const char* getViewProviderName() const;
 
-    boost::signals2::connection connect(const TextSlot &sub);
+    boost::signals2::connection connectText(const TextSlot &sub);
+    boost::signals2::connection connectLabel(const TextSlot &sub);
+
 private:
     TextSignal textChanged;
+    TextSignal labelChanged;
 };
 
 }

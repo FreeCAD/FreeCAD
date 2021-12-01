@@ -27,8 +27,7 @@
 #*   Werner Mayer 2003                                                     *
 #***************************************************************************
 
-import os,sys,string
-import FCFileTools
+import os,sys
 import MakeAppTools
 import re
 
@@ -93,7 +92,7 @@ def createApp(Application):
 	sys.stdout.write("Modifying files...\n")
 	MakeAppTools.replaceTemplate("../Mod/" + Application,"_TEMPLATEPY_",Application)
 	MakeAppTools.replaceTemplate("../Mod/" + Application,"${CMAKE_SOURCE_DIR}/src/Tools/","${CMAKE_SOURCE_DIR}/src/Mod/")
-	# make the congigure script executable
+	# make the configure script executable
 	#os.chmod("../Mod/" + Application + "/configure", 0777);
 	sys.stdout.write("Modifying files done.\n")
 
@@ -110,12 +109,13 @@ def validateApp(AppName):
 	clName="class "+AppName+": self=0"
 	try:
 		exec(clName)
-	except:
+	except Exception:
 		# Invalid class name
 		sys.stdout.write("Invalid name: '"+AppName+"'\n")
 		sys.exit()
 
 sys.stdout.write("Please enter a name for your application:")
+sys.stdout.flush()
 AppName = sys.stdin.readline()[:-1]
 validateApp(AppName)
 createApp(AppName)

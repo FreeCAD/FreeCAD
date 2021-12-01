@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tr�ger          (stefantroeger@gmx.net) 2015     *
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,9 +48,12 @@ PROPERTY_SOURCE(App::Origin, App::DocumentObject)
 const char* Origin::AxisRoles[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
 const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
 
-Origin::Origin(void) {
+Origin::Origin(void) : extension(this) {
     ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, App::Prop_Hidden,
             "Axis and baseplanes controlled by the origin" );
+
+    setStatus(App::NoAutoExpand,true);
+    extension.initExtension(this);
 }
 
 
@@ -69,7 +72,7 @@ App::OriginFeature *Origin::getOriginFeature( const char *role) const {
     } else {
 
         std::stringstream err;
-        err << "Origin \"" << getNameInDocument () << "\" doesn't contain feature with role \""
+        err << "Origin \"" << getFullName () << "\" doesn't contain feature with role \""
             << role << '"';
         throw Base::RuntimeError ( err.str().c_str () );
     }
@@ -81,7 +84,7 @@ App::Line *Origin::getAxis( const char *role ) const {
         return static_cast<App::Line *> (feat);
     } else {
         std::stringstream err;
-        err << "Origin \"" << getNameInDocument () << "\" contains bad Axis object for role \""
+        err << "Origin \"" << getFullName () << "\" contains bad Axis object for role \""
             << role << '"';
         throw Base::RuntimeError ( err.str().c_str () );
     }
@@ -93,7 +96,7 @@ App::Plane *Origin::getPlane( const char *role ) const {
         return static_cast<App::Plane *> (feat);
     } else {
         std::stringstream err;
-        err << "Origin \"" << getNameInDocument () << "\" comtains bad Plane object for role \""
+        err << "Origin \"" << getFullName () << "\" contains bad Plane object for role \""
             << role << '"';
         throw Base::RuntimeError ( err.str().c_str () );
     }
@@ -178,5 +181,46 @@ void Origin::unsetupObject () {
                 obj->getDocument()->removeObject (obj->getNameInDocument());
             }
         }
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+Origin::OriginExtension::OriginExtension(Origin* obj)
+    : obj(obj)
+{
+    Group.setStatus(Property::Transient, true);
+}
+
+void Origin::OriginExtension::initExtension(ExtensionContainer* obj) {
+    App::GroupExtension::initExtension(obj);
+}
+
+bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
+                                                    PyObject **, Base::Matrix4D *, bool, int) const {
+    if (!subname || subname[0] == '\0') {
+        return false;
+    }
+
+    // mapping of object name to role name
+    std::string name(subname);
+    for (int i=0; i<3; i++) {
+        if (name.rfind(Origin::AxisRoles[i], 0) == 0) {
+            name = Origin::AxisRoles[i];
+            break;
+        }
+        if (name.rfind(Origin::PlaneRoles[i], 0) == 0) {
+            name = Origin::PlaneRoles[i];
+            break;
+        }
+    }
+
+    try {
+        ret = obj->getOriginFeature(name.c_str());
+        return true;
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+        return false;
     }
 }

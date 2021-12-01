@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -154,7 +154,7 @@ Py::List TrajectoryPy::getWaypoints(void) const
 {
     Py::List list;
     for(unsigned int i = 0; i < getTrajectoryPtr()->getSize(); i++)
-        list.append(Py::Object(new Robot::WaypointPy(new Robot::Waypoint(getTrajectoryPtr()->getWaypoint(i)))));
+        list.append(Py::asObject(new Robot::WaypointPy(new Robot::Waypoint(getTrajectoryPtr()->getWaypoint(i)))));
 
     return list;
 }

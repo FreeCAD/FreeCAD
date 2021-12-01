@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -55,9 +56,10 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <Standard_Version.hxx>
+# include <QObject>
 #endif
 // TODO Cleanup headers (2015-09-04, Fat-Zer)
-#include <QObject>
+
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -78,7 +80,7 @@ using namespace Attacher;
 PROPERTY_SOURCE(PartDesign::Point, Part::Datum)
 
 Point::Point()
-{    
+{
     this->setAttacher(new AttachEnginePoint);
     this->makeShape();
 }

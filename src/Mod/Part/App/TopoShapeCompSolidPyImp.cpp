@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,9 +22,12 @@
 
 
 #include "PreCompiled.h"
-#include <BRep_Builder.hxx>
-#include <Standard_Failure.hxx>
-#include <TopoDS_CompSolid.hxx>
+
+#ifndef _PreComp_
+# include <BRep_Builder.hxx>
+# include <Standard_Failure.hxx>
+# include <TopoDS_CompSolid.hxx>
+#endif
 
 #include "OCCError.h"
 #include "TopoShape.h"
@@ -52,6 +55,13 @@ PyObject *TopoShapeCompSolidPy::PyMake(struct _typeobject *, PyObject *, PyObjec
 
 int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined CompSolid
+        getTopoShapePtr()->setShape(TopoDS_CompSolid());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O", &pcObj))
         return -1;
@@ -89,7 +99,7 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
-    
+
     try {
         const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->
             getTopoShapePtr()->getShape();
@@ -116,5 +126,5 @@ PyObject *TopoShapeCompSolidPy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeCompSolidPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

@@ -35,7 +35,7 @@ public:
   }
 
   void setDefaultExtract() ;
-  inline ZipLocalEntry &operator=( const class ZipLocalEntry &src ) ;
+  //inline ZipLocalEntry &operator=( const class ZipLocalEntry &src ) ;
   virtual string getComment() const ;
   virtual uint32 getCompressedSize() const ;
   virtual uint32 getCrc() const ;
@@ -123,7 +123,7 @@ public:
 
   void setDefaultWriter() ;
 
-  ZipCDirEntry &operator=( const class ZipCDirEntry &src ) ;
+  //ZipCDirEntry &operator=( const class ZipCDirEntry &src ) ;
   virtual string toString() const ;
 
   virtual string getComment() const ;

@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   (c) Yorik van Havre (yorik@uncreated.net) 2014                        *
+# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,13 +19,14 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
 
 '''
 This is an example preprocessor file for the Path workbench. Its aim is to
 open a gcode file, parse its contents, and create the appropriate objects
-in FreeCAD.
+in FreeCAD. This preprocessor will not add imported gcode to an existing
+job. For a more useful preprocessor, look at the gcode_pre.py file
 
 Read the Path Workbench documentation to know how to create Path objects
 from GCode.
@@ -36,21 +37,22 @@ import Path
 import FreeCAD
 import PathScripts.PathLog as PathLog
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+# LEVEL = PathLog.Level.DEBUG
+LEVEL = PathLog.Level.INFO
+PathLog.setLevel(LEVEL, PathLog.thisModule())
+
+if LEVEL == PathLog.Level.DEBUG:
     PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
 
 def open(filename):
-    PathLog.track(filename)
     "called when freecad opens a file."
+    PathLog.track(filename)
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     insert(filename, doc.Name)
@@ -68,40 +70,38 @@ def insert(filename, docname):
     path = Path.Path(gcode)
     obj.Path = path
 
+
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
     print("preprocessing...")
-    print(inputstring)
     PathLog.track(inputstring)
     # split the input by line
     lines = inputstring.split("\n")
-    output = ""
+    output = []
     lastcommand = None
-    print (lines)
 
-    for l in lines:
+    for lin in lines:
         # remove any leftover trailing and preceding spaces
-        l = l.strip()
-        if not l:
+        lin = lin.strip()
+        if not lin:
             # discard empty lines
             continue
-        if l[0].upper() in ["N"]:
+        if lin[0].upper() in ["N"]:
             # remove line numbers
-            l = l.split(" ",1)
-            if len(l)>=1:
-                l = l[1]
+            lin = lin.split(" ", 1)
+            if len(lin) >= 1:
+                lin = lin[1].strip()
             else:
                 continue
 
-
-        if l[0] in ["(","%","#",";"]:
+        if lin[0] in ["(", "%", "#", ";"]:
             # discard comment and other non strictly gcode lines
             continue
-        if l[0].upper() in ["G","M"]:
+        if lin[0].upper() in ["G", "M"]:
             # found a G or M command: we store it
-            output += l + "\n"
-            last = l[0].upper()
-            for c in l[1:]:
+            output.append(Path.Command(str(lin)))
+            last = lin[0].upper()
+            for c in lin[1:]:
                 if not c.isdigit():
                     break
                 else:
@@ -109,7 +109,7 @@ def parse(inputstring):
             lastcommand = last
         elif lastcommand:
             # no G or M command: we repeat the last one
-            output += lastcommand + " " + l + "\n"
+            output.append(Path.Command(str(lastcommand + " " + lin)))
 
     print("done preprocessing.")
     return output

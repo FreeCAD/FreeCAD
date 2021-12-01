@@ -24,7 +24,7 @@
 #ifndef APP_MERGEDOCUMENTS_H
 #define APP_MERGEDOCUMENTS_H
 
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 #include <Base/Persistence.h>
 
 namespace zipios {
@@ -50,6 +50,8 @@ public:
     void SaveDocFile (Base::Writer & w) const;
     void RestoreDocFile(Base::Reader & r);
 
+    const std::map<std::string, std::string> &getNameMap() const {return nameMap;}
+
 private:
     bool guiup;
     bool verbose;
@@ -57,7 +59,7 @@ private:
     App::Document* appdoc;
     std::vector<App::DocumentObject*> objects;
     std::map<std::string, std::string> nameMap;
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectExport;
     Connection connectImport;
 };

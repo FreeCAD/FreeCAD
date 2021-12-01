@@ -1,362 +1,498 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="uk" sourcelanguage="en">
+<TS version="2.1" language="uk" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
-      <source>FreeCAD Start Center</source>
-      <translation>Центр початку роботи з FreeCAD</translation>
+      <location filename="TranslationTexts.py" line="42"/>
+      <source>Start</source>
+      <translation>Початок</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
-      <source>Start a new project</source>
-      <translation>Почати новий проект</translation>
+      <location filename="TranslationTexts.py" line="43"/>
+      <source>Documents</source>
+      <translation>Документи</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
-      <source>Recent Files</source>
-      <translation>Недавні файли</translation>
+      <location filename="TranslationTexts.py" line="44"/>
+      <source>Help</source>
+      <translation>Довідка</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="96"/>
-      <source>Tutorials</source>
-      <translation>Посібники</translation>
+      <location filename="TranslationTexts.py" line="45"/>
+      <source>Activity</source>
+      <translation>Активність</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
-      <source>FreeCAD Homepage</source>
-      <translation>Домашня сторінка FreeCAD</translation>
+      <location filename="TranslationTexts.py" line="46"/>
+      <source>Recent files</source>
+      <translation>Нещодавні файли</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
-      <source>Example projects</source>
-      <translation>Приклади проектів</translation>
+      <location filename="TranslationTexts.py" line="47"/>
+      <source>Tip</source>
+      <translation>Порада</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
-      <source>Schenkel STEP file</source>
-      <translation>файл Schenkel STEP</translation>
+      <location filename="TranslationTexts.py" line="48"/>
+      <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
+      <translation>Налаштувати кількість останніх файлів, які будуть показані тут, можна в меню Редагування -&gt; Налаштування -&gt; Загальні -&gt; Розмір списку останніх файлів</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
-      <source>Load a PartDesign example</source>
-      <translation>Завантажити приклад Розробки деталі</translation>
+      <location filename="TranslationTexts.py" line="49"/>
+      <source>Examples</source>
+      <translation>Приклади</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
-      <source>Load a Drawing extraction</source>
-      <translation>Завантажити видобуте креслення</translation>
+      <location filename="TranslationTexts.py" line="50"/>
+      <source>General documentation</source>
+      <translation>Загальна документація</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>Load a Robot simulation example</source>
-      <translation>Завантажити приклад моделювання Робота</translation>
+      <location filename="TranslationTexts.py" line="51"/>
+      <source>User hub</source>
+      <translation>Розділ для користувачів</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
-      <source>Projects from the Web</source>
-      <translation>Проекти з Інтернету</translation>
+      <location filename="TranslationTexts.py" line="52"/>
+      <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
+      <translation>Цей розділ містить документацію, корисну для користувачів FreeCAD загалом: перелік усіх робочих столів, детальні інструкції для встановлення та використання додатку FreeCAD, навчальні посібники та все, що вам потрібно для початку.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-      <source>Schenkel STEP</source>
-      <translation>Schenkel STEP</translation>
+      <location filename="TranslationTexts.py" line="53"/>
+      <source>Power users hub</source>
+      <translation>Розділ для досвідчених користувачів</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
-      <source>Complex Part</source>
-      <translation>Складна деталь</translation>
+      <location filename="TranslationTexts.py" line="54"/>
+      <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
+      <translation>У цьому розділі зібрана документація для досвідчених користувачів і людей, зацікавлених в написанні скриптів python. Ви також знайдете там сховище макросів, інструкції щодо їх встановлення, використання та додаткову інформацію про налаштування FreeCAD під ваші конкретні потреби.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
-      <source>Close this window after opening or creating a file</source>
-      <translation>Закрити це вікно після відкриття або створення файлу</translation>
+      <location filename="TranslationTexts.py" line="55"/>
+      <source>Developers hub</source>
+      <translation>Розділ для розробників</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
-      <source>Don't show me this window again next time</source>
-      <translation>Не показувати це вікно наступного разу</translation>
+      <location filename="TranslationTexts.py" line="56"/>
+      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
+      <translation>Цей розділ містить матеріали для розробників: Як самостійно встановити FreeCAD, як структурувати вихідний код FreeCAD + як орієнтуватися в ньому, як розробляти нові робочі середовища та / або вбудовувати FreeCAD у свій власний додаток.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
-      <source>Designing parts</source>
-      <translation>Проектування деталей</translation>
+      <location filename="TranslationTexts.py" line="57"/>
+      <source>Manual</source>
+      <translation>Керівництво</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
-      <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>Робочий простір &lt;b&gt;Розробка деталі&lt;/b&gt; призначений для створення комплексної деталі, що базується на простих 2D-ескізах. Використовуйте його для малювання 2D-форм, обмежуючи деякі їхні елементи та видавлюйте їх у тривимірні деталі.</translation>
+      <location filename="TranslationTexts.py" line="58"/>
+      <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
+      <translation>Посібник FreeCAD - це ще один, більш лінійний спосіб представити інформацію, що міститься у цій wiki. Його створено для читання, як книга, і він поверхнево познайомить вас з багатьма іншими сторінками з решітки вище. Також доступні &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt; версії електронних книг &lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
-      <source>Example workflow</source>
-      <translation>Приклад робочого процесу</translation>
+      <location filename="TranslationTexts.py" line="59"/>
+      <source>Workbenches documentation</source>
+      <translation>Документація робочих просторів</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
-      <source>Part Design</source>
-      <translation>Дизайн частини</translation>
+      <location filename="TranslationTexts.py" line="60"/>
+      <source>These are the help pages of all the workbenches currently installed on this computer.</source>
+      <translation>Це довідкові сторінки всіх верстатів, встановлених на цьому комп’ютері.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
-      <source>Designing architectural elements</source>
-      <translation>Проектування елементів архітектури</translation>
+      <location filename="TranslationTexts.py" line="61"/>
+      <source>Getting help from the community</source>
+      <translation>Отримати допомогу від спільноти</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
-      <source>Working with Meshes</source>
-      <translation>Робота із сітками</translation>
+      <location filename="TranslationTexts.py" line="62"/>
+      <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>&lt;a href="http://forum.freecadweb.org"&gt;Форум FreeCAD&lt;/a&gt; є чудовим місцем, щоб отримати допомогу від інших користувачів FreeCAD та розробників. Форум має багато розділів з різних питань та тем, що обговорюються. Якщо маєте сумніви, напишіть у більш загальний розділ &lt;a href="https://forum.freecadweb.org /viewforum.php?f=3"&gt;Допомога у використанні FreeCAD&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
-      <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>Робочій простір &lt;b&gt;Сітка&lt;/b&gt; використовується для роботи з об'єктами Сітка. Сітки більш прості 3D-об'єкти ніж об'єкт Деталь, але вони часто виявляються легшими для імпортування та експортування до або з інші програми.</translation>
+      <location filename="TranslationTexts.py" line="63"/>
+      <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
+      <translation>Якщо це буде ваш перший допис на форумі, спочатку обов'язково &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;прочитайте рекомендації&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
-      <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation>FreeCAD пропонує кілька інструментів для перетворення між об'єктами Сітка та Деталь.</translation>
+      <location filename="TranslationTexts.py" line="64"/>
+      <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
+      <translation>FreeCAD також підтримує загальнодоступний &lt;a href="https://www.freecadweb.org/tracker"&gt; відстежувач помилок &lt;/a&gt;, де кожен може надсилати помилки та пропонувати нові функції. Щоб уникнути зайвої роботи та мати найкращі шанси побачити помилку вирішеною, обов’язково прочитайте &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt; посібник із поданням помилок &lt;/a&gt; перед публікацією.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
-      <source>Work with Meshes</source>
-      <translation>Робота з сітками</translation>
+      <location filename="TranslationTexts.py" line="65"/>
+      <source>Available addons</source>
+      <translation>Доступні доповнення</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
-      <source>The complete workbench</source>
-      <translation>Повний робочий простір</translation>
+      <location filename="TranslationTexts.py" line="66"/>
+      <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
+      <translation>Нижче наведено список доступних додаткових робочих місць, які можна додати до інсталяції FreeCAD. Перегляньте та встановіть їх з меню Інструменти -&gt; Менеджер доповнень. Ви можете дізнатись більше про будь-який з них, натиснувши посилання нижче.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
-      <source>FreeCAD Complete workbench</source>
-      <translation>Повний робочий простір FreeCAD</translation>
+      <location filename="TranslationTexts.py" line="67"/>
+      <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
+      <translation>Якщо не сходиться з вашою версією FreeCAD, встановіть пакет документації FreeCAD, щоб отримати центри документації, довідку по робочих питаннях та окрему командну документацію без підключення до Інтернету.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="90"/>
-      <source>file size:</source>
-      <translation>розмір файлу:</translation>
+      <location filename="TranslationTexts.py" line="68"/>
+      <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
+      <translation>Не вдається отримати інформацію з GitHub? &lt;a href="EnableDownload.py"&gt; Авторизуйте FreeCAD з доступом до Інтернету &lt;/a&gt; та перезавантажте початкову сторінку.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="91"/>
-      <source>creation time:</source>
-      <translation>час створення:</translation>
+      <location filename="TranslationTexts.py" line="69"/>
+      <source>Recent commits</source>
+      <translation>Останні коміти</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
-      <source>last modified:</source>
-      <translation>остання зміна:</translation>
+      <location filename="TranslationTexts.py" line="70"/>
+      <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
+      <translation>Нижче наведено останні зміни, додані до &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt; FreeCAD-коду &lt;/a&gt;. Ці зміни можуть поки що не відображатися у версії FreeCAD, яку ви зараз використовуєте. Перевірте &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt; доступні варіанти &lt;/a&gt;, якщо хочете отримати версію для розробки.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
-      <source>populated with some of the most commonly used tools.</source>
-      <translation>заповнений інструментами, які використовуються найчастіше.</translation>
+      <location filename="TranslationTexts.py" line="71"/>
+      <source>See all commits on github</source>
+      <translation>Прегляд комітів на GitHub</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
-      <source>Latest videos</source>
-      <translation>Останні відео</translation>
+      <location filename="TranslationTexts.py" line="72"/>
+      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
+      <translation>Ви можете налаштувати папку на замовлення, яка відображатиметься у меню Редагувати -&gt; Налаштування -&gt; Пуск -&gt; Показати додаткову папку</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
-      <source>On the web</source>
-      <translation>В Інтернеті</translation>
+      <location filename="TranslationTexts.py" line="73"/>
+      <source>version</source>
+      <translation>версія</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
-      <source>This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</source>
-      <translation>Це головна сторінка FreeCAD. Тут ви можете знайти багато інформації про FreeCAD, включаючи посібники, приклади та документацію користувача.</translation>
+      <location filename="TranslationTexts.py" line="74"/>
+      <source>build</source>
+      <translation>збірка</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
-      <source>location:</source>
-      <translation>розташування:</translation>
+      <location filename="TranslationTexts.py" line="75"/>
+      <source>Create new...</source>
+      <translation>Створити новий...</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="94"/>
-      <source>User manual</source>
-      <translation>Посібник користувача</translation>
+      <location filename="TranslationTexts.py" line="76"/>
+      <source>Unknown</source>
+      <translation>Невідомо</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="97"/>
-      <source>Python resources</source>
-      <translation>Ресурси python</translation>
+      <location filename="TranslationTexts.py" line="77"/>
+      <source>Forum</source>
+      <translation>Форум</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>File not found</source>
-      <translation>Файл не знайдено</translation>
+      <location filename="TranslationTexts.py" line="78"/>
+      <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
+      <translation>Останні дописи на &lt;a href="https://forum.freecadweb.org"&gt;форумі FreeCAD&lt;/a&gt;:</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="99"/>
-      <source>from &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</source>
-      <translation>з &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</translation>
+      <location filename="TranslationTexts.py" line="79"/>
+      <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
+      <translation>Щоб відкрити будь-яке з наведених вище посилань у браузері вашого робочого столу, клацніть правою кнопкою миші -&gt; Відкрити у зовнішньому браузері</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="100"/>
-      <source>The FreeCAD-tutorial blog</source>
-      <translation>Блог "Посібник FreeCAD"</translation>
+      <location filename="TranslationTexts.py" line="80"/>
+      <source>Creation date</source>
+      <translation>Дата створення</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
-      <source>from &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</source>
-      <translation>з &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;каналу FreeCADNews&lt;/a&gt;</translation>
+      <location filename="TranslationTexts.py" line="81"/>
+      <source>Last modification</source>
+      <translation>Остання зміна</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
-      <source>This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.</source>
-      <translation>Це офіційний посібник користувача FreeCAD, який створений, підтримується та перекладається спільнотою FreeCAD.</translation>
+      <location filename="TranslationTexts.py" line="82"/>
+      <source>Notes</source>
+      <translation>Нотатки</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="103"/>
-      <source>The tutorials section on the FreeCAD website</source>
-      <translation>Розділ посібників на сайті FreeCAD</translation>
+      <location filename="TranslationTexts.py" line="83"/>
+      <source>Open start page preferences</source>
+      <translation type="unfinished">Open start page preferences</translation>
     </message>
+  </context>
+  <context>
+    <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="105"/>
-      <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
-      <translation>Блог, присвячений навчанню FreeCAD, підтримується членами спільноти FreeCAD</translation>
+      <location filename="../../Workbench.cpp" line="75"/>
+      <source>Start page</source>
+      <translation>Стартова сторінка</translation>
     </message>
+  </context>
+  <context>
+    <name>CmdStartPage</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
-      <source>Getting started</source>
-      <translation>Початок роботи</translation>
+      <location filename="../../Command.cpp" line="45"/>
+      <source>Start</source>
+      <translation>Початок</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
-      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation>Інтерфейс FreeCAD  поділений на робочі столи, які складаються з набору інструментів для конкретного завдань. Ви можете почати з одним робочим столом в цьому списку, або з повним робочим столом, який представляє вам деякі з найбільш часто використовуваних інструментів. Натисніть, щоб прочитати більше про робочі столи на веб-сайті FreeCAD.</translation>
+      <location filename="../../Command.cpp" line="46"/>
+      <source>Start Page</source>
+      <translation>Початкова сторінка</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="109"/>
-      <source>Ship Design</source>
-      <translation>Проектування кораблів</translation>
+      <location filename="../../Command.cpp" line="47"/>
+      <source>Displays the start page in a browser view</source>
+      <translation type="unfinished">Displays the start page in a browser view</translation>
     </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
-      <source>Designing and calculating ships</source>
-      <translation>Проектування і розрахунок суден</translation>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>Start page options</source>
+      <translation>Налаштування початкової сторінки</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="111"/>
-      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
-      <translation>Модуль &lt;b&gt;Проектування кораблів&lt;/b&gt; пропонує кілька інструментів, щоб допомогти корабельним проектувальникам для перегляду, моделювання і обчислення профілів та інші специфічних властивостей корабельних корпусів.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Start page template</source>
+      <translation>Шаблон початкової сторінки</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="112"/>
-      <source>Load an Architectural example model</source>
-      <translation>Завантажити приклад архітектурної моделі</translation>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <source>An optional HTML template that will be used instead of the default start page.</source>
+      <translation>Додатковий HTML-шаблон, який буде використовуватися замість стартової сторінки за замовчуванням.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
-      <source>Architectural Design</source>
-      <translation>Архітектурне проектування</translation>
+      <location filename="../../DlgStartPreferences.ui" line="42"/>
+      <source>Contents</source>
+      <translation>Вміст</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
-      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation>Розділ веб-сайту FreeCAD присвячений сценаріям python, з прикладами, поясненнями та командами API.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="48"/>
+      <source>Show forum</source>
+      <translation>Показати форум</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
-      <source>Your version of FreeCAD is up to date.</source>
-      <translation>Ваша версія FreeCAD є найновішою.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="55"/>
+      <source>Show examples folder contents</source>
+      <translation>Показати вміст теки прикладів</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="116"/>
-      <source>There is a new release of FreeCAD available.</source>
-      <translation>Доступна нова версія FreeCAD.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="62"/>
+      <source>Show additional folder</source>
+      <translation>Показати додаткову теку</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
-      <source>Latest commits</source>
-      <translation>Останній комміт</translation>
+      <location filename="../../DlgStartPreferences.ui" line="69"/>
+      <source>If you want the examples to show on the first page</source>
+      <translation>Якщо ви бажаєте, щоб приклади показувалися на першій сторінці</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="118"/>
-      <source>Obtain a development version</source>
-      <translation>Отримати версію для розробників</translation>
+      <location filename="../../DlgStartPreferences.ui" line="91"/>
+      <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
+      <translation type="unfinished">If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
-      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation>&lt;b&gt;Версія для розробників&lt;/b&gt;час від часу викладається членами спільноти і зазвичай містить останні зміни, але більш імовірно, містить помилки.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="110"/>
+      <source>An optional custom folder to be displayed at the bottom of the first page.
+By using ";;" to separate paths, you can add several folders here</source>
+      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
+By using ";;" to separate paths, you can add several folders here</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
-      <source>See all commits</source>
-      <translation>Переглянути всі комміти</translation>
+      <location filename="../../DlgStartPreferences.ui" line="127"/>
+      <source>Show notepad</source>
+      <translation type="unfinished">Show notepad</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
-      <source>Load an FEM 3D example analysis</source>
-      <translation>Завантажити приклад 3D МКЕ-аналізу</translation>
+      <location filename="../../DlgStartPreferences.ui" line="134"/>
+      <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
+      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
-      <source>Load an FEM 2D example analysis</source>
-      <translation>Завантажити приклад 2D МКЕ-аналізу</translation>
+      <location filename="../../DlgStartPreferences.ui" line="153"/>
+      <source>Show tips</source>
+      <translation type="unfinished">Show tips</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
-      <source>http://www.freecadweb.org/wiki/Online_Help_Toc</source>
-      <translation>http://www.freecadweb.org/wiki/Online_Help_Toc</translation>
+      <location filename="../../DlgStartPreferences.ui" line="163"/>
+      <source>Displays help tips in the Start workbench Documents tab</source>
+      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="113"/>
-      <source>http://www.freecadweb.org/wiki/Tutorials</source>
-      <translation>http://www.freecadweb.org/wiki/Tutorials</translation>
+      <location filename="../../DlgStartPreferences.ui" line="185"/>
+      <source>Fonts and colors</source>
+      <translation>Шрифти і кольори</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="114"/>
-      <source>http://www.freecadweb.org/wiki/Power_users_hub</source>
-      <translation>http://www.freecadweb.org/wiki/Power_users_hub</translation>
+      <location filename="../../DlgStartPreferences.ui" line="197"/>
+      <source>The background of the main start page area</source>
+      <translation type="unfinished">The background of the main start page area</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
-      <source>FreeCAD Standard File</source>
-      <translation>FreeCAD стандартний файл</translation>
+      <location filename="../../DlgStartPreferences.ui" line="217"/>
+      <source>Background color</source>
+      <translation>Колір фону</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
-      <source>Author</source>
-      <translation>Автор</translation>
+      <location filename="../../DlgStartPreferences.ui" line="229"/>
+      <source>in FreeCAD</source>
+      <translation>у FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
-      <source>Company</source>
-      <translation>Назва компанії</translation>
+      <location filename="../../DlgStartPreferences.ui" line="248"/>
+      <source>In external browser</source>
+      <translation>У зовнішньому браузері</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
-      <source>License</source>
-      <translation>Ліцензія</translation>
+      <location filename="../../DlgStartPreferences.ui" line="266"/>
+      <source>Background color down gradient</source>
+      <translation type="unfinished">Background color down gradient</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation>&lt;b&gt;Архітектурний проект&lt;/b&gt; робоче середовище розроблене спеціально для роботи з архітектурними елементами стіни або вікон. Почніть з 2D креслення фігур і використовувати їх як напрямні побудувати архітектурних об'єктів.</translation>
+      <location filename="../../DlgStartPreferences.ui" line="279"/>
+      <source>The color of the version text</source>
+      <translation type="unfinished">The color of the version text</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
-      <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation>http://www.freecadweb.org/wiki/Getting_started</translation>
+      <location filename="../../DlgStartPreferences.ui" line="299"/>
+      <source>Link color</source>
+      <translation type="unfinished">Link color</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
-      <source>Load an FEM 3D new solver example analysis</source>
-      <translation>Завантажити аналіз прикладу нового розв'язувача 3D МСЕ</translation>
+      <location filename="../../DlgStartPreferences.ui" line="306"/>
+      <source>An optional image to display as background</source>
+      <translation type="unfinished">An optional image to display as background</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
-      <source>Click here</source>
-      <translation type="unfinished">Click here</translation>
+      <location filename="../../DlgStartPreferences.ui" line="319"/>
+      <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
+      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
-      <source>to allow FreeCAD to access the internet</source>
-      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
+      <location filename="../../DlgStartPreferences.ui" line="338"/>
+      <source>Page background color</source>
+      <translation>Колір фону сторінки</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="351"/>
+      <source>The color of the text on the main pages</source>
+      <translation type="unfinished">The color of the text on the main pages</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="371"/>
+      <source>Background image</source>
+      <translation>Фонове зображення</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="378"/>
+      <source>Page text color</source>
+      <translation>Колір тексту сторінки</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="391"/>
+      <source>The color of the links</source>
+      <translation>Колір посилання</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="417"/>
+      <source>The background color of the boxes inside the pages</source>
+      <translation type="unfinished">The background color of the boxes inside the pages</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="437"/>
+      <source>Box background color</source>
+      <translation type="unfinished">Box background color</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="450"/>
+      <source>The background color behind the panels</source>
+      <translation type="unfinished">The background color behind the panels</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
+      <source>The down gradient for the background color (currently unsupported)</source>
+      <translation type="unfinished">The down gradient for the background color (currently unsupported)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
+      <source>Open links</source>
+      <translation>Відкрити посилання</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="509"/>
+      <source>Background text color</source>
+      <translation>Колір фону текста</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="516"/>
+      <source>Use FreeCAD style sheet</source>
+      <translation>Використовувати стилі FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="523"/>
+      <source>Font family</source>
+      <translation>Гарнітура</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="532"/>
+      <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
+      <translation type="unfinished">The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="538"/>
+      <source>Arial,Helvetica,sans</source>
+      <translation>Arial,Helvetica,sans</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="551"/>
+      <source>The base font size to use for all texts of the Start page</source>
+      <translation type="unfinished">The base font size to use for all texts of the Start page</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="554"/>
+      <source>px</source>
+      <translation>пікс.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="572"/>
+      <source>Use gradient for New File icon</source>
+      <translation type="unfinished">Use gradient for New File icon</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="579"/>
+      <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
+      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="601"/>
+      <source>Options</source>
+      <translation>Параметри</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="607"/>
+      <source>Choose which workbench to switch to after the program launches</source>
+      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="614"/>
+      <source>If checked, will automatically close the Start page when FreeCAD launches</source>
+      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="633"/>
+      <source>Switch workbench after loading</source>
+      <translation type="unfinished">Switch workbench after loading</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="640"/>
+      <source>Close start page after loading</source>
+      <translation type="unfinished">Close start page after loading</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="647"/>
+      <source>Close and switch on opening file</source>
+      <translation type="unfinished">Close and switch on opening file</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="654"/>
+      <source>If application is started by opening a file, apply the two settings above</source>
+      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
     </message>
   </context>
 </TS>

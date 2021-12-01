@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -24,11 +22,11 @@
 
 import FreeCAD
 import FreeCADGui
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
-"""Path Copy object and FreeCAD command"""
+__doc__ = """Path Copy object and FreeCAD command"""
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -57,6 +55,7 @@ class ObjectPathCopy:
 class ViewProviderPathCopy:
 
     def __init__(self, vobj):
+        self.Object = vobj.Object
         vobj.Proxy = self
 
     def attach(self, vobj):
@@ -64,7 +63,7 @@ class ViewProviderPathCopy:
         return
 
     def getIcon(self):
-        return ":/icons/Path-Copy.svg"
+        return ":/icons/Path_Copy.svg"
 
     def __getstate__(self):
         return None
@@ -76,7 +75,7 @@ class ViewProviderPathCopy:
 class CommandPathCopy:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Copy',
+        return {'Pixmap': 'Path_Copy',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Copy", "Copy"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Copy", "Creates a linked copy of another path")}
 
@@ -84,7 +83,7 @@ class CommandPathCopy:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):

@@ -1,221 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sl" sourcelanguage="en">
+<TS version="2.1" language="sl" sourcelanguage="en">
   <context>
-    <name>CmdApproxPlane</name>
+    <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratni inženiring</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Approximate plane...</source>
-      <translation>Približek ravnine …</translation>
+      <source>Cylinder</source>
+      <translation>Valj</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <source>Approximate a cylinder</source>
+      <translation>Približek valja</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxPlane</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Vzvratni inženiring</translation>
+    </message>
+    <message>
+      <source>Plane...</source>
+      <translation>Ravnina ...</translation>
+    </message>
+    <message>
       <source>Approximate a plane</source>
       <translation>Približek ravnine</translation>
     </message>
   </context>
   <context>
-    <name>CmdApproxSurface</name>
+    <name>CmdApproxPolynomial</name>
     <message>
-      <location line="-37"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratni inženiring</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <source>Polynomial surface</source>
+      <translation>Mnogočlensko površje</translation>
+    </message>
+    <message>
+      <source>Approximate a polynomial surface</source>
+      <translation>Približek mnogočlenskega površja</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxSphere</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Vzvratni inženiring</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Krogla</translation>
+    </message>
+    <message>
+      <source>Approximate a sphere</source>
+      <translation>Približek krogli</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxSurface</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Vzvratni inženiring</translation>
+    </message>
+    <message>
       <source>Approximate B-spline surface...</source>
       <translation>Približek B-spline ploskve...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-spline surface</source>
       <translation>Približek B-spline ploskve</translation>
     </message>
+  </context>
+  <context>
+    <name>CmdMeshBoundary</name>
     <message>
-      <source>Approximate B-Spline surface...</source>
-      <translation>Približek površine b-zlepka …</translation>
+      <source>Reverse Engineering</source>
+      <translation>Vzvratni inženiring</translation>
     </message>
     <message>
-      <source>Approximate surface...</source>
-      <translation>Približna površina...</translation>
+      <source>Wire from mesh boundary...</source>
+      <translation>Žičje iz robov ploskovja ...</translation>
     </message>
     <message>
-      <source>Approximate a B-Spline surface</source>
-      <translation>Približek površine b-zlepka</translation>
+      <source>Create wire from mesh boundaries</source>
+      <translation>Ustvari žičje iz robov ploskovja</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location line="+134"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratni inženiring</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Poisson...</source>
       <translation>Poisson …</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Poisson surface reconstruction</source>
       <translation>Ponovna zgraditev površine po Poissonu</translation>
     </message>
   </context>
   <context>
-    <name>CmdViewTriangulation</name>
+    <name>CmdSegmentation</name>
     <message>
-      <location line="+32"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratni inženiring</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Structured point clouds</source>
-      <translation>Konstrukcijski točkovni oblaki</translation>
+      <source>Mesh segmentation...</source>
+      <translation>Razčlenitev ploskovja ...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
+      <source>Create mesh segments</source>
+      <translation>Ustvari odseke ploskovja</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentationFromComponents</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Vzvratni inženiring</translation>
+    </message>
+    <message>
+      <source>From components</source>
+      <translation>Iz sestavin</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from components</source>
+      <translation>Iz sestavin ustvari odseke ploskovij</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentationManual</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Vzvratni inženiring</translation>
+    </message>
+    <message>
+      <source>Manual segmentation...</source>
+      <translation>Ročna razčlenitev ...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments manually</source>
+      <translation>Ročno naredit odseke ploskovja</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdViewTriangulation</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Vzvratni inženiring</translation>
+    </message>
+    <message>
+      <source>Structured point clouds</source>
+      <translation>Ustrojeni oblaki točk</translation>
+    </message>
+    <message>
       <source>Triangulation of structured point clouds</source>
-      <translation>Triangulacija konstrukcijskih točkovnih oblakov</translation>
+      <translation>Trikotenje ustrojevanih točkovnih oblakov</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Fit plane</source>
+      <translation>Prilegaj ravnino</translation>
+    </message>
+    <message>
+      <source>Fit cylinder</source>
+      <translation>Prilegaj valj</translation>
+    </message>
+    <message>
+      <source>Fit sphere</source>
+      <translation>Prilegaj kroglo</translation>
+    </message>
+    <message>
+      <source>Fit polynomial surface</source>
+      <translation>Prilegaj mnogočlensko površje</translation>
     </message>
     <message>
       <source>View triangulation</source>
-      <translation>Pokaži triangulacijo</translation>
+      <translation>Trikotenje pogleda</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Postavitev</translation>
+    </message>
+    <message>
+      <source>Fit B-Spline</source>
+      <translation>Prilegaj B-zlepek</translation>
+    </message>
+    <message>
+      <source>Poisson reconstruction</source>
+      <translation>Ponovna zgraditev po Poissonu</translation>
+    </message>
+    <message>
+      <source>Segmentation</source>
+      <translation>Členitev</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <source>Fit B-Spline surface</source>
-      <translation>Prilagodi površino b-zlepka</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
       <translation>Prilagodi B-spline ploskev</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>u-Direction</source>
       <translation>Smer u</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <location line="+67"/>
       <source>Degree</source>
       <translation>Stopinje</translation>
     </message>
     <message>
-      <location line="-38"/>
-      <location line="+67"/>
       <source>Control points</source>
       <translation>Nadzorne točke</translation>
     </message>
     <message>
-      <location line="-35"/>
       <source>v-Direction</source>
       <translation>Smer v</translation>
     </message>
     <message>
-      <location line="+67"/>
       <source>Settings</source>
       <translation>Nastavitve</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Iterations</source>
       <translation>Ponovitve</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Size factor</source>
       <translation>Faktor velikosti</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Smoothing</source>
       <translation>Glajenje</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>Total Weight</source>
       <translation>Skupna teža</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Length of gradient</source>
       <translation>Dolžina gradienta</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Bending energy</source>
       <translation>Energija upogiba</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Curvature variation</source>
       <translation>Variacija ukrivljenosti</translation>
     </message>
     <message>
-      <location line="+32"/>
       <source>User-defined u/v directions</source>
       <translation>Uporabniško določeni smeri u/v</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Ustvari postavitev</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="+146"/>
+      <source>Input error</source>
+      <translation>Napaka vnosa</translation>
+    </message>
+    <message>
       <source>Wrong selection</source>
       <translation>Napačna izbira</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Please select a single placement object to get local orientation.</source>
       <translation>Izberite eno postavitev objekta za pridobitev lokalne usmerjenosti.</translation>
-    </message>
-    <message>
-      <location line="+28"/>
-      <source>Input error</source>
-      <translation>Napaka vnosa</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::PoissonWidget</name>
     <message>
-      <location filename="../../Poisson.ui" line="+14"/>
       <source>Poisson</source>
       <translation>Poisson</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Parameters</source>
       <translation>Parametri</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Octree depth</source>
       <translation>Globina osm. drevesa</translation>
     </message>
     <message>
-      <location line="+20"/>
       <source>Solver divide</source>
       <translation>Deli z reševalnikom</translation>
     </message>
     <message>
-      <location line="+20"/>
       <source>Samples per node</source>
       <translation>Vzorcev na vozlišče</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="+109"/>
       <source>Input error</source>
       <translation>Napaka vnosa</translation>
     </message>
@@ -223,14 +313,14 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="-159"/>
-      <location line="+135"/>
       <source>Wrong selection</source>
       <translation>Napačna izbira</translation>
     </message>
     <message>
-      <location line="-134"/>
-      <location line="+135"/>
+      <source>Please select a point cloud or mesh.</source>
+      <translation>Izberite oblak točk ali ploskovje.</translation>
+    </message>
+    <message>
       <source>Please select a single point cloud.</source>
       <translation>Izberite en točkovni oblak.</translation>
     </message>
@@ -238,15 +328,142 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation>Prikaz triangulacije ni uspel</translation>
+      <translation>Trikotenje pogleda spodletelo</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Razčlenitev ploskovja</translation>
+    </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Ustvari sestav</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Zgladi ploskovje</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Ravnina</translation>
+    </message>
+    <message>
+      <source>Curvature tolerance</source>
+      <translation>Dopustno odstopanje ukrivljenosti</translation>
+    </message>
+    <message>
+      <source>Distance to plane</source>
+      <translation>Oddaljenost od ravnine</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Najmanjše št. ploskev</translation>
+    </message>
+    <message>
+      <source>Create mesh from unused triangles</source>
+      <translation>Iz neuporabljenih trikotnikov sestavi ploskovje</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::SegmentationManual</name>
+    <message>
+      <source>Manual segmentation</source>
+      <translation>Ročna razčlenitev</translation>
+    </message>
+    <message>
+      <source>Select</source>
+      <translation>Izberite</translation>
+    </message>
+    <message>
+      <source>Components</source>
+      <translation>Sestavine</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Območje</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Izberite celo sestavino</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Izberite trikotnik</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; ploskev od</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>Vse</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Počisti</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Ravnina</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Dopustno odstopanje</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Najmanjše št. ploskev</translation>
+    </message>
+    <message>
+      <source>Detect</source>
+      <translation>Zaznaj</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Valj</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Krogla</translation>
+    </message>
+    <message>
+      <source>Region options</source>
+      <translation>Možnosti območja</translation>
+    </message>
+    <message>
+      <source>Respect only visible triangles</source>
+      <translation>Upoštevaj samo vidne trikotnike</translation>
+    </message>
+    <message>
+      <source>Respect only triangles with normals facing screen</source>
+      <translation>Upoštevaj samo trikotnike, katerih normale kažejo proti zaslonu</translation>
+    </message>
+    <message>
+      <source>Segmentation</source>
+      <translation>Členitev</translation>
+    </message>
+    <message>
+      <source>Cut segment from mesh</source>
+      <translation>Izreži odsek iz ploskovja</translation>
+    </message>
+    <message>
+      <source>Hide segment</source>
+      <translation>Skrij odsek</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::TaskSegmentationManual</name>
+    <message>
+      <source>Create</source>
+      <translation>Ustvari</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
       <translation>Vzvratni inženiring</translation>
     </message>

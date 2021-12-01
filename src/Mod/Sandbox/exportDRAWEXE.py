@@ -61,7 +61,7 @@ def f2s(n,angle=False,axis=False):
                 return s
 
 def ax2_xdir(normal):
-    #adaped from gp_Ax2.ccc (c) OpenCascade SAS LGPL 2.1+
+    #adapted from gp_Ax2.ccc (c) OpenCascade SAS LGPL 2.1+
 
     xa=abs(normal.x)
     ya=abs(normal.y)
@@ -161,7 +161,7 @@ def saveShape(csg,filename,shape,name,hasplacement = True,cleanshape=False):
         sh=shape.copy()
         sh.Placement=FreeCAD.Placement()
         # it not yet tested if changing the placement recreated the
-        # tessellation. but for now we simply do the cleaing once again
+        # tessellation. But for now we simply do the cleaning once again
         # to stay on the safe side
         if cleanshape:
             shape = shape.cleaned()
@@ -211,7 +211,7 @@ def isDraftWire(ob):
         if isinstance(ob.Proxy,Draft._Wire):
             #only return true if we support all options
             #"Closed" append last point at the end
-            #"MakeFace" 
+            #"MakeFace"
             #"Points" data we need
             # the usage of 'start' and 'end' is not clear
             if ob.Base is None and ob.Tool is None and \
@@ -513,7 +513,7 @@ class Drawexporter(object):
                     curname=nxtname
                     i+=1
         elif (isDraftPolygon(ob) and ob.ChamferSize.Value == 0 and\
-                ob.FilletRadius.Value == 0 and ob.Support == None) or\
+                ob.FilletRadius.Value == 0 and ob.Support is None) or\
                 ob.TypeId == "Part::Prism" or \
                 ob.TypeId == "Part::RegularPolygon":
             if checksupported: return True # The object is supported

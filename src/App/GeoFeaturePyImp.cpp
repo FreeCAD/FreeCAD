@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2016    *
+ *   Copyright (c) 2016 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -62,12 +62,26 @@ PyObject* GeoFeaturePy::getGlobalPlacement(PyObject * args) {
 PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
+
     GeoFeature* object = this->getGeoFeaturePtr();
     const PropertyComplexGeoData* prop = object->getPropertyOfGeometry();
     const char* name = prop ? prop->getName() : 0;
     if (name) {
         return Py::new_reference_to(Py::String(std::string(name)));
+    }
+    return Py::new_reference_to(Py::None());
+}
+
+PyObject* GeoFeaturePy::getPropertyOfGeometry(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    GeoFeature* object = this->getGeoFeaturePtr();
+    const PropertyComplexGeoData* prop = object->getPropertyOfGeometry();
+    if (prop) {
+        return const_cast<PropertyComplexGeoData*>(prop)->getPyObject();
     }
     return Py::new_reference_to(Py::None());
 }

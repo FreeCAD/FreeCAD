@@ -67,15 +67,9 @@ int PointsPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (!addPoints(args))
             return -1;
     }
-#if PY_MAJOR_VERSION >= 3
     else if (PyUnicode_Check(pcObj)) {
         getPointKernelPtr()->load(PyUnicode_AsUTF8(pcObj));
     }
-#else
-    else if (PyString_Check(pcObj)) {
-        getPointKernelPtr()->load(PyString_AsString(pcObj));
-    }
-#endif
     else {
         PyErr_SetString(PyExc_TypeError, "optional argument must be list, tuple or string");
         return -1;
@@ -188,11 +182,7 @@ PyObject* PointsPy::fromSegment(PyObject * args)
         pts->reserve(list.size());
         int numPoints = static_cast<int>(points->size());
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION < 3
-            int index = static_cast<int>(Py::Int(*it));
-#else
             long index = static_cast<long>(Py::Long(*it));
-#endif
             if (index >= 0 && index < numPoints)
                 pts->push_back(points->getPoint(index));
         }
@@ -237,7 +227,7 @@ Py::List PointsPy::getPoints(void) const
     Py::List PointList;
     const PointKernel* points = getPointKernelPtr();
     for (PointKernel::const_point_iterator it = points->begin(); it != points->end(); ++it) {
-        PointList.append(Py::Object(new Base::VectorPy(*it)));
+        PointList.append(Py::asObject(new Base::VectorPy(*it)));
     }
     return PointList;
 }

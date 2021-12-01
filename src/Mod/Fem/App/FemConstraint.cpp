@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <math.h> //OvG: Required for log10
 # include <TopoDS.hxx>
 # include <BRepGProp_Face.hxx>
 # include <gp_Vec.hxx>
@@ -34,8 +36,6 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
 # include <Adaptor3d_IsoCurve.hxx>
-# include <Adaptor3d_HSurface.hxx>
-# include <BRepAdaptor_HSurface.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <GProp_GProps.hxx>
 # include <BRepGProp.hxx>
@@ -49,6 +49,11 @@
 # include <Geom_Plane.hxx>
 # include <Geom_Line.hxx>
 # include <Precision.hxx>
+# include <Standard_Version.hxx>
+# if OCC_VERSION_HEX < 0x070600
+# include <Adaptor3d_HSurface.hxx>
+# include <BRepAdaptor_HSurface.hxx>
+# endif
 #endif
 
 #include "FemConstraint.h"
@@ -56,11 +61,12 @@
 
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/OriginFeature.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <math.h> //OvG: Required for log10
+
 
 using namespace Fem;
 
@@ -71,7 +77,12 @@ double round(double r) {
 }
 #endif
 
-PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject);
+#if OCC_VERSION_HEX >= 0x070600
+using Adaptor3d_HSurface = Adaptor3d_Surface;
+using BRepAdaptor_HSurface = BRepAdaptor_Surface;
+#endif
+
+PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject)
 
 Constraint::Constraint()
 {
@@ -88,9 +99,14 @@ Constraint::~Constraint()
 
 App::DocumentObjectExecReturn *Constraint::execute(void)
 {
-    References.touch();
-    Scale.touch();
-    return StdReturn;
+    try {
+        References.touch();
+        Scale.touch();
+        return StdReturn;
+    }
+    catch (const Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString(), this);
+    }
 }
 
 //OvG: Provide the ability to determine how big to draw constraint arrows etc.
@@ -121,14 +137,15 @@ void Constraint::onChanged(const App::Property* prop)
         // Extract geometry from References
         TopoDS_Shape sh;
 
+        bool execute = this->isRecomputing();
         for (std::size_t i = 0; i < Objects.size(); i++) {
             App::DocumentObject* obj = Objects[i];
             Part::Feature* feat = static_cast<Part::Feature*>(obj);
             const Part::TopoShape& toposhape = feat->Shape.getShape();
             if (!toposhape.getShape().IsNull()) {
-                sh = toposhape.getSubShape(SubElements[i].c_str());
+                sh = toposhape.getSubShape(SubElements[i].c_str(), !execute);
 
-                if (sh.ShapeType() == TopAbs_FACE) {
+                if (!sh.IsNull() && sh.ShapeType() == TopAbs_FACE) {
                     // Get face normal in center point
                     TopoDS_Face face = TopoDS::Face(sh);
                     BRepGProp_Face props(face);
@@ -140,8 +157,7 @@ void Constraint::onChanged(const App::Property* prop)
                     normal.Normalize();
                     NormalDirection.setValue(normal.X(), normal.Y(), normal.Z());
                     // One face is enough...
-                    App::DocumentObject::onChanged(prop);
-                    return;
+                    break;
                 }
             }
         }
@@ -172,12 +188,14 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
         if (toposhape.isNull())
             return false;
 
-        sh = toposhape.getSubShape(SubElements[i].c_str());
+        sh = toposhape.getSubShape(SubElements[i].c_str(), true);
+        if (sh.IsNull())
+            return false;
 
         if (sh.ShapeType() == TopAbs_VERTEX) {
             const TopoDS_Vertex& vertex = TopoDS::Vertex(sh);
             gp_Pnt p = BRep_Tool::Pnt(vertex);
-            points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
+            points.emplace_back(p.X(), p.Y(), p.Z());
             normals.push_back(NormalDirection.getValue());
             //OvG: Scale by whole object mass in case of a vertex
             GProp_GProps props;
@@ -214,8 +232,9 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
             steps = steps>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:steps; //OvG: Place upper limit on number of steps
             double step = (lp - fp) / steps;
             for (int i = 0; i < steps + 1; i++) {
-                gp_Pnt p = curve.Value(i * step);
-                points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
+                // Parameter values must be in the range [fp, lp] (#0003683)
+                gp_Pnt p = curve.Value(fp + i * step);
+                points.emplace_back(p.X(), p.Y(), p.Z());
                 normals.push_back(NormalDirection.getValue());
             }
         }
@@ -329,10 +348,10 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
                     gp_Pnt p = surface.Value(u, v);
                     BRepClass_FaceClassifier classifier(face, p, Precision::Confusion());
                     if (classifier.State() != TopAbs_OUT) {
-                        points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
+                        points.emplace_back(p.X(), p.Y(), p.Z());
                         props.Normal(u, v,center,normal);
                         normal.Normalize();
-                        normals.push_back(Base::Vector3d(normal.X(), normal.Y(), normal.Z()));
+                        normals.emplace_back(normal.X(), normal.Y(), normal.Z());
                     }
                 }
             }
@@ -421,6 +440,28 @@ Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::
 const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direction)
 {
     App::DocumentObject* obj = direction.getValue();
+    if (!obj) {
+        return Base::Vector3d(0,0,0);
+    }
+
+    if (obj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+        Base::Vector3d vec(1.0, 0.0, 0.0);
+        static_cast<App::Line*>(obj)->Placement.getValue().multVec(vec, vec);
+        return vec;
+    }
+
+    if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        Base::Vector3d vec(0.0, 0.0, 1.0);
+        static_cast<App::Plane*>(obj)->Placement.getValue().multVec(vec, vec);
+        return vec;
+    }
+
+    if (!obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        std::stringstream str;
+        str << "Type is not a line, plane or Part object";
+        throw Base::TypeError(str.str());
+    }
+
     std::vector<std::string> names = direction.getSubValues();
     if (names.size() == 0)
         return Base::Vector3d(0,0,0);
@@ -433,7 +474,7 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
     try {
         sh = shape.getSubShape(subName.c_str());
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         std::stringstream str;
         str << "No such sub-element '" << subName << "'";
         throw Base::AttributeError(str.str());

@@ -81,6 +81,10 @@ class SoVectorizeLine : public SoVectorizeItem {
 public:
     SoVectorizeLine(void) {
         this->type = LINE;
+        vidx[0] = 0;
+        vidx[1] = 0;
+        col[0] = 0;
+        col[1] = 0;
         this->pattern = 0xffff;
         this->width = 1.0f;
     }
@@ -117,6 +121,8 @@ class SoVectorizeImage : public SoVectorizeItem {
 public:
     SoVectorizeImage(void) {
         this->type = IMAGE;
+        this->image.data = 0;
+        this->image.nc = 0;
     }
 
     SbVec2f pos;        // pos in normalized coordinates
@@ -196,7 +202,7 @@ void SoFCVectorizeU3DActionP::printText(const SoVectorizeText * item) const
 
     //std::ostream& str = publ->getU3DOutput()->getFileStream();
     // todo
-    Q_UNUSED(item); 
+    Q_UNUSED(item);
 }
 
 void SoFCVectorizeU3DActionP::printTriangle(const SoVectorizeTriangle * item) const
@@ -226,23 +232,23 @@ void SoFCVectorizeU3DActionP::printTriangle(const SbVec3f * v, const SbColor * c
 
     //std::ostream& str = publ->getU3DOutput()->getFileStream();
     // todo
-    Q_UNUSED(c); 
+    Q_UNUSED(c);
 }
 
 void SoFCVectorizeU3DActionP::printCircle(const SbVec3f & v, const SbColor & c, const float radius) const
 {
     // todo
-    Q_UNUSED(v); 
-    Q_UNUSED(c); 
-    Q_UNUSED(radius); 
+    Q_UNUSED(v);
+    Q_UNUSED(c);
+    Q_UNUSED(radius);
 }
 
 void SoFCVectorizeU3DActionP::printSquare(const SbVec3f & v, const SbColor & c, const float size) const
 {
     // todo
-    Q_UNUSED(v); 
-    Q_UNUSED(c); 
-    Q_UNUSED(size); 
+    Q_UNUSED(v);
+    Q_UNUSED(c);
+    Q_UNUSED(size);
 }
 
 void SoFCVectorizeU3DActionP::printLine(const SoVectorizeLine * item) const
@@ -266,24 +272,24 @@ void SoFCVectorizeU3DActionP::printLine(const SoVectorizeLine * item) const
 
     //std::ostream& str = publ->getU3DOutput()->getFileStream();
     // todo
-    Q_UNUSED(item); 
+    Q_UNUSED(item);
 }
 
 void SoFCVectorizeU3DActionP::printPoint(const SoVectorizePoint * item) const
 {
     // todo
-    Q_UNUSED(item); 
+    Q_UNUSED(item);
 }
 
 void SoFCVectorizeU3DActionP::printImage(const SoVectorizeImage * item) const
 {
     // todo
-    Q_UNUSED(item); 
+    Q_UNUSED(item);
 }
 
 // -------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCVectorizeU3DAction);
+SO_ACTION_SOURCE(SoFCVectorizeU3DAction)
 
 void SoFCVectorizeU3DAction::initClass(void)
 {
@@ -312,8 +318,8 @@ SoFCVectorizeU3DAction::getU3DOutput(void) const
 void
 SoFCVectorizeU3DAction::actionMethod(SoAction * a, SoNode * n)
 {
-    Q_UNUSED(a); 
-    Q_UNUSED(n); 
+    Q_UNUSED(a);
+    Q_UNUSED(n);
 }
 
 void SoFCVectorizeU3DAction::beginTraversal(SoNode * node)

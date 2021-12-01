@@ -33,15 +33,6 @@ endif()
 
 SOURCE_GROUP("Resources" FILES ${PathResource_SRCS})
 
-set(PathGui_MOC_HDRS
-    DlgSettingsPathColor.h
-    TaskDlgPathCompound.h
-    DlgProcessorChooser.h
-)
-fc_wrap_cpp(PathGui_MOC_SRCS ${PathGui_MOC_HDRS})
-
-SOURCE_GROUP("Moc" FILES ${PathGui_MOC_SRCS})
-
 set(PathGui_UIC_SRCS
     DlgSettingsPathColor.ui
     TaskDlgPathCompound.ui
@@ -94,23 +85,23 @@ SET(PathGui_SRCS
     ${PathGui_SRCS_ViewProvider}
 )
 
-add_library(PathGui SHARED ${PathGui_SRCS})
-target_link_libraries(PathGui ${PathGui_LIBS})
-
-fc_target_copy_resource(PathGui
-    ${CMAKE_SOURCE_DIR}/src/Mod/Path
-    ${CMAKE_BINARY_DIR}/Mod/Path
-    InitGui.py)
-
-SET_BIN_DIR(PathGui PathGui /Mod/Path)
-SET_PYTHON_PREFIX_SUFFIX(PathGui)
-
-INSTALL(TARGETS PathGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PathGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PathGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(PathGuiIcon_SVG
     Resources/icons/PathWorkbench.svg
 )
 
+add_library(PathGui SHARED ${PathGui_SRCS} ${PathGuiIcon_SVG})
+target_link_libraries(PathGui ${PathGui_LIBS})
+
+SET_BIN_DIR(PathGui PathGui /Mod/Path)
+SET_PYTHON_PREFIX_SUFFIX(PathGui)
+
 fc_copy_sources(PathGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Path" ${PathGuiIcon_SVG})
 
+INSTALL(TARGETS PathGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${PathGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Path/Resources/icons")

@@ -60,7 +60,7 @@
 using namespace Gui;
 
 
-SO_KIT_SOURCE(SoShapeScale);
+SO_KIT_SOURCE(SoShapeScale)
 
 //  Constructor.
 SoShapeScale::SoShapeScale(void)
@@ -116,7 +116,7 @@ SoShapeScale::GLRender(SoGLRenderAction * action)
 
 // --------------------------------------------------------------
 
-SO_KIT_SOURCE(SoAxisCrossKit);
+SO_KIT_SOURCE(SoAxisCrossKit)
 
 void
 SoAxisCrossKit::initClass()
@@ -129,17 +129,17 @@ SoAxisCrossKit::SoAxisCrossKit()
    SO_KIT_CONSTRUCTOR(SoAxisCrossKit);
 
    // Add the parts to the catalog...
-   SO_KIT_ADD_CATALOG_ENTRY(xAxis, SoShapeKit, 
+   SO_KIT_ADD_CATALOG_ENTRY(xAxis, SoShapeKit,
                             true, this,"", true);
-   SO_KIT_ADD_CATALOG_ENTRY(xHead, SoShapeKit, 
+   SO_KIT_ADD_CATALOG_ENTRY(xHead, SoShapeKit,
                             true, this,"", true);
-   SO_KIT_ADD_CATALOG_ENTRY(yAxis, SoShapeKit, 
+   SO_KIT_ADD_CATALOG_ENTRY(yAxis, SoShapeKit,
                             true, this,"", true);
-   SO_KIT_ADD_CATALOG_ENTRY(yHead, SoShapeKit, 
+   SO_KIT_ADD_CATALOG_ENTRY(yHead, SoShapeKit,
                             true, this,"", true);
-   SO_KIT_ADD_CATALOG_ENTRY(zAxis, SoShapeKit, 
+   SO_KIT_ADD_CATALOG_ENTRY(zAxis, SoShapeKit,
                             true, this,"", true);
-   SO_KIT_ADD_CATALOG_ENTRY(zHead, SoShapeKit, 
+   SO_KIT_ADD_CATALOG_ENTRY(zHead, SoShapeKit,
                             true, this,"", true);
 
    SO_KIT_INIT_INSTANCE();
@@ -240,7 +240,7 @@ SoAxisCrossKit::createAxes()
 
 // --------------------------------------------------------------
 
-SO_NODE_SOURCE(SoRegPoint);
+SO_NODE_SOURCE(SoRegPoint)
 
 void SoRegPoint::initClass()
 {
@@ -300,7 +300,7 @@ void SoRegPoint::GLRender(SoGLRenderAction *action)
 
         SbVec3f p1 = base.getValue();
         SbVec3f p2 = p1 + normal.getValue() * length.getValue();
-        
+
         glLineWidth(1.0f);
         glColor3fv(color.getValue().getValue());
         glBegin(GL_LINE_STRIP);

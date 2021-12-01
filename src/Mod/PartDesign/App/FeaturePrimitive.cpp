@@ -23,13 +23,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepPrimAPI_MakeBox.hxx>
+# include <BRepBuilderAPI_GTransform.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+# include <BRepPrimAPI_MakeCylinder.hxx>
+# include <BRepPrimAPI_MakeSphere.hxx>
+# include <BRepPrimAPI_MakeCone.hxx>
+# include <BRepPrimAPI_MakeTorus.hxx>
+# include <BRepPrimAPI_MakePrism.hxx>
+# include <BRepPrim_Cylinder.hxx>
+# include <BRepBuilderAPI_MakePolygon.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
+# include <QObject>
+# include <math.h>
 #endif
 
 
 #include "FeaturePrimitive.h"
 #include "DatumPoint.h"
 #include "DatumCS.h"
-#include <Mod/Part/App/modelRefine.h>
 #include "FeaturePy.h"
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -37,30 +52,17 @@
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
 
-#include <BRepPrimAPI_MakeBox.hxx>
-#include <BRepBuilderAPI_GTransform.hxx>
-#include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepAlgoAPI_Cut.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <BRepPrimAPI_MakeCylinder.hxx>
-#include <BRepPrimAPI_MakeSphere.hxx>
-#include <BRepPrimAPI_MakeCone.hxx>
-#include <BRepPrimAPI_MakeTorus.hxx>
-#include <BRepPrimAPI_MakePrism.hxx>
-#include <BRepBuilderAPI_MakePolygon.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
-#include <QObject>
-#include <math.h>
-
 using namespace PartDesign;
 
 namespace PartDesign {
 
-const App::PropertyQuantityConstraint::Constraints torusRangeV = {-180.0,180.0,1.0};
-const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0,360.0,1.0};
-const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0,90.0,1.0};
-const App::PropertyQuantityConstraint::Constraints quantityRange  = {0.0,FLT_MAX,0.1};
+const App::PropertyQuantityConstraint::Constraints torusRangeV = { -180.0, 180.0, 1.0 };
+const App::PropertyQuantityConstraint::Constraints angleRangeU = { 0.0, 360.0, 1.0 };
+const App::PropertyQuantityConstraint::Constraints angleRangeV = { -90.0, 90.0, 1.0 };
+// it turned out that OCC cannot e.g. create a box with a width of Precision::Confusion()
+// with two times Precision::Confusion() all geometric primitives can be created
+const App::PropertyQuantityConstraint::Constraints quantityRange = { 2 * Precision::Confusion(), FLT_MAX, 0.1 };
+const App::PropertyQuantityConstraint::Constraints quantityRangeZero = { 0.0, FLT_MAX, 0.1 };
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::FeaturePrimitive, PartDesign::FeatureAddSub)
 
@@ -70,52 +72,34 @@ FeaturePrimitive::FeaturePrimitive()
     Part::AttachExtension::initExtension(this);
 }
 
-TopoDS_Shape FeaturePrimitive::refineShapeIfActive(const TopoDS_Shape& oldShape) const
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    if (hGrp->GetBool("RefineModel", false)) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            return resShape;
-        }
-        catch (Standard_Failure) {
-            return oldShape;
-        }
-    }
-
-    return oldShape;
-}
-
 App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& primitiveShape)
 {
     try {
         //transform the primitive in the correct coordinance
         FeatureAddSub::execute();
-        
+
         //if we have no base we just add the standard primitive shape
         TopoDS_Shape base;
-        try{
+        try {
              //if we have a base shape we need to make sure that it does not get our transformation to
              BRepBuilderAPI_Transform trsf(getBaseShape(), getLocation().Transformation().Inverted(), true);
              base = trsf.Shape();
         }
-        catch(const Base::Exception&) {
+        catch (const Base::Exception&) {
 
              //as we use this for preview we can add it even if useless for subtractive
              AddSubShape.setValue(primitiveShape);
-             
+
              if(getAddSubType() == FeatureAddSub::Additive)
                  Shape.setValue(getSolid(primitiveShape));
-             else 
-                 return new App::DocumentObjectExecReturn("Cannot subtract primitive feature without base feature");   
-             
+             else
+                 return new App::DocumentObjectExecReturn("Cannot subtract primitive feature without base feature");
+
              return  App::DocumentObject::StdReturn;
         }
-         
-        if(getAddSubType() == FeatureAddSub::Additive) {
-            
+
+        if (getAddSubType() == FeatureAddSub::Additive) {
+
             BRepAlgoAPI_Fuse mkFuse(base, primitiveShape);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Adding the primitive failed");
@@ -134,8 +118,8 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             Shape.setValue(getSolid(boolOp));
             AddSubShape.setValue(primitiveShape);
         }
-        else if(getAddSubType() == FeatureAddSub::Subtractive) {
-            
+        else if (getAddSubType() == FeatureAddSub::Subtractive) {
+
             BRepAlgoAPI_Cut mkCut(base, primitiveShape);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Subtracting the primitive failed");
@@ -149,13 +133,13 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             if (solidCount > 1) {
                 return new App::DocumentObjectExecReturn("Subtractive: Result has multiple solids. This is not supported at this time.");
             }
-            
+
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
             AddSubShape.setValue(primitiveShape);
         }
-        
-        
+
+
     }
     catch (Standard_Failure& e) {
 
@@ -175,8 +159,18 @@ void FeaturePrimitive::handleChangedPropertyName(Base::XMLReader &reader, const 
     extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
 }
 
+// suppress warning about tp_print for Py3.8
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 PYTHON_TYPE_DEF(PrimitivePy, PartDesign::FeaturePy)
 PYTHON_TYPE_IMP(PrimitivePy, PartDesign::FeaturePy)
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 PyObject* FeaturePrimitive::getPyObject()
 {
@@ -197,7 +191,7 @@ Box::Box()
     Length.setConstraints(&quantityRange);
     Width.setConstraints(&quantityRange);
     Height.setConstraints(&quantityRange);
-    
+
     primitiveType = FeaturePrimitive::Box;
 }
 
@@ -209,10 +203,8 @@ App::DocumentObjectExecReturn* Box::execute(void)
 
     if (L < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Length of box too small");
-
     if (W < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Width of box too small");
-
     if (H < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of box too small");
 
@@ -222,7 +214,6 @@ App::DocumentObjectExecReturn* Box::execute(void)
         return FeaturePrimitive::execute(mkBox.Shape());
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
@@ -233,7 +224,7 @@ short int Box::mustExecute() const
           Height.isTouched() ||
           Width.isTouched() )
         return 1;
-     
+
     return FeaturePrimitive::mustExecute();
 }
 
@@ -251,7 +242,9 @@ Cylinder::Cylinder()
     Angle.setConstraints(&angleRangeU);
     Radius.setConstraints(&quantityRange);
     Height.setConstraints(&quantityRange);
-    
+
+    Part::PrismExtension::initExtension(this);
+
     primitiveType = FeaturePrimitive::Cylinder;
 }
 
@@ -262,15 +255,20 @@ App::DocumentObjectExecReturn* Cylinder::execute(void)
         return new App::DocumentObjectExecReturn("Radius of cylinder too small");
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of cylinder too small");
+    if (Angle.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Rotation angle of cylinder too small");
     try {
         BRepPrimAPI_MakeCylinder mkCylr(Radius.getValue(),
                                         Height.getValue(),
-                                        Angle.getValue()/180.0f*M_PI);
-        
-        return FeaturePrimitive::execute(mkCylr.Shape());
+                                        Base::toRadians<double>(Angle.getValue()));
+
+        // the direction vector for the prism is the height for z and the given angle
+        BRepPrim_Cylinder prim = mkCylr.Cylinder();
+        TopoDS_Shape result = makePrism(Height.getValue(), prim.BottomFace());
+
+        return FeaturePrimitive::execute(result);
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -283,7 +281,7 @@ short int Cylinder::mustExecute() const
           Height.isTouched() ||
           Angle.isTouched() )
         return 1;
-     
+
     return FeaturePrimitive::mustExecute();
 }
 
@@ -303,7 +301,7 @@ Sphere::Sphere()
     Angle2.setConstraints(&angleRangeV);
     ADD_PROPERTY_TYPE(Angle3,(360.0f),"Sphere",App::Prop_None,"The angle of the sphere");
     Angle3.setConstraints(&angleRangeU);
-    
+
     primitiveType = FeaturePrimitive::Sphere;
 }
 
@@ -314,13 +312,12 @@ App::DocumentObjectExecReturn* Sphere::execute(void)
         return new App::DocumentObjectExecReturn("Radius of sphere too small");
     try {
         BRepPrimAPI_MakeSphere mkSphere(Radius.getValue(),
-                                        Angle1.getValue()/180.0f*M_PI,
-                                        Angle2.getValue()/180.0f*M_PI,
-                                        Angle3.getValue()/180.0f*M_PI);
+                                        Base::toRadians<double>(Angle1.getValue()),
+                                        Base::toRadians<double>(Angle2.getValue()),
+                                        Base::toRadians<double>(Angle3.getValue()));
         return FeaturePrimitive::execute(mkSphere.Shape());
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -334,7 +331,7 @@ short int Sphere::mustExecute() const
           Angle2.isTouched() ||
           Angle3.isTouched())
         return 1;
-     
+
     return FeaturePrimitive::mustExecute();
 }
 
@@ -351,19 +348,21 @@ Cone::Cone()
     ADD_PROPERTY_TYPE(Height,(10.0),"Cone",App::Prop_None,"The height of the cone");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Cone",App::Prop_None,"The angle of the cone");
     Angle.setConstraints(&angleRangeU);
-    Radius1.setConstraints(&quantityRange);
-    Radius2.setConstraints(&quantityRange);
+    Radius1.setConstraints(&quantityRangeZero);
+    Radius2.setConstraints(&quantityRangeZero);
     Height.setConstraints(&quantityRange);
-    
+
     primitiveType = FeaturePrimitive::Cone;
 }
 
 App::DocumentObjectExecReturn* Cone::execute(void)
 {
-    if (Radius1.getValue() < 0)
-        return new App::DocumentObjectExecReturn("Radius of cone too small");
-    if (Radius2.getValue() < 0)
-        return new App::DocumentObjectExecReturn("Radius of cone too small");
+    if (Radius1.getValue() < 0.0)
+        return new App::DocumentObjectExecReturn("Radius of cone cannot be negative");
+    if (Radius2.getValue() < 0.0)
+        return new App::DocumentObjectExecReturn("Radius of cone cannot be negative");
+    if (Radius1.getValue() == Radius2.getValue())
+        return new App::DocumentObjectExecReturn("The radii for cones must not be equal");
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of cone too small");
     try {
@@ -371,12 +370,11 @@ App::DocumentObjectExecReturn* Cone::execute(void)
         BRepPrimAPI_MakeCone mkCone(Radius1.getValue(),
                                     Radius2.getValue(),
                                     Height.getValue(),
-                                    Angle.getValue()/180.0f*M_PI);
-        
+                                    Base::toRadians<double>(Angle.getValue()));
+
         return FeaturePrimitive::execute(mkCone.Shape());
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -403,19 +401,19 @@ PROPERTY_SOURCE(PartDesign::Ellipsoid, PartDesign::FeaturePrimitive)
 
 Ellipsoid::Ellipsoid()
 {
-    ADD_PROPERTY_TYPE(Radius1,(2.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
+    ADD_PROPERTY_TYPE(Radius1,(2.0),"Ellipsoid",App::Prop_None,"Radius in local z-direction");
     Radius1.setConstraints(&quantityRange);
-    ADD_PROPERTY_TYPE(Radius2,(4.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
+    ADD_PROPERTY_TYPE(Radius2,(4.0),"Ellipsoid",App::Prop_None,"Radius in local x-direction");
     Radius2.setConstraints(&quantityRange);
-    ADD_PROPERTY_TYPE(Radius3,(0.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
-    Radius3.setConstraints(&quantityRange);
+    ADD_PROPERTY_TYPE(Radius3,(0.0),"Ellipsoid",App::Prop_None,"Radius in local y-direction\nIf zero, it is equal to Radius2");
+    Radius3.setConstraints(&quantityRangeZero);
     ADD_PROPERTY_TYPE(Angle1,(-90.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
     Angle1.setConstraints(&angleRangeV);
     ADD_PROPERTY_TYPE(Angle2,(90.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
     Angle2.setConstraints(&angleRangeV);
     ADD_PROPERTY_TYPE(Angle3,(360.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
     Angle3.setConstraints(&angleRangeU);
-    
+
     primitiveType = FeaturePrimitive::Ellipsoid;
 }
 
@@ -432,10 +430,10 @@ App::DocumentObjectExecReturn* Ellipsoid::execute(void)
         gp_Dir dir(0.0,0.0,1.0);
         gp_Ax2 ax2(pnt,dir);
         BRepPrimAPI_MakeSphere mkSphere(ax2,
-                                        Radius2.getValue(), 
-                                        Angle1.getValue()/180.0f*M_PI,
-                                        Angle2.getValue()/180.0f*M_PI,
-                                        Angle3.getValue()/180.0f*M_PI);
+                                        Radius2.getValue(),
+                                        Base::toRadians<double>(Angle1.getValue()),
+                                        Base::toRadians<double>(Angle2.getValue()),
+                                        Base::toRadians<double>(Angle3.getValue()));
         Standard_Real scaleX = 1.0;
         Standard_Real scaleZ = Radius1.getValue()/Radius2.getValue();
         // issue #1798: A third radius has been introduced. To be backward
@@ -458,7 +456,6 @@ App::DocumentObjectExecReturn* Ellipsoid::execute(void)
         return FeaturePrimitive::execute(mkTrsf.Shape());
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -479,7 +476,7 @@ short int Ellipsoid::mustExecute() const
         return 1;
     if (Angle3.isTouched())
         return 1;
-    
+
     return FeaturePrimitive::mustExecute();
 }
 
@@ -491,9 +488,9 @@ PROPERTY_SOURCE(PartDesign::Torus, PartDesign::FeaturePrimitive)
 
 Torus::Torus()
 {
-    ADD_PROPERTY_TYPE(Radius1,(10.0),"Torus",App::Prop_None,"The radius of the torus");
+    ADD_PROPERTY_TYPE(Radius1,(10.0),"Torus",App::Prop_None,"Radius in local xy-plane");
     Radius1.setConstraints(&quantityRange);
-    ADD_PROPERTY_TYPE(Radius2,(2.0),"Torus",App::Prop_None,"The radius of the torus");
+    ADD_PROPERTY_TYPE(Radius2,(2.0),"Torus",App::Prop_None,"Radius in local xz-plane");
     Radius2.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle1,(-180.0),"Torus",App::Prop_None,"The angle of the torus");
     Angle1.setConstraints(&torusRangeV);
@@ -501,7 +498,7 @@ Torus::Torus()
     Angle2.setConstraints(&torusRangeV);
     ADD_PROPERTY_TYPE(Angle3,(360.0),"Torus",App::Prop_None,"The angle of the torus");
     Angle3.setConstraints(&angleRangeU);
-    
+
     primitiveType = FeaturePrimitive::Torus;
 }
 
@@ -512,16 +509,24 @@ App::DocumentObjectExecReturn* Torus::execute(void)
     if (Radius2.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of torus too small");
     try {
-
+        // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
+#if 0
         BRepPrimAPI_MakeTorus mkTorus(Radius1.getValue(),
                                       Radius2.getValue(),
-                                      Angle1.getValue()/180.0f*M_PI,
-                                      Angle2.getValue()/180.0f*M_PI,
-                                      Angle3.getValue()/180.0f*M_PI);
+                                      Base::toRadians<double>(Angle1.getValue()),
+                                      Base::toRadians<double>(Angle2.getValue()),
+                                      Base::toRadians<double>(Angle3.getValue()));
         return FeaturePrimitive::execute(mkTorus.Solid());
+#else
+        Part::TopoShape shape;
+        return FeaturePrimitive::execute(shape.makeTorus(Radius1.getValue(),
+                                                         Radius2.getValue(),
+                                                         Angle1.getValue(),
+                                                         Angle2.getValue(),
+                                                         Angle3.getValue()));
+#endif
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -540,7 +545,7 @@ short int Torus::mustExecute() const
         return 1;
     if (Angle3.isTouched())
         return 1;
-    
+
     return FeaturePrimitive::mustExecute();
 }
 
@@ -552,10 +557,12 @@ PROPERTY_SOURCE(PartDesign::Prism, PartDesign::FeaturePrimitive)
 
 Prism::Prism()
 {
-    ADD_PROPERTY_TYPE(Polygon,(6.0),"Prism",App::Prop_None,"Number of sides in the polygon, of the prism");
-    ADD_PROPERTY_TYPE(Circumradius,(2.0),"Prism",App::Prop_None,"Circumradius (centre to vertex) of the polygon, of the prism");
-    ADD_PROPERTY_TYPE(Height,(10.0f),"Prism",App::Prop_None,"The height of the prism");
-    
+    ADD_PROPERTY_TYPE(Polygon, (6.0), "Prism", App::Prop_None, "Number of sides in the polygon, of the prism");
+    ADD_PROPERTY_TYPE(Circumradius, (2.0), "Prism", App::Prop_None, "Circumradius (centre to vertex) of the polygon, of the prism");
+    ADD_PROPERTY_TYPE(Height, (10.0f), "Prism", App::Prop_None, "The height of the prism");
+
+    Part::PrismExtension::initExtension(this);
+
     primitiveType = FeaturePrimitive::Prism;
 }
 
@@ -583,11 +590,11 @@ App::DocumentObjectExecReturn* Prism::execute(void)
         }
         mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
         BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
-        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(), gp_Vec(0,0,Height.getValue()));
-        return FeaturePrimitive::execute(mkPrism.Shape());
+        // the direction vector for the prism is the height for z and the given angle
+        TopoDS_Shape prism = makePrism(Height.getValue(), mkFace.Face());
+        return FeaturePrimitive::execute(prism);
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -602,7 +609,7 @@ short int Prism::mustExecute() const
         return 1;
     if (Height.isTouched())
         return 1;
-    
+
     return FeaturePrimitive::mustExecute();
 }
 
@@ -624,13 +631,13 @@ Wedge::Wedge()
     ADD_PROPERTY_TYPE(Zmax,(10.0f),"Wedge",App::Prop_None,"Zmax of the wedge");
     ADD_PROPERTY_TYPE(X2max,(8.0f),"Wedge",App::Prop_None,"X2max of the wedge");
     ADD_PROPERTY_TYPE(Z2max,(8.0f),"Wedge",App::Prop_None,"Z2max of the wedge");
-    
+
     primitiveType = FeaturePrimitive::Wedge;
 }
 
 App::DocumentObjectExecReturn* Wedge::execute(void)
 {
-       double xmin = Xmin.getValue();
+    double xmin = Xmin.getValue();
     double ymin = Ymin.getValue();
     double zmin = Zmin.getValue();
     double z2min = Z2min.getValue();
@@ -640,7 +647,6 @@ App::DocumentObjectExecReturn* Wedge::execute(void)
     double zmax = Zmax.getValue();
     double z2max = Z2max.getValue();
     double x2max = X2max.getValue();
-
 
     double dx = xmax-xmin;
     double dy = ymax-ymin;
@@ -674,7 +680,6 @@ App::DocumentObjectExecReturn* Wedge::execute(void)
         return FeaturePrimitive::execute(mkSolid.Solid());
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -694,7 +699,7 @@ short int Wedge::mustExecute() const
         X2max.isTouched() ||
         Z2max.isTouched())
         return 1;
-    
+
     return FeaturePrimitive::mustExecute();
 }
 

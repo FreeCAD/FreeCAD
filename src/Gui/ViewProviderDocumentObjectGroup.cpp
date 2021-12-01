@@ -60,7 +60,7 @@ ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup()
 #endif
     ViewProviderGroupExtension::initExtension(this);
 
-    sPixmap = "Group.svg";
+    sPixmap = "folder";
 }
 
 ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
@@ -78,8 +78,13 @@ bool ViewProviderDocumentObjectGroup::isShow(void) const
     return Visibility.getValue();
 }
 
+QIcon ViewProviderDocumentObjectGroup::getIcon(void) const
+{
+    return mergeGreyableOverlayIcons (Gui::BitmapFactory().iconFromTheme(sPixmap));
+}
+
 /**
- * Extracts the associated view providers of the objects of the associated object group group. 
+ * Extracts the associated view providers of the objects of the associated object group group.
  */
 void ViewProviderDocumentObjectGroup::getViewProviders(std::vector<ViewProviderDocumentObject*>& vp) const
 {

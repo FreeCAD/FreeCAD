@@ -31,6 +31,30 @@ namespace MeshCore
 {
 class MeshKernel;
 
+class MeshExport TriangulationVerifier
+{
+public:
+    TriangulationVerifier() {}
+    virtual ~TriangulationVerifier() {}
+    virtual bool Accept(const Base::Vector3f& n,
+                        const Base::Vector3f& p1,
+                        const Base::Vector3f& p2,
+                        const Base::Vector3f& p3) const;
+    virtual bool MustFlip(const Base::Vector3f& n1,
+                          const Base::Vector3f& n2) const;
+};
+
+class MeshExport TriangulationVerifierV2 : public TriangulationVerifier
+{
+public:
+    virtual bool Accept(const Base::Vector3f& n,
+                        const Base::Vector3f& p1,
+                        const Base::Vector3f& p2,
+                        const Base::Vector3f& p3) const;
+    virtual bool MustFlip(const Base::Vector3f& n1,
+                          const Base::Vector3f& n2) const;
+};
+
 class MeshExport AbstractPolygonTriangulator
 {
 public:
@@ -39,7 +63,13 @@ public:
 
     /** Sets the polygon to be triangulated. */
     void SetPolygon(const std::vector<Base::Vector3f>& raclPoints);
-    void SetIndices(const std::vector<unsigned long>& d) {_indices = d;}
+    void SetIndices(const std::vector<PointIndex>& d) {_indices = d;}
+    /** Set a verifier object that checks if the generated triangulation
+     * can be accepted and added to the mesh kernel.
+     * The triangulator takes ownership of the passed verifier.
+     */
+    void SetVerifier(TriangulationVerifier* v);
+    TriangulationVerifier* GetVerifier() const;
     /** Usually the created faces use the indices of the polygon points
      * from [0, n]. If the faces should be appended to an existing mesh
      * they may need to be reindexed from the calling instance.
@@ -63,7 +93,7 @@ public:
      * built out of the axes of the plane.
      */
     Base::Matrix4D GetTransformToFitPlane() const;
-    /** If the points of the polygon set by SetPolygon() doesn't lie in a 
+    /** If the points of the polygon set by SetPolygon() doesn't lie in a
      * plane this method can be used to project the points in a common plane.
      */
     std::vector<Base::Vector3f> ProjectToFitPlane();
@@ -87,7 +117,7 @@ public:
      * It returns an array of the number of edges for each closed
      * polygon.
      */
-    std::vector<unsigned long> GetInfo() const;
+    std::vector<PointIndex> GetInfo() const;
     virtual void Discard();
     /** Resets some internals. The default implementation does nothing.*/
     virtual void Reset();
@@ -102,12 +132,13 @@ protected:
 protected:
     bool                        _discard;
     Base::Matrix4D              _inverse;
-    std::vector<unsigned long>  _indices;
+    std::vector<PointIndex>     _indices;
     std::vector<Base::Vector3f> _points;
     std::vector<Base::Vector3f> _newpoints;
     std::vector<MeshGeomFacet>  _triangles;
     std::vector<MeshFacet>      _facets;
-    std::vector<unsigned long>  _info;
+    std::vector<PointIndex>     _info;
+    TriangulationVerifier*      _verifier;
 };
 
 /**
@@ -126,11 +157,11 @@ protected:
 private:
     /**
     * Static class to triangulate any contour/polygon (without holes) efficiently.
-    * The original code snippet was submitted to FlipCode.com by John W. Ratcliff 
+    * The original code snippet was submitted to FlipCode.com by John W. Ratcliff
     * (jratcliff@verant.com) on July 22, 2000.
     * The original vector of 2d points is replaced by a vector of 3d points where the
-    * z-ccordinate is ignored. This is because the algorithm is often used for 3d points 
-    * projected to a common plane. The result vector of 2d points is replaced by an 
+    * z-coordinate is ignored. This is because the algorithm is often used for 3d points 
+    * projected to a common plane. The result vector of 2d points is replaced by an
     * array of indices to the points of the polygon.
     */
     class Triangulate
@@ -139,7 +170,7 @@ private:
         // triangulate a contour/polygon, places results in STL vector
         // as series of triangles.indicating the points
         static bool Process(const std::vector<Base::Vector3f> &contour,
-            std::vector<unsigned long> &result);
+            std::vector<PointIndex> &result);
 
         // compute area of a contour/polygon
         static float Area(const std::vector<Base::Vector3f> &contour);
@@ -224,4 +255,4 @@ protected:
 } // namespace MeshCore
 
 
-#endif  // MESH_TRIANGULATION_H 
+#endif  // MESH_TRIANGULATION_H

@@ -44,7 +44,7 @@ public:
     App::PropertyLinkList   Items;
 
    /** @name base properties of all Assembly Items 
-     * This properties corospond mostly to the meta information
+     * This properties correspond mostly to the meta information
      * in the App::Document class
      */
     //@{
@@ -68,7 +68,7 @@ public:
     //@{
     /** Base color of the Item
         If the transparency value is 1.0
-        the color or the next hirachy is used
+        the color or the next hierarchy is used
         */
     App::PropertyColor Color;
     /// Visibility

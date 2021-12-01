@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh-CN" sourcelanguage="en">
+<TS version="2.1" language="zh-CN" sourcelanguage="en">
   <context>
     <name>Angle</name>
     <message>
@@ -23,35 +23,35 @@
       <source>Angle Snap</source>
       <translation>角度捕捉</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>1 °</source>
       <translation>1 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>2 °</source>
       <translation>2 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>5 °</source>
       <translation>5 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>10 °</source>
       <translation>10 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>20 °</source>
       <translation>20 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>45 °</source>
       <translation>45 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>90 °</source>
       <translation>90 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>180 °</source>
       <translation>180 °</translation>
     </message>
@@ -121,6 +121,81 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>编辑</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>导入</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>删除</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>粘贴表达式</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>创建链接组</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>创建链接</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>创建子链接</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>导入链接</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>导入所有链接</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>插入测量</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>插入文本文档</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>添加零件</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>添加组</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>对齐</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>定位</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>变换</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>链接变换</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>测量距离</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -174,12 +249,16 @@
       <translation>结果：</translation>
     </message>
     <message>
-      <source>&amp;Discard</source>
-      <translation>舍弃(&amp;D)</translation>
-    </message>
-    <message>
       <source>Ok</source>
       <translation>确定</translation>
+    </message>
+    <message>
+      <source>&amp;Clear</source>
+      <translation>清除(&amp;C)</translation>
+    </message>
+    <message>
+      <source>Revert to last calculated value (as constant)</source>
+      <translation>恢复到最后一个计算值(为常量)</translation>
     </message>
   </context>
   <context>
@@ -195,6 +274,36 @@
     <message>
       <source>Filename</source>
       <translation>文件名</translation>
+    </message>
+  </context>
+  <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>默认</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>变换</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>锯切</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>颜色</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>输入表达式...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>表达式： </translation>
     </message>
   </context>
   <context>
@@ -294,13 +403,13 @@
       <translation>按鼠标中键</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>按下鼠标中键及左键或右键</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>按中键+左键或中键+右键</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>当点击鼠标左键或右键时，滚动或按住鼠标中键并移动鼠标</translation>
+      <translation>滚动鼠标中键或在点击鼠标左键或右键时按住鼠标中键并移动鼠标</translation>
     </message>
   </context>
   <context>
@@ -386,14 +495,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>字号</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>鸣谢</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD能够在此皆因这些人的贡献：</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>授权许可</translation>
     </message>
@@ -412,6 +513,29 @@ while doing a left or right click and move the mouse up or down</source>
       <source>License</source>
       <translation>授权许可</translation>
     </message>
+    <message>
+      <source>Collection</source>
+      <translation>集合</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>鸣谢</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>个人用户</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>组织</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
@@ -422,6 +546,45 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>超出范围</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>相机设置</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>方向</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>当前视图</translation>
     </message>
   </context>
   <context>
@@ -486,11 +649,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Maximum</source>
-      <translation>最大值</translation>
+      <translation>最大</translation>
     </message>
     <message>
       <source>Minimum</source>
-      <translation>最小值</translation>
+      <translation>最小</translation>
     </message>
     <message>
       <source>Fullscreen</source>
@@ -508,11 +671,11 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>90°</source>
       <translation>90°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>-90°</source>
       <translation>-90°</translation>
     </message>
@@ -549,6 +712,49 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Windows</source>
       <translation>窗口</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <source>Add property</source>
+      <translation>添加属性</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>类型</translation>
+    </message>
+    <message>
+      <source>Group</source>
+      <translation>组</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <source>Verbose description of the new property.</source>
+      <translation>新属性的详细描述。</translation>
+    </message>
+    <message>
+      <source>Documentation</source>
+      <translation>文档</translation>
+    </message>
+    <message>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation>组名前缀</translation>
     </message>
   </context>
   <context>
@@ -725,7 +931,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgCustomCommandsImp</name>
     <message>
       <source>Category</source>
-      <translation>分类</translation>
+      <translation>类别</translation>
     </message>
     <message>
       <source>Icon</source>
@@ -818,19 +1024,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>多重定义快捷键</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>快捷键'%1'不唯一.这将导致不可预料的结果.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>已定义快捷键</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>快捷键'%1'已经分配给了'%2'.
-请重新定义.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>快捷方式'%1'不唯一. 这将导致不可预料的结果.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>快捷方式 '%1''已经分配给 '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>您想要覆盖吗？</translation>
     </message>
   </context>
   <context>
@@ -934,6 +1141,10 @@ Please define another shortcut.</source>
       <source>Global</source>
       <translation>全局</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation>%1 模块未加载</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -972,16 +1183,16 @@ Please define another shortcut.</source>
       <translation>按钮</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>清除</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>打印参考</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>三维鼠标按键</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>重设</translation>
     </message>
   </context>
   <context>
@@ -1177,10 +1388,6 @@ Please define another shortcut.</source>
       <translation>保留制表符</translation>
     </message>
     <message>
-      <source>Display Items</source>
-      <translation>显示项目</translation>
-    </message>
-    <message>
       <source>Family:</source>
       <translation>字体族:</translation>
     </message>
@@ -1196,6 +1403,46 @@ Please define another shortcut.</source>
       <source/>
       <translation>关于</translation>
     </message>
+    <message>
+      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
+      <translation>按下 &lt;Tab&gt; 将插入定义大小的缩进</translation>
+    </message>
+    <message>
+      <source>Tabulator raster (how many spaces)</source>
+      <translation>制表符&lt;Tab&gt;转空格(空格数量)</translation>
+    </message>
+    <message>
+      <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
+      <translation>按下 &lt;Tab&gt; 将插入多少空格</translation>
+    </message>
+    <message>
+      <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
+      <translation>按下 &lt;Tab&gt; 将插入一个定义大小的制表符</translation>
+    </message>
+    <message>
+      <source>Display items</source>
+      <translation>显示项目</translation>
+    </message>
+    <message>
+      <source>Font size to be used for selected code type</source>
+      <translation>用于选定代码类型的字体大小</translation>
+    </message>
+    <message>
+      <source>Color and font settings will be applied to selected type</source>
+      <translation>颜色和字体设置将应用于所选类型</translation>
+    </message>
+    <message>
+      <source>Font family to be used for selected code type</source>
+      <translation>用于选定代码类型的字体</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>颜色:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>代码行将被编号</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1210,10 +1457,6 @@ Please define another shortcut.</source>
     <message>
       <source>Enable splash screen at start up</source>
       <translation>打开软件启动界面</translation>
-    </message>
-    <message>
-      <source>Switch to tab of report window:</source>
-      <translation>切换到报告窗口标签:</translation>
     </message>
     <message>
       <source>Auto load module after start up:</source>
@@ -1236,10 +1479,6 @@ Please define another shortcut.</source>
       <translation>最近文件列表大小</translation>
     </message>
     <message>
-      <source>Window style:</source>
-      <translation>窗口风格:</translation>
-    </message>
-    <message>
       <source>Size of toolbar icons:</source>
       <translation>工具栏图标大小:</translation>
     </message>
@@ -1249,7 +1488,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Style sheet:</source>
-      <translation>样式列表：</translation>
+      <translation>样式表：</translation>
     </message>
     <message>
       <source>Python console</source>
@@ -1259,12 +1498,68 @@ Please define another shortcut.</source>
       <source>Enable word wrap</source>
       <translation>启用自动换行</translation>
     </message>
+    <message>
+      <source>Language of the application's user interface</source>
+      <translation>应用程序用户界面语言</translation>
+    </message>
+    <message>
+      <source>How many files should be listed in recent files list</source>
+      <translation>最近文件列表中应该列出多少个文件</translation>
+    </message>
+    <message>
+      <source>Background of the main window will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</source>
+      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</translation>
+    </message>
+    <message>
+      <source>Style sheet how user interface will look like</source>
+      <translation>用户界面的样式表</translation>
+    </message>
+    <message>
+      <source>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</source>
+      <translation>选择您对工具栏图标大小的偏好。您可以根据您的屏幕大小或个人品味来调整</translation>
+    </message>
+    <message>
+      <source>Tree view mode:</source>
+      <translation>树形视图模式：</translation>
+    </message>
+    <message>
+      <source>Customize how tree view is shown in the panel (restart required).
+
+'ComboView': combine tree view and property view into one panel.
+'TreeView and PropertyView': split tree view and property view into separate panel.
+'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
+      <translation>在面板中显示自定义树形视图的方式(需要重启)。
+
+'组合视图': 将树形视图和属性视图合并为一个面板。
+'树形视图和属性视图'：拆分树视图和属性视图为单独的面板。
+'全部'：保留所有三个面板，你可以有两组树形视图和属性视图。</translation>
+    </message>
+    <message>
+      <source>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</source>
+      <translation>Splash 屏幕是一个小的加载窗口，在FreeCAD 启动时显示
+。 如果选中此选项，FreeCAD 将显示初始屏幕</translation>
+    </message>
+    <message>
+      <source>Choose which workbench will be activated and shown
+after FreeCAD launches</source>
+      <translation>选择再FreeCAD启动以后显示的工作台</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation>在 Python 控制台中自动换行</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>No style sheet</source>
-      <translation>无样式列表</translation>
+      <translation>无样式表</translation>
     </message>
     <message>
       <source>Small (%1px)</source>
@@ -1286,6 +1581,18 @@ Please define another shortcut.</source>
       <source>Custom (%1px)</source>
       <translation>自定义 (%1px)</translation>
     </message>
+    <message>
+      <source>Combo View</source>
+      <translation>组合浏览器</translation>
+    </message>
+    <message>
+      <source>TreeView and PropertyView</source>
+      <translation>树状视图和属性视图</translation>
+    </message>
+    <message>
+      <source>Both</source>
+      <translation>两者都是</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgInputDialog</name>
@@ -1302,7 +1609,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgInspector</name>
     <message>
       <source>Scene Inspector</source>
-      <translation>场景检索</translation>
+      <translation>场景检查器</translation>
     </message>
   </context>
   <context>
@@ -1351,6 +1658,18 @@ Please define another shortcut.</source>
       <source>Rename</source>
       <translation>重命名</translation>
     </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>复制</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>插件...</translation>
+    </message>
+    <message>
+      <source>Toolbar</source>
+      <translation>工具栏</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1382,7 +1701,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Do you really want to delete the macro '%1'?</source>
-      <translation>你真的要删除宏'%1'?</translation>
+      <translation>是否确实要删除宏 '%1'？</translation>
     </message>
     <message>
       <source>Cannot create file</source>
@@ -1418,6 +1737,62 @@ This file already exists.</source>
 Perhaps a file permission error?</source>
       <translation>无法重命名为 "%1"。
 可能是文件权限错误？</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>复制宏</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>复制失败</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>无法复制到"%1"。
+可能是文件权限错误？</translation>
+    </message>
+    <message>
+      <source>Do not show again</source>
+      <translation>不再显示</translation>
+    </message>
+    <message>
+      <source>Guided Walkthrough</source>
+      <translation>指导式演练</translation>
+    </message>
+    <message>
+      <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+
+Note: your changes will be applied when you next switch workbenches
+</source>
+      <translation>这将引导您在自定义的全局工具栏中设置此宏。指示将以红色文本显示在对话框中。
+
+注意：当您下次切换工作台时，您的更改将被应用
+</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 1 of 2</source>
+      <translation type="unfinished">Walkthrough, dialog 1 of 2</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
+      <translation type="unfinished">Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 1 of 1</source>
+      <translation type="unfinished">Walkthrough, dialog 1 of 1</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 2 of 2</source>
+      <translation type="unfinished">Walkthrough, dialog 2 of 2</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
+      <translation type="unfinished">Walkthrough instructions: Click right arrow button (-&gt;), then Close.</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
+      <translation type="unfinished">Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</translation>
     </message>
   </context>
   <context>
@@ -1455,15 +1830,15 @@ Perhaps a file permission error?</source>
     <name>Gui::Dialog::DlgMacroRecordImp</name>
     <message>
       <source>Macro recorder</source>
-      <translation>宏记录器</translation>
+      <translation>宏录制器</translation>
     </message>
     <message>
       <source>Specify first a place to save.</source>
-      <translation>首先指定保存位置.</translation>
+      <translation>首先指定要保存的位置。</translation>
     </message>
     <message>
       <source>Existing macro</source>
-      <translation>已有的宏</translation>
+      <translation>现有宏</translation>
     </message>
     <message>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
@@ -1479,7 +1854,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>您对此目录无写入权限，请选择另外目录</translation>
+      <translation>您对此目录无写入权限，请选择其他目录</translation>
     </message>
   </context>
   <context>
@@ -1498,11 +1873,11 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Specular color:</source>
-      <translation>高光颜色:</translation>
+      <translation>镜面反射颜色</translation>
     </message>
     <message>
       <source>Shininess:</source>
-      <translation>反光度:</translation>
+      <translation>光泽度：</translation>
     </message>
     <message>
       <source>%</source>
@@ -1518,7 +1893,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Emissive color:</source>
-      <translation>发光颜色:</translation>
+      <translation>放射光颜色:</translation>
     </message>
   </context>
   <context>
@@ -1529,7 +1904,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Help viewer</source>
-      <translation>帮助阅读器</translation>
+      <translation>帮助查看器</translation>
     </message>
     <message>
       <source>Location of start page</source>
@@ -1571,6 +1946,69 @@ Specify another directory, please.</source>
       <source>&amp;Close</source>
       <translation>闭合(&amp;C)</translation>
     </message>
+    <message>
+      <source>Find...</source>
+      <translation>查找...</translation>
+    </message>
+    <message>
+      <source>Sorted</source>
+      <translation>已排序</translation>
+    </message>
+    <message>
+      <source>Quick search</source>
+      <translation>快速搜索</translation>
+    </message>
+    <message>
+      <source>Type in a group name to find it</source>
+      <translation>键入组名以找到它</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>搜索分组</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>查找</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>查找：</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>查看</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>组</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>值</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>只匹配整个字符串</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>查找下一个</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>未找到</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>找不到文本: %1</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameterImp</name>
@@ -1596,7 +2034,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Invalid input</source>
-      <translation>输入无效</translation>
+      <translation>无效输入</translation>
     </message>
     <message>
       <source>Invalid key name '%1'</source>
@@ -1605,6 +2043,10 @@ Specify another directory, please.</source>
     <message>
       <source>System parameter</source>
       <translation>系统参数</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>搜索分组</translation>
     </message>
   </context>
   <context>
@@ -1630,11 +2072,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Do you want to clear all your user settings?</source>
-      <translation>你想清除所有用户设置吗？</translation>
+      <translation>是否要清除所有用户设置？</translation>
     </message>
     <message>
       <source>If you agree all your settings will be cleared.</source>
-      <translation>如果您同意您的设置将被清除。</translation>
+      <translation>如果您同意，您的设置将被清除。</translation>
     </message>
   </context>
   <context>
@@ -1649,7 +2091,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Name:</source>
-      <translation>名称(&amp;N):</translation>
+      <translation>名称:</translation>
     </message>
     <message>
       <source>Commen&amp;t:</source>
@@ -1685,7 +2127,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>UUID:</source>
-      <translation>UUID:</translation>
+      <translation>通用唯一标识码:</translation>
     </message>
     <message>
       <source>License information:</source>
@@ -1693,11 +2135,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>License URL</source>
-      <translation>许可证URL</translation>
+      <translation>许可证网址</translation>
     </message>
     <message>
       <source>Open in browser</source>
       <translation>在浏览器中打开</translation>
+    </message>
+    <message>
+      <source>Program version:</source>
+      <translation>程序版本：</translation>
     </message>
   </context>
   <context>
@@ -1762,28 +2208,32 @@ Specify another directory, please.</source>
       <translation>链接</translation>
     </message>
     <message>
-      <source>Show all object types</source>
-      <translation>显示所有对象类型</translation>
-    </message>
-    <message>
-      <source>No selection</source>
-      <translation>未选择任何内容</translation>
-    </message>
-    <message>
-      <source>Please select an object from the list</source>
-      <translation>请从列表中选择一个对象</translation>
-    </message>
-    <message>
       <source>Search</source>
       <translation>搜索</translation>
     </message>
     <message>
       <source>A search pattern to filter the results above</source>
-      <translation>筛选以上结果的搜索模式</translation>
+      <translation>用于筛选上述结果的搜索模式</translation>
     </message>
     <message>
-      <source>None (Remove link)</source>
-      <translation>无 （删除链接）</translation>
+      <source>Filter by type</source>
+      <translation>按类型筛选</translation>
+    </message>
+    <message>
+      <source>Sync sub-object selection</source>
+      <translation>同步选中的子对象</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>重设</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>清除</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
     </message>
   </context>
   <context>
@@ -1834,15 +2284,108 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Python的错误重定向到报告浏览器</translation>
+      <translation>将 Python 内部错误重定向到报告视图</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation>内部Python输出重定向至报表浏览器</translation>
+      <translation>将 Python 内部输出重定向到报告视图</translation>
     </message>
     <message>
       <source>Python interpreter</source>
-      <translation>Python 编译器</translation>
+      <translation>Python 解释器</translation>
+    </message>
+    <message>
+      <source>Log messages will be recorded</source>
+      <translation>日志消息将被记录</translation>
+    </message>
+    <message>
+      <source>Warnings will be recorded</source>
+      <translation>警告将被记录</translation>
+    </message>
+    <message>
+      <source>Error messages will be recorded</source>
+      <translation>错误消息将被记录</translation>
+    </message>
+    <message>
+      <source>When an error has occurred, the Report View dialog becomes visible
+on-screen while displaying the error</source>
+      <translation>发生错误时，错误对话框会在屏幕上显示</translation>
+    </message>
+    <message>
+      <source>Show report view on error</source>
+      <translation>错误时显示报表视图</translation>
+    </message>
+    <message>
+      <source>When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</source>
+      <translation>当警告发生时，当显示警告时，报告视图对话框会在屏幕上显示</translation>
+    </message>
+    <message>
+      <source>Show report view on warning</source>
+      <translation>在警告时显示报告视图</translation>
+    </message>
+    <message>
+      <source>When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</source>
+      <translation type="unfinished">When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</translation>
+    </message>
+    <message>
+      <source>Show report view on normal message</source>
+      <translation type="unfinished">Show report view on normal message</translation>
+    </message>
+    <message>
+      <source>When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</source>
+      <translation>在日志消息发生时，选择显示日志消息的情况下，报告视图对话框会在屏幕上显示</translation>
+    </message>
+    <message>
+      <source>Show report view on log message</source>
+      <translation>在日志消息中显示报告视图</translation>
+    </message>
+    <message>
+      <source>Font color for normal messages in Report view panel</source>
+      <translation type="unfinished">Font color for normal messages in Report view panel</translation>
+    </message>
+    <message>
+      <source>Font color for log messages in Report view panel</source>
+      <translation type="unfinished">Font color for log messages in Report view panel</translation>
+    </message>
+    <message>
+      <source>Font color for warning messages in Report view panel</source>
+      <translation>报告视图面板中警告信息的字体颜色</translation>
+    </message>
+    <message>
+      <source>Font color for error messages in Report view panel</source>
+      <translation>报表视图面板错误消息的字体颜色</translation>
+    </message>
+    <message>
+      <source>Internal Python output will be redirected
+from Python console to Report view panel</source>
+      <translation type="unfinished">Internal Python output will be redirected
+from Python console to Report view panel</translation>
+    </message>
+    <message>
+      <source>Internal Python error messages will be redirected
+from Python console to Report view panel</source>
+      <translation type="unfinished">Internal Python error messages will be redirected
+from Python console to Report view panel</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation type="unfinished">Include a timecode for each report</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation type="unfinished">Include a timecode for each entry</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
     </message>
   </context>
   <context>
@@ -1873,7 +2416,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Abort program</source>
-      <translation>终止程序</translation>
+      <translation>中止程序</translation>
     </message>
     <message>
       <source>Help</source>
@@ -1888,11 +2431,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgSettings3DView</name>
     <message>
       <source>3D View</source>
-      <translation>3D 视图</translation>
-    </message>
-    <message>
-      <source>3D View settings</source>
-      <translation>3D 视图设置</translation>
+      <translation>三维视图</translation>
     </message>
     <message>
       <source>Show coordinate system in the corner</source>
@@ -1903,14 +2442,6 @@ Specify another directory, please.</source>
       <translation>显示每秒运行帧数</translation>
     </message>
     <message>
-      <source>Enable animation</source>
-      <translation>启用动画</translation>
-    </message>
-    <message>
-      <source>Eye to eye distance for stereo modes:</source>
-      <translation>立体模式的双眼距离:</translation>
-    </message>
-    <message>
       <source>Camera type</source>
       <translation>相机类型</translation>
     </message>
@@ -1919,48 +2450,8 @@ Specify another directory, please.</source>
       <translation>关于</translation>
     </message>
     <message>
-      <source>3D Navigation</source>
-      <translation>3D 导航</translation>
-    </message>
-    <message>
-      <source>Mouse...</source>
-      <translation>鼠标...</translation>
-    </message>
-    <message>
-      <source>Intensity of backlight</source>
-      <translation>背光强度</translation>
-    </message>
-    <message>
-      <source>Enable backlight color</source>
-      <translation>启用背光颜色</translation>
-    </message>
-    <message>
-      <source>Orbit style</source>
-      <translation>导航模式</translation>
-    </message>
-    <message>
-      <source>Turntable</source>
-      <translation>转盘</translation>
-    </message>
-    <message>
-      <source>Trackball</source>
-      <translation>轨迹球</translation>
-    </message>
-    <message>
-      <source>Invert zoom</source>
-      <translation>反向缩放</translation>
-    </message>
-    <message>
-      <source>Zoom at cursor</source>
-      <translation>以光标为中心缩放</translation>
-    </message>
-    <message>
-      <source>Zoom step</source>
-      <translation>缩放步长</translation>
-    </message>
-    <message>
       <source>Anti-Aliasing</source>
-      <translation>反锯齿</translation>
+      <translation>抗锯齿</translation>
     </message>
     <message>
       <source>None</source>
@@ -1984,15 +2475,195 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation>图像渲染</translation>
+      <translation>正视投影渲染(&amp;t)</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
       <translation>以透视渲染(&amp;g)</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>使用 OpenGL 顶点缓冲区对象 （实验）</translation>
+      <source>Marker size:</source>
+      <translation>标记大小：</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>常规</translation>
+    </message>
+    <message>
+      <source>Main coordinate system will always be shown in
+lower right corner within opened files</source>
+      <translation>主坐标系统将始终显示在打开文件的
+右下角</translation>
+    </message>
+    <message>
+      <source>Time needed for last operation and resulting frame rate
+will be shown at the lower left corner in opened files</source>
+      <translation type="unfinished">Time needed for last operation and resulting frame rate
+will be shown at the lower left corner in opened files</translation>
+    </message>
+    <message>
+      <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
+      <translation type="unfinished">If checked, application will remember which workbench is active for each tab of the viewport</translation>
+    </message>
+    <message>
+      <source>Remember active workbench by tab</source>
+      <translation type="unfinished">Remember active workbench by tab</translation>
+    </message>
+    <message>
+      <source>Rendering</source>
+      <translation>正在渲染</translation>
+    </message>
+    <message>
+      <source>If selected, Vertex Buffer Objects (VBO) will be used.
+A VBO is an OpenGL feature that provides methods for uploading
+vertex data (position, normal vector, color, etc.) to the graphics card.
+VBOs offer substantial performance gains because the data resides
+in the graphics memory rather than the system memory and so it
+can be rendered directly by GPU. 
+
+Note: Sometimes this feature may lead to a host of different
+issues ranging from graphical anomalies to GPU crash bugs. Remember to
+report this setting as enabled when seeking support on the FreeCAD forums</source>
+      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
+A VBO is an OpenGL feature that provides methods for uploading
+vertex data (position, normal vector, color, etc.) to the graphics card.
+VBOs offer substantial performance gains because the data resides
+in the graphics memory rather than the system memory and so it
+can be rendered directly by GPU. 
+
+Note: Sometimes this feature may lead to a host of different
+issues ranging from graphical anomalies to GPU crash bugs. Remember to
+report this setting as enabled when seeking support on the FreeCAD forums</translation>
+    </message>
+    <message>
+      <source>Use OpenGL VBO (Vertex Buffer Object)</source>
+      <translation>使用 OpenGL VBO (顶点缓存对象)</translation>
+    </message>
+    <message>
+      <source>Render cache</source>
+      <translation>渲染缓存</translation>
+    </message>
+    <message>
+      <source>'Render Caching' is another way to say 'Rendering Acceleration'.
+There are 3 options available to achieve this: 
+1) 'Auto' (default), let Coin3D decide where to cache.
+2) 'Distributed', manually turn on cache for all view provider root node.
+3) 'Centralized', manually turn off cache in all nodes of all view provider, and
+only cache at the scene graph root node. This offers the fastest rendering speed
+but slower response to any scene changes.</source>
+      <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
+There are 3 options available to achieve this: 
+1) 'Auto' (default), let Coin3D decide where to cache.
+2) 'Distributed', manually turn on cache for all view provider root node.
+3) 'Centralized', manually turn off cache in all nodes of all view provider, and
+only cache at the scene graph root node. This offers the fastest rendering speed
+but slower response to any scene changes.</translation>
+    </message>
+    <message>
+      <source>Auto</source>
+      <translation>自动</translation>
+    </message>
+    <message>
+      <source>Distributed</source>
+      <translation>分布</translation>
+    </message>
+    <message>
+      <source>Centralized</source>
+      <translation>居中</translation>
+    </message>
+    <message>
+      <source>Transparent objects:</source>
+      <translation>透明对象：</translation>
+    </message>
+    <message>
+      <source>Render types of transparent objects</source>
+      <translation>透明对象的渲染类型</translation>
+    </message>
+    <message>
+      <source>One pass</source>
+      <translation type="unfinished">One pass</translation>
+    </message>
+    <message>
+      <source>Backface pass</source>
+      <translation type="unfinished">Backface pass</translation>
+    </message>
+    <message>
+      <source>Size of vertices in the Sketcher workbench</source>
+      <translation type="unfinished">Size of vertices in the Sketcher workbench</translation>
+    </message>
+    <message>
+      <source>Eye to eye distance for stereo modes</source>
+      <translation>立体模式的双眼距离</translation>
+    </message>
+    <message>
+      <source>Backlight is enabled with the defined color</source>
+      <translation>已启用带有定义颜色的背光</translation>
+    </message>
+    <message>
+      <source>Backlight color</source>
+      <translation>背光颜色</translation>
+    </message>
+    <message>
+      <source>Intensity</source>
+      <translation>强度</translation>
+    </message>
+    <message>
+      <source>Intensity of the backlight</source>
+      <translation>背光强度</translation>
+    </message>
+    <message>
+      <source>Objects will be projected in orthographic projection</source>
+      <translation>对象将以正投影法投射。</translation>
+    </message>
+    <message>
+      <source>Objects will appear in a perspective projection</source>
+      <translation>对象将以透视投影法显示</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation type="unfinished">Axis cross will be shown by default at file
+opening or creation</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation type="unfinished">Show axis cross by default</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>选取半径 (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>使用软件 OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -2004,6 +2675,30 @@ Specify another directory, please.</source>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>打开一个新的查看器或重新启动 %1 以应用消除锯齿的更改。</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
     </message>
   </context>
   <context>
@@ -2038,7 +2733,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Out g&amp;rayed</source>
-      <translation>灰度(&amp;R)</translation>
+      <translation>外部&amp;呈灰色</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -2046,7 +2741,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Out &amp;invisible</source>
-      <translation>不可见(&amp;I)</translation>
+      <translation>&amp;外部不显示</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -2176,16 +2871,8 @@ Specify another directory, please.</source>
       <translation>作者姓名</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;创建文档者的名称&lt;/p&gt;&lt;p&gt;留白则为匿名&lt;/p&gt;&lt;p&gt;您可以使用此种格式：&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>If this is checked, the "Last modified by" field will be set when saving the file</source>
-      <translation>若勾选此项，存储时将设定“最后修改者为”域</translation>
-    </message>
-    <message>
       <source>Set on save</source>
-      <translation>定时存储</translation>
+      <translation>保存时的设置</translation>
     </message>
     <message>
       <source>Company</source>
@@ -2196,36 +2883,8 @@ Specify another directory, please.</source>
       <translation>默认许可证</translation>
     </message>
     <message>
-      <source>The default license for new documents</source>
-      <translation>新文档默认许可证</translation>
-    </message>
-    <message>
       <source>All rights reserved</source>
       <translation>版权所有</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution</source>
-      <translation>CreativeCommons 属性</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-ShareAlike</source>
-      <translation>订定通适署名：适用分享</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NoDerivatives</source>
-      <translation>订定通适署名：禁止演译</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial</source>
-      <translation>订定通适署名：非商业用途</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-      <translation>订定通适署名：非商业用途：适用分享</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-      <translation>订定通适署名：非商业用途：禁止演译</translation>
     </message>
     <message>
       <source>Public Domain</source>
@@ -2241,11 +2900,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>License URL</source>
-      <translation>许可证URL</translation>
-    </message>
-    <message>
-      <source>The default company to use for new files</source>
-      <translation>新文件默认使用的公司名称</translation>
+      <translation>许可证网址</translation>
     </message>
     <message>
       <source>Run AutoRecovery at startup</source>
@@ -2260,8 +2915,159 @@ Specify another directory, please.</source>
       <translation>将程序徽标添加到生成的缩略图</translation>
     </message>
     <message>
-      <source>A URL where the user can find more details about the license</source>
-      <translation>一个使用者可以找到更多有关授权说明的网址</translation>
+      <source>The application will create a new document when started</source>
+      <translation type="unfinished">The application will create a new document when started</translation>
+    </message>
+    <message>
+      <source>Compression level for FCStd files</source>
+      <translation>FCStd 文件的压缩级别</translation>
+    </message>
+    <message>
+      <source>All changes in documents are stored so that they can be undone/redone</source>
+      <translation type="unfinished">All changes in documents are stored so that they can be undone/redone</translation>
+    </message>
+    <message>
+      <source>How many Undo/Redo steps should be recorded</source>
+      <translation type="unfinished">How many Undo/Redo steps should be recorded</translation>
+    </message>
+    <message>
+      <source>Allow user aborting document recomputation by pressing ESC.
+This feature may slightly increase recomputation time.</source>
+      <translation type="unfinished">Allow user aborting document recomputation by pressing ESC.
+This feature may slightly increase recomputation time.</translation>
+    </message>
+    <message>
+      <source>Allow aborting recomputation</source>
+      <translation>允许中止重新计算</translation>
+    </message>
+    <message>
+      <source>If there is a recovery file available the application will
+automatically run a file recovery when it is started.</source>
+      <translation type="unfinished">If there is a recovery file available the application will
+automatically run a file recovery when it is started.</translation>
+    </message>
+    <message>
+      <source>How often a recovery file is written</source>
+      <translation>恢复文件写入频率</translation>
+    </message>
+    <message>
+      <source>A thumbnail will be stored when document is saved</source>
+      <translation>保存文档时将存储缩略图</translation>
+    </message>
+    <message>
+      <source>Size</source>
+      <translation>大小</translation>
+    </message>
+    <message>
+      <source>Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</source>
+      <translation>设置文档中存储的缩略图的大小。
+常见大小为128、256和512</translation>
+    </message>
+    <message>
+      <source>The program logo will be added to the thumbnail</source>
+      <translation>程序徽标将被添加到缩略图</translation>
+    </message>
+    <message>
+      <source>How many backup files will be kept when saving document</source>
+      <translation>保存文档时将保留多少备份文件</translation>
+    </message>
+    <message>
+      <source>Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</source>
+      <translation type="unfinished">Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</translation>
+    </message>
+    <message>
+      <source>Use date and FCBak extension</source>
+      <translation>使用日期和 FCBak 扩展名</translation>
+    </message>
+    <message>
+      <source>Date format</source>
+      <translation>日期格式</translation>
+    </message>
+    <message>
+      <source>Allow objects to have same label/name</source>
+      <translation>允许对象具有相同的标签/名称</translation>
+    </message>
+    <message>
+      <source>Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
+A partially loaded document cannot be edited. Double click the document
+icon in the tree view to fully reload it.</source>
+      <translation type="unfinished">Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
+A partially loaded document cannot be edited. Double click the document
+icon in the tree view to fully reload it.</translation>
+    </message>
+    <message>
+      <source>Disable partial loading of external linked objects</source>
+      <translation type="unfinished">Disable partial loading of external linked objects</translation>
+    </message>
+    <message>
+      <source>All documents that will be created will get the specified author name.
+Keep blank for anonymous.
+You can also use the form: John Doe &lt;john@doe.com&gt;</source>
+      <translation type="unfinished">All documents that will be created will get the specified author name.
+Keep blank for anonymous.
+You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
+    </message>
+    <message>
+      <source>The field 'Last modified by' will be set to specified author when saving the file</source>
+      <translation type="unfinished">The field 'Last modified by' will be set to specified author when saving the file</translation>
+    </message>
+    <message>
+      <source>Default company name to use for new files</source>
+      <translation>用于新文件的默认公司名称</translation>
+    </message>
+    <message>
+      <source>Default license for new documents</source>
+      <translation>新文档的默认许可证</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution</source>
+      <translation type="unfinished">Creative Commons Attribution</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-ShareAlike</source>
+      <translation type="unfinished">Creative Commons Attribution-ShareAlike</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NoDerivatives</source>
+      <translation type="unfinished">Creative Commons Attribution-NoDerivatives</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial</source>
+      <translation type="unfinished">Creative Commons Attribution-NonCommercial</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
+      <translation type="unfinished">Creative Commons Attribution-NonCommercial-ShareAlike</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
+      <translation type="unfinished">Creative Commons Attribution-NonCommercial-NoDerivatives</translation>
+    </message>
+    <message>
+      <source>URL describing more about the license</source>
+      <translation type="unfinished">URL describing more about the license</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsDocumentImp</name>
+    <message>
+      <source>The format of the date to use.</source>
+      <translation type="unfinished">The format of the date to use.</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>默认</translation>
+    </message>
+    <message>
+      <source>Format</source>
+      <translation>格式</translation>
     </message>
   </context>
   <context>
@@ -2359,7 +3165,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Image dimensions</source>
-      <translation>图像大小</translation>
+      <translation>图像尺寸</translation>
     </message>
     <message>
       <source>Pixel</source>
@@ -2384,82 +3190,6 @@ Specify another directory, please.</source>
     <message>
       <source>Icon       128 x 128</source>
       <translation>图标128x128</translation>
-    </message>
-    <message>
-      <source>CGA       320 x 200</source>
-      <translation>CGA 320x320</translation>
-    </message>
-    <message>
-      <source>QVGA     320 x 240</source>
-      <translation>QVGA 320x240</translation>
-    </message>
-    <message>
-      <source>VGA       640 x 480</source>
-      <translation>VGA 640x480</translation>
-    </message>
-    <message>
-      <source>NTSC     720 x 480</source>
-      <translation>NTSC 720x480</translation>
-    </message>
-    <message>
-      <source>PAL        768 x 578</source>
-      <translation>PAL 768x578</translation>
-    </message>
-    <message>
-      <source>SVGA     800 x 600</source>
-      <translation>SVGA 800x600</translation>
-    </message>
-    <message>
-      <source>XGA       1024 x 768</source>
-      <translation>XGA 1024x768</translation>
-    </message>
-    <message>
-      <source>HD720   1280 x 720</source>
-      <translation>HD720 1280 x 720</translation>
-    </message>
-    <message>
-      <source>SXGA     1280 x 1024</source>
-      <translation>SXGA 1280 x 1024</translation>
-    </message>
-    <message>
-      <source>SXGA+   1400 x 1050</source>
-      <translation>SXGA+ 1400 x 1050</translation>
-    </message>
-    <message>
-      <source>UXGA     1600 x 1200</source>
-      <translation>UXGA 1600 x 1200</translation>
-    </message>
-    <message>
-      <source>HD1080 1920 x 1080</source>
-      <translation>HD1080 1920 x 1080</translation>
-    </message>
-    <message>
-      <source>WUXGA  1920 x 1200</source>
-      <translation>WUXGA 1920 x 1200</translation>
-    </message>
-    <message>
-      <source>QXGA     2048 x 1538</source>
-      <translation>QXGA 2048 x 1538</translation>
-    </message>
-    <message>
-      <source>WQXGA  2560 x 1600</source>
-      <translation>WQXGA 2560 x 1600</translation>
-    </message>
-    <message>
-      <source>QSXGA   2560 x 2048</source>
-      <translation>QSXGA 2560 x 2048</translation>
-    </message>
-    <message utf8="true">
-      <source>QUXGA   3200 × 2400</source>
-      <translation>QUXGA 3200 × 2400</translation>
-    </message>
-    <message utf8="true">
-      <source>HUXGA   6400 × 4800</source>
-      <translation>HUXGA 6400 × 4800</translation>
-    </message>
-    <message>
-      <source>!!!          10000 x 10000</source>
-      <translation>!!! 10000 x 10000</translation>
     </message>
     <message>
       <source>Standard sizes:</source>
@@ -2525,6 +3255,83 @@ Specify another directory, please.</source>
       <source>Add watermark</source>
       <translation>添加水印</translation>
     </message>
+    <message>
+      <source>Creation method:</source>
+      <translation type="unfinished">Creation method:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsImageImp</name>
+    <message>
+      <source>Offscreen (New)</source>
+      <translation>离屏(新)</translation>
+    </message>
+    <message>
+      <source>Offscreen (Old)</source>
+      <translation>离屏(旧)</translation>
+    </message>
+    <message>
+      <source>Framebuffer (custom)</source>
+      <translation>帧缓存(自定义)</translation>
+    </message>
+    <message>
+      <source>Framebuffer (as is)</source>
+      <translation>帧缓存(当前)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
+    </message>
+    <message>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
+    </message>
+    <message>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>工作台</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
@@ -2554,11 +3361,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Gui commands</source>
-      <translation>GUI命令</translation>
-    </message>
-    <message>
-      <source>Recording GUI commands</source>
-      <translation>记录GUI命令</translation>
+      <translation>图形用户界面命令</translation>
     </message>
     <message>
       <source>Record as comment</source>
@@ -2575,6 +3378,310 @@ Specify another directory, please.</source>
     <message>
       <source>Run macros in local environment</source>
       <translation>在本地环境中运行宏</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>录制图形用户界面命令</translation>
+    </message>
+    <message>
+      <source>Variables defined by macros are created as local variables</source>
+      <translation type="unfinished">Variables defined by macros are created as local variables</translation>
+    </message>
+    <message>
+      <source>Commands executed by macro scripts are shown in Python console</source>
+      <translation type="unfinished">Commands executed by macro scripts are shown in Python console</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands</source>
+      <translation type="unfinished">Recorded macros will also contain user interface commands</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands as comments</source>
+      <translation type="unfinished">Recorded macros will also contain user interface commands as comments</translation>
+    </message>
+    <message>
+      <source>The directory in which the application will search for macros</source>
+      <translation type="unfinished">The directory in which the application will search for macros</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>最近的宏菜单</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>最近的宏列表大小</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>在最近宏列表中可以列出多少个宏</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>快捷方式计数</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>键盘编辑器</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>键盘编辑器，默认 = Ctrl+Shift+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsNavigation</name>
+    <message>
+      <source>Navigation</source>
+      <translation>导航栏</translation>
+    </message>
+    <message>
+      <source>Navigation cube</source>
+      <translation>导航立方体</translation>
+    </message>
+    <message>
+      <source>Steps by turn</source>
+      <translation>转动步数</translation>
+    </message>
+    <message>
+      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
+      <translation type="unfinished">Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>边角</translation>
+    </message>
+    <message>
+      <source>Corner where navigation cube is shown</source>
+      <translation>显示导航立方体的角落</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>左上</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>右上</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>左下</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>右下</translation>
+    </message>
+    <message>
+      <source>3D Navigation</source>
+      <translation>三维导航</translation>
+    </message>
+    <message>
+      <source>List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</source>
+      <translation type="unfinished">List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</translation>
+    </message>
+    <message>
+      <source>Mouse...</source>
+      <translation>鼠标...</translation>
+    </message>
+    <message>
+      <source>Navigation settings set</source>
+      <translation type="unfinished">Navigation settings set</translation>
+    </message>
+    <message>
+      <source>Orbit style</source>
+      <translation>环绕模式</translation>
+    </message>
+    <message>
+      <source>Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</source>
+      <translation type="unfinished">Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</translation>
+    </message>
+    <message>
+      <source>Turntable</source>
+      <translation>转盘</translation>
+    </message>
+    <message>
+      <source>Trackball</source>
+      <translation>轨迹球</translation>
+    </message>
+    <message>
+      <source>New document scale</source>
+      <translation type="unfinished">New document scale</translation>
+    </message>
+    <message>
+      <source>Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</source>
+      <translation type="unfinished">Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <source>Enable animated rotations</source>
+      <translation>启用动画旋转</translation>
+    </message>
+    <message>
+      <source>Enable animation</source>
+      <translation>启用动画</translation>
+    </message>
+    <message>
+      <source>Zoom operations will be performed at position of mouse pointer</source>
+      <translation type="unfinished">Zoom operations will be performed at position of mouse pointer</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>以光标为中心缩放</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>缩放步长</translation>
+    </message>
+    <message>
+      <source>Direction of zoom operations will be inverted</source>
+      <translation type="unfinished">Direction of zoom operations will be inverted</translation>
+    </message>
+    <message>
+      <source>Invert zoom</source>
+      <translation>反向缩放</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</source>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>禁用触摸屏倾斜手势</translation>
+    </message>
+    <message>
+      <source>Rotations in 3D will use current cursor position as center for rotation</source>
+      <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>等轴测</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>二轴测</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>三轴测</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>俯视</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>前视</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>左视</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>右视</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>后视</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>底视</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>自定义</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation type="unfinished">Default camera orientation</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>旋转模式</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>窗口中心</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>在光标处拖动</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>对象中心</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>立方体大小</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>导航立方体大小</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>选择</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
     </message>
   </context>
   <context>
@@ -2604,10 +3711,6 @@ Specify another directory, please.</source>
       <translation>单位</translation>
     </message>
     <message>
-      <source>User system:</source>
-      <translation>用户系统:</translation>
-    </message>
-    <message>
       <source>US customary (in/lb)</source>
       <translation>美制(吋/磅)</translation>
     </message>
@@ -2619,17 +3722,73 @@ Specify another directory, please.</source>
       <source>Imperial decimal (in/lb)</source>
       <translation>美制(寸/磅)</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>Building Euro (cm/m²/m³)</source>
       <translation>欧规(cm/m²/m³)</translation>
     </message>
     <message>
-      <source>Building US (ft-in/sqft/cuft)</source>
-      <translation>美制 (ft-in/sqft/cuft)</translation>
-    </message>
-    <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>米制小零件 &amp; 数控 (mm, mm/min)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>最小分数英寸：</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16英寸</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32英寸</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64英寸</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128英寸</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>单位系统：</translation>
+    </message>
+    <message>
+      <source>Number of decimals that should be shown for numbers and dimensions</source>
+      <translation type="unfinished">Number of decimals that should be shown for numbers and dimensions</translation>
+    </message>
+    <message>
+      <source>Unit system that should be used for all parts the application</source>
+      <translation type="unfinished">Unit system that should be used for all parts the application</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch to be displayed</source>
+      <translation type="unfinished">Minimum fractional inch to be displayed</translation>
+    </message>
+    <message>
+      <source>Building US (ft-in/sqft/cft)</source>
+      <translation type="unfinished">Building US (ft-in/sqft/cft)</translation>
+    </message>
+    <message>
+      <source>Imperial for Civil Eng (ft, ft/sec)</source>
+      <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -2667,12 +3826,56 @@ Specify another directory, please.</source>
       <translation>简单颜色</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>选取半径 (px):</translation>
+      <source>Object being edited</source>
+      <translation>正在编辑的对象</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>设置在3D 视图中选取元素的模糊范围。更大的价值选中物体更容易, 但会使一些小特征无法选中。</translation>
+      <source>Active container</source>
+      <translation>活动容器</translation>
+    </message>
+    <message>
+      <source>Enable preselection and highlight by specified color</source>
+      <translation type="unfinished">Enable preselection and highlight by specified color</translation>
+    </message>
+    <message>
+      <source>Enable selection highlighting and use specified color</source>
+      <translation type="unfinished">Enable selection highlighting and use specified color</translation>
+    </message>
+    <message>
+      <source>Background color for the model view</source>
+      <translation>模型视图的背景颜色</translation>
+    </message>
+    <message>
+      <source>Background will have selected color</source>
+      <translation>背景将使用所选颜色</translation>
+    </message>
+    <message>
+      <source>Color gradient will get selected color as middle color</source>
+      <translation>颜色渐变将使用所选颜色作为中间颜色</translation>
+    </message>
+    <message>
+      <source>Bottom color</source>
+      <translation>底部颜色</translation>
+    </message>
+    <message>
+      <source>Background will have selected color gradient</source>
+      <translation type="unfinished">Background will have selected color gradient</translation>
+    </message>
+    <message>
+      <source>Top color</source>
+      <translation>顶部颜色</translation>
+    </message>
+    <message>
+      <source>Tree view</source>
+      <translation>结构树浏览器</translation>
+    </message>
+    <message>
+      <source>Background color for objects in tree view that are currently edited</source>
+      <translation type="unfinished">Background color for objects in tree view that are currently edited</translation>
+    </message>
+    <message>
+      <source>Background color for active containers in tree view</source>
+      <translation type="unfinished">Background color for active containers in tree view</translation>
     </message>
   </context>
   <context>
@@ -2701,14 +3904,6 @@ Specify another directory, please.</source>
       <translation>数量：</translation>
     </message>
     <message>
-      <source>Units:</source>
-      <translation>单位</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
-    <message>
       <source>Copy</source>
       <translation>复制</translation>
     </message>
@@ -2716,12 +3911,68 @@ Specify another directory, please.</source>
       <source>Close</source>
       <translation>关闭</translation>
     </message>
+    <message>
+      <source>Input the source value and unit</source>
+      <translation type="unfinished">Input the source value and unit</translation>
+    </message>
+    <message>
+      <source>Input here the unit for the result</source>
+      <translation type="unfinished">Input here the unit for the result</translation>
+    </message>
+    <message>
+      <source>Result</source>
+      <translation>结果</translation>
+    </message>
+    <message>
+      <source>List of last used calculations 
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations 
+To add a calculation press Return in the value input field</translation>
+    </message>
+    <message>
+      <source>Quantity</source>
+      <translation>数量</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>单位系统：</translation>
+    </message>
+    <message>
+      <source>Unit system to be used for the Quantity
+The preference system is the one set in the general preferences.</source>
+      <translation>用于数量的单位系统
+偏好的单位系统是在偏好设置中设定的。</translation>
+    </message>
+    <message>
+      <source>Decimals:</source>
+      <translation>小数位数:</translation>
+    </message>
+    <message>
+      <source>Decimals for the Quantity</source>
+      <translation type="unfinished">Decimals for the Quantity</translation>
+    </message>
+    <message>
+      <source>Unit category:</source>
+      <translation>单位类别：</translation>
+    </message>
+    <message>
+      <source>Unit category for the Quantity</source>
+      <translation>数量单位类别</translation>
+    </message>
+    <message>
+      <source>Copy the result into the clipboard</source>
+      <translation>复制结果到剪贴板</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>Unit mismatch</source>
+      <source>unit mismatch</source>
       <translation>单位不匹配</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>未知单位：</translation>
     </message>
   </context>
   <context>
@@ -2767,10 +4018,6 @@ Specify another directory, please.</source>
       <translation>排序已启用的工作台</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;排序已启用的工作台&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>上移</translation>
     </message>
@@ -2779,12 +4026,16 @@ Specify another directory, please.</source>
       <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;向上 移动所选的项目&lt;/span&gt;&lt;/p&gt;&lt;p&gt;该项目将被上移&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;注意：&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; 此变更将于下次启动FreeCAD时生效&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
       <source>Add all to enabled workbenches</source>
       <translation>添加所有到启用的工作台</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;排序已启用的工作台&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2861,10 +4112,6 @@ Specify another directory, please.</source>
       <translation>您确定要删除所有暂存目录？</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>删除所有的暂存目录，您之后将无法恢复任何文件。</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>完成</translation>
     </message>
@@ -2878,6 +4125,10 @@ Specify another directory, please.</source>
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>点击“开始恢复”按钮开始下列文件的恢复进程。
 '状态'列显示文档能否被恢复。</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation>删除所有的暂存目录之后您将无法恢复任何文件。</translation>
     </message>
   </context>
   <context>
@@ -2963,11 +4214,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>1 Download</source>
-      <translation>1 下载</translation>
+      <translation>1个下载</translation>
     </message>
     <message>
       <source>%1 Downloads</source>
-      <translation>%1 下载</translation>
+      <translation>%1个下载</translation>
     </message>
   </context>
   <context>
@@ -3077,10 +4328,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>折叠</translation>
     </message>
     <message>
-      <source>Do really want to remove this parameter group?</source>
-      <translation>是否真的删除此参数组?</translation>
-    </message>
-    <message>
       <source>Existing sub-group</source>
       <translation>已存在子组</translation>
     </message>
@@ -3103,6 +4350,10 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Reading from '%1' failed.</source>
       <translation>读取'%1'失败.</translation>
+    </message>
+    <message>
+      <source>Do you really want to remove this parameter group?</source>
+      <translation type="unfinished">Do you really want to remove this parameter group?</translation>
     </message>
   </context>
   <context>
@@ -3195,28 +4446,8 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>中心:</translation>
     </message>
     <message>
-      <source>Pitch:</source>
-      <translation>间距:</translation>
-    </message>
-    <message>
-      <source>Roll:</source>
-      <translation>卷:</translation>
-    </message>
-    <message>
-      <source>Yaw:</source>
-      <translation>偏:</translation>
-    </message>
-    <message>
       <source>Rotation axis with angle</source>
-      <translation>按角度旋转轴</translation>
-    </message>
-    <message>
-      <source>Apply placement changes immediately</source>
-      <translation>立即应用更改</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>应用更改到对象</translation>
+      <translation>带角度的旋转轴</translation>
     </message>
     <message>
       <source>Apply</source>
@@ -3239,12 +4470,60 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>输入区域有错误的内容,请确认该区域合理的输入内容！</translation>
     </message>
     <message>
-      <source>Euler angles (XY'Z'')</source>
-      <translation>欧拉角 (XY'Z ')</translation>
-    </message>
-    <message>
       <source>Use center of mass</source>
       <translation>使用重心</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>轴向：</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>应用轴</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>按住 Shift 点击以反向</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>选定的点</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>应用增量更改</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>单击此按钮之前，请选择1，2或3个点。点可以位于顶点，面或边上。如果在面或边缘上，所使用的点将是沿着面或边缘的鼠标位置处的点。如果选择1点，则将其用作旋转中心。如果选择了2个点，则它们之间的中点将成为旋转中心，必要时将新建自定义轴。如果选择3个点，则第一个点成为旋转中心，并且位于与3个点定义的平面垂直的矢量上。报告视图中提供了一些距离和角度信息，这在对齐对象时非常有用。为方便，使用Shift+单击时，相应的距离或角度将复制到剪贴板。</translation>
+    </message>
+    <message>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
+    </message>
+    <message>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
+    </message>
+    <message>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
+    </message>
+    <message>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
+    </message>
+    <message>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
+    </message>
+    <message>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
+    </message>
+    <message>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -3256,6 +4535,37 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Command</source>
       <translation>命令</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::RemoteDebugger</name>
+    <message>
+      <source>Attach to remote debugger</source>
+      <translation type="unfinished">Attach to remote debugger</translation>
+    </message>
+    <message>
+      <source>winpdb</source>
+      <translation type="unfinished">winpdb</translation>
+    </message>
+    <message>
+      <source>Password:</source>
+      <translation>密码:</translation>
+    </message>
+    <message>
+      <source>VS Code</source>
+      <translation type="unfinished">VS Code</translation>
+    </message>
+    <message>
+      <source>Address:</source>
+      <translation>地址：</translation>
+    </message>
+    <message>
+      <source>Port:</source>
+      <translation>端口：</translation>
+    </message>
+    <message>
+      <source>Redirect output</source>
+      <translation>重定向输出</translation>
     </message>
   </context>
   <context>
@@ -3277,7 +4587,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::SceneModel</name>
     <message>
       <source>Inventor Tree</source>
-      <translation>结构树</translation>
+      <translation>发明者树</translation>
     </message>
     <message>
       <source>Nodes</source>
@@ -3320,11 +4630,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>No 3d view</source>
-      <translation>无3D视图</translation>
+      <translation>无三维视图</translation>
     </message>
     <message>
       <source>No active 3d view found.</source>
-      <translation>未发现活动的3d视图.</translation>
+      <translation>未发现活动的三维视图.</translation>
     </message>
   </context>
   <context>
@@ -3336,6 +4646,55 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Transform</source>
       <translation>变换</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::DlgObjectSelection</name>
+    <message>
+      <source>Object selection</source>
+      <translation>所选对象</translation>
+    </message>
+    <message>
+      <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
+      <translation type="unfinished">The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</translation>
+    </message>
+    <message>
+      <source>Dependency</source>
+      <translation>依赖关系</translation>
+    </message>
+    <message>
+      <source>Document</source>
+      <translation>文档</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <source>State</source>
+      <translation>状态</translation>
+    </message>
+    <message>
+      <source>Hierarchy</source>
+      <translation>组织结构</translation>
+    </message>
+    <message>
+      <source>Selected</source>
+      <translation>选定</translation>
+    </message>
+    <message>
+      <source>Partial</source>
+      <translation>部分的</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
   </context>
   <context>
@@ -3354,18 +4713,18 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
-      <translation>组合视图</translation>
-    </message>
-    <message>
-      <source>Tasks</source>
-      <translation>任务</translation>
+      <source>Combo View</source>
+      <translation>组合浏览器</translation>
     </message>
     <message>
       <source>Model</source>
       <translation>模型</translation>
+    </message>
+    <message>
+      <source>Tasks</source>
+      <translation>任务</translation>
     </message>
   </context>
   <context>
@@ -3377,18 +4736,6 @@ The 'Status' column shows whether the document could be recovered.</source>
   </context>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
-    <message>
-      <source>Logging</source>
-      <translation>日志</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>警告</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>错误</translation>
-    </message>
     <message>
       <source>Options</source>
       <translation>选项</translation>
@@ -3407,7 +4754,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Go to end</source>
-      <translation>转到结束</translation>
+      <translation>转至末尾</translation>
     </message>
     <message>
       <source>Redirect Python output</source>
@@ -3420,6 +4767,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>纯文本文件</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation>显示消息类型</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation>普通消息</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation>日志消息</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation>警告</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation>错误</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation>显示报告视图在</translation>
     </message>
   </context>
   <context>
@@ -3511,6 +4882,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>在文档中创建此子形状的独立副本</translation>
     </message>
+    <message>
+      <source>Picked object list</source>
+      <translation>选择对象列表</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DocumentModel</name>
@@ -3576,7 +4951,21 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>PDF file</source>
-      <translation>PDF文件</translation>
+      <translation>PDF 文件</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>精确匹配</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>精确匹配</translation>
     </message>
   </context>
   <context>
@@ -3638,20 +5027,20 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>点击或使用鼠标左键</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>单击OR点击鼠标左键。</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>用两个手指拖动屏幕。或按下鼠标右键。</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation>用两个手指拖动屏幕OR按下鼠标右键。</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>以单指拖拉屏幕或使用鼠标左键，在草图及其他编辑模式中需配合ALT键使用。</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation>用单指拖动屏幕OR使用鼠标左键，在草图&amp;&amp;其他编辑模式中需配合Alt键使用。</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>捏(将两指置于屏幕上分开或靠近)、转动鼠标中键或是键盘上的PgUp/PgDown。</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>捏 (将两指置于屏幕上 &amp;&amp; 分开 || 靠近) OR 转动鼠标中键 OR 键盘上的PgUp/PgDown。</translation>
     </message>
   </context>
   <context>
@@ -3834,13 +5223,18 @@ Do you want to save your changes?</source>
       <translation>全部关闭</translation>
     </message>
     <message>
-      <source>Object dependencies</source>
-      <translation>对象依赖关系</translation>
+      <source>Unsaved document</source>
+      <translation>未保存的文件</translation>
     </message>
     <message>
-      <source>The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</source>
-      <translation>所选物件与未选取物件有依赖,要一起复制它们吗?</translation>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
+    </message>
+    <message>
+      <source>To link to external objects, the document must be saved at least once.
+Do you want to save the document now?</source>
+      <translation type="unfinished">To link to external objects, the document must be saved at least once.
+Do you want to save the document now?</translation>
     </message>
   </context>
   <context>
@@ -3851,19 +5245,19 @@ Do you want to copy them, too?</source>
     </message>
     <message>
       <source>The alignment is already in progress.</source>
-      <translation>对齐方式已在进行中。</translation>
+      <translation>对齐正在进行。</translation>
     </message>
     <message>
       <source>Alignment[*]</source>
-      <translation>对齐方式[*]</translation>
+      <translation>对齐[*]</translation>
     </message>
     <message>
       <source>Please, select at least one point in the left and the right view</source>
-      <translation>请选择至少 %1 点左和右视图</translation>
+      <translation>请在左和右视图中选择至少1点</translation>
     </message>
     <message>
       <source>Please, select at least %1 points in the left and the right view</source>
-      <translation>请选择至少 %1 点左和右视图</translation>
+      <translation>请在左和右视图中选择至少%1点</translation>
     </message>
     <message>
       <source>Please pick points in the left and right view</source>
@@ -3871,34 +5265,34 @@ Do you want to copy them, too?</source>
     </message>
     <message>
       <source>The alignment has finished</source>
-      <translation>对齐方式已完成</translation>
+      <translation>对齐已完成</translation>
     </message>
     <message>
       <source>The alignment has been canceled</source>
-      <translation>对齐方式已被取消</translation>
+      <translation>对齐已被取消</translation>
     </message>
     <message>
       <source>Too few points picked in the left view. At least %1 points are needed.</source>
-      <translation>挑在右视图的点太少。至少需要 %1 点。</translation>
+      <translation>在左视图选取的点太少。至少需要 %1 点。</translation>
     </message>
     <message>
       <source>Too few points picked in the right view. At least %1 points are needed.</source>
-      <translation>挑在右视图的点太少。至少需要 %1 点。</translation>
+      <translation>在右视图选取的点太少。至少需要 %1 点。</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-      <translation>不同数量的左、 右视图中选取的点。对左视图 %1 点被挑选，右视图 %2 上点被挑选.</translation>
+      <translation>左、 右视图中选中的点数不同。左视图选中 %1 点，右视图选中 %2 点。</translation>
     </message>
     <message>
       <source>Try to align group of views</source>
-      <translation>尝试对齐组的意见</translation>
+      <translation>尝试对齐一组视图</translation>
     </message>
     <message>
       <source>The alignment failed.
 How do you want to proceed?</source>
-      <translation>对齐方式失败。您希望如何进行?</translation>
+      <translation>对齐失败。您希望如何进行?</translation>
     </message>
     <message>
       <source>Retry</source>
@@ -3932,28 +5326,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>点击或使用鼠标左键</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>单击OR点击鼠标左键。</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>用两个手指拖动屏幕。或按 ALT + 鼠标中键。</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation>用两个手指拖动屏幕 OR 按 ALT + 鼠标中键。</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>用一根手指拖动屏幕。或者按 ALT + 鼠标左键。在草绘器和其他编辑模式，还需按住 Alt。</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>用一根手指拖动屏幕 OR 按 ALT + 鼠标左键。在草图和其他编辑模式，还需按住 Alt。</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>捏(将两指置于屏幕并分开或靠近)、转动鼠中键、按住ALT加上鼠标右键或是键盘上的PgUp/PgDown。</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>捏合 (将两指置于屏幕并分开或靠近) OR 滚动鼠标中键 OR 按住ALT+鼠标右键 OR 键盘上的PgUp/PgDown。</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>下载开始...</translation>
+      <source>Download started...</source>
+      <translation>已开始下载...</translation>
     </message>
   </context>
   <context>
@@ -3998,7 +5391,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>异常终止</translation>
+      <translation>异常中止</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
@@ -4013,7 +5406,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>异常终止</translation>
+      <translation>异常中止</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
@@ -4028,10 +5421,45 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
-    <name>Gui::PropertyEditor::LinkListLabel</name>
+    <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <source>Change the linked objects</source>
-      <translation>更改链接的对象</translation>
+      <source>Error</source>
+      <translation>错误</translation>
+    </message>
+    <message>
+      <source>Object not found</source>
+      <translation>未发现物件</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit</source>
+      <translation>编辑</translation>
+    </message>
+    <message>
+      <source>property</source>
+      <translation>属性</translation>
+    </message>
+    <message>
+      <source>Show all</source>
+      <translation>显示全部</translation>
+    </message>
+    <message>
+      <source>Add property</source>
+      <translation>添加属性</translation>
+    </message>
+    <message>
+      <source>Remove property</source>
+      <translation>删除属性</translation>
+    </message>
+    <message>
+      <source>Expression...</source>
+      <translation>表达式...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
     </message>
   </context>
   <context>
@@ -4130,7 +5558,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Clear console</source>
-      <translation>清除控制台</translation>
+      <translation>清空控制台</translation>
     </message>
     <message>
       <source>Macro Files</source>
@@ -4139,6 +5567,14 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>All Files</source>
       <translation>所有文件</translation>
+    </message>
+    <message>
+      <source>Save history</source>
+      <translation>保存历史记录</translation>
+    </message>
+    <message>
+      <source>Saves Python history across %1 sessions</source>
+      <translation type="unfinished">Saves Python history across %1 sessions</translation>
     </message>
   </context>
   <context>
@@ -4157,6 +5593,21 @@ Do you want to exit without saving your data?</source>
     <message>
       <source>Open file %1</source>
       <translation>打开文件%1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>文件未找到</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>无法打开文件'%1'.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -4293,12 +5744,51 @@ Do you want to specify another directory?</source>
       <translation>增加量</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
+      <source>Translation Increment:</source>
       <translation>平移变化量：</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
+      <source>Rotation Increment:</source>
       <translation>旋转变化量：</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskElementColors</name>
+    <message>
+      <source>Set element color</source>
+      <translation>设置元素颜色</translation>
+    </message>
+    <message>
+      <source>TextLabel</source>
+      <translation>文本标签</translation>
+    </message>
+    <message>
+      <source>Recompute after commit</source>
+      <translation>提交后重新计算</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>删除</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>编辑</translation>
+    </message>
+    <message>
+      <source>Remove all</source>
+      <translation>删除全部</translation>
+    </message>
+    <message>
+      <source>Hide</source>
+      <translation>隐藏</translation>
+    </message>
+    <message>
+      <source>Box select</source>
+      <translation type="unfinished">Box select</translation>
+    </message>
+    <message>
+      <source>On-top when selected</source>
+      <translation type="unfinished">On-top when selected</translation>
     </message>
   </context>
   <context>
@@ -4383,6 +5873,10 @@ Do you want to specify another directory?</source>
       <source>If you don't save, your changes will be lost.</source>
       <translation>如果您现在退出的话，您的更改将会丢失。</translation>
     </message>
+    <message>
+      <source>Edit text</source>
+      <translation>编辑文本</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TouchpadNavigationStyle</name>
@@ -4404,10 +5898,176 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::Translator</name>
+    <message>
+      <source>English</source>
+      <translation>英语</translation>
+    </message>
+    <message>
+      <source>German</source>
+      <translation>德语</translation>
+    </message>
+    <message>
+      <source>Spanish</source>
+      <translation>西班牙语</translation>
+    </message>
+    <message>
+      <source>French</source>
+      <translation>法语</translation>
+    </message>
+    <message>
+      <source>Italian</source>
+      <translation>意大利语</translation>
+    </message>
+    <message>
+      <source>Japanese</source>
+      <translation>日语</translation>
+    </message>
+    <message>
+      <source>Chinese Simplified</source>
+      <translation>简体中文</translation>
+    </message>
+    <message>
+      <source>Chinese Traditional</source>
+      <translation>繁体中文</translation>
+    </message>
+    <message>
+      <source>Korean</source>
+      <translation>韩语</translation>
+    </message>
+    <message>
+      <source>Russian</source>
+      <translation>俄语</translation>
+    </message>
+    <message>
+      <source>Swedish</source>
+      <translation>瑞典语</translation>
+    </message>
+    <message>
+      <source>Afrikaans</source>
+      <translation>南非语</translation>
+    </message>
+    <message>
+      <source>Norwegian</source>
+      <translation>挪威语</translation>
+    </message>
+    <message>
+      <source>Portuguese, Brazilian</source>
+      <translation>葡萄牙语 (巴西)</translation>
+    </message>
+    <message>
+      <source>Portuguese</source>
+      <translation>葡萄牙语</translation>
+    </message>
+    <message>
+      <source>Dutch</source>
+      <translation>荷兰语</translation>
+    </message>
+    <message>
+      <source>Ukrainian</source>
+      <translation>乌克兰语</translation>
+    </message>
+    <message>
+      <source>Finnish</source>
+      <translation>芬兰语</translation>
+    </message>
+    <message>
+      <source>Croatian</source>
+      <translation>克罗地亚语</translation>
+    </message>
+    <message>
+      <source>Polish</source>
+      <translation>波兰语</translation>
+    </message>
+    <message>
+      <source>Czech</source>
+      <translation>捷克语</translation>
+    </message>
+    <message>
+      <source>Hungarian</source>
+      <translation>匈牙利语</translation>
+    </message>
+    <message>
+      <source>Romanian</source>
+      <translation>罗马尼亚语</translation>
+    </message>
+    <message>
+      <source>Slovak</source>
+      <translation>斯洛伐克语</translation>
+    </message>
+    <message>
+      <source>Turkish</source>
+      <translation>土耳其语</translation>
+    </message>
+    <message>
+      <source>Slovenian</source>
+      <translation>斯洛文尼亚语</translation>
+    </message>
+    <message>
+      <source>Basque</source>
+      <translation>巴斯克语</translation>
+    </message>
+    <message>
+      <source>Catalan</source>
+      <translation>加泰罗尼亚语</translation>
+    </message>
+    <message>
+      <source>Galician</source>
+      <translation>加利西亚语</translation>
+    </message>
+    <message>
+      <source>Kabyle</source>
+      <translation>卡比尔语</translation>
+    </message>
+    <message>
+      <source>Filipino</source>
+      <translation>菲律宾语</translation>
+    </message>
+    <message>
+      <source>Indonesian</source>
+      <translation>印尼语</translation>
+    </message>
+    <message>
+      <source>Lithuanian</source>
+      <translation>立陶宛语</translation>
+    </message>
+    <message>
+      <source>Valencian</source>
+      <translation>巴伦西亚语</translation>
+    </message>
+    <message>
+      <source>Arabic</source>
+      <translation>阿拉伯语</translation>
+    </message>
+    <message>
+      <source>Vietnamese</source>
+      <translation>越南语</translation>
+    </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>希腊语</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
       <translation>结构树浏览器</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>搜索</translation>
     </message>
   </context>
   <context>
@@ -4476,6 +6136,85 @@ Do you want to specify another directory?</source>
       <source>%1, Internal name: %2</source>
       <translation>%1、内部名: %2</translation>
     </message>
+    <message>
+      <source>Search...</source>
+      <translation>搜索...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>搜索对象</translation>
+    </message>
+    <message>
+      <source>Description</source>
+      <translation>描述</translation>
+    </message>
+    <message>
+      <source>Show hidden items</source>
+      <translation>显示隐藏条目</translation>
+    </message>
+    <message>
+      <source>Show hidden tree view items</source>
+      <translation>显示隐藏树视图条目</translation>
+    </message>
+    <message>
+      <source>Hide item</source>
+      <translation>隐藏条目</translation>
+    </message>
+    <message>
+      <source>Hide the item in tree</source>
+      <translation>隐藏在树中条目</translation>
+    </message>
+    <message>
+      <source>Close document</source>
+      <translation>关闭文档</translation>
+    </message>
+    <message>
+      <source>Close the document</source>
+      <translation>关闭此文档</translation>
+    </message>
+    <message>
+      <source>Reload document</source>
+      <translation>重载文档</translation>
+    </message>
+    <message>
+      <source>Reload a partially loaded document</source>
+      <translation type="unfinished">Reload a partially loaded document</translation>
+    </message>
+    <message>
+      <source>Allow partial recomputes</source>
+      <translation type="unfinished">Allow partial recomputes</translation>
+    </message>
+    <message>
+      <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
+      <translation type="unfinished">Enable or disable recomputating editing object when 'skip recomputation' is enabled</translation>
+    </message>
+    <message>
+      <source>Recompute object</source>
+      <translation type="unfinished">Recompute object</translation>
+    </message>
+    <message>
+      <source>Recompute the selected object</source>
+      <translation type="unfinished">Recompute the selected object</translation>
+    </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation type="unfinished"> (but must be executed)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation type="unfinished">Vectors</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation type="unfinished">Table</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
@@ -4485,7 +6224,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>PDF file</source>
-      <translation>PDF文件</translation>
+      <translation>PDF 文件</translation>
     </message>
     <message>
       <source>Opening file failed</source>
@@ -4523,7 +6262,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Preferences...</source>
-      <translation>偏好设定…</translation>
+      <translation>首选项…</translation>
     </message>
     <message>
       <source>Quit %1</source>
@@ -4628,7 +6367,7 @@ Do you want to specify another directory?</source>
     <name>PropertyListDialog</name>
     <message>
       <source>Invalid input</source>
-      <translation>输入无效</translation>
+      <translation>无效输入</translation>
     </message>
     <message>
       <source>Input in line %1 is not a number</source>
@@ -4767,7 +6506,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Restore frozen views</source>
-      <translation>回复冻结视图</translation>
+      <translation>恢复冻结视图</translation>
     </message>
     <message>
       <source>Cannot open file '%1'.</source>
@@ -4831,7 +6570,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Existing group</source>
-      <translation>已存在组</translation>
+      <translation>现有的组</translation>
     </message>
     <message>
       <source>The group '%1' already exists.</source>
@@ -4871,11 +6610,11 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Inner</source>
-      <translation>内</translation>
+      <translation>内部</translation>
     </message>
     <message>
       <source>Outer</source>
-      <translation>外</translation>
+      <translation>外部</translation>
     </message>
     <message>
       <source>No Browser</source>
@@ -4975,11 +6714,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>New boolean item</source>
-      <translation>新布尔值</translation>
+      <translation>新布尔运算项目</translation>
     </message>
     <message>
       <source>Navigation styles</source>
-      <translation>导航样式</translation>
+      <translation>导航模式</translation>
     </message>
     <message>
       <source>Move annotation</source>
@@ -4987,7 +6726,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation>变形</translation>
+      <translation>变换</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
@@ -5030,18 +6769,6 @@ Be aware the point where you click matters.</source>
       <translation>原点</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1:%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>平移： </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>旋转： </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>删除群组内容？</translation>
     </message>
@@ -5053,6 +6780,274 @@ Be aware the point where you click matters.</source>
       <source>Export failed</source>
       <translation>导出失败</translation>
     </message>
+    <message>
+      <source>Split</source>
+      <translation>分割</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>变换:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>旋转:</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>在活动部件间切换</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>编辑文本</translation>
+    </message>
+    <message>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation type="unfinished">The exported object contains external link. Please save the documentat least once before exporting.</translation>
+    </message>
+    <message>
+      <source>Delete failed</source>
+      <translation type="unfinished">Delete failed</translation>
+    </message>
+    <message>
+      <source>Dependency error</source>
+      <translation type="unfinished">Dependency error</translation>
+    </message>
+    <message>
+      <source>Copy selected</source>
+      <translation type="unfinished">Copy selected</translation>
+    </message>
+    <message>
+      <source>Copy active document</source>
+      <translation type="unfinished">Copy active document</translation>
+    </message>
+    <message>
+      <source>Copy all documents</source>
+      <translation type="unfinished">Copy all documents</translation>
+    </message>
+    <message>
+      <source>Paste</source>
+      <translation>粘贴</translation>
+    </message>
+    <message>
+      <source>Expression error</source>
+      <translation>表达式错误</translation>
+    </message>
+    <message>
+      <source>Failed to parse some of the expressions.
+Please check the Report View for more details.</source>
+      <translation type="unfinished">Failed to parse some of the expressions.
+Please check the Report View for more details.</translation>
+    </message>
+    <message>
+      <source>Failed to paste expressions</source>
+      <translation type="unfinished">Failed to paste expressions</translation>
+    </message>
+    <message>
+      <source>Simple group</source>
+      <translation type="unfinished">Simple group</translation>
+    </message>
+    <message>
+      <source>Group with links</source>
+      <translation type="unfinished">Group with links</translation>
+    </message>
+    <message>
+      <source>Group with transform links</source>
+      <translation type="unfinished">Group with transform links</translation>
+    </message>
+    <message>
+      <source>Create link group failed</source>
+      <translation type="unfinished">Create link group failed</translation>
+    </message>
+    <message>
+      <source>Create link failed</source>
+      <translation type="unfinished">Create link failed</translation>
+    </message>
+    <message>
+      <source>Failed to create relative link</source>
+      <translation type="unfinished">Failed to create relative link</translation>
+    </message>
+    <message>
+      <source>Unlink failed</source>
+      <translation type="unfinished">Unlink failed</translation>
+    </message>
+    <message>
+      <source>Replace link failed</source>
+      <translation type="unfinished">Replace link failed</translation>
+    </message>
+    <message>
+      <source>Failed to import links</source>
+      <translation type="unfinished">Failed to import links</translation>
+    </message>
+    <message>
+      <source>Failed to import all links</source>
+      <translation type="unfinished">Failed to import all links</translation>
+    </message>
+    <message>
+      <source>Invalid name</source>
+      <translation>名称无效</translation>
+    </message>
+    <message>
+      <source>The property name or group name must only contain alpha numericals,
+underscore, and must not start with a digit.</source>
+      <translation type="unfinished">The property name or group name must only contain alpha numericals,
+underscore, and must not start with a digit.</translation>
+    </message>
+    <message>
+      <source>The property '%1' already exists in '%2'</source>
+      <translation type="unfinished">The property '%1' already exists in '%2'</translation>
+    </message>
+    <message>
+      <source>Add property</source>
+      <translation>添加属性</translation>
+    </message>
+    <message>
+      <source>Failed to add property to '%1': %2</source>
+      <translation type="unfinished">Failed to add property to '%1': %2</translation>
+    </message>
+    <message>
+      <source>Save dependent files</source>
+      <translation type="unfinished">Save dependent files</translation>
+    </message>
+    <message>
+      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
+      <translation type="unfinished">The file contains external dependencies. Do you want to save the dependent files, too?</translation>
+    </message>
+    <message>
+      <source>Failed to save document</source>
+      <translation type="unfinished">Failed to save document</translation>
+    </message>
+    <message>
+      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
+      <translation>文档包含循环依赖。您仍然想要保存它们吗？</translation>
+    </message>
+    <message>
+      <source>Undo</source>
+      <translation>撤销</translation>
+    </message>
+    <message>
+      <source>Redo</source>
+      <translation>重做</translation>
+    </message>
+    <message>
+      <source>There are grouped transactions in the following documents with other preceding transactions</source>
+      <translation type="unfinished">There are grouped transactions in the following documents with other preceding transactions</translation>
+    </message>
+    <message>
+      <source>Choose 'Yes' to roll back all preceding transactions.
+Choose 'No' to roll back in the active document only.
+Choose 'Abort' to abort</source>
+      <translation type="unfinished">Choose 'Yes' to roll back all preceding transactions.
+Choose 'No' to roll back in the active document only.
+Choose 'Abort' to abort</translation>
+    </message>
+    <message>
+      <source>Do you want to save your changes to document before closing?</source>
+      <translation type="unfinished">Do you want to save your changes to document before closing?</translation>
+    </message>
+    <message>
+      <source>Apply answer to all</source>
+      <translation type="unfinished">Apply answer to all</translation>
+    </message>
+    <message>
+      <source>Drag &amp; drop failed</source>
+      <translation>拖放失败</translation>
+    </message>
+    <message>
+      <source>Override colors...</source>
+      <translation>覆盖颜色...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>您确定要继续吗？</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation type="unfinished">
+
+Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation type="unfinished">
+Document: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  路径： </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>相同的物理路径</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>错误</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>加载文件时出错。有些数据可能已经修改或未全部恢复。在报告视图中查看有关对象的更具体信息。</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>工作台</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+物理路径： </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -5062,7 +7057,18 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Selection not allowed by filter</source>
-      <translation>选择不被过滤器许可</translation>
+      <translation>选择不被筛选器许可</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdBoxElementSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>标准视图</translation>
+    </message>
+    <message>
+      <source>Box element selection</source>
+      <translation>方框元素选择</translation>
     </message>
   </context>
   <context>
@@ -5144,7 +7150,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Alignment...</source>
-      <translation>对齐方式...</translation>
+      <translation>对齐...</translation>
     </message>
     <message>
       <source>Align the selected objects</source>
@@ -5298,6 +7304,21 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>工具</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>依赖关系图...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>在活动文档中显示对象的依赖关系图</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -5380,11 +7401,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Preferences ...</source>
-      <translation>选项(&amp;P)...</translation>
+      <translation>首选项(&amp;P)...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
-      <translation>打开一个对话框编辑首选项</translation>
+      <translation>打开首选项窗口</translation>
     </message>
   </context>
   <context>
@@ -5411,6 +7432,10 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Draw style</source>
       <translation>绘制样式</translation>
+    </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation>更改对象的绘制样式</translation>
     </message>
   </context>
   <context>
@@ -5443,8 +7468,8 @@ Be aware the point where you click matters.</source>
       <translation>切换所选对象的编辑模式</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>进入或离开所选的对象的编辑模式</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation>激活或停用所选对象的编辑模式</translation>
     </message>
   </context>
   <context>
@@ -5463,26 +7488,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>No selection</source>
-      <translation>无选择</translation>
+      <translation>未选择任何内容</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>请先选择要导出的对象.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdExportGraphviz</name>
+    <name>StdCmdExpression</name>
     <message>
-      <source>Tools</source>
-      <translation>工具</translation>
+      <source>Edit</source>
+      <translation>编辑</translation>
     </message>
     <message>
-      <source>Dependency graph...</source>
-      <translation>依赖关系图...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>在活动文档中显示对象的依赖关系图</translation>
+      <source>Expression actions</source>
+      <translation>表达式动作</translation>
     </message>
   </context>
   <context>
@@ -5498,6 +7519,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Recompute feature or document</source>
       <translation>重新计算"特征"或"文档"</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>帮助</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>赞助</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation type="unfinished">Donate to FreeCAD development</translation>
     </message>
   </context>
   <context>
@@ -5671,6 +7707,197 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdLinkActions</name>
+    <message>
+      <source>View</source>
+      <translation>视图</translation>
+    </message>
+    <message>
+      <source>Link actions</source>
+      <translation type="unfinished">Link actions</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkImport</name>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>导入链接</translation>
+    </message>
+    <message>
+      <source>Import selected external link(s)</source>
+      <translation type="unfinished">Import selected external link(s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkImportAll</name>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>导入所有链接</translation>
+    </message>
+    <message>
+      <source>Import all links of the active document</source>
+      <translation type="unfinished">Import all links of the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMake</name>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>创建链接</translation>
+    </message>
+    <message>
+      <source>Create a link to the selected object(s)</source>
+      <translation type="unfinished">Create a link to the selected object(s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMakeGroup</name>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>创建链接组</translation>
+    </message>
+    <message>
+      <source>Create a group of links</source>
+      <translation type="unfinished">Create a group of links</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMakeRelative</name>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>创建子链接</translation>
+    </message>
+    <message>
+      <source>Create a sub-object or sub-element link</source>
+      <translation type="unfinished">Create a sub-object or sub-element link</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkReplace</name>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Replace with link</source>
+      <translation type="unfinished">Replace with link</translation>
+    </message>
+    <message>
+      <source>Replace the selected object(s) with link</source>
+      <translation type="unfinished">Replace the selected object(s) with link</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectActions</name>
+    <message>
+      <source>View</source>
+      <translation>视图</translation>
+    </message>
+    <message>
+      <source>Link navigation</source>
+      <translation type="unfinished">Link navigation</translation>
+    </message>
+    <message>
+      <source>Link navigation actions</source>
+      <translation type="unfinished">Link navigation actions</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectAllLinks</name>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Select all links</source>
+      <translation>选择全部链接</translation>
+    </message>
+    <message>
+      <source>Select all links to the current selected object</source>
+      <translation>选择当前选中对象的所有链接</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectLinked</name>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Go to linked object</source>
+      <translation type="unfinished">Go to linked object</translation>
+    </message>
+    <message>
+      <source>Select the linked object and switch to its owner document</source>
+      <translation type="unfinished">Select the linked object and switch to its owner document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectLinkedFinal</name>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Go to the deepest linked object</source>
+      <translation type="unfinished">Go to the deepest linked object</translation>
+    </message>
+    <message>
+      <source>Select the deepest linked object and switch to its owner document</source>
+      <translation type="unfinished">Select the deepest linked object and switch to its owner document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkUnlink</name>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Unlink</source>
+      <translation>取消链接</translation>
+    </message>
+    <message>
+      <source>Strip on level of link</source>
+      <translation>在链接级别上剥离</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMacroAttachDebugger</name>
+    <message>
+      <source>Macro</source>
+      <translation>宏</translation>
+    </message>
+    <message>
+      <source>Attach to remote debugger...</source>
+      <translation>附加到远程调试器...</translation>
+    </message>
+    <message>
+      <source>Attach to a remotely running debugger</source>
+      <translation>附加到远程运行的调试器</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdMacroStartDebug</name>
     <message>
       <source>Macro</source>
@@ -5693,7 +7920,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Step into</source>
-      <translation>踏入</translation>
+      <translation>单步调试</translation>
     </message>
   </context>
   <context>
@@ -5778,12 +8005,12 @@ Be aware the point where you click matters.</source>
       <translation>合并项目</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 文档(*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>不能合并项目本身.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 文档(*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -5870,7 +8097,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create part</source>
-      <translation>创建部件</translation>
+      <translation>创建零件</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
@@ -6043,6 +8270,21 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>宏</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>最近的宏</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>最近的宏列表</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -6103,6 +8345,21 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdSaveAll</name>
+    <message>
+      <source>File</source>
+      <translation>文件</translation>
+    </message>
+    <message>
+      <source>Save All</source>
+      <translation>全部保存</translation>
+    </message>
+    <message>
+      <source>Save all opened document</source>
+      <translation>保存所有打开的文档</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdSaveAs</name>
     <message>
       <source>File</source>
@@ -6148,6 +8405,51 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdSelBack</name>
+    <message>
+      <source>View</source>
+      <translation>视图</translation>
+    </message>
+    <message>
+      <source>&amp;Back</source>
+      <translation>返回(&amp;B)</translation>
+    </message>
+    <message>
+      <source>Go back to previous selection</source>
+      <translation>返回上一个选择</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelBoundingBox</name>
+    <message>
+      <source>View</source>
+      <translation>视图</translation>
+    </message>
+    <message>
+      <source>&amp;Bounding box</source>
+      <translation>边框(&amp;B)</translation>
+    </message>
+    <message>
+      <source>Show selection bounding box</source>
+      <translation>显示选择边框</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelForward</name>
+    <message>
+      <source>View</source>
+      <translation>视图</translation>
+    </message>
+    <message>
+      <source>&amp;Forward</source>
+      <translation>向前(&amp;F)</translation>
+    </message>
+    <message>
+      <source>Repeat the backed selection</source>
+      <translation>重复支持的选择</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdSelectAll</name>
     <message>
       <source>Edit</source>
@@ -6175,6 +8477,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Select visible objects in the active document</source>
       <translation>选择活动文档中的可见对象</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSendToPythonConsole</name>
+    <message>
+      <source>Edit</source>
+      <translation>编辑</translation>
+    </message>
+    <message>
+      <source>&amp;Send to Python Console</source>
+      <translation>发送到 Python 控制台(&amp;S)</translation>
+    </message>
+    <message>
+      <source>Sends the selected object to the Python console</source>
+      <translation>所选择的对象发送到 Python 控制台</translation>
     </message>
   </context>
   <context>
@@ -6215,7 +8532,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Show selection</source>
-      <translation>显示选择</translation>
+      <translation>显示所选</translation>
     </message>
     <message>
       <source>Show all selected objects</source>
@@ -6235,6 +8552,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Toggles the status bar</source>
       <translation>切换状态栏</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTextDocument</name>
+    <message>
+      <source>Tools</source>
+      <translation>工具</translation>
+    </message>
+    <message>
+      <source>Add text document</source>
+      <translation>添加文本文档</translation>
+    </message>
+    <message>
+      <source>Add text document to active document</source>
+      <translation>添加文本文档到活动文档</translation>
     </message>
   </context>
   <context>
@@ -6290,7 +8622,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>切换当前视图的平面裁剪</translation>
+      <translation>切换当前视图的修剪平面</translation>
     </message>
   </context>
   <context>
@@ -6380,7 +8712,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform the geometry of selected objects</source>
-      <translation>几何变换选中对象</translation>
+      <translation>变换选中对象的图形</translation>
     </message>
   </context>
   <context>
@@ -6391,7 +8723,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation>变形</translation>
+      <translation>变换</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
@@ -6399,18 +8731,63 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdTreeSelection</name>
+    <name>StdCmdTreeCollapse</name>
     <message>
       <source>View</source>
       <translation>视图</translation>
     </message>
     <message>
-      <source>Go to selection</source>
-      <translation>转到选择</translation>
+      <source>Collapse selected item</source>
+      <translation>折叠所选项</translation>
     </message>
     <message>
-      <source>Scroll to first selected item</source>
-      <translation>滚动到第一选择的对象</translation>
+      <source>Collapse currently selected tree items</source>
+      <translation>折叠当前所选树项</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeExpand</name>
+    <message>
+      <source>View</source>
+      <translation>视图</translation>
+    </message>
+    <message>
+      <source>Expand selected item</source>
+      <translation>展开所选项</translation>
+    </message>
+    <message>
+      <source>Expand currently selected tree items</source>
+      <translation>展开当前所选树项</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeSelectAllInstances</name>
+    <message>
+      <source>View</source>
+      <translation>视图</translation>
+    </message>
+    <message>
+      <source>Select all instances</source>
+      <translation>选择所有实例</translation>
+    </message>
+    <message>
+      <source>Select all instances of the current selected object</source>
+      <translation>选择当前所选对象的所有实例</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeViewActions</name>
+    <message>
+      <source>View</source>
+      <translation>视图</translation>
+    </message>
+    <message>
+      <source>TreeView actions</source>
+      <translation>树视图操作</translation>
+    </message>
+    <message>
+      <source>TreeView behavior options and actions</source>
+      <translation>树状视图行为选项和操作</translation>
     </message>
   </context>
   <context>
@@ -6444,6 +8821,17 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
@@ -6456,21 +8844,6 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Dock all top-level views</source>
       <translation>停靠所有顶级视图</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>轴侧图</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>设置为轴测投影视图</translation>
     </message>
   </context>
   <context>
@@ -6500,7 +8873,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation>为活动文档创建新的视图窗口</translation>
+      <translation>为活动文档新建视图窗口</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>标准视图</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>二轴测</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>设置为二轴测视图</translation>
     </message>
   </context>
   <context>
@@ -6515,7 +8903,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
-      <translation>自动控制显示3D纹理</translation>
+      <translation>自动控制显示三维纹理</translation>
     </message>
   </context>
   <context>
@@ -6591,6 +8979,36 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>设置为前视图</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>标准视图</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation>主页</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation>设置为默认主视图</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>标准视图</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>等轴测</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>设置为等轴测视图</translation>
     </message>
   </context>
   <context>
@@ -6714,6 +9132,21 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>标准视图</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>恢复保存的相机</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>恢复保存的相机设置</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -6721,7 +9154,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Right</source>
-      <translation>右</translation>
+      <translation>右视</translation>
     </message>
     <message>
       <source>Set to right view</source>
@@ -6739,8 +9172,8 @@ Be aware the point where you click matters.</source>
       <translation>向左旋转</translation>
     </message>
     <message>
-      <source>Rotate the view by 90Â° counter-clockwise</source>
-      <translation>旋转 90 ° 逆时针旋转视图</translation>
+      <source>Rotate the view by 90° counter-clockwise</source>
+      <translation>逆时针旋转 90° 视图</translation>
     </message>
   </context>
   <context>
@@ -6754,8 +9187,23 @@ Be aware the point where you click matters.</source>
       <translation>向右旋转</translation>
     </message>
     <message>
-      <source>Rotate the view by 90Â° clockwise</source>
-      <translation>按顺时针旋转90°旋转视图</translation>
+      <source>Rotate the view by 90° clockwise</source>
+      <translation>顺时针旋转 90° 视图</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>标准视图</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>保存当前相机</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>保存当前相机设置</translation>
     </message>
   </context>
   <context>
@@ -6766,11 +9214,26 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Top</source>
-      <translation>顶视</translation>
+      <translation>俯视</translation>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>设置为顶视图</translation>
+      <translation>设置为俯视图</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>标准视图</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>三轴测</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>设置为三轴测视图</translation>
     </message>
   </context>
   <context>
@@ -6781,11 +9244,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>FreeCAD-VR</source>
-      <translation>FreeCAD-VR</translation>
+      <translation>FreeCAD-虚拟现实</translation>
     </message>
     <message>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-      <translation>扩展FreeCAD 3D 窗口到头戴式显示器</translation>
+      <translation>扩展FreeCAD三维窗口至头戴式显示器</translation>
     </message>
   </context>
   <context>
@@ -6887,6 +9350,156 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Switches to perspective view mode</source>
       <translation>切换到透视视图模式</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>折叠/展开</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>展开活动文档并折叠所有其他文档</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeDrag</name>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+    <message>
+      <source>Initiate dragging</source>
+      <translation>启动拖动</translation>
+    </message>
+    <message>
+      <source>Initiate dragging of current selected tree items</source>
+      <translation>开始拖动当前所选树项</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>在树状图中显示所有文档</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+    <message>
+      <source>Multi document</source>
+      <translation>多文档</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreePreSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+    <message>
+      <source>Pre-selection</source>
+      <translation>预选</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeRecordSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+    <message>
+      <source>Record selection</source>
+      <translation>录制选择</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+    <message>
+      <source>Go to selection</source>
+      <translation>转到选择</translation>
+    </message>
+    <message>
+      <source>Scroll to first selected item</source>
+      <translation>滚动到所选的第一个对象</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>仅在树状图中显示活动文档</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+    <message>
+      <source>Single document</source>
+      <translation>单个文档</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncPlacement</name>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+    <message>
+      <source>Sync placement</source>
+      <translation>同步位置</translation>
+    </message>
+    <message>
+      <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
+      <translation>自动调整跨坐标系拖放对象的位置</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+    <message>
+      <source>Sync selection</source>
+      <translation>同步选择</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncView</name>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+    <message>
+      <source>Sync view</source>
+      <translation>同步视图</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
     </message>
   </context>
   <context>
@@ -7000,25 +9613,36 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
+      <source>The following referencing objects might break.
+
+Are you sure you want to continue?
+</source>
+      <translation>以下引用对象可能会中断。
+
+你确定你要继续吗？
+</translation>
+    </message>
+    <message>
       <source>Object dependencies</source>
       <translation>对象依赖关系</translation>
     </message>
     <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
-
-</source>
-      <translation>以下，参考对象可能会损坏。 你确定要继续吗？
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>这些项目被选择删除，但不在活动文档中。</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>依赖关系图</translation>
     </message>
   </context>
   <context>
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
-      <translation>正如</translation>
+      <translation>保持当前样式</translation>
     </message>
     <message>
       <source>Normal mode</source>
@@ -7080,16 +9704,10 @@ Are you sure you want to continue?
       <translation>对象依赖关系</translation>
     </message>
     <message>
-      <source>The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</source>
-      <translation>所选的对象有对未选定对象的依赖。你想要关联它们吗？</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>依赖关系图</translation>
+      <source>To link to external objects, the document must be saved at least once.
+Do you want to save the document now?</source>
+      <translation type="unfinished">To link to external objects, the document must be saved at least once.
+Do you want to save the document now?</translation>
     </message>
   </context>
   <context>
@@ -7097,6 +9715,19 @@ Do you want to duplicate them, too?</source>
     <message>
       <source>Group</source>
       <translation>组</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_Refresh</name>
+    <message>
+      <source>The document contains dependency cycles.
+Please check the Report View for more details.
+
+Do you still want to proceed?</source>
+      <translation>该文档包含依赖性循环。
+请检查报告视图以获取更多详细信息。
+
+您仍然要继续吗？</translation>
     </message>
   </context>
   <context>
@@ -7115,6 +9746,50 @@ Do you want to duplicate them, too?</source>
     </message>
   </context>
   <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>等轴测</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>将导航立方体设置为等距模式</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>正交投影</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>将视图设置为正交模式</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>透视</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>将视图设置为透视模式</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>缩放到适合窗口大小</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>缩放以使模型填充视图</translation>
+    </message>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
@@ -7130,7 +9805,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>&amp;Stereo</source>
-      <translation>立体成像(&amp;S)</translation>
+      <translation>立体显示(&amp;S)</translation>
     </message>
     <message>
       <source>&amp;Zoom</source>
@@ -7178,7 +9853,11 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Special Ops</source>
-      <translation>特殊Ops</translation>
+      <translation>特殊设定</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>轴测图</translation>
     </message>
   </context>
   <context>

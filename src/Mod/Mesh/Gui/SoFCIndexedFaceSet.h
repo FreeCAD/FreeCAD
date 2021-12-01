@@ -28,6 +28,9 @@
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoMFColor.h>
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
@@ -49,6 +52,8 @@ public:
     void renderCoordsGLArray(SoGLRenderAction *action);
     bool canRenderGLArray(SoGLRenderAction *action) const;
     bool matchMaterial(SoState*) const;
+    void update();
+    bool needUpdate(SoGLRenderAction *action);
     static bool shouldRenderDirectly(bool);
 
 private:
@@ -105,6 +110,7 @@ protected:
     // Force using the reference count mechanism.
     virtual ~SoFCIndexedFaceSet() {}
     virtual void GLRender(SoGLRenderAction *action);
+    void drawFaces(SoGLRenderAction *action);
     void drawCoords(const SoGLCoordinateElement * const vertexlist,
                     const int32_t *vertexindices,
                     int numindices,

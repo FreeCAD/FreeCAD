@@ -39,7 +39,7 @@ class DlgExtrusion : public QDialog, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    DlgExtrusion(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgExtrusion(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgExtrusion();
     void accept();
     void apply();
@@ -65,6 +65,7 @@ protected:
     void findShapes();
     bool canExtrude(const TopoDS_Shape&) const;
     void changeEvent(QEvent *e);
+    void keyPressEvent(QKeyEvent*);
 
 private Q_SLOTS:
     void on_rbDirModeCustom_toggled(bool on);
@@ -90,7 +91,7 @@ private:
     void autoSolid();
 
 private:
-    Ui_DlgExtrusion* ui;
+    std::unique_ptr<Ui_DlgExtrusion> ui;
     std::string document, label;
     class EdgeSelection;
     EdgeSelection* filter;

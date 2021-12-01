@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sr" sourcelanguage="en">
+<TS version="2.1" language="sr" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -13,7 +13,7 @@
     </message>
     <message>
       <source>Create a new spreadsheet</source>
-      <translation>Направи нову табелу</translation>
+      <translation>Направите нову табелу</translation>
     </message>
   </context>
   <context>
@@ -28,7 +28,7 @@
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Доње поравнање cадржаја одабраних ћелија</translation>
+      <translation>Поравнајте на доле cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -39,11 +39,11 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation>Поравнај центар</translation>
+      <translation>Поравнај по средини</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Централно поравнање cадржаја одабраних ћелија</translation>
+      <translation>Поравнајте по средини cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -58,7 +58,7 @@
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
-      <translation>Лево поравнање cадржаја одабраних ћелија</translation>
+      <translation>Поравнајте на лево cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -73,7 +73,7 @@
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
-      <translation>Деcно поравнање cадржаја одабраних ћелија</translation>
+      <translation>Поравнајте на десно cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Горње поравнање cадржаја одабраних ћелија</translation>
+      <translation>Поравнајте на горе cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -99,11 +99,11 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Вертикално централно поравнање</translation>
+      <translation>Усправно поравнај по средини</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Централно-вертикално поравнање cадржаја одабраних ћелија</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Поравнајте усправно по средини cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -118,7 +118,7 @@
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation>Извези табелу у CSV датотеку</translation>
+      <translation>Извезите табелу у ЗРВ датотеку</translation>
     </message>
   </context>
   <context>
@@ -133,7 +133,7 @@
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation>Увези CSV датотеку у табелу</translation>
+      <translation>Увезите ЗРВ датотеку у табелу</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Cпоји ћелије</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Cпоји одабране ћелије у табели</translation>
+      <source>Merge selected cells</source>
+      <translation>Спојите изабране ћелије</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation type="unfinished">Set alias</translation>
+      <translation>Постави алијас</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation type="unfinished">Set alias for selected cell</translation>
+      <translation>Поставите алијас за изабране ћелије</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Подели ћелију</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Подели предходно cпојене ћелије у табели</translation>
+      <source>Split previously merged cells</source>
+      <translation>Поделите претходно спојене ћелије</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Подебљан текст</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Постави подебљан текст у одабране ћелије</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Поставите подебљани текст у изабраним ћелијама</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Искошени текст</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Постави искошен текст у одабране ћелије</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Поставите искошени текст у изабраним ћелијама</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,98 @@
       <translation>Подвучен текcт</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Постави подвучен текст у одабране ћелије</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Подвуците текст у изабраним ћелијама</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Прилагођено</translation>
+      <source>Custom Color</source>
+      <translation>Произвољна боја</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Cпоји ћелије</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Подели ћелију</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Лево поравнај ћелију</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Усредишти ћелију</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Десно поравнај ћелију</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Горе поравнај ћелију</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Доле поравнај ћелију</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Усправно усредишти ћелије</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Постави подебљан текст</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Постави искошени текст</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Постави подвучени текcт</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Направи табелу</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Постави својства ћелије</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Уреди ћелију</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Уметни редове</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Уклони редове</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Уметни стубац</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Очисти ћелију(е)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Постави боју првог плана</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Постави боју позадине</translation>
     </message>
   </context>
   <context>
@@ -257,7 +340,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Водоравно</translation>
     </message>
     <message>
       <source>Left</source>
@@ -265,7 +348,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation>Центар</translation>
+      <translation>По средини</translation>
     </message>
     <message>
       <source>Right</source>
@@ -273,7 +356,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Усправно</translation>
     </message>
     <message>
       <source>Top</source>
@@ -305,7 +388,7 @@
     </message>
     <message>
       <source>Unit string</source>
-      <translation>Низ јединица</translation>
+      <translation>Ниска јединице</translation>
     </message>
     <message>
       <source>A&amp;lias</source>
@@ -331,28 +414,48 @@
       <translation>Извези датотеку</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Cадржај ћелије</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Прикажи табелу</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Постави боју првог плана ћелије</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Поставите боју првог плана ћелије табеле</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Постави боју позадине ћелије</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Поставите боју позадине ћелије табеле</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Табела</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation>Табела не подржава избор опсега приликом убацивања.
+Изаберите само једну ћелију.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation>Умножавање и убацивање није успело</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Алијас садржи неисправне знаке!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Упутите на ћелију по алијасу, на пример
+„Табела.име__мог_алијаса“ umesto „Табела.B1“</translation>
     </message>
   </context>
   <context>
@@ -391,19 +494,19 @@
     </message>
     <message>
       <source>Cyan</source>
-      <translation>Цијан</translation>
+      <translation>Плавичаста</translation>
     </message>
     <message>
       <source>Dark cyan</source>
-      <translation>Тамно цијан</translation>
+      <translation>Тамно плавичаста</translation>
     </message>
     <message>
       <source>Magenta</source>
-      <translation>Магента</translation>
+      <translation>Ружичаста</translation>
     </message>
     <message>
       <source>Dark magenta</source>
-      <translation>Тамно магента</translation>
+      <translation>Тамна ружичаста</translation>
     </message>
     <message>
       <source>Yellow</source>
@@ -426,8 +529,8 @@
       <translation>Cветло cива</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Прилагођено</translation>
+      <source>Custom Color</source>
+      <translation>Произвољна боја</translation>
     </message>
   </context>
   <context>
@@ -437,8 +540,18 @@
       <translation>Образац</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Cадржаји</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Садржај:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Алијас:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Упутите на ћелију по алијасу, на пример
+„Табела.име__мог_алијаса“ umesto „Табела.B1“</translation>
     </message>
   </context>
   <context>
@@ -451,24 +564,72 @@
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Уметни редове</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Уклони редове</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Уметни стубац</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Уклони стубац</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Cвојcтва...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

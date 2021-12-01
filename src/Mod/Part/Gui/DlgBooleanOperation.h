@@ -25,7 +25,7 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 
 class QTreeWidgetItem;
 
@@ -35,7 +35,7 @@ class Property;
 }
 namespace PartGui {
 
-typedef boost::signals::connection Connection;
+typedef boost::signals2::connection Connection;
 class Ui_DlgBooleanOperation;
 class DlgBooleanOperation : public QWidget
 {
@@ -63,7 +63,7 @@ private Q_SLOTS:
     void currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
 
 private:
-    Ui_DlgBooleanOperation* ui;
+    std::unique_ptr<Ui_DlgBooleanOperation> ui;
     Connection connectNewObject;
     Connection connectModObject;
     std::list<const App::DocumentObject*> observe;

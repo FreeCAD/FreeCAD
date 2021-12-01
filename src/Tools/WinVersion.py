@@ -11,7 +11,6 @@ def main():
 
     input=""
     output="."
-    dir="."
     
     try:
         opts, args = getopt.getopt(sys.argv[1:], "dso:", ["dir=","src=","out="])
@@ -20,14 +19,14 @@ def main():
 
     for o, a in opts:
         if o in ("-d", "--dir"):
-            dir = a
+            print ("The %s option is deprecated. Ignoring." % (o))
         if o in ("-s", "--src"):
             input = a
         if o in ("-o", "--out"):
             output = a
     git = SubWCRev.GitControl()
     
-    if(git.extractInfo(input)):
+    if(git.extractInfo(input, "")):
         print(git.hash)
         print(git.branch)
         print(git.rev[0:4])

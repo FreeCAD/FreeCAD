@@ -2,6 +2,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
+    ${COIN3D_INCLUDE_DIRS}/Inventor/annex
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
@@ -20,21 +21,12 @@ set(MeshGui_LIBS
     FreeCADGui
 )
 
-set(Mesh_MOC_HDRS
-    DlgEvaluateMeshImp.h
-    DlgEvaluateSettings.h
-    DlgRegularSolidImp.h
-    DlgSettingsMeshView.h
-    DlgSettingsImportExportImp.h
+generate_from_xml(ViewProviderMeshPy)
 
-    DlgSmoothing.h
-    MeshEditor.h
-    PropertyEditorMesh.h
-    RemoveComponents.h
-    Selection.h
+SET(MeshGui_XML_SRCS
+    ViewProviderMeshPy.xml
 )
-fc_wrap_cpp(Mesh_MOC_SRCS ${Mesh_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${Mesh_MOC_SRCS})
+SOURCE_GROUP("XML" FILES ${MeshGui_XML_SRCS})
 
 set(Dialogs_UIC_SRCS
     DlgEvaluateMesh.ui
@@ -42,9 +34,12 @@ set(Dialogs_UIC_SRCS
     DlgRegularSolid.ui
     DlgSettingsMeshView.ui
     DlgSettingsImportExport.ui
+    DlgDecimating.ui
     DlgSmoothing.ui
     RemoveComponents.ui
+    RemeshGmsh.ui
     Segmentation.ui
+    SegmentationBestFit.ui
     Selection.ui
 )
 
@@ -65,15 +60,24 @@ SET(Dialogs_SRCS
     DlgSettingsImportExport.ui
     DlgSettingsImportExportImp.cpp
     DlgSettingsImportExportImp.h
+    DlgDecimating.ui
+    DlgDecimating.cpp
+    DlgDecimating.h
     DlgSmoothing.ui
     DlgSmoothing.cpp
     DlgSmoothing.h
     RemoveComponents.ui
     RemoveComponents.cpp
     RemoveComponents.h
+    RemeshGmsh.ui
+    RemeshGmsh.cpp
+    RemeshGmsh.h
     Segmentation.ui
     Segmentation.cpp
     Segmentation.h
+    SegmentationBestFit.ui
+    SegmentationBestFit.cpp
+    SegmentationBestFit.h
     Selection.ui
     Selection.cpp
     Selection.h
@@ -113,6 +117,7 @@ SET(ViewProvider_SRCS
     ViewProviderCurvature.h
     ViewProviderDefects.cpp
     ViewProviderDefects.h
+    ViewProviderMeshPyImp.cpp
     ViewProviderMeshFaceSet.cpp
     ViewProviderMeshFaceSet.h
     ViewProviderTransform.cpp
@@ -123,6 +128,7 @@ SET(ViewProvider_SRCS
 SOURCE_GROUP("ViewProvider" FILES ${ViewProvider_SRCS})
 
 SET(MeshGui_SRCS
+    ${MeshGui_XML_SRCS}
     ${Dialogs_SRCS}
     ${Inventor_SRCS}
     ${resource_SRCS}
@@ -142,24 +148,26 @@ SET(MeshGui_SRCS
     Workbench.h
 )
 
-add_library(MeshGui SHARED ${MeshGui_SRCS})
-target_link_libraries(MeshGui ${MeshGui_LIBS})
-
-
-fc_target_copy_resource(MeshGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Mesh
-    ${CMAKE_BINARY_DIR}/Mod/Mesh
-    InitGui.py)
-
-SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
-SET_PYTHON_PREFIX_SUFFIX(MeshGui)
-
-INSTALL(TARGETS MeshGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(MeshGuiIcon_SVG
     Resources/icons/MeshWorkbench.svg
 )
 
+# Suppress this warning for the SbMatrix class
+if (EIGEN3_NO_DEPRECATED_COPY)
+    set_source_files_properties(
+        SoFCIndexedFaceSet.cpp
+        ViewProvider.cpp
+        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
+endif ()
+
+add_library(MeshGui SHARED ${MeshGui_SRCS} ${MeshGuiIcon_SVG})
+target_link_libraries(MeshGui ${MeshGui_LIBS})
+
+
+SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
+SET_PYTHON_PREFIX_SUFFIX(MeshGui)
+
 fc_copy_sources(MeshGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Mesh" ${MeshGuiIcon_SVG})
 
+INSTALL(TARGETS MeshGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${MeshGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Mesh/Resources/icons")

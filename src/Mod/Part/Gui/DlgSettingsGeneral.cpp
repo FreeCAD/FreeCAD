@@ -24,9 +24,10 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QButtonGroup>
+# include <QRegExp>
+# include <QRegExpValidator>
+# include <Interface_Static.hxx>
 #endif
-
-#include <Interface_Static.hxx>
 
 #include <Base/Parameter.h>
 #include <App/Application.h>
@@ -39,19 +40,17 @@
 using namespace PartGui;
 
 DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
-  : PreferencePage(parent)
+  : PreferencePage(parent), ui(new Ui_DlgSettingsGeneral)
 {
-    ui = new Ui_DlgSettingsGeneral();
     ui->setupUi(this);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsGeneral::~DlgSettingsGeneral()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void DlgSettingsGeneral::saveSettings()
@@ -86,24 +85,31 @@ void DlgSettingsGeneral::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgImportExportIges::DlgImportExportIges(QWidget* parent)
-  : PreferencePage(parent)
+  : PreferencePage(parent), ui(new Ui_DlgImportExportIges)
 {
-    ui = new Ui_DlgImportExportIges();
     ui->setupUi(this);
     ui->lineEditProduct->setReadOnly(true);
 
     bg = new QButtonGroup(this);
     bg->addButton(ui->radioButtonBRepOff, 0);
     bg->addButton(ui->radioButtonBRepOn, 1);
+
+    QRegExp rx;
+    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
+    companyValidator->setRegExp(rx);
+    ui->lineEditCompany->setValidator(companyValidator);
+    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
+    authorValidator->setRegExp(rx);
+    ui->lineEditAuthor->setValidator(authorValidator);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgImportExportIges::~DlgImportExportIges()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void DlgImportExportIges::saveSettings()
@@ -117,7 +123,7 @@ void DlgImportExportIges::saveSettings()
             Interface_Static::SetCVal("write.iges.unit","M");
             break;
         case 2:
-            Interface_Static::SetCVal("write.iges.unit","IN");
+            Interface_Static::SetCVal("write.iges.unit","INCH");
             break;
         default:
             Interface_Static::SetCVal("write.iges.unit","MM");
@@ -183,20 +189,41 @@ void DlgImportExportIges::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgImportExportStep::DlgImportExportStep(QWidget* parent)
-  : PreferencePage(parent)
+  : PreferencePage(parent), ui(new Ui_DlgImportExportStep)
 {
-    ui = new Ui_DlgImportExportStep();
     ui->setupUi(this);
+
+    ui->comboBoxSchema->setItemData(0, QByteArray("AP203"));
+    ui->comboBoxSchema->setItemData(1, QByteArray("AP214CD"));
+    ui->comboBoxSchema->setItemData(2, QByteArray("AP214DIS"));
+    ui->comboBoxSchema->setItemData(3, QByteArray("AP214IS"));
+    ui->comboBoxSchema->setItemData(4, QByteArray("AP242DIS"));
+
     ui->lineEditProduct->setReadOnly(true);
+    //ui->radioButtonAP203->setToolTip(tr("Configuration controlled 3D designs of mechanical parts and assemblies"));
+    //ui->radioButtonAP214->setToolTip(tr("Core data for automotive mechanical design processes"));
+
+    // https://tracker.dev.opencascade.org/view.php?id=25654
+    ui->checkBoxPcurves->setToolTip(tr("This parameter indicates whether parametric curves (curves in parametric space of surface)\n"
+                                       "should be written into the STEP file. This parameter can be set to off in order to minimize\n"
+                                       "the size of the resulting STEP file."));
+
+    QRegExp rx;
+    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
+    companyValidator->setRegExp(rx);
+    ui->lineEditCompany->setValidator(companyValidator);
+    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
+    authorValidator->setRegExp(rx);
+    ui->lineEditAuthor->setValidator(authorValidator);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgImportExportStep::~DlgImportExportStep()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void DlgImportExportStep::saveSettings()
@@ -219,7 +246,7 @@ void DlgImportExportStep::saveSettings()
             Interface_Static::SetCVal("write.step.unit","M");
             break;
         case 2:
-            Interface_Static::SetCVal("write.step.unit","IN");
+            Interface_Static::SetCVal("write.step.unit","INCH");
             break;
         default:
             Interface_Static::SetCVal("write.step.unit","MM");
@@ -227,15 +254,10 @@ void DlgImportExportStep::saveSettings()
     }
 
     // scheme
-    if (ui->radioButtonAP203->isChecked()) {
-        Interface_Static::SetCVal("write.step.schema","AP203");
-        hStepGrp->SetASCII("Scheme", "AP203");
-    }
-    else {
-        // possible values: AP214CD (1996), AP214DIS (1998), AP214IS (2002)
-        Interface_Static::SetCVal("write.step.schema","AP214IS");
-        hStepGrp->SetASCII("Scheme", "AP214IS");
-    }
+    // possible values: AP214CD (1996), AP214DIS (1998), AP214IS (2002), AP242DIS
+    QByteArray schema = ui->comboBoxSchema->itemData(ui->comboBoxSchema->currentIndex()).toByteArray();
+    Interface_Static::SetCVal("write.step.schema",schema);
+    hStepGrp->SetASCII("Scheme", schema);
 
     // header info
     hStepGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
@@ -244,6 +266,16 @@ void DlgImportExportStep::saveSettings()
 
     // (h)STEP of Import module
     ui->checkBoxMergeCompound->onSave();
+    ui->checkBoxExportHiddenObj->onSave();
+    ui->checkBoxExportLegacy->onSave();
+    ui->checkBoxKeepPlacement->onSave();
+    ui->checkBoxImportHiddenObj->onSave();
+    ui->checkBoxUseLinkGroup->onSave();
+    ui->checkBoxUseBaseName->onSave();
+    ui->checkBoxReduceObjects->onSave();
+    ui->checkBoxExpandCompound->onSave();
+    ui->checkBoxShowProgress->onSave();
+    ui->comboBoxImportMode->onSave();
 }
 
 void DlgImportExportStep::loadSettings()
@@ -263,12 +295,10 @@ void DlgImportExportStep::loadSettings()
     ui->comboBoxUnits->setCurrentIndex(unit);
 
     // scheme
-    QString ap = QString::fromStdString(hStepGrp->GetASCII("Scheme",
-        Interface_Static::CVal("write.step.schema")));
-    if (ap.startsWith(QLatin1String("AP203")))
-        ui->radioButtonAP203->setChecked(true);
-    else
-        ui->radioButtonAP214->setChecked(true);
+    QByteArray ap(hStepGrp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema")).c_str());
+    int index = ui->comboBoxSchema->findData(QVariant(ap));
+    if (index >= 0)
+        ui->comboBoxSchema->setCurrentIndex(index);
 
     // header info
     ui->lineEditCompany->setText(QString::fromStdString(hStepGrp->GetASCII("Company")));
@@ -278,6 +308,16 @@ void DlgImportExportStep::loadSettings()
 
     // (h)STEP of Import module
     ui->checkBoxMergeCompound->onRestore();
+    ui->checkBoxExportHiddenObj->onRestore();
+    ui->checkBoxExportLegacy->onRestore();
+    ui->checkBoxKeepPlacement->onRestore();
+    ui->checkBoxImportHiddenObj->onRestore();
+    ui->checkBoxUseLinkGroup->onRestore();
+    ui->checkBoxUseBaseName->onRestore();
+    ui->checkBoxReduceObjects->onRestore();
+    ui->checkBoxExpandCompound->onRestore();
+    ui->checkBoxShowProgress->onRestore();
+    ui->comboBoxImportMode->onRestore();
 }
 
 /**

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SprocketParameter</class>
+ <widget class="QWidget" name="SprocketParameter">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>264</width>
+    <height>142</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Sprocket parameter</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_9">
+     <property name="text">
+      <string>Number of teeth:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QSpinBox" name="spinBox_NumberOfTeeth">
+     <property name="minimum">
+      <number>3</number>
+     </property>
+     <property name="maximum">
+      <number>9999</number>
+     </property>
+     <property name="value">
+      <number>50</number>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_10">
+     <property name="text">
+      <string>Sprocket Reference</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="comboBox_SprocketReference">
+     <item>
+      <property name="text">
+       <string>ANSI 25</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 35</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 41</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 40</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 50</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 60</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 80</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 100</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 120</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 140</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 160</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 180</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 200</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ANSI 240</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bicycle with Derailleur</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bicycle without Derailleur</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ISO 606 06B</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ISO 606 08B</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ISO 606 10B</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ISO 606 12B</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ISO 606 16B</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ISO 606 20B</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ISO 606 24B</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Motorcycle 420</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Motorcycle 425</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Motorcycle 428</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Motorcycle 520</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Motorcycle 525</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Motorcycle 530</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Motorcycle 630</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>Chain Pitch:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="Gui::InputField" name="Quantity_Pitch">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>0 in</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="singleStep">
+      <double>0.001000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>2000.000000000000000</double>
+     </property>
+     <property name="minimum">
+      <double>0.010000000000000</double>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">in</string>
+     </property>
+     <property name="decimals" stdset="0">
+      <number>3</number>
+     </property>
+     <property name="value" stdset="0">
+      <double>0.375000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>Roller Diameter:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="Gui::InputField" name="Quantity_RollerDiameter">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="singleStep">
+      <double>0.010000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>50.000000000000000</double>
+     </property>
+     <property name="minimum">
+      <double>0.010000000000000</double>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">in</string>
+     </property>
+     <property name="decimals" stdset="0">
+      <number>3</number>
+     </property>
+     <property name="value" stdset="0">
+      <double>0.200000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>Thickness:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="Gui::InputField" name="Quantity_Thickness">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="singleStep">
+      <double>0.010000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>50.000000000000000</double>
+     </property>
+     <property name="minimum">
+      <double>0.010000000000000</double>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">in</string>
+     </property>
+     <property name="decimals" stdset="0">
+      <number>3</number>
+     </property>
+     <property name="value" stdset="0">
+      <double>0.200000000000000</double>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

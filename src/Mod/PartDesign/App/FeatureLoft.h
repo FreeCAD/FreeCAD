@@ -40,9 +40,9 @@ class PartDesignExport Loft : public ProfileBased
 public:
     Loft();
 
-    App::PropertyLinkList Sections;
-    App::PropertyBool     Ruled;
-    App::PropertyBool     Closed;    
+    App::PropertyLinkSubList Sections;
+    App::PropertyBool Ruled;
+    App::PropertyBool Closed;
 
     /** @name methods override feature */
     //@{
@@ -54,20 +54,24 @@ public:
     }
     //@}
 
+protected:
+    // handle changed property
+    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+
 private:
     //static const char* TypeEnums[];
     //static const char* SideEnums[];
 };
 
 class PartDesignExport AdditiveLoft : public Loft {
-    
+
     PROPERTY_HEADER(PartDesign::AdditiveLoft);
 public:
     AdditiveLoft();
 };
 
 class PartDesignExport SubtractiveLoft : public Loft {
-    
+
     PROPERTY_HEADER(PartDesign::SubtractiveLoft);
 public:
     SubtractiveLoft();

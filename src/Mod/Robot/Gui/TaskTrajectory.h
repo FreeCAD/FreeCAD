@@ -81,7 +81,7 @@ Q_SIGNALS:
 
 protected:
     void setTo(void);
-    void viewTool(const Base::Placement pos);
+    void viewTool(const Base::Placement& pos);
 
     QTimer *timer;
 

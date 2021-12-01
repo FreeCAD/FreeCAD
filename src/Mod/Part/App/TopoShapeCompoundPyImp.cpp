@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,13 +24,16 @@
 #include "PreCompiled.h"
 
 #include "TopoShape.h"
-#include <BRep_Builder.hxx>
-#include <Standard_Failure.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
-#include <Precision.hxx>
-#include <TopExp_Explorer.hxx>
+
+#ifndef _PreComp_
+# include <BRep_Builder.hxx>
+# include <Standard_Failure.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
+# include <Precision.hxx>
+# include <TopExp_Explorer.hxx>
+#endif
 
 #include "OCCError.h"
 
@@ -56,6 +59,13 @@ PyObject *TopoShapeCompoundPy::PyMake(struct _typeobject *, PyObject *, PyObject
 // constructor method
 int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Compound
+        getTopoShapePtr()->setShape(TopoDS_Compound());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O", &pcObj))
         return -1;
@@ -63,7 +73,7 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     BRep_Builder builder;
     TopoDS_Compound Comp;
     builder.MakeCompound(Comp);
-    
+
     try {
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -76,7 +86,6 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return -1;
     }
@@ -93,7 +102,7 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
-    
+
     try {
         const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->
             getTopoShapePtr()->getShape();
@@ -127,7 +136,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
             hEdges->Append(xp.Current());
 
         ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, PyObject_IsTrue(shared) ? Standard_True : Standard_False, hWires);
-     
+
         TopoDS_Compound comp;
         BRep_Builder builder;
         builder.MakeCompound(comp);
@@ -154,5 +163,5 @@ PyObject *TopoShapeCompoundPy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeCompoundPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

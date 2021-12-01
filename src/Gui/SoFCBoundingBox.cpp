@@ -43,7 +43,7 @@
 
 using namespace Gui;
 
-SO_NODE_SOURCE(SoFCBoundingBox);
+SO_NODE_SOURCE(SoFCBoundingBox)
 
 // vertices used to create a box
 static const int32_t bBoxVerts[8][3] =
@@ -93,7 +93,7 @@ SoFCBoundingBox::SoFCBoundingBox ()
     bboxLines->coordIndex.setNum(36);
     bboxLines->coordIndex.setValues(0, 36, bBoxEdges);
     bboxSep->addChild(bboxLines);
-  
+
 
     // create the text nodes, including a transform for each vertice offset
     textSep = new SoSeparator();
@@ -235,7 +235,7 @@ void SoFCBoundingBox::finish()
 
 // ---------------------------------------------------------------
 
-SO_NODE_SOURCE(SoSkipBoundingGroup);
+SO_NODE_SOURCE(SoSkipBoundingGroup)
 
 /*!
   Constructor.

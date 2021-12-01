@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Thomas Anderson         <blobfish[at]gmx.com>      *
+ *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,18 +26,17 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <App/DocumentObserver.h>
 
-class QuantitySpinBox;
-
 namespace Gui
 {
+  class QuantitySpinBox;
   class SoFCCSysDragger;
   class ViewProviderDragger;
-  
+
   class TaskCSysDragger : public Gui::TaskView::TaskDialog
   {
       Q_OBJECT
     public:
-      TaskCSysDragger(ViewProviderDragger *vpObjectIn, SoFCCSysDragger *draggerIn);
+      TaskCSysDragger(ViewProviderDocumentObject *vpObjectIn, SoFCCSysDragger *draggerIn);
       virtual ~TaskCSysDragger() override;
       virtual QDialogButtonBox::StandardButtons getStandardButtons() const override
         { return QDialogButtonBox::Ok;}

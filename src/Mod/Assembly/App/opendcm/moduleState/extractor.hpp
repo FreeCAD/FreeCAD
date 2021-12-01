@@ -67,7 +67,7 @@ struct Extractor {
         else
             l = 0;
     };
-    void getClusterRange(typename Sys::Cluster& cluster, std::vector<std::pair<GlobalVertex, boost::shared_ptr<typename Sys::Cluster> > >& range) {
+    void getClusterRange(typename Sys::Cluster& cluster, std::vector<std::pair<GlobalVertex, std::shared_ptr<typename Sys::Cluster> > >& range) {
 
         typedef typename Sys::Cluster::const_cluster_iterator iter;
 
@@ -104,11 +104,11 @@ struct Injector {
     void setVertexProperty(typename Sys::Cluster* cluster, int value) {
         cluster->template setProperty<details::cluster_vertex_prop>(value);
     };
-    void addClusters(std::vector<boost::shared_ptr<typename Sys::Cluster> >& clusters, typename Sys::Cluster* cluster) {
+    void addClusters(std::vector<std::shared_ptr<typename Sys::Cluster> >& clusters, typename Sys::Cluster* cluster) {
 
         //vertices for the cluster need to be added already (as edges need vertices created)
         //so we don't create a vertex here.
-        typename std::vector<boost::shared_ptr<typename Sys::Cluster> >::iterator it;
+        typename std::vector<std::shared_ptr<typename Sys::Cluster> >::iterator it;
         for(it = clusters.begin(); it != clusters.end(); it++) {
             LocalVertex v = cluster->getLocalVertex((*it)->template getProperty<details::cluster_vertex_prop>()).first;
             cluster->m_clusters[v] = *it;

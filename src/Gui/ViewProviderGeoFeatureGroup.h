@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2011 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -48,5 +48,5 @@ typedef ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup> ViewProviderGeoF
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+#endif // GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
 

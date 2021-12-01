@@ -1,0 +1,18 @@
+{
+    "name": "ISO 10642",
+    "cut_type": "countersink",
+    "thread_type": "metric",
+    "angle": 90,
+    "data": [
+	{ "thread": "M3",   "diameter":  6.7 },
+	{ "thread": "M4",   "diameter":  9.0 },
+	{ "thread": "M5",   "diameter": 12.2 },
+	{ "thread": "M6",   "diameter": 13.4 },
+	{ "thread": "M8",   "diameter": 17.9 },
+	{ "thread": "M10",  "diameter": 22.4 },
+	{ "thread": "M12",  "diameter": 26.9 },
+	{ "thread": "M14",  "diameter": 30.8 },
+	{ "thread": "M16",  "diameter": 33.6 },
+	{ "thread": "M20",  "diameter": 40.3 }
+    ]
+}

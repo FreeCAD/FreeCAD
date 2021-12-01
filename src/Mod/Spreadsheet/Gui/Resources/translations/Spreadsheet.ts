@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.1">
+<context>
+    <name>Spreadsheet</name>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="739"/>
+        <source>Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="874"/>
+        <source>Cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="751"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="753"/>
+        <source>Apply the changes to the current cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="755"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="757"/>
+        <source>Deletes the contents of the current cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="759"/>
+        <source>Compute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="761"/>
+        <source>Updates the values handled by controllers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="907"/>
+        <source>Create Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="933"/>
+        <source>Add controller</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="973"/>
+        <source>Add property controller</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="919"/>
+        <source>Add controller</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="922"/>
+        <source>Adds a cell controller to a selected spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Spreadsheet_Create</name>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="902"/>
+        <source>Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="905"/>
+        <source>Adds a spreadsheet object to the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="944"/>
+        <source>Add property controller</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Spreadsheet_legacy.py" line="947"/>
+        <source>Adds a property controller to a selected spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,7 +199,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Center-align contents vertically of selected cells</source>
+        <source>Vertically center-align contents of selected cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -147,7 +244,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Merge selected cells in spreadsheet</source>
+        <source>Merge selected cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -177,7 +274,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Split previously merged cells in spreadsheet</source>
+        <source>Split previously merged cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -192,7 +289,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set bold text in selected cells</source>
+        <source>Set text in selected cells bold</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -207,7 +304,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set italic text in selected cells</source>
+        <source>Set text in selected cells italic</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -222,14 +319,97 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set underline text in selected cells</source>
+        <source>Underline text in selected cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ColorPickerPopup</name>
     <message>
-        <source>Custom</source>
+        <source>Custom Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Command</name>
+    <message>
+        <source>Merge cells</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Split cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left-align cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Center cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right-align cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top-align cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bottom-align cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertically center cells</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set bold text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set italic text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set underline text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set cell properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit cell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert rows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove rows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert columns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear cell(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set foreground color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set background color</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -331,11 +511,45 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cell contents</source>
+        <source>Show spreadsheet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show spreadsheet</source>
+        <source>Set cell(s) foreground color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the Spreadsheet cell(s) foreground color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set cell(s) background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the Spreadsheet cell(s) background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp; Paste failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alias contains invalid characters!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -410,7 +624,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Custom</source>
+        <source>Custom Color</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -421,7 +635,71 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Contents</source>
+        <source>&amp;Content:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Alias:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+        <source>Spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import/Export Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (&apos;) or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delimiter Character: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>\</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Escape Character: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=&quot; font-style:italic;&quot;&gt;tab&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;comma&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>,</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quote Character: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -435,24 +713,56 @@
 <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-        <source>Insert rows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove rows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Insert columns</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove columns</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Properties...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n row(s) above</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n row(s) below</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n non-contiguous rows</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Remove row(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n column(s) left</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n column(s) right</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Insert %n non-contiguous columns</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Remove column(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>

@@ -25,25 +25,6 @@ set(SketcherGui_LIBS
     FreeCADGui
 )
 
-set(SketcherGui_MOC_HDRS
-    TaskSketcherConstrains.h
-    TaskSketcherElements.h
-    TaskSketcherCreateCommands.h
-    TaskSketcherGeneral.h
-    TaskSketcherMessages.h
-    TaskSketcherSolverAdvanced.h
-    TaskSketcherValidation.h
-    TaskDlgEditSketch.h
-    SketchOrientationDialog.h
-    SketchMirrorDialog.h
-    SketcherSettings.h
-    SketchRectangularArrayDialog.h
-    SketcherRegularPolygonDialog.h
-    PropertyConstraintListItem.h
-)
-fc_wrap_cpp(SketcherGui_MOC_SRCS ${SketcherGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${SketcherGui_MOC_SRCS})
-
 if(BUILD_QT5)
     qt5_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
 else()
@@ -51,7 +32,7 @@ else()
 endif()
 
 set(SketcherGui_UIC_SRCS
-    TaskSketcherConstrains.ui
+    TaskSketcherConstraints.ui
     TaskSketcherElements.ui
     TaskSketcherGeneral.ui
     TaskSketcherMessages.ui
@@ -62,8 +43,11 @@ set(SketcherGui_UIC_SRCS
     SketchMirrorDialog.ui
     SketcherSettings.ui
     SketcherSettingsColors.ui
+    SketcherSettingsDisplay.ui
     SketchRectangularArrayDialog.ui
     SketcherRegularPolygonDialog.ui
+    ConstraintMultiFilterDialog.ui
+    ConstraintSettingsDialog.ui
 )
 
 if(BUILD_QT5)
@@ -94,9 +78,10 @@ SET(SketcherGui_SRCS
     SoDatumLabel.h
     PropertyConstraintListItem.h
     PropertyConstraintListItem.cpp
-    TaskSketcherConstrains.ui
-    TaskSketcherConstrains.cpp
-    TaskSketcherConstrains.h
+    TaskSketcherConstraints.ui
+    TaskSketcherConstraints.cpp
+    ConstraintFilters.h
+    TaskSketcherConstraints.h
     TaskSketcherElements.ui
     TaskSketcherElements.cpp
     TaskSketcherElements.h
@@ -114,6 +99,8 @@ SET(SketcherGui_SRCS
     TaskSketcherValidation.ui
     TaskSketcherValidation.cpp
     TaskSketcherValidation.h
+    ShortcutListener.cpp
+    ShortcutListener.h
     ViewProviderSketch.cpp
     ViewProviderSketch.h
     DrawSketchHandler.cpp
@@ -132,35 +119,37 @@ SET(SketcherGui_SRCS
     SketchRectangularArrayDialog.cpp
     SketcherRegularPolygonDialog.h
     SketcherRegularPolygonDialog.cpp
+    ConstraintMultiFilterDialog.h
+    ConstraintMultiFilterDialog.cpp
+    ConstraintSettingsDialog.h
+    ConstraintSettingsDialog.cpp
     TaskDlgEditSketch.cpp
     TaskDlgEditSketch.h
     ViewProviderPython.cpp
     ViewProviderPython.h
+    ViewProviderSketchGeometryExtension.h
+    ViewProviderSketchGeometryExtension.cpp
 )
 
-SET(SketcherGui_Scripts
-    InitGui.py
-    TestSketcherGui.py
-)
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${SketcherGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(SketcherGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
-add_library(SketcherGui SHARED ${SketcherGui_SRCS})
-target_link_libraries(SketcherGui ${SketcherGui_LIBS})
-
-
-fc_target_copy_resource(SketcherGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Sketcher
-    ${CMAKE_BINARY_DIR}/Mod/Sketcher
-    ${SketcherGui_Scripts})
-
-SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
-SET_PYTHON_PREFIX_SUFFIX(SketcherGui)
-
-INSTALL(TARGETS SketcherGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 SET(SketcherGuiIcon_SVG
     Resources/icons/SketcherWorkbench.svg
 )
 
+add_library(SketcherGui SHARED ${SketcherGui_SRCS} ${SketcherGuiIcon_SVG})
+target_link_libraries(SketcherGui ${SketcherGui_LIBS})
+
+
+SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
+SET_PYTHON_PREFIX_SUFFIX(SketcherGui)
+
 fc_copy_sources(SketcherGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sketcher" ${SketcherGuiIcon_SVG})
 
+INSTALL(TARGETS SketcherGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${SketcherGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Sketcher/Resources/icons")

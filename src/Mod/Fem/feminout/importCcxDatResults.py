@@ -1,6 +1,8 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 - FreeCAD Developers                               *
-# *   Author: Przemo Firszt <przemo@firszt.eu>                              *
+# *   Copyright (c) 2015 Przemo Firszt <przemo@firszt.eu>                   *
+# *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,37 +22,44 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "importCcxDatResults"
+__title__ = "Result import for Calculix dat file format"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package importCcxDatResults
 #  \ingroup FEM
 #  \brief FreeCAD Calculix DAT reader for FEM workbench
 
-import FreeCAD
 import os
+
+import FreeCAD
+from FreeCAD import Console
 
 
 EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
 
 
-########## generic FreeCAD import and export methods ##########
-if open.__module__ == '__builtin__':
+# ********* generic FreeCAD import and export methods *********
+if open.__module__ == "__builtin__":
     # because we'll redefine open below (Python2)
     pyopen = open
-elif open.__module__ == 'io':
+elif open.__module__ == "io":
     # because we'll redefine open below (Python3)
     pyopen = open
 
 
-def open(filename):
+def open(
+    filename
+):
     "called when freecad opens a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     insert(filename, docname)
 
 
-def insert(filename, docname):
+def insert(
+    filename,
+    docname
+):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -60,15 +69,20 @@ def insert(filename, docname):
     import_dat(filename)
 
 
-########## module specific methods ##########
-def import_dat(filename, Analysis=None):
+# ********* module specific methods *********
+def import_dat(
+    filename,
+    Analysis=None
+):
     r = readResult(filename)
-    # print ("Results {}".format(r))
     return r
 
 
 # read a calculix result file and extract the data
-def readResult(dat_input):
+def readResult(
+    dat_input
+):
+    Console.PrintMessage("Read ccx results from dat file: {}\n".format(dat_input))
     dat_file = pyopen(dat_input, "r")
     eigenvalue_output_section_found = False
     mode_reading = False
@@ -83,11 +97,11 @@ def readResult(dat_input):
                 mode = int(line[0:7])
                 mode_frequency = float(line[39:55])
                 m = {}
-                m['eigenmode'] = mode
-                m['frequency'] = mode_frequency
+                m["eigenmode"] = mode
+                m["frequency"] = mode_frequency
                 results.append(m)
                 mode_reading = True
-            except:
+            except Exception:
                 if mode_reading:
                     # Conversion error after mode reading started, so it's the end of section
                     eigenvalue_output_section_found = False

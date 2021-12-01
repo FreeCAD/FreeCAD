@@ -53,37 +53,35 @@
 
 using namespace PartDesign;
 
+/* TRANSLATOR PartDesign::Pocket */
+
 const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace","TwoLengths",NULL};
 
-PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
+PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::FeatureExtrude)
 
 Pocket::Pocket()
 {
     addSubType = FeatureAddSub::Subtractive;
-    
+
     ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
     ADD_PROPERTY_TYPE(Length2,(100.0),"Pocket",App::Prop_None,"P");
+    ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pocket", App::Prop_None, "Use custom vector for pocket direction");
+    ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pocket", App::Prop_None, "Pocket direction vector");
+    ADD_PROPERTY_TYPE(ReferenceAxis, (0), "Pocket", App::Prop_None, "Reference axis of direction");
+    ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pocket", App::Prop_None, "Measure pocket length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
     ADD_PROPERTY_TYPE(Offset,(0.0),"Pocket",App::Prop_None,"Offset from face in which pocket will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
     Offset.setConstraints ( &signedLengthConstraint );
+
+    // Remove the constraints and keep the type to allow to accept negative values
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
+    Length2.setConstraints(nullptr);
 }
 
-short Pocket::mustExecute() const
-{
-    if (Placement.isTouched() ||
-        Type.isTouched() ||
-        Length.isTouched() ||
-        Length2.isTouched() ||
-        Offset.isTouched() ||
-        UpToFace.isTouched())
-        return 1;
-    return ProfileBased::mustExecute();
-}
-
-App::DocumentObjectExecReturn *Pocket::execute(void)
+App::DocumentObjectExecReturn *Pocket::execute()
 {
     // Handle legacy features, these typically have Type set to 3 (previously NULL, now UpToFace),
     // empty FaceName (because it didn't exist) and a value for Length
@@ -113,13 +111,17 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     TopoDS_Shape base;
     try {
         base = getBaseShape();
-    } catch (const Base::Exception&) {
-        return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the pocket!");
+    }
+    catch (const Base::Exception&) {
+        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
+                                    "  - the active Body does not contain a base shape, so there is no\n"
+                                    "  material to be removed;\n"
+                                    "  - the selected sketch does not belong to the active Body."));
+        return new App::DocumentObjectExecReturn(text);
     }
 
-    // get the Sketch plane
-    Base::Placement SketchPos    = obj->Placement.getValue(); 
-    Base::Vector3d  SketchVector = getProfileNormal();
+    // get the normal vector of the sketch
+    Base::Vector3d SketchVector = getProfileNormal();
 
     // turn around for pockets
     SketchVector *= -1;
@@ -130,7 +132,32 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
         base.Move(invObjLoc);
 
-        gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
+        Base::Vector3d pocketDirection = computeDirection(SketchVector);
+
+        // create vector in pocketing direction with length 1
+        gp_Dir dir(pocketDirection.x, pocketDirection.y, pocketDirection.z);
+
+        // The length of a gp_Dir is 1 so the resulting pocket would have
+        // the length L in the direction of dir. But we want to have its height in the
+        // direction of the normal vector.
+        // Therefore we must multiply L by the factor that is necessary
+        // to make dir as long that its projection to the SketchVector
+        // equals the SketchVector.
+        // This is the scalar product of both vectors.
+        // Since the pocket length cannot be negative, the factor must not be negative.
+
+        double factor = fabs(dir * gp_Dir(SketchVector.x, SketchVector.y, SketchVector.z));
+
+        // factor would be zero if vectors are orthogonal
+        if (factor < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Pocket: Creation failed because direction is orthogonal to sketch's normal vector");
+
+        // perform the length correction if not along custom vector
+        if (AlongSketchNormal.getValue()) {
+            L = L / factor;
+            L2 = L2 / factor;
+        }
+
         dir.Transform(invObjLoc.Transformation());
 
         if (profileshape.IsNull())
@@ -155,7 +182,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, base, supportface, profileshape, method, dir, Offset.getValue());
+            getUpToFace(upToFace, base, supportface, profileshape, method, dir);
+            addOffsetToFace(upToFace, dir, Offset.getValue());
 
             // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
             // prism that is being created is contained completely inside the base solid
@@ -167,13 +195,9 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopExp_Explorer Ex(supportface,TopAbs_WIRE);
             if (!Ex.More())
                 supportface = TopoDS_Face();
-            BRepFeat_MakePrism PrismMaker;
-            PrismMaker.Init(base, profileshape, supportface, dir, 0, 1);
-            PrismMaker.Perform(upToFace);
-
-            if (!PrismMaker.IsDone())
-                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
-            TopoDS_Shape prism = PrismMaker.Shape();
+            TopoDS_Shape prism;
+            PrismMode mode = PrismMode::CutFromBase;
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
@@ -189,7 +213,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             }
 
             this->Shape.setValue(getSolid(prism));
-        } else {
+        }
+        else {
             TopoDS_Shape prism;
             generatePrism(prism, profileshape, method, dir, L, L2,
                         Midplane.getValue(), Reversed.getValue());
@@ -224,7 +249,6 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-
         if (std::string(e.GetMessageString()) == "TopoDS::Face" &&
             (std::string(Type.getValueAsString()) == "UpToFirst" || std::string(Type.getValueAsString()) == "UpToFace"))
             return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"

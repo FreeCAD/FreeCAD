@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Thomas Anderson         <blobfish[at]gmx.com>      *
+ *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -44,20 +44,13 @@
 using namespace Gui;
 
 
-static double radiansToDegrees(const double &radiansIn)
-{
-  return radiansIn * (180.0 / M_PI);
-}
-
-static double degreesToRadains(const double &degreesIn)
+static double degreesToRadians(const double &degreesIn)
 {
   return degreesIn * (M_PI / 180.0);
 }
 
-static double lastTranslationIncrement = 1.0;
-static double lastRotationIncrement = degreesToRadains(15.0);
 
-TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderDragger* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
+TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderDocumentObject* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
   dragger(draggerIn)
 {
   assert(vpObjectIn);
@@ -80,13 +73,13 @@ void TaskCSysDragger::setupGui()
   Gui::TaskView::TaskBox *incrementsBox = new Gui::TaskView::TaskBox(
       Gui::BitmapFactory().pixmap("button_valid"),
       tr("Increments"), true, 0);
-  
+
   QGridLayout *gridLayout = new QGridLayout();
   gridLayout->setColumnStretch(1, 1);
-  
-  QLabel *tLabel = new QLabel(tr("Translation Increment: "), incrementsBox);
+
+  QLabel *tLabel = new QLabel(tr("Translation Increment:"), incrementsBox);
   gridLayout->addWidget(tLabel, 0, 0, Qt::AlignRight);
-  
+
   int spinBoxWidth = QApplication::fontMetrics().averageCharWidth() * 20;
   tSpinBox = new QuantitySpinBox(incrementsBox);
   tSpinBox->setMinimum(0.0);
@@ -94,17 +87,17 @@ void TaskCSysDragger::setupGui()
   tSpinBox->setUnit(Base::Unit::Length);
   tSpinBox->setMinimumWidth(spinBoxWidth);
   gridLayout->addWidget(tSpinBox, 0, 1, Qt::AlignLeft);
-  
-  QLabel *rLabel = new QLabel(tr("Rotation Increment: "), incrementsBox);
+
+  QLabel *rLabel = new QLabel(tr("Rotation Increment:"), incrementsBox);
   gridLayout->addWidget(rLabel, 1, 0, Qt::AlignRight);
-  
+
   rSpinBox = new QuantitySpinBox(incrementsBox);
   rSpinBox->setMinimum(0.0);
   rSpinBox->setMaximum(180.0);
   rSpinBox->setUnit(Base::Unit::Angle);
   rSpinBox->setMinimumWidth(spinBoxWidth);
   gridLayout->addWidget(rSpinBox, 1, 1, Qt::AlignLeft);
-  
+
   incrementsBox->groupLayout()->addLayout(gridLayout);
   Content.push_back(incrementsBox);
 
@@ -119,7 +112,7 @@ void TaskCSysDragger::onTIncrementSlot(double freshValue)
 
 void TaskCSysDragger::onRIncrementSlot(double freshValue)
 {
-  dragger->rotationIncrement.setValue(degreesToRadains(freshValue));
+  dragger->rotationIncrement.setValue(degreesToRadians(freshValue));
 }
 
 void TaskCSysDragger::open()
@@ -129,16 +122,20 @@ void TaskCSysDragger::open()
   Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->setEnabled(false);
 //   dragger->translationIncrement.setValue(lastTranslationIncrement);
 //   dragger->rotationIncrement.setValue(lastRotationIncrement);
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
+  double lastTranslationIncrement = hGrp->GetFloat("LastTranslationIncrement", 1.0);
+  double lastRotationIncrement = hGrp->GetFloat("LastRotationIncrement", 15.0);
   tSpinBox->setValue(lastTranslationIncrement);
-  rSpinBox->setValue(radiansToDegrees(lastRotationIncrement));
+  rSpinBox->setValue(lastRotationIncrement);
 
   Gui::TaskView::TaskDialog::open();
 }
 
 bool TaskCSysDragger::accept()
 {
-  lastTranslationIncrement = dragger->translationIncrement.getValue();
-  lastRotationIncrement = dragger->rotationIncrement.getValue();
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
+  hGrp->SetFloat("LastTranslationIncrement", tSpinBox->rawValue());
+  hGrp->SetFloat("LastRotationIncrement", rSpinBox->rawValue());
 
   App::DocumentObject* dObject = vpObject.getObject();
   if (dObject) {

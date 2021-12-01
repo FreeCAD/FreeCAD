@@ -1,21 +1,26 @@
-; St E 500 - 1.8907 - DIN 17102
+; Steel-St-E-500
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
-Name = [DE]St E 500
+[General]
+Name = St E 500
 NameDE = St E 500
 Father = Metal
-YoungsModulus = 210000 MPa
-UltimateTensileStrength = 610
-PoissonRatio = 0.3
-Density = 7800 kg/m^3
 KindOfMaterial = Fine grain steel
 KindOfMaterialDE = Feinkornstahl
 MaterialNumber = 1.8907
-ModulusOfShare = 81000
 Norm = DIN 17102
-ThermalExpansionCoefficient = 1.10E-005
+
+[Mechanical]
+Density = 7800 kg/m^3
+PoissonRatio = 0.3
+ShearModulus = 81000 MPa
 UltimateStrain = 0
-YieldStrength = 500
+UltimateTensileStrength = 610 MPa
+YieldStrength = 500 MPa
+YoungsModulus = 210000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000011 m/m/K

@@ -25,7 +25,7 @@
 
 #include <string>
 #include <fstream>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include "DocumentObject.h"
 #include "TextDocument.h"
@@ -40,15 +40,14 @@ TextDocument::TextDocument()
     ADD_PROPERTY_TYPE(
             Text, (""), 0, App::Prop_Hidden,
             "Content of the document.");
-    ADD_PROPERTY_TYPE(
-            ReadOnly, (false), 0, App::Prop_None,
-            "Defines whether the content can be edited.");
 }
 
 void TextDocument::onChanged(const Property* prop)
 {
     if (prop == &Text)
         textChanged();
+    else if (prop == &Label)
+        labelChanged();
     DocumentObject::onChanged(prop);
 }
 
@@ -57,7 +56,12 @@ const char* TextDocument::getViewProviderName() const
     return "Gui::ViewProviderTextDocument";
 }
 
-boost::signals2::connection TextDocument::connect(const TextSlot &sub)
+boost::signals2::connection TextDocument::connectText(const TextSlot &sub)
 {
     return textChanged.connect(sub);
+}
+
+boost::signals2::connection TextDocument::connectLabel(const TextSlot &sub)
+{
+    return labelChanged.connect(sub);
 }

@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "name": "5mm-thread-cutter",
+  "shape": "thread-mill.fcstd",
+  "parameter": {
+    "Crest": "0.10 mm",
+    "Diameter": "5.00 mm",
+    "Length": "50.00 mm",
+    "NeckDiameter": "3.00 mm",
+    "NeckLength": "20.00 mm",
+    "ShankDiameter": "5.00 mm"
+  },
+  "attribute": {}
+}

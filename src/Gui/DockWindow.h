@@ -34,10 +34,10 @@ class MDIView;
 class Application;
 
 /** Base class of all dockable windows belonging to a document
- *  there are two ways of belonging to a document. The 
+ *  there are two ways of belonging to a document. The
  *  first way is to a fixed one. The second way is to always
  *  belong to the active document, that means switching every time
- *  the active document is changing. It also means that the view 
+ *  the active document is changing. It also means that the view
  *  belongs sometimes to no document at all!
  *  @see TreeView
  *  @see Gui::Document
@@ -60,7 +60,7 @@ public:
    */
   virtual ~DockWindow();
 
-  /** @name methods to override 
+  /** @name methods to override
    */
   //@{
   /// get called when the document is updated
@@ -82,4 +82,4 @@ Q_SIGNALS:
 
 } // namespace Gui
 
-#endif // GUI_DOCKWINDOW_H 
+#endif // GUI_DOCKWINDOW_H

@@ -48,7 +48,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderImport,PartGui::ViewProviderPart)
 
 ViewProviderImport::ViewProviderImport()
 {
-    sPixmap = "PartFeatureImport";
+    sPixmap = "Part_FeatureImport";
 }
 
 ViewProviderImport::~ViewProviderImport()

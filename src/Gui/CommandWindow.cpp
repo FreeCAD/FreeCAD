@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QCoreApplication>
 # include <QStatusBar>
+# include <QEvent>
 #endif
 
 #include "Command.h"
@@ -45,12 +46,12 @@ using namespace Gui;
 //===========================================================================
 // Std_ArrangeIcons
 //===========================================================================
-DEF_STD_CMD_A(StdCmdArrangeIcons);
+DEF_STD_CMD_A(StdCmdArrangeIcons)
 
 StdCmdArrangeIcons::StdCmdArrangeIcons()
   : Command("Std_ArrangeIcons")
 {
-    sGroup        = QT_TR_NOOP("Window");
+    sGroup        = "Window";
     sMenuText     = QT_TR_NOOP("Arrange &Icons");
     sToolTipText  = QT_TR_NOOP("Arrange Icons");
     sWhatsThis    = "Std_ArrangeIcons";
@@ -60,7 +61,7 @@ StdCmdArrangeIcons::StdCmdArrangeIcons()
 
 void StdCmdArrangeIcons::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     getMainWindow()->arrangeIcons ();
 }
 
@@ -72,12 +73,12 @@ bool StdCmdArrangeIcons::isActive(void)
 //===========================================================================
 // Std_TileWindows
 //===========================================================================
-DEF_STD_CMD_A(StdCmdTileWindows);
+DEF_STD_CMD_A(StdCmdTileWindows)
 
 StdCmdTileWindows::StdCmdTileWindows()
   : Command("Std_TileWindows")
 {
-    sGroup        = QT_TR_NOOP("Window");
+    sGroup        = "Window";
     sMenuText     = QT_TR_NOOP("&Tile");
     sToolTipText  = QT_TR_NOOP("Tile the windows");
     sWhatsThis    = "Std_TileWindows";
@@ -88,7 +89,7 @@ StdCmdTileWindows::StdCmdTileWindows()
 
 void StdCmdTileWindows::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     getMainWindow()->tile();
 }
 
@@ -100,12 +101,12 @@ bool StdCmdTileWindows::isActive(void)
 //===========================================================================
 // Std_CascadeWindows
 //===========================================================================
-DEF_STD_CMD_A(StdCmdCascadeWindows);
+DEF_STD_CMD_A(StdCmdCascadeWindows)
 
 StdCmdCascadeWindows::StdCmdCascadeWindows()
   : Command("Std_CascadeWindows")
 {
-    sGroup        = QT_TR_NOOP("Window");
+    sGroup        = "Window";
     sMenuText     = QT_TR_NOOP("&Cascade");
     sToolTipText  = QT_TR_NOOP("Tile pragmatic");
     sWhatsThis    = "Std_CascadeWindows";
@@ -116,7 +117,7 @@ StdCmdCascadeWindows::StdCmdCascadeWindows()
 
 void StdCmdCascadeWindows::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     getMainWindow()->cascade();
 }
 
@@ -128,12 +129,12 @@ bool StdCmdCascadeWindows::isActive(void)
 //===========================================================================
 // Std_CloseActiveWindow
 //===========================================================================
-DEF_STD_CMD_A(StdCmdCloseActiveWindow);
+DEF_STD_CMD_A(StdCmdCloseActiveWindow)
 
 StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
   : Command("Std_CloseActiveWindow")
 {
-    sGroup        = QT_TR_NOOP("Window");
+    sGroup        = "Window";
     sMenuText     = QT_TR_NOOP("Cl&ose");
     sToolTipText  = QT_TR_NOOP("Close active window");
     sWhatsThis    = "Std_CloseActiveWindow";
@@ -142,12 +143,13 @@ StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
     // collide with this shortcut. Thus the shortcut of QMdiSubWindow will be
     // reset in MainWindow::addWindow() (#0002631)
     sAccel        = keySequenceToAccel(QKeySequence::Close);
-    eType         = 0;
+    sPixmap       = "Std_CloseActiveWindow";
+    eType         = NoTransaction;
 }
 
 void StdCmdCloseActiveWindow::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     getMainWindow()->closeActiveWindow();
 }
 
@@ -159,39 +161,40 @@ bool StdCmdCloseActiveWindow::isActive(void)
 //===========================================================================
 // Std_CloseAllWindows
 //===========================================================================
-DEF_STD_CMD_A(StdCmdCloseAllWindows);
+DEF_STD_CMD_A(StdCmdCloseAllWindows)
 
 StdCmdCloseAllWindows::StdCmdCloseAllWindows()
   : Command("Std_CloseAllWindows")
 {
-    sGroup        = QT_TR_NOOP("Window");
+    sGroup        = "Window";
     sMenuText     = QT_TR_NOOP("Close Al&l");
     sToolTipText  = QT_TR_NOOP("Close all windows");
     sWhatsThis    = "Std_CloseAllWindows";
     sStatusTip    = QT_TR_NOOP("Close all windows");
-    eType         = 0;
+    sPixmap       = "Std_CloseAllWindows";
+    eType         = NoTransaction;
 }
 
 void StdCmdCloseAllWindows::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
-    getMainWindow()->closeAllWindows();
+    Q_UNUSED(iMsg);
+    getMainWindow()->closeAllDocuments();
 }
 
 bool StdCmdCloseAllWindows::isActive(void)
 {
-    return !(getMainWindow()->windows().isEmpty());
+    return !(getMainWindow()->windows().isEmpty()) || App::GetApplication().getDocuments().size();
 }
 
 //===========================================================================
 // Std_ActivateNextWindow
 //===========================================================================
-DEF_STD_CMD_A(StdCmdActivateNextWindow);
+DEF_STD_CMD_A(StdCmdActivateNextWindow)
 
 StdCmdActivateNextWindow::StdCmdActivateNextWindow()
   : Command("Std_ActivateNextWindow")
 {
-    sGroup        = QT_TR_NOOP("Window");
+    sGroup        = "Window";
     sMenuText     = QT_TR_NOOP("Ne&xt");
     sToolTipText  = QT_TR_NOOP("Activate next window");
     sWhatsThis    = "Std_ActivateNextWindow";
@@ -203,7 +206,7 @@ StdCmdActivateNextWindow::StdCmdActivateNextWindow()
 
 void StdCmdActivateNextWindow::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     getMainWindow()->activateNextWindow();
 }
 
@@ -215,12 +218,12 @@ bool StdCmdActivateNextWindow::isActive(void)
 //===========================================================================
 // Std_ActivatePrevWindow
 //===========================================================================
-DEF_STD_CMD_A(StdCmdActivatePrevWindow);
+DEF_STD_CMD_A(StdCmdActivatePrevWindow)
 
 StdCmdActivatePrevWindow::StdCmdActivatePrevWindow()
   : Command("Std_ActivatePrevWindow")
 {
-    sGroup        = QT_TR_NOOP("Window");
+    sGroup        = "Window";
     sMenuText     = QT_TR_NOOP("Pre&vious");
     sToolTipText  = QT_TR_NOOP("Activate previous window");
     sWhatsThis    = "Std_ActivatePrevWindow";
@@ -232,7 +235,7 @@ StdCmdActivatePrevWindow::StdCmdActivatePrevWindow()
 
 void StdCmdActivatePrevWindow::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     getMainWindow()->activatePreviousWindow();
 }
 
@@ -244,23 +247,23 @@ bool StdCmdActivatePrevWindow::isActive(void)
 //===========================================================================
 // Std_Windows
 //===========================================================================
-DEF_STD_CMD(StdCmdWindows);
+DEF_STD_CMD(StdCmdWindows)
 
 StdCmdWindows::StdCmdWindows()
   : Command("Std_Windows")
 {
-    sGroup        = QT_TR_NOOP("Window");
+    sGroup        = "Window";
     sMenuText     = QT_TR_NOOP("&Windows...");
     sToolTipText  = QT_TR_NOOP("Windows list");
     sWhatsThis    = "Std_Windows";
     sStatusTip    = QT_TR_NOOP("Windows list");
-    //sPixmap     = "";
+    sPixmap       = "Std_Windows";
     eType         = 0;
 }
 
 void StdCmdWindows::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Dialog::DlgActivateWindowImp dlg( getMainWindow() );
     dlg.exec();
 }
@@ -268,12 +271,12 @@ void StdCmdWindows::activated(int iMsg)
 //===========================================================================
 // Std_UserInterface
 //===========================================================================
-DEF_STD_CMD(StdCmdUserInterface);
+DEF_STD_CMD(StdCmdUserInterface)
 
 StdCmdUserInterface::StdCmdUserInterface()
   : Command("Std_UserInterface")
 {
-    sGroup        = QT_TR_NOOP("View");
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Dock views");
     sToolTipText  = QT_TR_NOOP("Dock all top-level views");
     sWhatsThis    = "Std_UserInterface";
@@ -290,12 +293,12 @@ void StdCmdUserInterface::activated(int)
 // Std_DockWindowMenu
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdDockViewMenu);
+DEF_STD_CMD_AC(StdCmdDockViewMenu)
 
 StdCmdDockViewMenu::StdCmdDockViewMenu()
   : Command("Std_DockViewMenu")
 {
-    sGroup        = QT_TR_NOOP("View");
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Panels");
     sToolTipText  = QT_TR_NOOP("List of available dock panels");
     sWhatsThis    = "Std_DockViewMenu";
@@ -306,7 +309,7 @@ StdCmdDockViewMenu::StdCmdDockViewMenu()
 void StdCmdDockViewMenu::activated(int iMsg)
 {
     // Handled by the related QAction objects
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 }
 
 bool StdCmdDockViewMenu::isActive(void)
@@ -326,12 +329,12 @@ Action * StdCmdDockViewMenu::createAction(void)
 // Std_ToolBarMenu
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdToolBarMenu);
+DEF_STD_CMD_AC(StdCmdToolBarMenu)
 
 StdCmdToolBarMenu::StdCmdToolBarMenu()
   : Command("Std_ToolBarMenu")
 {
-    sGroup        = QT_TR_NOOP("View");
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Tool&bars");
     sToolTipText  = QT_TR_NOOP("Toggles this window");
     sWhatsThis    = "Std_ToolBarMenu";
@@ -342,7 +345,7 @@ StdCmdToolBarMenu::StdCmdToolBarMenu()
 void StdCmdToolBarMenu::activated(int iMsg)
 {
     // Handled by the related QAction objects
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 }
 
 bool StdCmdToolBarMenu::isActive(void)
@@ -362,12 +365,30 @@ Action * StdCmdToolBarMenu::createAction(void)
 // Std_ViewStatusBar
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdStatusBar);
+class FilterStatusBar : public QObject
+{
+//    Q_OBJECT
+
+public:
+    FilterStatusBar(Action * action):QObject(action) {this->action = action;}
+//    virtual ~FilterStatusBar() {}
+protected:
+    Action * action;
+    bool eventFilter(QObject *obj, QEvent *event)
+    {
+        if (getMainWindow()->findChild<QStatusBar *>() != nullptr && obj == getMainWindow()->statusBar() && ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
+            this->action->setChecked(getMainWindow()->statusBar()->isVisible());
+        }
+        return false;
+    }
+};
+
+DEF_STD_CMD_AC(StdCmdStatusBar)
 
 StdCmdStatusBar::StdCmdStatusBar()
   : Command("Std_ViewStatusBar")
 {
-    sGroup        = QT_TR_NOOP("View");
+    sGroup        = "View";
     sMenuText     = QT_TR_NOOP("Status bar");
     sToolTipText  = QT_TR_NOOP("Toggles the status bar");
     sWhatsThis    = "Std_ViewStatusBar";
@@ -379,7 +400,9 @@ Action * StdCmdStatusBar::createAction(void)
 {
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
-    pcAction->setChecked(true);
+    pcAction->setChecked(false, true);
+    FilterStatusBar *fsb = new FilterStatusBar(pcAction);
+    getMainWindow()->statusBar()->installEventFilter(fsb);
 
     return pcAction;
 }
@@ -406,12 +429,12 @@ bool StdCmdStatusBar::isActive()
 // Std_WindowsMenu
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdWindowsMenu );
+DEF_STD_CMD_AC(StdCmdWindowsMenu)
 
 StdCmdWindowsMenu::StdCmdWindowsMenu()
   : Command("Std_WindowsMenu")
 {
-    sGroup        = QT_TR_NOOP("Window");
+    sGroup        = "Window";
     sMenuText     = QT_TR_NOOP("Activates this window");
     sToolTipText  = QT_TR_NOOP("Activates this window");
     sWhatsThis    = "Std_WindowsMenu";
@@ -422,7 +445,7 @@ StdCmdWindowsMenu::StdCmdWindowsMenu()
 void StdCmdWindowsMenu::activated(int iMsg)
 {
     // already handled by the main window
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 }
 
 bool StdCmdWindowsMenu::isActive(void)
@@ -437,14 +460,14 @@ Action * StdCmdWindowsMenu::createAction(void)
     WindowAction *pcAction;
     pcAction = new WindowAction(this, getMainWindow());
     for ( int i=0; i<10; i++ ) {
-        QAction* window = pcAction->addAction(QObject::tr(sToolTipText));
+        QAction* window = pcAction->addAction(QObject::tr(getToolTipText()));
         window->setCheckable(true);
         window->setToolTip(QCoreApplication::translate(
-            this->className(), sToolTipText));
+            this->className(), getToolTipText()));
         window->setStatusTip(QCoreApplication::translate(
-            this->className(), sStatusTip));
+            this->className(), getStatusTip()));
         window->setWhatsThis(QCoreApplication::translate(
-            this->className(), sWhatsThis));
+            this->className(), getWhatsThis()));
     }
 
     QAction* sep = pcAction->addAction(QLatin1String(""));
@@ -480,5 +503,3 @@ void CreateWindowStdCommands(void)
 }
 
 } // namespace Gui
-
-

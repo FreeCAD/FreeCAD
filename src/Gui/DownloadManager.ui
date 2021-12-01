@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>Gui::Dialog::DownloadManager</class>
- <widget class="QDialog" name="Gui::Dialog::DownloadManager" >
-  <property name="geometry" >
+ <widget class="QDialog" name="Gui::Dialog::DownloadManager">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,37 +10,37 @@
     <height>252</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Downloads</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
-   <property name="margin" >
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
     <number>0</number>
    </property>
-   <property name="spacing" >
+   <property name="spacing">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="3" >
-    <widget class="EditTableView" name="downloadsView" />
+   <item row="0" column="0" colspan="3">
+    <widget class="EditTableView" name="downloadsView"/>
    </item>
-   <item row="1" column="0" >
-    <layout class="QHBoxLayout" name="horizontalLayout" >
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="cleanupButton" >
-       <property name="enabled" >
+      <widget class="QPushButton" name="cleanupButton">
+       <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="text" >
+       <property name="text">
         <string>Clean up</string>
        </property>
       </widget>
      </item>
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>58</width>
          <height>24</height>
@@ -49,19 +50,19 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="1" >
-    <widget class="QLabel" name="itemCount" >
-     <property name="text" >
+   <item row="1" column="1">
+    <widget class="QLabel" name="itemCount">
+     <property name="text">
       <string>0 Items</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="2" >
-    <spacer name="horizontalSpacer" >
-     <property name="orientation" >
+   <item row="1" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>148</width>
        <height>20</height>

@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                        *
+# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,10 +21,16 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
-from __future__ import print_function
+# ***************************************************************************
 
-TOOLTIP='''
+from __future__ import print_function
+import FreeCAD
+from FreeCAD import Units
+import datetime
+import PathScripts
+import PathScripts.PostUtils as PostUtils
+
+TOOLTIP = '''
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for a centroid 3 axis mill. This postprocessor, once placed
@@ -33,7 +41,7 @@ import centroid_post
 centroid_post.export(object,"/path/to/file.ncc","")
 '''
 
-TOOLTIP_ARGS='''
+TOOLTIP_ARGS = '''
 Arguments for centroid:
     --header,--no-header             ... output headers (--header)
     --comments,--no-comments         ... output comments (--comments)
@@ -41,14 +49,8 @@ Arguments for centroid:
     --show-editor, --no-show-editor  ... pop up editor before writing output(--show-editor)
     --feed-precision=1               ... number of digits of precision for feed rate.  Default=1
     --axis-precision=4               ... number of digits of precision for axis moves.  Default=4
+    --inches                         ... Convert output for US imperial mode (G20)
 '''
-import FreeCAD
-from FreeCAD import Units
-import datetime
-import PathScripts
-from PathScripts import PostUtils
-#from PathScripts import PathUtils
-
 now = datetime.datetime.now()
 
 # These globals set common customization preferences
@@ -65,13 +67,14 @@ COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
-UNITS = "G20"  # G21 for metric, G20 for us standard
-UNIT_FORMAT = 'mm/min'
+UNITS = "G21"  # G21 for metric, G20 for us standard
+UNIT_FORMAT = 'mm'
+UNIT_SPEED_FORMAT = 'mm/min'
 MACHINE_NAME = "Centroid"
-CORNER_MIN = {'x':-609.6, 'y':-152.4, 'z':0 } #use metric for internal units
-CORNER_MAX = {'x':609.6, 'y':152.4, 'z':304.8 } #use metric for internal units
-AXIS_PRECISION=4
-FEED_PRECISION=1
+CORNER_MIN = {'x': -609.6, 'y': -152.4, 'z': 0}  # use metric for internal units
+CORNER_MAX = {'x': 609.6, 'y': 152.4, 'z': 304.8}  # use metric for internal units
+AXIS_PRECISION = 4
+FEED_PRECISION = 1
 SPINDLE_DECIMALS = 0
 
 COMMENT = ";"
@@ -91,9 +94,10 @@ PREAMBLE = '''G53 G00 G17
 POSTAMBLE = '''M99
 '''
 
-TOOLRETURN = '''M5 M25
+TOOLRETURN = '''M5
+M25
 G49 H0
-''' #spindle off,height offset canceled,spindle retracted (M25 is a centroid command to retract spindle)
+'''  # spindle off,height offset canceled,spindle retracted (M25 is a centroid command to retract spindle)
 
 ZAXISRETURN = '''G91 G28 X0 Z0
 G90
@@ -113,16 +117,21 @@ TOOL_CHANGE = ''''''
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
+
 def processArguments(argstring):
+    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
     global SHOW_EDITOR
     global AXIS_PRECISION
     global FEED_PRECISION
+    global UNIT_SPEED_FORMAT
+    global UNIT_FORMAT
+    global UNITS
 
     for arg in argstring.split():
         if arg == '--header':
@@ -145,22 +154,20 @@ def processArguments(argstring):
             AXIS_PRECISION = arg.split('=')[1]
         elif arg.split('=')[0] == '--feed-precision':
             FEED_PRECISION = arg.split('=')[1]
+        elif arg == '--inches':
+            UNITS = 'G20'
+            UNIT_SPEED_FORMAT = 'in/min'
+            UNIT_FORMAT = 'in'
+
 
 def export(objectslist, filename, argstring):
+    # pylint: disable=global-statement
     processArguments(argstring)
     for i in objectslist:
-        print (i.Name)
+        print(i.Name)
     global UNITS
     global UNIT_FORMAT
-
-    # ISJOB = (len(objectslist) == 1) and isinstance(objectslist[0].Proxy, PathScripts.PathJob.ObjectJob)
-    # print("isjob: {} {}".format(ISJOB, len(objectslist)))
-
-    # if len(objectslist) > 1:
-    #     for obj in objectslist:
-    #         if not hasattr(obj, "Path"):
-    #             print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
-    #             return
+    global UNIT_SPEED_FORMAT
 
     print("postprocessing...")
     gcode = ""
@@ -174,7 +181,7 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         for item in objectslist:
-            if isinstance (item.Proxy, PathScripts.PathToolController.ToolController):
+            if hasattr(item, "Proxy") and isinstance(item.Proxy, PathScripts.PathToolController.ToolController):
                 gcode += ";T{}={}\n".format(item.ToolNumber, item.Name)
         gcode += linenumber() + ";begin preamble\n"
     for line in PREAMBLE.splitlines(True):
@@ -183,11 +190,6 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
-        #skip postprocessing tools
-       # if isinstance (obj.Proxy, PathScripts.PathToolController.ToolController):
-       #     continue
-
-
         # do the pre_op
         if OUTPUT_COMMENTS:
             gcode += linenumber() + ";begin operation\n"
@@ -227,7 +229,7 @@ def export(objectslist, filename, argstring):
     print("done postprocessing.")
 
     if not filename == '-':
-        gfile = pythonopen(filename, "wb")
+        gfile = pythonopen(filename, "w")
         gfile.write(final)
         gfile.close()
 
@@ -235,19 +237,19 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
+    # pylint: disable=global-statement
     global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
         return "N" + str(LINENR) + " "
     return ""
 
+
 def parse(pathobj):
-    global AXIS_PRECISION
-    global FEED_PRECISION
     out = ""
     lastcommand = None
-    axis_precision_string = '.' + str(AXIS_PRECISION) +'f'
-    feed_precision_string = '.' + str(FEED_PRECISION) +'f'
+    axis_precision_string = '.' + str(AXIS_PRECISION) + 'f'
+    feed_precision_string = '.' + str(FEED_PRECISION) + 'f'
     # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control
     # the order of parameters
     # centroid doesn't want K properties on XY plane  Arcs need work.
@@ -269,10 +271,10 @@ def parse(pathobj):
         #     out += linenumber() + "(" + pathobj.Label + ")\n"
 
         for c in pathobj.Path.Commands:
-            commandlist = [] #list of elements in the command, code and params.
-            command = c.Name #command M or G code or comment string
+            commandlist = []  # list of elements in the command, code and params.
+            command = c.Name  # command M or G code or comment string
 
-            if command[0]=='(':
+            if command[0] == '(':
                 command = PostUtils.fcoms(command, COMMENT)
 
             commandlist.append(command)
@@ -286,10 +288,10 @@ def parse(pathobj):
             for param in params:
                 if param in c.Parameters:
                     if param == 'F':
-                        if c.Name not in ["G0", "G00"]: #centroid doesn't use rapid speeds
+                        if c.Name not in ["G0", "G00"]:  # centroid doesn't use rapid speeds
                             speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
                             commandlist.append(
-                                param + format(float(speed.getValueAs(UNIT_FORMAT)), feed_precision_string) )
+                                param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), feed_precision_string))
                     elif param == 'H':
                         commandlist.append(param + str(int(c.Parameters['H'])))
                     elif param == 'S':
@@ -297,14 +299,14 @@ def parse(pathobj):
                     elif param == 'T':
                         commandlist.append(param + str(int(c.Parameters['T'])))
                     else:
+                        pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                         commandlist.append(
-                            param + format(c.Parameters[param], axis_precision_string))
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), axis_precision_string))
             outstr = str(commandlist)
-            outstr =outstr.replace('[','')
-            outstr =outstr.replace(']','')
-            outstr =outstr.replace("'",'')
-            outstr =outstr.replace(",",'')
-            #out += outstr + '\n'
+            outstr = outstr.replace('[', '')
+            outstr = outstr.replace(']', '')
+            outstr = outstr.replace("'", '')
+            outstr = outstr.replace(",", '')
 
             # store the latest command
             lastcommand = command

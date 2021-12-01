@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<!-- https://tamirov.ru edited -->
+<title>Стыковой шов односторонний с U-образным криволинейным скосом двух кромок. Single U groove weld - tech drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<g>
+ <path d="m30,40 v20" fill="none" stroke="#000" stroke-width="2" />
+ <path d="m5 15 a25 25, 0, 0, 0, 50 0" fill="none" stroke="#000" stroke-width="2" />
+</g>
+</svg>

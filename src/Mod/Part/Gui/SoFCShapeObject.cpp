@@ -25,12 +25,12 @@
 
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
-# include <windows.h>
+#  include <windows.h>
 # endif
 # ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
+#  include <OpenGL/gl.h>
 # else
-# include <GL/gl.h>
+#  include <GL/gl.h>
 # endif
 # include <float.h>
 # include <algorithm>
@@ -53,7 +53,7 @@
 using namespace PartGui;
 
 
-SO_NODE_SOURCE(SoFCControlPoints);
+SO_NODE_SOURCE(SoFCControlPoints)
 
 void SoFCControlPoints::initClass()
 {

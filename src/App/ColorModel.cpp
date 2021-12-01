@@ -334,8 +334,8 @@ ColorLegend::ColorLegend (void)
 : _bOutsideGrayed(false)
 {
     // default  green, red
-    _aclColorFields.push_back(Color(0, 1, 0));
-    _aclColorFields.push_back(Color(1, 0, 0));
+    _aclColorFields.emplace_back(0, 1, 0);
+    _aclColorFields.emplace_back(1, 0, 0);
 
     _aclNames.push_back("Min");
     _aclNames.push_back("Max");

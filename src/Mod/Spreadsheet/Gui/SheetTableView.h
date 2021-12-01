@@ -26,7 +26,6 @@
 #include <QTableView>
 #include <QHeaderView>
 #include <QKeyEvent>
-#include <boost/signals/connection.hpp>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Mod/Spreadsheet/App/Utils.h>
 
@@ -35,17 +34,18 @@ namespace SpreadsheetGui {
 class SheetViewHeader : public QHeaderView {
     Q_OBJECT
 public:
-    SheetViewHeader(Qt::Orientation o) : QHeaderView(o) {
-#if QT_VERSION >= 0x050000
+    SheetViewHeader(QTableView *owner, Qt::Orientation o) 
+        : QHeaderView(o),owner(owner) 
+    {
         setSectionsClickable(true);
-#else
-        setClickable(true);
-#endif
     }
 Q_SIGNALS:
     void resizeFinished();
 protected:
     void mouseReleaseEvent(QMouseEvent * event);
+    bool viewportEvent(QEvent *e);
+private:
+    QTableView *owner;
 };
 
 class SheetTableView : public QTableView
@@ -58,23 +58,51 @@ public:
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
+
+public Q_SLOTS:
+    void mergeCells();
+    void splitCell();
+    void deleteSelection();
+    void copySelection();
+    void cutSelection();
+    void pasteClipboard();
+    void finishEditWithMove(int keyPressed, Qt::KeyboardModifiers modifiers, bool handleTabMotion = false);
+    void ModifyBlockSelection(int targetRow, int targetColumn);
+
 protected Q_SLOTS:
     void commitData(QWidget *editor);
     void updateCellSpan(App::CellAddress address);
     void insertRows();
+    void insertRowsAfter();
     void removeRows();
     void insertColumns();
+    void insertColumnsAfter();
     void removeColumns();
     void cellProperties();
+    void onRecompute();
+
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
     bool event(QEvent *event);
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
+    void mousePressEvent(QMouseEvent* event);
+
+    void contextMenuEvent (QContextMenuEvent * e);
 
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
+    int tabCounter;
 
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection cellSpanChangedConnection;
+    QMenu *contextMenu;
+
+    QAction *actionMerge;
+    QAction *actionSplit;
+    QAction *actionCopy;
+    QAction *actionPaste;
+    QAction *actionCut;
+    QAction *actionDel;
+
+    boost::signals2::scoped_connection cellSpanChangedConnection;
 };
 
 }

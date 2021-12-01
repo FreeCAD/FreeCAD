@@ -38,6 +38,7 @@
 # include <QPainter>
 # include <QPrinter>
 # include <QPrintDialog>
+# include <QPrinterInfo>
 # include <QPrintPreviewDialog>
 # include <QStackedWidget>
 # include <QTimer>
@@ -84,6 +85,7 @@
 #include <Inventor/nodes/SoOrthographicCamera.h>
 
 #include "View3DInventorExamples.h"
+#include "ViewProviderDocumentObject.h"
 #include "SoFCSelectionAction.h"
 #include "View3DPy.h"
 #include "SoFCDB.h"
@@ -105,16 +107,16 @@ void GLOverlayWidget::paintEvent(QPaintEvent*)
 
 /* TRANSLATOR Gui::View3DInventor */
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView)
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
                                const QtGLWidget* sharewidget, Qt::WindowFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
 {
     stack = new QStackedWidget(this);
-    // important for highlighting 
+    // important for highlighting
     setMouseTracking(true);
-    // accept drops on the window, get handled in dropEvent, dragEnterEvent   
+    // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
 
     // attach parameter Observer
@@ -160,6 +162,8 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");
+    OnChange(*hGrp,"CornerCoordSystemSize");
+    OnChange(*hGrp,"ShowAxisCross");
     OnChange(*hGrp,"UseAutoRotation");
     OnChange(*hGrp,"Gradient");
     OnChange(*hGrp,"BackgroundColor");
@@ -171,6 +175,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"ShowNaviCube");
     OnChange(*hGrp,"CornerNaviCube");
     OnChange(*hGrp,"UseVBO");
+    OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
@@ -187,6 +192,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"Dimensions3dVisible");
     OnChange(*hGrp,"DimensionsDeltaVisible");
     OnChange(*hGrp,"PickRadius");
+    OnChange(*hGrp,"TransparentObjectRenderType");
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
@@ -194,9 +200,14 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
 
 View3DInventor::~View3DInventor()
 {
+    if(_pcDocument) {
+        SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
+        if (Cam)
+            _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
+    }
     hGrp->Detach(this);
 
-    //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined 
+    //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined
     //by a widget in SoQtViewer isn't reset. This widget becomes a dangling pointer and makes
     //the application crash. (Probably it's better to destroy this viewer by calling close().)
     //See also Gui::Document::~Document().
@@ -214,7 +225,7 @@ View3DInventor::~View3DInventor()
     }
 
     if (_viewerPy) {
-        static_cast<View3DInventorPy*>(_viewerPy)->_view = 0;
+        Base::PyGILStateLocker lock;
         Py_DECREF(_viewerPy);
     }
 
@@ -337,7 +348,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->navigationStyle()->setResetCursorPosition(on);
     }
     else if (strcmp(Reason,"InvertZoom") == 0) {
-        bool on = rGrp.GetBool("InvertZoom", false);
+        bool on = rGrp.GetBool("InvertZoom", true);
         _viewer->navigationStyle()->setZoomInverted(on);
     }
     else if (strcmp(Reason,"ZoomAtCursor") == 0) {
@@ -348,9 +359,19 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         float val = rGrp.GetFloat("ZoomStep", 0.0f);
         _viewer->navigationStyle()->setZoomStep(val);
     }
-    else if (strcmp(Reason,"DragAtCursor") == 0) {
-        bool on = rGrp.GetBool("DragAtCursor", false);
-        _viewer->navigationStyle()->setDragAtCursor(on);
+    else if (strcmp(Reason,"RotationMode") == 0) {
+        long mode = rGrp.GetInt("RotationMode", 1);
+        if (mode == 0) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::WindowCenter);
+        }
+        else if (mode == 1) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
+                                                              NavigationStyle::RotationCenterMode::FocalPointAtCursor);
+        }
+        else if (mode == 2) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
+                                                              NavigationStyle::RotationCenterMode::BoundingBoxCenter);
+        }
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
@@ -358,8 +379,14 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"CornerCoordSystem") == 0) {
         _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
     }
+    else if (strcmp(Reason,"CornerCoordSystemSize") == 0) {
+        _viewer->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize",10));
+    }
+    else if (strcmp(Reason,"ShowAxisCross") == 0) {
+        _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross",false));
+    }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
-        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",true));
+        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
     }
     else if (strcmp(Reason,"Gradient") == 0) {
         _viewer->setGradientBackground((rGrp.GetBool("Gradient",true)));
@@ -375,6 +402,9 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));
+    }
+    else if (strcmp(Reason,"RenderCache") == 0) {
+        _viewer->setRenderCache(rGrp.GetInt("RenderCache",0));
     }
     else if (strcmp(Reason,"Orthographic") == 0) {
         // check whether a perspective or orthogrphic camera should be set
@@ -403,6 +433,17 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason, "PickRadius") == 0) {
         _viewer->setPickRadius(rGrp.GetFloat("PickRadius", 5.0f));
+    }
+    else if (strcmp(Reason, "TransparentObjectRenderType") == 0) {
+        long renderType = rGrp.GetInt("TransparentObjectRenderType", 0);
+        if (renderType == 0) {
+            _viewer->getSoRenderManager()->getGLRenderAction()
+                   ->setTransparentDelayedObjectRenderType(SoGLRenderAction::ONE_PASS);
+        }
+        else if (renderType == 1) {
+            _viewer->getSoRenderManager()->getGLRenderAction()
+                   ->setTransparentDelayedObjectRenderType(SoGLRenderAction::NONSOLID_SEPARATE_BACKFACE_PASS);
+        }
     }
     else {
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
@@ -462,7 +503,7 @@ void View3DInventor::print()
 
 void View3DInventor::printPdf()
 {
-    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(), 
+    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
         QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
@@ -477,19 +518,25 @@ void View3DInventor::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
-    //printer.setPageSize(QPrinter::A3);
-    printer.setOrientation(QPrinter::Landscape);
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int initialDefaultPageSize = !QPrinterInfo::defaultPrinter().isNull() ? QPrinterInfo::defaultPrinter().defaultPageSize().id() : QPageSize::A4;
+    int defaultPageSize = hGrp->GetInt("DefaultPageSize", initialDefaultPageSize);
+    int defaultPageOrientation = hGrp->GetInt("DefaultPageOrientation", QPageLayout::Portrait);
+    printer.setPageSize(QPageSize(static_cast<QPageSize::PageSizeId>(defaultPageSize)));
+    printer.setPageOrientation(static_cast<QPageLayout::Orientation>(defaultPageOrientation));
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
             this, SLOT(print(QPrinter *)));
     dlg.exec();
+    hGrp -> SetInt("DefaultPageSize", printer.pageLayout().pageSize().id());
+    hGrp -> SetInt("DefaultPageOrientation", static_cast<int>(printer.pageLayout().orientation()));
 }
 
 void View3DInventor::print(QPrinter* printer)
 {
     QPainter p(printer);
-    p.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
+    p.setRenderHints(QPainter::Antialiasing);
     if (!p.isActive() && !printer->outputFileName().isEmpty()) {
         qApp->setOverrideCursor(Qt::ArrowCursor);
         QMessageBox::critical(this, tr("Opening file failed"),
@@ -498,11 +545,16 @@ void View3DInventor::print(QPrinter* printer)
         return;
     }
 
-    QRect rect = printer->pageRect();
+    QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
     QImage img;
     _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255,255,255), img);
     p.drawImage(0,0,img);
     p.end();
+}
+
+bool View3DInventor::containsViewProvider(const ViewProvider* vp) const
+{
+    return _viewer->containsViewProvider(vp);
 }
 
 // **********************************************************************************
@@ -574,40 +626,37 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         return true;
     }
     else if(strcmp("ViewBottom",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(0, -1, 0, 0));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Bottom));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewFront",pMsg) == 0 ) {
-        float root = (float)(sqrt(2.0)/2.0);
-        _viewer->setCameraOrientation(SbRotation(-root, 0, 0, -root));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Front));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewLeft",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(-0.5, 0.5, 0.5, -0.5));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Left));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewRear",pMsg) == 0 ) {
-        float root = (float)(sqrt(2.0)/2.0);
-        _viewer->setCameraOrientation(SbRotation(0, root, root, 0));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Rear));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewRight",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(0.5, 0.5, 0.5, 0.5));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Right));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewTop",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(0, 0, 0, 1));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Top));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewAxo",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation
-            (-0.353553f, -0.146447f, -0.353553f, -0.853553f));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
         _viewer->viewAll();
         return true;
     }
@@ -660,11 +709,11 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return doc && doc->getAvailableRedos() > 0;
     }
     else if (strcmp("Print",pMsg) == 0)
-        return true; 
+        return true;
     else if (strcmp("PrintPreview",pMsg) == 0)
-        return true; 
+        return true;
     else if (strcmp("PrintPdf",pMsg) == 0)
-        return true; 
+        return true;
     else if(strcmp("SetStereoRedGreen",pMsg) == 0)
         return true;
     else if(strcmp("SetStereoQuadBuff",pMsg) == 0)
@@ -688,7 +737,7 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
 #else
         return false;
-#endif 
+#endif
     else if(strcmp("ViewSelection",pMsg) == 0)
         return true;
     else if(strcmp("ViewBottom",pMsg) == 0)
@@ -727,47 +776,53 @@ bool View3DInventor::setCamera(const char* pCamera)
     SoNode * Cam;
     SoDB::read(&in,Cam);
 
-    if (!Cam){
+    if (!Cam || !Cam->isOfType(SoCamera::getClassTypeId())) {
         throw Base::RuntimeError("Camera settings failed to read");
     }
 
-    // toggle between persepective and orthographic camera
-    if (Cam->getTypeId() != CamViewer->getTypeId())
-    {
+    // this is to make sure to reliably delete the node
+    CoinPtr<SoNode> camPtr(Cam, true);
+
+    // toggle between perspective and orthographic camera
+    if (Cam->getTypeId() != CamViewer->getTypeId()) {
         _viewer->setCameraType(Cam->getTypeId());
         CamViewer = _viewer->getSoRenderManager()->getCamera();
     }
 
-    SoPerspectiveCamera  * CamViewerP = 0;
-    SoOrthographicCamera * CamViewerO = 0;
+    SoPerspectiveCamera  * CamViewerP = nullptr;
+    SoOrthographicCamera * CamViewerO = nullptr;
 
     if (CamViewer->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        CamViewerP = (SoPerspectiveCamera *)CamViewer;  // safe downward cast, knows the type
-    } else if (CamViewer->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        CamViewerO = (SoOrthographicCamera *)CamViewer;  // safe downward cast, knows the type
+        CamViewerP = static_cast<SoPerspectiveCamera *>(CamViewer);  // safe downward cast, knows the type
+    }
+    else if (CamViewer->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        CamViewerO = static_cast<SoOrthographicCamera *>(CamViewer);  // safe downward cast, knows the type
     }
 
     if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
         if (CamViewerP){
-            CamViewerP->position      = ((SoPerspectiveCamera *)Cam)->position;
-            CamViewerP->orientation   = ((SoPerspectiveCamera *)Cam)->orientation;
-            CamViewerP->nearDistance  = ((SoPerspectiveCamera *)Cam)->nearDistance;
-            CamViewerP->farDistance   = ((SoPerspectiveCamera *)Cam)->farDistance;
-            CamViewerP->focalDistance = ((SoPerspectiveCamera *)Cam)->focalDistance;
-        } else {
+            CamViewerP->position      = static_cast<SoPerspectiveCamera *>(Cam)->position;
+            CamViewerP->orientation   = static_cast<SoPerspectiveCamera *>(Cam)->orientation;
+            CamViewerP->nearDistance  = static_cast<SoPerspectiveCamera *>(Cam)->nearDistance;
+            CamViewerP->farDistance   = static_cast<SoPerspectiveCamera *>(Cam)->farDistance;
+            CamViewerP->focalDistance = static_cast<SoPerspectiveCamera *>(Cam)->focalDistance;
+        }
+        else {
             throw Base::TypeError("Camera type mismatch");
         }
-    } else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+    }
+    else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         if (CamViewerO){
-            CamViewerO->viewportMapping  = ((SoOrthographicCamera *)Cam)->viewportMapping;
-            CamViewerO->position         = ((SoOrthographicCamera *)Cam)->position;
-            CamViewerO->orientation      = ((SoOrthographicCamera *)Cam)->orientation;
-            CamViewerO->nearDistance     = ((SoOrthographicCamera *)Cam)->nearDistance;
-            CamViewerO->farDistance      = ((SoOrthographicCamera *)Cam)->farDistance;
-            CamViewerO->focalDistance    = ((SoOrthographicCamera *)Cam)->focalDistance;
-            CamViewerO->aspectRatio      = ((SoOrthographicCamera *)Cam)->aspectRatio ;
-            CamViewerO->height           = ((SoOrthographicCamera *)Cam)->height;
-        } else {
+            CamViewerO->viewportMapping  = static_cast<SoOrthographicCamera *>(Cam)->viewportMapping;
+            CamViewerO->position         = static_cast<SoOrthographicCamera *>(Cam)->position;
+            CamViewerO->orientation      = static_cast<SoOrthographicCamera *>(Cam)->orientation;
+            CamViewerO->nearDistance     = static_cast<SoOrthographicCamera *>(Cam)->nearDistance;
+            CamViewerO->farDistance      = static_cast<SoOrthographicCamera *>(Cam)->farDistance;
+            CamViewerO->focalDistance    = static_cast<SoOrthographicCamera *>(Cam)->focalDistance;
+            CamViewerO->aspectRatio      = static_cast<SoOrthographicCamera *>(Cam)->aspectRatio ;
+            CamViewerO->height           = static_cast<SoOrthographicCamera *>(Cam)->height;
+        }
+        else {
             throw Base::TypeError("Camera type mismatch");
         }
     }
@@ -809,23 +864,36 @@ void View3DInventor::restoreOverrideCursor()
     _viewer->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
 }
 
-void View3DInventor::dump(const char* filename)
+// defined in SoFCDB.cpp
+extern SoNode* replaceSwitchesInSceneGraph(SoNode*);
+
+void View3DInventor::dump(const char* filename, bool onlyVisible)
 {
     SoGetPrimitiveCountAction action;
     action.setCanApproximate(true);
     action.apply(_viewer->getSceneGraph());
 
+    SoNode* node = _viewer->getSceneGraph();
+    if (onlyVisible) {
+        node = replaceSwitchesInSceneGraph(node);
+        node->ref();
+    }
+
     if ( action.getTriangleCount() > 100000 || action.getPointCount() > 30000 || action.getLineCount() > 10000 )
-        _viewer->dumpToFile(_viewer->getSceneGraph(), filename, true);
+        _viewer->dumpToFile(node, filename, true);
     else
-        _viewer->dumpToFile(_viewer->getSceneGraph(), filename, false);
+        _viewer->dumpToFile(node, filename, false);
+
+    if (onlyVisible) {
+        node->unref();
+    }
 }
 
 void View3DInventor::windowStateChanged(MDIView* view)
 {
     bool canStartTimer = false;
     if (this != view) {
-        // If both views are child widgets of the workspace and view is maximized this view 
+        // If both views are child widgets of the workspace and view is maximized this view
         // must be hidden, hence we can start the timer.
         // Note: If view is top-level or fullscreen it doesn't necessarily hide the other view
         // e.g. if it is on a second monitor.
@@ -909,7 +977,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     //}
 #endif
 
-    // This widget becomes the focus proxy of the embedded GL widget if we leave 
+    // This widget becomes the focus proxy of the embedded GL widget if we leave
     // the 'Child' mode. If we reenter 'Child' mode the focus proxy is reset to 0.
     // If we change from 'TopLevel' mode to 'Fullscreen' mode or vice versa nothing
     // happens.
@@ -921,7 +989,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     // control after redirecting the first key event to the GL widget.
     if (oldmode == Child) {
         // To make a global shortcut working from this window we need to add
-        // all existing actions from the mainwindow and its sub-widgets 
+        // all existing actions from the mainwindow and its sub-widgets
         QList<QAction*> acts = getMainWindow()->findChildren<QAction*>();
         this->addActions(acts);
         _viewer->getGLWidget()->setFocusProxy(this);
@@ -947,7 +1015,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
 bool View3DInventor::eventFilter(QObject* watched, QEvent* e)
 {
     // As long as this widget is a top-level window (either in 'TopLevel' or 'FullScreen' mode) we
-    // need to be notified when an action is added to a widget. This action must also be added to 
+    // need to be notified when an action is added to a widget. This action must also be added to
     // this window to allow to make use of its shortcut (if defined).
     // Note: We don't need to care about removing an action if its parent widget gets destroyed.
     // This does the action itself for us.
@@ -967,14 +1035,11 @@ bool View3DInventor::eventFilter(QObject* watched, QEvent* e)
 
 void View3DInventor::keyPressEvent (QKeyEvent* e)
 {
-    ViewMode mode = MDIView::currentViewMode();
-    if (mode != Child) {
-        // If the widget is in fullscreen mode then we can return to normal mode either
-        // by pressing the matching accelerator or ESC. 
-        if (e->key() == Qt::Key_Escape) {
-            setCurrentViewMode(Child);
-        }
-    }
+    // See StdViewDockUndockFullscreen::activated()
+    // With Qt5 one cannot directly use 'setCurrentViewMode'
+    // of an MDI view because it causes rendering problems.
+    // The only reliable solution is to clone the MDI view,
+    // set its view mode and close the original MDI view.
 
     QMainWindow::keyPressEvent(e);
 }

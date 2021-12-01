@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2017                                                    *
-#*   Joseph Coffland <joseph@cauldrondevelopment.com>                      *
+#*   Copyright (c) 2017 Joseph Coffland <joseph@cauldrondevelopment.com>   *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -25,6 +23,7 @@
 
 import FreeCAD, Mesh, Draft, Part
 import json
+import six
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -35,7 +34,8 @@ else:
     def translate(ctxt, txt): return txt
 
 
-if open.__module__ == '__builtin__': pythonopen = open
+if open.__module__ in ['__builtin__','io']:
+    pythonopen = open
 
 
 def export(exportList, filename):
@@ -49,7 +49,10 @@ def export(exportList, filename):
         }
 
     # Write file
-    outfile = pythonopen(filename, "wb")
+    if six.PY2:
+        outfile = pythonopen(filename, "wb")
+    else:
+        outfile = pythonopen(filename, "w")
     json.dump(data, outfile, separators = (',', ':'))
     outfile.close()
 

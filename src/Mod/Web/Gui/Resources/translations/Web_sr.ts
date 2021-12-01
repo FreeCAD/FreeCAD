@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sr" sourcelanguage="en">
+<TS version="2.1" language="sr" sourcelanguage="en">
   <context>
     <name>CmdWebBrowserBack</name>
     <message>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="78"/>
       <source>Go back to the previous page</source>
-      <translation>Назад на претходну cтраницу</translation>
+      <translation>Вратите се на претходну cтраницу</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="107"/>
       <source>Go to the next page</source>
-      <translation>Иди на cледећу cтраницу</translation>
+      <translation>Идите на cледећу cтраницу</translation>
     </message>
   </context>
   <context>
@@ -52,6 +52,20 @@
     </message>
   </context>
   <context>
+    <name>CmdWebBrowserSetURL</name>
+    <message>
+      <location filename="../../Command.cpp" line="250"/>
+      <source>Web</source>
+      <translation>Интернет</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="251"/>
+      <location filename="../../Command.cpp" line="252"/>
+      <source>Set URL</source>
+      <translation>Постави адресу</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdWebBrowserStop</name>
     <message>
       <location filename="../../Command.cpp" line="162"/>
@@ -60,13 +74,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
+      <location filename="../../Command.cpp" line="164"/>
       <source>Stop loading</source>
       <translation>Зауcтави учитавање</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="164"/>
-      <source>Stop the current loading</source>
-      <translation>Зауcтави тренутно учитавање</translation>
     </message>
   </context>
   <context>
@@ -78,13 +88,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Zoom in</source>
       <translation>Увеличај</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="194"/>
-      <source>Zoom into the page</source>
-      <translation>Увеличај страницу</translation>
     </message>
   </context>
   <context>
@@ -96,13 +102,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Zoom out</source>
       <translation>Умањи</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="223"/>
-      <source>Zoom out of the page</source>
-      <translation>Умањи страницу</translation>
     </message>
   </context>
   <context>
@@ -120,155 +122,64 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Отвара веб сајт у FreeCAD</translation>
-    </message>
-  </context>
-  <context>
-    <name>Form</name>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="14"/>
-      <source>Sketchfab exporter</source>
-      <translation type="unfinished">Sketchfab exporter</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
-      <source>What to upload?</source>
-      <translation type="unfinished">What to upload?</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="46"/>
-      <source>Selection</source>
-      <translation>Избор</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="56"/>
-      <source>All visible objects</source>
-      <translation type="unfinished">All visible objects</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="81"/>
-      <source>Model name</source>
-      <translation type="unfinished">Model name</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="88"/>
-      <source>Private</source>
-      <translation type="unfinished">Private</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="100"/>
-      <source>Description</source>
-      <translation>Опис</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="110"/>
-      <source>Tags (separated by commas)</source>
-      <translation type="unfinished">Tags (separated by commas)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
-      <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
-      <source>Format</source>
-      <translation type="unfinished">Format</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
-      <source>OBJ + MTL (Arch exporter)</source>
-      <translation type="unfinished">OBJ + MTL (Arch exporter)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
-      <source>OBJ (standard Mesh exporter)</source>
-      <translation type="unfinished">OBJ (standard Mesh exporter)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="153"/>
-      <source>DAE (Collada)</source>
-      <translation type="unfinished">DAE (Collada)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="158"/>
-      <source>STL</source>
-      <translation type="unfinished">STL</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
-      <source>IGES (shapes only)</source>
-      <translation type="unfinished">IGES (shapes only)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
-      <source>IV</source>
-      <translation type="unfinished">IV</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
-      <source>Sketchfab API token</source>
-      <translation type="unfinished">Sketchfab API token</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>
-      <source>Obtain</source>
-      <translation type="unfinished">Obtain</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
-      <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
-      <source>uploading</source>
-      <translation type="unfinished">uploading</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
-      <source>Success! View uploaded online</source>
-      <translation type="unfinished">Success! View uploaded online</translation>
+      <translation>Отворите веб сајт у FreeCAD-у</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="412"/>
+      <location filename="../../AppWebGui.cpp" line="88"/>
+      <location filename="../../BrowserView.cpp" line="713"/>
       <source>Browser</source>
       <translation>Прегледач</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="309"/>
+      <location filename="../../BrowserView.cpp" line="528"/>
       <source>File does not exist!</source>
-      <translation>Датотека не пcтоји!</translation>
+      <translation>Датотека не поcтоји!</translation>
     </message>
   </context>
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="516"/>
+      <location filename="../../BrowserView.cpp" line="521"/>
+      <location filename="../../BrowserView.cpp" line="524"/>
       <source>Error</source>
       <translation>Грешка</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="383"/>
+      <location filename="../../BrowserView.cpp" line="521"/>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Дошло је до грешака приликом учитавања датотеке. Неки подаци су можда измењени или уопште нису опорављени. У приказу извештаја потражите одређеније информације о предметима у питању.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="524"/>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="684"/>
       <source>Loading %1...</source>
-      <translation>Учитавање %1...</translation>
+      <translation>Учитавам „%1“...</translation>
     </message>
   </context>
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="181"/>
+      <location filename="../../BrowserView.cpp" line="288"/>
       <source>Open in External Browser</source>
-      <translation>Отвори у Екстерном Прегледачу</translation>
+      <translation>Отвори у спољном прегледачу</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="185"/>
+      <location filename="../../BrowserView.cpp" line="292"/>
       <source>Open in new window</source>
       <translation>Отвори у новом прозору</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="324"/>
+      <source>View source</source>
+      <translation>Прикажи извор</translation>
     </message>
   </context>
   <context>

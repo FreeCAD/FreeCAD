@@ -1,22 +1,27 @@
-; EN-GJS-600-3 - 0.7060 - EN 1563
+; Steel-EN-GJS-600-3
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJS-600-3
 NameDE = GGG-60
 DescriptionDE = Kurbelwellen, Stangen
 Father = Metal
-YoungsModulus = 177000 MPa
-UltimateTensileStrength = 600
-PoissonRatio = 0.3
-Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.706
-ModulusOfShare = 67000
 Norm = EN 1563
-ThermalExpansionCoefficient = 1.10E-005
+
+[Mechanical]
+Density = 7200 kg/m^3
+PoissonRatio = 0.3
+ShearModulus = 67000 MPa
 UltimateStrain = 2
-YieldStrength = 370
+UltimateTensileStrength = 600 MPa
+YieldStrength = 370 MPa
+YoungsModulus = 177000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000011 m/m/K

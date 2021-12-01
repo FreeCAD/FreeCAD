@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -23,10 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
-import Path
 import PathScripts.PathUtil as PathUtil
-import Sketcher
 import TestSketcherApp
 
 from PathTests.PathTestUtils import PathTestBase
@@ -108,6 +103,7 @@ class TestPathUtil(PathTestBase):
 
         # create a valid base object
         box = self.doc.addObject("Part::Box","Box")
+        self.doc.recompute()
         self.assertTrue(PathUtil.isValidBaseObject(box))
 
         # a part with at least one valid object is valid

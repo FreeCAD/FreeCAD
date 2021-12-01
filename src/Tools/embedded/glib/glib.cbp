@@ -13,19 +13,15 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="/usr/include/python2.6" />
-					<Add directory="/usr/include/gtk-2.0/" />
+					<Add directory="/usr/include/python3.6m" />
+					<Add directory="/usr/include/gtk-3.0/" />
 					<Add directory="/usr/include/glib-2.0" />
-					<Add directory="/usr/lib/glib-2.0/include" />
+					<Add directory="/usr/lib/x86_64-linux-gnu/glib-2.0/include" />
 					<Add directory="/usr/include/cairo/" />
 					<Add directory="/usr/include/pango-1.0/" />
-					<Add directory="/usr/lib/gtk-2.0/include/" />
-					<Add directory="/usr/include/gtk-2.0/gdk/" />
+					<Add directory="/usr/include/gdk-pixbuf-2.0/" />
 					<Add directory="/usr/include/atk-1.0/" />
 				</Compiler>
-				<Linker>
-					<Add library="/usr/lib/libgtk-x11-2.0.so" />
-				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/glib" prefix_auto="1" extension_auto="1" />
@@ -42,13 +38,15 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="`pkg-config gtk+-2.0 --cflags`" />
-			<Add directory="/usr/include/python2.6" />
+			<Add option="`pkg-config gtk+-3.0 --cflags`" />
+			<Add directory="/usr/include/gtk-3.0" />
 		</Compiler>
 		<Linker>
-			<Add option="`pkg-config gtk+-2.0 --libs`" />
-			<Add library="python2.6" />
-			<Add directory="/usr/lib" />
+			<Add option="`pkg-config gtk+-3.0 --libs`" />
+			<Add library="python3.6m" />
+			<Add library="glib-2.0" />
+			<Add library="gobject-2.0" />
+			<Add directory="/usr/lib/x86_64-linux-gnu/" />
 		</Linker>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />

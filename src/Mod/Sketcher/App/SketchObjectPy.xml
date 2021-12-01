@@ -28,6 +28,11 @@
         <UserDocu>delete a geometric object from the sketch</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="delGeometries">
+      <Documentation>
+        <UserDocu>delete a list of geometric objects from the sketch, including any internal alignment geometry thereof</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="deleteAllGeometry">
         <Documentation>
             <UserDocu>delete all the geometry objects and constraints from the sketch except external geometry</UserDocu>
@@ -48,6 +53,11 @@
         <UserDocu>set construction mode of a geometry on or off</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getConstruction">
+      <Documentation>
+        <UserDocu>returns the construction mode of a geometry</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="addConstraint">
       <Documentation>
         <UserDocu>add a constraint to the sketch</UserDocu>
@@ -61,6 +71,14 @@
     <Methode Name="renameConstraint">
       <Documentation>
         <UserDocu>Rename a constraint of the sketch</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getIndexByName" Const="true">
+      <Documentation>
+        <UserDocu>
+Get the index of the constraint by name.
+If there is no such constraint an exception is raised.
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="carbonCopy">
@@ -88,7 +106,7 @@
         <UserDocu>set the Datum of a Distance or Angle constraint</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getDatum">
+    <Methode Name="getDatum" Const="true">
       <Documentation>
         <UserDocu>Get the value of a datum constraint</UserDocu>
       </Documentation>
@@ -98,7 +116,17 @@
         <UserDocu>set the Driving status of a datum constraint</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getDriving">
+    <Methode Name="setDatumsDriving">
+      <Documentation>
+        <UserDocu>set the Driving status of datum constraints</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="moveDatumsToEnd">
+      <Documentation>
+        <UserDocu>Moves all datum constraints to the end of the constraint list</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getDriving" Const="true">
       <Documentation>
         <UserDocu>Get the Driving status of a datum constraint</UserDocu>
       </Documentation>
@@ -123,6 +151,21 @@
             <UserDocu>toggle the VirtualSpace status of a constraint</UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="setActive">
+        <Documentation>
+            <UserDocu>sets the constraint on/off (enforced or not)</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="getActive" Const="true">
+        <Documentation>
+            <UserDocu>Get the constraint status (enforced or not)</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="toggleActive">
+        <Documentation>
+            <UserDocu>toggle the active status of constraint (enforced or not)</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="movePoint">
       <Documentation>
         <UserDocu>
@@ -138,14 +181,21 @@
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getPoint">
+    <Methode Name="getPoint" Const="true">
       <Documentation>
         <UserDocu>
           getPoint(GeoIndex,PointPos) - retrieve the vector of a point in the sketch
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getAxis">
+    <Methode Name="getGeoVertexIndex" Const="true">
+      <Documentation>
+        <UserDocu>
+          (geoId, posId) = getGeoVertexIndex(index) - retrieve the GeoId and PosId of a point in the sketch
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAxis" Const="true">
       <Documentation>
         <UserDocu>
           return an axis based on the corresponding construction line
@@ -167,11 +217,16 @@
         <UserDocu>extend a curve to new start and end positions</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="split">
+      <Documentation>
+        <UserDocu>split a curve with a given id at a given reference point</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="addSymmetric">
       <Documentation>
         <UserDocu>add a symmetric geometric objects to the sketch with respect to a reference point or line</UserDocu>
       </Documentation>
-    </Methode> 
+    </Methode>
     <Methode Name="addCopy">
       <Documentation>
         <UserDocu>add a copy of geometric objects to the sketch displaced by a vector3d</UserDocu>
@@ -187,15 +242,20 @@
         <UserDocu>add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="removeAxesAlignment">
+      <Documentation>
+        <UserDocu>modifies constraints so that the shape is not forced to be aligned with axes.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="ExposeInternalGeometry">
       <Documentation>
         <UserDocu>Deprecated -- use exposeInternalGeometry</UserDocu>
-      </Documentation>    
+      </Documentation>
     </Methode>
     <Methode Name="DeleteUnusedInternalGeometry">
       <Documentation>
         <UserDocu>Deprecated -- use deleteUnusedInternalGeometry</UserDocu>
-      </Documentation>    
+      </Documentation>
     </Methode>
     <Methode Name="exposeInternalGeometry">
       <Documentation>
@@ -210,11 +270,16 @@
     <Methode Name="convertToNURBS">
         <Documentation>
             <UserDocu>Approximates the given geometry with a B-Spline</UserDocu>
-        </Documentation>    
+        </Documentation>
     </Methode>
     <Methode Name="increaseBSplineDegree">
         <Documentation>
             <UserDocu>Increases the given BSpline Degree by a number of degrees</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="decreaseBSplineDegree">
+        <Documentation>
+            <UserDocu>Decreases the given BSpline Degree by a number of degrees by approximating this curve</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="modifyBSplineKnotMultiplicity">
@@ -295,7 +360,7 @@
     <Methode Name="analyseMissingPointOnPointCoincident">
         <Documentation>
             <UserDocu>
-                Analyses the already detected Missing Point On Point Constraints to detect endpoint tagency/perpendicular. 
+                Analyses the already detected Missing Point On Point Constraints to detect endpoint tagency/perpendicular.
                 The result may be retrieved or applied using the corresponding Get / Make methods.
             </UserDocu>
         </Documentation>
@@ -344,7 +409,7 @@
             </UserDocu>
         </Documentation>
     </Methode>
-    
+
     <Attribute Name="MissingPointOnPointConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>
@@ -368,7 +433,7 @@
             </UserDocu>
         </Documentation>
         <Parameter Name="MissingLineEqualityConstraints" Type="List"/>
-    </Attribute>    
+    </Attribute>
     <Attribute Name="MissingRadiusConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>
@@ -376,6 +441,14 @@
             </UserDocu>
         </Documentation>
         <Parameter Name="MissingRadiusConstraints" Type="List"/>
+    </Attribute>
+    <Attribute Name="OpenVertices" ReadOnly="true">
+        <Documentation>
+            <UserDocu>
+                returns a list of vertices positions.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="OpenVertices" Type="List"/>
     </Attribute>
     <Attribute Name="ConstraintCount" ReadOnly="true">
       <Documentation>
@@ -397,5 +470,23 @@
       </Documentation>
       <Parameter Name="AxisCount" Type="Long"/>
     </Attribute>
+    <Attribute Name="GeometryFacadeList" ReadOnly="false">
+      <Documentation>
+        <UserDocu>
+          Return a list of GeometryFacade objects corresponding to the PropertyGeometryList
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="GeometryFacadeList" Type="List"/>
+    </Attribute>
+    <Methode Name="setGeometryId">
+      <Documentation>
+        <UserDocu>sets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getGeometryId">
+      <Documentation>
+        <UserDocu>gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

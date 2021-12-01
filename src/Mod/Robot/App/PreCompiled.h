@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,12 +31,10 @@
 # define RobotExport __declspec(dllexport)
 # define PartExport  __declspec(dllimport)
 # define MeshExport  __declspec(dllimport)
-# define BaseExport  __declspec(dllimport)
 #else // for Linux
 # define RobotExport
 # define PartExport 
 # define MeshExport  
-# define BaseExport  
 #endif
 
 #ifdef _PreComp_

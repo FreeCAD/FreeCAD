@@ -23,11 +23,12 @@
 
 #include "PreCompiled.h"
 
+#include <Inventor/elements/SoOverrideElement.h>
 #include "SoFCInteractiveElement.h"
 
 using namespace Gui;
 
-SO_ELEMENT_SOURCE(SoFCInteractiveElement);
+SO_ELEMENT_SOURCE(SoFCInteractiveElement)
 
 void SoFCInteractiveElement::initClass(void)
 {
@@ -68,7 +69,7 @@ const SoFCInteractiveElement * SoFCInteractiveElement::getInstance(SoState * sta
 
 // ---------------------------------
 
-SO_ELEMENT_SOURCE(SoGLWidgetElement);
+SO_ELEMENT_SOURCE(SoGLWidgetElement)
 
 void SoGLWidgetElement::initClass(void)
 {
@@ -123,7 +124,7 @@ SoElement * SoGLWidgetElement::copyMatchInfo(void) const
 
 // ---------------------------------
 
-SO_ELEMENT_SOURCE(SoGLRenderActionElement);
+SO_ELEMENT_SOURCE(SoGLRenderActionElement)
 
 void SoGLRenderActionElement::initClass(void)
 {
@@ -178,7 +179,7 @@ SoElement * SoGLRenderActionElement::copyMatchInfo(void) const
 
 // ---------------------------------
 
-SO_NODE_SOURCE(SoGLWidgetNode);
+SO_NODE_SOURCE(SoGLWidgetNode)
 
 /*!
   Constructor.
@@ -217,7 +218,7 @@ void SoGLWidgetNode::GLRender(SoGLRenderAction * action)
 
 // ---------------------------------
 
-SO_ELEMENT_SOURCE(SoGLVBOActivatedElement);
+SO_ELEMENT_SOURCE(SoGLVBOActivatedElement)
 
 void SoGLVBOActivatedElement::initClass(void)
 {
@@ -248,6 +249,16 @@ void SoGLVBOActivatedElement::get(SoState * state, SbBool& active)
     const SoGLVBOActivatedElement* self =  static_cast<const SoGLVBOActivatedElement *>
         (SoElement::getConstElement(state, classStackIndex));
     active = self->active;
+    if(active) {
+        uint32_t flags = SoOverrideElement::getFlags(state);
+        if(flags & (SoOverrideElement::COLOR_INDEX|
+                    SoOverrideElement::DIFFUSE_COLOR|
+                    SoOverrideElement::MATERIAL_BINDING|
+                    SoOverrideElement::TRANSPARENCY|
+                    SoOverrideElement::NORMAL_VECTOR|
+                    SoOverrideElement::NORMAL_BINDING))
+            active = false;
+    }
 }
 
 void SoGLVBOActivatedElement::push(SoState * state)

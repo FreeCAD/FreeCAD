@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" height="64" width="64" id="svg12" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <defs id="defs16" />
+  <g id="symbol" style="fill:none;stroke:#cc0000;stroke-width:2">
+    <path d="m19,53l30,-30" stroke-dasharray="3 2" id="path2" />
+    <path d="m44,23h5v5z" id="path4" />
+    <circle cx="19" cy="53" r="3" id="circle6" />
+  </g>
+  <g id="crosshair" style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter">
+    <path d="m16,3v9m0,8v9m-13-13h9m8,0h9" id="path9" />
+  </g>
+</svg>

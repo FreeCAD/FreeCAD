@@ -343,7 +343,7 @@ void ClusterMath<Sys>::map_downstream::operator()(Geom g) {
 };
 
 template<typename Sys>
-void ClusterMath<Sys>::map_downstream::operator()(boost::shared_ptr<Cluster> c) {
+void ClusterMath<Sys>::map_downstream::operator()(std::shared_ptr<Cluster> c) {
     //we transform the GLOBAL geometries to local ones in the subcluster! therefore
     //we are not interested in the successive transformations, we only transform the
     //global geometries with the cluster transform we want them to be local in, and thats
@@ -353,7 +353,7 @@ void ClusterMath<Sys>::map_downstream::operator()(boost::shared_ptr<Cluster> c) 
 
 
 template<typename Sys>
-void ClusterMath<Sys>::mapClusterDownstreamGeometry(boost::shared_ptr<Cluster> cluster) {
+void ClusterMath<Sys>::mapClusterDownstreamGeometry(std::shared_ptr<Cluster> cluster) {
 
 #ifdef USE_LOGGING
     BOOST_LOG(log) << "Map downstream geometry";

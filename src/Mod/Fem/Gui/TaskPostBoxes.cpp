@@ -24,6 +24,23 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoFontStyle.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTranslation.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoMarkerSet.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+
+# include <sstream>
+
+# include <QApplication>
+# include <QMessageBox>
 #endif
 
 #include "ui_TaskPostDisplay.h"
@@ -37,6 +54,7 @@
 #include "ViewProviderFemPostObject.h"
 #include "ViewProviderFemPostFunction.h"
 #include "ViewProviderFemPostFilter.h"
+
 #include <Mod/Fem/App/FemPostObject.h>
 #include <Mod/Fem/App/FemPostFilter.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
@@ -46,25 +64,9 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Action.h>
-#include <QMessageBox>
-#include <QPushButton>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
 
-# include <sstream>
-# include <QApplication>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoDrawStyle.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Base/Console.h>
@@ -76,7 +78,7 @@
 using namespace FemGui;
 using namespace Gui;
 
-// ----------------------------------------------------------------------------
+// ***************************************************************************
 
 PointMarker::PointMarker(Gui::View3DInventorViewer* iv, std::string ObjName) : view(iv),
     vp(new ViewProviderPointMarker)
@@ -143,7 +145,7 @@ ViewProviderPointMarker::~ViewProviderPointMarker()
     pCoords->unref();
 }
 
-// ----------------------------------------------------------------------------
+// ***************************************************************************
 
 DataMarker::DataMarker(Gui::View3DInventorViewer* iv, std::string ObjName) : view(iv),
     vp(new ViewProviderDataMarker)
@@ -216,10 +218,10 @@ ViewProviderDataMarker::~ViewProviderDataMarker()
     pMarker->unref();
 }
 
-//**************************************************************************
-//**************************************************************************
+// ***************************************************************************
+// ***************************************************************************
 // TaskDialog
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ***************************************************************************
 
 TaskDlgPost::TaskDlgPost(Gui::ViewProviderDocumentObject *view)
     : TaskDialog(), m_view(view)
@@ -296,8 +298,9 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box) {
     if(box->button(QDialogButtonBox::Apply))
         box->button(QDialogButtonBox::Apply)->setDefault(true);
 }
-//############################################################################################
 
+// ***************************************************************************
+// some task box methods
 TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap &icon, const QString &title, QWidget* parent)
     : TaskBox(icon, title, true, parent) {
 
@@ -323,21 +326,25 @@ void TaskPostBox::recompute() {
 
 void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBox* box) {
 
-    box->clear();
     QStringList list;
     std::vector<std::string> vec = prop.getEnumVector();
     for(std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it ) {
         list.push_back(QString::fromStdString(*it));
     }
 
+    int index = prop.getValue();
+    // be aware the QComboxBox might be connected to the Property,
+    // thus clearing the box will set back the property enumeration index too.
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=30944
+    box->clear();
     box->insertItems(0, list);
-    box->setCurrentIndex(prop.getValue());
+    box->setCurrentIndex(index);
 }
 
-//###########################################################################################################
-
+// ***************************************************************************
+// post pipeline results
 TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent)
-    : TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Display options"), parent)
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_ResultShow"), tr("Result display options"), parent)
 {
     //we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -351,6 +358,12 @@ TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget 
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode, ui->Representation);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+
+    // get Tranparency from ViewProvider
+    int trans = getTypedView<ViewProviderFemPostObject>()->Transparency.getValue();
+    Base::Console().Log("Transparency %i: \n", trans);
+    // sync the trancparency slider
+    ui->Transparency->setValue(trans);
 }
 
 TaskPostDisplay::~TaskPostDisplay()
@@ -378,16 +391,17 @@ void TaskPostDisplay::on_VectorMode_activated(int i) {
 
 void TaskPostDisplay::on_Transparency_valueChanged(int i) {
 
-    getTypedView<ViewProviderFemPostObject>()->Transperency.setValue(i);
+    getTypedView<ViewProviderFemPostObject>()->Transparency.setValue(i);
 }
 
 void TaskPostDisplay::applyPythonCode() {
 
 }
 
-//############################################################################################
-
-TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent): TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"), tr("Implicit function"), parent) {
+// ***************************************************************************
+// ?
+// the icon fem-post-geo-plane might be wrong but I do not know any better since the plane is one of the implicit functions
+TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent): TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostFunction::getClassTypeId()));
 
@@ -407,10 +421,10 @@ void TaskPostFunction::applyPythonCode() {
     //we apply the views widgets python code
 }
 
-//############################################################################################
-
+// ***************************************************************************
+// region clip filter
 TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Choose implicit function"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("FEM_PostFilterClipRegion"), tr("Clip region, choose implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostClip::getClassTypeId()));
     assert(function);
@@ -528,10 +542,11 @@ void TaskPostClip::on_InsideOut_toggled(bool val) {
     static_cast<Fem::FemPostClipFilter*>(getObject())->InsideOut.setValue(val);
     recompute();
 }
-//############################################################################################
 
+// ***************************************************************************
+// data along a line
 TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Data Along Line"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("FEM_PostFilterDataAlongLine"), tr("Data along a line options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostDataAlongLine::getClassTypeId()));
 
@@ -745,10 +760,10 @@ plt.show()\n";
 
 }
 
-//############################################################################################
-
+// ***************************************************************************
+// data at point
 TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Data At Point"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("FEM_PostFilterDataAtPoint"), tr("Data at point options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostDataAtPoint::getClassTypeId()));
 
@@ -909,10 +924,10 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     Base::Console().Error(PointData.c_str());
 }
 
-//############################################################################################
-
+// ***************************************************************************
+// scalar clip filter
 TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget* parent) :
-    TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Clip options"), parent) {
+    TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterClipScalar"), tr("Scalar clip options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostScalarClip::getClassTypeId()));
 
@@ -926,17 +941,27 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget
     //load the default values
     updateEnumerationList(getTypedObject<Fem::FemPostScalarClipFilter>()->Scalars, ui->Scalar);
     ui->InsideOut->setChecked(static_cast<Fem::FemPostScalarClipFilter*>(getObject())->InsideOut.getValue());
+    App::PropertyFloatConstraint& scalar_prop = static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
+    double scalar_factor = scalar_prop.getValue();
 
-    App::PropertyFloatConstraint& value = static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
-    //don't forget to sync the slider
+    // set spinbox scalar_factor, don't forget to sync the slider
     ui->Value->blockSignals(true);
-    ui->Value->setValue( value.getValue());
+    ui->Value->setValue(scalar_factor);
     ui->Value->blockSignals(false);
-    //don't forget to sync the slider
-    ui->Value->blockSignals(true);
-    ui->Value->setValue( value.getConstraints()->UpperBound * (1-double(value.getValue())/100.)
-                            + double(value.getValue())/100.*value.getConstraints()->UpperBound);
-    ui->Value->blockSignals(false);
+
+    // sync the slider
+    // slider min = 0%, slider max = 100%
+    //
+    //                 scalar_factor 
+    // slider_value = --------------- x 100
+    //                      max
+    //
+    double max = scalar_prop.getConstraints()->UpperBound;
+    int slider_value = (scalar_factor / max) * 100.;
+    ui->Slider->blockSignals(true);
+    ui->Slider->setValue(slider_value);
+    ui->Slider->blockSignals(false);
+    Base::Console().Log("init: scalar_factor, slider_value: %f, %i: \n", scalar_factor, slider_value);
 }
 
 TaskPostScalarClip::~TaskPostScalarClip() {
@@ -952,20 +977,25 @@ void TaskPostScalarClip::on_Scalar_currentIndexChanged(int idx) {
     static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Scalars.setValue(idx);
     recompute();
 
-    //update constraints and values
-    App::PropertyFloatConstraint& value = static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
-    ui->Maximum->setText(QString::number(value.getConstraints()->UpperBound));
-    ui->Minimum->setText(QString::number(value.getConstraints()->LowerBound));
+    // update constraints and values
+    App::PropertyFloatConstraint& scalar_prop = static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
+    double scalar_factor = scalar_prop.getValue();
+    double min = scalar_prop.getConstraints()->LowerBound;
+    double max = scalar_prop.getConstraints()->UpperBound;
 
-    //don't forget to sync the slider
+    ui->Maximum->setText(QString::number(min));
+    ui->Minimum->setText(QString::number(max));
+
+    // set scalar_factor, don't forget to sync the slider
     ui->Value->blockSignals(true);
-    ui->Value->setValue( value.getValue());
+    ui->Value->setValue(scalar_factor);
     ui->Value->blockSignals(false);
-    //don't forget to sync the slider
-    ui->Value->blockSignals(true);
-    ui->Value->setValue( value.getConstraints()->UpperBound * (1-double(value.getValue())/100.)
-                            + double(value.getValue())/100.*value.getConstraints()->UpperBound);
-    ui->Value->blockSignals(false);
+
+    // sync the slider
+    ui->Slider->blockSignals(true);
+    int slider_value = (scalar_factor / max) * 100.;
+    ui->Slider->setValue(slider_value);
+    ui->Slider->blockSignals(false);
 }
 
 void TaskPostScalarClip::on_Slider_valueChanged(int v) {
@@ -1000,39 +1030,53 @@ void TaskPostScalarClip::on_InsideOut_toggled(bool val) {
     recompute();
 }
 
-
-//############################################################################################
-
+// ***************************************************************************
+// warp filter
+// spinbox min, slider, spinbox max
+// spinbox warp factor
 TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget* parent) :
-    TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Clip options"), parent) {
+    TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterWarp"), tr("Warp options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostWarpVector::getClassTypeId()));
 
-    //we load the views widget
+    // we load the views widget
     proxy = new QWidget(this);
     ui = new Ui_TaskPostWarpVector();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
-    //load the default values
+    // load the default values for warp display
     updateEnumerationList(getTypedObject<Fem::FemPostWarpVectorFilter>()->Vector, ui->Vector);
+    double warp_factor = static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.getValue(); // get the standard warp factor
 
-    double value = static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.getValue();
-        //don't forget to sync the slider
+    // set spinbox warp_factor, don't forget to sync the slider
     ui->Value->blockSignals(true);
-    ui->Value->setValue( value);
+    ui->Value->setValue(warp_factor);
     ui->Value->blockSignals(false);
-    //don't forget to sync the slider
+
+    // set min and max, don't forget to sync the slider
+    // TODO if warp is set to standard 1.0, find a smarter way for standard min, max and warp_factor
+    // may be depend on grid boundbox and min max vector values
     ui->Max->blockSignals(true);
-    ui->Max->setValue( value==0 ? 1 : value * 10.);
+    ui->Max->setValue( warp_factor==0 ? 1 : warp_factor * 10.);
     ui->Max->blockSignals(false);
     ui->Min->blockSignals(true);
-    ui->Min->setValue( value==0 ? 0 : value / 10.);
+    ui->Min->setValue( warp_factor==0 ? 0 : warp_factor / 10.);
     ui->Min->blockSignals(false);
+
+    // sync slider
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue((value - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.);
+    // slider min = 0%, slider max = 100%
+    //
+    //                 ( warp_factor - min )
+    // slider_value = ----------------------- x 100
+    //                     ( max - min )
+    //
+    int slider_value = (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
+    ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
+    Base::Console().Log("init: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
 TaskPostWarpVector::~TaskPostWarpVector() {
@@ -1044,52 +1088,95 @@ void TaskPostWarpVector::applyPythonCode() {
 }
 
 void TaskPostWarpVector::on_Vector_currentIndexChanged(int idx) {
+    // combobox to choose the result to warp
 
     static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Vector.setValue(idx);
     recompute();
 }
 
-void TaskPostWarpVector::on_Slider_valueChanged(int v) {
+void TaskPostWarpVector::on_Slider_valueChanged(int slider_value) {
+    // slider changed, change warp factor and sync spinbox
 
-    double val = ui->Min->value() + (ui->Max->value()-ui->Min->value())/100.*v;
-    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(val);
+    //
+    //                                       ( max - min )
+    // warp_factor = min + ( slider_value x --------------- )
+    //                                            100
+    //
+    double warp_factor = ui->Min->value() + (( ui->Max->value() - ui->Min->value()) / 100.) * slider_value;
+    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
     recompute();
 
-    //don't forget to sync the spinbox
+    // sync the spinbox
     ui->Value->blockSignals(true);
-    ui->Value->setValue( val );
+    ui->Value->setValue(warp_factor);
     ui->Value->blockSignals(false);
+    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
-void TaskPostWarpVector::on_Value_valueChanged(double v) {
+void TaskPostWarpVector::on_Value_valueChanged(double warp_factor) {
+    // spinbox changed, change warp factor and sync slider
 
-    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(v);
+    // TODO warp factor should not be smaller than min and greater than max, but problems on automate change of warp_factor, see on_Max_valueChanged
+
+    static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
     recompute();
 
-    //don't forget to sync the slider
+    // sync the slider, see above for formula
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue(int((v - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.));
+    int slider_value = (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
+    ui->Slider->setValue(slider_value);
     ui->Slider->blockSignals(false);
+    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
 }
 
 void TaskPostWarpVector::on_Max_valueChanged(double) {
 
+    // TODO max should be greater than min, see a few lines later on problem on input characters
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.);
+    ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.);
     ui->Slider->blockSignals(false);
+
+    /*
+     * problem, if warp_factor is 2000 one would like to input 4000 as max, one starts to input 4
+     * immediately the warp_factor is changed to 4 because 4 < 2000, but one has just input one character of his 4000
+     * I do not know how to solve this, but the code to set slider and spinbox is fine thus I leave it ...
+     *
+     * mhh it works if "apply changes to pipeline directly" button is deactivated, still it really confuses if
+     * the button is active. More investigation is needed.
+     *
+    // set warp factor to max, if warp factor > max
+    if (ui->Value->value() > ui->Max->value()) {
+        double warp_factor = ui->Max->value();
+        static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
+        recompute();
+
+        // sync the slider, see above for formula
+        ui->Slider->blockSignals(true);
+        int slider_value = (warp_factor - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.;
+        ui->Slider->setValue(slider_value);
+        ui->Slider->blockSignals(false);
+        // sync the spinbox, see above for formula
+        ui->Value->blockSignals(true);
+        ui->Value->setValue(warp_factor);
+        ui->Value->blockSignals(false);
+    Base::Console().Log("Change: warp_factor, slider_value: %f, %i: \n", warp_factor, slider_value);
+    }
+    */
 }
 
 void TaskPostWarpVector::on_Min_valueChanged(double) {
 
+    // TODO min should be smaller than max
+    // TODO if warp factor is smaller than min, warp factor should be min, don't forget to sync
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value())*100.);
+    ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.);
     ui->Slider->blockSignals(false);
 }
 
-//############################################################################################
-
+// ***************************************************************************
+// function clip filter
 TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"), tr("Choose implicit function"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("FEM_PostFilterCutFunction"), tr("Function cut, choose implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostCut::getClassTypeId()));
     assert(function);

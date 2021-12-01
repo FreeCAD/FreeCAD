@@ -3,6 +3,10 @@ if(WIN32)
     add_definitions(-DBOOST_DYN_LINK)
 endif(WIN32)
 
+if(FREECAD_RELEASE_SEH)
+    add_definitions(-DHAVE_SEH)
+endif(FREECAD_RELEASE_SEH)
+
 # This causes some problems with the resource files to be found, especially with the StartPage
 IF(RESOURCEDIR)
     add_definitions(-DRESOURCEDIR="${RESOURCEDIR}")
@@ -12,20 +16,20 @@ IF(DOCDIR)
     add_definitions(-DDOCDIR="${DOCDIR}")
 ENDIF(DOCDIR)
 
-add_definitions(-DBOOST_${Boost_VERSION})
-
 #if you want to use the old DAG structure uncomment this line
 #add_definitions(-DUSE_OLD_DAG)
 
-#write relevant cmake variables to a file for later access with python. Exportet are all variables 
-#starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we 
-#use a python list for export. 
+# -----------------------------------------------------------------------------
+
+#write relevant cmake variables to a file for later access with python. Exported are all variables 
+#starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we
+#use a python list for export.
 set(_vars "const char CMakeVariables[] =\"cmake = [")
 set(_delim "")
 get_cmake_property(_variableNames VARIABLES)
 foreach (_variableName ${_variableNames})
     if (${_variableName})
-        STRING(REGEX MATCH "^[_]?[^_]*" _prefix "${_variableName}_") 
+        STRING(REGEX MATCH "^[_]?[^_]*" _prefix "${_variableName}_")
         if(${_prefix} STREQUAL "BUILD")
             STRING(REPLACE "\\" "\\\\" _name ${_variableName})
             set(_vars "${_vars}${_delim}\\n\"\n\"\\\"${_name}\\\"")
@@ -34,9 +38,17 @@ foreach (_variableName ${_variableNames})
     endif ()
 endforeach()
 set(_vars "${_vars}]\\n\" \n;")
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.h "${_vars}" )
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.hh "${_vars}" )
+
+fc_copy_file_if_different(
+    "${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.hh"
+    "${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.h"
+)
+
+# -----------------------------------------------------------------------------
 
 include_directories(
+    ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -77,9 +89,11 @@ generate_from_xml(ExtensionPy)
 generate_from_xml(ExtensionContainerPy)
 generate_from_xml(DocumentObjectExtensionPy)
 generate_from_xml(GroupExtensionPy)
+generate_from_xml(LinkBaseExtensionPy)
 generate_from_xml(DocumentObjectGroupPy)
 generate_from_xml(GeoFeaturePy)
 generate_from_xml(GeoFeatureGroupExtensionPy)
+generate_from_xml(MetadataPy)
 generate_from_xml(OriginGroupExtensionPy)
 generate_from_xml(PartPy)
 
@@ -95,6 +109,8 @@ SET(FreeCADApp_XML_SRCS
     ExtensionContainerPy.xml
     DocumentObjectExtensionPy.xml
     GroupExtensionPy.xml
+    LinkBaseExtensionPy.xml
+    MetadataPy.xml
     DocumentObjectGroupPy.xml
     DocumentObjectPy.xml
     GeoFeaturePy.xml
@@ -152,6 +168,8 @@ SET(Document_CPP_SRCS
     MaterialObject.cpp
     MergeDocuments.cpp
     TextDocument.cpp
+    Link.cpp
+    LinkBaseExtensionPyImp.cpp
 )
 
 SET(Document_HPP_SRCS
@@ -167,6 +185,7 @@ SET(Document_HPP_SRCS
     DocumentObserver.h
     DocumentObserverPython.h
     Expression.h
+    ExpressionParser.h
     ExpressionVisitors.h
     FeatureCustom.h
     FeaturePython.h
@@ -190,6 +209,7 @@ SET(Document_HPP_SRCS
     MaterialObject.h
     MergeDocuments.h
     TextDocument.h
+    Link.h
 )
 SET(Document_SRCS
     ${Document_CPP_SRCS}
@@ -236,6 +256,7 @@ SET(FreeCADApp_CPP_SRCS
     ${Properties_CPP_SRCS}
     Application.cpp
     ApplicationPy.cpp
+    AutoTransaction.cpp
     Branding.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
@@ -243,17 +264,21 @@ SET(FreeCADApp_CPP_SRCS
     Enumeration.cpp
     Material.cpp
     MaterialPyImp.cpp
+    Metadata.cpp
+    MetadataPyImp.cpp
 )
 
 SET(FreeCADApp_HPP_SRCS
     ${Document_HPP_SRCS}
     ${Properties_HPP_SRCS}
     Application.h
+    AutoTransaction.h
     Branding.h
     ColorModel.h
     ComplexGeoData.h
     Enumeration.h
     Material.h
+    Metadata.h
 )
 
 SET(FreeCADApp_SRCS
@@ -266,20 +291,22 @@ SET(FreeCADApp_SRCS
     PreCompiled.h
 )
 
-if(BUILD_USE_PCH)
+if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     ADD_MSVC_PRECOMPILED_HEADER(FreeCADApp PreCompiled.h PreCompiled.cpp FreeCADApp_CPP_SRCS)
-endif(BUILD_USE_PCH)
+endif(FREECAD_USE_PCH)
 
 add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
 
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
 
+add_dependencies(FreeCADApp fc_version)
+
 SET_BIN_DIR(FreeCADApp FreeCADApp)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADApp
-        RUNTIME DESTINATION bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)

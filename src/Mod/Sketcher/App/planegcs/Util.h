@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Konstantinos Poulios      (logari81@gmail.com) 2011     *
+ *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,87 +19,33 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+# *   Major modifications: 2020 Russell Johnson <russ4262@gmail.com>        *
 
 import FreeCAD
-import Part
-import Path
-import PathScripts.PathAreaOp as PathAreaOp
-import PathScripts.PathLog as PathLog
-import PathScripts.PathOp as PathOp
-import PathScripts.PathProfileBase as PathProfileBase
-import PathScripts.PathUtils as PathUtils
-
-from DraftGeomUtils import findWires
-from PySide import QtCore
-
-"""Path Profile from Edges Object and Command"""
-
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui
+import PathScripts.PathProfile as PathProfile
 
 
-# Qt tanslation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-__title__ = "Path Profile Edges Operation"
+__title__ = "Path Profile Edges Operation (depreciated)"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
-__doc__ = "Path Profile operation based on edges."
+__url__ = "https://www.freecadweb.org"
+__doc__ = "Path Profile operation based on edges (depreciated)."
+__contributors__ = "russ4262 (Russell Johnson)"
 
 
-class ObjectProfile(PathProfileBase.ObjectProfile):
-    '''Proxy object for Profile operations based on edges.'''
+class ObjectProfile(PathProfile.ObjectProfile):
+    '''Psuedo class for Profile operation,
+    allowing for backward compatibility with pre-existing "Profile Edges" operations.'''
+    pass
+# Eclass
 
-    def baseObject(self):
-        '''baseObject() ... returns super of receiver
-        Used to call base implementation in overwritten functions.'''
-        return super(self.__class__, self)
 
-    def areaOpFeatures(self, obj):
-        '''areaOpFeatures(obj) ... add support for edge base geometry.'''
-        return PathOp.FeatureBaseEdges
+def SetupProperties():
+    return PathProfile.SetupProperties()
 
-    def areaOpShapes(self, obj):
-        '''areaOpShapes(obj) ... returns envelope for all wires formed by the base edges.'''
-        PathLog.track()
 
-        if obj.UseComp:
-            self.commandlist.append(Path.Command("(Compensated Tool Path. Diameter: " + str(self.radius * 2) + ")"))
-        else:
-            self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
-
-        shapes = []
-        if obj.Base:
-            wires = []
-
-            for b in obj.Base:
-                edgelist = []
-                for sub in b[1]:
-                    edgelist.append(getattr(b[0].Shape, sub))
-                wires.extend(findWires(edgelist))
-
-            for wire in wires:
-                f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-
-                # shift the compound to the bottom of the base object for
-                # proper sectioning
-                zShift = b[0].Shape.BoundBox.ZMin - f.BoundBox.ZMin
-                newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), f.Placement.Rotation)
-                f.Placement = newPlace
-                env = PathUtils.getEnvelope(self.baseobject.Shape, subshape=f, depthparams=self.depthparams)
-                shapes.append((env, False))
-        return shapes
-
-def Create(name):
-    '''Create(name) ... Creates and returns a Profile based on edges operation.'''
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectProfile(obj)
+def Create(name, obj=None, parentJob=None):
+    '''Create(name) ... Creates and returns a Profile operation.'''
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    obj.Proxy = ObjectProfile(obj, name, parentJob)
     return obj

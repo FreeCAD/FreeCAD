@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" id="svg870" version="1.2" viewBox="0 0 45 11.646566" height="11.646566pt" width="45pt">
+  <metadata id="metadata874">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs id="defs851">
+    <clipPath id="clip1">
+      <path id="path842" d="M 11 0 L 34 0 L 34 11.648438 L 11 11.648438 Z M 11 0 " />
+    </clipPath>
+    <clipPath id="clip2">
+      <path id="path845" d="M 33 0 L 45 0 L 45 11.648438 L 33 11.648438 Z M 33 0 " />
+    </clipPath>
+    <clipPath id="clip3">
+      <path id="path848" d="M 0 0 L 12 0 L 12 11.648438 L 0 11.648438 Z M 0 0 " />
+    </clipPath>
+  </defs>
+  <g id="surface49720">
+    <g id="g855" clip-rule="nonzero" clip-path="url(#clip1)">
+      <path id="path853" d="M 11.367188 0.277344 L 33.632813 0.277344 L 33.632813 11.371094 L 11.367188 11.371094 Z M 11.367188 0.277344 " style="fill-rule:nonzero;fill:rgb(100%, 100%, 100%);fill-opacity:1;stroke-width:0.552709;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%, 0%, 0%);stroke-opacity:1;stroke-miterlimit:4" />
+    </g>
+    <g id="g859" clip-rule="nonzero" clip-path="url(#clip2)">
+      <path id="path857" d="M 33.632813 0.277344 L 44.722656 0.277344 L 44.722656 11.367188 L 33.632813 11.367188 Z M 33.632813 0.277344 " style="fill-rule:nonzero;fill:rgb(100%, 100%, 100%);fill-opacity:1;stroke-width:0.555071;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%, 0%, 0%);stroke-opacity:1;stroke-miterlimit:4" />
+    </g>
+    <g id="g863" clip-rule="nonzero" clip-path="url(#clip3)">
+      <path id="path861" d="M 0.277344 0.277344 L 11.367188 0.277344 L 11.367188 11.367188 L 0.277344 11.367188 Z M 0.277344 0.277344 " style="fill-rule:nonzero;fill:rgb(100%, 100%, 100%);fill-opacity:1;stroke-width:0.555071;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%, 0%, 0%);stroke-opacity:1;stroke-miterlimit:4" />
+    </g>
+    <path id="path865" d="M 1.753906 9.648438 L 9.890625 9.648438 " style="fill:none;stroke-width:0.555071;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%, 0%, 0%);stroke-opacity:1;stroke-miterlimit:4" />
+    <path id="path867" d="M 5.824219 9.621094 L 5.824219 2 " style="fill:none;stroke-width:0.555071;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%, 0%, 0%);stroke-opacity:1;stroke-miterlimit:4" />
+  </g>
+</svg>

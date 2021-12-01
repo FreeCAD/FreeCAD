@@ -24,10 +24,16 @@
 #ifndef MESH_DEFINITIONS_H
 #define MESH_DEFINITIONS_H
 
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
+
+#include <climits>
+
 // default values
 #define MESH_MIN_PT_DIST           1.0e-6f
 #define MESH_MIN_EDGE_LEN          1.0e-3f
-#define MESH_MIN_EDGE_ANGLE        float(RAD(2.0))
+#define MESH_MIN_EDGE_ANGLE        2.0
 #define MESH_REMOVE_MIN_LEN        true
 #define MESH_REMOVE_G3_EDGES       true
 
@@ -36,14 +42,6 @@
  */
 #define FLOAT_EPS   1.0e-4f 
 
-#ifndef  F_PI
-# define F_PI  3.1415926f
-#endif
-
-#ifndef  D_PI
-# define D_PI  3.141592653589793
-#endif
-  
 #ifndef  FLOAT_MAX
 # define FLOAT_MAX 1e30f
 #endif
@@ -56,13 +54,25 @@
 # define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
 #endif
 
-/*
- * macros to convert between angles
- */
-#define RAD(D)    ((D) * D_PI / 180.0)
-#define DEGREE(R) ((R) * 180.0 / D_PI) 
-
 namespace MeshCore {
+
+// type definitions
+using ElementIndex = unsigned long;
+const ElementIndex ELEMENT_INDEX_MAX = ULONG_MAX;
+using FacetIndex = ElementIndex;
+const FacetIndex FACET_INDEX_MAX = ULONG_MAX;
+using PointIndex = ElementIndex;
+const PointIndex POINT_INDEX_MAX = ULONG_MAX;
+
+template <class Prec>
+class Math
+{
+public:
+    MeshExport static const Prec PI;
+};
+
+typedef Math<float> Mathf;
+typedef Math<double> Mathd;
 
 /**
  * Global defined tolerances used to compare points
@@ -71,8 +81,8 @@ namespace MeshCore {
 class MeshExport MeshDefinitions
 {
 public:
-  MeshDefinitions (void);
-  virtual ~MeshDefinitions (void)
+  MeshDefinitions ();
+  virtual ~MeshDefinitions ()
   {}
 
   static float  _fMinPointDistance;

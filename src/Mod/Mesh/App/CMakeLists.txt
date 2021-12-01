@@ -28,12 +28,14 @@ if (BUILD_QT5)
     )
 endif()
 
+generate_from_xml(EdgePy)
 generate_from_xml(FacetPy)
 generate_from_xml(MeshFeaturePy)
 generate_from_xml(MeshPointPy)
 generate_from_xml(MeshPy)
 
 SET(Mesh_XML_SRCS
+    EdgePy.xml
     FacetPy.xml
     MeshFeaturePy.xml
     MeshPointPy.xml
@@ -88,9 +90,16 @@ SET(Core_SRCS
     Core/Triangulation.h
     Core/Trim.cpp
     Core/Trim.h
+    Core/TrimByPlane.cpp
+    Core/TrimByPlane.h
     Core/tritritest.h
+    Core/Utilities.h
     Core/Visitor.cpp
     Core/Visitor.h
+    Core/CylinderFit.cpp
+    Core/CylinderFit.h
+    Core/SphereFit.cpp
+    Core/SphereFit.h
 )
 SOURCE_GROUP("Core" FILES ${Core_SRCS})
 
@@ -322,6 +331,11 @@ SET(Mesh_SRCS
     AppMeshPy.cpp
     Exporter.cpp
     Exporter.h
+    Importer.cpp
+    Importer.h
+    Edge.cpp
+    Edge.h
+    EdgePyImp.cpp
     Facet.cpp
     Facet.h
     FacetPyImp.cpp
@@ -355,31 +369,44 @@ SET(Mesh_SRCS
     MeshProperties.cpp
     MeshProperties.h
     MeshPyImp.cpp
+    MeshTexture.cpp
+    MeshTexture.h
     PreCompiled.cpp
     PreCompiled.h
     Segment.cpp
     Segment.h
 )
 
-if(BUILD_USE_PCH)
+# Suppress -Wundefined-var-template
+if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
+    unset(_flag_found CACHE)
+    check_cxx_compiler_flag("-Wno-undefined-var-template" _flag_found)
+    if (_flag_found)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+    endif()
+endif()
+
+if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Core_SRCS} ${Mesh_SRCS})
     ADD_MSVC_PRECOMPILED_HEADER(Mesh PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(BUILD_USE_PCH)
+endif(FREECAD_USE_PCH)
+
+# Suppress some very long Eigen3 warnings of older versions
+if (EIGEN3_NO_DEPRECATED_COPY)
+    set_source_files_properties(
+        Core/Approximation.cpp
+        Core/CylinderFit.cpp
+        Core/SphereFit.cpp
+        Core/KDTree.cpp
+        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
+endif ()
 
 add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
+set_target_properties(Mesh PROPERTIES CXX_STANDARD_REQUIRED ON)
+set_target_properties(Mesh PROPERTIES CXX_STANDARD 17)
 
-
-fc_target_copy_resource(Mesh 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Mesh
-    ${CMAKE_BINARY_DIR}/Mod/Mesh
-    Init.py BuildRegularGeoms.py)
-
-fc_target_copy_resource(Mesh 
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Mesh
-    MeshTestsApp.py)
 
 SET_BIN_DIR(Mesh Mesh /Mod/Mesh)
 SET_PYTHON_PREFIX_SUFFIX(Mesh)

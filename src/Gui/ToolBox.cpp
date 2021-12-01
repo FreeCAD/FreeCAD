@@ -52,7 +52,7 @@ ToolBox::~ToolBox()
 }
 
 /**
- * Adds the widget w in a new tab at bottom of the toolbox. The new tab's label is set to \a label. 
+ * Adds the widget w in a new tab at bottom of the toolbox. The new tab's label is set to \a label.
  * Returns the new tab's index.
  */
 int ToolBox::addItem ( QWidget * w, const QString & label )
@@ -61,7 +61,7 @@ int ToolBox::addItem ( QWidget * w, const QString & label )
 }
 
 /**
- * Adds the widget \a item in a new tab at bottom of the toolbox. The new tab's label is set to \a label, and 
+ * Adds the widget \a item in a new tab at bottom of the toolbox. The new tab's label is set to \a label, and
  * the \a iconSet is displayed to the left of the \a label. Returns the new tab's index.
  */
 int ToolBox::addItem ( QWidget * item, const QIcon & iconSet, const QString & label )
@@ -70,9 +70,9 @@ int ToolBox::addItem ( QWidget * item, const QIcon & iconSet, const QString & la
 }
 
 /**
- * This is an overloaded member function, provided for convenience. It behaves essentially like the above function. 
+ * This is an overloaded member function, provided for convenience. It behaves essentially like the above function.
  *
- * Inserts the widget \a item at position \a index, or at the bottom of the toolbox if \a index is out of range. 
+ * Inserts the widget \a item at position \a index, or at the bottom of the toolbox if \a index is out of range.
  * The new item's label is set to \a label. Returns the new item's index.
  */
 int ToolBox::insertItem ( int index, QWidget * item, const QString & label )
@@ -81,8 +81,8 @@ int ToolBox::insertItem ( int index, QWidget * item, const QString & label )
 }
 
 /**
- * Inserts the widget \a item at position \a index, or at the bottom of the toolbox if \a index is out of range. 
- * The new item's label is set to \a label, and the \a iconSet is displayed to the left of the \a label. 
+ * Inserts the widget \a item at position \a index, or at the bottom of the toolbox if \a index is out of range.
+ * The new item's label is set to \a label, and the \a iconSet is displayed to the left of the \a label.
  * Returns the new item's index.
  */
 int ToolBox::insertItem ( int index, QWidget * item, const QIcon & iconSet, const QString & label )

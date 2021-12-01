@@ -39,21 +39,22 @@ using namespace Gui;
 
 ViewVolumeProjection::ViewVolumeProjection (const SbViewVolume &vv)
   : viewVolume(vv)
-  , hasTransform(false)
 {
+    matrix = viewVolume.getMatrix();
+    invert = matrix.inverse();
 }
 
 Base::Vector3f ViewVolumeProjection::operator()(const Base::Vector3f &pt) const
 {
-    SbVec3f pt3d(pt.x,pt.y,pt.z);
-    if (hasTransform) {
-        Base::Vector3f ptt = transform * pt;
-        pt3d.setValue(ptt.x, ptt.y, ptt.z);
-    }
+    Base::Vector3f src;
+    transformInput(pt, src);
 
-    // Calling this function is expensive as the complete projection matrix is recomputed on each step
-    viewVolume.projectToScreen(pt3d,pt3d);
-    return Base::Vector3f(pt3d[0],pt3d[1],pt3d[2]);
+    SbVec3f pt3d(src.x,src.y,src.z);
+
+    // See SbViewVolume::projectToScreen
+    matrix.multVecMatrix(pt3d, pt3d);
+
+    return Base::Vector3f(0.5*pt3d[0]+0.5, 0.5*pt3d[1]+0.5, 0.5*pt3d[2]+0.5);
 }
 
 Base::Vector3d ViewVolumeProjection::operator()(const Base::Vector3d &pt) const
@@ -65,17 +66,8 @@ Base::Vector3d ViewVolumeProjection::operator()(const Base::Vector3d &pt) const
 
 Base::Vector3f ViewVolumeProjection::inverse (const Base::Vector3f &pt) const
 {
-#if 1
     SbVec3f pt3d(2.0f*pt.x-1.0f, 2.0f*pt.y-1.0f, 2.0f*pt.z-1.0f);
-    viewVolume.getMatrix().inverse().multVecMatrix(pt3d, pt3d);
-#elif 1
-    SbLine line; SbVec3f pt3d;
-    SbPlane distPlane = viewVolume.getPlane(viewVolume.getNearDist());
-    viewVolume.projectPointToLine(SbVec2f(pt.x,pt.x), line);
-    distPlane.intersect(line, pt3d);
-#else
-    SbVec3f pt3d = viewVolume.getPlanePoint(viewVolume.getNearDist(), SbVec2f(pt.x,pt.y));
-#endif
+    invert.multVecMatrix(pt3d, pt3d);
     return Base::Vector3f(pt3d[0],pt3d[1],pt3d[2]);
 }
 
@@ -86,41 +78,15 @@ Base::Vector3d ViewVolumeProjection::inverse (const Base::Vector3d &pt) const
     return Base::convertTo<Base::Vector3d>(ptf);
 }
 
-/*!
- * \brief This method applies an additional transformation to the input points
- * passed with the () operator.
- * \param mat
- */
-void ViewVolumeProjection::setTransform(const Base::Matrix4D& mat)
-{
-    transform = mat;
-    hasTransform = (mat != Base::Matrix4D());
-}
-
 Base::Matrix4D ViewVolumeProjection::getProjectionMatrix () const
 {
     // Inventor stores the transposed matrix
     Base::Matrix4D mat;
-    SbMatrix affine, proj;
-
-    // The Inventor projection matrix is obtained by multiplying both matrices together (cf source)
-    viewVolume.getMatrices(affine, proj);
-    SbMatrix pmatrix = affine.multRight(proj);
 
     for (int i=0; i<4; i++) {
         for (int j=0; j<4; j++)
-            mat[i][j] = pmatrix[j][i];
+            mat[i][j] = matrix[j][i];
     }
-
-    // Compose the object transform, if defined
-    if (hasTransform) {
-        mat = mat * transform;
-    }
-
-    // Scale from [-1,1] to [0,1]
-    // As done in OpenInventor sources (see SbDPViewVolume::projectToScreen)
-    mat.scale(0.5, 0.5, 0.5);
-    mat.move(0.5, 0.5, 0.5);
 
     return mat;
 }
@@ -129,8 +95,8 @@ Base::Matrix4D ViewVolumeProjection::getProjectionMatrix () const
 
 void Tessellator::tessCB(void * v0, void * v1, void * v2, void * cbdata)
 {
-    int * vtx0 = (int *)v0; 
-    int * vtx1 = (int *)v1; 
+    int * vtx0 = (int *)v0;
+    int * vtx1 = (int *)v1;
     int * vtx2 = (int *)v2;
 
     std::vector<int>* array = (std::vector<int> *)cbdata;

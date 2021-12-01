@@ -87,6 +87,8 @@ SET(FeaturesDressUp_SRCS
 SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 
 SET(FeaturesSketchBased_SRCS
+    FeatureExtrude.cpp
+    FeatureExtrude.h
     FeatureSketchBased.cpp
     FeatureSketchBased.h
     FeaturePad.cpp
@@ -109,6 +111,8 @@ SET(FeaturesSketchBased_SRCS
     FeaturePipe.cpp
     FeatureLoft.h
     FeatureLoft.cpp
+    FeatureHelix.h
+    FeatureHelix.cpp
 )
 
 SOURCE_GROUP("SketchBasedFeatures" FILES ${FeaturesSketchBased_SRCS})
@@ -127,7 +131,6 @@ SET(Python_SRCS
     BodyPyImp.cpp
     FeaturePy.xml
     FeaturePyImp.cpp
-
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -138,57 +141,17 @@ SET(PartDesign_SRCS
     ${FeaturesSketchBased_SRCS}
     ${FeaturesDressUp_SRCS}
     ${Module_SRCS}
-	${Python_SRCS}
-)
-
-SET(PartDesign_Scripts
-    __init__.py
-    Init.py
-    TestPartDesignApp.py
-    InvoluteGearFeature.py
-    InvoluteGearFeature.ui
-    Scripts/__init__.py
-    Scripts/Gear.py
-    Scripts/DistanceBolt.py
-    Scripts/Epitrochoid.py
-    Scripts/FilletArc.py
-    Scripts/RadialCopy.py
-    Scripts/Parallelepiped.py
-    Scripts/Spring.py
-    PartDesignTests/__init__.py
-    PartDesignTests/TestDatum.py
-    PartDesignTests/TestShapeBinder.py
-    PartDesignTests/TestPad.py
-    PartDesignTests/TestPocket.py
-    PartDesignTests/TestHole.py
-    PartDesignTests/TestRevolve.py
-    PartDesignTests/TestLoft.py
-    PartDesignTests/TestPipe.py
-    PartDesignTests/TestPrimitive.py
-    PartDesignTests/TestMirrored.py
-    PartDesignTests/TestLinearPattern.py
-    PartDesignTests/TestPolarPattern.py
-    PartDesignTests/TestMultiTransform.py
-    PartDesignTests/TestBoolean.py
-    PartDesignTests/TestFillet.py
-    PartDesignTests/TestChamfer.py
-    PartDesignTests/TestDraft.py
-    PartDesignTests/TestThickness.py
-    fcgear/__init__.py
-    fcgear/fcgear.py
-    fcgear/fcgeardialog.py
-    fcgear/involute.py
-    fcgear/svggear.py
+    ${Python_SRCS}
 )
 
 add_library(PartDesign SHARED ${PartDesign_SRCS})
 target_link_libraries(PartDesign ${PartDesign_LIBS})
 
-
-fc_target_copy_resource(PartDesign 
-    ${CMAKE_SOURCE_DIR}/src/Mod/PartDesign
-    ${CMAKE_BINARY_DIR}/Mod/PartDesign
-    ${PartDesign_Scripts})
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PartDesign_CPP_SRCS ${PartDesign_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PartDesign PreCompiled.h PreCompiled.cpp PartDesign_CPP_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET_BIN_DIR(PartDesign _PartDesign /Mod/PartDesign)
 SET_PYTHON_PREFIX_SUFFIX(PartDesign)

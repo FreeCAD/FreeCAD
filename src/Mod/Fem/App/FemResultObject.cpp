@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,7 +41,7 @@ FemResultObject::FemResultObject()
     ADD_PROPERTY_TYPE(Mesh,(0), "General",Prop_None,"Link to the corresponding mesh");
     ADD_PROPERTY_TYPE(NodeNumbers,(0), "NodeData",Prop_None,"Numbers of the result nodes");
     ADD_PROPERTY_TYPE(Stats,(0), "Data",Prop_None,"Statistics of the results");
-    ADD_PROPERTY_TYPE(Time,(0), "Data",Prop_None,"Time of analysis incement");
+    ADD_PROPERTY_TYPE(Time,(0), "Data",Prop_None,"Time of analysis increment");
 
     // make read-only for property editor
     NodeNumbers.setStatus(App::Property::ReadOnly, true);

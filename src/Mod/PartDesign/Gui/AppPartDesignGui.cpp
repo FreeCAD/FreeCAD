@@ -61,6 +61,7 @@
 #include "ViewProviderThickness.h"
 #include "ViewProviderPipe.h"
 #include "ViewProviderLoft.h"
+#include "ViewProviderHelix.h"
 #include "ViewProviderShapeBinder.h"
 #include "ViewProviderBase.h"
 
@@ -150,11 +151,13 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProviderDatumPlane    ::init();
     PartDesignGui::ViewProviderDatumCoordinateSystem::init();
     PartDesignGui::ViewProviderShapeBinder   ::init();
+    PartDesignGui::ViewProviderSubShapeBinder::init();
     PartDesignGui::ViewProviderBoolean       ::init();
     PartDesignGui::ViewProviderAddSub        ::init();
     PartDesignGui::ViewProviderPrimitive     ::init();
     PartDesignGui::ViewProviderPipe          ::init();
     PartDesignGui::ViewProviderLoft          ::init();
+    PartDesignGui::ViewProviderHelix         ::init();
     PartDesignGui::ViewProviderBase          ::init();
 
      // add resources and reloads the translators

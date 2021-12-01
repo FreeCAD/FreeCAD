@@ -27,7 +27,7 @@
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/BodyBase.h>
 
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 
 namespace App {
     class Origin;
@@ -60,9 +60,6 @@ public:
         return "PartDesignGui::ViewProviderBody";
     }
     //@}
-
-    /// Return the previous feature
-    App::DocumentObject* getPrevFeature(App::DocumentObject *start = NULL) const;
 
     /**
      * Add the feature into the body at the current insert point.
@@ -120,12 +117,13 @@ public:
 
     PyObject *getPyObject(void) override;
 
+    virtual std::vector<std::string> getSubObjects(int reason=0) const override;
+    virtual App::DocumentObject *getSubObject(const char *subname,
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
 
-protected:
-    virtual void onSettingDocument() override;
-
-    /// Adjusts the first solid's feature's base on BaseFeature getting set
-    virtual void onChanged (const App::Property* prop) override;
+    void setShowTip(bool enable) {
+        showTip = enable;
+    }
 
     /**
       * Return the solid feature before the given feature, or before the Tip feature
@@ -139,13 +137,25 @@ protected:
       */
     App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
 
+    // a body is solid if it has features that are solid according to member isSolidFeature.
+    bool isSolid(void);
+
+protected:
+    virtual void onSettingDocument() override;
+
+    /// Adjusts the first solid's feature's base on BaseFeature getting set
+    virtual void onChanged (const App::Property* prop) override;
+
     /// Creates the corresponding Origin object
     virtual void setupObject () override;
     /// Removes all planes and axis if they are still linked to the document
     virtual void unsetupObject () override;
 
+    virtual void onDocumentRestored() override;
+
 private:
-    boost::signals::scoped_connection connection;
+    boost::signals2::scoped_connection connection;
+    bool showTip = false;
 };
 
 } //namespace PartDesign

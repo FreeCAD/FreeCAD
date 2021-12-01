@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Riegel         <juergen.riegel@web.de>                  *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -61,7 +61,7 @@ using namespace std;
 //  Base::XMLReader: Constructors and Destructor
 // ---------------------------------------------------------------------------
 
-Base::XMLReader::XMLReader(const char* FileName, std::istream& str) 
+Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
   : DocumentSchema(0), ProgramVersion(""), FileVersion(0), Level(0),
     CharacterCount(0), ReadType(None), _File(FileName), _valid(false),
     _verbose(true)
@@ -69,7 +69,6 @@ Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
 #ifdef _MSC_VER
     str.imbue(std::locale::empty());
 #else
-    //FIXME: Check whether this is correct
     str.imbue(std::locale::classic());
 #endif
 
@@ -130,52 +129,60 @@ long Base::XMLReader::getAttributeAsInteger(const char* AttrName) const
 {
     AttrMapType::const_iterator pos = AttrMap.find(AttrName);
 
-    if (pos != AttrMap.end())
+    if (pos != AttrMap.end()) {
         return atol(pos->second.c_str());
-    else
+    }
+    else {
         // wrong name, use hasAttribute if not sure!
-        assert(0);
-
-    return 0;
+        std::ostringstream msg;
+        msg << "XML Attribute: \"" << AttrName << "\" not found";
+        throw Base::XMLAttributeError(msg.str());
+    }
 }
 
 unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName) const
 {
     AttrMapType::const_iterator pos = AttrMap.find(AttrName);
 
-    if (pos != AttrMap.end())
+    if (pos != AttrMap.end()) {
         return strtoul(pos->second.c_str(),0,10);
-    else
+    }
+    else {
         // wrong name, use hasAttribute if not sure!
-        assert(0);
-
-    return 0;
+        std::ostringstream msg;
+        msg << "XML Attribute: \"" << AttrName << "\" not found";
+        throw Base::XMLAttributeError(msg.str());
+    }
 }
 
 double Base::XMLReader::getAttributeAsFloat  (const char* AttrName) const
 {
     AttrMapType::const_iterator pos = AttrMap.find(AttrName);
 
-    if (pos != AttrMap.end())
+    if (pos != AttrMap.end()) {
         return atof(pos->second.c_str());
-    else
+    }
+    else {
         // wrong name, use hasAttribute if not sure!
-        assert(0);
-
-    return 0.0;
+        std::ostringstream msg;
+        msg << "XML Attribute: \"" << AttrName << "\" not found";
+        throw Base::XMLAttributeError(msg.str());
+    }
 }
 
 const char*  Base::XMLReader::getAttribute (const char* AttrName) const
 {
     AttrMapType::const_iterator pos = AttrMap.find(AttrName);
 
-    if (pos != AttrMap.end())
+    if (pos != AttrMap.end()) {
         return pos->second.c_str();
-    else
+    }
+    else {
         // wrong name, use hasAttribute if not sure!
-        assert(0);
-
-    return ""; 
+        std::ostringstream msg;
+        msg << "XML Attribute: \"" << AttrName << "\" not found";
+        throw Base::XMLAttributeError(msg.str());
+    }
 }
 
 bool Base::XMLReader::hasAttribute (const char* AttrName) const
@@ -250,10 +257,18 @@ void Base::XMLReader::readElement(const char* ElementName)
              (ElementName && LocalName != ElementName));
 }
 
-void Base::XMLReader::readEndElement(const char* ElementName)
+int Base::XMLReader::level() const {
+    return Level;
+}
+
+void Base::XMLReader::readEndElement(const char* ElementName, int level)
 {
     // if we are already at the end of the current element
-    if (ReadType == EndElement && LocalName == ElementName) {
+    if (ReadType == EndElement
+            && ElementName
+            && LocalName == ElementName
+            && (level<0 || level==Level))
+    {
         return;
     }
     else if (ReadType == EndDocument) {
@@ -266,7 +281,10 @@ void Base::XMLReader::readEndElement(const char* ElementName)
         ok = read(); if (!ok) break;
         if (ReadType == EndDocument)
             break;
-    } while (ReadType != EndElement || (ElementName && LocalName != ElementName));
+    } while (ReadType != EndElement
+                || (ElementName
+                    && (LocalName != ElementName
+                        || (level>=0 && level!=Level))));
 }
 
 void Base::XMLReader::readCharacters(void)
@@ -293,7 +311,7 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
 {
     // It's possible that not all objects inside the document could be created, e.g. if a module
     // is missing that would know these object types. So, there may be data files inside the zip
-    // file that cannot be read. We simply ignore these files. 
+    // file that cannot be read. We simply ignore these files.
     // On the other hand, however, it could happen that a file should be read that is not part of
     // the zip file. This happens e.g. if a document is written without GUI up but is read with GUI
     // up. In this case the associated GUI document asks for its file which is not part of the ZIP
@@ -311,7 +329,7 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
     std::vector<FileEntry>::const_iterator it = FileList.begin();
     Base::SequencerLauncher seq("Importing project files...", FileList.size());
     while (entry->isValid() && it != FileList.end()) {
-        std::vector<FileEntry>::const_iterator jt = it; 
+        std::vector<FileEntry>::const_iterator jt = it;
         // Check if the current entry is registered, otherwise check the next registered files as soon as
         // both file names match
         while (jt != FileList.end() && entry->getName() != jt->FileName)
@@ -322,6 +340,8 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
             try {
                 Base::Reader reader(zipstream, jt->FileName, FileVersion);
                 jt->Object->RestoreDocFile(reader);
+                if (reader.getLocalReader())
+                    reader.getLocalReader()->readFiles(zipstream);
             }
             catch(...) {
                 // For any exception we just continue with the next file.
@@ -505,10 +525,50 @@ void Base::XMLReader::resetErrors()
 {
 }
 
+bool Base::XMLReader::testStatus(ReaderStatus pos) const
+{
+    return StatusBits.test((size_t)pos);
+}
+
+void Base::XMLReader::setStatus(ReaderStatus pos, bool on)
+{
+    StatusBits.set((size_t)pos, on);
+}
+
+void Base::XMLReader::setPartialRestore(bool on)
+{
+    setStatus(PartialRestore, on);
+    setStatus(PartialRestoreInDocumentObject, on);
+    setStatus(PartialRestoreInProperty, on);
+    setStatus(PartialRestoreInObject, on);
+}
+
+void Base::XMLReader::clearPartialRestoreDocumentObject(void)
+{
+    setStatus(PartialRestoreInDocumentObject, false);
+    setStatus(PartialRestoreInProperty, false);
+    setStatus(PartialRestoreInObject, false);
+}
+
+void Base::XMLReader::clearPartialRestoreProperty(void)
+{
+    setStatus(PartialRestoreInProperty, false);
+    setStatus(PartialRestoreInObject, false);
+}
+
+void Base::XMLReader::clearPartialRestoreObject(void)
+{
+    setStatus(PartialRestoreInObject, false);
+}
+
 // ----------------------------------------------------------
 
 Base::Reader::Reader(std::istream& str, const std::string& name, int version)
   : std::istream(str.rdbuf()), _str(str), _name(name), fileVersion(version)
+{
+}
+
+Base::Reader::~Reader()
 {
 }
 
@@ -527,3 +587,12 @@ std::istream& Base::Reader::getStream()
     return this->_str;
 }
 
+void Base::Reader::initLocalReader(std::shared_ptr<Base::XMLReader> reader)
+{
+    this->localreader = reader;
+}
+
+std::shared_ptr<Base::XMLReader> Base::Reader::getLocalReader() const
+{
+    return(this->localreader);
+}

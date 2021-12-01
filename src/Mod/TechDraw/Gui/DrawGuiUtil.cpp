@@ -36,10 +36,20 @@
 
 #endif
 
+#include <gp_Vec.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Trsf.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Ax2.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepLProp_SLProps.hxx>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
+#include <App/Property.h>
+#include <App/PropertyPythonObject.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
@@ -51,6 +61,11 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+
+#include <Inventor/SbVec3f.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -60,6 +75,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include "QGVPage.h"
 #include "MDIViewPage.h"
@@ -67,6 +83,18 @@
 #include "DrawGuiUtil.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
+
+void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
+{
+    qcb->clear();
+    int i = 0;
+    for (; i < ArrowPropEnum::ArrowCount; i++) {
+        qcb->addItem(tr(ArrowPropEnum::ArrowTypeEnums[i]));
+        QIcon itemIcon(QString::fromUtf8(ArrowPropEnum::ArrowTypeIcons[i].c_str()));
+        qcb->setItemIcon(i, itemIcon);
+    }
+}
 
 //===========================================================================
 // validate helper routines
@@ -75,34 +103,21 @@ using namespace TechDrawGui;
 //find a page in Selection, Document or CurrentWindow.
 TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
 {
-    TechDraw::DrawPage* page;
-    int failCase = 0;
+    TechDraw::DrawPage* page = nullptr;
 
-    //check Selection and/or Document for a DrawPage
-    std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    if (selPages.empty()) {                                            //no page in selection
+    //check Selection for a page
+    std::vector<App::DocumentObject*> selPages = cmd->getSelection().
+                                                 getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    if (selPages.empty()) {
+        //no page in selection, try document
         selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-        if (selPages.empty()) {                                        //no page in document
-            page = nullptr; 
-            failCase = 1;
-        } else if (selPages.size() > 1) {                              //multiple pages in document, but none selected
-            page = nullptr;
-            failCase = 2;
-        } else {                                                       //only page in document - use it
-            page = static_cast<TechDraw::DrawPage*>(selPages.front());
-        }
-    } else if (selPages.size() > 1) {                                  //multiple pages in selection
-        page = nullptr;
-        failCase = 3;
-    } else {                                                           //use only page in selection
-        page = static_cast<TechDraw::DrawPage*>(selPages.front());
-    }
-
-    //if no page is selected
-    //default to currently displayed DrawPage is there is one         //code moved Coverity CID 174668
-    if (page == nullptr) { 
-        if ((failCase == 1) ||
-            (failCase == 2)) {
+        if (selPages.empty()) {
+            //no page in document
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                                 QObject::tr("No Drawing Pages in document."));
+        } else if (selPages.size() > 1) {       
+            //multiple pages in document, but none selected
+            //use active page if there is one
             Gui::MainWindow* w = Gui::getMainWindow();
             Gui::MDIView* mv = w->activeWindow();
             MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
@@ -111,28 +126,115 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
                 QGVPage* qp = mvp->getQGVPage();
                 page = qp->getDrawPage();
             } else {
-                failCase = 1;
-            }
-        }
-    }
-
-    if (page == nullptr) {
-        switch(failCase) {
-            case 1:
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
-                                    QObject::tr("Create/select a page first."));
-                break;
-            case 2:
+                // no active page
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Which page?"),
                                      QObject::tr("Can not determine correct page."));
-                break;
-            case 3:
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                                     QObject::tr("Select exactly 1 page."));
+            }
+        } else { 
+            //only 1 page in document - use it
+            page = static_cast<TechDraw::DrawPage*>(selPages.front());
         }
+    } else if (selPages.size() > 1) {
+        //multiple pages in selection
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
+                             QObject::tr("Select only 1 page."));
+    } else {
+        //exactly 1 page in selection, use it
+        page = static_cast<TechDraw::DrawPage*>(selPages.front());
     }
 
     return page;
+}
+
+bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
+{
+    bool result = false;        
+    App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
+
+    if (proxy != nullptr) {
+        //if no proxy, can not be Draft obj
+        //if has proxy, might be Draft obj
+        std::stringstream ss;
+        Py::Object proxyObj = proxy->getValue();
+        Base::PyGILStateLocker lock;
+        try {
+            if (proxyObj.hasAttr("__module__")) {
+                Py::String mod(proxyObj.getAttr("__module__"));
+                ss <<  (std::string)mod;
+                if (ss.str().find("Draft") != std::string::npos) {
+                    result = true;
+                } else if (ss.str().find("draft") != std::string::npos) {
+                    result = true;
+                }
+            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            e.ReportException();
+            result = false;
+        }
+    }
+    return result;
+}
+
+bool DrawGuiUtil::isArchObject(App::DocumentObject* obj)
+{
+    bool result = false;        
+    App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
+
+    if (proxy != nullptr) {
+        //if no proxy, can not be Arch obj
+        //if has proxy, might be Arch obj
+        Py::Object proxyObj = proxy->getValue();
+        std::stringstream ss;
+        Base::PyGILStateLocker lock;
+        try {
+            if (proxyObj.hasAttr("__module__")) {
+                Py::String mod(proxyObj.getAttr("__module__"));
+                ss <<  (std::string)mod;
+                //does this have to be an ArchSection, or can it be any Arch object?
+                if (ss.str().find("Arch") != std::string::npos) {
+                    result = true;
+                }
+            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            e.ReportException();
+            result = false;
+        }
+    }
+    return result;
+}
+
+bool DrawGuiUtil::isArchSection(App::DocumentObject* obj)
+{
+    bool result = false;
+    App::PropertyPythonObject* proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
+
+    if (proxy != nullptr) {
+        //if no proxy, can not be Arch obj
+        //if has proxy, might be Arch obj
+        Py::Object proxyObj = proxy->getValue();
+        std::stringstream ss;
+        Base::PyGILStateLocker lock;
+        try {
+            if (proxyObj.hasAttr("__module__")) {
+                Py::String mod(proxyObj.getAttr("__module__"));
+                ss <<  (std::string)mod;
+                //does this have to be an ArchSection, or can it be other Arch objects?
+                if (ss.str().find("ArchSectionPlane") != std::string::npos) {
+                    result = true;
+                }
+            }
+        }
+        catch (Py::Exception&) {
+            Base::PyException e; // extract the Python error text
+            e.ReportException();
+            result = false;
+        }
+    }
+    return result;
 }
 
 bool DrawGuiUtil::needPage(Gui::Command* cmd)
@@ -187,3 +289,85 @@ void DrawGuiUtil::dumpPointF(const char* text, const QPointF& p)
     Base::Console().Message("DUMP - dumpPointF - %s\n",text);
     Base::Console().Message("Point: (%.3f, %.3f)\n",p.x(),p.y());
 }
+
+std::pair<Base::Vector3d,Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
+{
+    std::pair<Base::Vector3d,Base::Vector3d> result;
+    Base::Vector3d viewDir(0.0,-1.0,0.0);                                       //default to front
+    Base::Vector3d viewUp(0.0,0.0,1.0);                                         //default to top
+    Base::Vector3d viewRight(1.0,0.0,0.0);                                      //default to right
+    std::list<Gui::MDIView*> mdis = Gui::Application::Instance->activeDocument()->getMDIViews();
+    Gui::View3DInventor *view;
+    Gui::View3DInventorViewer *viewer = nullptr;
+    for (auto& m: mdis) {                                                       //find the 3D viewer
+        view = dynamic_cast<Gui::View3DInventor*>(m);
+        if (view) {
+            viewer = view->getViewer();
+            break;
+        }
+    }
+    if (!viewer) {
+        Base::Console().Log("LOG - DrawGuiUtil could not find a 3D viewer\n");
+        return std::make_pair( viewDir, viewRight);
+    }
+
+    SbVec3f dvec  = viewer->getViewDirection();
+    SbVec3f upvec = viewer->getUpDirection();
+
+    viewDir = Base::Vector3d(dvec[0], dvec[1], dvec[2]);
+    viewDir = viewDir * (-1.0);        // Inventor dir is opposite TD projection dir
+    viewUp  = Base::Vector3d(upvec[0],upvec[1],upvec[2]);
+
+//    Base::Vector3d dirXup = viewDir.Cross(viewUp);
+    Base::Vector3d right = viewUp.Cross(viewDir);
+
+    result = std::make_pair(viewDir,right);
+    return result;
+}
+
+std::pair<Base::Vector3d,Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::DocumentObject* obj, std::string faceName)
+{
+    std::pair<Base::Vector3d,Base::Vector3d> d3Dirs = get3DDirAndRot();
+    Base::Vector3d d3Up = (d3Dirs.first).Cross(d3Dirs.second);
+    std::pair<Base::Vector3d,Base::Vector3d> dirs;
+    dirs.first = Base::Vector3d(0.0,0.0,1.0);                 //set a default
+    dirs.second = Base::Vector3d(1.0,0.0,0.0);
+    Base::Vector3d projDir, rotVec;
+    projDir = d3Dirs.first;
+    rotVec = d3Dirs.second;
+
+    auto ts = Part::Feature::getShape(obj,faceName.c_str(),true);
+    if(ts.IsNull() || ts.ShapeType()!=TopAbs_FACE) {
+        Base::Console().Warning("getProjDirFromFace(%s) is not a Face\n",faceName.c_str());
+        return dirs;
+    }
+
+    const TopoDS_Face& face = TopoDS::Face(ts);
+    TopAbs_Orientation orient = face.Orientation();
+    BRepAdaptor_Surface adapt(face);
+    
+    double u1 = adapt.FirstUParameter();
+    double u2 = adapt.LastUParameter();
+    double v1 = adapt.FirstVParameter();
+    double v2 = adapt.LastVParameter();
+    double uMid = (u1+u2)/2.0;
+    double vMid = (v1+v2)/2.0;
+
+    BRepLProp_SLProps props(adapt,uMid,vMid,2,Precision::Confusion());
+    if (props.IsNormalDefined()) {
+        gp_Dir vec = props.Normal();
+        projDir = Base::Vector3d(vec.X(),vec.Y(),vec.Z());
+        rotVec = projDir.Cross(d3Up);
+        if (orient != TopAbs_FORWARD) {
+            projDir = projDir * (-1.0);
+        }
+    }
+    else {
+        Base::Console().Log("Selected Face has no normal at midpoint\n");
+    }
+
+    dirs = std::make_pair(projDir,rotVec);
+    return dirs;
+}
+
+

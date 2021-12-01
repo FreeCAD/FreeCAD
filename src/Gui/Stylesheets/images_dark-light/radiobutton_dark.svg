@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="30"
+   height="30"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   sodipodi:docname="radiobutton_dark.svg"
+   viewBox="0 0 30 29.999999">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#c0c0c0"
+     borderopacity="1"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="14.697811"
+     inkscape:cx="7.1479536"
+     inkscape:cy="12.99474"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:object-nodes="true"
+     guidecolor="#0092ff"
+     guideopacity="0.49803922"
+     guidehicolor="#ff5200"
+     guidehiopacity="0.49803922"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:snap-global="true"
+     inkscape:window-width="1680"
+     inkscape:window-height="939"
+     inkscape:window-x="0"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     borderlayer="true"
+     units="px"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2242"
+       originx="3.1640626e-05"
+       originy="2.0228902e-06"
+       enabled="true"
+       spacingx="0.49999999"
+       spacingy="0.49999999"
+       empspacing="2"
+       color="#c63fff"
+       opacity="0.0627451" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Pablo Gil</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>SVG</rdf:li>
+            <rdf:li>template</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-1074.0663,-326.59799)">
+    <path
+       style="opacity:1;vector-effect:none;fill:#000000;fill-opacity:0.11764706;fill-rule:evenodd;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 20.912109 15.982422 A 6.0000115 5.9999991 0 0 1 15 21 A 6.0000115 5.9999991 0 0 1 9.0878906 16.019531 A 6.0000115 5.9999991 0 0 0 9 17 A 6.0000115 5.9999991 0 0 0 15 23 A 6.0000115 5.9999991 0 0 0 21 17 A 6.0000115 5.9999991 0 0 0 20.912109 15.982422 z "
+       transform="translate(1074.0663,326.59799)"
+       id="ellipse7528" />
+    <ellipse
+       style="opacity:1;vector-effect:none;fill:#000000;fill-opacity:0.50980395;fill-rule:evenodd;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path7524"
+       cx="1089.0663"
+       cy="341.59799"
+       rx="6.0000114"
+       ry="5.999999" />
+  </g>
+</svg>

@@ -23,12 +23,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <vector>
-#include <list>
-#include <set>
-#include <boost/bind.hpp>
-#include <QMessageBox>
-#include <QPushButton>
+# include <vector>
+# include <list>
+# include <set>
+# include <boost_bind_bind.hpp>
+# include <QMessageBox>
+# include <QPushButton>
 #endif
 
 #include <Base/Exception.h>
@@ -43,6 +43,7 @@
 
 
 using namespace PartDesignGui;
+namespace bp = boost::placeholders;
 
 
 WorkflowManager * WorkflowManager::_instance = nullptr;
@@ -55,11 +56,11 @@ WorkflowManager::WorkflowManager() {
    }
 
     connectNewDocument = App::GetApplication().signalNewDocument.connect(
-            boost::bind( &WorkflowManager::slotNewDocument, this, _1 ) );
+            boost::bind( &WorkflowManager::slotNewDocument, this, bp::_1 ) );
     connectFinishRestoreDocument = App::GetApplication().signalFinishRestoreDocument.connect(
-            boost::bind( &WorkflowManager::slotFinishRestoreDocument, this, _1 ) );
+            boost::bind( &WorkflowManager::slotFinishRestoreDocument, this, bp::_1 ) );
     connectDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
-            boost::bind( &WorkflowManager::slotDeleteDocument, this, _1 ) );
+            boost::bind( &WorkflowManager::slotDeleteDocument, this, bp::_1 ) );
 }
 
 WorkflowManager::~WorkflowManager() {
@@ -76,7 +77,7 @@ void WorkflowManager::init() {
     if (!_instance) {
         _instance = new WorkflowManager();
     } else {
-        //throw Base::Exception( "Trying to init the workflow manager second time." );
+        //throw Base::RuntimeError( "Trying to init the workflow manager second time." );
     }
 }
 
@@ -158,7 +159,7 @@ Workflow WorkflowManager::determineWorkflow(App::Document *doc) {
                     "If you refuse to migrate you won't be able to use new PartDesign features"
                     " like Bodies and Parts. As a result you also won't be able to use your parts"
                     " in the assembly workbench.\n"
-                    "Although you will be able to migrate any moment later with 'Part Design->Migrate...'." ) );
+                    "Although you will be able to migrate any moment later with 'Part Design -> Migrate'." ) );
         msgBox.setIcon( QMessageBox::Question );
         QPushButton * yesBtn      = msgBox.addButton ( QMessageBox::Yes );
         QPushButton * manuallyBtn = msgBox.addButton (

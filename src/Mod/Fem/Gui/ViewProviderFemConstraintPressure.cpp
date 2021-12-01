@@ -26,11 +26,12 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoMultipleCopy.h>
-# include <Precision.hxx>
 #endif
 
 #include "Mod/Fem/App/FemConstraintPressure.h"
@@ -45,7 +46,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPressure, FemGui::ViewProviderF
 
 ViewProviderFemConstraintPressure::ViewProviderFemConstraintPressure()
 {
-    sPixmap = "fem-constraint-pressure";
+    sPixmap = "FEM_ConstraintPressure";
     ADD_PROPERTY(FaceColor,(0.0f,0.2f,0.8f));
 }
 
@@ -90,7 +91,7 @@ bool ViewProviderFemConstraintPressure::setEdit(int ModNum)
 }
 
 #define ARROWLENGTH (4)
-#define ARROWHEADRADIUS (ARROWLENGTH/3)
+#define ARROWHEADRADIUS (ARROWLENGTH/3.0f)
 //#define USE_MULTIPLE_COPY //OvG: MULTICOPY fails to update scaled arrows on initial drawing - so disable
 
 void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
@@ -126,7 +127,7 @@ void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
         int idx = 0;
 #else
         // Redraw all arrows
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {

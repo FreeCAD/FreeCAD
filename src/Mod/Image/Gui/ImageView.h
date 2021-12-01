@@ -25,6 +25,7 @@
 #else
 #include "GLImageBox.h"
 #endif
+#include <Mod/Image/ImageGlobal.h>
 
 class QSlider;
 class QAction;
@@ -38,6 +39,8 @@ namespace ImageGui
 class ImageGuiExport ImageView : public Gui::MDIView
 {
     Q_OBJECT
+
+    TYPESYSTEM_HEADER();
 
 public:
     ImageView(QWidget* parent);
@@ -128,6 +131,7 @@ protected:
     bool _statusBarEnabled;
     bool _mouseEventsEnabled;
     bool _ignoreCloseEvent;
+    bool _invertZoom;
 };
 
 } // namespace ImageViewGui

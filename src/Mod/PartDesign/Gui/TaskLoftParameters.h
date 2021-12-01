@@ -50,31 +50,35 @@ class TaskLoftParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskLoftParameters(ViewProviderLoft *LoftView,bool newObj=false,QWidget *parent = 0);
+    TaskLoftParameters(ViewProviderLoft *LoftView, bool newObj=false, QWidget *parent = 0);
     ~TaskLoftParameters();
 
 private Q_SLOTS:
+    void onProfileButton(bool);
     void onRefButtonAdd(bool);
-    void onRefButtonRemvove(bool);
+    void onRefButtonRemove(bool);
     void onClosed(bool);
     void onRuled(bool);
+    void onDeleteSection();
+    void indexesMoved();
 
 protected:
+    enum selectionModes { none, refAdd, refRemove, refProfile };
+
     void changeEvent(QEvent *e);
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI(int index);
+    void updateUI();
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
     void removeFromListWidget(QListWidget*w, QString name);
-    void clearButtons();
+    void clearButtons(const selectionModes notThis=none);
     void exitSelectionMode();
 
 private:
     QWidget* proxy;
-    Ui_TaskLoftParameters* ui;
+    std::unique_ptr<Ui_TaskLoftParameters> ui;
 
-    enum selectionModes { none, refAdd, refRemove };
     selectionModes selectionMode = none;
 };
 

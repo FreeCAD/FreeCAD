@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2013     *
+ *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,15 +36,47 @@ using namespace Base;
 std::string QuantityPy::representation(void) const
 {
     std::stringstream ret;
-    ret << getQuantityPtr()->getValue() << " "; 
+#if 0
+    //ret.precision(getQuantityPtr()->getFormat().precision);
+    //ret.setf(std::ios::fixed, std::ios::floatfield);
+    ret << getQuantityPtr()->getValue() << " ";
     ret << getQuantityPtr()->getUnit().getString().toUtf8().constData();
+#else
+    double val= getQuantityPtr()->getValue();
+    Unit unit = getQuantityPtr()->getUnit();
+
+    // Use Python's implementation to repr() a float
+    Py::Float flt(val);
+    ret << static_cast<std::string>(flt.repr());
+    if (!unit.isEmpty())
+        ret << " " << unit.getString().toUtf8().constData();
+#endif
 
     return ret.str();
 }
 
+PyObject* QuantityPy::toStr(PyObject* args)
+{
+    int prec = getQuantityPtr()->getFormat().precision;
+    if (!PyArg_ParseTuple(args,"|i", &prec))
+        return nullptr;
+
+    double val= getQuantityPtr()->getValue();
+    Unit unit = getQuantityPtr()->getUnit();
+
+    std::stringstream ret;
+    ret.precision(prec);
+    ret.setf(std::ios::fixed, std::ios::floatfield);
+    ret << val;
+    if (!unit.isEmpty())
+        ret << " " << unit.getString().toUtf8().constData();
+
+    return Py_BuildValue("s", ret.str().c_str());
+}
+
 PyObject *QuantityPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of QuantityPy and the Twin object 
+    // create a new instance of QuantityPy and the Twin object
     return new QuantityPy(new Quantity);
 }
 
@@ -203,6 +235,17 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
     return new QuantityPy(new Quantity(quant));
 }
 
+PyObject * QuantityPy::__round__ (PyObject *args)
+{
+    double val= getQuantityPtr()->getValue();
+    Unit unit = getQuantityPtr()->getUnit();
+    Py::Float flt(val);
+    Py::Callable func(flt.getAttr("__round__"));
+    double rnd = static_cast<double>(Py::Float(func.apply(args)));
+
+    return new QuantityPy(new Quantity(rnd, unit));
+}
+
 PyObject * QuantityPy::number_float_handler (PyObject *self)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
@@ -222,25 +265,8 @@ PyObject * QuantityPy::number_int_handler (PyObject *self)
     }
 
     QuantityPy* q = static_cast<QuantityPy*>(self);
-#if PY_MAJOR_VERSION < 3
-    return PyInt_FromLong((long)q->getValue());
-#else
     return PyLong_FromLong((long)q->getValue());
-#endif
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * QuantityPy::number_long_handler (PyObject *self)
-{
-    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
-        return 0;
-    }
-
-    QuantityPy* q = static_cast<QuantityPy*>(self);
-    return PyInt_FromLong((long)q->getValue());
-}
-#endif
 
 PyObject * QuantityPy::number_negative_handler (PyObject *self)
 {
@@ -276,130 +302,91 @@ PyObject * QuantityPy::number_absolute_handler (PyObject *self)
     return new QuantityPy(new Quantity(fabs(a->getValue()), a->getUnit()));
 }
 
+static Quantity &pyToQuantity(Quantity &q, PyObject *pyobj) {
+    if (PyObject_TypeCheck(pyobj, &Base::QuantityPy::Type))
+        q = *static_cast<Base::QuantityPy*>(pyobj)->getQuantityPtr();
+    else if (PyFloat_Check(pyobj))
+        q = Quantity(PyFloat_AsDouble(pyobj));
+    else if (PyLong_Check(pyobj))
+        q = Quantity(PyLong_AsLong(pyobj));
+    else {
+        PyErr_Format(PyExc_TypeError,"Cannot convert %s to Quantity",Py_TYPE(pyobj)->tp_name);
+        throw Py::Exception();
+    }
+    return q;
+}
+
 PyObject* QuantityPy::number_add_handler(PyObject *self, PyObject *other)
 {
-    if (!PyObject_TypeCheck(self, &(QuantityPy::Type)) ||
-        !PyObject_TypeCheck(other, &(QuantityPy::Type))) {
-        std::stringstream ret;
-        ret << Py_TYPE(self)->tp_name << " and " << Py_TYPE(other)->tp_name
-            << " cannot be mixed in Quantity.__add__.\n"
-            << "Make sure to use matching types.";
-        PyErr_SetString(PyExc_TypeError, ret.str().c_str());
-        return 0;
-    }
+    Quantity *pa=0, *pb=0;
+    Quantity a,b;
+    PY_TRY {
+        if (PyObject_TypeCheck(self, &(QuantityPy::Type)))
+            pa = static_cast<QuantityPy*>(self)->getQuantityPtr();
+        else
+            pa = &pyToQuantity(a,self);
 
-    try {
-        Base::Quantity *a = static_cast<QuantityPy*>(self)->getQuantityPtr();
-        Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
-        return new QuantityPy(new Quantity(*a+*b) );
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
+        if (PyObject_TypeCheck(other, &(QuantityPy::Type)))
+            pb = static_cast<QuantityPy*>(other)->getQuantityPtr();
+        else
+            pb = &pyToQuantity(b,other);
+        return new QuantityPy(new Quantity(*pa + *pb) );
+    } PY_CATCH
 }
 
 PyObject* QuantityPy::number_subtract_handler(PyObject *self, PyObject *other)
 {
-    if (!PyObject_TypeCheck(self, &(QuantityPy::Type)) ||
-        !PyObject_TypeCheck(other, &(QuantityPy::Type))) {
-        std::stringstream ret;
-        ret << Py_TYPE(self)->tp_name << " and " << Py_TYPE(other)->tp_name
-            << " cannot be mixed in Quantity.__sub__.\n"
-            << "Make sure to use matching types.";
-        PyErr_SetString(PyExc_TypeError, ret.str().c_str());
-        return 0;
-    }
+    Quantity *pa=0, *pb=0;
+    Quantity a,b;
+    PY_TRY {
+        if (PyObject_TypeCheck(self, &(QuantityPy::Type)))
+            pa = static_cast<QuantityPy*>(self)->getQuantityPtr();
+        else
+            pa = &pyToQuantity(a,self);
 
-    try {
-        Base::Quantity *a = static_cast<QuantityPy*>(self)->getQuantityPtr();
-        Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
-        return new QuantityPy(new Quantity(*a-*b) );
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
+        if (PyObject_TypeCheck(other, &(QuantityPy::Type)))
+            pb = static_cast<QuantityPy*>(other)->getQuantityPtr();
+        else
+            pb = &pyToQuantity(b,other);
+        return new QuantityPy(new Quantity(*pa - *pb) );
+    } PY_CATCH
 }
 
 PyObject* QuantityPy::number_multiply_handler(PyObject *self, PyObject *other)
 {
-    if (PyObject_TypeCheck(self, &(QuantityPy::Type))) {
-        if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
-            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-            Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
-            return new QuantityPy(new Quantity(*a * *b) );
-        }
-        else if (PyFloat_Check(other)) {
-            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-            double b = PyFloat_AsDouble(other);
-            return new QuantityPy(new Quantity(*a*b) );
-        }
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(other)) {
-            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-            double b = (double)PyInt_AsLong(other);
-#else
-        else if (PyLong_Check(other)) {
-            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-            double b = (double)PyLong_AsLong(other);
-#endif
-            return new QuantityPy(new Quantity(*a*b) );
-        }
-    }
-    else if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
-        if (PyFloat_Check(self)) {
-            Base::Quantity *a = static_cast<QuantityPy*>(other) ->getQuantityPtr();
-            double b = PyFloat_AsDouble(self);
-            return new QuantityPy(new Quantity(*a*b) );
-        }
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(self)) {
-            Base::Quantity *a = static_cast<QuantityPy*>(other) ->getQuantityPtr();
-            double b = (double)PyInt_AsLong(self);
-#else
-        else if (PyLong_Check(self)) {
-            Base::Quantity *a = static_cast<QuantityPy*>(other) ->getQuantityPtr();
-            double b = (double)PyLong_AsLong(self);
-#endif
-            return new QuantityPy(new Quantity(*a*b) );
-        }
-    }
+    Quantity *pa=0, *pb=0;
+    Quantity a,b;
+    PY_TRY {
+        if (PyObject_TypeCheck(self, &(QuantityPy::Type)))
+            pa = static_cast<QuantityPy*>(self)->getQuantityPtr();
+        else
+            pa = &pyToQuantity(a,self);
 
-    PyErr_SetString(PyExc_TypeError, "A Quantity can only be multiplied by Quantity or number");
-    return 0;
+        if (PyObject_TypeCheck(other, &(QuantityPy::Type)))
+            pb = static_cast<QuantityPy*>(other)->getQuantityPtr();
+        else
+            pb = &pyToQuantity(b,other);
+        return new QuantityPy(new Quantity(*pa * *pb) );
+    } PY_CATCH
 }
 
-#if PY_MAJOR_VERSION < 3
 PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
 {
-    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
-        return 0;
-    }
+    Quantity *pa=0, *pb=0;
+    Quantity a,b;
+    PY_TRY {
+        if (PyObject_TypeCheck(self, &(QuantityPy::Type)))
+            pa = static_cast<QuantityPy*>(self)->getQuantityPtr();
+        else
+            pa = &pyToQuantity(a,self);
 
-    if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
-        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-        Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
-        
-        return new QuantityPy(new Quantity(*a / *b) );
-    }
-    else if (PyFloat_Check(other)) {
-        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-        double b = PyFloat_AsDouble(other);
-        return new QuantityPy(new Quantity(*a / b) );
-    }
-    else if (PyInt_Check(other)) {
-        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-        double b = (double)PyInt_AsLong(other);
-        return new QuantityPy(new Quantity(*a / b) );
-    }
-    else {
-        PyErr_SetString(PyExc_TypeError, "A Quantity can only be divided by Quantity or number");
-        return 0;
-    }
+        if (PyObject_TypeCheck(other, &(QuantityPy::Type)))
+            pb = static_cast<QuantityPy*>(other)->getQuantityPtr();
+        else
+            pb = &pyToQuantity(b,other);
+        return new QuantityPy(new Quantity(*pa / *pb) );
+    } PY_CATCH
 }
-#endif
 
 PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other)
 {
@@ -419,13 +406,8 @@ PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other
     else if (PyFloat_Check(other)) {
         d2 = PyFloat_AsDouble(other);
     }
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(other)) {
-        d2 = (double)PyInt_AsLong(other);
-#else
     else if (PyLong_Check(other)) {
         d2 = (double)PyLong_AsLong(other);
-#endif
     }
     else {
         PyErr_SetString(PyExc_TypeError, "Expected quantity or number");
@@ -458,32 +440,29 @@ PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, Py
         return 0;
     }
 
-    if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
-        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-        Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
-        
-        return new QuantityPy(new Quantity(a->pow(*b)));
-    }
-    else if (PyFloat_Check(other)) {
-        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-        double b = PyFloat_AsDouble(other);
-        return new QuantityPy(new Quantity(a->pow(b)) );
-    }
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(other)) {
-        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-        double b = (double)PyInt_AsLong(other);
-#else
-    else if (PyLong_Check(other)) {
-        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-        double b = (double)PyLong_AsLong(other);
-#endif
-        return new QuantityPy(new Quantity(a->pow(b)));
-    }
-    else {
-        PyErr_SetString(PyExc_TypeError, "Expected quantity or number");
-        return 0;
-    }
+    PY_TRY {
+        if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
+            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+            Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
+            Base::Quantity q(a->pow(*b)); // to prevent memory leak in case of exception
+
+            return new QuantityPy(new Quantity(q));
+        }
+        else if (PyFloat_Check(other)) {
+            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+            double b = PyFloat_AsDouble(other);
+            return new QuantityPy(new Quantity(a->pow(b)) );
+        }
+        else if (PyLong_Check(other)) {
+            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+            double b = (double)PyLong_AsLong(other);
+            return new QuantityPy(new Quantity(a->pow(b)));
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "Expected quantity or number");
+            return 0;
+        }
+    }PY_CATCH
 }
 
 int QuantityPy::number_nonzero_handler (PyObject *self)
@@ -589,7 +568,7 @@ void QuantityPy::setValue(Py::Float arg)
 
 Py::Object QuantityPy::getUnit(void) const
 {
-    return Py::Object(new UnitPy(new Unit(getQuantityPtr()->getUnit())));
+    return Py::asObject(new UnitPy(new Unit(getQuantityPtr()->getUnit())));
 }
 
 void QuantityPy::setUnit(Py::Object arg)
@@ -607,48 +586,85 @@ Py::String QuantityPy::getUserString(void) const
     return Py::String(getQuantityPtr()->getUserString().toUtf8(),"utf-8");
 }
 
-Py::Tuple QuantityPy::getFormat(void) const
+Py::Dict QuantityPy::getFormat(void) const
 {
     QuantityFormat fmt = getQuantityPtr()->getFormat();
 
-    Py::Tuple tuple(2);
-    tuple.setItem(0, Py::Int (fmt.precision));
-    tuple.setItem(1, Py::Char(fmt.toFormat()));
-    return tuple;
+    Py::Dict dict;
+    dict.setItem("Precision", Py::Int (fmt.precision));
+    dict.setItem("NumberFormat", Py::Char(fmt.toFormat()));
+    dict.setItem("Denominator", Py::Int(fmt.denominator));
+    return dict;
 }
 
-void  QuantityPy::setFormat(Py::Tuple arg)
+void  QuantityPy::setFormat(Py::Dict arg)
 {
-    QuantityFormat fmt;
+    QuantityFormat fmt = getQuantityPtr()->getFormat();
 
-    Py::Int  prec(arg.getItem(0));
-    Py::Char form(arg.getItem(1));
-    fmt.precision = static_cast<int>(prec);
+    if (arg.hasKey("Precision")) {
+        Py::Int  prec(arg.getItem("Precision"));
+        fmt.precision = static_cast<int>(prec);
+    }
 
-#if PY_MAJOR_VERSION >= 3
-    std::string fmtstr = static_cast<std::string>(Py::String(form));
-#else
-    std::string fmtstr = static_cast<std::string>(form);
-#endif
-    if (fmtstr.size() != 1)
-        throw Py::ValueError("Invalid format character");
+    if (arg.hasKey("NumberFormat")) {
+        Py::Char form(arg.getItem("NumberFormat"));
+        std::string fmtstr = static_cast<std::string>(Py::String(form));
+        if (fmtstr.size() != 1)
+            throw Py::ValueError("Invalid format character");
 
-    bool ok;
-    fmt.format = Base::QuantityFormat::toFormat(fmtstr[0], &ok);
-    if (!ok)
-        throw Py::ValueError("Invalid format character");
+        bool ok;
+        fmt.format = Base::QuantityFormat::toFormat(fmtstr[0], &ok);
+        if (!ok)
+            throw Py::ValueError("Invalid format character");
+    }
+
+    if (arg.hasKey("Denominator")) {
+        Py::Int  denom(arg.getItem("Denominator"));
+        int fracInch = static_cast<int>(denom);
+        // check that the value is positive and a power of 2
+        if (fracInch <= 0)
+            throw Py::ValueError("Denominator must be higher than zero");
+        // bitwise check
+        if (fracInch & (fracInch - 1))
+            throw Py::ValueError("Denominator must be a power of two");
+        fmt.denominator = fracInch;
+    }
 
     getQuantityPtr()->setFormat(fmt);
 }
 
-PyObject *QuantityPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *QuantityPy::getCustomAttributes(const char* attr) const
 {
-    return 0;
+    QuantityPy* py = nullptr;
+    if (strcmp(attr, "Torr") == 0) {
+        py = new QuantityPy(new Quantity(Quantity::Torr));
+    }
+    else if (strcmp(attr, "mTorr") == 0) {
+        py = new QuantityPy(new Quantity(Quantity::mTorr));
+    }
+    else if (strcmp(attr, "yTorr") == 0) {
+        py = new QuantityPy(new Quantity(Quantity::yTorr));
+    }
+    else if (strcmp(attr, "PoundForce") == 0) {
+        py = new QuantityPy(new Quantity(Quantity::PoundForce));
+    }
+    else if (strcmp(attr, "AngularMinute") == 0) {
+        py = new QuantityPy(new Quantity(Quantity::AngMinute));
+    }
+    else if (strcmp(attr, "AngularSecond") == 0) {
+        py = new QuantityPy(new Quantity(Quantity::AngSecond));
+    }
+
+    if (py) {
+        py->setNotTracking();
+    }
+
+    return py;
 }
 
 int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 PyObject * QuantityPy::number_invert_handler (PyObject* /*self*/)
@@ -687,21 +703,3 @@ PyObject * QuantityPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-int QuantityPy::number_coerce_handler (PyObject** /*self*/, PyObject** /*other*/)
-{
-    return 1;
-}
-
-PyObject * QuantityPy::number_oct_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_TypeError, "oct() argument can't be converted to oct");
-    return 0;
-}
-
-PyObject * QuantityPy::number_hex_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_TypeError, "hex() argument can't be converted to hex");
-    return 0;
-}
-#endif

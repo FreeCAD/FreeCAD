@@ -72,7 +72,9 @@ App::PropertyFloatConstraint::Constraints ViewProviderPoints::floatRange = {1.0,
 
 ViewProviderPoints::ViewProviderPoints()
 {
-    ADD_PROPERTY(PointSize,(2.0f));
+    static const char *osgroup = "Object Style";
+
+    ADD_PROPERTY_TYPE(PointSize, (2.0f), osgroup, App::Prop_None, "Set point size");
     PointSize.setConstraints(&floatRange);
 
     // Create the selection node
@@ -80,6 +82,9 @@ ViewProviderPoints::ViewProviderPoints()
     pcHighlight->ref();
     if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
         Selectable.setValue(false);
+
+    // BBOX
+    SelectionStyle.setValue(1);
 
     pcPointsCoord = new SoCoordinate3();
     pcPointsCoord->ref();
@@ -107,6 +112,10 @@ void ViewProviderPoints::onChanged(const App::Property* prop)
 {
     if (prop == &PointSize) {
         pcPointStyle->pointSize = PointSize.getValue();
+    }
+    else if (prop == &SelectionStyle) {
+        pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
+                                                       : Gui::SoFCSelection::EMISSIVE;
     }
     else {
         ViewProviderGeometryObject::onChanged(prop);
@@ -243,6 +252,16 @@ std::vector<std::string> ViewProviderPoints::getDisplayModes(void) const
     std::vector<std::string> StrList;
     StrList.push_back("Points");
 
+    // FIXME: This way all display modes are added even if the points feature
+    // doesn't support it.
+    // For the future a more flexible way is needed to add new display modes
+    // at a later time
+#if 1
+    StrList.push_back("Color");
+    StrList.push_back("Shaded");
+    StrList.push_back("Intensity");
+
+#else
     if (pcObject) {
         std::map<std::string,App::Property*> Map;
         pcObject->getPropertyMap(Map);
@@ -257,6 +276,7 @@ std::vector<std::string> ViewProviderPoints::getDisplayModes(void) const
                 StrList.push_back("Color");
         }
     }
+#endif
 
     return StrList;
 }
@@ -293,6 +313,8 @@ bool ViewProviderPoints::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Transform)
         return ViewProviderGeometryObject::setEdit(ModNum);
+    else if (ModNum == ViewProvider::Cutting)
+        return true;
     return false;
 }
 
@@ -316,7 +338,7 @@ void ViewProviderPoints::clipPointsCallback(void *, SoEventCallback * n)
     if (clPoly.front() != clPoly.back())
         clPoly.push_back(clPoly.front());
 
-    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderPoints::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderPoints::getClassTypeId());
     for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
         ViewProviderPoints* that = static_cast<ViewProviderPoints*>(*it);
         if (that->getEditingMode() > -1) {
@@ -443,7 +465,7 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
         return; // nothing needs to be done
 
     //Remove the points from the cloud and open a transaction object for the undo/redo stuff
-    Gui::Application::Instance->activeDocument()->openCommand("Cut points");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Cut points"));
 
     // sets the points outside the polygon to update the Inventor node
     fea->Points.removeIndices(removeIndices);
@@ -602,7 +624,7 @@ void ViewProviderStructured::cut(const std::vector<SbVec2f>& picked, Gui::View3D
 
     if (invalidatePoints) {
         //Remove the points from the cloud and open a transaction object for the undo/redo stuff
-        Gui::Application::Instance->activeDocument()->openCommand("Cut points");
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Cut points"));
 
         // sets the points outside the polygon to update the Inventor node
         fea->Points.setValue(newKernel);

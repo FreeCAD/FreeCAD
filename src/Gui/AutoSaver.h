@@ -29,7 +29,7 @@
 #include <map>
 #include <set>
 #include <string>
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 
 namespace App {
 class Document;
@@ -53,7 +53,7 @@ public:
 private:
     void slotNewObject(const App::DocumentObject&);
     void slotChangePropertyData(const App::Property&);
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection documentNew;
     Connection documentMod;
 };
@@ -87,6 +87,9 @@ protected:
     void slotDeleteDocument(const App::Document& Doc);
     void timerEvent(QTimerEvent * event);
     void saveDocument(const std::string&, AutoSaveProperty&);
+
+public Q_SLOTS:
+    void renameFile(QString dirName, QString file, QString tmpFile);
 
 private:
     int timeout; /*!< Timeout in milliseconds */

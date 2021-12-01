@@ -49,7 +49,6 @@ SketcherRegularPolygonDialog::SketcherRegularPolygonDialog(void)
 
 SketcherRegularPolygonDialog::~SketcherRegularPolygonDialog()
 {
-
 }
 
 void SketcherRegularPolygonDialog::accept()

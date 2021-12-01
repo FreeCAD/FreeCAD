@@ -24,12 +24,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
+# include <QAbstractSpinBox>
 # include <QActionEvent>
 # include <QApplication>
 # include <QCursor>
+# include <QLineEdit>
 # include <QPointer>
 # include <QPushButton>
+# include <QTimer>
 #endif
 
 #include "TaskView.h"
@@ -40,6 +43,8 @@
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Control.h>
+#include <Gui/ActionFunction.h>
+#include <Gui/MainWindow.h>
 
 #if defined (QSINT_ACTIONPANEL)
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
@@ -48,6 +53,7 @@
 #endif
 
 using namespace Gui::TaskView;
+namespace bp = boost::placeholders;
 
 //**************************************************************************
 //**************************************************************************
@@ -393,16 +399,16 @@ TaskView::TaskView(QWidget *parent)
 
     connectApplicationActiveDocument = 
     App::GetApplication().signalActiveDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, _1));
+        (boost::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, bp::_1));
     connectApplicationDeleteDocument = 
     App::GetApplication().signalDeletedDocument.connect
         (boost::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this));
     connectApplicationUndoDocument = 
     App::GetApplication().signalUndoDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, _1));
+        (boost::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, bp::_1));
     connectApplicationRedoDocument = 
     App::GetApplication().signalRedoDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, _1));
+        (boost::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, bp::_1));
 }
 
 TaskView::~TaskView()
@@ -412,6 +418,40 @@ TaskView::~TaskView()
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     Gui::Selection().Detach(this);
+}
+
+bool TaskView::event(QEvent* event)
+{
+    // Workaround for a limitation in Qt (#0003794)
+    // Line edits and spin boxes don't handle the key combination
+    // Shift+Keypad button (if NumLock is activated)
+    if (event->type() == QEvent::ShortcutOverride) {
+        QWidget* focusWidget = qApp->focusWidget();
+        bool isLineEdit = qobject_cast<QLineEdit*>(focusWidget);
+        bool isSpinBox = qobject_cast<QAbstractSpinBox*>(focusWidget);
+
+        if (isLineEdit || isSpinBox) {
+            QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+            Qt::KeyboardModifiers ShiftKeypadModifier = Qt::ShiftModifier | Qt::KeypadModifier;
+            if (kevent->modifiers() == Qt::NoModifier ||
+                kevent->modifiers() == Qt::ShiftModifier ||
+                kevent->modifiers() == Qt::KeypadModifier ||
+                kevent->modifiers() == ShiftKeypadModifier) {
+                switch (kevent->key()) {
+                case Qt::Key_Delete:
+                case Qt::Key_Home:
+                case Qt::Key_End:
+                case Qt::Key_Backspace:
+                case Qt::Key_Left:
+                case Qt::Key_Right:
+                    kevent->accept();
+                default:
+                    break;
+                }
+            }
+        }
+    }
+    return QScrollArea::event(event);
 }
 
 void TaskView::keyPressEvent(QKeyEvent* ke)
@@ -438,7 +478,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
                 }
             }
         }
-        else if (ke->key() == Qt::Key_Escape) {
+        else if (ke->key() == Qt::Key_Escape && ActiveDialog->isEscapeButtonEnabled()) {
             // get only the buttons of the button box
             QDialogButtonBox* box = ActiveCtrl->standardButtons();
             QList<QAbstractButton*> list = box->buttons();
@@ -458,6 +498,17 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
                     }
                     return;
                 }
+            }
+
+            // In case a task panel has no Close or Cancel button
+            // then invoke resetEdit() directly
+            // See also ViewProvider::eventCallback
+            Gui::TimerFunction* func = new Gui::TimerFunction();
+            func->setAutoDelete(true);
+            Gui::Document* doc = Gui::Application::Instance->getDocument(ActiveDialog->getDocumentName().c_str());
+            if (doc) {
+                func->setFunction(boost::bind(&Document::resetEdit, doc));
+                QTimer::singleShot(0, func, SLOT(timeout()));
             }
         }
     }
@@ -481,12 +532,22 @@ void TaskView::slotDeletedDocument()
 
 void TaskView::slotUndoDocument(const App::Document&)
 {
+    if (ActiveDialog && ActiveDialog->isAutoCloseOnTransactionChange()) {
+        ActiveDialog->autoClosedOnTransactionChange();
+        removeDialog();
+    }
+
     if (!ActiveDialog)
         updateWatcher();
 }
 
 void TaskView::slotRedoDocument(const App::Document&)
 {
+    if (ActiveDialog && ActiveDialog->isAutoCloseOnTransactionChange()) {
+        ActiveDialog->autoClosedOnTransactionChange();
+        removeDialog();
+    }
+
     if (!ActiveDialog)
         updateWatcher();
 }
@@ -564,10 +625,14 @@ void TaskView::showDialog(TaskDialog *dlg)
     ActiveDialog = dlg;
 
     ActiveDialog->open();
+
+    getMainWindow()->updateActions();
 }
 
 void TaskView::removeDialog(void)
 {
+    getMainWindow()->updateActions();
+
     if (ActiveCtrl) {
         taskPanel->removeWidget(ActiveCtrl);
         delete ActiveCtrl;
@@ -596,6 +661,7 @@ void TaskView::removeDialog(void)
     addTaskWatcher();
     
     if (remove) {
+        remove->closed();
         remove->emitDestructionSignal();
         delete remove;
     }
@@ -671,6 +737,19 @@ void TaskView::addTaskWatcher(void)
     updateWatcher();
 
 #if defined (QSINT_ACTIONPANEL)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+    // Workaround to avoid a crash in Qt. See also
+    // https://forum.freecadweb.org/viewtopic.php?f=8&t=39187
+    //
+    // Notify the button box about a style change so that it can
+    // safely delete the style animation of its push buttons.
+    QDialogButtonBox* box = taskPanel->findChild<QDialogButtonBox*>();
+    if (box) {
+        QEvent event(QEvent::StyleChange);
+        QApplication::sendEvent(box, &event);
+    }
+#endif
+
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
 #endif
 }
@@ -707,6 +786,11 @@ void TaskView::removeTaskWatcher(void)
 
 void TaskView::accept()
 {
+    if (!ActiveDialog) { // Protect against segfaults due to out-of-order deletions
+        Base::Console().Warning("ActiveDialog was null in call to TaskView::accept()\n");
+        return;
+    }
+
     // Make sure that if 'accept' calls 'closeDialog' the deletion is postponed until
     // the dialog leaves the 'accept' method
     ActiveDialog->setProperty("taskview_accept_or_reject", true);
@@ -718,6 +802,11 @@ void TaskView::accept()
 
 void TaskView::reject()
 {
+    if (!ActiveDialog) { // Protect against segfaults due to out-of-order deletions
+        Base::Console().Warning("ActiveDialog was null in call to TaskView::reject()\n");
+        return;
+    }
+
     // Make sure that if 'reject' calls 'closeDialog' the deletion is postponed until
     // the dialog leaves the 'reject' method
     ActiveDialog->setProperty("taskview_accept_or_reject", true);

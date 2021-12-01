@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -127,6 +127,7 @@ public:
     void setNormals(const std::vector<Base::Vector3f>&);
     void setWidth(int);
     void setHeight(int);
+    void setPlacement(const Base::Placement&);
 
 protected:
     const PointKernel& points;
@@ -134,6 +135,7 @@ protected:
     std::vector<App::Color> colors;
     std::vector<Base::Vector3f> normals;
     int width, height;
+    Base::Placement placement;
 };
 
 class AscWriter : public Writer

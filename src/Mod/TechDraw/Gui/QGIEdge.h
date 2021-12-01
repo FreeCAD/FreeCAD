@@ -49,6 +49,8 @@ public:
     void setSmoothEdge(bool b) { isSmoothEdge = b; }
     bool getSmoothEdge() { return(isSmoothEdge); }
     virtual void setPrettyNormal() override;
+    
+    double getEdgeFuzz(void) const;
 
 protected:
     int projIndex;                                                     //index of edge in Projection. must exist.

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2009     *
+ *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,26 +22,29 @@
 
 
 #include "PreCompiled.h"
-#include <algorithm>
-#include <stdexcept>
+
+#ifndef _PreComp_
+# include <Python.h>
+# include <algorithm>
+# include <stdexcept>
+# include <SMESH_Gen.hxx>
+# include <SMESH_Group.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMESHDS_Group.hxx>
+# include <SMDSAbs_ElementType.hxx>
+# include <SMDS_MeshElement.hxx>
+# include <SMDS_VolumeTool.hxx>
+# include <SMESHDS_Mesh.hxx>
+
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS.hxx>
+#endif
 
 #include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/QuantityPy.h>
-
-#include <SMESH_Gen.hxx>
-#include <SMESH_Group.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESHDS_Group.hxx>
-#include <SMDSAbs_ElementType.hxx>
-#include <SMDS_MeshElement.hxx>
-#include <SMDS_VolumeTool.hxx>
-#include <SMESHDS_Mesh.hxx>
-
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS.hxx>
 
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeSolidPy.h>
@@ -259,11 +262,7 @@ PyObject* FemMeshPy::addEdge(PyObject *args)
         Py::List list(obj);
         std::vector<const SMDS_MeshNode*> Nodes;
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long NoNr(*it);
-#else
-            Py::Int NoNr(*it);
-#endif
             const SMDS_MeshNode* node = meshDS->FindNode(NoNr);
             if (!node)
                 throw std::runtime_error("Failed to get node of the given indices");
@@ -303,11 +302,7 @@ PyObject* FemMeshPy::addEdge(PyObject *args)
                 throw std::runtime_error("Unknown node count, [2|3] are allowed"); //unknown edge type
             }
         }
-#if PY_MAJOR_VERSION >= 3
         return Py::new_reference_to(Py::Long(edge->GetID()));
-#else
-        return Py::new_reference_to(Py::Int(edge->GetID()));
-#endif
     }
     PyErr_SetString(PyExc_TypeError, "addEdge accepts:\n"
         "-- int,int\n"
@@ -349,11 +344,7 @@ PyObject* FemMeshPy::addFace(PyObject *args)
         Py::List list(obj);
         std::vector<const SMDS_MeshNode*> Nodes;
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long NoNr(*it);
-#else
-            Py::Int NoNr(*it);
-#endif
             const SMDS_MeshNode* node = meshDS->FindNode(NoNr);
             if (!node)
                 throw std::runtime_error("Failed to get node of the given indices");
@@ -482,11 +473,7 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
         Py::List list(obj);
         std::vector<const SMDS_MeshNode*> Nodes;
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long NoNr(*it);
-#else
-            Py::Int NoNr(*it);
-#endif
             const SMDS_MeshNode* node = meshDS->FindNode(NoNr);
             if (!node)
                 throw std::runtime_error("Failed to get node of the given indices");
@@ -696,11 +683,37 @@ PyObject* FemMeshPy::getFacesByFace(PyObject *args)
         Py::List ret;
         std::list<int> resultSet = getFemMeshPtr()->getFacesByFace(fc);
         for (std::list<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it) {
-#if PY_MAJOR_VERSION >= 3
             ret.append(Py::Long(*it));
-#else
-            ret.append(Py::Int(*it));
-#endif
+        }
+
+        return Py::new_reference_to(ret);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        return 0;
+    }
+}
+
+
+PyObject* FemMeshPy::getEdgesByEdge(PyObject *args)
+{
+    PyObject *pW;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeEdgePy::Type), &pW))
+         return 0;
+
+    try {
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeEdgePy*>(pW)->getTopoShapePtr()->getShape();
+        if (sh.IsNull()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Edge is empty");
+            return 0;
+        }
+
+        const TopoDS_Edge& fc = TopoDS::Edge(sh);
+
+        Py::List ret;
+        std::list<int> resultSet = getFemMeshPtr()->getEdgesByEdge(fc);
+        for (std::list<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it) {
+            ret.append(Py::Long(*it));
         }
 
         return Py::new_reference_to(ret);
@@ -789,7 +802,7 @@ PyObject* FemMeshPy::getNodeById(PyObject *args)
         vec = Mtrx * vec;
         return new Base::VectorPy( vec );
     }else{
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "No valid ID");
+        PyErr_SetString(PyExc_ValueError, "No valid node ID");
         return 0;
     }
 }
@@ -928,11 +941,13 @@ PyObject* FemMeshPy::getGroupName(PyObject *args)
     int id;
     if (!PyArg_ParseTuple(args, "i", &id))
          return 0;
-#if PY_MAJOR_VERSION >= 3
-    return PyUnicode_FromString(getFemMeshPtr()->getSMesh()->GetGroup(id)->GetName());
-#else
-    return PyString_FromString(getFemMeshPtr()->getSMesh()->GetGroup(id)->GetName());
-#endif
+
+    SMESH_Group* group = getFemMeshPtr()->getSMesh()->GetGroup(id);
+    if (!group) {
+        PyErr_SetString(PyExc_ValueError, "No group for given id");
+        return 0;
+    }
+    return PyUnicode_FromString(group->GetName());
 }
 
 PyObject* FemMeshPy::getGroupElementType(PyObject *args)
@@ -941,7 +956,12 @@ PyObject* FemMeshPy::getGroupElementType(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &id))
          return 0;
 
-    SMDSAbs_ElementType aElementType = getFemMeshPtr()->getSMesh()->GetGroup(id)->GetGroupDS()->GetType();
+    SMESH_Group* group = getFemMeshPtr()->getSMesh()->GetGroup(id);
+    if (!group) {
+        PyErr_SetString(PyExc_ValueError, "No group for given id");
+        return 0;
+    }
+    SMDSAbs_ElementType aElementType = group->GetGroupDS()->GetType();
     const char* typeString = "";
     switch(aElementType) {
         case SMDSAbs_All            : typeString = "All"; break;
@@ -953,11 +973,7 @@ PyObject* FemMeshPy::getGroupElementType(PyObject *args)
         case SMDSAbs_Ball           : typeString = "Ball"; break;
         default                     : typeString = "Unknown"; break;
     }
-#if PY_MAJOR_VERSION >= 3
     return PyUnicode_FromString(typeString);
-#else
-    return PyString_FromString(typeString);
-#endif
 }
 
 PyObject* FemMeshPy::getGroupElements(PyObject *args)
@@ -966,8 +982,14 @@ PyObject* FemMeshPy::getGroupElements(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &id))
          return 0;
 
+    SMESH_Group* group = getFemMeshPtr()->getSMesh()->GetGroup(id);
+    if (!group) {
+        PyErr_SetString(PyExc_ValueError, "No group for given id");
+        return 0;
+    }
+
     std::set<int> ids;
-    SMDS_ElemIteratorPtr aElemIter = getFemMeshPtr()->getSMesh()->GetGroup(id)->GetGroupDS()->GetElements();
+    SMDS_ElemIteratorPtr aElemIter = group->GetGroupDS()->GetElements();
     while (aElemIter->more()) {
         const SMDS_MeshElement* aElement = aElemIter->next();
         ids.insert(aElement->GetID());
@@ -976,11 +998,163 @@ PyObject* FemMeshPy::getGroupElements(PyObject *args)
     Py::Tuple tuple(ids.size());
     int index = 0;
     for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
         tuple.setItem(index++, Py::Long(*it));
-#else
-        tuple.setItem(index++, Py::Int(*it));
-#endif
+    }
+
+    return Py::new_reference_to(tuple);
+}
+
+/*
+Add Groups and elements to these.
+*/
+
+PyObject* FemMeshPy::addGroup(PyObject *args)
+{
+    // get name and typestring from arguments
+    char* Name;
+    char* typeString;
+    int theId = -1;
+    if (!PyArg_ParseTuple(args, "etet|i","utf-8", &Name, "utf-8", &typeString, &theId))
+        return 0;
+    std::string EncodedName = std::string(Name);
+    std::string EncodedTypeString = std::string(typeString);
+
+    int retId = -1;
+
+    try
+    {
+        retId = getFemMeshPtr()->addGroup(EncodedTypeString, EncodedName, theId);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        return 0;
+    }
+    std::cout << "Added Group: Name: \'" << EncodedName << "\' Type: \'" << EncodedTypeString << "\' id: " << retId << std::endl;
+
+    return PyLong_FromLong(retId);
+}
+
+PyObject* FemMeshPy::addGroupElements(PyObject *args)
+{
+    int id;
+    // the second object should be a list
+    // see https://stackoverflow.com/questions/22458298/extending-python-with-c-pass-a-list-to-pyarg-parsetuple
+    PyObject *pList;
+    PyObject *pItem;
+    Py_ssize_t n;
+
+    if (!PyArg_ParseTuple(args, "iO!", &id, &PyList_Type, &pList))
+    {
+        PyErr_SetString(PyExc_TypeError, "AddGroupElements: 2nd Parameter must be a list.");
+        return 0;
+    }
+
+    std::set<Py_ssize_t> ids;
+    n = PyList_Size(pList);
+    std::cout << "AddGroupElements: num elements: " << n << " sizeof: " << sizeof(n) << std::endl;
+    for (Py_ssize_t i = 0; i < n; i++) {
+        pItem = PyList_GetItem(pList, i);
+        if(!PyLong_Check(pItem)) {
+            PyErr_SetString(PyExc_TypeError, "AddGroupElements: List items must be integers.");
+            return 0;
+        }
+        ids.insert(PyLong_AsSsize_t(pItem));
+        // Py_ssize_t transparently handles maximum array lengths on 32bit and 64bit machines
+        // See: https://www.python.org/dev/peps/pep-0353/
+    }
+
+    // Downcast Py_ssize_t to int to be compatible with SMESH functions
+    std::set<int> int_ids;
+    for (std::set<Py_ssize_t>::iterator it = ids.begin(); it != ids.end(); ++it)
+        int_ids.insert(Py_SAFE_DOWNCAST(*it, Py_ssize_t, int));
+
+    try
+    {
+        getFemMeshPtr()->addGroupElements(id, int_ids);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+PyObject* FemMeshPy::removeGroup(PyObject *args)
+{
+    int theId;
+    if (!PyArg_ParseTuple(args, "i", &theId))
+        return 0;
+    return PyBool_FromLong((long)(getFemMeshPtr()->removeGroup(theId)));
+}
+
+
+PyObject* FemMeshPy::getElementType(PyObject *args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id))
+        return 0;
+
+    // An element ...
+    SMDSAbs_ElementType aElementType = getFemMeshPtr()->getSMesh()->GetElementType(id, true);
+    // ... or a node
+    if (aElementType == SMDSAbs_All)
+        aElementType = getFemMeshPtr()->getSMesh()->GetElementType(id, false);
+
+    const char* typeString = "";
+    switch(aElementType) {
+    case SMDSAbs_Node           : typeString = "Node"; break;
+    case SMDSAbs_Edge           : typeString = "Edge"; break;
+    case SMDSAbs_Face           : typeString = "Face"; break;
+    case SMDSAbs_Volume         : typeString = "Volume"; break;
+    case SMDSAbs_0DElement      : typeString = "0DElement"; break;
+    case SMDSAbs_Ball           : typeString = "Ball"; break;
+    default: {
+        PyErr_SetString(PyExc_ValueError, "No node or element for given id");
+        return 0;
+    }
+    }
+
+    return PyUnicode_FromString(typeString);
+}
+
+PyObject* FemMeshPy::getIdByElementType(PyObject *args)
+{
+    char* str;
+    if (!PyArg_ParseTuple(args, "s", &str))
+        return 0;
+
+    SMDSAbs_ElementType aElementType = SMDSAbs_All;
+    if (strcmp(str, "Node") == 0) {
+        aElementType = SMDSAbs_Node;
+    }
+    else if (strcmp(str, "Edge") == 0) {
+        aElementType = SMDSAbs_Edge;
+    }
+    else if (strcmp(str, "Face") == 0) {
+        aElementType = SMDSAbs_Face;
+    }
+    else if (strcmp(str, "Volume") == 0) {
+        aElementType = SMDSAbs_Volume;
+    }
+    else if (strcmp(str, "0DElement") == 0) {
+        aElementType = SMDSAbs_0DElement;
+    }
+    else if (strcmp(str, "Ball") == 0) {
+        aElementType = SMDSAbs_Ball;
+    }
+
+    std::set<int> ids;
+    SMDS_ElemIteratorPtr aElemIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->elementsIterator(aElementType);
+    while (aElemIter->more()) {
+        const SMDS_MeshElement* aElem = aElemIter->next();
+        ids.insert(aElem->GetID());
+    }
+
+    Py::Tuple tuple(ids.size());
+    int index = 0;
+    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
+        tuple.setItem(index++, Py::Long(*it));
     }
 
     return Py::new_reference_to(tuple);
@@ -1166,11 +1340,7 @@ Py::Tuple FemMeshPy::getGroups(void) const
     Py::Tuple tuple(groupIDs.size());
     int index = 0;
     for (std::list<int>::iterator it = groupIDs.begin(); it != groupIDs.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
         tuple.setItem(index++, Py::Long(*it));
-#else
-        tuple.setItem(index++, Py::Int(*it));
-#endif
     }
 
     return tuple;
@@ -1178,7 +1348,7 @@ Py::Tuple FemMeshPy::getGroups(void) const
 
 Py::Object FemMeshPy::getVolume(void) const
 {
-    return Py::Object(new Base::QuantityPy(new Base::Quantity(getFemMeshPtr()->getVolume())));
+    return Py::asObject(new Base::QuantityPy(new Base::Quantity(getFemMeshPtr()->getVolume())));
 
 }
 

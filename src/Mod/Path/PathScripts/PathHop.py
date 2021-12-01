@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -25,11 +23,11 @@
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
-"""Path Hop object and FreeCAD command"""
+__doc__ = """Path Hop object and FreeCAD command"""
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -73,14 +71,14 @@ class ObjectHop:
 class ViewProviderPathHop:
 
     def __init__(self, vobj):
+        self.Object = vobj.Object
         vobj.Proxy = self
 
     def attach(self, vobj):
         self.Object = vobj.Object
-        return
 
     def getIcon(self):
-        return ":/icons/Path-Hop.svg"
+        return ":/icons/Path_Hop.svg"
 
     def __getstate__(self):
         return None
@@ -92,7 +90,7 @@ class ViewProviderPathHop:
 class CommandPathHop:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Hop',
+        return {'Pixmap': 'Path_Hop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Hop", "Hop"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Hop", "Creates a Path Hop object")}
 
@@ -100,7 +98,7 @@ class CommandPathHop:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):

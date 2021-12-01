@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 #/******************************************************************************
-# *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+# *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
 # *                                                                            *
 # *   This file is part of the FreeCAD CAx development system.                 *
 # *                                                                            *
@@ -120,7 +121,7 @@ class SegmentFunction:
 
     def buildFromDict(self, var, dict):
         self.variable = var
-        for key in sorted(dict.iterkeys()):
+        for key in sorted(dict.keys()):
             #if abs(dict[key]) > 1E-9:
             self.segments.append(SegmentFunctionSegment(key, var, dict[key], 0))
             
@@ -129,7 +130,7 @@ class SegmentFunction:
             self.segments.insert(self.index(st), SegmentFunctionSegment(st, self.variable, coeff, exp))
 
     def addSegments(self, dict):
-        for key in sorted(dict.iterkeys()):
+        for key in sorted(dict.keys()):
             self.addSegment(key,  dict[key])
 
     def setMaxX(self, mx):
@@ -372,19 +373,23 @@ class TranslationFunction:
         
         xresult = []
         yresult = []
-        for xval in sorted(xvals):
-            if xval in divs:
-                i = self.intfunc.index(xval)
-                (begin,  length) = self.intfunc.interval(xval)
-                I_i = self.intfunc.value(xval)
-                C_i0 = self.boundaries[2 * i]
-                C_i1 = self.boundaries[2 * i + 1]
-                FreeCAD.Console.PrintMessage("Interval %u: %f to %f, I_i: %f, C_i0: %f, C_i1: %f\n" % (i,  begin, length,  I_i,  C_i0,  C_i1))           
-            
-            xresult.append(xval)
-            # w(xval) = (transfunc(xval) + C_i0 * xval + C_i1) / (E * I_i)
-            value = (self.transfunc.value(xval)  + C_i0 * xval + C_i1) / (E * I_i)
-            yresult.append(value)
+        # Coverity has reported a problem that I_i, C_i0 or C_i1:
+        # Bad use of null-like value (CIDs are 192609, 192611, 192616)
+        # Since this code doesn't seem to be used anywhere the problematic
+        # part will be commented out
+        #for xval in sorted(xvals):
+        #    if xval in divs:
+        #        i = self.intfunc.index(xval)
+        #        (begin,  length) = self.intfunc.interval(xval)
+        #        I_i = self.intfunc.value(xval)
+        #        C_i0 = self.boundaries[2 * i]
+        #        C_i1 = self.boundaries[2 * i + 1]
+        #        FreeCAD.Console.PrintMessage("Interval %u: %f to %f, I_i: %f, C_i0: %f, C_i1: %f\n" % (i,  begin, length,  I_i,  C_i0,  C_i1))
+        #
+        #    xresult.append(xval)
+        #    # w(xval) = (transfunc(xval) + C_i0 * xval + C_i1) / (E * I_i)
+        #    value = (self.transfunc.value(xval)  + C_i0 * xval + C_i1) / (E * I_i)
+        #    yresult.append(value)
             
         return (xresult, yresult)
 

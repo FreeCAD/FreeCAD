@@ -70,16 +70,36 @@
 #ifndef OCCGEOMETRY
 #define OCCGEOMETRY
 #endif
+
+// DLL_HEADER is re-defined in netgen headers
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmacro-redefined"
+#endif
+
+#ifdef NETGEN_PYTHON
+#undef NETGEN_PYTHON
+#endif
+
+#ifndef WIN32
+#undef DLL_HEADER
+#endif
+
 #include <occgeom.hpp>
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
+
 namespace nglib {
 #include <nglib.h>
 }
 namespace netgen {
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
+#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0)
+#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0)
+#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
 #else
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
@@ -212,7 +232,7 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
   int Netgen_triangle[3];
 
   NETGENPlugin_NetgenLibWrapper ngLib;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0)
+#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   Ng_Mesh * Netgen_mesh = ngLib._ngMesh;
 #else
   Ng_Mesh * Netgen_mesh = ngLib._ngMesh.get();
@@ -378,15 +398,15 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
 //    if      ( faceh < 0.5 * maxh ) compareh = -1;
 //    else if ( faceh > 1.5 * maxh ) compareh = 1;
 //    else                           compareh = 0;
-//    // cerr << "faceh " << faceh << endl;
-//    // cerr << "init maxh " << maxh << endl;
-//    // cerr << "compareh " << compareh << endl;
+//    // cerr << "faceh " << faceh << std::endl;
+//    // cerr << "init maxh " << maxh << std::endl;
+//    // cerr << "compareh " << compareh << std::endl;
 
 //    if ( compareh > 0 )
 //      maxh *= 1.2;
 //    else
 //      maxh *= 0.8;
-//    // cerr << "maxh " << maxh << endl;
+//    // cerr << "maxh " << maxh << std::endl;
 
 //    // get bnd box
 //    netgen::Point3d pmin, pmax;
@@ -436,11 +456,11 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   netgen::Mesh* ngMesh = (netgen::Mesh*)Netgen_mesh;
   int Netgen_NbOfNodes = Ng_GetNP(Netgen_mesh);
 
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0)
+#if NETGEN_VERSION < NETGEN_VERSION_STRING(5,0,0)
   char *optstr = 0;
 #endif
 
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2)
+#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
   int startWith = netgen::MESHCONST_MESHVOLUME;
   int endWith   = netgen::MESHCONST_OPTVOLUME;
 #else
@@ -456,7 +476,7 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   {
     aMesher.SetParameters( _hypParameters );
     if ( !_hypParameters->GetOptimize() )
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2)
+#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,2,0)
       endWith = netgen::MESHCONST_MESHVOLUME;
 #else
       netgen::mparam.perfstepsend = netgen::MESHCONST_MESHVOLUME;
@@ -487,14 +507,14 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   try
   {
     OCC_CATCH_SIGNALS;
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0)
+#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,0,0)
     std::shared_ptr<netgen::Mesh> mesh_ptr(ngMesh,  [](netgen::Mesh*){});
-#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
+#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,0)
     err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, netgen::mparam);
 #else
     err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, netgen::mparam, startWith, endWith);
 #endif
-#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0)
+#elif NETGEN_VERSION >= NETGEN_VERSION_STRING(5,0,0)
     ngMesh->CalcLocalH(netgen::mparam.grading);
     err = netgen::OCCGenerateMesh(occgeo, ngMesh, netgen::mparam, startWith, endWith);
 #else
@@ -619,7 +639,7 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
   int Netgen_tetrahedron[4];
 
   NETGENPlugin_NetgenLibWrapper ngLib;
-#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0)
+#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0,0)
   Ng_Mesh * Netgen_mesh = ngLib._ngMesh;
 #else
   Ng_Mesh * Netgen_mesh = ngLib._ngMesh.get();
@@ -707,14 +727,14 @@ double NETGENPlugin_NETGEN_3D::GetProgress() const
          strncmp( netgen::multithread.task, volMeshing, 3 ) == 0 ))
   {
     res = 0.001 + meshingRatio * netgen::multithread.percent / 100.;
-    //cout << netgen::multithread.task << " " <<_progressTic << "-" << netgen::multithread.percent << endl;
+    //cout << netgen::multithread.task << " " <<_progressTic << "-" << netgen::multithread.percent << std::endl;
   }
   else // different otimizations
   {
     if ( _progressByTic < 0. )
       ((NETGENPlugin_NETGEN_3D*)this)->_progressByTic = meshingRatio / _progressTic;
     res = _progressByTic * _progressTic;
-    //cout << netgen::multithread.task << " " << _progressTic << " " << res << endl;
+    //cout << netgen::multithread.task << " " << _progressTic << " " << res << std::endl;
   }
   return Min ( res, 0.98 );
 }

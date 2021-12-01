@@ -29,16 +29,15 @@ __title__="FreeCAD OpenSCAD Workbench - CSG exporter Version"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["http://www.sloan-home.co.uk/Export/Export.html"]
 
-import FreeCAD, os, Part, math
-from FreeCAD import Vector
+import FreeCAD
 
-try: import FreeCADGui
-except ValueError: gui = False
-else: gui = True
+if FreeCAD.GuiUp:
+    gui = True
+else:
+    gui = False
 
 #***************************************************************************
 # Tailor following to your requirements ( Should all be strings )          *
-global fafs
 #fafs = '$fa = 12, $fs = 2'
 #convexity = 'convexity = 10'
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
@@ -50,8 +49,9 @@ convexity = 'convexity = %d' % conv
 #***************************************************************************
 # Radius values not fixed for value apart from cylinder & Cone
 # no doubt there will be a problem when they do implement Value
-if open.__module__ == '__builtin__':
-        pythonopen = open
+if open.__module__ in ['__builtin__', 'io']:
+    pythonopen = open # to distinguish python built-in open function from the one declared here
+
 
 def center(b):
     if b == 2:
@@ -79,7 +79,9 @@ def check_multmatrix(csg,ob,x,y,z):
 def mesh2polyhedron(mesh):
     pointstr=','.join(['[%f,%f,%f]' % tuple(vec) for vec in mesh.Topology[0]])
     trianglestr=','.join(['[%d,%d,%d]' % tuple(tri) for tri in mesh.Topology[1]])
-    return 'polyhedron ( points = [%s], triangles = [%s]);' % (pointstr,trianglestr)
+    #avoid deprecation warning by changing triangles to faces
+    #return 'polyhedron ( points = [%s], triangles = [%s]);' % (pointstr,trianglestr)
+    return 'polyhedron ( points = [%s], faces = [%s]);' % (pointstr,trianglestr)
 
 def vector2d(v):
     return [v[0],v[1]]
@@ -267,4 +269,4 @@ def export(exportList,filename):
     csg.write("}\n}\n")
     # close file              
     csg.close()
-    FreeCAD.Console.PrintMessage("successfully exported "+filename)
+    FreeCAD.Console.PrintMessage("successfully exported" + " " + filename)

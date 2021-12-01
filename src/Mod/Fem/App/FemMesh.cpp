@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2009     *
+ *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <cstdlib>
 # include <memory>
+# include <Python.h>
 # include <Bnd_Box.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
@@ -33,6 +34,35 @@
 # include <TopoDS_Vertex.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <gp_Pnt.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Shape.hxx>
+# include <ShapeAnalysis_ShapeTolerance.hxx>
+
+# include <boost/assign/list_of.hpp>
+# include <boost/tokenizer.hpp> //to simplify parsing input files we use the boost lib
+
+# include <SMESH_Gen.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMESH_MeshEditor.hxx>
+# include <SMESH_Group.hxx>
+# include <SMDS_MeshGroup.hxx>
+# include <SMESHDS_GroupBase.hxx>
+# include <SMESHDS_Group.hxx>
+# include <SMESHDS_Mesh.hxx>
+//# include <SMDS_PolyhedralVolumeOfNodes.hxx>
+# include <SMDS_VolumeTool.hxx>
+# include <StdMeshers_MaxLength.hxx>
+# include <StdMeshers_LocalLength.hxx>
+# include <StdMeshers_MaxElementArea.hxx>
+# include <StdMeshers_NumberOfSegments.hxx>
+# include <StdMeshers_Deflection1D.hxx>
+# include <StdMeshers_Regular_1D.hxx>
+# include <StdMeshers_StartEndLength.hxx>
+# include <StdMeshers_QuadranglePreference.hxx>
+# include <StdMeshers_Quadrangle_2D.hxx>
+# include <StdMeshers_QuadraticMesh.hxx>
+
 #endif
 
 #include <Base/Writer.h>
@@ -42,6 +72,7 @@
 #include <Base/FileInfo.h>
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 
 #include <Mod/Mesh/App/Core/MeshKernel.h>
@@ -53,59 +84,41 @@
 #include "FemVTKTools.h"
 #endif
 
-#include <boost/assign/list_of.hpp>
-#include <SMESH_Gen.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESH_MeshEditor.hxx>
-#include <SMESH_Group.hxx>
-#include <SMDS_MeshGroup.hxx>
-#include <SMESHDS_GroupBase.hxx>
-#include <SMESHDS_Group.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDS_PolyhedralVolumeOfNodes.hxx>
-#include <SMDS_VolumeTool.hxx>
-#include <StdMeshers_MaxLength.hxx>
-#include <StdMeshers_LocalLength.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_NumberOfSegments.hxx>
-#include <StdMeshers_Deflection1D.hxx>
-#include <StdMeshers_Regular_1D.hxx>
-#include <StdMeshers_StartEndLength.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_Quadrangle_2D.hxx>
-#include <StdMeshers_QuadraticMesh.hxx>
+# include <FemMeshPy.h>
 
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Shape.hxx>
 
-# include <ShapeAnalysis_ShapeTolerance.hxx>
-
-//to simplify parsing input files we use the boost lib
-#include <boost/tokenizer.hpp>
 
 
 using namespace Fem;
 using namespace Base;
 using namespace boost;
 
+#if SMESH_VERSION_MAJOR < 9
 static int StatCount = 0;
-#if SMESH_VERSION_MAJOR >= 7
-    SMESH_Gen* FemMesh::_mesh_gen = 0;
 #endif
 
-TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence);
+SMESH_Gen* FemMesh::_mesh_gen = 0;
+
+TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence)
 
 FemMesh::FemMesh()
 {
     //Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
     // create a mesh always with new StudyId to avoid overlapping destruction
+#if SMESH_VERSION_MAJOR >= 9
+    myMesh = getGenerator()->CreateMesh(false);
+#else
     myMesh = getGenerator()->CreateMesh(StatCount++,false);
+#endif
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
 {
+#if SMESH_VERSION_MAJOR >= 9
+    myMesh = getGenerator()->CreateMesh(false);
+#else
     myMesh = getGenerator()->CreateMesh(StatCount++,false);
+#endif
     copyMeshData(mesh);
 }
 
@@ -127,7 +140,11 @@ FemMesh::~FemMesh()
 FemMesh &FemMesh::operator=(const FemMesh& mesh)
 {
     if (this != &mesh) {
+#if SMESH_VERSION_MAJOR >= 9
+        myMesh = getGenerator()->CreateMesh(true);
+#else
         myMesh = getGenerator()->CreateMesh(0,true);
+#endif
         copyMeshData(mesh);
     }
     return *this;
@@ -173,10 +190,17 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
             int ID = elem->GetID();
             switch (elem->GetEntityType()) {
             case SMDSEntity_Polyhedra:
+#if SMESH_VERSION_MAJOR >= 9
+                editor.GetMeshDS()->
+                    AddPolyhedralVolumeWithID(nodes,
+                                              static_cast<const SMDS_MeshVolume*>(elem)->GetQuantities(),
+                                              ID);
+#else
                 editor.GetMeshDS()->
                     AddPolyhedralVolumeWithID(nodes,
                                               static_cast<const SMDS_VtkVolume*>(elem)->GetQuantities(),
                                               ID);
+#endif
                 break;
             case SMDSEntity_Ball:
             {
@@ -236,7 +260,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
 
         // Make a new group
         if (!groupElems.empty()) {
-            int aId;
+            int aId = -1;
             SMESH_Group* newGroupObj = this->myMesh->AddGroup(groupType, group->GetName(), aId);
             SMESHDS_Group* newGroupDS = dynamic_cast<SMESHDS_Group*>(newGroupObj->GetGroupDS());
             if (newGroupDS) {
@@ -493,13 +517,9 @@ SMESH_Mesh* FemMesh::getSMesh()
 
 SMESH_Gen * FemMesh::getGenerator()
 {
-#if SMESH_VERSION_MAJOR < 7
-    return SMESH_Gen::get();
-#else
     if (!FemMesh::_mesh_gen)
         FemMesh::_mesh_gen = new SMESH_Gen();
     return FemMesh::_mesh_gen;
-#endif
 }
 
 void FemMesh::addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp)
@@ -513,6 +533,41 @@ void FemMesh::setStandardHypotheses()
 {
     if (!hypoth.empty())
         return;
+#if SMESH_VERSION_MAJOR >= 9
+    int hyp=0;
+    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, getGenerator()));
+    static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
+    hypoth.push_back(len);
+
+    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, getGenerator()));
+    static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
+    hypoth.push_back(loc);
+
+    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, getGenerator()));
+    static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
+    hypoth.push_back(area);
+
+    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, getGenerator()));
+    static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
+    hypoth.push_back(segm);
+
+    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, getGenerator()));
+    static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
+    hypoth.push_back(defl);
+
+    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, getGenerator()));
+    hypoth.push_back(reg);
+
+    //SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, getGenerator()));
+    //static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
+    //hypoth.push_back(sel);
+
+    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,getGenerator()));
+    hypoth.push_back(qdp);
+
+    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,getGenerator()));
+    hypoth.push_back(q2d);
+#else
     int hyp=0;
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
@@ -546,6 +601,7 @@ void FemMesh::setStandardHypotheses()
 
     SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,getGenerator()));
     hypoth.push_back(q2d);
+#endif
 
     // Apply hypothesis
     for (int i=0; i<hyp;i++)
@@ -573,10 +629,60 @@ std::set<long> FemMesh::getSurfaceNodes(long /*ElemId*/, short /*FaceId*/, float
  */
 std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &face) const
 {
-    //TODO: This function is broken with SMESH7 as it is impossible to iterate volume faces
     std::list<std::pair<int, int> > result;
     std::set<int> nodes_on_face = getNodesByFace(face);
 
+#if SMESH_VERSION_MAJOR >= 7
+    // SMDS_MeshVolume::facesIterator() is broken with SMESH7 as it is impossible to iterate volume faces
+    // In SMESH9 this function has been removed
+    //
+    std::map< int, std::set<int> > face_nodes;
+
+    // get faces that contribute to 'nodes_on_face' with all of its nodes
+    SMDS_FaceIteratorPtr face_iter = myMesh->GetMeshDS()->facesIterator();
+    while (face_iter && face_iter->more()) {
+        const SMDS_MeshFace* face = face_iter->next();
+        SMDS_NodeIteratorPtr node_iter = face->nodeIterator();
+
+        // all nodes of the current face must be part of 'nodes_on_face'
+        std::set<int> node_ids;
+        while (node_iter && node_iter->more()) {
+            const SMDS_MeshNode* node = node_iter->next();
+            node_ids.insert(node->GetID());
+        }
+
+        std::vector<int> element_face_nodes;
+        std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), node_ids.begin(), node_ids.end(),
+            std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+
+        if (element_face_nodes.size() == node_ids.size()) {
+            face_nodes[face->GetID()] = node_ids;
+        }
+    }
+
+    // get all nodes of a volume and check which faces contribute to it with all of its nodes
+    SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
+    while (vol_iter->more()) {
+        const SMDS_MeshVolume* vol = vol_iter->next();
+        SMDS_NodeIteratorPtr node_iter = vol->nodeIterator();
+        std::set<int> node_ids;
+        while (node_iter && node_iter->more()) {
+            const SMDS_MeshNode* node = node_iter->next();
+            node_ids.insert(node->GetID());
+        }
+
+        for (const auto& it : face_nodes) {
+            std::vector<int> element_face_nodes;
+            std::set_intersection(node_ids.begin(), node_ids.end(), it.second.begin(), it.second.end(),
+                std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+
+            // For curved faces it is possible that a volume contributes more than one face
+            if (element_face_nodes.size() == it.second.size()) {
+                result.emplace_back(vol->GetID(), it.first);
+            }
+        }
+    }
+#else
     SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
     while (vol_iter->more()) {
         const SMDS_MeshVolume* vol = vol_iter->next();
@@ -597,10 +703,11 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
 
             // For curved faces it is possible that a volume contributes more than one face
             if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
-                result.push_back(std::make_pair(vol->GetID(), face->GetID()));
+                result.emplace_back(vol->GetID(), face->GetID());
             }
         }
     }
+#endif
 
     result.sort();
     return result;
@@ -631,6 +738,34 @@ std::list<int> FemMesh::getFacesByFace(const TopoDS_Face &face) const
         // For curved faces it is possible that a volume contributes more than one face
         if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
             result.push_back(face->GetID());
+        }
+    }
+
+    result.sort();
+    return result;
+}
+
+std::list<int> FemMesh::getEdgesByEdge(const TopoDS_Edge &edge) const
+{
+    std::list<int> result;
+    std::set<int> nodes_on_edge = getNodesByEdge(edge);
+
+    SMDS_EdgeIteratorPtr edge_iter = myMesh->GetMeshDS()->edgesIterator();
+    while (edge_iter->more()) {
+        const SMDS_MeshEdge* edge = static_cast<const SMDS_MeshEdge*>(edge_iter->next());
+        int numNodes = edge->NbNodes();
+
+        std::set<int> edge_nodes;
+        for (int i=0; i<numNodes; i++) {
+            edge_nodes.insert(edge->GetNode(i)->GetID());
+        }
+
+        std::vector<int> element_edge_nodes;
+        std::set_intersection(nodes_on_edge.begin(), nodes_on_edge.end(), edge_nodes.begin(), edge_nodes.end(),
+            std::back_insert_iterator<std::vector<int> >(element_edge_nodes));
+
+        if (element_edge_nodes.size() == static_cast<std::size_t>(numNodes)) {
+            result.push_back(edge->GetID());
         }
     }
 
@@ -920,10 +1055,10 @@ std::set<int> FemMesh::getFacesOnly(void) const
     //         get the volume nodes
     //         if the face nodes are a subset of the volume nodes
     //             add the face to the volume faces and break
-    //     if face not belongs to a volume
+    //     if face doesn't belong to a volume
     //         add it to faces only
     //
-    // This means it is iterated over a lot of volumes many times, this is quite expensive !
+    // This means it is iterated over a lot of volumes many times, this is quite expensive!
     //
     // TODO make this faster
     // Idea:
@@ -933,7 +1068,7 @@ std::set<int> FemMesh::getFacesOnly(void) const
     //     if not in volume faces
     //     add it to the faces only
     //
-    // but the volume faces does not seam know their global mesh ID, I could not found any method in SMESH
+    // but the volume faces do not seem to know their global mesh ID, I could not find any method in SMESH
 
     std::set<int> resultIDs;
 
@@ -970,6 +1105,393 @@ std::set<int> FemMesh::getFacesOnly(void) const
     return resultIDs;
 }
 
+namespace {
+class NastranElement {
+public:
+    virtual ~NastranElement() = default;
+    bool isValid() const {
+        return element_id >= 0;
+    }
+    virtual void read(const std::string& str1, const std::string& str2) = 0;
+    virtual void addToMesh(SMESHDS_Mesh* meshds) = 0;
+
+protected:
+    int element_id = -1;
+    std::vector<int> elements;
+};
+
+typedef std::shared_ptr<NastranElement> NastranElementPtr;
+
+class GRIDElement : public NastranElement {
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddNodeWithID(node.x, node.y, node.z, element_id);
+    }
+
+protected:
+    Base::Vector3d node;
+};
+
+class GRIDFreeFieldElement : public GRIDElement {
+    void read(const std::string& str, const std::string&) {
+        char_separator<char> sep(",");
+        tokenizer<char_separator<char> > tokens(str, sep);
+        std::vector<string> token_results;
+        token_results.assign(tokens.begin(),tokens.end());
+        if (token_results.size() < 6)
+            return;//Line does not include Nodal coordinates
+
+        element_id = atoi(token_results[1].c_str());
+        node.x = atof(token_results[3].c_str());
+        node.y = atof(token_results[4].c_str());
+        node.z = atof(token_results[5].c_str());
+    }
+};
+
+class GRIDLongFieldElement : public GRIDElement {
+    void read(const std::string& str1, const std::string& str2) {
+        element_id = atoi(str1.substr(8,24).c_str());
+        node.x = atof(str1.substr(40,56).c_str());
+        node.y = atof(str1.substr(56,72).c_str());
+        node.z = atof(str2.substr(8,24).c_str());
+    }
+};
+
+class GRIDSmallFieldElement : public GRIDElement {
+    void read(const std::string&, const std::string&) {
+    }
+};
+
+class CTRIA3Element : public NastranElement {
+public:
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        const SMDS_MeshNode* n0 = meshds->FindNode(elements[0]);
+        const SMDS_MeshNode* n1 = meshds->FindNode(elements[1]);
+        const SMDS_MeshNode* n2 = meshds->FindNode(elements[2]);
+        if (n0 && n1 && n2) {
+            meshds->AddFaceWithID
+            (
+                n0, n1, n2,
+                element_id
+            );
+        }
+        else {
+            Base::Console().Warning("NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
+                                    element_id,
+                                    elements[0],
+                                    elements[1],
+                                    elements[2]);
+        }
+    }
+};
+
+class CTRIA3FreeFieldElement : public CTRIA3Element {
+public:
+    void read(const std::string& str, const std::string&) {
+        char_separator<char> sep(",");
+        tokenizer<char_separator<char> > tokens(str, sep);
+        std::vector<string> token_results;
+        token_results.assign(tokens.begin(),tokens.end());
+        if (token_results.size() < 6)
+            return;//Line does not include enough nodal IDs
+
+        element_id = atoi(token_results[1].c_str());
+        elements.push_back(atoi(token_results[3].c_str()));
+        elements.push_back(atoi(token_results[4].c_str()));
+        elements.push_back(atoi(token_results[5].c_str()));
+    }
+};
+
+class CTRIA3LongFieldElement : public CTRIA3Element {
+public:
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24,32).c_str()));
+        elements.push_back(atoi(str.substr(32,40).c_str()));
+        elements.push_back(atoi(str.substr(40,48).c_str()));
+    }
+};
+
+class CTRIA3SmallFieldElement : public CTRIA3Element {
+public:
+    void read(const std::string&, const std::string&) {
+    }
+};
+
+class CTETRAElement : public NastranElement {
+public:
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        const SMDS_MeshNode* n0 = meshds->FindNode(elements[1]);
+        const SMDS_MeshNode* n1 = meshds->FindNode(elements[0]);
+        const SMDS_MeshNode* n2 = meshds->FindNode(elements[2]);
+        const SMDS_MeshNode* n3 = meshds->FindNode(elements[3]);
+        const SMDS_MeshNode* n4 = meshds->FindNode(elements[4]);
+        const SMDS_MeshNode* n5 = meshds->FindNode(elements[6]);
+        const SMDS_MeshNode* n6 = meshds->FindNode(elements[5]);
+        const SMDS_MeshNode* n7 = meshds->FindNode(elements[8]);
+        const SMDS_MeshNode* n8 = meshds->FindNode(elements[7]);
+        const SMDS_MeshNode* n9 = meshds->FindNode(elements[9]);
+        if (n0 && n1 && n2 && n3 && n4 && n5 && n6 && n7 && n8 && n9) {
+            meshds->AddVolumeWithID
+            (
+                n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
+                element_id
+            );
+        }
+        else {
+            Base::Console().Warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d)\n",
+                                    element_id,
+                                    elements[1],
+                                    elements[0],
+                                    elements[2],
+                                    elements[3],
+                                    elements[4],
+                                    elements[6],
+                                    elements[5],
+                                    elements[8],
+                                    elements[7],
+                                    elements[9]);
+        }
+    }
+};
+
+class CTETRAFreeFieldElement : public CTETRAElement {
+public:
+    void read(const std::string& str, const std::string&) {
+        char_separator<char> sep(",");
+        tokenizer<char_separator<char> > tokens(str, sep);
+        std::vector<string> token_results;
+        token_results.assign(tokens.begin(),tokens.end());
+        if (token_results.size() < 14)
+            return;//Line does not include enough nodal IDs
+
+        element_id = atoi(token_results[1].c_str());
+        elements.push_back(atoi(token_results[3].c_str()));
+        elements.push_back(atoi(token_results[4].c_str()));
+        elements.push_back(atoi(token_results[5].c_str()));
+        elements.push_back(atoi(token_results[6].c_str()));
+        elements.push_back(atoi(token_results[7].c_str()));
+        elements.push_back(atoi(token_results[8].c_str()));
+        elements.push_back(atoi(token_results[10].c_str()));
+        elements.push_back(atoi(token_results[11].c_str()));
+        elements.push_back(atoi(token_results[12].c_str()));
+        elements.push_back(atoi(token_results[13].c_str()));
+    }
+};
+
+class CTETRALongFieldElement : public CTETRAElement {
+public:
+    void read(const std::string& str1, const std::string& str2) {
+        int id = atoi(str1.substr(8,16).c_str());
+        int offset = 0;
+
+        if(id < 1000000)
+            offset = 0;
+        else if (id < 10000000)
+            offset = 1;
+        else if (id < 100000000)
+            offset = 2;
+
+
+        element_id = id;
+        elements.push_back(atoi(str1.substr(24,32).c_str()));
+        elements.push_back(atoi(str1.substr(32,40).c_str()));
+        elements.push_back(atoi(str1.substr(40,48).c_str()));
+        elements.push_back(atoi(str1.substr(48,56).c_str()));
+        elements.push_back(atoi(str1.substr(56,64).c_str()));
+        elements.push_back(atoi(str1.substr(64,72).c_str()));
+        elements.push_back(atoi(str2.substr(8+offset,16+offset).c_str()));
+        elements.push_back(atoi(str2.substr(16+offset,24+offset).c_str()));
+        elements.push_back(atoi(str2.substr(24+offset,32+offset).c_str()));
+        elements.push_back(atoi(str2.substr(32+offset,40+offset).c_str()));
+    }
+};
+
+
+class CTETRASmallFieldElement : public CTETRAElement {
+public:
+    void read(const std::string&, const std::string&) {
+    }
+};
+
+// NASTRAN-95
+
+class GRIDNastran95Element : public GRIDElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8, 16).c_str());
+        node.x = atof(str.substr(24, 32).c_str());
+        node.y = atof(str.substr(32, 40).c_str());
+        node.z = atof(str.substr(40, 48).c_str());
+    }
+};
+
+class CBARElement : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24,32).c_str()));
+        elements.push_back(atoi(str.substr(32,40).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddEdgeWithID(
+            elements[0],
+            elements[1],
+            element_id
+        );
+    }
+};
+
+class CTRMEMElement : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24,32).c_str()));
+        elements.push_back(atoi(str.substr(32,40).c_str()));
+        elements.push_back(atoi(str.substr(40,48).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddFaceWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            element_id
+        );
+    }
+};
+
+class CTRIA1Element : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24, 32).c_str()));
+        elements.push_back(atoi(str.substr(32, 40).c_str()));
+        elements.push_back(atoi(str.substr(40, 48).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddFaceWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            element_id
+        );
+    }
+};
+
+class CQUAD1Element : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24, 32).c_str()));
+        elements.push_back(atoi(str.substr(32, 40).c_str()));
+        elements.push_back(atoi(str.substr(40, 48).c_str()));
+        elements.push_back(atoi(str.substr(48, 56).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddFaceWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            element_id
+        );
+    }
+};
+
+class CTETRANastran95Element : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24, 32).c_str()));
+        elements.push_back(atoi(str.substr(32, 40).c_str()));
+        elements.push_back(atoi(str.substr(40, 48).c_str()));
+        elements.push_back(atoi(str.substr(48, 56).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddFaceWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            element_id
+        );
+    }
+};
+
+class CWEDGEElement : public NastranElement {
+    void read(const std::string& str, const std::string&) {
+        element_id = atoi(str.substr(8,16).c_str());
+        elements.push_back(atoi(str.substr(24,32).c_str()));
+        elements.push_back(atoi(str.substr(32,40).c_str()));
+        elements.push_back(atoi(str.substr(40,48).c_str()));
+        elements.push_back(atoi(str.substr(48,56).c_str()));
+        elements.push_back(atoi(str.substr(56,64).c_str()));
+        elements.push_back(atoi(str.substr(64,72).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddVolumeWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            elements[4],
+            elements[5],
+            element_id
+        );
+    }
+};
+
+class CHEXA1Element : public NastranElement {
+    void read(const std::string& str1, const std::string& str2) {
+        element_id = atoi(str1.substr(8,16).c_str());
+        elements.push_back(atoi(str1.substr(24,32).c_str()));
+        elements.push_back(atoi(str1.substr(32,40).c_str()));
+        elements.push_back(atoi(str1.substr(40,48).c_str()));
+        elements.push_back(atoi(str1.substr(48,56).c_str()));
+        elements.push_back(atoi(str1.substr(56,64).c_str()));
+        elements.push_back(atoi(str1.substr(64,72).c_str()));
+
+        elements.push_back(atoi(str2.substr(8,16).c_str()));
+        elements.push_back(atoi(str2.substr(16,24).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddVolumeWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            elements[4],
+            elements[5],
+            elements[6],
+            elements[7],
+            element_id
+        );
+    }
+};
+
+class CHEXA2Element : public NastranElement {
+    void read(const std::string& str1, const std::string& str2) {
+        element_id = atoi(str1.substr(8,16).c_str());
+        elements.push_back(atoi(str1.substr(24,32).c_str()));
+        elements.push_back(atoi(str1.substr(32,40).c_str()));
+        elements.push_back(atoi(str1.substr(40,48).c_str()));
+        elements.push_back(atoi(str1.substr(48,56).c_str()));
+        elements.push_back(atoi(str1.substr(56,64).c_str()));
+        elements.push_back(atoi(str1.substr(64,72).c_str()));
+
+        elements.push_back(atoi(str2.substr(8,16).c_str()));
+        elements.push_back(atoi(str2.substr(16,24).c_str()));
+    }
+    void addToMesh(SMESHDS_Mesh* meshds) {
+        meshds->AddVolumeWithID(
+            elements[0],
+            elements[1],
+            elements[2],
+            elements[3],
+            elements[4],
+            elements[5],
+            elements[6],
+            elements[7],
+            element_id
+        );
+    }
+};
+
+}
+
 void FemMesh::readNastran(const std::string &Filename)
 {
     Base::TimeInfo Start;
@@ -980,116 +1502,69 @@ void FemMesh::readNastran(const std::string &Filename)
     std::ifstream inputfile;
     inputfile.open(Filename.c_str());
     inputfile.seekg(std::ifstream::beg);
-    std::string line1,line2,temp;
-    std::vector<string> token_results;
-    token_results.clear();
-    Base::Vector3d current_node;
-    std::vector<Base::Vector3d> vertices;
-    vertices.clear();
-    std::vector<unsigned int> nodal_id;
-    nodal_id.clear();
-    std::vector<unsigned int> tetra_element;
-    std::vector<std::vector<unsigned int> > all_elements;
-    std::vector<unsigned int> element_id;
-    element_id.clear();
-    bool nastran_free_format = false;
+    std::string line1,line2;
+    std::vector<NastranElementPtr> mesh_elements;
+    enum Format {
+        FreeField,
+        SmallField,
+        LongField
+    };
+    Format nastranFormat = Format::LongField;
+
     do
     {
         std::getline(inputfile,line1);
-        if (line1.size() == 0) continue;
-        if (!nastran_free_format && line1.find(",")!= std::string::npos)
-            nastran_free_format = true;
-        if (!nastran_free_format && line1.find("GRID*")!= std::string::npos ) //We found a Grid line
-        {
+        if (line1.size() == 0)
+            continue;
+        if (line1.find(',') != std::string::npos)
+            nastranFormat = Format::FreeField;
+
+        NastranElementPtr ptr;
+        if (line1.find("GRID*") != std::string::npos) { //We found a Grid line
             //Now lets extract the GRID Points = Nodes
             //As each GRID Line consists of two subsequent lines we have to
             //take care of that as well
-            std::getline(inputfile,line2);
-            //Get the Nodal ID
-            nodal_id.push_back(atoi(line1.substr(8,24).c_str()));
-            //Extract X Value
-            current_node.x = atof(line1.substr(40,56).c_str());
-            //Extract Y Value
-            current_node.y = atof(line1.substr(56,72).c_str());
-            //Extract Z Value
-            current_node.z = atof(line2.substr(8,24).c_str());
-
-            vertices.push_back(current_node);
+            if (nastranFormat == Format::LongField) {
+                std::getline(inputfile,line2);
+                ptr = std::make_shared<GRIDLongFieldElement>();
+                ptr->read(line1, line2);
+            }
         }
-        else if (!nastran_free_format && line1.find("CTETRA")!= std::string::npos)
-        {
-            tetra_element.clear();
+        else if (line1.find("GRID") != std::string::npos) { //We found a Grid line
+            if (nastranFormat == Format::FreeField) {
+                ptr = std::make_shared<GRIDFreeFieldElement>();
+                ptr->read(line1, "");
+            }
+        }
+        else if (line1.find("CTRIA3") != std::string::npos) {
+            if (nastranFormat == Format::FreeField) {
+                ptr = std::make_shared<CTRIA3FreeFieldElement>();
+                ptr->read(line1, "");
+            }
+            else {
+                ptr = std::make_shared<CTRIA3LongFieldElement>();
+                ptr->read(line1, "");
+            }
+        }
+        else if (line1.find("CTETRA") != std::string::npos) {
             //Lets extract the elements
             //As each Element Line consists of two subsequent lines as well
             //we have to take care of that
             //At a first step we only extract Quadratic Tetrahedral Elements
             std::getline(inputfile,line2);
-            unsigned int id = atoi(line1.substr(8,16).c_str());
-            int offset = 0;
-
-            if(id < 1000000)
-                offset = 0;
-            else if (id < 10000000)
-                offset = 1;
-            else if (id < 100000000)
-                offset = 2;
-
-
-            element_id.push_back(id);
-            tetra_element.push_back(atoi(line1.substr(24,32).c_str()));
-            tetra_element.push_back(atoi(line1.substr(32,40).c_str()));
-            tetra_element.push_back(atoi(line1.substr(40,48).c_str()));
-            tetra_element.push_back(atoi(line1.substr(48,56).c_str()));
-            tetra_element.push_back(atoi(line1.substr(56,64).c_str()));
-            tetra_element.push_back(atoi(line1.substr(64,72).c_str()));
-            tetra_element.push_back(atoi(line2.substr(8+offset,16+offset).c_str()));
-            tetra_element.push_back(atoi(line2.substr(16+offset,24+offset).c_str()));
-            tetra_element.push_back(atoi(line2.substr(24+offset,32+offset).c_str()));
-            tetra_element.push_back(atoi(line2.substr(32+offset,40+offset).c_str()));
-
-            all_elements.push_back(tetra_element);
-        }
-        else if (nastran_free_format && line1.find("GRID")!= std::string::npos ) //We found a Grid line
-        {
-            char_separator<char> sep(",");
-            tokenizer<char_separator<char> > tokens(line1, sep);
-            token_results.assign(tokens.begin(),tokens.end());
-            if (token_results.size() < 3)
-                continue;//Line does not include Nodal coordinates
-            nodal_id.push_back(atoi(token_results[1].c_str()));
-            current_node.x = atof(token_results[3].c_str());
-            current_node.y = atof(token_results[4].c_str());
-            current_node.z = atof(token_results[5].c_str());
-            vertices.push_back(current_node);
-        }
-        else if (nastran_free_format && line1.find("CTETRA")!= std::string::npos)
-        {
-            tetra_element.clear();
-            //Lets extract the elements
-            //As each Element Line consists of two subsequent lines as well
-            //we have to take care of that
-            //At a first step we only extract Quadratic Tetrahedral Elements
-            std::getline(inputfile,line2);
-            char_separator<char> sep(",");
-            tokenizer<char_separator<char> > tokens(line1.append(line2), sep);
-            token_results.assign(tokens.begin(),tokens.end());
-            if (token_results.size() < 11)
-                continue;//Line does not include enough nodal IDs
-            element_id.push_back(atoi(token_results[1].c_str()));
-            tetra_element.push_back(atoi(token_results[3].c_str()));
-            tetra_element.push_back(atoi(token_results[4].c_str()));
-            tetra_element.push_back(atoi(token_results[5].c_str()));
-            tetra_element.push_back(atoi(token_results[6].c_str()));
-            tetra_element.push_back(atoi(token_results[7].c_str()));
-            tetra_element.push_back(atoi(token_results[8].c_str()));
-            tetra_element.push_back(atoi(token_results[10].c_str()));
-            tetra_element.push_back(atoi(token_results[11].c_str()));
-            tetra_element.push_back(atoi(token_results[12].c_str()));
-            tetra_element.push_back(atoi(token_results[13].c_str()));
-
-            all_elements.push_back(tetra_element);
+            if (nastranFormat == Format::FreeField) {
+                ptr = std::make_shared<CTETRAFreeFieldElement>();
+                ptr->read(line1.append(line2), "");
+            }
+            else {
+                ptr = std::make_shared<CTETRALongFieldElement>();
+                ptr->read(line1, line2);
+            }
         }
 
+        if (ptr && ptr->isValid()) {
+            mesh_elements.push_back(ptr);
+        }
     }
     while (inputfile.good());
     inputfile.close();
@@ -1097,53 +1572,225 @@ void FemMesh::readNastran(const std::string &Filename)
     Base::Console().Log("    %f: File read, start building mesh\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
     //Now fill the SMESH datastructure
-    std::vector<Base::Vector3d>::const_iterator anodeiterator;
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
     meshds->ClearMesh();
-    unsigned int j=0;
-    for(anodeiterator=vertices.begin(); anodeiterator!=vertices.end(); anodeiterator++)
-    {
-        meshds->AddNodeWithID((*anodeiterator).x,(*anodeiterator).y,(*anodeiterator).z,nodal_id[j]);
-        j++;
+
+    for (auto it : mesh_elements) {
+        it->addToMesh(meshds);
     }
 
-    for(unsigned int i=0;i<all_elements.size();i++)
-    {
-        //Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig.
-        //Ansonsten ist eine konsistente Datenstruktur nicht möglich
-        //meshds->AddVolumeWithID
-        //(
-        //    meshds->FindNode(all_elements[i][0]),
-        //    meshds->FindNode(all_elements[i][2]),
-        //    meshds->FindNode(all_elements[i][1]),
-        //    meshds->FindNode(all_elements[i][3]),
-        //    meshds->FindNode(all_elements[i][6]),
-        //    meshds->FindNode(all_elements[i][5]),
-        //    meshds->FindNode(all_elements[i][4]),
-        //    meshds->FindNode(all_elements[i][9]),
-        //    meshds->FindNode(all_elements[i][7]),
-        //    meshds->FindNode(all_elements[i][8]),
-        //    element_id[i]
-        //);
-        meshds->AddVolumeWithID
-        (
-            meshds->FindNode(all_elements[i][1]),
-            meshds->FindNode(all_elements[i][0]),
-            meshds->FindNode(all_elements[i][2]),
-            meshds->FindNode(all_elements[i][3]),
-            meshds->FindNode(all_elements[i][4]),
-            meshds->FindNode(all_elements[i][6]),
-            meshds->FindNode(all_elements[i][5]),
-            meshds->FindNode(all_elements[i][8]),
-            meshds->FindNode(all_elements[i][7]),
-            meshds->FindNode(all_elements[i][9]),
-            element_id[i]
-        );
-    }
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
 }
 
+void FemMesh::readNastran95(const std::string &Filename)
+{
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::readNastran95() =================================\n");
+
+    _Mtrx = Base::Matrix4D();
+
+    std::ifstream inputfile;
+    inputfile.open(Filename.c_str());
+    inputfile.seekg(std::ifstream::beg);
+    std::string line1,line2,tcard;
+
+    std::vector<NastranElementPtr> mesh_nodes;
+    std::vector<NastranElementPtr> mesh_elements;
+
+    do
+    {
+        NastranElementPtr node;
+        NastranElementPtr elem;
+        std::getline(inputfile, line1);
+        //cout << line1 << endl;
+        if (line1.size() == 0)
+            continue;
+
+        tcard = line1.substr(0, 8).c_str();
+        //boost::algorithm::trim(tcard);
+        if (line1.find("GRID*") != std::string::npos ) //We found a Grid line
+        {
+            //Now lets extract the GRID Points = Nodes
+            //As each GRID Line consists of two subsequent lines we have to
+            //take care of that as well
+            std::getline(inputfile,line2);
+            node = std::make_shared<GRIDLongFieldElement>();
+            node->read(line1, line2);
+        }
+        else if (line1.find("GRID") != std::string::npos) //We found a Grid line
+        {
+            //Base::Console().Log("Found a GRID\n");
+            //D06.inp
+            //GRID    109             .9      .7
+            //Now lets extract the GRID Points = Nodes
+            //Get the Nodal ID
+            node = std::make_shared<GRIDNastran95Element>();
+            node->read(line1, "");
+        }
+        
+        //1D
+        else if (line1.substr(0,6)=="CBAR")
+        {
+            elem = std::make_shared<CBARElement>();
+            elem->read(line1, "");
+        }
+        //2d
+        else if (line1.substr(0,6)=="CTRMEM")
+        {
+            //D06
+            //CTRMEM  322     1       179     180     185
+            elem = std::make_shared<CTRMEMElement>();
+            elem->read(line1, "");
+        }
+        else if (line1.substr(0, 6) == "CTRIA1")
+        {
+            //D06
+            //CTRMEM  322     1       179     180     185
+            elem = std::make_shared<CTRIA1Element>();
+            elem->read(line1, "");
+        }
+        else if (line1.substr(0, 6) == "CQUAD1")
+        {
+            //D06
+            //CTRMEM  322     1       179     180     185                                     
+            elem = std::make_shared<CQUAD1Element>();
+            elem->read(line1, "");
+        }
+        
+        //3d element
+        else if (line1.find("CTETRA")!= std::string::npos)
+        {
+            //d011121a.inp    
+            //CTETRA  3       200     104     114     3       103                             
+            elem = std::make_shared<CTETRANastran95Element>();
+            elem->read(line1, "");
+        }
+        else if (line1.find("CWEDGE")!= std::string::npos)
+        {
+            //d011121a.inp    
+            //CWEDGE  11      200     6       17      16      106     117     116             
+            elem = std::make_shared<CTETRANastran95Element>();
+            elem->read(line1, "");
+        }
+        else if (line1.find("CHEXA1")!= std::string::npos)
+        {
+            //d011121a.inp    
+            //CHEXA1  1       200     1       2       13      12      101     102     +SOL1   
+            //+SOL1   113     112                                                             
+            std::getline(inputfile,line2);
+            elem = std::make_shared<CHEXA1Element>();
+            elem->read(line1, line2);
+        }
+        else if (line1.find("CHEXA2")!= std::string::npos)
+        {
+            //d011121a.inp    
+            //CHEXA1  1       200     1       2       13      12      101     102     +SOL1   
+            //+SOL1   113     112                                                             
+            std::getline(inputfile,line2);
+            elem = std::make_shared<CHEXA2Element>();
+            elem->read(line1, line2);
+        }
+
+        if (node && node->isValid()) {
+            mesh_nodes.push_back(node);
+        }
+
+        if (elem && elem->isValid()) {
+            mesh_elements.push_back(elem);
+        }
+    }
+    while (inputfile.good());
+    inputfile.close();
+
+    Base::Console().Log("    %f: File read, start building mesh\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+
+    //Now fill the SMESH datastructure
+    SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
+    meshds->ClearMesh();
+
+    for (auto it : mesh_nodes) {
+        it->addToMesh(meshds);
+    }
+
+    for (auto it : mesh_elements) {
+        it->addToMesh(meshds);
+    }
+
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+}
+
+void FemMesh::readAbaqus(const std::string &FileName)
+{
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::readAbaqus() =================================\n");
+
+    /*
+    Python command to read Abaqus inp mesh file from test suite:
+    from feminout.importInpMesh import read as read_inp
+    femmesh = read_inp(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/mesh/tetra10_mesh.inp')
+    */
+
+    PyObject* module = PyImport_ImportModule("feminout.importInpMesh");
+    if (!module)
+        return;
+    try {
+        Py::Module abaqusmod(module, true);
+        Py::Callable method(abaqusmod.getAttr("read"));
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(FileName));
+        Py::Object mesh(method.apply(args));
+        if (PyObject_TypeCheck(mesh.ptr(), &FemMeshPy::Type)) {
+            FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
+            FemMesh* fem = fempy->getFemMeshPtr();
+            *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
+                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
+        }
+        else {
+            throw Base::FileException("Problems reading file");
+        }
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+}
+
+void FemMesh::readZ88(const std::string &FileName)
+{
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::readZ88() =================================\n");
+
+    /*
+    Python command to read Z88 mesh file from test suite:
+    from feminout.importZ88Mesh import read as read_z88
+    femmesh = read_z88(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/mesh/tetra10_mesh.z88')
+    */
+
+    PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");
+    if (!module)
+        return;
+    try {
+        Py::Module z88mod(module, true);
+        Py::Callable method(z88mod.getAttr("read"));
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(FileName));
+        Py::Object mesh(method.apply(args));
+        if (PyObject_TypeCheck(mesh.ptr(), &FemMeshPy::Type)) {
+            FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
+            FemMesh* fem = fempy->getFemMeshPtr();
+            *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
+                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
+        }
+        else {
+            throw Base::FileException("Problems reading file");
+        }
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+}
 
 void FemMesh::read(const char *FileName)
 {
@@ -1152,7 +1799,7 @@ void FemMesh::read(const char *FileName)
 
     // checking on the file
     if (!File.isReadable())
-        throw Base::Exception("File to load not existing or not readable");
+        throw Base::FileException("File to load not existing or not readable", File);
 
     if (File.hasExtension("unv") ) {
         // read UNV file
@@ -1161,6 +1808,15 @@ void FemMesh::read(const char *FileName)
     else if (File.hasExtension("med") ) {
         myMesh->MEDToMesh(File.filePath().c_str(),File.fileNamePure().c_str());
     }
+    else if (File.hasExtension("inp") ) {
+        // read Abaqus inp mesh file
+        readAbaqus(File.filePath());
+
+        // if the file doesn't contain supported geometries try Nastran95
+        SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
+        if (meshds->NbNodes() == 0)
+            readNastran95(File.filePath());
+    }
     else if (File.hasExtension("stl") ) {
         // read brep-file
         myMesh->STLToMesh(File.filePath().c_str());
@@ -1168,7 +1824,7 @@ void FemMesh::read(const char *FileName)
 #if SMESH_VERSION_MAJOR < 7
     else if (File.hasExtension("dat") ) {
         // read brep-file
-    // vejmarie disable
+        // vejmarie disable
         myMesh->DATToMesh(File.filePath().c_str());
     }
 #endif
@@ -1182,8 +1838,12 @@ void FemMesh::read(const char *FileName)
         FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
     }
 #endif
+    else if (File.hasExtension("z88") ) {
+        // read Z88 mesh file
+        readZ88(File.filePath());
+    }
     else{
-        throw Base::Exception("Unknown extension");
+        throw Base::FileException("Unknown extension");
     }
 }
 
@@ -1419,8 +2079,9 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 
     // write all data to file
-    std::ofstream anABAQUS_Output;
-    anABAQUS_Output.open(Filename.c_str());
+    // take also care of special characters in path https://forum.freecadweb.org/viewtopic.php?f=10&t=37436
+    Base::FileInfo fi(Filename);
+    Base::ofstream anABAQUS_Output(fi);
     anABAQUS_Output.precision(13);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
 
     // add some text and make sure one of the known elemParam values is used
@@ -1577,6 +2238,36 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 }
 
+
+void FemMesh::writeZ88(const std::string &FileName) const
+{
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::writeZ88() =================================\n");
+
+    /*
+    Python command to export FemMesh from StartWB FEM 3D example:
+    import feminout.importZ88Mesh
+    feminout.importZ88Mesh.write(App.ActiveDocument.Box_Mesh.FemMesh, '/tmp/mesh.z88')
+    */
+
+    PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");
+    if (!module)
+        return;
+    try {
+        Py::Module z88mod(module, true);
+        Py::Object mesh = Py::asObject(new FemMeshPy(const_cast<FemMesh*>(this)));
+        Py::Callable method(z88mod.getAttr("write"));
+        Py::Tuple args(2);
+        args.setItem(0, mesh);
+        args.setItem(1, Py::String(FileName));
+        method.apply(args);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+}
+
+
 void FemMesh::write(const char *FileName) const
 {
     Base::FileInfo File(FileName);
@@ -1616,8 +2307,13 @@ void FemMesh::write(const char *FileName) const
         FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);
     }
 #endif
+    else if (File.hasExtension("z88") ) {
+        Base::Console().Log("FEM mesh object will be exported to z88 format.\n");
+        // write z88 file
+        writeZ88(File.filePath());
+    }
     else{
-        throw Base::Exception("An unknown file extension was added!");
+        throw Base::FileException("An unknown file extension was added!");
     }
 }
 
@@ -1656,7 +2352,7 @@ void FemMesh::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
     if( reader.hasAttribute("a11")){
@@ -1810,8 +2506,9 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
 }
 //    for(unsigned int i=0;i<all_elements.size();i++)
 //        {
-//            //Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig.
-//            //Ansonsten ist eine konsistente Datenstruktur nicht möglich
+//                // an consistent data structure is only possible
+//                // if the elements are added in the right order
+//                // thus the order is very important
 //                meshds->AddVolumeWithID(
 //                meshds->FindNode(all_elements[i][0]),
 //                meshds->FindNode(all_elements[i][2]),
@@ -1909,5 +2606,76 @@ Base::Quantity FemMesh::getVolume(void)const
     return Base::Quantity(volume,Unit::Volume);
 
 
+}
+
+int FemMesh::addGroup(const std::string TypeString, const std::string Name, const int theId)
+{
+    // define mapping between typestring and ElementType
+    // TODO: remove code doubling by providing mappings for all FemMesh functions
+    typedef std::map<std::string, SMDSAbs_ElementType> string_eltype_map;
+    string_eltype_map mapping;
+    mapping["All"] = SMDSAbs_All;
+    mapping["Node"] = SMDSAbs_Node;
+    mapping["Edge"] = SMDSAbs_Edge;
+    mapping["Face"] = SMDSAbs_Face;
+    mapping["Volume"] = SMDSAbs_Volume;
+    mapping["0DElement"] = SMDSAbs_0DElement;
+    mapping["Ball"] = SMDSAbs_Ball;
+
+    int aId = theId;
+
+    // check whether typestring is valid
+    bool typeStringValid = false;
+    for (string_eltype_map::const_iterator it = mapping.begin(); it != mapping.end(); ++it)
+    {
+        std::string key = it->first;
+        if (key == TypeString)
+            typeStringValid = true;
+    }
+    if (!typeStringValid)
+        throw std::runtime_error("AddGroup: Invalid type string! Allowed: All, Node, Edge, Face, Volume, 0DElement, Ball");
+    // add group to mesh
+    SMESH_Group* group = this->getSMesh()->AddGroup(mapping[TypeString], Name.c_str(), aId);
+    if (!group)
+        throw std::runtime_error("AddGroup: Failed to create new group.");
+#if SMESH_VERSION_MAJOR >= 9
+    return group->GetID();
+#else
+    return aId;
+#endif
+}
+
+void FemMesh::addGroupElements(int GroupId, const std::set<int>& ElementIds)
+{
+    SMESH_Group* group = this->getSMesh()->GetGroup(GroupId);
+    if (!group) {
+        throw std::runtime_error("AddGroupElements: No group for given id.");
+    }
+    SMESHDS_Group* groupDS = dynamic_cast<SMESHDS_Group*>(group->GetGroupDS());
+    if (!groupDS) {
+        throw std::runtime_error("addGroupElements: Failed to add group elements.");
+    }
+
+    // Traverse the full mesh and add elements to group if id is in set 'ids'
+    // and if group type is compatible with element
+    SMDSAbs_ElementType aElementType = groupDS->GetType();
+
+    SMDS_ElemIteratorPtr aElemIter = this->getSMesh()->GetMeshDS()->elementsIterator(aElementType);
+    while (aElemIter->more()) {
+        const SMDS_MeshElement* aElem = aElemIter->next();
+        std::set<int>::iterator it;
+        it = ElementIds.find(aElem->GetID());
+        if (it != ElementIds.end())
+        {
+            // the element was in the list
+            if (!groupDS->Contains(aElem)) // check whether element is already in group
+                groupDS->Add(aElem); // if not, add it
+        }
+    }
+}
+
+bool FemMesh::removeGroup(int GroupId)
+{
+    return this->getSMesh()->RemoveGroup(GroupId);
 }
 

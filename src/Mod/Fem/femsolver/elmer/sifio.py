@@ -1,6 +1,7 @@
 # ***************************************************************************
+# *   Copyright (c) 2016 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
-# *   Copyright (c) 2016 - Markus Hovorka <m.hovorka@live.de>               *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,6 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "FreeCAD FEM solver Elmer sifio"
+__author__ = "Markus Hovorka"
+__url__ = "https://www.freecadweb.org"
+
+## \addtogroup FEM
+#  @{
 
 import collections
 import six
@@ -179,11 +186,9 @@ class Builder(object):
                     for solverSection in eqSection[self._ACTIVE_SOLVERS]:
                         if solverSection not in allSections:
                             allSections.append(solverSection)
-            if (BODY_FORCE in section and
-                    section[BODY_FORCE] not in allSections):
+            if BODY_FORCE in section and section[BODY_FORCE] not in allSections:
                 allSections.append(section[BODY_FORCE])
-            if (INITIAL_CONDITION in section and
-                    section[INITIAL_CONDITION] not in allSections):
+            if INITIAL_CONDITION in section and section[INITIAL_CONDITION] not in allSections:
                 allSections.append(section[INITIAL_CONDITION])
         for name, section in self._boundaries.items():
             section["Name"] = name
@@ -257,7 +262,7 @@ class Section(object):
     def __iter__(self):
         return self._attrs.items()
 
-    def iterkeys(self):
+    def keys(self):
         return self._attrs.keys()
 
     def __contains__(self, item):
@@ -305,7 +310,7 @@ class _Writer(object):
         self._stream.write(_SECTION_DELIM)
 
     def _writeSectionBody(self, s):
-        for key in sorted(s.iterkeys()):  # def iterkeys() from class sifio.Section is called
+        for key in sorted(s.keys()):  # def keys() from class sifio.Section is called
             self._writeAttribute(key, s[key])
 
     def _writeAttribute(self, key, data):
@@ -332,8 +337,10 @@ class _Writer(object):
         return it.next()
 
     def _isCollection(self, data):
-        return (not isinstance(data, str) and
-                isinstance(data, collections.Iterable))
+        return (
+            not isinstance(data, six.string_types)
+            and isinstance(data, collections.Iterable)
+        )
 
     def _checkScalar(self, dataType):
         if issubclass(dataType, int):
@@ -393,14 +400,16 @@ class _Writer(object):
             return _TYPE_INTEGER
         if issubclass(dataType, float):
             return _TYPE_REAL
-        if issubclass(dataType, six.string_types):    # use six to be sure to be Python 2.7 and 3.x compatible
+        # use six to be sure to be Python 2.7 and 3.x compatible
+        if issubclass(dataType, six.string_types):
             return _TYPE_STRING
         raise ValueError("Unsupported data type: %s" % dataType)
 
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
             return str(self._idMgr.getId(data))
-        if issubclass(dataType, six.string_types):    # use six to be sure to be Python 2.7 and 3.x compatible
+        # use six to be sure to be Python 2.7 and 3.x compatible
+        if issubclass(dataType, six.string_types):
             return '"%s"' % data
         return str(data)
 
@@ -435,3 +444,5 @@ class _IdManager(object):
         if section not in self._ids:
             self.setId(section)
         return self._ids[section]
+
+##  @}

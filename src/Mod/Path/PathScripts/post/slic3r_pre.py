@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   (c) Yorik van Havre (yorik@uncreated.net) 2015                        *
+# *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,7 +19,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
 '''
 This is an preprocessor to read gcode files produced from slic3r.
@@ -30,7 +30,7 @@ import Path
 import FreeCAD
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
 

@@ -165,7 +165,7 @@ def crawl(site=DEFAULTURL):
         if PDFCONVERTOR == 'pisa':
             try:
                 import ho.pisa as pisa
-            except: ("Error: Python-pisa not installed, exiting.")
+            except Exception: ("Error: Python-pisa not installed, exiting.")
             return 1
         else:
             if os.system('htmldoc --version'):
@@ -173,7 +173,7 @@ def crawl(site=DEFAULTURL):
                 return 1
         try:
             from pyPdf import PdfFileReader,PdfFileWriter
-        except:
+        except Exception:
             print ("Error: Python-pypdf not installed, exiting.")
 
     # run ########################################################
@@ -242,8 +242,8 @@ def fetch_resources(uri, rel):
 
 def createpdf_pisa(pagename,folder=TMPFOLDER):
     "creates a pdf file from a saved page using pisa (python module)"
-    infile = file(folder + os.sep + pagename+'.html','ro')
-    outfile = file(folder + os.sep + pagename+'.pdf','wb')
+    infile = open(folder + os.sep + pagename+'.html','ro')
+    outfile = open(folder + os.sep + pagename+'.pdf','wb')
     if VERBOSE: print ("Converting " + pagename + " to pdf...")
     pdf = pisa.CreatePDF(infile,outfile,folder,link_callback=fetch_resources)
     outfile.close()
@@ -272,12 +272,12 @@ def joinpdf(folder=TMPFOLDER,startpage=INDEX,outputname='freecad.pdf'):
     for p in pages:
         if exists(p[:-5]):
             if VERBOSE: print ('Appending',p)
-            try: inputfile = PdfFileReader(file(folder+os.sep+p[:-5]+'.pdf','rb'))
-            except: print ('Unable to append',p)
+            try: inputfile = PdfFileReader(open(folder+os.sep+p[:-5]+'.pdf','rb'))
+            except Exception: print ('Unable to append',p)
             else:
                 for i in range(inputfile.getNumPages()):
                     result.addPage(inputfile.getPage(i))
-    outputfile = file(OUTPUTPATH + os.sep + outputname,'wb')
+    outputfile = open(OUTPUTPATH + os.sep + outputname,'wb')
     result.write(outputfile)
     outputfile.close()
     if VERBOSE: print ('Successfully created',OUTPUTPATH,os.sep,outputname)
@@ -538,7 +538,7 @@ def fetchimage(imagelink):
                 file.close()
                 processed.append(filename)
                 return
-            except:
+            except Exception:
                 failcount += 1
         print ('Error: unable to fetch file ' + filename)
 
@@ -574,7 +574,7 @@ def output(html,page):
     file.close()
 
 def main(arg):
-	global QHELPCOMPILER,QCOLLECTIOMGENERATOR,OUTPUTPATH,PDFOUTPUT,PDFCONVERTOR,TMPFOLDER
+	global QHELPCOMPILER,QCOLLECTIOMGENERATOR,OUTPUTPATH,PDFOUTPUT,PDFCONVERTOR,TMPFOLDER,VERBOSE
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], "hp:t:c:g:o:", ["help", "pdf=", "noremove", "tempfolder=", "helpcompiler-exe=", "out-path=", "helpgenerator-exe="])
 	except getopt.GetoptError:
@@ -618,5 +618,5 @@ def main(arg):
 
 if __name__ == "__main__":
     # main(sys.argv[1:])
-    print "Warning! This script is obsolete. Use the scripts in the offlinedocs folder..."
+    print ("Warning! This script is obsolete. Use the scripts in the offlinedocs folder...")
       

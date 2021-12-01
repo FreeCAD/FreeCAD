@@ -27,10 +27,12 @@
 #include "WidgetFactory.h"
 #include "Workbench.h"
 
-// INCLUDE YOUR PREFERENCFE PAGES HERE
+// INCLUDE YOUR PREFERENCE PAGES HERE
 //
 #include "DlgPreferencesImp.h"
 #include "DlgSettings3DViewImp.h"
+#include "DlgSettingsNavigation.h"
+#include "DlgSettingsSelection.h"
 #include "DlgSettingsViewColor.h"
 #include "DlgGeneralImp.h"
 #include "DlgEditorImp.h"
@@ -39,6 +41,7 @@
 #include "DlgSettingsDocumentImp.h"
 //#include "DlgOnlineHelpImp.h"
 #include "DlgReportViewImp.h"
+#include "DlgSettingsLazyLoadedImp.h"
 
 #include "DlgToolbarsImp.h"
 #include "DlgWorkbenchesImp.h"
@@ -47,8 +50,10 @@
 #include "DlgKeyboardImp.h"
 #include "DlgCustomizeSpaceball.h"
 #include "DlgCustomizeSpNavSettings.h"
+#include "DlgSettingsCacheDirectory.h"
 #include "InputField.h"
 #include "QuantitySpinBox.h"
+#include "PrefWidgets.h"
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -58,18 +63,22 @@ using namespace Gui::Dialog;
  */
 WidgetFactorySupplier::WidgetFactorySupplier()
 {
-    // ADD YOUR PREFERENCE PAGES HERE 
+    // ADD YOUR PREFERENCE PAGES HERE
     //
     //
-    new PrefPageProducer<DlgGeneralImp>         ( QT_TRANSLATE_NOOP("QObject","General") );
-  //new PrefPageProducer<DlgOnlineHelpImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgSettingsDocumentImp>( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgSettingsEditorImp>  ( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgReportViewImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgSettingsMacroImp>   ( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgSettingsUnitsImp>   ( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgSettings3DViewImp>  ( QT_TRANSLATE_NOOP("QObject","Display") );
-    new PrefPageProducer<DlgSettingsViewColor>  ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgGeneralImp>            ( QT_TRANSLATE_NOOP("QObject","General") );
+  //new PrefPageProducer<DlgOnlineHelpImp>         ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsDocumentImp>   ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsSelection>     ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsCacheDirectory>( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsEditorImp>     ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgReportViewImp>         ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsMacroImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsUnitsImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettings3DViewImp>     ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsNavigation>    ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsViewColor>     ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsLazyLoadedImp> ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
 
     // ADD YOUR CUSTOMIZE PAGES HERE
     //
@@ -91,6 +100,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::PrefDoubleSpinBox>;
     new WidgetProducer<Gui::PrefLineEdit>;
     new WidgetProducer<Gui::PrefComboBox>;
+    new WidgetProducer<Gui::PrefFontBox>;
     new WidgetProducer<Gui::PrefCheckBox>;
     new WidgetProducer<Gui::PrefRadioButton>;
     new WidgetProducer<Gui::PrefSlider>;
@@ -103,7 +113,10 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::ActionSelector>;
     new WidgetProducer<Gui::ColorButton>;
     new WidgetProducer<Gui::UrlLabel>;
+    new WidgetProducer<Gui::StatefulLabel>;
     new WidgetProducer<Gui::FileChooser>;
     new WidgetProducer<Gui::UIntSpinBox>;
+    new WidgetProducer<Gui::IntSpinBox>;
+    new WidgetProducer<Gui::DoubleSpinBox>;
     new WidgetProducer<Gui::QuantitySpinBox>;
 }

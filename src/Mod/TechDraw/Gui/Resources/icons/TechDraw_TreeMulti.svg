@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   id="svg2160"
+   height="64"
+   width="64"
+   version="1.1">
+  <title
+     id="title845">TechDraw_TreeMulti</title>
+  <defs
+     id="defs2162">
+    <linearGradient
+       id="linearGradient3876">
+      <stop
+         id="stop3878"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1;" />
+      <stop
+         id="stop3880"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="5.3030605"
+       x2="8.6882267"
+       y1="11.562243"
+       x1="11.29622"
+       id="linearGradient3882"
+       xlink:href="#linearGradient3876" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="14.170237"
+       x2="20.684996"
+       y1="21.472618"
+       x1="23.292988"
+       id="linearGradient3890"
+       xlink:href="#linearGradient3876" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="36.419811"
+       x2="17.941404"
+       y1="53.857143"
+       x1="22.892857"
+       id="linearGradient3898"
+       xlink:href="#linearGradient3876" />
+  </defs>
+  <metadata
+     id="metadata2165">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>TechDraw_TreeMulti</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[WandererFan]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>TechDraw_TreeMulti</dc:title>
+        <dc:date>2016-10-29</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/TechDraw_TreeMulti.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     style="stroke:#2e3436;stroke-width:3.1295917"
+     transform="matrix(1.917183,0,0,1.917183,0.34307953,3.8330625)"
+     id="layer1">
+    <rect
+       style="color:#000000;fill:#d3d7cf;fill-opacity:1;fill-rule:nonzero;stroke:#2e3436;stroke-width:1.04319727;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3063"
+       y="3.7382648"
+       x="5.5586348"
+       ry="0.086343832"
+       rx="0"
+       height="9.3887777"
+       width="9.3887758" />
+    <path
+       style="color:#000000;fill:#d3d7cf;fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:1.04319727000000010;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3833"
+       d="m 22.252525,11.572035 5.74306,4.168486 -2.189763,6.750107 -7.096408,0.0033 -2.196059,-6.748062 z" />
+    <path
+       transform="matrix(0.48147564,0,0,0.48147565,-0.09870372,-0.95612288)"
+       d="m 31.25,45.5 c 0,5.384776 -4.365224,9.75 -9.75,9.75 -5.384776,0 -9.75,-4.365224 -9.75,-9.75 0,-5.384776 4.365224,-9.75 9.75,-9.75 5.384776,0 9.75,4.365224 9.75,9.75 z"
+       id="path2998"
+       style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2.16666675;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    <rect
+       style="color:#000000;fill:url(#linearGradient3882);fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:1.04319727000000010;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3063-9"
+       y="4.7814593"
+       x="6.6018314"
+       ry="0.067156315"
+       rx="0"
+       height="7.3023829"
+       width="7.3023815" />
+    <path
+       style="color:#000000;fill:url(#linearGradient3890);fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.04319727000000010;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3833-4"
+       d="m 22.262359,12.853347 4.484607,3.293062 -1.684691,5.289449 -5.578908,0.02761 -1.727923,-5.319306 z" />
+    <path
+       transform="matrix(0.37448106,0,0,0.37448107,2.2016797,3.9121302)"
+       d="m 31.25,45.5 c 0,5.384776 -4.365224,9.75 -9.75,9.75 -5.384776,0 -9.75,-4.365224 -9.75,-9.75 0,-5.384776 4.365224,-9.75 9.75,-9.75 5.384776,0 9.75,4.365224 9.75,9.75 z"
+       id="path2998-8"
+       style="fill:url(#linearGradient3898);fill-opacity:1;stroke:#ffffff;stroke-width:2.78571438999999990;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+  </g>
+  <rect
+     y="5"
+     x="5"
+     height="54"
+     width="54"
+     id="rect4138-1"
+     style="fill:none;stroke:#2e3436;stroke-width:5.99999952;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:5.99999988, 11.99999978;stroke-dashoffset:7.79999985" />
+  <rect
+     y="5"
+     x="5"
+     height="54"
+     width="54"
+     id="rect4138-7"
+     style="fill:none;stroke:#babdb6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:5.99999987999999980, 11.99999978000000000;stroke-dashoffset:7.79999984999999980" />
+</svg>

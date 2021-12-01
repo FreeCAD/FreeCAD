@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,6 +29,7 @@
 #include "PathPy.h"
 #include "PathPy.cpp"
 
+#include "Base/BoundBoxPy.h"
 #include "Base/GeometryPyCXX.h"
 #include "CommandPy.h"
 
@@ -49,7 +50,7 @@ std::string PathPy::representation(void) const
 
 PyObject *PathPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PathPy and the Twin object 
+    // create a new instance of PathPy and the Twin object
     return new PathPy(new Toolpath);
 }
 
@@ -67,7 +68,7 @@ int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     getToolpathPtr()->addCommand(cmd);
                 } else {
                     PyErr_SetString(PyExc_TypeError, "The list must contain only Path Commands");
-                    return -1; 
+                    return -1;
                 }
             }
         }
@@ -79,7 +80,7 @@ int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
     PyErr_SetString(PyExc_TypeError, "Argument must be a list of commands or a gcode string");
-    return -1; 
+    return -1;
 }
 
 
@@ -89,7 +90,7 @@ Py::List PathPy::getCommands(void) const
 {
     Py::List list;
     for(unsigned int i = 0; i < getToolpathPtr()->getSize(); i++)
-        list.append(Py::Object(new Path::CommandPy(new Path::Command(getToolpathPtr()->getCommand(i)))));
+        list.append(Py::asObject(new Path::CommandPy(new Path::Command(getToolpathPtr()->getCommand(i)))));
     return list;
 }
 
@@ -126,6 +127,11 @@ Py::Float PathPy::getLength(void) const
 Py::Long PathPy::getSize(void) const
 {
     return Py::Long((long)getToolpathPtr()->getSize());
+}
+
+Py::Object PathPy::getBoundBox(void) const
+{
+    return Py::BoundingBox(getToolpathPtr()->getBoundBox());
 }
 
 // specific methods
@@ -183,17 +189,22 @@ PyObject* PathPy::deleteCommand(PyObject * args)
     Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected an integer (optional)");
 }
 
+PyObject* PathPy::getCycleTime(PyObject * args)
+{
+    double hFeed, vFeed, hRapid, vRapid;
+    if (PyArg_ParseTuple(args, "dddd", &hFeed, &vFeed, &hRapid, &vRapid)){
+        return PyFloat_FromDouble(getToolpathPtr()->getCycleTime(hFeed, vFeed, hRapid, vRapid));
+    }
+    return 0;
+}
+
 // GCode methods
 
 PyObject* PathPy::toGCode(PyObject * args)
 {
     if (PyArg_ParseTuple(args, "")) {
         std::string result = getToolpathPtr()->toGCode();
-#if PY_MAJOR_VERSION >= 3
         return PyUnicode_FromString(result.c_str());
-#else
-        return PyString_FromString(result.c_str());
-#endif
     }
     throw Py::TypeError("This method accepts no argument");
 }
@@ -219,7 +230,7 @@ PyObject *PathPy::getCustomAttributes(const char* /*attr*/) const
 
 int PathPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

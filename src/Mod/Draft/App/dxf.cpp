@@ -164,12 +164,15 @@ void CDxfWrite::WriteEllipse(const double* c, double major_radius, double minor_
 CDxfRead::CDxfRead(const char* filepath)
 {
     // start the file
+    memset( m_str, '\0', sizeof(m_str) );
     memset( m_unused_line, '\0', sizeof(m_unused_line) );
     m_fail = false;
     m_aci = 0;
     m_eUnits = eMillimeters;
     m_measurement_inch = false;
     strcpy(m_layer_name, "0");  // Default layer name
+    memset( m_section_name, '\0', sizeof(m_section_name) );
+    memset( m_block_name, '\0', sizeof(m_block_name) );
     m_ignore_errors = true;
 
     m_ifs = new ifstream(filepath);
@@ -191,7 +194,7 @@ double CDxfRead::mm( double value ) const
 {
     if(m_measurement_inch)
     {
-        value *= 0.0393700787401575;
+        value *= 25.4;
     }
 
     switch(m_eUnits)
@@ -406,7 +409,7 @@ bool CDxfRead::ReadArc()
     double start_angle = 0.0;// in degrees
     double end_angle = 0.0;
     double radius = 0.0;
-    double c[3]; // centre
+    double c[3] = {0,0,0}; // centre
     double z_extrusion_dir = 1.0;
     bool hidden = false;
     
@@ -687,7 +690,7 @@ bool CDxfRead::ReadSpline()
 bool CDxfRead::ReadCircle()
 {
     double radius = 0.0;
-    double c[3]; // centre
+    double c[3] = {0,0,0}; // centre
     bool hidden = false;
 
     while(!((*m_ifs).eof()))
@@ -845,8 +848,8 @@ bool CDxfRead::ReadText()
 
 bool CDxfRead::ReadEllipse()
 {
-    double c[3]; // centre
-    double m[3]; //major axis point
+    double c[3] = {0,0,0}; // centre
+    double m[3] = {0,0,0}; //major axis point
     double ratio=0; //ratio of major to minor axis
     double start=0; //start of arc
     double end=0;  // end of arc
@@ -946,7 +949,7 @@ static bool poly_prev_found = false;
 static double poly_prev_x;
 static double poly_prev_y;
 static double poly_prev_z;
-static double poly_prev_bulge_found;
+static bool poly_prev_bulge_found = false;
 static double poly_prev_bulge;
 static bool poly_first_found = false;
 static double poly_first_x;
@@ -1318,13 +1321,10 @@ void CDxfRead::OnReadEllipse(const double* c, const double* m, double ratio, dou
 
 bool CDxfRead::ReadInsert()
 {
-    double c[3]; // coordinate
-    double s[3]; // scale
+    double c[3] = {0,0,0}; // coordinate
+    double s[3] = {1,1,1}; // scale
     double rot = 0.0; // rotation
-    char name[1024];
-    s[0] = 1.0;
-    s[1] = 1.0;
-    s[2] = 1.0;
+    char name[1024] = {0};
 
     while(!((*m_ifs).eof()))
     {
@@ -1413,9 +1413,9 @@ bool CDxfRead::ReadInsert()
 
 bool CDxfRead::ReadDimension()
 {
-    double s[3]; // startpoint
-    double e[3]; // endpoint
-    double p[3]; // dimpoint
+    double s[3] = {0,0,0}; // startpoint
+    double e[3] = {0,0,0}; // endpoint
+    double p[3] = {0,0,0}; // dimpoint
     double rot = -1.0; // rotation
 
     while(!((*m_ifs).eof()))
@@ -1575,9 +1575,20 @@ void CDxfRead::get_line()
     strcpy(m_str, str);
 }
 
+void dxf_strncpy(char* dst, const char* src, size_t size)
+{
+    size_t ret = strlen(src);
+
+    if (size) {
+        size_t len = (ret >= size) ? size - 1 : ret;
+        memcpy(dst, src, len);
+        dst[len] = '\0';
+    }
+}
+
 void CDxfRead::put_line(const char *value)
 {
-    strcpy( m_unused_line, value );
+    dxf_strncpy( m_unused_line, value, sizeof(m_unused_line) );
 }
 
 

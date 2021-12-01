@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <stack>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 #include "MergeDocuments.h"
 #include <Base/Console.h>
@@ -36,6 +36,7 @@
 #include <Gui/ViewProvider.h>
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 namespace Gui {
 
@@ -63,6 +64,9 @@ public:
         return true;
     }
 protected:
+    // See App::MergeDocument::XMLMergeReader for comments, with one additional
+    // benefits, we can save repetitive coding here.
+#if 0
     void startElement(const XMLCh* const uri, const XMLCh* const localname,
                       const XMLCh* const qname,
                       const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
@@ -80,6 +84,24 @@ protected:
                         it->second = jt->second;
                 }
             }
+            // update the expression if name of the object is used
+            else if (LocalName == "Expression") {
+                std::map<std::string, std::string>::iterator it = AttrMap.find("expression");
+                if (it != AttrMap.end()) {
+                    // search for the part before the first dot that should be the object name.
+                    std::string expression = it->second;
+                    std::string::size_type dotpos = expression.find_first_of(".");
+                    if (dotpos != std::string::npos) {
+                        std::string name = expression.substr(0, dotpos);
+                        std::map<std::string, std::string>::const_iterator jt = nameMap.find(name);
+                        if (jt != nameMap.end()) {
+                            std::string newexpression = jt->second;
+                            newexpression += expression.substr(dotpos);
+                            it->second = newexpression;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -89,6 +111,7 @@ protected:
         if (LocalName == "Property")
             propertyStack.pop();
     }
+#endif
 
 private:
     std::map<std::string, std::string>& nameMap;
@@ -100,9 +123,9 @@ private:
 MergeDocuments::MergeDocuments(App::Document* doc) : stream(0), appdoc(doc)
 {
     connectExport = doc->signalExportObjects.connect
-        (boost::bind(&MergeDocuments::exportObject, this, _1, _2));
+        (boost::bind(&MergeDocuments::exportObject, this, bp::_1, bp::_2));
     connectImport = doc->signalImportObjects.connect
-        (boost::bind(&MergeDocuments::importObject, this, _1, _2));
+        (boost::bind(&MergeDocuments::importObject, this, bp::_1, bp::_2));
     document = Gui::Application::Instance->getDocument(doc);
 }
 

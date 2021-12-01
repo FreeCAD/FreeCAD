@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QEventLoop>
 # include <QMessageBox>
 # include <QTextStream>
 # include <QTimer>
@@ -64,7 +63,6 @@ class SweepWidget::Private
 {
 public:
     Ui_TaskSweep ui;
-    QEventLoop loop;
     QString buttonText;
     std::string document;
     Private()
@@ -84,7 +82,7 @@ public:
         bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
         {
             if (pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                if (!sSubName) {
+                if (!sSubName || sSubName[0] == '\0') {
                     // If selecting again the same edge the passed sub-element is empty. If the whole
                     // shape is an edge or wire we can use it completely.
                     const TopoDS_Shape& shape = static_cast<Part::Feature*>(pObj)->Shape.getValue();
@@ -148,6 +146,7 @@ SweepWidget::SweepWidget(QWidget* parent)
 SweepWidget::~SweepWidget()
 {
     delete d;
+    Gui::Selection().rmvSelectionGate();
 }
 
 void SweepWidget::findShapes()
@@ -163,18 +162,35 @@ void SweepWidget::findShapes()
         TopoDS_Shape shape = (*it)->Shape.getValue();
         if (shape.IsNull()) continue;
 
-        // also allow compounds with a single face, wire, edge or vertex
+        // also allow compounds with a single face, wire or vertex or
+        // if there are only edges building one wire
         if (shape.ShapeType() == TopAbs_COMPOUND) {
+            Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+            Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+
             TopoDS_Iterator it(shape);
             int numChilds=0;
             TopoDS_Shape child;
             for (; it.More(); it.Next(), numChilds++) {
-                if (!it.Value().IsNull())
+                if (!it.Value().IsNull()) {
                     child = it.Value();
+                    if (child.ShapeType() == TopAbs_EDGE) {
+                        hEdges->Append(child);
+                    }
+                }
             }
 
-            if (numChilds == 1)
+            // a single child
+            if (numChilds == 1) {
                 shape = child;
+            }
+            // or all children are edges
+            else if (hEdges->Length() == numChilds) {
+                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges,
+                    Precision::Confusion(), Standard_False, hWires);
+                if (hWires->Length() == 1)
+                    shape = hWires->Value(1);
+            }
         }
 
         if (shape.ShapeType() == TopAbs_FACE ||
@@ -255,7 +271,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
 
 bool SweepWidget::accept()
 {
-    if (d->loop.isRunning())
+    if (d->ui.buttonPath->isChecked())
         return false;
     Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
     Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");
@@ -321,15 +337,16 @@ bool SweepWidget::accept()
             .arg(QString::fromLatin1(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
-        if (!doc) throw Base::Exception("Document doesn't exist anymore");
-        doc->openCommand("Sweep");
+        if (!doc)
+            throw Base::RuntimeError("Document doesn't exist anymore");
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Sweep"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {
             std::string msg = obj->getStatusString();
             doc->abortCommand();
-            throw Base::Exception(msg);
+            throw Base::RuntimeError(msg);
         }
         doc->commitCommand();
     }
@@ -343,7 +360,7 @@ bool SweepWidget::accept()
 
 bool SweepWidget::reject()
 {
-    if (d->loop.isRunning())
+    if (d->ui.buttonPath->isChecked())
         return false;
     return true;
 }
@@ -360,9 +377,9 @@ void SweepWidget::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
     }
 }
 
-void SweepWidget::on_buttonPath_clicked()
+void SweepWidget::on_buttonPath_toggled(bool on)
 {
-    if (!d->loop.isRunning()) {
+    if (on) {
         QList<QWidget*> c = this->findChildren<QWidget*>();
         for (QList<QWidget*>::iterator it = c.begin(); it != c.end(); ++it)
             (*it)->setEnabled(false);
@@ -374,7 +391,6 @@ void SweepWidget::on_buttonPath_clicked()
 
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new Private::EdgeSelection());
-        d->loop.exec();
     }
     else {
         QList<QWidget*> c = this->findChildren<QWidget*>();
@@ -383,7 +399,6 @@ void SweepWidget::on_buttonPath_clicked()
         d->ui.buttonPath->setText(d->buttonText);
         d->ui.labelPath->clear();
         Gui::Selection().rmvSelectionGate();
-        d->loop.quit();
 
         Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
         Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");

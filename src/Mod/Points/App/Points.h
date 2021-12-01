@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,6 +34,7 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
+#include <Mod/Points/PointsGlobal.h>
 
 namespace Points
 {
@@ -58,6 +59,7 @@ public:
     {
         resize(size);
     }
+    PointKernel(const PointKernel&);
     virtual ~PointKernel()
     {
     }

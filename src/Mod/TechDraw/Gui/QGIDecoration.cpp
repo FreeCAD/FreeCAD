@@ -36,9 +36,15 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "Rez.h"
+#include "PreferencesGui.h"
+#include "ZVALUE.h"
+#include "DrawGuiUtil.h"
+#include "QGICMark.h"
 #include "QGIDecoration.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIDecoration::QGIDecoration() :
     m_colCurrent(Qt::black),
@@ -79,6 +85,46 @@ void QGIDecoration::setStyle(Qt::PenStyle s)
 
 void QGIDecoration::setColor(QColor c)
 {
+    m_colNormal = c;
     m_colCurrent = c;
     m_pen.setColor(m_colCurrent);
+    m_brush.setColor(m_colCurrent);
 }
+
+QColor QGIDecoration::prefNormalColor()
+{
+    return PreferencesGui::normalQColor();
+}
+
+QColor QGIDecoration::prefPreColor()
+{
+    return PreferencesGui::preselectQColor();
+}
+
+QColor QGIDecoration::prefSelectColor()
+{
+    return PreferencesGui::selectQColor();
+}
+
+QRectF QGIDecoration::boundingRect() const
+{
+    return childrenBoundingRect();
+}
+
+
+void QGIDecoration::makeMark(double x, double y)
+{
+    QGICMark* cmItem = new QGICMark(-1);
+    cmItem->setParentItem(this);
+    cmItem->setPos(x,y);
+    cmItem->setThick(2.0);
+    cmItem->setSize(40.0);
+    cmItem->setZValue(ZVALUE::VERTEX);
+}
+
+void QGIDecoration::makeMark(Base::Vector3d v)
+{
+    makeMark(v.x,v.y);
+}
+
+

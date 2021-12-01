@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Approx_Curve3d.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
@@ -96,8 +97,16 @@
 # include <GCPnts_AbscissaPoint.hxx>
 # include <Precision.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <ShapeConstruct_Curve.hxx>
-#endif
+# include <LProp_NotDefined.hxx>
+# if OCC_VERSION_HEX < 0x070600
+# include <GeomAdaptor_HCurve.hxx>
+# endif
+
+# include <ctime>
+# include <cmath>
+#endif //_PreComp_
 
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/LinePy.h>
@@ -133,9 +142,13 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 
-#include <ctime>
+#include "GeometryMigrationExtension.h"
 
 #include "Geometry.h"
+
+#if OCC_VERSION_HEX >= 0x070600
+using GeomAdaptor_HCurve = GeomAdaptor_Curve;
+#endif
 
 using namespace Part;
 
@@ -182,13 +195,13 @@ const char* gce_ErrorStatusText(gce_ErrorType et)
 TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
 
 Geometry::Geometry()
-  : Construction(false)
 {
     createNewTag();
 }
 
 Geometry::~Geometry()
 {
+
 }
 
 // Persistence implementer
@@ -199,22 +212,176 @@ unsigned int Geometry::getMemSize (void) const
 
 void Geometry::Save(Base::Writer &writer) const
 {
-    const char c = Construction?'1':'0';
-    writer.Stream() << writer.ind() << "<Construction value=\"" <<  c << "\"/>" << endl;
+    // We always store an extension array even if empty, so that restoring is consistent.
+
+    // Get the number of persistent extensions
+    int counter = 0;
+    for(auto att:extensions) {
+        if(att->isDerivedFrom(Part::GeometryPersistenceExtension::getClassTypeId()))
+            counter++;
+    }
+
+    writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << counter << "\">" << std::endl;
+
+    writer.incInd();
+
+    for(auto att:extensions) {
+        if(att->isDerivedFrom(Part::GeometryPersistenceExtension::getClassTypeId()))
+            std::static_pointer_cast<Part::GeometryPersistenceExtension>(att)->Save(writer);
+    }
+
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</GeoExtensions>" << std::endl;
 }
 
 void Geometry::Restore(Base::XMLReader &reader)
 {
-    // read my Element
-    reader.readElement("Construction");
-    // get the value of my Attribute
-    Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    // In legacy file format, there are no extensions and there is a construction XML tag
+    // In the new format, this is migrated into extensions, and we get an array with extensions
+    reader.readElement();
+
+    if(strcmp(reader.localName(),"GeoExtensions") == 0) { // new format
+
+        int count = reader.getAttributeAsInteger("count");
+
+        for (int i = 0; i < count; i++) {
+            reader.readElement("GeoExtension");
+            const char* TypeName = reader.getAttribute("type");
+            Base::Type type = Base::Type::fromName(TypeName);
+            GeometryPersistenceExtension *newE = (GeometryPersistenceExtension *)type.createInstance();
+            newE->Restore(reader);
+
+            extensions.push_back(std::shared_ptr<GeometryExtension>(newE));
+        }
+
+        reader.readEndElement("GeoExtensions");
+    }
+    else if(strcmp(reader.localName(),"Construction") == 0) { // legacy
+
+        bool construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+
+        // prepare migration
+        if(!this->hasExtension(GeometryMigrationExtension::getClassTypeId()))
+            this->setExtension(std::make_unique<GeometryMigrationExtension>());
+
+        auto ext = std::static_pointer_cast<GeometryMigrationExtension>(this->getExtension(GeometryMigrationExtension::getClassTypeId()).lock());
+
+        ext->setMigrationType(GeometryMigrationExtension::Construction);
+        ext->setConstruction(construction);
+
+    }
+
 }
 
 boost::uuids::uuid Geometry::getTag() const
 {
     return tag;
 }
+
+std::vector<std::weak_ptr<const GeometryExtension>> Geometry::getExtensions() const
+{
+    std::vector<std::weak_ptr<const GeometryExtension>> wp;
+
+    for(auto & ext:extensions)
+        wp.push_back(ext);
+
+    return wp;
+}
+
+bool Geometry::hasExtension(Base::Type type) const
+{
+    for( auto ext : extensions) {
+        if(ext->getTypeId() == type)
+            return true;
+    }
+
+    return false;
+}
+
+bool Geometry::hasExtension(std::string name) const
+{
+    for( auto ext : extensions) {
+        if(ext->getName() == name)
+            return true;
+    }
+
+    return false;
+}
+
+std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type)
+{
+    for( auto ext : extensions) {
+        if(ext->getTypeId() == type)
+            return ext;
+    }
+
+    throw Base::ValueError("No geometry extension of the requested type.");
+}
+
+std::weak_ptr<GeometryExtension> Geometry::getExtension(std::string name)
+{
+    for( auto ext : extensions) {
+        if(ext->getName() == name)
+            return ext;
+    }
+
+    throw Base::ValueError("No geometry extension with the requested name.");
+}
+
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) const
+{
+    return const_cast<Geometry*>(this)->getExtension(type).lock();
+}
+
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) const
+{
+    return const_cast<Geometry*>(this)->getExtension(name).lock();
+}
+
+
+void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geoext )
+{
+    bool hasext=false;
+
+    for( auto & ext : extensions) {
+        // if same type and name, this modifies the existing extension.
+        if( ext->getTypeId() == geoext->getTypeId() &&
+            ext->getName() == geoext->getName()){
+            ext = std::move( geoext );
+            ext->notifyAttachment(this);
+            hasext = true;
+            break;
+        }
+    }
+
+    if(!hasext) { // new type-name unique id, so add.
+        extensions.push_back(std::move( geoext ));
+        extensions.back()->notifyAttachment(this);
+    }
+}
+
+void Geometry::deleteExtension(Base::Type type)
+{
+    extensions.erase(
+        std::remove_if( extensions.begin(),
+                        extensions.end(),
+                        [&type](const std::shared_ptr<GeometryExtension>& ext){
+                            return ext->getTypeId() == type;
+                        }),
+        extensions.end());
+}
+
+void Geometry::deleteExtension(std::string name)
+{
+    extensions.erase(
+        std::remove_if( extensions.begin(),
+                        extensions.end(),
+                        [&name](const std::shared_ptr<GeometryExtension>& ext){
+                            return ext->getName() == name;
+                        }),
+        extensions.end());
+}
+
 
 void Geometry::createNewTag()
 {
@@ -239,12 +406,75 @@ void Geometry::assignTag(const Part::Geometry * geo)
         throw Base::TypeError("Geometry tag can not be assigned as geometry types do not match.");
 }
 
+void Geometry::copyNonTag(const Part::Geometry * src)
+{
+    for(auto & ext: src->extensions) {
+        this->extensions.push_back(ext->copy());
+        extensions.back()->notifyAttachment(this);
+    }
+}
+
 Geometry *Geometry::clone(void) const
 {
     Geometry* cpy = this->copy();
     cpy->tag = this->tag;
+
+    // class copy is responsible for copying extensions
+
     return cpy;
 }
+
+void Geometry::mirror(const Base::Vector3d& point)
+{
+    gp_Pnt pnt(point.x, point.y, point.z);
+    handle()->Mirror(pnt);
+}
+
+void Geometry::mirror(const Base::Vector3d& point, const Base::Vector3d& dir)
+{
+    gp_Ax1 ax1(gp_Pnt(point.x,point.y,point.z), gp_Dir(dir.x,dir.y,dir.z));
+    handle()->Mirror(ax1);
+}
+
+void Geometry::rotate(const Base::Placement& plm)
+{
+    Base::Rotation rot(plm.getRotation());
+    Base::Vector3d pnt, dir;
+
+    double angle;
+
+    rot.getValue(dir, angle);
+    pnt = plm.getPosition();
+
+    gp_Ax1 ax1(gp_Pnt(pnt.x,pnt.y,pnt.z), gp_Dir(dir.x,dir.y,dir.z));
+    handle()->Rotate(ax1, angle);
+}
+
+void Geometry::scale(const Base::Vector3d& vec, double scale)
+{
+    gp_Pnt pnt(vec.x, vec.y, vec.z);
+    handle()->Scale(pnt, scale);
+}
+
+void Geometry::transform(const Base::Matrix4D& mat)
+{
+    gp_Trsf trf;
+    trf.SetValues(mat[0][0],mat[0][1],mat[0][2],mat[0][3],
+                mat[1][0],mat[1][1],mat[1][2],mat[1][3],
+                mat[2][0],mat[2][1],mat[2][2],mat[2][3]
+#if OCC_VERSION_HEX < 0x060800
+                , 0.00001,0.00001
+#endif
+                ); //precision was removed in OCCT CR0025194
+    handle()->Transform(trf);
+}
+
+void Geometry::translate(const Base::Vector3d& vec)
+{
+    gp_Vec trl(vec.x, vec.y, vec.z);
+    handle()->Translate(trl);
+}
+
 
 // -------------------------------------------------
 
@@ -283,7 +513,7 @@ void GeomPoint::setHandle(const Handle(Geom_CartesianPoint)& p)
 Geometry *GeomPoint::copy(void) const
 {
     GeomPoint *newPoint = new GeomPoint(myPoint);
-    newPoint->Construction = this->Construction;
+    newPoint->copyNonTag(this);
     return newPoint;
 }
 
@@ -320,7 +550,7 @@ void GeomPoint::Save(Base::Writer &writer) const
                 << "X=\"" <<  Point.x <<
                 "\" Y=\"" <<  Point.y <<
                 "\" Z=\"" <<  Point.z <<
-             "\"/>" << endl;
+             "\"/>" << std::endl;
 }
 
 void GeomPoint::Restore(Base::XMLReader &reader)
@@ -370,7 +600,7 @@ GeomBSplineCurve* GeomCurve::toBSpline(double first, double last) const
     Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     Handle(Geom_BSplineCurve) spline = scc.ConvertToBSpline(c, first, last, Precision::Confusion());
     if (spline.IsNull())
-        throw Base::RuntimeError("Conversion to B-spline failed");
+        THROWM(Base::CADKernelError,"Conversion to B-spline failed")
     return new GeomBSplineCurve(spline);
 }
 
@@ -385,6 +615,19 @@ bool GeomCurve::tangent(double u, gp_Dir& dir) const
     GeomLProp_CLProps prop(c,u,1,Precision::Confusion());
     if (prop.IsTangentDefined()) {
         prop.Tangent(dir);
+        return true;
+    }
+
+    return false;
+}
+
+bool GeomCurve::tangent(double u, Base::Vector3d& dir) const
+{
+    gp_Dir gdir;
+
+    if (tangent(u, gdir)) {
+        dir = Base::Vector3d(gdir.X(),gdir.Y(),gdir.Z());
+
         return true;
     }
 
@@ -435,12 +678,88 @@ bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
             return true;
         }
     }
+    catch (const LProp_NotDefined&) {
+        dir.Set(0,0,0);
+        return false;
+    }
     catch (Standard_Failure& e) {
-
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 
     return false;
+}
+
+bool GeomCurve::intersect(  const GeomCurve *c,
+                            std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
+                            double tol) const
+{
+    Handle(Geom_Curve) curve1 = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve2 = Handle(Geom_Curve)::DownCast(c->handle());
+
+    if(!curve1.IsNull() && !curve2.IsNull()) {
+        return intersect(curve1,curve2,points, tol);
+    }
+    else
+        return false;
+
+}
+
+bool GeomCurve::intersect(const Handle(Geom_Curve) curve1, const Handle(Geom_Curve) curve2,
+                std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
+                double tol)
+{
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=31700
+    if (curve1->IsKind(STANDARD_TYPE(Geom_BoundedCurve)) &&
+        curve2->IsKind(STANDARD_TYPE(Geom_BoundedCurve))){
+
+        Handle(Geom_BoundedCurve) bcurve1 = Handle(Geom_BoundedCurve)::DownCast(curve1);
+        Handle(Geom_BoundedCurve) bcurve2 = Handle(Geom_BoundedCurve)::DownCast(curve2);
+
+        gp_Pnt c1s = bcurve1->StartPoint();
+        gp_Pnt c2s = bcurve2->StartPoint();
+        gp_Pnt c1e = bcurve1->EndPoint();
+        gp_Pnt c2e = bcurve2->EndPoint();
+
+        auto checkendpoints = [&points,tol]( gp_Pnt p1, gp_Pnt p2) {
+            if(p1.Distance(p2) < tol)
+                points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
+        };
+
+        checkendpoints(c1s,c2s);
+        checkendpoints(c1s,c2e);
+        checkendpoints(c1e,c2s);
+        checkendpoints(c1e,c2e);
+
+    }
+
+    try {
+
+        GeomAPI_ExtremaCurveCurve intersector(curve1, curve2);
+
+        if (intersector.NbExtrema() == 0 || intersector.LowerDistance() > tol) {
+            // No intersection
+            return false;
+        }
+
+        for (int i = 1; i <= intersector.NbExtrema(); i++) {
+            if (intersector.Distance(i) > tol)
+                continue;
+
+            gp_Pnt p1, p2;
+            intersector.Points(i, p1, p2);
+            points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
+        }
+    }
+    catch (Standard_Failure& e) {
+        // Yes Extrema finding failed, but if we got an intersection then go on with it
+        if(points.size()>0)
+            return points.size()>0?true:false;
+        else
+            THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+
+
+    return points.size()>0?true:false;
 }
 
 bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
@@ -454,25 +773,29 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
             return true;
         }
     }
-    catch (StdFail_NotDone e) { // projection does not exist on trimmer curve, let's try basis curve
-        closestParameterToBasicCurve(point,u);
+    catch (StdFail_NotDone& e) {
+        if (c->IsKind(STANDARD_TYPE(Geom_BoundedCurve))){
+            Base::Vector3d firstpoint = this->pointAtParameter(c->FirstParameter());
+            Base::Vector3d lastpoint = this->pointAtParameter(c->LastParameter());
 
-        if(abs(u-c->FirstParameter()) < abs(u-c->LastParameter()))
-            u = c->FirstParameter();
+            if((firstpoint-point).Length() < (lastpoint-point).Length())
+                u = c->FirstParameter();
+            else
+                u = c->LastParameter();
+        }
         else
-            u = c->LastParameter();
+            THROWM(Base::CADKernelError,e.GetMessageString())
 
         return true;
     }
     catch (Standard_Failure& e) {
-
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 
     return false;
 }
 
-bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double &u) const
+bool GeomCurve::closestParameterToBasisCurve(const Base::Vector3d& point, double &u) const
 {
     Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
 
@@ -488,8 +811,7 @@ bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double
             }
         }
         catch (Standard_Failure& e) {
-    
-            throw Base::RuntimeError(e.GetMessageString());
+            THROWM(Base::CADKernelError,e.GetMessageString())
         }
 
         return false;
@@ -509,9 +831,8 @@ double GeomCurve::getFirstParameter() const
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
-
 }
 
 double GeomCurve::getLastParameter() const
@@ -524,7 +845,7 @@ double GeomCurve::getLastParameter() const
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -538,7 +859,7 @@ double GeomCurve::curvatureAt(double u) const
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -553,7 +874,7 @@ double GeomCurve::length(double u, double v) const
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -566,7 +887,7 @@ void GeomCurve::reverse(void)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -649,7 +970,7 @@ const Handle(Geom_Geometry)& GeomBezierCurve::handle() const
 Geometry *GeomBezierCurve::copy(void) const
 {
     GeomBezierCurve *newCurve = new GeomBezierCurve(myCurve);
-    newCurve->Construction = this->Construction;
+    newCurve->copyNonTag(this);
     return newCurve;
 }
 
@@ -662,7 +983,7 @@ std::vector<Base::Vector3d> GeomBezierCurve::getPoles() const
 
     for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
         const gp_Pnt& pnt = p(i);
-        poles.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+        poles.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
     }
     return poles;
 }
@@ -699,7 +1020,7 @@ void GeomBezierCurve::Save(Base::Writer& writer) const
          << writer.ind()
              << "<BezierCurve "
                 << "PolesCount=\"" <<  poles.size() <<
-             "\">" << endl;
+             "\">" << std::endl;
 
     writer.incInd();
 
@@ -714,11 +1035,11 @@ void GeomBezierCurve::Save(Base::Writer& writer) const
             "\" Y=\"" << (*itp).y <<
             "\" Z=\"" << (*itp).z <<
             "\" Weight=\"" << (*itw) <<
-        "\"/>" << endl;
+        "\"/>" << std::endl;
     }
 
     writer.decInd();
-    writer.Stream() << writer.ind() << "</BezierCurve>" << endl ;
+    writer.Stream() << writer.ind() << "</BezierCurve>" << std::endl ;
 }
 
 void GeomBezierCurve::Restore(Base::XMLReader& reader)
@@ -751,17 +1072,17 @@ void GeomBezierCurve::Restore(Base::XMLReader& reader)
         if (!bezier.IsNull())
             this->myCurve = bezier;
         else
-            throw Base::RuntimeError("BezierCurve restore failed");
+            THROWM(Base::CADKernelError,"BezierCurve restore failed")
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
 PyObject *GeomBezierCurve::getPyObject(void)
 {
-    return new BezierCurvePy((GeomBezierCurve*)this->clone());
+    return new BezierCurvePy(static_cast<GeomBezierCurve*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -836,9 +1157,14 @@ const Handle(Geom_Geometry)& GeomBSplineCurve::handle() const
 
 Geometry *GeomBSplineCurve::copy(void) const
 {
-    GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
-    newCurve->Construction = this->Construction;
-    return newCurve;
+    try {
+        GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
+        newCurve->copyNonTag(this);
+        return newCurve;
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError, e.GetMessageString())
+    }
 }
 
 int GeomBSplineCurve::countPoles() const
@@ -861,9 +1187,27 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
             myCurve->SetPole(index,pnt,weight);
     }
     catch (Standard_Failure& e) {
-
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
+}
+
+void GeomBSplineCurve::workAroundOCCTBug(const std::vector<double>& weights)
+{
+    // If during assignment of weights (during the for loop below) all weights
+    // become (temporarily) equal even though weights does not have equal values
+    // OCCT will convert all the weights (the already assigned and those not yet assigned)
+    // to 1.0 (nonrational b-splines have 1.0 weights). This may lead to the assignment of wrong
+    // of weight values.
+    //
+    // Little hack is to set the last weight to a value different from last but one current and to-be-assigned
+
+    if (weights.size() < 2) // at least two poles/weights
+        return;
+
+    auto lastindex = myCurve->NbPoles(); // OCCT is base-1
+    auto lastbutonevalue = myCurve->Weight(lastindex-1);
+    double fakelastvalue = lastbutonevalue + weights[weights.size()-2];
+    myCurve->SetWeight(weights.size(),fakelastvalue);
 }
 
 void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights)
@@ -871,10 +1215,12 @@ void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles, const 
     if (poles.size() != weights.size())
         throw Base::ValueError("poles and weights mismatch");
 
+    workAroundOCCTBug(weights);
+
     Standard_Integer index=1;
 
-    for (std::size_t it = 0; it < poles.size(); it++, index++) {
-        setPole(index, poles[it], weights[it]);
+    for (std::size_t i = 0; i < poles.size(); i++, index++) {
+        setPole(index, poles[i], weights[i]);
     }
 }
 
@@ -896,7 +1242,7 @@ std::vector<Base::Vector3d> GeomBSplineCurve::getPoles() const
 
     for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
         const gp_Pnt& pnt = p(i);
-        poles.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+        poles.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
     }
     return poles;
 }
@@ -917,6 +1263,8 @@ std::vector<double> GeomBSplineCurve::getWeights() const
 
 void GeomBSplineCurve::setWeights(const std::vector<double>& weights)
 {
+    workAroundOCCTBug(weights);
+
     try {
         Standard_Integer index=1;
 
@@ -926,7 +1274,7 @@ void GeomBSplineCurve::setWeights(const std::vector<double>& weights)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -940,7 +1288,7 @@ void GeomBSplineCurve::setKnot(int index, const double val, int mult)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1000,7 +1348,7 @@ int GeomBSplineCurve::getMultiplicity(int index) const
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1012,6 +1360,11 @@ int GeomBSplineCurve::getDegree() const
 bool GeomBSplineCurve::isPeriodic() const
 {
     return myCurve->IsPeriodic()==Standard_True;
+}
+
+bool GeomBSplineCurve::isRational() const
+{
+    return myCurve->IsRational()==Standard_True;
 }
 
 bool GeomBSplineCurve::join(const Handle(Geom_BSplineCurve)& spline)
@@ -1112,17 +1465,45 @@ void GeomBSplineCurve::makeC1Continuous(double tol, double ang_tol)
     GeomConvert::C0BSplineToC1BSplineCurve(this->myCurve, tol, ang_tol);
 }
 
-void GeomBSplineCurve::increaseDegree(double degree)
+void GeomBSplineCurve::increaseDegree(int degree)
 {
     try {
         Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(this->handle());
         curve->IncreaseDegree(degree);
-        return;
     }
     catch (Standard_Failure& e) {
-
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
+}
+
+/*!
+ * \brief GeomBSplineCurve::approximate
+ * \param tol3d
+ * \param maxSegments
+ * \param maxDegree
+ * \param continuity
+ * \return true if the approximation succeeded, false otherwise
+ */
+bool GeomBSplineCurve::approximate(double tol3d, int maxSegments, int maxDegree, int continuity)
+{
+    try {
+        GeomAbs_Shape cont = GeomAbs_C0;
+        if (continuity >= 0 && continuity <= 6)
+            cont = static_cast<GeomAbs_Shape>(continuity);
+
+        GeomAdaptor_Curve adapt(myCurve);
+        Handle(GeomAdaptor_HCurve) hCurve = new GeomAdaptor_HCurve(adapt);
+        Approx_Curve3d approx(hCurve, tol3d, cont, maxSegments, maxDegree);
+        if (approx.IsDone() && approx.HasResult()) {
+            this->setHandle(approx.Curve());
+            return true;
+        }
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+
+    return false;
 }
 
 void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
@@ -1133,23 +1514,67 @@ void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
         return;
     }
     catch (Standard_Failure& e) {
-
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
 bool GeomBSplineCurve::removeKnot(int index, int multiplicity, double tolerance)
 {
     try {
-        Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(this->handle());
-        return curve->RemoveKnot(index, multiplicity, tolerance) == Standard_True;
+        Handle(Geom_BSplineCurve) curve =Handle(Geom_BSplineCurve)::DownCast(myCurve->Copy());
+        if (curve->RemoveKnot(index, multiplicity, tolerance)) {
+
+            // It can happen that OCCT computes a negative weight but still claims the removal was successful
+            TColStd_Array1OfReal weights(1, curve->NbPoles());
+            curve->Weights(weights);
+            for (Standard_Integer i = weights.Lower(); i <= weights.Upper(); i++) {
+                double v = weights(i);
+                if (v <= gp::Resolution())
+                    return false;
+            }
+
+            myCurve = curve;
+            return true;
+        }
+
+        return false;
     }
     catch (Standard_Failure& e) {
-
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
+void GeomBSplineCurve::Trim(double u, double v)
+{
+    auto splitUnwrappedBSpline = [this](double u, double v) {
+        // it makes a copy internally (checked in the source code of OCCT)
+        auto handle = GeomConvert::SplitBSplineCurve (  myCurve,
+                                                            u,
+                                                            v,
+                                                            Precision::Confusion()
+                                                        );
+        setHandle(handle);
+    };
+
+    try {
+        if(!isPeriodic()) {
+            splitUnwrappedBSpline(u, v);
+        }
+        else { // periodic
+            if( v < u ) { // wraps over origin
+                v = v + 1.0; // v needs one extra lap (1.0)
+
+                splitUnwrappedBSpline(u, v);
+            }
+            else {
+                splitUnwrappedBSpline(u, v);
+            }
+        }
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+}
 
 // Persistence implementer
 unsigned int GeomBSplineCurve::getMemSize (void) const
@@ -1176,7 +1601,7 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
                  "\" KnotsCount=\"" <<  knots.size() <<
                  "\" Degree=\"" <<  degree <<
                  "\" IsPeriodic=\"" <<  (int) isperiodic <<
-             "\">" << endl;
+             "\">" << std::endl;
 
     writer.incInd();
 
@@ -1191,7 +1616,7 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
             "\" Y=\"" << (*itp).y <<
             "\" Z=\"" << (*itp).z <<
             "\" Weight=\"" << (*itw) <<
-        "\"/>" << endl;
+        "\"/>" << std::endl;
     }
 
     std::vector<double>::const_iterator itk;
@@ -1203,11 +1628,11 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
             << "<Knot "
             << "Value=\"" << (*itk)
             << "\" Mult=\"" << (*itm) <<
-        "\"/>" << endl;
+        "\"/>" << std::endl;
     }
 
     writer.decInd();
-    writer.Stream() << writer.ind() << "</BSplineCurve>" << endl ;
+    writer.Stream() << writer.ind() << "</BSplineCurve>" << std::endl ;
 }
 
 void GeomBSplineCurve::Restore(Base::XMLReader& reader)
@@ -1259,18 +1684,18 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
         if (!spline.IsNull())
             this->myCurve = spline;
         else
-            throw Base::RuntimeError("BSpline restore failed");
+            THROWM(Base::CADKernelError,"BSpline restore failed")
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
 
 PyObject *GeomBSplineCurve::getPyObject(void)
 {
-    return new BSplineCurvePy((GeomBSplineCurve*)this->clone());
+    return new BSplineCurvePy(static_cast<GeomBSplineCurve*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -1303,7 +1728,7 @@ void GeomConic::setLocation(const Base::Vector3d& Center)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1325,7 +1750,7 @@ void GeomConic::setCenter(const Base::Vector3d& Center)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1374,7 +1799,7 @@ void GeomConic::setAngleXU(double angle)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1393,7 +1818,89 @@ bool GeomConic::isReversed() const
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomArcOfConic,Part::GeomCurve)
+TYPESYSTEM_SOURCE(Part::GeomTrimmedCurve,Part::GeomBoundedCurve)
+
+GeomTrimmedCurve::GeomTrimmedCurve()
+{
+}
+
+GeomTrimmedCurve::GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)& c)
+{
+    setHandle(c);
+}
+
+GeomTrimmedCurve::~GeomTrimmedCurve()
+{
+}
+
+void GeomTrimmedCurve::setHandle(const Handle(Geom_TrimmedCurve)& c)
+{
+    this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
+}
+
+const Handle(Geom_Geometry)& GeomTrimmedCurve::handle() const
+{
+    return myCurve;
+}
+
+Geometry *GeomTrimmedCurve::copy(void) const
+{
+    GeomTrimmedCurve *newCurve =  new GeomTrimmedCurve(myCurve);
+    newCurve->copyNonTag(this);
+    return newCurve;
+}
+
+// Persistence implementer
+unsigned int GeomTrimmedCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
+void         GeomTrimmedCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
+void         GeomTrimmedCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+
+PyObject *GeomTrimmedCurve::getPyObject(void)
+{
+    return new TrimmedCurvePy(static_cast<GeomTrimmedCurve*>(this->clone()));
+}
+
+bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c,
+                                std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
+                                double tol) const
+{
+    Handle(Geom_TrimmedCurve) curve1 =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_TrimmedCurve) curve2 =  Handle(Geom_TrimmedCurve)::DownCast(c->handle());
+
+    Handle(Geom_Curve) bcurve1 = curve1->BasisCurve();
+    Handle(Geom_Curve) bcurve2 = curve2->BasisCurve();
+
+
+    if(!bcurve1.IsNull() && !bcurve2.IsNull()) {
+
+        return intersect(bcurve1, bcurve2, points, tol);
+    }
+    else
+        return false;
+
+}
+
+void GeomTrimmedCurve::getRange(double& u, double& v) const
+{
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    u = curve->FirstParameter();
+    v = curve->LastParameter();
+}
+
+void GeomTrimmedCurve::setRange(double u, double v)
+{
+    try {
+        Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+
+        curve->SetTrim(u, v);
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
+    }
+}
+
+// -------------------------------------------------
+TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomArcOfConic,Part::GeomTrimmedCurve)
 
 GeomArcOfConic::GeomArcOfConic()
 {
@@ -1466,7 +1973,7 @@ void GeomArcOfConic::setCenter(const Base::Vector3d& Center)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1481,7 +1988,7 @@ void GeomArcOfConic::setLocation(const Base::Vector3d& Center)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+       THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1543,7 +2050,7 @@ void GeomArcOfConic::setAngleXU(double angle)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1589,7 +2096,7 @@ void GeomArcOfConic::setXAxisDir(const Base::Vector3d& newdir)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1626,7 +2133,7 @@ void GeomCircle::setHandle(const Handle(Geom_Circle)& c)
 Geometry *GeomCircle::copy(void) const
 {
     GeomCircle *newCirc = new GeomCircle(myCurve);
-    newCirc->Construction = this->Construction;
+    newCirc->copyNonTag(this);
     return newCirc;
 }
 
@@ -1694,7 +2201,7 @@ void GeomCircle::setRadius(double Radius)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1727,7 +2234,7 @@ void GeomCircle::Save(Base::Writer& writer) const
                 "\" NormalZ=\"" <<  normal.Z() <<
                 "\" AngleXU=\"" <<  AngleXU <<
                 "\" Radius=\"" <<  this->myCurve->Radius() <<
-             "\"/>" << endl;
+             "\"/>" << std::endl;
 }
 
 void GeomCircle::Restore(Base::XMLReader& reader)
@@ -1761,13 +2268,13 @@ void GeomCircle::Restore(Base::XMLReader& reader)
     try {
         GC_MakeCircle mc(xdir, Radius);
         if (!mc.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
 
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1818,7 +2325,7 @@ Geometry *GeomArcOfCircle::copy(void) const
 {
     GeomArcOfCircle* copy = new GeomArcOfCircle();
     copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
+    copy->copyNonTag(this);
     return copy;
 }
 
@@ -1846,7 +2353,7 @@ void GeomArcOfCircle::setRadius(double Radius)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1919,7 +2426,7 @@ void GeomArcOfCircle::setRange(double u, double v, bool emulateCCWXY)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -1956,7 +2463,7 @@ void GeomArcOfCircle::Save(Base::Writer &writer) const
                 "\" Radius=\"" <<  circle->Radius() <<
                 "\" StartAngle=\"" <<  this->myCurve->FirstParameter() <<
                 "\" EndAngle=\"" <<  this->myCurve->LastParameter() <<
-             "\"/>" << endl;
+             "\"/>" << std::endl;
 }
 
 void GeomArcOfCircle::Restore(Base::XMLReader &reader)
@@ -1992,10 +2499,10 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
     try {
         GC_MakeCircle mc(xdir, Radius);
         if (!mc.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
         GC_MakeArcOfCircle ma(mc.Value()->Circ(), StartAngle, EndAngle, 1);
         if (!ma.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(ma.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(ma.Status()))
 
         Handle(Geom_TrimmedCurve) tmpcurve = ma.Value();
         Handle(Geom_Circle) tmpcircle = Handle(Geom_Circle)::DownCast(tmpcurve->BasisCurve());
@@ -2006,7 +2513,7 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2047,7 +2554,7 @@ void GeomEllipse::setHandle(const Handle(Geom_Ellipse) &e)
 Geometry *GeomEllipse::copy(void) const
 {
     GeomEllipse *newEllipse = new GeomEllipse(myCurve);
-    newEllipse->Construction = this->Construction;
+    newEllipse->copyNonTag(this);
     return newEllipse;
 }
 
@@ -2114,7 +2621,7 @@ void GeomEllipse::setMajorRadius(double Radius)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2133,7 +2640,7 @@ void GeomEllipse::setMinorRadius(double Radius)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2171,7 +2678,7 @@ void GeomEllipse::setMajorAxisDir(Base::Vector3d newdir)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2207,7 +2714,7 @@ void GeomEllipse::Save(Base::Writer& writer) const
             << "MajorRadius=\"" <<  this->myCurve->MajorRadius() << "\" "
             << "MinorRadius=\"" <<  this->myCurve->MinorRadius() << "\" "
             << "AngleXU=\"" << AngleXU << "\" "
-            << "/>" << endl;
+            << "/>" << std::endl;
 }
 
 void GeomEllipse::Restore(Base::XMLReader& reader)
@@ -2247,19 +2754,19 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
     try {
         GC_MakeEllipse mc(xdir, MajorRadius, MinorRadius);
         if (!mc.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
 
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
 PyObject *GeomEllipse::getPyObject(void)
 {
-    return new EllipsePy((GeomEllipse*)this->clone());
+    return new EllipsePy(static_cast<GeomEllipse*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -2303,7 +2810,7 @@ Geometry *GeomArcOfEllipse::copy(void) const
 {
     GeomArcOfEllipse* copy = new GeomArcOfEllipse();
     copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
+    copy->copyNonTag(this);
     return copy;
 }
 
@@ -2329,7 +2836,7 @@ void GeomArcOfEllipse::setMajorRadius(double Radius)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2348,7 +2855,7 @@ void GeomArcOfEllipse::setMinorRadius(double Radius)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2390,7 +2897,7 @@ void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2437,7 +2944,7 @@ void GeomArcOfEllipse::setRange(double u, double v, bool emulateCCWXY)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2477,7 +2984,7 @@ void GeomArcOfEllipse::Save(Base::Writer &writer) const
             << "AngleXU=\"" << AngleXU << "\" "
             << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
             << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "
-            << "/>" << endl;
+            << "/>" << std::endl;
 }
 
 void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
@@ -2515,11 +3022,11 @@ void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
     try {
         GC_MakeEllipse mc(xdir, MajorRadius, MinorRadius);
         if (!mc.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
 
         GC_MakeArcOfEllipse ma(mc.Value()->Elips(), StartAngle, EndAngle, 1);
         if (!ma.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(ma.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(ma.Status()))
 
         Handle(Geom_TrimmedCurve) tmpcurve = ma.Value();
         Handle(Geom_Ellipse) tmpellipse = Handle(Geom_Ellipse)::DownCast(tmpcurve->BasisCurve());
@@ -2530,7 +3037,7 @@ void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2572,7 +3079,7 @@ void GeomHyperbola::setHandle(const Handle(Geom_Hyperbola)& c)
 Geometry *GeomHyperbola::copy(void) const
 {
     GeomHyperbola *newHyp = new GeomHyperbola(myCurve);
-    newHyp->Construction = this->Construction;
+    newHyp->copyNonTag(this);
     return newHyp;
 }
 
@@ -2596,7 +3103,7 @@ void GeomHyperbola::setMajorRadius(double Radius)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2615,7 +3122,7 @@ void GeomHyperbola::setMinorRadius(double Radius)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2650,7 +3157,7 @@ void GeomHyperbola::Save(Base::Writer& writer) const
             << "MajorRadius=\"" <<  this->myCurve->MajorRadius() << "\" "
             << "MinorRadius=\"" <<  this->myCurve->MinorRadius() << "\" "
             << "AngleXU=\"" << AngleXU << "\" "
-            << "/>" << endl;
+            << "/>" << std::endl;
 }
 
 void GeomHyperbola::Restore(Base::XMLReader& reader)
@@ -2685,13 +3192,13 @@ void GeomHyperbola::Restore(Base::XMLReader& reader)
     try {
         GC_MakeHyperbola mc(xdir, MajorRadius, MinorRadius);
         if (!mc.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
 
         this->myCurve = mc.Value();
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2741,7 +3248,7 @@ Geometry *GeomArcOfHyperbola::copy(void) const
 {
     GeomArcOfHyperbola* copy = new GeomArcOfHyperbola();
     copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
+    copy->copyNonTag(this);
     return copy;
 }
 
@@ -2767,7 +3274,7 @@ void GeomArcOfHyperbola::setMajorRadius(double Radius)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2786,7 +3293,7 @@ void GeomArcOfHyperbola::setMinorRadius(double Radius)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2829,7 +3336,7 @@ void GeomArcOfHyperbola::setMajorAxisDir(Base::Vector3d newdir)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2846,7 +3353,7 @@ void GeomArcOfHyperbola::getRange(double& u, double& v, bool emulateCCWXY) const
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 
     u = myCurve->FirstParameter();
@@ -2868,7 +3375,7 @@ void GeomArcOfHyperbola::setRange(double u, double v, bool emulateCCWXY)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -2907,7 +3414,7 @@ void GeomArcOfHyperbola::Save(Base::Writer &writer) const
             << "AngleXU=\"" << AngleXU << "\" "
             << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
             << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "
-            << "/>" << endl;
+            << "/>" << std::endl;
 }
 
 void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
@@ -2945,11 +3452,11 @@ void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
     try {
         GC_MakeHyperbola mc(xdir, MajorRadius, MinorRadius);
         if (!mc.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
 
         GC_MakeArcOfHyperbola ma(mc.Value()->Hypr(), StartAngle, EndAngle, 1);
         if (!ma.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(ma.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(ma.Status()))
 
         Handle(Geom_TrimmedCurve) tmpcurve = ma.Value();
         Handle(Geom_Hyperbola) tmphyperbola = Handle(Geom_Hyperbola)::DownCast(tmpcurve->BasisCurve());
@@ -2960,7 +3467,7 @@ void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -3000,7 +3507,7 @@ void GeomParabola::setHandle(const Handle(Geom_Parabola)& c)
 Geometry *GeomParabola::copy(void) const
 {
     GeomParabola *newPar = new GeomParabola(myCurve);
-    newPar->Construction = this->Construction;
+    newPar->copyNonTag(this);
     return newPar;
 }
 
@@ -3026,7 +3533,7 @@ void GeomParabola::setFocal(double length)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -3060,7 +3567,7 @@ void GeomParabola::Save(Base::Writer& writer) const
             << "NormalZ=\"" <<  normal.Z() << "\" "
             << "Focal=\"" <<  this->myCurve->Focal() << "\" "
             << "AngleXU=\"" << AngleXU << "\" "
-            << "/>" << endl;
+            << "/>" << std::endl;
 }
 
 void GeomParabola::Restore(Base::XMLReader& reader)
@@ -3094,13 +3601,13 @@ void GeomParabola::Restore(Base::XMLReader& reader)
     try {
         gce_MakeParab mc(xdir, Focal);
         if (!mc.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
 
         this->myCurve = new Geom_Parabola(mc.Value());
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -3150,7 +3657,7 @@ Geometry *GeomArcOfParabola::copy(void) const
 {
     GeomArcOfParabola* copy = new GeomArcOfParabola();
     copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
+    copy->copyNonTag(this);
     return copy;
 }
 
@@ -3176,7 +3683,7 @@ void GeomArcOfParabola::setFocal(double length)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -3201,7 +3708,7 @@ void GeomArcOfParabola::getRange(double& u, double& v, bool emulateCCWXY) const
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 
     u = myCurve->FirstParameter();
@@ -3222,7 +3729,7 @@ void GeomArcOfParabola::setRange(double u, double v, bool emulateCCWXY)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -3260,7 +3767,7 @@ void GeomArcOfParabola::Save(Base::Writer &writer) const
             << "AngleXU=\"" << AngleXU << "\" "
             << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
             << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "
-            << "/>" << endl;
+            << "/>" << std::endl;
 }
 
 void GeomArcOfParabola::Restore(Base::XMLReader &reader)
@@ -3297,11 +3804,11 @@ void GeomArcOfParabola::Restore(Base::XMLReader &reader)
     try {
         gce_MakeParab mc(xdir, Focal);
         if (!mc.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(mc.Status()))
 
         GC_MakeArcOfParabola ma(mc.Value(), StartAngle, EndAngle, 1);
         if (!ma.IsDone())
-            throw Base::Exception(gce_ErrorStatusText(ma.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(ma.Status()))
 
         Handle(Geom_TrimmedCurve) tmpcurve = ma.Value();
         Handle(Geom_Parabola) tmpparabola = Handle(Geom_Parabola)::DownCast(tmpcurve->BasisCurve());
@@ -3312,7 +3819,7 @@ void GeomArcOfParabola::Restore(Base::XMLReader &reader)
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -3378,7 +3885,7 @@ void GeomLine::setHandle(const Handle(Geom_Line)& l)
 Geometry *GeomLine::copy(void) const
 {
     GeomLine *newLine = new GeomLine(myCurve);
-    newLine->Construction = this->Construction;
+    newLine->copyNonTag(this);
     return newLine;
 }
 
@@ -3405,7 +3912,7 @@ void GeomLine::Save(Base::Writer &writer) const
                 "\" DirX=\"" <<  Dir.x <<
                 "\" DirY=\"" <<  Dir.y <<
                 "\" DirZ=\"" <<  Dir.z <<
-             "\"/>" << endl;
+             "\"/>" << std::endl;
 }
 void GeomLine::Restore(Base::XMLReader &reader)
 {
@@ -3429,12 +3936,12 @@ void GeomLine::Restore(Base::XMLReader &reader)
 
 PyObject *GeomLine::getPyObject(void)
 {
-    return 0;
+    return new LinePy(static_cast<GeomLine*>(this->clone()));
 }
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomLineSegment,Part::GeomCurve)
+TYPESYSTEM_SOURCE(Part::GeomLineSegment,Part::GeomTrimmedCurve)
 
 GeomLineSegment::GeomLineSegment()
 {
@@ -3476,7 +3983,7 @@ Geometry *GeomLineSegment::copy(void)const
 {
     GeomLineSegment *tempCurve = new GeomLineSegment();
     tempCurve->myCurve = Handle(Geom_TrimmedCurve)::DownCast(myCurve->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -3502,10 +4009,11 @@ void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3
     try {
         // Create line out of two points
         if (p1.Distance(p2) < gp::Resolution())
-            Standard_Failure::Raise("Both points are equal");
+            THROWM(Base::ValueError,"Both points are equal");
+
         GC_MakeSegment ms(p1, p2);
         if (!ms.IsDone()) {
-            throw Base::Exception(gce_ErrorStatusText(ms.Status()));
+            THROWM(Base::CADKernelError,gce_ErrorStatusText(ms.Status()))
         }
 
         // get Geom_Line of line segment
@@ -3518,7 +4026,7 @@ void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3
     }
     catch (Standard_Failure& e) {
 
-        throw Base::RuntimeError(e.GetMessageString());
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
@@ -3545,7 +4053,7 @@ void GeomLineSegment::Save       (Base::Writer &writer) const
                 "\" EndX=\"" <<  End.x <<
                 "\" EndY=\"" <<  End.y <<
                 "\" EndZ=\"" <<  End.z <<
-             "\"/>" << endl;
+             "\"/>" << std::endl;
 }
 
 void GeomLineSegment::Restore    (Base::XMLReader &reader)
@@ -3564,8 +4072,27 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
     EndY   = reader.getAttributeAsFloat("EndY");
     EndZ   = reader.getAttributeAsFloat("EndZ");
 
+    Base::Vector3d start(StartX,StartY,StartZ);
+    Base::Vector3d end(EndX,EndY,EndZ);
     // set the read geometry
-    setPoints(Base::Vector3d(StartX,StartY,StartZ),Base::Vector3d(EndX,EndY,EndZ) );
+    try {
+        setPoints(start, end);
+    }
+    catch(Base::ValueError&) {
+        // for a line segment construction, the only possibility of a value error is that
+        // the points are too close. The best try to restore is incrementing the distance.
+        // for other objects, the best effort may be just to leave default values.
+        reader.setPartialRestore(true);
+
+        if(start.x == 0) {
+            end = start + Base::Vector3d(DBL_EPSILON,0,0);
+        }
+        else {
+            end = start + Base::Vector3d(start.x*DBL_EPSILON,0,0);
+        }
+
+        setPoints(start, end);
+    }
 }
 
 PyObject *GeomLineSegment::getPyObject(void)
@@ -3586,6 +4113,10 @@ GeomOffsetCurve::GeomOffsetCurve(const Handle(Geom_Curve)& c, double offset, con
     this->myCurve = new Geom_OffsetCurve(c, offset, dir);
 }
 
+GeomOffsetCurve::GeomOffsetCurve(const Handle(Geom_Curve)& c, double offset, Base::Vector3d& dir):GeomOffsetCurve(c,offset,gp_Dir(dir.x,dir.y,dir.z))
+{
+}
+
 GeomOffsetCurve::GeomOffsetCurve(const Handle(Geom_OffsetCurve)& c)
 {
     setHandle(c);
@@ -3598,7 +4129,7 @@ GeomOffsetCurve::~GeomOffsetCurve()
 Geometry *GeomOffsetCurve::copy(void) const
 {
     GeomOffsetCurve *newCurve = new GeomOffsetCurve(myCurve);
-    newCurve->Construction = this->Construction;
+    newCurve->copyNonTag(this);
     return newCurve;
 }
 
@@ -3619,54 +4150,11 @@ void         GeomOffsetCurve::Restore    (Base::XMLReader &/*reader*/)    {asser
 
 PyObject *GeomOffsetCurve::getPyObject(void)
 {
-    return new OffsetCurvePy((GeomOffsetCurve*)this->clone());
+    return new OffsetCurvePy(static_cast<GeomOffsetCurve*>(this->clone()));
 }
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomTrimmedCurve,Part::GeomCurve)
-
-GeomTrimmedCurve::GeomTrimmedCurve()
-{
-}
-
-GeomTrimmedCurve::GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)& c)
-{
-    setHandle(c);
-}
-
-GeomTrimmedCurve::~GeomTrimmedCurve()
-{
-}
-
-void GeomTrimmedCurve::setHandle(const Handle(Geom_TrimmedCurve)& c)
-{
-    this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
-}
-
-const Handle(Geom_Geometry)& GeomTrimmedCurve::handle() const
-{
-    return myCurve;
-}
-
-Geometry *GeomTrimmedCurve::copy(void) const
-{
-    GeomTrimmedCurve *newCurve =  new GeomTrimmedCurve(myCurve);
-    newCurve->Construction = this->Construction;
-    return newCurve;
-}
-
-// Persistence implementer
-unsigned int GeomTrimmedCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomTrimmedCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomTrimmedCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
-
-PyObject *GeomTrimmedCurve::getPyObject(void)
-{
-    return 0;
-}
-
-// -------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomSurface,Part::Geometry)
 
@@ -3735,7 +4223,7 @@ bool GeomSurface::isUmbillic(double u, double v) const
         return prop.IsUmbilic();
     }
 
-    throw Base::RuntimeError("No curvature defined");
+    THROWM(Base::RuntimeError,"No curvature defined")
 }
 
 double GeomSurface::curvature(double u, double v, Curvature type) const
@@ -3762,7 +4250,7 @@ double GeomSurface::curvature(double u, double v, Curvature type) const
         return value;
     }
 
-    throw Base::RuntimeError("No curvature defined");
+    THROWM(Base::RuntimeError,"No curvature defined")
 }
 
 void GeomSurface::curvatureDirections(double u, double v, gp_Dir& maxD, gp_Dir& minD) const
@@ -3774,7 +4262,7 @@ void GeomSurface::curvatureDirections(double u, double v, gp_Dir& maxD, gp_Dir& 
         return;
     }
 
-    throw Base::RuntimeError("No curvature defined");
+    THROWM(Base::RuntimeError,"No curvature defined")
 }
 
 // -------------------------------------------------
@@ -3813,7 +4301,7 @@ void GeomBezierSurface::setHandle(const Handle(Geom_BezierSurface)& b)
 Geometry *GeomBezierSurface::copy(void) const
 {
     GeomBezierSurface *newSurf =  new GeomBezierSurface(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -3824,7 +4312,7 @@ void         GeomBezierSurface::Restore    (Base::XMLReader &/*reader*/)    {ass
 
 PyObject *GeomBezierSurface::getPyObject(void)
 {
-    return new BezierSurfacePy((GeomBezierSurface*)this->clone());
+    return new BezierSurfacePy(static_cast<GeomBezierSurface*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -3872,7 +4360,7 @@ const Handle(Geom_Geometry)& GeomBSplineSurface::handle() const
 Geometry *GeomBSplineSurface::copy(void) const
 {
     GeomBSplineSurface *newSurf =  new GeomBSplineSurface(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -3883,7 +4371,7 @@ void         GeomBSplineSurface::Restore    (Base::XMLReader &/*reader*/)    {as
 
 PyObject *GeomBSplineSurface::getPyObject(void)
 {
-    return new BSplineSurfacePy((GeomBSplineSurface*)this->clone());
+    return new BSplineSurfacePy(static_cast<GeomBSplineSurface*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -3919,7 +4407,7 @@ Geometry *GeomCylinder::copy(void) const
 {
     GeomCylinder *tempCurve = new GeomCylinder();
     tempCurve->mySurface = Handle(Geom_CylindricalSurface)::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -3930,7 +4418,7 @@ void         GeomCylinder::Restore    (Base::XMLReader &/*reader*/)    {assert(0
 
 PyObject *GeomCylinder::getPyObject(void)
 {
-    return new CylinderPy((GeomCylinder*)this->clone());
+    return new CylinderPy(static_cast<GeomCylinder*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -3966,7 +4454,7 @@ Geometry *GeomCone::copy(void) const
 {
     GeomCone *tempCurve = new GeomCone();
     tempCurve->mySurface = Handle(Geom_ConicalSurface)::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -3977,7 +4465,7 @@ void         GeomCone::Restore    (Base::XMLReader &/*reader*/)    {assert(0);  
 
 PyObject *GeomCone::getPyObject(void)
 {
-    return new ConePy((GeomCone*)this->clone());
+    return new ConePy(static_cast<GeomCone*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4013,7 +4501,7 @@ Geometry *GeomToroid::copy(void) const
 {
     GeomToroid *tempCurve = new GeomToroid();
     tempCurve->mySurface = Handle(Geom_ToroidalSurface)::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -4024,7 +4512,7 @@ void         GeomToroid::Restore    (Base::XMLReader &/*reader*/)    {assert(0);
 
 PyObject *GeomToroid::getPyObject(void)
 {
-    return new ToroidPy((GeomToroid*)this->clone());
+    return new ToroidPy(static_cast<GeomToroid*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4060,7 +4548,7 @@ Geometry *GeomSphere::copy(void) const
 {
     GeomSphere *tempCurve = new GeomSphere();
     tempCurve->mySurface = Handle(Geom_SphericalSurface)::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -4071,7 +4559,7 @@ void         GeomSphere::Restore    (Base::XMLReader &/*reader*/)    {assert(0);
 
 PyObject *GeomSphere::getPyObject(void)
 {
-    return new SpherePy((GeomSphere*)this->clone());
+    return new SpherePy(static_cast<GeomSphere*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4107,7 +4595,7 @@ Geometry *GeomPlane::copy(void) const
 {
     GeomPlane *tempCurve = new GeomPlane();
     tempCurve->mySurface = Handle(Geom_Plane)::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -4118,7 +4606,7 @@ void         GeomPlane::Restore    (Base::XMLReader &/*reader*/)    {assert(0); 
 
 PyObject *GeomPlane::getPyObject(void)
 {
-    return new PlanePy((GeomPlane*)this->clone());
+    return new PlanePy(static_cast<GeomPlane*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4156,7 +4644,7 @@ const Handle(Geom_Geometry)& GeomOffsetSurface::handle() const
 Geometry *GeomOffsetSurface::copy(void) const
 {
     GeomOffsetSurface *newSurf = new GeomOffsetSurface(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -4167,7 +4655,7 @@ void         GeomOffsetSurface::Restore    (Base::XMLReader &/*reader*/)    {ass
 
 PyObject *GeomOffsetSurface::getPyObject(void)
 {
-    return new OffsetSurfacePy((GeomOffsetSurface*)this->clone());
+    return new OffsetSurfacePy(static_cast<GeomOffsetSurface*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4211,7 +4699,7 @@ const Handle(Geom_Geometry)& GeomPlateSurface::handle() const
 Geometry *GeomPlateSurface::copy(void) const
 {
     GeomPlateSurface *newSurf = new GeomPlateSurface(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -4266,7 +4754,7 @@ const Handle(Geom_Geometry)& GeomTrimmedSurface::handle() const
 Geometry *GeomTrimmedSurface::copy(void) const
 {
     GeomTrimmedSurface *newSurf = new GeomTrimmedSurface(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -4277,7 +4765,7 @@ void         GeomTrimmedSurface::Restore    (Base::XMLReader &/*reader*/)    {as
 
 PyObject *GeomTrimmedSurface::getPyObject(void)
 {
-    return 0;
+    return new RectangularTrimmedSurfacePy(static_cast<GeomTrimmedSurface*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4315,7 +4803,7 @@ const Handle(Geom_Geometry)& GeomSurfaceOfRevolution::handle() const
 Geometry *GeomSurfaceOfRevolution::copy(void) const
 {
     GeomSurfaceOfRevolution *newSurf = new GeomSurfaceOfRevolution(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -4326,7 +4814,7 @@ void         GeomSurfaceOfRevolution::Restore    (Base::XMLReader &/*reader*/)  
 
 PyObject *GeomSurfaceOfRevolution::getPyObject(void)
 {
-    return new SurfaceOfRevolutionPy((GeomSurfaceOfRevolution*)this->clone());
+    return new SurfaceOfRevolutionPy(static_cast<GeomSurfaceOfRevolution*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4364,7 +4852,7 @@ const Handle(Geom_Geometry)& GeomSurfaceOfExtrusion::handle() const
 Geometry *GeomSurfaceOfExtrusion::copy(void) const
 {
     GeomSurfaceOfExtrusion *newSurf = new GeomSurfaceOfExtrusion(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -4375,7 +4863,7 @@ void         GeomSurfaceOfExtrusion::Restore    (Base::XMLReader &/*reader*/)   
 
 PyObject *GeomSurfaceOfExtrusion::getPyObject(void)
 {
-    return new SurfaceOfExtrusionPy((GeomSurfaceOfExtrusion*)this->clone());
+    return new SurfaceOfExtrusionPy(static_cast<GeomSurfaceOfExtrusion*>(this->clone()));
 }
 
 
@@ -4550,60 +5038,286 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     return arc;
 }
 
-GeomSurface* makeFromSurface(const Handle(Geom_Surface)& s)
+std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)& s)
 {
+    std::unique_ptr<GeomSurface> geoSurf;
     if (s->IsKind(STANDARD_TYPE(Geom_ToroidalSurface))) {
         Handle(Geom_ToroidalSurface) hSurf = Handle(Geom_ToroidalSurface)::DownCast(s);
-        return new GeomToroid(hSurf);
+        geoSurf.reset(new GeomToroid(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_BezierSurface))) {
         Handle(Geom_BezierSurface) hSurf = Handle(Geom_BezierSurface)::DownCast(s);
-        return new GeomBezierSurface(hSurf);
+        geoSurf.reset(new GeomBezierSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {
         Handle(Geom_BSplineSurface) hSurf = Handle(Geom_BSplineSurface)::DownCast(s);
-        return new GeomBSplineSurface(hSurf);
+        geoSurf.reset(new GeomBSplineSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))) {
         Handle(Geom_CylindricalSurface) hSurf = Handle(Geom_CylindricalSurface)::DownCast(s);
-        return new GeomCylinder(hSurf);
+        geoSurf.reset(new GeomCylinder(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_ConicalSurface))) {
         Handle(Geom_ConicalSurface) hSurf = Handle(Geom_ConicalSurface)::DownCast(s);
-        return new GeomCone(hSurf);
+        geoSurf.reset(new GeomCone(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SphericalSurface))) {
         Handle(Geom_SphericalSurface) hSurf = Handle(Geom_SphericalSurface)::DownCast(s);
-        return new GeomSphere(hSurf);
+        geoSurf.reset(new GeomSphere(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_Plane))) {
         Handle(Geom_Plane) hSurf = Handle(Geom_Plane)::DownCast(s);
-        return new GeomPlane(hSurf);
+        geoSurf.reset(new GeomPlane(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_OffsetSurface))) {
         Handle(Geom_OffsetSurface) hSurf = Handle(Geom_OffsetSurface)::DownCast(s);
-        return new GeomOffsetSurface(hSurf);
+        geoSurf.reset(new GeomOffsetSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(GeomPlate_Surface))) {
         Handle(GeomPlate_Surface) hSurf = Handle(GeomPlate_Surface)::DownCast(s);
-        return new GeomPlateSurface(hSurf);
+        geoSurf.reset(new GeomPlateSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
         Handle(Geom_RectangularTrimmedSurface) hSurf = Handle(Geom_RectangularTrimmedSurface)::DownCast(s);
-        return new GeomTrimmedSurface(hSurf);
+        geoSurf.reset(new GeomTrimmedSurface(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfRevolution))) {
         Handle(Geom_SurfaceOfRevolution) hSurf = Handle(Geom_SurfaceOfRevolution)::DownCast(s);
-        return new GeomSurfaceOfRevolution(hSurf);
+        geoSurf.reset(new GeomSurfaceOfRevolution(hSurf));
     }
     else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfLinearExtrusion))) {
         Handle(Geom_SurfaceOfLinearExtrusion) hSurf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(s);
-        return new GeomSurfaceOfExtrusion(hSurf);
+        geoSurf.reset(new GeomSurfaceOfExtrusion(hSurf));
+    }
+    else {
+        std::string err = "Unhandled surface type ";
+        err += s->DynamicType()->Name();
+        throw Base::TypeError(err);
     }
 
-    std::string err = "Unhandled surface type ";
-    err += s->DynamicType()->Name();
-    throw Base::TypeError(err);
+    return geoSurf;
+}
+
+std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)& c)
+{
+    std::unique_ptr<GeomCurve> geoCurve;
+    if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
+        Handle(Geom_Circle) circ = Handle(Geom_Circle)::DownCast(c);
+        geoCurve.reset(new GeomCircle(circ));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
+        Handle(Geom_Ellipse) ell = Handle(Geom_Ellipse)::DownCast(c);
+        geoCurve.reset(new GeomEllipse(ell));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
+        Handle(Geom_Hyperbola) hyp = Handle(Geom_Hyperbola)::DownCast(c);
+        geoCurve.reset(new GeomHyperbola(hyp));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
+        Handle(Geom_Line) lin = Handle(Geom_Line)::DownCast(c);
+        geoCurve.reset(new GeomLine(lin));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
+        Handle(Geom_OffsetCurve) oc = Handle(Geom_OffsetCurve)::DownCast(c);
+        geoCurve.reset(new GeomOffsetCurve(oc));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
+        Handle(Geom_Parabola) par = Handle(Geom_Parabola)::DownCast(c);
+        geoCurve.reset(new GeomParabola(par));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+        return makeFromTrimmedCurve(c, c->FirstParameter(), c->LastParameter());
+    }
+    /*else if (c->IsKind(STANDARD_TYPE(Geom_BoundedCurve))) {
+        Handle(Geom_BoundedCurve) bc = Handle(Geom_BoundedCurve)::DownCast(c);
+        return Py::asObject(new GeometryCurvePy(new GeomBoundedCurve(bc)));
+    }*/
+    else if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+        Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c);
+        geoCurve.reset(new GeomBezierCurve(bezier));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
+        Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c);
+        geoCurve.reset(new GeomBSplineCurve(bspline));
+    }
+    else {
+        std::string err = "Unhandled curve type ";
+        err += c->DynamicType()->Name();
+        throw Base::TypeError(err);
+    }
+
+    return geoCurve;
+}
+
+std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, double f, double l)
+{
+    if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
+        Handle(Geom_Circle) circ = Handle(Geom_Circle)::DownCast(c);
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfCircle());
+        Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom_Circle) this_circ = Handle(Geom_Circle)::DownCast
+            (this_arc->BasisCurve());
+        this_circ->SetCirc(circ->Circ());
+        this_arc->SetTrim(f, l);
+        return arc;
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
+        Handle(Geom_Ellipse) ellp = Handle(Geom_Ellipse)::DownCast(c);
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfEllipse());
+        Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom_Ellipse) this_ellp = Handle(Geom_Ellipse)::DownCast
+            (this_arc->BasisCurve());
+        this_ellp->SetElips(ellp->Elips());
+        this_arc->SetTrim(f, l);
+        return arc;
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
+        Handle(Geom_Hyperbola) hypr = Handle(Geom_Hyperbola)::DownCast(c);
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfHyperbola());
+        Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom_Hyperbola) this_hypr = Handle(Geom_Hyperbola)::DownCast
+            (this_arc->BasisCurve());
+        this_hypr->SetHypr(hypr->Hypr());
+        this_arc->SetTrim(f, l);
+        return arc;
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
+        Handle(Geom_Line) line = Handle(Geom_Line)::DownCast(c);
+        std::unique_ptr<GeomCurve> segm(new GeomLineSegment());
+        Handle(Geom_TrimmedCurve) this_segm = Handle(Geom_TrimmedCurve)::DownCast
+            (segm->handle());
+        Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
+            (this_segm->BasisCurve());
+        this_line->SetLin(line->Lin());
+        this_segm->SetTrim(f, l);
+        return segm;
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
+        Handle(Geom_Parabola) para = Handle(Geom_Parabola)::DownCast(c);
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfParabola());
+        Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom_Parabola) this_para = Handle(Geom_Parabola)::DownCast
+            (this_arc->BasisCurve());
+        this_para->SetParab(para->Parab());
+        this_arc->SetTrim(f, l);
+        return arc;
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+        Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c->Copy());
+        bezier->Segment(f, l);
+        return std::unique_ptr<GeomCurve>(new GeomBezierCurve(bezier));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
+        Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c->Copy());
+        bspline->Segment(f, l);
+        return std::unique_ptr<GeomCurve>(new GeomBSplineCurve(bspline));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
+        Handle(Geom_OffsetCurve) oc = Handle(Geom_OffsetCurve)::DownCast(c);
+        double v = oc->Offset();
+        gp_Dir dir = oc->Direction();
+        std::unique_ptr<GeomCurve> bc(makeFromTrimmedCurve(oc->BasisCurve(), f, l));
+        return std::unique_ptr<GeomCurve>(new GeomOffsetCurve(Handle(Geom_Curve)::DownCast(bc->handle()), v, dir));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+        Handle(Geom_TrimmedCurve) trc = Handle(Geom_TrimmedCurve)::DownCast(c);
+        return makeFromTrimmedCurve(trc->BasisCurve(), f, l);
+    }
+    /*else if (c->IsKind(STANDARD_TYPE(Geom_BoundedCurve))) {
+        Handle(Geom_BoundedCurve) bc = Handle(Geom_BoundedCurve)::DownCast(c);
+        return Py::asObject(new GeometryCurvePy(new GeomBoundedCurve(bc)));
+    }*/
+    else {
+        std::string err = "Unhandled curve type ";
+        err += c->DynamicType()->Name();
+        throw Base::TypeError(err);
+    }
+}
+
+std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt)
+{
+    std::unique_ptr<GeomCurve> geoCurve;
+    switch (adapt.GetType())
+    {
+    case GeomAbs_Line:
+        {
+            geoCurve.reset(new GeomLine());
+            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
+                (geoCurve->handle());
+            this_curv->SetLin(adapt.Line());
+            break;
+        }
+    case GeomAbs_Circle:
+        {
+            geoCurve.reset(new GeomCircle());
+            Handle(Geom_Circle) this_curv = Handle(Geom_Circle)::DownCast
+                (geoCurve->handle());
+            this_curv->SetCirc(adapt.Circle());
+            break;
+        }
+    case GeomAbs_Ellipse:
+        {
+            geoCurve.reset(new GeomEllipse());
+            Handle(Geom_Ellipse) this_curv = Handle(Geom_Ellipse)::DownCast
+                (geoCurve->handle());
+            this_curv->SetElips(adapt.Ellipse());
+            break;
+        }
+    case GeomAbs_Hyperbola:
+        {
+            geoCurve.reset(new GeomHyperbola());
+            Handle(Geom_Hyperbola) this_curv = Handle(Geom_Hyperbola)::DownCast
+                (geoCurve->handle());
+            this_curv->SetHypr(adapt.Hyperbola());
+            break;
+        }
+    case GeomAbs_Parabola:
+        {
+            geoCurve.reset(new GeomParabola());
+            Handle(Geom_Parabola) this_curv = Handle(Geom_Parabola)::DownCast
+                (geoCurve->handle());
+            this_curv->SetParab(adapt.Parabola());
+            break;
+        }
+    case GeomAbs_BezierCurve:
+        {
+            geoCurve.reset(new GeomBezierCurve(adapt.Bezier()));
+            break;
+        }
+    case GeomAbs_BSplineCurve:
+        {
+            geoCurve.reset(new GeomBSplineCurve(adapt.BSpline()));
+            break;
+        }
+#if OCC_VERSION_HEX >= 0x070000
+    case GeomAbs_OffsetCurve:
+        {
+            geoCurve.reset(new GeomOffsetCurve(adapt.OffsetCurve()));
+            break;
+        }
+#endif
+    case GeomAbs_OtherCurve:
+    default:
+        break;
+    }
+
+    if (!geoCurve)
+        throw Base::TypeError("Unhandled curve type");
+
+    // Check if the curve must be trimmed
+    Handle(Geom_Curve) curv3d = Handle(Geom_Curve)::DownCast
+        (geoCurve->handle());
+    double u = curv3d->FirstParameter();
+    double v = curv3d->LastParameter();
+    if (u != adapt.FirstParameter() || v != adapt.LastParameter()) {
+        geoCurve = makeFromTrimmedCurve(curv3d, adapt.FirstParameter(), adapt.LastParameter());
+    }
+
+    return geoCurve;
 }
 
 }

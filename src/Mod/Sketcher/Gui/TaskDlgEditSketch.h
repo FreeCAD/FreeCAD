@@ -27,14 +27,14 @@
 #include <Gui/TaskView/TaskDialog.h>
 
 #include "ViewProviderSketch.h"
-#include "TaskSketcherConstrains.h"
+#include "TaskSketcherConstraints.h"
 #include "TaskSketcherElements.h"
 #include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
 #include "TaskSketcherSolverAdvanced.h"
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 
-typedef boost::signals::connection Connection;
+typedef boost::signals2::connection Connection;
 
 namespace SketcherGui {
 
@@ -62,7 +62,7 @@ public:
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
 
-    /// returns for Close and Help button 
+    /// returns for Close and Help button
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
     { return QDialogButtonBox::Close; }
 
@@ -72,13 +72,11 @@ protected:
 
 protected:
     ViewProviderSketch      *sketchView;
-    TaskSketcherConstrains  *Constraints;
+    TaskSketcherConstraints *Constraints;
     TaskSketcherElements    *Elements;
     TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;
     TaskSketcherSolverAdvanced *SolverAdvanced;
-    Connection connectUndoDocument;
-    Connection connectRedoDocument;
 };
 
 

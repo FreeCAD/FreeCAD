@@ -24,11 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMenu>
+# include <QAction>
+# include <QMessageBox>
 #endif
 
-#include <QMenu>
-#include <QAction>
-#include <QMessageBox>
 #include "ViewProviderHole.h"
 #include "TaskHoleParameters.h"
 #include <Mod/PartDesign/App/FeatureHole.h>

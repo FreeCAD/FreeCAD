@@ -28,7 +28,6 @@
 # include <QTreeWidget>
 # include <TopoDS_Shape.hxx>
 # include <TopExp_Explorer.hxx>
-# include <boost/bind.hpp>
 # include <cfloat>
 # include <Python.h>
 # include <Inventor/system/inttypes.h>
@@ -78,7 +77,6 @@ Mirroring::Mirroring(QWidget* parent)
 Mirroring::~Mirroring()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void Mirroring::changeEvent(QEvent *e)

@@ -26,12 +26,13 @@
 #ifndef FEMGUI_DLGSETTINGSFEMZ88IMP_H
 #define FEMGUI_DLGSETTINGSFEMZ88IMP_H
 
-#include "ui_DlgSettingsFemZ88.h"
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 namespace FemGui {
+class Ui_DlgSettingsFemZ88Imp;
 
-class DlgSettingsFemZ88Imp : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsFemZ88Imp
+class DlgSettingsFemZ88Imp : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -43,6 +44,9 @@ protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
+
+private:
+    std::unique_ptr<Ui_DlgSettingsFemZ88Imp> ui;
 };
 
 } // namespace FemGui

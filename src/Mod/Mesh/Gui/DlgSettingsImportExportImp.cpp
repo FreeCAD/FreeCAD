@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Ian Rees         <ian.rees@gmail.com>              *
+ *   Copyright (c) 2016 Ian Rees <ian.rees@gmail.com>                      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,6 +25,7 @@
 #include "DlgSettingsImportExportImp.h"
 #include "ui_DlgSettingsImportExport.h"
 #include <App/Application.h>
+#include <Mod/Mesh/App/Core/MeshIO.h>
 
 
 using namespace MeshGui;
@@ -33,11 +34,14 @@ DlgSettingsImportExport::DlgSettingsImportExport(QWidget* parent)
   : PreferencePage(parent), ui(new Ui_DlgSettingsImportExport)
 {
     ui->setupUi(this);
+    ui->exportAmfCompressed->setToolTip(tr("This parameter indicates whether ZIP compression\n"
+                                           "is used when writing a file in AMF format"));
 }
 
 DlgSettingsImportExport::~DlgSettingsImportExport()
 {
     // no need to delete child widgets, Qt does it all for us
+    delete ui;
 }
 
 void DlgSettingsImportExport::saveSettings()
@@ -48,6 +52,13 @@ void DlgSettingsImportExport::saveSettings()
     handle->SetFloat("MaxDeviationExport", value);
     
     ui->exportAmfCompressed->onSave();
+
+    ParameterGrp::handle asy = handle->GetGroup("Asymptote");
+    asy->SetASCII("Width", ui->asymptoteWidth->text().toLatin1());
+    asy->SetASCII("Height", ui->asymptoteHeight->text().toLatin1());
+
+    MeshCore::MeshOutput::SetAsymptoteSize(ui->asymptoteWidth->text().toStdString(),
+                                           ui->asymptoteHeight->text().toStdString());
 }
 
 void DlgSettingsImportExport::loadSettings()
@@ -59,6 +70,10 @@ void DlgSettingsImportExport::loadSettings()
     ui->maxDeviationExport->setValue(value);
     
     ui->exportAmfCompressed->onRestore();
+
+    ParameterGrp::handle asy = handle->GetGroup("Asymptote");
+    ui->asymptoteWidth->setText(QString::fromStdString(asy->GetASCII("Width")));
+    ui->asymptoteHeight->setText(QString::fromStdString(asy->GetASCII("Height")));
 }
 
 /**

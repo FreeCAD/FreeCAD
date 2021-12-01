@@ -161,7 +161,7 @@ ViewProviderPartReference::ViewProviderPartReference()
     //pShapeHints->ref();
     //Lighting.touch();
 
-    sPixmap = "Tree_Part";
+    sPixmap = "Part_3D_object";
     //loadParameter();
 }
 
@@ -241,9 +241,9 @@ void ViewProviderPartReference::attach(App::DocumentObject *pcFeat)
     ViewProviderGeometryObject::attach(pcFeat);
 
     SoGroup* pcNormalRoot = new SoGroup();
-    SoGroup* pcFlatRoot = new SoGroup();
-    SoGroup* pcWireframeRoot = new SoGroup();
-    SoGroup* pcPointsRoot = new SoGroup();
+    //SoGroup* pcFlatRoot = new SoGroup();
+    //SoGroup* pcWireframeRoot = new SoGroup();
+    //SoGroup* pcPointsRoot = new SoGroup();
 
     // enable two-side rendering
     pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
@@ -256,15 +256,15 @@ void ViewProviderPartReference::attach(App::DocumentObject *pcFeat)
     pcNormalRoot->addChild(VertexRoot);
 
     // just faces with no edges or points
-    pcFlatRoot->addChild(pShapeHints);
-    pcFlatRoot->addChild(FaceRoot);
+    //pcFlatRoot->addChild(pShapeHints);
+    //pcFlatRoot->addChild(FaceRoot);
 
     // only edges
-    pcWireframeRoot->addChild(EdgeRoot);
-    pcWireframeRoot->addChild(VertexRoot);
+    //pcWireframeRoot->addChild(EdgeRoot);
+    //pcWireframeRoot->addChild(VertexRoot);
 
     // normal viewing with edges and points
-    pcPointsRoot->addChild(VertexRoot);
+    //pcPointsRoot->addChild(VertexRoot);
 
     // putting all together with the switch
     addDisplayMaskMode(pcNormalRoot, "Reference");
@@ -274,7 +274,7 @@ void ViewProviderPartReference::setDisplayMode(const char* ModeName)
 {
     if ( strcmp("Reference",ModeName)==0 )
         setDisplayMaskMode("Reference");
-	
+
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
 

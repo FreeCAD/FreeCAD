@@ -46,5 +46,9 @@
         <file>translations/Raytracing_id.qm</file>
         <file>translations/Raytracing_lt.qm</file>
         <file>translations/Raytracing_val-ES.qm</file>
+        <file>translations/Raytracing_ar.qm</file>
+        <file>translations/Raytracing_vi.qm</file>
+        <file>translations/Raytracing_es-AR.qm</file>
+        <file>translations/Raytracing_bg.qm</file>
     </qresource>
 </RCC>

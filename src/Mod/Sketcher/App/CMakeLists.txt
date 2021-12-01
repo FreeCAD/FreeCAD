@@ -36,6 +36,10 @@ set(Sketcher_LIBS
 
 generate_from_xml(SketchObjectSFPy)
 generate_from_xml(SketchObjectPy)
+generate_from_xml(SketchGeometryExtensionPy)
+generate_from_xml(ExternalGeometryExtensionPy)
+generate_from_xml(GeometryFacadePy)
+generate_from_xml(ExternalGeometryFacadePy)
 generate_from_xml(ConstraintPy)
 generate_from_xml(SketchPy)
 
@@ -50,6 +54,12 @@ SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 SET(Features_SRCS
     SketchObjectSF.cpp
     SketchObjectSF.h
+    SketchGeometryExtension.cpp
+    SketchGeometryExtension.h
+    ExternalGeometryExtension.cpp
+    ExternalGeometryExtension.h
+    SolverGeometryExtension.cpp
+    SolverGeometryExtension.h
     SketchObject.cpp
     SketchObject.h
     SketchAnalysis.h
@@ -63,6 +73,10 @@ SET(Datatypes_SRCS
     Constraint.h
     Sketch.cpp
     Sketch.h
+    GeometryFacade.cpp
+    GeometryFacade.h
+    ExternalGeometryFacade.cpp
+    ExternalGeometryFacade.h
 )
 SOURCE_GROUP("Datatypes" FILES ${Datatypes_SRCS})
 
@@ -71,6 +85,14 @@ SET(Python_SRCS
     SketchObjectSFPyImp.cpp
     SketchObjectPy.xml
     SketchObjectPyImp.cpp
+    SketchGeometryExtensionPy.xml
+    SketchGeometryExtensionPyImp.cpp
+    ExternalGeometryExtensionPy.xml
+    ExternalGeometryExtensionPyImp.cpp
+    GeometryFacadePy.xml
+    GeometryFacadePyImp.cpp
+    ExternalGeometryFacadePy.xml
+    ExternalGeometryFacadePyImp.cpp
     ConstraintPyImp.cpp
     ConstraintPy.xml
     SketchPy.xml
@@ -80,7 +102,6 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
 SET(PlaneGCS_SRCS
-    planegcs/qp_eq.h
     planegcs/GCS.cpp
     planegcs/GCS.h
     planegcs/Util.h
@@ -112,24 +133,32 @@ SET(Sketcher_SRCS
     ${Datatypes_SRCS}
 )
 
-SET(Sketcher_Scripts
-    Init.py
-    SketcherExample.py
-    TestSketcherApp.py
-    Profiles.py
-    ProfileLib/Hexagon.py
-    ProfileLib/RegularPolygon.py
-    ProfileLib/__init__.py
+SET(Sketcher_PCH_SRCS
+    ${Features_SRCS}
+    ${SketchModule_SRCS}
+    ${Python_SRCS}
+    ${Properties_SRCS}
+    ${Datatypes_SRCS}
 )
 
 add_library(Sketcher SHARED ${Sketcher_SRCS})
 target_link_libraries(Sketcher ${Sketcher_LIBS})
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Sketcher_CPP_SRCS ${Sketcher_PCH_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Sketcher PreCompiled.h PreCompiled.cpp Sketcher_CPP_SRCS)
+endif(FREECAD_USE_PCH)
 
-fc_target_copy_resource(Sketcher 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Sketcher
-    ${CMAKE_BINARY_DIR}/Mod/Sketcher
-    ${Sketcher_Scripts})
+# Suppress some very long Eigen3 warnings of older versions
+if (EIGEN3_NO_DEPRECATED_COPY)
+    set_source_files_properties(
+        planegcs/GCS.cpp
+        planegcs/SubSystem.cpp
+        planegcs/qp_eq.cpp
+        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
+endif ()
+
 
 SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(Sketcher)

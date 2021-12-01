@@ -40,7 +40,7 @@
 using namespace App;
 
 
-TYPESYSTEM_SOURCE(App::PropertyPythonObject , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyPythonObject , App::Property)
 
 PropertyPythonObject::PropertyPythonObject()
 {
@@ -109,6 +109,8 @@ std::string PropertyPythonObject::toString() const
         repr = str.as_std_string("ascii");
     }
     catch (Py::Exception&) {
+        Py::String typestr(this->object.type().str());
+        Base::Console().Error("PropertyPythonObject::toString(): failed for %s\n", typestr.as_string().c_str());
         Base::PyException e; // extract the Python error text
         e.ReportException();
     }
@@ -120,6 +122,8 @@ void PropertyPythonObject::fromString(const std::string& repr)
 {
     Base::PyGILStateLocker lock;
     try {
+        if (repr.empty())
+            return;
         Py::Module pickle(PyImport_ImportModule("json"),true);
         if (pickle.isNull())
             throw Py::Exception();
@@ -331,14 +335,13 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
                 if (mod.isNull())
                     throw Py::Exception();
                 PyObject* cls = mod.getAttr(reader.getAttribute("class")).ptr();
-#if PY_MAJOR_VERSION >= 3
-                if (PyType_Check(cls)) {
-#else
-                if (PyClass_Check(cls)) {
-                    this->object = PyInstance_NewRaw(cls, 0);
+                if (!cls) {
+                    std::stringstream s;
+                    s << "Module " << reader.getAttribute("module")
+                      << " has no class " << reader.getAttribute("class");
+                    throw Py::AttributeError(s.str());
                 }
-                else if (PyType_Check(cls)) {
-#endif
+                if (PyType_Check(cls)) {
                     this->object = PyType_GenericAlloc((PyTypeObject*)cls, 0);
                 }
                 else {
@@ -352,11 +355,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
                 Py::Module mod(PyImport_ImportModule(nam.c_str()),true);
                 if (mod.isNull())
                     throw Py::Exception();
-#if PY_MAJOR_VERSION >= 3
                 this->object = PyObject_CallObject(mod.getAttr(cls).ptr(), NULL);
-#else
-                this->object = PyInstance_NewRaw(mod.getAttr(cls).ptr(), 0);
-#endif
                 load_pickle = true;
                 buffer = std::string(what[2].second, end);
             }

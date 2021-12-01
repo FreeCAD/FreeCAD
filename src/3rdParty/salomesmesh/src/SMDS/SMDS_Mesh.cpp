@@ -26,6 +26,11 @@
 #pragma warning(disable:4786)
 #endif
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Winconsistent-missing-override"
+#endif
+
 #include "SMDS_FaceOfEdges.hxx"
 #include "SMDS_FaceOfNodes.hxx"
 #include "SMDS_Mesh.hxx"
@@ -4763,7 +4768,11 @@ void SMDS_Mesh::dumpGrid(string ficdump)
         ficcon << endl;
   }
   ficcon << "-------------------------------- connectivity " <<  nbPoints << endl;
-        vtkCellLinks *links = myGrid->GetCellLinks();
+#ifdef VTK_CELL_ARRAY_V2
+  vtkCellLinks *links = static_cast<vtkCellLinks*>(myGrid->GetCellLinks());
+#else
+  vtkCellLinks *links = myGrid->GetCellLinks();
+#endif
   for (int i=0; i<nbPoints; i++)
   {
         int ncells = links->GetNcells(i);
@@ -4851,3 +4860,7 @@ bool SMDS_Mesh::isCompacted()
     }
   return true;
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif

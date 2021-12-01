@@ -27,6 +27,7 @@
 #include <vector>
 #include <memory>
 #include <Base/Vector3D.h>
+#include <App/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Sketcher/App/SketchAnalysis.h>
 
@@ -58,6 +59,8 @@ private Q_SLOTS:
     void on_orientLockEnable_clicked();
     void on_orientLockDisable_clicked();
     void on_delConstrExtr_clicked();
+    void on_findDegenerated_clicked();
+    void on_fixDegenerated_clicked();
 
 private:
     void showPoints(const std::vector<Base::Vector3d>&);
@@ -65,7 +68,7 @@ private:
 
 private:
     std::unique_ptr<Ui_TaskSketcherValidation> ui;
-    Sketcher::SketchObject* sketch;
+    App::WeakPtrT<Sketcher::SketchObject> sketch;
     Sketcher::SketchAnalysis sketchAnalyser;
     SoGroup* coincidenceRoot;
 };

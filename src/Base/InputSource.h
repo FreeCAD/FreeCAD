@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de)          *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,7 +24,7 @@
 #define BASE_IINPUTSOURCE_H
 
 
-#include <iostream>
+#include <iosfwd>
 
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/util/BinInputStream.hpp>
@@ -32,6 +32,9 @@
 #include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/sax/InputSource.hpp>
 #include <QTextCodec>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 
 XERCES_CPP_NAMESPACE_BEGIN
@@ -65,7 +68,7 @@ private :
   //  Unimplemented constructors and operators
   // -----------------------------------------------------------------------
   StdInputStream(const StdInputStream&);
-  StdInputStream& operator=(const StdInputStream&);   
+  StdInputStream& operator=(const StdInputStream&);
 
   // -----------------------------------------------------------------------
   //  Private data members

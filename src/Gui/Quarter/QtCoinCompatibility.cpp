@@ -22,7 +22,7 @@ QtCoinCompatibility::QImageToSbImage(const QImage & image, SbImage & sbimage)
     }
 
     SbVec2s size((short) w, (short) h);
-    sbimage.setValue(size, c, NULL);
+    sbimage.setValue(size, c, nullptr);
     unsigned char * buffer = sbimage.getValue(size, c);
 
     if (c == 1) {

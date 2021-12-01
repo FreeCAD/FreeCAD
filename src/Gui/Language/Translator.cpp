@@ -28,6 +28,7 @@
 # include <QStringList>
 # include <QDir>
 # include <QApplication>
+# include <QRegularExpression>
 #endif
 
 #include "Translator.h"
@@ -105,6 +106,7 @@ class TranslatorP
 public:
     std::string activatedLanguage; /**< Active language */
     std::map<std::string, std::string> mapLanguageTopLevelDomain;
+    TStringMap mapSupportedLocales;
     std::list<QTranslator*> translators; /**< A list of all created translators */
     QStringList paths;
 };
@@ -128,42 +130,59 @@ Translator::Translator()
 {
     // This is needed for Qt's lupdate
     d = new TranslatorP;
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"              )] = "en";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("German"               )] = "de";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"              )] = "es-ES";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"               )] = "fr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Italian"              )] = "it";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Japanese"             )] = "ja";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"            )] = "af";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Arabic"               )] = "ar";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Basque"               )] = "eu";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Bulgarian"            )] = "bg";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Catalan"              )] = "ca";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Simplified"   )] = "zh-CN";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Traditional"  )] = "zh-TW";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean"               )] = "ko";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"              )] = "ru";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"              )] = "sv-SE";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"            )] = "af";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Norwegian"            )] = "no";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese, Brazilian")] = "pt-BR";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese"           )] = "pt-PT";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                )] = "nl";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"              )] = "fi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Croatian"             )] = "hr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Polish"               )] = "pl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Czech"                )] = "cs";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hungarian"            )] = "hu";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"             )] = "ro";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"              )] = "tr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"            )] = "sl";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Basque"               )] = "eu";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Catalan"              )] = "ca";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                )] = "nl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"              )] = "en";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"             )] = "fil";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"              )] = "fi";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"               )] = "fr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Galician"             )] = "gl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("German"               )] = "de";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Greek"                )] = "el";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hungarian"            )] = "hu";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Indonesian"           )] = "id";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Italian"              )] = "it";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Japanese"             )] = "ja";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Kabyle"               )] = "kab";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean"               )] = "ko";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"             )] = "fil";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Indonesian"           )] = "id";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Lithuanian"           )] = "lt";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Norwegian"            )] = "no";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Polish"               )] = "pl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese, Brazilian")] = "pt-BR";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese"           )] = "pt-PT";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"             )] = "ro";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"              )] = "ru";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"            )] = "sl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"              )] = "es-ES";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish, Argentina"   )] = "es-AR";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"              )] = "sv-SE";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"              )] = "tr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
-    
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
+
+    auto entries = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        GetASCII("AdditionalLanguageDomainEntries", "");
+    // The format of the entries is "Language Name 1"="code1";"Language Name 2"="code2";...
+    // Example: <FCText Name="AdditionalLanguageDomainEntries">"Romanian"="ro";"Polish"="pl";</FCText>
+    QRegularExpression matchingRE(QString::fromUtf8("\"(.*[^\\s]+.*)\"\\s*=\\s*\"([^\\s]+)\";?"));
+    auto matches = matchingRE.globalMatch(QString::fromStdString(entries));
+    while (matches.hasNext()) {
+        QRegularExpressionMatch match = matches.next();
+        QString language = match.captured(1);
+        QString tld = match.captured(2);
+        d->mapLanguageTopLevelDomain[language.toStdString()] = tld.toStdString();
+    }
+
     d->activatedLanguage = "English";
 
     d->paths = directories();
@@ -177,34 +196,33 @@ Translator::~Translator()
 
 TStringList Translator::supportedLanguages() const
 {
-    // List all .qm files
     TStringList languages;
-    QDir dir(QLatin1String(":/translations"));
-    for (std::map<std::string,std::string>::const_iterator it = d->mapLanguageTopLevelDomain.begin();
-        it != d->mapLanguageTopLevelDomain.end(); ++it) {
-        QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(it->second.c_str()));
-        QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-        if (!fileNames.isEmpty())
-            languages.push_back(it->first);
-    }
+    TStringMap locales = supportedLocales();
+    for (auto it : locales)
+        languages.push_back(it.first);
 
     return languages;
 }
 
 TStringMap Translator::supportedLocales() const
 {
+    if (!d->mapSupportedLocales.empty())
+        return d->mapSupportedLocales;
+
     // List all .qm files
-    TStringMap languages;
-    QDir dir(QLatin1String(":/translations"));
-    for (std::map<std::string,std::string>::const_iterator it = d->mapLanguageTopLevelDomain.begin();
-        it != d->mapLanguageTopLevelDomain.end(); ++it) {
-        QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(it->second.c_str()));
-        QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-        if (!fileNames.isEmpty())
-            languages[it->first] = it->second;
+    for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
+        for (const auto& directoryName : d->paths) {
+            QDir dir(directoryName);
+            QString filter = QString::fromLatin1("*_%1.qm").arg(QString::fromStdString(domainMap.second));
+            QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
+            if (!fileNames.isEmpty()) {
+                d->mapSupportedLocales[domainMap.first] = domainMap.second;
+                break;
+            }
+        }
     }
 
-    return languages;
+    return d->mapSupportedLocales;
 }
 
 void Translator::activateLanguage (const char* lang)
@@ -234,12 +252,17 @@ std::string Translator::locale(const std::string& lang) const
 
 QStringList Translator::directories() const
 {
-    QStringList list;
+    QStringList list; 
+    auto dir = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        GetASCII("AdditionalTranslationsDirectory", "");
+    if (!dir.empty())
+        list.push_back(QString::fromStdString(dir));
     QDir home(QString::fromUtf8(App::Application::getUserAppDataDir().c_str()));
     list.push_back(home.absoluteFilePath(QLatin1String("translations")));
     QDir resc(QString::fromUtf8(App::Application::getResourceDir().c_str()));
     list.push_back(resc.absoluteFilePath(QLatin1String("translations")));
     list.push_back(QLatin1String(":/translations"));
+    
     return list;
 }
 

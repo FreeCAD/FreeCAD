@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>*
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -91,7 +92,27 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     return refStr;
 }
 
-void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar) {
+void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
+{
+    Gui::Document* doc = vp->getDocument();
+    if (doc) {
+        doc->setHide(profile->getNameInDocument());
+        if (base)
+            doc->setShow(base->getNameInDocument());
+    }
+}
+
+void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
+{
+    Gui::Document* doc = vp->getDocument();
+    if (doc) {
+        doc->setShow(profile->getNameInDocument());
+        if (base)
+            doc->setHide(base->getNameInDocument());
+    }
+}
+
+void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar, const bool circle) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
 
     PartDesign::ProfileBased* pcSketchBased = dynamic_cast<PartDesign::ProfileBased*>(vp->getObject());
@@ -100,26 +121,17 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
         App::DocumentObject* prevSolid = pcSketchBased->getBaseObject( /* silent =*/ true );
 
         if (pressed) {
-            Gui::Document* doc = vp->getDocument();
-            if (doc) {
-                doc->setHide(pcSketchBased->getNameInDocument());
-                if (prevSolid)
-                    doc->setShow(prevSolid->getNameInDocument());
-            }
+            startReferenceSelection(pcSketchBased, prevSolid);
             Gui::Selection().clearSelection();
             Gui::Selection().addSelectionGate
-                (new ReferenceSelection(prevSolid, edge, face, planar));
+                (new ReferenceSelection(prevSolid, edge, face, planar, false, false, circle));
         } else {
             Gui::Selection().rmvSelectionGate();
-            Gui::Document* doc = vp->getDocument();
-            if (doc) {
-                doc->setShow(pcSketchBased->getNameInDocument());
-                if (prevSolid)
-                    doc->setHide(prevSolid->getNameInDocument());
-            }
+            finishReferenceSelection(pcSketchBased, prevSolid);
         }
     }
 }
+
 
 void TaskSketchBasedParameters::exitSelectionMode()
 {
@@ -196,19 +208,35 @@ QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
     return QVariant(); // no such feature found
 }
 
-QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub)
+QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub) const
 {
+    App::Document* doc = this->vp->getObject()->getDocument();
     QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
 
     if (o.isEmpty())
         return QString();
-    else
-        return QString::fromLatin1("(App.activeDocument().") + o +
-                QString::fromLatin1(", [\"") + sub + QString::fromLatin1("\"])");
+
+    return QString::fromLatin1("(App.getDocument(\"%1\").%2, [\"%3\"])")
+            .arg(QString::fromLatin1(doc->getName()), o, sub);
+}
+
+QString TaskSketchBasedParameters::make2DLabel(const App::DocumentObject* section,
+                                               const std::vector<std::string>& subValues)
+{
+    if(section->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        return QString::fromUtf8(section->Label.getValue());
+    else {
+        if(subValues.empty())
+            throw Base::ValueError("No valid subelement linked in Part::Feature");
+
+        return QString::fromUtf8((std::string(section->getNameInDocument())
+                                  + ":" + subValues[0]).c_str());
+    }
 }
 
 TaskSketchBasedParameters::~TaskSketchBasedParameters()
 {
+    Gui::Selection().rmvSelectionGate();
 }
 
 
@@ -236,14 +264,12 @@ bool TaskDlgSketchBasedParameters::accept() {
     // Make sure the feature is what we are expecting
     // Should be fine but you never know...
     if ( !feature->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId()) ) {
-        throw Base::Exception("Bad object processed in the sketch based dialog.");
+        throw Base::TypeError("Bad object processed in the sketch based dialog.");
     }
 
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(feature)->Profile.getValue();
 
-    if (sketch) {
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
-    }
+    FCMD_OBJ_HIDE(sketch);
 
     return TaskDlgFeatureParameters::accept();
 }
@@ -251,6 +277,7 @@ bool TaskDlgSketchBasedParameters::accept() {
 bool TaskDlgSketchBasedParameters::reject()
 {
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    App::DocumentObjectWeakPtrT weakptr(pcSketchBased);
     // get the Sketch
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Profile.getValue());
     bool rv;
@@ -260,7 +287,7 @@ bool TaskDlgSketchBasedParameters::reject()
 
     // if abort command deleted the object the sketch is visible again.
     // The previous one feature already should be made visible
-    if (!Gui::Application::Instance->getViewProvider(pcSketchBased)) {
+    if (weakptr.expired()) {
         // Make the sketch visible
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();

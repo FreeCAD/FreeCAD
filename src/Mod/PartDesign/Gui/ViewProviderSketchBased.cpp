@@ -72,3 +72,4 @@ bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
 
     return ViewProvider::onDelete(s);
 }
+

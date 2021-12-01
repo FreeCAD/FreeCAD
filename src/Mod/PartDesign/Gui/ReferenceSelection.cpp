@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Konstantinos Poulios <logari81@gmail.com>              *
+ *   Copyright (c) 2012 Konstantinos Poulios <logari81@gmail.com>             *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -28,7 +28,7 @@
 # include <TopoDS_Face.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
-#include <QDialog>
+# include <QDialog>
 #endif
 
 #include <App/OriginFeature.h>
@@ -37,6 +37,8 @@
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -75,7 +77,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     } else { // fallback to active part
         originGroupObject = PartDesignGui::getActivePart ( );
     }
-    
+
     App::OriginGroupExtension* originGroup = nullptr;
     if(originGroupObject)
         originGroup = originGroupObject->getExtensionByType<App::OriginGroupExtension>();
@@ -105,7 +107,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
                         return true;
                     }
                 }
-            } catch (const Base::Exception)
+            } catch (const Base::Exception&)
             { }
         }
         return false; // The Plane/Axis doesn't fits our needs
@@ -129,46 +131,63 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         return false;
     }
 
-    // Handle selection of geometry elements
-    if (!sSubName || sSubName[0] == '\0')
-        return false;
     if (!allowOtherBody) {
         if (support == NULL)
             return false;
         if (pObj != support)
             return false;
     }
-    std::string subName(sSubName);
-    if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge") {
-        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
-        TopoDS_Shape sh = shape.getSubShape(subName.c_str());
-        const TopoDS_Edge& edge = TopoDS::Edge(sh);
-        if (!edge.IsNull()) {
-            if (planar) {
-                BRepAdaptor_Curve adapt(edge);
-                if (adapt.GetType() == GeomAbs_Line)
+    // Handle selection of geometry elements
+    if (!sSubName || sSubName[0] == '\0')
+        return whole;
+
+    // resolve links if needed
+    if (!pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        pObj = Part::Feature::getShapeOwner(pObj, sSubName);
+    }
+
+    if (pObj && pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        std::string subName(sSubName);
+        if (edge && subName.compare(0, 4, "Edge") == 0) {
+            const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+            TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+            const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
+            if (!edgeShape.IsNull()) {
+                if (planar) {
+                    BRepAdaptor_Curve adapt(edgeShape);
+                    if (adapt.GetType() == GeomAbs_Line)
+                        return true;
+                } else {
                     return true;
-            } else {
+                }
+            }
+        }
+        if (plane && subName.compare(0, 4, "Face") == 0) {
+            const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+            TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+            const TopoDS_Face& face = TopoDS::Face(sh);
+            if (!face.IsNull()) {
+                if (planar) {
+                    BRepAdaptor_Surface adapt(face);
+                    if (adapt.GetType() == GeomAbs_Plane)
+                        return true;
+                } else {
+                    return true;
+                }
+            }
+        }
+        if (point && subName.compare(0, 6, "Vertex") == 0) {
+            return true;
+        }
+        if (circle && subName.compare(0, 4, "Edge") == 0) {
+            const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+            TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+            const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
+            BRepAdaptor_Curve adapt(edgeShape);
+            if (adapt.GetType() == GeomAbs_Circle) {
                 return true;
             }
         }
-    }
-    if (plane && subName.size() > 4 && subName.substr(0,4) == "Face") {
-        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
-        TopoDS_Shape sh = shape.getSubShape(subName.c_str());
-        const TopoDS_Face& face = TopoDS::Face(sh);
-        if (!face.IsNull()) {
-            if (planar) {
-                BRepAdaptor_Surface adapt(face);
-                if (adapt.GetType() == GeomAbs_Plane)
-                    return true;
-            } else {
-                return true;
-            }
-        }
-    }
-    if (point && subName.size() > 6 && subName.substr(0,6) == "Vertex") {
-        return true;
     }
     return false;
 }
@@ -193,54 +212,50 @@ bool CombineSelectionFilterGates::allow(App::Document* pDoc, App::DocumentObject
 namespace PartDesignGui
 {
 
-void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
+bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
                             App::DocumentObject*& selObj, std::vector<std::string>& selSub)
 {
+    selObj = nullptr;
     if (!thisObj)
-        return;
+        return false;
 
     if (strcmp(thisObj->getDocument()->getName(), msg.pDocName) != 0)
-        return;
-    
+        return false;
+
     selObj = thisObj->getDocument()->getObject(msg.pObjectName);
     if (selObj == thisObj)
-        return;
-    
+        return false;
+
     std::string subname = msg.pSubName;
-    
+
     //check if the selection is an external reference and ask the user what to do
-    //of course only if thisObj is in a body, as otherwise the old workflow would not 
-    //be supportet
+    //of course only if thisObj is in a body, as otherwise the old workflow would not
+    //be supported
     PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
     bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
-    if(!originfeature && body) {
+    if (!originfeature && body) {
         PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
-        if(!selBody || body != selBody) {
-            
-            auto* pcActivePart = PartDesignGui::getPartFor(body, false);
-
-            QDialog* dia = new QDialog;
-            Ui_Dialog dlg;
-            dlg.setupUi(dia);
-            dia->setModal(true);
-            int result = dia->exec();
-            if(result == QDialog::DialogCode::Rejected) {
-                selObj = NULL;
-                return;
+        if (!selBody || body != selBody) {
+            QDialog dia(Gui::getMainWindow());
+            Ui_DlgReference dlg;
+            dlg.setupUi(&dia);
+            dia.setModal(true);
+            int result = dia.exec();
+            if (result == QDialog::DialogCode::Rejected) {
+                selObj = nullptr;
+                return false;
             }
-            else if(!dlg.radioXRef->isChecked()) {
 
-                    auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
-                    if(selBody)
-                        body->addObject(copy);
-                    else
-                        pcActivePart->addObject(copy);
+            if (!dlg.radioXRef->isChecked()) {
+                App::Document* document = thisObj->getDocument();
+                document->openTransaction("Make copy");
+                auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
+                body->addObject(copy);
 
-                    selObj = copy;
-                    subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
-                    subname.append("1");
+                selObj = copy;
+                subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
+                subname.append("1");
             }
-        
         }
     }
 
@@ -250,6 +265,8 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     }
 
     selSub = std::vector<std::string>(1,subname);
+
+    return true;
 }
 
 QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
@@ -287,9 +304,9 @@ std::string buildLinkSingleSubPythonStr(const App::DocumentObject* obj,
         return "None";
 
     if (PartDesign::Feature::isDatum(obj))
-        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"\"])";
+        return Gui::Command::getObjectCmd(obj,"(",", [''])");
     else
-        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + subs.front() + "\"])";
+        return Gui::Command::getObjectCmd(obj,"(",", ['") + subs.front() + "'])";
 }
 
 std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & objs)
@@ -301,7 +318,7 @@ std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & obj
     std::string result("[");
 
     for (std::vector<App::DocumentObject*>::const_iterator o = objs.begin(); o != objs.end(); o++)
-        result += std::string("App.activeDocument().") + (*o)->getNameInDocument() + ",";
+        result += Gui::Command::getObjectCmd(*o,0,",");
     result += "]";
 
     return result;
@@ -321,7 +338,7 @@ std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & 
     for (size_t i=0, objs_sz=objs.size(); i < objs_sz; i++) {
         if (objs[i] ) {
             result += '(';
-            result += std::string("App.activeDocument().").append( objs[i]->getNameInDocument () );
+            result += Gui::Command::getObjectCmd(objs[i]);
             result += ",\"";
             result += subs[i];
             result += "\"),";

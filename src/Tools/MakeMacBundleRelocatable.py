@@ -1,7 +1,6 @@
 import os
 import sys
-from subprocess import Popen, PIPE, check_call, check_output
-import pprint
+from subprocess import check_call, check_output
 import re
 import logging
 
@@ -237,7 +236,7 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
 
                 try:
                    deps = create_dep_nodes(list_install_names(k2), s_paths)
-                except:
+                except Exception:
                    logging.error("Failed to resolve dependency in " + k2)
                    raise
 
@@ -341,7 +340,7 @@ def change_libid(graph, node, bundle_path):
        logging.debug(" ~ id: " + node.name)
        try:
           check_call([ "install_name_tool", "-id", node.name, lib ])
-       except:
+       except Exception:
           logging.warning("Failed to change bundle id {} in lib {}".format(node.name, lib))
 
 def print_child(graph, node, path):

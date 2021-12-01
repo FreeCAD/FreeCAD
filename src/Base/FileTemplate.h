@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) YEAR YOUR NAME         <Your e-mail address>            *
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,9 @@
 // Std. configurations
 
 #include <string>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base
 {
@@ -41,13 +44,13 @@ namespace Base
  *  Base::Console().Log("Stage: %d",i);
  *  \endcode
  *  \par
- *  nother blablablablablablablablablabl:
+ *  another blablablablablablablablablabl:
  * Text before the list
  * - list item 1
  *   - sub item 1
  *     - sub sub item 1
  *     - sub sub item 2
- *     . 
+ *     .
  *     The dot above ends the sub sub item list.
  *     More text for the first sub item
  *   .
@@ -70,7 +73,7 @@ namespace Base
  *     <li>mouse double click event
  *     </ol>
  *  <li> keyboard events
- *     <ol>     
+ *     <ol>
  *     <li>key down event
  *     <li>key up event
  *     </ol>
@@ -89,16 +92,16 @@ public:
 
     int testMe(int a,const char *s);
 
-    /** 
+    /**
      * An enum.
      * More detailed enum description.
      */
 
-    enum TEnum { 
-        TVal1, /**< enum value TVal1. */  
-        TVal2, /**< enum value TVal2. */  
-        TVal3  /**< enum value TVal3. */  
-    } 
+    enum TEnum {
+        TVal1, /**< enum value TVal1. */
+        TVal2, /**< enum value TVal2. */
+        TVal3  /**< enum value TVal3. */
+    }
     *enumPtr, /**< enum pointer. Details. */
     enumVar;  /**< enum variable. Details. */
 
@@ -121,12 +124,12 @@ public:
     //@}
 
 
-    /** 
+    /**
     * a public variable.
     * Details.
     */
     int publicVar;
- 
+
     /**
      * a function variable.
      * Details.

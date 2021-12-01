@@ -25,10 +25,13 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
+# include <QAction>
 # include <QApplication>
+# include <QMenu>
 #include <Inventor/nodes/SoSwitch.h>
 #endif
 
+#include <Gui/ActionFunction.h>
 #include <Gui/Command.h>
 #include <Gui/MDIView.h>
 #include <Gui/Control.h>
@@ -40,6 +43,7 @@
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include "Utils.h"
 #include "TaskFeatureParameters.h"
 
 #include "ViewProvider.h"
@@ -47,11 +51,12 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
 :oldWb(""), oldTip(NULL), isSetTipIcon(false)
 {
+    PartGui::ViewProviderAttachExtension::initExtension(this);
 }
 
 ViewProvider::~ViewProvider()
@@ -60,33 +65,43 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
-#if 0
-	PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
-    // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
-	if (body != NULL) {
-        // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
-        // Also, this way the user won't be tempted to use future geometry as external references for the sketch
-		oldTip = body->Tip.getValue();
-        if (oldTip != this->pcObject)
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-        else
-            oldTip = NULL;
-    } else {
-        oldTip = NULL;
-    }
-#endif
-
     try {
-        std::string Msg("Edit ");
-        Msg += this->pcObject->Label.getValue();
-        Gui::Command::openCommand(Msg.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",
-                this->pcObject->getNameInDocument());
+        PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
+        QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+        Gui::Command::openCommand(text.toUtf8());
+        PartDesignGui::setEdit(pcObject,body);
     }
     catch (const Base::Exception&) {
         Gui::Command::abortCommand();
     }
     return true;
+}
+
+void ViewProvider::startDefaultEditMode()
+{
+    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+    Gui::Command::openCommand(text.toUtf8());
+
+    Gui::Document* document = this->getDocument();
+    if (document) {
+        document->setEdit(this, ViewProvider::Default);
+    }
+}
+
+void ViewProvider::addDefaultAction(QMenu* menu, const QString& text)
+{
+    QAction* act = menu->addAction(text);
+    act->setData(QVariant((int)ViewProvider::Default));
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    func->trigger(act, boost::bind(&ViewProvider::startDefaultEditMode, this));
+}
+
+void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Color));
+    // Call the extensions
+    Gui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProvider::setEdit(int ModNum)
@@ -125,7 +140,7 @@ bool ViewProvider::setEdit(int ModNum)
         if (!featureDlg) {
             featureDlg = this->getEditDialog();
             if (!featureDlg) { // Shouldn't generally happen
-                throw Base::Exception ("Failed to create new edit dialog.");
+                throw Base::RuntimeError ("Failed to create new edit dialog.");
             }
         }
 
@@ -138,7 +153,7 @@ bool ViewProvider::setEdit(int ModNum)
 
 
 TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
-    throw Base::Exception("getEditDialog() not implemented");
+    throw Base::NotImplementedError("getEditDialog() not implemented");
 }
 
 
@@ -181,48 +196,42 @@ void ViewProvider::updateData(const App::Property* prop)
 }
 
 void ViewProvider::onChanged(const App::Property* prop) {
-    
+
     //if the object is inside of a body we make sure it is the only visible one on activation
     if(prop == &Visibility && Visibility.getValue()) {
-    
+
         Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
         if(body) {
-            
+
             //hide all features in the body other than this object
             for(App::DocumentObject* obj : body->Group.getValues()) {
-             
+
                 if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && obj != getObject()) {
-                   Gui::ViewProvider* vp = Gui::Application::Instance->activeDocument()->getViewProvider(obj);
-                   if(!vp) 
-                       return;
-                   
-                   Gui::ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
+                   auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
+                           Gui::Application::Instance->getViewProvider(obj));
                    if(vpd && vpd->Visibility.getValue())
                        vpd->Visibility.setValue(false);
                 }
-            }            
+            }
         }
     }
-    
+
     PartGui::ViewProviderPartExt::onChanged(prop);
 }
 
 void ViewProvider::setTipIcon(bool onoff) {
     isSetTipIcon = onoff;
-    
+
     signalChangeIcon();
 }
 
-QIcon ViewProvider::getIcon(void) const
+QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
 {
-    return mergeTip(Gui::BitmapFactory().pixmap(sPixmap));
-}
+    QIcon mergedicon = orig;
 
-QIcon ViewProvider::mergeTip(QIcon orig) const
-{
     if(isSetTipIcon) {
         QPixmap px;
-        
+
         static const char * const feature_tip_xpm[]={
             "9 9 3 1",
             ". c None",
@@ -239,18 +248,11 @@ QIcon ViewProvider::mergeTip(QIcon orig) const
             "...###..."};
         px = QPixmap(feature_tip_xpm);
 
-        QIcon icon_mod;
+        mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
 
-        int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
-
-        icon_mod.addPixmap(Gui::BitmapFactory().merge(orig.pixmap(w, w, QIcon::Normal, QIcon::Off),
-                                                    px,Gui::BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
-        icon_mod.addPixmap(Gui::BitmapFactory().merge(orig.pixmap(w, w, QIcon::Normal, QIcon::On ),
-                                                    px,Gui::BitmapFactoryInst::BottomRight), QIcon::Normal, QIcon::Off);
-        return icon_mod;
     }
-    else
-        return orig;
+
+    return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
 }
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)
@@ -271,20 +273,19 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
 
     if (body != NULL) {
         // Deletion from the tree of a feature is handled by Document.removeObject, which has no clue
-        // about what a body is. Therefore, Bodies, although an "activable" container, know nothing 
+        // about what a body is. Therefore, Bodies, although an "activable" container, know nothing
         // about what happens at Document level with the features they contain.
         //
         // The Deletion command StdCmdDelete::activated, however does notify the viewprovider corresponding
         // to the feature (not body) of the imminent deletion (before actually doing it).
         //
-        // Consequently, the only way of notifying a body of the imminent deletion of one of its features 
-        // so as to do the clean up required (moving basefeature references, tip management) is from the 
+        // Consequently, the only way of notifying a body of the imminent deletion of one of its features
+        // so as to do the clean up required (moving basefeature references, tip management) is from the
         // viewprovider, so we call it here.
         //
         // fixes (#3084)
 
-        Gui::Command::doCommand ( Gui::Command::Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                                body->getNameInDocument(), feature->getNameInDocument() );
+        FCMD_OBJ_CMD(body,"removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
     }
 
     return true;
@@ -294,22 +295,22 @@ void ViewProvider::setBodyMode(bool bodymode) {
 
     std::vector<App::Property*> props;
     getPropertyList(props);
-    
+
     auto vp = getBodyViewProvider();
     if(!vp)
         return;
-    
+
     for(App::Property* prop : props) {
-        
+
         //we keep visibility and selectibility per object
         if(prop == &Visibility ||
            prop == &Selectable)
             continue;
-        
+
         //we hide only properties which are available in the body, not special ones
         if(!vp->getPropertyByName(prop->getName()))
             continue;
-            
+
         prop->setStatus(App::Property::Hidden, bodymode);
     }
 }
@@ -319,11 +320,11 @@ void ViewProvider::makeTemporaryVisible(bool onoff)
     //make sure to not use the overridden versions, as they change properties
     if (onoff) {
         if (VisualTouched) {
-            updateVisual(static_cast<Part::Feature*>(getObject())->Shape.getValue());
+            updateVisual();
         }
         Gui::ViewProvider::show();
     }
-    else 
+    else
         Gui::ViewProvider::hide();
 }
 
@@ -344,7 +345,7 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
         if(vp && vp->isDerivedFrom(ViewProviderBody::getClassTypeId()))
            return static_cast<ViewProviderBody*>(vp);
     }
-    
+
     return nullptr;
 }
 
@@ -352,7 +353,7 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
 
 namespace Gui {
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewProvider);
+PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewProvider)
 /// @endcond
 
 // explicit template instantiation

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="lt" sourcelanguage="en">
+<TS version="2.1" language="lt" sourcelanguage="en">
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Add triangle</source>
@@ -20,22 +20,22 @@
     <name>CmdMeshBoundingBox</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Boundings info...</source>
-      <translation>Informacija apie ribas...</translation>
+      <translation>Ribiniai matmenys...</translation>
     </message>
     <message>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Rodyti pasirinkto tinklo ribas</translation>
+      <translation>Rodyti pasirinkto tinklo ribinius matmenis</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Regular solid...</source>
@@ -47,21 +47,51 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshCrossSections</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Tinklas</translation>
+    </message>
+    <message>
+      <source>Cross-sections...</source>
+      <translation>Skerspjūviai...</translation>
+    </message>
+    <message>
+      <source>Cross-sections</source>
+      <translation>Skerspjūviai</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshDecimating</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Tinklas</translation>
+    </message>
+    <message>
+      <source>Decimation...</source>
+      <translation type="unfinished">Decimation...</translation>
+    </message>
+    <message>
+      <source>Decimates a mesh</source>
+      <translation type="unfinished">Decimates a mesh</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshDemolding</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Tinklas</translation>
+    </message>
     <message>
       <source>Interactive demolding direction</source>
       <translation>Sąveikus krypties gavimas iš pavidalo</translation>
-    </message>
-    <message>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshDifference</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Difference</source>
@@ -72,89 +102,52 @@
     <name>CmdMeshEvaluateFacet</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Face info</source>
-      <translation>Paviršiaus duomenys</translation>
+      <translation>Daugiakampio duomenys</translation>
     </message>
     <message>
       <source>Information about face</source>
-      <translation>Duomenys apie paviršių</translation>
+      <translation>Duomenys apie daugiakampį</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Check solid mesh</source>
-      <translation>Patikrinti tūrinį tinklą</translation>
+      <translation>Tikrinti tinklo vientisumą</translation>
     </message>
     <message>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Tikrina, ar tinklas yra tūrinis (pilnaviduris) objektas</translation>
+      <translation>Tikrinti, ar tinklas sudaro pilnavidurį kūną</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Atveria langą tinklo tikrinimui ir pataisymui</translation>
-    </message>
-    <message>
-      <source>Evaluate &amp;&amp; Repair mesh...</source>
-      <translation>Patikrinti ir pataisyti tinklą...</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshExMakeMesh</name>
-    <message>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklo patikra ir taisa...</translation>
     </message>
     <message>
-      <source>Make a Box</source>
-      <translation type="unfinished">Make a Box</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshExMakeTool</name>
-    <message>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <source>Make a Tool</source>
-      <translation type="unfinished">Make a Tool</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshExMakeUnion</name>
-    <message>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <source>Make Union</source>
-      <translation type="unfinished">Make Union</translation>
+      <source>Opens a dialog to analyze and repair a mesh</source>
+      <translation>Atveria tinklo patikros ir taisos įrankį</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshExport</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Export mesh...</source>
@@ -169,7 +162,7 @@
     <name>CmdMeshFillInteractiveHole</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Close hole</source>
@@ -177,14 +170,14 @@
     </message>
     <message>
       <source>Close holes interactively</source>
-      <translation>Užaklinti skyles sąveikaujant</translation>
+      <translation>Užaklinti skyles perklausiant</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Fill holes...</source>
@@ -199,7 +192,7 @@
     <name>CmdMeshFlipNormals</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Flip normals</source>
@@ -214,7 +207,7 @@
     <name>CmdMeshFromGeometry</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Create mesh from geometry...</source>
@@ -229,22 +222,22 @@
     <name>CmdMeshFromPartShape</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Create mesh from shape...</source>
-      <translation>Sukurti tinklą iš kūno pavidalo...</translation>
+      <translation>Sukurti daikto tinklą...</translation>
     </message>
     <message>
       <source>Tessellate shape</source>
-      <translation>Figūros mozaika</translation>
+      <translation>Versti paviršių į daugiasienį</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Harmonize normals</source>
@@ -259,7 +252,7 @@
     <name>CmdMeshImport</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Import mesh...</source>
@@ -274,7 +267,7 @@
     <name>CmdMeshIntersection</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Intersection</source>
@@ -285,7 +278,7 @@
     <name>CmdMeshMerge</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Merge</source>
@@ -300,7 +293,7 @@
     <name>CmdMeshPolyCut</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Cut mesh</source>
@@ -315,7 +308,7 @@
     <name>CmdMeshPolySegm</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Make segment</source>
@@ -330,7 +323,7 @@
     <name>CmdMeshPolySelect</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Select mesh</source>
@@ -345,7 +338,7 @@
     <name>CmdMeshPolySplit</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Split mesh</source>
@@ -360,7 +353,7 @@
     <name>CmdMeshPolyTrim</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Trim mesh</source>
@@ -372,10 +365,25 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshRemeshGmsh</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Tinklas</translation>
+    </message>
+    <message>
+      <source>Refinement...</source>
+      <translation>Patobulinti...</translation>
+    </message>
+    <message>
+      <source>Refine existing mesh</source>
+      <translation>Patobulinti esamą tinklą</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Remove components by hand...</source>
@@ -390,7 +398,7 @@
     <name>CmdMeshRemoveComponents</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Remove components...</source>
@@ -405,7 +413,7 @@
     <name>CmdMeshScale</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Scale...</source>
@@ -420,7 +428,7 @@
     <name>CmdMeshSectionByPlane</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Create section from mesh and plane</source>
@@ -435,7 +443,7 @@
     <name>CmdMeshSegmentation</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Create mesh segments...</source>
@@ -447,10 +455,25 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Tinklas</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation>Sukurti tinklo atkarpas iš geriausiai pritaikytų paviršių...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation>Sukurti tinklo atkarpas iš geriausiai pritaikytų paviršių</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Smooth...</source>
@@ -462,10 +485,25 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSplitComponents</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Tinklas</translation>
+    </message>
+    <message>
+      <source>Split by components</source>
+      <translation type="unfinished">Split by components</translation>
+    </message>
+    <message>
+      <source>Split selected mesh into its components</source>
+      <translation type="unfinished">Split selected mesh into its components</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshToolMesh</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Segment by tool mesh</source>
@@ -480,7 +518,7 @@
     <name>CmdMeshTransform</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Transform mesh</source>
@@ -495,7 +533,7 @@
     <name>CmdMeshTrimByPlane</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Trim mesh with a plane</source>
@@ -510,7 +548,7 @@
     <name>CmdMeshUnion</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Union</source>
@@ -521,22 +559,22 @@
     <name>CmdMeshVertexCurvature</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>Apskaičiuoja tinklo viršūnių kreivumo spindulius</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Curvature plot</source>
       <translation>Kreivio diagrama</translation>
+    </message>
+    <message>
+      <source>Calculates the curvature of the vertices of a mesh</source>
+      <translation>Apskaičiuoja tinklo viršūnių kreivumo spindulius</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <source>Curvature info</source>
@@ -548,66 +586,204 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
+    </message>
+    <message>
+      <source>Segment by tool mesh</source>
+      <translation>Tinklo įrankio dalis</translation>
+    </message>
+    <message>
+      <source>Mesh union</source>
+      <translation type="unfinished">Mesh union</translation>
+    </message>
+    <message>
+      <source>Mesh difference</source>
+      <translation type="unfinished">Mesh difference</translation>
+    </message>
+    <message>
+      <source>Mesh intersection</source>
+      <translation type="unfinished">Mesh intersection</translation>
+    </message>
+    <message>
+      <source>Import Mesh</source>
+      <translation type="unfinished">Import Mesh</translation>
+    </message>
+    <message>
+      <source>Mesh VertexCurvature</source>
+      <translation type="unfinished">Mesh VertexCurvature</translation>
+    </message>
+    <message>
+      <source>Mesh Smoothing</source>
+      <translation type="unfinished">Mesh Smoothing</translation>
+    </message>
+    <message>
+      <source>Harmonize mesh normals</source>
+      <translation type="unfinished">Harmonize mesh normals</translation>
+    </message>
+    <message>
+      <source>Flip mesh normals</source>
+      <translation type="unfinished">Flip mesh normals</translation>
+    </message>
+    <message>
+      <source>Fill up holes</source>
+      <translation type="unfinished">Fill up holes</translation>
+    </message>
+    <message>
+      <source>Mesh merge</source>
+      <translation type="unfinished">Mesh merge</translation>
+    </message>
+    <message>
+      <source>Mesh split</source>
+      <translation type="unfinished">Mesh split</translation>
+    </message>
+    <message>
+      <source>Mesh scale</source>
+      <translation type="unfinished">Mesh scale</translation>
+    </message>
+    <message>
+      <source>Mesh Decimating</source>
+      <translation type="unfinished">Mesh Decimating</translation>
+    </message>
+    <message>
+      <source>Harmonize normals</source>
+      <translation>Suderinti normales</translation>
+    </message>
+    <message>
+      <source>Remove non-manifolds</source>
+      <translation type="unfinished">Remove non-manifolds</translation>
+    </message>
+    <message>
+      <source>Fix indices</source>
+      <translation type="unfinished">Fix indices</translation>
+    </message>
+    <message>
+      <source>Remove degenerated faces</source>
+      <translation type="unfinished">Remove degenerated faces</translation>
+    </message>
+    <message>
+      <source>Remove duplicated faces</source>
+      <translation type="unfinished">Remove duplicated faces</translation>
+    </message>
+    <message>
+      <source>Remove duplicated points</source>
+      <translation type="unfinished">Remove duplicated points</translation>
+    </message>
+    <message>
+      <source>Fix self-intersections</source>
+      <translation type="unfinished">Fix self-intersections</translation>
+    </message>
+    <message>
+      <source>Remove folds</source>
+      <translation type="unfinished">Remove folds</translation>
+    </message>
+    <message>
+      <source>Repair mesh</source>
+      <translation type="unfinished">Repair mesh</translation>
+    </message>
+    <message>
+      <source>Delete selection</source>
+      <translation type="unfinished">Delete selection</translation>
+    </message>
+    <message>
+      <source>Cut</source>
+      <translation>Pjaustyti</translation>
+    </message>
+    <message>
+      <source>Trim</source>
+      <translation>Apkarpyti</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Skelti</translation>
+    </message>
+    <message>
+      <source>Segment</source>
+      <translation type="unfinished">Segment</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Naikinti</translation>
+    </message>
+    <message>
+      <source>Fill hole</source>
+      <translation type="unfinished">Fill hole</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::DlgDecimating</name>
+    <message>
+      <source>Decimating</source>
+      <translation type="unfinished">Decimating</translation>
+    </message>
+    <message>
+      <source>Reduction</source>
+      <translation type="unfinished">Reduction</translation>
+    </message>
+    <message>
+      <source>None</source>
+      <translation>Joks</translation>
+    </message>
+    <message>
+      <source>Full</source>
+      <translation type="unfinished">Full</translation>
+    </message>
+    <message>
+      <source>Absolute number</source>
+      <translation type="unfinished">Absolute number</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Leidžiamoji nuokrypa</translation>
+    </message>
+    <message>
+      <source>Absolute number (Maximum: %1)</source>
+      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::DlgEvaluateMesh</name>
     <message>
-      <source>&amp;Help</source>
-      <translation>Ž&amp;inynas</translation>
-    </message>
-    <message>
-      <source>F1</source>
-      <translation>F1</translation>
-    </message>
-    <message>
-      <source>&amp;Close</source>
-      <translation>&amp;Užverti</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
+      <source>Evaluate &amp; Repair Mesh</source>
+      <translation>Tinklo patikra ir taisa</translation>
     </message>
     <message>
       <source>Mesh information</source>
-      <translation>Tinklo informacija</translation>
-    </message>
-    <message>
-      <source>No information</source>
-      <translation>Nėra duomenų</translation>
+      <translation>Tinklo duomenys</translation>
     </message>
     <message>
       <source>Number of points:</source>
       <translation>Taškų kiekis:</translation>
     </message>
     <message>
+      <source>No information</source>
+      <translation>Nėra duomenų</translation>
+    </message>
+    <message>
+      <source>Number of faces:</source>
+      <translation>Sienų kiekis:</translation>
+    </message>
+    <message>
       <source>Number of edges:</source>
-      <translation>Briaunų kiekis:</translation>
+      <translation>Kraštinių kiekis:</translation>
     </message>
     <message>
       <source>Refresh</source>
       <translation>Atnaujinti</translation>
     </message>
     <message>
+      <source>Orientation</source>
+      <translation>Kampinė padėtis</translation>
+    </message>
+    <message>
       <source>Analyze</source>
-      <translation>Nagrinėti</translation>
+      <translation>Tikrinti</translation>
     </message>
     <message>
       <source>Repair</source>
       <translation>Taisyti</translation>
-    </message>
-    <message>
-      <source>Orientation</source>
-      <translation>Kryptis</translation>
-    </message>
-    <message>
-      <source>Degenerated faces</source>
-      <translation>Išsigimę daugiakampiai</translation>
-    </message>
-    <message>
-      <source>Face indices</source>
-      <translation>Daugiakampių indeksai</translation>
-    </message>
-    <message>
-      <source>Number of faces:</source>
-      <translation>Daugiakampių kiekis:</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
@@ -622,59 +798,56 @@
       <translation>Nedaugdaros</translation>
     </message>
     <message>
+      <source>Degenerated faces</source>
+      <translation>Išsigimę daugiakampiai</translation>
+    </message>
+    <message>
+      <source>Face indices</source>
+      <translation>Daugiakampių indeksai</translation>
+    </message>
+    <message>
       <source>Self-intersections</source>
       <translation>Vidiniai persikirtimai</translation>
-    </message>
-    <message>
-      <source>All above tests together</source>
-      <translation>Visi išvardinti bandymai vienu kartu</translation>
-    </message>
-    <message>
-      <source>Repetitive repair</source>
-      <translation>Pasikartojantysis taisymas</translation>
-    </message>
-    <message>
-      <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Patikrinti ir pataisyti tinklą</translation>
     </message>
     <message>
       <source>Folds on surface</source>
       <translation>Paviršiaus klostės</translation>
     </message>
+    <message>
+      <source>All above tests together</source>
+      <translation>Atlikti visas išvardintas patikras kartu</translation>
+    </message>
+    <message>
+      <source>Repetitive repair</source>
+      <translation>Pasikartojančioji taisa</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
+    <message>
+      <source>Settings...</source>
+      <translation>Nustatymai...</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Niekas nepasirinkta</translation>
+    </message>
     <message>
       <source>No information</source>
       <translation>Nėra duomenų</translation>
     </message>
     <message>
-      <source>Invalid neighbour indices</source>
-      <translation>Netinkami kaimynų indeksai</translation>
+      <source>Flipped normals found</source>
+      <translation>Rasta apgręžtų normalių</translation>
     </message>
     <message>
-      <source>Invalid face indices</source>
-      <translation>Netinkami daugiakampių indeksai</translation>
+      <source>Orientation</source>
+      <translation>Kampinė padėtis</translation>
     </message>
     <message>
-      <source>Invalid point indices</source>
-      <translation>Netinkami taškų indeksai</translation>
-    </message>
-    <message>
-      <source>Multiple point indices</source>
-      <translation>Daugybiniai taškų indeksai</translation>
-    </message>
-    <message>
-      <source>Non-manifolds</source>
-      <translation>Nedaugdaros</translation>
-    </message>
-    <message>
-      <source>Cannot remove non-manifolds</source>
-      <translation>Negalima pašalinti nedaugdarų</translation>
-    </message>
-    <message>
-      <source>No selection</source>
-      <translation>Niekas nepasirinkta</translation>
+      <source>Check failed due to folds on the surface.
+Please run the command to repair folds first</source>
+      <translation>Tikrinimas nepavyko dėl esamų paviršiaus klosčių. Prašome pirmiausia atlikti klosčių taisymo veiksmą</translation>
     </message>
     <message>
       <source>No flipped normals</source>
@@ -693,8 +866,36 @@
       <translation>%1 nedaugdarų</translation>
     </message>
     <message>
+      <source>Non-manifolds</source>
+      <translation>Nedaugdaros</translation>
+    </message>
+    <message>
+      <source>Cannot remove non-manifolds</source>
+      <translation>Negalima pašalinti nedaugdarų</translation>
+    </message>
+    <message>
+      <source>Invalid face indices</source>
+      <translation>Netinkami daugiakampių indeksai</translation>
+    </message>
+    <message>
+      <source>Invalid point indices</source>
+      <translation>Netinkami taškų indeksai</translation>
+    </message>
+    <message>
+      <source>Multiple point indices</source>
+      <translation>Daugybiniai taškų indeksai</translation>
+    </message>
+    <message>
+      <source>Invalid neighbour indices</source>
+      <translation>Netinkami kaimynų indeksai</translation>
+    </message>
+    <message>
       <source>No invalid indices</source>
       <translation>Nėra netinkamų indeksų</translation>
+    </message>
+    <message>
+      <source>Indices</source>
+      <translation>Indeksai</translation>
     </message>
     <message>
       <source>No degenerations</source>
@@ -705,12 +906,20 @@
       <translation>%1 išsigimusių daugiakampių</translation>
     </message>
     <message>
+      <source>Degenerations</source>
+      <translation>Išsigimimai</translation>
+    </message>
+    <message>
       <source>No duplicated faces</source>
       <translation>Nėra sutampančių daugiakampių</translation>
     </message>
     <message>
       <source>%1 duplicated faces</source>
       <translation>%1 sutampančių daugiakampių</translation>
+    </message>
+    <message>
+      <source>Duplicated faces</source>
+      <translation>Sutampantys daugiakampiai</translation>
     </message>
     <message>
       <source>No duplicated points</source>
@@ -721,41 +930,12 @@
       <translation>Sutampantys taškai</translation>
     </message>
     <message>
-      <source>Orientation</source>
-      <translation>Kryptis</translation>
-    </message>
-    <message>
-      <source>Indices</source>
-      <translation>Indeksai</translation>
-    </message>
-    <message>
-      <source>Degenerations</source>
-      <translation>Išsigimimai</translation>
-    </message>
-    <message>
-      <source>Duplicated faces</source>
-      <translation>Sutampantys daugiakampiai</translation>
-    </message>
-    <message>
       <source>No self-intersections</source>
       <translation>Nėra vidinių persikirtimų</translation>
     </message>
     <message>
       <source>Self-intersections</source>
       <translation>Vidiniai persikirtimai</translation>
-    </message>
-    <message>
-      <source>Mesh repair</source>
-      <translation>Tinklo taisymas</translation>
-    </message>
-    <message>
-      <source>Flipped normals found</source>
-      <translation>Rasta apgręžtų normalių</translation>
-    </message>
-    <message>
-      <source>Check failed due to folds on the surface.
-Please run the command to repair folds first</source>
-      <translation>Tikrinimas nepavyko dėl paviršiaus klosčių. Prašome pirmiausia atlikti klosčių taisymo veiksmą</translation>
     </message>
     <message>
       <source>No folds on surface</source>
@@ -770,19 +950,19 @@ Please run the command to repair folds first</source>
       <translation>Klostės</translation>
     </message>
     <message>
-      <source>Settings...</source>
-      <translation>Nustatymai...</translation>
+      <source>Mesh repair</source>
+      <translation>Tinklo taisymas</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <source>Evaluation settings</source>
-      <translation>Tikrinimo nustatymai</translation>
+      <translation>Patikros nustatymai</translation>
     </message>
     <message>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Nuostatos</translation>
     </message>
     <message>
       <source>Check for non-manifold points</source>
@@ -805,7 +985,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>&amp;Create</source>
-      <translation type="unfinished">&amp;Create</translation>
+      <translation>&amp;Sukurti</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -817,11 +997,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Alt+O</source>
-      <translation type="unfinished">Alt+O</translation>
+      <translation>Alt+O</translation>
     </message>
     <message>
       <source>Solid:</source>
-      <translation>Vientisinis kūnas:</translation>
+      <translation>Pilnaviduris kūnas:</translation>
     </message>
     <message>
       <source>Cube</source>
@@ -849,19 +1029,19 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Height:</source>
-      <translation type="unfinished">Height:</translation>
+      <translation>Aukštis:</translation>
     </message>
     <message>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Ilgis:</translation>
     </message>
     <message>
       <source>Width:</source>
-      <translation type="unfinished">Width:</translation>
+      <translation>Plotis:</translation>
     </message>
     <message>
       <source>Radius:</source>
-      <translation type="unfinished">Radius:</translation>
+      <translation>Spindulys:</translation>
     </message>
     <message>
       <source>Closed</source>
@@ -888,11 +1068,11 @@ Please run the command to repair folds first</source>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
       <source>Create %1</source>
-      <translation type="unfinished">Create %1</translation>
+      <translation>Sukurti %1</translation>
     </message>
     <message>
       <source>No active document</source>
-      <translation type="unfinished">No active document</translation>
+      <translation>Nėra taisytino dokumento</translation>
     </message>
   </context>
   <context>
@@ -903,27 +1083,44 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Eksportuoti</translation>
     </message>
     <message>
-      <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation type="unfinished">Defines the deviation of tessellation to the actual surface</translation>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Didžiausias tinklo pavidalo nuokrypis nuo kūno pavidalo</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Deviation of tessellation to the actual surface</source>
+      <translation>Daugiasienio tinklo nuokrypis nuo tikrojo paviršiaus</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Išklotinė&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Apibrėžia didžiausią tinklo sienų nuokrypį nuo tikrojo paviršiaus. Mažesnė vertė sulėtina atvaizdavimo greitį, bet padidina detalumą/skyrą.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Didžiausias tinklo nuokrypis</translation>
     </message>
     <message>
-      <source>mm</source>
-      <translation>mm</translation>
+      <source>ZIP compression is used when writing a mesh file in AMF format</source>
+      <translation>Yra naudojamas ZIP glaudinimas, kuomet tinklas išsaugomas AMF formatu</translation>
     </message>
     <message>
       <source>Export AMF files using compression</source>
       <translation>Eksportuoti glaudintus AMF failus</translation>
+    </message>
+    <message>
+      <source>Width:</source>
+      <translation>Plotis:</translation>
+    </message>
+    <message>
+      <source>Height:</source>
+      <translation>Aukštis:</translation>
+    </message>
+    <message>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation>Šis dydis parodo ar ZIP suglaudinimas yra naudojamas įrašant į rinkmeną AMF formatu</translation>
     </message>
   </context>
   <context>
@@ -933,8 +1130,57 @@ Please run the command to repair folds first</source>
       <translation>Tinklinis rodinys</translation>
     </message>
     <message>
+      <source>Default appearance for new meshes</source>
+      <translation>Numatytoji naujų tinklų išvaizda</translation>
+    </message>
+    <message>
+      <source>Default line color</source>
+      <translation>Numatytoji brūkšnio spalva</translation>
+    </message>
+    <message>
+      <source>Mesh transparency</source>
+      <translation>Tinklo skaidrumas</translation>
+    </message>
+    <message>
+      <source>Default color for new meshes</source>
+      <translation>Numatytoji naujų tinklų spalva</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <source>Default mesh color</source>
+      <translation>Numatytoji tinklo spalva</translation>
+    </message>
+    <message>
+      <source>A bounding box will be displayed</source>
+      <translation>Bus rodomas gaubiantysis stačiakampis gretasienis</translation>
+    </message>
+    <message>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Rodyti paryškintų tinklų gaubiantį stačiakampį gretasienį</translation>
+    </message>
+    <message>
+      <source>Default line color for new meshes</source>
+      <translation>Numatytoji naujų tinklų spalva</translation>
+    </message>
+    <message>
+      <source>The bottom side of surface will be rendered the same way than top side.
+If not checked, it depends on the option "Enable backlight color"
+(preferences section Display -&gt; 3D View). Either the backlight color
+will be used or black.</source>
+      <translation>Apatinė paviršiaus pusė bus piešiama taip pat, kaip ir viršutinė pusė.
+Jei nepasirinkta, tai priklauso nuo parinkties „Įgalinti galinį pašvietimą“
+(Nuostatų skiltyje Rodymas -&gt; Erdvinis vaizdas). Tuomet bus naudojama galinio pašvietimo arba juoda spalva.</translation>
+    </message>
+    <message>
       <source>Two-side rendering</source>
       <translation>Abiejų sienų atvaizdavimas</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Linijos skaidrumas</translation>
     </message>
     <message>
       <source>Backface color</source>
@@ -946,51 +1192,45 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Tai yra mažiausias kampas tarp dviejų daugiakampių, kai iš jų paskaičiuotų normalių gaunamas plokščias šešėlis.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jei kampas tarp kaimyninių normalių yra mažesnis už nelygumo kampą, ant paviršių, turinčių bendrą briauną kris tolygus šešėlis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Tai yra mažiausias kampas tarp dviejų daugiakampių, kai iš jų paskaičiuotų normalių gaunamas plokščias šešėlis.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jei kampas tarp kaimyninių normalių yra mažesnis už nelygumo kampą, ant paviršių, turinčių bendrą kraštinę kris tolygus šešėlis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Crease angle</source>
       <translation>Nelygumo kampas</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Plokščiasis šešėliavimas/Phong'o tolydusis šešėliavimas&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Apibrėžia paviršių išvaizdą.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Esant plokščiajam šešėliavimui, paviršiaus normalės nėra apskaičiuojamos kiekvienai viršūnei, o tai lemia laiptuotą kreivų paviršių išvaizdą. Taikant Phong'o tolydųjį šešėliavimą, išvaizda būna glotnesnė &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jei nustatyta ši parinktis, naudojamas Phong'o šešėliavimas.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>If this option is set Phong shading is used, otherwise flat shading.
+Shading defines the appearance of surfaces.
+
+With flat shading the surface normals are not defined per vertex that leads
+to a unreal appearance for curved surfaces while using Phong shading leads
+to a smoother appearance.
+</source>
+      <translation>Jei nustatyta ši parinktis, atvaizdavimui taikomas Fongo šešėliavimas, kitu atveju taikomas plokštuminis šelėliavimas.
+Šešėliavimas apibrėžia paviršių išvaizdą.
+
+Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuojamos kiekvienai viršūnei ir dėl to kreivi paviršiai atvaizduojami netikroviškai (paviršius atrodo žvynuotas), o naudojant Fongo šešėliavimą, kreivi paviršiai atrodo glotnūs.</translation>
     </message>
     <message>
       <source>Define normal per vertex</source>
       <translation>Nustatyti normalę kiekvienai viršūnei</translation>
     </message>
-    <message utf8="true">
+    <message>
+      <source>Crease angle is a threshold angle between two faces.
+
+ If face angle ≥ crease angle, facet shading is used
+ If face angle &lt; crease angle, smooth shading is used</source>
+      <translation>Klostės kampas yra slenkstinis kampas tarp dviejų daugiakampių.
+ Jei kampas ≥ už slenkstinį kampą, taikomas žvynelinis šešėliavimas
+ Jei kampas &lt; už slenkstinį kampą, taikomas tolydusis šešėliavimas</translation>
+    </message>
+    <message>
       <source> °</source>
       <translation> °</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Default appearance for new meshes</source>
-      <translation>Numatytoji naujų tinklų išvaizda</translation>
-    </message>
-    <message>
-      <source>Default line color</source>
-      <translation>Numatytoji linijos spalva</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Tinklo skaidrumas</translation>
-    </message>
-    <message>
-      <source>Default mesh color</source>
-      <translation>Numatytoji tinklo spalva</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Rodyti paryškintų tinklų ribinį stačiakampį gretasienį</translation>
-    </message>
-    <message>
-      <source>Line transparency</source>
-      <translation>Linijos skaidrumas</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Patarimas&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Kiekvienos viršūnės normalės apibrėžimas yra vadinamas &lt;span style=" font-style:italic;"&gt;Fongo šešėliavimu&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;, o kiekvienos sienos normalės apibrėžimas yra vadinamas&lt;/span&gt;Plokščiuoju šešėliavimu&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -1033,6 +1273,45 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::GmshWidget</name>
+    <message>
+      <source>Automatic</source>
+      <translation>Automatinis</translation>
+    </message>
+    <message>
+      <source>Adaptive</source>
+      <translation>Prisitaikantis</translation>
+    </message>
+    <message>
+      <source>Frontal</source>
+      <translation>Priekinis</translation>
+    </message>
+    <message>
+      <source>Frontal Quad</source>
+      <translation>Priekiniai keturkampiai</translation>
+    </message>
+    <message>
+      <source>Parallelograms</source>
+      <translation>Lygiagretainiai</translation>
+    </message>
+    <message>
+      <source>Time:</source>
+      <translation>Laikas:</translation>
+    </message>
+    <message>
+      <source>Running gmsh...</source>
+      <translation>Paleidžiamas „gmsh“...</translation>
+    </message>
+    <message>
+      <source>Failed to start</source>
+      <translation>Nepavyko pradėti</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Klaida</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
       <source>Add triangle</source>
@@ -1056,6 +1335,92 @@ Please run the command to repair folds first</source>
     <message>
       <source>Finish</source>
       <translation>Užbaigti</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation>Paviršiaus pritaikymas</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Dydžiai</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Atranka</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Sritis</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Trikampis</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Išvalyti</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Skaičiuoti</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Niekas nepasirinkta</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation>Prieš pritaikant prie paviršiaus, pažymėkite sritį.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::RemeshGmsh</name>
+    <message>
+      <source>Remesh by gmsh</source>
+      <translation>Perkurti tinklą su „gmsh“</translation>
+    </message>
+    <message>
+      <source>Remeshing Parameter</source>
+      <translation>Perkūrimo dydis</translation>
+    </message>
+    <message>
+      <source>Meshing:</source>
+      <translation>Kuriamas tinklas:</translation>
+    </message>
+    <message>
+      <source>Max element size (0.0 = Auto):</source>
+      <translation>Didžiausios akies dydis (0.0 = Apskaičiuojamas savaime):</translation>
+    </message>
+    <message>
+      <source>Min element size (0.0 = Auto):</source>
+      <translation>Smulkiausios akies dydis (0.0 = Apskaičiuojamas savaime):</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Posūkio kampas:</translation>
+    </message>
+    <message>
+      <source>Gmsh</source>
+      <translation>„Gmsh“</translation>
+    </message>
+    <message>
+      <source>Path</source>
+      <translation>Kelias</translation>
+    </message>
+    <message>
+      <source>Kill</source>
+      <translation>Nutraukti</translation>
+    </message>
+    <message>
+      <source>Time:</source>
+      <translation>Laikas:</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Išvalyti</translation>
     </message>
   </context>
   <context>
@@ -1109,12 +1474,12 @@ Please run the command to repair folds first</source>
       <translation>Srities parinktys</translation>
     </message>
     <message>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>Priimti tik trikampius, kurių normalės nukreiptos į išorę</translation>
-    </message>
-    <message>
       <source>Respect only visible triangles</source>
       <translation>Priimti tik matomus trikampius</translation>
+    </message>
+    <message>
+      <source>Respect only triangles with normals facing screen</source>
+      <translation>Priimti tik trikampius, kurių normalės nukreiptos į išorę</translation>
     </message>
   </context>
   <context>
@@ -1136,16 +1501,16 @@ Please run the command to repair folds first</source>
       <translation>Leidžiamoji nuokrypa</translation>
     </message>
     <message>
-      <source>Minumum number of faces</source>
-      <translation>Mažiausias daugiakampių skaičius</translation>
+      <source>Minimum number of faces</source>
+      <translation>Mažiausias daugiakampių kiekis</translation>
     </message>
     <message>
       <source>Cylinder</source>
       <translation>Ritinys</translation>
     </message>
     <message>
-      <source>Radius</source>
-      <translation>Spindulys</translation>
+      <source>Curvature</source>
+      <translation>Kreivis</translation>
     </message>
     <message>
       <source>Tolerance (Flat)</source>
@@ -1156,12 +1521,71 @@ Please run the command to repair folds first</source>
       <translation>Leidžiamoji kreivio nuokrypa</translation>
     </message>
     <message>
-      <source>Minimum number of faces</source>
-      <translation>Mažiausias daugiakampių kiekis</translation>
+      <source>Sphere</source>
+      <translation>Rutulys</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Bet koks pavidalas</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>Didžiausias kreivis</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>Mažiausias kreivis</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Tinklo skaidymas</translation>
     </message>
     <message>
       <source>Sphere</source>
       <translation>Rutulys</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Leidžiamoji nuokrypa</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Mažiausias daugiakampių kiekis</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Dydžiai...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plokštuma</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Ritinys</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Pagrindas</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Įprastiniai</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Ašis</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Spindulys</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Vidurys</translation>
     </message>
   </context>
   <context>
@@ -1207,14 +1631,10 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
-    <name>Mesh_TrimByPlane</name>
+    <name>Mesh_BoundingBox</name>
     <message>
-      <source>Select plane</source>
-      <translation>Pasirinkti plokštumą</translation>
-    </message>
-    <message>
-      <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Prašome pasirinkti plokštumą, kuri perpjaus tinklą.</translation>
+      <source>Boundings of %1:</source>
+      <translation>%1 gaubiančiojo stačiakampio gretasienio ribos:</translation>
     </message>
   </context>
   <context>
@@ -1224,7 +1644,7 @@ Please run the command to repair folds first</source>
       <translation>OpenSCAD</translation>
     </message>
     <message>
-      <source>Unknwon error occured while running OpenSCAD.</source>
+      <source>Unknown error occurred while running OpenSCAD.</source>
       <translation>Leidžiant OpenSCAD įvyko nežinoma klaida.</translation>
     </message>
     <message>
@@ -1233,171 +1653,19 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>OpenSCAD nerastas jūsų kompiuteryje.
 Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.html.</translation>
     </message>
-    <message>
-      <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation>Leidžiant OpenSCAD įvyko nežinoma klaida.</translation>
-    </message>
   </context>
   <context>
     <name>QDockWidget</name>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Patikrinti ir pataisyti tinklą</translation>
+      <translation>Tinklo patikra ir taisa</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <source>Import mesh</source>
-      <translation>Importuoti tinklą</translation>
-    </message>
-    <message>
-      <source>Export mesh</source>
-      <translation>Eksportuoti tinklą</translation>
-    </message>
-    <message>
-      <source>Solid Mesh</source>
-      <translation>Pilnaviduris (vientisinis) tinklas</translation>
-    </message>
-    <message>
-      <source>Boundings</source>
-      <translation>Apribojimai</translation>
-    </message>
-    <message>
-      <source>Fill holes</source>
-      <translation>Užpildyti skyles</translation>
-    </message>
-    <message>
-      <source>Fill holes with maximum number of edges:</source>
-      <translation>Užpildyti skyles, turinčias daugiausiai briaunų:</translation>
-    </message>
-    <message>
-      <source>Binary STL (*.stl)</source>
-      <translation type="unfinished">Binary STL (*.stl)</translation>
-    </message>
-    <message>
-      <source>ASCII STL (*.ast)</source>
-      <translation type="unfinished">ASCII STL (*.ast)</translation>
-    </message>
-    <message>
-      <source>Binary Mesh (*.bms)</source>
-      <translation type="unfinished">Binary Mesh (*.bms)</translation>
-    </message>
-    <message>
-      <source>Alias Mesh (*.obj)</source>
-      <translation type="unfinished">Alias Mesh (*.obj)</translation>
-    </message>
-    <message>
-      <source>Inventor V2.1 ascii (*.iv)</source>
-      <translation type="unfinished">Inventor V2.1 ascii (*.iv)</translation>
-    </message>
-    <message>
-      <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
-    </message>
-    <message>
-      <source>ASCII STL (*.stl)</source>
-      <translation type="unfinished">ASCII STL (*.stl)</translation>
-    </message>
-    <message>
-      <source>VRML V2.0 (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML V2.0 (*.wrl *.vrml)</translation>
-    </message>
-    <message>
-      <source>Compressed VRML 2.0 (*.wrz)</source>
-      <translation type="unfinished">Compressed VRML 2.0 (*.wrz)</translation>
-    </message>
-    <message>
-      <source>Nastran (*.nas *.bdf)</source>
-      <translation type="unfinished">Nastran (*.nas *.bdf)</translation>
-    </message>
-    <message>
-      <source>Python module def (*.py)</source>
-      <translation type="unfinished">Python module def (*.py)</translation>
-    </message>
-    <message>
-      <source>Meshing Tolerance</source>
-      <translation>Leidžiamieji tinklo nuokrypiai</translation>
-    </message>
-    <message>
-      <source>Enter tolerance for meshing geometry:</source>
-      <translation>Įveskite leidžiamą nuokrypį geometriją apibrėžiančiam tinklui:</translation>
-    </message>
-    <message>
-      <source>The mesh '%1' is a solid.</source>
-      <translation>Tinklas '%1' yra pilnaviduris.</translation>
-    </message>
-    <message>
-      <source>The mesh '%1' is not a solid.</source>
-      <translation>Tinklas '%1' nėra pilnaviduris.</translation>
-    </message>
-    <message>
-      <source>Min=&lt;%1,%2,%3&gt;
-
-Max=&lt;%4,%5,%6&gt;</source>
-      <translation>Mažiausia=&lt;%1,%2,%3&gt;
-
-Daugiausia=&lt;%4,%5,%6&gt;</translation>
-    </message>
-    <message>
-      <source>[Points: %1, Edges: %2 Faces: %3]</source>
-      <translation type="unfinished">[Points: %1, Edges: %2 Faces: %3]</translation>
-    </message>
-    <message>
-      <source>Leave info mode</source>
-      <translation>Išeiti iš duomenų pateikimo režimo</translation>
-    </message>
-    <message>
-      <source>Index: %1</source>
-      <translation>Indeksas: %1</translation>
-    </message>
-    <message>
-      <source>Leave hole-filling mode</source>
-      <translation>Išeiti iš skylių užpildymo režimo</translation>
-    </message>
-    <message>
-      <source>Leave removal mode</source>
-      <translation>Išeiti iš šalinimo režimo</translation>
-    </message>
-    <message>
-      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</source>
-      <translation type="unfinished">All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</translation>
-    </message>
-    <message>
-      <source>Stanford Polygon (*.ply)</source>
-      <translation type="unfinished">Stanford Polygon (*.ply)</translation>
-    </message>
-    <message>
-      <source>Object File Format (*.off)</source>
-      <translation type="unfinished">Object File Format (*.off)</translation>
-    </message>
-    <message>
-      <source>Standford Polygon (*.ply)</source>
-      <translation type="unfinished">Standford Polygon (*.ply)</translation>
-    </message>
-    <message>
-      <source>Delete selected faces</source>
-      <translation>Pašalinti pasirinktus daugiakampius</translation>
-    </message>
-    <message>
-      <source>Clear selected faces</source>
-      <translation>Išvalyti pasirinktus daugiakampius</translation>
-    </message>
-    <message>
-      <source>Annotation</source>
-      <translation>Santrauka</translation>
-    </message>
-    <message>
-      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
-      <translation type="unfinished">All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
-    </message>
-    <message>
-      <source>X3D Extensible 3D (*.x3d)</source>
-      <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
-    </message>
-    <message>
-      <source>Display components</source>
-      <translation>Atvaizduoti dalis</translation>
+      <source>Import-Export</source>
+      <translation>Importas-Eksportas</translation>
     </message>
     <message>
       <source>All Mesh Files</source>
@@ -1424,20 +1692,44 @@ Daugiausia=&lt;%4,%5,%6&gt;</translation>
       <translation>Objekto failo formatas</translation>
     </message>
     <message>
-      <source>Inventor V2.1 ascii</source>
-      <translation>Inventor V2.1 ascii</translation>
+      <source>Inventor V2.1 ASCII</source>
+      <translation type="unfinished">Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
       <translation>Stanford Polygon</translation>
     </message>
     <message>
+      <source>NASTRAN</source>
+      <translation type="unfinished">NASTRAN</translation>
+    </message>
+    <message>
       <source>All Files</source>
       <translation>Visi failai</translation>
     </message>
     <message>
+      <source>Import mesh</source>
+      <translation>Importuoti tinklą</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Paprastas modelio formatas</translation>
+    </message>
+    <message>
+      <source>Inventor V2.1 ascii</source>
+      <translation>Inventor V2.1 ascii</translation>
+    </message>
+    <message>
       <source>X3D Extensible 3D</source>
       <translation>X3D Extensible 3D</translation>
+    </message>
+    <message>
+      <source>Compressed X3D</source>
+      <translation type="unfinished">Compressed X3D</translation>
+    </message>
+    <message>
+      <source>WebGL/X3D</source>
+      <translation type="unfinished">WebGL/X3D</translation>
     </message>
     <message>
       <source>VRML V2.0</source>
@@ -1456,12 +1748,44 @@ Daugiausia=&lt;%4,%5,%6&gt;</translation>
       <translation>Python modulio def</translation>
     </message>
     <message>
-      <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation>[Taškų: %1, briaunų: %2, daugiakampių: %3]</translation>
+      <source>Asymptote Format</source>
+      <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
-      <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <source>Export mesh</source>
+      <translation>Eksportuoti tinklą</translation>
+    </message>
+    <message>
+      <source>Meshing Tolerance</source>
+      <translation>Leidžiamieji tinklo nuokrypiai</translation>
+    </message>
+    <message>
+      <source>Enter tolerance for meshing geometry:</source>
+      <translation>Įveskite leidžiamą nuokrypį geometriją apibrėžiančiam tinklui:</translation>
+    </message>
+    <message>
+      <source>The mesh '%1' is not a solid.</source>
+      <translation>Tinklas '%1' nesudaro pilnavidurio kūno.</translation>
+    </message>
+    <message>
+      <source>The mesh '%1' is a solid.</source>
+      <translation>Tinklas '%1' yra pilnaviduris.</translation>
+    </message>
+    <message>
+      <source>Solid Mesh</source>
+      <translation>Tinklo vientisumas</translation>
+    </message>
+    <message>
+      <source>Boundings</source>
+      <translation>Ribiniai matmenys</translation>
+    </message>
+    <message>
+      <source>Fill holes</source>
+      <translation>Užpildyti skyles</translation>
+    </message>
+    <message>
+      <source>Fill holes with maximum number of edges:</source>
+      <translation>Užpildyti skyles, turinčias daugiausiai tiek kraštinių:</translation>
     </message>
     <message>
       <source>Scaling</source>
@@ -1471,12 +1795,52 @@ Daugiausia=&lt;%4,%5,%6&gt;</translation>
       <source>Enter scaling factor:</source>
       <translation>Įveskite mastelį:</translation>
     </message>
+    <message>
+      <source>[Points: %1, Edges: %2, Faces: %3]</source>
+      <translation>[Taškų: %1, kraštinių: %2, daugiakampių: %3]</translation>
+    </message>
+    <message>
+      <source>Display components</source>
+      <translation>Atvaizduoti dalis</translation>
+    </message>
+    <message>
+      <source>Display segments</source>
+      <translation>Rodyti atkarpas</translation>
+    </message>
+    <message>
+      <source>Leave info mode</source>
+      <translation>Išeiti iš duomenų pateikimo režimo</translation>
+    </message>
+    <message>
+      <source>Index: %1</source>
+      <translation>Indeksas: %1</translation>
+    </message>
+    <message>
+      <source>Leave hole-filling mode</source>
+      <translation>Išeiti iš skylių užpildymo režimo</translation>
+    </message>
+    <message>
+      <source>Leave removal mode</source>
+      <translation>Išeiti iš šalinimo režimo</translation>
+    </message>
+    <message>
+      <source>Delete selected faces</source>
+      <translation>Pašalinti pasirinktus daugiakampius</translation>
+    </message>
+    <message>
+      <source>Clear selected faces</source>
+      <translation>Išvalyti pasirinktus daugiakampius</translation>
+    </message>
+    <message>
+      <source>Annotation</source>
+      <translation>Santrauka</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>Analyze</source>
-      <translation>Nagrinėti</translation>
+      <translation>Tikrinti</translation>
     </message>
     <message>
       <source>Boolean</source>

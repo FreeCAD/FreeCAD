@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Shai Seger         <shaise at gmail>               *
+ *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -57,6 +57,9 @@
 #include <stack>
 #include <string>
 #include <vector>
+
+// Boost
+#include <boost/regex.hpp>
 
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>

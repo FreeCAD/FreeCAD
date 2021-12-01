@@ -48,7 +48,7 @@ struct cloner {
 
     template<typename T>
     struct test : mpl::and_<details::is_shared_ptr<T>,
-            mpl::not_<boost::is_same<T, boost::shared_ptr<typename System::Cluster> > > > {};
+            mpl::not_<boost::is_same<T, std::shared_ptr<typename System::Cluster> > > > {};
 
     template<typename T>
     typename boost::enable_if< test<T>, void>::type operator()(T& p) const {
@@ -104,9 +104,9 @@ SolverInfo System<KernelType, T1, T2, T3>::solve() {
 };
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
-boost::shared_ptr<System<KernelType, T1, T2, T3> > System<KernelType, T1, T2, T3>::createSubsystem() {
+std::shared_ptr<System<KernelType, T1, T2, T3> > System<KernelType, T1, T2, T3>::createSubsystem() {
 
-    boost::shared_ptr<System> s = boost::shared_ptr<System>(new System());
+    std::shared_ptr<System> s = std::shared_ptr<System>(new System());
     s->m_cluster = m_cluster->createCluster().first;
     s->m_storage = m_storage;
     s->m_cluster->template setProperty<dcm::type_prop>(details::subcluster);
@@ -127,12 +127,12 @@ boost::shared_ptr<System<KernelType, T1, T2, T3> > System<KernelType, T1, T2, T3
 };
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
-typename std::vector<boost::shared_ptr<System<KernelType, T1, T2, T3> > >::iterator System<KernelType, T1, T2, T3>::beginSubsystems() {
+typename std::vector<std::shared_ptr<System<KernelType, T1, T2, T3> > >::iterator System<KernelType, T1, T2, T3>::beginSubsystems() {
   return m_subsystems.begin();
 };
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
-typename std::vector<boost::shared_ptr<System<KernelType, T1, T2, T3> > >::iterator System<KernelType, T1, T2, T3>::endSubsystems() {
+typename std::vector<std::shared_ptr<System<KernelType, T1, T2, T3> > >::iterator System<KernelType, T1, T2, T3>::endSubsystems() {
   return m_subsystems.end();
 };
 

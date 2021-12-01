@@ -26,16 +26,15 @@
 # include <sstream>
 # include <locale>
 # include <iostream>
+# include <QElapsedTimer>
 #endif
 
-# include <QTime>
 #include "PyExport.h"
 #include "Interpreter.h"
 #include "Tools.h"
 
 namespace Base {
-struct string_comp  : public std::binary_function<std::string, 
-                                                  std::string, bool>
+struct string_comp
 {
     // s1 and s2 must be numbers represented as string
     bool operator()(const std::string& s1, const std::string& s2)
@@ -154,11 +153,7 @@ std::string Base::Tools::escapedUnicodeFromUtf8(const char *s)
 
     PyObject* escaped = PyUnicode_AsUnicodeEscapeString(unicode);
     if (escaped) {
-#if PY_MAJOR_VERSION >= 3
         escapedstr = std::string(PyBytes_AsString(escaped));
-#else
-        escapedstr = std::string(PyString_AsString(escaped));
-#endif
         Py_DECREF(escaped);
     }
 
@@ -174,22 +169,79 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
     PyObject* unicode = PyUnicode_DecodeUnicodeEscape(s.c_str(), s.size(), "strict");
     if (!unicode)
         return string;
-#if PY_MAJOR_VERSION >= 3
     if (PyUnicode_Check(unicode)) {
         string = PyUnicode_AsUTF8(unicode);
     }
-#else
-    if (PyUnicode_Check(unicode)) {
-        PyObject* value = PyUnicode_AsUTF8String(unicode);
-        string = PyString_AsString(value);
-        Py_DECREF(value);
-    }
-    else if (PyString_Check(unicode)) {
-        string = PyString_AsString(unicode);
-    }
-#endif
     Py_DECREF(unicode);
     return string;
+}
+
+QString Base::Tools::escapeEncodeString(const QString& s)
+{
+    QString result;
+    const int len = s.length();
+    result.reserve(int(len * 1.1));
+    for (int i = 0; i < len; ++i) {
+        if (s.at(i) == QLatin1Char('\\'))
+            result += QLatin1String("\\\\");
+        else if (s.at(i) == QLatin1Char('\"'))
+            result += QLatin1String("\\\"");
+        else if (s.at(i) == QLatin1Char('\''))
+            result += QLatin1String("\\\'");
+        else
+            result += s.at(i);
+    }
+    result.squeeze();
+    return result;
+}
+
+std::string Base::Tools::escapeEncodeString(const std::string& s)
+{
+    std::string result;
+    size_t len = s.size();
+    for (size_t i = 0; i < len; ++i) {
+        if (s.at(i) == '\\')
+            result += "\\\\";
+        else if (s.at(i) == '\"')
+            result += "\\\"";
+        else if (s.at(i) == '\'')
+            result += "\\\'";
+        else
+            result += s.at(i);
+    }
+    return result;
+}
+
+QString Base::Tools::escapeEncodeFilename(const QString& s)
+{
+    QString result;
+    const int len = s.length();
+    result.reserve(int(len * 1.1));
+    for (int i = 0; i < len; ++i) {
+        if (s.at(i) == QLatin1Char('\"'))
+            result += QLatin1String("\\\"");
+        else if (s.at(i) == QLatin1Char('\''))
+            result += QLatin1String("\\\'");
+        else
+            result += s.at(i);
+    }
+    result.squeeze();
+    return result;
+}
+
+std::string Base::Tools::escapeEncodeFilename(const std::string& s)
+{
+    std::string result;
+    size_t len = s.size();
+    for (size_t i = 0; i < len; ++i) {
+        if (s.at(i) == '\"')
+            result += "\\\"";
+        else if (s.at(i) == '\'')
+            result += "\\\'";
+        else
+            result += s.at(i);
+    }
+    return result;
 }
 
 // ----------------------------------------------------------------------------
@@ -198,7 +250,7 @@ using namespace Base;
 
 struct StopWatch::Private
 {
-    QTime t;
+    QElapsedTimer t;
 };
 
 StopWatch::StopWatch() : d(new Private)
@@ -246,6 +298,3 @@ std::string StopWatch::toString(int ms) const
         str << msec << "ms";
     return str.str();
 }
-
-
-

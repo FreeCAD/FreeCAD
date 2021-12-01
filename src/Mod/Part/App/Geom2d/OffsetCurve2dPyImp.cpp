@@ -95,7 +95,7 @@ Py::Object OffsetCurve2dPy::getBasisCurve(void) const
     Handle(Geom2d_Curve) basis = curve->BasisCurve();
     if (basis.IsNull())
         return Py::None();
-    std::unique_ptr<Geom2dCurve> geo2d = getCurve2dFromGeom2d(basis);
+    std::unique_ptr<Geom2dCurve> geo2d = makeFromCurve2d(basis);
     if (!geo2d)
         throw Py::RuntimeError("Unknown curve type");
     return Py::asObject(geo2d->getPyObject());

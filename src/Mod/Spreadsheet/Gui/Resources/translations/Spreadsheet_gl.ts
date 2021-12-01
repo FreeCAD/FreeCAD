@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="gl" sourcelanguage="en">
+<TS version="2.1" language="gl" sourcelanguage="en">
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Folla de cálculo</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Célula</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Aplicar</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation type="unfinished">Apply the changes to the current cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Desbotar</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation type="unfinished">Deletes the contents of the current cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Calcular</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation type="unfinished">Updates the values handled by controllers</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation type="unfinished">Create Spreadsheet</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Folla de cálculo</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+    </message>
+  </context>
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -28,7 +125,7 @@
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Aliñado inferior do contido das celas seleccionadas</translation>
+      <translation>Aliñado inferior do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -43,7 +140,7 @@
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Aliñado ó centro do contido das celas seleccionadas</translation>
+      <translation>Aliñado ó centro do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -58,7 +155,7 @@
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
-      <translation>Aliñado á esquerda do contido das celas seleccionadas</translation>
+      <translation>Aliñado á esquerda do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -73,7 +170,7 @@
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
-      <translation>Aliñado á dereita do contido das celas seleccionadas</translation>
+      <translation>Aliñado á dereita do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -88,7 +185,7 @@
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Aliñado á cima do contido das celas seleccionadas</translation>
+      <translation>Aliñado á cima do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -102,8 +199,8 @@
       <translation>Aliñación verticalmente centrada</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Aliñado ó centro en sentido vertical do contido das celas seleccionadas</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Aliñado verticalmente ó centro do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -147,8 +244,8 @@
       <translation>Combinar celas</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Combina as celas seleccionadas nunha, na folla de cálculo</translation>
+      <source>Merge selected cells</source>
+      <translation>Fundir celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -163,7 +260,7 @@
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Define un alcume para as celas seleccionadas</translation>
+      <translation>Define un alcume para as celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -177,8 +274,8 @@
       <translation>Dividir cela</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Divide celas combinadas anteriormente na folla de cálculo</translation>
+      <source>Split previously merged cells</source>
+      <translation>Dividir celas previamente mesturadas</translation>
     </message>
   </context>
   <context>
@@ -192,8 +289,8 @@
       <translation>Texto en grosa</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Establece o texto das celas seleccionadas en grosa</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Conxunto de texto en celas escolmadas en negro</translation>
     </message>
   </context>
   <context>
@@ -207,8 +304,8 @@
       <translation>Texto en cursiva</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Establece o texto das celas seleccionadas en cursiva</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Conxunto de texto en celas escolmadas en itálica</translation>
     </message>
   </context>
   <context>
@@ -222,15 +319,98 @@
       <translation>Texto subliñado</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Establece o texto subliñado nas celas seleccionadas</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Suliñar texto en celas escolmadas</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Personalizar</translation>
+      <source>Custom Color</source>
+      <translation>Personalizar cor</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Combinar celas</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Dividir cela</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation type="unfinished">Left-align cell</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation type="unfinished">Center cell</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation type="unfinished">Right-align cell</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation type="unfinished">Top-align cell</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation type="unfinished">Bottom-align cell</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation type="unfinished">Vertically center cells</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation type="unfinished">Set bold text</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation type="unfinished">Set italic text</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation type="unfinished">Set underline text</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation type="unfinished">Create Spreadsheet</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation type="unfinished">Set cell properties</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation type="unfinished">Edit cell</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Inserir ringleiras</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Desbotar ringleiras</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Inserir columnas</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation type="unfinished">Clear cell(s)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation type="unfinished">Set foreground color</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation type="unfinished">Set background color</translation>
     </message>
   </context>
   <context>
@@ -257,7 +437,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Horizontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +453,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Vertical</translation>
     </message>
     <message>
       <source>Top</source>
@@ -331,10 +511,6 @@
       <translation>Exportar ficheiro</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Contido da cela</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Amosar a folla de cálculo</translation>
     </message>
@@ -353,6 +529,30 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Definir a cor do plano de fondo da(s) célula(s) da folla de cálculo</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Folla de cálculo</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation type="unfinished">Alias contains invalid characters!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation type="unfinished">Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -426,8 +626,8 @@
       <translation>Gris claro</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personalizar</translation>
+      <source>Custom Color</source>
+      <translation>Personalizar cor</translation>
     </message>
   </context>
   <context>
@@ -437,8 +637,73 @@
       <translation>Formulario</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Contidos</translation>
+      <source>&amp;Content:</source>
+      <translation type="unfinished">&amp;Content:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation type="unfinished">&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation type="unfinished">Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Folla de cálculo</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation type="unfinished">Import/Export Settings</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation type="unfinished">Delimiter Character: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation type="unfinished">\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation type="unfinished">Escape Character: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation type="unfinished">tab</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation type="unfinished">Quote Character: </translation>
     </message>
   </context>
   <context>
@@ -451,24 +716,64 @@
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Inserir ringleiras</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Desbotar ringleiras</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Inserir columnas</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Desbotar columnas</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Propiedades...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

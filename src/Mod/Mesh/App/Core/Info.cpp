@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <iomanip>
-# include <ios>
+# include <iostream>
 # include <map>
 # include <set>
 #endif
@@ -52,10 +52,7 @@ std::ostream& MeshInfo::GeneralInformation (std::ostream &rclStream) const
 
   rclStream << "Mesh: ["
             << ulCtFc << " Faces, ";
-          if (ulCtEd!=ULONG_MAX)
   rclStream << ulCtEd << " Edges, ";
-          else
-  rclStream << "Cannot determine number of edges, ";
   rclStream << ulCtPt << " Points"
             << "]" << std::endl;
 
@@ -65,12 +62,11 @@ std::ostream& MeshInfo::GeneralInformation (std::ostream &rclStream) const
 std::ostream& MeshInfo::DetailedPointInfo (std::ostream& rclStream) const
 {
   // print points
-  unsigned long i;
   rclStream << _rclMesh.CountPoints() << " Points:" << std::endl;
   MeshPointIterator pPIter(_rclMesh), pPEnd(_rclMesh);
   pPIter.Begin();
   pPEnd.End();
-  i = 0;
+  PointIndex i = 0;
 
   rclStream.precision(3);
   rclStream.setf(std::ios::fixed | std::ios::showpoint | std::ios::showpos);
@@ -90,7 +86,7 @@ std::ostream& MeshInfo::DetailedEdgeInfo (std::ostream& rclStream) const
 {
   // print edges
   // get edges from facets
-  std::map<std::pair<unsigned long, unsigned long>, int > lEdges;
+  std::map<std::pair<PointIndex, PointIndex>, int > lEdges;
 
   const MeshFacetArray& rFacets = _rclMesh.GetFacets();
   MeshFacetArray::_TConstIterator pFIter;
@@ -100,9 +96,9 @@ std::ostream& MeshInfo::DetailedEdgeInfo (std::ostream& rclStream) const
     const MeshFacet& rFacet = *pFIter;
     for ( int j=0; j<3; j++ )
     {
-      unsigned long ulPt0 = std::min<unsigned long>(rFacet._aulPoints[j],  rFacet._aulPoints[(j+1)%3]);
-      unsigned long ulPt1 = std::max<unsigned long>(rFacet._aulPoints[j],  rFacet._aulPoints[(j+1)%3]);
-      std::pair<unsigned long, unsigned long> cEdge(ulPt0, ulPt1);
+      PointIndex ulPt0 = std::min<PointIndex>(rFacet._aulPoints[j],  rFacet._aulPoints[(j+1)%3]);
+      PointIndex ulPt1 = std::max<PointIndex>(rFacet._aulPoints[j],  rFacet._aulPoints[(j+1)%3]);
+      std::pair<PointIndex, PointIndex> cEdge(ulPt0, ulPt1);
       lEdges[ cEdge ]++;
     }
 
@@ -111,7 +107,7 @@ std::ostream& MeshInfo::DetailedEdgeInfo (std::ostream& rclStream) const
 
   // print edges
   rclStream << lEdges.size() << " Edges:" << std::endl;
-  std::map<std::pair<unsigned long, unsigned long>, int >::const_iterator  pEIter;
+  std::map<std::pair<PointIndex, PointIndex>, int >::const_iterator  pEIter;
   pEIter = lEdges.begin();
 
   rclStream.precision(3);

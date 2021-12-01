@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>*
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -50,14 +51,20 @@ public:
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg)=0;
     const QString onAddSelection(const Gui::SelectionChanges& msg);
-    void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar);
+    virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
+    virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
+    void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar, const bool circle = false);
     void exitSelectionMode();
     QVariant setUpToFace(const QString& text);
     /// Try to find the name of a feature with the given label.
-    /// For faster access a suggeted name can be tested, first.
+    /// For faster access a suggested name can be tested, first.
     QVariant objectNameByLabel(const QString& label, const QVariant& suggest) const;
 
-    static QString getFaceReference(const QString& obj, const QString& sub);
+    QString getFaceReference(const QString& obj, const QString& sub) const;
+    /// Create a label for the 2D feature: the objects name if it's already 2D,
+    /// or the subelement's name if the object is a solid.
+    QString make2DLabel(const App::DocumentObject* section,
+                        const std::vector<std::string>& subValues);
 };
 
 class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters

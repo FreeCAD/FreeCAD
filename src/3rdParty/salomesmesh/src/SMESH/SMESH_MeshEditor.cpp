@@ -24,6 +24,11 @@
 // Created   : Mon Apr 12 16:10:22 2004
 // Author    : Edward AGAPOV (eap)
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
+#endif
+
 #include "SMESH_MeshEditor.hxx"
 
 #include "SMDS_FaceOfNodes.hxx"
@@ -4163,7 +4168,7 @@ void SMESH_MeshEditor::Smooth (TIDSortedElemSet &          theElems,
             // if ( posType != SMDS_TOP_3DSPACE )
             //   dist2 = pNode.SquareDistance( surface->Value( newUV.X(), newUV.Y() ));
             // if ( dist2 < dist1 )
-              uv = newUV;
+            uv = newUV;
           }
         }
         // store UV in the map
@@ -11178,7 +11183,7 @@ double SMESH_MeshEditor::OrientedAngle(const gp_Pnt& p0, const gp_Pnt& p1, const
   try {
     return n2.AngleWithRef(n1, vref);
   }
-  catch ( Standard_Failure ) {
+  catch ( Standard_Failure &) {
   }
   return Max( v1.Magnitude(), v2.Magnitude() );
 }
@@ -11343,7 +11348,7 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
             {
               int oldId = *itn;
               //MESSAGE("     node " << oldId);
-              vtkCellLinks::Link l = grid->GetCellLinks()->GetLink(oldId);
+              vtkCellLinks::Link l = static_cast<vtkCellLinks*>(grid->GetCellLinks())->GetLink(oldId);
               for (int i=0; i<l.ncells; i++)
                 {
                   int vtkId = l.cells[i];
@@ -11522,7 +11527,7 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
                                           //MESSAGE("  domain " << idom << " volume " << elem->GetID());
                                           double values[3];
                                           vtkIdType npts = 0;
-                                          vtkIdType* pts = 0;
+                                          vtkIdTypePtr pts = 0;
                                           grid->GetCellPoints(vtkVolIds[ivol], npts, pts);
                                           SMDS_VtkVolume::gravityCenter(grid, pts, npts, values);
                                           if (id ==0)
@@ -11703,7 +11708,7 @@ bool SMESH_MeshEditor::DoubleNodesOnGroupBoundaries( const std::vector<TIDSorted
         {
           int oldId = itnod->first;
           //MESSAGE("     node " << oldId);
-          vtkCellLinks::Link l = grid->GetCellLinks()->GetLink(oldId);
+          vtkCellLinks::Link l = static_cast<vtkCellLinks*>(grid->GetCellLinks())->GetLink(oldId);
           for (int i = 0; i < l.ncells; i++)
             {
               int vtkId = l.cells[i];
@@ -12160,7 +12165,7 @@ void SMESH_MeshEditor::CreateHoleSkin(double radius,
           MESSAGE("volume to check,  vtkId " << vtkId << " smdsId " << meshDS->fromVtkToSmds(vtkId));
           bool volInside = false;
           vtkIdType npts = 0;
-          vtkIdType* pts = 0;
+          vtkIdTypePtr pts = 0;
           grid->GetCellPoints(vtkId, npts, pts);
           for (int i=0; i<npts; i++)
             {
@@ -12868,3 +12873,7 @@ void SMESH_MeshEditor::copyPosition( const SMDS_MeshNode* from,
   default:;
   }
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif

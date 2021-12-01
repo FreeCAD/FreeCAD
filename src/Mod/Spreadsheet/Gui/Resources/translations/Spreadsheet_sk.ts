@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sk" sourcelanguage="en">
+<TS version="2.1" language="sk" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Vertikálne zarovnanie na stred</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Zarovnanie obsahu vybraných buniek do stredu</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Vertikálne zarovnať na stred obsah vybraných buniek</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Zlúčiť bunky</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Zlúčiť vybraté bunky v tabuľke</translation>
+      <source>Merge selected cells</source>
+      <translation>Zlúčiť vybrané bunky</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation type="unfinished">Set alias</translation>
+      <translation>Nastaviť pomenovanie</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation type="unfinished">Set alias for selected cell</translation>
+      <translation>Nastaviť pomenovanie pre vybranú bunku</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Rozdeliť bunku</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Rozdelenie predtým zlúčených buniek v tabuľke</translation>
+      <source>Split previously merged cells</source>
+      <translation>Rozdeliť predtým zlúčené bunky</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Tučné písmo</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Nastaviť tučné písmo vo vybratých bunkách</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Nastaviť text vo vybraných bunkách na tučný</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Kurzívny text</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Nastavenie kurzívy vo vybratých bunkách</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Nastaviť text vo vybraných bunkách na kurzívu</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,98 @@
       <translation>Podčiarknuť text</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Podčiarknuť text vo vybratých bunkách</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Podčiarknúť text vo vybraných bunkách</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <source>Custom Color</source>
+      <translation>Vlastná farba</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Zlúčiť bunky</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Rozdeliť bunku</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation type="unfinished">Left-align cell</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation type="unfinished">Center cell</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation type="unfinished">Right-align cell</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation type="unfinished">Top-align cell</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation type="unfinished">Bottom-align cell</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation type="unfinished">Vertically center cells</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation type="unfinished">Set bold text</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation type="unfinished">Set italic text</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation type="unfinished">Set underline text</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation type="unfinished">Create Spreadsheet</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation type="unfinished">Set cell properties</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation type="unfinished">Edit cell</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Vložiť riadky</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Odstrániť riadky</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Vložiť stĺpce</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation type="unfinished">Clear cell(s)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation type="unfinished">Set foreground color</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation type="unfinished">Set background color</translation>
     </message>
   </context>
   <context>
@@ -265,7 +348,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Stred</translation>
     </message>
     <message>
       <source>Right</source>
@@ -320,19 +403,15 @@
     <name>QObject</name>
     <message>
       <source>All (*)</source>
-      <translation type="unfinished">All (*)</translation>
+      <translation>Všetko (*)</translation>
     </message>
     <message>
       <source>Import file</source>
-      <translation>Import súboru</translation>
+      <translation>Importovať súbor</translation>
     </message>
     <message>
       <source>Export file</source>
-      <translation>Export súboru</translation>
-    </message>
-    <message>
-      <source>Cell contents</source>
-      <translation>Obsah buniek</translation>
+      <translation>Exportovať súbor</translation>
     </message>
     <message>
       <source>Show spreadsheet</source>
@@ -340,19 +419,43 @@
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Nastaviť farbu popredia bunky</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Nataviť farbu popredia buniek zošita</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Nataviť farbu pozadia bunky</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Nastaviť farbu pozadia buniek zošita</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Tabuľka</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation>Tabuľkový procesor nepodporuje vyberanie rozsahu pri vkladaní.
+Prosím vyberte len jednu bunku.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation>Kopírovať a vložiť zlyhalo</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Adresa obsahuje neplatné znaky.</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Odkazovať na bunku jej pomenovaním, napríklad
+Spreadsheet.moje_pomenovanie namiesto Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -426,8 +529,8 @@
       <translation>Svetlo sivá</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <source>Custom Color</source>
+      <translation>Vlastná farba</translation>
     </message>
   </context>
   <context>
@@ -437,38 +540,104 @@
       <translation>Forma</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Obsah</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Obsah:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Pomenovanie:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Odkazovať na bunku jej pomenovaním, napríklad
+Spreadsheet.moje_pomenovanie namiesto Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
-      <translation type="unfinished">Unnamed</translation>
+      <translation>Nepomenovaný</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Vložiť riadky</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Odstrániť riadky</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Vložiť stĺpce</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Odstrániť stĺpce</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Vlastnosti...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

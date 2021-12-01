@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>330</width>
     <height>800</height>
    </rect>
   </property>
@@ -21,7 +21,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
+    <width>330</width>
     <height>800</height>
    </size>
   </property>
@@ -37,7 +37,7 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>10</x>
      <y>0</y>
      <width>311</width>
      <height>743</height>

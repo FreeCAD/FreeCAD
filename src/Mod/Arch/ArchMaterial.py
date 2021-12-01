@@ -1,6 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2015 - Yorik van Havre <yorik@uncreated.net>            *
+#*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,7 +21,8 @@
 
 import FreeCAD
 if FreeCAD.GuiUp:
-    import FreeCADGui, Arch_rc, os
+    import FreeCADGui, os
+    import Arch_rc # Needed for access to icons # lgtm [py/unused_import]
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -45,18 +45,24 @@ __url__ = "http://www.freecadweb.org"
 #  This module provides tools to add materials to
 #  Arch objects
 
-def makeMaterial(name="Material"):
+def makeMaterial(name="Material",color=None,transparency=None):
 
     '''makeMaterial(name): makes an Material object'''
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython","Material")
     obj.Label = name
     _ArchMaterial(obj)
     if FreeCAD.GuiUp:
         _ViewProviderArchMaterial(obj.ViewObject)
     getMaterialContainer().addObject(obj)
+    if color:
+        obj.Color = color[:3]
+        if len(color) > 3:
+            obj.Transparency = color[3]*100
+    if transparency:
+        obj.Transparency = transparency
     return obj
 
 
@@ -77,7 +83,7 @@ def getMaterialContainer():
 def makeMultiMaterial(name="MultiMaterial"):
 
     '''makeMultiMaterial(name): makes an Material object'''
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","MultiMaterial")
     obj.Label = name
     _ArchMultiMaterial(obj)
     if FreeCAD.GuiUp:
@@ -121,7 +127,7 @@ class _CommandArchMaterial:
         for obj in sel:
             if hasattr(obj,"Material"):
                 FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject(\""+obj.Name+"\").Material = mat")
-        FreeCADGui.doCommandGui("mat.ViewObject.startEditing()")
+        FreeCADGui.doCommandGui("mat.ViewObject.Document.setEdit(mat.ViewObject, 0)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -156,7 +162,7 @@ class _CommandArchMultiMaterial:
             if hasattr(obj,"Material"):
                 if not obj.isDerivedFrom("App::MaterialObject"):
                     FreeCADGui.doCommand("FreeCAD.ActiveDocument."+obj.Name+".Material = mat")
-        FreeCADGui.doCommandGui("mat.ViewObject.startEditing()")
+        FreeCADGui.doCommandGui("mat.ViewObject.Document.setEdit(mat.ViewObject, 0)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -208,25 +214,33 @@ class _ViewProviderArchMaterialContainer:
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Material_Group.svg"),"Merge duplicates",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.mergeByName)
         menu.addAction(action1)
+        action2 = QtGui.QAction(QtGui.QIcon(),"Reorder children alphabetically",menu)
+        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.reorder)
+        menu.addAction(action2)
 
     def mergeByName(self):
         if hasattr(self,"Object"):
             mats = [o for o in self.Object.Group if o.isDerivedFrom("App::MaterialObject")]
             todelete = []
             for mat in mats:
-                if mat.Label[-1].isdigit() and mat.Label[-2].isdigit() and mat.Label[-3].isdigit():
-                    orig = None
-                    for om in mats:
-                        if om.Label == mat.Label[:-3].strip():
-                            orig = om
-                            break
-                    if orig:
-                        for par in mat.InList:
-                            for prop in par.PropertiesList:
-                                if getattr(par,prop) == mat:
-                                    FreeCAD.Console.PrintMessage("Changed property '"+prop+"' of object "+par.Label+" from "+mat.Label+" to "+orig.Label+"\n")
-                                    setattr(par,prop,orig)
-                        todelete.append(mat)
+                orig = None
+                for om in mats:
+                    if om.Label == mat.Label:
+                        orig = om
+                        break
+                else:
+                    if mat.Label[-1].isdigit() and mat.Label[-2].isdigit() and mat.Label[-3].isdigit():
+                        for om in mats:
+                            if om.Label == mat.Label[:-3].strip():
+                                orig = om
+                                break
+                if orig:
+                    for par in mat.InList:
+                        for prop in par.PropertiesList:
+                            if getattr(par,prop) == mat:
+                                FreeCAD.Console.PrintMessage("Changed property '"+prop+"' of object "+par.Label+" from "+mat.Label+" to "+orig.Label+"\n")
+                                setattr(par,prop,orig)
+                    todelete.append(mat)
             for tod in todelete:
                 if not tod.InList:
                     FreeCAD.Console.PrintMessage("Merging duplicate material "+tod.Label+"\n")
@@ -236,6 +250,14 @@ class _ViewProviderArchMaterialContainer:
                     FreeCAD.ActiveDocument.removeObject(tod.Name)
                 else:
                     FreeCAD.Console.PrintMessage("Unable to delete material "+tod.Label+": InList not empty\n")
+
+    def reorder(self):
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"Group") and self.Object.Group:
+                g = self.Object.Group
+                g.sort(key=lambda obj: obj.Label)
+                self.Object.Group = g
+                FreeCAD.ActiveDocument.recompute()
 
     def __getstate__(self):
         return None
@@ -250,21 +272,52 @@ class _ArchMaterial:
     "The Material object"
 
     def __init__(self,obj):
+
         self.Type = "Material"
         obj.Proxy = self
-        obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","A description for this material"))
-        obj.addProperty("App::PropertyString","StandardCode","Arch",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"))
-        obj.addProperty("App::PropertyString","ProductURL","Arch",QT_TRANSLATE_NOOP("App::Property","A URL where to find information about this material"))
-        obj.addProperty("App::PropertyPercent","Transparency","Arch",QT_TRANSLATE_NOOP("App::Property","The transparency value of this material"))
-        obj.addProperty("App::PropertyColor","Color","Arch",QT_TRANSLATE_NOOP("App::Property","The color of this material"))
+        self.setProperties(obj)
+
+    def onDocumentRestored(self,obj):
+
+        self.setProperties(obj)
+
+    def setProperties(self,obj):
+
+        if not "Description" in obj.PropertiesList:
+            obj.addProperty("App::PropertyString","Description","Material",QT_TRANSLATE_NOOP("App::Property","A description for this material"))
+        if not "StandardCode" in obj.PropertiesList:
+            obj.addProperty("App::PropertyString","StandardCode","Material",QT_TRANSLATE_NOOP("App::Property","A standard code (MasterFormat, OmniClass,...)"))
+        if not "ProductURL" in obj.PropertiesList:
+            obj.addProperty("App::PropertyString","ProductURL","Material",QT_TRANSLATE_NOOP("App::Property","A URL where to find information about this material"))
+        if not "Transparency" in obj.PropertiesList:
+            obj.addProperty("App::PropertyPercent","Transparency","Material",QT_TRANSLATE_NOOP("App::Property","The transparency value of this material"))
+        if not "Color" in obj.PropertiesList:
+            obj.addProperty("App::PropertyColor","Color","Material",QT_TRANSLATE_NOOP("App::Property","The color of this material"))
+        if not "SectionColor" in obj.PropertiesList:
+            obj.addProperty("App::PropertyColor","SectionColor","Material",QT_TRANSLATE_NOOP("App::Property","The color of this material when cut"))
+
+    def isSameColor(self,c1,c2):
+
+        r = 4
+        if round(c1[0],r) == round(c2[0],r):
+            if round(c1[1],r) == round(c2[1],r):
+                if round(c1[2],r) == round(c2[2],r):
+                    return True
+        return False
 
     def onChanged(self,obj,prop):
-        d = None
+
+        d = obj.Material
         if prop == "Material":
+            if "SectionColor" in obj.Material:
+                c = tuple([float(f) for f in obj.Material['SectionColor'].strip("()").strip("[]").split(",")])
+                if hasattr(obj,"SectionColor"):
+                    if not self.isSameColor(obj.SectionColor,c):
+                        obj.SectionColor = c
             if "DiffuseColor" in obj.Material:
-                c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").split(",")])
+                c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").strip("[]").split(",")])
                 if hasattr(obj,"Color"):
-                    if obj.Color != c:
+                    if not self.isSameColor(obj.Color,c):
                         obj.Color = c
             if "Transparency" in obj.Material:
                 t = int(obj.Material['Transparency'])
@@ -283,65 +336,69 @@ class _ArchMaterial:
                 if hasattr(obj,"Description"):
                     if obj.Description != obj.Material["Description"]:
                         obj.Description = obj.Material["Description"]
+            if "Name" in obj.Material:
+                if hasattr(obj,"Label"):
+                    if obj.Label != obj.Material["Name"]:
+                        obj.Label = obj.Material["Name"]
+        elif prop == "Label":
+            if "Name" in d:
+                if d["Name"] == obj.Label:
+                    return
+            d["Name"] = obj.Label
+        elif prop == "SectionColor":
+            if hasattr(obj,"SectionColor"):
+                if "SectionColor" in d:
+                    if self.isSameColor(tuple([float(f) for f in d['SectionColor'].strip("()").strip("[]").split(",")]),obj.SectionColor[:3]):
+                        return
+                d["SectionColor"] = str(obj.SectionColor[:3])
         elif prop == "Color":
             if hasattr(obj,"Color"):
-                if obj.Material:
-                    d = obj.Material
-                    val = str(obj.Color[:3])
-                    if "DiffuseColor" in d:
-                        if d["DiffuseColor"] == val:
-                            return
-                    d["DiffuseColor"] = val
+                if "DiffuseColor" in d:
+                    if self.isSameColor(tuple([float(f) for f in d['DiffuseColor'].strip("()").strip("[]").split(",")]),obj.Color[:3]):
+                        return
+                d["DiffuseColor"] = str(obj.Color[:3])
         elif prop == "Transparency":
             if hasattr(obj,"Transparency"):
-                if obj.Material:
-                    d = obj.Material
-                    val = str(obj.Transparency)
-                    if "Transparency" in d:
-                        if d["Transparency"] == val:
-                            return
-                    d["Transparency"] = val
+                val = str(obj.Transparency)
+                if "Transparency" in d:
+                    if d["Transparency"] == val:
+                        return
+                d["Transparency"] = val
         elif prop == "ProductURL":
             if hasattr(obj,"ProductURL"):
-                if obj.Material:
-                    d = obj.Material
-                    val = obj.ProductURL
-                    if "ProductURL" in d:
-                        if d["ProductURL"] == val:
-                            return
-                    obj.Material["ProductURL"] = val
+                val = obj.ProductURL
+                if "ProductURL" in d:
+                    if d["ProductURL"] == val:
+                        return
+                obj.Material["ProductURL"] = val
         elif prop == "StandardCode":
             if hasattr(obj,"StandardCode"):
-                if obj.Material:
-                    d = obj.Material
-                    val = obj.StandardCode
-                    if "StandardCode" in d:
-                        if d["StandardCode"] == val:
-                            return
-                    d["StandardCode"] = val
+                val = obj.StandardCode
+                if "StandardCode" in d:
+                    if d["StandardCode"] == val:
+                        return
+                d["StandardCode"] = val
         elif prop == "Description":
             if hasattr(obj,"Description"):
-                if obj.Material:
-                    d = obj.Material
-                    val = obj.Description
-                    if "Description" in d:
-                        if d["Description"] == val:
-                            return
-                    d["Description"] = val
-        if d:
+                val = obj.Description
+                if "Description" in d:
+                    if d["Description"] == val:
+                        return
+                d["Description"] = val
+        if d and (d != obj.Material):
             obj.Material = d
-            if FreeCAD.GuiUp:
-                import FreeCADGui
+            #if FreeCAD.GuiUp:
+                #import FreeCADGui
                 # not sure why this is needed, but it is...
-                FreeCADGui.ActiveDocument.resetEdit()
+                #FreeCADGui.ActiveDocument.resetEdit()
 
     def execute(self,obj):
         if obj.Material:
             if FreeCAD.GuiUp:
                 if "DiffuseColor" in obj.Material:
-                    c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").split(",")])
+                    c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").strip("[]").split(",")])
                     for p in obj.InList:
-                        if hasattr(p,"Material"):
+                        if hasattr(p,"Material") and ( (not hasattr(p.ViewObject,"UseMaterialColor")) or p.ViewObject.UseMaterialColor):
                             if p.Material.Name == obj.Name:
                                 p.ViewObject.ShapeColor = c
         return
@@ -363,6 +420,8 @@ class _ViewProviderArchMaterial:
         vobj.Proxy = self
 
     def getIcon(self):
+        if hasattr(self,"icondata"):
+            return self.icondata
         return ":/icons/Arch_Material.svg"
 
     def attach(self, vobj):
@@ -370,7 +429,34 @@ class _ViewProviderArchMaterial:
         return
 
     def updateData(self, obj, prop):
-        return
+        if prop == "Color":
+            from PySide import QtCore,QtGui
+
+            # custom icon
+            if hasattr(obj,"Color"):
+                c = obj.Color
+                matcolor = QtGui.QColor(int(c[0]*255),int(c[1]*255),int(c[2]*255))
+                darkcolor = QtGui.QColor(int(c[0]*125),int(c[1]*125),int(c[2]*125))
+                im = QtGui.QImage(48,48,QtGui.QImage.Format_ARGB32)
+                im.fill(QtCore.Qt.transparent)
+                pt = QtGui.QPainter(im)
+                pt.setPen(QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap))
+                #pt.setBrush(QtGui.QBrush(matcolor, QtCore.Qt.SolidPattern))
+                gradient = QtGui.QLinearGradient(0,0,48,48)
+                gradient.setColorAt(0,matcolor)
+                gradient.setColorAt(1,darkcolor)
+                pt.setBrush(QtGui.QBrush(gradient))
+                pt.drawEllipse(6,6,36,36)
+                pt.setPen(QtGui.QPen(QtCore.Qt.white, 1, QtCore.Qt.SolidLine, QtCore.Qt.FlatCap))
+                pt.setBrush(QtGui.QBrush(QtCore.Qt.white, QtCore.Qt.SolidPattern))
+                pt.drawEllipse(12,12,12,12)
+                pt.end()
+
+                ba = QtCore.QByteArray()
+                b = QtCore.QBuffer(ba)
+                b.open(QtCore.QIODevice.WriteOnly)
+                im.save(b,"XPM")
+                self.icondata = ba.data().decode("latin1")
 
     def onChanged(self, vobj, prop):
         if prop == "Material":
@@ -383,6 +469,8 @@ class _ViewProviderArchMaterial:
     def setEdit(self,vobj,mode):
         self.taskd = _ArchMaterialTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(self.taskd)
+        self.taskd.form.FieldName.setFocus()
+        self.taskd.form.FieldName.selectAll()
         return True
 
     def unsetEdit(self,vobj,mode):
@@ -391,6 +479,16 @@ class _ViewProviderArchMaterial:
         if hasattr(self,"taskd"):
             del self.taskd
         return
+
+    def setTaskValue(self,widgetname,value):
+        if hasattr(self,"taskd"):
+            if hasattr(self.taskd,"form"):
+                if hasattr(self.taskd.form,widgetname):
+                    widget = getattr(self.taskd.form,widgetname)
+                    if hasattr(widget,"setText"):
+                        widget.setText(value)
+                    elif hasattr(widget,"setValue"):
+                        widget.setText(value)
 
     def __getstate__(self):
         return None
@@ -401,7 +499,7 @@ class _ViewProviderArchMaterial:
     def claimChildren(self):
         ch = []
         if hasattr(self,"Object"):
-            for o in FreeCAD.ActiveDocument.Objects:
+            for o in self.Object.Document.Objects:
                 if o.isDerivedFrom("App::MaterialObject"):
                     if o.Material:
                         if "Father" in o.Material:
@@ -419,16 +517,17 @@ class _ArchMaterialTaskPanel:
         self.existingmaterials = []
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchMaterial.ui")
-        self.color = QtGui.QColor(128,128,128)
         colorPix = QtGui.QPixmap(16,16)
-        colorPix.fill(self.color)
+        colorPix.fill(QtGui.QColor(204,204,204))
         self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
+        self.form.ButtonSectionColor.setIcon(QtGui.QIcon(colorPix))
         self.form.ButtonUrl.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
         QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(QString)"), self.chooseMat)
         QtCore.QObject.connect(self.form.comboBox_FromExisting, QtCore.SIGNAL("currentIndexChanged(int)"), self.fromExisting)
         QtCore.QObject.connect(self.form.comboFather, QtCore.SIGNAL("currentIndexChanged(QString)"), self.setFather)
         QtCore.QObject.connect(self.form.comboFather, QtCore.SIGNAL("currentTextChanged(QString)"), self.setFather)
         QtCore.QObject.connect(self.form.ButtonColor,QtCore.SIGNAL("pressed()"),self.getColor)
+        QtCore.QObject.connect(self.form.ButtonSectionColor,QtCore.SIGNAL("pressed()"),self.getSectionColor)
         QtCore.QObject.connect(self.form.ButtonUrl,QtCore.SIGNAL("pressed()"),self.openUrl)
         QtCore.QObject.connect(self.form.ButtonEditor,QtCore.SIGNAL("pressed()"),self.openEditor)
         QtCore.QObject.connect(self.form.ButtonCode,QtCore.SIGNAL("pressed()"),self.getCode)
@@ -436,10 +535,9 @@ class _ArchMaterialTaskPanel:
         self.fillExistingCombo()
         try:
             import BimClassification
-        except:
+        except Exception:
             self.form.ButtonCode.hide()
         else:
-            import os
             self.form.ButtonCode.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
         if self.obj:
             if hasattr(self.obj,"Material"):
@@ -454,21 +552,14 @@ class _ArchMaterialTaskPanel:
             self.form.FieldName.setText(self.obj.Label)
         if 'Description' in self.material:
             self.form.FieldDescription.setText(self.material['Description'])
-        col = None
         if 'DiffuseColor' in self.material:
-            col = self.material["DiffuseColor"]
+            self.form.ButtonColor.setIcon(self.getColorIcon(self.material["DiffuseColor"]))
         elif 'ViewColor' in self.material:
-            col = self.material["ViewColor"]
+            self.form.ButtonColor.setIcon(self.getColorIcon(self.material["ViewColor"]))
         elif 'Color' in self.material:
-            col = self.material["Color"]
-        if col:
-            if "(" in col:
-                c = tuple([float(f) for f in col.strip("()").split(",")])
-                self.color = QtGui.QColor()
-                self.color.setRgbF(c[0],c[1],c[2])
-                colorPix = QtGui.QPixmap(16,16)
-                colorPix.fill(self.color)
-                self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
+            self.form.ButtonColor.setIcon(self.getColorIcon(self.material["Color"]))
+        if 'SectionColor' in self.material:
+            self.form.ButtonSectionColor.setIcon(self.getColorIcon(self.material["SectionColor"]))
         if 'StandardCode' in self.material:
             self.form.FieldCode.setText(self.material['StandardCode'])
         if 'ProductURL' in self.material:
@@ -491,18 +582,35 @@ class _ArchMaterialTaskPanel:
         if father and not found:
             self.form.comboFather.addItem(father)
             self.form.comboFather.setCurrentIndex(self.form.comboFather.count()-1)
-            
+
+    def getColorIcon(self,color):
+        if color:
+            if "(" in color:
+                c = tuple([float(f) for f in color.strip("()").split(",")])
+                qcolor = QtGui.QColor()
+                qcolor.setRgbF(c[0],c[1],c[2])
+                colorPix = QtGui.QPixmap(16,16)
+                colorPix.fill(qcolor)
+                icon = QtGui.QIcon(colorPix)
+                return icon
+        return QtGui.QIcon()
 
     def getFields(self):
         "sets self.material from the contents of the task box"
         self.material['Name'] = self.form.FieldName.text()
         self.material['Description'] = self.form.FieldDescription.text()
-        self.material['DiffuseColor'] = str(self.color.getRgbF()[:3])
+        self.material['DiffuseColor'] = self.getColorFromIcon(self.form.ButtonColor.icon())
         self.material['ViewColor'] = self.material['DiffuseColor']
         self.material['Color'] = self.material['DiffuseColor']
+        self.material['SectionColor'] = self.getColorFromIcon(self.form.ButtonSectionColor.icon())
         self.material['StandardCode'] = self.form.FieldCode.text()
         self.material['ProductURL'] = self.form.FieldUrl.text()
         self.material['Transparency'] = str(self.form.SpinBox_Transparency.value())
+
+    def getColorFromIcon(self,icon):
+        "gets pixel color from the given icon"
+        pixel = icon.pixmap(16,16).toImage().pixel(0,0)
+        return str(QtGui.QColor(pixel).getRgbF())
 
     def accept(self):
         self.getFields()
@@ -537,11 +645,20 @@ class _ArchMaterialTaskPanel:
                 self.material["Father"] = text
 
     def getColor(self):
+        self.getColorForButton(self.form.ButtonColor)
+
+    def getSectionColor(self):
+        self.getColorForButton(self.form.ButtonSectionColor)
+
+    def getColorForButton(self,button):
         "opens a color picker dialog"
-        self.color = QtGui.QColorDialog.getColor()
-        colorPix = QtGui.QPixmap(16,16)
-        colorPix.fill(self.color)
-        self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
+        icon = button.icon()
+        pixel = icon.pixmap(16,16).toImage().pixel(0,0)
+        color = QtGui.QColorDialog.getColor(QtGui.QColor(pixel))
+        if color.isValid():
+            colorPix = QtGui.QPixmap(16,16)
+            colorPix.fill(color)
+            button.setIcon(QtGui.QIcon(colorPix))
 
     def fillMaterialCombo(self):
         "fills the combo with the existing FCMat cards"
@@ -639,7 +756,7 @@ class _ViewProviderArchMultiMaterial:
 
     def doubleClicked(self,vobj):
         self.setEdit(vobj)
-        
+
     def isShow(self):
         return True
 
@@ -653,7 +770,7 @@ if FreeCAD.GuiUp:
                 if obj.isDerivedFrom("App::MaterialObject"):
                     self.mats.append(obj)
             QtGui.QStyledItemDelegate.__init__(self, parent, *args)
-    
+
         def createEditor(self,parent,option,index):
             if index.column() == 0:
                 editor = QtGui.QComboBox(parent)
@@ -668,7 +785,7 @@ if FreeCAD.GuiUp:
             else:
                 editor = QtGui.QLineEdit(parent)
             return editor
-    
+
         def setEditorData(self, editor, index):
             if index.column() == 0:
                 import ArchWindow
@@ -682,7 +799,7 @@ if FreeCAD.GuiUp:
                 editor.setCurrentIndex(idx)
             else:
                 QtGui.QStyledItemDelegate.setEditorData(self, editor, index)
-    
+
         def setModelData(self, editor, model, index):
             if index.column() == 0:
                 if editor.currentIndex() == -1:
@@ -715,15 +832,21 @@ class _ArchMultiMaterialTaskPanel:
         QtCore.QObject.connect(self.form.upButton,QtCore.SIGNAL("pressed()"),self.upLayer)
         QtCore.QObject.connect(self.form.downButton,QtCore.SIGNAL("pressed()"),self.downLayer)
         QtCore.QObject.connect(self.form.delButton,QtCore.SIGNAL("pressed()"),self.delLayer)
+        QtCore.QObject.connect(self.form.invertButton,QtCore.SIGNAL("pressed()"),self.invertLayer)
+        QtCore.QObject.connect(self.model,QtCore.SIGNAL("itemChanged(QStandardItem*)"),self.recalcThickness)
         self.fillExistingCombo()
         self.fillData()
-        
+
     def fillData(self,obj=None):
         if not obj:
             obj = self.obj
         if obj:
             self.model.clear()
             self.model.setHorizontalHeaderLabels([translate("Arch","Name"),translate("Arch","Material"),translate("Arch","Thickness")])
+            # restore widths
+            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+            self.form.tree.setColumnWidth(0,p.GetInt("MultiMaterialColumnWidth0",60))
+            self.form.tree.setColumnWidth(1,p.GetInt("MultiMaterialColumnWidth1",60))
             for i in range(len(obj.Names)):
                 item1 = QtGui.QStandardItem(obj.Names[i])
                 item2 = QtGui.QStandardItem(obj.Materials[i].Label)
@@ -741,7 +864,7 @@ class _ArchMultiMaterialTaskPanel:
                     self.existingmaterials.append(obj)
         for m in self.existingmaterials:
             self.form.chooseCombo.addItem(m.Label)
-            
+
     def fromExisting(self,index):
         "sets the contents from an existing material"
         if index > 0:
@@ -749,20 +872,21 @@ class _ArchMultiMaterialTaskPanel:
                 m = self.existingmaterials[index-1]
                 if m:
                     self.fillData(m)
-            
+
     def addLayer(self):
         item1 = QtGui.QStandardItem(translate("Arch","New layer"))
         item2 = QtGui.QStandardItem()
         item3 = QtGui.QStandardItem()
         self.model.appendRow([item1,item2,item3])
-        
+
     def delLayer(self):
         sel = self.form.tree.selectedIndexes()
         if sel:
             row = sel[0].row()
             if row >= 0:
                 self.model.takeRow(row)
-        
+        self.recalcThickness()
+
     def moveLayer(self,mvt=0):
         sel = self.form.tree.selectedIndexes()
         if sel and mvt:
@@ -776,11 +900,40 @@ class _ArchMultiMaterialTaskPanel:
 
     def upLayer(self):
         self.moveLayer(mvt=-1)
-        
+
     def downLayer(self):
         self.moveLayer(mvt=1)
-        
+
+    def invertLayer(self):
+        items = [self.model.takeRow(row) for row in range(self.model.rowCount()-1,-1,-1)]
+        items.reverse()
+        for item in items:
+            self.model.insertRow(0,item)
+
+    def recalcThickness(self,item=None):
+        prefix = translate("Arch","Total thickness")+": "
+        th = 0
+        suffix = ""
+        for row in range(self.model.rowCount()):
+            thick = 0
+            d = self.model.item(row,2).text()
+            try:
+                d = float(d)
+            except Exception:
+                thick = FreeCAD.Units.Quantity(d).Value
+            else:
+                thick = FreeCAD.Units.Quantity(d,FreeCAD.Units.Length).Value
+            th += abs(thick)
+            if not thick:
+                suffix = " ("+translate("Arch","depends on the object")+")"
+        val = FreeCAD.Units.Quantity(th,FreeCAD.Units.Length).UserString
+        self.form.labelTotalThickness.setText(prefix + val + suffix)
+
     def accept(self):
+        # store widths
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        p.SetInt("MultiMaterialColumnWidth0",self.form.tree.columnWidth(0))
+        p.SetInt("MultiMaterialColumnWidth1",self.form.tree.columnWidth(1))
         if self.obj:
             mats = []
             for m in FreeCAD.ActiveDocument.Objects:
@@ -799,7 +952,7 @@ class _ArchMultiMaterialTaskPanel:
                 d = self.model.item(row,2).text()
                 try:
                     d = float(d)
-                except:
+                except Exception:
                     thick = FreeCAD.Units.Quantity(d).Value
                 else:
                     thick = FreeCAD.Units.Quantity(d,FreeCAD.Units.Length).Value

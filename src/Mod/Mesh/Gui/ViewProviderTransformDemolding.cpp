@@ -141,7 +141,7 @@ void ViewProviderMeshTransformDemolding::calcNormalVector(void)
     const MeshGeomFacet& rFace = *cFIt;
 
     Base::Vector3f norm(rFace.GetNormal());
-    normalVector.push_back(SbVec3f(norm.x,norm.y,norm.z));
+    normalVector.emplace_back(norm.x,norm.y,norm.z);
   }
 }
 
@@ -150,7 +150,7 @@ void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation &rot
   // 3.1415926535897932384626433832795
   SbVec3f Up(0,0,1),result;
 
-  unsigned long i=0;
+  int i=0;
   for( std::vector<SbVec3f>::const_iterator it=normalVector.begin();it != normalVector.end(); ++it,i++)
   {
     rot.multVec(*it,result);
@@ -200,7 +200,7 @@ void ViewProviderMeshTransformDemolding::valueChangedCallback(void)
   temp.setTransform( SbVec3f(0,0,0),    // no transformation
                      rot,               // rotation from the dragger
                      SbVec3f(1,1,1),    // no scaling
-                     SbRotation() ,     // no scaling oriantation
+                     SbRotation() ,     // no scaling orientation
                      SbVec3f(center.x,center.y,center.z)); // center of rotation
   pcTransformDrag->setMatrix( temp );
 }

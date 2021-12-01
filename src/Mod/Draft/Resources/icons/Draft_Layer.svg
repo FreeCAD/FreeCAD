@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg2985"
+   height="64px"
+   width="64px">
+  <title
+     id="title853">Draft_Layer</title>
+  <defs
+     id="defs2987">
+    <linearGradient
+       id="linearGradient3815">
+      <stop
+         id="stop3817"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1;" />
+      <stop
+         id="stop3819"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3807">
+      <stop
+         id="stop3809"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1;" />
+      <stop
+         id="stop3811"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3799">
+      <stop
+         id="stop3801"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1;" />
+      <stop
+         id="stop3803"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="translate(-0.02151317,-0.91811256)"
+       gradientUnits="userSpaceOnUse"
+       y2="-1.3815211"
+       x2="25.928942"
+       y1="19.086002"
+       x1="53.257175"
+       id="linearGradient3805"
+       xlink:href="#linearGradient3799" />
+    <linearGradient
+       gradientTransform="translate(0.75600263,0.0412295)"
+       gradientUnits="userSpaceOnUse"
+       y2="12.022611"
+       x2="36.843666"
+       y1="27.953379"
+       x1="61.719494"
+       id="linearGradient3813"
+       xlink:href="#linearGradient3807" />
+    <linearGradient
+       gradientTransform="translate(-0.18895427,-1.1237431)"
+       gradientUnits="userSpaceOnUse"
+       y2="23.542751"
+       x2="48.388607"
+       y1="43.419685"
+       x1="74.313408"
+       id="linearGradient3821"
+       xlink:href="#linearGradient3815" />
+  </defs>
+  <g
+     id="layer1">
+    <rect
+       transform="matrix(0.92408158,0.38219528,-0.75246174,0.65863596,0,0)"
+       y="16.492231"
+       x="40.359722"
+       height="27.016869"
+       width="39.045357"
+       id="rect2993"
+       style="color:#000000;fill:url(#linearGradient3821);fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:2.1126256;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       id="rect2993-0-9-3-7"
+       d="M 25.329927,28.679638 57.173418,41.866954 40.234042,56.653163 8.3211848,43.465847 z"
+       style="color:#000000;fill:none;stroke:#ffffff;stroke-width:2;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       transform="matrix(0.92408158,0.38219528,-0.75246174,0.65863596,0,0)"
+       y="6.2172832"
+       x="31.989382"
+       height="27.016869"
+       width="39.045357"
+       id="rect2993-0"
+       style="color:#000000;fill:url(#linearGradient3813);fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:2.1126256;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       id="rect2993-0-9-3-6"
+       d="M 25.30824,18.773895 57.151731,31.961211 40.212355,46.74742 8.2994962,33.560104 z"
+       style="color:#000000;fill:none;stroke:#ffffff;stroke-width:2;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       transform="matrix(0.92408158,0.38219528,-0.75246174,0.65863596,0,0)"
+       y="-6.1819811"
+       x="21.896566"
+       height="27.016869"
+       width="39.045357"
+       id="rect2993-0-9"
+       style="color:#000000;fill:url(#linearGradient3805);fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:2.1126256;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       id="rect2993-0-9-3"
+       d="M 25.281278,6.6563352 57.124769,19.843651 40.185393,34.62986 8.2725348,21.442544 z"
+       style="color:#000000;fill:none;stroke:#ffffff;stroke-width:2;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+  </g>
+  <metadata
+     id="metadata5826">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Draft_Layer</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Tue Jun 10 10:21:01 2014 -0300</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Yorik van Havre]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Layer.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>page</rdf:li>
+            <rdf:li>pages</rdf:li>
+            <rdf:li>rectangles</rdf:li>
+            <rdf:li>stack</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Three pages or rectangles stacked on top of each other. Previously VisGroup.</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

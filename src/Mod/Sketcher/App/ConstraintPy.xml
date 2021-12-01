@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-    Father="PersistencePy"  
-    Name="ConstraintPy" 
-    Twin="Constraint" 
-    TwinPointer="Constraint" 
-    Include="Mod/Sketcher/App/Constraint.h" 
-    Namespace="Sketcher" 
-    FatherInclude="Base/PersistencePy.h" 
+  <PythonExport
+    Father="PersistencePy"
+    Name="ConstraintPy"
+    Twin="Constraint"
+    TwinPointer="Constraint"
+    Include="Mod/Sketcher/App/Constraint.h"
+    Namespace="Sketcher"
+    FatherInclude="Base/PersistencePy.h"
     FatherNamespace="Base"
     Constructor="true"
     Delete="true">
@@ -28,7 +28,7 @@
       </Documentation>
       <Parameter Name="First" Type="Long"/>
     </Attribute>
-    <Attribute Name="FirstPos" ReadOnly="true">
+    <Attribute Name="FirstPos" ReadOnly="false">
       <Documentation>
         <UserDocu>Position of first geometry index the Constraint refers to</UserDocu>
       </Documentation>
@@ -40,19 +40,19 @@
       </Documentation>
       <Parameter Name="Second" Type="Long"/>
     </Attribute>
-    <Attribute Name="SecondPos" ReadOnly="true">
+    <Attribute Name="SecondPos" ReadOnly="false">
       <Documentation>
         <UserDocu>Position of second geometry index the Constraint refers to</UserDocu>
       </Documentation>
-      <Parameter Name="SeondPos" Type="Long"/>
+      <Parameter Name="SecondPos" Type="Long"/>
     </Attribute>
     <Attribute Name="Third" ReadOnly="false">
       <Documentation>
         <UserDocu>Third geometry index the Constraint refers to</UserDocu>
       </Documentation>
-      <Parameter Name="Second" Type="Long"/>
+      <Parameter Name="Third" Type="Long"/>
     </Attribute>
-    <Attribute Name="ThirdPos" ReadOnly="true">
+    <Attribute Name="ThirdPos" ReadOnly="false">
       <Documentation>
         <UserDocu>Position of third geometry index the Constraint refers to</UserDocu>
       </Documentation>
@@ -81,6 +81,12 @@
         <UserDocu>Constraint in virtual space</UserDocu>
       </Documentation>
       <Parameter Name="InVirtualSpace" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="IsActive" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Returns whether the constraint active (enforced) or not</UserDocu>
+        </Documentation>
+        <Parameter Name="IsActive" Type="Boolean"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

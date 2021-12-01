@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -23,8 +21,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
-import Path
 import PathScripts.PathStock as PathStock
 
 from PathTests.PathTestUtils import PathTestBase
@@ -45,9 +41,10 @@ class TestPathStock(PathTestBase):
         self.base.Width  = 200
         self.base.Height = 300
         self.job = self.doc.addObject('App::FeaturePython', 'Job')
-        self.job.addProperty('App::PropertyLink', 'Base')
-        self.job.Base = self.base
-        self.job.addProperty('App::PropertyLink', 'Proxy')
+        self.job.addProperty('App::PropertyLink', 'Model')
+        model = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Model")
+        model.addObject(self.base)
+        self.job.Model = model
         self.job.Proxy = FakeJobProxy()
 
     def tearDown(self):

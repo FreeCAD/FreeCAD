@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="GeometryCurvePy"
+	Name="BoundedCurvePy"
+        PythonName="Part.BoundedCurve"
+        Twin="GeomBoundedCurve"
+        TwinPointer="GeomBoundedCurve"
+	Include="Mod/Part/App/Geometry.h"
+	Namespace="Part"
+	FatherInclude="Mod/Part/App/GeometryCurvePy.h"
+	FatherNamespace="Part"
+	Constructor="true">
+	<Documentation>
+            <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo@gmail.com" />
+            <UserDocu>
+                The abstract class BoundedCurve is the root class of all bounded curve objects.
+            </UserDocu>
+        </Documentation>
+        <Attribute Name="StartPoint" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the starting point of the bounded curve.
+		</UserDocu>
+            </Documentation>
+            <Parameter Name="StartPoint" Type="Object"/>
+	</Attribute>
+        <Attribute Name="EndPoint" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns the end point of the bounded curve.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="EndPoint" Type="Object"/>
+        </Attribute>
+        </PythonExport>
+</GenerateModel>

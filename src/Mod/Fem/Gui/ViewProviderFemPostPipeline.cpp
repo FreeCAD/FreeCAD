@@ -35,7 +35,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostPipeline, FemGui::ViewProviderFemPost
 
 ViewProviderFemPostPipeline::ViewProviderFemPostPipeline()
 {
-    sPixmap = "fem-data";
+    sPixmap = "FEM_PostPipelineFromResult";
 }
 
 ViewProviderFemPostPipeline::~ViewProviderFemPostPipeline()
@@ -60,7 +60,7 @@ std::vector< App::DocumentObject* > ViewProviderFemPostPipeline::claimChildren3D
 }
 
 void ViewProviderFemPostPipeline::updateData(const App::Property* prop) {
-    FemGui::ViewProviderFemPostObject::onChanged(prop);
+    FemGui::ViewProviderFemPostObject::updateData(prop);
 
     if(strcmp(prop->getName(), "Function") == 0) {
         updateFunctionSize();

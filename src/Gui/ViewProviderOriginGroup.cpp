@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,9 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <boost/bind.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -52,6 +49,6 @@ ViewProviderOriginGroup::ViewProviderOriginGroup ()
     initExtension(this);
 }
 
-ViewProviderOriginGroup::~ViewProviderOriginGroup () 
+ViewProviderOriginGroup::~ViewProviderOriginGroup ()
 {
 }

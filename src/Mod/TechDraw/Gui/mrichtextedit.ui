@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MRichTextEdit</class>
+ <widget class="QWidget" name="MRichTextEdit">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>879</width>
+    <height>312</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true"/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>1</number>
+   </property>
+   <property name="margin">
+    <number>1</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="f_toolbar" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="f_save">
+        <property name="toolTip">
+         <string>Save changes</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/document-save.svg</normaloff>:/icons/MRTE/document-save.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_exit">
+        <property name="toolTip">
+         <string>Close editor</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/application-exit.svg</normaloff>:/icons/MRTE/application-exit.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_7">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="f_paragraph">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Paragraph formatting</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_4">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_undo">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Undo (CTRL+Z)</string>
+        </property>
+        <property name="text">
+         <string>Undo</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/edit-undo.svg</normaloff>:/icons/MRTE/edit-undo.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_redo">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Redo</string>
+        </property>
+        <property name="text">
+         <string>Redo</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/edit-redo.svg</normaloff>:/icons/MRTE/edit-redo.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_cut">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Cut (CTRL+X)</string>
+        </property>
+        <property name="text">
+         <string>Cut</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/edit-cut.svg</normaloff>:/icons/MRTE/edit-cut.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_copy">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Copy (CTRL+C)</string>
+        </property>
+        <property name="text">
+         <string>Copy</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/edit-copy.svg</normaloff>:/icons/MRTE/edit-copy.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_paste">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Paste (CTRL+V)</string>
+        </property>
+        <property name="text">
+         <string>Paste</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/edit-paste.svg</normaloff>:/icons/MRTE/edit-paste.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_link">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Link (CTRL+L)</string>
+        </property>
+        <property name="text">
+         <string>Link</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/internet-web-browser.svg</normaloff>:/icons/MRTE/internet-web-browser.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_bold">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string notr="true">Bold (CTRL+B)</string>
+        </property>
+        <property name="text">
+         <string>Bold</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/textBold.svg</normaloff>:/icons/MRTE/textBold.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_italic">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Italic (CTRL+I)</string>
+        </property>
+        <property name="text">
+         <string>Italic</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/textItalic.svg</normaloff>:/icons/MRTE/textItalic.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_underline">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Underline (CTRL+U)</string>
+        </property>
+        <property name="text">
+         <string>Underline</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/textUnderline.svg</normaloff>:/icons/MRTE/textUnderline.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_strikeout">
+        <property name="toolTip">
+         <string>Strikethrough</string>
+        </property>
+        <property name="text">
+         <string>Strike Out</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/textStrike.svg</normaloff>:/icons/MRTE/textStrike.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_5">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_list_bullet">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Bullet list (CTRL+-)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/listBullet.svg</normaloff>:/icons/MRTE/listBullet.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_list_ordered">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Ordered list (CTRL+=)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/listNumber.svg</normaloff>:/icons/MRTE/listNumber.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_indent_dec">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Decrease indentation (CTRL+,)</string>
+        </property>
+        <property name="text">
+         <string>Decrease indentation</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/indentLess.svg</normaloff>:/icons/MRTE/indentLess.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_indent_inc">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Increase indentation (CTRL+.)</string>
+        </property>
+        <property name="text">
+         <string>Increase indentation</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/indentMore.svg</normaloff>:/icons/MRTE/indentMore.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_fgcolor">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Text foreground color</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/fgColor.svg</normaloff>:/icons/MRTE/fgColor.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_bgcolor">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Text background color</string>
+        </property>
+        <property name="text">
+         <string>Background</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/bgColor.svg</normaloff>:/icons/MRTE/bgColor.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonIconOnly</enum>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::NoArrow</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="f_fontsize">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Font size</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_6">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_image">
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/insertImage.svg</normaloff>:/icons/MRTE/insertImage.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QToolButton" name="f_menu">
+        <property name="toolTip">
+         <string>More functions</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="Resources/TechDraw.qrc">
+          <normaloff>:/icons/MRTE/menu.svg</normaloff>:/icons/MRTE/menu.svg</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+     <zorder>f_paragraph</zorder>
+     <zorder>line_4</zorder>
+     <zorder>f_undo</zorder>
+     <zorder>f_redo</zorder>
+     <zorder>f_cut</zorder>
+     <zorder>f_copy</zorder>
+     <zorder>f_paste</zorder>
+     <zorder>line</zorder>
+     <zorder>f_link</zorder>
+     <zorder>line_3</zorder>
+     <zorder>f_italic</zorder>
+     <zorder>f_underline</zorder>
+     <zorder>line_2</zorder>
+     <zorder>f_fontsize</zorder>
+     <zorder>line_5</zorder>
+     <zorder>f_list_bullet</zorder>
+     <zorder>f_list_ordered</zorder>
+     <zorder>f_indent_dec</zorder>
+     <zorder>f_indent_inc</zorder>
+     <zorder>f_bold</zorder>
+     <zorder>f_bgcolor</zorder>
+     <zorder>f_strikeout</zorder>
+     <zorder>f_image</zorder>
+     <zorder>line_6</zorder>
+     <zorder>f_menu</zorder>
+     <zorder>f_fgcolor</zorder>
+     <zorder>f_save</zorder>
+     <zorder>f_exit</zorder>
+     <zorder>line_7</zorder>
+    </widget>
+   </item>
+   <item>
+    <widget class="MTextEdit" name="f_textedit">
+     <property name="toolTip">
+      <string>More functions</string>
+     </property>
+     <property name="autoFormatting">
+      <set>QTextEdit::AutoNone</set>
+     </property>
+     <property name="tabChangesFocus">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header>mtextedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>f_textedit</tabstop>
+  <tabstop>f_strikeout</tabstop>
+  <tabstop>f_image</tabstop>
+  <tabstop>f_menu</tabstop>
+ </tabstops>
+ <resources>
+  <include location="Resources/TechDraw.qrc"/>
+  <include location="Resources/TechDraw.qrc"/>
+ </resources>
+ <connections/>
+</ui>

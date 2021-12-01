@@ -23,7 +23,6 @@
 #ifndef _TECHDRAW_DrawSVGTemplate_h_
 #define _TECHDRAW_DrawSVGTemplate_h_
 
-#include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
@@ -62,7 +61,6 @@ public:
 
     double getWidth() const;
     double getHeight() const;
-    void getBlockDimensions(double &x, double &y, double &width, double &height) const;
 
 protected:
     void onChanged(const App::Property* prop);
@@ -73,7 +71,8 @@ protected:
      */
     std::map<std::string, std::string> getEditableTextsFromTemplate();
 
-    QRectF blockDimensions;
+	QString processTemplate(QString fileSpec);
+
 };
 
 typedef App::FeaturePythonT<DrawSVGTemplate> DrawSVGTemplatePython;

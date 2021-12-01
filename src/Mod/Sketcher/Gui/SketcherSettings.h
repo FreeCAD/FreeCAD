@@ -25,9 +25,11 @@
 #define SKETCHERGUI_SKETCHERSETTINGS_H
 
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 namespace SketcherGui {
 class Ui_SketcherSettings;
+class Ui_SketcherSettingsDisplay;
 class Ui_SketcherSettingsColors;
 class SketcherGeneralWidget;
 /**
@@ -48,12 +50,34 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+private:
+    std::unique_ptr<Ui_SketcherSettings> ui;
+    SketcherGeneralWidget* form;
+};
+
+/**
+ * The SketcherSettings class implements a preference page to change sketcher display settings.
+ * @author Werner Mayer
+ */
+class SketcherSettingsDisplay : public Gui::Dialog::PreferencePage
+{
+    Q_OBJECT
+
+public:
+    SketcherSettingsDisplay(QWidget* parent = 0);
+    ~SketcherSettingsDisplay();
+
+    void saveSettings();
+    void loadSettings();
+
+protected:
+    void changeEvent(QEvent *e);
+
 private Q_SLOTS:
     void onBtnTVApplyClicked(bool);
 
 private:
-    Ui_SketcherSettings* ui;
-    SketcherGeneralWidget* form;
+    std::unique_ptr<Ui_SketcherSettingsDisplay> ui;
 };
 
 /**
@@ -75,7 +99,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui_SketcherSettingsColors* ui;
+    std::unique_ptr<Ui_SketcherSettingsColors> ui;
 };
 
 } // namespace SketcherGui

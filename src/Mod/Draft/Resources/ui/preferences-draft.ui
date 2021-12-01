@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>487</width>
-    <height>491</height>
+    <width>500</width>
+    <height>560</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,117 +22,16 @@
    </property>
    <item>
     <widget class="QGroupBox" name="groupBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="title">
       <string>General Draft Settings</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label_19">
-          <property name="text">
-           <string>Draft interface mode</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_4">
-          <property name="toolTip">
-           <string>This is the UI mode in which the Draft module will work: Toolbar mode will place all Draft settings in a separate toolbar, while taskbar mode will use the FreeCAD Taskview system for all its user interaction</string>
-          </property>
-          <property name="currentIndex">
-           <number>1</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UiMode</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>Toolbar</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Taskview</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="checkBox_2">
-        <property name="toolTip">
-         <string>If this is checked, step-by-step instructions will be displayed in the Output Window when running Draft commands</string>
-        </property>
-        <property name="text">
-         <string>Verbose command line mode</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>Verbose</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
-        <property name="toolTip">
-         <string>If this is checked, copy mode will be kept across command, otherwise commands will always start in no-copy mode</string>
-        </property>
-        <property name="text">
-         <string>Global copy mode</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>copymode</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
-        <property name="toolTip">
-         <string>Normally, after copying objects, the copies get selected. If this option is checked, the base objects will be selected instead.</string>
-        </property>
-        <property name="text">
-         <string>Select base objects after copying</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>selectBaseObjects</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
@@ -218,7 +117,10 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>The number of decimals in internal coordinates operations (for ex. 3 = 0.001)</string>
+           <string>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</string>
+          </property>
+          <property name="maximum">
+           <number>10</number>
           </property>
           <property name="value">
            <number>6</number>
@@ -265,7 +167,7 @@
           </property>
           <property name="toolTip">
            <string>This is the value used by functions that use a tolerance.
-Values with differences below this value will be treated as same.</string>
+Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</string>
           </property>
           <property name="suffix">
            <string/>
@@ -287,52 +189,149 @@ Values with differences below this value will be treated as same.</string>
        </layout>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+       <widget class="Gui::PrefCheckBox" name="checkBox_3">
         <property name="toolTip">
-         <string>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</string>
+         <string>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</string>
         </property>
         <property name="text">
-         <string>Use Part Primitives when available</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>UsePartPrimitives</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
-        <property name="toolTip">
-         <string>If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</string>
-        </property>
-        <property name="text">
-         <string>Fill objects with faces whenever possible</string>
+         <string>Show groups in layers list drop-down button</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>fillmode</cstring>
+         <cstring>AutogroupAddGroups</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
         </property>
        </widget>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="verticalGroupBox">
+     <property name="title">
+      <string>Draft tools options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="margin">
+       <number>9</number>
+      </property>
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkBox">
-        <property name="text">
-         <string>When drawing lines, set focus on Length instead of X coordinate</string>
+       <layout class="QGridLayout" name="gridLayout">
+        <property name="topMargin">
+         <number>0</number>
         </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>focusOnLength</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBox">
+          <property name="toolTip">
+           <string>When drawing lines, set focus on Length instead of X coordinate.
+This allows to point the direction and type the distance.</string>
+          </property>
+          <property name="text">
+           <string>Set focus on Length instead of X coordinate</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>focusOnLength</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBox_2">
+          <property name="toolTip">
+           <string>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</string>
+          </property>
+          <property name="text">
+           <string>Set the Support property when possible</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>useSupport</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
+          <property name="toolTip">
+           <string>If this is checked, objects will appear as filled by default.
+Otherwise, they will appear as wireframe</string>
+          </property>
+          <property name="text">
+           <string>Fill objects with faces whenever possible</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>fillmode</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
+          <property name="toolTip">
+           <string>Normally, after copying objects, the copies get selected.
+If this option is checked, the base objects will be selected instead.</string>
+          </property>
+          <property name="text">
+           <string>Select base objects after copying</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>selectBaseObjects</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+          <property name="toolTip">
+           <string>If this is checked, copy mode will be kept across command,
+otherwise commands will always start in no-copy mode</string>
+          </property>
+          <property name="text">
+           <string>Global copy mode</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>copymode</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+          <property name="toolTip">
+           <string>Force Draft Tools to create Part primitives instead of Draft objects.
+Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</string>
+          </property>
+          <property name="text">
+           <string>Use Part Primitives when available</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UsePartPrimitives</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -363,10 +362,16 @@ Values with differences below this value will be treated as same.</string>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_3">
-     <property name="title">
-      <string>Construction geometry</string>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <property name="title">
+      <string>Construction Geometry</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
@@ -421,7 +426,7 @@ Values with differences below this value will be treated as same.</string>
           <property name="toolTip">
            <string>This is the default color for objects being drawn while in construction mode.</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>44</red>
             <green>125</green>
@@ -438,21 +443,21 @@ Values with differences below this value will be treated as same.</string>
         </item>
        </layout>
       </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

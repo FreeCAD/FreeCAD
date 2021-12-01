@@ -157,6 +157,18 @@ namespace Py
             EXPLICIT_TYPENAME method_map_t::const_iterator i = mm.find( name );
             if( i == mm.end() )
             {
+                if( name == "__dict__" ) // __methods__ is not supported in Py3 any more, use __dict__ instead
+                {
+                    Dict methods;
+
+                    i = mm.begin();
+                    EXPLICIT_TYPENAME method_map_t::const_iterator i_end = mm.end();
+
+                    for( ; i != i_end; ++i )
+                        methods.setItem( String( (*i).first ), String( "" ) );
+
+                    return methods;
+                }
                 if( name == "__methods__" )
                 {
                     List methods;

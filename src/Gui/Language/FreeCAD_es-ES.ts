@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es-ES" sourcelanguage="en">
+<TS version="2.1" language="es-ES" sourcelanguage="en">
   <context>
     <name>Angle</name>
     <message>
@@ -23,35 +23,35 @@
       <source>Angle Snap</source>
       <translation>Ajuste angular</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>1 °</source>
       <translation>1 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>2 °</source>
       <translation>2 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>5 °</source>
       <translation>5 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>10 °</source>
       <translation>10 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>20 °</source>
       <translation>20 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>45 °</source>
       <translation>45 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>90 °</source>
       <translation>90 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>180 °</source>
       <translation>180 °</translation>
     </message>
@@ -106,7 +106,7 @@
     </message>
     <message>
       <source>Clear measurement</source>
-      <translation>Borrar medición</translation>
+      <translation>Limpiar medición</translation>
     </message>
   </context>
   <context>
@@ -117,7 +117,82 @@
     </message>
     <message>
       <source>Toggle measurement</source>
-      <translation>Activar medición</translation>
+      <translation>Activa/desactiva la medición</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editar</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Importar</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Borrar</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Pegar expresiones</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Hacer vínculo de grupo</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Crear vínculo</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Crear sub-vínculo</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importar vínculo</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importar todos los vínculos</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Insertar dimensión</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Insertar documento de texto</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Añadir una pieza</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Añade un grupo</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Alinear</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Ubicación</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformar</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Transformación de vínculo</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Medir distancia</translation>
     </message>
   </context>
   <context>
@@ -174,12 +249,16 @@
       <translation>Resultado:</translation>
     </message>
     <message>
-      <source>&amp;Discard</source>
-      <translation>&amp;Descartar</translation>
-    </message>
-    <message>
       <source>Ok</source>
       <translation>Aceptar</translation>
+    </message>
+    <message>
+      <source>&amp;Clear</source>
+      <translation>Borrar</translation>
+    </message>
+    <message>
+      <source>Revert to last calculated value (as constant)</source>
+      <translation>Revertir al último valor calculado (como constante)</translation>
     </message>
   </context>
   <context>
@@ -195,6 +274,36 @@
     <message>
       <source>Filename</source>
       <translation>Nombre del archivo</translation>
+    </message>
+  </context>
+  <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Por defecto</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformar</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Corte</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Color</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Introduzca una expresión...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Expresión: </translation>
     </message>
   </context>
   <context>
@@ -250,7 +359,7 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation>%1 archivos de ayuda no encontrado (%2). Puede necesitar instalar el %1 de paquetes de documentación.</translation>
+      <translation>%1 archivos de ayuda no encontrados (%2). Puede necesitar instalar el paquete de documentación %1.</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
@@ -261,14 +370,14 @@
     <name>Gui::AutoSaver</name>
     <message>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation>Por favor, espere hasta que se guarde el archivo de autorrecuperación...</translation>
+      <translation>Espera hasta que se haya guardado el archivo de recuperación automática...</translation>
     </message>
   </context>
   <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Cliquee el botón izquierdo del mouse</translation>
+      <translation>Pulsa el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
@@ -276,31 +385,32 @@
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Cliquee el botón central del mouse</translation>
+      <translation>Pulsar el botón central del ratón</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Despláce botón central del mouse</translation>
+      <translation>Desplazar el botón central del ratón</translation>
     </message>
   </context>
   <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Cliquee el botón izquierdo del mouse</translation>
+      <translation>Pulsa el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Cliquee el botón central del mouse</translation>
+      <translation>Pulsar el botón central del ratón</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Pulse el botón central y derecho o izquierdo del ratón</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Pulsar el botón central + izquierda o central + derecha</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Desliza la rueda del ratón o mantenla pulsada mientras haces click derecho o izquierdo, moviendo el ratón hacia arriba o abajo</translation>
+      <translation>Desplace el botón central del ratón o mantenga presionado el botón central
+mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arriba o hacia abajo</translation>
     </message>
   </context>
   <context>
@@ -344,7 +454,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Finalizar edición de objeto</translation>
+      <translation>Finalizar edición del objeto</translation>
     </message>
   </context>
   <context>
@@ -355,7 +465,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Revision number</source>
-      <translation>Número de revisión</translation>
+      <translation>Número de la revisión</translation>
     </message>
     <message>
       <source>Version</source>
@@ -371,7 +481,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Release date</source>
-      <translation>Fecha de la versión</translation>
+      <translation>Fecha de lanzamiento</translation>
     </message>
     <message>
       <source>Copy to clipboard</source>
@@ -383,15 +493,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Word size</source>
-      <translation>Tamaño de palabra</translation>
-    </message>
-    <message>
-      <source>Credits</source>
-      <translation>Créditos</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD no sería nada sin sus esfuerzos:</translation>
+      <translation>Tamaño de la palabra</translation>
     </message>
     <message>
       <source>License</source>
@@ -412,6 +514,29 @@ while doing a left or right click and move the mouse up or down</source>
       <source>License</source>
       <translation>Licencia</translation>
     </message>
+    <message>
+      <source>Collection</source>
+      <translation>Colección</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Créditos</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCAD no sería posible sin las contribuciones de</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Individuos</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organizaciones</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
@@ -422,6 +547,45 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Fuera de rango</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Ajustes de la cámara</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Orientación</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Vista actual</translation>
     </message>
   </context>
   <context>
@@ -440,7 +604,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Offset</source>
-      <translation>Equidistancia</translation>
+      <translation>Desplazamiento</translation>
     </message>
     <message>
       <source>Clipping Y</source>
@@ -452,7 +616,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Clipping custom direction</source>
-      <translation>Dirección personalizada de recorte</translation>
+      <translation>Dirección personalizada del recorte</translation>
     </message>
     <message>
       <source>View</source>
@@ -508,11 +672,11 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Angle</source>
       <translation>Ángulo</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>90°</source>
       <translation>90°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>-90°</source>
       <translation>-90°</translation>
     </message>
@@ -552,6 +716,49 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <source>Add property</source>
+      <translation>Añadir propiedad</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Tipo</translation>
+    </message>
+    <message>
+      <source>Group</source>
+      <translation>Grupo</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Nombre</translation>
+    </message>
+    <message>
+      <source>Verbose description of the new property.</source>
+      <translation>Descripción detallada de la nueva propiedad.</translation>
+    </message>
+    <message>
+      <source>Documentation</source>
+      <translation>Documentación</translation>
+    </message>
+    <message>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation>Prefija el nombre de la propiedad con el nombre del grupo en el formulario 'Group_Name' para evitar conflictos con una propiedad existente.
+En este caso el prefijo se recortará automáticamente cuando se muestre en el editor de propiedades.
+Sin embargo, la propiedad todavía se utiliza en un script con el nombre completo, como 'obj.Group_Name'.
+
+Si esto no está marcado, entonces la propiedad debe ser nombrada de forma única, y se accede como 'obj.Name'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation>Nombre del grupo de prefijo</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgAuthorization</name>
     <message>
       <source>Authorization</source>
@@ -567,7 +774,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Username:</source>
-      <translation>Nombre de usuario:</translation>
+      <translation>Nombre del usuario:</translation>
     </message>
     <message>
       <source>Site:</source>
@@ -586,11 +793,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>EtiquetaTexto</translation>
+      <translation>Etiqueta Texto</translation>
     </message>
     <message>
       <source>CheckBox</source>
-      <translation>Casilla de Selección</translation>
+      <translation>Caja de Selección</translation>
     </message>
   </context>
   <context>
@@ -601,7 +808,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Icon folders...</source>
-      <translation>Carpetas de icono...</translation>
+      <translation>Carpetas de los iconos...</translation>
     </message>
   </context>
   <context>
@@ -612,7 +819,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Setup Custom Macros</source>
-      <translation>Macros de sistema personalizadas</translation>
+      <translation>Configurar macros personalizadas</translation>
     </message>
     <message>
       <source>Macro:</source>
@@ -640,7 +847,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Tool tip:</source>
-      <translation>Sugerencia de herramienta:</translation>
+      <translation>sugerencia:</translation>
     </message>
     <message>
       <source>Menu text:</source>
@@ -818,20 +1025,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Múltiples atajos de teclado definidos</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>El atajo de teclado '%1' está definido más de una vez. Esto puede ocasionar un comportamiento inesperado.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Atajo de teclado ya definido</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>El atajo de teclado '%1' ya está asignado a '%2'.
-
-Por favor defina otro atajo de teclado.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>El acceso directo '%1' se define más de una vez. Esto podría provocar un comportamiento inesperado.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>El acceso directo '%1' ya está asignado a '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>¿Quieres anularlo?</translation>
     </message>
   </context>
   <context>
@@ -935,6 +1142,10 @@ Por favor defina otro atajo de teclado.</translation>
       <source>Global</source>
       <translation>Global</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation>%1 módulo no cargado</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -973,16 +1184,16 @@ Por favor defina otro atajo de teclado.</translation>
       <translation>Botones</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Limpiar</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
-      <translation>Referencia de impresión</translation>
+      <translation>Imprimir referencia</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Botones del SpaceBall</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Reiniciar</translation>
     </message>
   </context>
   <context>
@@ -993,7 +1204,7 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation>Visualización</translation>
+      <translation>Mostrar</translation>
     </message>
     <message>
       <source>Transparency:</source>
@@ -1021,7 +1232,7 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Modo de impresión:</translation>
+      <translation>Modo impresión:</translation>
     </message>
     <message>
       <source/>
@@ -1041,11 +1252,11 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
       <source>Color plot:</source>
-      <translation>Color del plot:</translation>
+      <translation>Color del trazado:</translation>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Ventana de documento:</translation>
+      <translation>Ventana del documento:</translation>
     </message>
   </context>
   <context>
@@ -1159,7 +1370,7 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
       <source>Indentation</source>
-      <translation>Sangrado</translation>
+      <translation>Sangría</translation>
     </message>
     <message>
       <source>Insert spaces</source>
@@ -1178,10 +1389,6 @@ Por favor defina otro atajo de teclado.</translation>
       <translation>Mantener la tabulación</translation>
     </message>
     <message>
-      <source>Display Items</source>
-      <translation>Visualizar elementos</translation>
-    </message>
-    <message>
       <source>Family:</source>
       <translation>Familia:</translation>
     </message>
@@ -1197,6 +1404,46 @@ Por favor defina otro atajo de teclado.</translation>
       <source/>
       <translation>(Vacio)</translation>
     </message>
+    <message>
+      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
+      <translation>Pulsando &lt;Tab&gt; insertará la cantidad de tamaño de sangría definido</translation>
+    </message>
+    <message>
+      <source>Tabulator raster (how many spaces)</source>
+      <translation>Tabulador raster (cuántos espacios)</translation>
+    </message>
+    <message>
+      <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
+      <translation>Cuantos espacios se insertarán al presionar &lt;Tab&gt;</translation>
+    </message>
+    <message>
+      <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
+      <translation>Pulsando &lt;Tab&gt; insertará un tabulador con tamaño de tab definido</translation>
+    </message>
+    <message>
+      <source>Display items</source>
+      <translation>Mostrar elementos</translation>
+    </message>
+    <message>
+      <source>Font size to be used for selected code type</source>
+      <translation>Tamaño de letra a utilizar para el tipo de código seleccionado</translation>
+    </message>
+    <message>
+      <source>Color and font settings will be applied to selected type</source>
+      <translation>Los ajustes de color y fuente se aplicarán al tipo seleccionado</translation>
+    </message>
+    <message>
+      <source>Font family to be used for selected code type</source>
+      <translation>Familia de fuente a utilizar para el tipo de código seleccionado</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Color:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Las líneas de código serán numeradas</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1211,10 +1458,6 @@ Por favor defina otro atajo de teclado.</translation>
     <message>
       <source>Enable splash screen at start up</source>
       <translation>Activar página de bienvenida en el inicio</translation>
-    </message>
-    <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Cambiar a la pestaña de ventana de informe:</translation>
     </message>
     <message>
       <source>Auto load module after start up:</source>
@@ -1237,20 +1480,16 @@ Por favor defina otro atajo de teclado.</translation>
       <translation>Tamaño de la lista de archivos recientes</translation>
     </message>
     <message>
-      <source>Window style:</source>
-      <translation>Estilo de ventana:</translation>
-    </message>
-    <message>
       <source>Size of toolbar icons:</source>
       <translation>Tamaño de los iconos de la barra de herramientas:</translation>
     </message>
     <message>
       <source>Enable tiled background</source>
-      <translation>Habilitar fondo en mosaico</translation>
+      <translation>Habilitar el fondo en mosaico</translation>
     </message>
     <message>
       <source>Style sheet:</source>
-      <translation>Hoja de estilo:</translation>
+      <translation>Hoja del estilo:</translation>
     </message>
     <message>
       <source>Python console</source>
@@ -1258,14 +1497,74 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
       <source>Enable word wrap</source>
-      <translation>Activar partir palabra</translation>
+      <translation>Habilitar ajuste de línea</translation>
+    </message>
+    <message>
+      <source>Language of the application's user interface</source>
+      <translation>Idioma de la interfaz de usuario de la aplicación</translation>
+    </message>
+    <message>
+      <source>How many files should be listed in recent files list</source>
+      <translation>Cuántos archivos deben aparecer en la lista de archivos recientes</translation>
+    </message>
+    <message>
+      <source>Background of the main window will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</source>
+      <translation>El fondo de la ventana principal consistirá en baldosas de una imagen especial.
+Vea la wiki de FreeCAD para más detalles sobre la imagen.</translation>
+    </message>
+    <message>
+      <source>Style sheet how user interface will look like</source>
+      <translation>Hoja de estilo como se verá la interfaz de usuario</translation>
+    </message>
+    <message>
+      <source>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</source>
+      <translation>Elija su preferencia por el tamaño del icono de la barra de herramientas. Puede ajustar
+esto de acuerdo con el tamaño de la pantalla o el gusto personal</translation>
+    </message>
+    <message>
+      <source>Tree view mode:</source>
+      <translation>Modo de vista del árbol:</translation>
+    </message>
+    <message>
+      <source>Customize how tree view is shown in the panel (restart required).
+
+'ComboView': combine tree view and property view into one panel.
+'TreeView and PropertyView': split tree view and property view into separate panel.
+'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
+      <translation>Personalizar cómo se muestra la vista de árbol en el panel (se requiere reiniciar).
+
+'Vista Combinada': combinar vista de árbol y vista de propiedad en un panel.
+'Vista de Árbol y Vista de Propiedades': dividir vista de árbol y vista de propiedad en un panel separado.
+'Ambos': mantén los tres paneles, y puedes tener dos conjuntos de vista de árbol y vista de propiedad.</translation>
+    </message>
+    <message>
+      <source>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</source>
+      <translation>Una pantalla de Bienvenida es una pequeña ventana de carga que se muestra
+cuando se inicia FreeCAD. Si esta opción está marcada, FreeCAD mostrará
+la pantalla de bienvenida</translation>
+    </message>
+    <message>
+      <source>Choose which workbench will be activated and shown
+after FreeCAD launches</source>
+      <translation>Elija qué banco de trabajo se activará y se mostrará
+después de que FreeCAD inicie</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation>Las palabras serán envueltas cuando excedan
+espacio horizontal disponible en la consola de Python</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>No style sheet</source>
-      <translation>Ninguna hoja de estilo</translation>
+      <translation>Sin hoja de estilo</translation>
     </message>
     <message>
       <source>Small (%1px)</source>
@@ -1287,12 +1586,24 @@ Por favor defina otro atajo de teclado.</translation>
       <source>Custom (%1px)</source>
       <translation>Personalizado (%1px)</translation>
     </message>
+    <message>
+      <source>Combo View</source>
+      <translation>Vista combinada</translation>
+    </message>
+    <message>
+      <source>TreeView and PropertyView</source>
+      <translation>Vista del Árbol y Vista de Propiedades</translation>
+    </message>
+    <message>
+      <source>Both</source>
+      <translation>Ambos</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgInputDialog</name>
     <message>
       <source>Input</source>
-      <translation>introducir</translation>
+      <translation>Entrada</translation>
     </message>
     <message>
       <source/>
@@ -1338,19 +1649,31 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
       <source>User macros</source>
-      <translation>Macros de usuario</translation>
+      <translation>Macros del usuario</translation>
     </message>
     <message>
       <source>System macros</source>
-      <translation>Macros de sistema</translation>
+      <translation>Macros del sistema</translation>
     </message>
     <message>
       <source>User macros location:</source>
-      <translation>Ubicación de macros de usuario:</translation>
+      <translation>Ubicación de las macros del usuario:</translation>
     </message>
     <message>
       <source>Rename</source>
       <translation>Renombrar</translation>
+    </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Duplicar</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Complementos...</translation>
+    </message>
+    <message>
+      <source>Toolbar</source>
+      <translation>Barra de herramientas</translation>
     </message>
   </context>
   <context>
@@ -1391,7 +1714,7 @@ Este archivo ya existe.</translation>
     </message>
     <message>
       <source>Creation of file '%1' failed.</source>
-      <translation>Falló la creación del archivo '%1'.</translation>
+      <translation>Error al crear el archivo  '%1'.</translation>
     </message>
     <message>
       <source>Read-only</source>
@@ -1399,7 +1722,7 @@ Este archivo ya existe.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation>Renombrar archivo Macro</translation>
+      <translation>Renombrar el archivo de la Macro</translation>
     </message>
     <message>
       <source>Enter new name:</source>
@@ -1408,17 +1731,74 @@ Este archivo ya existe.</translation>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation>'%1' ya existe.</translation>
+      <translation>'%1' 
+ya existe.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation>Renombrar fallo</translation>
+      <translation>Error al Re-nombrarlo</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation>Fallo al renombre de '%1'.
+      <translation>Error al cambiar el nombre a '%1'.
 ¿Tal vez un error de permiso de archivo?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Duplicar Macro</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Error al Duplicar</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Error al duplicar en '%1'.
+¿Tal vez un error de los permisos del archivo?</translation>
+    </message>
+    <message>
+      <source>Do not show again</source>
+      <translation>No volver a mostrar</translation>
+    </message>
+    <message>
+      <source>Guided Walkthrough</source>
+      <translation>Tutorial guiado</translation>
+    </message>
+    <message>
+      <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+
+Note: your changes will be applied when you next switch workbenches
+</source>
+      <translation>Esto le guiará en la configuración de esta macro en una barra de herramientas global personalizada. Las instrucciones estarán en rojo dentro del diálogo.
+
+Nota: tus cambios se aplicarán cuando cambies de banco de trabajo
+</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 1 of 2</source>
+      <translation>Tutorial, diálogo 1 de 2</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
+      <translation>Instrucciones de aprobación: Rellene los campos que faltan (opcional) y luego haga clic en Agregar, luego en Cerrar</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 1 of 1</source>
+      <translation>Tutorial, diálogo 1 de 1</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 2 of 2</source>
+      <translation>Tutorial, diálogo 2 de 2</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
+      <translation>Instrucciones del tutorial: Haga clic en el botón derecho de la flecha (-&gt;), luego cierre.</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
+      <translation>Instrucciones del tutorial: Haga clic en el botón derecho de la flecha (-&gt;), luego cierre.</translation>
     </message>
   </context>
   <context>
@@ -1468,19 +1848,19 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
-      <translation>La macro '%1' ya existe. ¿Desea sobreescribirla?</translation>
+      <translation>La macro '%1' ya existe. ¿Quieres sobrescribir-la?</translation>
     </message>
     <message>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>No existe el directorio de macro. Por favor, seleccione otro.</translation>
+      <translation>El directorio de la macro no existe. Por favor elije otro.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
-      <translation>Elija el directorio de macro</translation>
+      <translation>Elije el directorio de macro</translation>
     </message>
     <message>
       <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>No tiene ningún permiso de escritura para el directorio. Por favor, seleccione otro.</translation>
+      <translation>No tienes permisos de escritura para el directorio. Por favor elije otro.</translation>
     </message>
   </context>
   <context>
@@ -1574,6 +1954,69 @@ Especifique otro directorio, por favor.</translation>
       <source>&amp;Close</source>
       <translation>&amp;Cerrar</translation>
     </message>
+    <message>
+      <source>Find...</source>
+      <translation>Encontrar...</translation>
+    </message>
+    <message>
+      <source>Sorted</source>
+      <translation>Ordenado</translation>
+    </message>
+    <message>
+      <source>Quick search</source>
+      <translation>Búsqueda rápida</translation>
+    </message>
+    <message>
+      <source>Type in a group name to find it</source>
+      <translation>Escriba el nombre de un grupo para encontrarlo</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Buscar Grupo</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Encontrar</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Que buscar:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Buscar en</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Grupos</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Nombres</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Valores</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Sólo coincidencia de palabras completas</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Encontrar siguiente</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>No se encuentra</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>No se puede encontrar el texto: %1</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameterImp</name>
@@ -1609,6 +2052,10 @@ Especifique otro directorio, por favor.</translation>
       <source>System parameter</source>
       <translation>Parámetro del sistema</translation>
     </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Buscar Grupo</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPreferences</name>
@@ -1629,11 +2076,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Clear user settings</source>
-      <translation>Borrar ajustes de usuario</translation>
+      <translation>Borrar ajustes del usuario</translation>
     </message>
     <message>
       <source>Do you want to clear all your user settings?</source>
-      <translation>¿Desea borrar todos los ajustes de usuario?</translation>
+      <translation>¿Desea borrar todos los ajustes del usuario?</translation>
     </message>
     <message>
       <source>If you agree all your settings will be cleared.</source>
@@ -1702,6 +2149,10 @@ Especifique otro directorio, por favor.</translation>
       <source>Open in browser</source>
       <translation>Abrir en navegador</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation>Versión del programa:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -1735,7 +2186,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Load project file after creation</source>
-      <translation>Cargar el archivo del proyecto después de la creación</translation>
+      <translation>Cargar archivo de proyecto después de la creación</translation>
     </message>
     <message>
       <source>Empty source</source>
@@ -1743,7 +2194,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>No source is defined.</source>
-      <translation>No hay fuentes definidas.</translation>
+      <translation>No hay fuente definida.</translation>
     </message>
     <message>
       <source>Empty destination</source>
@@ -1755,38 +2206,42 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Project file</source>
-      <translation>Archivo de proyecto</translation>
+      <translation>Archivo del proyecto</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
       <source>Link</source>
-      <translation>Enlace</translation>
-    </message>
-    <message>
-      <source>Show all object types</source>
-      <translation>Mostrar todos los tipos de objeto</translation>
-    </message>
-    <message>
-      <source>No selection</source>
-      <translation>Ninguna selección</translation>
-    </message>
-    <message>
-      <source>Please select an object from the list</source>
-      <translation>Por favor, selecciona un objeto de la lista</translation>
+      <translation>Vínculo</translation>
     </message>
     <message>
       <source>Search</source>
-      <translation>Búsqueda</translation>
+      <translation>Buscar</translation>
     </message>
     <message>
       <source>A search pattern to filter the results above</source>
-      <translation>Un patrón de búsqueda para filtrar los resultados de arriba</translation>
+      <translation>Un patrón de búsqueda para filtrar los resultados anteriores</translation>
     </message>
     <message>
-      <source>None (Remove link)</source>
-      <translation>Ninguno (quitar enlace)</translation>
+      <source>Filter by type</source>
+      <translation>Filtrar por tipo</translation>
+    </message>
+    <message>
+      <source>Sync sub-object selection</source>
+      <translation>Sincronizar selección de sub-objetos</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Reiniciar</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Limpiar</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Si está activado, entonces la selección de vista 3D se sincronizará con la jerarquía completa de objetos.</translation>
     </message>
   </context>
   <context>
@@ -1801,7 +2256,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Record log messages</source>
-      <translation>Grabar lista de mensajes</translation>
+      <translation>Grabar mensajes de registro</translation>
     </message>
     <message>
       <source>Record warnings</source>
@@ -1821,7 +2276,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Log messages:</source>
-      <translation>Lista de mensajes:</translation>
+      <translation>Mensajes de registro:</translation>
     </message>
     <message>
       <source>Warnings:</source>
@@ -1837,15 +2292,107 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Redirigir los errores internos de Python a un informe visual</translation>
+      <translation>Redirigir los errores internos de Python a la vista de informe</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation>Redirigir la salida de Python interna a la vista de informe</translation>
+      <translation>Redirigir la salida interna de Python a la vista de informe</translation>
     </message>
     <message>
       <source>Python interpreter</source>
       <translation>Intérprete de Python</translation>
+    </message>
+    <message>
+      <source>Log messages will be recorded</source>
+      <translation>Los mensajes de registro serán grabados</translation>
+    </message>
+    <message>
+      <source>Warnings will be recorded</source>
+      <translation>Las advertencias se registrarán</translation>
+    </message>
+    <message>
+      <source>Error messages will be recorded</source>
+      <translation>Los mensajes de registro serán grabados</translation>
+    </message>
+    <message>
+      <source>When an error has occurred, the Report View dialog becomes visible
+on-screen while displaying the error</source>
+      <translation>Cuando ha ocurrido un error, el diálogo de Vista de Informe se hace visible en pantalla mostrando el error</translation>
+    </message>
+    <message>
+      <source>Show report view on error</source>
+      <translation>Mostrar vista de informe en errores</translation>
+    </message>
+    <message>
+      <source>When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</source>
+      <translation>Cuando ha ocurrido una advertencia, el diálogo de Vista de Informe se hace visible en pantalla mostrando la advertencia</translation>
+    </message>
+    <message>
+      <source>Show report view on warning</source>
+      <translation>Mostrar vista de informe en advertencias</translation>
+    </message>
+    <message>
+      <source>When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</source>
+      <translation>Cuando se emite un mensaje normal, el diálogo de Vista de Informe se hace visible en pantalla mostrando el mensaje</translation>
+    </message>
+    <message>
+      <source>Show report view on normal message</source>
+      <translation>Mostrar vista de informe en mensaje normal</translation>
+    </message>
+    <message>
+      <source>When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</source>
+      <translation>Cuando se emite un mensaje de registro, el diálogo de Vista de Informe se hace visible en pantalla mostrando el mensaje de registro</translation>
+    </message>
+    <message>
+      <source>Show report view on log message</source>
+      <translation>Mostrar vista de informe en mensaje de registro</translation>
+    </message>
+    <message>
+      <source>Font color for normal messages in Report view panel</source>
+      <translation>Color de fuente para los mensajes normales en el panel de Vista de Informe</translation>
+    </message>
+    <message>
+      <source>Font color for log messages in Report view panel</source>
+      <translation>Color de fuente para los mensajes de registro en el panel de Vista de Informe</translation>
+    </message>
+    <message>
+      <source>Font color for warning messages in Report view panel</source>
+      <translation>Color de fuente para mensajes de avertencia en el panel de Vista de Informe</translation>
+    </message>
+    <message>
+      <source>Font color for error messages in Report view panel</source>
+      <translation>Color de fuente para los mensajes de error en el panel de Vista de Informe</translation>
+    </message>
+    <message>
+      <source>Internal Python output will be redirected
+from Python console to Report view panel</source>
+      <translation>La salida interna de Python se redirigirá
+desde la consola de Python al panel de la vista de informe</translation>
+    </message>
+    <message>
+      <source>Internal Python error messages will be redirected
+from Python console to Report view panel</source>
+      <translation>La salida interna de Python se redirigirá
+desde la consola de Python al panel de la vista de informe</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation>Incluye un código de tiempo para cada informe</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation>Incluye un código de tiempo para cada entrada</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation>Los mensajes normales serán grabados</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation>Grabar mensajes normales</translation>
     </message>
   </context>
   <context>
@@ -1856,7 +2403,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>EtiquetaTexto</translation>
+      <translation>Etiqueta Texto</translation>
     </message>
     <message>
       <source>Advanced &gt;&gt;</source>
@@ -1894,24 +2441,12 @@ Especifique otro directorio, por favor.</translation>
       <translation>Vista 3D</translation>
     </message>
     <message>
-      <source>3D View settings</source>
-      <translation>Configuración de vista 3D</translation>
-    </message>
-    <message>
       <source>Show coordinate system in the corner</source>
       <translation>Mostrar sistema de coordenadas en la esquina</translation>
     </message>
     <message>
       <source>Show counter of frames per second</source>
       <translation>Mostrar contador de cuadros por segundo</translation>
-    </message>
-    <message>
-      <source>Enable animation</source>
-      <translation>Activar animación</translation>
-    </message>
-    <message>
-      <source>Eye to eye distance for stereo modes:</source>
-      <translation>Distancia del punto de mira para los modos estéreo:</translation>
     </message>
     <message>
       <source>Camera type</source>
@@ -1922,48 +2457,8 @@ Especifique otro directorio, por favor.</translation>
       <translation>(Vacio)</translation>
     </message>
     <message>
-      <source>3D Navigation</source>
-      <translation>Navegación 3D</translation>
-    </message>
-    <message>
-      <source>Mouse...</source>
-      <translation>Mouse...</translation>
-    </message>
-    <message>
-      <source>Intensity of backlight</source>
-      <translation>Intensidad de luz de fondo</translation>
-    </message>
-    <message>
-      <source>Enable backlight color</source>
-      <translation>Habilitar color de luz de fondo</translation>
-    </message>
-    <message>
-      <source>Orbit style</source>
-      <translation>Estilo órbita</translation>
-    </message>
-    <message>
-      <source>Turntable</source>
-      <translation>Mesa giratoria</translation>
-    </message>
-    <message>
-      <source>Trackball</source>
-      <translation>Trackball</translation>
-    </message>
-    <message>
-      <source>Invert zoom</source>
-      <translation>Invertir zoom</translation>
-    </message>
-    <message>
-      <source>Zoom at cursor</source>
-      <translation>Zoom en cursor</translation>
-    </message>
-    <message>
-      <source>Zoom step</source>
-      <translation>Paso de zoom</translation>
-    </message>
-    <message>
       <source>Anti-Aliasing</source>
-      <translation>Anti-aliasing</translation>
+      <translation>Anti-alias</translation>
     </message>
     <message>
       <source>None</source>
@@ -1975,15 +2470,15 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>MSAA 2x</source>
-      <translation>MSAA 2 x</translation>
+      <translation>MSAA 2x</translation>
     </message>
     <message>
       <source>MSAA 4x</source>
-      <translation>MSAA 4 x</translation>
+      <translation>MSAA 4x</translation>
     </message>
     <message>
       <source>MSAA 8x</source>
-      <translation>MSAA 8 x</translation>
+      <translation>MSAA 8x</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
@@ -1994,8 +2489,186 @@ Especifique otro directorio, por favor.</translation>
       <translation>Renderizado en perspectiva</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>Utilizar OpenGL Vertex Buffer Object (experimental)</translation>
+      <source>Marker size:</source>
+      <translation>Tamaño del marcador:</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>General</translation>
+    </message>
+    <message>
+      <source>Main coordinate system will always be shown in
+lower right corner within opened files</source>
+      <translation>El sistema de coordenadas principales siempre se mostrará en
+esquina inferior derecha dentro de los archivos abiertos</translation>
+    </message>
+    <message>
+      <source>Time needed for last operation and resulting frame rate
+will be shown at the lower left corner in opened files</source>
+      <translation>Tiempo necesario para la última operación y la tasa de fotogramas resultante
+se mostrará en la esquina inferior izquierda en los archivos abiertos</translation>
+    </message>
+    <message>
+      <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
+      <translation>Si está marcado, la aplicación recordará qué banco de trabajo está activo para cada pestaña de la vista</translation>
+    </message>
+    <message>
+      <source>Remember active workbench by tab</source>
+      <translation>Recordar banco de trabajo activo por pestaña</translation>
+    </message>
+    <message>
+      <source>Rendering</source>
+      <translation>Renderizado</translation>
+    </message>
+    <message>
+      <source>If selected, Vertex Buffer Objects (VBO) will be used.
+A VBO is an OpenGL feature that provides methods for uploading
+vertex data (position, normal vector, color, etc.) to the graphics card.
+VBOs offer substantial performance gains because the data resides
+in the graphics memory rather than the system memory and so it
+can be rendered directly by GPU. 
+
+Note: Sometimes this feature may lead to a host of different
+issues ranging from graphical anomalies to GPU crash bugs. Remember to
+report this setting as enabled when seeking support on the FreeCAD forums</source>
+      <translation>Si se selecciona, se utilizarán los objetos de búfer de vértices (VB).
+Una VBO es una función OpenGL que proporciona métodos para subir datos de vértices
+(posición, vector, color, etc.) a la tarjeta gráfica.
+Las VBOs ofrecen un rendimiento sustancial porque los datos residen
+en la memoria gráfica en lugar de la memoria del sistema y por lo tanto
+pueden ser renderizados directamente por GPU. 
+
+Nota: A veces esta característica puede llevar a un gran número de problemas
+que van desde anomías gráficas hasta errores de bloqueo de GPU. Recuerda reportar
+esta configuración como activada al buscar soporte en los foros de FreeCAD</translation>
+    </message>
+    <message>
+      <source>Use OpenGL VBO (Vertex Buffer Object)</source>
+      <translation>Usar OpenGL VBO (Vertex Buffer Object)</translation>
+    </message>
+    <message>
+      <source>Render cache</source>
+      <translation>Renderizar caché</translation>
+    </message>
+    <message>
+      <source>'Render Caching' is another way to say 'Rendering Acceleration'.
+There are 3 options available to achieve this: 
+1) 'Auto' (default), let Coin3D decide where to cache.
+2) 'Distributed', manually turn on cache for all view provider root node.
+3) 'Centralized', manually turn off cache in all nodes of all view provider, and
+only cache at the scene graph root node. This offers the fastest rendering speed
+but slower response to any scene changes.</source>
+      <translation>"Renderizar almacenamiento de caché" es otra forma de decir "aceleración de renderizado".
+Hay 3 opciones disponibles para lograr esto: 
+1) 'Auto' (por defecto), deja que Coin3D decida dónde cachear.
+2) 'Distribuido', activa manualmente la caché para todos los nodos raíz del proveedor de vista.
+3) 'Centralizado', desactiva manualmente la caché en todos los nodos de todos los proveedores de vistas y
+sólo caché en el nodo raíz del gráfico de escenas. Esto ofrece la velocidad de renderizado más rápida
+pero una respuesta más lenta a cualquier cambio de escena.</translation>
+    </message>
+    <message>
+      <source>Auto</source>
+      <translation>Auto</translation>
+    </message>
+    <message>
+      <source>Distributed</source>
+      <translation>Distribuido</translation>
+    </message>
+    <message>
+      <source>Centralized</source>
+      <translation>Centralizado</translation>
+    </message>
+    <message>
+      <source>Transparent objects:</source>
+      <translation>Objetos transparentes:</translation>
+    </message>
+    <message>
+      <source>Render types of transparent objects</source>
+      <translation>Renderizar tipos de objetos transparentes</translation>
+    </message>
+    <message>
+      <source>One pass</source>
+      <translation>Una pasada</translation>
+    </message>
+    <message>
+      <source>Backface pass</source>
+      <translation>Pasada de cara posterior</translation>
+    </message>
+    <message>
+      <source>Size of vertices in the Sketcher workbench</source>
+      <translation>Tamaño de los vértices en el banco de trabajo del croquis</translation>
+    </message>
+    <message>
+      <source>Eye to eye distance for stereo modes</source>
+      <translation>Distancia de ojo a ojo para modos estéreo</translation>
+    </message>
+    <message>
+      <source>Backlight is enabled with the defined color</source>
+      <translation>La retroiluminación está habilitada con el color definido</translation>
+    </message>
+    <message>
+      <source>Backlight color</source>
+      <translation>Luz de fondo</translation>
+    </message>
+    <message>
+      <source>Intensity</source>
+      <translation>Intensidad</translation>
+    </message>
+    <message>
+      <source>Intensity of the backlight</source>
+      <translation>Intensidad de la luz de fondo</translation>
+    </message>
+    <message>
+      <source>Objects will be projected in orthographic projection</source>
+      <translation>Los objetos se proyectarán en proyección ortográfica</translation>
+    </message>
+    <message>
+      <source>Objects will appear in a perspective projection</source>
+      <translation>Los objetos aparecerán en una proyección perspectiva</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation>La cruz de los ejes se mostrará por defecto al abrir o crear un archivo</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation>Mostrar la cruz de los ejes por defecto</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Elegir radio (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Área para elegir elementos en la vista 3D.
+Valor más grande facilita la selección de cosas, pero puede hacer que las características pequeñas sean imposibles de seleccionar.               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Esta opción es útil para solucionar problemas de tarjeta gráfica y problemas en el controlador.
+
+Cambiar esta opción requiere reiniciar la aplicación.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Usar software OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Qué tipo de antialiasing multimuestra se utiliza</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Distancia de ojos a ojos usada para proyecciones estéreo.
+El valor especificado es un factor que se multiplicará con el tamaño del recuadro
+del objeto 3D que se muestra actualmente.</translation>
     </message>
   </context>
   <context>
@@ -2006,7 +2679,31 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>Abra un nueva vista o reinicie %1 para aplicar los cambios de anti-aliasing.</translation>
+      <translation>Abre un nuevo visor o reinicie %1 para aplicar los cambios de suavizado.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
     </message>
   </context>
   <context>
@@ -2180,14 +2877,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>Nombre del autor</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;El nombre a usar en la creación de documento.&lt;/p&gt;&lt;p&gt;En blanco para mantener anónimo.&lt;/p&gt;&lt;p&gt;También puede utilizar el formulario:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt; john@doe.com &amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>If this is checked, the "Last modified by" field will be set when saving the file</source>
-      <translation>Si ésto está activado, el campo "Última modificación por" se establecerá al guardar el fichero</translation>
-    </message>
-    <message>
       <source>Set on save</source>
       <translation>Establecer al guardar</translation>
     </message>
@@ -2200,36 +2889,8 @@ Especifique otro directorio, por favor.</translation>
       <translation>Licencia por defecto</translation>
     </message>
     <message>
-      <source>The default license for new documents</source>
-      <translation>La licencia por defecto para nuevos documentos</translation>
-    </message>
-    <message>
       <source>All rights reserved</source>
       <translation>Todos los derechos reservados</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution</source>
-      <translation>Creative Commons Reconocimiento</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-ShareAlike</source>
-      <translation>Creative Commons Reconocimiento - CompartirIgual</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NoDerivatives</source>
-      <translation>Creative Commons Reconocimiento - SinObraDerivada</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial</source>
-      <translation>Creative Commons Reconocimiento - NoComercial</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-      <translation>Creative Commons Reconocimiento - NoComercial - CompartirIgual</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-      <translation>Creative Commons Reconocimiento - NoComercial - SinObraDerivada</translation>
     </message>
     <message>
       <source>Public Domain</source>
@@ -2248,10 +2909,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>URL de la licencia</translation>
     </message>
     <message>
-      <source>The default company to use for new files</source>
-      <translation>La compañía por defecto a usar para nuevos archivos</translation>
-    </message>
-    <message>
       <source>Run AutoRecovery at startup</source>
       <translation>Ejecutar recuperación automática al iniciar</translation>
     </message>
@@ -2264,8 +2921,158 @@ Especifique otro directorio, por favor.</translation>
       <translation>Agregar el logo del programa a la miniatura generada</translation>
     </message>
     <message>
-      <source>A URL where the user can find more details about the license</source>
-      <translation>Una dirección URL donde el usuario puede encontrar más detalles acerca de la licencia</translation>
+      <source>The application will create a new document when started</source>
+      <translation>La aplicación creará un nuevo documento cuando se inicie</translation>
+    </message>
+    <message>
+      <source>Compression level for FCStd files</source>
+      <translation>Nivel de compresión para archivos FCStd</translation>
+    </message>
+    <message>
+      <source>All changes in documents are stored so that they can be undone/redone</source>
+      <translation>Todos los cambios en los documentos se almacenan para que se puedan deshacer/rehacer</translation>
+    </message>
+    <message>
+      <source>How many Undo/Redo steps should be recorded</source>
+      <translation>Cuántos pasos de Deshacer/Rehacer deben ser grabados</translation>
+    </message>
+    <message>
+      <source>Allow user aborting document recomputation by pressing ESC.
+This feature may slightly increase recomputation time.</source>
+      <translation>Permitir al usuario abortar el recalculado de documentos presionando ESC.
+Esta característica puede aumentar ligeramente el tiempo de recomputación.</translation>
+    </message>
+    <message>
+      <source>Allow aborting recomputation</source>
+      <translation>Permitir abortar la recomputación</translation>
+    </message>
+    <message>
+      <source>If there is a recovery file available the application will
+automatically run a file recovery when it is started.</source>
+      <translation>Si hay un archivo de recuperación disponible, la aplicación
+ejecutará automáticamente un archivo de recuperación cuando se inicie.</translation>
+    </message>
+    <message>
+      <source>How often a recovery file is written</source>
+      <translation>Con qué frecuencia se escribe un archivo de recuperación</translation>
+    </message>
+    <message>
+      <source>A thumbnail will be stored when document is saved</source>
+      <translation>Una miniatura se almacenará cuando se guarde el documento</translation>
+    </message>
+    <message>
+      <source>Size</source>
+      <translation>Tamaño</translation>
+    </message>
+    <message>
+      <source>Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</source>
+      <translation>Establece el tamaño de la miniatura que se almacena en el documento.
+Los tamaños comunes son 128, 256 y 512</translation>
+    </message>
+    <message>
+      <source>The program logo will be added to the thumbnail</source>
+      <translation>El logotipo del programa se añadirá a la miniatura</translation>
+    </message>
+    <message>
+      <source>How many backup files will be kept when saving document</source>
+      <translation>Cuántos archivos de copia de seguridad serán guardados al guardar el documento</translation>
+    </message>
+    <message>
+      <source>Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</source>
+      <translation>Los archivos de copia de seguridad tendrán la extensión '.FCbak' y los nombres de archivo tendrán el sufijo de fecha de acuerdo al formato especificado</translation>
+    </message>
+    <message>
+      <source>Use date and FCBak extension</source>
+      <translation>Usar fecha y extensión FCBak</translation>
+    </message>
+    <message>
+      <source>Date format</source>
+      <translation>Formato de fecha</translation>
+    </message>
+    <message>
+      <source>Allow objects to have same label/name</source>
+      <translation>Permitir que los objetos tengan la misma etiqueta/nombre</translation>
+    </message>
+    <message>
+      <source>Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
+A partially loaded document cannot be edited. Double click the document
+icon in the tree view to fully reload it.</source>
+      <translation>Habilitar la carga parcial de documentos vinculados externos.
+De esta manera solo los objetos referenciados y sus dependencias se cargarán
+cuando un documento vinculado se abra automáticamente junto con el documento principal.
+Un documento parcialmente cargado no puede ser editado. Haga doble clic en el icono
+del documento en la vista de árbol para volver a cargarlo completamente.</translation>
+    </message>
+    <message>
+      <source>Disable partial loading of external linked objects</source>
+      <translation>Deshabilita la carga parcial de objetos vinculados externos</translation>
+    </message>
+    <message>
+      <source>All documents that will be created will get the specified author name.
+Keep blank for anonymous.
+You can also use the form: John Doe &lt;john@doe.com&gt;</source>
+      <translation>Todos los documentos que se crearán obtendrán el nombre de autor especificado.
+Mantener en blanco para anonimato.
+También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translation>
+    </message>
+    <message>
+      <source>The field 'Last modified by' will be set to specified author when saving the file</source>
+      <translation>El campo 'Última modificación por' se establecerá al autor especificado al guardar el archivo</translation>
+    </message>
+    <message>
+      <source>Default company name to use for new files</source>
+      <translation>Nombre de empresa predeterminado a usar para nuevos archivos</translation>
+    </message>
+    <message>
+      <source>Default license for new documents</source>
+      <translation>Licencia predeterminada para nuevos documentos</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution</source>
+      <translation>Creative Commons Attribution</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-ShareAlike</source>
+      <translation>Creative Commons Attribution-ShareAlike</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NoDerivatives</source>
+      <translation>Creative Commons Attribution-NoDerivatives</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial</source>
+      <translation>Creative Commons Attribution-NonCommercial</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
+      <translation>Creative Commons Attribution-NonCommercial-ShareAlike</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
+      <translation>Creative Commons Attribution-NonCommercial-NoDerivatives</translation>
+    </message>
+    <message>
+      <source>URL describing more about the license</source>
+      <translation>URL que describe más sobre la licencia</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsDocumentImp</name>
+    <message>
+      <source>The format of the date to use.</source>
+      <translation>El formato de la fecha a utilizar.</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Por defecto</translation>
+    </message>
+    <message>
+      <source>Format</source>
+      <translation>Formato</translation>
     </message>
   </context>
   <context>
@@ -2347,7 +3154,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Back&amp;ground:</source>
-      <translation>C&amp;olor de fondo:</translation>
+      <translation>C&amp;olor del fondo:</translation>
     </message>
     <message>
       <source>Current</source>
@@ -2363,7 +3170,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Image dimensions</source>
-      <translation>Dimensiones de imagen</translation>
+      <translation>Cotas de imagen</translation>
     </message>
     <message>
       <source>Pixel</source>
@@ -2388,82 +3195,6 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>Icon       128 x 128</source>
       <translation>Icono       128 x 128</translation>
-    </message>
-    <message>
-      <source>CGA       320 x 200</source>
-      <translation>CGA       320 x 200</translation>
-    </message>
-    <message>
-      <source>QVGA     320 x 240</source>
-      <translation>QVGA     320 x 240</translation>
-    </message>
-    <message>
-      <source>VGA       640 x 480</source>
-      <translation>VGA       640 x 480</translation>
-    </message>
-    <message>
-      <source>NTSC     720 x 480</source>
-      <translation>NTSC     720 x 480</translation>
-    </message>
-    <message>
-      <source>PAL        768 x 578</source>
-      <translation>PAL        768 x 578</translation>
-    </message>
-    <message>
-      <source>SVGA     800 x 600</source>
-      <translation>SVGA     800 x 600</translation>
-    </message>
-    <message>
-      <source>XGA       1024 x 768</source>
-      <translation>XGA       1024 x 768</translation>
-    </message>
-    <message>
-      <source>HD720   1280 x 720</source>
-      <translation>HD720   1280 x 720</translation>
-    </message>
-    <message>
-      <source>SXGA     1280 x 1024</source>
-      <translation>SXGA     1280 x 1024</translation>
-    </message>
-    <message>
-      <source>SXGA+   1400 x 1050</source>
-      <translation>SXGA+   1400 x 1050</translation>
-    </message>
-    <message>
-      <source>UXGA     1600 x 1200</source>
-      <translation>UXGA     1600 x 1200</translation>
-    </message>
-    <message>
-      <source>HD1080 1920 x 1080</source>
-      <translation>HD1080 1920 x 1080</translation>
-    </message>
-    <message>
-      <source>WUXGA  1920 x 1200</source>
-      <translation>WUXGA  1920 x 1200</translation>
-    </message>
-    <message>
-      <source>QXGA     2048 x 1538</source>
-      <translation>QXGA     2048 x 1538</translation>
-    </message>
-    <message>
-      <source>WQXGA  2560 x 1600</source>
-      <translation>WQXGA  2560 x 1600</translation>
-    </message>
-    <message>
-      <source>QSXGA   2560 x 2048</source>
-      <translation>QSXGA   2560 x 2048</translation>
-    </message>
-    <message utf8="true">
-      <source>QUXGA   3200 × 2400</source>
-      <translation>QUXGA   3200 × 2400</translation>
-    </message>
-    <message utf8="true">
-      <source>HUXGA   6400 × 4800</source>
-      <translation>HUXGA   6400 × 4800</translation>
-    </message>
-    <message>
-      <source>!!!          10000 x 10000</source>
-      <translation>!!!          10000 x 10000</translation>
     </message>
     <message>
       <source>Standard sizes:</source>
@@ -2523,11 +3254,88 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Transparent</source>
-      <translation>Transparencia</translation>
+      <translation>Transparente</translation>
     </message>
     <message>
       <source>Add watermark</source>
       <translation>Añadir marca de agua</translation>
+    </message>
+    <message>
+      <source>Creation method:</source>
+      <translation>Método de creación:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsImageImp</name>
+    <message>
+      <source>Offscreen (New)</source>
+      <translation>Fuera de pantalla (Nuevo)</translation>
+    </message>
+    <message>
+      <source>Offscreen (Old)</source>
+      <translation>Fuera de pantalla (Antiguo)</translation>
+    </message>
+    <message>
+      <source>Framebuffer (custom)</source>
+      <translation>Framebuffer (personalizado)</translation>
+    </message>
+    <message>
+      <source>Framebuffer (as is)</source>
+      <translation>Framebuffer (tal cual)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Workbench Name</source>
+      <translation>Nombre del banco de trabajo</translation>
+    </message>
+    <message>
+      <source>Autoload?</source>
+      <translation>¿Carga automática?</translation>
+    </message>
+    <message>
+      <source>Load Now</source>
+      <translation>Cargar ahora</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Para preservar recursos, FreeCAD no carga los bancos de trabajo hasta que se usen. Cargarlos puede proporcionar acceso a preferencias adicionales relacionadas con su funcionalidad.&lt;/p&gt;&lt;p&gt;Los siguientes bancos de trabajo están disponibles en su instalación:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation>Bancos de trabajo disponibles</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Escenario</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Carga automática</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Si está marcado</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>se cargará automáticamente cuando FreeCAD se inicie</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Este es el módulo de inicio actual y debe cargarse automáticamente. Ver Preferencias/General/Autocarga para cambiar.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Cargado</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Cargar ahora</translation>
     </message>
   </context>
   <context>
@@ -2542,7 +3350,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Logging Commands</source>
-      <translation>Comandos de inicio de sesión</translation>
+      <translation>Comandos de registro</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
@@ -2561,10 +3369,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>Comandos de interfaz de usuario</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Grabando comandos de interfaz de usuario</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Grabar como comentario</translation>
     </message>
@@ -2579,6 +3383,308 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Ejecutar macro en entorno local</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Grabar comandos GUI</translation>
+    </message>
+    <message>
+      <source>Variables defined by macros are created as local variables</source>
+      <translation>Las variables definidas por macros se crean como variables locales</translation>
+    </message>
+    <message>
+      <source>Commands executed by macro scripts are shown in Python console</source>
+      <translation>Los comandos ejecutados por scripts de macro se muestran en la consola de Python</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands</source>
+      <translation>Las macros grabadas también contendrán comandos de interfaz de usuario</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands as comments</source>
+      <translation>Las macros grabadas también contendrán comandos de interfaz de usuario como comentarios</translation>
+    </message>
+    <message>
+      <source>The directory in which the application will search for macros</source>
+      <translation>El directorio en el que la aplicación buscará macros</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>Menú de macros recientes</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>Tamaño de la lista de macros reciente</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Cuántas macros debería aparecer en la lista de macros recientes</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>Contador de accesos directos</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>Cuántas macros recientes deben tener accesos directos</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>Modificadores de teclado</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>Modificadores de teclado, por defecto = Ctrl+Shift+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsNavigation</name>
+    <message>
+      <source>Navigation</source>
+      <translation>Navegación</translation>
+    </message>
+    <message>
+      <source>Navigation cube</source>
+      <translation>Cubo de navegación</translation>
+    </message>
+    <message>
+      <source>Steps by turn</source>
+      <translation>Pasos por vuelta</translation>
+    </message>
+    <message>
+      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
+      <translation>Número de pasos por giro cuando se usan flechas (por defecto = 8: ángulo del paso = 360/8 = 45 grados)</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Esquina</translation>
+    </message>
+    <message>
+      <source>Corner where navigation cube is shown</source>
+      <translation>Esquina donde se muestra el cubo de navegación</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Arriba a la izquierda</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Parte superior derecha</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Abajo a la izquierda</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Abajo a la derecha</translation>
+    </message>
+    <message>
+      <source>3D Navigation</source>
+      <translation>Navegación 3D</translation>
+    </message>
+    <message>
+      <source>List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</source>
+      <translation>Lista la configuración de botones del ratón para cada configuración de navegación elegida.
+Seleccione un conjunto y, a continuación, presione el botón para ver dichas configuraciones.</translation>
+    </message>
+    <message>
+      <source>Mouse...</source>
+      <translation>Ratón...</translation>
+    </message>
+    <message>
+      <source>Navigation settings set</source>
+      <translation>Configuración de navegación</translation>
+    </message>
+    <message>
+      <source>Orbit style</source>
+      <translation>Estilo órbita</translation>
+    </message>
+    <message>
+      <source>Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</source>
+      <translation>Estilo de órbita de rotación.
+Trackball: mover el ratón horizontalmente rotará la pieza alrededor del eje Y
+Turntable: la pieza se girará alrededor del eje Z.</translation>
+    </message>
+    <message>
+      <source>Turntable</source>
+      <translation>Mesa giratoria</translation>
+    </message>
+    <message>
+      <source>Trackball</source>
+      <translation>Trackball</translation>
+    </message>
+    <message>
+      <source>New document scale</source>
+      <translation>Nueva escala de documento</translation>
+    </message>
+    <message>
+      <source>Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</source>
+      <translation>Establece el zoom de la cámara para nuevos documentos.
+El valor es el diámetro de la esfera que cabe en la pantalla.</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <source>Enable animated rotations</source>
+      <translation>Activar rotaciones animadas</translation>
+    </message>
+    <message>
+      <source>Enable animation</source>
+      <translation>Activar animación</translation>
+    </message>
+    <message>
+      <source>Zoom operations will be performed at position of mouse pointer</source>
+      <translation>Las operaciones de zoom se realizarán en la posición del puntero del ratón</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Zoom en cursor</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Paso de zoom</translation>
+    </message>
+    <message>
+      <source>Direction of zoom operations will be inverted</source>
+      <translation>La dirección de las operaciones de zoom se invertirá</translation>
+    </message>
+    <message>
+      <source>Invert zoom</source>
+      <translation>Invertir zoom</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</source>
+      <translation>Impide que la vista se incline cuando se hace zoom. Afecta solo el estilo de navegación por gestos. La inclinación del ratón no está desactivada por esta configuración.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>Desactivar el gesto de inclinación de la pantalla táctil</translation>
+    </message>
+    <message>
+      <source>Rotations in 3D will use current cursor position as center for rotation</source>
+      <translation>Las rotaciones en 3D usarán la posición actual del cursor como centro de rotación</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isométrica</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimétrica</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimétrica</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Planta</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Alzado</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Izquierda</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Derecha</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Posterior</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Inferior</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Personalizado</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Orientación de cámara por defecto</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Orientación de cámara por defecto al crear un nuevo documento o seleccionar la vista de inicio</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Modo de rotación</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Centro de la ventana</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Arrastra el cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Centro del objeto</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Girar al estado posible más cercano al hacer clic en una cara del cubo</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Girar al más cercano</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Tamaño del cubo</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Tamaño del cubo de navegación</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Cuánto se ampliará.
+El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Selección</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Cambia automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Auto expande el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Preselecciona el objeto en la vista 3D cuando el puntero de ratón esté sobre el objeto del árbol</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Graba la selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Añadir casillas de selección en el árbol del documentos</translation>
     </message>
   </context>
   <context>
@@ -2608,10 +3714,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>Unidad</translation>
     </message>
     <message>
-      <source>User system:</source>
-      <translation>Sistema del usuario:</translation>
-    </message>
-    <message>
       <source>US customary (in/lb)</source>
       <translation>US propias (in/lb)</translation>
     </message>
@@ -2623,17 +3725,73 @@ Especifique otro directorio, por favor.</translation>
       <source>Imperial decimal (in/lb)</source>
       <translation>Decimales Imperiales (in / lb)</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>Building Euro (cm/m²/m³)</source>
       <translation>Construcción Euro (cm/m²/m³)</translation>
     </message>
     <message>
-      <source>Building US (ft-in/sqft/cuft)</source>
-      <translation>Construcción US (ft-in/sqft/cuft)</translation>
+      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+      <translation>Piezas pequeñas que son métricas &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
-      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation>Piezas pequeñas métricas y CNC (mm, mm/min)</translation>
+      <source>Minimum fractional inch:</source>
+      <translation>Mínimo pulgadas fraccionarias:</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Unidad del sistema:</translation>
+    </message>
+    <message>
+      <source>Number of decimals that should be shown for numbers and dimensions</source>
+      <translation>Número de decimales que deberían mostrarse en números y cotas.</translation>
+    </message>
+    <message>
+      <source>Unit system that should be used for all parts the application</source>
+      <translation>Sistema de unidades que debe ser utilizado para todas las partes de la aplicación</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch to be displayed</source>
+      <translation>Pulgada fraccional mínima que se mostrará</translation>
+    </message>
+    <message>
+      <source>Building US (ft-in/sqft/cft)</source>
+      <translation>Building US (ft-in/sqft/cft)</translation>
+    </message>
+    <message>
+      <source>Imperial for Civil Eng (ft, ft/sec)</source>
+      <translation>Imperial para Ing Civil (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, seg)</translation>
     </message>
   </context>
   <context>
@@ -2671,12 +3829,56 @@ Especifique otro directorio, por favor.</translation>
       <translation>Color simple</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Elegir radio (px):</translation>
+      <source>Object being edited</source>
+      <translation>Objeto editándose</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Establece la zona de confusión para elegir elementos en vista 3D. Un mayor valor hace que sea más fácil elegir cosas, pero hará imposible seleccionar algunas características pequeñas.</translation>
+      <source>Active container</source>
+      <translation>Contenedor activo</translation>
+    </message>
+    <message>
+      <source>Enable preselection and highlight by specified color</source>
+      <translation>Habilitar preselección y resaltado mediante el color especificado</translation>
+    </message>
+    <message>
+      <source>Enable selection highlighting and use specified color</source>
+      <translation>Activar resaltado de selección y usar el color especificado</translation>
+    </message>
+    <message>
+      <source>Background color for the model view</source>
+      <translation>Color de fondo para la vista del modelo</translation>
+    </message>
+    <message>
+      <source>Background will have selected color</source>
+      <translation>El fondo tendrá el color seleccionado</translation>
+    </message>
+    <message>
+      <source>Color gradient will get selected color as middle color</source>
+      <translation>El degradado de color obtendrá el color seleccionado como color medio</translation>
+    </message>
+    <message>
+      <source>Bottom color</source>
+      <translation>Color inferior</translation>
+    </message>
+    <message>
+      <source>Background will have selected color gradient</source>
+      <translation>El fondo tendrá el gradiente de colores seleccionado</translation>
+    </message>
+    <message>
+      <source>Top color</source>
+      <translation>Color superior</translation>
+    </message>
+    <message>
+      <source>Tree view</source>
+      <translation>Vista en árbol</translation>
+    </message>
+    <message>
+      <source>Background color for objects in tree view that are currently edited</source>
+      <translation>Color de fondo para objetos en la vista en árbol que están en edición actualmente</translation>
+    </message>
+    <message>
+      <source>Background color for active containers in tree view</source>
+      <translation>Color de fondo para contenedores activos en la vista en árbol</translation>
     </message>
   </context>
   <context>
@@ -2694,7 +3896,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>as:</source>
-      <translation>as:</translation>
+      <translation>como:</translation>
     </message>
     <message>
       <source>=&gt;</source>
@@ -2705,14 +3907,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>Cantidad:</translation>
     </message>
     <message>
-      <source>Units:</source>
-      <translation>Unidades:</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
-    <message>
       <source>Copy</source>
       <translation>Copiar</translation>
     </message>
@@ -2720,27 +3914,83 @@ Especifique otro directorio, por favor.</translation>
       <source>Close</source>
       <translation>Cerrar</translation>
     </message>
+    <message>
+      <source>Input the source value and unit</source>
+      <translation>Ingrese el valor y la unidad de origen</translation>
+    </message>
+    <message>
+      <source>Input here the unit for the result</source>
+      <translation>Ingrese aquí la unidad para el resultado</translation>
+    </message>
+    <message>
+      <source>Result</source>
+      <translation>Resultado</translation>
+    </message>
+    <message>
+      <source>List of last used calculations 
+To add a calculation press Return in the value input field</source>
+      <translation>Lista de los últimos cálculos usados 
+Para añadir un cálculo, presione Retorno en el campo de entrada de valor</translation>
+    </message>
+    <message>
+      <source>Quantity</source>
+      <translation>Cantidad</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Unidad del sistema:</translation>
+    </message>
+    <message>
+      <source>Unit system to be used for the Quantity
+The preference system is the one set in the general preferences.</source>
+      <translation>Sistema de unidades a ser utilizado para la Cantidad
+El sistema de preferencias es el establecido en las preferencias generales.</translation>
+    </message>
+    <message>
+      <source>Decimals:</source>
+      <translation>Decimales:</translation>
+    </message>
+    <message>
+      <source>Decimals for the Quantity</source>
+      <translation>Decimales para la Cantidad</translation>
+    </message>
+    <message>
+      <source>Unit category:</source>
+      <translation>Categoría de unidad:</translation>
+    </message>
+    <message>
+      <source>Unit category for the Quantity</source>
+      <translation>Categoría de unidad para la cantidad</translation>
+    </message>
+    <message>
+      <source>Copy the result into the clipboard</source>
+      <translation>Copiar el resultado en el portapapeles</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>Unit mismatch</source>
-      <translation>Unidad incompatible</translation>
+      <source>unit mismatch</source>
+      <translation>unidad incompatible</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>unidad desconocida:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
       <source>Workbenches</source>
-      <translation>Espacios de trabajo</translation>
+      <translation>Escenarios</translation>
     </message>
     <message>
       <source>Enabled workbenches</source>
-      <translation>Espacios de trabajo habilitados</translation>
+      <translation>Escenario habilitados</translation>
     </message>
     <message>
       <source>Disabled workbenches</source>
-      <translation>Espacios de trabajo deshabilitados</translation>
+      <translation>Escenario des-habilitados</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -2748,7 +3998,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Bajar el objeto seleccionado.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;El objeto será bajado&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Mueve el elemento seleccionado hacia abajo&lt;/span&gt;&lt;/p&gt;&lt;p&gt;El objeto se moverá hacia abajo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move left</source>
@@ -2756,7 +4006,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Retire la mesa de trabajo seleccionada de los bancos habilitados&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; Retire el banco de trabajo seleccionado de los bancos de trabajo habilitados&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -2764,15 +4014,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Retire la mesa de trabajo seleccionada a los bancos habilitados&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Mover el banco de trabajo seleccionado a los bancos de trabajo habilitados.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Sort enabled workbenches</source>
-      <translation>Clasificar espacios de trabajo habilitados</translation>
-    </message>
-    <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Tipo de mesa de trabajo habilitado&lt;/p&gt;</translation>
+      <translation>Clasificar escenarios habilitados</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -2780,15 +4026,19 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Subir el objeto seleccionado.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;El objeto será subido.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt; Nota:&lt;/span&gt; &lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; Los cambios estarán activados la próxima vez que inicie FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Mueve el elemento seleccionado hacia arriba.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;El objeto se moverá hacia arriba.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation>Agregar todos a espacios de trabajo habilitados</translation>
+      <translation>Agregar todos a escenarios habilitados</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Ordenar los entornos de trabajo habilitados&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; Los cambios se activarán la próxima vez que inicie la aplicación&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2865,10 +4115,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>¿Está seguro que desea eliminar todos los directorios transitorios?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Al eliminar todo directorio transitorio no podrá recuperar los archivos luego.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Completado</translation>
     </message>
@@ -2883,6 +4129,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Pulse 'Empezar Recuperación' para iniciar el proceso de recuperación del documento indicado a continuación. 
 
 La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation>Al eliminar todo directorio transitorio no podrá recuperar los archivos luego.</translation>
     </message>
   </context>
   <context>
@@ -2925,7 +4175,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>%1 of %2 (%3/sec) %4</source>
-      <translation>%1 de %2 (%3/sec) %4</translation>
+      <translation>%1 de %2 (%3/seg) %4</translation>
     </message>
     <message>
       <source>?</source>
@@ -2960,7 +4210,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>0 Items</source>
-      <translation>0 Items</translation>
+      <translation>0 Artículos</translation>
     </message>
     <message>
       <source>Download Manager</source>
@@ -2968,7 +4218,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>1 Download</source>
-      <translation>1 descarga</translation>
+      <translation>1 Descarga</translation>
     </message>
     <message>
       <source>%1 Downloads</source>
@@ -3082,10 +4332,6 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <translation>Colapsar</translation>
     </message>
     <message>
-      <source>Do really want to remove this parameter group?</source>
-      <translation>¿Realmente desea eliminar este grupo de parámetros?</translation>
-    </message>
-    <message>
       <source>Existing sub-group</source>
       <translation>Subgrupo existente</translation>
     </message>
@@ -3108,6 +4354,10 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     <message>
       <source>Reading from '%1' failed.</source>
       <translation>La lectura de '%1' ha fallado.</translation>
+    </message>
+    <message>
+      <source>Do you really want to remove this parameter group?</source>
+      <translation>¿Realmente desea eliminar este grupo de parámetros?</translation>
     </message>
   </context>
   <context>
@@ -3146,7 +4396,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>New Boolean item</source>
-      <translation>nuevo elemento booleano</translation>
+      <translation>Nuevo elemento booleano</translation>
     </message>
     <message>
       <source>Existing item</source>
@@ -3200,28 +4450,8 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <translation>Centro:</translation>
     </message>
     <message>
-      <source>Pitch:</source>
-      <translation>Tono:</translation>
-    </message>
-    <message>
-      <source>Roll:</source>
-      <translation>Lanzar:</translation>
-    </message>
-    <message>
-      <source>Yaw:</source>
-      <translation>Del desvío:</translation>
-    </message>
-    <message>
       <source>Rotation axis with angle</source>
       <translation>Eje de rotación con ángulo</translation>
-    </message>
-    <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Aplicar los cambios de posición de inmediato</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Aplicar cambios incrementales a la posición de los objetos</translation>
     </message>
     <message>
       <source>Apply</source>
@@ -3244,12 +4474,60 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <translation>Algunos campos contienen datos incorrectos, asegúrese de introducirlos en el lugar apropiado.</translation>
     </message>
     <message>
-      <source>Euler angles (XY'Z'')</source>
-      <translation>Ángulos de Euler (XY'Z'')</translation>
-    </message>
-    <message>
       <source>Use center of mass</source>
       <translation>Usar centro de masa</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Axial:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Aplicar axial</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Clic Mayús para la dirección opuesta</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Puntos seleccionados</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Aplicar cambios incrementales</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Por favor, seleccione 1, 2 o 3 puntos antes de hacer clic en este botón. Un punto puede estar en un vértice, cara o arista. Si en una cara o arista, el punto utilizado será el punto en la posición del mouse a lo largo de la cara o la arista. Si se selecciona 1 punto, se utilizará como centro de rotación. Si se seleccionan 2 puntos, el punto medio entre ellos será el centro de rotación y, si es necesario, se creará un nuevo eje personalizado. Si se seleccionan 3 puntos, el primer punto se convierte en el centro de rotación y se encuentra en el vector que es normal al plano definido por los 3 puntos. Se proporciona cierta información de distancia y ángulo en la vista de reporte, que puede ser útil al alinear objetos. Para su comodidad, cuando se usa la tecla Mayús + clic, la distancia o el ángulo apropiados se copian en el portapapeles.</translation>
+    </message>
+    <message>
+      <source>Pitch (around y-axis):</source>
+      <translation>Elevación (alrededor del eje y):</translation>
+    </message>
+    <message>
+      <source>Roll (around x-axis):</source>
+      <translation>Balanceo (alrededor del eje x-):</translation>
+    </message>
+    <message>
+      <source>Yaw (around z-axis):</source>
+      <translation>Rumbo (alrededor del eje z):</translation>
+    </message>
+    <message>
+      <source>Yaw (around z-axis)</source>
+      <translation>Rumbo (alrededor del eje z)</translation>
+    </message>
+    <message>
+      <source>Pitch (around y-axis)</source>
+      <translation>Elevación (alrededor del eje y)</translation>
+    </message>
+    <message>
+      <source>Roll (around the x-axis)</source>
+      <translation>Balanceo (alrededor del eje x)</translation>
+    </message>
+    <message>
+      <source>Euler angles (zy'x'')</source>
+      <translation>Ángulos de Euler (xy'z'')</translation>
     </message>
   </context>
   <context>
@@ -3261,6 +4539,37 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     <message>
       <source>Command</source>
       <translation>Comando</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::RemoteDebugger</name>
+    <message>
+      <source>Attach to remote debugger</source>
+      <translation>Adjuntar al depurador remoto</translation>
+    </message>
+    <message>
+      <source>winpdb</source>
+      <translation>winpdb</translation>
+    </message>
+    <message>
+      <source>Password:</source>
+      <translation>Contraseña:</translation>
+    </message>
+    <message>
+      <source>VS Code</source>
+      <translation>Código VS</translation>
+    </message>
+    <message>
+      <source>Address:</source>
+      <translation>Dirección:</translation>
+    </message>
+    <message>
+      <source>Port:</source>
+      <translation>Puerto:</translation>
+    </message>
+    <message>
+      <source>Redirect output</source>
+      <translation>Redirigir salida</translation>
     </message>
   </context>
   <context>
@@ -3301,7 +4610,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Mapeo de textura</translation>
+      <translation>Mapeado de textura</translation>
     </message>
     <message>
       <source>Global</source>
@@ -3325,11 +4634,11 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>No 3d view</source>
-      <translation>No exista vista 3d</translation>
+      <translation>No existe la vista 3d</translation>
     </message>
     <message>
       <source>No active 3d view found.</source>
-      <translation>No se encontró una vista activa en 3d.</translation>
+      <translation>No se ha encontrado una vista 3D activa.</translation>
     </message>
   </context>
   <context>
@@ -3341,6 +4650,54 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     <message>
       <source>Transform</source>
       <translation>Transformar</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::DlgObjectSelection</name>
+    <message>
+      <source>Object selection</source>
+      <translation>Selección de objeto</translation>
+    </message>
+    <message>
+      <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
+      <translation>Los objetos seleccionados contienen otras dependencias. Por favor, seleccione qué objetos exportar. Todas las dependencias se seleccionan automáticamente por defecto.</translation>
+    </message>
+    <message>
+      <source>Dependency</source>
+      <translation>Dependencia</translation>
+    </message>
+    <message>
+      <source>Document</source>
+      <translation>Documento</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Nombre</translation>
+    </message>
+    <message>
+      <source>State</source>
+      <translation>Estado</translation>
+    </message>
+    <message>
+      <source>Hierarchy</source>
+      <translation>Jerarquía</translation>
+    </message>
+    <message>
+      <source>Selected</source>
+      <translation>Seleccionado</translation>
+    </message>
+    <message>
+      <source>Partial</source>
+      <translation>Parcial</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation>&amp;Usar las Selecciones Originales</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Ignorar lo precedente y continuar con los objetos seleccionados con prioridad a la apertura de este dialogo</translation>
     </message>
   </context>
   <context>
@@ -3359,18 +4716,18 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
+      <source>Combo View</source>
       <translation>Vista combinada</translation>
-    </message>
-    <message>
-      <source>Tasks</source>
-      <translation>Tareas</translation>
     </message>
     <message>
       <source>Model</source>
       <translation>Modelo</translation>
+    </message>
+    <message>
+      <source>Tasks</source>
+      <translation>Tareas</translation>
     </message>
   </context>
   <context>
@@ -3382,18 +4739,6 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
   </context>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
-    <message>
-      <source>Logging</source>
-      <translation>Inicio de sesión</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Advertencia</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Error</translation>
-    </message>
     <message>
       <source>Options</source>
       <translation>Opciones</translation>
@@ -3426,6 +4771,30 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <source>Plain Text Files</source>
       <translation>Archivos de texto plano</translation>
     </message>
+    <message>
+      <source>Display message types</source>
+      <translation>Mostrar tipos de mensajes</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation>Mensajes normales</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation>Mensajes de registro</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation>Advertencias</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation>Errores</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation>Mostrar vista del informe en</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DockWnd::ReportView</name>
@@ -3442,7 +4811,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
       <source>Search</source>
-      <translation>Búsqueda</translation>
+      <translation>Buscar</translation>
     </message>
     <message>
       <source>Searches object labels</source>
@@ -3462,7 +4831,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
     <message>
       <source>Deselect</source>
-      <translation>Deseleccionar</translation>
+      <translation>De-seleccionar</translation>
     </message>
     <message>
       <source>Deselects this object</source>
@@ -3516,6 +4885,10 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Crea una copia independiente de esta subforma en el documento</translation>
     </message>
+    <message>
+      <source>Picked object list</source>
+      <translation>Lista de objetos seleccionados</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DocumentModel</name>
@@ -3540,7 +4913,7 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
 This has been modified outside of the source editor. Do you want to reload it?</source>
       <translation>%1.
 
-Ha sido modificado fuera del editor de código fuente. Desea recargarlo?</translation>
+Esto se ha modificado fuera del editor de origen. ¿Quieres re-cargarlo?</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -3554,7 +4927,7 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>Export PDF</source>
-      <translation>Exportar PDF</translation>
+      <translation>Exportar en PDF</translation>
     </message>
     <message>
       <source>untitled[*]</source>
@@ -3566,11 +4939,11 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>%1 chars removed</source>
-      <translation>%1 carácteres eliminados</translation>
+      <translation>%1 caracteres eliminados</translation>
     </message>
     <message>
       <source>%1 chars added</source>
-      <translation>%1 carácteres añadidos</translation>
+      <translation>%1 caracteres añadidos</translation>
     </message>
     <message>
       <source>Formatted</source>
@@ -3583,6 +4956,20 @@ Desea guardar los cambios?</translation>
     <message>
       <source>PDF file</source>
       <translation>Archivo PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Coincidencia exacta</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Coincidencia exacta</translation>
     </message>
   </context>
   <context>
@@ -3622,19 +5009,19 @@ Desea guardar los cambios?</translation>
     <name>Gui::Flag</name>
     <message>
       <source>Top left</source>
-      <translation>Planta izquierda</translation>
+      <translation>Arriba a la izquierda</translation>
     </message>
     <message>
       <source>Bottom left</source>
-      <translation>Inferior izquierda</translation>
+      <translation>Abajo a la izquierda</translation>
     </message>
     <message>
       <source>Top right</source>
-      <translation>OPlanta derecha</translation>
+      <translation>Parte superior derecha</translation>
     </message>
     <message>
       <source>Bottom right</source>
-      <translation>Inferior derecha</translation>
+      <translation>Abajo a la derecha</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -3644,20 +5031,20 @@ Desea guardar los cambios?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Dé un toque. O haga clic en el botón izquierdo del ratón.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Toque o haga click en el botón izquierdo del ratón.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Arrastre la pantalla con dos dedos. O pulse el botón derecho del ratón.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation>Arrastre la pantalla con dos dedos o pulse el botón derecho del ratón.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastre la pantalla con un dedo. O pulse el botón izquierdo del ratón. En el croquizador y otros modos de edición, mantenga pulsado también Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation>Arrastra la pantalla con un dedo O pulsa el botón izquierdo del ratón. En Sketcher &amp;&amp; otros modos de edición, mantén Alt además.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Pellizque (ponga dos dedos en la pantalla y separelos/juntelos). O arrastre el botón central del ratón. O use AcPág/RePág en teclado.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Pince (coloque dos dedos en la pantalla &amp;&amp; sepárelos || júntelos) O arrastre el botón central del ratón O use PgUp/PgDown en el teclado.</translation>
     </message>
   </context>
   <context>
@@ -3734,19 +5121,19 @@ Desea guardar los cambios?</translation>
     <name>Gui::InventorNavigationStyle</name>
     <message>
       <source>Press CTRL and left mouse button</source>
-      <translation>Presione la tecla CTRL y el botón izquierdo del mouse</translation>
+      <translation>Presione la tecla CTRL y el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Cliquee el botón central del mouse</translation>
+      <translation>Pulsar el botón central del ratón</translation>
     </message>
     <message>
       <source>Press left mouse button</source>
-      <translation>Cliquee el botón izquierdo del mouse</translation>
+      <translation>Pulsa el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Despláce botón central del mouse</translation>
+      <translation>Desplazar el botón central del ratón</translation>
     </message>
   </context>
   <context>
@@ -3840,14 +5227,18 @@ Desea guardar los cambios?</translation>
       <translation>Cerrar todo</translation>
     </message>
     <message>
-      <source>Object dependencies</source>
-      <translation>Dependencias del objeto</translation>
+      <source>Unsaved document</source>
+      <translation>Documento sin guardar</translation>
     </message>
     <message>
-      <source>The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</source>
-      <translation>En los objetos seleccionados hay dependencia a objetos no seleccionados.
-¿Quieres duplicarlos también?</translation>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation>El objeto exportado contiene un vínculo externo. Por favor, guarde el documento al menos una vez antes de exportar.</translation>
+    </message>
+    <message>
+      <source>To link to external objects, the document must be saved at least once.
+Do you want to save the document now?</source>
+      <translation>Para vincular a objetos externos, el documento debe guardarse al menos una vez.
+¿Desea guardar el documento ahora?</translation>
     </message>
   </context>
   <context>
@@ -3866,15 +5257,15 @@ Do you want to copy them, too?</source>
     </message>
     <message>
       <source>Please, select at least one point in the left and the right view</source>
-      <translation>Por favor, seleccione al menos 1 punto en la vista izquierda y derecha</translation>
+      <translation>Por favor, selecciona al menos un punto en la vista izquierda y derecha</translation>
     </message>
     <message>
       <source>Please, select at least %1 points in the left and the right view</source>
-      <translation>Por favor, seleccione al menos %1 de puntos en la vista izquierda y derecha</translation>
+      <translation>Por favor, selecciona al menos %1 punto(s) en la vista izquierda y la derecha</translation>
     </message>
     <message>
       <source>Please pick points in the left and right view</source>
-      <translation>Por favor seleccione puntos en la vista izquierda y derecha</translation>
+      <translation>Selecciona puntos en la vista izquierda y derecha</translation>
     </message>
     <message>
       <source>The alignment has finished</source>
@@ -3917,11 +5308,11 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Abort</source>
-      <translation>Cancelar</translation>
+      <translation>Abortar</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-      <translation>Número diferente de puntos en la vista izquierda y derecha. En la vista izquierda %1 puntos se han seleccionado, en la vista derecha %2 puntos se han seleccionado.</translation>
+      <translation>Diferente número de puntos seleccionado en la vista izquierda y derecha. En la vista izquierda se seleccionan %1 puntos, en la vista derecha se seleccionan %2 puntos.</translation>
     </message>
     <message>
       <source>Point picked at (%1,%2,%3)</source>
@@ -3939,36 +5330,34 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Dé un toque. O haga clic en el botón izquierdo del ratón.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Toque o haga click en el botón izquierdo del ratón.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Arrastre la pantalla con dos dedos. O presione ALT + botón medio del ratón.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation>Arrastre la pantalla con dos dedos o presione ALT + botón medio del ratón.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastre la pantalla con un dedo. O presione ALT + botón izquierdo del mouse. En Sketcher y otros modos de edición, también mantenga presionado Alt.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Arrastre la pantalla con un dedo o presione ALT + botón izquierdo del mouse. En Sketcher y otros modos de edición, también mantenga presionado Alt.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Pellizcar (poner dos dedos en la pantalla y separarlos). O usar el scroll medio del mouse. O presionar ALT + botón derecho del mouse. O usar PgUp/PgDown del teclado.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Pellizque (ponga dos dedos en la pantalla y separelos/juntelos) o arrastre el botón central del ratón o presione ALT + botón derecho del ratón o use AvPág/RePág en teclado.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Descarga comenzada...
-</translation>
+      <source>Download started...</source>
+      <translation>La descarga comenzó...</translation>
     </message>
   </context>
   <context>
     <name>Gui::OpenCascadeNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Cliquee el botón izquierdo del mouse</translation>
+      <translation>Pulsa el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press CTRL and middle mouse button</source>
@@ -3980,7 +5369,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Press CTRL and left mouse button</source>
-      <translation>Presione la tecla CTRL y el botón izquierdo del mouse</translation>
+      <translation>Presione la tecla CTRL y el botón izquierdo del ratón</translation>
     </message>
   </context>
   <context>
@@ -4006,7 +5395,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>Abortando</translation>
+      <translation>Abortar</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
@@ -4021,7 +5410,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>Abortando</translation>
+      <translation>Abortar</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
@@ -4036,17 +5425,52 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
-    <name>Gui::PropertyEditor::LinkListLabel</name>
+    <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <source>Change the linked objects</source>
-      <translation>Cambiar el objeto vinculado</translation>
+      <source>Error</source>
+      <translation>Error</translation>
+    </message>
+    <message>
+      <source>Object not found</source>
+      <translation>Objeto no encontrado</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editar</translation>
+    </message>
+    <message>
+      <source>property</source>
+      <translation>propiedad</translation>
+    </message>
+    <message>
+      <source>Show all</source>
+      <translation>Mostrar todo</translation>
+    </message>
+    <message>
+      <source>Add property</source>
+      <translation>Añadir propiedad</translation>
+    </message>
+    <message>
+      <source>Remove property</source>
+      <translation>Eliminar propiedad</translation>
+    </message>
+    <message>
+      <source>Expression...</source>
+      <translation>Expresión...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Auto expandir</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
-      <translation>Propiedad</translation>
+      <translation>Propiedades</translation>
     </message>
     <message>
       <source>Value</source>
@@ -4074,7 +5498,7 @@ How do you want to proceed?</source>
       <source>The application is still running.
 Do you want to exit without saving your data?</source>
       <translation>La aplicación aún se está ejecutando.
-Desea salir sin guardar sus datos?</translation>
+¿Quieres salir sin guardar tus datos?</translation>
     </message>
     <message>
       <source>Python console</source>
@@ -4102,7 +5526,7 @@ Desea salir sin guardar sus datos?</translation>
     </message>
     <message>
       <source>Save history as...</source>
-      <translation>Guardar historioa como...</translation>
+      <translation>Guardar historia como...</translation>
     </message>
     <message>
       <source>Insert file name...</source>
@@ -4148,6 +5572,14 @@ Desea salir sin guardar sus datos?</translation>
       <source>All Files</source>
       <translation>Todos los Archivos</translation>
     </message>
+    <message>
+      <source>Save history</source>
+      <translation>Guardar historial</translation>
+    </message>
+    <message>
+      <source>Saves Python history across %1 sessions</source>
+      <translation>Guarda el historial de Python en %1 sesiones</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
@@ -4176,14 +5608,29 @@ Desea salir sin guardar sus datos?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Ejecutar macro %1 (Shift+click para editar): %2</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Archivo no encontrado</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>El archivo '%1' no se puede abrir.</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::RevitNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Cliquee el botón izquierdo del mouse</translation>
+      <translation>Pulsa el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Cliquee el botón central del mouse</translation>
+      <translation>Pulsar el botón central del ratón</translation>
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
@@ -4191,7 +5638,7 @@ Desea salir sin guardar sus datos?</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Despláce botón central del mouse</translation>
+      <translation>Desplazar el botón central del ratón</translation>
     </message>
   </context>
   <context>
@@ -4221,7 +5668,7 @@ Desea salir sin guardar sus datos?</translation>
     </message>
     <message>
       <source>Long description of commands</source>
-      <translation>Descripción larga de comandos</translation>
+      <translation>Descripción larga de los comandos</translation>
     </message>
   </context>
   <context>
@@ -4260,7 +5707,7 @@ Desea especificar un directorio existente?</translation>
 Do you want to specify another directory?</source>
       <translation>No tiene permisos de escritura para '%1'
 
-Desea especificar otro directorio?</translation>
+¿Quieres especificar otro directorio?</translation>
     </message>
     <message>
       <source>Stop downloading</source>
@@ -4303,19 +5750,58 @@ Desea especificar otro directorio?</translation>
       <translation>Incrementos</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Incremento de traslación: </translation>
+      <source>Translation Increment:</source>
+      <translation>Incremento de Traslación:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Incremento de rotación: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Incremento de rotación:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskElementColors</name>
+    <message>
+      <source>Set element color</source>
+      <translation>Establecer color del elemento</translation>
+    </message>
+    <message>
+      <source>TextLabel</source>
+      <translation>Etiqueta Texto</translation>
+    </message>
+    <message>
+      <source>Recompute after commit</source>
+      <translation>Recalcular después de la confirmación</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Quitar</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>Editar</translation>
+    </message>
+    <message>
+      <source>Remove all</source>
+      <translation>Eliminar todo</translation>
+    </message>
+    <message>
+      <source>Hide</source>
+      <translation>Ocultar</translation>
+    </message>
+    <message>
+      <source>Box select</source>
+      <translation>Cuadro de selección</translation>
+    </message>
+    <message>
+      <source>On-top when selected</source>
+      <translation>Encima cuando se selecciona</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Plot mode:</source>
-      <translation>Modo de impresión:</translation>
+      <translation>Modo impresión:</translation>
     </message>
     <message>
       <source>Point size:</source>
@@ -4335,7 +5821,7 @@ Desea especificar otro directorio?</translation>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Ventana de documento:</translation>
+      <translation>Ventana del documento:</translation>
     </message>
   </context>
   <context>
@@ -4393,12 +5879,16 @@ Desea especificar otro directorio?</translation>
       <source>If you don't save, your changes will be lost.</source>
       <translation>De no guardar, se perderán los cambios.</translation>
     </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Editar texto</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Cliquee el botón izquierdo del mouse</translation>
+      <translation>Pulsa el botón izquierdo del ratón</translation>
     </message>
     <message>
       <source>Press SHIFT button</source>
@@ -4414,10 +5904,176 @@ Desea especificar otro directorio?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Translator</name>
+    <message>
+      <source>English</source>
+      <translation>Inglés</translation>
+    </message>
+    <message>
+      <source>German</source>
+      <translation>Alemán</translation>
+    </message>
+    <message>
+      <source>Spanish</source>
+      <translation>Español</translation>
+    </message>
+    <message>
+      <source>French</source>
+      <translation>Francés</translation>
+    </message>
+    <message>
+      <source>Italian</source>
+      <translation>Italiano</translation>
+    </message>
+    <message>
+      <source>Japanese</source>
+      <translation>Japonés</translation>
+    </message>
+    <message>
+      <source>Chinese Simplified</source>
+      <translation>Chino simplificado</translation>
+    </message>
+    <message>
+      <source>Chinese Traditional</source>
+      <translation>Chino tradicional</translation>
+    </message>
+    <message>
+      <source>Korean</source>
+      <translation>Coreano</translation>
+    </message>
+    <message>
+      <source>Russian</source>
+      <translation>Ruso</translation>
+    </message>
+    <message>
+      <source>Swedish</source>
+      <translation>Sueco</translation>
+    </message>
+    <message>
+      <source>Afrikaans</source>
+      <translation>Africaans</translation>
+    </message>
+    <message>
+      <source>Norwegian</source>
+      <translation>Noruego</translation>
+    </message>
+    <message>
+      <source>Portuguese, Brazilian</source>
+      <translation>Portugués, Brasileño</translation>
+    </message>
+    <message>
+      <source>Portuguese</source>
+      <translation>Portugués</translation>
+    </message>
+    <message>
+      <source>Dutch</source>
+      <translation>Holandés</translation>
+    </message>
+    <message>
+      <source>Ukrainian</source>
+      <translation>Ucraniano</translation>
+    </message>
+    <message>
+      <source>Finnish</source>
+      <translation>Finlandés</translation>
+    </message>
+    <message>
+      <source>Croatian</source>
+      <translation>Croata</translation>
+    </message>
+    <message>
+      <source>Polish</source>
+      <translation>Polaco</translation>
+    </message>
+    <message>
+      <source>Czech</source>
+      <translation>Checo</translation>
+    </message>
+    <message>
+      <source>Hungarian</source>
+      <translation>Húngaro</translation>
+    </message>
+    <message>
+      <source>Romanian</source>
+      <translation>Rumano</translation>
+    </message>
+    <message>
+      <source>Slovak</source>
+      <translation>Eslovaco</translation>
+    </message>
+    <message>
+      <source>Turkish</source>
+      <translation>Turco</translation>
+    </message>
+    <message>
+      <source>Slovenian</source>
+      <translation>Esloveno</translation>
+    </message>
+    <message>
+      <source>Basque</source>
+      <translation>Euskera</translation>
+    </message>
+    <message>
+      <source>Catalan</source>
+      <translation>Catalán</translation>
+    </message>
+    <message>
+      <source>Galician</source>
+      <translation>Gallego</translation>
+    </message>
+    <message>
+      <source>Kabyle</source>
+      <translation>Cabilio</translation>
+    </message>
+    <message>
+      <source>Filipino</source>
+      <translation>Filipino</translation>
+    </message>
+    <message>
+      <source>Indonesian</source>
+      <translation>Indonesio</translation>
+    </message>
+    <message>
+      <source>Lithuanian</source>
+      <translation>Lituano</translation>
+    </message>
+    <message>
+      <source>Valencian</source>
+      <translation>Valenciano</translation>
+    </message>
+    <message>
+      <source>Arabic</source>
+      <translation>Árabe</translation>
+    </message>
+    <message>
+      <source>Vietnamese</source>
+      <translation>Vietnamita</translation>
+    </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation>Búlgaro</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Griego</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation>Español, Argentina</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
       <translation>Vista en árbol</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Buscar</translation>
     </message>
   </context>
   <context>
@@ -4456,7 +6112,7 @@ Desea especificar otro directorio?</translation>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Finalizar edición de objeto</translation>
+      <translation>Finalizar edición del objeto</translation>
     </message>
     <message>
       <source>Activate document</source>
@@ -4486,12 +6142,91 @@ Desea especificar otro directorio?</translation>
       <source>%1, Internal name: %2</source>
       <translation>%1, Nombre interno: %2</translation>
     </message>
+    <message>
+      <source>Search...</source>
+      <translation>Buscar...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Búsqueda de objetos</translation>
+    </message>
+    <message>
+      <source>Description</source>
+      <translation>Descripción</translation>
+    </message>
+    <message>
+      <source>Show hidden items</source>
+      <translation>Mostrar elementos ocultos</translation>
+    </message>
+    <message>
+      <source>Show hidden tree view items</source>
+      <translation>Mostrar elementos ocultos del árbol</translation>
+    </message>
+    <message>
+      <source>Hide item</source>
+      <translation>Ocultar elemento</translation>
+    </message>
+    <message>
+      <source>Hide the item in tree</source>
+      <translation>Ocultar el elemento en el árbol</translation>
+    </message>
+    <message>
+      <source>Close document</source>
+      <translation>Cerrar documento</translation>
+    </message>
+    <message>
+      <source>Close the document</source>
+      <translation>Cerrar el documento</translation>
+    </message>
+    <message>
+      <source>Reload document</source>
+      <translation>Recargar documento</translation>
+    </message>
+    <message>
+      <source>Reload a partially loaded document</source>
+      <translation>Recargar un documento parcialmente cargado</translation>
+    </message>
+    <message>
+      <source>Allow partial recomputes</source>
+      <translation>Permitir recalculado parcial</translation>
+    </message>
+    <message>
+      <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
+      <translation>Activar o desactivar el recalculado del objeto de edición cuando 'saltar recalculado' está activado</translation>
+    </message>
+    <message>
+      <source>Recompute object</source>
+      <translation>Recalcular objeto</translation>
+    </message>
+    <message>
+      <source>Recompute the selected object</source>
+      <translation>Recalcular el objeto seleccionado</translation>
+    </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation> (pero debe ser ejecutado)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation>Vectores</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation>Tabla</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
     <message>
       <source>Export PDF</source>
-      <translation>Exportar PDF</translation>
+      <translation>Exportar en PDF</translation>
     </message>
     <message>
       <source>PDF file</source>
@@ -4653,7 +6388,7 @@ Desea especificar otro directorio?</translation>
     </message>
     <message>
       <source>Property view</source>
-      <translation>Vista de Propiedades</translation>
+      <translation>Vista de las propiedades</translation>
     </message>
     <message>
       <source>Selection view</source>
@@ -4692,7 +6427,7 @@ Desea especificar otro directorio?</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation>Visualización</translation>
+      <translation>Mostrar</translation>
     </message>
     <message>
       <source>Unknown filetype</source>
@@ -4826,7 +6561,7 @@ Desea continuar?</translation>
     </message>
     <message>
       <source>New Boolean item</source>
-      <translation>nuevo elemento booleano</translation>
+      <translation>Nuevo elemento booleano</translation>
     </message>
     <message>
       <source>Choose an item:</source>
@@ -5041,18 +6776,6 @@ Be aware the point where you click matters.</source>
       <translation>Origen de coordenadas</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Traducción: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Rotación: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>¿Borrar el contenido de grupo?</translation>
     </message>
@@ -5064,6 +6787,273 @@ Be aware the point where you click matters.</source>
       <source>Export failed</source>
       <translation>Exportación fallida</translation>
     </message>
+    <message>
+      <source>Split</source>
+      <translation>Dividir</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Traslación:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotación:</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Activar/desactivar parte activa</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Editar texto</translation>
+    </message>
+    <message>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation>El objeto exportado contiene un vínculo externo. Por favor, guarde el documento al menos una vez antes de exportar.</translation>
+    </message>
+    <message>
+      <source>Delete failed</source>
+      <translation>Error al eliminar</translation>
+    </message>
+    <message>
+      <source>Dependency error</source>
+      <translation>Error de dependencia</translation>
+    </message>
+    <message>
+      <source>Copy selected</source>
+      <translation>Copiar seleccionado</translation>
+    </message>
+    <message>
+      <source>Copy active document</source>
+      <translation>Copiar documento activo</translation>
+    </message>
+    <message>
+      <source>Copy all documents</source>
+      <translation>Copiar todos los documentos</translation>
+    </message>
+    <message>
+      <source>Paste</source>
+      <translation>Pegar</translation>
+    </message>
+    <message>
+      <source>Expression error</source>
+      <translation>Error de Expresión</translation>
+    </message>
+    <message>
+      <source>Failed to parse some of the expressions.
+Please check the Report View for more details.</source>
+      <translation>Error al analizar alguna(s) de las expresiones.
+Por favor, compruebe la Vista de Informe para más detalles.</translation>
+    </message>
+    <message>
+      <source>Failed to paste expressions</source>
+      <translation>Error al pegar expresiones</translation>
+    </message>
+    <message>
+      <source>Simple group</source>
+      <translation>Grupo simple</translation>
+    </message>
+    <message>
+      <source>Group with links</source>
+      <translation>Grupo con vínculos</translation>
+    </message>
+    <message>
+      <source>Group with transform links</source>
+      <translation>Grupo con vínculos de transformación</translation>
+    </message>
+    <message>
+      <source>Create link group failed</source>
+      <translation>Error al crear vínculo de grupo</translation>
+    </message>
+    <message>
+      <source>Create link failed</source>
+      <translation>La creación del vínculo falló</translation>
+    </message>
+    <message>
+      <source>Failed to create relative link</source>
+      <translation>Error al crear vínculo relativo</translation>
+    </message>
+    <message>
+      <source>Unlink failed</source>
+      <translation>Error al desvincular</translation>
+    </message>
+    <message>
+      <source>Replace link failed</source>
+      <translation>Error al reemplazar vínculo</translation>
+    </message>
+    <message>
+      <source>Failed to import links</source>
+      <translation>Error al importar vínculo</translation>
+    </message>
+    <message>
+      <source>Failed to import all links</source>
+      <translation>Error al importar todos los vínculos</translation>
+    </message>
+    <message>
+      <source>Invalid name</source>
+      <translation>Nombre inválido</translation>
+    </message>
+    <message>
+      <source>The property name or group name must only contain alpha numericals,
+underscore, and must not start with a digit.</source>
+      <translation>El nombre de la propiedad o el nombre del grupo solo debe contener caracteres alfanuméricos, guión bajo, y no debe comenzar con un dígito.</translation>
+    </message>
+    <message>
+      <source>The property '%1' already exists in '%2'</source>
+      <translation>La propiedad '%1' ya existe en '%2'</translation>
+    </message>
+    <message>
+      <source>Add property</source>
+      <translation>Añadir propiedad</translation>
+    </message>
+    <message>
+      <source>Failed to add property to '%1': %2</source>
+      <translation>Error al añadir la propiedad a '%1': %2</translation>
+    </message>
+    <message>
+      <source>Save dependent files</source>
+      <translation>Guardar archivos dependientes</translation>
+    </message>
+    <message>
+      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
+      <translation>El archivo contiene dependencias externas. ¿Desea guardar los archivos dependientes también?</translation>
+    </message>
+    <message>
+      <source>Failed to save document</source>
+      <translation>Error al guardar el documento</translation>
+    </message>
+    <message>
+      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
+      <translation>Los documentos contienen dependencias cíclicas. ¿Desea guardarlos?</translation>
+    </message>
+    <message>
+      <source>Undo</source>
+      <translation>Deshacer</translation>
+    </message>
+    <message>
+      <source>Redo</source>
+      <translation>Rehacer</translation>
+    </message>
+    <message>
+      <source>There are grouped transactions in the following documents with other preceding transactions</source>
+      <translation>Hay transacciones de grupo en los siguientes documentos con otras transacciones anteriores</translation>
+    </message>
+    <message>
+      <source>Choose 'Yes' to roll back all preceding transactions.
+Choose 'No' to roll back in the active document only.
+Choose 'Abort' to abort</source>
+      <translation>Elija 'Sí' para deshacer todas las transacciones anteriores.
+Elija 'No' para deshacer solo en el documento activo.
+Seleccione 'Abortar' para abortar</translation>
+    </message>
+    <message>
+      <source>Do you want to save your changes to document before closing?</source>
+      <translation>¿Desea guardar los cambios en el documento antes de cerrar?</translation>
+    </message>
+    <message>
+      <source>Apply answer to all</source>
+      <translation>Aplicar respuesta a todos</translation>
+    </message>
+    <message>
+      <source>Drag &amp; drop failed</source>
+      <translation>Error al arrastrar y soltar</translation>
+    </message>
+    <message>
+      <source>Override colors...</source>
+      <translation>Anular colores...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Ruta física idéntica detectada. ¡Puede causar sobreescritura no deseada del documento existente!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>¿Está seguro de que desea continuar?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Por favor, compruebe la vista del informe para más...</translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Documento: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Ruta: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Ruta física idéntica</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Error</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Hubo errores al cargar el archivo. Algunos datos pueden haber sido modificados o no recuperados en absoluto. Busque en la vista de informe para obtener información más específica sobre los objetos involucrados.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Hubo errores graves al cargar el archivo. Algunos datos pueden haber sido modificados o no recuperados. Guardar el proyecto muy probablemente resultará en la pérdida de datos.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Escenarios</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Trayectoria física: </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation>No se pudo guardar el documento</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation>Hubo un problema al intentar guardar el archivo. Esto puede deberse a que algunas de las carpetas matriz no existen, o no posee permisos suficientes, o por otras razones. Detalles del error:
+
+"%1"
+
+¿Desea guardar el archivo con un nombre diferente?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation>Documento no guardado</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation>El documento%1 no se pudo guardar. ¿Desea cancelar cerrando?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation>%1 Documento(s) no guardados</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation>Algunos documentos no se han podido guardar. ¿Desea cancelar el cierre?</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -5074,6 +7064,17 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Selection not allowed by filter</source>
       <translation>Selección no permitida por filtro</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdBoxElementSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Box element selection</source>
+      <translation>Selección de elemento de cuadro</translation>
     </message>
   </context>
   <context>
@@ -5125,7 +7126,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Ne&amp;xt</source>
-      <translation>&amp;Siguiente</translation>
+      <translation>Si&amp;guiente</translation>
     </message>
     <message>
       <source>Activate next window</source>
@@ -5140,7 +7141,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Pre&amp;vious</source>
-      <translation>Pre&amp;via</translation>
+      <translation>Pre&amp;vio</translation>
     </message>
     <message>
       <source>Activate previous window</source>
@@ -5159,7 +7160,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Align the selected objects</source>
-      <translation>Alinie los objetos seleccionados</translation>
+      <translation>Alinea los objetos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -5211,11 +7212,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Cl&amp;ose</source>
-      <translation>&amp;Cerrar</translation>
+      <translation>Ce&amp;rrar</translation>
     </message>
     <message>
       <source>Close active window</source>
-      <translation>Cerrar la ventana activa</translation>
+      <translation>Cierra la ventana activa</translation>
     </message>
   </context>
   <context>
@@ -5226,11 +7227,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Close Al&amp;l</source>
-      <translation>Cerrar &amp;Todo</translation>
+      <translation>Cerrar To&amp;do</translation>
     </message>
     <message>
       <source>Close all windows</source>
-      <translation>Cerrar todas las ventanas</translation>
+      <translation>Cierra todas las ventanas</translation>
     </message>
   </context>
   <context>
@@ -5241,7 +7242,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Start command &amp;line...</source>
-      <translation>&amp;Iniciar línea de comandos...</translation>
+      <translation>Iniciar &amp;línea de comandos...</translation>
     </message>
     <message>
       <source>Opens the command line in the console</source>
@@ -5309,6 +7310,21 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Herramientas</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Gráfico de dependencias...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Muestra el gráfico de dependencia de los objetos en el documento activo</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -5316,7 +7332,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Cu&amp;stomize...</source>
-      <translation>&amp;Personalizar...</translation>
+      <translation>Pe&amp;rsonalizar...</translation>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
@@ -5380,7 +7396,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
-      <translation>Abre un cuadro de diálogo para editar los parametros</translation>
+      <translation>Abre un cuadro de diálogo para editar los parámetros</translation>
     </message>
   </context>
   <context>
@@ -5423,6 +7439,10 @@ Be aware the point where you click matters.</source>
       <source>Draw style</source>
       <translation>Estilo de dibujo</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation>Cambia el estilo de dibujo de los objetos</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -5436,7 +7456,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Ponga los duplicados de los objetos seleccionados en el documento activo</translation>
+      <translation>Pone los duplicados de los objetos seleccionados en el documento activo</translation>
     </message>
   </context>
   <context>
@@ -5454,8 +7474,8 @@ Be aware the point where you click matters.</source>
       <translation>Activa o desactiva el modo de edición del objeto seleccionado</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Entra o sale del modo de edición del objeto seleccionado</translation>
+      <source>Activates or Deactivates the selected object's edit mode</source>
+      <translation>Activa o desactiva el modo de edición del objeto seleccionado</translation>
     </message>
   </context>
   <context>
@@ -5470,30 +7490,26 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Exportar un objeto en el documento activo</translation>
+      <translation>Exporta un objeto en el documento activo</translation>
     </message>
     <message>
       <source>No selection</source>
       <translation>Ninguna selección</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Por favor, seleccione el primero de los objetos que desea exportar.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Seleccione los objetos a exportar antes de elegir Exportar.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdExportGraphviz</name>
+    <name>StdCmdExpression</name>
     <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
+      <source>Edit</source>
+      <translation>Editar</translation>
     </message>
     <message>
-      <source>Dependency graph...</source>
-      <translation>Gráfico de dependencias...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Mostrar el gráfico de dependencia de los objetos en el documento activo</translation>
+      <source>Expression actions</source>
+      <translation>Acciones de expresión</translation>
     </message>
   </context>
   <context>
@@ -5509,6 +7525,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Recompute feature or document</source>
       <translation>Recalcular caracteristicas o documento</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Ayuda</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Donar</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Donar para apoyar el desarrollo</translation>
     </message>
   </context>
   <context>
@@ -5640,7 +7671,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Hide all objects in the document</source>
-      <translation>Ocultar todos los objetos en el documento</translation>
+      <translation>Oculta todos los objetos en el documento</translation>
     </message>
   </context>
   <context>
@@ -5655,7 +7686,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Hide all selected objects</source>
-      <translation>Ocultar todos los objetos seleccionados</translation>
+      <translation>Oculta todos los objetos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -5670,7 +7701,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Import a file in the active document</source>
-      <translation>Importar un archivo en el documento activo</translation>
+      <translation>Importa un archivo en el documento activo</translation>
     </message>
     <message>
       <source>Supported formats</source>
@@ -5679,6 +7710,197 @@ Be aware the point where you click matters.</source>
     <message>
       <source>All files (*.*)</source>
       <translation>Todos los archivos (*.*)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkActions</name>
+    <message>
+      <source>View</source>
+      <translation>Vista</translation>
+    </message>
+    <message>
+      <source>Link actions</source>
+      <translation>Acciones de vínculos</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkImport</name>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importar vínculo</translation>
+    </message>
+    <message>
+      <source>Import selected external link(s)</source>
+      <translation>Importar vínculo(s) externo(s) seleccionado(s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkImportAll</name>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importar todos los vínculos</translation>
+    </message>
+    <message>
+      <source>Import all links of the active document</source>
+      <translation>Importar todos los vínculos del documento activo</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMake</name>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Crear vínculo</translation>
+    </message>
+    <message>
+      <source>Create a link to the selected object(s)</source>
+      <translation>Crear un vínculo al(los) objeto(s) seleccionado(s)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMakeGroup</name>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Hacer vínculo de grupo</translation>
+    </message>
+    <message>
+      <source>Create a group of links</source>
+      <translation>Crear un grupo de vínculos</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMakeRelative</name>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Crear sub-vínculo</translation>
+    </message>
+    <message>
+      <source>Create a sub-object or sub-element link</source>
+      <translation>Crear un vínculo de sub-objeto o sub-elemento</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkReplace</name>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Replace with link</source>
+      <translation>Reemplazar con vínculo</translation>
+    </message>
+    <message>
+      <source>Replace the selected object(s) with link</source>
+      <translation>Reemplazar el(los) objeto(s) seleccionados con vínculo</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectActions</name>
+    <message>
+      <source>View</source>
+      <translation>Vista</translation>
+    </message>
+    <message>
+      <source>Link navigation</source>
+      <translation>Navegación de vínculos</translation>
+    </message>
+    <message>
+      <source>Link navigation actions</source>
+      <translation>Acciones de navegación de vínculos</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectAllLinks</name>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Select all links</source>
+      <translation>Seleccionar todos los vínculos</translation>
+    </message>
+    <message>
+      <source>Select all links to the current selected object</source>
+      <translation>Seleccionar todos los vínculos al objeto seleccionado actual</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectLinked</name>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Go to linked object</source>
+      <translation>Ir al objeto vinculado</translation>
+    </message>
+    <message>
+      <source>Select the linked object and switch to its owner document</source>
+      <translation>Seleccione el objeto vinculado y cambie al documento propietario</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectLinkedFinal</name>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Go to the deepest linked object</source>
+      <translation>Ir al objeto vinculado más profundo</translation>
+    </message>
+    <message>
+      <source>Select the deepest linked object and switch to its owner document</source>
+      <translation>Selecciona el objeto vinculado más profundo y cambia al documento propietario</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkUnlink</name>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Unlink</source>
+      <translation>Desvincular</translation>
+    </message>
+    <message>
+      <source>Strip on level of link</source>
+      <translation>Listón en el nivel de vínculo</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMacroAttachDebugger</name>
+    <message>
+      <source>Macro</source>
+      <translation>Macro</translation>
+    </message>
+    <message>
+      <source>Attach to remote debugger...</source>
+      <translation>Adjuntar al depurador remoto...</translation>
+    </message>
+    <message>
+      <source>Attach to a remotely running debugger</source>
+      <translation>Adjuntar a un depurador de ejecución remota</translation>
     </message>
   </context>
   <context>
@@ -5704,7 +7926,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Step into</source>
-      <translation>Entrar</translation>
+      <translation>Entrar en</translation>
     </message>
   </context>
   <context>
@@ -5786,15 +8008,15 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Merge project</source>
-      <translation>Fusionar proyecto</translation>
-    </message>
-    <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>Documento %1(*.fcstd)</translation>
+      <translation>Fusiona el proyecto</translation>
     </message>
     <message>
       <source>Cannot merge project with itself.</source>
       <translation>No se puede fusionar el proyecto consigo mismo.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 documento (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -5809,7 +8031,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create a new empty document</source>
-      <translation>Crear un documento vacío nuevo</translation>
+      <translation>Crea un documento vacío nuevo</translation>
     </message>
     <message>
       <source>Unnamed</source>
@@ -5854,7 +8076,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Open a document or import files</source>
-      <translation>Abrir un documento o importar archivos</translation>
+      <translation>Abre un documento o importa archivos</translation>
     </message>
     <message>
       <source>Supported formats</source>
@@ -5885,7 +8107,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation>Crear una nueva pieza y activarla</translation>
+      <translation>Crea una nueva pieza y hacerla activa</translation>
     </message>
   </context>
   <context>
@@ -5930,7 +8152,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Imprimir el documento</translation>
+      <translation>Imprime el documento</translation>
     </message>
   </context>
   <context>
@@ -5941,11 +8163,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Export PDF...</source>
-      <translation>&amp;Exportar PDF...</translation>
+      <translation>&amp;Exportar en PDF...</translation>
     </message>
     <message>
       <source>Export the document as PDF</source>
-      <translation>Exportar el documento como PDF</translation>
+      <translation>Exporta el documento como PDF</translation>
     </message>
   </context>
   <context>
@@ -5960,7 +8182,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Imprimir el documento</translation>
+      <translation>Imprime el documento</translation>
     </message>
     <message>
       <source>Print preview</source>
@@ -5979,7 +8201,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Mostrar detalles del proyecto activo actual</translation>
+      <translation>Muestra detalles del proyecto activo actual</translation>
     </message>
   </context>
   <context>
@@ -6020,11 +8242,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>E&amp;xit</source>
-      <translation>&amp;Salir</translation>
+      <translation>S&amp;alir</translation>
     </message>
     <message>
       <source>Quits the application</source>
-      <translation>Salir de la aplicación</translation>
+      <translation>Sale de la aplicación</translation>
     </message>
   </context>
   <context>
@@ -6051,6 +8273,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Recent file list</source>
       <translation>Lista de archivos recientes</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Macro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Macros recientes</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Lista de macros recientes</translation>
     </message>
   </context>
   <context>
@@ -6114,6 +8351,21 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdSaveAll</name>
+    <message>
+      <source>File</source>
+      <translation>Archivo</translation>
+    </message>
+    <message>
+      <source>Save All</source>
+      <translation>Guardar todo</translation>
+    </message>
+    <message>
+      <source>Save all opened document</source>
+      <translation>Guarda todos los documentos abiertos</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdSaveAs</name>
     <message>
       <source>File</source>
@@ -6121,7 +8373,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Save &amp;As...</source>
-      <translation>Guardar &amp;como...</translation>
+      <translation>Guardar &amp;Como...</translation>
     </message>
     <message>
       <source>Save the active document under a new file name</source>
@@ -6136,11 +8388,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Save a &amp;Copy...</source>
-      <translation>Guardar una copia...</translation>
+      <translation>Guardar una &amp;Copia...</translation>
     </message>
     <message>
       <source>Save a copy of the active document under a new file name</source>
-      <translation>Guardar una copia del documento activo con un nuevo nombre de archivo</translation>
+      <translation>Guarda una copia del documento activo con un nuevo nombre de archivo</translation>
     </message>
   </context>
   <context>
@@ -6159,6 +8411,51 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdSelBack</name>
+    <message>
+      <source>View</source>
+      <translation>Vista</translation>
+    </message>
+    <message>
+      <source>&amp;Back</source>
+      <translation>&amp;Atrás</translation>
+    </message>
+    <message>
+      <source>Go back to previous selection</source>
+      <translation>Volver a la selección anterior</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelBoundingBox</name>
+    <message>
+      <source>View</source>
+      <translation>Vista</translation>
+    </message>
+    <message>
+      <source>&amp;Bounding box</source>
+      <translation>&amp;Cuadro delimitador</translation>
+    </message>
+    <message>
+      <source>Show selection bounding box</source>
+      <translation>Muestra el cuadro delimitador de selección</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelForward</name>
+    <message>
+      <source>View</source>
+      <translation>Vista</translation>
+    </message>
+    <message>
+      <source>&amp;Forward</source>
+      <translation>&amp;Adelante</translation>
+    </message>
+    <message>
+      <source>Repeat the backed selection</source>
+      <translation>Repetir la selección respaldada</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdSelectAll</name>
     <message>
       <source>Edit</source>
@@ -6166,11 +8463,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Select &amp;All</source>
-      <translation>Seleccionar &amp;todo</translation>
+      <translation>Seleccionar &amp;Todo</translation>
     </message>
     <message>
       <source>Select all</source>
-      <translation>Seleccionar todo</translation>
+      <translation>Selecciona todo</translation>
     </message>
   </context>
   <context>
@@ -6185,7 +8482,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Select visible objects in the active document</source>
-      <translation>Seleccione objetos visibles en el documento activo</translation>
+      <translation>Selecciona objetos visibles en el documento activo</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSendToPythonConsole</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editar</translation>
+    </message>
+    <message>
+      <source>&amp;Send to Python Console</source>
+      <translation>&amp;Enviar a consola de Python</translation>
+    </message>
+    <message>
+      <source>Sends the selected object to the Python console</source>
+      <translation>Envía el objeto seleccionado a la consola de Python</translation>
     </message>
   </context>
   <context>
@@ -6200,7 +8512,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Sets the display properties of the selected object</source>
-      <translation>Establece las propiedades de visualización de los objetos seleccionados</translation>
+      <translation>Establece las propiedades de visualización del objeto seleccionado.</translation>
     </message>
   </context>
   <context>
@@ -6215,7 +8527,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Show all objects in the document</source>
-      <translation>Mostrar todos los objetos en el documento</translation>
+      <translation>Muestra todos los objetos en el documento</translation>
     </message>
   </context>
   <context>
@@ -6230,7 +8542,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Show all selected objects</source>
-      <translation>Mostrar todos los objetos seleccionados</translation>
+      <translation>Muestra todos los objetos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -6245,7 +8557,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles the status bar</source>
-      <translation>Conmutar la barra de estado</translation>
+      <translation>Activa/desactiva la barra de estado</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTextDocument</name>
+    <message>
+      <source>Tools</source>
+      <translation>Herramientas</translation>
+    </message>
+    <message>
+      <source>Add text document</source>
+      <translation>Añadir documento de texto</translation>
+    </message>
+    <message>
+      <source>Add text document to active document</source>
+      <translation>Añadir documento de texto al documento activo</translation>
     </message>
   </context>
   <context>
@@ -6260,7 +8587,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Mapeo de textura</translation>
+      <translation>Mapeado de textura</translation>
     </message>
   </context>
   <context>
@@ -6301,7 +8628,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Conmuta el plano de recorte para la vista activa</translation>
+      <translation>Conmuta el plano de corte para la vista activa</translation>
     </message>
   </context>
   <context>
@@ -6316,7 +8643,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>
-      <translation>Alternar entre el modo de navegación y edición</translation>
+      <translation>Alterna entre el modo de navegación y edición</translation>
     </message>
   </context>
   <context>
@@ -6346,7 +8673,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Conmutar la propiedad de los objetos de ser seleccionados en la Vista 3D</translation>
+      <translation>Alterna la propiedad de los objetos para ser seleccionados en la Vista 3D</translation>
     </message>
   </context>
   <context>
@@ -6376,7 +8703,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Conmutar esta ventana</translation>
+      <translation>Alternar esta ventana</translation>
     </message>
   </context>
   <context>
@@ -6406,22 +8733,67 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
-      <translation>Transformar el objeto seleccionado en la vista 3D</translation>
+      <translation>Transforma el objeto seleccionado en la vista 3d</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdTreeSelection</name>
+    <name>StdCmdTreeCollapse</name>
     <message>
       <source>View</source>
       <translation>Vista</translation>
     </message>
     <message>
-      <source>Go to selection</source>
-      <translation>Ir a la selección</translation>
+      <source>Collapse selected item</source>
+      <translation>Colapsar elemento seleccionado</translation>
     </message>
     <message>
-      <source>Scroll to first selected item</source>
-      <translation>Desplazarse al primer elemento seleccionado</translation>
+      <source>Collapse currently selected tree items</source>
+      <translation>Colapsar elementos del árbol seleccionados</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeExpand</name>
+    <message>
+      <source>View</source>
+      <translation>Vista</translation>
+    </message>
+    <message>
+      <source>Expand selected item</source>
+      <translation>Expandir elemento seleccionado</translation>
+    </message>
+    <message>
+      <source>Expand currently selected tree items</source>
+      <translation>Expandir los elementos del árbol seleccionados</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeSelectAllInstances</name>
+    <message>
+      <source>View</source>
+      <translation>Vista</translation>
+    </message>
+    <message>
+      <source>Select all instances</source>
+      <translation>Seleccionar todas las instancias</translation>
+    </message>
+    <message>
+      <source>Select all instances of the current selected object</source>
+      <translation>Seleccionar todas las instancias del objeto seleccionado actual</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeViewActions</name>
+    <message>
+      <source>View</source>
+      <translation>Vista</translation>
+    </message>
+    <message>
+      <source>TreeView actions</source>
+      <translation>Acciones del vista de árbol</translation>
+    </message>
+    <message>
+      <source>TreeView behavior options and actions</source>
+      <translation>Opciones y acciones de comportamiento de la vista de árbol</translation>
     </message>
   </context>
   <context>
@@ -6436,7 +8808,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Undo exactly one action</source>
-      <translation>Deshacer exactamente una acción</translation>
+      <translation>Deshace exactamente una acción</translation>
     </message>
   </context>
   <context>
@@ -6455,6 +8827,17 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation>Modo edición</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation>Determina el comportamiento cuando se edita un objeto del árbol</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
@@ -6467,21 +8850,6 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Dock all top-level views</source>
       <translation>Acoplar todas las vistas de nivel superior</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonométrica</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Establecer vista axonométrica</translation>
     </message>
   </context>
   <context>
@@ -6512,6 +8880,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>Crea una nueva ventana de vista para el documento activo</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimétrica</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Establece vista dimétrica</translation>
     </message>
   </context>
   <context>
@@ -6571,7 +8954,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
-      <translation>Ajustar el contenido completo a la pantalla</translation>
+      <translation>Ajusta el contenido completo a la pantalla</translation>
     </message>
   </context>
   <context>
@@ -6586,7 +8969,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
-      <translation>Ajustar el contenido seleccionado a la pantalla</translation>
+      <translation>Ajusta el contenido seleccionado a la pantalla</translation>
     </message>
   </context>
   <context>
@@ -6601,7 +8984,37 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Establecer vista alzado</translation>
+      <translation>Establece vista de alzado</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation>Inicio</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation>Establece por defecto la vista de inicio</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isométrica</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Establece vista isométrica</translation>
     </message>
   </context>
   <context>
@@ -6616,7 +9029,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Publicar la posición de la cámara a la consola y a una macro, para rellamar fácilmente a esta posición</translation>
+      <translation>Publica la posición de la cámara a la consola y a una macro, para reutilizar fácilmente esta posición</translation>
     </message>
   </context>
   <context>
@@ -6631,7 +9044,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Cambiar la visualización estéreo a columnas intercaladas</translation>
+      <translation>Cambia la visualización estéreo a columnas intercaladas</translation>
     </message>
   </context>
   <context>
@@ -6646,7 +9059,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Rows</source>
-      <translation>Cambiar la visualización estéreo a filas intercaladas</translation>
+      <translation>Cambia la visualización estéreo a filas intercaladas</translation>
     </message>
   </context>
   <context>
@@ -6661,7 +9074,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switch stereo viewing off</source>
-      <translation>Cambiar la visualización estereo a apagado</translation>
+      <translation>Apaga la visualización estereo</translation>
     </message>
   </context>
   <context>
@@ -6676,7 +9089,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Cambiar la visualización estereo a cuádruple buffer</translation>
+      <translation>Cambia la visualización estereo a cuádruple buffer</translation>
     </message>
   </context>
   <context>
@@ -6691,7 +9104,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switch stereo viewing to red/cyan</source>
-      <translation>Cambiar a visualización estereo rojo/cian</translation>
+      <translation>Cambia a visualización estereo rojo/cian</translation>
     </message>
   </context>
   <context>
@@ -6706,7 +9119,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to left view</source>
-      <translation>Establecer vista izquierda</translation>
+      <translation>Establece vista izquierda</translation>
     </message>
   </context>
   <context>
@@ -6721,7 +9134,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to rear view</source>
-      <translation>Establecer vista posterior</translation>
+      <translation>Establece vista posterior</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Restaurar cámara guardada</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Restaurar configuraciones de la cámara guardada</translation>
     </message>
   </context>
   <context>
@@ -6736,7 +9164,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to right view</source>
-      <translation>Establecer vista derecha</translation>
+      <translation>Establece vista derecha</translation>
     </message>
   </context>
   <context>
@@ -6750,8 +9178,8 @@ Be aware the point where you click matters.</source>
       <translation>Rotar a la izquierda</translation>
     </message>
     <message>
-      <source>Rotate the view by 90Â° counter-clockwise</source>
-      <translation>Girar la vista hacia la izquierda 90 °</translation>
+      <source>Rotate the view by 90° counter-clockwise</source>
+      <translation>Gira la vista a 90° en sentido antihorario</translation>
     </message>
   </context>
   <context>
@@ -6765,8 +9193,23 @@ Be aware the point where you click matters.</source>
       <translation>Rotar a la derecha</translation>
     </message>
     <message>
-      <source>Rotate the view by 90Â° clockwise</source>
-      <translation>﻿Rotar la vista en 90 ° en sentido horario</translation>
+      <source>Rotate the view by 90° clockwise</source>
+      <translation>Gira la vista a 90° en sentido horario</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Guardar cámara actual</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Guardar las configuraciones de la cámara actual</translation>
     </message>
   </context>
   <context>
@@ -6781,7 +9224,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>Establecer vista en planta</translation>
+      <translation>Establece vista en planta</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimétrica</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Establece vista trimétrica</translation>
     </message>
   </context>
   <context>
@@ -6867,7 +9325,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation>Mostrar la ventana principal en modo de pantalla completa</translation>
+      <translation>Muestra la ventana principal en modo de pantalla completa</translation>
     </message>
   </context>
   <context>
@@ -6882,7 +9340,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
-      <translation>Cambiar a modo de vista ortográfica</translation>
+      <translation>Cambia al modo de vista ortográfico</translation>
     </message>
   </context>
   <context>
@@ -6897,7 +9355,157 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
-      <translation>Cambiar a modo de vista perspectiva</translation>
+      <translation>Cambia a modo de vista perspectiva</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Contraer/expandir</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Expande el documento activo y colapsa todos los demás</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeDrag</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+    <message>
+      <source>Initiate dragging</source>
+      <translation>Iniciar arrastre</translation>
+    </message>
+    <message>
+      <source>Initiate dragging of current selected tree items</source>
+      <translation>Inicia el arrastre de los elementos del árbol seleccionados</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Muestra todos los documentos en la vista de árbol</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+    <message>
+      <source>Multi document</source>
+      <translation>Documento múltiple</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreePreSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+    <message>
+      <source>Pre-selection</source>
+      <translation>Pre-selección</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Preselecciona el objeto en la vista 3D cuando el puntero de ratón esté sobre el objeto del árbol</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeRecordSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+    <message>
+      <source>Record selection</source>
+      <translation>Grabar selección</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Graba la selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+    <message>
+      <source>Go to selection</source>
+      <translation>Ir a la selección</translation>
+    </message>
+    <message>
+      <source>Scroll to first selected item</source>
+      <translation>Desplazarse al primer elemento seleccionado</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Muestra sólo el documento activo en la vista de árbol</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+    <message>
+      <source>Single document</source>
+      <translation>Documento simple</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncPlacement</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+    <message>
+      <source>Sync placement</source>
+      <translation>Colocación de sincronización</translation>
+    </message>
+    <message>
+      <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
+      <translation>Ajusta automáticamente la posición al arrastrar y soltar objetos a través de los sistemas de coordenadas</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+    <message>
+      <source>Sync selection</source>
+      <translation>Sincronizar selección</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Auto expande el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncView</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+    <message>
+      <source>Sync view</source>
+      <translation>Sincronizar vista</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Cambia automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
     </message>
   </context>
   <context>
@@ -6979,7 +9587,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Undocked</source>
-      <translation>Sin acoplar</translation>
+      <translation>Desacoplado</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -7011,20 +9619,29 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
+      <source>The following referencing objects might break.
+
+Are you sure you want to continue?
+</source>
+      <translation>Los siguientes objetos de referencia pueden romperse.
+
+¿Está seguro de que desea continuar?
+</translation>
+    </message>
+    <message>
       <source>Object dependencies</source>
       <translation>Dependencias del objeto</translation>
     </message>
     <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
-
-</source>
-      <translation>Lo siguiente, hace referencia a objetos que pueden romperse. 
-
-¿Está seguro que desea continuar?
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Estos elementos están seleccionados para su borrado, pero no están en el documento activo.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Gráfico de dependencias</translation>
     </message>
   </context>
   <context>
@@ -7093,17 +9710,10 @@ Are you sure you want to continue?
       <translation>Dependencias del objeto</translation>
     </message>
     <message>
-      <source>The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</source>
-      <translation>En los objetos seleccionados hay dependencia a objetos no seleccionados.
-¿Quieres duplicarlos también?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Gráfico de dependencias</translation>
+      <source>To link to external objects, the document must be saved at least once.
+Do you want to save the document now?</source>
+      <translation>Para vincular a objetos externos, el documento debe guardarse al menos una vez.
+¿Desea guardar el documento ahora?</translation>
     </message>
   </context>
   <context>
@@ -7111,6 +9721,19 @@ Do you want to duplicate them, too?</source>
     <message>
       <source>Group</source>
       <translation>Grupo</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_Refresh</name>
+    <message>
+      <source>The document contains dependency cycles.
+Please check the Report View for more details.
+
+Do you still want to proceed?</source>
+      <translation>El documento contiene ciclos de dependencia.
+Por favor, compruebe la Vista de Reportes para más detalles.
+
+¿Desea continuar?</translation>
     </message>
   </context>
   <context>
@@ -7129,6 +9752,50 @@ Do you want to duplicate them, too?</source>
     </message>
   </context>
   <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Isométrica</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Configurar NaviCube al modo Isométrico</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ortográfico</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Configurar Vista a modo Ortográfico</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Perspectiva</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Configurar Vista a modo Perspectiva</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Zoom para ajustar</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Zoom para que ese modelo llene la vista</translation>
+    </message>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
@@ -7144,7 +9811,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>&amp;Stereo</source>
-      <translation>&amp;Estereo</translation>
+      <translation>&amp;Estéreo</translation>
     </message>
     <message>
       <source>&amp;Zoom</source>
@@ -7193,6 +9860,10 @@ Do you want to duplicate them, too?</source>
     <message>
       <source>Special Ops</source>
       <translation>Operaciones especiales</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Axonométrica</translation>
     </message>
   </context>
   <context>

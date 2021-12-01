@@ -45,6 +45,7 @@ using namespace MeshGui;
     qApp->translate("Workbench", "Analyze");
     qApp->translate("Workbench", "Boolean");
     qApp->translate("Workbench", "&Meshes");
+    qApp->translate("Workbench", "Cutting");
     qApp->translate("Workbench", "Mesh tools");
 #endif
 
@@ -120,9 +121,9 @@ public:
             numPoints->setText(QString::number(countPoints));
             numFacets->setText(QString::number(countFacets));
             numMin->setText(QString::fromLatin1("X: %1\tY: %2\tZ: %3")
-                .arg(bbox.MinX).arg(bbox.MinX).arg(bbox.MinX));
+                .arg(bbox.MinX).arg(bbox.MinY).arg(bbox.MinZ));
             numMax->setText(QString::fromLatin1("X: %1\tY: %2\tZ: %3")
-                .arg(bbox.MaxX).arg(bbox.MaxX).arg(bbox.MaxX));
+                .arg(bbox.MaxX).arg(bbox.MaxY).arg(bbox.MaxZ));
         }
         else {
             numPoints->setText(QString::fromLatin1(""));
@@ -184,18 +185,50 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // boolean
     Gui::MenuItem* boolean = new Gui::MenuItem;
     boolean->setCommand("Boolean");
-    *boolean << "Mesh_Union" << "Mesh_Intersection" << "Mesh_Difference";
- 
+    *boolean << "Mesh_Union"
+             << "Mesh_Intersection"
+             << "Mesh_Difference";
+
+    // cutting
+    Gui::MenuItem* cutting = new Gui::MenuItem;
+    cutting->setCommand("Cutting");
+    *cutting << "Mesh_PolyCut"
+             << "Mesh_PolyTrim"
+           //<< "Mesh_PolySegm"
+             << "Mesh_TrimByPlane"
+             << "Mesh_SectionByPlane"
+             << "Mesh_CrossSections";
+
     mesh->setCommand("&Meshes");
-    *mesh << "Mesh_Import" << "Mesh_Export" << "Mesh_FromPartShape" << "Separator"
-          << analyze << "Mesh_HarmonizeNormals" << "Mesh_FlipNormals" << "Separator" 
-          << "Mesh_FillupHoles" << "Mesh_FillInteractiveHole" << "Mesh_RemoveComponents"
-          << "Mesh_RemoveCompByHand" << "Mesh_AddFacet" << "Mesh_Smoothing" << "Mesh_Scale"
-          << "Separator" << "Mesh_BuildRegularSolid" << boolean << "Separator"
-          << "Mesh_Merge" << "Mesh_PolySelect" << "Mesh_PolyCut"
-          << "Mesh_PolySplit" << "Mesh_PolySegm" << "Mesh_PolyTrim" << "Separator"
-          << "Mesh_TrimByPlane" << "Mesh_SectionByPlane" << "Mesh_Segmentation"
-          << "Mesh_VertexCurvature";
+    *mesh << "Mesh_Import"
+          << "Mesh_Export"
+          << "Mesh_FromPartShape"
+          << "Mesh_RemeshGmsh"
+          << "Separator"
+          << analyze
+          << "Mesh_VertexCurvature"
+          << "Mesh_HarmonizeNormals"
+          << "Mesh_FlipNormals"
+          << "Separator"
+          << "Mesh_FillupHoles"
+          << "Mesh_FillInteractiveHole"
+          << "Mesh_AddFacet"
+          << "Mesh_RemoveComponents"
+          << "Mesh_RemoveCompByHand"
+          << "Mesh_Segmentation"
+          << "Mesh_SegmentationBestFit"
+          << "Separator"
+          << "Mesh_Smoothing"
+          << "Mesh_Decimating"
+          << "Mesh_Scale"
+          << "Separator"
+          << "Mesh_BuildRegularSolid"
+          << boolean
+          << cutting
+          << "Separator"
+          << "Mesh_Merge"
+          << "Mesh_SplitComponents"
+          << "Separator";
     Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
     if (mgr.getCommandByName("MeshPart_CreateFlatMesh"))
         *mesh << "MeshPart_CreateFlatMesh";
@@ -207,9 +240,58 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
+    
     Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
     mesh->setCommand("Mesh tools");
-    *mesh << "Mesh_Import" << "Mesh_Export" << "Separator" << "Mesh_PolyCut" << "Mesh_VertexCurvature";
+    *mesh << "Mesh_Import" 
+          << "Mesh_Export" 
+          << "Mesh_FromPartShape"
+          << "Mesh_BuildRegularSolid";
+		  
+    Gui::ToolBarItem* modifying = new Gui::ToolBarItem(root);
+    modifying->setCommand("Mesh modify");
+    *modifying << "Mesh_HarmonizeNormals" 
+               << "Mesh_FlipNormals"
+               << "Mesh_FillupHoles"
+               << "Mesh_FillInteractiveHole"
+               << "Mesh_AddFacet"
+               << "Mesh_RemoveComponents"
+               << "Mesh_Smoothing"
+               << "Mesh_RemeshGmsh"
+               << "Mesh_Decimating"
+               << "Mesh_Scale";
+			   
+    Gui::ToolBarItem* boolean = new Gui::ToolBarItem(root);
+    boolean->setCommand("Mesh boolean");
+    *boolean << "Mesh_Union"
+             << "Mesh_Intersection"
+             << "Mesh_Difference";
+			 
+    Gui::ToolBarItem* cutting = new Gui::ToolBarItem(root);
+    cutting->setCommand("Mesh cutting");
+    *cutting << "Mesh_PolyCut"
+             << "Mesh_PolyTrim"
+             << "Mesh_TrimByPlane"
+             << "Mesh_SectionByPlane"
+             << "Mesh_CrossSections";
+			 
+    Gui::ToolBarItem* compseg = new Gui::ToolBarItem(root);
+    compseg->setCommand("Mesh segmentation");
+    *compseg << "Mesh_Merge"
+             << "Mesh_SplitComponents"
+             << "Mesh_Segmentation"
+             << "Mesh_SegmentationBestFit";
+			 
+    Gui::ToolBarItem* analyze = new Gui::ToolBarItem(root);
+    analyze->setCommand("Mesh analyze");
+    *analyze << "Mesh_Evaluation"
+             << "Mesh_EvaluateFacet"
+             << "Mesh_VertexCurvature"
+             << "Mesh_CurvatureInfo"
+             << "Mesh_EvaluateSolid"
+             << "Mesh_BoundingBox";
+		  
+		  
     return root;
 }
 

@@ -26,10 +26,10 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 
 class Ui_TaskSketcherMessages;
-typedef boost::signals::connection Connection;
+typedef boost::signals2::connection Connection;
 
 namespace App {
 class Property;
@@ -47,22 +47,21 @@ public:
     TaskSketcherMessages(ViewProviderSketch *sketchView);
     ~TaskSketcherMessages();
 
-    void slotSetUp(QString msg);
-    void slotSolved(QString msg);
+    void slotSetUp(const QString &state, const QString &msg, const QString& link, const QString& linkText);
 
 private Q_SLOTS:
-    void on_labelConstrainStatus_linkActivated(const QString &);
+    void on_labelConstrainStatusLink_linkClicked(const QString &);
     void on_autoUpdate_stateChanged(int state);
+    void on_autoRemoveRedundants_stateChanged(int state);
     void on_manualUpdate_clicked(bool checked);
     
 protected:
     ViewProviderSketch *sketchView;
     Connection connectionSetUp;
-    Connection connectionSolved;
 
 private:
     QWidget* proxy;
-    Ui_TaskSketcherMessages* ui;
+    std::unique_ptr<Ui_TaskSketcherMessages> ui;
 };
 
 } //namespace SketcherGui

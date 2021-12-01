@@ -76,9 +76,8 @@ def generateDoc():
 		os.chdir(cwd)
 		print('done.')
 
-def writedocs(dir, pkgpath='', done=None):
+def writedocs(dir, pkgpath=''):
     """Write out HTML documentation for all modules in a directory tree."""
-    if done is None: done = {}
     for importer, modname, ispkg in pkgutil.walk_packages([dir], pkgpath):
     		# Ignore all debug modules
     		if modname[-2:] != '_d':

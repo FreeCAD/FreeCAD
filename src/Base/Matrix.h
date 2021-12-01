@@ -25,12 +25,15 @@
 #define BASE_MATRIX_H
 
 #include <cassert>
+#include <cfloat>
 #include <cmath>
 #include <cstdio>
 #include <string>
 
 #include "Vector3D.h"
-#include <float.h>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base {
 
@@ -49,12 +52,12 @@ public:
   Matrix4D(void);
 
   /// Construction
-  Matrix4D (float a11, float a12, float a13, float a14, 
+  Matrix4D (float a11, float a12, float a13, float a14,
             float a21, float a22, float a23, float a24,
             float a31, float a32, float a33, float a34,
             float a41, float a42, float a43, float a44 );
   /// Construction
-  Matrix4D (double a11, double a12, double a13, double a14, 
+  Matrix4D (double a11, double a12, double a13, double a14,
             double a21, double a22, double a23, double a24,
             double a31, double a32, double a33, double a34,
             double a41, double a42, double a43, double a44 );
@@ -80,7 +83,7 @@ public:
   inline Matrix4D& operator =  (const Matrix4D& rclMtrx);
   /// Matrix multiplication
   inline Matrix4D  operator *  (const Matrix4D& rclMtrx) const;
-  /// Multiplication matrix with vector 
+  /// Multiplication matrix with vector
   inline Vector3f  operator *  (const Vector3f& rclVct) const;
   inline Vector3d  operator *  (const Vector3d& rclVct) const;
   inline void multVec(const Vector3d & src, Vector3d & dst) const;
@@ -136,6 +139,8 @@ public:
   /// scale for the x,y,z value
   void scale        (const Vector3f& rclVct);
   void scale        (const Vector3d& rclVct);
+  /// Check for scaling factor, 0: not scale, 1: uniform scale, or else -1
+  int hasScale(double tol=0.0) const;
   /// Rotate around the X axis (in transformed space) for the given value in radians
   void rotX         (double fAngle);
   /// Rotate around the Y axis (in transformed space) for the given value in radians
@@ -170,7 +175,7 @@ public:
   std::string toString(void) const;
   /// read the 16 double of the matrix from a string
   void fromString (const std::string &str);
-  
+
 private:
   double  dMtrx4D[4][4];
 };
@@ -178,7 +183,7 @@ private:
 inline Matrix4D Matrix4D::operator  +  (const Matrix4D& rclMtrx) const
 {
   Matrix4D  clMat;
-  short     iz, is;
+  unsigned short iz, is;
 
   for (iz = 0; iz < 4; iz++) {
     for (is = 0; is < 4; is++) {
@@ -191,7 +196,7 @@ inline Matrix4D Matrix4D::operator  +  (const Matrix4D& rclMtrx) const
 
 inline Matrix4D& Matrix4D::operator += (const Matrix4D& rclMtrx)
 {
-  short     iz, is;
+  unsigned short iz, is;
 
   for (iz = 0; iz < 4; iz++) {
     for (is = 0; is < 4; is++) {
@@ -205,7 +210,7 @@ inline Matrix4D& Matrix4D::operator += (const Matrix4D& rclMtrx)
 inline Matrix4D Matrix4D::operator  -  (const Matrix4D& rclMtrx) const
 {
   Matrix4D  clMat;
-  short     iz, is;
+  unsigned short  iz, is;
 
   for (iz = 0; iz < 4; iz++) {
     for (is = 0; is < 4; is++) {
@@ -218,7 +223,7 @@ inline Matrix4D Matrix4D::operator  -  (const Matrix4D& rclMtrx) const
 
 inline Matrix4D& Matrix4D::operator -= (const Matrix4D& rclMtrx)
 {
-  short     iz, is;
+  unsigned short iz, is;
 
   for (iz = 0; iz < 4; iz++) {
     for (is = 0; is < 4; is++) {
@@ -232,31 +237,31 @@ inline Matrix4D& Matrix4D::operator -= (const Matrix4D& rclMtrx)
 inline Matrix4D& Matrix4D::operator *= (const Matrix4D& rclMtrx)
 {
   Matrix4D  clMat;
-  short     ie, iz, is;
+  unsigned short ie, iz, is;
 
   for (iz = 0; iz < 4; iz++)
     for (is = 0; is < 4; is++) {
       clMat.dMtrx4D[iz][is] = 0;
       for (ie = 0; ie < 4; ie++)
-        clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] * 
+        clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] *
                           rclMtrx.dMtrx4D[ie][is];
     }
 
   (*this) = clMat;
- 
+
   return *this;
 }
 
 inline Matrix4D Matrix4D::operator * (const Matrix4D& rclMtrx) const
 {
   Matrix4D  clMat;
-  short     ie, iz, is;
+  unsigned short ie, iz, is;
 
   for (iz = 0; iz < 4; iz++)
     for (is = 0; is < 4; is++) {
       clMat.dMtrx4D[iz][is] = 0;
       for (ie = 0; ie < 4; ie++)
-       	clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] * 
+       	clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] *
                           rclMtrx.dMtrx4D[ie][is];
     }
 
@@ -265,25 +270,30 @@ inline Matrix4D Matrix4D::operator * (const Matrix4D& rclMtrx) const
 
 inline Matrix4D& Matrix4D::operator= (const Matrix4D& rclMtrx)
 {
-  short iz, is;
+  unsigned short iz, is;
 
   for (iz = 0; iz < 4; iz++) {
     for (is = 0; is < 4; is++) {
       dMtrx4D[iz][is] = rclMtrx.dMtrx4D[iz][is];
     }
   }
-  
+
   return *this;
 }
 
 inline Vector3f Matrix4D::operator* (const Vector3f& rclVct) const
 {
-  return Vector3f((float)(dMtrx4D[0][0]*rclVct.x + dMtrx4D[0][1]*rclVct.y +
-                          dMtrx4D[0][2]*rclVct.z + dMtrx4D[0][3]),
-                  (float)(dMtrx4D[1][0]*rclVct.x + dMtrx4D[1][1]*rclVct.y +
-                          dMtrx4D[1][2]*rclVct.z + dMtrx4D[1][3]),
-                  (float)(dMtrx4D[2][0]*rclVct.x + dMtrx4D[2][1]*rclVct.y +
-                          dMtrx4D[2][2]*rclVct.z + dMtrx4D[2][3]));
+  double x = static_cast<double>(rclVct.x);
+  double y = static_cast<double>(rclVct.y);
+  double z = static_cast<double>(rclVct.z);
+  return Vector3f(
+    static_cast<float>(dMtrx4D[0][0]*x + dMtrx4D[0][1]*y +
+                       dMtrx4D[0][2]*z + dMtrx4D[0][3]),
+    static_cast<float>(dMtrx4D[1][0]*x + dMtrx4D[1][1]*y +
+                       dMtrx4D[1][2]*z + dMtrx4D[1][3]),
+    static_cast<float>(dMtrx4D[2][0]*x + dMtrx4D[2][1]*y +
+                       dMtrx4D[2][2]*z + dMtrx4D[2][3])
+  );
 }
 
 inline Vector3d Matrix4D::operator* (const Vector3d& rclVct) const
@@ -309,23 +319,31 @@ inline void Matrix4D::multVec(const Vector3d & src, Vector3d & dst) const
 
 inline void Matrix4D::multVec(const Vector3f & src, Vector3f & dst) const
 {
-  float x = (dMtrx4D[0][0]*src.x + dMtrx4D[0][1]*src.y +
-             dMtrx4D[0][2]*src.z + dMtrx4D[0][3]);
-  float y = (dMtrx4D[1][0]*src.x + dMtrx4D[1][1]*src.y +
-             dMtrx4D[1][2]*src.z + dMtrx4D[1][3]);
-  float z = (dMtrx4D[2][0]*src.x + dMtrx4D[2][1]*src.y +
-             dMtrx4D[2][2]*src.z + dMtrx4D[2][3]);
-  dst.Set(x,y,z);
+  double sx = static_cast<double>(src.x);
+  double sy = static_cast<double>(src.y);
+  double sz = static_cast<double>(src.z);
+
+  double x = (dMtrx4D[0][0]*sx + dMtrx4D[0][1]*sy +
+              dMtrx4D[0][2]*sz + dMtrx4D[0][3]);
+  double y = (dMtrx4D[1][0]*sx + dMtrx4D[1][1]*sy +
+              dMtrx4D[1][2]*sz + dMtrx4D[1][3]);
+  double z = (dMtrx4D[2][0]*sx + dMtrx4D[2][1]*sy +
+              dMtrx4D[2][2]*sz + dMtrx4D[2][3]);
+  dst.Set(static_cast<float>(x),
+          static_cast<float>(y),
+          static_cast<float>(z));
 }
 
 inline bool Matrix4D::operator== (const Matrix4D& rclMtrx) const
 {
-  short     iz, is;
+  unsigned short iz, is;
 
-  for (iz = 0; iz < 4; iz++)
-    for (is = 0; is < 4; is++) 
+  for (iz = 0; iz < 4; iz++) {
+    for (is = 0; is < 4; is++) {
       if (fabs(dMtrx4D[iz][is] - rclMtrx.dMtrx4D[iz][is]) > traits_type::epsilon())
         return false;
+    }
+  }
 
   return true;
 }
@@ -355,6 +373,6 @@ inline const double* Matrix4D::operator[] (unsigned short usNdx) const
 } // namespace Base
 
 
-#endif // BASE_MATRIX_H 
+#endif // BASE_MATRIX_H
 
 

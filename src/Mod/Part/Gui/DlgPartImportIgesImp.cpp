@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,6 +30,7 @@
 #include <Gui/MainWindow.h>
 
 #include "DlgPartImportIgesImp.h"
+#include "ui_DlgPartImportIges.h"
 
 using namespace PartGui;
 
@@ -44,8 +45,9 @@ using namespace PartGui;
  */
 DlgPartImportIgesImp::DlgPartImportIgesImp(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
+    , ui(new Ui_DlgPartImportIges)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 /*  
@@ -66,12 +68,12 @@ void DlgPartImportIgesImp::OnApply()
 
 void DlgPartImportIgesImp::onChooseFileName()
 {
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString::null, QString::null,
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(),
         QString::fromLatin1("%1 (*.igs *.iges);;%2 (*.*)"))
-        .arg(tr("IGES"))
-        .arg(tr("All Files"));
+        .arg(tr("IGES"),
+             tr("All Files"));
     if (!fn.isEmpty()) {
-        FileName->setText(fn);
+        ui->FileName->setText(fn);
     }
 }
 

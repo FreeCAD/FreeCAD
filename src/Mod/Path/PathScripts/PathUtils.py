@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,34 +19,36 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-'''PathUtils -common functions used in PathScripts for filterig, sorting, and generating gcode toolpath data '''
+'''PathUtils -common functions used in PathScripts for filtering, sorting, and generating gcode toolpath data '''
 import FreeCAD
-import FreeCADGui
+import Path
+# import PathScripts
+import PathScripts.PathJob as PathJob
+import PathScripts.PathGeom as PathGeom
 import math
 import numpy
-import Part
-import Path
-import PathScripts
-import PathScripts.PathGeom as PathGeom
-import TechDraw
 
-from DraftGeomUtils import geomType
 from FreeCAD import Vector
-from PathScripts import PathJob
-from PathScripts import PathJobCmd
 from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#FreeCAD.setLogLevel('Path.Area', 0)
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
+Part = LazyLoader('Part', globals(), 'Part')
+TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+
+UserInput = None
+
 
 def waiting_effects(function):
     def new_function(*args, **kwargs):
@@ -59,64 +59,13 @@ def waiting_effects(function):
         try:
             res = function(*args, **kwargs)
         # don't catch exceptions - want to know where they are coming from ....
-        #except Exception as e:
+        # except Exception as e:
         #    raise e
         #    print("Error {}".format(e.args[0]))
         finally:
             QtGui.QApplication.restoreOverrideCursor()
         return res
     return new_function
-
-
-def cleanedges(splines, precision):
-    '''cleanedges([splines],precision). Convert BSpline curves, Beziers, to arcs that can be used for cnc paths.
-    Returns Lines as is. Filters Circle and Arcs for over 180 degrees. Discretizes Ellipses. Ignores other geometry. '''
-    PathLog.track()
-    edges = []
-    for spline in splines:
-        if geomType(spline) == "BSplineCurve":
-            arcs = spline.Curve.toBiArcs(precision)
-            for i in arcs:
-                edges.append(Part.Edge(i))
-
-        elif geomType(spline) == "BezierCurve":
-            newspline = spline.Curve.toBSpline()
-            arcs = newspline.toBiArcs(precision)
-            for i in arcs:
-                edges.append(Part.Edge(i))
-
-        elif geomType(spline) == "Ellipse":
-            edges = curvetowire(spline, 1.0)  # fixme hardcoded value
-
-        elif geomType(spline) == "Circle":
-            arcs = filterArcs(spline)
-            for i in arcs:
-                edges.append(Part.Edge(i))
-
-        elif geomType(spline) == "Line":
-            edges.append(spline)
-
-        elif geomType(spline) == "LineSegment":
-            edges.append(spline)
-
-        else:
-            pass
-
-    return edges
-
-
-def curvetowire(obj, steps):
-    '''adapted from DraftGeomUtils, because the discretize function changed a bit '''
-
-    PathLog.track()
-    points = obj.copy().discretize(Distance=eval('steps'))
-    p0 = points[0]
-    edgelist = []
-    for p in points[1:]:
-        edge = Part.makeLine((p0.x, p0.y, p0.z), (p.x, p.y, p.z))
-        edgelist.append(edge)
-        p0 = p
-    return edgelist
 
 
 def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
@@ -130,6 +79,12 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
     tooldiameter=float
     """
     PathLog.track('obj: {} candidate: {} tooldiameter {}'.format(obj, candidate, tooldiameter))
+    if list == type(obj):
+        for shape in obj:
+            if isDrillable(shape, candidate, tooldiameter, includePartials):
+                return (True, shape)
+        return (False, None)
+
     drillable = False
     try:
         if candidate.ShapeType == 'Face':
@@ -141,7 +96,7 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                         PathLog.debug("candidate is a circle")
                         v0 = edge.Vertexes[0].Point
                         v1 = edge.Vertexes[1].Point
-                        #check if the cylinder seam is vertically aligned.  Eliminate tilted holes
+                        # check if the cylinder seam is vertically aligned.  Eliminate tilted holes
                         if (numpy.isclose(v1.sub(v0).x, 0, rtol=1e-05, atol=1e-06)) and \
                                 (numpy.isclose(v1.sub(v0).y, 0, rtol=1e-05, atol=1e-06)):
                             drillable = True
@@ -153,7 +108,7 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                             # object.  This eliminates extruded circles but allows
                             # actual holes.
                             if obj.isInside(lsp, 1e-6, False) or obj.isInside(lep, 1e-6, False):
-                                PathLog.track("inside check failed. lsp: {}  lep: {}".format(lsp,lep))
+                                PathLog.track("inside check failed. lsp: {}  lep: {}".format(lsp, lep))
                                 drillable = False
                             # eliminate elliptical holes
                             elif not hasattr(face.Surface, "Radius"):
@@ -161,15 +116,15 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                                 drillable = False
                             else:
                                 if tooldiameter is not None:
-                                    drillable = face.Surface.Radius >= tooldiameter/2
+                                    drillable = face.Surface.Radius >= tooldiameter / 2
                                 else:
                                     drillable = True
-            elif type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0,0,1)):
+            elif type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(face.Surface.Axis, FreeCAD.Vector(0, 0, 1)):
                 if len(face.Edges) == 1 and type(face.Edges[0].Curve) == Part.Circle:
                     center = face.Edges[0].Curve.Center
                     if obj.isInside(center, 1e-6, False):
                         if tooldiameter is not None:
-                            drillable = face.Edges[0].Curve.Radius >= tooldiameter/2
+                            drillable = face.Edges[0].Curve.Radius >= tooldiameter / 2
                         else:
                             drillable = True
         else:
@@ -182,22 +137,23 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                     else:
                         PathLog.debug("Has Radius, Circle")
                         if tooldiameter is not None:
-                            drillable = edge.Curve.Radius >= tooldiameter/2
+                            drillable = edge.Curve.Radius >= tooldiameter / 2
                             if not drillable:
                                 FreeCAD.Console.PrintMessage(
-                                        "Found a drillable hole with diameter: {}: "
-                                        "too small for the current tool with "
-                                        "diameter: {}".format(edge.Curve.Radius*2, tooldiameter))
+                                    "Found a drillable hole with diameter: {}: "
+                                    "too small for the current tool with "
+                                    "diameter: {}".format(edge.Curve.Radius * 2, tooldiameter))
                         else:
                             drillable = True
         PathLog.debug("candidate is drillable: {}".format(drillable))
-    except Exception as ex:
+    except Exception as ex:  # pylint: disable=broad-except
         PathLog.warning(translate("PathUtils", "Issue determine drillability: {}").format(ex))
     return drillable
 
 
-# fixme set at 4 decimal places for testing
-def fmt(val): return format(val, '.4f')
+# set at 4 decimal places for testing
+def fmt(val):
+    return format(val, '.4f')
 
 
 def segments(poly):
@@ -228,6 +184,7 @@ def loopdetect(obj, edge1, edge2):
     loopwire = next(x for x in loop)[1]
     return loopwire
 
+
 def horizontalEdgeLoop(obj, edge):
     '''horizontalEdgeLoop(obj, edge) ... returns a wire in the horizontal plane, if that is the only horizontal wire the given edge is a part of.'''
     h = edge.hashCode()
@@ -236,6 +193,7 @@ def horizontalEdgeLoop(obj, edge):
     if len(loops) == 1:
         return loops[0]
     return None
+
 
 def horizontalFaceLoop(obj, face, faceList=None):
     '''horizontalFaceLoop(obj, face, faceList=None) ... returns a list of face names which form the walls of a vertical hole face is a part of.
@@ -249,8 +207,8 @@ def horizontalFaceLoop(obj, face, faceList=None):
     for wire in wires:
         hashes = [e.hashCode() for e in wire.Edges]
 
-        #find all faces that share a an edge with the wire and are vertical
-        faces = ["Face%d"%(i+1) for i,f in enumerate(obj.Shape.Faces) if any(e.hashCode() in hashes for e in f.Edges) and PathGeom.isVertical(f)]
+        # find all faces that share a an edge with the wire and are vertical
+        faces = ["Face%d" % (i + 1) for i, f in enumerate(obj.Shape.Faces) if any(e.hashCode() in hashes for e in f.Edges) and PathGeom.isVertical(f)]
 
         if faceList and not all(f in faces for f in faceList):
             continue
@@ -258,10 +216,10 @@ def horizontalFaceLoop(obj, face, faceList=None):
         # verify they form a valid hole by getting the outline and comparing
         # the resulting XY footprint with that of the faces
         comp = Part.makeCompound([obj.Shape.getElement(f) for f in faces])
-        outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0,0,1))
+        outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0, 0, 1))
 
         # findShapeOutline always returns closed wires, by removing the
-        # trace-backs single edge spikes don't contriubte to the bound box
+        # trace-backs single edge spikes don't contribute to the bound box
         uniqueEdges = []
         for edge in outline.Edges:
             if any(PathGeom.edgesMatch(edge, e) for e in uniqueEdges):
@@ -276,6 +234,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         if w.isClosed() and PathGeom.isRoughly(bb1.XMin, bb2.XMin) and PathGeom.isRoughly(bb1.XMax, bb2.XMax) and PathGeom.isRoughly(bb1.YMin, bb2.YMin) and PathGeom.isRoughly(bb1.YMax, bb2.YMax):
             return faces
     return None
+
 
 def filterArcs(arcEdge):
     '''filterArcs(Edge) -used to split arcs that over 180 degrees. Returns list '''
@@ -295,10 +254,8 @@ def filterArcs(arcEdge):
             arcstpt = s.valueAt(s.FirstParameter)
             arcmid = s.valueAt(
                 (s.LastParameter - s.FirstParameter) * 0.5 + s.FirstParameter)
-            arcquad1 = s.valueAt((s.LastParameter - s.FirstParameter) *
-                                 0.25 + s.FirstParameter)  # future midpt for arc1
-            arcquad2 = s.valueAt((s.LastParameter - s.FirstParameter) *
-                                 0.75 + s.FirstParameter)  # future midpt for arc2
+            arcquad1 = s.valueAt((s.LastParameter - s.FirstParameter) * 0.25 + s.FirstParameter)  # future midpt for arc1
+            arcquad2 = s.valueAt((s.LastParameter - s.FirstParameter) * 0.75 + s.FirstParameter)  # future midpt for arc2
             arcendpt = s.valueAt(s.LastParameter)
             # reconstruct with 2 arcs
             arcseg1 = Part.ArcOfCircle(arcstpt, arcquad1, arcmid)
@@ -338,10 +295,6 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     '''
     PathLog.track(partshape, subshape, depthparams)
 
-    # if partshape.Volume == 0.0:  #Not a 3D object
-    #     return None
-
-
     zShift = 0
     if subshape is not None:
         if isinstance(subshape, Part.Face):
@@ -353,7 +306,6 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
             PathLog.debug("About to section with params: {}".format(area.getParams()))
             sec = area.makeSections(heights=[0.0], project=True)[0].getShape()
 
-       # zShift = partshape.BoundBox.ZMin - subshape.BoundBox.ZMin
         PathLog.debug('partshapeZmin: {}, subshapeZMin: {}, zShift: {}'.format(partshape.BoundBox.ZMin, subshape.BoundBox.ZMin, zShift))
 
     else:
@@ -364,9 +316,7 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     # If depthparams are passed, use it to calculate bottom and height of
     # envelope
     if depthparams is not None:
-#        eLength = float(stockheight)-partshape.BoundBox.ZMin
         eLength = depthparams.safe_height - depthparams.final_depth
-        #envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
         zShift = depthparams.final_depth - sec.BoundBox.ZMin
         PathLog.debug('boundbox zMIN: {} elength: {} zShift {}'.format(partshape.BoundBox.ZMin, eLength, zShift))
     else:
@@ -384,14 +334,57 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     return envelopeshape
 
 
+# Function to extract offset face from shape
+def getOffsetArea(fcShape,
+                  offset,
+                  removeHoles=False,
+                  # Default: XY plane
+                  plane=Part.makeCircle(10),
+                  tolerance=1e-4):
+    '''Make an offset area of a shape, projected onto a plane.
+    Positive offsets expand the area, negative offsets shrink it.
+    Inspired by _buildPathArea() from PathAreaOp.py module. Adjustments made
+    based on notes by @sliptonic at this webpage:
+    https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes.'''
+    PathLog.debug('getOffsetArea()')
+
+    areaParams = {}
+    areaParams['Offset'] = offset
+    areaParams['Fill'] = 1  # 1
+    areaParams['Outline'] = removeHoles
+    areaParams['Coplanar'] = 0
+    areaParams['SectionCount'] = 1  # -1 = full(all per depthparams??) sections
+    areaParams['Reorient'] = True
+    areaParams['OpenMode'] = 0
+    areaParams['MaxArcPoints'] = 400  # 400
+    areaParams['Project'] = True
+    areaParams['FitArcs'] = False  # Can be buggy & expensive
+    areaParams['Deflection'] = tolerance
+    areaParams['Accuracy'] = tolerance
+    areaParams['Tolerance'] = 1e-5  # Equal point tolerance
+    areaParams['Simplify'] = True
+    areaParams['CleanDistance'] = tolerance / 5
+
+    area = Path.Area()  # Create instance of Area() class object
+    # Set working plane normal to Z=1
+    area.setPlane(makeWorkplane(plane))
+    area.add(fcShape)
+    area.setParams(**areaParams)  # set parameters
+
+    offsetShape = area.getShape()
+    if not offsetShape.Faces:
+        return False
+    return offsetShape
+
+
 def reverseEdge(e):
-    if geomType(e) == "Circle":
+    if DraftGeomUtils.geomType(e) == "Circle":
         arcstpt = e.valueAt(e.FirstParameter)
         arcmid = e.valueAt((e.LastParameter - e.FirstParameter) * 0.5 + e.FirstParameter)
         arcendpt = e.valueAt(e.LastParameter)
         arcofCirc = Part.ArcOfCircle(arcendpt, arcmid, arcstpt)
         newedge = arcofCirc.toShape()
-    elif geomType(e) == "LineSegment" or geomType(e) == "Line":
+    elif DraftGeomUtils.geomType(e) == "LineSegment" or DraftGeomUtils.geomType(e) == "Line":
         stpt = e.valueAt(e.FirstParameter)
         endpt = e.valueAt(e.LastParameter)
         newedge = Part.makeLine(endpt, stpt)
@@ -399,37 +392,34 @@ def reverseEdge(e):
     return newedge
 
 
-def getToolControllers(obj):
+def getToolControllers(obj, proxy=None):
     '''returns all the tool controllers'''
+    if proxy is None:
+        proxy = obj.Proxy
     try:
         job = findParentJob(obj)
-    except:
+    except Exception:  # pylint: disable=broad-except
         job = None
 
+    PathLog.debug("op={} ({})".format(obj.Label, type(obj)))
     if job:
-        return job.ToolController
+        return [tc for tc in job.Tools.Group if proxy.isToolSupported(obj, tc.Tool)]
     return []
 
 
-def findToolController(obj, name=None):
+def findToolController(obj, proxy, name=None):
     '''returns a tool controller with a given name.
     If no name is specified, returns the first controller.
     if no controller is found, returns None'''
 
     PathLog.track('name: {}'.format(name))
     c = None
-    if FreeCAD.GuiUp:
-        # First check if a user has selected a tool controller in the tree. Return the first one and remove all from selection
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            if hasattr(sel.Object, 'Proxy'):
-                if isinstance(sel.Object.Proxy, PathScripts.PathToolController.ToolController):
-                    if c is None:
-                        c = sel.Object
-                    FreeCADGui.Selection.removeSelection(sel.Object)
+    if UserInput:
+        c = UserInput.selectedToolController()
     if c is not None:
         return c
 
-    controllers = getToolControllers(obj)
+    controllers = getToolControllers(obj, proxy)
 
     if len(controllers) == 0:
         return None
@@ -442,16 +432,8 @@ def findToolController(obj, name=None):
             tc = None
     elif name is not None:  # More than one, make the user choose.
         tc = [i for i in controllers if i.Label == name][0]
-    else:
-        # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgTCChooser.ui")
-        form = FreeCADGui.PySideUic.loadUi(":/panels/DlgTCChooser.ui")
-        mylist = [i.Label for i in controllers]
-        form.uiToolController.addItems(mylist)
-        r = form.exec_()
-        if not r:
-            tc = None
-        else:
-            tc = [i for i in controllers if i.Label == form.uiToolController.currentText()][0]
+    elif UserInput:
+        tc = UserInput.chooseToolController(controllers)
     return tc
 
 
@@ -459,9 +441,9 @@ def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''
     PathLog.track()
     for i in obj.InList:
-        if isinstance(i.Proxy, PathScripts.PathJob.ObjectJob):
+        if hasattr(i, 'Proxy') and isinstance(i.Proxy, PathJob.ObjectJob):
             return i
-        if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython":
+        if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython" or i.TypeId == "App::DocumentObjectGroup":
             grandParent = findParentJob(i)
             if grandParent is not None:
                 return grandParent
@@ -474,11 +456,14 @@ def GetJobs(jobname=None):
         return [job for job in PathJob.Instances() if job.Name == jobname]
     return PathJob.Instances()
 
+
 def addToJob(obj, jobname=None):
     '''adds a path object to a job
     obj = obj
     jobname = None'''
     PathLog.track(jobname)
+
+    job = None
     if jobname is not None:
         jobs = GetJobs(jobname)
         if len(jobs) == 1:
@@ -488,25 +473,17 @@ def addToJob(obj, jobname=None):
             return None
     else:
         jobs = GetJobs()
-        if len(jobs) == 0:
-            job = PathJobCmd.CommandJobCreate().Activated()
+        if len(jobs) == 0 and UserInput:
+            job = UserInput.createJob()
         elif len(jobs) == 1:
             job = jobs[0]
-        else:
-            # form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
-            form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
-            mylist = [i.Label for i in jobs]
-            form.cboProject.addItems(mylist)
-            r = form.exec_()
-            if r is False:
-                return None
-            else:
-                print(form.cboProject.currentText())
-                job = [i for i in jobs if i.Label == form.cboProject.currentText()][0]
+        elif UserInput:
+            job = UserInput.chooseJob(jobs)
 
     if obj and job:
         job.Proxy.addOperation(obj)
     return job
+
 
 def rapid(x=None, y=None, z=None):
     """ Returns gcode string to perform a rapid move."""
@@ -525,7 +502,6 @@ def rapid(x=None, y=None, z=None):
 
 def feed(x=None, y=None, z=None, horizFeed=0, vertFeed=0):
     """ Return gcode string to perform a linear feed."""
-    global feedxy
     retstr = "G01 F"
     if(x is None) and (y is None):
         retstr += str("%.4f" % horizFeed)
@@ -562,7 +538,7 @@ def arc(cx, cy, sx, sy, ex, ey, horizFeed=0, ez=None, ccw=False):
 
     eps = 0.01
     if (math.sqrt((cx - sx)**2 + (cy - sy)**2) - math.sqrt((cx - ex)**2 + (cy - ey)**2)) >= eps:
-        print("ERROR: Illegal arc: Start and end radii not equal")
+        PathLog.error(translate("Path", "Illegal arc: Start and end radii not equal"))
         return ""
 
     retstr = ""
@@ -595,15 +571,14 @@ def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed
     # toold = self.radius * 2
 
     helixCmds = "(START HELICAL PLUNGE)\n"
-    if(plungePos is None):
+    if plungePos is None:
         raise Exception("Helical plunging requires a position!")
-        return None
 
-    helixX = plungePos.x + toold/2 * plungeR
+    helixX = plungePos.x + toold / 2 * plungeR
     helixY = plungePos.y
 
     helixCirc = math.pi * toold * plungeR
-    dzPerRev = math.sin(rampangle/180. * math.pi) * helixCirc
+    dzPerRev = math.sin(rampangle / 180. * math.pi) * helixCirc
 
     # Go to the start of the helix position
     helixCmds += rapid(helixX, helixY)
@@ -611,7 +586,7 @@ def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed
 
     # Helix as required to get to the requested depth
     lastZ = startZ
-    curZ = max(startZ-dzPerRev, destZ)
+    curZ = max(startZ - dzPerRev, destZ)
     done = False
     while not done:
         done = (curZ == destZ)
@@ -620,7 +595,7 @@ def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed
 
         # Use two half-helixes; FreeCAD renders that correctly,
         # and it fits with the other code breaking up 360-degree arcs
-        helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX - toold * plungeR, helixY, horizFeed, ez=(curZ + lastZ)/2., ccw=True)
+        helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX - toold * plungeR, helixY, horizFeed, ez=(curZ + lastZ) / 2., ccw=True)
         helixCmds += arc(plungePos.x, plungePos.y, helixX - toold * plungeR, helixY, helixX, helixY, horizFeed, ez=curZ, ccw=True)
         lastZ = curZ
         curZ = max(curZ - dzPerRev, destZ)
@@ -646,26 +621,23 @@ def rampPlunge(edge, rampangle, destZ, startZ):
     rampCmds = "(START RAMP PLUNGE)\n"
     if(edge is None):
         raise Exception("Ramp plunging requires an edge!")
-        return None
 
     sPoint = edge.Vertexes[0].Point
     ePoint = edge.Vertexes[1].Point
     # Evidently edges can get flipped- pick the right one in this case
-    # FIXME: This is iffy code, based on what already existed in the "for vpos ..." loop below
     if ePoint == sPoint:
         # print "FLIP"
         ePoint = edge.Vertexes[-1].Point
 
     rampDist = edge.Length
-    rampDZ = math.sin(rampangle/180. * math.pi) * rampDist
+    rampDZ = math.sin(rampangle / 180. * math.pi) * rampDist
 
     rampCmds += rapid(sPoint.x, sPoint.y)
     rampCmds += rapid(z=startZ)
 
     # Ramp down to the requested depth
-    # FIXME: This might be an arc, so handle that as well
 
-    curZ = max(startZ-rampDZ, destZ)
+    curZ = max(startZ - rampDZ, destZ)
     done = False
     while not done:
         done = (curZ == destZ)
@@ -683,12 +655,17 @@ def rampPlunge(edge, rampangle, destZ, startZ):
     return rampCmds
 
 
-def sort_jobs(locations, keys, attractors=[]):
+def sort_jobs(locations, keys, attractors=None):
     """ sort holes by the nearest neighbor method
         keys: two-element list of keys for X and Y coordinates. for example ['x','y']
         originally written by m0n5t3r for PathHelix
     """
-    from Queue import PriorityQueue
+    if attractors is None:
+        attractors = []
+    try:
+        from queue import PriorityQueue
+    except ImportError:
+        from Queue import PriorityQueue
     from collections import defaultdict
 
     attractors = attractors or [keys[0]]
@@ -712,10 +689,11 @@ def sort_jobs(locations, keys, attractors=[]):
     def find_closest(location_list, location, dist):
         q = PriorityQueue()
 
-        for j in location_list:
-            q.put((dist(j, location) + weight(j), j))
+        for i, j in enumerate(location_list):
+            # prevent dictionary comparison by inserting the index
+            q.put((dist(j, location) + weight(j), i, j))
 
-        prio, result = q.get()
+        prio, i, result = q.get()  # pylint: disable=unused-variable
 
         return result
 
@@ -731,6 +709,7 @@ def sort_jobs(locations, keys, attractors=[]):
         locations.remove(closest)
 
     return out
+
 
 def guessDepths(objshape, subs=None):
     """
@@ -763,22 +742,35 @@ def guessDepths(objshape, subs=None):
 
     return depth_params(clearance, safe, start, 1.0, 0.0, final, user_depths=None, equalstep=False)
 
+
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
-    if tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
-        return 0.0
-    else:
-        if tool.CuttingEdgeAngle <= 0 or tool.CuttingEdgeAngle >= 180:
-            PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % tool.CuttingEdgeAngle)
-            return 0.0
-        theta = math.radians(tool.CuttingEdgeAngle)
-        length = (tool.Diameter/2) / math.tan(theta/2) 
-        if length < 0:
-            PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % tool.CuttingEdgeAngle)
-            return 0.0
-        return length
 
-class depth_params:
+    if isinstance(tool, Path.Tool):
+        PathLog.error(translate("Path", "Legacy Tools not supported"))
+        return 0.0
+
+    if not hasattr(tool, 'TipAngle'):
+        PathLog.error(translate("Path", "Selected tool is not a drill"))
+        return 0.0
+
+    angle = tool.TipAngle
+
+    if angle <= 0 or angle >= 180:
+        PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % angle)
+        return 0.0
+
+    theta = math.radians(angle)
+    length = (float(tool.Diameter) / 2) / math.tan(theta / 2)
+
+    if length < 0:
+        PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % angle)
+        return 0.0
+
+    return length
+
+
+class depth_params(object):
     '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
     (self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False)
 
@@ -796,8 +788,6 @@ class depth_params:
 
     def __init__(self, clearance_height, safe_height, start_depth, step_down, z_finish_step, final_depth, user_depths=None, equalstep=False):
         '''self, clearance_height, safe_height, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None], equalstep=False'''
-        if z_finish_step > step_down:
-            raise ValueError('z_finish_step must be less than step_down')
 
         self.__clearance_height = clearance_height
         self.__safe_height = safe_height
@@ -808,6 +798,9 @@ class depth_params:
         self.__user_depths = user_depths
         self.data = self.__get_depths(equalstep=equalstep)
         self.index = 0
+
+        if self.__z_finish_step > self.__step_down:
+            raise ValueError('z_finish_step must be less than step_down')
 
     def __iter__(self):
         self.index = 0
@@ -833,7 +826,7 @@ class depth_params:
     @property
     def safe_height(self):
         """
-        Height of top of raw stock material.  Rapid moves above safe height are 
+        Height of top of raw stock material.  Rapid moves above safe height are
         assumed to be safe within an operation.  May not be safe between
         operations or tool changes.
         All moves below safe height except retraction should be at feed rate.
@@ -936,3 +929,78 @@ class depth_params:
             return [stop] + depths
 
 
+def simplify3dLine(line, tolerance=1e-4):
+    """Simplify a line defined by a list of App.Vectors, while keeping the
+    maximum deviation from the original line within the defined tolerance.
+    Implementation of
+    https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm"""
+    stack = [(0, len(line) - 1)]
+    results = []
+
+    def processRange(start, end):
+        """Internal worker. Process a range of Vector indices within the
+        line."""
+        if end - start < 2:
+            results.extend(line[start:end])
+            return
+        # Find point with maximum distance
+        maxIndex, maxDistance = 0, 0.0
+        startPoint, endPoint = (line[start], line[end])
+        for i in range(start + 1, end):
+            v = line[i]
+            distance = v.distanceToLineSegment(startPoint, endPoint).Length
+            if distance > maxDistance:
+                maxDistance = distance
+                maxIndex = i
+        if maxDistance > tolerance:
+            # Push second branch first, to be executed last
+            stack.append((maxIndex, end))
+            stack.append((start, maxIndex))
+        else:
+            results.append(line[start])
+
+    while len(stack):
+        processRange(*stack.pop())
+    # Each segment only appended its start point to the final result, so fill in
+    # the last point.
+    results.append(line[-1])
+    return results
+
+
+def RtoIJ(startpoint, command):
+    '''
+    This function takes a startpoint and an arc command in radius mode and
+    returns an arc command in IJ mode. Useful for preprocessor scripts
+    '''
+    if 'R' not in command.Parameters:
+        raise ValueError('No R parameter in command')
+    if command.Name not in ['G2', 'G02', 'G03', 'G3']:
+        raise ValueError('Not an arc command')
+
+    endpoint = command.Placement.Base
+    radius = command.Parameters['R']
+
+    # calculate the IJ
+    # we take a vector between the start and endpoints
+    chord = endpoint.sub(startpoint)
+
+    # Take its perpendicular (we assume the arc is in the XY plane)
+    perp = chord.cross(FreeCAD.Vector(0, 0, 1))
+
+    # use pythagoras to get the perp length
+    plength = math.sqrt(radius**2 - (chord.Length / 2)**2)
+    perp.normalize()
+    perp.scale(plength, plength, plength)
+
+    # Calculate the relative center
+    relativecenter = chord.scale(0.5, 0.5, 0.5).add(perp)
+
+    # build new command
+    params = { c: command.Parameters[c] for c in 'XYZF' if c in command.Parameters}
+    params['I'] = relativecenter.x
+    params['J'] = relativecenter.y
+
+    newcommand = Path.Command(command.Name)
+    newcommand.Parameters = params
+
+    return newcommand

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,6 +35,8 @@
 #include <Gui/WorkbenchManager.h>
 #include <Gui/Language/Translator.h>
 #include "Workbench.h"
+#include <Gui/WidgetFactory.h>
+#include "DlgStartPreferencesImp.h"
 
 #include <Mod/Start/App/StartConfiguration.h>
 
@@ -103,6 +105,9 @@ PyMOD_INIT_FUNC(StartGui)
 
     PyObject* mod = StartGui::initModule();
     Base::Console().Log("Loading GUI of Start module... done\n");
+
+    // register preferences pages
+    new Gui::PrefPageProducer<StartGui::DlgStartPreferencesImp> ("Start");
 
     // instantiating the commands
     CreateStartCommands();

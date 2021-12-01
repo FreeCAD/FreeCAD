@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -59,7 +59,8 @@ bool ViewProviderMultiTransform::onDelete(const std::vector<std::string> &svec) 
     {
         if ((*it) != NULL)
             Gui::Command::doCommand(
-                Gui::Command::Doc,"App.ActiveDocument.removeObject(\"%s\")", (*it)->getNameInDocument());
+                Gui::Command::Doc,"App.getDocument('%s').removeObject(\"%s\")", \
+                    (*it)->getDocument()->getName(), (*it)->getNameInDocument());
     }
 
     // Handle Originals

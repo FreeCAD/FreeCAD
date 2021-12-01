@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -36,14 +34,22 @@ else:
 #
 #  This module provides tools to import and export Collada (.dae) files.
 
-__title__="FreeCAD Collada importer"
+__title__  = "FreeCAD Collada importer"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 DEBUG = True
 
+try:
+    # Python 2 forward compatibility
+    range = xrange
+except NameError:
+    pass
+
 def checkCollada():
+
     "checks if collada if available"
+
     global collada
     COLLADA = None
     try:
@@ -53,9 +59,12 @@ def checkCollada():
         return False
     else:
         return True
-        
+
+
 def triangulate(shape):
+
     "triangulates the given face"
+
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     mesher = p.GetInt("ColladaMesher",0)
     tessellation = p.GetFloat("ColladaTessellation",1.0)
@@ -74,10 +83,12 @@ def triangulate(shape):
                SegPerRadius=segsperradius,SecondOrder=secondorder,Optimize=optimize,
                AllowQuad=allowquads).Topology
 
-    
+
 def open(filename):
+
     "called when freecad wants to open a file"
-    if not checkCollada(): 
+
+    if not checkCollada():
         return
     docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
     doc = FreeCAD.newDocument(docname)
@@ -86,9 +97,12 @@ def open(filename):
     read(filename)
     return doc
 
+
 def insert(filename,docname):
+
     "called when freecad wants to import a file"
-    if not checkCollada(): 
+
+    if not checkCollada():
         return
     try:
         doc = FreeCAD.getDocument(docname)
@@ -98,8 +112,11 @@ def insert(filename,docname):
     read(filename)
     return doc
 
+
 def decode(name):
+
     "decodes encoded strings"
+
     try:
         decodedName = (name.decode("utf8"))
     except UnicodeDecodeError:
@@ -110,7 +127,11 @@ def decode(name):
             decodedName = name
     return decodedName
 
+
 def read(filename):
+
+    "reads a DAE file"
+
     global col
     col = collada.Collada(filename, ignore=[collada.DaeUnsupportedError])
     # Read the unitmeter info from dae file and compute unit to convert to mm
@@ -163,8 +184,14 @@ def read(filename):
                     if color and FreeCAD.GuiUp:
                         obj.ViewObject.ShapeColor = color
 
-def export(exportList,filename,tessellation=1):
-    "called when freecad exports a file"
+
+def export(exportList,filename,tessellation=1,colors=None):
+
+    """export(exportList,filename,tessellation=1,colors=None) -- exports FreeCAD contents to a DAE file.
+    colors is an optional dictionary of objName:shapeColorTuple or objName:diffuseColorList elements
+    to be used in non-GUI mode if you want to be able to export colors. Tessellation is used when breaking
+    curved surfaces into triangles."""
+
     if not checkCollada(): return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     scale = p.GetFloat("ColladaScalingFactor",1.0)
@@ -176,21 +203,25 @@ def export(exportList,filename,tessellation=1):
     colmesh.assetInfo.upaxis = collada.asset.UP_AXIS.Z_UP
     # authoring info
     cont = collada.asset.Contributor()
-    author = FreeCAD.ActiveDocument.CreatedBy.encode("utf8")
+    try:
+        author = FreeCAD.ActiveDocument.CreatedBy
+    except UnicodeEncodeError:
+        author = FreeCAD.ActiveDocument.CreatedBy.encode("utf8")
     author = author.replace("<","")
     author = author.replace(">","")
     cont.author = author
     ver = FreeCAD.Version()
     appli = "FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + "\n"
     cont.authoring_tool = appli
-    print(author, appli)
+    #print(author, appli)
     colmesh.assetInfo.contributors.append(cont)
     colmesh.assetInfo.unitname = "meter"
     colmesh.assetInfo.unitmeter = 1.0
     defaultmat = None
     objind = 0
     scenenodes = []
-    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Draft.get_group_contents(exportList, walls=True,
+                                           addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
     for obj in objectslist:
         findex = numpy.array([])
@@ -215,19 +246,19 @@ def export(exportList,filename,tessellation=1):
 
             # vertex indices
             vindex = numpy.empty(len(Topology[0]) * 3)
-            for i in xrange(len(Topology[0])):
+            for i in range(len(Topology[0])):
                 v = Topology[0][i]
                 vindex[list(range(i*3, i*3+3))] = (v.x*scale,v.y*scale,v.z*scale)
 
             # normals
             nindex = numpy.empty(len(Facets) * 3)
-            for i in xrange(len(Facets)):
+            for i in range(len(Facets)):
                 n = Facets[i].Normal
                 nindex[list(range(i*3, i*3+3))] = (n.x,n.y,n.z)
 
             # face indices
             findex = numpy.empty(len(Topology[1]) * 6, numpy.int64)
-            for i in xrange(len(Topology[1])):
+            for i in range(len(Topology[1])):
                 f = Topology[1][i]
                 findex[list(range(i*6, i*6+6))] = (f[0],i,f[1],i,f[2],i)
 
@@ -252,7 +283,22 @@ def export(exportList,filename,tessellation=1):
                         matref = "ref_"+obj.Material.Name
                         matnode = collada.scene.MaterialNode(matref, mat, inputs=[])
         if not matnode:
-            if FreeCAD.GuiUp:
+            if colors:
+                if obj.Name in colors:
+                    color = colors[obj.Name]
+                    if color:
+                        if isinstance(color[0],tuple):
+                            # this is a diffusecolor. For now, use the first color - #TODO: Support per-face colors
+                            color = color[0]
+                        #print("found color for obj",obj.Name,":",color)
+                        kd = color[:3]
+                        effect = collada.material.Effect("effect_"+obj.Name, [], "phong", diffuse=kd, specular=(1,1,1))
+                        mat = collada.material.Material("mat_"+obj.Name, obj.Name, effect)
+                        colmesh.effects.append(effect)
+                        colmesh.materials.append(mat)
+                        matref = "ref_"+obj.Name
+                        matnode = collada.scene.MaterialNode(matref, mat, inputs=[])
+            elif FreeCAD.GuiUp:
                 if hasattr(obj.ViewObject,"ShapeColor"):
                     kd = obj.ViewObject.ShapeColor[:3]
                     effect = collada.material.Effect("effect_"+obj.Name, [], "phong", diffuse=kd, specular=(1,1,1))

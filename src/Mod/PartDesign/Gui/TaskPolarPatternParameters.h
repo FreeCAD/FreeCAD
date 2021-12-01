@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -58,6 +58,7 @@ public:
     virtual ~TaskPolarPatternParameters();
 
     void apply();
+
 private Q_SLOTS:
     void onUpdateViewTimer();
     void onAxisChanged(int num);
@@ -68,6 +69,8 @@ private Q_SLOTS:
     virtual void onFeatureDeleted(void);
 
 protected:
+    virtual void addObject(App::DocumentObject*);
+    virtual void removeObject(App::DocumentObject*);
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     virtual void clearButtons();
@@ -79,12 +82,13 @@ protected:
     unsigned getOccurrences(void) const;
 
 private:
+    void connectSignals();
     void setupUI();
     void updateUI();
     void kickUpdateViewTimer() const;
 
 private:
-    Ui_TaskPolarPatternParameters* ui;
+    std::unique_ptr<Ui_TaskPolarPatternParameters> ui;
     QTimer* updateViewTimer;
 
     ComboLinks axesLinks;

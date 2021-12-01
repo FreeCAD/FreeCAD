@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,11 +26,13 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+
 # include <QAction>
 # include <QApplication>
 # include <QDockWidget>
 # include <QMenu>
 # include <QStackedWidget>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoFontStyle.h>
@@ -389,6 +392,30 @@ void ViewProviderFemConstraint::updateArrow(const SoNode* node, const int idx, c
     updateCone(sep, idx, radius, radius/2);
     updatePlacement(sep, idx+CONE_CHILDREN, SbVec3f(0, -radius/2-(length-radius)/2, 0), SbRotation());
     updateCylinder(sep, idx+CONE_CHILDREN+PLACEMENT_CHILDREN, length-radius, radius/5);
+}
+
+#define SPRING_CHILDREN (CUBE_CHILDREN + PLACEMENT_CHILDREN + CYLINDER_CHILDREN)
+
+void ViewProviderFemConstraint::createSpring(SoSeparator* sep, const double length, const double width)
+{
+    createCube(sep, width, width, length/2);
+    createPlacement(sep, SbVec3f(0, -length/2, 0), SbRotation());
+    createCylinder(sep, length/2, width/4);
+}
+
+SoSeparator* ViewProviderFemConstraint::createSpring(const double length, const double width)
+{
+    SoSeparator* sep = new SoSeparator();
+    createSpring(sep, length, width);
+    return sep;
+}
+
+void ViewProviderFemConstraint::updateSpring(const SoNode* node, const int idx, const double length, const double width)
+{
+    const SoSeparator* sep = static_cast<const SoSeparator*>(node);
+    updateCube(sep, idx, width, width, length/2);
+    updatePlacement(sep, idx+CUBE_CHILDREN, SbVec3f(0, -length/2, 0), SbRotation());
+    updateCylinder(sep, idx+CUBE_CHILDREN+PLACEMENT_CHILDREN, length/2, width/4);
 }
 
 #define FIXED_CHILDREN (CONE_CHILDREN + PLACEMENT_CHILDREN + CUBE_CHILDREN)

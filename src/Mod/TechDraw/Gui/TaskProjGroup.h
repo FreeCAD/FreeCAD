@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2011 Joe Dowsett <j-dowsett[at]users.sourceforge.net>   *
- *   Copyright (c) 2014  Luke Parry <l.parry@warwick.ac.uk>                *
+ *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -62,6 +62,12 @@ public:
 public:
     virtual bool accept();
     virtual bool reject();
+    virtual bool apply();
+    void modifyStandardButtons(QDialogButtonBox* box);
+    void saveButtons(QPushButton* btnOK,
+                     QPushButton* btnCancel,
+                     QPushButton* btnApply);
+
     void updateTask();
     std::pair<int, int> nearestFraction(const double val, const long int maxDenom = 999) const;
     // Sets the numerator and denominator widgets to match newScale
@@ -75,11 +81,13 @@ protected Q_SLOTS:
     /// Requests appropriate rotation of our DrawProjGroup
     void rotateButtonClicked(void);
 
-    void on3DClicked(void);
-    void onResetClicked(void);
-    
-    void projectionTypeChanged(int index);
+//    void onResetClicked(void);
+/*    void projectionTypeChanged(int index);*/
+    void projectionTypeChanged(QString qText);
     void scaleTypeChanged(int index);
+    void AutoDistributeClicked(bool b);
+    /// Updates item spacing
+    void spacingChanged(void);
     void scaleManuallyChanged(int i);
 
 protected:
@@ -91,24 +99,37 @@ protected:
      * between checkboxes and viewToggled()
      */
     void setupViewCheckboxes(bool addConnections = false);
-    std::pair<Base::Vector3d,Base::Vector3d> get3DViewDir(void);
     void setUiPrimary(void);
+    void saveGroupState();
+    void restoreGroupState();
+
     QString formatVector(Base::Vector3d v);
 
+    TechDraw::DrawPage* m_page;
+    MDIViewPage* m_mdi;
+
 private:
-    //class Private;
-    Ui_TaskProjGroup * ui;
+    std::unique_ptr<Ui_TaskProjGroup> ui;
+    TechDraw::DrawProjGroup* multiView;
+    bool m_createMode;
+
     bool blockUpdate;
     /// Translate a view checkbox index into represented view string, depending on projection type
     const char * viewChkIndexToCStr(int index);
 
-protected:
-  //ViewProviderProjGroup *viewProvider;
-  TechDraw::DrawProjGroup* multiView;
-  bool m_createMode;
-  TechDraw::DrawPage* m_page;
-  MDIViewPage* m_mdi;
+    QPushButton* m_btnOK;
+    QPushButton* m_btnCancel;
+    QPushButton* m_btnApply;
 
+    std::vector<App::DocumentObject*> m_saveSource;
+    std::string    m_saveProjType;
+    std::string    m_saveScaleType;
+    double         m_saveScale;
+    bool           m_saveAutoDistribute;
+    double         m_saveSpacingX;
+    double         m_saveSpacingY;
+    Base::Vector3d m_saveDirection;
+    std::vector<std::string> m_saveViewNames;
 };
 
 /// Simulation dialog for the TaskView
@@ -122,6 +143,11 @@ public:
 
     const ViewProviderProjGroup * getViewProvider() const { return viewProvider; }
     TechDraw::DrawProjGroup * getMultiView() const { return multiView; }
+
+    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
+    virtual void modifyStandardButtons(QDialogButtonBox* box);
+
 public:
     /// is called the TaskView when the dialog is opened
     virtual void open();

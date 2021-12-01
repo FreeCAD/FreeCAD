@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c)2011  Luke Parry                                         *
+ *   Copyright (c) 2011 Luke Parry                                         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -47,7 +47,7 @@ using namespace Gui;
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(SoAutoZoomTranslation);
+SO_NODE_SOURCE(SoAutoZoomTranslation)
 
 void SoAutoZoomTranslation::initClass()
 {
@@ -73,16 +73,20 @@ void SoAutoZoomTranslation::initClass()
 
 float SoAutoZoomTranslation::getScaleFactor(SoAction* action) const
 {
+    float scale = scaleFactor.getValue();
+    if(!scale)
+        return 1.0;
     // Dividing by 5 seems to work well
     SbViewVolume vv = SoViewVolumeElement::get(action->getState());
     float aspectRatio = SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
-    float scale = vv.getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / (5*aspectRatio);
+    scale *= vv.getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / (5*aspectRatio);
     return scale;
 }
 
 SoAutoZoomTranslation::SoAutoZoomTranslation()
 {
     SO_NODE_CONSTRUCTOR(SoAutoZoomTranslation);
+    SO_NODE_ADD_FIELD(scaleFactor, (1.0f));
     //SO_NODE_ADD_FIELD(abPos, (SbVec3f(0.f,0.f,0.f)));
 }
 
@@ -96,8 +100,15 @@ void SoAutoZoomTranslation::GLRender(SoGLRenderAction * action)
 void SoAutoZoomTranslation::doAction(SoAction * action)
 {
     float sf = this->getScaleFactor(action);
-    SoModelMatrixElement::scaleBy(action->getState(), this,
-                                SbVec3f(sf,sf,sf));
+    auto state = action->getState();
+    SbRotation r,so;
+    SbVec3f s,t;
+    SbMatrix matrix = SoModelMatrixElement::get(action->getState());
+    matrix.getTransform(t,r,s,so);
+    matrix.multVecMatrix(SbVec3f(0,0,0),t);
+    // reset current model scale factor
+    matrix.setTransform(t,r,SbVec3f(sf,sf,sf));
+    SoModelMatrixElement::set(state,this,matrix);
 }
 
 // set the auto scale factor.
@@ -115,14 +126,15 @@ void SoAutoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 {
     float sf = this->getScaleFactor(action);
 
-    SbVec3f scalevec = SbVec3f(sf,sf,sf);
-    SbMatrix m;
+    SbMatrix &m = action->getMatrix();
 
-    m.setScale(scalevec);
-    action->getMatrix().multLeft(m);
+    SbRotation r,so;
+    SbVec3f s,t;
+    m.getTransform(t,r,s,so);
+    m.multVecMatrix(SbVec3f(0,0,0),t);
+    m.setTransform(t,r,SbVec3f(sf,sf,sf));
 
-    m.setScale(SbVec3f(1.0f / scalevec[0], 1.0f / scalevec[1], 1.0f / scalevec[2]));
-    action->getInverse().multRight(m);
+    action->getInverse() = m.inverse();
 }
 
 void SoAutoZoomTranslation::callback(SoCallbackAction * action)

@@ -25,8 +25,7 @@
 #define GUI_GRAPHVIZVIEW_H
 
 #include "MDIView.h"
-#include <boost/shared_ptr.hpp>
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 
 
 class QGraphicsScene;
@@ -35,7 +34,7 @@ class QSvgRenderer;
 class QGraphicsSvgItem;
 class GraphicsViewZoom;
 
-namespace Gui 
+namespace Gui
 {
 
 class GraphvizWorker;
@@ -84,7 +83,7 @@ private:
     GraphvizWorker* thread;
     int nPending;
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
     Connection recomputeConnection;
     Connection undoConnection;
     Connection redoConnection;

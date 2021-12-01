@@ -40,7 +40,7 @@ This script needs to be run after the wiki has been fully downloaded. It has thr
    files downloaded. Revision.txt and wikifiles.txt get also updated.
 """
 
-import sys, os, re, tempfile, getopt
+import sys, os, re
 from urllib.request import urlopen
 from urllib.error import HTTPError
 

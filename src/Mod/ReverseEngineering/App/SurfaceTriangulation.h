@@ -56,14 +56,14 @@ public:
       * (this will make the algorithm adapt to different point densities in the cloud).
       * \param[in] mu the multiplier
       */
-    inline void 
+    inline void
     setMu (double mu) { this->mu = mu; }
 
     /** \brief Set the sphere radius that is to be used for determining the k-nearest neighbors used for triangulating.
       * \param[in] radius the sphere radius that is to contain all k-nearest neighbors
       * \note This distance limits the maximum edge length!
       */
-    inline void 
+    inline void
     setSearchRadius (double radius) { this->searchRadius = radius; }
 
 private:

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64"
+   height="64"
+   id="svg9484"
+   sodipodi:version="0.32"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="Mesh_Boundary.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.1">
+  <title
+     id="title3749">Mesh_Boundary</title>
+  <defs
+     id="defs9486">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3787">
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1;"
+         offset="0"
+         id="stop3789" />
+      <stop
+         style="stop-color:#3465a4;stop-opacity:0;"
+         offset="1"
+         id="stop3791" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient12537">
+      <stop
+         style="stop-color:#00fd00;stop-opacity:1;"
+         offset="0"
+         id="stop12539" />
+      <stop
+         style="stop-color:#00fd00;stop-opacity:0;"
+         offset="1"
+         id="stop12541" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient12537"
+       id="linearGradient12547"
+       x1="4.5"
+       y1="14.755193"
+       x2="30.5"
+       y2="14.755193"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(35,-2)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3787"
+       id="linearGradient3793"
+       x1="17.66153"
+       y1="12.138105"
+       x2="18.211552"
+       y2="15.855962"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(2.0769231,0,0,2.0769231,-0.3221559,-32.300461)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="10.774357"
+     inkscape:cx="15.24726"
+     inkscape:cy="32"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     inkscape:window-width="800"
+     inkscape:window-height="836"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:snap-global="true"
+     inkscape:window-maximized="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2989"
+       units="px"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       spacingx="1px"
+       spacingy="1px" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata9489">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:title>Mesh_Boundary</dc:title>
+        <dc:description>A single triangular mesh face with a hole in it</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>triangle</rdf:li>
+            <rdf:li>face</rdf:li>
+            <rdf:li>hole</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Mesh_Boundary.svg</dc:identifier>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     transform="translate(0,32)">
+    <path
+       style="fill:#73d216;stroke:none"
+       d="m 5,3 46,-30 8,54 z"
+       id="path2991-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:none;stroke:#8ae234;stroke-width:4.15384626;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 9.361434,4.2882443 50.374642,-22.064326"
+       id="path3779"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#8ae234;stroke-width:4.15384626;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 47.039395,-23.701405 7.249288,47.223369"
+       id="path3781"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#8ae234;stroke-width:4.15384626;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 58.081977,21.833612 8,0"
+       id="path3783"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#172a04;stroke-width:4.15384626;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 5,3 46,-30 8,54 z"
+       id="path2991"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#204a87;fill-opacity:1;stroke:#0b1521;stroke-width:2.15216589;stroke-opacity:1"
+       id="path10509"
+       sodipodi:cx="20.143869"
+       sodipodi:cy="14.792462"
+       sodipodi:rx="5.051754"
+       sodipodi:ry="3.6309483"
+       d="m 25.195623,14.792462 c 0,2.005318 -2.261747,3.630949 -5.051754,3.630949 -2.790006,0 -5.051754,-1.625631 -5.051754,-3.630949 0,-2.005317 2.261748,-3.630948 5.051754,-3.630948 2.790007,0 5.051754,1.625631 5.051754,3.630948 z"
+       transform="matrix(1.8607197,0,0,2.0020199,0.565081,-29.722958)" />
+    <path
+       style="fill:none;stroke:url(#linearGradient3793);stroke-width:4.15384626;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 32.908613,0.73482268 C 32.199859,-3.2235373 40.336618,-4.8362971 43,-1"
+       id="path3785"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+  </g>
+</svg>

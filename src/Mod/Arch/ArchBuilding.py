@@ -1,9 +1,6 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -26,7 +23,7 @@
 import FreeCAD,Draft,ArchCommands,ArchFloor
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    from PySide import QtCore
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -37,9 +34,9 @@ else:
         return txt
     # \endcond
 
-__title__="FreeCAD Building"
+__title__  = "FreeCAD Building"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchBuilding
 #  \ingroup ARCH
@@ -239,8 +236,8 @@ class _CommandBuilding:
                 else:
                     warning = True
         if warning :
-            message = translate( "Arch" , "You can put anything but Site and Building object in a Building object.\n\
-Building object is not allowed to accept Site and Building object.\n\
+            message = translate( "Arch" , "You can put anything but Site and Building objects in a Building object.\n\
+Building object is not allowed to accept Site and Building objects.\n\
 Site and Building objects will be removed from the selection.\n\
 You can change that in the preferences.") + "\n"
             ArchCommands.printMessage( message )
@@ -270,7 +267,7 @@ class _Building(ArchFloor._Floor):
 
         ArchFloor._Floor.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Building"
+        obj.IfcType = "Building"
 
     def setProperties(self,obj):
 

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "Probe",
+  "shape": "probe.fcstd",
+  "parameter": {
+    "Diameter": "6.0000 mm",
+    "Length": "50.0000 mm",
+    "ShaftDiameter": "4.0000 mm"
+  },
+  "attribute": {}
+}

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2012    *
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -43,7 +43,7 @@ PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderOriginFeature)
 
 
 ViewProviderPlane::ViewProviderPlane()
-{ 
+{
     sPixmap = "Std_Plane";
 }
 
@@ -70,13 +70,11 @@ void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
     sep->addChild ( pCoords );
 
     SoIndexedLineSet *pLines  = new SoIndexedLineSet ();
-    pLines->ref();
     pLines->coordIndex.setNum(6);
     pLines->coordIndex.setValues(0, 6, lines);
     sep->addChild ( pLines );
 
     SoTranslation *textTranslation = new SoTranslation ();
-    textTranslation->ref ();
     textTranslation->translation.setValue ( SbVec3f ( -size * 49. / 50., size * 9./10., 0 ) );
     sep->addChild ( textTranslation );
 

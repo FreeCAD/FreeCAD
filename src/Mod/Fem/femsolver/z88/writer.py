@@ -1,6 +1,7 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   Copyright (c) 2017 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,222 +21,288 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Z88 Writer"
+__title__ = "FreeCAD FEM solver Z88 writer"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
 
-import FreeCAD
 import time
-import femmesh.meshtools as FemMeshTools
-import feminout.importZ88Mesh as importZ88Mesh
-from .. import writerbase as FemInputWriter
+from os.path import join
+
+import FreeCAD
+
+from .. import writerbase
+from feminout import importZ88Mesh
+from femmesh import meshtools
 
 
-class FemInputWriterZ88(FemInputWriter.FemInputWriter):
-    def __init__(self,
-                 analysis_obj, solver_obj,
-                 mesh_obj, matlin_obj, matnonlin_obj,
-                 fixed_obj, displacement_obj,
-                 contact_obj, planerotation_obj, transform_obj,
-                 selfweight_obj, force_obj, pressure_obj,
-                 temperature_obj, heatflux_obj, initialtemperature_obj,
-                 beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
-                 dir_name=None
-                 ):
-
-        FemInputWriter.FemInputWriter.__init__(
+class FemInputWriterZ88(writerbase.FemInputWriter):
+    def __init__(
+        self,
+        analysis_obj,
+        solver_obj,
+        mesh_obj,
+        member,
+        dir_name=None
+    ):
+        writerbase.FemInputWriter.__init__(
             self,
-            analysis_obj, solver_obj,
-            mesh_obj, matlin_obj, matnonlin_obj,
-            fixed_obj, displacement_obj,
-            contact_obj, planerotation_obj, transform_obj,
-            selfweight_obj, force_obj, pressure_obj,
-            temperature_obj, heatflux_obj, initialtemperature_obj,
-            beamsection_obj, beamrotation_obj, shellthickness_obj, fluidsection_obj,
-            dir_name)
-        # self.dir_name does have a slash at the end
-        self.file_name = self.dir_name + 'z88'
-        FreeCAD.Console.PrintMessage('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name + '\n')
-        FreeCAD.Console.PrintMessage('FemInputWriterZ88 --> self.file_name  -->  ' + self.file_name + '\n')
+            analysis_obj,
+            solver_obj,
+            mesh_obj,
+            member,
+            dir_name
+        )
+        self.file_name = join(self.dir_name, "z88")
 
-    def write_z88_input(self):
-        timestart = time.clock()
-        if not self.femnodes_mesh:
-            self.femnodes_mesh = self.femmesh.Nodes
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-            self.element_count = len(self.femelement_table)
-        self.set_z88_elparam()
+    # ********************************************************************************************
+    # write solver input
+    def write_solver_input(self):
+        timestart = time.process_time()
+        FreeCAD.Console.PrintMessage("\n")  # because of time print in separate line
+        FreeCAD.Console.PrintMessage("Z88 solver input writing...\n")
+        FreeCAD.Console.PrintLog(
+            "FemInputWriterZ88 --> self.dir_name  -->  {}\n"
+            .format(self.dir_name)
+        )
+        FreeCAD.Console.PrintMessage(
+            "FemInputWriterZ88 --> self.file_name  -->  {}\n"
+            .format(self.file_name)
+        )
+        FreeCAD.Console.PrintMessage(
+            "Write z88 input files to: {}\n"
+            .format(self.dir_name)
+        )
+        control = self.set_z88_elparam()
+        if control is False:
+            return None
         self.write_z88_mesh()
-        self.write_z88_contraints()
+        self.write_z88_constraints()
         self.write_z88_face_loads()
         self.write_z88_materials()
         self.write_z88_elements_properties()
         self.write_z88_integration_properties()
         self.write_z88_memory_parameter()
         self.write_z88_solver_parameter()
-        FreeCAD.Console.PrintMessage("Writing time input file: " + str(time.clock() - timestart) + ' \n\n')
+        writing_time_string = (
+            "Writing time input file: {} seconds"
+            .format(round((time.process_time() - timestart), 2))
+        )
+        FreeCAD.Console.PrintMessage(
+            "{}\n\n".format(writing_time_string))
         return self.dir_name
 
+    # ********************************************************************************************
     def set_z88_elparam(self):
-        # TODO: z88_param should be moved to the solver object like the known analysis
-        z8804 = {'INTORD': '0', 'INTOS': '0', 'IHFLAG': '0', 'ISFLAG': '1'}  # seg2 --> stab4
-        z8824 = {'INTORD': '7', 'INTOS': '7', 'IHFLAG': '1', 'ISFLAG': '1'}  # tria6 --> schale24
-        z8823 = {'INTORD': '3', 'INTOS': '0', 'IHFLAG': '1', 'ISFLAG': '0'}  # quad8 --> schale23
-        z8817 = {'INTORD': '4', 'INTOS': '0', 'IHFLAG': '0', 'ISFLAG': '0'}  # tetra4 --> volume17
-        z8816 = {'INTORD': '4', 'INTOS': '0', 'IHFLAG': '0', 'ISFLAG': '0'}  # tetra10 --> volume16
-        z8801 = {'INTORD': '2', 'INTOS': '2', 'IHFLAG': '0', 'ISFLAG': '1'}  # hexa8 --> volume1
-        z8810 = {'INTORD': '3', 'INTOS': '0', 'IHFLAG': '0', 'ISFLAG': '0'}  # hexa20 --> volume10
-        z88_param = {4: z8804, 24: z8824, 23: z8823, 17: z8817, 16: z8816, 1: z8801, 10: z8810}
-        self.z88_param = z88_param
-        # elemente 17, 16, 10, INTORD etc ... testen !!!
-        self.z88_element_type = importZ88Mesh.get_z88_element_type(self.femmesh, self.femelement_table)
-        self.z88_elparam = self.z88_param[self.z88_element_type]
+        # TODO: param should be moved to the solver object like the known analysis
+        z8804 = {"INTORD": "0", "INTOS": "0", "IHFLAG": "0", "ISFLAG": "1"}  # seg2 --> stab4
+        z8824 = {"INTORD": "7", "INTOS": "7", "IHFLAG": "1", "ISFLAG": "1"}  # tria6 --> schale24
+        z8823 = {"INTORD": "3", "INTOS": "0", "IHFLAG": "1", "ISFLAG": "0"}  # quad8 --> schale23
+        z8817 = {"INTORD": "4", "INTOS": "0", "IHFLAG": "0", "ISFLAG": "0"}  # tetra4 --> volume17
+        z8816 = {"INTORD": "4", "INTOS": "0", "IHFLAG": "0", "ISFLAG": "0"}  # tetra10 --> volume16
+        z8801 = {"INTORD": "2", "INTOS": "2", "IHFLAG": "0", "ISFLAG": "1"}  # hexa8 --> volume1
+        z8810 = {"INTORD": "3", "INTOS": "0", "IHFLAG": "0", "ISFLAG": "0"}  # hexa20 --> volume10
+        param = {4: z8804, 24: z8824, 23: z8823, 17: z8817, 16: z8816, 1: z8801, 10: z8810}
+        # TODO: test elements 17, 16, 10, INTORD etc
+        self.z88_element_type = importZ88Mesh.get_z88_element_type(
+            self.femmesh,
+            self.femelement_table
+        )
+        if self.z88_element_type in param:
+            self.z88_elparam = param[self.z88_element_type]
+        else:
+            FreeCAD.Console.PrintError(
+                "Element type not supported by Z88. Can not write Z88 solver input.\n")
+            return False
         FreeCAD.Console.PrintMessage(self.z88_elparam)
-        FreeCAD.Console.PrintMessage('\n')
+        FreeCAD.Console.PrintMessage("\n")
+        return True
 
+    # ********************************************************************************************
     def write_z88_mesh(self):
-        mesh_file_path = self.file_name + 'i1.txt'
-        f = open(mesh_file_path, 'w')
-        importZ88Mesh.write_z88_mesh_to_file(self.femnodes_mesh, self.femelement_table, self.z88_element_type, f)
+        if not self.femnodes_mesh:
+            self.femnodes_mesh = self.femmesh.Nodes
+        if not self.femelement_table:
+            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
+            self.element_count = len(self.femelement_table)
+        mesh_file_path = self.file_name + "i1.txt"
+        f = open(mesh_file_path, "w")
+        importZ88Mesh.write_z88_mesh_to_file(
+            self.femnodes_mesh,
+            self.femelement_table,
+            self.z88_element_type,
+            f
+        )
         f.close()
 
-    def write_z88_contraints(self):
+    # ********************************************************************************************
+    def write_z88_constraints(self):
         constraints_data = []  # will be a list of tuple for better sorting
 
         # fixed constraints
-        # get nodes
-        self.get_constraints_fixed_nodes()
-        # write nodes to constraints_data (different from writing to file in ccxInpWriter)
-        for femobj in self.fixed_objects:
-            for n in femobj['Nodes']:
-                constraints_data.append((n, str(n) + '  1  2  0\n'))
-                constraints_data.append((n, str(n) + '  2  2  0\n'))
-                constraints_data.append((n, str(n) + '  3  2  0\n'))
+        # write nodes to constraints_data (different from writing to file in ccxInpWriter
+        for femobj in self.member.cons_fixed:
+            for n in femobj["Nodes"]:
+                constraints_data.append((n, "{}  1  2  0\n".format(n)))
+                constraints_data.append((n, "{}  2  2  0\n".format(n)))
+                constraints_data.append((n, "{}  3  2  0\n".format(n)))
 
         # forces constraints
-        # check shape type of reference shape and get node loads
-        self.get_constraints_force_nodeloads()
-        # write node loads to constraints_data (a bit different from writing to file for ccxInpWriter)
-        for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            direction_vec = femobj['Object'].DirectionVector
-            for ref_shape in femobj['NodeLoadTable']:
+        # write node loads to constraints_data
+        # a bit different from writing to file for ccxInpWriter
+        for femobj in self.member.cons_force:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            direction_vec = femobj["Object"].DirectionVector
+            for ref_shape in femobj["NodeLoadTable"]:
                 for n in sorted(ref_shape[1]):
                     node_load = ref_shape[1][n]
                     if (direction_vec.x != 0.0):
                         v1 = direction_vec.x * node_load
-                        constraints_data.append((n, str(n) + '  1  1  ' + str(v1) + '\n'))
+                        constraints_data.append((n, "{}  1  1  {}\n".format(n, v1)))
                     if (direction_vec.y != 0.0):
                         v2 = direction_vec.y * node_load
-                        constraints_data.append((n, str(n) + '  2  1  ' + str(v2) + '\n'))
+                        constraints_data.append((n, "{}  2  1  {}\n".format(n, v2)))
                     if (direction_vec.z != 0.0):
                         v3 = direction_vec.z * node_load
-                        constraints_data.append((n, str(n) + '  3  1  ' + str(v3) + '\n'))
+                        constraints_data.append((n, "{}  3  1  {}\n".format(n, v3)))
 
         # write constraints_data to file
-        contraints_file_path = self.file_name + 'i2.txt'
-        f = open(contraints_file_path, 'w')
-        f.write(str(len(constraints_data)) + '\n')
+        constraints_file_path = self.file_name + "i2.txt"
+        f = open(constraints_file_path, "w")
+        f.write(str(len(constraints_data)) + "\n")
         for c in sorted(constraints_data):
             f.write(c[1])
         f.close()
 
+    # ********************************************************************************************
     def write_z88_face_loads(self):
         # not yet supported
-        face_load_file_path = self.file_name + 'i5.txt'
-        f = open(face_load_file_path, 'w')
-        f.write(' 0')
-        f.write('\n')
+        face_load_file_path = self.file_name + "i5.txt"
+        f = open(face_load_file_path, "w")
+        f.write(" 0")
+        f.write("\n")
         f.close()
 
+    # ********************************************************************************************
     def write_z88_materials(self):
-        if len(self.material_objects) == 1:
-            material_data_file_name = '51.txt'
-            materials_file_path = self.file_name + 'mat.txt'
-            fms = open(materials_file_path, 'w')
-            fms.write('1\n')
-            fms.write('1 ' + str(self.element_count) + ' ' + material_data_file_name)
-            fms.write('\n')
-            fms.close()
-            material_data_file_path = self.dir_name + '/' + material_data_file_name
-            fmd = open(material_data_file_path, 'w')
-            mat_obj = self.material_objects[0]['Object']
-            YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
-            YM_in_MPa = YM.getValueAs('MPa')
-            PR = float(mat_obj.Material['PoissonRatio'])
-            fmd.write('{0} {1:.3f}'.format(YM_in_MPa, PR))
-            fmd.write('\n')
-            fmd.close()
-        else:
-            FreeCAD.Console.PrintError("Multiple Materials for Z88 not yet supported!\n")
+        mat_obj = self.member.mats_linear[0]["Object"]
+        material_data_file_name = "51.txt"
+        materials_file_path = self.file_name + "mat.txt"
+        fms = open(materials_file_path, "w")
+        fms.write("1\n")
+        fms.write("1 {} {}".format(self.element_count, material_data_file_name))
+        fms.write("\n")
+        fms.close()
+        material_data_file_path = join(self.dir_name, material_data_file_name)
+        fmd = open(material_data_file_path, "w")
+        YM = FreeCAD.Units.Quantity(mat_obj.Material["YoungsModulus"])
+        YM_in_MPa = YM.getValueAs("MPa")
+        PR = float(mat_obj.Material["PoissonRatio"])
+        fmd.write("{0} {1:.3f}".format(YM_in_MPa, PR))
+        fmd.write("\n")
+        fmd.close()
 
+    # ********************************************************************************************
     def write_z88_elements_properties(self):
-        element_properties_file_path = self.file_name + 'elp.txt'
+        element_properties_file_path = self.file_name + "elp.txt"
         elements_data = []
-        if FemMeshTools.is_edge_femmesh(self.femmesh):
-            if len(self.beamsection_objects) == 1:
-                beam_obj = self.beamsection_objects[0]['Object']
-                width = beam_obj.RectWidth.getValueAs('mm')
-                height = beam_obj.RectHeight.getValueAs('mm')
-                area = str(width * height)
-                elements_data.append('1 ' + str(self.element_count) + ' ' + area + ' 0 0 0 0 0 0 ')
-                FreeCAD.Console.PrintMessage("Be aware, only trusses are supported for edge meshes!\n")
+        if meshtools.is_edge_femmesh(self.femmesh):
+            beam_obj = self.member.geos_beamsection[0]["Object"]
+            area = 0
+            if beam_obj.SectionType == "Rectangular":
+                width = beam_obj.RectWidth.getValueAs("mm").Value
+                height = beam_obj.RectHeight.getValueAs("mm").Value
+                area = width * height
+            elif beam_obj.SectionType == "Circular":
+                diameter = beam_obj.CircDiameter.getValueAs("mm").Value
+                from math import pi
+                area = 0.25 * pi * diameter * diameter
             else:
-                FreeCAD.Console.PrintError("Multiple beamsections for Z88 not yet supported!\n")
-        elif FemMeshTools.is_face_femmesh(self.femmesh):
-            if len(self.shellthickness_objects) == 1:
-                thick_obj = self.shellthickness_objects[0]['Object']
-                thickness = str(thick_obj.Thickness.getValueAs('mm'))
-                elements_data.append('1 ' + str(self.element_count) + ' ' + thickness + ' 0 0 0 0 0 0 ')
-            else:
-                FreeCAD.Console.PrintError("Multiple thicknesses for Z88 not yet supported!\n")
-        elif FemMeshTools.is_solid_femmesh(self.femmesh):
-            elements_data.append('1 ' + str(self.element_count) + ' 0 0 0 0 0 0 0')
+                FreeCAD.Console.PrintError(
+                    "Cross section type {} not supported, "
+                    "cross section area will be 0 in solver input.\n"
+                    .format(beam_obj.SectionType)
+                )
+                # TODO make the check in prechecks and delete it here
+                # no extensive errorhandling in writer
+                # this way the solver will fail and an exception is raised somehow
+            elements_data.append(
+                "1 {} {} 0 0 0 0 0 0 "
+                .format(self.element_count, area)
+            )
+            FreeCAD.Console.PrintWarning(
+                "Be aware, only trusses are supported for edge meshes!\n"
+            )
+        elif meshtools.is_face_femmesh(self.femmesh):
+            thick_obj = self.member.geos_shellthickness[0]["Object"]
+            thickness = thick_obj.Thickness.getValueAs("mm").Value
+            elements_data.append(
+                "1 {} {} 0 0 0 0 0 0 "
+                .format(self.element_count, thickness)
+            )
+        elif meshtools.is_solid_femmesh(self.femmesh):
+            elements_data.append(
+                "1 {} 0 0 0 0 0 0 0"
+                .format(self.element_count)
+            )
         else:
             FreeCAD.Console.PrintError("Error!\n")
-        f = open(element_properties_file_path, 'w')
-        f.write(str(len(elements_data)) + '\n')
+        f = open(element_properties_file_path, "w")
+        f.write(str(len(elements_data)) + "\n")
         for e in elements_data:
             f.write(e)
-        f.write('\n')
+        f.write("\n")
         f.close()
 
+    # ********************************************************************************************
     def write_z88_integration_properties(self):
         integration_data = []
-        integration_data.append('1 ' + str(self.element_count) + ' ' + self.z88_elparam['INTORD'] + ' ' + self.z88_elparam['INTOS'])
-        integration_properties_file_path = self.file_name + 'int.txt'
-        f = open(integration_properties_file_path, 'w')
-        f.write(str(len(integration_data)) + '\n')
+        integration_data.append("1 {} {} {}".format(
+            self.element_count,
+            self.z88_elparam["INTORD"],
+            self.z88_elparam["INTOS"]
+        ))
+        integration_properties_file_path = self.file_name + "int.txt"
+        f = open(integration_properties_file_path, "w")
+        f.write("{}\n".format(len(integration_data)))
         for i in integration_data:
             f.write(i)
-        f.write('\n')
+        f.write("\n")
         f.close()
 
+    # ********************************************************************************************
     def write_z88_solver_parameter(self):
         global z88_man_template
-        z88_man_template = z88_man_template.replace("$z88_param_ihflag", str(self.z88_elparam['IHFLAG']))
-        z88_man_template = z88_man_template.replace("$z88_param_isflag", str(self.z88_elparam['ISFLAG']))
-        solver_parameter_file_path = self.file_name + 'man.txt'
-        f = open(solver_parameter_file_path, 'w')
+        z88_man_template = z88_man_template.replace(
+            "$z88_param_ihflag", str(self.z88_elparam["IHFLAG"])
+        )
+        z88_man_template = z88_man_template.replace(
+            "$z88_param_isflag", str(self.z88_elparam["ISFLAG"])
+        )
+        solver_parameter_file_path = self.file_name + "man.txt"
+        f = open(solver_parameter_file_path, "w")
         f.write(z88_man_template)
         f.close()
 
+    # ********************************************************************************************
     def write_z88_memory_parameter(self):
         # self.z88_param_maxgs = 6000000
         self.z88_param_maxgs = 50000000  # vierkantrohr
         global z88_dyn_template
-        z88_dyn_template = z88_dyn_template.replace("$z88_param_maxgs", str(self.z88_param_maxgs))
-        solver_parameter_file_path = self.file_name + '.dyn'
-        f = open(solver_parameter_file_path, 'w')
+        z88_dyn_template = z88_dyn_template.replace(
+            "$z88_param_maxgs",
+            "{}".format(self.z88_param_maxgs)
+        )
+        solver_parameter_file_path = self.file_name + ".dyn"
+        f = open(solver_parameter_file_path, "w")
         f.write(z88_dyn_template)
         f.close()
 
 
 # for solver parameter file Z88man.txt
-z88_man_template = '''DYNAMIC START
+z88_man_template = """DYNAMIC START
 ---------------------------------------------------------------------------
 Z88V14OS
 ---------------------------------------------------------------------------
@@ -271,10 +338,10 @@ STRESS START
 STRESS END
 
 DYNAMIC END
-'''
+"""
 
 # for memory parameter file z88.dyn
-z88_dyn_template = '''DYNAMIC START
+z88_dyn_template = """DYNAMIC START
 ---------------------------------------------------------------------------
 Z88 new version 14OS                   Z88 neue Version 14OS
 ---------------------------------------------------------------------------
@@ -323,6 +390,6 @@ Entries for Cuthill-McKee Z88H         Daten fuer Cuthill- McKee Programm
 
 
 DYNAMIC END
-'''
+"""
 
 ##  @}

@@ -69,8 +69,14 @@ protected:
     void getParameters();
     QStringList listToQ(std::vector<std::string> in);
 
+private Q_SLOTS:
+    void onNameChanged();
+    void onScaleChanged();
+    void onLineWeightChanged();
+    void onColorChanged();
+
 private:
-    Ui_TaskGeomHatch * ui;
+    std::unique_ptr<Ui_TaskGeomHatch> ui;
     TechDraw::DrawGeomHatch* m_hatch;
     TechDrawGui::ViewProviderGeomHatch* m_Vp;
     App::DocumentObject* m_source;

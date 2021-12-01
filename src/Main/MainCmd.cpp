@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,8 +19,8 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
+
 #include "../FCConfig.h"
 
 #ifdef _PreComp_
@@ -53,7 +53,9 @@
 using Base::Console;
 using App::Application;
 
-const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2018\n"\
+const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2021\n"\
+                       "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
+                       "FreeCAD wouldn't be possible without FreeCAD community.\n"\
                        "  #####                 ####  ###   ####  \n" \
                        "  #                    #      # #   #   # \n" \
                        "  #     ##  #### ####  #     #   #  #   # \n" \
@@ -70,6 +72,13 @@ int main( int argc, char ** argv )
     setlocale(LC_ALL, "");
     setlocale(LC_NUMERIC, "C");
 
+#if defined(__MINGW32__)
+    const char* mingw_prefix = getenv("MINGW_PREFIX");
+    const char* py_home = getenv("PYTHONHOME");
+    if (!py_home && mingw_prefix)
+        _putenv_s("PYTHONHOME", mingw_prefix);
+#endif
+
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";
     App::Application::Config()["ExeVendor"] = "FreeCAD";
@@ -82,6 +91,7 @@ int main( int argc, char ** argv )
         // Init phase ===========================================================
         // sets the default run mode for FC, starts with command prompt if not overridden in InitConfig...
         App::Application::Config()["RunMode"] = "Exit";
+        App::Application::Config()["LoggingConsole"] = "1";
 
         // Inits the Application
         App::Application::init(argc,argv);
@@ -98,7 +108,7 @@ int main( int argc, char ** argv )
         std::string appName = App::Application::Config()["ExeName"];
         std::stringstream msg;
         msg << "While initializing " << appName << " the following exception occurred: '" << e.what() << "'\n\n";
-        msg << "Python is searching for its runtime files in the following directories:\n" << Py_GetPath() << "\n\n";
+        msg << "Python is searching for its runtime files in the following directories:\n" << Py_EncodeLocale(Py_GetPath(),nullptr) << "\n\n";
         msg << "Python version information:\n" << Py_GetVersion() << "\n";
         const char* pythonhome = getenv("PYTHONHOME");
         if ( pythonhome ) {

@@ -658,11 +658,11 @@ def VALUE(V):
     # first try to instantiate an INTEGER from the string:
     try:
         return INTEGER(V)
-    except:
+    except Exception:
         pass #not possible, try to cast to REAL
     try:
         return REAL(V)
-    except:
+    except Exception:
         pass
     # else return None
     return None

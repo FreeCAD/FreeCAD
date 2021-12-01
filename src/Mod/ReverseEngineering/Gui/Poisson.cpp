@@ -93,13 +93,12 @@ bool PoissonWidget::accept()
             ;
         QString command = QString::fromLatin1("%1.addObject(\"Mesh::Feature\", \"Poisson\").Mesh = "
             "ReverseEngineering.poissonReconstruction(%2)")
-            .arg(document)
-            .arg(argument)
+            .arg(document, argument)
             ;
 
         Gui::WaitCursor wc;
         Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
-        Gui::Command::openCommand("Poisson reconstruction");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Poisson reconstruction"));
         Gui::Command::runCommand(Gui::Command::Doc, command.toLatin1());
         Gui::Command::commitCommand();
         Gui::Command::updateActive();

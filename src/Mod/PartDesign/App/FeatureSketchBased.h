@@ -54,9 +54,11 @@ public:
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
 
-    App::PropertyBool Refine;
+    App::PropertyBool AllowMultiFace;
 
     short mustExecute() const;
+
+    void setupObject();
 
     /** calculates and updates the Placement property based on the features
      * this one is made from: either from Base, if there is one, or from sketch,
@@ -76,7 +78,7 @@ public:
      *               Default is false.
      */
     Part::Part2DObject* getVerifiedSketch(bool silent=false) const;
-    
+
     /**
      * Verifies the linked Profile and returns it if it is a valid object
      * @param silent if profile property is malformed and the parameter is true
@@ -84,34 +86,39 @@ public:
      *               Default is false.
      */
     Part::Feature* getVerifiedObject(bool silent=false) const;
-    
+
     /**
      * Verifies the linked Object and returns the shape used as profile
-     * @param silent if profirle property is malformed and the parameter is true
+     * @param silent if profile property is malformed and the parameter is true
      *               silently returns nullptr, otherwise throw a Base::Exception.
      *               Default is false.
      */
     TopoDS_Shape getVerifiedFace(bool silent = false) const;
-    
+
     /// Returns the wires the sketch is composed of
     std::vector<TopoDS_Wire> getProfileWires() const;
-    
+
     /// Returns the face of the sketch support (if any)
     const TopoDS_Face getSupportFace() const;
-    
+
     Base::Vector3d getProfileNormal() const;
 
+    Part::TopoShape getProfileShape() const;
+
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
-    int getSketchAxisCount(void) const;    
+    int getSketchAxisCount(void) const;
 
     virtual Part::Feature* getBaseObject(bool silent=false) const;
-    
+
     //backwards compatibility: profile property was renamed and has different type now
     virtual void Restore(Base::XMLReader& reader);
-    
+    virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
+
+    // calculate the through all length
+    double getThroughAllLength() const;
+
 protected:
     void remapSupportShape(const TopoDS_Shape&);
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
 
     /// Extract a face from a given LinkSub
     static void getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
@@ -123,20 +130,44 @@ protected:
                             const TopoDS_Face& supportface,
                             const TopoDS_Shape& sketchshape,
                             const std::string& method,
-                            const gp_Dir& dir,
-                            const double offset);
+                            const gp_Dir& dir);
+
+    /// Add an offset to the face
+    static void addOffsetToFace(TopoDS_Face& upToFace,
+                                const gp_Dir& dir,
+                                double offset);
+
     /**
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepPrimAPI_MakePrism
       */
+    void generatePrism(TopoDS_Shape& prism,
+                       const TopoDS_Shape& sketchshape,
+                       const std::string& method,
+                       const gp_Dir& direction,
+                       const double L,
+                       const double L2,
+                       const bool midplane,
+                       const bool reversed);
+    // See BRepFeat_MakePrism
+    enum PrismMode {
+        CutFromBase = 0,
+        FuseWithBase = 1,
+        None = 2
+    };
+    /**
+      * Generate a linear prism
+      * It will be a stand-alone solid created with BRepFeat_MakePrism
+      */
     static void generatePrism(TopoDS_Shape& prism,
-                              const TopoDS_Shape& sketchshape,
                               const std::string& method,
+                              const TopoDS_Shape& baseshape,
+                              const TopoDS_Shape& profileshape,
+                              const TopoDS_Face& sketchface,
+                              const TopoDS_Face& uptoface,
                               const gp_Dir& direction,
-                              const double L,
-                              const double L2,
-                              const bool midplane,
-                              const bool reversed);
+                              PrismMode Mode,
+                              Standard_Boolean Modify);
 
     /// Check whether the wire after projection on the face is inside the face
     static bool checkWireInsideFace(const TopoDS_Wire& wire,
@@ -151,8 +182,8 @@ protected:
     double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v);
     /// get Axis from ReferenceAxis
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
-                 Base::Vector3d& base, Base::Vector3d& dir);
-        
+                 Base::Vector3d& base, Base::Vector3d& dir, bool checkPerpendicular=true);
+
     void onChanged(const App::Property* prop);
 private:
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;

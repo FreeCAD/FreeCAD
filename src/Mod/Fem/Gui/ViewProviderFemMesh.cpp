@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+
 # include <Inventor/SoDB.h>
 # include <Inventor/SoInput.h>
 # include <Inventor/SbVec3f.h>
@@ -47,7 +48,14 @@
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/details/SoPointDetail.h>
+
 # include <QFile>
+
+# include <sstream>
+
+# include <SMESH_Mesh.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMDSAbs_ElementType.hxx>
 #endif
 
 #include "ViewProviderFemMesh.h"
@@ -61,11 +69,8 @@
 #include <Base/Console.h>
 #include <Base/TimeInfo.h>
 #include <Base/BoundBox.h>
-#include <sstream>
 
-#include <SMESH_Mesh.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDSAbs_ElementType.hxx>
+
 
 using namespace FemGui;
 
@@ -157,7 +162,7 @@ bool FemFace::isSameFace (FemFace &face)
     }
 
     return false;
-};
+}
 
 // ----------------------------------------------------------------------------
 
@@ -165,6 +170,7 @@ class ViewProviderFemMesh::Private
 {
 public:
     static const char *dm_face_wire;
+    static const char *dm_wire_node;
     static const char *dm_face_wire_node;
     static const char *dm_face;
     static const char *dm_node;
@@ -172,6 +178,7 @@ public:
 };
 
 const char * ViewProviderFemMesh::Private::dm_face_wire = "Faces & Wireframe";
+const char * ViewProviderFemMesh::Private::dm_wire_node = "Wireframe & Nodes";
 const char * ViewProviderFemMesh::Private::dm_face_wire_node = "Faces, Wireframe & Nodes";
 const char * ViewProviderFemMesh::Private::dm_face = "Faces";
 const char * ViewProviderFemMesh::Private::dm_node = "Nodes";
@@ -273,9 +280,8 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     SoPointSet *pointset = new SoPointSet;
     pcAnotRoot->addChild(pointset);
 
-    // flat
+    // Faces
     SoGroup* pcFlatRoot = new SoGroup();
-    // face nodes
     pcFlatRoot->addChild(pcCoords);
     pcFlatRoot->addChild(pShapeHints);
     pcFlatRoot->addChild(pcShapeMaterial);
@@ -284,10 +290,10 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcFlatRoot->addChild(pcAnotRoot);
     addDisplayMaskMode(pcFlatRoot, Private::dm_face);
 
-    // line
+    // Wireframe
+    SoGroup* pcWireRoot = new SoSeparator();
     SoLightModel* pcLightModel = new SoLightModel();
     pcLightModel->model = SoLightModel::BASE_COLOR;
-    SoGroup* pcWireRoot = new SoGroup();
     pcWireRoot->addChild(pcCoords);
     pcWireRoot->addChild(pcDrawStyle);
     pcWireRoot->addChild(pcLightModel);
@@ -297,8 +303,7 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcWireRoot->addChild(pcLines);
     addDisplayMaskMode(pcWireRoot, Private::dm_wire);
 
-
-    // Points
+    // Nodes
     SoGroup* pcPointsRoot = new SoSeparator();
     pcPointsRoot->addChild(pcPointMaterial);
     pcPointsRoot->addChild(pcPointStyle);
@@ -307,43 +312,34 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcPointsRoot->addChild(pointset);
     addDisplayMaskMode(pcPointsRoot, Private::dm_node);
 
-    // flat+line (Elements)
-    SoPolygonOffset* offset = new SoPolygonOffset();
-    offset->styles = SoPolygonOffset::LINES;
+    // For combined modes make sure to use a Separator instead of a Group
+    // because the group affects nodes that are rendered afterwards (#0003769)
+
+    // Faces + Wireframe (Elements)
+    //SoPolygonOffset* offset = new SoPolygonOffset();
+    //offset->styles = SoPolygonOffset::FILLED;
     //offset->factor = 2.0f;
     //offset->units = 1.0f;
-    SoGroup* pcFlatWireRoot = new SoSeparator();
-    // add the complete flat group (contains the coordinates)
-    pcFlatWireRoot->addChild(pcFlatRoot);
-    //pcFlatWireRoot->addChild(offset); // makes no difference.....
-    // add the line nodes
-    SoMaterialBinding *pcMatBind = new SoMaterialBinding;
-    pcMatBind->value = SoMaterialBinding::OVERALL;
-    pcFlatWireRoot->addChild(pcMatBind);
-    pcFlatWireRoot->addChild(pcDrawStyle);
-    pcFlatWireRoot->addChild(pcLightModel);
-    pcFlatWireRoot->addChild(color);
-    pcFlatWireRoot->addChild(pcLines);
 
+    SoGroup* pcFlatWireRoot = new SoGroup();
+    pcFlatWireRoot->addChild(pcWireRoot);
+    //pcFlatWireRoot->addChild(offset);
+    pcFlatWireRoot->addChild(pcFlatRoot);
     addDisplayMaskMode(pcFlatWireRoot, Private::dm_face_wire);
 
-    // flat+line+Nodes (Elements&Nodes)
-    SoGroup* pcElemNodesRoot = new SoSeparator();
-    // add the complete flat group (contains the coordinates)
-    pcElemNodesRoot->addChild(pcFlatRoot);
+    // Faces + Wireframe + Nodes (Elements&Nodes)
+    SoGroup* pcElemNodesRoot = new SoGroup();
+    pcElemNodesRoot->addChild(pcPointsRoot);
+    pcElemNodesRoot->addChild(pcWireRoot);
     //pcElemNodesRoot->addChild(offset);
-    // add the line nodes
-    pcElemNodesRoot->addChild(pcDrawStyle);
-    pcElemNodesRoot->addChild(pcLightModel);
-    pcElemNodesRoot->addChild(color);
-    pcElemNodesRoot->addChild(pcLines);
-    // add the points nodes
-    pcElemNodesRoot->addChild(pcPointMaterial);
-    pcElemNodesRoot->addChild(pcPointStyle);
-    pcElemNodesRoot->addChild(pcPointMaterial);
-    pcElemNodesRoot->addChild(pointset);
-
+    pcElemNodesRoot->addChild(pcFlatRoot);
     addDisplayMaskMode(pcElemNodesRoot, Private::dm_face_wire_node);
+
+    // Wireframe + Nodes
+    SoGroup* pcWireNodeRoot = new SoGroup();
+    pcWireNodeRoot->addChild(pcPointsRoot);
+    pcWireNodeRoot->addChild(pcWireRoot);
+    addDisplayMaskMode(pcWireNodeRoot, Private::dm_wire_node);
 }
 
 void ViewProviderFemMesh::setDisplayMode(const char* ModeName)
@@ -360,6 +356,7 @@ std::vector<std::string> ViewProviderFemMesh::getDisplayModes(void) const
     StrList.push_back(Private::dm_face);
     StrList.push_back(Private::dm_wire);
     StrList.push_back(Private::dm_node);
+    StrList.push_back(Private::dm_wire_node);
     return StrList;
 }
 
@@ -395,7 +392,9 @@ void ViewProviderFemMesh::onChanged(const App::Property* prop)
     else if (prop == &ShowInner ) {
         // recalc mesh with new settings
         ViewProviderFEMMeshBuilder builder;
-        builder.createMesh(&(dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh), pcCoords, pcFaces, pcLines, vFaceElementIdx, vNodeElementIdx, onlyEdges, ShowInner.getValue(), MaxFacesShowInner.getValue());
+        builder.createMesh(&(static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh),
+                           pcCoords, pcFaces, pcLines, vFaceElementIdx, vNodeElementIdx,
+                           onlyEdges, ShowInner.getValue(), MaxFacesShowInner.getValue());
     }
     else if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
@@ -415,7 +414,7 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
 
             str << "Elem" << (edx>>3) << "F"<< (edx&7)+1;
         }
-        // trigger on edges only if edge only mesh, otherwise you only hit edges an never faces....
+        // trigger on edges only if edge only mesh, otherwise you only hit edges and never faces....
         else if (onlyEdges && detail->getTypeId() == SoLineDetail::getClassTypeId()) {
             const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
             int edge = line_detail->getLineIndex() + 1;
@@ -424,8 +423,13 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
         else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
             const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
             int idx = point_detail->getCoordinateIndex();
-            if (idx < static_cast<int>(vNodeElementIdx.size())) {
-                int vertex = vNodeElementIdx[point_detail->getCoordinateIndex()];
+            // first check if the index is part of the highlighted nodes (#0003618)
+            if (idx < static_cast<int>(vHighlightedIdx.size())) {
+                int vertex = vHighlightedIdx[idx];
+                str << "Node" << vertex;
+            }
+            else if (idx < static_cast<int>(vNodeElementIdx.size())) {
+                int vertex = vNodeElementIdx[idx];
                 str << "Node" << vertex;
             }
             else {
@@ -471,15 +475,22 @@ std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* /
     return std::vector<Base::Vector3d>();
 }
 
+std::set<long> ViewProviderFemMesh::getHighlightNodes() const
+{
+    std::set<long> nodes;
+    nodes.insert(vHighlightedIdx.begin(), vHighlightedIdx.end());
+    return nodes;
+}
+
 void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNodes)
 {
-    if(!HighlightedNodes.empty()){
+    if (!HighlightedNodes.empty()) {
         SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
 
         pcAnoCoords->point.setNum(HighlightedNodes.size());
         SbVec3f* verts = pcAnoCoords->point.startEditing();
         int i=0;
-        for(std::set<long>::const_iterator it=HighlightedNodes.begin();it!=HighlightedNodes.end();++it,i++){
+        for (std::set<long>::const_iterator it=HighlightedNodes.begin();it!=HighlightedNodes.end();++it,i++){
             const SMDS_MeshNode *Node = data->FindNode(*it);
             if (Node)
                 verts[i].setValue((float)Node->X(),(float)Node->Y(),(float)Node->Z());
@@ -487,13 +498,22 @@ void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNod
                 verts[i].setValue(0,0,0);
         }
         pcAnoCoords->point.finishEditing();
-    }else{
+
+        // save the node ids
+        vHighlightedIdx.clear();
+        vHighlightedIdx.insert(vHighlightedIdx.end(),
+                               HighlightedNodes.begin(), HighlightedNodes.end());
+    }
+    else {
         pcAnoCoords->point.setNum(0);
+        vHighlightedIdx.clear();
     }
 }
+
 void ViewProviderFemMesh::resetHighlightNodes(void)
 {
     pcAnoCoords->point.setNum(0);
+    vHighlightedIdx.clear();
 }
 
 PyObject * ViewProviderFemMesh::getPyObject()
@@ -697,7 +717,7 @@ inline void insEdgeVec(std::map<int,std::set<int> > &map, int n1, int n2)
     //    map[n2].insert(n1);
     //else
         map[n2].insert(n1);
-};
+}
 
 inline unsigned long ElemFold(unsigned long Element,unsigned long FaceNbr)
 {

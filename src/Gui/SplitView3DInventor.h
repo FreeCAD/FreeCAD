@@ -25,6 +25,7 @@
 #define GUI_SPLITVIEW3DINVENTOR_H
 
 #include "MDIView.h"
+#include "MDIViewPy.h"
 
 #include <Base/Parameter.h>
 #include <CXX/Extensions.hxx>
@@ -39,10 +40,12 @@ class AbstractSplitViewPy;
  */
 class GuiExport AbstractSplitView : public MDIView, public ParameterGrp::ObserverType
 {
+    Q_OBJECT
+
     TYPESYSTEM_HEADER();
 
 public:
-    AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=0);
+    AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
     ~AbstractSplitView();
 
     virtual const char *getName(void) const;
@@ -53,9 +56,11 @@ public:
     virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);
     virtual void onUpdate(void);
     virtual void deleteSelf();
+    virtual void viewAll();
 
     View3DInventorViewer *getViewer(unsigned int) const;
     void setOverrideCursor(const QCursor&);
+    virtual bool containsViewProvider(const ViewProvider*) const;
 
     PyObject *getPyObject(void);
     void setPyObject(PyObject *);
@@ -74,12 +79,16 @@ protected:
 class AbstractSplitViewPy : public Py::PythonExtension<AbstractSplitViewPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    using BaseType = Py::PythonExtension<AbstractSplitViewPy>;
+    static void init_type();    // announce properties and methods
 
     AbstractSplitViewPy(AbstractSplitView *vi);
     ~AbstractSplitViewPy();
+    AbstractSplitView* getSplitViewPtr();
 
     Py::Object repr();
+    Py::Object getattr(const char *);
+    Py::Object cast_to_base(const Py::Tuple&);
 
     Py::Object fitAll(const Py::Tuple&);
     Py::Object viewBottom(const Py::Tuple&);
@@ -88,16 +97,14 @@ public:
     Py::Object viewRear(const Py::Tuple&);
     Py::Object viewRight(const Py::Tuple&);
     Py::Object viewTop(const Py::Tuple&);
-    Py::Object viewAxometric(const Py::Tuple&);
+    Py::Object viewIsometric(const Py::Tuple&);
     Py::Object getViewer(const Py::Tuple&);
     Py::Object sequence_item(ssize_t);
     Py::Object close(const Py::Tuple&);
     int sequence_length();
 
 private:
-    AbstractSplitView* _view;
-    friend class AbstractSplitView;
-    void testExistence();
+    Gui::MDIViewPy base;
 };
 
 /** The SplitView3DInventor class allows to create a window with two or more Inventor views.
@@ -108,7 +115,7 @@ class GuiExport SplitView3DInventor : public AbstractSplitView
     TYPESYSTEM_HEADER();
 
 public:
-    SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=0);
+    SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags());
     ~SplitView3DInventor();
 };
 

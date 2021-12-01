@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -20,14 +19,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-''' Used for CNC machine Stops for Path module. Create an Optional or Mandatory Stop.'''
+
+'''Used for CNC machine Stops for Path module. Create an Optional or Mandatory Stop.'''
 
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -47,7 +47,6 @@ class Stop:
 
     def onChanged(self, obj, prop):
         pass
-#        FreeCAD.ActiveDocument.recompute()
 
     def execute(self, obj):
         if obj.Stop == 'Optional':
@@ -64,7 +63,6 @@ class Stop:
 class _ViewProviderStop:
 
     def __init__(self, vobj):  # mandatory
-        #        obj.addProperty("App::PropertyFloat","SomePropertyName","PropertyGroup","Description of this property")
         vobj.Proxy = self
         mode = 2
         vobj.setEditorMode('LineWidth', mode)
@@ -84,9 +82,10 @@ class _ViewProviderStop:
         return None
 
     def getIcon(self):  # optional
-        return ":/icons/Path-Stop.svg"
+        return ":/icons/Path_Stop.svg"
 
     def onChanged(self, vobj, prop):  # optional
+        # pylint: disable=unused-argument
         mode = 2
         vobj.setEditorMode('LineWidth', mode)
         vobj.setEditorMode('MarkerColor', mode)
@@ -102,7 +101,7 @@ class _ViewProviderStop:
 class CommandPathStop:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Stop',
+        return {'Pixmap': 'Path_Stop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Stop", "Stop"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Stop", "Add Optional or Mandatory Stop to the program")}
 
@@ -110,7 +109,7 @@ class CommandPathStop:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):

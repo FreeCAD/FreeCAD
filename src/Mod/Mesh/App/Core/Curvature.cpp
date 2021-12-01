@@ -28,7 +28,7 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 //#define OPTIMIZE_CURVATURE
 #ifdef OPTIMIZE_CURVATURE
@@ -48,15 +48,16 @@
 #include <Base/Tools.h>
 
 using namespace MeshCore;
+namespace bp = boost::placeholders;
 
 MeshCurvature::MeshCurvature(const MeshKernel& kernel)
   : myKernel(kernel), myMinPoints(20), myRadius(0.5f)
 {
     mySegment.resize(kernel.CountFacets());
-    std::generate(mySegment.begin(), mySegment.end(), Base::iotaGen<unsigned long>(0));
+    std::generate(mySegment.begin(), mySegment.end(), Base::iotaGen<FacetIndex>(0));
 }
 
-MeshCurvature::MeshCurvature(const MeshKernel& kernel, const std::vector<unsigned long>& segm)
+MeshCurvature::MeshCurvature(const MeshKernel& kernel, const std::vector<FacetIndex>& segm)
   : myKernel(kernel), myMinPoints(20), myRadius(0.5f), mySegment(segm)
 {
 }
@@ -71,7 +72,7 @@ void MeshCurvature::ComputePerFace(bool parallel)
 
     if (!parallel) {
         Base::SequencerLauncher seq("Curvature estimation", mySegment.size());
-        for (std::vector<unsigned long>::iterator it = mySegment.begin(); it != mySegment.end(); ++it) {
+        for (std::vector<FacetIndex>::iterator it = mySegment.begin(); it != mySegment.end(); ++it) {
             CurvatureInfo info = face.Compute(*it);
             myCurvature.push_back(info);
             seq.next();
@@ -79,7 +80,7 @@ void MeshCurvature::ComputePerFace(bool parallel)
     }
     else {
         QFuture<CurvatureInfo> future = QtConcurrent::mapped
-            (mySegment, boost::bind(&FacetCurvature::Compute, &face, _1));
+            (mySegment, boost::bind(&FacetCurvature::Compute, &face, bp::_1));
         QFutureWatcher<CurvatureInfo> watcher;
         watcher.setFuture(future);
         watcher.waitForFinished();
@@ -342,10 +343,10 @@ namespace MeshCore {
 class FitPointCollector : public MeshCollector
 {
 public:
-    FitPointCollector(std::set<unsigned long>& ind) : indices(ind){}
-    virtual void Append(const MeshCore::MeshKernel& kernel, unsigned long index)
+    FitPointCollector(std::set<PointIndex>& ind) : indices(ind){}
+    virtual void Append(const MeshCore::MeshKernel& kernel, FacetIndex index)
     {
-        unsigned long ulP1, ulP2, ulP3;
+        PointIndex ulP1, ulP2, ulP3;
         kernel.GetFacetPoints(index, ulP1, ulP2, ulP3);
         indices.insert(ulP1);
         indices.insert(ulP2);
@@ -353,7 +354,7 @@ public:
     }
 
 private:
-    std::set<unsigned long>& indices;
+    std::set<PointIndex>& indices;
 };
 }
 
@@ -364,15 +365,15 @@ FacetCurvature::FacetCurvature(const MeshKernel& kernel, const MeshRefPointToFac
 {
 }
 
-CurvatureInfo FacetCurvature::Compute(unsigned long index) const
+CurvatureInfo FacetCurvature::Compute(FacetIndex index) const
 {
-    Base::Vector3f rkDir0, rkDir1, rkPnt;
+    Base::Vector3f rkDir0, rkDir1;
     Base::Vector3f rkNormal;
 
     MeshGeomFacet face = myKernel.GetFacet(index);
     Base::Vector3f face_gravity = face.GetGravityPoint();
     Base::Vector3f face_normal = face.GetNormal();
-    std::set<unsigned long> point_indices;
+    std::set<PointIndex> point_indices;
     FitPointCollector collect(point_indices);
 
     float searchDist = myRadius;
@@ -390,7 +391,7 @@ CurvatureInfo FacetCurvature::Compute(unsigned long index) const
     std::vector<Base::Vector3f> fitPoints;
     const MeshPointArray& verts = myKernel.GetPoints();
     fitPoints.reserve(point_indices.size());
-    for (std::set<unsigned long>::iterator it = point_indices.begin(); it != point_indices.end(); ++it) {
+    for (std::set<PointIndex>::iterator it = point_indices.begin(); it != point_indices.end(); ++it) {
         fitPoints.push_back(verts[*it] - face_gravity);
     }
 

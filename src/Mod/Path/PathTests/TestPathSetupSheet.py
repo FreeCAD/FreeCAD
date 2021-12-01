@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +21,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path
 import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathLog as PathLog
 import sys
@@ -36,7 +33,7 @@ def refstring(string):
     if sys.version_info.major < 3:
         return string
     return string.replace(" u'", " '")
-    
+
 
 class TestPathSetupSheet(PathTestBase):
 
@@ -56,9 +53,9 @@ class TestPathSetupSheet(PathTestBase):
         self.assertEqualLocale(attrs[PathSetupSheet.Template.HorizRapid], '0.00 mm/s')
         self.assertEqualLocale(attrs[PathSetupSheet.Template.VertRapid], '0.00 mm/s')
         self.assertEqualLocale(attrs[PathSetupSheet.Template.SafeHeightOffset], '3.00 mm')
-        self.assertEqual(attrs[PathSetupSheet.Template.SafeHeightExpression], 'StartDepth+SetupSheet.SafeHeightOffset')
+        self.assertEqual(attrs[PathSetupSheet.Template.SafeHeightExpression], 'OpStockZMax+SetupSheet.SafeHeightOffset')
         self.assertEqualLocale(attrs[PathSetupSheet.Template.ClearanceHeightOffset], '5.00 mm')
-        self.assertEqual(attrs[PathSetupSheet.Template.ClearanceHeightExpression], 'StartDepth+SetupSheet.ClearanceHeightOffset')
+        self.assertEqual(attrs[PathSetupSheet.Template.ClearanceHeightExpression], 'OpStockZMax+SetupSheet.ClearanceHeightOffset')
 
     def test01(self):
         '''Verify SetupSheet template attributes roundtrip.'''

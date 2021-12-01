@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -140,7 +140,7 @@ void Robot6AxisPy::setAxis6(Py::Float arg)
 
 Py::Object Robot6AxisPy::getTcp(void) const
 {
-	return Py::Object(new Base::PlacementPy(new Base::Placement(getRobot6AxisPtr()->getTcp())));
+	return Py::asObject(new Base::PlacementPy(new Base::Placement(getRobot6AxisPtr()->getTcp())));
 }
 
 void Robot6AxisPy::setTcp(Py::Object value)
@@ -154,7 +154,7 @@ void Robot6AxisPy::setTcp(Py::Object value)
     }
     else if (PyObject_TypeCheck(*value, &(Base::PlacementPy::Type))) {
         if(! getRobot6AxisPtr()->setTo(*static_cast<Base::PlacementPy*>(*value)->getPlacementPtr()))
-			throw Base::Exception("Can not reach Point");
+			throw Base::RuntimeError("Can not reach Point");
     }
     else {
         std::string error = std::string("type must be 'Matrix' or 'Placement', not ");

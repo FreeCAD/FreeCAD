@@ -82,7 +82,7 @@ unsigned char * generateTexture(int w, int h, int d)
     }
   }
 
-  
+
   return bitmap;
 }
 
@@ -117,11 +117,11 @@ void doClipping(SbVec3f trans, SbRotation rot)
   // Clip box against plane
 
   SbClip clip;
-  SoMFVec3f * globalVerts = 
+  SoMFVec3f * globalVerts =
     (SoMFVec3f *)SoDB::getGlobalField(SbName("globalVerts"));
-  SoMFVec3f * globalTVerts = 
+  SoMFVec3f * globalTVerts =
     (SoMFVec3f *)SoDB::getGlobalField(SbName("globalTVerts"));
-  SoMFInt32 * globalnv = 
+  SoMFInt32 * globalnv =
     (SoMFInt32 *)SoDB::getGlobalField(SbName("globalnv"));
   globalVerts->startEditing();
   globalVerts->setNum(0);
@@ -154,7 +154,7 @@ void doClipping(SbVec3f trans, SbRotation rot)
   globalnv->finishEditing();
 
   // Close hole in clipped box by clipping against all 6 planes
-  
+
   const SbVec3f planecoords[] = {
     SbVec3f(-10,0,-10),
     SbVec3f(10,0,-10),
@@ -162,7 +162,7 @@ void doClipping(SbVec3f trans, SbRotation rot)
     SbVec3f(-10,0,10)
   };
 
-  
+
   clip.reset();
   for (i = 0;i<4;i++) {
     SbVec3f v;
@@ -176,9 +176,9 @@ void doClipping(SbVec3f trans, SbRotation rot)
     clip.clip(p);
   }
   int numVerts = clip.getNumVertices();
-  SoMFVec3f * planeVerts = 
+  SoMFVec3f * planeVerts =
     (SoMFVec3f *)SoDB::getGlobalField(SbName("planeVerts"));
-  SoMFVec3f * planeTVerts = 
+  SoMFVec3f * planeTVerts =
     (SoMFVec3f *)SoDB::getGlobalField(SbName("planeTVerts"));
   planeVerts->startEditing();
   planeVerts->setNum(0);
@@ -235,7 +235,7 @@ void Texture3D(SoSeparator * root)
   SoMaterial * mat = new SoMaterial;
   mat->emissiveColor.setValue(1,1,1);
   root->addChild(mat);
-    
+
   SoTransformerDragger * dragger = new SoTransformerDragger;
   dragger->scaleFactor.setValue(5,5,5);
   dragger->addValueChangedCallback(draggerCB, NULL);
@@ -310,7 +310,7 @@ void LightManip(SoSeparator * root)
   }
 
 
-} 
+}
 
 
 
@@ -323,8 +323,8 @@ const int texturewidth = 128;
 const int textureheight = 128;
 
 // Global variables
-double cr = 0.33;
-double ci = 0.43;
+double global_cr = 0.33;
+double global_ci = 0.43;
 
 // Global pointer
 //unsigned char * bitmap = new unsigned char[texturewidth*textureheight];
@@ -339,9 +339,9 @@ unsigned char bitmap[texturewidth*textureheight];
 //  int height  - height of the bitmap
 //  int mult    - number to multiply each color by.
 //  unsigned char * bmp - pointer to the bitmap
-//  int n       - number of iterations 
+//  int n       - number of iterations
 void
-julia(double crr, double cii, float zoom, int width, int height, int mult, 
+julia(double crr, double cii, float zoom, int width, int height, int mult,
       unsigned char * bmp, int n)
 {
   double zr, zr_old, zi;
@@ -375,7 +375,7 @@ texture()
   return texture;
 }
 
-// This function is called 20 times each second. 
+// This function is called 20 times each second.
 static void
 timersensorcallback(void * data, SoSensor *)
 {
@@ -384,34 +384,36 @@ timersensorcallback(void * data, SoSensor *)
   SoTexture2 * texnode = (SoTexture2*) data;
 
   if (!direction) {
-    cr -= 0.0005;
-    ci += 0.0005;
+    global_cr -= 0.0005;
+    global_ci += 0.0005;
   }
   else {
-    cr += 0.0005;
-    ci -= 0.0005;
+    global_cr += 0.0005;
+    global_ci -= 0.0005;
   }
 
-  if (ci<0.30)
+  if (global_ci<0.30)
     direction = !direction;
-  else if (ci>0.83)
+  else if (global_ci>0.83)
     direction = !direction;
 
   SbVec2s size;
   int nc;
   unsigned char * image = texnode->image.startEditing(size, nc);
   // Generate a julia set to use as a texturemap
-  julia(cr, ci, 2.5, size[0], size[1], 4, image, 64);
+  julia(global_cr, global_ci, 2.5, size[0], size[1], 4, image, 64);
   texnode->image.finishEditing();
 }
 
 void AnimationTexture(SoSeparator * root)
 {
+  // Scene graph
+  if ( root == NULL ) return; // Shouldn't happen.
 
   // Generate a julia set to use as a texturemap
-  julia(cr, ci, 2.5, texturewidth, textureheight, 4, bitmap, 64);
+  julia(global_cr, global_ci, 2.5, texturewidth, textureheight, 4, bitmap, 64);
 
- 
+
   SoTexture2 * texnode = texture();
 
   // Enable backface culling
@@ -425,8 +427,6 @@ void AnimationTexture(SoSeparator * root)
   texturetimer->setInterval(0.05);
   texturetimer->schedule();
 
-  // Scene graph
-  if ( root == NULL ) return; // Shouldn't happen.
   root->ref(); // prevent from being deleted because of the still running timer sensor
 //  SoSeparator * root = new SoSeparator;
 //  root->ref();
@@ -434,6 +434,4 @@ void AnimationTexture(SoSeparator * root)
   root->addChild(hints);
   root->addChild(texnode);
   root->addChild(new SoCube);
-
- }
-
+}

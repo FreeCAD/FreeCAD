@@ -42,7 +42,7 @@
 #include <GraphicsViewZoom.h>
 
 GraphicsViewZoom::GraphicsViewZoom(QGraphicsView* view)
-  : QObject(view), _view(view)
+  : QObject(view), _view(view), m_invert_zoom(false)
 {
   _view->viewport()->installEventFilter(this);
   _view->setMouseTracking(true);
@@ -79,8 +79,11 @@ bool GraphicsViewZoom::eventFilter(QObject *object, QEvent *event) {
   } else if (event->type() == QEvent::Wheel) {
     QWheelEvent* wheel_event = static_cast<QWheelEvent*>(event);
     if (QApplication::keyboardModifiers() == _modifiers) {
-      if (wheel_event->orientation() == Qt::Vertical) {
-        double angle = wheel_event->delta();
+      QPoint delta = wheel_event->angleDelta();
+      if (qAbs(delta.y()) > qAbs(delta.x())) { // vertical
+        double angle = -delta.y();
+        if (m_invert_zoom)
+          angle = -angle;
         double factor = qPow(_zoom_factor_base, angle);
         gentle_zoom(factor);
         return true;

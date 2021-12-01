@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>484</height>
+    <width>531</width>
+    <height>552</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,90 +26,6 @@
       <string>Visual Settings</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Default line color</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton">
-          <property name="toolTip">
-           <string>The default color for new objects</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>color</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Default line width</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox">
-          <property name="toolTip">
-           <string>The default linewidth for new objects</string>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>linewidth</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
@@ -275,7 +191,7 @@
         <item>
          <widget class="QLabel" name="label_13">
           <property name="text">
-           <string>Alternate SVG Patterns location</string>
+           <string>Alternate SVG patterns location</string>
           </property>
          </widget>
         </item>
@@ -301,7 +217,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</string>
+           <string>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>patternFile</cstring>
@@ -318,7 +234,7 @@
         <item>
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Hatch patterns resolution</string>
+           <string>SVG pattern resolution</string>
           </property>
          </widget>
         </item>
@@ -337,6 +253,9 @@
         </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_2">
+          <property name="toolTip">
+           <string>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</string>
+          </property>
           <property name="maximum">
            <number>512</number>
           </property>
@@ -345,6 +264,92 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>HatchPatternResolution</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>SVG pattern default size</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
+          <property name="toolTip">
+           <string>The default size for SVG patterns</string>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+          <property name="minimum">
+           <double>0.000100000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>HatchPatternSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
+          <property name="toolTip">
+           <string>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</string>
+          </property>
+          <property name="text">
+           <string>Preserve colors of faces during downgrade/upgrade</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>preserveFaceColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
+          <property name="toolTip">
+           <string>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</string>
+          </property>
+          <property name="text">
+           <string>Preserve names of faces during downgrade/upgrade</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>preserveFaceNames</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -550,6 +555,11 @@
   <customwidget>
    <class>Gui::PrefLineEdit</class>
    <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

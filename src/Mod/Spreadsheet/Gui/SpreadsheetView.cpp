@@ -35,32 +35,36 @@
 # include <cmath>
 #endif
 
-#include "SpreadsheetView.h"
-#include "SpreadsheetDelegate.h"
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <App/Range.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/ExpressionCompleter.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
+#include <App/Range.h>
+#include <Base/Tools.h>
+#include <boost_bind_bind.hpp>
+#include <Gui/MainWindow.h>
+#include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <boost/bind.hpp>
+#include <Gui/CommandT.h>
+#include <Gui/Document.h>
+#include <Gui/ExpressionCompleter.h>
+#include <LineEdit.h>
+#include <Mod/Spreadsheet/App/Sheet.h>
+#include <Mod/Spreadsheet/App/SheetPy.h>
 #include <Mod/Spreadsheet/App/Utils.h>
 #include "qtcolorpicker.h"
-#include <LineEdit.h>
 
+#include "SpreadsheetView.h"
+#include "SpreadsheetDelegate.h"
 #include "ui_Sheet.h"
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace Gui;
 using namespace App;
+namespace bp = boost::placeholders;
 
 /* TRANSLATOR SpreadsheetGui::SheetView */
 
-TYPESYSTEM_SOURCE_ABSTRACT(SpreadsheetGui::SheetView, Gui::MDIView);
+TYPESYSTEM_SOURCE_ABSTRACT(SpreadsheetGui::SheetView, Gui::MDIView)
 
 SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWidget *parent)
     : MDIView(pcDocument, parent)
@@ -94,10 +98,13 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     connect(ui->cells->verticalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
             this, SLOT(rowResized(int, int, int)));
 
-    connect(ui->cellContent, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
+    connect(delegate, &SpreadsheetDelegate::finishedWithKey, this, &SheetView::editingFinishedWithKey);
+    connect(ui->cellContent, &ExpressionLineEdit::returnPressed, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
+    connect(ui->cellAlias, &ExpressionLineEdit::returnPressed, this, [this]() {confirmAliasChanged(ui->cellAlias->text()); });
+    connect(ui->cellAlias, &LineEdit::textEdited, this, &SheetView::aliasChanged);
 
-    columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, _1, _2));
-    rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, _1, _2));
+    columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, bp::_1, bp::_2));
+    rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, bp::_1, bp::_2));
 
     connect( model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(modelUpdated(const QModelIndex &, const QModelIndex &)));
 
@@ -116,6 +123,7 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
 
     // Set document object to create auto completer
     ui->cellContent->setDocumentObject(sheet);
+    ui->cellAlias->setDocumentObject(sheet);
 }
 
 SheetView::~SheetView()
@@ -148,6 +156,31 @@ bool SheetView::onMsg(const char *pMsg, const char **)
         getGuiDocument()->saveAs();
         return true;
     }
+    else if(strcmp("Std_Delete",pMsg) == 0) {
+        std::vector<Range> ranges = selectedRanges();
+        if (sheet->hasCell(ranges)) {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear cell(s)"));
+            std::vector<Range>::const_iterator i = ranges.begin();
+            for (; i != ranges.end(); ++i) {
+                FCMD_OBJ_CMD(sheet, "clear('" << i->rangeString() << "')");
+            }
+            Gui::Command::commitCommand();
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        }
+        return true;
+    }
+    else if (strcmp("Cut",pMsg) == 0) {
+        ui->cells->cutSelection();
+        return true;
+    }
+    else if (strcmp("Copy",pMsg) == 0) {
+        ui->cells->copySelection();
+        return true;
+    }
+    else if (strcmp("Paste",pMsg) == 0) {
+        ui->cells->pasteClipboard();
+        return true;
+    }
     else
         return false;
 }
@@ -166,6 +199,12 @@ bool SheetView::onHasMsg(const char *pMsg) const
         return true;
     else if (strcmp("SaveAs",pMsg) == 0)
         return true;
+    else if (strcmp("Cut",pMsg) == 0)
+        return true;
+    else if (strcmp("Copy",pMsg) == 0)
+        return true;
+    else if (strcmp("Paste",pMsg) == 0)
+        return true;
     else
         return false;
 }
@@ -174,20 +213,7 @@ void SheetView::setCurrentCell(QString str)
 {
     Q_UNUSED(str);
     updateContentLine();
-}
-
-void SheetView::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Delete) {
-        if (event->modifiers() == 0) {
-            //model()->setData(currentIndex(), QVariant(), Qt::EditRole);
-        }
-        else if (event->modifiers() == Qt::ControlModifier) {
-            //model()->setData(currentIndex(), QVariant(), Qt::EditRole);
-        }
-    }
-    else
-        Gui::MDIView::keyPressEvent(event);
+    updateAliasLine();
 }
 
 void SheetView::updateContentLine()
@@ -196,16 +222,29 @@ void SheetView::updateContentLine()
 
     if (i.isValid()) {
         std::string str;
-        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-
-        if (cell)
-            cell->getStringContent(str);
+        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
+            (void)cell->getStringContent(str);
         ui->cellContent->setText(QString::fromUtf8(str.c_str()));
-        ui->cellContent->setIndex(i);
         ui->cellContent->setEnabled(true);
 
         // Update completer model; for the time being, we do this by setting the document object of the input line.
         ui->cellContent->setDocumentObject(sheet);
+    }
+}
+
+void SheetView::updateAliasLine()
+{
+    QModelIndex i = ui->cells->currentIndex();
+
+    if (i.isValid()) {
+        std::string str;
+        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
+            (void)cell->getAlias(str);
+        ui->cellAlias->setText(QString::fromUtf8(str.c_str()));
+        ui->cellAlias->setEnabled(true);
+
+        // Update completer model; for the time being, we do this by setting the document object of the input line.
+        ui->cellAlias->setDocumentObject(sheet);
     }
 }
 
@@ -215,16 +254,8 @@ void SheetView::columnResizeFinished()
         return;
 
     blockSignals(true);
-    Gui::Command::openCommand("Resize column");
-
-    QMap<int, int>::const_iterator i = newColumnSizes.begin();
-    while (i != newColumnSizes.end()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setColumnWidth('%s', %d)", sheet->getNameInDocument(),
-                                columnName(i.key()).c_str(), i.value());
-        ++i;
-    }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    for(auto &v : newColumnSizes)
+        sheet->setColumnWidth(v.first,v.second);
     blockSignals(false);
     newColumnSizes.clear();
 }
@@ -235,16 +266,8 @@ void SheetView::rowResizeFinished()
         return;
 
     blockSignals(true);
-    Gui::Command::openCommand("Resize row");
-
-    QMap<int, int>::const_iterator i = newRowSizes.begin();
-    while (i != newRowSizes.end()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setRowHeight('%s', %d)", sheet->getNameInDocument(),
-                                rowName(i.key()).c_str(), i.value());
-        ++i;
-    }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    for(auto &v : newRowSizes)
+        sheet->setRowHeight(v.first,v.second);
     blockSignals(false);
     newRowSizes.clear();
 }
@@ -257,6 +280,7 @@ void SheetView::modelUpdated(const QModelIndex &topLeft, const QModelIndex &bott
         return;
 
     updateContentLine();
+    updateAliasLine();
 }
 
 void SheetView::columnResized(int col, int oldSize, int newSize)
@@ -283,20 +307,75 @@ void SheetView::resizeRow(int col, int newSize)
         ui->cells->setRowHeight(col, newSize);
 }
 
-void SheetView::editingFinished()
+void SheetView::editingFinishedWithKey(int key, Qt::KeyboardModifiers modifiers)
 {
-    if (ui->cellContent->completerActive()) {
-        ui->cellContent->hideCompleter();
-        return;
+    QModelIndex i = ui->cells->currentIndex();
+
+    if (i.isValid()) {
+        ui->cells->finishEditWithMove(key, modifiers);
+    }
+}
+
+void SheetView::confirmAliasChanged(const QString& text)
+{
+    bool aliasOkay = true;
+
+    ui->cellAlias->setDocumentObject(sheet);
+    if (text.length() != 0 && !sheet->isValidAlias(Base::Tools::toStdString(text))) {
+        aliasOkay = false;
     }
 
     QModelIndex i = ui->cells->currentIndex();
+    if (const auto* cell = sheet->getCell(CellAddress(i.row(), i.column()))) {
+        if (!aliasOkay) {
+            //do not show error message if failure to set new alias is because it is already the same string
+            std::string current_alias;
+            (void)cell->getAlias(current_alias);
+            if (text != QString::fromUtf8(current_alias.c_str())) {
+                Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(text).c_str());
+            }
+        }
+        else {
+            std::string address = CellAddress(i.row(), i.column()).toString();
+            Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
+                address, text.toStdString());
+            Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
+            ui->cells->setFocus();
+        }
+    }
+}
 
-    // Update data in cell
-    ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
 
-    ui->cells->setCurrentIndex(ui->cellContent->next());
+void SheetView::confirmContentChanged(const QString& text)
+{
+    QModelIndex i = ui->cells->currentIndex();
+    ui->cells->model()->setData(i, QVariant(text), Qt::EditRole);
     ui->cells->setFocus();
+}
+
+void SheetView::aliasChanged(const QString& text)
+{
+    // check live the input and highlight if the user input invalid characters
+
+    bool aliasOk = true;
+    QPalette palette = ui->cellAlias->palette();
+
+    if (!text.isEmpty() && !sheet->isValidAlias(Base::Tools::toStdString(text)))
+        aliasOk = false;
+
+    if (!aliasOk) {
+        // change tooltip and make text color red
+        ui->cellAlias->setToolTip(QObject::tr("Alias contains invalid characters!"));
+        palette.setColor(QPalette::Text, Qt::red);
+    }
+    else {
+        // go back to normal
+        ui->cellAlias->setToolTip(
+            QObject::tr("Refer to cell by alias, for example\nSpreadsheet.my_alias_name instead of Spreadsheet.B1"));
+        palette.setColor(QPalette::Text, Qt::black);
+    }
+    // apply the text color via the palette
+    ui->cellAlias->setPalette(palette);
 }
 
 void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex & previous  )
@@ -304,17 +383,25 @@ void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex 
     Q_UNUSED(current);
     Q_UNUSED(previous);
     updateContentLine();
+    updateAliasLine();
 }
 
 void SheetView::updateCell(const App::Property *prop)
 {
     try {
+        if (prop == &sheet->Label) {
+            QString cap = QString::fromUtf8(sheet->Label.getValue());
+            setWindowTitle(cap);
+        }
         CellAddress address;
 
-        sheet->getCellAddress(prop, address);
+        if(!sheet->getCellAddress(prop, address))
+            return;
 
-        if (currentIndex().row() == address.row() && currentIndex().column() == address.col() )
+        if (currentIndex().row() == address.row() && currentIndex().column() == address.col() ){
             updateContentLine();
+            updateAliasLine();
+        }
     }
     catch (...) {
         // Property is not a cell
@@ -332,19 +419,208 @@ QModelIndexList SheetView::selectedIndexes() const
     return ui->cells->selectionModel()->selectedIndexes();
 }
 
+void SpreadsheetGui::SheetView::select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags)
+{
+    ui->cells->selectionModel()->select(model->index(cell.row(), cell.col()), flags);
+}
+
+void SpreadsheetGui::SheetView::select(App::CellAddress topLeft, App::CellAddress bottomRight, QItemSelectionModel::SelectionFlags flags)
+{
+    ui->cells->selectionModel()->select(QItemSelection(model->index(topLeft.row(), topLeft.col()), model->index(bottomRight.row(), bottomRight.col())), flags);
+}
+
+void SheetView::deleteSelection()
+{
+    ui->cells->deleteSelection();
+}
+
 QModelIndex SheetView::currentIndex() const
 {
     return ui->cells->currentIndex();
 }
 
+void SpreadsheetGui::SheetView::setCurrentIndex(App::CellAddress cell) const
+{
+    ui->cells->setCurrentIndex(model->index(cell.row(), cell.col()));
+}
+
 PyObject *SheetView::getPyObject()
 {
-    Py_Return;
+    if (!pythonObject)
+        pythonObject = new SheetViewPy(this);
+
+    Py_INCREF(pythonObject);
+    return pythonObject;
 }
 
 void SheetView::deleteSelf()
 {
     Gui::MDIView::deleteSelf();
 }
+
+// ----------------------------------------------------------
+
+void SheetViewPy::init_type()
+{
+    behaviors().name("SheetViewPy");
+    behaviors().doc("Python binding class for the Sheet view class");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+    
+    add_varargs_method("selectedRanges", &SheetViewPy::selectedRanges, "selectedRanges(): Get a list of all selected ranges");
+    add_varargs_method("selectedCells", &SheetViewPy::selectedCells, "selectedCells(): Get a list of all selected cells");
+    add_varargs_method("select", &SheetViewPy::select, "select(cell,flags): Select (or deselect) the given cell, applying QItemSelectionModel.SelectionFlags\nselect(topLeft,bottomRight,flags): Select (or deselect) the given range, applying QItemSelectionModel.SelectionFlags");
+    add_varargs_method("currentIndex", &SheetViewPy::currentIndex, "currentIndex(): Get the current index");
+    add_varargs_method("setCurrentIndex", &SheetViewPy::setCurrentIndex, "setCurrentIndex(cell): Set the current index to the named cell (e.g. 'A1')");
+    
+    add_varargs_method("getSheet", &SheetViewPy::getSheet, "getSheet()");
+    add_varargs_method("cast_to_base", &SheetViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
+    behaviors().readyType();
+}
+
+SheetViewPy::SheetViewPy(SheetView *mdi)
+  : base(mdi)
+{
+}
+
+SheetViewPy::~SheetViewPy()
+{
+}
+
+Py::Object SheetViewPy::repr()
+{
+    std::ostringstream s_out;
+    if (!getSheetViewPtr())
+        throw Py::RuntimeError("Cannot print representation of deleted object");
+    s_out << "SheetView";
+    return Py::String(s_out.str());
+}
+
+// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// a trick is to use MDIViewPy as class member and override getattr() to
+// join the attributes of both classes. This way all methods of MDIViewPy
+// appear for SheetViewPy, too.
+Py::Object SheetViewPy::getattr(const char * attr)
+{
+    if (!getSheetViewPtr()) {
+        std::ostringstream s_out;
+        s_out << "Cannot access attribute '" << attr << "' of deleted object";
+        throw Py::RuntimeError(s_out.str());
+    }
+    std::string name( attr );
+    if (name == "__dict__" || name == "__class__") {
+        Py::Dict dict_self(BaseType::getattr("__dict__"));
+        Py::Dict dict_base(base.getattr("__dict__"));
+        for (auto it : dict_base) {
+            dict_self.setItem(it.first, it.second);
+        }
+        return dict_self;
+    }
+
+    try {
+        return BaseType::getattr(attr);
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+        return base.getattr(attr);
+    }
+}
+
+SheetView* SheetViewPy::getSheetViewPtr()
+{
+    return qobject_cast<SheetView*>(base.getMDIViewPtr());
+}
+
+Py::Object SheetViewPy::getSheet(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::asObject(new Spreadsheet::SheetPy(getSheetViewPtr()->getSheet()));
+}
+
+Py::Object SheetViewPy::cast_to_base(const Py::Tuple&)
+{
+    return Gui::MDIViewPy::create(base.getMDIViewPtr());
+}
+
+Py::Object SheetViewPy::selectedRanges(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    SheetView* sheetView = getSheetViewPtr();
+    std::vector<App::Range> ranges = sheetView->selectedRanges();
+    Py::List list;
+    for (const auto& range : ranges)
+    {
+        list.append(Py::String(range.rangeString()));
+    }
+
+    return list;
+}
+
+Py::Object SheetViewPy::selectedCells(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    SheetView* sheetView = getSheetViewPtr();
+    QModelIndexList cells = sheetView->selectedIndexes();
+    Py::List list;
+    for (const auto& cell : cells) {
+        list.append(Py::String(App::CellAddress(cell.row(), cell.column()).toString()));
+    }
+
+    return list;
+}
+
+Py::Object SheetViewPy::select(const Py::Tuple& _args)
+{
+    SheetView* sheetView = getSheetViewPtr();
+
+    Py::Sequence args(_args.ptr());
+
+    const char* cell;
+    const char* topLeft;
+    const char* bottomRight;
+    int flags = 0;
+    if (args.size() == 2 && PyArg_ParseTuple(_args.ptr(), "si", &cell, &flags)) {
+        sheetView->select(App::CellAddress(cell), static_cast<QItemSelectionModel::SelectionFlags>(flags));
+    }
+    else if (args.size() == 3 && PyArg_ParseTuple(_args.ptr(), "ssi", &topLeft, &bottomRight, &flags)) {
+        sheetView->select(App::CellAddress(topLeft), App::CellAddress(bottomRight), static_cast<QItemSelectionModel::SelectionFlags>(flags));
+    }
+    else {
+        if (args.size() == 2)
+            throw Base::TypeError("Expects the arguments to be a cell name (e.g. 'A1') and QItemSelectionModel.SelectionFlags");
+        else if (args.size() == 3)
+            throw Base::TypeError("Expects the arguments to be a cell name (e.g. 'A1'), a second cell name (e.g. 'B5'), and QItemSelectionModel.SelectionFlags");
+        else
+            throw Base::TypeError("Wrong arguments to select: specify either a cell, or two cells (for a range), and QItemSelectionModel.SelectionFlags");
+    }
+    return Py::None();
+}
+
+Py::Object SheetViewPy::currentIndex(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    SheetView* sheetView = getSheetViewPtr();
+    auto index = sheetView->currentIndex();
+    Py::String str(App::CellAddress(index.row(), index.column()).toString());
+    return str;
+}
+
+Py::Object SheetViewPy::setCurrentIndex(const Py::Tuple& args)
+{
+    SheetView* sheetView = getSheetViewPtr();
+
+    const char* cell;
+    if (PyArg_ParseTuple(args.ptr(), "s", &cell)) {
+        sheetView->setCurrentIndex(App::CellAddress(cell));
+    }
+    return Py::None();
+}
+
 
 #include "moc_SpreadsheetView.cpp"

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,8 +22,48 @@
 
 
 #include "PreCompiled.h"
+#include <SMESH_Version.h>
 
 #ifndef _PreComp_
+# include <Python.h>
+# include <SMESH_Gen.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMDS_VolumeTool.hxx>
+# include <StdMeshers_Arithmetic1D.hxx>
+# include <StdMeshers_AutomaticLength.hxx>
+# include <StdMeshers_MaxLength.hxx>
+# include <StdMeshers_LocalLength.hxx>
+# include <StdMeshers_MaxElementArea.hxx>
+# include <StdMeshers_NotConformAllowed.hxx>
+# include <StdMeshers_QuadranglePreference.hxx>
+# include <StdMeshers_Quadrangle_2D.hxx>
+# include <StdMeshers_Regular_1D.hxx>
+# include <StdMeshers_UseExisting_1D2D.hxx>
+# include <StdMeshers_CompositeSegment_1D.hxx>
+# include <StdMeshers_Deflection1D.hxx>
+# include <StdMeshers_Hexa_3D.hxx>
+# include <StdMeshers_LayerDistribution.hxx>
+# include <StdMeshers_LengthFromEdges.hxx>
+# include <StdMeshers_MaxElementVolume.hxx>
+# include <StdMeshers_MEFISTO_2D.hxx>
+# include <StdMeshers_NumberOfLayers.hxx>
+# include <StdMeshers_NumberOfSegments.hxx>
+# include <StdMeshers_Prism_3D.hxx>
+# include <StdMeshers_Projection_1D.hxx>
+# include <StdMeshers_Projection_2D.hxx>
+# include <StdMeshers_Projection_3D.hxx>
+# include <StdMeshers_QuadraticMesh.hxx>
+# include <StdMeshers_RadialPrism_3D.hxx>
+# include <StdMeshers_SegmentAroundVertex_0D.hxx>
+# include <StdMeshers_ProjectionSource1D.hxx>
+# include <StdMeshers_ProjectionSource2D.hxx>
+# include <StdMeshers_ProjectionSource3D.hxx>
+# include <StdMeshers_SegmentLengthAroundVertex.hxx>
+# include <StdMeshers_StartEndLength.hxx>
+# include <StdMeshers_CompositeHexa_3D.hxx>
+
+# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepTools.hxx>
 #endif
 
 #include "FemMeshShapeObject.h"
@@ -31,46 +71,6 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <SMESH_Gen.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMDS_PolyhedralVolumeOfNodes.hxx>
-#include <SMDS_VolumeTool.hxx>
-#include <StdMeshers_Arithmetic1D.hxx>
-#include <StdMeshers_AutomaticLength.hxx>
-#include <StdMeshers_MaxLength.hxx>
-#include <StdMeshers_LocalLength.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_NotConformAllowed.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_Quadrangle_2D.hxx>
-#include <StdMeshers_Regular_1D.hxx>
-#include <StdMeshers_UseExisting_1D2D.hxx>
-#include <StdMeshers_CompositeSegment_1D.hxx>
-#include <StdMeshers_Deflection1D.hxx>
-#include <StdMeshers_Hexa_3D.hxx>
-#include <StdMeshers_LayerDistribution.hxx>
-#include <StdMeshers_LengthFromEdges.hxx>
-#include <StdMeshers_MaxElementVolume.hxx>
-#include <StdMeshers_MEFISTO_2D.hxx>
-#include <StdMeshers_NumberOfLayers.hxx>
-#include <StdMeshers_NumberOfSegments.hxx>
-#include <StdMeshers_Prism_3D.hxx>
-#include <StdMeshers_Projection_1D.hxx>
-#include <StdMeshers_Projection_2D.hxx>
-#include <StdMeshers_Projection_3D.hxx>
-#include <StdMeshers_QuadraticMesh.hxx>
-#include <StdMeshers_RadialPrism_3D.hxx>
-#include <StdMeshers_SegmentAroundVertex_0D.hxx>
-#include <StdMeshers_ProjectionSource1D.hxx>
-#include <StdMeshers_ProjectionSource2D.hxx>
-#include <StdMeshers_ProjectionSource3D.hxx>
-#include <StdMeshers_SegmentLengthAroundVertex.hxx>
-#include <StdMeshers_StartEndLength.hxx>
-//#include <StdMeshers_Propagation.hxx>
-#include <StdMeshers_CompositeHexa_3D.hxx>
-
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepTools.hxx>
 
 using namespace Fem;
 using namespace App;
@@ -80,7 +80,7 @@ PROPERTY_SOURCE(Fem::FemMeshShapeObject, Fem::FemMeshObject)
 
 FemMeshShapeObject::FemMeshShapeObject()
 {
-    ADD_PROPERTY_TYPE(Shape,(0), "Shape",Prop_None,"Shape for the analysis");
+    ADD_PROPERTY_TYPE(Shape,(0), "FEM Mesh",Prop_None,"Geometry object, the mesh is made from. The geometry object has to have a Shape.");
 }
 
 FemMeshShapeObject::~FemMeshShapeObject()
@@ -147,6 +147,36 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
     newMesh.compute();
 #endif
 #if 1  // Surface quad mesh
+#if SMESH_VERSION_MAJOR >= 9
+    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, myGen));
+    static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
+    newMesh.addHypothesis(shape, len);
+
+    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, myGen));
+    static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
+    newMesh.addHypothesis(shape, loc);
+
+    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, myGen));
+    static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
+    newMesh.addHypothesis(shape, area);
+
+    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, myGen));
+    static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
+    newMesh.addHypothesis(shape, segm);
+
+    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, myGen));
+    static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
+    newMesh.addHypothesis(shape, defl);
+
+    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, myGen));
+    newMesh.addHypothesis(shape, reg);
+
+    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,myGen));
+    newMesh.addHypothesis(shape, qdp);
+
+    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,myGen));
+    newMesh.addHypothesis(shape, q2d);
+#else
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, myGen));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
     newMesh.addHypothesis(shape, len);
@@ -179,6 +209,7 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 
     SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,myGen));
     newMesh.addHypothesis(shape, q2d);
+#endif
 
     // create mesh
     newMesh.compute();

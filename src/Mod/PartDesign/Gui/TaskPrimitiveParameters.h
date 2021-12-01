@@ -24,6 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskPrimitiveParameters_H
 #define GUI_TASKVIEW_TaskPrimitiveParameters_H
 
+#include <memory>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/DocumentObserver.h>
@@ -34,9 +35,6 @@
 #include "TaskDatumParameters.h"
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
-#include "ui_TaskPrimitiveParameters.h"
-
-class Ui_TaskPrimitiveParameters;
 
 namespace App {
 class Property;
@@ -47,9 +45,7 @@ class ViewProvider;
 }
 
 namespace PartDesignGui { 
-
-namespace s = boost::signals;
-
+class Ui_DlgPrimitives;
 class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
                           public Gui::DocumentObserver
 {
@@ -59,7 +55,7 @@ public:
     TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = 0);
     ~TaskBoxPrimitives();
 
-    void setPrimitive(QString name);
+    bool setPrimitive(App::DocumentObject *);
 
 public Q_SLOTS:
     void onBoxLengthChanged(double);
@@ -67,6 +63,8 @@ public Q_SLOTS:
     void onBoxHeightChanged(double);
     void onCylinderRadiusChanged(double);
     void onCylinderHeightChanged(double);
+    void onCylinderXSkewChanged(double);
+    void onCylinderYSkewChanged(double);
     void onCylinderAngleChanged(double);
     void onSphereRadiusChanged(double);
     void onSphereAngle1Changed(double);
@@ -89,17 +87,19 @@ public Q_SLOTS:
     void onTorusAngle3Changed(double);
     void onPrismCircumradiusChanged(double);
     void onPrismHeightChanged(double);
+    void onPrismXSkewChanged(double);
+    void onPrismYSkewChanged(double);
     void onPrismPolygonChanged(int);
     void onWedgeXmaxChanged(double);
-    void onWedgeXinChanged(double);
+    void onWedgeXminChanged(double);
     void onWedgeYmaxChanged(double);
-    void onWedgeYinChanged(double);
+    void onWedgeYminChanged(double);
     void onWedgeZmaxChanged(double);
-    void onWedgeZinChanged(double);
+    void onWedgeZminChanged(double);
     void onWedgeX2maxChanged(double);
-    void onWedgeX2inChanged(double);
+    void onWedgeX2minChanged(double);
     void onWedgeZ2maxChanged(double);
-    void onWedgeZ2inChanged(double);
+    void onWedgeZ2minChanged(double);
 
 private:
     /** Notifies when the object is about to be removed. */
@@ -107,7 +107,7 @@ private:
 
 private:
     QWidget* proxy;
-    Ui_DlgPrimitives ui;
+    std::unique_ptr<Ui_DlgPrimitives> ui;
     ViewProviderPrimitive* vp;
 };
 

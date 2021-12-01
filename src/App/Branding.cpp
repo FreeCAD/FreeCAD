@@ -44,6 +44,7 @@ Branding::Branding()
     filter.push_back("WindowIcon");
     filter.push_back("ProgramLogo");
     filter.push_back("ProgramIcons");
+    filter.push_back("StyleSheet");
 
     filter.push_back("BuildVersionMajor");
     filter.push_back("BuildVersionMinor");

@@ -107,7 +107,6 @@ PyObject* Curve2dPy::reverse(PyObject * args)
             Py_Return;
         }
         catch (Standard_Failure& e) {
-    
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
@@ -166,16 +165,9 @@ TopoDS_Edge create3dCurve(const TopoDS_Edge& edge)
                                                 adapt_curve.LastParameter());
             edge3d =  mkBuilder3d.Edge();
         } break;
-    case GeomAbs_BSplineCurve:
-        {
-            BRepBuilderAPI_MakeEdge mkBuilder3d(adapt_curve.BSpline(),
-                                                adapt_curve.FirstParameter(),
-                                                adapt_curve.LastParameter());
-            edge3d =  mkBuilder3d.Edge();
-        } break;
     default:
         edge3d = edge;
-        BRepLib::BuildCurves3d(edge3d);
+        BRepLib::BuildCurves3d(edge3d, Precision::Confusion(), GeomAbs_Shape::GeomAbs_C1, 14, 10000);
         break;
     }
 
@@ -194,7 +186,6 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure& e) {
-    
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
@@ -211,7 +202,6 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure& e) {
-    
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
@@ -232,7 +222,6 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure& e) {
-    
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
@@ -272,7 +261,6 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure& e) {
-    
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
@@ -292,7 +280,6 @@ PyObject* Curve2dPy::toShape(PyObject *args)
             return Py::new_reference_to(shape2pyshape(edge));
         }
         catch (Standard_Failure& e) {
-    
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
@@ -328,14 +315,9 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
 
-                Py::Module module("__FreeCADBase__");
-                Py::Callable method(module.getAttr("Vector2d"));
-                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt2d p = adapt.Value (discretizer.Parameter (i));
-                    arg.setItem(0, Py::Float(p.X()));
-                    arg.setItem(1, Py::Float(p.Y()));
-                    points.append(method.apply(arg));
+                    points.append(Base::Vector2dPy::create(p.X(), p.Y()));
                 }
 
                 return Py::new_reference_to(points);
@@ -358,14 +340,9 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
 
-                Py::Module module("__FreeCADBase__");
-                Py::Callable method(module.getAttr("Vector2d"));
-                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt2d p = adapt.Value (discretizer.Parameter (i));
-                    arg.setItem(0, Py::Float(p.X()));
-                    arg.setItem(1, Py::Float(p.Y()));
-                    points.append(method.apply(arg));
+                    points.append(Base::Vector2dPy::create(p.X(), p.Y()));
                 }
 
                 return Py::new_reference_to(points);
@@ -386,14 +363,9 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
 
-                Py::Module module("__FreeCADBase__");
-                Py::Callable method(module.getAttr("Vector2d"));
-                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt p = discretizer.Value (i);
-                    arg.setItem(0, Py::Float(p.X()));
-                    arg.setItem(1, Py::Float(p.Y()));
-                    points.append(method.apply(arg));
+                    points.append(Base::Vector2dPy::create(p.X(), p.Y()));
                 }
 
                 return Py::new_reference_to(points);
@@ -416,14 +388,9 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
 
-                Py::Module module("__FreeCADBase__");
-                Py::Callable method(module.getAttr("Vector2d"));
-                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt p = discretizer.Value (i);
-                    arg.setItem(0, Py::Float(p.X()));
-                    arg.setItem(1, Py::Float(p.Y()));
-                    points.append(method.apply(arg));
+                    points.append(Base::Vector2dPy::create(p.X(), p.Y()));
                 }
 
                 return Py::new_reference_to(points);
@@ -444,14 +411,9 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
 
-                Py::Module module("__FreeCADBase__");
-                Py::Callable method(module.getAttr("Vector2d"));
-                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt2d p = adapt.Value (discretizer.Parameter (i));
-                    arg.setItem(0, Py::Float(p.X()));
-                    arg.setItem(1, Py::Float(p.Y()));
-                    points.append(method.apply(arg));
+                    points.append(Base::Vector2dPy::create(p.X(), p.Y()));
                 }
 
                 return Py::new_reference_to(points);
@@ -471,15 +433,9 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
             if (discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
-
-                Py::Module module("__FreeCADBase__");
-                Py::Callable method(module.getAttr("Vector2d"));
-                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt p = discretizer.Value (i);
-                    arg.setItem(0, Py::Float(p.X()));
-                    arg.setItem(1, Py::Float(p.Y()));
-                    points.append(method.apply(arg));
+                    points.append(Base::Vector2dPy::create(p.X(), p.Y()));
                 }
 
                 return Py::new_reference_to(points);
@@ -516,7 +472,6 @@ PyObject* Curve2dPy::length(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -542,7 +497,6 @@ PyObject* Curve2dPy::parameterAtDistance(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -561,17 +515,10 @@ PyObject* Curve2dPy::value(PyObject *args)
             if (!PyArg_ParseTuple(args, "d", &u))
                 return 0;
             gp_Pnt2d p = c->Value(u);
-
-            Py::Module module("__FreeCADBase__");
-            Py::Callable method(module.getAttr("Vector2d"));
-            Py::Tuple arg(2);
-            arg.setItem(0, Py::Float(p.X()));
-            arg.setItem(1, Py::Float(p.Y()));
-            return Py::new_reference_to(method.apply(arg));
+            return Py::new_reference_to(Base::Vector2dPy::create(p.X(), p.Y()));
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -595,16 +542,10 @@ PyObject* Curve2dPy::tangent(PyObject *args)
                 prop.Tangent(dir);
             }
 
-            Py::Module module("__FreeCADBase__");
-            Py::Callable method(module.getAttr("Vector2d"));
-            Py::Tuple arg(2);
-            arg.setItem(0, Py::Float(dir.X()));
-            arg.setItem(1, Py::Float(dir.Y()));
-            return Py::new_reference_to(method.apply(arg));
+            return Py::new_reference_to(Base::Vector2dPy::create(dir.X(), dir.Y()));
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -626,16 +567,10 @@ PyObject* Curve2dPy::normal(PyObject *args)
             Geom2dLProp_CLProps2d prop(c,u,2,Precision::Confusion());
             prop.Normal(dir);
 
-            Py::Module module("__FreeCADBase__");
-            Py::Callable method(module.getAttr("Vector2d"));
-            Py::Tuple arg(2);
-            arg.setItem(0, Py::Float(dir.X()));
-            arg.setItem(1, Py::Float(dir.Y()));
-            return Py::new_reference_to(method.apply(arg));
+            return Py::new_reference_to(Base::Vector2dPy::create(dir.X(), dir.Y()));
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -659,7 +594,6 @@ PyObject* Curve2dPy::curvature(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -681,16 +615,10 @@ PyObject* Curve2dPy::centerOfCurvature(PyObject *args)
             gp_Pnt2d pnt ;
             prop.CentreOfCurvature(pnt);
 
-            Py::Module module("__FreeCADBase__");
-            Py::Callable method(module.getAttr("Vector2d"));
-            Py::Tuple arg(2);
-            arg.setItem(0, Py::Float(pnt.X()));
-            arg.setItem(1, Py::Float(pnt.Y()));
-            return Py::new_reference_to(method.apply(arg));
+            return Py::new_reference_to(Base::Vector2dPy::create(pnt.X(), pnt.Y()));
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -708,7 +636,7 @@ PyObject* Curve2dPy::parameter(PyObject *args)
             PyObject *p;
             if (!PyArg_ParseTuple(args, "O!", Base::Vector2dPy::type_object(), &p))
                 return 0;
-            Base::Vector2d v = Py::Vector2d(p).getCxxObject()->value();
+            Base::Vector2d v = Py::toVector2d(p);
             gp_Pnt2d pnt(v.x,v.y);
             Geom2dAPI_ProjectPointOnCurve ppc(pnt, c);
             double val = ppc.LowerDistanceParameter();
@@ -744,7 +672,6 @@ PyObject* Curve2dPy::toBSpline(PyObject * args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -798,7 +725,6 @@ PyObject* Curve2dPy::approximateBSpline(PyObject *args)
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
@@ -881,37 +807,40 @@ PyObject* Curve2dPy::intersectCC(PyObject *args)
             double prec = Precision::Confusion();
             if (!PyArg_ParseTuple(args, "O!|d", &(Part::Curve2dPy::Type), &p, &prec))
                 return 0;
+
             Handle(Geom2d_Curve) curve2 = Handle(Geom2d_Curve)::DownCast(static_cast<Geometry2dPy*>(p)->getGeometry2dPtr()->handle());
-            Geom2dAPI_ExtremaCurveCurve intersector(curve1, curve2,
-                                                    curve1->FirstParameter(),
-                                                    curve1->LastParameter(),
-                                                    curve2->FirstParameter(),
-                                                    curve2->LastParameter());
-            if (intersector.LowerDistance() > Precision::Confusion()) {
+            Py::List points;
+            Geom2dAPI_InterCurveCurve intersector(curve1, curve2, prec);
+            if ((intersector.NbPoints() == 0) && (intersector.NbSegments() == 0)) {
                 // No intersection
                 return Py::new_reference_to(Py::List());
             }
-
-            Py::List points;
-            Py::Module module("__FreeCADBase__");
-            Py::Callable method(module.getAttr("Vector2d"));
-            Py::Tuple arg(2);
-            for (int i = 1; i <= intersector.NbExtrema(); i++) {
-                if (intersector.Distance(i) > Precision::Confusion())
-                    continue;
-                gp_Pnt2d p1, p2;
-                intersector.Points(i, p1, p2);
-
-                arg.setItem(0, Py::Float(p1.X()));
-                arg.setItem(1, Py::Float(p1.Y()));
-                points.append(method.apply(arg));
+            if (intersector.NbPoints() > 0) {
+                // Cross intersections
+                for (int i = 1; i <= intersector.NbPoints(); i++) {
+                    gp_Pnt2d p1 = intersector.Point(i);
+                    points.append(Base::Vector2dPy::create(p1.X(), p1.Y()));
+                }
             }
-
+            if (intersector.NbSegments() > 0) {
+                // Tangential intersections
+                Geom2dAPI_ExtremaCurveCurve intersector2(curve1, curve2,
+                                                        curve1->FirstParameter(),
+                                                        curve1->LastParameter(),
+                                                        curve2->FirstParameter(),
+                                                        curve2->LastParameter());
+                for (int i = 1; i <= intersector2.NbExtrema(); i++) {
+                    if (intersector2.Distance(i) > prec)
+                        continue;
+                    gp_Pnt2d p1, p2;
+                    intersector2.Points(i, p1, p2);
+                    points.append(Base::Vector2dPy::create(p1.X(), p1.Y()));
+                }
+            }
             return Py::new_reference_to(points);
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
         return 0;
     }

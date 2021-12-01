@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -43,12 +43,12 @@ class TaskWidgetPathCompound : public Gui::TaskView::TaskBox
 public:
     TaskWidgetPathCompound(ViewProviderPathCompound *CompoundView, QWidget *parent=0);
     ~TaskWidgetPathCompound();
-    
+
     std::vector<std::string> getList(void) const;
 
 protected:
     void changeEvent(QEvent *e);
-    
+
 private:
     QWidget* proxy;
     Ui_TaskDlgPathCompound* ui;
@@ -72,10 +72,10 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user press the help button 
+    /// is called by the framework if the user press the help button
     virtual void helpRequested();
 
-    /// returns for Close and Help button 
+    /// returns for Close and Help button
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 

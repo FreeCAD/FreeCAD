@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -79,6 +79,9 @@
 #ifndef __Qt4All__
 # include <Gui/Qt4All.h>
 #endif
+
+// OCCT
+#include <BRepBuilderAPI_MakePolygon.hxx>
 
 #endif //_PreComp_
 

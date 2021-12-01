@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #/******************************************************************************
-# *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+# *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
 # *                                                                            *
 # *   This file is part of the FreeCAD CAx development system.                 *
 # *                                                                            *
@@ -22,9 +22,9 @@
 # ******************************************************************************/
 
 import FreeCAD, FreeCADGui
-from SegmentFunction import SegmentFunction,  IntervalFunction,  StressFunction,  TranslationFunction
-from ShaftFeature import ShaftFeature
-from ShaftDiagram import Diagram
+from .SegmentFunction import SegmentFunction,  IntervalFunction,  StressFunction,  TranslationFunction
+from .ShaftFeature import ShaftFeature
+from .ShaftDiagram import Diagram
 import math
 
 class ShaftSegment:
@@ -53,12 +53,12 @@ class Shaft:
     wstrings = (("",  "",  "",  "",  ""), 
                         ("Translation [y]",  "x",  "mm",  "w_y",  "mm"), 
                         ("Translation [z]",  "x",  "mm",  "w_z",  "mm"))
-    sigmaNstrings =  (("Normal stress [x]",  "x", "mm", "\sigma_x",  u"N/mm²"), 
-                        ("Shear stress [y]",  "x",  "mm",  "\sigma_y",  u"N/mm²"), 
-                        ("Shear stress [z]",  "x",  "mm",  "\sigma_z",  u"N/mm²"))
-    sigmaBstrings = (("Torque stress [x]",  "x", "mm", "\tau_t",  u"N/mm²"), 
-                        ("Bending stress [z]",  "x",  "mm",  "\sigma_{b,z}",  u"N/mm²"), 
-                        ("Bending stress [y]",  "x",  "mm",  "\sigma_{b,y}",  u"N/mm²"))
+    sigmaNstrings =  (("Normal stress [x]",  "x", "mm", "\\sigma_x",  u"N/mm²"),
+                        ("Shear stress [y]",  "x",  "mm",  "\\sigma_y",  u"N/mm²"),
+                        ("Shear stress [z]",  "x",  "mm",  "\\sigma_z",  u"N/mm²"))
+    sigmaBstrings = (("Torque stress [x]",  "x", "mm", "\\tau_t",  u"N/mm²"),
+                        ("Bending stress [z]",  "x",  "mm",  "\\sigma_{b,z}",  u"N/mm²"),
+                        ("Bending stress [y]",  "x",  "mm",  "\\sigma_{b,y}",  u"N/mm²"))
 
     def __init__(self, parent):
         self.parent = parent
@@ -88,7 +88,7 @@ class Shaft:
         # We don't call equilibrium() here because the new segment has no constraints defined yet
         # Fix face reference of fixed segment if it is the last one
         for i in range(1,  len(self.segments)):
-            if self.segments[i].constraintType is not "Fixed":
+            if self.segments[i].constraintType != "Fixed":
                 continue
             if i == len(self.segments) - 1:
                 self.segments[index].constraint.References = [( self.feature.feature,  "Face%u" % (2 * (index+1) + 1) )]
@@ -162,6 +162,7 @@ class Shaft:
     def updateEdge(self, column, start):
         App.Console.PrintMessage("Not implemented yet - waiting for robust references...")
         return
+        """
         if self.sketchClosed is not True:
             return
         # Create a chamfer or fillet at the start or end edge of the segment
@@ -186,6 +187,7 @@ class Shaft:
         edgeName = "Edge%u" % self.getEdgeIndex(column, idx, edgeType)
         self.doc.getObject(objName).Base = (self.doc.getObject("RevolutionShaft"),"[%s]" % edgeName)
         # etc. etc.
+        """
 
     def getEdgeIndex(self, column, startIdx):
         # FIXME: This is impossible without robust references anchored in the sketch!!!
@@ -213,7 +215,7 @@ class Shaft:
         if which in self.Fstr:
             ax = self.Fstr.index(which)
             text = self.Qstrings[ax]
-            if self.F[ax] == None:
+            if self.F[ax] is None:
                 # No data
                 return
             if self.F[ax].name in self.diagrams:
@@ -226,7 +228,7 @@ class Shaft:
         elif which in self.Mstr:
             ax = self.Mstr.index(which)
             text = self.Mstrings[ax]
-            if self.M[ax] == None:
+            if self.M[ax] is None:
                 # No data
                 return
             if self.M[ax].name in self.diagrams:
@@ -239,7 +241,7 @@ class Shaft:
         elif which in self.wstr:
             ax = self.wstr.index(which)
             text = self.wstrings[ax]
-            if self.w[ax] == None:
+            if self.w[ax] is None:
                 # No data
                 return
             if self.w[ax].name in self.diagrams:
@@ -252,7 +254,7 @@ class Shaft:
         elif which in self.sigmaNstr:
             ax = self.sigmaNstr.index(which)
             text = self.sigmaNstrings[ax]
-            if self.sigmaN[ax] == None:
+            if self.sigmaN[ax] is None:
                 # No data
                 return
             if self.sigmaN[ax].name in self.diagrams:
@@ -265,7 +267,7 @@ class Shaft:
         elif which in self.sigmaBstr:
             ax = self.sigmaBstr.index(which)
             text = self.sigmaBstrings[ax]
-            if self.sigmaB[ax] == None:
+            if self.sigmaB[ax] is None:
                 # No data
                 return
             if self.sigmaB[ax].name in self.diagrams:

@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinlaender <jrheinlaender@users.sourceforge.net>        *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,12 +25,13 @@
 #ifndef GUI_TASKVIEW_TaskAttacher_H
 #define GUI_TASKVIEW_TaskAttacher_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Part/App/Attacher.h>
+#include <boost/function.hpp>
 
-#include "Gui/ViewProviderDocumentObject.h"
 
 class Ui_TaskAttacher;
 class QLineEdit;
@@ -51,8 +53,12 @@ class PartGuiExport TaskAttacher : public Gui::TaskView::TaskBox, public Gui::Se
     Q_OBJECT
 
 public:
-    TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget *parent = 0, 
-        QString picture = QString::fromLatin1(""), QString text = QString::fromLatin1("Attachment"));
+    typedef boost::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
+                                  App::DocumentObject *, const std::string&)>  VisibilityFunction;
+
+    TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = 0,
+                 QString picture = QString(),
+                 QString text = QString::fromLatin1("Attachment"), VisibilityFunction func = 0);
     ~TaskAttacher();
 
     bool   getFlip(void) const;
@@ -90,6 +96,7 @@ protected:
     void changeEvent(QEvent *e) override;
 private:
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
+    void documentDeleted(const Gui::Document&);
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateReferencesUI();
 
@@ -119,10 +126,12 @@ private:
 
 protected:
     Gui::ViewProviderDocumentObject *ViewProvider;
+    std::string ObjectName;
 
 private:
     QWidget* proxy;
-    Ui_TaskAttacher* ui;
+    std::unique_ptr<Ui_TaskAttacher> ui;
+    VisibilityFunction visibilityFunc;
 
     // TODO fix documentation here (2015-11-10, Fat-Zer)
     int iActiveRef; //what reference is being picked in 3d view now? -1 means no one, 0-3 means a reference is being picked.
@@ -131,8 +140,9 @@ private:
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectDelObject;
+    Connection connectDelDocument;
 };
 
 /// simulation dialog for the TaskView

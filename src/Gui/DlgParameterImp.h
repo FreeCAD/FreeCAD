@@ -29,22 +29,24 @@
 #include <QTreeWidgetItem>
 #include <QTreeWidget>
 #include <QDialog>
+#include <QPointer>
 
 namespace Gui {
 namespace Dialog {
 
 class Ui_DlgParameter;
+class DlgParameterFind;
 
 /**
  * The DlgParameterImp class implements a dialog showing all parameters in a list view.
  * \author Jürgen Riegel
  */
 class GuiExport DlgParameterImp : public QDialog
-{ 
+{
     Q_OBJECT
 
 public:
-    DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+    DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
     ~DlgParameterImp();
 
     void accept();
@@ -54,10 +56,13 @@ public:
 
 protected Q_SLOTS:
     void onChangeParameterSet(int);
+    void on_buttonFind_clicked();
+    void on_findGroupLE_textChanged(const QString &SearchStr);
     void on_buttonSaveToDisk_clicked();
 
     void onGroupSelected(QTreeWidgetItem *);
     void on_closeButton_clicked();
+    void on_checkSort_toggled(bool);
 
 protected:
     void changeEvent(QEvent *e);
@@ -68,6 +73,13 @@ protected:
     QTreeWidget* paramGroup;
     QTreeWidget* paramValue;
     Ui_DlgParameter* ui;
+    QPointer<DlgParameterFind> finder;
+
+private:
+    QFont defaultFont;
+    QBrush defaultColor;
+    QFont boldFont;
+    QList<QTreeWidgetItem*> foundList;
 };
 
 // --------------------------------------------------------------------
@@ -139,12 +151,15 @@ public:
 
     /** Sets the current parameter group that is displayed. */
     void setCurrentGroup( const Base::Reference<ParameterGrp>& _hcGrp );
+    /** Returns the current parameter group that is displayed. */
+    Base::Reference<ParameterGrp> currentGroup() const;
 
 protected:
     /** Shows the context menu. */
     void contextMenuEvent ( QContextMenuEvent* event );
     /** Invokes onDeleteSelectedItem() if the "Del" key was pressed. */
     void keyPressEvent (QKeyEvent* event);
+    void resizeEvent(QResizeEvent*);
 
 protected Q_SLOTS:
     /** Changes the value of the leaf of the selected item. */
@@ -166,7 +181,7 @@ protected Q_SLOTS:
     void onCreateFloatItem();
     /** Creates and appends a new "boolean" leaf. */
     void onCreateBoolItem();
-    /** Defines that the first column is editable. 
+    /** Defines that the first column is editable.
      * @note We need to reimplement this method as QTreeWidgetItem::flags()
      * doesn't have an int parameter.
      */
@@ -187,8 +202,8 @@ private:
 };
 
 /** The link between the Tree and the shown Label.
- * Every (shown) Label in the FCDocument class get it 
- * associated FCTreeLabel which controls the visibility 
+ * Every (shown) Label in the FCDocument class get it
+ * associated FCTreeLabel which controls the visibility
  * and the functions of the Label.
  *
  * \author Jürgen Riegel
@@ -213,7 +228,7 @@ public:
 /**
  * The ParameterValueItem class represents items that are added to the ParameterValue
  * listview. Each item represents a leaf in a parameter group and allows interaction
- * with this leaf, such as modifying its name, its value or even remove it from the 
+ * with this leaf, such as modifying its name, its value or even remove it from the
  * parameter group.
  * @author Werner Mayer
  */

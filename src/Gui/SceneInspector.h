@@ -25,7 +25,7 @@
 
 #include <QStandardItemModel>
 #include <QDialog>
-#include <QMap>
+#include <QHash>
 
 class SoNode;
 
@@ -56,13 +56,13 @@ public:
     /// insert the first node in tree
     void setNode(SoNode* node);
     /// set names per node
-    void setNodeNames(const QMap<SoNode*, QString>& names);
+    void setNodeNames(const QHash<SoNode*, QString>& names);
     /// returns standard parent's flags
     Qt::ItemFlags flags (const QModelIndex & index) const;
 
 private:
     void setNode(QModelIndex, SoNode*);
-    QMap<SoNode*, QString> nodeNames;
+    QHash<SoNode*, QString> nodeNames;
 };
 
 /// Dialog window to display scenegraph model as a tree
@@ -71,7 +71,7 @@ class DlgInspector : public QDialog
     Q_OBJECT
 
 public:
-    DlgInspector(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgInspector(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgInspector();
 
     void setDocument(Gui::Document* doc);

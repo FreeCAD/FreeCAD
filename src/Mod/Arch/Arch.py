@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,16 +19,16 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Arch API"
+__title__  = "FreeCAD Arch API"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \defgroup ARCH Arch
 #  \ingroup PYTHONWORKBENCHES
 #  \brief Architecture and BIM tools
 #
 #  This module provides tools specialized in Building Information Modeling (BIM).
-#  such as convenience tools to build walls, windows or structures, and 
+#  such as convenience tools to build walls, windows or structures, and
 #  IFC import/export capabilities.
 
 '''The Arch module provides tools specialized in BIM modeling.'''
@@ -42,6 +40,8 @@ if FreeCAD.GuiUp:
 
 from ArchWall import *
 from ArchFloor import *
+from ArchFence import *
+from ArchProject import *
 from ArchSite import *
 from ArchBuilding import *
 from ArchStructure import *
@@ -49,6 +49,7 @@ from ArchProfile import *
 from ArchCommands import *
 from ArchSectionPlane import *
 from ArchWindow import *
+from ArchWindowPresets import *
 from ArchAxis import *
 from ArchRoof import *
 from ArchSpace import *
@@ -63,3 +64,6 @@ from ArchSchedule import *
 from ArchPrecast import *
 from ArchPipe import *
 from ArchBuildingPart import *
+from ArchReference import *
+from ArchTruss import *
+from ArchCurtainWall import *

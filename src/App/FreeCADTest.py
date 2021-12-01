@@ -1,12 +1,5 @@
-# FreeCAD test module
-# (c) 2002 Juergen Riegel
-#
-# Testing the function of the base system and run
-# (if existing) the test function of the modules
-#
-
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
+#*   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -26,13 +19,21 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
+
+# FreeCAD test module
+#
+# Testing the function of the base system and run
+# (if existing) the test function of the modules
+
 
 
 Log ("FreeCAD test running...\n\n")
 
-import TestApp, sys
+import sys
+
+import FreeCAD
+import TestApp
 
 testCase = FreeCAD.ConfigGet("TestCase")
 

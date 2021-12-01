@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,7 @@
 # include <QMdiArea>
 # include <QMdiSubWindow>
 # include <QUrl>
+# include <QIcon>
 #endif
 
 #include <Base/Console.h>
@@ -62,6 +63,14 @@ public:
         );
         add_varargs_method("openBrowserWindow",&Module::openBrowserWindow
         );
+        add_varargs_method("open",&Module::openBrowser,
+            "open(htmlcode,baseurl,[title,iconpath])\n"
+            "Load a local (X)HTML file."
+        );
+        add_varargs_method("insert",&Module::openBrowser,
+            "insert(string)\n"
+            "Load a local (X)HTML file."
+        );
         initialize("This module is the WebGui module."); // register with Python
     }
 
@@ -81,6 +90,8 @@ private:
         pcBrowserView->resize(400, 300);
         pcBrowserView->load(url);
         Gui::getMainWindow()->addWindow(pcBrowserView);
+        if (!Gui::getMainWindow()->activeWindow())
+            Gui::getMainWindow()->setActiveWindow(pcBrowserView);
 
         return Py::None();
     }
@@ -89,31 +100,50 @@ private:
     {
         const char* HtmlCode;
         const char* BaseUrl;
-        const char* TabName = "Browser";
-        if (! PyArg_ParseTuple(args.ptr(), "ss|s",&HtmlCode,&BaseUrl,&TabName))
+        const char* IconPath;
+        char* TabName = nullptr;
+        if (! PyArg_ParseTuple(args.ptr(), "ss|ets", &HtmlCode, &BaseUrl, "utf-8", &TabName, &IconPath))
             throw Py::Exception();
+
+        std::string EncodedName = "Browser";
+        if (TabName) {
+            EncodedName = std::string(TabName);
+            PyMem_Free(TabName);
+        }
 
         WebGui::BrowserView* pcBrowserView = 0;
         pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
         pcBrowserView->resize(400, 300);
         pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
-        pcBrowserView->setWindowTitle(QString::fromUtf8(TabName));
+        pcBrowserView->setWindowTitle(QString::fromUtf8(EncodedName.c_str()));
+        if (IconPath)
+            pcBrowserView->setWindowIcon(QIcon(QString::fromUtf8(IconPath)));
         Gui::getMainWindow()->addWindow(pcBrowserView);
+        if (!Gui::getMainWindow()->activeWindow())
+            Gui::getMainWindow()->setActiveWindow(pcBrowserView);
 
         return Py::None();
     }
 
     Py::Object openBrowserWindow(const Py::Tuple& args)
     {
-        const char* TabName = "Browser";
-        if (! PyArg_ParseTuple(args.ptr(), "|s",&TabName))
+        char* TabName = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "|et", "utf-8", &TabName))
             throw Py::Exception();
+
+        std::string EncodedName = "Browser";
+        if (TabName) {
+            EncodedName = std::string(TabName);
+            PyMem_Free(TabName);
+        }
 
         WebGui::BrowserView* pcBrowserView = 0;
         pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
         pcBrowserView->resize(400, 300);
-        pcBrowserView->setWindowTitle(QString::fromUtf8(TabName));
+        pcBrowserView->setWindowTitle(QString::fromUtf8(EncodedName.c_str()));
         Gui::getMainWindow()->addWindow(pcBrowserView);
+        if (!Gui::getMainWindow()->activeWindow())
+            Gui::getMainWindow()->setActiveWindow(pcBrowserView);
 
         return Py::asObject(pcBrowserView->getPyObject());
     }
@@ -140,6 +170,7 @@ PyMOD_INIT_FUNC(WebGui)
 
     // instantiating the commands
     CreateWebCommands();
+    WebGui::BrowserView::init();
     WebGui::Workbench::init();
 
      // add resources and reloads the translators

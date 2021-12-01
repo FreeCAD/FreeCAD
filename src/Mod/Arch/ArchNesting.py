@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -25,7 +23,7 @@
 
 from __future__ import print_function
 
-import FreeCAD, Part, DraftGeomUtils, WorkingPlane, DraftVecUtils, math, Draft
+import FreeCAD, Part, DraftGeomUtils, WorkingPlane, DraftVecUtils, math
 from datetime import datetime
 
 # This is roughly based on the no-fit polygon algorithm, used in
@@ -81,7 +79,7 @@ class Nester:
         if not self.shapes:
             self.shapes = []
         for obj in objects:
-            if obj.isDerivedFrom("Part::Feature"):
+            if hasattr(obj,'Shape'):
                 h = obj.Shape.hashCode()
                 if not h in self.objects:
                     self.objects[h] = obj
@@ -91,7 +89,7 @@ class Nester:
 
         """addContainer(object): adds a FreeCAD DocumentObject as the container"""
 
-        if container.isDerivedFrom("Part::Feature"):
+        if hasattr(container,'Shape'):
             self.container = container.Shape
 
     def clear(self):
@@ -293,7 +291,6 @@ class Nester:
                     nofitpol = []
                     for placed in sheet:
                         pts = []
-                        pi = 0
                         for placedvert in self.order(placed[1],right=True):
                             fpts = []
                             for i,rotvert in enumerate(rotverts):
@@ -432,7 +429,7 @@ class Nester:
                             #for i,p in enumerate(faceverts):
                             #    Draft.makeText([str(i)],point=p)
                             return
-                            
+
                         if pol.isValid():
                             nofitpol.append(pol)
                             #Part.show(pol)
@@ -462,18 +459,18 @@ class Nester:
                         edges = [e[0] for e in lut.values() if len(e) == 1]
                         try:
                             pol = Part.Face(Part.Wire(edges))
-                        except:
+                        except Exception:
                             # above method can fail sometimes. Try a slower method
                             w = DraftGeomUtils.findWires(edges)
                             if len(w) == 1:
                                 if w[0].isClosed():
                                     try:
                                         pol = Part.Face(w[0])
-                                    except:
+                                    except Exception:
                                         print("Error merging polygons. Aborting")
                                         try:
                                             Part.show(Part.Wire(edges))
-                                        except:
+                                        except Exception:
                                             for e in edges:
                                                 Part.show(e)
                                         return

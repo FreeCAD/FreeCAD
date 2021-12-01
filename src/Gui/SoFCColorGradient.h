@@ -66,7 +66,7 @@ public:
   /** Returns the current maximum of the parameter range. */
   float getMaxValue (void) const { return _cColGrad.getMaxValue(); }
   /**
-   * Opems a dialog to customie the current settings of the color gradient bar.
+   * Opens a dialog to customize the current settings of the color gradient bar.
    * Returns true if the settings have been changed, false otherwise.
    */
   bool customize();
@@ -75,7 +75,7 @@ public:
 
 protected:
   /**
-   * Sets the current viewer size this color gradient is embedded into to recalculate its new position.
+   * Sets the current viewer size this color gradient is embedded into, to recalculate its new position.
    */
   void setViewportSize( const SbVec2s& size );
 
@@ -112,4 +112,3 @@ private:
 
 
 #endif // GUI_SOFCCOLORGRADIENT_H
-

@@ -31,13 +31,15 @@
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
 # include <Precision.hxx>
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
 # include <TopoDS.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
+
+# include <QMessageBox>
+# include <QRegExp>
+# include <QTextStream>
+
 # include <sstream>
 #endif
 
@@ -59,7 +61,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintInitialTemperature */
 
 TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "fem-constraint-InitialTemperature")
+  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintInitialTemperature")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintInitialTemperature();
@@ -104,7 +106,7 @@ TaskDlgFemConstraintInitialTemperature::TaskDlgFemConstraintInitialTemperature(V
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintInitialTemperature(ConstraintView);;
+    this->parameter = new TaskFemConstraintInitialTemperature(ConstraintView);
 
     Content.push_back(parameter);
 }
@@ -141,7 +143,7 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
     try {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!ConstraintView->getObject()->isValid())
-            throw Base::Exception(ConstraintView->getObject()->getStatusString());
+            throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
     }

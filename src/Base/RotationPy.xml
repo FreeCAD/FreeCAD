@@ -10,6 +10,7 @@
 		  Namespace="Base"
 		  Constructor="true"
 		  Delete="true"
+		  NumberProtocol="true"
           RichCompare="true"
 		  FatherNamespace="Base">
 		<Documentation>
@@ -23,6 +24,8 @@
 				-- a Vector (axis) and a float (angle)
 				-- two Vectors (rotation from/to vector)
 				-- three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention
+                -- one string and three floats (Euler angles) as euler rotation 
+                   of a given type. Call toEulerSequence() for supported sequence types.
 				-- four floats (Quaternion) where the quaternion is specified as:
 				   q=xi+yj+zk+w, i.e. the last parameter is the real part
 				-- three vectors that define rotated axes directions + an optional
@@ -50,8 +53,9 @@
         <Methode Name="isSame">
             <Documentation>
                 <UserDocu>
-                    isSame(Rotation)
-                    Checks if the two quaternions perform the same rotation
+                    isSame(Rotation, [tolerance=0])
+                    Checks if the two quaternions perform the same rotation.
+                    Optionally, a tolerance value greater than zero can be passed.
                 </UserDocu>
             </Documentation>
         </Methode>
@@ -71,12 +75,58 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="toEuler" Const="true">
+        <Methode Name="slerp" Const="true">
 			<Documentation>
 				<UserDocu>
-					toEuler(Vector) -> list
+					slerp(Rotation, Float) -> Rotation
+					Spherical linear interpolation of this and a given rotation. The float must be in the range of 0 and 1
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="setYawPitchRoll">
+            <Documentation>
+                <UserDocu>
+                    setYawPitchRoll(angle1, angle2, angle3)
+                    Set the Euler angles of this rotation
+                    as yaw-pitch-roll in XY'Z'' convention.
+
+                    NOTE: The angles are in degree
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getYawPitchRoll" Const="true">
+			<Documentation>
+				<UserDocu>
+                    getYawPitchRoll() -> list
 					Get the Euler angles of this rotation
 					as yaw-pitch-roll in XY'Z'' convention
+                    NOTE: The angles are in degree
+                </UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="setEulerAngles">
+            <Documentation>
+                <UserDocu>
+                setEulerAngles(seq, angle1, angle2, angle3)
+                Set the Euler angles in a given sequence for this rotation.
+                'seq' is the Euler sequence name. You get all possible values with toEulerAngles()
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="toEulerAngles" Const="true">
+			<Documentation>
+				<UserDocu>
+					toEulerAngles(seq='') -> list
+                    Get the Euler angles in a given sequence for this rotation.
+                    Call this function without arguments to output all possible values of 'seq'.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="toMatrix" Const="true">
+			<Documentation>
+				<UserDocu>
+					toMatrix()
+					convert the rotation to a matrix representation
 				</UserDocu>
 			</Documentation>
 		</Methode>
@@ -107,6 +157,12 @@
 				<UserDocu>The rotation axis of the quaternion</UserDocu>
 			</Documentation>
 			<Parameter Name="Axis" Type="Object" />
+		</Attribute>
+		<Attribute Name="RawAxis" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The rotation axis without normalization</UserDocu>
+			</Documentation>
+			<Parameter Name="RawAxis" Type="Object" />
 		</Attribute>
 		<Attribute Name="Angle" ReadOnly="false">
 			<Documentation>

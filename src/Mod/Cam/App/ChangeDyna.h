@@ -24,7 +24,7 @@
 #ifndef CHANGEDYNA_H
 #define CHANGEDYNA_H
 
-#include <iostream>
+#include <iosfwd>
 #include <string>
 #include <vector>
 

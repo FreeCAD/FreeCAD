@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen        (eivind@kvedalen.name)  2015     *
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -91,15 +91,41 @@ PyObject* SheetPy::set(PyObject *args)
 
 PyObject* SheetPy::get(PyObject *args)
 {
-    char *address;
+    const char *address;
+    const char *address2=0;
 
-    if (!PyArg_ParseTuple(args, "s:get", &address))
+    if (!PyArg_ParseTuple(args, "s|s:get", &address, &address2))
         return 0;
+
+    PY_TRY {
+        if(address2) {
+            auto a1 = getSheetPtr()->getAddressFromAlias(address);
+            if(a1.empty())
+                a1 = address;
+            auto a2 = getSheetPtr()->getAddressFromAlias(address2);
+            if(a2.empty())
+                a2 = address2;
+            Range range(a1.c_str(),a2.c_str());
+            Py::Tuple tuple(range.size());
+            int i=0;
+            do {
+                App::Property *prop = getSheetPtr()->getPropertyByName(range.address().c_str());
+                if(!prop) {
+                    PyErr_Format(PyExc_ValueError, "Invalid address '%s' in range %s:%s",
+                            range.address().c_str(), address, address2);
+                    return 0;
+                }
+                tuple.setItem(i++,Py::Object(prop->getPyObject(),true));
+            }while(range.next());
+            return Py::new_reference_to(tuple);
+        }
+    }PY_CATCH;
 
     App::Property * prop = this->getSheetPtr()->getPropertyByName(address);
 
     if (prop == 0) {
-        PyErr_SetString(PyExc_ValueError, "Invalid address or property.");
+        PyErr_Format(PyExc_ValueError, 
+                "Invalid cell address or property: %s",address);
         return 0;
     }
     return prop->getPyObject();
@@ -113,21 +139,29 @@ PyObject* SheetPy::getContents(PyObject *args)
     if (!PyArg_ParseTuple(args, "s:getContents", &strAddress))
         return 0;
 
-    try {        
-        address = stringToAddress(strAddress);
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
-    }
+    PY_TRY {
+        try {        
+            Sheet * sheet = getSheetPtr();
+            std::string addr = sheet->getAddressFromAlias(strAddress);
 
-    std::string contents;
-    const Cell * cell = this->getSheetPtr()->getCell(address);
+            if (addr.empty())
+                address = stringToAddress(strAddress);
+            else
+                address = stringToAddress(addr.c_str());
+        }
+        catch (const Base::Exception & e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return 0;
+        }
 
-    if (cell)
-        cell->getStringContent( contents );
+        std::string contents;
+        const Cell * cell = this->getSheetPtr()->getCell(address);
 
-    return Py::new_reference_to( Py::String( contents ) );
+        if (cell)
+            cell->getStringContent( contents );
+
+        return Py::new_reference_to( Py::String( contents ) );
+    } PY_CATCH
 }
 
 PyObject* SheetPy::clear(PyObject *args)
@@ -289,13 +323,8 @@ PyObject* SheetPy::setStyle(PyObject *args)
             PyObject * item = PySet_Pop(copy);
 
             // check on the key:
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(item))
                 style.insert(PyUnicode_AsUTF8(item));
-#else
-            if (PyString_Check(item))
-                style.insert(PyString_AsString(item));
-#endif
             else {
                 std::string error = std::string("type of the set need to be a string, not ") + item->ob_type->tp_name;
                 PyErr_SetString(PyExc_TypeError, error.c_str());
@@ -305,19 +334,11 @@ PyObject* SheetPy::setStyle(PyObject *args)
         }
         Py_DECREF(copy);
     }
-#if PY_MAJOR_VERSION >= 3
     else if (PyUnicode_Check(value)) {
-#else
-    else if (PyString_Check(value)) {
-#endif
         using namespace boost;
 
         escaped_list_separator<char> e('\0', '|', '\0');
-#if PY_MAJOR_VERSION >= 3
         std::string line = PyUnicode_AsUTF8(value);
-#else
-        std::string line = PyString_AsString(value);
-#endif
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
         for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
@@ -429,11 +450,7 @@ PyObject* SheetPy::getStyle(PyObject *args)
         PyObject * s = PySet_New(NULL);
 
         for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i)
-#if PY_MAJOR_VERSION >= 3
             PySet_Add(s, PyUnicode_FromString((*i).c_str()));
-#else
-            PySet_Add(s, PyString_FromString((*i).c_str()));
-#endif
 
         return s;
     }
@@ -478,17 +495,7 @@ PyObject* SheetPy::setAlias(PyObject *args)
     try {
         address = stringToAddress(strAddress);
         if (PyUnicode_Check(value))
-#if PY_MAJOR_VERSION >= 3
             getSheetPtr()->setAlias(address, PyUnicode_AsUTF8(value));
-#else
-        {
-            PyObject* unicode = PyUnicode_AsUTF8String(value);
-            getSheetPtr()->setAlias(address, PyString_AsString(unicode));
-            Py_DECREF(unicode);            
-        }
-        else if (PyString_Check(value))
-            getSheetPtr()->setAlias(address, PyString_AsString(value));
-#endif
         else if (value == Py_None)
             getSheetPtr()->setAlias(address, "");
         else
@@ -594,13 +601,8 @@ PyObject* SheetPy::setAlignment(PyObject *args)
         while (n-- > 0) {
             PyObject * item = PySet_Pop(copy);
 
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(item))
                 alignment = Cell::decodeAlignment(PyUnicode_AsUTF8(item), alignment);
-#else
-            if (PyString_Check(item))
-                alignment = Cell::decodeAlignment(PyString_AsString(item), alignment);
-#endif
             else {
                 std::string error = std::string("type of the key need to be a string, not") + item->ob_type->tp_name;
                 PyErr_SetString(PyExc_TypeError, error.c_str());
@@ -611,24 +613,18 @@ PyObject* SheetPy::setAlignment(PyObject *args)
 
         Py_DECREF(copy);
     }
-#if PY_MAJOR_VERSION >= 3
     else if (PyUnicode_Check(value)) {
-#else
-    else if (PyString_Check(value)) {
-#endif
         // Argument is a string, combination of alignments, separated by the pipe character
         using namespace boost;
 
         escaped_list_separator<char> e('\0', '|', '\0');
-#if PY_MAJOR_VERSION >= 3
         std::string line = PyUnicode_AsUTF8(value);
-#else
-        std::string line = PyString_AsString(value);
-#endif
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
-        for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
-            alignment = Cell::decodeAlignment(*i, alignment);
+        for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i) {
+            if(i->size())
+                alignment = Cell::decodeAlignment(*i, alignment);
+        }
     }
     else {
         std::string error = std::string("style must be either set or string, not ") + value->ob_type->tp_name;
@@ -691,7 +687,6 @@ PyObject* SheetPy::getAlignment(PyObject *args)
     if (cell && cell->getAlignment(alignment)) {
         PyObject * s = PySet_New(NULL);
 
-#if PY_MAJOR_VERSION >= 3
         if (alignment & Cell::ALIGNMENT_LEFT)
             PySet_Add(s, PyUnicode_FromString("left"));
         if (alignment & Cell::ALIGNMENT_HCENTER)
@@ -704,20 +699,6 @@ PyObject* SheetPy::getAlignment(PyObject *args)
             PySet_Add(s, PyUnicode_FromString("vcenter"));
         if (alignment & Cell::ALIGNMENT_BOTTOM)
             PySet_Add(s, PyUnicode_FromString("bottom"));
-#else
-        if (alignment & Cell::ALIGNMENT_LEFT)
-            PySet_Add(s, PyString_FromString("left"));
-        if (alignment & Cell::ALIGNMENT_HCENTER)
-            PySet_Add(s, PyString_FromString("center"));
-        if (alignment & Cell::ALIGNMENT_RIGHT)
-            PySet_Add(s, PyString_FromString("right"));
-        if (alignment & Cell::ALIGNMENT_TOP)
-            PySet_Add(s, PyString_FromString("top"));
-        if (alignment & Cell::ALIGNMENT_VCENTER)
-            PySet_Add(s, PyString_FromString("vcenter"));
-        if (alignment & Cell::ALIGNMENT_BOTTOM)
-            PySet_Add(s, PyString_FromString("bottom"));
-#endif
 
         return s;
     }
@@ -731,13 +712,8 @@ static float decodeFloat(const PyObject * obj)
 {
     if (PyFloat_Check(obj))
         return PyFloat_AsDouble((PyObject *)obj);
-#if PY_MAJOR_VERSION >= 3
     else if (PyLong_Check(obj))
         return PyLong_AsLong((PyObject *)obj);
-#else
-    else if (PyInt_Check(obj))
-        return PyInt_AsLong((PyObject *)obj);
-#endif
     throw Base::TypeError("Float or integer expected");
 }
 
@@ -963,15 +939,61 @@ PyObject* SheetPy::getRowHeight(PyObject *args)
     }
 }
 
+PyObject *SheetPy::touchCells(PyObject *args) {
+    const char *address;
+    const char *address2=0;
+
+    if (!PyArg_ParseTuple(args, "s|s:touchCells", &address, &address2))
+        return 0;
+
+    PY_TRY {
+        std::string a1 = getSheetPtr()->getAddressFromAlias(address);
+        if(a1.empty())
+            a1 = address;
+
+        std::string a2;
+        if(!address2) {
+            a2 = a1;
+        } else {
+            a2 = getSheetPtr()->getAddressFromAlias(address2);
+            if(a2.empty())
+                a2 = address2;
+        }
+        getSheetPtr()->touchCells(Range(a1.c_str(),a2.c_str()));
+        Py_Return;
+    }PY_CATCH;
+}
+
+PyObject *SheetPy::recomputeCells(PyObject *args) {
+    const char *address;
+    const char *address2=0;
+
+    if (!PyArg_ParseTuple(args, "s|s:touchCells", &address, &address2))
+        return 0;
+
+    PY_TRY {
+        std::string a1 = getSheetPtr()->getAddressFromAlias(address);
+        if(a1.empty())
+            a1 = address;
+
+        std::string a2;
+        if(!address2) {
+            a2 = a1;
+        } else {
+            a2 = getSheetPtr()->getAddressFromAlias(address2);
+            if(a2.empty())
+                a2 = address2;
+        }
+        getSheetPtr()->recomputeCells(Range(a1.c_str(),a2.c_str()));
+        Py_Return;
+    }PY_CATCH;
+}
+
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 
-PyObject *SheetPy::getCustomAttributes(const char* attr) const
+PyObject *SheetPy::getCustomAttributes(const char*) const
 {
-    App::Property * prop = this->getSheetPtr()->getPropertyByName(attr);
-
-    if (prop == 0)
-        return 0;
-    return prop->getPyObject();
+    return 0;
 }
 
 int SheetPy::setCustomAttributes(const char* , PyObject* )

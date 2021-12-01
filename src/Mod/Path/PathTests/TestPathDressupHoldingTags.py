@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,17 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import Path
-import PathScripts
+import PathTests.PathTestUtils as PathTestUtils
 import math
-import unittest
 
 from FreeCAD import Vector
-from PathScripts.PathDressupHoldingTags import *
-from PathTests.PathTestUtils import PathTestBase
+from PathScripts.PathDressupHoldingTags import Tag
 
-class TestHoldingTags(PathTestBase):
+class TestHoldingTags(PathTestUtils.PathTestBase):
     """Unit tests for the HoldingTags dressup."""
 
     def test00(self):

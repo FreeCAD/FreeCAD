@@ -64,9 +64,11 @@ private:
     class Edge
     {
         public:
-        unsigned long	pt1, pt2, facetIdx;
+        PointIndex pt1;
+        PointIndex pt2;
+        FacetIndex facetIdx;
 
-        Edge (unsigned long p1, unsigned long p2, unsigned long idx)
+        Edge (PointIndex p1, PointIndex p2, FacetIndex idx)
         {
             facetIdx = idx;
             if (p1 > p2)
@@ -105,7 +107,7 @@ private:
     // keep an array of iterators pointing to the vertex inside the set to save memory
     typedef std::pair<std::set<MeshPoint>::iterator, bool> MeshPointIterator;
     std::vector<MeshPointIterator> _pointsIterator;
-    unsigned long _ptIdx;
+    size_t _ptIdx;
 
     void SetNeighbourhood  ();
     // As it's forbidden to insert a degenerated facet but insert its vertices anyway we must remove them 
@@ -113,7 +115,7 @@ private:
 
 public:
     MeshBuilder(MeshKernel &rclM);
-    ~MeshBuilder(void);
+    ~MeshBuilder();
 
     /**
      * Set the tolerance for the comparison of points. Normally you don't need to set the tolerance.
@@ -128,7 +130,7 @@ public:
      * AddFacet(), otherwise you'll possibly run into wastage of memory
      * and performance problems.
      */
-    void Initialize (unsigned long ctFacets, bool deletion = true);
+    void Initialize (size_t ctFacets, bool deletion = true);
 
     /** adding facets */
     /** Add new facet
@@ -187,13 +189,14 @@ private:
     MeshKernel& _meshKernel;
 
 public:
+    typedef int size_type;
     MeshFastBuilder(MeshKernel &rclM);
-    ~MeshFastBuilder(void);
+    ~MeshFastBuilder();
 
     /** Initializes the class. Must be done before adding facets 
      * @param ctFacets count of facets.
      */
-    void Initialize (unsigned long ctFacets);
+    void Initialize (size_type ctFacets);
     /** Add new facet
      */
     void AddFacet (const Base::Vector3f* facetPoints);

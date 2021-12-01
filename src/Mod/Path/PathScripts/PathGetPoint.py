@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,17 +20,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Draft
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Draft = LazyLoader('Draft', globals(), 'Draft')
 
 from PySide import QtCore, QtGui
 from pivy import coin
 
 __title__ = "Path GetPoint UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Helper class to use FreeCADGUi.Snapper to let the user enter arbitrary points while the task panel is active."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -58,6 +59,14 @@ class TaskPanel:
         self.buttonBox = None
         self.onPath = onPath
         self.obj = None
+
+        self.pt = None
+        self.point = None
+        self.pointCbClick = None
+        self.pointCbMove = None
+        self.pointWhenDone = None
+        self.escape = None
+        self.view = None
 
     def setupUi(self):
         '''setupUi() ... internal function - do not call.'''
@@ -96,6 +105,10 @@ class TaskPanel:
         creates a dotted line indicating from where the original point started from.
         If start is specified the Snapper UI is closed on the first point the user enters. If start remains None, then Snapper is kept open
         until the user explicitly closes Snapper. This lets the user enter multiple points in quick succession.'''
+
+        # there's no get point without Snapper, if it's not loaded, need to do that explicitly
+        if not hasattr(FreeCADGui, 'Snapper'):
+            import DraftTools
 
         def displayPoint(p):
             self.point = p
@@ -148,6 +161,7 @@ class TaskPanel:
                 self.pointAcceptAndContinue()
 
         def cancel():
+            # pylint: disable=unused-variable
             self.pointReject()
 
         self.pointWhenDone = whenDone
@@ -165,6 +179,7 @@ class TaskPanel:
 
         if self.buttonBox:
             self.buttonBox.setEnabled(False)
+
         FreeCADGui.Snapper.forceGridOff=True
 
     def pointFinish(self, ok, cleanup = True):

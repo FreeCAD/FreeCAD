@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
+ *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,7 +42,7 @@ class View3DPy;
 
 class GuiExport GLOverlayWidget : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     GLOverlayWidget(QWidget* parent=0) : QWidget(parent)
@@ -58,17 +58,17 @@ protected:
 };
 
 /** The 3D view window
- *  It consists out of the 3D view 
+ *  It consists out of the 3D view
  *  \author Juergen Riegel
  */
 class GuiExport View3DInventor : public MDIView, public ParameterGrp::ObserverType
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     TYPESYSTEM_HEADER();
 
 public:
-    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QtGLWidget* sharewidget = 0, Qt::WindowFlags wflags=0);
+    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QtGLWidget* sharewidget = 0, Qt::WindowFlags wflags=Qt::WindowFlags());
     ~View3DInventor();
 
     /// Message handler
@@ -93,7 +93,7 @@ public:
     /**
      * If \a b is set to \a FullScreen the MDI view is displayed in full screen mode, if \a b
      * is set to \a TopLevel then it is displayed as an own top-level window, otherwise (\a Normal)
-     * as tabbed window. 
+     * as tabbed window.
      * This method is reimplemented from MDIView to set the this widget as the proxy of the embedded
      * GL widget to get all key events in \a TopLevel or \a Fullscreen mode.
      */
@@ -106,13 +106,14 @@ public:
     void removeOverlayWidget();
 
     View3DInventorViewer *getViewer(void) const {return _viewer;}
-  
+    virtual bool containsViewProvider(const ViewProvider*) const;
+
 public Q_SLOTS:
     /// override the cursor in this view
     void setOverrideCursor(const QCursor&);
     void restoreOverrideCursor();
 
-    void dump(const char* filename);
+    void dump(const char* filename, bool onlyVisible=false);
 
 protected Q_SLOTS:
     void stopAnimating();

@@ -19,10 +19,12 @@
 #   USA                                                                   *
 #**************************************************************************
 
-import FreeCAD, os, sys, unittest, Part
+import FreeCAD, unittest, Part
 import copy 
 from FreeCAD import Units
 App = FreeCAD
+
+from parttests.regression_tests import RegressionTests
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
@@ -110,6 +112,7 @@ class PartTestBSplineCurve(unittest.TestCase):
         Box = self.Doc.addObject("Part::Box","Box")
         Mirroring = self.Doc.addObject("Part::Mirroring", 'Mirroring')
         Spreadsheet = self.Doc.addObject('Spreadsheet::Sheet', 'Spreadsheet')
+        Mirroring.Source = Box
         Mirroring.Base = (8, 5, 25)
         Mirroring.Normal = (0.5, 0.2, 0.9)
         Spreadsheet.set('A1', '=Mirroring.Base.x')

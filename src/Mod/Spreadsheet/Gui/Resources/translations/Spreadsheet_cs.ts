@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="cs" sourcelanguage="en">
+<TS version="2.1" language="cs" sourcelanguage="en">
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Tabulka</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>buňka</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Použít</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation type="unfinished">Apply the changes to the current cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Odstranit</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation type="unfinished">Deletes the contents of the current cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Vypočítat</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation type="unfinished">Updates the values handled by controllers</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Vytvořit tebulku</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Tabulka</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+    </message>
+  </context>
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +199,8 @@
       <translation>Zarovnat na střed</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Zarovnání na střed obsah vybraných buněk</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Vertikálně vystředit obsah vybraných buněk</translation>
     </message>
   </context>
   <context>
@@ -147,8 +244,8 @@
       <translation>Sloučit buňky</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Sloučit vybrané buňky v tabulce</translation>
+      <source>Merge selected cells</source>
+      <translation>Sloučit vybrané buňky</translation>
     </message>
   </context>
   <context>
@@ -177,8 +274,8 @@
       <translation>Rozdělit buňku</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Rozdělení dříve sloučených buněk v tabulce</translation>
+      <source>Split previously merged cells</source>
+      <translation>Rozdělit dříve sloučené buňky</translation>
     </message>
   </context>
   <context>
@@ -192,7 +289,7 @@
       <translation>Tučný text</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
+      <source>Set text in selected cells bold</source>
       <translation>Nastavit tučný text ve vybraných buňkách</translation>
     </message>
   </context>
@@ -207,8 +304,8 @@
       <translation>Kurzíva</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Nastavit kurzívu ve vybraných buňkách</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Zapnout kurzívu ve vybraných buňkách</translation>
     </message>
   </context>
   <context>
@@ -222,15 +319,98 @@
       <translation>Podtržení textu</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Nastavení podtržení textu ve vybraných buňkách</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Podtrhnout text ve vybraných buňkách</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Vlastní</translation>
+      <source>Custom Color</source>
+      <translation>Vlastní barva</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Sloučit buňky</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Rozdělit buňku</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Zarovnat buňku vlevo</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Zarovnat buňku na střed</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Zarovnat buňku vpravo</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Zarovnat buňku nahoru</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Zarovnat buňku dolů</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Svisle na střed buněk</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Tučně</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Kurzíva</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Podtrženo</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Vytvořit tebulku</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Nastavení buněk</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Editovat</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Vložit řádky</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Odstranit řádky</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Vložit sloupce</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Vymazat buňku(y)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Barva popředí</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Barva pozadí</translation>
     </message>
   </context>
   <context>
@@ -265,7 +445,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation>Střed</translation>
+      <translation>Na střed</translation>
     </message>
     <message>
       <source>Right</source>
@@ -301,7 +481,7 @@
     </message>
     <message>
       <source>&amp;Display unit</source>
-      <translation>Zobrazit jednotku</translation>
+      <translation>&amp;Zobrazit jednotku</translation>
     </message>
     <message>
       <source>Unit string</source>
@@ -331,10 +511,6 @@
       <translation>Exportovat soubor</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Obsah buňky</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Zobrazit tabulku</translation>
     </message>
@@ -353,6 +529,30 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Nastaví barvu pozadí buněk v tabulce</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Tabulka</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation>Tabulka nepodporuje výběr rozsahu při vkládání.
+Prosím vyberte pouze jednu buňku.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation>Kopírování a vložení se nezdařilo</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Alias obsahuje neplatné znaky!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Odkaz na buňku aliasem, například
+Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -426,8 +626,8 @@
       <translation>Světle šedá</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Vlastní</translation>
+      <source>Custom Color</source>
+      <translation>Vlastní barva</translation>
     </message>
   </context>
   <context>
@@ -437,8 +637,73 @@
       <translation>Návrh</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Obsah</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Obsah:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Odkaz na buňku aliasem, například
+Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Tabulka</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation type="unfinished">Import/Export Settings</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation type="unfinished">Delimiter Character: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation type="unfinished">\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation type="unfinished">Escape Character: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation type="unfinished">tab</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation type="unfinished">Quote Character: </translation>
     </message>
   </context>
   <context>
@@ -451,24 +716,80 @@
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Vložit řádky</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Odstranit řádky</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Vložit sloupce</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Odstranit sloupce</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Vlastnosti...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Vložit %n řádek(řádků) nad</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Vložit %n řádek(řádků) pod</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Vložit %n nesouvislých řádků</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Odstranit řádek(řádky)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Vložit %n sloupec(sloupců) vlevo</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Vložit %n sloupec(sloupců) vpravo</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Vložit %n nesouvislých sloupců</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Odstranit sloupec(ce)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

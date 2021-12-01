@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sv-SE" sourcelanguage="en">
+<TS version="2.1" language="sv-SE" sourcelanguage="en">
   <context>
     <name>Angle</name>
     <message>
@@ -23,35 +23,35 @@
       <source>Angle Snap</source>
       <translation>Vinkel Snäpp</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>1 °</source>
       <translation>1°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>2 °</source>
       <translation>2°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>5 °</source>
       <translation>5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>10 °</source>
       <translation>10°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>20 °</source>
       <translation>20°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>45 °</source>
       <translation>45°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>90 °</source>
       <translation>90°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>180 °</source>
       <translation>180°</translation>
     </message>
@@ -64,11 +64,11 @@
     </message>
     <message>
       <source>Visual size of the feature</source>
-      <translation>Visningsstorleken för detaljen</translation>
+      <translation>Visningsstorlek för funktionen</translation>
     </message>
     <message>
       <source>&lt;empty&gt;</source>
-      <translation type="unfinished">&lt;empty&gt;</translation>
+      <translation>&lt;tom&gt;</translation>
     </message>
     <message>
       <source>Angle</source>
@@ -91,33 +91,108 @@
     <name>CmdTestConsoleOutput</name>
     <message>
       <source>Standard-Test</source>
-      <translation>Standard-Test</translation>
+      <translation>Standardtest</translation>
     </message>
     <message>
       <source>Test console output</source>
-      <translation>Testkonsol utskrift</translation>
+      <translation>Testkonsol-utmatning</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
       <source>Measure</source>
-      <translation>Mät</translation>
+      <translation>Mätning</translation>
     </message>
     <message>
       <source>Clear measurement</source>
-      <translation>Rensa måttsättning</translation>
+      <translation>Rensa mätning</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
       <source>Measure</source>
-      <translation>Mät</translation>
+      <translation>Mätning</translation>
     </message>
     <message>
       <source>Toggle measurement</source>
-      <translation>Växla mått</translation>
+      <translation>Växla mätning</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Importera</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Radera</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Klistra in uttryck</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Skapa länkgrupp</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Skapa länk</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Skapa underlänk</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importera länkar</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importera alla länkar</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Infoga mått</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Infoga textdokument</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Lägg till en del</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Lägg till en grupp</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Justera</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Placering</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Omvandla</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Länk omvandling</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Mät avstånd</translation>
     </message>
   </context>
   <context>
@@ -160,7 +235,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation type="unfinished">Global Sensitivity:</translation>
+      <translation>Global känslighet:</translation>
     </message>
   </context>
   <context>
@@ -174,12 +249,16 @@
       <translation>Resultat:</translation>
     </message>
     <message>
-      <source>&amp;Discard</source>
-      <translation>&amp;Förkasta</translation>
-    </message>
-    <message>
       <source>Ok</source>
       <translation>OK</translation>
+    </message>
+    <message>
+      <source>&amp;Clear</source>
+      <translation>&amp;Rensa</translation>
+    </message>
+    <message>
+      <source>Revert to last calculated value (as constant)</source>
+      <translation>Återgå till senast beräknat värde (som konstant)</translation>
     </message>
   </context>
   <context>
@@ -195,6 +274,36 @@
     <message>
       <source>Filename</source>
       <translation>Filnamn</translation>
+    </message>
+  </context>
+  <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Standard</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Omvandla</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Skär</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Färg</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Ange ett uttryck...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Uttryck: </translation>
     </message>
   </context>
   <context>
@@ -261,7 +370,7 @@
     <name>Gui::AutoSaver</name>
     <message>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation>Vänta tills den återskapade filen har sparats...</translation>
+      <translation>Vänligen vänta tills återskapningsfilen har sparats...</translation>
     </message>
   </context>
   <context>
@@ -294,13 +403,13 @@
       <translation>Tryck på mittre musknapp</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Tryck på mitt och vänster eller höger musknapp</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Tryck mittenknapp + vänsterknapp eller mittenknapp + högerknapp</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Rulla med musens scrollknapp eller håll den nedtryckt medan du klickar med vänster eller höger musknapp och flyttar musen uppåt eller nedåt</translation>
+      <translation>Rulla med musens mittenknapp, eller håll den nedtryckt medan du klickar med vänster eller höger knapp och rör musen uppåt eller nedåt</translation>
     </message>
   </context>
   <context>
@@ -386,14 +495,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Ordstorlek</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Tack till</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD skulle inte finnas utan deras insatser:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licens</translation>
     </message>
@@ -402,15 +503,38 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Bibliotek</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Denna mjukvara använder komponenter med öppen källkod vars copyright och andra rättigheter tillhör deras respektive ägare:</translation>
     </message>
     <message>
       <source>License</source>
       <translation>Licens</translation>
+    </message>
+    <message>
+      <source>Collection</source>
+      <translation>Samling</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Tack till</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCAD skulle inte vara möjligt utan bidrag från</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Personer</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Organisationer</translation>
     </message>
   </context>
   <context>
@@ -422,6 +546,45 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Utanför område</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Kamerainställningar</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Orientering</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Aktuell vy</translation>
     </message>
   </context>
   <context>
@@ -508,11 +671,11 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Angle</source>
       <translation>Vinkel</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>90°</source>
       <translation>90°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>-90°</source>
       <translation>-90°</translation>
     </message>
@@ -549,6 +712,49 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Windows</source>
       <translation>Fönster</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <source>Add property</source>
+      <translation>Lägg till egenskap</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Typ</translation>
+    </message>
+    <message>
+      <source>Group</source>
+      <translation>Grupp</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Namn</translation>
+    </message>
+    <message>
+      <source>Verbose description of the new property.</source>
+      <translation>Utförlig beskrivning av den nya egenskapen.</translation>
+    </message>
+    <message>
+      <source>Documentation</source>
+      <translation>Dokumentation</translation>
+    </message>
+    <message>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation>Addera gruppnamnet som prefix till egenskapsnamnet i formuläret 'Group_Name' för att undvika konflikter med en befintlig egenskap.
+I så fall kommer prefixet automatiskt att döljas när det visas i egenskapsredigeraren.
+Egenskapen används dock fortfarande i skript med det fullständiga namnet, som 'obj.Group_Name'.
+
+Om detta inte väljs måste egenskapen vara unikt namngiven och den nås som 'obj.Name'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation>Addera prefix till gruppnamn</translation>
     </message>
   </context>
   <context>
@@ -818,20 +1024,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>multipel definierad genväg</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Genvägen '%1' är definierad mer än en gång. Detta kan leda till oväntat beteende.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Genvägen är redan definierad</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>Genvägen '%1' är redan tilldelad '%2'.
-
-Definiera en annan genväg.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>Snabbkommandot '%1' är definierat flera gånger. Det kan leda till oväntat beteende.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>Snabbkommandot '%1' är redan tilldelat till '%2'.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>Vill du ersätta den?</translation>
     </message>
   </context>
   <context>
@@ -935,6 +1141,10 @@ Definiera en annan genväg.</translation>
       <source>Global</source>
       <translation>Global</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation>%1 modulen ej inladdad</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -973,16 +1183,16 @@ Definiera en annan genväg.</translation>
       <translation>Knappar</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Rensa</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Utskriftsreferens</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Spaceball knappar</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Återställ</translation>
     </message>
   </context>
   <context>
@@ -1178,10 +1388,6 @@ Definiera en annan genväg.</translation>
       <translation>Behåll tabulatorer</translation>
     </message>
     <message>
-      <source>Display Items</source>
-      <translation>Visa saker</translation>
-    </message>
-    <message>
       <source>Family:</source>
       <translation>Familj:</translation>
     </message>
@@ -1197,6 +1403,46 @@ Definiera en annan genväg.</translation>
       <source/>
       <translation type="unfinished"/>
     </message>
+    <message>
+      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
+      <translation>Tryck på &lt;Tab&gt; för att infoga definierad indenteringsstorlek</translation>
+    </message>
+    <message>
+      <source>Tabulator raster (how many spaces)</source>
+      <translation type="unfinished">Tabulator raster (how many spaces)</translation>
+    </message>
+    <message>
+      <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
+      <translation>Hur många mellanslag som kommer att infogas med &lt;Tab&gt;</translation>
+    </message>
+    <message>
+      <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
+      <translation>Tryck på &lt;Tab&gt; för att infoga definierad indenteringsstorlek</translation>
+    </message>
+    <message>
+      <source>Display items</source>
+      <translation>Visa objekt</translation>
+    </message>
+    <message>
+      <source>Font size to be used for selected code type</source>
+      <translation>Teckenstorlek som ska användas för markerad kodtyp</translation>
+    </message>
+    <message>
+      <source>Color and font settings will be applied to selected type</source>
+      <translation>Färg- och typsnittsinställningar kommer att tillämpas på markerad typ</translation>
+    </message>
+    <message>
+      <source>Font family to be used for selected code type</source>
+      <translation>Typsnittsfamilj som ska användas för markerad kodtyp</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Färg:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Kodrader kommer att numreras</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1211,10 +1457,6 @@ Definiera en annan genväg.</translation>
     <message>
       <source>Enable splash screen at start up</source>
       <translation>Aktivera splashfönster vid uppstart</translation>
-    </message>
-    <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Växla till rapportfönstrets tabb:</translation>
     </message>
     <message>
       <source>Auto load module after start up:</source>
@@ -1237,10 +1479,6 @@ Definiera en annan genväg.</translation>
       <translation>Storlek på listan för senast öppnade filer</translation>
     </message>
     <message>
-      <source>Window style:</source>
-      <translation>Fönsterstil:</translation>
-    </message>
-    <message>
       <source>Size of toolbar icons:</source>
       <translation>Storlek på verktygsfältsikonerna:</translation>
     </message>
@@ -1258,7 +1496,67 @@ Definiera en annan genväg.</translation>
     </message>
     <message>
       <source>Enable word wrap</source>
-      <translation type="unfinished">Enable word wrap</translation>
+      <translation>Aktivera radbrytning</translation>
+    </message>
+    <message>
+      <source>Language of the application's user interface</source>
+      <translation>Användargränssnittets språk</translation>
+    </message>
+    <message>
+      <source>How many files should be listed in recent files list</source>
+      <translation>Hur många filer ska visas i listan över senaste filer</translation>
+    </message>
+    <message>
+      <source>Background of the main window will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</source>
+      <translation>Bakgrunden till huvudfönstret kommer att bestå av brickor av en speciell bild.
+Se FreeCAD Wiki för detaljer om bilden.</translation>
+    </message>
+    <message>
+      <source>Style sheet how user interface will look like</source>
+      <translation>Stilmallen för användargränssnittets utseende</translation>
+    </message>
+    <message>
+      <source>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</source>
+      <translation>Välj din inställning för ikonstorlek i verktygsfältet. Du kan justera
+detta beroende på skärmstorlek eller personlig smak</translation>
+    </message>
+    <message>
+      <source>Tree view mode:</source>
+      <translation>Trädvyläge:</translation>
+    </message>
+    <message>
+      <source>Customize how tree view is shown in the panel (restart required).
+
+'ComboView': combine tree view and property view into one panel.
+'TreeView and PropertyView': split tree view and property view into separate panel.
+'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
+      <translation>Anpassa hur trädvyn visas i panelen (omstart krävs).
+
+'ComboView': kombinera trävyn och egenskapsvyn i en panel.
+'TreeView and PropertyView': delad trädvy och egenskapsvy i separat panel.
+'Båda': ha alla tre paneler, och du kan ha två uppsättningar av träd vy och egenskapsvy.</translation>
+    </message>
+    <message>
+      <source>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</source>
+      <translation>En startskärm är ett litet laddningsfönster som visas
+när FreeCAD startar. Om detta alternativ är markerat kommer FreeCAD
+visa startskärm</translation>
+    </message>
+    <message>
+      <source>Choose which workbench will be activated and shown
+after FreeCAD launches</source>
+      <translation>Välj vilken arbetsbänk som ska aktiveras och visas
+vid start av FreeCAD</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation>Radbrytning kommer att appliceras när det tillgängliga
+horisontellt utrymmet överskrids i Python-konsolen</translation>
     </message>
   </context>
   <context>
@@ -1281,11 +1579,23 @@ Definiera en annan genväg.</translation>
     </message>
     <message>
       <source>Extra large (%1px)</source>
-      <translation type="unfinished">Extra large (%1px)</translation>
+      <translation>Extra stor (%1px)</translation>
     </message>
     <message>
       <source>Custom (%1px)</source>
       <translation>Anpassad (%1px)</translation>
+    </message>
+    <message>
+      <source>Combo View</source>
+      <translation>Kombinerad vy</translation>
+    </message>
+    <message>
+      <source>TreeView and PropertyView</source>
+      <translation>TrädVy och EgenskapsVy</translation>
+    </message>
+    <message>
+      <source>Both</source>
+      <translation>Båda</translation>
     </message>
   </context>
   <context>
@@ -1338,7 +1648,7 @@ Definiera en annan genväg.</translation>
     </message>
     <message>
       <source>User macros</source>
-      <translation>Använarmakron</translation>
+      <translation>Användarmakron</translation>
     </message>
     <message>
       <source>System macros</source>
@@ -1351,6 +1661,18 @@ Definiera en annan genväg.</translation>
     <message>
       <source>Rename</source>
       <translation>Döp om</translation>
+    </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Duplicera</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Tillägg...</translation>
+    </message>
+    <message>
+      <source>Toolbar</source>
+      <translation>Verktygsfält</translation>
     </message>
   </context>
   <context>
@@ -1399,27 +1721,83 @@ Denna fil finns redan.</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>Döper om makrofil</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Ange nytt namn:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1'
+ finns redan.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Omdöpning misslyckades</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Misslyckades med att döpa om till '%1'.
+Kanske saknas filrättigheter?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Duplicera makro</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Duplicering misslyckades</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Misslyckades med att duplicera till '%1'.
+Kanske saknas fil-rättigheter?</translation>
+    </message>
+    <message>
+      <source>Do not show again</source>
+      <translation>Visa inte igen</translation>
+    </message>
+    <message>
+      <source>Guided Walkthrough</source>
+      <translation>Guidad genomgång</translation>
+    </message>
+    <message>
+      <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+
+Note: your changes will be applied when you next switch workbenches
+</source>
+      <translation>Detta kommer att guida dig i att ställa in detta makro i ett anpassat globalt verktygsfält. Instruktioner kommer att vara i röd text i dialogrutan.
+
+Obs: dina ändringar kommer att tillämpas när du byter arbetsbänkar nästa gång
+</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 1 of 2</source>
+      <translation>Genomgång, dialogruta 1 av 2</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
+      <translation>Genomgångsinstruktioner: Fyll i saknade fält (valfritt) klicka sedan på Lägg till och stäng</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 1 of 1</source>
+      <translation>Genomgång, dialogruta 1 av 1</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 2 of 2</source>
+      <translation>Genomgång, dialogruta 2 av 2</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
+      <translation>Genomgångsinstruktioner: Klicka på höger pilknapp (-&gt;), sedan Stäng.</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
+      <translation>Genomgångsinstruktioner: Klicka på Ny, sedan höger pilknapp (-&gt;), sedan Stäng.</translation>
     </message>
   </context>
   <context>
@@ -1575,6 +1953,69 @@ Ange en annan katalog.</translation>
       <source>&amp;Close</source>
       <translation>S&amp;täng</translation>
     </message>
+    <message>
+      <source>Find...</source>
+      <translation>Sök...</translation>
+    </message>
+    <message>
+      <source>Sorted</source>
+      <translation>Sorterad</translation>
+    </message>
+    <message>
+      <source>Quick search</source>
+      <translation>Snabbsökning</translation>
+    </message>
+    <message>
+      <source>Type in a group name to find it</source>
+      <translation>Skriv in ett gruppnamn för att hitta det</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Sök grupp</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Hitta</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Hitta vad:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Titta på</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Grupper</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Namn</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Värden</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Matcha bara hela strängen</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Hitta nästa</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Hittades inte</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>Kan inte hitta texten: %1</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameterImp</name>
@@ -1610,6 +2051,10 @@ Ange en annan katalog.</translation>
       <source>System parameter</source>
       <translation>Systemparameter</translation>
     </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Sök grupp</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPreferences</name>
@@ -1638,7 +2083,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>If you agree all your settings will be cleared.</source>
-      <translation>Om du accepterar kommer alla inställningar att raderas.</translation>
+      <translation>Om du accepterar kommer alla dina inställningar att raderas.</translation>
     </message>
   </context>
   <context>
@@ -1703,6 +2148,10 @@ Ange en annan katalog.</translation>
       <source>Open in browser</source>
       <translation>Öppna i webbläsare</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation>Programversion:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -1766,28 +2215,32 @@ Ange en annan katalog.</translation>
       <translation>Länk</translation>
     </message>
     <message>
-      <source>Show all object types</source>
-      <translation>Visa alla objekttyper</translation>
-    </message>
-    <message>
-      <source>No selection</source>
-      <translation>Inget val</translation>
-    </message>
-    <message>
-      <source>Please select an object from the list</source>
-      <translation>Välj ett objekt från listan</translation>
-    </message>
-    <message>
       <source>Search</source>
       <translation>Sök</translation>
     </message>
     <message>
       <source>A search pattern to filter the results above</source>
-      <translation type="unfinished">A search pattern to filter the results above</translation>
+      <translation>Ett sökmönster för att filtrera resultatet ovan</translation>
     </message>
     <message>
-      <source>None (Remove link)</source>
-      <translation type="unfinished">None (Remove link)</translation>
+      <source>Filter by type</source>
+      <translation>Filtrera efter typ</translation>
+    </message>
+    <message>
+      <source>Sync sub-object selection</source>
+      <translation>Synkronisera underobjektets val</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Återställ</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Rensa</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Om det är aktiverat kommer 3D-vymarkering att synkroniseras med full objekthierarki.</translation>
     </message>
   </context>
   <context>
@@ -1848,6 +2301,102 @@ Ange en annan katalog.</translation>
       <source>Python interpreter</source>
       <translation>Python-tolk</translation>
     </message>
+    <message>
+      <source>Log messages will be recorded</source>
+      <translation>Loggmeddelanden kommer att spelas in</translation>
+    </message>
+    <message>
+      <source>Warnings will be recorded</source>
+      <translation>Varningar kommer att registreras</translation>
+    </message>
+    <message>
+      <source>Error messages will be recorded</source>
+      <translation>Felmeddelanden kommer att spelas in</translation>
+    </message>
+    <message>
+      <source>When an error has occurred, the Report View dialog becomes visible
+on-screen while displaying the error</source>
+      <translation>När ett fel har inträffat blir dialogrutan för rapportvy synlig
+på skärmen när felet visas</translation>
+    </message>
+    <message>
+      <source>Show report view on error</source>
+      <translation>Visa rapportvy vid fel</translation>
+    </message>
+    <message>
+      <source>When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</source>
+      <translation>När varning har inträffat blir dialogrutan för rapportvy synlig
+på skärmen när varningen visas</translation>
+    </message>
+    <message>
+      <source>Show report view on warning</source>
+      <translation>Visa rapportvy vid varning</translation>
+    </message>
+    <message>
+      <source>When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</source>
+      <translation>När ett normalt meddelande har inträffat blir dialogrutan för rapportvy synlig
+på skärmen när meddelandet visas</translation>
+    </message>
+    <message>
+      <source>Show report view on normal message</source>
+      <translation>Visa rapportvy på normalt meddelande</translation>
+    </message>
+    <message>
+      <source>When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</source>
+      <translation>När ett loggmeddelande har inträffat blir dialogrutan för Report View synlig
+på skärmen när loggmeddelandet visas</translation>
+    </message>
+    <message>
+      <source>Show report view on log message</source>
+      <translation>Visa rapportvy för loggmeddelande</translation>
+    </message>
+    <message>
+      <source>Font color for normal messages in Report view panel</source>
+      <translation>Teckensnittsfärg för vanliga meddelanden i panelen Rapportvy</translation>
+    </message>
+    <message>
+      <source>Font color for log messages in Report view panel</source>
+      <translation>Teckensnittsfärg för loggmeddelanden i panelen Rapportvy</translation>
+    </message>
+    <message>
+      <source>Font color for warning messages in Report view panel</source>
+      <translation>Teckensnittsfärg för varningsmeddelanden i panelen Rapportvy</translation>
+    </message>
+    <message>
+      <source>Font color for error messages in Report view panel</source>
+      <translation>Teckensnittsfärg för felmeddelanden i panelen Rapportvy</translation>
+    </message>
+    <message>
+      <source>Internal Python output will be redirected
+from Python console to Report view panel</source>
+      <translation>Intern Python-utmatning kommer att omdirigeras
+från Python-konsolen till Rapportvy panelen</translation>
+    </message>
+    <message>
+      <source>Internal Python error messages will be redirected
+from Python console to Report view panel</source>
+      <translation>Intern Python-utmatning kommer att omdirigeras
+från Python-konsolen till Rapportvy panelen</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation>Inkludera en tidskod för varje rapport</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation>Inkludera en tidskod för varje post</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation>Normala meddelanden kommer att spelas in</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation>Spela in normala meddelanden</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgRunExternal</name>
@@ -1895,10 +2444,6 @@ Ange en annan katalog.</translation>
       <translation>3D Vy</translation>
     </message>
     <message>
-      <source>3D View settings</source>
-      <translation>Inställningar för 3D Vy</translation>
-    </message>
-    <message>
       <source>Show coordinate system in the corner</source>
       <translation>Visa koordinatsystemet i hörnet</translation>
     </message>
@@ -1907,60 +2452,12 @@ Ange en annan katalog.</translation>
       <translation>Visa räknaren för bilder per sekund</translation>
     </message>
     <message>
-      <source>Enable animation</source>
-      <translation>Aktivera animering</translation>
-    </message>
-    <message>
-      <source>Eye to eye distance for stereo modes:</source>
-      <translation>Ögonavstånd för stereolägen:</translation>
-    </message>
-    <message>
       <source>Camera type</source>
       <translation>Kameratyp</translation>
     </message>
     <message>
       <source/>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>3D Navigation</source>
-      <translation>3D Navigering</translation>
-    </message>
-    <message>
-      <source>Mouse...</source>
-      <translation>Mus...</translation>
-    </message>
-    <message>
-      <source>Intensity of backlight</source>
-      <translation>Intensiteten i bakgrundsbelysningen</translation>
-    </message>
-    <message>
-      <source>Enable backlight color</source>
-      <translation>Aktivera bakgrundsbelysningsfärg</translation>
-    </message>
-    <message>
-      <source>Orbit style</source>
-      <translation>Orbit stil</translation>
-    </message>
-    <message>
-      <source>Turntable</source>
-      <translation>Skivtallrik</translation>
-    </message>
-    <message>
-      <source>Trackball</source>
-      <translation>Trackball</translation>
-    </message>
-    <message>
-      <source>Invert zoom</source>
-      <translation>Invertera zoom</translation>
-    </message>
-    <message>
-      <source>Zoom at cursor</source>
-      <translation>Zooma vid markören</translation>
-    </message>
-    <message>
-      <source>Zoom step</source>
-      <translation>Zoom steg</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
@@ -1995,8 +2492,188 @@ Ange en annan katalog.</translation>
       <translation>Perspektivrenderin&amp;g</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
+      <source>Marker size:</source>
+      <translation>Markörstorlek:</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Allmänt</translation>
+    </message>
+    <message>
+      <source>Main coordinate system will always be shown in
+lower right corner within opened files</source>
+      <translation>Huvudkoordinatsystemet kommer alltid att visas i
+nedre högra hörnet i öppnade filer</translation>
+    </message>
+    <message>
+      <source>Time needed for last operation and resulting frame rate
+will be shown at the lower left corner in opened files</source>
+      <translation>Tid som behövs för senaste operation och resulterande bildfrekvens
+visas i nedre vänstra hörnet i öppnade filer</translation>
+    </message>
+    <message>
+      <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
+      <translation>Om markerad, så kommer applikationen att komma ihåg vilken arbetsbänk som är aktiv för varje flik i visningsområdet</translation>
+    </message>
+    <message>
+      <source>Remember active workbench by tab</source>
+      <translation>Kom ihåg aktiv arbetsbänk för flik</translation>
+    </message>
+    <message>
+      <source>Rendering</source>
+      <translation>Rendering</translation>
+    </message>
+    <message>
+      <source>If selected, Vertex Buffer Objects (VBO) will be used.
+A VBO is an OpenGL feature that provides methods for uploading
+vertex data (position, normal vector, color, etc.) to the graphics card.
+VBOs offer substantial performance gains because the data resides
+in the graphics memory rather than the system memory and so it
+can be rendered directly by GPU. 
+
+Note: Sometimes this feature may lead to a host of different
+issues ranging from graphical anomalies to GPU crash bugs. Remember to
+report this setting as enabled when seeking support on the FreeCAD forums</source>
+      <translation>Om detta är val kommer Vertex Buffer Objects (VBO) att användas.
+En VBO är en OpenGL-funktion som tillhandahåller metoder för att ladda upp
+vertex-data (position, normal vektor, färg etc.) till grafikkortet.
+VBOs erbjuder betydande prestandavinster eftersom datan finns
+i grafikminnet snarare än systemminnet och så
+kan renderas direkt av GPU. 
+
+Obs: Ibland kan den här funktionen leda till en mängd olika
+problem som sträcker sig från grafiska avvikelser till GPU-kraschfel. Kom ihåg att
+rapportera denna inställning som aktiverad när du söker support på FreeCAD-forumen</translation>
+    </message>
+    <message>
+      <source>Use OpenGL VBO (Vertex Buffer Object)</source>
+      <translation>Använd OpenGL (VertexBufferObject)</translation>
+    </message>
+    <message>
+      <source>Render cache</source>
+      <translation>Renderingscache</translation>
+    </message>
+    <message>
+      <source>'Render Caching' is another way to say 'Rendering Acceleration'.
+There are 3 options available to achieve this: 
+1) 'Auto' (default), let Coin3D decide where to cache.
+2) 'Distributed', manually turn on cache for all view provider root node.
+3) 'Centralized', manually turn off cache in all nodes of all view provider, and
+only cache at the scene graph root node. This offers the fastest rendering speed
+but slower response to any scene changes.</source>
+      <translation>”Render Caching” är ett annat sätt att säga ”Rendering Acceleration”.
+Det finns 3 alternativ för att uppnå detta: 
+1) 'Auto' (standard), låt Coin3D bestämma var cachen ska göras.
+2) 'Distribuerad', aktivera manuellt cache för alla vyleverantörers rotnod.
+3) 'Centraliserad', manuellt stänga av cache i alla noder i alla visningsleverantörer, och
+endast cache i scendiagrammets rotnod. Detta erbjuder den snabbaste renderingshastigheten
+men långsammare svar på alla scenförändringar.</translation>
+    </message>
+    <message>
+      <source>Auto</source>
+      <translation>Automatisk</translation>
+    </message>
+    <message>
+      <source>Distributed</source>
+      <translation>Distribuerad</translation>
+    </message>
+    <message>
+      <source>Centralized</source>
+      <translation>Centraliserad</translation>
+    </message>
+    <message>
+      <source>Transparent objects:</source>
+      <translation>Transparenta objekt:</translation>
+    </message>
+    <message>
+      <source>Render types of transparent objects</source>
+      <translation>Rendera typer av transparenta objekt</translation>
+    </message>
+    <message>
+      <source>One pass</source>
+      <translation>Ett pass</translation>
+    </message>
+    <message>
+      <source>Backface pass</source>
+      <translation type="unfinished">Backface pass</translation>
+    </message>
+    <message>
+      <source>Size of vertices in the Sketcher workbench</source>
+      <translation>Storlek på hörn i Sketcher arbetsbänken</translation>
+    </message>
+    <message>
+      <source>Eye to eye distance for stereo modes</source>
+      <translation>Ögonavstånd för stereolägen</translation>
+    </message>
+    <message>
+      <source>Backlight is enabled with the defined color</source>
+      <translation>Bakgrundsbelysningen är aktiverad med den definierade färgen</translation>
+    </message>
+    <message>
+      <source>Backlight color</source>
+      <translation>Bakgrundsbelysningens färg</translation>
+    </message>
+    <message>
+      <source>Intensity</source>
+      <translation>Intensitet</translation>
+    </message>
+    <message>
+      <source>Intensity of the backlight</source>
+      <translation>Bakgrundsbelysningens Intensitet</translation>
+    </message>
+    <message>
+      <source>Objects will be projected in orthographic projection</source>
+      <translation>Objekt kommer att projiceras i ortografisk projektion</translation>
+    </message>
+    <message>
+      <source>Objects will appear in a perspective projection</source>
+      <translation>Objekt kommer att visas i en perspektiv projektion</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation>Axelkors kommer att visas som standard vid fil
+öppna eller skapa</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation>Visa axelkors som standard</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Välj radie (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Område för att välja element i 3D-vyn.
+Större värde underlättar att plocka saker, men kan göra små saker omöjliga att välja.
+               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Det här alternativet är användbart för felsökning av grafikkort och drivrutinsproblem.
+
+För att ändra detta alternativ krävs en omstart av programmet.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Använd mjukvaru OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Vilken typ av multisamplad anti-aliasing används</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Öga-till-öga avstånd används för stereoprojektioner.
+Det angivna värdet är en faktor som kommer att multipliceras med
+storleken på det 3D-objekt som visas.</translation>
     </message>
   </context>
   <context>
@@ -2007,7 +2684,31 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>Öppna ett nytt fönster eller starta om %1 för att tillämpa kantutjämningsändringar.</translation>
+      <translation>Öppna ett nytt fönster eller starta om %1 för att tillämpa ändringar för kantutjämning.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
     </message>
   </context>
   <context>
@@ -2154,7 +2855,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
-      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
+      <translation>Maximalt antal backup-filer att behålla när dokument återsparas</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2181,16 +2882,8 @@ Ange en annan katalog.</translation>
       <translation>Författare</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;Namnet på skapare av dokumentet.&lt;/p&gt; &lt;p&gt;Lämna tomt för anonym.&lt;/p&gt; &lt;p&gt;Du kan också använda varianten:&lt;/p&gt; &lt;p&gt;John Doe &amp;lt; john@doe.com &amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>If this is checked, the "Last modified by" field will be set when saving the file</source>
-      <translation>Om detta är markerat kommer fältet "Senast redigerad av" uppdateras när filen sparas</translation>
-    </message>
-    <message>
       <source>Set on save</source>
-      <translation>Applicera vid Spara</translation>
+      <translation>Uppdatera vid sparning</translation>
     </message>
     <message>
       <source>Company</source>
@@ -2201,56 +2894,24 @@ Ange en annan katalog.</translation>
       <translation>Standardlicens</translation>
     </message>
     <message>
-      <source>The default license for new documents</source>
-      <translation>Standardlicensen för nya dokument</translation>
-    </message>
-    <message>
       <source>All rights reserved</source>
       <translation>Alla rättigheter reserverade</translation>
     </message>
     <message>
-      <source>CreativeCommons Attribution</source>
-      <translation type="unfinished">CreativeCommons Attribution</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-ShareAlike</source>
-      <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NoDerivatives</source>
-      <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
-    </message>
-    <message>
       <source>Public Domain</source>
-      <translation type="unfinished">Public Domain</translation>
+      <translation>Fri användning (Public Domain)</translation>
     </message>
     <message>
       <source>FreeArt</source>
-      <translation type="unfinished">FreeArt</translation>
+      <translation>FreeArt</translation>
     </message>
     <message>
       <source>Other</source>
-      <translation>övrigt</translation>
+      <translation>Övrigt</translation>
     </message>
     <message>
       <source>License URL</source>
       <translation>Licens-URL</translation>
-    </message>
-    <message>
-      <source>The default company to use for new files</source>
-      <translation>Standardföretaget för nya filer</translation>
     </message>
     <message>
       <source>Run AutoRecovery at startup</source>
@@ -2258,15 +2919,166 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
-      <translation>Spara information för återställning varje</translation>
+      <translation>Spara information för automatisk återställning varje</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>Lägg till programlogon i den genererade miniatyrbilden</translation>
     </message>
     <message>
-      <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <source>The application will create a new document when started</source>
+      <translation>Programmet kommer att skapa ett nytt dokument när det startas</translation>
+    </message>
+    <message>
+      <source>Compression level for FCStd files</source>
+      <translation>Komprimeringsnivå för FCStd-filer</translation>
+    </message>
+    <message>
+      <source>All changes in documents are stored so that they can be undone/redone</source>
+      <translation>Alla ändringar i dokument lagras så att de kan ångras/göras om</translation>
+    </message>
+    <message>
+      <source>How many Undo/Redo steps should be recorded</source>
+      <translation>Hur många Ångra/Gör om steg ska registreras</translation>
+    </message>
+    <message>
+      <source>Allow user aborting document recomputation by pressing ESC.
+This feature may slightly increase recomputation time.</source>
+      <translation>Tillåt användare att avbryta omberäkning av dokument genom att trycka på ESC.
+Denna funktion kan öka omberäkningstiden något.</translation>
+    </message>
+    <message>
+      <source>Allow aborting recomputation</source>
+      <translation>Tillåt att omberäkning avbryts</translation>
+    </message>
+    <message>
+      <source>If there is a recovery file available the application will
+automatically run a file recovery when it is started.</source>
+      <translation>Om det finns en återställningsfil tillgänglig kommer programmet
+automatiskt att köra en filåterställning när det startas.</translation>
+    </message>
+    <message>
+      <source>How often a recovery file is written</source>
+      <translation>Hur ofta en återställningsfil skrivs</translation>
+    </message>
+    <message>
+      <source>A thumbnail will be stored when document is saved</source>
+      <translation>En miniatyrbild sparas när dokumentet sparas</translation>
+    </message>
+    <message>
+      <source>Size</source>
+      <translation>Storlek</translation>
+    </message>
+    <message>
+      <source>Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</source>
+      <translation>Anger storleken på miniatyrbilden som lagras i dokumentet.
+Vanliga storlekar är 128, 256 och 512</translation>
+    </message>
+    <message>
+      <source>The program logo will be added to the thumbnail</source>
+      <translation>Programmets logotyp kommer att adderas till miniatyrbilden</translation>
+    </message>
+    <message>
+      <source>How many backup files will be kept when saving document</source>
+      <translation>Hur många säkerhetskopierade filer kommer att behållas när dokument sparas</translation>
+    </message>
+    <message>
+      <source>Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</source>
+      <translation>Säkerhetskopiera filer kommer att få tillägg '.FCbak' och filnamn
+få datum suffix enligt det angivna formatet</translation>
+    </message>
+    <message>
+      <source>Use date and FCBak extension</source>
+      <translation>Använd datum och FCBak tillägg</translation>
+    </message>
+    <message>
+      <source>Date format</source>
+      <translation>Datumformat</translation>
+    </message>
+    <message>
+      <source>Allow objects to have same label/name</source>
+      <translation>Tillåt objekt att ha samma etikett/namn</translation>
+    </message>
+    <message>
+      <source>Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
+A partially loaded document cannot be edited. Double click the document
+icon in the tree view to fully reload it.</source>
+      <translation>Aktivera partiell laddning av externa länkade dokument.
+Då kommer endast refererade objekt och deras beroenden laddas
+när ett länkat dokument öppnas automatiskt tillsammans med huvuddokumentet.
+Ett delvis laddat dokument kan inte redigeras. Dubbelklicka på ikonen för dokumentet
+i trädvyn för att ladda om det.</translation>
+    </message>
+    <message>
+      <source>Disable partial loading of external linked objects</source>
+      <translation>Inaktivera partiell laddning av externa länkade objekt</translation>
+    </message>
+    <message>
+      <source>All documents that will be created will get the specified author name.
+Keep blank for anonymous.
+You can also use the form: John Doe &lt;john@doe.com&gt;</source>
+      <translation>Alla dokument som kommer att skapas kommer att få det angivna författarnamnet.
+Behåll tomt för anonymt.
+Du kan också använda formuläret: John Doe &lt;john@doe.com&gt;</translation>
+    </message>
+    <message>
+      <source>The field 'Last modified by' will be set to specified author when saving the file</source>
+      <translation>Fältet 'Senast ändrad av' kommer att sättas till specificerad författare när filen sparas</translation>
+    </message>
+    <message>
+      <source>Default company name to use for new files</source>
+      <translation>Förvalt företagsnamn att använda för nya filer</translation>
+    </message>
+    <message>
+      <source>Default license for new documents</source>
+      <translation>Standardlicens för nya dokument</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution</source>
+      <translation>Creative Commons Erkännande-licens</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-ShareAlike</source>
+      <translation>Creative Commons Erkännande-licens DelaLika</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NoDerivatives</source>
+      <translation>Creative Commons erkännande, inga bearbetningar</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial</source>
+      <translation>Creative Commons Erkännande-IckeKommersiell</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
+      <translation>Creative Commons Erkännande-IckeKommersiell-DelaLika</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
+      <translation>Creative Commons erkännande, icke kommersiell, inga bearbetningar</translation>
+    </message>
+    <message>
+      <source>URL describing more about the license</source>
+      <translation>URL som beskriver mer om licensen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsDocumentImp</name>
+    <message>
+      <source>The format of the date to use.</source>
+      <translation>Datumformat som ska användas.</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Standard</translation>
+    </message>
+    <message>
+      <source>Format</source>
+      <translation>Format</translation>
     </message>
   </context>
   <context>
@@ -2391,82 +3203,6 @@ Ange en annan katalog.</translation>
       <translation>Ikon       128 .x. 128</translation>
     </message>
     <message>
-      <source>CGA       320 x 200</source>
-      <translation>CGA       320 x 200</translation>
-    </message>
-    <message>
-      <source>QVGA     320 x 240</source>
-      <translation>QVGA     320 x 240</translation>
-    </message>
-    <message>
-      <source>VGA       640 x 480</source>
-      <translation>VGA        640 x 480</translation>
-    </message>
-    <message>
-      <source>NTSC     720 x 480</source>
-      <translation>NTSC     720 x 480</translation>
-    </message>
-    <message>
-      <source>PAL        768 x 578</source>
-      <translation>PAL        768 x 578</translation>
-    </message>
-    <message>
-      <source>SVGA     800 x 600</source>
-      <translation>SVGA     800 x 600</translation>
-    </message>
-    <message>
-      <source>XGA       1024 x 768</source>
-      <translation>XGA       1024 x 768</translation>
-    </message>
-    <message>
-      <source>HD720   1280 x 720</source>
-      <translation>HD720   1280 x 720</translation>
-    </message>
-    <message>
-      <source>SXGA     1280 x 1024</source>
-      <translation>SXGA     1280 x 1024</translation>
-    </message>
-    <message>
-      <source>SXGA+   1400 x 1050</source>
-      <translation>SXGA+   1400 x 1050</translation>
-    </message>
-    <message>
-      <source>UXGA     1600 x 1200</source>
-      <translation>UXGA     1600 x 1200</translation>
-    </message>
-    <message>
-      <source>HD1080 1920 x 1080</source>
-      <translation>HD1080 1920 x 1080</translation>
-    </message>
-    <message>
-      <source>WUXGA  1920 x 1200</source>
-      <translation>WUXGA  1920 x 1200</translation>
-    </message>
-    <message>
-      <source>QXGA     2048 x 1538</source>
-      <translation>QXGA     2048 x 1538</translation>
-    </message>
-    <message>
-      <source>WQXGA  2560 x 1600</source>
-      <translation>WQXGA  2560 x 1600</translation>
-    </message>
-    <message>
-      <source>QSXGA   2560 x 2048</source>
-      <translation>QSXGA   2560 x 2048</translation>
-    </message>
-    <message utf8="true">
-      <source>QUXGA   3200 × 2400</source>
-      <translation>QUXGA   3200 × 2400</translation>
-    </message>
-    <message utf8="true">
-      <source>HUXGA   6400 × 4800</source>
-      <translation>HUXGA   6400 × 4800</translation>
-    </message>
-    <message>
-      <source>!!!          10000 x 10000</source>
-      <translation>!!!          10000 x 10000</translation>
-    </message>
-    <message>
       <source>Standard sizes:</source>
       <translation>Standardstorlekar:</translation>
     </message>
@@ -2524,11 +3260,88 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Transparent</source>
-      <translation>Genomskinlig</translation>
+      <translation>Transparent</translation>
     </message>
     <message>
       <source>Add watermark</source>
       <translation>Lägg till vattenstämpel</translation>
+    </message>
+    <message>
+      <source>Creation method:</source>
+      <translation>Skapningsmetod:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsImageImp</name>
+    <message>
+      <source>Offscreen (New)</source>
+      <translation>Offscreen (Ny)</translation>
+    </message>
+    <message>
+      <source>Offscreen (Old)</source>
+      <translation>Offscreen (gammal)</translation>
+    </message>
+    <message>
+      <source>Framebuffer (custom)</source>
+      <translation>Framebuffer (anpassad)</translation>
+    </message>
+    <message>
+      <source>Framebuffer (as is)</source>
+      <translation>Framebuffer (som är)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Workbench Name</source>
+      <translation>Namn på arbetsbänk</translation>
+    </message>
+    <message>
+      <source>Autoload?</source>
+      <translation>Auto-laddad?</translation>
+    </message>
+    <message>
+      <source>Load Now</source>
+      <translation>Ladda nu</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;För att bevara resurser laddar FreeCAD inte arbetsbänkar förrän de används. Laddar dem kan ge tillgång till ytterligare inställningar relaterade till deras funktionalitet.&lt;/p&gt;&lt;p&gt;Följande arbetsbänkar finns tillgängliga i din installation, men är ännu inte laddade:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation>Tillgängliga arbetsbänkar</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Arbetsbänk</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Autoladda</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Om kontrollerad</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>laddas automatiskt när FreeCAD startas upp</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Detta är den aktuella startmodulen och måste autoladdas. Se Inställningar/Allmän/Autoladda för att ändra.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Laddad</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Ladda nu</translation>
     </message>
   </context>
   <context>
@@ -2562,10 +3375,6 @@ Ange en annan katalog.</translation>
       <translation>Gui kommandon</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Spelar in GUI kommandon</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Spela in som kommentar</translation>
     </message>
@@ -2580,6 +3389,308 @@ Ange en annan katalog.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Kör makron i lokala miljön</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Spela in GUI-kommandon</translation>
+    </message>
+    <message>
+      <source>Variables defined by macros are created as local variables</source>
+      <translation>Variabler definierade av makron skapas som lokala variabler</translation>
+    </message>
+    <message>
+      <source>Commands executed by macro scripts are shown in Python console</source>
+      <translation>Kommandon som körs av makroskript visas i Python-konsolen</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands</source>
+      <translation>Inspelade makron kommer också att innehålla kommandon för användargränssnitt</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands as comments</source>
+      <translation>Inspelade makron kommer också att innehålla kommandon för användargränssnitt som kommentarer</translation>
+    </message>
+    <message>
+      <source>The directory in which the application will search for macros</source>
+      <translation>Katalogen där programmet kommer att söka efter makron</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>Lista över senast använda makron</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>Storlek på senaste makrolistan</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Hur många makron ska listas i listan över senast använda makron</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>Antal genvägar</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>Hur många nya makron bör ha genvägar</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>Tangentbords modifierare</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>Tangentbords modifierare, standard = Ctrl+Skift+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsNavigation</name>
+    <message>
+      <source>Navigation</source>
+      <translation>Navigering</translation>
+    </message>
+    <message>
+      <source>Navigation cube</source>
+      <translation>Navigationskub</translation>
+    </message>
+    <message>
+      <source>Steps by turn</source>
+      <translation>Vridsteg</translation>
+    </message>
+    <message>
+      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
+      <translation>Antal vridsteg vid användning av pilar (standard = 8 : stegvinkel = 360/8 = 45 grader)</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Hörn</translation>
+    </message>
+    <message>
+      <source>Corner where navigation cube is shown</source>
+      <translation>Hörn där navigationskub visas</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Topp vänster</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Topp höger</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Botten vänster</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Botten höger</translation>
+    </message>
+    <message>
+      <source>3D Navigation</source>
+      <translation>3D Navigering</translation>
+    </message>
+    <message>
+      <source>List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</source>
+      <translation>Lista musknappskonfigurationer för varje vald navigeringsinställning.
+Välj en uppsättning och tryck sedan på knappen för att visa nämnda konfigurationer.</translation>
+    </message>
+    <message>
+      <source>Mouse...</source>
+      <translation>Mus...</translation>
+    </message>
+    <message>
+      <source>Navigation settings set</source>
+      <translation>Navigeringsinställningar inställda</translation>
+    </message>
+    <message>
+      <source>Orbit style</source>
+      <translation>Orbit stil</translation>
+    </message>
+    <message>
+      <source>Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</source>
+      <translation>Rotationsstil.
+Trackball: att flytta musen horisontellt kommer att rotera delen runt y-axeln
+Vridbord: delen kommer att roteras runt z-axeln.</translation>
+    </message>
+    <message>
+      <source>Turntable</source>
+      <translation>Skivtallrik</translation>
+    </message>
+    <message>
+      <source>Trackball</source>
+      <translation>Trackball</translation>
+    </message>
+    <message>
+      <source>New document scale</source>
+      <translation>Ny dokumentskala</translation>
+    </message>
+    <message>
+      <source>Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</source>
+      <translation>Ställer in kamerans zoom för nya dokument.
+Värdet är sfärens diameter som passar på skärmen.</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <source>Enable animated rotations</source>
+      <translation>Aktivera animerade rotationer</translation>
+    </message>
+    <message>
+      <source>Enable animation</source>
+      <translation>Aktivera animering</translation>
+    </message>
+    <message>
+      <source>Zoom operations will be performed at position of mouse pointer</source>
+      <translation>Zoomoperationer kommer att utföras vid muspekarens position</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Zooma vid markören</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Zoom steg</translation>
+    </message>
+    <message>
+      <source>Direction of zoom operations will be inverted</source>
+      <translation>Zoomoperationernas riktning kommer att inverteras</translation>
+    </message>
+    <message>
+      <source>Invert zoom</source>
+      <translation>Invertera zoom</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</source>
+      <translation>Förhindrar lutning av vy vid två-fingers-zoomning. Påverkar endast gestnavigeringsstil, vylutning med musen avaktiveras inte av denna inställning.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>Avaktivera lutning med gester på pekskärm</translation>
+    </message>
+    <message>
+      <source>Rotations in 3D will use current cursor position as center for rotation</source>
+      <translation>Rotationer i 3D kommer att använda aktuell markörposition som centrum för rotation</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisk</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrisk</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrisk</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Topp</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Front</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Vänster</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Höger</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Bak</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Botten</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Anpassad</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Standard kamerainriktning</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Standard kamerainriktning när du skapar ett nytt dokument eller väljer hemvyn</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Rotationsläge</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Fönster mitt</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Drag vid muspekaren</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Objekt centrum</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Roterar till närmaste möjliga tillstånd när du klickar på en kubsida</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Rotera till närmaste</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Kubstorlek</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Storlek på navigationskuben</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Hur mycket kommer att zoomas.
+Zoomsteg '1' betyder en faktor på 7,5 för varje zoomsteg.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Markering</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Växla automatiskt till 3D-vyn som innehåller det valda objektet</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Expandera trädobjektet automatiskt när motsvarande objekt väljs i 3D-vyn</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Förvälj objektet i 3D-vyn när musen går över trädobjektet</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Spela in markering i trädvyn för att gå bakåt/framåt med navigeringsknappen</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Lägg till kryssrutor för val i dokumentträd</translation>
     </message>
   </context>
   <context>
@@ -2609,10 +3720,6 @@ Ange en annan katalog.</translation>
       <translation>Enhet</translation>
     </message>
     <message>
-      <source>User system:</source>
-      <translation>Användarsystem:</translation>
-    </message>
-    <message>
       <source>US customary (in/lb)</source>
       <translation>Amerikanska enheter (in/lb)</translation>
     </message>
@@ -2624,17 +3731,73 @@ Ange en annan katalog.</translation>
       <source>Imperial decimal (in/lb)</source>
       <translation>Brittiska enheter (in/lb)</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>Building Euro (cm/m²/m³)</source>
       <translation>Europeiska byggenheter (cm//m²/m³)</translation>
     </message>
     <message>
-      <source>Building US (ft-in/sqft/cuft)</source>
+      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+      <translation>Metriska små- och CNC-enheter (mm, mm/min)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>Minsta bråkdel av tum:</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Enhetssystem:</translation>
+    </message>
+    <message>
+      <source>Number of decimals that should be shown for numbers and dimensions</source>
+      <translation>Antal decimaler som ska visas för siffror och dimensioner</translation>
+    </message>
+    <message>
+      <source>Unit system that should be used for all parts the application</source>
+      <translation>Enhetssystem som ska användas för alla delar av applikationen</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch to be displayed</source>
+      <translation>Minsta bråkdel tum som ska visas</translation>
+    </message>
+    <message>
+      <source>Building US (ft-in/sqft/cft)</source>
       <translation>Amerikanska byggenheter (ft-in/sqft/cuft)</translation>
     </message>
     <message>
-      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <source>Imperial for Civil Eng (ft, ft/sec)</source>
+      <translation>Imperial för Civil Eng (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, s)</translation>
     </message>
   </context>
   <context>
@@ -2672,12 +3835,56 @@ Ange en annan katalog.</translation>
       <translation>Enkel färg</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Välj radie (px):</translation>
+      <source>Object being edited</source>
+      <translation>Objektet som blir redigerat</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <source>Active container</source>
+      <translation>Aktiv behållare</translation>
+    </message>
+    <message>
+      <source>Enable preselection and highlight by specified color</source>
+      <translation>Aktivera förval och markering efter angiven färg</translation>
+    </message>
+    <message>
+      <source>Enable selection highlighting and use specified color</source>
+      <translation>Aktivera valmarkering och använd angiven färg</translation>
+    </message>
+    <message>
+      <source>Background color for the model view</source>
+      <translation>Bakgrundsfärg för modellvyn</translation>
+    </message>
+    <message>
+      <source>Background will have selected color</source>
+      <translation>Bakgrunden kommer att ha vald färg</translation>
+    </message>
+    <message>
+      <source>Color gradient will get selected color as middle color</source>
+      <translation>Färg gradient kommer att få vald färg som mellersta färg</translation>
+    </message>
+    <message>
+      <source>Bottom color</source>
+      <translation>Nedre färg</translation>
+    </message>
+    <message>
+      <source>Background will have selected color gradient</source>
+      <translation>Bakgrunden kommer att ha vald färgtoning</translation>
+    </message>
+    <message>
+      <source>Top color</source>
+      <translation>Övre färg</translation>
+    </message>
+    <message>
+      <source>Tree view</source>
+      <translation>Trädvy</translation>
+    </message>
+    <message>
+      <source>Background color for objects in tree view that are currently edited</source>
+      <translation>Bakgrundsfärg för objekt i trädvyn som för närvarande redigeras</translation>
+    </message>
+    <message>
+      <source>Background color for active containers in tree view</source>
+      <translation>Bakgrundsfärg för aktiva behållare i trädvyn</translation>
     </message>
   </context>
   <context>
@@ -2706,14 +3913,6 @@ Ange en annan katalog.</translation>
       <translation>Kvantitet:</translation>
     </message>
     <message>
-      <source>Units:</source>
-      <translation>Enheter:</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>Hjälp</translation>
-    </message>
-    <message>
       <source>Copy</source>
       <translation>Kopiera</translation>
     </message>
@@ -2721,12 +3920,68 @@ Ange en annan katalog.</translation>
       <source>Close</source>
       <translation>Stäng</translation>
     </message>
+    <message>
+      <source>Input the source value and unit</source>
+      <translation>Ange källvärde och enhet</translation>
+    </message>
+    <message>
+      <source>Input here the unit for the result</source>
+      <translation>Ange här enheten för resultatet</translation>
+    </message>
+    <message>
+      <source>Result</source>
+      <translation>Resultat</translation>
+    </message>
+    <message>
+      <source>List of last used calculations 
+To add a calculation press Return in the value input field</source>
+      <translation>Lista över senast använda beräkningar 
+För att lägga till en beräkning trycker du på Retur i fältet för indata</translation>
+    </message>
+    <message>
+      <source>Quantity</source>
+      <translation>Kvantitet</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Enhetssystem:</translation>
+    </message>
+    <message>
+      <source>Unit system to be used for the Quantity
+The preference system is the one set in the general preferences.</source>
+      <translation>Enhetssystem som ska användas för Kvantitet
+Inställningssystemet är det som anges i de allmänna inställningarna.</translation>
+    </message>
+    <message>
+      <source>Decimals:</source>
+      <translation>Decimaler:</translation>
+    </message>
+    <message>
+      <source>Decimals for the Quantity</source>
+      <translation>Decimaltal för Kvantitet</translation>
+    </message>
+    <message>
+      <source>Unit category:</source>
+      <translation>Enhetskategori:</translation>
+    </message>
+    <message>
+      <source>Unit category for the Quantity</source>
+      <translation>Enhetskategori för kvantitet</translation>
+    </message>
+    <message>
+      <source>Copy the result into the clipboard</source>
+      <translation>Kopiera resultatet till urklipp</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>Unit mismatch</source>
-      <translation>Enhetsförväxling</translation>
+      <source>unit mismatch</source>
+      <translation>enhet matchar inte</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>okänd enhet:</translation>
     </message>
   </context>
   <context>
@@ -2749,7 +4004,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Flytta ner det markerade objektet&lt;/span&gt;&lt;/p&gt; &lt;p&gt;Objektet kommer att flyttas ner&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Flytta ner det valda föremålet&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Föremålet kommer att flyttas ned&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move left</source>
@@ -2772,24 +4027,24 @@ Ange en annan katalog.</translation>
       <translation>Sortera aktiverade arbetsbänkar</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Sortera aktiverade arbetsbänkar&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Flytta upp</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; flytta upp det markerade objektet&lt;/span&gt;&lt;/p&gt; &lt;p&gt;Objektet kommer att flyttas upp&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt; Obs:&lt;/span&gt; &lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; Ändringarna blir aktiva nästa gång du startar FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Flytta upp det valda föremålet.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Föremålet kommer att flyttas upp.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
       <translation>Lägg till alla till aktiverade arbetsbänkar</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Sortera aktiverade arbetsbänkar&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt; Obs:&lt;/span&gt; &lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; Ändringarna blir aktiva nästa gång du startar FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2803,7 +4058,7 @@ Ange en annan katalog.</translation>
     <name>Gui::Dialog::DocumentRecovery</name>
     <message>
       <source>Document Recovery</source>
-      <translation>Återställ dokument</translation>
+      <translation>Dokumentåterställnng</translation>
     </message>
     <message>
       <source>Status of recovered documents:</source>
@@ -2831,11 +4086,11 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Failed to recover</source>
-      <translation>Misslyckades återställa</translation>
+      <translation>Återställning misslyckades</translation>
     </message>
     <message>
       <source>Successfully recovered</source>
-      <translation>Lyckades återställa</translation>
+      <translation>Återställning lyckades</translation>
     </message>
     <message>
       <source>Finish</source>
@@ -2855,19 +4110,15 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete the selected transient directories?</source>
-      <translation>Är du säker på att du vill ta bort de valda temporära katalogerna?</translation>
+      <translation>Är du säker på att du vill radera de valda temporära katalogerna?</translation>
     </message>
     <message>
       <source>When deleting the selected transient directory you won't be able to recover any files afterwards.</source>
-      <translation>När du tar bort den valda temporära katalogerna kommer du inte att kunna återställa filerna efteråt.</translation>
+      <translation>När den valda temporära katalogen raderas kommer du inte att kunna återställa några filer efteråt.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation>Är du säker på att du vill ta bort alla temporära kataloger?</translation>
-    </message>
-    <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>När du tar bort den valda temporära katalogerna kommer du inte att kunna återställa filerna efteråt.</translation>
+      <translation>Är du säker på att du vill radera alla temporära kataloger?</translation>
     </message>
     <message>
       <source>Finished</source>
@@ -2881,9 +4132,11 @@ Ange en annan katalog.</translation>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation type="unfinished">Press 'Start Recovery' to start the recovery process of the document listed below.
-
-The 'Status' column shows whether the document could be recovered.</translation>
+      <translation>Tryck på 'Starta återställning' för att återställa det dokument som anges nedan. Kolumnen 'Status' visar om dokumentet kunde återställas.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation>När du tar bort alla temporära kataloger kommer du inte att kunna återställa några filer efteråt.</translation>
     </message>
   </context>
   <context>
@@ -2902,15 +4155,15 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Error opening saved file: %1</source>
-      <translation type="unfinished">Error opening saved file: %1</translation>
+      <translation>Fel vid öppning av sparad fil: %1</translation>
     </message>
     <message>
       <source>Error saving: %1</source>
-      <translation>Fel vid sparande: %1</translation>
+      <translation>Fel vid sparning: %1</translation>
     </message>
     <message>
       <source>Network Error: %1</source>
-      <translation>Nätverkfel: %1</translation>
+      <translation>Nätverksfel: %1</translation>
     </message>
     <message>
       <source>seconds</source>
@@ -2938,7 +4191,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>bytes</source>
-      <translation>bytes</translation>
+      <translation>byte</translation>
     </message>
     <message>
       <source>kB</source>
@@ -2957,11 +4210,11 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Clean up</source>
-      <translation>Städa</translation>
+      <translation>Rensa</translation>
     </message>
     <message>
       <source>0 Items</source>
-      <translation>0 objekt</translation>
+      <translation>0 föremål</translation>
     </message>
     <message>
       <source>Download Manager</source>
@@ -2973,14 +4226,14 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>%1 Downloads</source>
-      <translation>%1 Nedladdningar</translation>
+      <translation>%1 nedladdningar</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
       <source>Icon folders</source>
-      <translation>Mapp för Ikoner</translation>
+      <translation>Mapp för ikoner</translation>
     </message>
     <message>
       <source>Add icon folder</source>
@@ -2991,7 +4244,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <name>Gui::Dialog::IconFolders</name>
     <message>
       <source>Add or remove custom icon folders</source>
-      <translation>Lägga till eller ta bort mapp för egna ikoner</translation>
+      <translation>Lägg till eller ta bort mapp(ar) för egna ikoner</translation>
     </message>
     <message>
       <source>Remove folder</source>
@@ -3083,10 +4336,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <translation>Minimera</translation>
     </message>
     <message>
-      <source>Do really want to remove this parameter group?</source>
-      <translation>Vill du verkligen to bort denna parametergrupp?</translation>
-    </message>
-    <message>
       <source>Existing sub-group</source>
       <translation>Existerande undergrupp</translation>
     </message>
@@ -3109,6 +4358,10 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>Reading from '%1' failed.</source>
       <translation>Läsning från '%1' misslyckades.</translation>
+    </message>
+    <message>
+      <source>Do you really want to remove this parameter group?</source>
+      <translation>Vill du verkligen to bort denna parametergrupp?</translation>
     </message>
   </context>
   <context>
@@ -3201,28 +4454,8 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <translation>Centrum:</translation>
     </message>
     <message>
-      <source>Pitch:</source>
-      <translation>Lutning:</translation>
-    </message>
-    <message>
-      <source>Roll:</source>
-      <translation>Rullning:</translation>
-    </message>
-    <message>
-      <source>Yaw:</source>
-      <translation>Girning:</translation>
-    </message>
-    <message>
       <source>Rotation axis with angle</source>
       <translation>Rotera axeln med vinkel</translation>
-    </message>
-    <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Applicera placeringsförändringar omedelbart</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>applicera stegvisa förändringar på objektplacering</translation>
     </message>
     <message>
       <source>Apply</source>
@@ -3245,12 +4478,60 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <translation>Det finns inmatningsfält med felaktiga värden, vänligen ange giltiga värden!</translation>
     </message>
     <message>
-      <source>Euler angles (XY'Z'')</source>
-      <translation>Euler-vinklar (XY'Z'')</translation>
+      <source>Use center of mass</source>
+      <translation>Använd masscentrum</translation>
     </message>
     <message>
-      <source>Use center of mass</source>
-      <translation type="unfinished">Use center of mass</translation>
+      <source>Axial:</source>
+      <translation>Axel:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Tillämpa axel</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Skift-klicka för omvänd riktning</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Markerade punkter</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Tillämpa inkrementala ändringar</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Vänligen välj en, två eller tre punkter och tryck sedan på denna knapp. En punkt kan antingen vara en hörnpunkt eller ligga på en kant eller yta. Om en kant eller yta väljs, kommer punkten ligga vid musens position på kanten eller ytan. Om en punkt är vald kommer den vara rotationscentrum. Om två punkter är valda kommer mittpunkten mellan dom att vara rotationscentrum, och en ny axel kommer skapas vid behov. Om tre punkter är valda kommer den första punkten att vara rotationscentrum och ligga på normalvektorn mot det plan som definieras av dom tre valda punkterna. Viss distans- och vinkelinformation är tillgänglig i rapport-vyn, vilket kan vara användbart när objekt ska justeras. För enkelhetens skull så kopieras lämplig distans och vinkel vid skift + klick.</translation>
+    </message>
+    <message>
+      <source>Pitch (around y-axis):</source>
+      <translation>Pitch (runt y-axeln):</translation>
+    </message>
+    <message>
+      <source>Roll (around x-axis):</source>
+      <translation>Rulla (runt x-axeln):</translation>
+    </message>
+    <message>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
+    </message>
+    <message>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
+    </message>
+    <message>
+      <source>Pitch (around y-axis)</source>
+      <translation>Pitch (runt y-axeln)</translation>
+    </message>
+    <message>
+      <source>Roll (around the x-axis)</source>
+      <translation>Rulla (runt x-axeln)</translation>
+    </message>
+    <message>
+      <source>Euler angles (zy'x'')</source>
+      <translation>Euler vinklar (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -3262,6 +4543,37 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <source>Command</source>
       <translation>Kommando</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::RemoteDebugger</name>
+    <message>
+      <source>Attach to remote debugger</source>
+      <translation>Bifoga till fjärravlusare</translation>
+    </message>
+    <message>
+      <source>winpdb</source>
+      <translation>winpdb</translation>
+    </message>
+    <message>
+      <source>Password:</source>
+      <translation>Lösenord:</translation>
+    </message>
+    <message>
+      <source>VS Code</source>
+      <translation>VS kod</translation>
+    </message>
+    <message>
+      <source>Address:</source>
+      <translation>Adress:</translation>
+    </message>
+    <message>
+      <source>Port:</source>
+      <translation>Port:</translation>
+    </message>
+    <message>
+      <source>Redirect output</source>
+      <translation>Omdirigera utdata</translation>
     </message>
   </context>
   <context>
@@ -3345,6 +4657,55 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
   </context>
   <context>
+    <name>Gui::DlgObjectSelection</name>
+    <message>
+      <source>Object selection</source>
+      <translation>Objektval</translation>
+    </message>
+    <message>
+      <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
+      <translation>De markerade objekten innehåller andra beroenden. Välj vilka objekt att exportera. Alla beroenden är automatiskt valda som standard.</translation>
+    </message>
+    <message>
+      <source>Dependency</source>
+      <translation>Beroende</translation>
+    </message>
+    <message>
+      <source>Document</source>
+      <translation>Dokument</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Namn</translation>
+    </message>
+    <message>
+      <source>State</source>
+      <translation>Tillstånd</translation>
+    </message>
+    <message>
+      <source>Hierarchy</source>
+      <translation>Hierarki</translation>
+    </message>
+    <message>
+      <source>Selected</source>
+      <translation>Markerad</translation>
+    </message>
+    <message>
+      <source>Partial</source>
+      <translation>Partiell</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation>&amp;Använd ursprungliga val</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Ignorera beroenden och fortsätt med objekt
+som ursprungligen valts innan du öppnar denna dialogruta</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::DlgTreeWidget</name>
     <message>
       <source>Dialog</source>
@@ -3360,18 +4721,18 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
-      <translation>Kombivy</translation>
-    </message>
-    <message>
-      <source>Tasks</source>
-      <translation>Uppgifter</translation>
+      <source>Combo View</source>
+      <translation>Kombinerad vy</translation>
     </message>
     <message>
       <source>Model</source>
       <translation>Modell</translation>
+    </message>
+    <message>
+      <source>Tasks</source>
+      <translation>Uppgifter</translation>
     </message>
   </context>
   <context>
@@ -3383,18 +4744,6 @@ The 'Status' column shows whether the document could be recovered.</translation>
   </context>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
-    <message>
-      <source>Logging</source>
-      <translation>Loggning</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Varning</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Fel</translation>
-    </message>
     <message>
       <source>Options</source>
       <translation>Alternativ</translation>
@@ -3427,6 +4776,30 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <source>Plain Text Files</source>
       <translation>Textfil</translation>
     </message>
+    <message>
+      <source>Display message types</source>
+      <translation>Visa meddelandetyper</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation>Normala meddelanden</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation>Loggmeddelanden</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation>Varningar</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation>Fel</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation>Visa rapportvy på</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DockWnd::ReportView</name>
@@ -3447,7 +4820,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Searches object labels</source>
-      <translation>Söker objekts etiketter</translation>
+      <translation>Söker objektetiketter</translation>
     </message>
     <message>
       <source>Clears the search field</source>
@@ -3455,11 +4828,11 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Select only</source>
-      <translation>Välj endast</translation>
+      <translation>Markera endast</translation>
     </message>
     <message>
       <source>Selects only this object</source>
-      <translation>Väljer bara det här objektet</translation>
+      <translation>Markerar endast detta objekt</translation>
     </message>
     <message>
       <source>Deselect</source>
@@ -3467,7 +4840,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Deselects this object</source>
-      <translation>Avmarkerar objektet</translation>
+      <translation>Avmarkerar detta objekt</translation>
     </message>
     <message>
       <source>Zoom fit</source>
@@ -3483,15 +4856,15 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Selects and locates this object in the tree view</source>
-      <translation>Väljer och lokaliserar objektet i trädvyn</translation>
+      <translation>Markerar och lokaliserar detta objekt i trädvyn</translation>
     </message>
     <message>
       <source>To python console</source>
-      <translation>Till pythonkonsolen</translation>
+      <translation>Till Python-konsolen</translation>
     </message>
     <message>
       <source>Reveals this object and its subelements in the python console.</source>
-      <translation>Visar detta objekt och dess underelement i pythonkonsolen.</translation>
+      <translation>Visar detta objekt och dess underelement i Python-konsolen.</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
@@ -3503,19 +4876,23 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Selection View</source>
-      <translation type="unfinished">Selection View</translation>
+      <translation>Urvalsvy</translation>
     </message>
     <message>
       <source>The number of selected items</source>
-      <translation type="unfinished">The number of selected items</translation>
+      <translation>Antalet markerade föremål</translation>
     </message>
     <message>
       <source>Duplicate subshape</source>
-      <translation type="unfinished">Duplicate subshape</translation>
+      <translation>Duplicera underform</translation>
     </message>
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
-      <translation type="unfinished">Creates a standalone copy of this subshape in the document</translation>
+      <translation>Skapa en fristående kopia av den här underformen i dokumentet</translation>
+    </message>
+    <message>
+      <source>Picked object list</source>
+      <translation>Lista med valda objekt</translation>
     </message>
   </context>
   <context>
@@ -3587,6 +4964,20 @@ Vill du spara ändringarna?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Exakt matchning</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Exakt matchning</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::FileChooser</name>
     <message>
       <source>Select a file</source>
@@ -3645,20 +5036,20 @@ Vill du spara ändringarna?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Tryck på skärmen eller klicka på vänster musknapp.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Knacka ELLER klicka på musens vänstra knapp.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Dra på skärmen med två fingrar. Eller tryck på höger musknapp.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation>Drag skärmen med två fingrar ELLER tryck på musens högra knapp.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Dra på skärmen med ett finger. Eller tryck på vänster musknapp. I Sketcher och andra redigeringslägen, håll ned Alt-knappen.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation>Dra skärmen med ett finger ELLER tryck på musens vänstra knapp. I Skissaren och andra redigeringslägen, håller du även ned Alt.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Nyp (dra isär/ihop två fingrar på skärmen). Eller bläddra med mellersta musknappen. Eller använd PgUp/Page på tangentbordet.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Nyp (dra isär/ihop två fingrar på skärmen), bläddra med musens mittenknapp eller använd PGUP/PGDOWN på tangentbordet.</translation>
     </message>
   </context>
   <context>
@@ -3673,7 +5064,7 @@ Vill du spara ändringarna?</translation>
     </message>
     <message>
       <source>Bitmap format</source>
-      <translation>Bitmappsformat</translation>
+      <translation>Bitmap-format</translation>
     </message>
     <message>
       <source>GIF format</source>
@@ -3697,15 +5088,15 @@ Vill du spara ändringarna?</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.</source>
-      <translation type="unfinished">Graphviz couldn't be found on your system.</translation>
+      <translation>Graphviz kunde inte hittas i systemet.</translation>
     </message>
     <message>
       <source>Read more about it here.</source>
-      <translation type="unfinished">Read more about it here.</translation>
+      <translation>Läs mer om det här.</translation>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation type="unfinished">Do you want to specify its installation path if it's already installed?</translation>
+      <translation>Vill du ange dess installationssökväg om det redan är installerat?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
@@ -3811,7 +5202,7 @@ Vill du spara ändringarna?</translation>
     </message>
     <message>
       <source>Macro file doesn't exist</source>
-      <translation>Makrofilen finns inte</translation>
+      <translation>Makrofil existerar inte</translation>
     </message>
     <message>
       <source>No such macro file: '%1'</source>
@@ -3841,13 +5232,18 @@ Vill du spara ändringarna?</translation>
       <translation>Stäng alla</translation>
     </message>
     <message>
-      <source>Object dependencies</source>
-      <translation>Objektberoenden</translation>
+      <source>Unsaved document</source>
+      <translation>Osparat dokument</translation>
     </message>
     <message>
-      <source>The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</source>
-      <translation>Markerade objekt har ett beroende till omarkerade objekt. Vill du kopiera även dem?</translation>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation>Det exporterade objektet innehåller extern länk. Spara dokumentet minst en gång innan du exporterar.</translation>
+    </message>
+    <message>
+      <source>To link to external objects, the document must be saved at least once.
+Do you want to save the document now?</source>
+      <translation>För att länka till externa objekt måste dokumentet sparas minst en gång.
+Vill du spara dokumentet nu?</translation>
     </message>
   </context>
   <context>
@@ -3936,33 +5332,32 @@ Hur vill du fortsätta?</translation>
     </message>
     <message>
       <source>No point was found on model</source>
-      <translation>Ingen punkt på modellen hittades</translation>
+      <translation>Ingen punkt hittades på modellen</translation>
     </message>
   </context>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Tryck på skärmen eller klicka på vänster musknapp.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Knacka ELLER klicka på musens vänstra knapp.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Dra skärmen med två fingrar. Eller tryck på ALT + musens mittknapp.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation>Drag skärmen med två fingrar eller tryck på musens mittenknapp.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Dra skärmen med ett finger. Eller tryck på ALT + vänster musknapp. I Sketcher och andra redigeringslägen, håller du även ned Alt.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Drag skärmen med ett finger ELLER tryck på musens vänstra knapp. I Skissaren och andra redigeringslägen, håller du även ned ALT.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Nyp (dra isär/ihop två fingrar på skärmen). Eller bläddra med mellersta musknappen. Eller tryck ALT+höger musknapp. Eller använd PgUp/PgDown på tangentbordet.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Nyp (dra isär/ihop två fingrar på skärmen), bläddra med musens mittenknapp eller använd PgUp/PgDown på tangentbordet.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
+      <source>Download started...</source>
       <translation>Nedladdning startad...</translation>
     </message>
   </context>
@@ -3974,11 +5369,11 @@ Hur vill du fortsätta?</translation>
     </message>
     <message>
       <source>Press CTRL and middle mouse button</source>
-      <translation>Tryck CTRL och mellersta musknapp</translation>
+      <translation>Tryck på CTRL och musens mittenknapp</translation>
     </message>
     <message>
       <source>Press CTRL and right mouse button</source>
-      <translation>Tryck CTRL och höger musknapp</translation>
+      <translation>Tryck på CTRL och musens högra knapp</translation>
     </message>
     <message>
       <source>Press CTRL and left mouse button</source>
@@ -4034,14 +5429,49 @@ Hur vill du fortsätta?</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
       <source>Change the linked object</source>
-      <translation type="unfinished">Change the linked object</translation>
+      <translation>Ändra det länkade objektet</translation>
     </message>
   </context>
   <context>
-    <name>Gui::PropertyEditor::LinkListLabel</name>
+    <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <source>Error</source>
+      <translation>Fel</translation>
+    </message>
+    <message>
+      <source>Object not found</source>
+      <translation>Objekt hittades inte</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+    <message>
+      <source>property</source>
+      <translation>egenskap</translation>
+    </message>
+    <message>
+      <source>Show all</source>
+      <translation>Visa alla</translation>
+    </message>
+    <message>
+      <source>Add property</source>
+      <translation>Lägg till egenskap</translation>
+    </message>
+    <message>
+      <source>Remove property</source>
+      <translation>Ta bort egenskap</translation>
+    </message>
+    <message>
+      <source>Expression...</source>
+      <translation>Uttryck...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Utöka automatiskt</translation>
     </message>
   </context>
   <context>
@@ -4144,11 +5574,19 @@ Vill du avsluta utan att spara din data?</translation>
     </message>
     <message>
       <source>Macro Files</source>
-      <translation>Makro-filer</translation>
+      <translation>Makrofiler</translation>
     </message>
     <message>
       <source>All Files</source>
       <translation>Alla Filer</translation>
+    </message>
+    <message>
+      <source>Save history</source>
+      <translation>Spara historik</translation>
+    </message>
+    <message>
+      <source>Saves Python history across %1 sessions</source>
+      <translation>Sparar Python-historik över %1 sessioner</translation>
     </message>
   </context>
   <context>
@@ -4167,6 +5605,21 @@ Vill du avsluta utan att spara din data?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Öppna fil %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Fil ej funnen</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Filen '%1' kan inte öppnas.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Kör makro %1 (Shift+klick för att redigera) genväg: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -4277,11 +5730,11 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Automatic python modules documentation</source>
-      <translation>Automatisk dokumentation för pythonmoduler</translation>
+      <translation>Automatisk dokumentation för Python-moduler</translation>
     </message>
     <message>
       <source>Opens a browser to show the Python modules documentation</source>
-      <translation>Öppnar en webbläsare för att visa dokumentation för pythonmoduler</translation>
+      <translation>Öppnar en webbläsare för att visa dokumentation för Python-moduler</translation>
     </message>
   </context>
   <context>
@@ -4305,12 +5758,51 @@ Vill du ange en annan katalog?</translation>
       <translation>Steglängd</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Steglängd vid förflyttning: </translation>
+      <source>Translation Increment:</source>
+      <translation>Steglängd vid förflyttning:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Steglängd vid rotation: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Steglängd vid rotation:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskElementColors</name>
+    <message>
+      <source>Set element color</source>
+      <translation>Ange elementfärg</translation>
+    </message>
+    <message>
+      <source>TextLabel</source>
+      <translation>TextLabel</translation>
+    </message>
+    <message>
+      <source>Recompute after commit</source>
+      <translation>Omräkna efter ändring</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Ta bort</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+    <message>
+      <source>Remove all</source>
+      <translation>Ta bort alla</translation>
+    </message>
+    <message>
+      <source>Hide</source>
+      <translation>Dölj</translation>
+    </message>
+    <message>
+      <source>Box select</source>
+      <translation>Lådmarkering</translation>
+    </message>
+    <message>
+      <source>On-top when selected</source>
+      <translation>Överst när markerad</translation>
     </message>
   </context>
   <context>
@@ -4373,15 +5865,15 @@ Vill du ange en annan katalog?</translation>
     <name>Gui::TextDocumentEditorView</name>
     <message>
       <source>Text updated</source>
-      <translation type="unfinished">Text updated</translation>
+      <translation>Text uppdaterad</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation type="unfinished">The text of the underlying object has changed. Discard changes and reload the text from the object?</translation>
+      <translation>Texten hos det underliggande objektet har ändrats. Förkasta ändringar och ladda om texten från objektet?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
-      <translation type="unfinished">Yes, reload.</translation>
+      <translation>Ja, ladda om.</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -4389,11 +5881,15 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
-      <translation type="unfinished">Do you want to save your changes before closing?</translation>
+      <translation>Vill du spara ändringarna innan du avslutar?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Om du inte sparar går dina ändringar förlorade.</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Redigera text</translation>
     </message>
   </context>
   <context>
@@ -4412,7 +5908,166 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Press CTRL and SHIFT buttons</source>
-      <translation>Tryck CTRL och SKIFT knapparna</translation>
+      <translation>Tryck på CTRL och SHIFT</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Translator</name>
+    <message>
+      <source>English</source>
+      <translation>Engelska</translation>
+    </message>
+    <message>
+      <source>German</source>
+      <translation>Tyska</translation>
+    </message>
+    <message>
+      <source>Spanish</source>
+      <translation>Spanska</translation>
+    </message>
+    <message>
+      <source>French</source>
+      <translation>Franska</translation>
+    </message>
+    <message>
+      <source>Italian</source>
+      <translation>Italienska</translation>
+    </message>
+    <message>
+      <source>Japanese</source>
+      <translation>Japanska</translation>
+    </message>
+    <message>
+      <source>Chinese Simplified</source>
+      <translation>Kinesiska (förenklad)</translation>
+    </message>
+    <message>
+      <source>Chinese Traditional</source>
+      <translation>Kinesiska (traditionell)</translation>
+    </message>
+    <message>
+      <source>Korean</source>
+      <translation>Koreansk</translation>
+    </message>
+    <message>
+      <source>Russian</source>
+      <translation>Ryska</translation>
+    </message>
+    <message>
+      <source>Swedish</source>
+      <translation>Svenska</translation>
+    </message>
+    <message>
+      <source>Afrikaans</source>
+      <translation>Afrikaans</translation>
+    </message>
+    <message>
+      <source>Norwegian</source>
+      <translation>Norska</translation>
+    </message>
+    <message>
+      <source>Portuguese, Brazilian</source>
+      <translation>Brasiliansk portugisiska</translation>
+    </message>
+    <message>
+      <source>Portuguese</source>
+      <translation>Portugisiska</translation>
+    </message>
+    <message>
+      <source>Dutch</source>
+      <translation>Nederländska</translation>
+    </message>
+    <message>
+      <source>Ukrainian</source>
+      <translation>Ukrainska</translation>
+    </message>
+    <message>
+      <source>Finnish</source>
+      <translation>Finska</translation>
+    </message>
+    <message>
+      <source>Croatian</source>
+      <translation>Kroatiska</translation>
+    </message>
+    <message>
+      <source>Polish</source>
+      <translation>Polska</translation>
+    </message>
+    <message>
+      <source>Czech</source>
+      <translation>Tjeckiska</translation>
+    </message>
+    <message>
+      <source>Hungarian</source>
+      <translation>Ungerska</translation>
+    </message>
+    <message>
+      <source>Romanian</source>
+      <translation>Rumänska</translation>
+    </message>
+    <message>
+      <source>Slovak</source>
+      <translation>Slovakiska</translation>
+    </message>
+    <message>
+      <source>Turkish</source>
+      <translation>Turkiska</translation>
+    </message>
+    <message>
+      <source>Slovenian</source>
+      <translation>Slovenska</translation>
+    </message>
+    <message>
+      <source>Basque</source>
+      <translation>Baskisk</translation>
+    </message>
+    <message>
+      <source>Catalan</source>
+      <translation>Katalanska</translation>
+    </message>
+    <message>
+      <source>Galician</source>
+      <translation>Galiciska</translation>
+    </message>
+    <message>
+      <source>Kabyle</source>
+      <translation>Kabyliska</translation>
+    </message>
+    <message>
+      <source>Filipino</source>
+      <translation>Filippinska</translation>
+    </message>
+    <message>
+      <source>Indonesian</source>
+      <translation>Indonesiska</translation>
+    </message>
+    <message>
+      <source>Lithuanian</source>
+      <translation>Litauiska</translation>
+    </message>
+    <message>
+      <source>Valencian</source>
+      <translation>Valencianska</translation>
+    </message>
+    <message>
+      <source>Arabic</source>
+      <translation>Arabiska</translation>
+    </message>
+    <message>
+      <source>Vietnamese</source>
+      <translation>Vietnamesiska</translation>
+    </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation>Bulgariska</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Grekiska</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation>Spanska, Argentina</translation>
     </message>
   </context>
   <context>
@@ -4420,6 +6075,13 @@ Vill du ange en annan katalog?</translation>
     <message>
       <source>Tree view</source>
       <translation>Trädvy</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Sök</translation>
     </message>
   </context>
   <context>
@@ -4470,7 +6132,7 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Skip recomputes</source>
-      <translation>Hoppa över omberäkningar</translation>
+      <translation>Utför inte omberäkningar</translation>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
@@ -4486,7 +6148,86 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
-      <translation type="unfinished">%1, Internal name: %2</translation>
+      <translation>%1, Internt namn: %2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Sök...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Sök efter objekt</translation>
+    </message>
+    <message>
+      <source>Description</source>
+      <translation>Beskrivning</translation>
+    </message>
+    <message>
+      <source>Show hidden items</source>
+      <translation>Visa dolda objekt</translation>
+    </message>
+    <message>
+      <source>Show hidden tree view items</source>
+      <translation>Visa dolda objekt för trädvyn</translation>
+    </message>
+    <message>
+      <source>Hide item</source>
+      <translation>Dölj objekt</translation>
+    </message>
+    <message>
+      <source>Hide the item in tree</source>
+      <translation>Dölj objektet i trädet</translation>
+    </message>
+    <message>
+      <source>Close document</source>
+      <translation>Stäng dokument</translation>
+    </message>
+    <message>
+      <source>Close the document</source>
+      <translation>Stäng dokumentet</translation>
+    </message>
+    <message>
+      <source>Reload document</source>
+      <translation>Ladda om dokument</translation>
+    </message>
+    <message>
+      <source>Reload a partially loaded document</source>
+      <translation>Ladda om ett delvis laddat dokument</translation>
+    </message>
+    <message>
+      <source>Allow partial recomputes</source>
+      <translation>Tillåt partiell omberäkning</translation>
+    </message>
+    <message>
+      <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
+      <translation>Aktivera eller inaktivera omberäkning av redigeringsobjekt när 'hoppa över omberäkning' är aktiverat</translation>
+    </message>
+    <message>
+      <source>Recompute object</source>
+      <translation>Omräkna objekt</translation>
+    </message>
+    <message>
+      <source>Recompute the selected object</source>
+      <translation>Beräkna om det markerade objektet</translation>
+    </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation> (men måste verkställas)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation>Vektorer</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation>Tabell</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -4527,7 +6268,7 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Hide Others</source>
-      <translation>Göm övriga</translation>
+      <translation>Dölj övriga</translation>
     </message>
     <message>
       <source>Show All</source>
@@ -4554,7 +6295,7 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>&lt;qt&gt;Connect to proxy "%1" using:&lt;/qt&gt;</source>
-      <translation>&lt;qt&gt;Ansluta till proxy "%1" med:&lt;/qt&gt;</translation>
+      <translation>&lt;qt&gt;Anslut till proxy "%1" med:&lt;/qt&gt;</translation>
     </message>
   </context>
   <context>
@@ -4644,7 +6385,7 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Input in line %1 is not a number</source>
-      <translation>Text på linje %1 är inte ett nummer</translation>
+      <translation>Inmatning på rad %1 är inte ett nummer</translation>
     </message>
   </context>
   <context>
@@ -5010,7 +6751,7 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document '%1' before closing?</source>
-      <translation>Vill du spara dina ändringar i dokumentet "%1" innan du stänger?</translation>
+      <translation>Vill du spara dina ändringar i dokument "%1" innan du stänger?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
@@ -5026,7 +6767,7 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Saving document failed</source>
-      <translation>Det gick inte att spara dokument</translation>
+      <translation>Sparning av dokument misslyckades</translation>
     </message>
     <message>
       <source>Document</source>
@@ -5038,23 +6779,11 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Not allowed to delete system-wide macros</source>
-      <translation>Inte tillåtet att ta bort systeme-makron</translation>
+      <translation>Inte tillåtet att ta bort systemmakron</translation>
     </message>
     <message>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
-    </message>
-    <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Förflyttning: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Rotering: </translation>
+      <translation>Origo</translation>
     </message>
     <message>
       <source>Delete group content?</source>
@@ -5062,11 +6791,279 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
+      <translation>%1 är inte tom, vill du även ta bort innehållet?</translation>
     </message>
     <message>
       <source>Export failed</source>
-      <translation type="unfinished">Export failed</translation>
+      <translation>Exportering misslyckades</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Dela</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Förflyttning:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotation:</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Växla aktiv del</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Redigera text</translation>
+    </message>
+    <message>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation>Det exporterade objektet innehåller extern länk. Spara dokumentet minst en gång innan du exporterar.</translation>
+    </message>
+    <message>
+      <source>Delete failed</source>
+      <translation>Borttagning misslyckades</translation>
+    </message>
+    <message>
+      <source>Dependency error</source>
+      <translation>Beroendefel</translation>
+    </message>
+    <message>
+      <source>Copy selected</source>
+      <translation>Kopiera markerade</translation>
+    </message>
+    <message>
+      <source>Copy active document</source>
+      <translation>Kopiera aktivt dokument</translation>
+    </message>
+    <message>
+      <source>Copy all documents</source>
+      <translation>Kopiera alla dokument</translation>
+    </message>
+    <message>
+      <source>Paste</source>
+      <translation>Klistra in</translation>
+    </message>
+    <message>
+      <source>Expression error</source>
+      <translation>Fel på uttryck</translation>
+    </message>
+    <message>
+      <source>Failed to parse some of the expressions.
+Please check the Report View for more details.</source>
+      <translation>Det gick inte att tolka några av uttrycken.
+Vänligen kontrollera rapportvyn för mer information.</translation>
+    </message>
+    <message>
+      <source>Failed to paste expressions</source>
+      <translation>Misslyckas att klistra in uttryck</translation>
+    </message>
+    <message>
+      <source>Simple group</source>
+      <translation>Enkel grupp</translation>
+    </message>
+    <message>
+      <source>Group with links</source>
+      <translation>Grupp med länkar</translation>
+    </message>
+    <message>
+      <source>Group with transform links</source>
+      <translation type="unfinished">Group with transform links</translation>
+    </message>
+    <message>
+      <source>Create link group failed</source>
+      <translation>Kunde inte skapa länkgrupp</translation>
+    </message>
+    <message>
+      <source>Create link failed</source>
+      <translation>Kunde inte skapa länk</translation>
+    </message>
+    <message>
+      <source>Failed to create relative link</source>
+      <translation>Kunde inte skapa relativ länk</translation>
+    </message>
+    <message>
+      <source>Unlink failed</source>
+      <translation>Avlänka misslyckades</translation>
+    </message>
+    <message>
+      <source>Replace link failed</source>
+      <translation>Det gick inte att ersätta länken</translation>
+    </message>
+    <message>
+      <source>Failed to import links</source>
+      <translation>Det gick inte att importera länkar</translation>
+    </message>
+    <message>
+      <source>Failed to import all links</source>
+      <translation>Det gick inte att importera alla länkar</translation>
+    </message>
+    <message>
+      <source>Invalid name</source>
+      <translation>Ogiltigt namn</translation>
+    </message>
+    <message>
+      <source>The property name or group name must only contain alpha numericals,
+underscore, and must not start with a digit.</source>
+      <translation>Egenskapens namn eller gruppnamn får endast innehålla alfanumeriska tecken,
+understrykningstecken och får inte börja med en siffra.</translation>
+    </message>
+    <message>
+      <source>The property '%1' already exists in '%2'</source>
+      <translation>Egenskapen '%1' finns redan i '%2'</translation>
+    </message>
+    <message>
+      <source>Add property</source>
+      <translation>Lägg till egenskap</translation>
+    </message>
+    <message>
+      <source>Failed to add property to '%1': %2</source>
+      <translation>Det gick inte att lägga till egenskapen till '%1': %2</translation>
+    </message>
+    <message>
+      <source>Save dependent files</source>
+      <translation>Spara beroende filer</translation>
+    </message>
+    <message>
+      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
+      <translation>Filen innehåller externa beroenden. Vill du spara de beroende filerna också?</translation>
+    </message>
+    <message>
+      <source>Failed to save document</source>
+      <translation>Det gick inte att spara dokumentet</translation>
+    </message>
+    <message>
+      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
+      <translation>Dokument innehåller cykliska beroenden. Vill du fortfarande spara dem?</translation>
+    </message>
+    <message>
+      <source>Undo</source>
+      <translation>Ångra</translation>
+    </message>
+    <message>
+      <source>Redo</source>
+      <translation>Gör om</translation>
+    </message>
+    <message>
+      <source>There are grouped transactions in the following documents with other preceding transactions</source>
+      <translation>Det finns grupperade transaktioner i följande dokument med andra föregående transaktioner</translation>
+    </message>
+    <message>
+      <source>Choose 'Yes' to roll back all preceding transactions.
+Choose 'No' to roll back in the active document only.
+Choose 'Abort' to abort</source>
+      <translation>Välj "Ja" att rulla tillbaka alla föregående transaktioner.
+Välj "Nej" att rulla tillbaka endast i det aktiva dokumentet.
+Välj "Avbryt" för att avbryta</translation>
+    </message>
+    <message>
+      <source>Do you want to save your changes to document before closing?</source>
+      <translation>Vill du spara dina ändringar i dokument innan du stänger?</translation>
+    </message>
+    <message>
+      <source>Apply answer to all</source>
+      <translation>Tillämpa svar på alla</translation>
+    </message>
+    <message>
+      <source>Drag &amp; drop failed</source>
+      <translation>Dra och släpp misslyckades</translation>
+    </message>
+    <message>
+      <source>Override colors...</source>
+      <translation>Åsidosätt färger...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Identisk fysisk sökväg upptäckt. Det kan orsaka oönskad överskrivning av befintligt dokument!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Är du säker på att du vill fortsätta?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Kontrollera rapportvyn för mer...</translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Dokument: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Sökväg: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Identisk fysisk sökväg</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Fel</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Det uppstod ett fel under inläsning av filen. Viss data kan ha ändrats eller inte återställts alls. Titta i rapportvyn för mer specifik information om de inblandade objekten.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Det uppstod allvarliga fel vid inläsning av filen. Vissa data kan ha ändrats eller inte återställts alls. Att spara projektet kommer sannolikt att resultera i förlust av data.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Arbetsbänkar</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
     </message>
   </context>
   <context>
@@ -5077,7 +7074,18 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Selection not allowed by filter</source>
-      <translation>Urval som inte tillåts av filter</translation>
+      <translation>Markering inte tillåten av filter</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdBoxElementSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Box element selection</source>
+      <translation type="unfinished">Box element selection</translation>
     </message>
   </context>
   <context>
@@ -5313,6 +7321,21 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Verktyg</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Beroende diagram...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Visa objektens beroendediagram i det aktiva dokumentet</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -5427,6 +7450,10 @@ Tänk på att det har betydelse var du klickar.</translation>
       <source>Draw style</source>
       <translation>Ritstil</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation>Ändra ritningsstilen för objekten</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -5458,7 +7485,7 @@ Tänk på att det har betydelse var du klickar.</translation>
       <translation>Växlar det markerade objektets redigeringsläge</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
+      <source>Activates or Deactivates the selected object's edit mode</source>
       <translation>Går in i eller lämnar det markerade objektets redigeringsläge</translation>
     </message>
   </context>
@@ -5481,23 +7508,19 @@ Tänk på att det har betydelse var du klickar.</translation>
       <translation>Inget val</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Markera först de objekt som du vill exportera.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Välj objekt att exportera innan du väljer Exportera.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdExportGraphviz</name>
+    <name>StdCmdExpression</name>
     <message>
-      <source>Tools</source>
-      <translation>Verktyg</translation>
+      <source>Edit</source>
+      <translation>Redigera</translation>
     </message>
     <message>
-      <source>Dependency graph...</source>
-      <translation>Beroende diagram...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Visa objektens beroendediagram i det aktiva dokumentet</translation>
+      <source>Expression actions</source>
+      <translation>Åtgärder för uttryck</translation>
     </message>
   </context>
   <context>
@@ -5516,6 +7539,21 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Hjälp</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Donera</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Donera till FreeCAD's utveckling</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdFreeCADFAQ</name>
     <message>
       <source>Help</source>
@@ -5527,7 +7565,7 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Frequently Asked Questions on the FreeCAD website</source>
-      <translation>Vanliga frågor på FreeCADs vebbplats</translation>
+      <translation>Vanliga frågor (FAQ) på FreeCADs hemsida</translation>
     </message>
     <message>
       <source>Frequently Asked Questions</source>
@@ -5546,7 +7584,7 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>The FreeCAD forum, where you can find help from other users</source>
-      <translation>FreeCAD-forumet, där kan du hitta hjälp från andra användare</translation>
+      <translation>FreeCAD-forumet, där du kan få hjälp från andra användare</translation>
     </message>
     <message>
       <source>The FreeCAD Forum</source>
@@ -5561,11 +7599,11 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Python scripting documentation</source>
-      <translation>Dokumentation för pythonskript</translation>
+      <translation>Dokumentation för Python-skript</translation>
     </message>
     <message>
       <source>Python scripting documentation on the FreeCAD website</source>
-      <translation>Dokumentation för pythonskript på FreeCADs webbplats</translation>
+      <translation>Dokumentation för Python-skript på FreeCADs hemsida</translation>
     </message>
     <message>
       <source>PowerUsers documentation</source>
@@ -5584,7 +7622,7 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Documentation for users on the FreeCAD website</source>
-      <translation>Användardokumentation på FreeCADs webbplats</translation>
+      <translation>Dokumentation för användare på FreeCADs hemsida</translation>
     </message>
   </context>
   <context>
@@ -5625,11 +7663,11 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Skapa grupp</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Skapa en ny grupp för att ordna objekt</translation>
     </message>
   </context>
   <context>
@@ -5683,6 +7721,197 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>All files (*.*)</source>
       <translation>Alla filer (*.*)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkActions</name>
+    <message>
+      <source>View</source>
+      <translation>Vy</translation>
+    </message>
+    <message>
+      <source>Link actions</source>
+      <translation>Länka åtgärder</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkImport</name>
+    <message>
+      <source>Link</source>
+      <translation>Länk</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importera länkar</translation>
+    </message>
+    <message>
+      <source>Import selected external link(s)</source>
+      <translation>Importera en eller flera markerade externa länkar</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkImportAll</name>
+    <message>
+      <source>Link</source>
+      <translation>Länk</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importera alla länkar</translation>
+    </message>
+    <message>
+      <source>Import all links of the active document</source>
+      <translation>Importera alla länkar till det aktiva dokumentet</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMake</name>
+    <message>
+      <source>Link</source>
+      <translation>Länk</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Skapa länk</translation>
+    </message>
+    <message>
+      <source>Create a link to the selected object(s)</source>
+      <translation>Skapa en länk till en eller flera markerade objekt</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMakeGroup</name>
+    <message>
+      <source>Link</source>
+      <translation>Länk</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Skapa länkgrupp</translation>
+    </message>
+    <message>
+      <source>Create a group of links</source>
+      <translation>Skapa en grupp länkar</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMakeRelative</name>
+    <message>
+      <source>Link</source>
+      <translation>Länk</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Skapa underlänk</translation>
+    </message>
+    <message>
+      <source>Create a sub-object or sub-element link</source>
+      <translation>Skapa ett underobjekt eller underelementslänk</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkReplace</name>
+    <message>
+      <source>Link</source>
+      <translation>Länk</translation>
+    </message>
+    <message>
+      <source>Replace with link</source>
+      <translation>Ersätt med länk</translation>
+    </message>
+    <message>
+      <source>Replace the selected object(s) with link</source>
+      <translation>Ersätt en eller flera markerade objekt med länk</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectActions</name>
+    <message>
+      <source>View</source>
+      <translation>Vy</translation>
+    </message>
+    <message>
+      <source>Link navigation</source>
+      <translation>Länk navigation</translation>
+    </message>
+    <message>
+      <source>Link navigation actions</source>
+      <translation>Länk navigering åtgärder</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectAllLinks</name>
+    <message>
+      <source>Link</source>
+      <translation>Länk</translation>
+    </message>
+    <message>
+      <source>Select all links</source>
+      <translation>Markera alla länkar</translation>
+    </message>
+    <message>
+      <source>Select all links to the current selected object</source>
+      <translation>Markera alla länkar till det aktuella markerade objektet</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectLinked</name>
+    <message>
+      <source>Link</source>
+      <translation>Länk</translation>
+    </message>
+    <message>
+      <source>Go to linked object</source>
+      <translation>Gå till länkat objekt</translation>
+    </message>
+    <message>
+      <source>Select the linked object and switch to its owner document</source>
+      <translation>Markera det länkade objektet och växla till dess ägardokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectLinkedFinal</name>
+    <message>
+      <source>Link</source>
+      <translation>Länk</translation>
+    </message>
+    <message>
+      <source>Go to the deepest linked object</source>
+      <translation>Gå till det djupast länkade objektet</translation>
+    </message>
+    <message>
+      <source>Select the deepest linked object and switch to its owner document</source>
+      <translation>Markera det djupaste länkade objektet och växla till dess ägardokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkUnlink</name>
+    <message>
+      <source>Link</source>
+      <translation>Länk</translation>
+    </message>
+    <message>
+      <source>Unlink</source>
+      <translation>Ta bort länk</translation>
+    </message>
+    <message>
+      <source>Strip on level of link</source>
+      <translation>Ta bort på länkens nivå</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMacroAttachDebugger</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makro</translation>
+    </message>
+    <message>
+      <source>Attach to remote debugger...</source>
+      <translation>Bifoga till fjärravlusare...</translation>
+    </message>
+    <message>
+      <source>Attach to a remotely running debugger</source>
+      <translation>Bifoga till en fjärranslutande avlusare</translation>
     </message>
   </context>
   <context>
@@ -5793,12 +8022,12 @@ Tänk på att det har betydelse var du klickar.</translation>
       <translation>Sammanfoga projekt</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 dokument (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Kan inte slå samman projektet med sig själv.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 dokument (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -5874,7 +8103,7 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Loading the file %1 is not supported</source>
-      <translation>Inläsning av filen %1 stöds inte</translation>
+      <translation>Laddning av filen %1 stöds inte</translation>
     </message>
   </context>
   <context>
@@ -6058,6 +8287,21 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Senaste makron</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Lista öveer senast använda makron</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -6095,11 +8339,11 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Revert</source>
-      <translation>Återställ</translation>
+      <translation>Återgå</translation>
     </message>
     <message>
       <source>Reverts to the saved version of this file</source>
-      <translation>Återställ till sparad versionen av filen</translation>
+      <translation>Återgå till den sparade versionen av den här filen</translation>
     </message>
   </context>
   <context>
@@ -6115,6 +8359,21 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>Save the active document</source>
       <translation>Spara det aktiva dokumentet</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSaveAll</name>
+    <message>
+      <source>File</source>
+      <translation>Fil</translation>
+    </message>
+    <message>
+      <source>Save All</source>
+      <translation>Spara alla</translation>
+    </message>
+    <message>
+      <source>Save all opened document</source>
+      <translation>Spara alla öppnade dokument</translation>
     </message>
   </context>
   <context>
@@ -6140,11 +8399,11 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Save a &amp;Copy...</source>
-      <translation>Spara en &amp;kopia...</translation>
+      <translation>Spara &amp;kopia...</translation>
     </message>
     <message>
       <source>Save a copy of the active document under a new file name</source>
-      <translation>Spara en kopia av det aktiva dokumentet med nytt filnamn</translation>
+      <translation>Spara en kopia av det aktiva dokumentet med ett nytt filnamn</translation>
     </message>
   </context>
   <context>
@@ -6160,6 +8419,51 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>Scene inspector</source>
       <translation>Sceninspektör</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelBack</name>
+    <message>
+      <source>View</source>
+      <translation>Vy</translation>
+    </message>
+    <message>
+      <source>&amp;Back</source>
+      <translation>&amp;Tillbaka</translation>
+    </message>
+    <message>
+      <source>Go back to previous selection</source>
+      <translation>Gå tillbaka till föregående markering</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelBoundingBox</name>
+    <message>
+      <source>View</source>
+      <translation>Vy</translation>
+    </message>
+    <message>
+      <source>&amp;Bounding box</source>
+      <translation>&amp;Markeringsramen</translation>
+    </message>
+    <message>
+      <source>Show selection bounding box</source>
+      <translation>Visa markeringsruta</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelForward</name>
+    <message>
+      <source>View</source>
+      <translation>Vy</translation>
+    </message>
+    <message>
+      <source>&amp;Forward</source>
+      <translation>&amp;Framåt</translation>
+    </message>
+    <message>
+      <source>Repeat the backed selection</source>
+      <translation type="unfinished">Repeat the backed selection</translation>
     </message>
   </context>
   <context>
@@ -6185,11 +8489,26 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Select visible objects</source>
-      <translation>Välj synliga objekt</translation>
+      <translation>Markera synliga objekt</translation>
     </message>
     <message>
       <source>Select visible objects in the active document</source>
-      <translation>Välj synliga objekt i det aktiva dokumentet</translation>
+      <translation>Markera synliga objekt i det aktiva dokumentet</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSendToPythonConsole</name>
+    <message>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+    <message>
+      <source>&amp;Send to Python Console</source>
+      <translation>&amp;Skicka till Python-konsolen</translation>
+    </message>
+    <message>
+      <source>Sends the selected object to the Python console</source>
+      <translation>Skickar det markerade objektet till Python-konsolen</translation>
     </message>
   </context>
   <context>
@@ -6250,6 +8569,21 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>Toggles the status bar</source>
       <translation>Växlar statusfältet</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTextDocument</name>
+    <message>
+      <source>Tools</source>
+      <translation>Verktyg</translation>
+    </message>
+    <message>
+      <source>Add text document</source>
+      <translation>Lägg till textdokument</translation>
+    </message>
+    <message>
+      <source>Add text document to active document</source>
+      <translation>Lägg till textdokument till aktivt dokument</translation>
     </message>
   </context>
   <context>
@@ -6414,18 +8748,63 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdTreeSelection</name>
+    <name>StdCmdTreeCollapse</name>
     <message>
       <source>View</source>
       <translation>Vy</translation>
     </message>
     <message>
-      <source>Go to selection</source>
-      <translation>Gå till markering</translation>
+      <source>Collapse selected item</source>
+      <translation>Komprimera markerat objekt</translation>
     </message>
     <message>
-      <source>Scroll to first selected item</source>
-      <translation>Rulla till den först valda saken</translation>
+      <source>Collapse currently selected tree items</source>
+      <translation>Komprimera för närvarande valda trädposter</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeExpand</name>
+    <message>
+      <source>View</source>
+      <translation>Vy</translation>
+    </message>
+    <message>
+      <source>Expand selected item</source>
+      <translation>Expandera valt objekt</translation>
+    </message>
+    <message>
+      <source>Expand currently selected tree items</source>
+      <translation>Expandera för närvarande valda trädobjekt</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeSelectAllInstances</name>
+    <message>
+      <source>View</source>
+      <translation>Vy</translation>
+    </message>
+    <message>
+      <source>Select all instances</source>
+      <translation>Markera alla instanser</translation>
+    </message>
+    <message>
+      <source>Select all instances of the current selected object</source>
+      <translation>Markera alla instanser av det aktuella markerade objektet</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeViewActions</name>
+    <message>
+      <source>View</source>
+      <translation>Vy</translation>
+    </message>
+    <message>
+      <source>TreeView actions</source>
+      <translation>TreeView åtgärder</translation>
+    </message>
+    <message>
+      <source>TreeView behavior options and actions</source>
+      <translation>TreeView beteende alternativ och åtgärder</translation>
     </message>
   </context>
   <context>
@@ -6459,6 +8838,17 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
@@ -6471,21 +8861,6 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>Dock all top-level views</source>
       <translation>Docka alla toppnivå vyer</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardvy</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometrisk</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Applicera axonometrisk vy</translation>
     </message>
   </context>
   <context>
@@ -6515,7 +8890,22 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation type="unfinished">Creates a new view window for the active document</translation>
+      <translation>Skapar ett nytt vyfönster för det aktiva dokumentet</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrisk</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Applicera dimetrisk vy</translation>
     </message>
   </context>
   <context>
@@ -6606,6 +8996,36 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>Set to front view</source>
       <translation>Ställ in till frontvy</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation>Start</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation>Ange som standardvy</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisk</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Applicera isometrisk vy</translation>
     </message>
   </context>
   <context>
@@ -6729,6 +9149,21 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Återställ sparad kamera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Återställ sparade kamerainställningar</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -6754,7 +9189,7 @@ Tänk på att det har betydelse var du klickar.</translation>
       <translation>Rotera vänster</translation>
     </message>
     <message>
-      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <source>Rotate the view by 90° counter-clockwise</source>
       <translation>Rotera vyn 90° moturs</translation>
     </message>
   </context>
@@ -6769,8 +9204,23 @@ Tänk på att det har betydelse var du klickar.</translation>
       <translation>Rotera höger</translation>
     </message>
     <message>
-      <source>Rotate the view by 90Â° clockwise</source>
+      <source>Rotate the view by 90° clockwise</source>
       <translation>Rotera vyn 90° medurs</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Spara aktuell kamera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Spara aktuella kamerainställningar</translation>
     </message>
   </context>
   <context>
@@ -6789,6 +9239,21 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrisk</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Applicera trimetrisk vy</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
@@ -6800,7 +9265,7 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-      <translation>Utvidgar FreeCAD 3D fönstret till en Oculus Rift</translation>
+      <translation>Utvidga 3D-fönstret till en Oculus Rift</translation>
     </message>
   </context>
   <context>
@@ -6871,7 +9336,7 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Visa huvudfönstret i fullskärmsläge</translation>
     </message>
   </context>
   <context>
@@ -6902,6 +9367,156 @@ Tänk på att det har betydelse var du klickar.</translation>
     <message>
       <source>Switches to perspective view mode</source>
       <translation>Växlar till perspektivt visningsläge</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Minimera/expandera</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Expandera det aktiva dokumentet och minimera alla andra</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Trädvy</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeDrag</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Trädvy</translation>
+    </message>
+    <message>
+      <source>Initiate dragging</source>
+      <translation>Initiera dragning</translation>
+    </message>
+    <message>
+      <source>Initiate dragging of current selected tree items</source>
+      <translation>Initiera dragning av aktuella valda trädobjekt</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Visa alla dokument i trädvyn</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Trädvy</translation>
+    </message>
+    <message>
+      <source>Multi document</source>
+      <translation>Flerdokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreePreSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Trädvy</translation>
+    </message>
+    <message>
+      <source>Pre-selection</source>
+      <translation>Förval</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Förvälj objektet i 3D-vyn när musen går över trädobjektet</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeRecordSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Trädvy</translation>
+    </message>
+    <message>
+      <source>Record selection</source>
+      <translation>Spela in markering</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Spela in markering i trädvyn för att gå bakåt/framåt med navigeringsknappen</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Trädvy</translation>
+    </message>
+    <message>
+      <source>Go to selection</source>
+      <translation>Gå till markering</translation>
+    </message>
+    <message>
+      <source>Scroll to first selected item</source>
+      <translation>Rulla till den först valda saken</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Visa endast det aktiva dokumentet i trädvyn</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Trädvy</translation>
+    </message>
+    <message>
+      <source>Single document</source>
+      <translation>Enskilt dokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncPlacement</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Trädvy</translation>
+    </message>
+    <message>
+      <source>Sync placement</source>
+      <translation>Synkronisera placering</translation>
+    </message>
+    <message>
+      <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
+      <translation>Justera automatiskt placering när du drar och släpper objekt över koordinatsystem</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Trädvy</translation>
+    </message>
+    <message>
+      <source>Sync selection</source>
+      <translation>Synkroniseringsval</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Expandera trädobjektet automatiskt när motsvarande objekt väljs i 3D-vyn</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncView</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Trädvy</translation>
+    </message>
+    <message>
+      <source>Sync view</source>
+      <translation>Synkronisera vy</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Växla automatiskt till 3D-vyn som innehåller det valda objektet</translation>
     </message>
   </context>
   <context>
@@ -7015,18 +9630,27 @@ Tänk på att det har betydelse var du klickar.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
+      <source>The following referencing objects might break.
+
+Are you sure you want to continue?
+</source>
+      <translation>Följande, refererade objekten kan skadas. Är du säker på att du vill fortsätta?
+</translation>
+    </message>
+    <message>
       <source>Object dependencies</source>
       <translation>Objektberoenden</translation>
     </message>
     <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
-
-</source>
-      <translation>Följande, refererande objekten kan skadas. Är du säker på att du vill fortsätta?
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Dessa föremål är markerade för radering, men finns inte i det aktiva dokumentet.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Beroendediagram</translation>
     </message>
   </context>
   <context>
@@ -7077,15 +9701,15 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Hidden line mode</source>
-      <translation type="unfinished">Hidden line mode</translation>
+      <translation>Dolda linjer-läge</translation>
     </message>
     <message>
       <source>No shading</source>
-      <translation type="unfinished">No shading</translation>
+      <translation>Utan skuggning</translation>
     </message>
     <message>
       <source>No shading mode</source>
-      <translation type="unfinished">No shading mode</translation>
+      <translation>Utan skuggning-läge</translation>
     </message>
   </context>
   <context>
@@ -7095,16 +9719,10 @@ Are you sure you want to continue?
       <translation>Objektberoenden</translation>
     </message>
     <message>
-      <source>The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</source>
-      <translation>Markerade objekt har ett beroende till omarkerade objekt. Vill du kopiera även dem?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Beroendediagram</translation>
+      <source>To link to external objects, the document must be saved at least once.
+Do you want to save the document now?</source>
+      <translation>För att länka till externa objekt måste dokumentet sparas minst en gång.
+Vill du spara dokumentet nu?</translation>
     </message>
   </context>
   <context>
@@ -7115,6 +9733,19 @@ Do you want to duplicate them, too?</source>
     </message>
   </context>
   <context>
+    <name>Std_Refresh</name>
+    <message>
+      <source>The document contains dependency cycles.
+Please check the Report View for more details.
+
+Do you still want to proceed?</source>
+      <translation>Dokumentet innehåller beroendecykler.
+Vänligen kontrollera rapportvyn för mer information.
+
+Vill du fortfarande fortsätta?</translation>
+    </message>
+  </context>
+  <context>
     <name>Std_Revert</name>
     <message>
       <source>This will discard all the changes since last file save.</source>
@@ -7122,11 +9753,55 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Revert document</source>
-      <translation>Återställ dokument</translation>
+      <translation>Återgå dokument</translation>
     </message>
     <message>
       <source>Do you want to continue?</source>
       <translation>Vill du fortsätta?</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisk</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Använd isometriskt läge för NaviKuben</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ortografisk</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Använd ortografisk vy</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Perspektiv</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Använd perspektivvy</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Anpassa storlek</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Zooma så att modellen fyller vyn</translation>
     </message>
   </context>
   <context>
@@ -7194,6 +9869,10 @@ Do you want to duplicate them, too?</source>
     <message>
       <source>Special Ops</source>
       <translation>Special operationer</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Axonometrisk</translation>
     </message>
   </context>
   <context>

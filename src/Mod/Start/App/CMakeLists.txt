@@ -23,11 +23,6 @@ add_library(Start SHARED ${Start_SRCS})
 target_link_libraries(Start ${Start_LIBS})
 
 
-fc_target_copy_resource(Start 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Start
-    ${CMAKE_BINARY_DIR}/Mod/Start
-    Init.py)
-
 SET_BIN_DIR(Start Start /Mod/Start)
 SET_PYTHON_PREFIX_SUFFIX(Start)
 

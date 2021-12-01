@@ -26,15 +26,19 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-
-class Ui_TaskSketcherGeneral;
+#include <boost_signals2.hpp>
 
 namespace App {
 class Property;
 }
 
+namespace Gui {
+class ViewProvider;
+}
+
 namespace SketcherGui {
 
+class Ui_TaskSketcherGeneral;
 class ViewProviderSketch;
 
 class SketcherGeneralWidget : public QWidget
@@ -44,31 +48,34 @@ class SketcherGeneralWidget : public QWidget
 public:
     SketcherGeneralWidget(QWidget *parent=0);
     ~SketcherGeneralWidget();
+    
+    bool eventFilter(QObject *object, QEvent *event);
 
     void saveSettings();
+    void saveOrderingOrder();
     void loadSettings();
-	void setInitGridSize(double val);
+    void loadOrderingOrder();
+    void setGridSize(double val);
+    void checkGridView(bool);
+    void checkGridSnap(bool);
+    void checkAutoconstraints(bool);
+    void checkAvoidRedundant(bool);
+    void enableGridSettings(bool);
+    void enableAvoidRedundant(bool);
 
 Q_SIGNALS:
-    void setGridSnap(int Type);
     void emitToggleGridView(bool);
-    void emitToggleGridSnap(int);
+    void emitToggleGridSnap(bool);
     void emitSetGridSize(double);
-    void emitToggleAutoconstraints(int);
+    void emitToggleAutoconstraints(bool);
+    void emitToggleAvoidRedundant(bool);
     void emitRenderOrderChanged();
-
-public Q_SLOTS:
-    void toggleGridView(bool on);
-    void setGridSize(double val);
-    void toggleGridSnap(int state);
-    void renderOrderChanged();
-    void on_checkBoxRedundantAutoconstraints_stateChanged(int);
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui_TaskSketcherGeneral* ui;
+    std::unique_ptr<Ui_TaskSketcherGeneral> ui;
 };
 
 class TaskSketcherGeneral : public Gui::TaskView::TaskBox,
@@ -83,19 +90,22 @@ public:
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                   Gui::SelectionSingleton::MessageType Reason);
 
-Q_SIGNALS:
-    void setGridSnap(int Type);
-
 public Q_SLOTS:
-    void toggleGridView(bool on);
-    void setGridSize(double val);
-    void toggleGridSnap(int state);
-    void toggleAutoconstraints(int state);
-    void renderOrderChanged();
+    void onToggleGridView(bool on);
+    void onSetGridSize(double val);
+    void onToggleGridSnap(bool on);
+    void onToggleAutoconstraints(bool on);
+    void onToggleAvoidRedundant(bool);
+    void onRenderOrderChanged();
+
+private:
+    void onChangedSketchView(const Gui::ViewProvider&,
+                             const App::Property&);
 
 private:
     ViewProviderSketch *sketchView;
     SketcherGeneralWidget* widget;
+    boost::signals2::scoped_connection changedSketchView;
 };
 
 } //namespace SketcherGui

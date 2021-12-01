@@ -30,6 +30,7 @@
 # include <QMessageBox>
 # include <QMouseEvent>
 # include <QPainter>
+# include <QPainterPath>
 #endif
 
 #include <App/Document.h>
@@ -89,16 +90,16 @@ void QGIDrawingTemplate::draw()
 
     TechDraw::DrawParametricTemplate *tmplte = getParametricTemplate();
     if(!tmplte) {
-        throw Base::Exception("Template Feuature not set for QGIDrawingTemplate");
+        throw Base::RuntimeError("Template Feuature not set for QGIDrawingTemplate");
     }
 
 
     // Clear the previous geometry stored
 
     // Get a list of geometry and iterate
-    const std::vector<TechDrawGeometry::BaseGeom *> &geoms =  tmplte->getGeometry();
+    const std::vector<TechDraw::BaseGeom *> &geoms =  tmplte->getGeometry();
 
-    std::vector<TechDrawGeometry::BaseGeom *>::const_iterator it = geoms.begin();
+    std::vector<TechDraw::BaseGeom *>::const_iterator it = geoms.begin();
 
     QPainterPath path;
 
@@ -106,12 +107,12 @@ void QGIDrawingTemplate::draw()
     // iterate through all the geometries
     for(; it != geoms.end(); ++it) {
         switch((*it)->geomType) {
-          case TechDrawGeometry::GENERIC: {
+          case TechDraw::GENERIC: {
 
-            TechDrawGeometry::Generic *geom = static_cast<TechDrawGeometry::Generic *>(*it);
+            TechDraw::Generic *geom = static_cast<TechDraw::Generic *>(*it);
 
             path.moveTo(geom->points[0].x, geom->points[0].y);
-            std::vector<Base::Vector2d>::const_iterator it = geom->points.begin();
+            std::vector<Base::Vector3d>::const_iterator it = geom->points.begin();
 
             for(++it; it != geom->points.end(); ++it) {
                 path.lineTo((*it).x, (*it).y);

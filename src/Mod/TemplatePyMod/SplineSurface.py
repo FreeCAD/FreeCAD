@@ -5,6 +5,8 @@
 # len(knot_u) := nNodes_u + degree_u + 1
 # len(knot_v) := nNodes_v + degree_v + 1
 
+import FreeCAD
+
 degree_u=2
 degree_v=2
 nNodes_u=5

@@ -11,10 +11,11 @@
 
 #include <iomanip>
 
-#include <src/Build/Version.h>
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 #include <Base/Vector3D.h>
 #include "dxf.h"
 
@@ -30,17 +31,25 @@ Base::Vector3d toVector3d(const double* a)
 }
 
 CDxfWrite::CDxfWrite(const char* filepath) :
-//TODO: these should probably be parms in config file
-m_entityHandle(0x300),
-m_layerHandle(0x30),
-m_blockHandle(0x210),
-m_blkRecordHandle(0x110),
+//TODO: these should probably be parameters in config file
+//handles:
+//boilerplate 0 - A00
+//used by dxf.cpp A01 - FFFE
+//ACAD HANDSEED  FFFF
+
+m_handle(0xA00),                       //room for 2560 handles in boilerplate files
+//m_entityHandle(0x300),               //don't need special ranges for handles
+//m_layerHandle(0x30),
+//m_blockHandle(0x210),
+//m_blkRecordHandle(0x110),
+m_polyOverride(false),
 m_layerName("none")
 {
     // start the file
     m_fail = false;
     m_version = 12;
-    m_ofs = new ofstream(filepath, ios::out);
+    Base::FileInfo fi(filepath);
+    m_ofs = new Base::ofstream(fi, ios::out);
     m_ssBlock     = new std::ostringstream();
     m_ssBlkRecord = new std::ostringstream();
     m_ssEntity    = new std::ostringstream();
@@ -56,6 +65,10 @@ m_layerName("none")
 CDxfWrite::~CDxfWrite()
 {
     delete m_ofs;
+    delete m_ssBlock;
+    delete m_ssBlkRecord;
+    delete m_ssEntity;
+    delete m_ssLayer;
 }
 
 void CDxfWrite::init(void)
@@ -63,7 +76,6 @@ void CDxfWrite::init(void)
     writeHeaderSection();
     makeBlockRecordTableHead();
     makeBlockSectionHead();
-
 }
 
 //! assemble pieces into output file
@@ -88,7 +100,12 @@ void CDxfWrite::endRun(void)
 void CDxfWrite::writeHeaderSection(void)
 {
     std::stringstream ss;
-    ss << "FreeCAD v" << FCVersionMajor << "." << FCVersionMinor << " " << FCRevision; 
+    ss << "FreeCAD v"
+        << App::Application::Config()["BuildVersionMajor"]
+        << "."
+        << App::Application::Config()["BuildVersionMinor"]
+        << " "
+        << App::Application::Config()["BuildRevision"];
 
     //header & version
     (*m_ofs) << "999"      << endl;
@@ -431,40 +448,53 @@ std::string CDxfWrite::getPlateFile(std::string fileSpec)
     return outString.str();
 }
 
-std::string CDxfWrite::getEntityHandle(void)
+std::string CDxfWrite::getHandle(void)
 {
-    m_entityHandle++;
+    m_handle++;
     std::stringstream ss;
     ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
-    ss << m_entityHandle;
+    ss << m_handle;
     return ss.str();
+}
+
+std::string CDxfWrite::getEntityHandle(void)
+{
+    return getHandle();
+//    m_entityHandle++;
+//    std::stringstream ss;
+//    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
+//    ss << m_entityHandle;
+//    return ss.str();
 }
 
 std::string CDxfWrite::getLayerHandle(void)
 {
-    m_layerHandle++;
-    std::stringstream ss;
-    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
-    ss << m_layerHandle;
-    return ss.str();
+    return getHandle();
+//    m_layerHandle++;
+//    std::stringstream ss;
+//    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
+//    ss << m_layerHandle;
+//    return ss.str();
 }
 
 std::string CDxfWrite::getBlockHandle(void)
 {
-    m_blockHandle++;
-    std::stringstream ss;
-    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
-    ss << m_blockHandle;
-    return ss.str();
+    return getHandle();
+//    m_blockHandle++;
+//    std::stringstream ss;
+//    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
+//    ss << m_blockHandle;
+//    return ss.str();
 }
 
 std::string CDxfWrite::getBlkRecordHandle(void)
 {
-    m_blkRecordHandle++;
-    std::stringstream ss;
-    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
-    ss << m_blkRecordHandle;
-    return ss.str();
+    return getHandle();
+//    m_blkRecordHandle++;
+//    std::stringstream ss;
+//    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
+//    ss << m_blkRecordHandle;
+//    return ss.str();
 }
 
 void CDxfWrite::addBlockName(std::string b, std::string h) 
@@ -522,7 +552,7 @@ void CDxfWrite::putLine(const Base::Vector3d s, const Base::Vector3d e,
 //***************************
 //writeLWPolyLine  (Note: LWPolyline might not be supported in R12
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeLWPolyLine(LWPolyDataOut pd)
+void CDxfWrite::writeLWPolyLine(const LWPolyDataOut &pd)
 {
     (*m_ssEntity) << "  0"               << endl;
     (*m_ssEntity) << "LWPOLYLINE"     << endl;
@@ -580,7 +610,7 @@ void CDxfWrite::writeLWPolyLine(LWPolyDataOut pd)
 //***************************
 //writePolyline
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writePolyline(LWPolyDataOut pd)
+void CDxfWrite::writePolyline(const LWPolyDataOut &pd)
 {
     (*m_ssEntity) << "  0"            << endl;
     (*m_ssEntity) << "POLYLINE"       << endl;
@@ -797,7 +827,7 @@ void CDxfWrite::writeEllipse(const double* c, double major_radius, double minor_
 //***************************
 //writeSpline
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeSpline(SplineDataOut sd)
+void CDxfWrite::writeSpline(const SplineDataOut &sd)
 {
     (*m_ssEntity) << "  0"          << endl;
     (*m_ssEntity) << "SPLINE"       << endl;
@@ -1036,9 +1066,12 @@ void CDxfWrite::putArrow(Base::Vector3d arrowPos, Base::Vector3d barb1Pos, Base:
 //***************************
 //writeLinearDim
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+#define ALIGNED 0
+#define HORIZONTAL 1
+#define VERTICAL 2
 void CDxfWrite::writeLinearDim(const double* textMidPoint, const double* lineDefPoint,
                          const double* extLine1, const double* extLine2,
-                         const char* dimText)
+                         const char* dimText, int type)
 {
     (*m_ssEntity) << "  0"          << endl;
     (*m_ssEntity) << "DIMENSION"    << endl;
@@ -1070,8 +1103,15 @@ void CDxfWrite::writeLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ssEntity) << textMidPoint[1]    << endl;
     (*m_ssEntity) << " 31"          << endl;
     (*m_ssEntity) << textMidPoint[2]    << endl;
-    (*m_ssEntity) << " 70"          << endl;
-    (*m_ssEntity) << 1              << endl;    // dimType1 = Aligned
+    if (type == ALIGNED) {
+        (*m_ssEntity) << " 70"          << endl;
+        (*m_ssEntity) << 1              << endl;    // dimType1 = Aligned
+    }
+    if ( (type == HORIZONTAL) ||
+         (type == VERTICAL) ) {
+        (*m_ssEntity) << " 70"          << endl;
+        (*m_ssEntity) << 32             << endl;  // dimType0 = Aligned + 32 (bit for unique block)?
+    }
 //    (*m_ssEntity) << " 71"          << endl;    // not R12
 //    (*m_ssEntity) << 1              << endl;    // attachPoint ??1 = topleft
     (*m_ssEntity) << "  1"          << endl;
@@ -1095,11 +1135,22 @@ void CDxfWrite::writeLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ssEntity) << extLine2[1]    << endl;
     (*m_ssEntity) << " 34"          << endl;
     (*m_ssEntity) << extLine2[2]    << endl;
+    if (m_version > 12) {
+        if (type == VERTICAL) {
+            (*m_ssEntity) << " 50"          << endl;
+            (*m_ssEntity) << "90"     << endl;
+        }
+        if ( (type == HORIZONTAL) ||
+             (type == VERTICAL) ) {
+            (*m_ssEntity) << "100"          << endl;
+            (*m_ssEntity) << "AcDbRotatedDimension"     << endl;
+        }
+    }
 
     writeDimBlockPreamble();
     writeLinearDimBlock(textMidPoint,lineDefPoint,
                                         extLine1, extLine2,
-                                        dimText);
+                                        dimText, type);
     writeBlockTrailer();
 }
 
@@ -1396,7 +1447,7 @@ void CDxfWrite::writeBlockTrailer(void)
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::writeLinearDimBlock(const double* textMidPoint, const double* dimLine,
                          const double* e1Start, const double* e2Start,
-                         const char* dimText)
+                         const char* dimText, int type)
 {
     Base::Vector3d e1S(e1Start[0],e1Start[1],e1Start[2]);
     Base::Vector3d e2S(e2Start[0],e2Start[1],e2Start[2]);
@@ -1408,6 +1459,40 @@ void CDxfWrite::writeLinearDimBlock(const double* textMidPoint, const double* di
     Base::Vector3d X(1.0,0.0,0.0);
     double angle = para.GetAngle(X);
     angle = angle * 180.0 / M_PI;
+    if (type == ALIGNED) {
+        //NOP
+    } else if (type == HORIZONTAL) { 
+        double x = e1Start[0];
+        double y = dimLine[1];
+        e1E = Base::Vector3d(x, y, 0.0);
+        x = e2Start[0];
+        e2E = Base::Vector3d(x, y, 0.0);
+        perp = Base::Vector3d(0, -1, 0);     //down
+        para = Base::Vector3d(1, 0, 0);      //right
+        if (dimLine[1] > e1Start[1]) {
+            perp = Base::Vector3d(0, 1, 0);   //up 
+        }
+        if (e1Start[0] > e2Start[0]) {
+            para = Base::Vector3d(-1, 0, 0);  //left
+        }
+        angle = 0;
+    } else if (type == VERTICAL) {
+        double x = dimLine[0];
+        double y = e1Start[1];
+        e1E = Base::Vector3d(x, y, 0.0);
+        y = e2Start[1];
+        e2E = Base::Vector3d(x, y, 0.0);
+        perp = Base::Vector3d(1, 0, 0);
+        para = Base::Vector3d(0, 1, 0);
+        if (dimLine[0] < e1Start[0]) {
+            perp = Base::Vector3d(-1, 0, 0);
+        }
+        if (e1Start[1] > e2Start[1]) {
+            para = Base::Vector3d(0, -1, 0);
+        }
+        angle = 90;
+    }
+
     double arrowLen = 5.0;             //magic number
     double arrowWidth = arrowLen/6.0/2.0;   //magic number calc!
 
@@ -1659,12 +1744,15 @@ void CDxfWrite::writeObjectsSection(void)
 CDxfRead::CDxfRead(const char* filepath)
 {
     // start the file
+    memset( m_str, '\0', sizeof(m_str) );
     memset( m_unused_line, '\0', sizeof(m_unused_line) );
     m_fail = false;
     m_aci = 0;
     m_eUnits = eMillimeters;
     m_measurement_inch = false;
     strcpy(m_layer_name, "0");  // Default layer name
+    memset( m_section_name, '\0', sizeof(m_section_name) );
+    memset( m_block_name, '\0', sizeof(m_block_name) );
     m_ignore_errors = true;
 
     m_ifs = new ifstream(filepath);
@@ -1686,7 +1774,7 @@ double CDxfRead::mm( double value ) const
 {
     if(m_measurement_inch)
     {
-        value *= 0.0393700787401575;
+        value *= 25.4;
     }
 
     switch(m_eUnits)
@@ -1901,7 +1989,7 @@ bool CDxfRead::ReadArc()
     double start_angle = 0.0;// in degrees
     double end_angle = 0.0;
     double radius = 0.0;
-    double c[3]; // centre
+    double c[3] = {0,0,0}; // centre
     double z_extrusion_dir = 1.0;
     bool hidden = false;
     
@@ -2182,7 +2270,7 @@ bool CDxfRead::ReadSpline()
 bool CDxfRead::ReadCircle()
 {
     double radius = 0.0;
-    double c[3]; // centre
+    double c[3] = {0,0,0}; // centre
     bool hidden = false;
 
     while(!((*m_ifs).eof()))
@@ -2340,8 +2428,8 @@ bool CDxfRead::ReadText()
 
 bool CDxfRead::ReadEllipse()
 {
-    double c[3]; // centre
-    double m[3]; //major axis point
+    double c[3] = {0,0,0}; // centre
+    double m[3] = {0,0,0}; //major axis point
     double ratio=0; //ratio of major to minor axis
     double start=0; //start of arc
     double end=0;  // end of arc
@@ -2441,7 +2529,7 @@ static bool poly_prev_found = false;
 static double poly_prev_x;
 static double poly_prev_y;
 static double poly_prev_z;
-static double poly_prev_bulge_found;
+static bool poly_prev_bulge_found = false;
 static double poly_prev_bulge;
 static bool poly_first_found = false;
 static double poly_first_x;
@@ -2714,7 +2802,7 @@ bool CDxfRead::ReadPolyLine()
                 get_line();
                 if (! strcmp(m_str,"VERTEX"))
                 {
-                    double vertex[3];
+                    double vertex[3] = {0,0,0};
                     if (CDxfRead::ReadVertex(vertex, &bulge_found, &bulge))
                     {
                         if(!first_vertex_section_found) {
@@ -2757,7 +2845,7 @@ bool CDxfRead::ReadPolyLine()
 }
 
 void CDxfRead::OnReadArc(double start_angle, double end_angle, double radius, const double* c, double z_extrusion_dir, bool hidden){
-    double s[3], e[3], temp[3] ;
+    double s[3] = {0,0,0}, e[3] = {0,0,0}, temp[3] = {0,0,0};
     if (z_extrusion_dir==1.0)
   {
     temp[0] =c[0];
@@ -2813,13 +2901,10 @@ void CDxfRead::OnReadEllipse(const double* c, const double* m, double ratio, dou
 
 bool CDxfRead::ReadInsert()
 {
-    double c[3]; // coordinate
-    double s[3]; // scale
+    double c[3] = {0,0,0}; // coordinate
+    double s[3] = {1,1,1}; // scale
     double rot = 0.0; // rotation
-    char name[1024];
-    s[0] = 1.0;
-    s[1] = 1.0;
-    s[2] = 1.0;
+    char name[1024] = {0};
 
     while(!((*m_ifs).eof()))
     {
@@ -2908,9 +2993,9 @@ bool CDxfRead::ReadInsert()
 
 bool CDxfRead::ReadDimension()
 {
-    double s[3]; // startpoint
-    double e[3]; // endpoint
-    double p[3]; // dimpoint
+    double s[3] = {0,0,0}; // startpoint
+    double e[3] = {0,0,0}; // endpoint
+    double p[3] = {0,0,0}; // dimpoint
     double rot = -1.0; // rotation
 
     while(!((*m_ifs).eof()))
@@ -3070,9 +3155,20 @@ void CDxfRead::get_line()
     strcpy(m_str, str);
 }
 
+void dxf_strncpy(char* dst, const char* src, size_t size)
+{
+    size_t ret = strlen(src);
+
+    if (size) {
+        size_t len = (ret >= size) ? size - 1 : ret;
+        memcpy(dst, src, len);
+        dst[len] = '\0';
+    }
+}
+
 void CDxfRead::put_line(const char *value)
 {
-    strcpy( m_unused_line, value );
+    dxf_strncpy( m_unused_line, value, sizeof(m_unused_line) );
 }
 
 
@@ -3180,6 +3276,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
         {
             get_line();
             if (!strcmp( m_str, "SECTION" )){
+              strcpy(m_section_name, "");
               get_line();
               get_line();
               if (strcmp( m_str, "ENTITIES" ))

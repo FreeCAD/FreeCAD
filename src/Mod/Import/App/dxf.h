@@ -145,6 +145,7 @@ protected:
     //! copy boiler plate file
     std::string getPlateFile(std::string fileSpec);
     void setDataDir(std::string s) { m_dataDir = s; }
+    std::string getHandle(void);
     std::string getEntityHandle(void);
     std::string getLayerHandle(void);
     std::string getBlockHandle(void);
@@ -152,10 +153,12 @@ protected:
 
     std::string m_optionSource;
     int m_version;
+    int m_handle;
     int m_entityHandle;
     int m_layerHandle;
     int m_blockHandle;
     int m_blkRecordHandle;
+    bool m_polyOverride;
     
     std::string m_saveModelSpaceHandle;
     std::string m_savePaperSpaceHandle;
@@ -180,6 +183,8 @@ public:
 //    bool isVersionValid(int vers);
     std::string getLayerName() { return m_layerName; }
     void setLayerName(std::string s);
+    void setVersion(int v) { m_version = v;}
+    void setPolyOverride(bool b) { m_polyOverride = b; }
     void addBlockName(std::string s, std::string blkRecordHandle);
 
     void writeLine(const double* s, const double* e);
@@ -188,18 +193,18 @@ public:
     void writeEllipse(const double* c, double major_radius, double minor_radius, 
                       double rotation, double start_angle, double end_angle, bool endIsCW);
     void writeCircle(const double* c, double radius );
-    void writeSpline(SplineDataOut sd);
-    void writeLWPolyLine(LWPolyDataOut pd);
-    void writePolyline(LWPolyDataOut pd);
+    void writeSpline(const SplineDataOut &sd);
+    void writeLWPolyLine(const LWPolyDataOut &pd);
+    void writePolyline(const LWPolyDataOut &pd);
     void writeVertex(double x, double y, double z);
     void writeText(const char* text, const double* location1, const double* location2,
                    const double height, const int horizJust);
     void writeLinearDim(const double* textMidPoint, const double* lineDefPoint,
                   const double* extLine1, const double* extLine2,
-                  const char* dimText);
+                  const char* dimText, int type);
     void writeLinearDimBlock(const double* textMidPoint, const double* lineDefPoint,
                   const double* extLine1, const double* extLine2,
-                  const char* dimText);
+                  const char* dimText, int type);
     void writeAngularDim(const double* textMidPoint, const double* lineDefPoint,
                   const double* startExt1, const double* endExt1,
                   const double* startExt2, const double* endExt2,
@@ -283,7 +288,7 @@ protected:
 
 public:
     CDxfRead(const char* filepath); // this opens the file
-    ~CDxfRead(); // this closes the file
+    virtual ~CDxfRead(); // this closes the file
 
     bool Failed(){return m_fail;}
     void DoRead(const bool ignore_errors = false); // this reads the file and calls the following functions

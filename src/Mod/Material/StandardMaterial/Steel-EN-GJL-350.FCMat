@@ -1,22 +1,27 @@
-; EN-GJL-350 - 0.6035 - EN 1561
+; Steel-EN-GJL-350
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJL-350
 NameDE = GG-35
 DescriptionDE = höchstbeanspruchbar, für Teile mit konstanter Wanddicke, Pressenständer, Turbinengehäuse
 Father = Metal
-YoungsModulus = 135000 MPa
-UltimateTensileStrength = 350
-PoissonRatio = 0.3
-Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.6035
-ModulusOfShare = 52000
 Norm = EN 1561
-ThermalExpansionCoefficient = 1.00E-005
+
+[Mechanical]
+Density = 7200 kg/m^3
+PoissonRatio = 0.3
+ShearModulus = 52000 MPa
 UltimateStrain = 15
-YieldStrength = 228
+UltimateTensileStrength = 350 MPa
+YieldStrength = 228 MPa
+YoungsModulus = 135000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.00001 m/m/K

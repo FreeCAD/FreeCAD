@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>              *
+ *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,6 +25,7 @@
 #define BASE_UNITSAPI_H
 
 #include <CXX/WrapPython.h>
+#include <memory>
 #include <string>
 #include <QString>
 #include "UnitsSchema.h"
@@ -32,12 +33,12 @@
 
 
 namespace Base {
-    
+typedef std::unique_ptr<UnitsSchema> UnitsSchemaPtr;
 
 /**
  * The UnitsApi
  */
-class BaseExport UnitsApi 
+class BaseExport UnitsApi
 {
 
 public:
@@ -49,7 +50,7 @@ public:
     /** set Schema
      * set the UnitsSchema of the Application
      * this a represented by a class of type UnitSchema which
-     * defines a set of standard units for that schema and rules 
+     * defines a set of standard units for that schema and rules
      * for representative strings.
      */
     static void setSchema(UnitSystem s);
@@ -65,6 +66,22 @@ public:
         return UnitsApi::schemaTranslate(quant, dummy1, dummy2);
     }
 
+    /** Get a number as string for a quantity of a given format.
+     * The string is a number in C locale (i.e. the decimal separator is always a dot) and if
+     * needed represented in scientific notation. The string also includes the unit of the quantity.
+     */
+    static QString toString(const Base::Quantity& q, const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
+    /** Get a number as string for a quantity of a given format.
+     * The string is a number in C locale (i.e. the decimal separator is always a dot) and if
+     * needed represented in scientific notation. The string doesn't include the unit of the quantity.
+     */
+    static QString toNumber(const Base::Quantity& q, const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
+    /** Get a number as string for a double of a given format.
+     * The string is a number in C locale (i.e. the decimal separator is always a dot) and if
+     * needed represented in scientific notation. The string doesn't include the unit of the quantity.
+     */
+    static QString toNumber(double d, const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
+
     /// generate a value for a quantity with default user preferred system
     static double toDbl(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
     /// generate a value for a quantity with default user preferred system
@@ -72,7 +89,7 @@ public:
 
     // set the number of decimals
     static void setDecimals(int);
-    // fet the number of decimals
+    // get the number of decimals
     static int getDecimals();
     /// set the application defaults
     //static void setDefaults(void);
@@ -85,13 +102,12 @@ public:
 
     static double defaultFactor;
 
-protected:
     /// return an instance of the given enum value
-    static UnitsSchema* createSchema(UnitSystem s);
+    static UnitsSchemaPtr createSchema(UnitSystem s);
 
 protected:
     // not used at the moment
-    static UnitsSchema *  UserPrefSystem;
+    static UnitsSchemaPtr UserPrefSystem;
     static UnitSystem actSystem;
     /// number of decimals for floats
     static int      UserPrefDecimals;
@@ -100,12 +116,13 @@ protected:
     //static double parse(const char*,bool &UsedUnit);
 
 protected: // the python API wrapper methods
-    //static PyObject *sTranslateUnit   (PyObject *self,PyObject *args,PyObject *kwd);
-    //static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sParseQuantity   (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sListSchemas     (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sGetSchema       (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sSchemaTranslate (PyObject *self,PyObject *args,PyObject *kwd);
+    //static PyObject *sTranslateUnit   (PyObject *self,PyObject *args);
+    //static PyObject *sGetWithPrefs    (PyObject *self,PyObject *args);
+    static PyObject *sParseQuantity   (PyObject *self,PyObject *args);
+    static PyObject *sListSchemas     (PyObject *self,PyObject *args);
+    static PyObject *sGetSchema       (PyObject *self,PyObject *args);
+    static PyObject *sSetSchema       (PyObject *self,PyObject *args);
+    static PyObject *sSchemaTranslate (PyObject *self,PyObject *args);
 };
 
 } // namespace Base

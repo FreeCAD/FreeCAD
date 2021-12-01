@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="gl" sourcelanguage="en">
+<TS version="2.1" language="gl" sourcelanguage="en">
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
@@ -28,7 +28,7 @@
     </message>
     <message>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Amosa os límites da malla seleccionada</translation>
+      <translation>Amosa os límites da malla escolmada</translation>
     </message>
   </context>
   <context>
@@ -47,14 +47,44 @@
     </message>
   </context>
   <context>
-    <name>CmdMeshDemolding</name>
-    <message>
-      <source>Interactive demolding direction</source>
-      <translation>Dirección de desmoldaxe interactiva</translation>
-    </message>
+    <name>CmdMeshCrossSections</name>
     <message>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Cross-sections...</source>
+      <translation>Cortes transversais...</translation>
+    </message>
+    <message>
+      <source>Cross-sections</source>
+      <translation>Cortes transversais</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshDecimating</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Decimation...</source>
+      <translation type="unfinished">Decimation...</translation>
+    </message>
+    <message>
+      <source>Decimates a mesh</source>
+      <translation type="unfinished">Decimates a mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshDemolding</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Interactive demolding direction</source>
+      <translation>Dirección de desmoldaxe interactiva</translation>
     </message>
   </context>
   <context>
@@ -105,49 +135,12 @@
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Abre unha xanela para analizar e reparar a malla</translation>
-    </message>
-    <message>
-      <source>Evaluate &amp;&amp; Repair mesh...</source>
-      <translation>Avaliar &amp;e arranxar a malla...</translation>
-    </message>
-    <message>
       <source>Evaluate and repair mesh...</source>
       <translation>Avaliar e arranxar a malla...</translation>
     </message>
-  </context>
-  <context>
-    <name>CmdMeshExMakeMesh</name>
     <message>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <source>Make a Box</source>
-      <translation type="unfinished">Make a Box</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshExMakeTool</name>
-    <message>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <source>Make a Tool</source>
-      <translation type="unfinished">Make a Tool</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshExMakeUnion</name>
-    <message>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <source>Make Union</source>
-      <translation type="unfinished">Make Union</translation>
+      <source>Opens a dialog to analyze and repair a mesh</source>
+      <translation>Abre unha xanela para analizar e reparar a malla</translation>
     </message>
   </context>
   <context>
@@ -372,6 +365,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshRemeshGmsh</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Refinement...</source>
+      <translation type="unfinished">Refinement...</translation>
+    </message>
+    <message>
+      <source>Refine existing mesh</source>
+      <translation type="unfinished">Refine existing mesh</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -447,6 +455,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation>Cera segmentos de malla dende as superficies que mellor axustan...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation>Crea segmentos de malla das superficies que mellor axustan</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -459,6 +482,21 @@
     <message>
       <source>Smooth the selected meshes</source>
       <translation>Suaviza as mallas escolmadas</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSplitComponents</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Split by components</source>
+      <translation>Dividir por compoñentes</translation>
+    </message>
+    <message>
+      <source>Split selected mesh into its components</source>
+      <translation type="unfinished">Split selected mesh into its components</translation>
     </message>
   </context>
   <context>
@@ -524,12 +562,12 @@
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>Calcula a curvatura dos vértices da malla</translation>
-    </message>
-    <message>
       <source>Curvature plot</source>
       <translation>Trazado da curvatura</translation>
+    </message>
+    <message>
+      <source>Calculates the curvature of the vertices of a mesh</source>
+      <translation>Calcula a curvatura dos vértices da malla</translation>
     </message>
   </context>
   <context>
@@ -548,34 +586,184 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
+    </message>
+    <message>
+      <source>Segment by tool mesh</source>
+      <translation>Segmento por ferramenta de malla</translation>
+    </message>
+    <message>
+      <source>Mesh union</source>
+      <translation type="unfinished">Mesh union</translation>
+    </message>
+    <message>
+      <source>Mesh difference</source>
+      <translation type="unfinished">Mesh difference</translation>
+    </message>
+    <message>
+      <source>Mesh intersection</source>
+      <translation type="unfinished">Mesh intersection</translation>
+    </message>
+    <message>
+      <source>Import Mesh</source>
+      <translation type="unfinished">Import Mesh</translation>
+    </message>
+    <message>
+      <source>Mesh VertexCurvature</source>
+      <translation type="unfinished">Mesh VertexCurvature</translation>
+    </message>
+    <message>
+      <source>Mesh Smoothing</source>
+      <translation type="unfinished">Mesh Smoothing</translation>
+    </message>
+    <message>
+      <source>Harmonize mesh normals</source>
+      <translation type="unfinished">Harmonize mesh normals</translation>
+    </message>
+    <message>
+      <source>Flip mesh normals</source>
+      <translation type="unfinished">Flip mesh normals</translation>
+    </message>
+    <message>
+      <source>Fill up holes</source>
+      <translation type="unfinished">Fill up holes</translation>
+    </message>
+    <message>
+      <source>Mesh merge</source>
+      <translation type="unfinished">Mesh merge</translation>
+    </message>
+    <message>
+      <source>Mesh split</source>
+      <translation type="unfinished">Mesh split</translation>
+    </message>
+    <message>
+      <source>Mesh scale</source>
+      <translation type="unfinished">Mesh scale</translation>
+    </message>
+    <message>
+      <source>Mesh Decimating</source>
+      <translation type="unfinished">Mesh Decimating</translation>
+    </message>
+    <message>
+      <source>Harmonize normals</source>
+      <translation>Harmonizar normais</translation>
+    </message>
+    <message>
+      <source>Remove non-manifolds</source>
+      <translation type="unfinished">Remove non-manifolds</translation>
+    </message>
+    <message>
+      <source>Fix indices</source>
+      <translation type="unfinished">Fix indices</translation>
+    </message>
+    <message>
+      <source>Remove degenerated faces</source>
+      <translation type="unfinished">Remove degenerated faces</translation>
+    </message>
+    <message>
+      <source>Remove duplicated faces</source>
+      <translation type="unfinished">Remove duplicated faces</translation>
+    </message>
+    <message>
+      <source>Remove duplicated points</source>
+      <translation type="unfinished">Remove duplicated points</translation>
+    </message>
+    <message>
+      <source>Fix self-intersections</source>
+      <translation type="unfinished">Fix self-intersections</translation>
+    </message>
+    <message>
+      <source>Remove folds</source>
+      <translation type="unfinished">Remove folds</translation>
+    </message>
+    <message>
+      <source>Repair mesh</source>
+      <translation type="unfinished">Repair mesh</translation>
+    </message>
+    <message>
+      <source>Delete selection</source>
+      <translation type="unfinished">Delete selection</translation>
+    </message>
+    <message>
+      <source>Cut</source>
+      <translation>Tallar</translation>
+    </message>
+    <message>
+      <source>Trim</source>
+      <translation>Tallar</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Dividir</translation>
+    </message>
+    <message>
+      <source>Segment</source>
+      <translation type="unfinished">Segment</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Desbotar</translation>
+    </message>
+    <message>
+      <source>Fill hole</source>
+      <translation type="unfinished">Fill hole</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::DlgDecimating</name>
+    <message>
+      <source>Decimating</source>
+      <translation type="unfinished">Decimating</translation>
+    </message>
+    <message>
+      <source>Reduction</source>
+      <translation type="unfinished">Reduction</translation>
+    </message>
+    <message>
+      <source>None</source>
+      <translation>Ningún</translation>
+    </message>
+    <message>
+      <source>Full</source>
+      <translation type="unfinished">Full</translation>
+    </message>
+    <message>
+      <source>Absolute number</source>
+      <translation type="unfinished">Absolute number</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerancia</translation>
+    </message>
+    <message>
+      <source>Absolute number (Maximum: %1)</source>
+      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::DlgEvaluateMesh</name>
     <message>
-      <source>&amp;Help</source>
-      <translation>&amp;Axuda</translation>
-    </message>
-    <message>
-      <source>F1</source>
-      <translation>F1</translation>
-    </message>
-    <message>
-      <source>&amp;Close</source>
-      <translation>&amp;Pechar</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
+      <source>Evaluate &amp; Repair Mesh</source>
+      <translation>Avaliar e Arranxar Malla</translation>
     </message>
     <message>
       <source>Mesh information</source>
       <translation>Información da malla</translation>
     </message>
     <message>
+      <source>Number of points:</source>
+      <translation>Cantidade de puntos:</translation>
+    </message>
+    <message>
       <source>No information</source>
       <translation>Sen información</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Cantidade de puntos:</translation>
+      <source>Number of faces:</source>
+      <translation>Cantidade de faces:</translation>
     </message>
     <message>
       <source>Number of edges:</source>
@@ -586,28 +774,16 @@
       <translation>Refrescar</translation>
     </message>
     <message>
+      <source>Orientation</source>
+      <translation>Orientación</translation>
+    </message>
+    <message>
       <source>Analyze</source>
       <translation>Analizar</translation>
     </message>
     <message>
       <source>Repair</source>
       <translation>Arranxar</translation>
-    </message>
-    <message>
-      <source>Orientation</source>
-      <translation>Orientación</translation>
-    </message>
-    <message>
-      <source>Degenerated faces</source>
-      <translation>Faces dexeneradas</translation>
-    </message>
-    <message>
-      <source>Face indices</source>
-      <translation>Índices de face</translation>
-    </message>
-    <message>
-      <source>Number of faces:</source>
-      <translation>Cantidade de faces:</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
@@ -622,8 +798,20 @@
       <translation>Non-multiplicidades</translation>
     </message>
     <message>
+      <source>Degenerated faces</source>
+      <translation>Faces dexeneradas</translation>
+    </message>
+    <message>
+      <source>Face indices</source>
+      <translation>Índices de face</translation>
+    </message>
+    <message>
       <source>Self-intersections</source>
       <translation>Auto-interseccións</translation>
+    </message>
+    <message>
+      <source>Folds on surface</source>
+      <translation>Dobras na superficie</translation>
     </message>
     <message>
       <source>All above tests together</source>
@@ -633,48 +821,33 @@
       <source>Repetitive repair</source>
       <translation>Arranxos repetitivos</translation>
     </message>
-    <message>
-      <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Avaliar e Arranxar Malla</translation>
-    </message>
-    <message>
-      <source>Folds on surface</source>
-      <translation>Dobras na superficie</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
+    <message>
+      <source>Settings...</source>
+      <translation>Configuracións...</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Ningunha escolla</translation>
+    </message>
     <message>
       <source>No information</source>
       <translation>Sen información</translation>
     </message>
     <message>
-      <source>Invalid neighbour indices</source>
-      <translation>Índices veciños inválidos</translation>
+      <source>Flipped normals found</source>
+      <translation>Atopáronse normais invertidas</translation>
     </message>
     <message>
-      <source>Invalid face indices</source>
-      <translation>Índices de face inválidos</translation>
+      <source>Orientation</source>
+      <translation>Orientación</translation>
     </message>
     <message>
-      <source>Invalid point indices</source>
-      <translation>Índices de punto inválidos</translation>
-    </message>
-    <message>
-      <source>Multiple point indices</source>
-      <translation>Moitos índices de puntos</translation>
-    </message>
-    <message>
-      <source>Non-manifolds</source>
-      <translation>Non-multiplicidades</translation>
-    </message>
-    <message>
-      <source>Cannot remove non-manifolds</source>
-      <translation>Non é posíbel rexeitar as non-multiplicidades</translation>
-    </message>
-    <message>
-      <source>No selection</source>
-      <translation>Ningunha escolla</translation>
+      <source>Check failed due to folds on the surface.
+Please run the command to repair folds first</source>
+      <translation>Fallou a comprobación debido a dobras na superficie. Por favor, execute a orde para arranxar dobras primeiro</translation>
     </message>
     <message>
       <source>No flipped normals</source>
@@ -693,8 +866,36 @@
       <translation>%1 non-multiplicidades</translation>
     </message>
     <message>
+      <source>Non-manifolds</source>
+      <translation>Non-multiplicidades</translation>
+    </message>
+    <message>
+      <source>Cannot remove non-manifolds</source>
+      <translation>Non é posíbel rexeitar as non-multiplicidades</translation>
+    </message>
+    <message>
+      <source>Invalid face indices</source>
+      <translation>Índices de face inválidos</translation>
+    </message>
+    <message>
+      <source>Invalid point indices</source>
+      <translation>Índices de punto inválidos</translation>
+    </message>
+    <message>
+      <source>Multiple point indices</source>
+      <translation>Moitos índices de puntos</translation>
+    </message>
+    <message>
+      <source>Invalid neighbour indices</source>
+      <translation>Índices veciños inválidos</translation>
+    </message>
+    <message>
       <source>No invalid indices</source>
       <translation>Ningún índice inválido</translation>
+    </message>
+    <message>
+      <source>Indices</source>
+      <translation>Índices</translation>
     </message>
     <message>
       <source>No degenerations</source>
@@ -705,12 +906,20 @@
       <translation>%1 faces dexeneradas</translation>
     </message>
     <message>
+      <source>Degenerations</source>
+      <translation>Dexeneracións</translation>
+    </message>
+    <message>
       <source>No duplicated faces</source>
       <translation>Ningunha face duplicada</translation>
     </message>
     <message>
       <source>%1 duplicated faces</source>
       <translation>%1 faces duplicadas</translation>
+    </message>
+    <message>
+      <source>Duplicated faces</source>
+      <translation>Faces duplicadas</translation>
     </message>
     <message>
       <source>No duplicated points</source>
@@ -721,41 +930,12 @@
       <translation>Puntos duplicados</translation>
     </message>
     <message>
-      <source>Orientation</source>
-      <translation>Orientación</translation>
-    </message>
-    <message>
-      <source>Indices</source>
-      <translation>Índices</translation>
-    </message>
-    <message>
-      <source>Degenerations</source>
-      <translation>Dexeneracións</translation>
-    </message>
-    <message>
-      <source>Duplicated faces</source>
-      <translation>Faces duplicadas</translation>
-    </message>
-    <message>
       <source>No self-intersections</source>
       <translation>Ningunha auto-intersección</translation>
     </message>
     <message>
       <source>Self-intersections</source>
       <translation>Auto-interseccións</translation>
-    </message>
-    <message>
-      <source>Mesh repair</source>
-      <translation>Arranxar malla</translation>
-    </message>
-    <message>
-      <source>Flipped normals found</source>
-      <translation>Atopáronse normais invertidas</translation>
-    </message>
-    <message>
-      <source>Check failed due to folds on the surface.
-Please run the command to repair folds first</source>
-      <translation>Fallou a comprobación debido a dobras na superficie. Por favor, execute a orde para arranxar dobras primeiro</translation>
     </message>
     <message>
       <source>No folds on surface</source>
@@ -770,8 +950,8 @@ Please run the command to repair folds first</source>
       <translation>Dobras</translation>
     </message>
     <message>
-      <source>Settings...</source>
-      <translation>Configuracións...</translation>
+      <source>Mesh repair</source>
+      <translation>Arranxar malla</translation>
     </message>
   </context>
   <context>
@@ -782,7 +962,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Axustes</translation>
     </message>
     <message>
       <source>Check for non-manifold points</source>
@@ -817,7 +997,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Alt+O</source>
-      <translation type="unfinished">Alt+O</translation>
+      <translation>Alt+O</translation>
     </message>
     <message>
       <source>Solid:</source>
@@ -906,24 +1086,41 @@ Please run the command to repair folds first</source>
       <translation type="unfinished">Export</translation>
     </message>
     <message>
-      <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Define a desviación de teselado da superficie actual</translation>
+      <source>Maximal deviation between mesh and object</source>
+      <translation type="unfinished">Maximal deviation between mesh and object</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Teselado.&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Define o desvío máximo da malla teselada respecto da superficie. A menor valor é menor a velocidade de renderización e é máis agradable a aparencia.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Deviation of tessellation to the actual surface</source>
+      <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Teselado&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Define a máxima desviación da malla de teselado da superficie. Un valor miúdo ralentiza o renderizado o que incremente o miudo/resolución.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Desviación máxima da malla</translation>
     </message>
     <message>
-      <source>mm</source>
-      <translation>mm</translation>
+      <source>ZIP compression is used when writing a mesh file in AMF format</source>
+      <translation type="unfinished">ZIP compression is used when writing a mesh file in AMF format</translation>
     </message>
     <message>
       <source>Export AMF files using compression</source>
       <translation>Exportar ficheiros AMF usando compresión</translation>
+    </message>
+    <message>
+      <source>Width:</source>
+      <translation>Ancho:</translation>
+    </message>
+    <message>
+      <source>Height:</source>
+      <translation>Alto:</translation>
+    </message>
+    <message>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation>Iste parámetro indica uso de compresión ZIP cando escribe ficheiros en formato AMF</translation>
     </message>
   </context>
   <context>
@@ -933,8 +1130,58 @@ Please run the command to repair folds first</source>
       <translation>Vista de malla</translation>
     </message>
     <message>
+      <source>Default appearance for new meshes</source>
+      <translation>Aparencia por defecto para novas mallas</translation>
+    </message>
+    <message>
+      <source>Default line color</source>
+      <translation>Cor de liña por defecto</translation>
+    </message>
+    <message>
+      <source>Mesh transparency</source>
+      <translation>Transparencia da malla</translation>
+    </message>
+    <message>
+      <source>Default color for new meshes</source>
+      <translation type="unfinished">Default color for new meshes</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <source>Default mesh color</source>
+      <translation>Cor da malla por defecto</translation>
+    </message>
+    <message>
+      <source>A bounding box will be displayed</source>
+      <translation type="unfinished">A bounding box will be displayed</translation>
+    </message>
+    <message>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Amosar carcasa para mallas destacadas ou escolmadas</translation>
+    </message>
+    <message>
+      <source>Default line color for new meshes</source>
+      <translation type="unfinished">Default line color for new meshes</translation>
+    </message>
+    <message>
+      <source>The bottom side of surface will be rendered the same way than top side.
+If not checked, it depends on the option "Enable backlight color"
+(preferences section Display -&gt; 3D View). Either the backlight color
+will be used or black.</source>
+      <translation type="unfinished">The bottom side of surface will be rendered the same way than top side.
+If not checked, it depends on the option "Enable backlight color"
+(preferences section Display -&gt; 3D View). Either the backlight color
+will be used or black.</translation>
+    </message>
+    <message>
       <source>Two-side rendering</source>
       <translation>Renderizado a dúas caras</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Transparencia da liña</translation>
     </message>
     <message>
       <source>Backface color</source>
@@ -953,44 +1200,42 @@ Please run the command to repair folds first</source>
       <translation>Ángulo da engurra</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Define a aparencia das superficies.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Co sombreado plano as normais da superficie non son definidas por vértice, que leva a unha aparencia irreal para superficies curvadas, mentres que usando o sombreado Phong leva a un aspecto máis suave. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Se esta opción está estabelecida úsase o sombreado Phong, se non está estabelecida úsase o sombreado plano.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>If this option is set Phong shading is used, otherwise flat shading.
+Shading defines the appearance of surfaces.
+
+With flat shading the surface normals are not defined per vertex that leads
+to a unreal appearance for curved surfaces while using Phong shading leads
+to a smoother appearance.
+</source>
+      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
+Shading defines the appearance of surfaces.
+
+With flat shading the surface normals are not defined per vertex that leads
+to a unreal appearance for curved surfaces while using Phong shading leads
+to a smoother appearance.
+</translation>
     </message>
     <message>
       <source>Define normal per vertex</source>
       <translation>Definir normal por vértice</translation>
     </message>
-    <message utf8="true">
+    <message>
+      <source>Crease angle is a threshold angle between two faces.
+
+ If face angle ≥ crease angle, facet shading is used
+ If face angle &lt; crease angle, smooth shading is used</source>
+      <translation type="unfinished">Crease angle is a threshold angle between two faces.
+
+ If face angle ≥ crease angle, facet shading is used
+ If face angle &lt; crease angle, smooth shading is used</translation>
+    </message>
+    <message>
       <source> °</source>
       <translation> °</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Default appearance for new meshes</source>
-      <translation>Aparencia por defecto para novas mallas</translation>
-    </message>
-    <message>
-      <source>Default line color</source>
-      <translation>Cor de liña por defecto</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Transparencia da malla</translation>
-    </message>
-    <message>
-      <source>Default mesh color</source>
-      <translation>Cor da malla por defecto</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Amosar carcasa para mallas destacadas ou seleccionadas</translation>
-    </message>
-    <message>
-      <source>Line transparency</source>
-      <translation>Transparencia da liña</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Definindo a normals por vértice está só chamado &lt;span style=" font-style:italic;"&gt;Sombreado Phong &lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;cando estea definida a normal para a face é chamado &lt;/span&gt;Sombrado chan&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -1033,6 +1278,45 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::GmshWidget</name>
+    <message>
+      <source>Automatic</source>
+      <translation>Automática</translation>
+    </message>
+    <message>
+      <source>Adaptive</source>
+      <translation>Adaptable</translation>
+    </message>
+    <message>
+      <source>Frontal</source>
+      <translation type="unfinished">Frontal</translation>
+    </message>
+    <message>
+      <source>Frontal Quad</source>
+      <translation type="unfinished">Frontal Quad</translation>
+    </message>
+    <message>
+      <source>Parallelograms</source>
+      <translation type="unfinished">Parallelograms</translation>
+    </message>
+    <message>
+      <source>Time:</source>
+      <translation>Tempo:</translation>
+    </message>
+    <message>
+      <source>Running gmsh...</source>
+      <translation type="unfinished">Running gmsh...</translation>
+    </message>
+    <message>
+      <source>Failed to start</source>
+      <translation type="unfinished">Failed to start</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Erro</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
       <source>Add triangle</source>
@@ -1048,14 +1332,100 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Finish</source>
-      <translation>Rermatar</translation>
+      <translation>Rematar</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
       <source>Finish</source>
-      <translation>Rermatar</translation>
+      <translation>Rematar</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation>Superficie de axuste</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Parámetros</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Selección</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Rexión</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Triángulo</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Baleirar</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Calcular</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Ningunha escolla</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation>Antes de colocar a superficie escolma unha área.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::RemeshGmsh</name>
+    <message>
+      <source>Remesh by gmsh</source>
+      <translation type="unfinished">Remesh by gmsh</translation>
+    </message>
+    <message>
+      <source>Remeshing Parameter</source>
+      <translation type="unfinished">Remeshing Parameter</translation>
+    </message>
+    <message>
+      <source>Meshing:</source>
+      <translation type="unfinished">Meshing:</translation>
+    </message>
+    <message>
+      <source>Max element size (0.0 = Auto):</source>
+      <translation type="unfinished">Max element size (0.0 = Auto):</translation>
+    </message>
+    <message>
+      <source>Min element size (0.0 = Auto):</source>
+      <translation type="unfinished">Min element size (0.0 = Auto):</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Ángulo:</translation>
+    </message>
+    <message>
+      <source>Gmsh</source>
+      <translation type="unfinished">Gmsh</translation>
+    </message>
+    <message>
+      <source>Path</source>
+      <translation>Traxectoria</translation>
+    </message>
+    <message>
+      <source>Kill</source>
+      <translation type="unfinished">Kill</translation>
+    </message>
+    <message>
+      <source>Time:</source>
+      <translation>Tempo:</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Baleirar</translation>
     </message>
   </context>
   <context>
@@ -1066,11 +1436,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Select</source>
-      <translation>Seleccionar</translation>
+      <translation>Escolmar</translation>
     </message>
     <message>
       <source>Select whole component</source>
-      <translation>Seleccionar compoñente enteiro</translation>
+      <translation>Escolmar compoñente enteiro</translation>
     </message>
     <message>
       <source>Pick triangle</source>
@@ -1109,12 +1479,12 @@ Please run the command to repair folds first</source>
       <translation>Opcións de rexión</translation>
     </message>
     <message>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>Respectar só triángulos con normais de cara a pantalla</translation>
-    </message>
-    <message>
       <source>Respect only visible triangles</source>
       <translation>Respectar só triángulos visíbeis</translation>
+    </message>
+    <message>
+      <source>Respect only triangles with normals facing screen</source>
+      <translation>Respectar só triángulos con normais de cara a pantalla</translation>
     </message>
   </context>
   <context>
@@ -1136,7 +1506,7 @@ Please run the command to repair folds first</source>
       <translation>Tolerancia</translation>
     </message>
     <message>
-      <source>Minumum number of faces</source>
+      <source>Minimum number of faces</source>
       <translation>Número mínimo de faces</translation>
     </message>
     <message>
@@ -1144,8 +1514,8 @@ Please run the command to repair folds first</source>
       <translation>Cilindro</translation>
     </message>
     <message>
-      <source>Radius</source>
-      <translation>Raio</translation>
+      <source>Curvature</source>
+      <translation>Curvatura</translation>
     </message>
     <message>
       <source>Tolerance (Flat)</source>
@@ -1156,12 +1526,71 @@ Please run the command to repair folds first</source>
       <translation>Tolerancia (curvado)</translation>
     </message>
     <message>
-      <source>Minimum number of faces</source>
-      <translation>Número mínimo de faces</translation>
+      <source>Sphere</source>
+      <translation>Esfera</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Forma libre</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>Máx. Curvatura</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>Mín. Curvatura</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentación da malla</translation>
     </message>
     <message>
       <source>Sphere</source>
       <translation>Esfera</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerancia</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Número mínimo de faces</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parámetros...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plano</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cilindro</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Base</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normal</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Eixo</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Raio</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Centro</translation>
     </message>
   </context>
   <context>
@@ -1188,11 +1617,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Use a brush tool to select the area</source>
-      <translation>Use unha ferramenta brocha para seleccionar a área</translation>
+      <translation>Use unha ferramenta brocha para escolmar a área</translation>
     </message>
     <message>
       <source>Clears completely the selected area</source>
-      <translation>Baleira completamente a área seleccionada</translation>
+      <translation>Baleira completamente a área escolmada</translation>
     </message>
   </context>
   <context>
@@ -1207,14 +1636,10 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
-    <name>Mesh_TrimByPlane</name>
+    <name>Mesh_BoundingBox</name>
     <message>
-      <source>Select plane</source>
-      <translation>Seleccionar plano</translation>
-    </message>
-    <message>
-      <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Escolme un plano co que tallar a malla.</translation>
+      <source>Boundings of %1:</source>
+      <translation>Límites de %1:</translation>
     </message>
   </context>
   <context>
@@ -1224,7 +1649,7 @@ Please run the command to repair folds first</source>
       <translation>OpenSCAD</translation>
     </message>
     <message>
-      <source>Unknwon error occured while running OpenSCAD.</source>
+      <source>Unknown error occurred while running OpenSCAD.</source>
       <translation>Ocorreu un erro descoñecido namentres corría OpenSCAD.</translation>
     </message>
     <message>
@@ -1232,10 +1657,6 @@ Please run the command to repair folds first</source>
 Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>O OpenSCAD non se atopou no seu sistema.
 Por favor visite http://www.openscad.org/index.html para instalalo.</translation>
-    </message>
-    <message>
-      <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation>Ocorreu un erro descoñecido namentres corría OpenSCAD.</translation>
     </message>
   </context>
   <context>
@@ -1248,154 +1669,8 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
   <context>
     <name>QObject</name>
     <message>
-      <source>Import mesh</source>
-      <translation>Importar malla</translation>
-    </message>
-    <message>
-      <source>Export mesh</source>
-      <translation>Exportar malla</translation>
-    </message>
-    <message>
-      <source>Solid Mesh</source>
-      <translation>Malla sólida</translation>
-    </message>
-    <message>
-      <source>Boundings</source>
-      <translation>Límites</translation>
-    </message>
-    <message>
-      <source>Fill holes</source>
-      <translation>Reencher buratos</translation>
-    </message>
-    <message>
-      <source>Fill holes with maximum number of edges:</source>
-      <translation>Reencher buratos coa cantidade máxima de arestas:</translation>
-    </message>
-    <message>
-      <source>Binary STL (*.stl)</source>
-      <translation type="unfinished">Binary STL (*.stl)</translation>
-    </message>
-    <message>
-      <source>ASCII STL (*.ast)</source>
-      <translation type="unfinished">ASCII STL (*.ast)</translation>
-    </message>
-    <message>
-      <source>Binary Mesh (*.bms)</source>
-      <translation type="unfinished">Binary Mesh (*.bms)</translation>
-    </message>
-    <message>
-      <source>Alias Mesh (*.obj)</source>
-      <translation type="unfinished">Alias Mesh (*.obj)</translation>
-    </message>
-    <message>
-      <source>Inventor V2.1 ascii (*.iv)</source>
-      <translation type="unfinished">Inventor V2.1 ascii (*.iv)</translation>
-    </message>
-    <message>
-      <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
-    </message>
-    <message>
-      <source>ASCII STL (*.stl)</source>
-      <translation type="unfinished">ASCII STL (*.stl)</translation>
-    </message>
-    <message>
-      <source>VRML V2.0 (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML V2.0 (*.wrl *.vrml)</translation>
-    </message>
-    <message>
-      <source>Compressed VRML 2.0 (*.wrz)</source>
-      <translation type="unfinished">Compressed VRML 2.0 (*.wrz)</translation>
-    </message>
-    <message>
-      <source>Nastran (*.nas *.bdf)</source>
-      <translation type="unfinished">Nastran (*.nas *.bdf)</translation>
-    </message>
-    <message>
-      <source>Python module def (*.py)</source>
-      <translation type="unfinished">Python module def (*.py)</translation>
-    </message>
-    <message>
-      <source>Meshing Tolerance</source>
-      <translation>Tolerancia da malla</translation>
-    </message>
-    <message>
-      <source>Enter tolerance for meshing geometry:</source>
-      <translation>Introduza a tolerancia para a xeometría da malla:</translation>
-    </message>
-    <message>
-      <source>The mesh '%1' is a solid.</source>
-      <translation>A malla '%1' é un sólido.</translation>
-    </message>
-    <message>
-      <source>The mesh '%1' is not a solid.</source>
-      <translation>A malla '%1' non é un sólido.</translation>
-    </message>
-    <message>
-      <source>Min=&lt;%1,%2,%3&gt;
-
-Max=&lt;%4,%5,%6&gt;</source>
-      <translation>Min=&lt;%1,%2,%3&gt; Max=&lt;%4,%5,%6&gt;</translation>
-    </message>
-    <message>
-      <source>[Points: %1, Edges: %2 Faces: %3]</source>
-      <translation type="unfinished">[Points: %1, Edges: %2 Faces: %3]</translation>
-    </message>
-    <message>
-      <source>Leave info mode</source>
-      <translation>Saír do modo de información</translation>
-    </message>
-    <message>
-      <source>Index: %1</source>
-      <translation>Índice: %1</translation>
-    </message>
-    <message>
-      <source>Leave hole-filling mode</source>
-      <translation>Saír do modo de reenchido de buratos</translation>
-    </message>
-    <message>
-      <source>Leave removal mode</source>
-      <translation>Saír do modo de rexeitado</translation>
-    </message>
-    <message>
-      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</source>
-      <translation type="unfinished">All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</translation>
-    </message>
-    <message>
-      <source>Stanford Polygon (*.ply)</source>
-      <translation type="unfinished">Stanford Polygon (*.ply)</translation>
-    </message>
-    <message>
-      <source>Object File Format (*.off)</source>
-      <translation type="unfinished">Object File Format (*.off)</translation>
-    </message>
-    <message>
-      <source>Standford Polygon (*.ply)</source>
-      <translation type="unfinished">Standford Polygon (*.ply)</translation>
-    </message>
-    <message>
-      <source>Delete selected faces</source>
-      <translation>Desbotar as faces escolmadas</translation>
-    </message>
-    <message>
-      <source>Clear selected faces</source>
-      <translation>Baleirar faces seleccionadas</translation>
-    </message>
-    <message>
-      <source>Annotation</source>
-      <translation>Apuntamento</translation>
-    </message>
-    <message>
-      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
-      <translation type="unfinished">All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
-    </message>
-    <message>
-      <source>X3D Extensible 3D (*.x3d)</source>
-      <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
-    </message>
-    <message>
-      <source>Display components</source>
-      <translation>Amosar compoñentes</translation>
+      <source>Import-Export</source>
+      <translation>Importar-Exportar</translation>
     </message>
     <message>
       <source>All Mesh Files</source>
@@ -1422,20 +1697,44 @@ Max=&lt;%4,%5,%6&gt;</source>
       <translation>Formato do ficheiro do obxecto</translation>
     </message>
     <message>
-      <source>Inventor V2.1 ascii</source>
-      <translation>Inventor v 2.1 ascii</translation>
+      <source>Inventor V2.1 ASCII</source>
+      <translation type="unfinished">Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
       <translation>Polígono de Stanford</translation>
     </message>
     <message>
+      <source>NASTRAN</source>
+      <translation type="unfinished">NASTRAN</translation>
+    </message>
+    <message>
       <source>All Files</source>
       <translation>Tódolos ficheiros</translation>
     </message>
     <message>
+      <source>Import mesh</source>
+      <translation>Importar malla</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Formato de Modelo Sinxelo</translation>
+    </message>
+    <message>
+      <source>Inventor V2.1 ascii</source>
+      <translation>Inventor v 2.1 ascii</translation>
+    </message>
+    <message>
       <source>X3D Extensible 3D</source>
       <translation>X3D Extensíbel 3D</translation>
+    </message>
+    <message>
+      <source>Compressed X3D</source>
+      <translation type="unfinished">Compressed X3D</translation>
+    </message>
+    <message>
+      <source>WebGL/X3D</source>
+      <translation type="unfinished">WebGL/X3D</translation>
     </message>
     <message>
       <source>VRML V2.0</source>
@@ -1454,12 +1753,44 @@ Max=&lt;%4,%5,%6&gt;</source>
       <translation>Definición do módulo Python</translation>
     </message>
     <message>
-      <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation>[Puntos: %1, Arestas: %2, Faces: %3]</translation>
+      <source>Asymptote Format</source>
+      <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
-      <source>Import-Export</source>
-      <translation>Importar-Exportar</translation>
+      <source>Export mesh</source>
+      <translation>Exportar malla</translation>
+    </message>
+    <message>
+      <source>Meshing Tolerance</source>
+      <translation>Tolerancia da malla</translation>
+    </message>
+    <message>
+      <source>Enter tolerance for meshing geometry:</source>
+      <translation>Introduza a tolerancia para a xeometría da malla:</translation>
+    </message>
+    <message>
+      <source>The mesh '%1' is not a solid.</source>
+      <translation>A malla '%1' non é un sólido.</translation>
+    </message>
+    <message>
+      <source>The mesh '%1' is a solid.</source>
+      <translation>A malla '%1' é un sólido.</translation>
+    </message>
+    <message>
+      <source>Solid Mesh</source>
+      <translation>Malla sólida</translation>
+    </message>
+    <message>
+      <source>Boundings</source>
+      <translation>Límites</translation>
+    </message>
+    <message>
+      <source>Fill holes</source>
+      <translation>Reencher buratos</translation>
+    </message>
+    <message>
+      <source>Fill holes with maximum number of edges:</source>
+      <translation>Reencher buratos coa cantidade máxima de arestas:</translation>
     </message>
     <message>
       <source>Scaling</source>
@@ -1468,6 +1799,46 @@ Max=&lt;%4,%5,%6&gt;</source>
     <message>
       <source>Enter scaling factor:</source>
       <translation>Inserir factor de escala:</translation>
+    </message>
+    <message>
+      <source>[Points: %1, Edges: %2, Faces: %3]</source>
+      <translation>[Puntos: %1, Arestas: %2, Faces: %3]</translation>
+    </message>
+    <message>
+      <source>Display components</source>
+      <translation>Amosar compoñentes</translation>
+    </message>
+    <message>
+      <source>Display segments</source>
+      <translation type="unfinished">Display segments</translation>
+    </message>
+    <message>
+      <source>Leave info mode</source>
+      <translation>Saír do modo de información</translation>
+    </message>
+    <message>
+      <source>Index: %1</source>
+      <translation>Índice: %1</translation>
+    </message>
+    <message>
+      <source>Leave hole-filling mode</source>
+      <translation>Saír do modo de reenchido de buratos</translation>
+    </message>
+    <message>
+      <source>Leave removal mode</source>
+      <translation>Saír do modo de rexeitado</translation>
+    </message>
+    <message>
+      <source>Delete selected faces</source>
+      <translation>Desbotar as faces escolmadas</translation>
+    </message>
+    <message>
+      <source>Clear selected faces</source>
+      <translation>Baleirar faces escolmadas</translation>
+    </message>
+    <message>
+      <source>Annotation</source>
+      <translation>Apuntamento</translation>
     </message>
   </context>
   <context>

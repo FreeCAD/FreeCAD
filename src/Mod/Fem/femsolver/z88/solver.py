@@ -1,6 +1,7 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   Copyright (c) 2017 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,23 +21,22 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Z88 SolverObject"
+__title__ = "FreeCAD FEM solver object Z88"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package SolverZ88
 #  \ingroup FEM
 
-import os
 import glob
+import os
 
 import FreeCAD
-import femtools.femutils as FemUtils
 
+from . import tasks
 from .. import run
 from .. import solverbase
-from . import tasks
-
+from femtools import femutils
 
 if FreeCAD.GuiUp:
     import FemGui
@@ -45,7 +45,7 @@ ANALYSIS_TYPES = ["static"]
 
 
 def create(doc, name="SolverZ88"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
@@ -53,7 +53,7 @@ class Proxy(solverbase.Proxy):
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
 
-    Type = "Fem::FemSolverObjectZ88"
+    Type = "Fem::SolverZ88"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
@@ -79,7 +79,7 @@ class Proxy(solverbase.Proxy):
 
     def edit(self, directory):
         pattern = os.path.join(directory, "*.txt")
-        print(pattern)
+        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
         f = glob.glob(pattern)[0]
         FemGui.open(f)
 
@@ -88,4 +88,8 @@ class Proxy(solverbase.Proxy):
 
 
 class ViewProxy(solverbase.ViewProxy):
-    pass
+
+    def getIcon(self):
+        return ":/icons/FEM_SolverZ88.svg"
+
+##  @}

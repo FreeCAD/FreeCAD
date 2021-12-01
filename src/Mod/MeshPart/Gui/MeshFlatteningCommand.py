@@ -1,7 +1,32 @@
+#***************************************************************************
+#*   Copyright (c) 2017 Lorenz Lechner                                     *
+#*                                                                         *
+#*   This file is part of the FreeCAD CAx development system.              *
+#*                                                                         *
+#*   This library is free software; you can redistribute it and/or         *
+#*   modify it under the terms of the GNU Library General Public           *
+#*   License as published by the Free Software Foundation; either          *
+#*   version 2 of the License, or (at your option) any later version.      *
+#*                                                                         *
+#*   This library  is distributed in the hope that it will be useful,      *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this library; see the file COPYING.LIB. If not,    *
+#*   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+#*   Suite 330, Boston, MA  02111-1307, USA                                *
+#*                                                                         *
+#***************************************************************************/
+
 import Mesh
 import FreeCAD as App
 import FreeCADGui as Gui
 import Part
+import MeshPartGui
+
+from PySide.QtCore import QT_TRANSLATE_NOOP # for translations
 
 class BaseCommand(object):
     def __init__(self):
@@ -12,13 +37,15 @@ class BaseCommand(object):
             return False
         else:
             return True
-    
+
 
 class CreateFlatMesh(BaseCommand):
     """create flat wires from a meshed face"""
 
     def GetResources(self):
-        return {'MenuText': 'Unwrap Mesh', 'ToolTip': 'find a flat representation of a mesh'}
+        return {'Pixmap': 'MeshPart_CreateFlatMesh.svg',
+                'MenuText': QT_TRANSLATE_NOOP("MeshPart_FlatteningCommand", "Unwrap Mesh"),
+                'ToolTip': QT_TRANSLATE_NOOP("MeshPart_FlatteningCommand", "Find a flat representation of a mesh.")}
 
     def Activated(self):
         import numpy as np
@@ -29,8 +56,8 @@ class CreateFlatMesh(BaseCommand):
         flattener = flatmesh.FaceUnwrapper(points, faces)
         flattener.findFlatNodes(5, 0.95)
         boundaries = flattener.getFlatBoundaryNodes()
-        print('number of nodes: {}'.format(len(flattener.ze_nodes)))
-        print('number of faces: {}'.format(len(flattener.tris)))
+        #print('number of nodes: {}'.format(len(flattener.ze_nodes)))
+        #print('number of faces: {}'.format(len(flattener.tris)))
 
         wires = []
         for edge in boundaries:
@@ -46,10 +73,12 @@ class CreateFlatMesh(BaseCommand):
 class CreateFlatFace(BaseCommand):
     """create a flat face from a single face
        only full faces are supported right now"""
-       
+
     def GetResources(self):
-        return {'MenuText': 'Unwrap Face', 'ToolTip': 'find a flat representation of a mesh'}
-    
+        return {'Pixmap': 'MeshPart_CreateFlatFace.svg',
+                'MenuText': QT_TRANSLATE_NOOP("MeshPart_FlatteningCommand", "Unwrap Face"),
+                'ToolTip': QT_TRANSLATE_NOOP("MeshPart_FlatteningCommand", "Find a flat representation of a mesh.")}
+
     def Activated(self):
         import numpy as np
         import flatmesh
@@ -73,12 +102,14 @@ class CreateFlatFace(BaseCommand):
                 bs.setPole(u + 1, v + 1, App.Vector(poles[i]))
                 i += 1
         Part.show(bs.toShape())
-        
+
     def IsActive(self):
         assert(super(CreateFlatFace, self).IsActive())
         assert(isinstance(Gui.Selection.getSelectionEx()[0].SubObjects[0], Part.Face))
         return True
 
+
+# Test if pybind11 dependency is available
 try:
     import flatmesh
     Gui.addCommand('MeshPart_CreateFlatMesh', CreateFlatMesh())

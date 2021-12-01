@@ -27,6 +27,17 @@
 # include <QAction>
 # include <QMenu>
 # include <QMessageBox>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoNormal.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Bnd_Box.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include "ViewProviderPrimitive.h"
@@ -39,17 +50,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Base/Console.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoNormal.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoPickStyle.h>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
+
 
 
 using namespace PartDesignGui;
@@ -58,7 +59,6 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPrimitive,PartDesignGui::ViewProvider
 
 ViewProviderPrimitive::ViewProviderPrimitive()
 {
-    previewFaceSet = 0;
 }
 
 ViewProviderPrimitive::~ViewProviderPrimitive()
@@ -75,13 +75,12 @@ void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, con
     QAction* act;
     act = menu->addAction(QObject::tr("Edit primitive"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderPrimitive::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
-        setPreviewDisplayMode(true);
-        
         // When double-clicking on the item for this fillet the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -113,6 +112,8 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
         else
             Gui::Control().showDialog(new TaskPrimitiveParameters(this));
 
+        setPreviewDisplayMode(true);
+
         return true;
     }
     else {
@@ -122,8 +123,12 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
 
 void ViewProviderPrimitive::unsetEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
     setPreviewDisplayMode(false);
+
+    // Rely on parent class to:
+    // restitute old workbench (set setEdit above) and close the dialog if exiting editing
+    PartDesignGui::ViewProvider::unsetEdit(ModNum);
+
 }
 
 void ViewProviderPrimitive::updateData(const App::Property* p) {
@@ -135,9 +140,9 @@ QIcon ViewProviderPrimitive::getIcon(void) const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::FeaturePrimitive*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive_");
+        str += QString::fromLatin1("Additive");
     else
-        str += QString::fromLatin1("Subtractive_");
+        str += QString::fromLatin1("Subtractive");
 
     switch(prim->getPrimitiveType()) {
     case PartDesign::FeaturePrimitive::Box:
@@ -167,5 +172,5 @@ QIcon ViewProviderPrimitive::getIcon(void) const {
     }
 
     str += QString::fromLatin1(".svg");
-    return mergeTip(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }

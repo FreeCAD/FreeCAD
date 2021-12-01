@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <qobject.h>
-# include <boost/bind.hpp>
+# include <boost/bind/bind.hpp>
 
 #endif
 
@@ -39,7 +39,7 @@
 #include "Workbench.h"
 
 using namespace AssemblyGui;
-
+namespace bp = boost::placeholders;
 
 
 
@@ -202,10 +202,10 @@ void Workbench::activated()
     //}
 
     // Let us be notified when a document is activated, so that we can update the ActivePartObject
-    Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, _1));
-    App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, _1));
-    App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
-    App::GetApplication().signalDeleteDocument.connect(boost::bind(&Workbench::slotDeleteDocument, this, _1));
+    Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, bp::_1));
+    App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, bp::_1));
+    App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, bp::_1));
+    App::GetApplication().signalDeleteDocument.connect(boost::bind(&Workbench::slotDeleteDocument, this, bp::_1));
 
 
     Gui::Control().showModelView();
@@ -216,10 +216,10 @@ void Workbench::deactivated()
     Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(None)");
 
     // Disconnect all document signals...
-    Gui::Application::Instance->signalActiveDocument.disconnect(boost::bind(&Workbench::slotActiveDocument, this, _1));
-    App::GetApplication().signalNewDocument.disconnect(boost::bind(&Workbench::slotNewDocument, this, _1));
-    App::GetApplication().signalFinishRestoreDocument.disconnect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
-    App::GetApplication().signalDeleteDocument.disconnect(boost::bind(&Workbench::slotDeleteDocument, this, _1));
+    Gui::Application::Instance->signalActiveDocument.disconnect(boost::bind(&Workbench::slotActiveDocument, this, bp::_1));
+    App::GetApplication().signalNewDocument.disconnect(boost::bind(&Workbench::slotNewDocument, this, bp::_1));
+    App::GetApplication().signalFinishRestoreDocument.disconnect(boost::bind(&Workbench::slotFinishRestoreDocument, this, bp::_1));
+    App::GetApplication().signalDeleteDocument.disconnect(boost::bind(&Workbench::slotDeleteDocument, this, bp::_1));
 
     Gui::Workbench::deactivated();
     removeTaskWatcher();

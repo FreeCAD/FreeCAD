@@ -1,108 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="tr" sourcelanguage="en">
+<TS version="2.1" language="tr" sourcelanguage="en">
+  <context>
+    <name>CmdMeshPartCrossSections</name>
+    <message>
+      <source>MeshPart</source>
+      <translation>ParçacıkBölümü</translation>
+    </message>
+    <message>
+      <source>Cross-sections...</source>
+      <translation>Kesitler...</translation>
+    </message>
+    <message>
+      <source>Cross-sections</source>
+      <translation>Kesit</translation>
+    </message>
+  </context>
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="+245"/>
       <source>Mesh</source>
       <translation>Parçacık</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Curve on mesh...</source>
       <translation>Örgü eğrisi...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Curve on mesh</source>
-      <translation>Örgü eğrisi</translation>
+      <source>Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</source>
+      <translation>Bir ağın üstünde yaklaşık bir eğri oluşturur. 
+Bu komut yalnızca bir 'ağ' nesnesiyle çalışır.</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location line="-191"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Create mesh from shape...</source>
       <translation>Parçacıktan şekil oluştur</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Tessellate shape</source>
-      <translation>Şekili mozaik döşe</translation>
+      <translation>Şekilden Örgü oluştur</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location line="+106"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Create section from mesh and plane</source>
       <translation>Örgü ve düzlemden kesit oluştur</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Section</source>
-      <translation>Bölüm</translation>
+      <translation>Kesişim</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location line="-85"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Trim mesh with a plane</source>
       <translation>Bir düzlem ile örgü bölme</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Trims a mesh with a plane</source>
       <translation>Bir düzlemle örgü kesme</translation>
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Trim with plane</source>
+      <translation>Düzlemden Kırp</translation>
+    </message>
+    <message>
+      <source>Section with plane</source>
+      <translation>Düzlemli bölüm</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPartGui::CrossSections</name>
+    <message>
+      <source>Cross sections</source>
+      <translation>Kesitler</translation>
+    </message>
+    <message>
+      <source>Guiding plane</source>
+      <translation>Rehberlik düzlemi</translation>
+    </message>
+    <message>
+      <source>XY</source>
+      <translation>XY</translation>
+    </message>
+    <message>
+      <source>XZ</source>
+      <translation>XZ</translation>
+    </message>
+    <message>
+      <source>YZ</source>
+      <translation>YZ</translation>
+    </message>
+    <message>
+      <source>Position:</source>
+      <translation>Pozisyon:</translation>
+    </message>
+    <message>
+      <source>Sections</source>
+      <translation>Kesişimler</translation>
+    </message>
+    <message>
+      <source>On both sides</source>
+      <translation>İki tarafta da</translation>
+    </message>
+    <message>
+      <source>Count</source>
+      <translation>Saymak</translation>
+    </message>
+    <message>
+      <source>Distance:</source>
+      <translation>Mesafe:</translation>
+    </message>
+    <message>
+      <source>Options</source>
+      <translation>Seçenekler</translation>
+    </message>
+    <message>
+      <source>Connect edges if distance less than</source>
+      <translation>Mesafe şundan azsa kenarları birleştirin</translation>
+    </message>
+    <message>
+      <source>Failure</source>
+      <translation>Başarısız</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="+353"/>
       <source>Create</source>
       <translation>Oluştur</translation>
     </message>
     <message>
-      <location line="+2"/>
       <source>Close wire</source>
       <translation>Telin Yakını</translation>
     </message>
     <message>
-      <location line="+2"/>
       <source>Clear</source>
       <translation>Temizle</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Cancel</source>
-      <translation>İptal et</translation>
+      <translation>İptal</translation>
     </message>
     <message>
-      <location line="+208"/>
       <source>Wrong mesh picked</source>
       <translation>Yanlış örgü seçildi</translation>
     </message>
     <message>
-      <location line="+40"/>
       <source>No point was picked</source>
       <translation>Hiçbir nokta seçilmedi</translation>
     </message>
@@ -110,52 +174,50 @@
   <context>
     <name>MeshPartGui::TaskCurveOnMesh</name>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
       <source>Curve on mesh</source>
       <translation>Örgü eğrisi</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
+      <translation>"Başlat"a basın, ardından ağ üzerindeki noktaları seçin; Yeterli nokta ayarlandığında, sağ tıklayın ve 'Oluştur'u seçin. Daha fazla spline oluşturmak için bu işlemi tekrarlayın. İşlemi tamamlamak için bu görev panelini kapatın. 
+
+Bu komut, normal bir yüz veya yüzeyle değil, yalnızca 'ağ' nesnesiyle çalışır. Bir nesneyi ağa dönüştürmek için Mesh Çalışma Tezgahının araçlarını kullanın.</translation>
+    </message>
+    <message>
       <source>Wire</source>
       <translation>Yay</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <source>Snap tolerance to vertexes</source>
-      <translation>Noktalara yapışma toleransı</translation>
+      <source>Snap tolerance to vertices</source>
+      <translation>Toleransı köşelere yasla</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source> px</source>
       <translation> piksel</translation>
     </message>
     <message>
-      <location line="+10"/>
       <source>Split threshold</source>
       <translation>Bölme eşiği</translation>
     </message>
     <message>
-      <location line="+26"/>
       <source>Spline Approximation</source>
       <translation>Spline Yaklaşımı</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Tolerance to mesh</source>
       <translation>Örgü toleransı</translation>
     </message>
     <message>
-      <location line="+26"/>
       <source>Continuity</source>
       <translation>Süreklilik</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source>Maximum curve degree</source>
       <translation>Maksimum eğri derecesi</translation>
     </message>
     <message>
-      <location line="+24"/>
       <source>Start</source>
       <translation>Başla</translation>
     </message>
@@ -163,158 +225,206 @@
   <context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-      <location filename="../../Tessellation.ui" line="+14"/>
       <source>Tessellation</source>
       <translation>Mozaikleme</translation>
     </message>
     <message>
-      <location line="+10"/>
-      <source>Shapes</source>
-      <translation>Şekiller</translation>
-    </message>
-    <message>
-      <location line="+8"/>
       <source>Meshing options</source>
       <translation>Örgü seçenekleri</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Standard</source>
       <translation>Standart</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>Mefisto</source>
-      <translation>Mefisto</translation>
+      <source>Use the standard mesher</source>
+      <translation>Standart mesher kullanın</translation>
     </message>
     <message>
-      <location line="+7"/>
-      <source>Netgen</source>
-      <translation>Netgen</translation>
-    </message>
-    <message>
-      <location line="+81"/>
-      <source>Define segments by face colors</source>
-      <translation>Kesimleri yüz renkleriyle tanımlama</translation>
-    </message>
-    <message>
-      <location line="-7"/>
-      <source>Apply face colors to mesh</source>
-      <translation>Örgü için yüz renkleri uygula</translation>
-    </message>
-    <message>
-      <location line="-35"/>
-      <source>Angular deviation:</source>
-      <translation>Açısal sapma:</translation>
-    </message>
-    <message>
-      <location line="+28"/>
-      <source>Relative surface deviation</source>
-      <translation>Göreceli yüzey sapması</translation>
-    </message>
-    <message>
-      <location line="+40"/>
-      <source>Maximum edge length:</source>
-      <translation>En fazla kenar uzunluğu:</translation>
-    </message>
-    <message>
-      <location line="+44"/>
-      <source>Fineness:</source>
-      <translation>İnceliği:</translation>
-    </message>
-    <message>
-      <location line="+17"/>
-      <source>Very coarse</source>
-      <translation>Çok kaba</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Coarse</source>
-      <translation>Kaba</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Moderate</source>
-      <translation>Normal</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Fine</source>
-      <translation>İyi</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Very fine</source>
-      <translation>Çok iyi</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>User defined</source>
-      <translation>Kullanıcı tanımlı</translation>
-    </message>
-    <message>
-      <location line="+10"/>
-      <source>Mesh size grading:</source>
-      <translation>Mesh ebadı derecelendirmesi:</translation>
-    </message>
-    <message>
-      <location line="+29"/>
-      <source>Elements per edge:</source>
-      <translation>Kenar başına öğeler:</translation>
-    </message>
-    <message>
-      <location line="+29"/>
-      <source>Elements per curvature radius:</source>
-      <translation>Eğrilik yarıçapındaki elemanlar:</translation>
-    </message>
-    <message>
-      <location line="+31"/>
-      <source>Optimize surface</source>
-      <translation>Yüzeyi en iyileştir</translation>
-    </message>
-    <message>
-      <location line="+10"/>
-      <source>Second order elements</source>
-      <translation>İkinci mertebeden elemanlar</translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source>Quad dominated</source>
-      <translation>Dörtlü hakimdi</translation>
-    </message>
-    <message>
-      <source>Settings</source>
-      <translation>Ayarlar</translation>
-    </message>
-    <message>
-      <location line="-293"/>
       <source>Surface deviation:</source>
       <translation>Yüzey sapması:</translation>
     </message>
     <message>
-      <source>Max. edge length:</source>
-      <translation>Kenar uzunluğunun en büyük değeri:</translation>
+      <source>Maximal linear deflection of a mesh section from the surface of the object</source>
+      <translation>Ağ bölümünün, nesnenin yüzeyinden en fazla doğrusal sapması</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="+225"/>
+      <source>Angular deviation:</source>
+      <translation>Açısal sapma:</translation>
+    </message>
+    <message>
+      <source>Maximal angular deflection of a mesh section to the next section</source>
+      <translation>Bir ağ bölümünün, sonraki bölüme en fazla açısal sapması</translation>
+    </message>
+    <message>
+      <source>The maximal linear deviation of a mesh segment will be the specified
+Surface deviation multiplied by the length of the current mesh segment (edge)</source>
+      <translation>Bir ağ bölümünün en fazla doğrusal sapması, belirtilen Yüzey sapmasının mevcut ağ bölümünün (kenar) uzunluğu ile çarpımı olacaktır</translation>
+    </message>
+    <message>
+      <source>Relative surface deviation</source>
+      <translation>Göreceli yüzey sapması</translation>
+    </message>
+    <message>
+      <source>Mesh will get face colors of the object</source>
+      <translation>Ağ, nesnenin yüz renklerini alacak</translation>
+    </message>
+    <message>
+      <source>Apply face colors to mesh</source>
+      <translation>Örgü için yüz renkleri uygula</translation>
+    </message>
+    <message>
+      <source>Mesh segments will be grouped according to the color of the object faces.
+These groups will be exported for mesh output formats supporting
+this feature (e.g. the format OBJ).</source>
+      <translation>Ağ (Kafes) bölümleri, nesne yüzlerinin rengine göre gruplandırılacaktır. 
+Bu gruplar, bu özelliği destekleyen ağ (örgü) çıktı biçimleri için dışa aktarılacaktır (ör. OBJ biçimi).</translation>
+    </message>
+    <message>
+      <source>Define segments by face colors</source>
+      <translation>Kesimleri yüz renkleriyle tanımlama</translation>
+    </message>
+    <message>
+      <source>Mefisto</source>
+      <translation>Mefisto</translation>
+    </message>
+    <message>
+      <source>Use the Mefisto mesher</source>
+      <translation>Mefisto mesher kullanın</translation>
+    </message>
+    <message>
+      <source>Maximum edge length:</source>
+      <translation>En fazla kenar uzunluğu:</translation>
+    </message>
+    <message>
+      <source>If this number is smaller the mesh becomes finer.
+The smallest value is 0.</source>
+      <translation>Bu sayı daha küçükse, ağ daha ince hale gelir.
+En küçük değer 0'dır.</translation>
+    </message>
+    <message>
+      <source>Estimate</source>
+      <translation>Tahmin</translation>
+    </message>
+    <message>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
+    </message>
+    <message>
+      <source>Use the Netgen mesher</source>
+      <translation>Netgen mesher kullanın</translation>
+    </message>
+    <message>
+      <source>Fineness:</source>
+      <translation>İnceliği:</translation>
+    </message>
+    <message>
+      <source>Very coarse</source>
+      <translation>Çok kaba</translation>
+    </message>
+    <message>
+      <source>Coarse</source>
+      <translation>Kaba</translation>
+    </message>
+    <message>
+      <source>Moderate</source>
+      <translation>Normal</translation>
+    </message>
+    <message>
+      <source>Fine</source>
+      <translation>İyi</translation>
+    </message>
+    <message>
+      <source>Very fine</source>
+      <translation>Çok iyi</translation>
+    </message>
+    <message>
+      <source>User defined</source>
+      <translation>Kullanıcı tanımlı</translation>
+    </message>
+    <message>
+      <source>Mesh size grading:</source>
+      <translation>Mesh ebadı derecelendirmesi:</translation>
+    </message>
+    <message>
+      <source>If this parameter is smaller, the mesh becomes finer.
+A value in the range of 0.1-1.</source>
+      <translation>Bu parametre daha küçükse, ağ daha ince hale gelir. 
+0.1-1 aralığında bir değer.</translation>
+    </message>
+    <message>
+      <source>Elements per edge:</source>
+      <translation>Kenar başına öğeler:</translation>
+    </message>
+    <message>
+      <source>If this parameter is larger, the mesh becomes finer.
+A value in the range of 0.2-10.</source>
+      <translation>Bu parametre daha büyükse, ağ daha ince hale gelir. 0,2-10 aralığında bir değer.</translation>
+    </message>
+    <message>
+      <source>Elements per curvature radius:</source>
+      <translation>Eğrilik yarıçapındaki elemanlar:</translation>
+    </message>
+    <message>
+      <source>Whether optimization of surface shape will be done</source>
+      <translation>Yüzey şekli optimizasyonunun yapılıp yapılmayacağı</translation>
+    </message>
+    <message>
+      <source>Optimize surface</source>
+      <translation>Yüzeyi en iyileştir</translation>
+    </message>
+    <message>
+      <source>Whether second order elements will be generated</source>
+      <translation>İkinci dereceden elemanların üretilip üretilmeyeceği</translation>
+    </message>
+    <message>
+      <source>Second order elements</source>
+      <translation>İkinci mertebeden elemanlar</translation>
+    </message>
+    <message>
+      <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
+      <translation>Ağların tercihen dörtgen yüzler kullanılarak düzenlenip düzenlenmeyeceği</translation>
+    </message>
+    <message>
+      <source>Quad dominated</source>
+      <translation>Dörtlü hakimdi</translation>
+    </message>
+    <message>
+      <source>Leave panel open</source>
+      <translation>Paneli açık bırak</translation>
+    </message>
+    <message>
+      <source>gmsh</source>
+      <translation>gmsh</translation>
+    </message>
+    <message>
+      <source>No active document</source>
+      <translation>Etkin belge yok</translation>
+    </message>
+    <message>
+      <source>You have selected a body without tip.
+Either set the tip of the body or select a different shape, please.</source>
+      <translation type="unfinished">You have selected a body without tip.
+Either set the tip of the body or select a different shape, please.</translation>
+    </message>
+    <message>
+      <source>You have selected a shape without faces.
+Select a different shape, please.</source>
+      <translation type="unfinished">You have selected a shape without faces.
+Select a different shape, please.</translation>
+    </message>
+    <message>
       <source>Select a shape for meshing, first.</source>
       <translation>Önce parçacık haline getirmek için bir şekil seçiniz.</translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source>No such document '%1'.</source>
-      <translation>'%1' adlı belge bulunamadı.</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
       <source>Select plane</source>
       <translation>Uçak seç</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Lütfen kafesin kesildiği bir düzlem seçin.</translation>
     </message>
@@ -322,20 +432,37 @@
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location line="-85"/>
       <source>Select plane</source>
       <translation>Uçak seç</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Please select a plane at which you trim the mesh.</source>
       <translation>Lütfen örgünün düzeltileceği bir düzlem seçin.</translation>
+    </message>
+    <message>
+      <source>Trim by plane</source>
+      <translation>Düzlemden Kırp</translation>
+    </message>
+    <message>
+      <source>Select the side you want to keep.</source>
+      <translation>Tutmak istediğin kenarı seç.</translation>
+    </message>
+    <message>
+      <source>Below</source>
+      <translation>Altta</translation>
+    </message>
+    <message>
+      <source>Above</source>
+      <translation>Üstünde</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Ayır</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+36"/>
       <source>MeshPart</source>
       <translation>ParçacıkBölümü</translation>
     </message>

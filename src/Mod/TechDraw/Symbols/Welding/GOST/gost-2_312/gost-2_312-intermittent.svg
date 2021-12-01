@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<!-- https://tamirov.ru edited -->
+<title>Шов прерывистый или точечный с шахматным расположением. Intermittent - tech drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<path d="m5,10 h30 l-30,50 h30" fill="none" stroke="#000" stroke-linejoin="bevel" stroke-width="2" />
+</svg>

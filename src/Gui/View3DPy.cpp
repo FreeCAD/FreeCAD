@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,6 +41,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "NavigationStyle.h"
+#include "SoMouseWheelEvent.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCOffscreenRenderer.h"
 #include "SoFCVectorizeSVGAction.h"
@@ -50,6 +51,7 @@
 #include "View3DInventorViewer.h"
 #include "View3DViewerPy.h"
 #include "ActiveObjectList.h"
+#include "PythonWrapper.h"
 
 
 #include <Base/Console.h>
@@ -64,6 +66,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
+#include <App/GeoFeature.h>
 #include <CXX/Objects.hxx>
 
 using namespace Gui;
@@ -78,7 +81,6 @@ void View3DInventorPy::init_type()
     behaviors().supportGetattr();
     behaviors().supportSetattr();
 
-    add_varargs_method("message",&View3DInventorPy::message,"message()");
     add_varargs_method("fitAll",&View3DInventorPy::fitAll,"fitAll()");
     add_keyword_method("boxZoom",&View3DInventorPy::boxZoom,"boxZoom()");
 
@@ -88,8 +90,21 @@ void View3DInventorPy::init_type()
     add_varargs_method("viewRear",&View3DInventorPy::viewRear,"viewRear()");
     add_varargs_method("viewRight",&View3DInventorPy::viewRight,"viewRight()");
     add_varargs_method("viewTop",&View3DInventorPy::viewTop,"viewTop()");
-    add_varargs_method("viewAxometric",&View3DInventorPy::viewAxonometric,"viewAxonometric()"); // for backward compatibility
-    add_varargs_method("viewAxonometric",&View3DInventorPy::viewAxonometric,"viewAxonometric()");
+    add_varargs_method("viewAxometric",&View3DInventorPy::viewIsometric,"viewAxonometric()"); // for backward compatibility
+    add_varargs_method("viewAxonometric",&View3DInventorPy::viewIsometric,"viewAxonometric()");
+    add_varargs_method("viewIsometric",&View3DInventorPy::viewIsometric,"viewIsometric()");
+    add_varargs_method("viewDimetric",&View3DInventorPy::viewDimetric,"viewDimetric()");
+    add_varargs_method("viewTrimetric",&View3DInventorPy::viewTrimetric,"viewTrimetric()");
+    add_varargs_method("viewDefaultOrientation",&View3DInventorPy::viewDefaultOrientation,
+                       "viewDefaultOrientation(ori_str = '', scale = -1.0): sets camera rotation to a predefined one, \n"
+                       "and camera position and zoom to show certain amount of model space. \n"
+                       "ori_string can be 'Top', 'Bottom', 'Front', 'Rear', 'Left', 'Right', \n"
+                       "'Isometric', 'Dimetric', 'Trimetric', 'Custom'. If empty, the value is \n"
+                       "fetched from Parameters.\n"
+                       "scale sets distance from camera to origin, and height of the screen in \n"
+                       "model space, so that a sphere of diameter <scale> fits the height of the\n"
+                       "viewport. If zero, scaling is not done. If negative, the value is \n"
+                       "fetched from Parameters.");
     add_varargs_method("viewRotateLeft",&View3DInventorPy::viewRotateLeft,"viewRotateLeft()");
     add_varargs_method("viewRotateRight",&View3DInventorPy::viewRotateRight,"viewRotateRight()");
     add_varargs_method("zoomIn",&View3DInventorPy::zoomIn,"zoomIn()");
@@ -99,7 +114,9 @@ void View3DInventorPy::init_type()
     add_varargs_method("stopAnimating",&View3DInventorPy::stopAnimating,"stopAnimating()");
     add_varargs_method("setAnimationEnabled",&View3DInventorPy::setAnimationEnabled,"setAnimationEnabled()");
     add_varargs_method("isAnimationEnabled",&View3DInventorPy::isAnimationEnabled,"isAnimationEnabled()");
-    add_varargs_method("dump",&View3DInventorPy::dump,"dump()");
+    add_varargs_method("setPopupMenuEnabled",&View3DInventorPy::setPopupMenuEnabled,"setPopupMenuEnabled()");
+    add_varargs_method("isPopupMenuEnabled",&View3DInventorPy::isPopupMenuEnabled,"isPopupMenuEnabled()");
+    add_varargs_method("dump",&View3DInventorPy::dump,"dump(filename, [onlyVisible=False])");
     add_varargs_method("dumpNode",&View3DInventorPy::dumpNode,"dumpNode(node)");
     add_varargs_method("setStereoType",&View3DInventorPy::setStereoType,"setStereoType()");
     add_varargs_method("getStereoType",&View3DInventorPy::getStereoType,"getStereoType()");
@@ -174,15 +191,35 @@ void View3DInventorPy::init_type()
         "Remove the DraggerCalback function from the coin node\n"
         "Possibles types :\n"
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
-    add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object)\nadd or set a new active object");
-    add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name)\nreturns the active object for the given type");
+    add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
+    add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
     add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_varargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
-
+    add_varargs_method("setName",&View3DInventorPy::setName,"setName(str): sets a name to this viewer\nThe name sets the widget's windowTitle and appears on the viewer tab");
+    add_keyword_method("toggleClippingPlane", &View3DInventorPy::toggleClippingPlane,
+        "toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()\n"
+        "Toggle a global clipping plane\n\n"
+        "toggle: -1 toggle, 1 show, 0 hide\n"
+        "beforeEditing: whether to insert the clipping node before or after editing root node\n"
+        "noManip: whether to create a manipulator\n"
+        "pla: clipping plane placement");
+    add_varargs_method("hasClippingPlane",&View3DInventorPy::hasClippingPlane,
+        "hasClippingPlane(): check whether this clipping plane is active");
+    add_varargs_method("graphicsView",&View3DInventorPy::graphicsView,
+        "graphicsView(): Access this view as QGraphicsView");
+    add_varargs_method("setCornerCrossVisible",&View3DInventorPy::setCornerCrossVisible,
+        "setCornerCrossVisible(bool): Defines corner axis cross visibility");
+    add_varargs_method("isCornerCrossVisible",&View3DInventorPy::isCornerCrossVisible,
+        "isCornerCrossVisible(): Returns current corner axis cross visibility");
+    add_varargs_method("setCornerCrossSize",&View3DInventorPy::setCornerCrossSize,
+        "setCornerCrossSize(int): Defines corner axis cross size");
+    add_varargs_method("getCornerCrossSize",&View3DInventorPy::getCornerCrossSize,
+        "getCornerCrossSize(): Returns current corner axis cross size");
+    add_varargs_method("cast_to_base", &View3DInventorPy::cast_to_base, "cast_to_base() cast to MDIView class");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
-  : _view(vi)
+  : base(vi)
 {
 }
 
@@ -193,11 +230,16 @@ View3DInventorPy::~View3DInventorPy()
         Py_DECREF(*it);
 }
 
+View3DInventor* View3DInventorPy::getView3DIventorPtr()
+{
+    return qobject_cast<View3DInventor*>(base.getMDIViewPtr());
+}
+
 Py::Object View3DInventorPy::repr()
 {
     std::string s;
     std::ostringstream s_out;
-    if (!_view)
+    if (!getView3DIventorPtr())
         throw Py::RuntimeError("Cannot print representation of deleted object");
     s_out << "View3DInventor";
     return Py::String(s_out.str());
@@ -216,28 +258,57 @@ PyObject *View3DInventorPy::method_varargs_ext_handler(PyObject *_self_and_name_
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (const Py::Exception&) {
+        throw;
+    }
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
+    }
+}
+
+// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// a trick is to use MDIViewPy as class member and override getattr() to
+// join the attributes of both classes. This way all methods of MDIViewPy
+// appear for SheetViewPy, too.
+Py::Object View3DInventorPy::getattribute(const char * attr)
+{
+    if (!getView3DIventorPtr())
+        throw Py::RuntimeError("Cannot print representation of deleted object");
+    std::string name( attr );
+    if (name == "__dict__" || name == "__class__") {
+        Py::Dict dict_self(BaseType::getattr("__dict__"));
+        Py::Dict dict_base(base.getattr("__dict__"));
+        for (auto it : dict_base) {
+            dict_self.setItem(it.first, it.second);
+        }
+        return dict_self;
+    }
+
+    try {
+        return BaseType::getattr(attr);
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+        return base.getattr(attr);
     }
 }
 
 Py::Object View3DInventorPy::getattr(const char * attr)
 {
-    if (!_view) {
-        std::string s;
+    if (!getView3DIventorPtr()) {
         std::ostringstream s_out;
         s_out << "Cannot access attribute '" << attr << "' of deleted object";
         throw Py::RuntimeError(s_out.str());
     }
     else {
         // see if an active object has the same name
-        App::DocumentObject *docObj = _view->getActiveObject<App::DocumentObject*>(attr);
+        App::DocumentObject *docObj = getView3DIventorPtr()->getActiveObject<App::DocumentObject*>(attr);
         if (docObj) {
             return Py::Object(docObj->getPyObject(),true);
         }
         else {
             // else looking for a method with the name and call it
-            Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
+            Py::Object obj = getattribute(attr);
             if (PyCFunction_Check(obj.ptr())) {
                 PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
                 if (op->m_ml->ml_flags == METH_VARARGS) {
@@ -253,37 +324,15 @@ Py::Object View3DInventorPy::getattr(const char * attr)
 
 int View3DInventorPy::setattr(const char * attr, const Py::Object & value)
 {
-    if (!_view) {
+    if (!getView3DIventorPtr()) {
         std::string s;
         std::ostringstream s_out;
         s_out << "Cannot access attribute '" << attr << "' of deleted object";
         throw Py::RuntimeError(s_out.str());
     }
     else {
-        return Py::PythonExtension<View3DInventorPy>::setattr(attr, value);
+        return BaseType::setattr(attr, value);
     }
-}
-
-Py::Object View3DInventorPy::message(const Py::Tuple& args)
-{
-    const char **ppReturn = 0;
-    char *psMsgStr;
-    if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))     // convert args: Python->C 
-        throw Py::Exception();
-
-    try {
-        _view->onMsg(psMsgStr,ppReturn);
-    }
-    catch (const Base::Exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch (const std::exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch(...) {
-        throw Py::RuntimeError("Unknown C++ exception");
-    }
-    return Py::None();
 }
 
 Py::Object View3DInventorPy::fitAll(const Py::Tuple& args)
@@ -293,7 +342,7 @@ Py::Object View3DInventorPy::fitAll(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->viewAll((float)factor);
+        getView3DIventorPtr()->getViewer()->viewAll((float)factor);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -301,7 +350,7 @@ Py::Object View3DInventorPy::fitAll(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
     return Py::None();
@@ -316,8 +365,121 @@ Py::Object View3DInventorPy::boxZoom(const Py::Tuple& args, const Py::Dict& kwds
         throw Py::Exception();
 
     SbBox2s box(xmin, ymin, xmax, ymax);
-    _view->getViewer()->boxZoom(box);
+    getView3DIventorPtr()->getViewer()->boxZoom(box);
     return Py::None();
+}
+
+/**
+ Formulas to get quaternion for axonometric views:
+
+ \code
+from math import sqrt, degrees, asin, atan
+p1=App.Rotation(App.Vector(1,0,0),90)
+p2=App.Rotation(App.Vector(0,0,1),alpha)
+p3=App.Rotation(p2.multVec(App.Vector(1,0,0)),beta)
+p4=p3.multiply(p2).multiply(p1)
+
+from pivy import coin
+c=Gui.ActiveDocument.ActiveView.getCameraNode()
+c.orientation.setValue(*p4.Q)
+ \endcode
+
+ The angles alpha and beta depend on the type of axonometry
+ Isometric:
+ \code
+alpha=45
+beta=degrees(asin(-sqrt(1.0/3.0)))
+ \endcode
+
+ Dimetric:
+ \code
+alpha=degrees(asin(sqrt(1.0/8.0)))
+beta=degrees(-asin(1.0/3.0))
+ \endcode
+
+ Trimetric:
+ \code
+alpha=30.0
+beta=-35.0
+ \endcode
+
+ Verification code that the axonomtries are correct:
+
+ \code
+from pivy import coin
+c=Gui.ActiveDocument.ActiveView.getCameraNode()
+vo=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,0,0)).getValue())
+vx=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(10,0,0)).getValue())
+vy=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,10,0)).getValue())
+vz=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,0,10)).getValue())
+(vx-vo).Length
+(vy-vo).Length
+(vz-vo).Length
+
+# Projection
+vo.z=0
+vx.z=0
+vy.z=0
+vz.z=0
+
+(vx-vo).Length
+(vy-vo).Length
+(vz-vo).Length
+ \endcode
+
+ See also:
+ http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_6_2_ger_web.html#1
+ http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/code_v2/Axonometric/qt/Axonometric.cpp
+ https://de.wikipedia.org/wiki/Arkussinus_und_Arkuskosinus
+*/
+
+SbRotation Camera::rotation(Camera::Orientation view)
+{
+    switch (view) {
+    case Top:
+        return SbRotation(0, 0, 0, 1);
+    case Bottom:
+        return SbRotation(1, 0, 0, 0);
+    case Front: {
+        float root = (float)(sqrt(2.0)/2.0);
+        return SbRotation(root, 0, 0, root);
+    }
+    case Rear: {
+        float root = (float)(sqrt(2.0)/2.0);
+        return SbRotation(0, root, root, 0);
+    }
+    case Left:
+        return SbRotation(-0.5, 0.5, 0.5, -0.5);
+    case Right:
+        return SbRotation(0.5, 0.5, 0.5, 0.5);
+    case Isometric:
+        //from math import sqrt, degrees, asin
+        //p1=App.Rotation(App.Vector(1,0,0),45)
+        //p2=App.Rotation(App.Vector(0,0,1),-45)
+        //p3=p2.multiply(p1)
+        //return SbRotation(0.353553f, -0.146447f, -0.353553f, 0.853553f);
+
+        //from math import sqrt, degrees, asin
+        //p1=App.Rotation(App.Vector(1,0,0),90)
+        //p2=App.Rotation(App.Vector(0,0,1),135)
+        //p3=App.Rotation(App.Vector(-1,1,0),degrees(asin(-sqrt(1.0/3.0))))
+        //p4=p3.multiply(p2).multiply(p1)
+        //return SbRotation(0.17592, 0.424708, 0.820473, 0.339851);
+
+        //from math import sqrt, degrees, asin
+        //p1=App.Rotation(App.Vector(1,0,0),90)
+        //p2=App.Rotation(App.Vector(0,0,1),45)
+        //#p3=App.Rotation(App.Vector(1,1,0),45)
+        //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
+        //p4=p3.multiply(p2).multiply(p1)
+        return SbRotation(0.424708f, 0.17592f, 0.339851f, 0.820473f);
+    case Dimetric:
+        return SbRotation(0.567952f, 0.103751f, 0.146726f, 0.803205f);
+    case Trimetric:
+        return SbRotation(0.446015f, 0.119509f, 0.229575f, 0.856787f);
+    default:
+        return SbRotation(0, 0, 0, 1);
+    }
 }
 
 Py::Object View3DInventorPy::viewBottom(const Py::Tuple& args)
@@ -326,7 +488,7 @@ Py::Object View3DInventorPy::viewBottom(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->setCameraOrientation(SbRotation(0, -1, 0, 0));
+        getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Bottom));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -334,7 +496,7 @@ Py::Object View3DInventorPy::viewBottom(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -347,8 +509,7 @@ Py::Object View3DInventorPy::viewFront(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        float root = (float)(sqrt(2.0)/2.0);
-        _view->getViewer()->setCameraOrientation(SbRotation(-root, 0, 0, -root));
+        getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Front));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -356,7 +517,7 @@ Py::Object View3DInventorPy::viewFront(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -369,7 +530,7 @@ Py::Object View3DInventorPy::viewLeft(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->setCameraOrientation(SbRotation(-0.5, 0.5, 0.5, -0.5));
+        getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Left));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -377,7 +538,7 @@ Py::Object View3DInventorPy::viewLeft(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -390,8 +551,7 @@ Py::Object View3DInventorPy::viewRear(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        float root = (float)(sqrt(2.0)/2.0);
-        _view->getViewer()->setCameraOrientation(SbRotation(0, root, root, 0));
+        getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Rear));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -399,7 +559,7 @@ Py::Object View3DInventorPy::viewRear(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -412,7 +572,7 @@ Py::Object View3DInventorPy::viewRight(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->setCameraOrientation(SbRotation(0.5, 0.5, 0.5, 0.5));
+        getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Right));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -420,7 +580,7 @@ Py::Object View3DInventorPy::viewRight(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -433,7 +593,7 @@ Py::Object View3DInventorPy::viewTop(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->setCameraOrientation(SbRotation(0, 0, 0, 1));
+        getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Top));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -441,34 +601,20 @@ Py::Object View3DInventorPy::viewTop(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewAxonometric(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewIsometric(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
 
     try {
-        //from math import sqrt, degrees, asin
-        //p1=App.Rotation(App.Vector(1,0,0),45)
-        //p2=App.Rotation(App.Vector(0,0,1),-45)
-        //p3=p2.multiply(p1)
-        //_view->getViewer()->setCameraOrientation(SbRotation
-        //    (0.353553f, -0.146447f, -0.353553f, 0.853553f));
-
-        //from math import sqrt, degrees, asin
-        //p1=App.Rotation(App.Vector(1,0,0),90)
-        //p2=App.Rotation(App.Vector(0,0,1),45)
-        //p3=App.Rotation(App.Vector(1,1,0),45)
-        //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
-        //p4=p3.multiply(p2).multiply(p1)
-        _view->getViewer()->setCameraOrientation(SbRotation
-             (0.424708f, 0.17592f, 0.339851f, 0.820473f));
+        getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Isometric));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -476,7 +622,140 @@ Py::Object View3DInventorPy::viewAxonometric(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::viewDimetric(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Dimetric));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::viewTrimetric(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        getView3DIventorPtr()->getViewer()->setCameraOrientation(Camera::rotation(Camera::Trimetric));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
+{
+    char* view = nullptr;
+    double scale = -1.0;
+    if (!PyArg_ParseTuple(args.ptr(), "|sd", &view, &scale))
+        throw Py::Exception();
+
+    try {
+        std::string newDocView;
+        SbRotation rot(0,0,0,1);
+        if (view) {
+            newDocView = view;
+        }
+        else {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+            newDocView = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
+        }
+
+        if (newDocView == "Top") {
+            rot = Camera::rotation(Camera::Top);
+        }
+        else if (newDocView == "Bottom") {
+            rot = Camera::rotation(Camera::Bottom);
+        }
+        else if (newDocView == "Front") {
+            rot = Camera::rotation(Camera::Front);
+        }
+        else if (newDocView == "Rear") {
+            rot = Camera::rotation(Camera::Rear);
+        }
+        else if (newDocView == "Left") {
+            rot = Camera::rotation(Camera::Left);
+        }
+        else if (newDocView == "Right") {
+            rot = Camera::rotation(Camera::Right);
+        }
+        else if (newDocView == "Isometric") {
+            rot = Camera::rotation(Camera::Isometric);
+        }
+        else if (newDocView == "Dimetric") {
+            rot = Camera::rotation(Camera::Dimetric);
+        }
+        else if (newDocView == "Trimetric") {
+            rot = Camera::rotation(Camera::Trimetric);
+        }
+        else if (newDocView == "Custom") {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View/Custom");
+            float q0 = static_cast<float>(hGrp->GetFloat("Q0", 0));
+            float q1 = static_cast<float>(hGrp->GetFloat("Q1", 0));
+            float q2 = static_cast<float>(hGrp->GetFloat("Q2", 0));
+            float q3 = static_cast<float>(hGrp->GetFloat("Q3", 1));
+            rot.setValue(q0, q1, q2, q3);
+        }
+
+        SoCamera* cam = getView3DIventorPtr()->getViewer()->getCamera();
+        cam->orientation = rot;
+
+        if (scale < 0.0){
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+            scale = hGrp->GetFloat("NewDocumentCameraScale",100.0);
+        }
+        if (scale > 1e-7) {
+            double f = 0.0; //focal dist
+            if (cam->isOfType(SoOrthographicCamera::getClassTypeId())){
+                static_cast<SoOrthographicCamera*>(cam)->height = scale;
+                f = scale;
+            } else if (cam->isOfType(SoPerspectiveCamera::getClassTypeId())){
+                //nothing to do
+                double ang = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue();
+                f = 0.5 * scale / sin(ang * 0.5);
+            }
+            SbVec3f lookDir;
+            rot.multVec(SbVec3f(0,0,-1), lookDir);
+            SbVec3f pos = lookDir * -f;
+            cam->focalDistance = f;
+            cam->position = pos;
+        }
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -489,7 +768,7 @@ Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-      SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
+      SoCamera* cam = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
@@ -502,7 +781,7 @@ Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -515,7 +794,7 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-      SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
+      SoCamera* cam = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
@@ -528,7 +807,7 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -541,7 +820,7 @@ Py::Object View3DInventorPy::zoomIn(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->navigationStyle()->zoomIn();
+        getView3DIventorPtr()->getViewer()->navigationStyle()->zoomIn();
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -549,7 +828,7 @@ Py::Object View3DInventorPy::zoomIn(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -562,7 +841,7 @@ Py::Object View3DInventorPy::zoomOut(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->navigationStyle()->zoomOut();
+        getView3DIventorPtr()->getViewer()->navigationStyle()->zoomOut();
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -570,7 +849,7 @@ Py::Object View3DInventorPy::zoomOut(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -591,13 +870,13 @@ Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
             float q1 = (float)Py::Float(tuple[1]);
             float q2 = (float)Py::Float(tuple[2]);
             float q3 = (float)Py::Float(tuple[3]);
-            _view->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), PyObject_IsTrue(m));
+            getView3DIventorPtr()->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), PyObject_IsTrue(m));
         }
         else if (PyObject_TypeCheck(o, &Base::RotationPy::Type)) {
             Base::Rotation r = (Base::Rotation)Py::Rotation(o,false);
             double q0, q1, q2, q3;
             r.getValue(q0, q1, q2, q3);
-            _view->getViewer()->setCameraOrientation(SbRotation((float)q0, (float)q1, (float)q2, (float)q3), PyObject_IsTrue(m));
+            getView3DIventorPtr()->getViewer()->setCameraOrientation(SbRotation((float)q0, (float)q1, (float)q2, (float)q3), PyObject_IsTrue(m));
         }
         else {
             throw Py::ValueError("Neither tuple nor rotation object");
@@ -623,7 +902,7 @@ Py::Object View3DInventorPy::getCameraOrientation(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    SbRotation rot = _view->getViewer()->getCameraOrientation();
+    SbRotation rot = getView3DIventorPtr()->getViewer()->getCameraOrientation();
     float q0,q1,q2,q3;
     rot.getValue(q0,q1,q2,q3);
     return Py::Rotation(Base::Rotation(q0,q1,q2,q3));
@@ -643,12 +922,12 @@ Py::Object View3DInventorPy::viewPosition(const Py::Tuple& args)
         Base::Vector3d pos = plm->getPosition();
         double q0,q1,q2,q3;
         rot.getValue(q0,q1,q2,q3);
-        _view->getViewer()->moveCameraTo(
+        getView3DIventorPtr()->getViewer()->moveCameraTo(
             SbRotation((float)q0, (float)q1, (float)q2, (float)q3),
             SbVec3f((float)pos.x, (float)pos.y, (float)pos.z), steps, ms);
     }
 
-    SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
+    SoCamera* cam = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
     if (!cam) return Py::None();
 
     SbRotation rot = cam->orientation.getValue();
@@ -667,7 +946,7 @@ Py::Object View3DInventorPy::startAnimating(const Py::Tuple& args)
     float velocity;
     if (!PyArg_ParseTuple(args.ptr(), "ffff", &x,&y,&z,&velocity))
         throw Py::Exception();
-    _view->getViewer()->startAnimating(SbVec3f(x,y,z),velocity);
+    getView3DIventorPtr()->getViewer()->startAnimating(SbVec3f(x,y,z),velocity);
     return Py::None();
 }
 
@@ -675,7 +954,7 @@ Py::Object View3DInventorPy::stopAnimating(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    _view->getViewer()->stopAnimating();
+    getView3DIventorPtr()->getViewer()->stopAnimating();
     return Py::None();
 }
 
@@ -684,7 +963,7 @@ Py::Object View3DInventorPy::setAnimationEnabled(const Py::Tuple& args)
     int ok;
     if (!PyArg_ParseTuple(args.ptr(), "i", &ok))
         throw Py::Exception();
-    _view->getViewer()->setAnimationEnabled(ok!=0);
+    getView3DIventorPtr()->getViewer()->setAnimationEnabled(ok!=0);
     return Py::None();
 }
 
@@ -692,7 +971,24 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    SbBool ok = _view->getViewer()->isAnimationEnabled();
+    SbBool ok = getView3DIventorPtr()->getViewer()->isAnimationEnabled();
+    return Py::Boolean(ok ? true : false);
+}
+
+Py::Object View3DInventorPy::setPopupMenuEnabled(const Py::Tuple& args)
+{
+    int ok;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &ok))
+        throw Py::Exception();
+    getView3DIventorPtr()->getViewer()->setPopupMenuEnabled(ok!=0);
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::isPopupMenuEnabled(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    SbBool ok = getView3DIventorPtr()->getViewer()->isPopupMenuEnabled();
     return Py::Boolean(ok ? true : false);
 }
 
@@ -700,8 +996,9 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 {
     char *cFileName,*cColor="Current",*cComment="$MIBA";
     int w=-1,h=-1;
+    int s=View3DInventorViewer::getNumSamples();
 
-    if (!PyArg_ParseTuple(args.ptr(), "et|iiss","utf-8",&cFileName,&w,&h,&cColor,&cComment))
+    if (!PyArg_ParseTuple(args.ptr(), "et|iissi","utf-8",&cFileName,&w,&h,&cColor,&cComment,&s))
         throw Py::Exception();
 
     std::string encodedName = std::string(cFileName);
@@ -719,10 +1016,10 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
-    _view->getViewer()->savePicture(w, h, 8, bg, img);
+    getView3DIventorPtr()->getViewer()->savePicture(w, h, s, bg, img);
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
-    SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
+    SoCamera* cam = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
     renderer.writeToImageFile(encodedName.c_str(), cComment, cam->getViewVolume().getMatrix(), img);
 
     return Py::None();
@@ -763,11 +1060,11 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
     QColor bg;
     QString colname = QString::fromLatin1(name);
     if (colname.compare(QLatin1String("Current"), Qt::CaseInsensitive) == 0)
-        bg = _view->getViewer()->backgroundColor();
+        bg = getView3DIventorPtr()->getViewer()->backgroundColor();
     else
         bg.setNamedColor(colname);
 
-    _view->getViewer()->saveGraphic(ps,bg,vo.get());
+    getView3DIventorPtr()->getViewer()->saveGraphic(ps,bg,vo.get());
     out->closeFile();
     return Py::None();
 }
@@ -778,7 +1075,7 @@ Py::Object View3DInventorPy::getCameraNode(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        SoNode* camera = _view->getViewer()->getSoRenderManager()->getCamera();
+        SoNode* camera = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
         PyObject* proxy = 0;
         std::string type;
         type = "So"; // seems that So prefix is missing in camera node
@@ -804,7 +1101,7 @@ Py::Object View3DInventorPy::getCamera(const Py::Tuple& args)
 
     try {
         SoWriteAction wa(&out);
-        SoCamera * cam = _view->getViewer()->getSoRenderManager()->getCamera();
+        SoCamera * cam = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
         if (cam) wa.apply(cam);
         else buffer[0] = '\0';
         return Py::String(buffer);
@@ -815,7 +1112,7 @@ Py::Object View3DInventorPy::getCamera(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
@@ -825,7 +1122,7 @@ Py::Object View3DInventorPy::getViewDirection(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     try {
-        SbVec3f dvec = _view->getViewer()->getViewDirection();
+        SbVec3f dvec = getView3DIventorPtr()->getViewer()->getViewDirection();
         return Py::Vector(Base::Vector3f(dvec[0], dvec[1], dvec[2]));
     }
     catch (const Base::Exception& e) {
@@ -834,7 +1131,7 @@ Py::Object View3DInventorPy::getViewDirection(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 }
@@ -842,8 +1139,8 @@ Py::Object View3DInventorPy::getViewDirection(const Py::Tuple& args)
 Py::Object View3DInventorPy::setViewDirection(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object)) 
-        throw Py::Exception(); 
+    if (!PyArg_ParseTuple(args.ptr(), "O", &object))
+        throw Py::Exception();
 
     try {
         if (PyTuple_Check(object)) {
@@ -855,7 +1152,7 @@ Py::Object View3DInventorPy::setViewDirection(const Py::Tuple& args)
             dir.setValue((float)x, (float)y, (float)z);
             if (dir.length() < 0.001f)
                 throw Py::ValueError("Null vector cannot be used to set direction");
-            _view->getViewer()->setViewDirection(dir);
+            getView3DIventorPtr()->getViewer()->setViewDirection(dir);
             return Py::None();
         }
     }
@@ -868,7 +1165,7 @@ Py::Object View3DInventorPy::setViewDirection(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
-    catch(...) {
+    catch (...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
 
@@ -884,7 +1181,7 @@ Py::Object View3DInventorPy::setCamera(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->setCamera(buffer);
+        getView3DIventorPtr()->setCamera(buffer);
         return Py::None();
     }
     catch (const Base::Exception& e) {
@@ -906,7 +1203,7 @@ Py::Object View3DInventorPy::getCameraType(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
 
-    SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
+    SoCamera* cam = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
     if (!cam) {
         throw Py::RuntimeError("No camera set!");
     }
@@ -924,7 +1221,7 @@ Py::Object View3DInventorPy::getCameraType(const Py::Tuple& args)
 Py::Object View3DInventorPy::setCameraType(const Py::Tuple& args)
 {
     int cameratype=-1;
-    if (!PyArg_ParseTuple(args.ptr(), "i", &cameratype)) {    // convert args: Python->C 
+    if (!PyArg_ParseTuple(args.ptr(), "i", &cameratype)) {    // convert args: Python->C
         char* modename;
         PyErr_Clear();
         if (!PyArg_ParseTuple(args.ptr(), "s", &modename))
@@ -947,9 +1244,9 @@ Py::Object View3DInventorPy::setCameraType(const Py::Tuple& args)
     if (cameratype < 0 || cameratype > 1)
         throw Py::IndexError("Out of range");
     if (cameratype==0)
-        _view->getViewer()->setCameraType(SoOrthographicCamera::getClassTypeId());
+        getView3DIventorPtr()->getViewer()->setCameraType(SoOrthographicCamera::getClassTypeId());
     else
-        _view->getViewer()->setCameraType(SoPerspectiveCamera::getClassTypeId());
+        getView3DIventorPtr()->getViewer()->setCameraType(SoPerspectiveCamera::getClassTypeId());
     return Py::None();
 }
 
@@ -979,11 +1276,12 @@ Py::Object View3DInventorPy::listCameraTypes(const Py::Tuple& args)
 Py::Object View3DInventorPy::dump(const Py::Tuple& args)
 {
     char* filename;
-    if (!PyArg_ParseTuple(args.ptr(), "s", &filename))
+    PyObject *onlyVisible = Py_False;
+    if (!PyArg_ParseTuple(args.ptr(), "s|O", &filename, &onlyVisible))
         throw Py::Exception();
 
     try {
-        _view->dump(filename);
+        getView3DIventorPtr()->dump(filename, PyObject_IsTrue(onlyVisible));
         return Py::None();
     }
     catch (const Base::Exception& e) {
@@ -1000,7 +1298,7 @@ Py::Object View3DInventorPy::dump(const Py::Tuple& args)
 Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args.ptr(), "O", &object))     // convert args: Python->C
         throw Py::Exception();
 
     void* ptr = 0;
@@ -1044,7 +1342,7 @@ Py::Object View3DInventorPy::setStereoType(const Py::Tuple& args)
         if (stereomode < 0 || stereomode > 4)
             throw Py::IndexError("Out of range");
         Quarter::SoQTQuarterAdaptor::StereoMode mode = Quarter::SoQTQuarterAdaptor::StereoMode(stereomode);
-        _view->getViewer()->setStereoMode(mode);
+        getView3DIventorPtr()->getViewer()->setStereoMode(mode);
         return Py::None();
     }
     catch (const Base::Exception& e) {
@@ -1064,7 +1362,7 @@ Py::Object View3DInventorPy::getStereoType(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        int mode = (int)(_view->getViewer()->stereoMode());
+        int mode = (int)(getView3DIventorPtr()->getViewer()->stereoMode());
         return Py::String(StereoTypeEnums[mode]);
     }
     catch (const Base::Exception& e) {
@@ -1107,10 +1405,10 @@ Py::Object View3DInventorPy::getCursorPos(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     try {
-        QPoint pos = _view->mapFromGlobal(QCursor::pos());
+        QPoint pos = getView3DIventorPtr()->mapFromGlobal(QCursor::pos());
         Py::Tuple tuple(2);
         tuple.setItem(0, Py::Int(pos.x()));
-        tuple.setItem(1, Py::Int(_view->height()-pos.y()-1));
+        tuple.setItem(1, Py::Int(getView3DIventorPtr()->height()-pos.y()-1));
         return tuple;
     }
     catch (const Py::Exception&) {
@@ -1121,14 +1419,14 @@ Py::Object View3DInventorPy::getCursorPos(const Py::Tuple& args)
 Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
 {
     PyObject* object;
-    float r = _view->getViewer()->getPickRadius();
+    float r = getView3DIventorPtr()->getViewer()->getPickRadius();
     if (!PyArg_ParseTuple(args.ptr(), "O|f", &object, &r))
         throw Py::Exception();
 
     try {
         //Note: For gcc (4.2) we need the 'const' keyword to avoid the compiler error:
         //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Int' requested
-        //We should report this problem to the PyCXX project as in the documentation an 
+        //We should report this problem to the PyCXX project as in the documentation an
         //example without the 'const' keyword is used.
         //Or we can also write Py::Int x(tuple[0]);
         const Py::Tuple tuple(object);
@@ -1139,10 +1437,10 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
         // graph traversal we must not use a second SoHandleEventAction as
         // we will get Coin warnings because of multiple scene graph traversals
         // which is regarded as error-prone.
-        SoRayPickAction action(_view->getViewer()->getSoRenderManager()->getViewportRegion());
+        SoRayPickAction action(getView3DIventorPtr()->getViewer()->getSoRenderManager()->getViewportRegion());
         action.setPoint(SbVec2s((long)x,(long)y));
         action.setRadius(r);
-        action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
+        action.apply(getView3DIventorPtr()->getViewer()->getSoRenderManager()->getSceneGraph());
         SoPickedPoint *Point = action.getPickedPoint();
 
         Py::Object ret = Py::None();
@@ -1153,20 +1451,43 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             dict.setItem("y", Py::Float(pt[1]));
             dict.setItem("z", Py::Float(pt[2]));
 
-            Gui::Document* doc = _view->getViewer()->getDocument();
-            ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(Point->getPath())
-                    : _view->getViewer()->getViewProviderByPathFromTail(Point->getPath());
+            Gui::Document* doc = getView3DIventorPtr()->getViewer()->getDocument();
+            ViewProvider *vp = doc ? doc->getViewProviderByPathFromHead(Point->getPath())
+                    : getView3DIventorPtr()->getViewer()->getViewProviderByPath(Point->getPath());
             if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                if (!vp->isSelectable())
+                    return ret;
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                dict.setItem("Document",
-                    Py::String(vpd->getObject()->getDocument()->getName()));
-                dict.setItem("Object",
-                    Py::String(vpd->getObject()->getNameInDocument()));
                 if (vp->useNewSelectionModel()) {
-                    dict.setItem("Component",
-                        Py::String(vpd->getElement(Point->getDetail())));
+                    std::string subname;
+                    if (!vp->getElementPicked(Point,subname))
+                        return ret;
+                    auto obj = vpd->getObject();
+                    if (!obj)
+                        return ret;
+                    if (subname.size()) {
+                        std::pair<std::string,std::string> elementName;
+                        auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
+                        if (!sobj)
+                            return ret;
+                        if (sobj != obj) {
+                            dict.setItem("ParentObject",Py::Object(obj->getPyObject(),true));
+                            dict.setItem("SubName",Py::String(subname));
+                            obj = sobj;
+                        }
+                        subname = elementName.second.size()?elementName.second:elementName.first;
+                    }
+                    dict.setItem("Document",
+                        Py::String(obj->getDocument()->getName()));
+                    dict.setItem("Object",
+                        Py::String(obj->getNameInDocument()));
+                    dict.setItem("Component",Py::String(subname));
                 }
                 else {
+                    dict.setItem("Document",
+                        Py::String(vpd->getObject()->getDocument()->getName()));
+                    dict.setItem("Object",
+                        Py::String(vpd->getObject()->getNameInDocument()));
                     // search for a SoFCSelection node
                     SoFCDocumentObjectAction objaction;
                     objaction.apply(Point->getPath());
@@ -1206,14 +1527,14 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
 Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
 {
     PyObject* object;
-    float r = _view->getViewer()->getPickRadius();
+    float r = getView3DIventorPtr()->getViewer()->getPickRadius();
     if (!PyArg_ParseTuple(args.ptr(), "O|f", &object, &r))
         throw Py::Exception();
 
     try {
         //Note: For gcc (4.2) we need the 'const' keyword to avoid the compiler error:
         //conversion from 'Py::seqref<Py::Object>' to non-scalar type 'Py::Int' requested
-        //We should report this problem to the PyCXX project as in the documentation an 
+        //We should report this problem to the PyCXX project as in the documentation an
         //example without the 'const' keyword is used.
         //Or we can also write Py::Int x(tuple[0]);
         const Py::Tuple tuple(object);
@@ -1224,14 +1545,14 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
         // graph traversal we must not use a second SoHandleEventAction as
         // we will get Coin warnings because of multiple scene graph traversals
         // which is regarded as error-prone.
-        SoRayPickAction action(_view->getViewer()->getSoRenderManager()->getViewportRegion());
+        SoRayPickAction action(getView3DIventorPtr()->getViewer()->getSoRenderManager()->getViewportRegion());
         action.setPickAll(true);
         action.setRadius(r);
         action.setPoint(SbVec2s((long)x,(long)y));
-        action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
+        action.apply(getView3DIventorPtr()->getViewer()->getSoRenderManager()->getSceneGraph());
         const SoPickedPointList& pp = action.getPickedPointList();
 
-        Gui::Document* doc = _view->getViewer()->getDocument();
+        Gui::Document* doc = getView3DIventorPtr()->getViewer()->getDocument();
         Py::Object ret = Py::None();
         if (pp.getLength() > 0) {
             Py::List list;
@@ -1243,19 +1564,42 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                 dict.setItem("y", Py::Float(pt[1]));
                 dict.setItem("z", Py::Float(pt[2]));
 
-                ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(point->getPath())
-                        : _view->getViewer()->getViewProviderByPathFromTail(point->getPath());
-                if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                ViewProvider *vp = doc ? doc->getViewProviderByPathFromHead(point->getPath())
+                        : getView3DIventorPtr()->getViewer()->getViewProviderByPath(point->getPath());
+                if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                    if(!vp->isSelectable())
+                        continue;
                     ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                    dict.setItem("Document",
-                        Py::String(vpd->getObject()->getDocument()->getName()));
-                    dict.setItem("Object",
-                        Py::String(vpd->getObject()->getNameInDocument()));
                     if (vp->useNewSelectionModel()) {
-                        dict.setItem("Component",
-                            Py::String(vpd->getElement(point->getDetail())));
+                        std::string subname;
+                        if (!vp->getElementPicked(point,subname))
+                            continue;
+                        auto obj = vpd->getObject();
+                        if (!obj)
+                            continue;
+                        if (subname.size()) {
+                            std::pair<std::string,std::string> elementName;
+                            auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
+                            if (!sobj)
+                                continue;
+                            if (sobj != obj) {
+                                dict.setItem("ParentObject",Py::Object(obj->getPyObject(),true));
+                                dict.setItem("SubName",Py::String(subname));
+                                obj = sobj;
+                            }
+                            subname = elementName.second.size()?elementName.second:elementName.first;
+                        }
+                        dict.setItem("Document",
+                            Py::String(obj->getDocument()->getName()));
+                        dict.setItem("Object",
+                            Py::String(obj->getNameInDocument()));
+                        dict.setItem("Component",Py::String(subname));
                     }
                     else {
+                        dict.setItem("Document",
+                            Py::String(vpd->getObject()->getDocument()->getName()));
+                        dict.setItem("Object",
+                            Py::String(vpd->getObject()->getNameInDocument()));
                         // search for a SoFCSelection node
                         SoFCDocumentObjectAction objaction;
                         objaction.apply(point->getPath());
@@ -1299,7 +1643,7 @@ Py::Object View3DInventorPy::getSize(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     try {
-        SbVec2s size = _view->getViewer()->getSoRenderManager()->getSize();
+        SbVec2s size = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getSize();
         Py::Tuple tuple(2);
         tuple.setItem(0, Py::Int(size[0]));
         tuple.setItem(1, Py::Int(size[1]));
@@ -1320,7 +1664,7 @@ Py::Object View3DInventorPy::getPoint(const Py::Tuple& args)
         y = (int)Py::Int(t[1]);
     }
     try {
-        SbVec3f pt = _view->getViewer()->getPointOnScreen(SbVec2s(x,y));
+        SbVec3f pt = getView3DIventorPtr()->getViewer()->getPointOnScreen(SbVec2s(x,y));
         return Py::Vector(Base::Vector3f(pt[0], pt[1], pt[2]));
     }
     catch (const Base::Exception& e) {
@@ -1349,11 +1693,11 @@ Py::Object View3DInventorPy::getPointOnScreen(const Py::Tuple& args)
     }
 
     try {
-        const SbViewportRegion& vp = _view->getViewer()->getSoRenderManager()->getViewportRegion();
+        const SbViewportRegion& vp = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getViewportRegion();
         float fRatio = vp.getViewportAspectRatio();
         const SbVec2s& sp = vp.getViewportSizePixels();
         //float dX, dY; vp.getViewportSize().getValue(dX, dY);
-        SbViewVolume vv = _view->getViewer()->getSoRenderManager()->getCamera()->getViewVolume(fRatio);
+        SbViewVolume vv = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera()->getViewVolume(fRatio);
 
         SbVec3f pt(vx,vy,vz);
         vv.projectToScreen(pt, pt);
@@ -1394,7 +1738,7 @@ Py::Object View3DInventorPy::listNavigationTypes(const Py::Tuple&)
 
 Py::Object View3DInventorPy::getNavigationType(const Py::Tuple&)
 {
-    std::string name = _view->getViewer()->navigationStyle()->getTypeId().getName();
+    std::string name = getView3DIventorPtr()->getViewer()->navigationStyle()->getTypeId().getName();
     return Py::String(name);
 }
 
@@ -1404,7 +1748,7 @@ Py::Object View3DInventorPy::setNavigationType(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s", &style))
         throw Py::Exception();
     Base::Type type = Base::Type::fromName(style);
-    _view->getViewer()->setNavigationType(type);
+    getView3DIventorPtr()->getViewer()->setNavigationType(type);
     return Py::None();
 }
 
@@ -1693,6 +2037,10 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
 
             dict.setItem("Button", Py::String(button));
         }
+        if (e->isOfType(SoMouseWheelEvent::getClassTypeId())){
+            const SoMouseWheelEvent* mwe = static_cast<const SoMouseWheelEvent*>(e);
+            dict.setItem("Delta", Py::Long(mwe->getDelta()));
+        }
         if (e->isOfType(SoSpaceballButtonEvent::getClassTypeId())) {
             const SoSpaceballButtonEvent* sbe = static_cast<const SoSpaceballButtonEvent*>(e);
             std::string button;
@@ -1781,7 +2129,7 @@ Py::Object View3DInventorPy::addEventCallback(const Py::Tuple& args)
             throw Py::TypeError(s_out.str());
         }
 
-        _view->getViewer()->addEventCallback(eventId, View3DInventorPy::eventCallback, method);
+        getView3DIventorPtr()->getViewer()->addEventCallback(eventId, View3DInventorPy::eventCallback, method);
         callbacks.push_back(method);
         Py_INCREF(method);
         return Py::Callable(method, false);
@@ -1809,7 +2157,7 @@ Py::Object View3DInventorPy::removeEventCallback(const Py::Tuple& args)
             throw Py::TypeError(s_out.str());
         }
 
-        _view->getViewer()->removeEventCallback(eventId, View3DInventorPy::eventCallback, method);
+        getView3DIventorPtr()->getViewer()->removeEventCallback(eventId, View3DInventorPy::eventCallback, method);
         callbacks.remove(method);
         Py_DECREF(method);
         return Py::None();
@@ -1834,7 +2182,7 @@ Py::Object View3DInventorPy::setAnnotation(const Py::Tuple& args)
         throw Py::RuntimeError(e.what());
     }
 
-    _view->getGuiDocument()->setAnnotationViewProvider(psAnnoName, view);
+    getView3DIventorPtr()->getGuiDocument()->setAnnotationViewProvider(psAnnoName, view);
     return Py::None();
 }
 
@@ -1844,9 +2192,9 @@ Py::Object View3DInventorPy::removeAnnotation(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s", &psAnnoName))
         throw Py::Exception();
     ViewProvider* view = 0;
-    view = _view->getGuiDocument()->getAnnotationViewProvider(psAnnoName);
+    view = getView3DIventorPtr()->getGuiDocument()->getAnnotationViewProvider(psAnnoName);
     if (view) {
-        _view->getGuiDocument()->removeAnnotationViewProvider(psAnnoName);
+        getView3DIventorPtr()->getGuiDocument()->removeAnnotationViewProvider(psAnnoName);
         return Py::None();
     }
     else {
@@ -1863,7 +2211,7 @@ Py::Object View3DInventorPy::getSceneGraph(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        SoNode* scene = _view->getViewer()->getSceneGraph();
+        SoNode* scene = getView3DIventorPtr()->getViewer()->getSceneGraph();
         PyObject* proxy = 0;
         proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", (void*)scene, 1);
         scene->ref();
@@ -1879,7 +2227,7 @@ Py::Object View3DInventorPy::getViewer(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
 
-    View3DInventorViewer* viewer = _view->getViewer();
+    View3DInventorViewer* viewer = getView3DIventorPtr()->getViewer();
     return Py::Object(viewer->getPyObject(), true);
 }
 
@@ -1980,10 +2328,10 @@ Py::Object View3DInventorPy::addEventCallbackPivy(const Py::Tuple& args)
             throw Py::TypeError("object is not callable");
         }
 
-        SoEventCallbackCB* callback = (ex == 1 ? 
+        SoEventCallbackCB* callback = (ex == 1 ?
             View3DInventorPy::eventCallbackPivyEx :
             View3DInventorPy::eventCallbackPivy);
-        _view->getViewer()->addEventCallback(*eventId, callback, method);
+        getView3DIventorPtr()->getViewer()->addEventCallback(*eventId, callback, method);
         callbacks.push_back(method);
         Py_INCREF(method);
         return Py::Callable(method, false);
@@ -2022,10 +2370,10 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
             throw Py::TypeError("object is not callable");
         }
 
-        SoEventCallbackCB* callback = (ex == 1 ? 
+        SoEventCallbackCB* callback = (ex == 1 ?
             View3DInventorPy::eventCallbackPivyEx :
             View3DInventorPy::eventCallbackPivy);
-        _view->getViewer()->removeEventCallback(*eventId, callback, method);
+        getView3DIventorPtr()->getViewer()->removeEventCallback(*eventId, callback, method);
         callbacks.remove(method);
         Py_DECREF(method);
         return Py::Callable(method, false);
@@ -2040,7 +2388,7 @@ Py::Object View3DInventorPy::setAxisCross(const Py::Tuple& args)
     int ok;
     if (!PyArg_ParseTuple(args.ptr(), "i", &ok))
         throw Py::Exception();
-    _view->getViewer()->setAxisCross(ok!=0);
+    getView3DIventorPtr()->getViewer()->setAxisCross(ok!=0);
     return Py::None();
 }
 
@@ -2048,7 +2396,7 @@ Py::Object View3DInventorPy::hasAxisCross(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    SbBool ok = _view->getViewer()->hasAxisCross();
+    SbBool ok = getView3DIventorPtr()->getViewer()->hasAxisCross();
     return Py::Boolean(ok ? true : false);
 }
 
@@ -2185,37 +2533,45 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
 {
-    PyObject* docObject = 0;
+    PyObject* docObject = Py_None;
     char* name;
-
-    //allow reset of active object by setting "None"
-    if (args.length() == 2 && args.back() == Py::None()) {
-        PyArg_Parse(args.front().ptr(), "s", &name);
-        _view->setActiveObject(NULL, name);
-        return Py::None();
-    }
-
-    if (!PyArg_ParseTuple(args.ptr(), "sO!", &name, &App::DocumentObjectPy::Type, &docObject))
+    char *subname = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
         throw Py::Exception();
 
-    if (docObject){
-        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
-        _view->setActiveObject(obj, name);
+    if (docObject == Py_None) {
+        getView3DIventorPtr()->setActiveObject(0, name);
     }
+    else {
+        if (!PyObject_TypeCheck(docObject, &App::DocumentObjectPy::Type))
+            throw Py::TypeError("Expect the second argument to be a document object or None");
+        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+        getView3DIventorPtr()->setActiveObject(obj, name, subname);
+    }
+
     return Py::None();
 }
 
 Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
 {
     char* name;
-    if (!PyArg_ParseTuple(args.ptr(), "s", &name))
-        throw Py::Exception();
+    PyObject *resolve = Py_True;
+    if (!PyArg_ParseTuple(args.ptr(), "s|O", &name,&resolve))
+                throw Py::Exception();
 
-    App::DocumentObject* obj = _view->getActiveObject<App::DocumentObject*>(name);
-    if(!obj)
+    App::DocumentObject *parent = 0;
+    std::string subname;
+    App::DocumentObject* obj = getView3DIventorPtr()->getActiveObject<App::DocumentObject*>(name,&parent,&subname);
+    if (!obj)
         return Py::None();
 
-    return Py::Object(obj->getPyObject());
+    if (PyObject_IsTrue(resolve))
+        return Py::asObject(obj->getPyObject());
+
+    return Py::TupleN(
+            Py::asObject(obj->getPyObject()),
+            Py::asObject(parent->getPyObject()),
+            Py::String(subname.c_str()));
 }
 
 Py::Object View3DInventorPy::getViewProvidersOfType(const Py::Tuple& args)
@@ -2224,7 +2580,7 @@ Py::Object View3DInventorPy::getViewProvidersOfType(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s", &name))
         throw Py::Exception();
 
-    std::vector<ViewProvider*> vps = _view->getViewer()->getViewProvidersOfType(Base::Type::fromName(name));
+    std::vector<ViewProvider*> vps = getView3DIventorPtr()->getViewer()->getViewProvidersOfType(Base::Type::fromName(name));
     Py::List list;
     for (std::vector<ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
         list.append(Py::asObject((*it)->getPyObject()));
@@ -2237,6 +2593,104 @@ Py::Object View3DInventorPy::redraw(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    _view->getViewer()->redraw();
+    getView3DIventorPtr()->getViewer()->redraw();
     return Py::None();
+}
+
+Py::Object View3DInventorPy::setName(const Py::Tuple& args)
+{
+    char* buffer;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &buffer))
+        throw Py::Exception();
+
+    try {
+        getView3DIventorPtr()->setWindowTitle(QString::fromUtf8(buffer));
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch(...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+}
+
+Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py::Dict& kwds)
+{
+    static char* keywords[] = {"toggle", "beforeEditing", "noManip", "pla", NULL};
+    int toggle = -1;
+    PyObject *beforeEditing = Py_False;
+    PyObject *noManip = Py_True;
+    PyObject *pyPla = Py_None;
+    if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "|iOOO!", keywords,
+                    &toggle, &beforeEditing, &noManip, &Base::PlacementPy::Type,&pyPla))
+        throw Py::Exception();
+
+    Base::Placement pla;
+    if(pyPla!=Py_None)
+        pla = *static_cast<Base::PlacementPy*>(pyPla)->getPlacementPtr();
+    getView3DIventorPtr()->getViewer()->toggleClippingPlane(toggle,PyObject_IsTrue(beforeEditing),
+            PyObject_IsTrue(noManip),pla);
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::hasClippingPlane(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(getView3DIventorPtr()->getViewer()->hasClippingPlane());
+}
+
+Py::Object View3DInventorPy::graphicsView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    PythonWrapper wrap;
+    wrap.loadWidgetsModule();
+    return wrap.fromQWidget(getView3DIventorPtr()->getViewer(), "QGraphicsView");
+}
+
+Py::Object View3DInventorPy::setCornerCrossVisible(const Py::Tuple& args)
+{
+    int ok;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &ok))
+        throw Py::Exception();
+    getView3DIventorPtr()->getViewer()->setFeedbackVisibility(ok!=0);
+    getView3DIventorPtr()->getViewer()->redraw(); // added because isViewing() returns False when focus is in Python Console
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::isCornerCrossVisible(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    bool ok = getView3DIventorPtr()->getViewer()->isFeedbackVisible();
+    return Py::Boolean(ok ? true : false);
+}
+
+Py::Object View3DInventorPy::setCornerCrossSize(const Py::Tuple& args)
+{
+    int size=0;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &size))
+        throw Py::Exception();
+    getView3DIventorPtr()->getViewer()->setFeedbackSize(size);
+    getView3DIventorPtr()->getViewer()->redraw(); // added because isViewing() returns False when focus is in Python Console
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::getCornerCrossSize(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    int size = getView3DIventorPtr()->getViewer()->getFeedbackSize();
+    return Py::Int(size);
+}
+
+Py::Object View3DInventorPy::cast_to_base(const Py::Tuple&)
+{
+    return Gui::MDIViewPy::create(getView3DIventorPtr());
 }

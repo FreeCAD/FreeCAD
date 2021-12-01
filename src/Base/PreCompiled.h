@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,14 +46,22 @@
 #ifdef FC_OS_WIN32
 #include <direct.h>
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 #include <crtdbg.h>
 #include <shellapi.h>
 #include <Rpc.h>
 #endif
 
-// STL 
+#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+#include <dirent.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#endif
+
+// STL
 #include <string>
 #include <list>
 #include <map>
@@ -84,11 +92,13 @@
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
+#include <xercesc/framework/MemBufFormatTarget.hpp>
+#include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/util/XMLUni.hpp>
 #include <xercesc/util/XMLUniDefs.hpp>
 #include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/platformutils.hpp>
+#include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
@@ -112,11 +122,13 @@
 #include <QIODevice>
 #include <QDataStream>
 #include <QDateTime>
+#include <QElapsedTimer>
 #include <QWriteLocker>
 #include <QReadLocker>
 #include <QReadWriteLock>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QTime>
 #include <QUuid>
 
 

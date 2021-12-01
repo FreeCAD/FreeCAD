@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,10 +30,10 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -64,25 +64,25 @@ namespace SketcherGui {
 extern GeometryCreationMode geometryCreationMode;
 
 /* Constrain commands =======================================================*/
-DEF_STD_CMD_A(CmdSketcherToggleConstruction);
+DEF_STD_CMD_A(CmdSketcherToggleConstruction)
 
 CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     :Command("Sketcher_ToggleConstruction")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Toggle construction geometry");
     sToolTipText    = QT_TR_NOOP("Toggles the toolbar or selected geometry to/from construction mode");
     sWhatsThis      = "Sketcher_ToggleConstruction";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_AlterConstruction";
-    sAccel          = "C,M";
+    sPixmap         = "Sketcher_ToggleConstruction";
+    sAccel          = "G, N";
     eType           = ForEdit;
 
     // list of toggle construction commands
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateLine");
-    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateRectangle");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRectangles");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePolyline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateArc");
@@ -113,7 +113,10 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
     else // there was a selection, so operate in toggle mode.
     {
         // get the selection
-        std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+        std::vector<Gui::SelectionObject> selection;
+        selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+        Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1) {
@@ -131,7 +134,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
         }
 
         // undo command open
-        openCommand("Toggle draft from/to draft");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle draft from/to draft"));
 
         // go through the selected subelements
         for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
@@ -139,13 +142,28 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
             if (it->size() > 4 && it->substr(0,4) == "Edge") {
                 int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
                 // issue the actual commands to toggle
-                doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleConstruction(%d) ", GeoId);
             }
+            if (it->size() > 6 && it->substr(0,6) == "Vertex") {
+                int vertexId = std::atoi(it->substr(6,4000).c_str()) - 1;
+
+                int geoId;
+                PointPos pos;
+                Obj->getGeoVertexIndex(vertexId,geoId, pos);
+
+                auto geo = Obj->getGeometry(geoId);
+
+                if(geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+                    // issue the actual commands to toggle
+                    Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleConstruction(%d) ", geoId);
+                }
+            }
+
         }
         // finish the transaction and update
         commitCommand();
 
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
 
         // clear the selection (convenience)
         getSelection().clearSelection();
@@ -165,5 +183,3 @@ void CreateSketcherCommandsAlterGeo(void)
 
     rcCmdMgr.addCommand(new CmdSketcherToggleConstruction());
 }
-
-

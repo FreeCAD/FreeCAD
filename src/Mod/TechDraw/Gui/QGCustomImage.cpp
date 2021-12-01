@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan   (wandererfan@gmail.com)              *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -72,6 +72,21 @@ bool QGCustomImage::load(QString fileSpec)
     prepareGeometryChange();
     setPixmap(m_px);
     return(success);
+}
+
+bool QGCustomImage::load(QPixmap map)
+{
+    bool success = true;
+    m_px = map;
+    prepareGeometryChange();
+    setPixmap(m_px);
+    return(success);
+}
+
+QSize QGCustomImage::imageSize(void)
+{
+    QSize result = m_px.size();
+    return result;
 }
 
 void QGCustomImage::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

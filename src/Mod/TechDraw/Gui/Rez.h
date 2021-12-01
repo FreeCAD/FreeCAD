@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>               *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,12 +41,14 @@ public:
     static void setRezFactor(double f);
 //turn App side value to Gui side value
     static double guiX(double x);
-    static Base::Vector2d guiX(Base::Vector2d v);
     static Base::Vector3d guiX(Base::Vector3d v);
+    static Base::Vector2d guiX(Base::Vector3d v, bool planar);
+    static QPointF guiX(QPointF p);
+
 //turn Gui side value to App side value
     static double appX(double x);
-    static Base::Vector2d appX(Base::Vector2d v);
     static Base::Vector3d appX(Base::Vector3d v);
+    static QPointF appX(QPointF p);
 
     static QPointF guiPt(QPointF p);
     static QPointF appPt(QPointF p);
@@ -54,7 +56,7 @@ public:
     static QRectF guiRect(QRectF r);
     static QSize guiSize(QSize s);
     static QSize appSize(QSize s);
-    
+
 private:
     static double m_rezFactor;
 };

@@ -39,6 +39,10 @@
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Woverloaded-virtual"
+# pragma clang diagnostic ignored "-Wextra-semi"
+#elif defined (__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wpedantic"
 #endif
 
 #include <SMESH_Gen.hxx>
@@ -70,14 +74,14 @@
 #endif // HAVE_NETGEN
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#elif defined (__GNUC__)
+# pragma GCC diagnostic pop
 #endif
 #endif // HAVE_SMESH
 
 using namespace MeshPart;
 
-#if SMESH_VERSION_MAJOR >= 7
-    SMESH_Gen* Mesher::_mesh_gen = 0;
-#endif
+SMESH_Gen* Mesher::_mesh_gen = 0;
 
 
 MeshingOutput::MeshingOutput() 
@@ -115,7 +119,9 @@ int MeshingOutput::sync()
 
 // ----------------------------------------------------------------------------
 
-struct Mesher::Vertex {
+namespace MeshPart {
+
+struct Vertex {
     static const double deflection;
     Standard_Real x,y,z;
     Standard_Integer i;
@@ -146,51 +152,22 @@ struct Mesher::Vertex {
     }
 };
 
-const double Mesher::Vertex::deflection = gp::Resolution();
+const double Vertex::deflection = gp::Resolution();
 
 // ----------------------------------------------------------------------------
 
-Mesher::Mesher(const TopoDS_Shape& s)
-  : shape(s)
-  , method(None)
-  , maxLength(0)
-  , maxArea(0)
-  , localLength(0)
-  , deflection(0)
-  , angularDeflection(0.5)
-  , minLen(0)
-  , maxLen(0)
-  , relative(false)
-  , regular(false)
-  , segments(false)
-#if defined (HAVE_NETGEN)
-  , fineness(5)
-  , growthRate(0)
-  , nbSegPerEdge(0)
-  , nbSegPerRadius(0)
-  , secondOrder(false)
-  , optimize(true)
-  , allowquad(false)
-#endif
-{
-}
+class BrepMesh {
+    bool segments;
+    std::vector<uint32_t> colors;
+public:
+    BrepMesh(bool s, const std::vector<uint32_t>& c)
+        : segments(s)
+        , colors(c)
+    {
+    }
 
-Mesher::~Mesher()
-{
-}
-
-Mesh::MeshObject* Mesher::createMesh() const
-{
-    // OCC standard mesher
-    if (method == Standard) {
-        if (!shape.IsNull()) {
-            BRepTools::Clean(shape);
-            BRepMesh_IncrementalMesh aMesh(shape, deflection, relative, angularDeflection);
-        }
-
-        std::vector<Part::TopoShape::Domain> domains;
-        Part::TopoShape(shape).getDomains(domains);
-
+    Mesh::MeshObject* create(const std::vector<Part::TopoShape::Domain>& domains) const
+    {
         std::map<uint32_t, std::vector<std::size_t> > colorMap;
         for (std::size_t i=0; i<colors.size(); i++) {
             colorMap[colors[i]].push_back(i);
@@ -209,7 +186,7 @@ Mesh::MeshObject* Mesher::createMesh() const
         Standard_Real x2, y2, z2;
         Standard_Real x3, y3, z3;
 
-        std::vector< std::vector<unsigned long> > meshSegments;
+        std::vector< std::vector<MeshCore::FacetIndex> > meshSegments;
         std::size_t numMeshFaces = 0;
 
         for (std::size_t i = 0; i < domains.size(); ++i) {
@@ -279,8 +256,8 @@ Mesh::MeshObject* Mesher::createMesh() const
 
             // add a segment for the face
             if (createSegm || this->segments) {
-                std::vector<unsigned long> segment(numDomainFaces);
-                std::generate(segment.begin(), segment.end(), Base::iotaGen<unsigned long>(numMeshFaces));
+                std::vector<MeshCore::FacetIndex> segment(numDomainFaces);
+                std::generate(segment.begin(), segment.end(), Base::iotaGen<MeshCore::FacetIndex>(numMeshFaces));
                 numMeshFaces += numDomainFaces;
                 meshSegments.push_back(segment);
             }
@@ -307,6 +284,9 @@ Mesh::MeshObject* Mesher::createMesh() const
                 std::stringstream str;
                 str << "patch" << index++;
                 segm.setName(str.str());
+                App::Color col;
+                col.setPackedValue(it.first);
+                segm.setColor(col.asHexString());
                 meshdata->addSegment(segm);
             }
         }
@@ -317,21 +297,75 @@ Mesh::MeshObject* Mesher::createMesh() const
         }
         return meshdata;
     }
+};
+}
+
+// ----------------------------------------------------------------------------
+
+Mesher::Mesher(const TopoDS_Shape& s)
+  : shape(s)
+  , method(None)
+  , maxLength(0)
+  , maxArea(0)
+  , localLength(0)
+  , deflection(0)
+  , angularDeflection(0.5)
+  , minLen(0)
+  , maxLen(0)
+  , relative(false)
+  , regular(false)
+  , segments(false)
+#if defined (HAVE_NETGEN)
+  , fineness(5)
+  , growthRate(0)
+  , nbSegPerEdge(0)
+  , nbSegPerRadius(0)
+  , secondOrder(false)
+  , optimize(true)
+  , allowquad(false)
+#endif
+{
+}
+
+Mesher::~Mesher()
+{
+}
+
+Mesh::MeshObject* Mesher::createStandard() const
+{
+    if (!shape.IsNull()) {
+        BRepTools::Clean(shape);
+        BRepMesh_IncrementalMesh aMesh(shape, deflection, relative, angularDeflection);
+    }
+
+    std::vector<Part::TopoShape::Domain> domains;
+    Part::TopoShape(shape).getDomains(domains);
+
+    BrepMesh brepmesh(this->segments, this->colors);
+    return brepmesh.create(domains);
+}
+
+Mesh::MeshObject* Mesher::createMesh() const
+{
+    // OCC standard mesher
+    if (method == Standard) {
+        return createStandard();
+    }
 
 #ifndef HAVE_SMESH
-    throw Base::Exception("SMESH is not available on this platform");
+    throw Base::RuntimeError("SMESH is not available on this platform");
 #else
     std::list<SMESH_Hypothesis*> hypoth;
 
-#if SMESH_VERSION_MAJOR < 7
-    SMESH_Gen* meshgen = SMESH_Gen::get();
-#else
-    if (! Mesher::_mesh_gen)
+    if (!Mesher::_mesh_gen)
         Mesher::_mesh_gen = new SMESH_Gen();
     SMESH_Gen* meshgen = Mesher::_mesh_gen;
-#endif
 
+#if SMESH_VERSION_MAJOR >= 9
+    SMESH_Mesh* mesh = meshgen->CreateMesh(true);
+#else
     SMESH_Mesh* mesh = meshgen->CreateMesh(0, true);
+#endif
 
 
     int hyp=0;
@@ -339,7 +373,11 @@ Mesh::MeshObject* Mesher::createMesh() const
     switch (method) {
 #if defined (HAVE_NETGEN)
     case Netgen: {
+#if SMESH_VERSION_MAJOR >= 9
+        NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++,meshgen);
+#else
         NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++,0,meshgen);
+#endif
 
         if (fineness >=0 && fineness < 5) {
             hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Fineness(fineness));
@@ -354,63 +392,108 @@ Mesh::MeshObject* Mesher::createMesh() const
                 hyp2d->SetNbSegPerRadius(nbSegPerRadius);
         }
 
+        if (maxLen > 0)
+            hyp2d->SetMaxSize(maxLen);
+        if (minLen > 0)
+            hyp2d->SetMinSize(minLen);
+
         hyp2d->SetQuadAllowed(allowquad);
         hyp2d->SetOptimize(optimize);
         hyp2d->SetSecondOrder(secondOrder); // apply bisecting to create four triangles out of one
         hypoth.push_back(hyp2d);
 
+#if SMESH_VERSION_MAJOR >= 9
+        NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++,meshgen);
+#else
         NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++,0,meshgen);
+#endif
         hypoth.push_back(alg2d);
     } break;
 #endif
 #if defined (HAVE_MEFISTO)
     case Mefisto: {
         if (maxLength > 0) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, meshgen);
+#else
             StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, 0, meshgen);
+#endif
             hyp1d->SetLength(maxLength);
             hypoth.push_back(hyp1d);
         }
         else if (localLength > 0) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++,meshgen);
+#else
             StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++,0,meshgen);
+#endif
             hyp1d->SetLength(localLength);
             hypoth.push_back(hyp1d);
         }
         else if (maxArea > 0) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++,meshgen);
+#else
             StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++,0,meshgen);
+#endif
             hyp2d->SetMaxArea(maxArea);
             hypoth.push_back(hyp2d);
         }
         else if (deflection > 0) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++,meshgen);
+#else
             StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++,0,meshgen);
+#endif
             hyp1d->SetDeflection(deflection);
             hypoth.push_back(hyp1d);
         }
         else if (minLen > 0 && maxLen > 0) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++,meshgen);
+#else
             StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++,0,meshgen);
+#endif
             hyp1d->SetLength(minLen, false);
             hyp1d->SetLength(maxLen, true);
             hypoth.push_back(hyp1d);
         }
         else {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++,meshgen);
+#else
             StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++,0,meshgen);
+#endif
             hypoth.push_back(hyp1d);
         }
 
         {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++,meshgen);
+#else
             StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++,0,meshgen);
+#endif
             hyp1d->SetNumberOfSegments(1);
             hypoth.push_back(hyp1d);
         }
 
         if (regular) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++,meshgen);
+#else
             StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++,0,meshgen);
+#endif
             hypoth.push_back(hyp1d);
         }
 #if SMESH_VERSION_MAJOR < 7
         StdMeshers_TrianglePreference* hyp2d_1 = new StdMeshers_TrianglePreference(hyp++,0,meshgen);
         hypoth.push_back(hyp2d_1);
 #endif
+#if SMESH_VERSION_MAJOR >= 9
+        StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++,meshgen);
+#else
         StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++,0,meshgen);
+#endif
         hypoth.push_back(alg2d);
     } break;
 #endif
@@ -432,6 +515,23 @@ Mesh::MeshObject* Mesher::createMesh() const
     std::cout.rdbuf(oldcout);
 
     // build up the mesh structure
+    Mesh::MeshObject* meshdata = createFrom(mesh);
+
+    // clean up
+    TopoDS_Shape aNull;
+    mesh->ShapeToMesh(aNull);
+    mesh->Clear();
+    delete mesh;
+    for (std::list<SMESH_Hypothesis*>::iterator it = hypoth.begin(); it != hypoth.end(); ++it)
+        delete *it;
+
+    return meshdata;
+#endif // HAVE_SMESH
+}
+
+Mesh::MeshObject* Mesher::createFrom(SMESH_Mesh* mesh) const
+{
+    // build up the mesh structure
     SMDS_FaceIteratorPtr aFaceIter = mesh->GetMeshDS()->facesIterator();
     SMDS_NodeIteratorPtr aNodeIter = mesh->GetMeshDS()->nodesIterator();
 
@@ -449,6 +549,7 @@ Mesh::MeshObject* Mesher::createMesh() const
         verts.push_back(p);
         mapNodeIndex[aNode] = index++;
     }
+
     for (;aFaceIter->more();) {
         const SMDS_MeshFace* aFace = aFaceIter->next();
         if (aFace->NbNodes() == 3) {
@@ -573,20 +674,10 @@ Mesh::MeshObject* Mesher::createMesh() const
         }
     }
 
-    // clean up
-    TopoDS_Shape aNull;
-    mesh->ShapeToMesh(aNull);
-    mesh->Clear();
-    delete mesh;
-    for (std::list<SMESH_Hypothesis*>::iterator it = hypoth.begin(); it != hypoth.end(); ++it)
-        delete *it;
-    
     MeshCore::MeshKernel kernel;
     kernel.Adopt(verts, faces, true);
 
     Mesh::MeshObject* meshdata = new Mesh::MeshObject();
     meshdata->swap(kernel);
     return meshdata;
-#endif // HAVE_SMESH
 }
-

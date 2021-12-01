@@ -26,10 +26,11 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QFile>
+# include <QDir>
 # include <QRunnable>
 # include <QTextStream>
 # include <QThreadPool>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <sstream>
 #endif
 
@@ -49,15 +50,18 @@
 #include "MainWindow.h"
 #include "ViewProvider.h"
 
+FC_LOG_LEVEL_INIT("App",true,true)
+
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 AutoSaver* AutoSaver::self = 0;
 
 AutoSaver::AutoSaver(QObject* parent)
   : QObject(parent), timeout(900000), compressed(true)
 {
-    App::GetApplication().signalNewDocument.connect(boost::bind(&AutoSaver::slotCreateDocument, this, _1));
-    App::GetApplication().signalDeleteDocument.connect(boost::bind(&AutoSaver::slotDeleteDocument, this, _1));
+    App::GetApplication().signalNewDocument.connect(boost::bind(&AutoSaver::slotCreateDocument, this, bp::_1));
+    App::GetApplication().signalDeleteDocument.connect(boost::bind(&AutoSaver::slotDeleteDocument, this, bp::_1));
 }
 
 AutoSaver::~AutoSaver()
@@ -69,6 +73,15 @@ AutoSaver* AutoSaver::instance()
     if (!self)
         self = new AutoSaver(QApplication::instance());
     return self;
+}
+
+void AutoSaver::renameFile(QString dirName, QString file, QString tmpFile)
+{
+    FC_LOG("auto saver rename " << tmpFile.toUtf8().constData()
+            << " -> " << file.toUtf8().constData());
+    QDir dir(dirName);
+    dir.remove(file);
+    dir.rename(tmpFile,file);
 }
 
 void AutoSaver::setTimeout(int ms)
@@ -122,7 +135,9 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
 {
     Gui::WaitCursor wc;
     App::Document* doc = App::GetApplication().getDocument(name.c_str());
-    if (doc) {
+    if (doc && !doc->testStatus(App::Document::PartialDoc)
+            && !doc->testStatus(App::Document::TempDoc))
+    {
         // Set the document's current transient directory
         std::string dirName = doc->TransientDir.getValue();
         dirName += "/fc_recovery_files";
@@ -134,12 +149,12 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         if (file.open(QFile::WriteOnly)) {
             QTextStream str(&file);
             str.setCodec("UTF-8");
-            str << "<?xml version='1.0' encoding='utf-8'?>" << endl
-                << "<AutoRecovery SchemaVersion=\"1\">" << endl;
-            str << "  <Status>Created</Status>" << endl;
-            str << "  <Label>" << QString::fromUtf8(doc->Label.getValue()) << "</Label>" << endl; // store the document's current label
-            str << "  <FileName>" << QString::fromUtf8(doc->FileName.getValue()) << "</FileName>" << endl; // store the document's current filename
-            str << "</AutoRecovery>" << endl;
+            str << "<?xml version='1.0' encoding='utf-8'?>\n"
+                << "<AutoRecovery SchemaVersion=\"1\">\n";
+            str << "  <Status>Created</Status>\n";
+            str << "  <Label>" << QString::fromUtf8(doc->Label.getValue()) << "</Label>\n"; // store the document's current label
+            str << "  <FileName>" << QString::fromUtf8(doc->FileName.getValue()) << "</FileName>\n"; // store the document's current filename
+            str << "</AutoRecovery>\n";
             file.close();
         }
 
@@ -159,8 +174,11 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         {
             if (!this->compressed) {
                 RecoveryWriter writer(saver);
-                if (hGrp->GetBool("SaveBinaryBrep", true))
-                    writer.setMode("BinaryBrep");
+
+                // We will be using thread pool if not compressed.
+                // So, always force binary format because ASCII
+                // is not reentrant. See PropertyPartShape::SaveDocFile
+                writer.setMode("BinaryBrep");
 
                 writer.putNextEntry("Document.xml");
 
@@ -227,9 +245,9 @@ void AutoSaver::timerEvent(QTimerEvent * event)
 AutoSaveProperty::AutoSaveProperty(const App::Document* doc) : timerId(-1)
 {
     documentNew = const_cast<App::Document*>(doc)->signalNewObject.connect
-        (boost::bind(&AutoSaveProperty::slotNewObject, this, _1));
+        (boost::bind(&AutoSaveProperty::slotNewObject, this, bp::_1));
     documentMod = const_cast<App::Document*>(doc)->signalChangedObject.connect
-        (boost::bind(&AutoSaveProperty::slotChangePropertyData, this, _2));
+        (boost::bind(&AutoSaveProperty::slotChangePropertyData, this, bp::_2));
 }
 
 AutoSaveProperty::~AutoSaveProperty()
@@ -310,10 +328,11 @@ public:
         , writer(dir)
     {
         writer.setModes(modes);
-        // always force binary format because ASCII
-        // is not reentrant. See PropertyPartShape::SaveDocFile
-        writer.setMode("BinaryBrep");
-        writer.putNextEntry(file);
+
+        dirName = QString::fromUtf8(dir);
+        fileName = QString::fromUtf8(file);
+        tmpName = QString::fromLatin1("%1.tmp%2").arg(fileName).arg(rand());
+        writer.putNextEntry(tmpName.toUtf8().constData());
     }
     virtual ~RecoveryRunnable()
     {
@@ -322,11 +341,24 @@ public:
     virtual void run()
     {
         prop->SaveDocFile(writer);
+        writer.close();
+
+        // We could have renamed the file in this thread. However, there is
+        // still chance of crash when we deleted the original and before rename
+        // the new file. So we ask the main thread to do it. There is still
+        // possibility of crash caused by thread other than the main, but
+        // that's the best we can do for now.
+        QMetaObject::invokeMethod(AutoSaver::instance(), "renameFile",
+                Qt::QueuedConnection, Q_ARG(QString,dirName)
+                ,Q_ARG(QString,fileName),Q_ARG(QString,tmpName));
     }
 
 private:
     App::Property* prop;
     Base::FileWriter writer;
+    QString dirName;
+    QString fileName;
+    QString tmpName;
 };
 
 }
@@ -346,7 +378,7 @@ void RecoveryWriter::writeFiles(void)
         if (shouldWrite(entry.FileName, entry.Object)) {
             std::string filePath = entry.FileName;
             std::string::size_type pos = 0;
-            while ((pos = filePath.find("/", pos)) != std::string::npos) {
+            while ((pos = filePath.find('/', pos)) != std::string::npos) {
                 std::string dirName = DirName + "/" + filePath.substr(0, pos);
                 pos++;
                 Base::FileInfo fi(dirName);

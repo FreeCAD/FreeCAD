@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2009     *
+ *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,8 +30,9 @@
 
 #include <vector>
 #include <list>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <SMESH_Version.h>
+#include <SMDSAbs_ElementType.hxx>
 
 class SMESH_Gen;
 class SMESH_Mesh;
@@ -45,7 +46,7 @@ class TopoDS_Solid;
 namespace Fem
 {
 
-typedef boost::shared_ptr<SMESH_Hypothesis> SMESH_HypothesisPtr;
+typedef std::shared_ptr<SMESH_Hypothesis> SMESH_HypothesisPtr;
 
 /** The representation of a FemMesh
  */
@@ -101,6 +102,8 @@ public:
     std::list<int> getElementNodes(int id) const;
     /// retrieving face IDs number by face
     std::list<int> getFacesByFace(const TopoDS_Face &face) const;
+    /// retrieving edge IDs number by edge
+    std::list<int> getEdgesByEdge(const TopoDS_Edge &edge) const;
     /// retrieving volume IDs and face IDs number by face
     std::list<std::pair<int, int> > getVolumesByFace(const TopoDS_Face &face) const;
     /// retrieving volume IDs and CalculiX face number by face
@@ -129,6 +132,17 @@ public:
     void transformGeometry(const Base::Matrix4D &rclMat);
     //@}
 
+    /** @name Group management */
+    //@{
+    /// Adds group to mesh
+    int addGroup(const std::string, const std::string, const int=-1);
+    /// Adds elements to group (int due to int used by raw SMESH functions)
+    void addGroupElements(int, const std::set<int>&);
+    /// Remove group (Name due to similarity to SMESH basis functions)
+    bool removeGroup(int);
+    //@}
+
+
     struct FemMeshInfo {
         int numFaces;
         int numNode;
@@ -150,10 +164,14 @@ public:
     void read(const char *FileName);
     void write(const char *FileName) const;
     void writeABAQUS(const std::string &Filename, int elemParam, bool groupParam) const;
+    void writeZ88(const std::string &FileName) const;
 
 private:
     void copyMeshData(const FemMesh&);
     void readNastran(const std::string &Filename);
+    void readNastran95(const std::string &Filename);
+    void readZ88(const std::string &Filename);
+    void readAbaqus(const std::string &Filename);
 
 private:
     /// positioning matrix
@@ -161,9 +179,7 @@ private:
     SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;
-#if SMESH_VERSION_MAJOR >= 7
     static SMESH_Gen *_mesh_gen;
-#endif
 };
 
 } //namespace Part

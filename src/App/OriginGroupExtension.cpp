@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,11 +27,14 @@
 #endif
 
 #include <Base/Exception.h>
-
+#include <Base/Console.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include "Origin.h"
 
 #include "GeoFeature.h"
+
+FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 
@@ -53,26 +56,49 @@ App::Origin *OriginGroupExtension::getOrigin () const {
 
     if ( !originObj ) {
         std::stringstream err;
-        err << "Can't find Origin for \"" << getExtendedObject()->getNameInDocument () << "\"";
+        err << "Can't find Origin for \"" << getExtendedObject()->getFullName () << "\"";
         throw Base::RuntimeError ( err.str().c_str () );
 
     } else if (! originObj->isDerivedFrom ( App::Origin::getClassTypeId() ) ) {
         std::stringstream err;
-        err << "Bad object \"" << originObj->getNameInDocument () << "\"(" << originObj->getTypeId().getName()
-            << ") linked to the Origin of \"" << getExtendedObject()->getNameInDocument () << "\"";
+        err << "Bad object \"" << originObj->getFullName () << "\"(" << originObj->getTypeId().getName()
+            << ") linked to the Origin of \"" << getExtendedObject()->getFullName () << "\"";
         throw Base::RuntimeError ( err.str().c_str () );
     } else {
             return static_cast<App::Origin *> ( originObj );
     }
 }
 
+bool OriginGroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const
+{
+    App::DocumentObject *originObj = Origin.getValue ();
+    const char *dot;
+    if(originObj && originObj->getNameInDocument() &&
+       subname && (dot=strchr(subname,'.')))
+    {
+        bool found;
+        if(subname[0] == '$')
+            found = std::string(subname+1,dot)==originObj->Label.getValue();
+        else
+            found = std::string(subname,dot)==originObj->getNameInDocument();
+        if(found) {
+            if(mat && transform)
+                *mat *= const_cast<OriginGroupExtension*>(this)->placement().getValue().toMatrix();
+            ret = originObj->getSubObject(dot+1,pyObj,mat,true,depth+1);
+            return true;
+        }
+    }
+    return GeoFeatureGroupExtension::extensionGetSubObject(ret,subname,pyObj,mat,transform,depth);
+}
+
 App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj) {
 
     if(!obj)
         return nullptr;
-    
+
     bool isOriginFeature = obj->isDerivedFrom(App::OriginFeature::getClassTypeId());
-    
+
     auto list = obj->getInList();
     for (auto o : list) {
         if(o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId()))
@@ -126,6 +152,30 @@ void OriginGroupExtension::onExtendedUnsetupObject () {
     GeoFeatureGroupExtension::onExtendedUnsetupObject ();
 }
 
+void OriginGroupExtension::extensionOnChanged(const Property* p) {
+    if(p == &Origin) {
+        App::DocumentObject *owner = getExtendedObject();
+        App::DocumentObject *origin = Origin.getValue();
+        // Document::Importing indicates the object is being imported (i.e.
+        // copied). So check the Origin ownership here to prevent copy without
+        // dependency
+        if (origin && owner && owner->getDocument()
+                   && owner->getDocument()->testStatus(Document::Importing)) {
+            for (auto o : origin->getInList()) {
+                if(o != owner && o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
+                    // Temporarily reset 'Restoring' status to allow document to auto label new objects
+                    Base::ObjectStatusLocker<Document::Status, Document> guard(
+                            Document::Restoring, owner->getDocument(), false);
+                    Origin.setValue(owner->getDocument()->addObject("App::Origin", "Origin"));
+                    FC_WARN("Reset origin in " << owner->getFullName());
+                    return;
+                }
+            }
+        }
+    }
+    GeoFeatureGroupExtension::extensionOnChanged(p);
+}
+
 void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
 {
     //we get all links and replace the origin objects if needed (subnames need not to change, they
@@ -135,13 +185,13 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
     obj->getPropertyList(list);
     for(App::Property* prop : list) {
         if(prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
-            
+
             auto p = static_cast<App::PropertyLink*>(prop);
             if(!p->getValue() || !p->getValue()->isDerivedFrom(App::OriginFeature::getClassTypeId()))
                 continue;
-        
+
             p->setValue(getOrigin()->getOriginFeature(static_cast<OriginFeature*>(p->getValue())->Role.getValue()));
-        }            
+        }
         else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
             auto p = static_cast<App::PropertyLinkList*>(prop);
             auto vec = p->getValues();
@@ -162,7 +212,7 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
             auto p = static_cast<App::PropertyLinkSub*>(prop);
             if(!p->getValue() || !p->getValue()->isDerivedFrom(App::OriginFeature::getClassTypeId()))
                 continue;
-        
+
             std::vector<std::string> subValues = p->getSubValues();
             p->setValue(getOrigin()->getOriginFeature(static_cast<OriginFeature*>(p->getValue())->Role.getValue()), subValues);
         }

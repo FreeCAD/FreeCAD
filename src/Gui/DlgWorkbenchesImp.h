@@ -1,7 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: Przemo Firszt <przemo@firszt.eu>                              *
- *   Based on DlgToolbars.h file                                           *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU Library General Public           *
@@ -20,17 +19,23 @@
  *                                                                         *
  ***************************************************************************/
 
+// Based on DlgToolbars.h file
+
 
 #ifndef GUI_DIALOG_DLGWORKBENCHES_IMP_H
 #define GUI_DIALOG_DLGWORKBENCHES_IMP_H
 
-#include "ui_DlgWorkbenches.h"
 #include "PropertyPage.h"
+#include <memory>
+
+class QListWidgetCustom;
+class QListWidgetItem;
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgWorkbenches;
 
-class DlgWorkbenchesImp : public CustomizeActionPage, public Ui_DlgWorkbenches
+class DlgWorkbenchesImp : public CustomizeActionPage
 {
     Q_OBJECT
 
@@ -63,6 +68,9 @@ private:
                         QListWidgetItem *wi);
     void save_workbenches();
     void shift_workbench(bool up);
+
+private:
+    std::unique_ptr<Ui_DlgWorkbenches> ui;
 };
 
 } // namespace Dialog

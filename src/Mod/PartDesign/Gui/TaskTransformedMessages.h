@@ -25,10 +25,10 @@
 #define GUI_TASKVIEW_TaskTransformedMessages_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 
 class Ui_TaskTransformedMessages;
-typedef boost::signals::connection Connection;
+typedef boost::signals2::connection Connection;
 
 namespace App {
 class Property;
@@ -56,7 +56,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskTransformedMessages* ui;
+    std::unique_ptr<Ui_TaskTransformedMessages> ui;
 };
 
 } //namespace PartDesignGui

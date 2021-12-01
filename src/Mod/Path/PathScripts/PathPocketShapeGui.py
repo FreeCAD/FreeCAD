@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -23,29 +21,47 @@
 # ***************************************************************************
 
 import FreeCAD
+import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocketShape as PathPocketShape
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
+import PathScripts.PathFeatureExtensionsGui as PathFeatureExtensionsGui
 
 from PySide import QtCore
 
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
+
 __title__ = "Path Pocket Shape Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Pocket Shape operation page controller and command implementation."
+
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
     '''Page controller class for Pocket operation'''
 
     def pocketFeatures(self):
         '''pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)'''
-        return PathPocketBaseGui.FeaturePocket
+        return PathPocketBaseGui.FeaturePocket | PathPocketBaseGui.FeatureOutline
+
+    def taskPanelBaseLocationPage(self, obj, features):
+        if not hasattr(self, 'extensionsPanel'):
+            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(obj, features) # pylint: disable=attribute-defined-outside-init
+        return self.extensionsPanel
 
 Command = PathOpGui.SetupOperation('Pocket Shape',
         PathPocketShape.Create,
         TaskPanelOpPage,
-        'Path-Pocket',
-        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket Shape"),
-        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces"))
+        'Path_Pocket',
+        QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Pocket Shape"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Creates a Path Pocket object from a face or faces"),
+        PathPocketShape.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathPocketShapeGui... done\n")

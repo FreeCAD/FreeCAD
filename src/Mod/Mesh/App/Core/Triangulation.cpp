@@ -39,13 +39,64 @@
 using namespace MeshCore;
 
 
+bool TriangulationVerifier::Accept(const Base::Vector3f& n,
+                                   const Base::Vector3f& p1,
+                                   const Base::Vector3f& p2,
+                                   const Base::Vector3f& p3) const
+{
+    float ref_dist = (p2 - p1) * n;
+    float tri_dist = (p3 - p1) * n;
+    return (ref_dist * tri_dist <= 0.0f);
+}
+
+bool TriangulationVerifier::MustFlip(const Base::Vector3f& n1,
+                                     const Base::Vector3f& n2) const
+{
+    return n1.Dot(n2) <= 0.0f;
+}
+
+bool TriangulationVerifierV2::Accept(const Base::Vector3f& n,
+                                     const Base::Vector3f& p1,
+                                     const Base::Vector3f& p2,
+                                     const Base::Vector3f& p3) const
+{
+    float ref_dist = (p2 - p1) * n;
+    float tri_dist = (p3 - p1) * n;
+    float prod = ref_dist * tri_dist;
+    (void)prod;
+    return true;
+}
+
+bool TriangulationVerifierV2::MustFlip(const Base::Vector3f& n1,
+                                       const Base::Vector3f& n2) const
+{
+    float dot = n1.Dot(n2);
+    (void)dot;
+    return false;
+}
+
+// ----------------------------------------------------------------------------
+
 AbstractPolygonTriangulator::AbstractPolygonTriangulator()
 {
     _discard = false;
+    _verifier = new TriangulationVerifier();
 }
 
 AbstractPolygonTriangulator::~AbstractPolygonTriangulator()
 {
+    delete _verifier;
+}
+
+TriangulationVerifier* AbstractPolygonTriangulator::GetVerifier() const
+{
+    return _verifier;
+}
+
+void AbstractPolygonTriangulator::SetVerifier(TriangulationVerifier* v)
+{
+    delete _verifier;
+    _verifier = v;
 }
 
 void AbstractPolygonTriangulator::SetPolygon(const std::vector<Base::Vector3f>& raclPoints)
@@ -92,7 +143,7 @@ Base::Matrix4D AbstractPolygonTriangulator::GetTransformToFitPlane() const
     for (std::vector<Base::Vector3f>::const_iterator it = _points.begin(); it!=_points.end(); ++it)
         planeFit.AddPoint(*it);
 
-    if (planeFit.Fit() == FLOAT_MAX)
+    if (planeFit.Fit() >= FLOAT_MAX)
         throw Base::RuntimeError("Plane fit failed");
 
     Base::Vector3f bs = planeFit.GetBase();
@@ -103,9 +154,20 @@ Base::Matrix4D AbstractPolygonTriangulator::GetTransformToFitPlane() const
     // build the matrix for the inverse transformation
     Base::Matrix4D rInverse;
     rInverse.setToUnity();
-    rInverse[0][0] = ex.x; rInverse[0][1] = ey.x; rInverse[0][2] = ez.x; rInverse[0][3] = bs.x;
-    rInverse[1][0] = ex.y; rInverse[1][1] = ey.y; rInverse[1][2] = ez.y; rInverse[1][3] = bs.y;
-    rInverse[2][0] = ex.z; rInverse[2][1] = ey.z; rInverse[2][2] = ez.z; rInverse[2][3] = bs.z;
+    rInverse[0][0] = static_cast<double>(ex.x);
+    rInverse[0][1] = static_cast<double>(ey.x);
+    rInverse[0][2] = static_cast<double>(ez.x);
+    rInverse[0][3] = static_cast<double>(bs.x);
+
+    rInverse[1][0] = static_cast<double>(ex.y);
+    rInverse[1][1] = static_cast<double>(ey.y);
+    rInverse[1][2] = static_cast<double>(ez.y);
+    rInverse[1][3] = static_cast<double>(bs.y);
+
+    rInverse[2][0] = static_cast<double>(ex.z);
+    rInverse[2][1] = static_cast<double>(ey.z);
+    rInverse[2][2] = static_cast<double>(ez.z);
+    rInverse[2][3] = static_cast<double>(bs.z);
 
     return rInverse;
 }
@@ -114,9 +176,15 @@ std::vector<Base::Vector3f> AbstractPolygonTriangulator::ProjectToFitPlane()
 {
     std::vector<Base::Vector3f> proj = _points;
     _inverse = GetTransformToFitPlane();
-    Base::Vector3f bs((float)_inverse[0][3], (float)_inverse[1][3], (float)_inverse[2][3]);
-    Base::Vector3f ex((float)_inverse[0][0], (float)_inverse[1][0], (float)_inverse[2][0]);
-    Base::Vector3f ey((float)_inverse[0][1], (float)_inverse[1][1], (float)_inverse[2][1]);
+    Base::Vector3f bs(static_cast<float>(_inverse[0][3]),
+                      static_cast<float>(_inverse[1][3]),
+                      static_cast<float>(_inverse[2][3]));
+    Base::Vector3f ex(static_cast<float>(_inverse[0][0]),
+                      static_cast<float>(_inverse[1][0]),
+                      static_cast<float>(_inverse[2][0]));
+    Base::Vector3f ey(static_cast<float>(_inverse[0][1]),
+                      static_cast<float>(_inverse[1][1]),
+                      static_cast<float>(_inverse[2][1]));
     for (std::vector<Base::Vector3f>::iterator jt = proj.begin(); jt!=proj.end(); ++jt)
         jt->TransformToCoordinateSystem(bs, ex, ey);
     return proj;
@@ -129,9 +197,15 @@ void AbstractPolygonTriangulator::PostProcessing(const std::vector<Base::Vector3
     unsigned int uMinPts = 50;
 
     PolynomialFit polyFit;
-    Base::Vector3f bs((float)_inverse[0][3], (float)_inverse[1][3], (float)_inverse[2][3]);
-    Base::Vector3f ex((float)_inverse[0][0], (float)_inverse[1][0], (float)_inverse[2][0]);
-    Base::Vector3f ey((float)_inverse[0][1], (float)_inverse[1][1], (float)_inverse[2][1]);
+    Base::Vector3f bs(static_cast<float>(_inverse[0][3]),
+                      static_cast<float>(_inverse[1][3]),
+                      static_cast<float>(_inverse[2][3]));
+    Base::Vector3f ex(static_cast<float>(_inverse[0][0]),
+                      static_cast<float>(_inverse[1][0]),
+                      static_cast<float>(_inverse[2][0]));
+    Base::Vector3f ey(static_cast<float>(_inverse[0][1]),
+                      static_cast<float>(_inverse[1][1]),
+                      static_cast<float>(_inverse[2][1]));
 
     for (std::vector<Base::Vector3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
         Base::Vector3f pt = *it;
@@ -141,7 +215,7 @@ void AbstractPolygonTriangulator::PostProcessing(const std::vector<Base::Vector3
 
     if (polyFit.CountPoints() >= uMinPts && polyFit.Fit() < FLOAT_MAX) {
         for (std::vector<Base::Vector3f>::iterator pt = _newpoints.begin(); pt != _newpoints.end(); ++pt)
-            pt->z = (float)polyFit.Value(pt->x, pt->y);
+            pt->z = static_cast<float>(polyFit.Value(pt->x, pt->y));
     }
 }
 
@@ -179,7 +253,7 @@ bool AbstractPolygonTriangulator::TriangulatePolygon()
     }
 }
 
-std::vector<unsigned long> AbstractPolygonTriangulator::GetInfo() const
+std::vector<PointIndex> AbstractPolygonTriangulator::GetInfo() const
 {
     return _info;
 }
@@ -218,13 +292,13 @@ bool EarClippingTriangulator::Triangulate()
     _triangles.clear();
 
     std::vector<Base::Vector3f> pts = ProjectToFitPlane();
-    std::vector<unsigned long> result;
+    std::vector<PointIndex> result;
 
     //  Invoke the triangulator to triangulate this polygon.
     Triangulate::Process(pts,result);
 
     // print out the results.
-    unsigned long tcount = result.size()/3;
+    size_t tcount = result.size()/3;
 
     bool ok = tcount+2 == _points.size();
     if  (tcount > _points.size())
@@ -232,7 +306,7 @@ bool EarClippingTriangulator::Triangulate()
 
     MeshGeomFacet clFacet;
     MeshFacet clTopFacet;
-    for (unsigned long i=0; i<tcount; i++) {
+    for (size_t i=0; i<tcount; i++) {
         if (Triangulate::_invert) {
             clFacet._aclPoints[0] = _points[result[i*3+0]];
             clFacet._aclPoints[2] = _points[result[i*3+1]];
@@ -324,7 +398,7 @@ bool EarClippingTriangulator::Triangulate::Snip(const std::vector<Base::Vector3f
 bool EarClippingTriangulator::Triangulate::_invert = false;
 
 bool EarClippingTriangulator::Triangulate::Process(const std::vector<Base::Vector3f> &contour,
-                                                   std::vector<unsigned long> &result)
+                                                   std::vector<PointIndex> &result)
 {
     /* allocate and initialize list of Vertices in polygon */
 
@@ -409,30 +483,30 @@ bool QuasiDelaunayTriangulator::Triangulate()
 
     // For each internal edge get the adjacent facets. When doing an edge swap we must update
     // this structure.
-    std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> > aEdge2Face;
+    std::map<std::pair<PointIndex, PointIndex>, std::vector<FacetIndex> > aEdge2Face;
     for (std::vector<MeshFacet>::iterator pI = _facets.begin(); pI != _facets.end(); ++pI) {
         for (int i = 0; i < 3; i++) {
-            unsigned long ulPt0 = std::min<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
-            unsigned long ulPt1 = std::max<unsigned long>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
+            PointIndex ulPt0 = std::min<PointIndex>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
+            PointIndex ulPt1 = std::max<PointIndex>(pI->_aulPoints[i],  pI->_aulPoints[(i+1)%3]);
             // ignore borderlines of the polygon
             if ((ulPt1-ulPt0)%(_points.size()-1) > 1)
-                aEdge2Face[std::pair<unsigned long, unsigned long>(ulPt0, ulPt1)].push_back(pI - _facets.begin());
+                aEdge2Face[std::pair<PointIndex, PointIndex>(ulPt0, ulPt1)].push_back(pI - _facets.begin());
         }
     }
 
     // fill up this list with all internal edges and perform swap edges until this list is empty
-    std::list<std::pair<unsigned long, unsigned long> > aEdgeList;
-    std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> >::iterator pE;
+    std::list<std::pair<PointIndex, PointIndex> > aEdgeList;
+    std::map<std::pair<PointIndex, PointIndex>, std::vector<FacetIndex> >::iterator pE;
     for (pE = aEdge2Face.begin(); pE != aEdge2Face.end(); ++pE)
         aEdgeList.push_back(pE->first);
 
     // to be sure to avoid an endless loop
-    unsigned long uMaxIter = 5 * aEdge2Face.size();
+    size_t uMaxIter = 5 * aEdge2Face.size();
 
     // Perform a swap edge where needed
     while (!aEdgeList.empty() && uMaxIter > 0) {
         // get the first edge and remove it from the list
-        std::pair<unsigned long, unsigned long> aEdge = aEdgeList.front();
+        std::pair<PointIndex, PointIndex> aEdge = aEdgeList.front();
         aEdgeList.pop_front();
         uMaxIter--;
 
@@ -482,10 +556,10 @@ bool QuasiDelaunayTriangulator::Triangulate()
 
             // adjust the edge list
             for (int i=0; i<3; i++) {
-                std::map<std::pair<unsigned long, unsigned long>, std::vector<unsigned long> >::iterator it;
+                std::map<std::pair<PointIndex, PointIndex>, std::vector<FacetIndex> >::iterator it;
                 // first facet
-                unsigned long ulPt0 = std::min<unsigned long>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
-                unsigned long ulPt1 = std::max<unsigned long>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
+                PointIndex ulPt0 = std::min<PointIndex>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
+                PointIndex ulPt1 = std::max<PointIndex>(rF1._aulPoints[i],  rF1._aulPoints[(i+1)%3]);
                 it = aEdge2Face.find( std::make_pair(ulPt0, ulPt1) );
                 if (it != aEdge2Face.end()) {
                     if (it->second[0] == pE->second[1])
@@ -496,8 +570,8 @@ bool QuasiDelaunayTriangulator::Triangulate()
                 }
 
                 // second facet
-                ulPt0 = std::min<unsigned long>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
-                ulPt1 = std::max<unsigned long>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
+                ulPt0 = std::min<PointIndex>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
+                ulPt1 = std::max<PointIndex>(rF2._aulPoints[i],  rF2._aulPoints[(i+1)%3]);
                 it = aEdge2Face.find( std::make_pair(ulPt0, ulPt1) );
                 if (it != aEdge2Face.end()) {
                     if (it->second[0] == pE->second[0])
@@ -509,9 +583,9 @@ bool QuasiDelaunayTriangulator::Triangulate()
             }
 
             // Now we must remove the edge and replace it through the new edge
-            unsigned long ulPt0 = std::min<unsigned long>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
-            unsigned long ulPt1 = std::max<unsigned long>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
-            std::pair<unsigned long, unsigned long> aNewEdge = std::make_pair(ulPt0, ulPt1);
+            PointIndex ulPt0 = std::min<PointIndex>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
+            PointIndex ulPt1 = std::max<PointIndex>(rF1._aulPoints[(side1+1)%3], rF2._aulPoints[(side2+1)%3]);
+            std::pair<PointIndex, PointIndex> aNewEdge = std::make_pair(ulPt0, ulPt1);
             aEdge2Face[aNewEdge] = pE->second;
             aEdge2Face.erase(pE);
         }
@@ -524,17 +598,17 @@ bool QuasiDelaunayTriangulator::Triangulate()
 
 namespace MeshCore {
 namespace Triangulation {
-struct Vertex2d_Less  : public std::binary_function<const Base::Vector3f&, const Base::Vector3f&, bool>
+struct Vertex2d_Less
 {
     bool operator()(const Base::Vector3f& p, const Base::Vector3f& q) const
     {
         if (fabs(p.x - q.x) < MeshDefinitions::_fMinPointDistanceD1) {
         if (fabs(p.y - q.y) < MeshDefinitions::_fMinPointDistanceD1) {
         return false; } else return p.y < q.y;
-        } else return p.x < q.x; return true;
+        } else return p.x < q.x;
     }
 };
-struct Vertex2d_EqualTo  : public std::binary_function<const Base::Vector3f&, const Base::Vector3f&, bool>
+struct Vertex2d_EqualTo
 {
     bool operator()(const Base::Vector3f& p, const Base::Vector3f& q) const
     {
@@ -574,36 +648,41 @@ bool DelaunayTriangulator::Triangulate()
     std::vector<Wm4::Vector2d> akVertex;
     akVertex.reserve(_points.size());
     for (std::vector<Base::Vector3f>::iterator it = _points.begin(); it != _points.end(); ++it) {
-        akVertex.push_back(Wm4::Vector2d(it->x, it->y));
+        akVertex.emplace_back(static_cast<double>(it->x), static_cast<double>(it->y));
     }
 
-    Wm4::Delaunay2d del(akVertex.size(), &(akVertex[0]), 0.001, false, Wm4::Query::QT_INT64);
+    Wm4::Delaunay2d del(static_cast<int>(akVertex.size()), &(akVertex[0]), 0.001, false, Wm4::Query::QT_INT64);
     int iTQuantity = del.GetSimplexQuantity();
-    std::vector<int> aiTVertex(3*iTQuantity);
-    size_t uiSize = 3*iTQuantity*sizeof(int);
-    Wm4::System::Memcpy(&(aiTVertex[0]),uiSize,del.GetIndices(),uiSize);
+    std::vector<int> aiTVertex(static_cast<size_t>(3*iTQuantity));
 
-    // If H is the number of hull edges and N is the number of vertices,
-    // then the triangulation must have 2*N-2-H triangles and 3*N-3-H
-    // edges.
-    int iEQuantity = 0;
-    int* aiIndex = 0;
-    del.GetHull(iEQuantity,aiIndex);
-    int iUniqueVQuantity = del.GetUniqueVertexQuantity();
-    int iTVerify = 2*iUniqueVQuantity - 2 - iEQuantity;
-    (void)iTVerify;  // avoid warning in release build
-    bool succeeded = (iTVerify == iTQuantity);
-    int iEVerify = 3*iUniqueVQuantity - 3 - iEQuantity;
-    (void)iEVerify;  // avoid warning about unused variable
-    delete[] aiIndex;
+    bool succeeded = false;
+    if (iTQuantity > 0) {
+        size_t uiSize = static_cast<size_t>(3*iTQuantity)*sizeof(int);
+        Wm4::System::Memcpy(&(aiTVertex[0]),uiSize,del.GetIndices(),uiSize);
+
+        // If H is the number of hull edges and N is the number of vertices,
+        // then the triangulation must have 2*N-2-H triangles and 3*N-3-H
+        // edges.
+        int iEQuantity = 0;
+        int* aiIndex = nullptr;
+        del.GetHull(iEQuantity,aiIndex);
+        int iUniqueVQuantity = del.GetUniqueVertexQuantity();
+        int iTVerify = 2*iUniqueVQuantity - 2 - iEQuantity;
+        (void)iTVerify;  // avoid warning in release build
+        succeeded = (iTVerify == iTQuantity);
+        int iEVerify = 3*iUniqueVQuantity - 3 - iEQuantity;
+        (void)iEVerify;  // avoid warning about unused variable
+        delete[] aiIndex;
+    }
 
     MeshGeomFacet triangle;
     MeshFacet facet;
     for (int i = 0; i < iTQuantity; i++) {
         for (int j=0; j<3; j++) {
-            facet._aulPoints[j] = aiTVertex[3*i+j];
-            triangle._aclPoints[j].x = (float)akVertex[aiTVertex[3*i+j]].X();
-            triangle._aclPoints[j].y = (float)akVertex[aiTVertex[3*i+j]].Y();
+            size_t index = static_cast<size_t>(aiTVertex[static_cast<size_t>(3*i+j)]);
+            facet._aulPoints[j] = static_cast<PointIndex>(index);
+            triangle._aclPoints[j].x = static_cast<float>(akVertex[index].X());
+            triangle._aclPoints[j].y = static_cast<float>(akVertex[index].Y());
         }
 
         _triangles.push_back(triangle);

@@ -1,3 +1,4 @@
+#**************************************************************************
 #   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -31,6 +32,7 @@ from TDTest.DVAnnoSymImageTest import DVAnnoSymImageTest
 from TDTest.DVDimensionTest    import DVDimensionTest
 from TDTest.DVPartTest         import DVPartTest
 from TDTest.DVSectionTest      import DVSectionTest
+from TDTest.DVBalloonTest      import DVBalloonTest
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD TechDraw module
@@ -86,3 +88,10 @@ class TechDrawTestCases(unittest.TestCase):
         else:
             print("TD DrawViewSection test failed")
 
+    def testBalloonCase(self):
+        print("starting TD DrawViewBalloon test")
+        rc = DVBalloonTest()
+        if rc:
+            print("TD DrawViewBalloon test passed")
+        else:
+            print("TD DrawViewBalloon test failed")

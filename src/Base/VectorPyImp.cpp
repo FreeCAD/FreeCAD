@@ -32,6 +32,8 @@
 // inclusion of the generated files (generated out of VectorPy.xml)
 #include "GeometryPyCXX.h"
 #include "VectorPy.h"
+#include "MatrixPy.h"
+#include "RotationPy.h"
 #include "VectorPy.cpp"
 
 using namespace Base;
@@ -53,7 +55,7 @@ std::string VectorPy::representation(void) const
 
 PyObject *VectorPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of VectorPy and the Twin object 
+    // create a new instance of VectorPy and the Twin object
     return new VectorPy(new Vector3d);
 }
 
@@ -142,44 +144,26 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
 {
     if (PyObject_TypeCheck(self, &(VectorPy::Type))) {
         Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
+
         if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
             Base::Vector3d b = static_cast<VectorPy*>(other)->value();
             Py::Float mult(a * b);
             return Py::new_reference_to(mult);
         }
-        else if (PyFloat_Check(other)) {
+        else if (PyNumber_Check(other)) {
             double b = PyFloat_AsDouble(other);
             return new VectorPy(a * b);
         }
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(other)) {
-        Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
-        long b = PyInt_AsLong(other);
-#else
-    else if (PyLong_Check(other)) {
-        long b = PyLong_AsLong(other);
-#endif
-            return new VectorPy(a * (double)b);
-        }
         else {
-            PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
+            PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
             return 0;
         }
     }
     else if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
         Base::Vector3d a = static_cast<VectorPy*>(other) ->value();
-        if (PyFloat_Check(self)) {
+        if (PyNumber_Check(self)) {
             double b = PyFloat_AsDouble(self);
             return new VectorPy(a * b);
-        }
-#if PY_MAJOR_VERSION >= 3
-        else if (PyLong_Check(self)) {
-            long b = PyLong_AsLong(self);
-#else
-        else if (PyInt_Check(self)) {
-            long b = PyInt_AsLong(self);
-#endif
-            return new VectorPy(a * (double)b);
         }
         else {
             PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
@@ -223,7 +207,7 @@ int VectorPy::sequence_ass_item(PyObject *self, Py_ssize_t index, PyObject *valu
         return -1;
     }
 
-    if (PyFloat_Check(value)) {
+    if (PyNumber_Check(value)) {
         VectorPy::PointerType ptr = static_cast<VectorPy*>(self)->getVectorPtr();
         (*ptr)[index] = PyFloat_AsDouble(value);
     }
@@ -248,11 +232,7 @@ PyObject * VectorPy::mapping_subscript(PyObject *self, PyObject *item)
     }
     else if (PySlice_Check(item)) {
         Py_ssize_t start, stop, step, slicelength, cur, i;
-#if PY_MAJOR_VERSION < 3
-        PySliceObject* slice = reinterpret_cast<PySliceObject*>(item);
-#else
         PyObject* slice = item;
-#endif
 
         if (PySlice_GetIndicesEx(slice,
                          sequence_length(self),
@@ -326,7 +306,7 @@ PyObject*  VectorPy::negative(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-        
+
     VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
     Base::Vector3d v = -(*this_ptr);
     return new VectorPy(v);
@@ -431,6 +411,32 @@ PyObject*  VectorPy::cross(PyObject *args)
     return new VectorPy(v);
 }
 
+PyObject*  VectorPy::isOnLineSegment(PyObject *args)
+{
+    PyObject *start, *end;
+    if (!PyArg_ParseTuple(args, "OO",&start, &end))
+        return 0;
+    if (!PyObject_TypeCheck(start, &(VectorPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "First arg must be Vector");
+        return 0;
+    }
+    if (!PyObject_TypeCheck(end, &(VectorPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Second arg must be Vector");
+        return 0;
+    }
+
+    VectorPy* start_vec = static_cast<VectorPy*>(start);
+    VectorPy* end_vec = static_cast<VectorPy*>(end);
+
+    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
+    VectorPy::PointerType start_ptr = reinterpret_cast<VectorPy::PointerType>(start_vec->_pcTwinPointer);
+    VectorPy::PointerType end_ptr = reinterpret_cast<VectorPy::PointerType>(end_vec->_pcTwinPointer);
+
+    Py::Boolean result = this_ptr->IsOnLineSegment(*start_ptr, *end_ptr);
+
+    return Py::new_reference_to(result);
+}
+
 PyObject*  VectorPy::getAngle(PyObject *args)
 {
     PyObject *obj;
@@ -451,7 +457,7 @@ PyObject*  VectorPy::normalize(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    if (ptr->Length() < 1.0e-6) {
+    if (ptr->Length() < Vector3d::epsilon()) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot normalize null vector");
         return 0;
     }
@@ -612,7 +618,7 @@ void  VectorPy::setLength(Py::Float arg)
 {
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
     double len = ptr->Length();
-    if (len < 1.0e-6) {
+    if (len < Vector3d::epsilon()) {
         throw Py::RuntimeError(std::string("Cannot set length of null vector"));
     }
 
@@ -672,7 +678,6 @@ int VectorPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 // In generation script allow to more precisely define which slots
 // of the number protocol should be supported instead of setting all.
 
-#if PY_MAJOR_VERSION < 3
 PyObject * VectorPy::number_divide_handler (PyObject* self, PyObject* other)
 {
     if (PyObject_TypeCheck(self, &(VectorPy::Type)) &&
@@ -702,10 +707,17 @@ PyObject * VectorPy::number_divide_handler (PyObject* self, PyObject* other)
                  Py_TYPE(self)->tp_name, Py_TYPE(other)->tp_name);
     return 0;
 }
-#endif
 
 PyObject * VectorPy::number_remainder_handler (PyObject* self, PyObject* other)
 {
+    if (PyObject_TypeCheck(self, &(VectorPy::Type)) &&
+        PyObject_TypeCheck(other, &(VectorPy::Type)))
+    {
+        Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
+        Base::Vector3d b = static_cast<VectorPy*>(other) ->value();
+        return new VectorPy(a % b);
+    }
+
     PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for %%: '%s' and '%s'",
                  Py_TYPE(self)->tp_name, Py_TYPE(other)->tp_name);
     return 0;
@@ -811,13 +823,6 @@ PyObject * VectorPy::number_or_handler (PyObject* self, PyObject* other)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-int VectorPy::number_coerce_handler (PyObject ** /*self*/, PyObject ** /*other*/)
-{
-    return 1;
-}
-#endif
-
 PyObject * VectorPy::number_int_handler (PyObject* self)
 {
     PyErr_Format(PyExc_TypeError, "int() argument must be a string or a number, not '%s'",
@@ -825,32 +830,9 @@ PyObject * VectorPy::number_int_handler (PyObject* self)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-PyObject * VectorPy::number_long_handler (PyObject* self)
-{
-    PyErr_Format(PyExc_TypeError, "long() argument must be a string or a number, not '%s'",
-                 Py_TYPE(self)->tp_name);
-    return 0;
-}
-#endif
-
 PyObject * VectorPy::number_float_handler (PyObject* self)
 {
     PyErr_Format(PyExc_TypeError, "float() argument must be a string or a number, not '%s'",
                  Py_TYPE(self)->tp_name);
     return 0;
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * VectorPy::number_oct_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_TypeError, "oct() argument can't be converted to oct");
-    return 0;
-}
-
-PyObject * VectorPy::number_hex_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_TypeError, "hex() argument can't be converted to hex");
-    return 0;
-}
-#endif

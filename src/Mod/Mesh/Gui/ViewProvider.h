@@ -27,6 +27,7 @@
 #include <Inventor/fields/SoSFVec2f.h>
 
 #include <Mod/Mesh/App/Core/Elements.h>
+#include <Mod/Mesh/App/Types.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
 #include <App/PropertyStandard.h>
@@ -96,7 +97,7 @@ public:
     virtual ~ViewProviderExport();
 
     virtual QIcon getIcon() const;
-    SoSeparator* getRoot(void){return 0;}
+    SoSeparator* getRoot(void) const {return nullptr;}
     std::vector<std::string> getDisplayModes(void) const;
     const char* getDefaultDisplayMode() const;
 };
@@ -136,29 +137,34 @@ public:
     bool exportToVrml(const char* filename, const MeshCore::Material&, bool binary=false) const;
     void exportMesh(const char* filename, const char* fmt=0) const;
     void setupContextMenu(QMenu*, QObject*, const char*);
+    /// Get the python wrapper for that ViewProvider
+    PyObject* getPyObject();
 
     /** @name Editing */
     //@{
     bool doubleClicked(void){ return false; }
-    bool isFacetSelected(unsigned long facet);
-    void selectComponent(unsigned long facet);
-    void deselectComponent(unsigned long facet);
-    void selectFacet(unsigned long facet);
-    void deselectFacet(unsigned long facet);
-    void setSelection(const std::vector<unsigned long>&);
-    void addSelection(const std::vector<unsigned long>&);
-    void removeSelection(const std::vector<unsigned long>&);
+    bool isFacetSelected(Mesh::FacetIndex facet);
+    void selectComponent(Mesh::FacetIndex facet);
+    void deselectComponent(Mesh::FacetIndex facet);
+    void selectFacet(Mesh::FacetIndex facet);
+    void deselectFacet(Mesh::FacetIndex facet);
+    void setSelection(const std::vector<Mesh::FacetIndex>&);
+    void addSelection(const std::vector<Mesh::FacetIndex>&);
+    void removeSelection(const std::vector<Mesh::FacetIndex>&);
     void invertSelection();
     void clearSelection();
     void deleteSelection();
     bool hasSelection() const;
     void getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
                               const Base::ViewProjMethod& proj, SbBool inner,
-                              std::vector<unsigned long>& indices) const;
-    std::vector<unsigned long> getFacetsOfRegion(const SbViewportRegion&, const SbViewportRegion&, SoCamera*) const;
-    std::vector<unsigned long> getVisibleFacetsAfterZoom(const SbBox2s&, const SbViewportRegion&, SoCamera*) const;
-    std::vector<unsigned long> getVisibleFacets(const SbViewportRegion&, SoCamera*) const;
-    virtual void removeFacets(const std::vector<unsigned long>&);
+                              std::vector<Mesh::FacetIndex>& indices) const;
+    std::vector<Mesh::FacetIndex> getFacetsOfRegion(const SbViewportRegion&, const SbViewportRegion&, SoCamera*) const;
+    std::vector<Mesh::FacetIndex> getVisibleFacetsAfterZoom(const SbBox2s&, const SbViewportRegion&, SoCamera*) const;
+    std::vector<Mesh::FacetIndex> getVisibleFacets(const SbViewportRegion&, SoCamera*) const;
+    virtual void cutMesh(const std::vector<SbVec2f>& picked, const Base::ViewProjMethod& proj, SbBool inner);
+    virtual void trimMesh(const std::vector<SbVec2f>& picked, const Base::ViewProjMethod& proj, SbBool inner);
+    virtual void appendFacets(const std::vector<Mesh::FacetIndex>&);
+    virtual void removeFacets(const std::vector<Mesh::FacetIndex>&);
     /*! The size of the array must be equal to the number of facets. */
     void setFacetTransparency(const std::vector<float>&);
     void resetFacetTransparency();
@@ -174,20 +180,21 @@ protected:
     void onChanged(const App::Property* prop);
     virtual void showOpenEdges(bool);
     void setOpenEdgeColorFrom(const App::Color& col);
-    virtual void cutMesh(const std::vector<SbVec2f>& picked, const Base::ViewProjMethod& proj, SbBool inner);
-    virtual void trimMesh(const std::vector<SbVec2f>& picked, const Base::ViewProjMethod& proj, SbBool inner);
     virtual void splitMesh(const MeshCore::MeshKernel& toolMesh, const Base::Vector3f& normal, SbBool inner);
     virtual void segmentMesh(const MeshCore::MeshKernel& toolMesh, const Base::Vector3f& normal, SbBool inner);
-    virtual void faceInfo(unsigned long facet);
-    virtual void fillHole(unsigned long facet);
+    virtual void faceInfo(Mesh::FacetIndex facet);
+    virtual void fillHole(Mesh::FacetIndex facet);
     virtual void selectArea(short, short, short, short, const SbViewportRegion&, SoCamera*);
-    void highlightSelection();
-    void unhighlightSelection();
+    virtual void highlightSelection();
+    virtual void unhighlightSelection();
     void highlightComponents();
     void setHighlightedComponents(bool);
+    void highlightSegments();
+    void setHighlightedSegments(bool);
     App::PropertyColorList* getColorProperty() const;
-    void tryColorPerVertex(bool);
+    void tryColorPerVertexOrFace(bool);
     void setColorPerVertex(const App::PropertyColorList*);
+    void setColorPerFace(const App::PropertyColorList*);
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;
@@ -211,6 +218,7 @@ private:
     static void panCamera(SoCamera*, float, const SbPlane&, const SbVec2f&, const SbVec2f&);
 
 protected:
+    std::string highlightMode;
     Gui::SoFCSelection  * pcHighlight;
     SoGroup             * pcShapeGroup;
     SoDrawStyle         * pcLineStyle;

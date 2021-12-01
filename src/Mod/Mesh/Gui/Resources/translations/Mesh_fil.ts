@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fil" sourcelanguage="en">
+<TS version="2.1" language="fil" sourcelanguage="en">
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
@@ -47,14 +47,44 @@
     </message>
   </context>
   <context>
-    <name>CmdMeshDemolding</name>
-    <message>
-      <source>Interactive demolding direction</source>
-      <translation>Interactive demolding direction</translation>
-    </message>
+    <name>CmdMeshCrossSections</name>
     <message>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Cross-sections...</source>
+      <translation>Cross-sections...</translation>
+    </message>
+    <message>
+      <source>Cross-sections</source>
+      <translation>Cross-sections</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshDecimating</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Decimation...</source>
+      <translation type="unfinished">Decimation...</translation>
+    </message>
+    <message>
+      <source>Decimates a mesh</source>
+      <translation type="unfinished">Decimates a mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshDemolding</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Interactive demolding direction</source>
+      <translation>Interactive demolding direction</translation>
     </message>
   </context>
   <context>
@@ -105,49 +135,12 @@
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Nagbubukas ng dialogo para aralin at ayusin ang mesh</translation>
-    </message>
-    <message>
-      <source>Evaluate &amp;&amp; Repair mesh...</source>
-      <translation>Suriin &amp; ayusin ang mesh...</translation>
-    </message>
-    <message>
       <source>Evaluate and repair mesh...</source>
       <translation type="unfinished">Evaluate and repair mesh...</translation>
     </message>
-  </context>
-  <context>
-    <name>CmdMeshExMakeMesh</name>
     <message>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <source>Make a Box</source>
-      <translation type="unfinished">Make a Box</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshExMakeTool</name>
-    <message>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <source>Make a Tool</source>
-      <translation type="unfinished">Make a Tool</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMeshExMakeUnion</name>
-    <message>
-      <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
-    </message>
-    <message>
-      <source>Make Union</source>
-      <translation type="unfinished">Make Union</translation>
+      <source>Opens a dialog to analyze and repair a mesh</source>
+      <translation>Nagbubukas ng dialogo para aralin at ayusin ang mesh</translation>
     </message>
   </context>
   <context>
@@ -372,6 +365,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshRemeshGmsh</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Refinement...</source>
+      <translation type="unfinished">Refinement...</translation>
+    </message>
+    <message>
+      <source>Refine existing mesh</source>
+      <translation type="unfinished">Refine existing mesh</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
       <source>Mesh</source>
@@ -447,6 +455,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -459,6 +482,21 @@
     <message>
       <source>Smooth the selected meshes</source>
       <translation>I-smooth ang mga napiling mesh</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSplitComponents</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Split by components</source>
+      <translation type="unfinished">Split by components</translation>
+    </message>
+    <message>
+      <source>Split selected mesh into its components</source>
+      <translation type="unfinished">Split selected mesh into its components</translation>
     </message>
   </context>
   <context>
@@ -524,12 +562,12 @@
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>Nagkakalkula ng curvature ng mga vertices ng mesh</translation>
-    </message>
-    <message>
       <source>Curvature plot</source>
       <translation>Plot ng curvature</translation>
+    </message>
+    <message>
+      <source>Calculates the curvature of the vertices of a mesh</source>
+      <translation>Nagkakalkula ng curvature ng mga vertices ng mesh</translation>
     </message>
   </context>
   <context>
@@ -548,34 +586,184 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
+    </message>
+    <message>
+      <source>Segment by tool mesh</source>
+      <translation>Segment sa pamamagitan ng tool mesh</translation>
+    </message>
+    <message>
+      <source>Mesh union</source>
+      <translation type="unfinished">Mesh union</translation>
+    </message>
+    <message>
+      <source>Mesh difference</source>
+      <translation type="unfinished">Mesh difference</translation>
+    </message>
+    <message>
+      <source>Mesh intersection</source>
+      <translation type="unfinished">Mesh intersection</translation>
+    </message>
+    <message>
+      <source>Import Mesh</source>
+      <translation type="unfinished">Import Mesh</translation>
+    </message>
+    <message>
+      <source>Mesh VertexCurvature</source>
+      <translation type="unfinished">Mesh VertexCurvature</translation>
+    </message>
+    <message>
+      <source>Mesh Smoothing</source>
+      <translation type="unfinished">Mesh Smoothing</translation>
+    </message>
+    <message>
+      <source>Harmonize mesh normals</source>
+      <translation type="unfinished">Harmonize mesh normals</translation>
+    </message>
+    <message>
+      <source>Flip mesh normals</source>
+      <translation type="unfinished">Flip mesh normals</translation>
+    </message>
+    <message>
+      <source>Fill up holes</source>
+      <translation type="unfinished">Fill up holes</translation>
+    </message>
+    <message>
+      <source>Mesh merge</source>
+      <translation type="unfinished">Mesh merge</translation>
+    </message>
+    <message>
+      <source>Mesh split</source>
+      <translation type="unfinished">Mesh split</translation>
+    </message>
+    <message>
+      <source>Mesh scale</source>
+      <translation type="unfinished">Mesh scale</translation>
+    </message>
+    <message>
+      <source>Mesh Decimating</source>
+      <translation type="unfinished">Mesh Decimating</translation>
+    </message>
+    <message>
+      <source>Harmonize normals</source>
+      <translation>Nagbibigay harmonya sa normals</translation>
+    </message>
+    <message>
+      <source>Remove non-manifolds</source>
+      <translation type="unfinished">Remove non-manifolds</translation>
+    </message>
+    <message>
+      <source>Fix indices</source>
+      <translation type="unfinished">Fix indices</translation>
+    </message>
+    <message>
+      <source>Remove degenerated faces</source>
+      <translation type="unfinished">Remove degenerated faces</translation>
+    </message>
+    <message>
+      <source>Remove duplicated faces</source>
+      <translation type="unfinished">Remove duplicated faces</translation>
+    </message>
+    <message>
+      <source>Remove duplicated points</source>
+      <translation type="unfinished">Remove duplicated points</translation>
+    </message>
+    <message>
+      <source>Fix self-intersections</source>
+      <translation type="unfinished">Fix self-intersections</translation>
+    </message>
+    <message>
+      <source>Remove folds</source>
+      <translation type="unfinished">Remove folds</translation>
+    </message>
+    <message>
+      <source>Repair mesh</source>
+      <translation type="unfinished">Repair mesh</translation>
+    </message>
+    <message>
+      <source>Delete selection</source>
+      <translation type="unfinished">Delete selection</translation>
+    </message>
+    <message>
+      <source>Cut</source>
+      <translation>Cut</translation>
+    </message>
+    <message>
+      <source>Trim</source>
+      <translation>Mahusay</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation type="unfinished">Split</translation>
+    </message>
+    <message>
+      <source>Segment</source>
+      <translation type="unfinished">Segment</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Burahin</translation>
+    </message>
+    <message>
+      <source>Fill hole</source>
+      <translation type="unfinished">Fill hole</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::DlgDecimating</name>
+    <message>
+      <source>Decimating</source>
+      <translation type="unfinished">Decimating</translation>
+    </message>
+    <message>
+      <source>Reduction</source>
+      <translation type="unfinished">Reduction</translation>
+    </message>
+    <message>
+      <source>None</source>
+      <translation>Wala</translation>
+    </message>
+    <message>
+      <source>Full</source>
+      <translation type="unfinished">Full</translation>
+    </message>
+    <message>
+      <source>Absolute number</source>
+      <translation type="unfinished">Absolute number</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Pahintulot</translation>
+    </message>
+    <message>
+      <source>Absolute number (Maximum: %1)</source>
+      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::DlgEvaluateMesh</name>
     <message>
-      <source>&amp;Help</source>
-      <translation>&amp;Tulong</translation>
-    </message>
-    <message>
-      <source>F1</source>
-      <translation>F1</translation>
-    </message>
-    <message>
-      <source>&amp;Close</source>
-      <translation>&amp;Sarado</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
+      <source>Evaluate &amp; Repair Mesh</source>
+      <translation>Suriin &amp; Ayusin ang Mesh</translation>
     </message>
     <message>
       <source>Mesh information</source>
       <translation>Impormasyon ng Mesh</translation>
     </message>
     <message>
+      <source>Number of points:</source>
+      <translation>Bilang ng mga puntos:</translation>
+    </message>
+    <message>
       <source>No information</source>
       <translation>Walang impormasyon</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Bilang ng mga puntos:</translation>
+      <source>Number of faces:</source>
+      <translation>Bilang ng faces:</translation>
     </message>
     <message>
       <source>Number of edges:</source>
@@ -586,28 +774,16 @@
       <translation>I-refresh</translation>
     </message>
     <message>
+      <source>Orientation</source>
+      <translation>Oryentasyon</translation>
+    </message>
+    <message>
       <source>Analyze</source>
       <translation>Pag-aralan</translation>
     </message>
     <message>
       <source>Repair</source>
       <translation>Ayusin</translation>
-    </message>
-    <message>
-      <source>Orientation</source>
-      <translation>Oryentasyon</translation>
-    </message>
-    <message>
-      <source>Degenerated faces</source>
-      <translation>Degenerated na faces</translation>
-    </message>
-    <message>
-      <source>Face indices</source>
-      <translation>Face indices</translation>
-    </message>
-    <message>
-      <source>Number of faces:</source>
-      <translation>Bilang ng faces:</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
@@ -622,8 +798,20 @@
       <translation>Non-manifolds</translation>
     </message>
     <message>
+      <source>Degenerated faces</source>
+      <translation>Degenerated na faces</translation>
+    </message>
+    <message>
+      <source>Face indices</source>
+      <translation>Face indices</translation>
+    </message>
+    <message>
       <source>Self-intersections</source>
       <translation>Sariling-intersetions</translation>
+    </message>
+    <message>
+      <source>Folds on surface</source>
+      <translation>Mga fold sa surface</translation>
     </message>
     <message>
       <source>All above tests together</source>
@@ -633,48 +821,33 @@
       <source>Repetitive repair</source>
       <translation>Pauit ulit na pagsasaayos</translation>
     </message>
-    <message>
-      <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Suriin &amp; Ayusin ang Mesh</translation>
-    </message>
-    <message>
-      <source>Folds on surface</source>
-      <translation>Mga fold sa surface</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
+    <message>
+      <source>Settings...</source>
+      <translation>Mga Settings...</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Walang pinili</translation>
+    </message>
     <message>
       <source>No information</source>
       <translation>Walang impormasyon</translation>
     </message>
     <message>
-      <source>Invalid neighbour indices</source>
-      <translation>Hindi valid na neighbor indices</translation>
+      <source>Flipped normals found</source>
+      <translation>Natagpuan ang flipped normals</translation>
     </message>
     <message>
-      <source>Invalid face indices</source>
-      <translation>Hindi valid na face indices</translation>
+      <source>Orientation</source>
+      <translation>Oryentasyon</translation>
     </message>
     <message>
-      <source>Invalid point indices</source>
-      <translation>Hindi valid na point indices</translation>
-    </message>
-    <message>
-      <source>Multiple point indices</source>
-      <translation>Maramihang point indices</translation>
-    </message>
-    <message>
-      <source>Non-manifolds</source>
-      <translation>Non-manifolds</translation>
-    </message>
-    <message>
-      <source>Cannot remove non-manifolds</source>
-      <translation>Hindi maalis ang non-manifolds</translation>
-    </message>
-    <message>
-      <source>No selection</source>
-      <translation>Walang pinili</translation>
+      <source>Check failed due to folds on the surface.
+Please run the command to repair folds first</source>
+      <translation>Hindi nagtagumpay ang pag check dahil sa folds na nasa surface. Mangyaring i-run ang command para maayos ang folds muna</translation>
     </message>
     <message>
       <source>No flipped normals</source>
@@ -693,8 +866,36 @@
       <translation>%1 non-manifolds</translation>
     </message>
     <message>
+      <source>Non-manifolds</source>
+      <translation>Non-manifolds</translation>
+    </message>
+    <message>
+      <source>Cannot remove non-manifolds</source>
+      <translation>Hindi maalis ang non-manifolds</translation>
+    </message>
+    <message>
+      <source>Invalid face indices</source>
+      <translation>Hindi valid na face indices</translation>
+    </message>
+    <message>
+      <source>Invalid point indices</source>
+      <translation>Hindi valid na point indices</translation>
+    </message>
+    <message>
+      <source>Multiple point indices</source>
+      <translation>Maramihang point indices</translation>
+    </message>
+    <message>
+      <source>Invalid neighbour indices</source>
+      <translation>Hindi valid na neighbor indices</translation>
+    </message>
+    <message>
       <source>No invalid indices</source>
       <translation>Walang invalid indices</translation>
+    </message>
+    <message>
+      <source>Indices</source>
+      <translation>Indices</translation>
     </message>
     <message>
       <source>No degenerations</source>
@@ -705,12 +906,20 @@
       <translation>%1 degenerated faces</translation>
     </message>
     <message>
+      <source>Degenerations</source>
+      <translation>Degenerations</translation>
+    </message>
+    <message>
       <source>No duplicated faces</source>
       <translation>Walang na duplicate na faces</translation>
     </message>
     <message>
       <source>%1 duplicated faces</source>
       <translation>%1 duplicated faces</translation>
+    </message>
+    <message>
+      <source>Duplicated faces</source>
+      <translation>Na duplicate na faces</translation>
     </message>
     <message>
       <source>No duplicated points</source>
@@ -721,41 +930,12 @@
       <translation>Na duplicate na points</translation>
     </message>
     <message>
-      <source>Orientation</source>
-      <translation>Oryentasyon</translation>
-    </message>
-    <message>
-      <source>Indices</source>
-      <translation>Indices</translation>
-    </message>
-    <message>
-      <source>Degenerations</source>
-      <translation>Degenerations</translation>
-    </message>
-    <message>
-      <source>Duplicated faces</source>
-      <translation>Na duplicate na faces</translation>
-    </message>
-    <message>
       <source>No self-intersections</source>
       <translation>Walang self-intersections</translation>
     </message>
     <message>
       <source>Self-intersections</source>
       <translation>Sariling-intersetions</translation>
-    </message>
-    <message>
-      <source>Mesh repair</source>
-      <translation>Pag ayos ng Mesh</translation>
-    </message>
-    <message>
-      <source>Flipped normals found</source>
-      <translation>Natagpuan ang flipped normals</translation>
-    </message>
-    <message>
-      <source>Check failed due to folds on the surface.
-Please run the command to repair folds first</source>
-      <translation>Hindi nagtagumpay ang pag check dahil sa folds na nasa surface. Mangyaring i-run ang command para maayos ang folds muna</translation>
     </message>
     <message>
       <source>No folds on surface</source>
@@ -770,8 +950,8 @@ Please run the command to repair folds first</source>
       <translation>Folds</translation>
     </message>
     <message>
-      <source>Settings...</source>
-      <translation>Mga Settings...</translation>
+      <source>Mesh repair</source>
+      <translation>Pag ayos ng Mesh</translation>
     </message>
   </context>
   <context>
@@ -906,24 +1086,42 @@ Please run the command to repair folds first</source>
       <translation type="unfinished">Export</translation>
     </message>
     <message>
-      <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Tinutukoy ang deviation ng tessellation sa aktuwal na surface</translation>
+      <source>Maximal deviation between mesh and object</source>
+      <translation type="unfinished">Maximal deviation between mesh and object</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Ang tumutukoy sa maximum deviation ng tessellated mesh sa surface. Kapag mas maliit ang value, mas mabagal ang render speed at mas maganda ang mga itsura.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Deviation of tessellation to the actual surface</source>
+      <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Pinakamataas na mesh deviation</translation>
     </message>
     <message>
-      <source>mm</source>
-      <translation>mm</translation>
+      <source>ZIP compression is used when writing a mesh file in AMF format</source>
+      <translation type="unfinished">ZIP compression is used when writing a mesh file in AMF format</translation>
     </message>
     <message>
       <source>Export AMF files using compression</source>
       <translation>Export AMF files gamit ang compression</translation>
+    </message>
+    <message>
+      <source>Width:</source>
+      <translation>Lapad:</translation>
+    </message>
+    <message>
+      <source>Height:</source>
+      <translation>Taas:</translation>
+    </message>
+    <message>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation type="unfinished">This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</translation>
     </message>
   </context>
   <context>
@@ -933,8 +1131,58 @@ Please run the command to repair folds first</source>
       <translation>View ng Mesh</translation>
     </message>
     <message>
+      <source>Default appearance for new meshes</source>
+      <translation>Default na anyo para sa bagong mga mesh</translation>
+    </message>
+    <message>
+      <source>Default line color</source>
+      <translation>Default na kulay ng linya</translation>
+    </message>
+    <message>
+      <source>Mesh transparency</source>
+      <translation>Transparency ng mesh</translation>
+    </message>
+    <message>
+      <source>Default color for new meshes</source>
+      <translation type="unfinished">Default color for new meshes</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <source>Default mesh color</source>
+      <translation>Default na kulay ng mesh</translation>
+    </message>
+    <message>
+      <source>A bounding box will be displayed</source>
+      <translation type="unfinished">A bounding box will be displayed</translation>
+    </message>
+    <message>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Pinapakita ang bounding-box para sa naka-highlight o napiling mga mesh</translation>
+    </message>
+    <message>
+      <source>Default line color for new meshes</source>
+      <translation type="unfinished">Default line color for new meshes</translation>
+    </message>
+    <message>
+      <source>The bottom side of surface will be rendered the same way than top side.
+If not checked, it depends on the option "Enable backlight color"
+(preferences section Display -&gt; 3D View). Either the backlight color
+will be used or black.</source>
+      <translation type="unfinished">The bottom side of surface will be rendered the same way than top side.
+If not checked, it depends on the option "Enable backlight color"
+(preferences section Display -&gt; 3D View). Either the backlight color
+will be used or black.</translation>
+    </message>
+    <message>
       <source>Two-side rendering</source>
       <translation>Dalawang-side na rendering</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Transparency ng Linya</translation>
     </message>
     <message>
       <source>Backface color</source>
@@ -953,44 +1201,42 @@ Please run the command to repair folds first</source>
       <translation>Crease ng anggulo</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>If this option is set Phong shading is used, otherwise flat shading.
+Shading defines the appearance of surfaces.
+
+With flat shading the surface normals are not defined per vertex that leads
+to a unreal appearance for curved surfaces while using Phong shading leads
+to a smoother appearance.
+</source>
+      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
+Shading defines the appearance of surfaces.
+
+With flat shading the surface normals are not defined per vertex that leads
+to a unreal appearance for curved surfaces while using Phong shading leads
+to a smoother appearance.
+</translation>
     </message>
     <message>
       <source>Define normal per vertex</source>
       <translation>Tukuyin ang normal kada vertex</translation>
     </message>
-    <message utf8="true">
+    <message>
+      <source>Crease angle is a threshold angle between two faces.
+
+ If face angle ≥ crease angle, facet shading is used
+ If face angle &lt; crease angle, smooth shading is used</source>
+      <translation type="unfinished">Crease angle is a threshold angle between two faces.
+
+ If face angle ≥ crease angle, facet shading is used
+ If face angle &lt; crease angle, smooth shading is used</translation>
+    </message>
+    <message>
       <source> °</source>
       <translation> °</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Default appearance for new meshes</source>
-      <translation>Default na anyo para sa bagong mga mesh</translation>
-    </message>
-    <message>
-      <source>Default line color</source>
-      <translation>Default na kulay ng linya</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Transparency ng mesh</translation>
-    </message>
-    <message>
-      <source>Default mesh color</source>
-      <translation>Default na kulay ng mesh</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Pinapakita ang bounding-box para sa naka-highlight o napiling mga mesh</translation>
-    </message>
-    <message>
-      <source>Line transparency</source>
-      <translation>Transparency ng Linya</translation>
     </message>
   </context>
   <context>
@@ -1033,6 +1279,45 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::GmshWidget</name>
+    <message>
+      <source>Automatic</source>
+      <translation>Kusa</translation>
+    </message>
+    <message>
+      <source>Adaptive</source>
+      <translation type="unfinished">Adaptive</translation>
+    </message>
+    <message>
+      <source>Frontal</source>
+      <translation type="unfinished">Frontal</translation>
+    </message>
+    <message>
+      <source>Frontal Quad</source>
+      <translation type="unfinished">Frontal Quad</translation>
+    </message>
+    <message>
+      <source>Parallelograms</source>
+      <translation type="unfinished">Parallelograms</translation>
+    </message>
+    <message>
+      <source>Time:</source>
+      <translation>Oras:</translation>
+    </message>
+    <message>
+      <source>Running gmsh...</source>
+      <translation type="unfinished">Running gmsh...</translation>
+    </message>
+    <message>
+      <source>Failed to start</source>
+      <translation type="unfinished">Failed to start</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Kamalian</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
       <source>Add triangle</source>
@@ -1056,6 +1341,92 @@ Please run the command to repair folds first</source>
     <message>
       <source>Finish</source>
       <translation>Tapos na</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation type="unfinished">Surface fit</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Mga Parametro</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Pagpili</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Rehiyon</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Tatlong pánulukan</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Malinaw</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation type="unfinished">Compute</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Walang pinili</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation type="unfinished">Before fitting the surface select an area.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::RemeshGmsh</name>
+    <message>
+      <source>Remesh by gmsh</source>
+      <translation type="unfinished">Remesh by gmsh</translation>
+    </message>
+    <message>
+      <source>Remeshing Parameter</source>
+      <translation type="unfinished">Remeshing Parameter</translation>
+    </message>
+    <message>
+      <source>Meshing:</source>
+      <translation type="unfinished">Meshing:</translation>
+    </message>
+    <message>
+      <source>Max element size (0.0 = Auto):</source>
+      <translation type="unfinished">Max element size (0.0 = Auto):</translation>
+    </message>
+    <message>
+      <source>Min element size (0.0 = Auto):</source>
+      <translation type="unfinished">Min element size (0.0 = Auto):</translation>
+    </message>
+    <message>
+      <source>Angle:</source>
+      <translation>Anggulo:</translation>
+    </message>
+    <message>
+      <source>Gmsh</source>
+      <translation type="unfinished">Gmsh</translation>
+    </message>
+    <message>
+      <source>Path</source>
+      <translation>Landas</translation>
+    </message>
+    <message>
+      <source>Kill</source>
+      <translation type="unfinished">Kill</translation>
+    </message>
+    <message>
+      <source>Time:</source>
+      <translation>Oras:</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Malinaw</translation>
     </message>
   </context>
   <context>
@@ -1109,12 +1480,12 @@ Please run the command to repair folds first</source>
       <translation>Mga pagpipilian na rehiyon</translation>
     </message>
     <message>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>Respect lamang ang mga triangle na may normals facing screen</translation>
-    </message>
-    <message>
       <source>Respect only visible triangles</source>
       <translation>Respect lamang ang mga nakikitang triangle</translation>
+    </message>
+    <message>
+      <source>Respect only triangles with normals facing screen</source>
+      <translation>Respect lamang ang mga triangle na may normals facing screen</translation>
     </message>
   </context>
   <context>
@@ -1136,7 +1507,7 @@ Please run the command to repair folds first</source>
       <translation>Pahintulot</translation>
     </message>
     <message>
-      <source>Minumum number of faces</source>
+      <source>Minimum number of faces</source>
       <translation>Pinakamababang bilang ng faces</translation>
     </message>
     <message>
@@ -1144,8 +1515,8 @@ Please run the command to repair folds first</source>
       <translation>Cylinder</translation>
     </message>
     <message>
-      <source>Radius</source>
-      <translation>Guhit na mulâ sa gitnâ hanggang sa gilid ng bilog</translation>
+      <source>Curvature</source>
+      <translation type="unfinished">Curvature</translation>
     </message>
     <message>
       <source>Tolerance (Flat)</source>
@@ -1156,12 +1527,71 @@ Please run the command to repair folds first</source>
       <translation>Tolerance (Curved)</translation>
     </message>
     <message>
-      <source>Minimum number of faces</source>
-      <translation>Pinakamababang bilang ng faces</translation>
+      <source>Sphere</source>
+      <translation>Sphere</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation type="unfinished">Freeform</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation type="unfinished">Max. Curvature</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation type="unfinished">Min. Curvature</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentation ng mesh</translation>
     </message>
     <message>
       <source>Sphere</source>
       <translation>Sphere</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Pahintulot</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Pinakamababang bilang ng faces</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation type="unfinished">Parameters...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plane</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cylinder</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Base</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normal</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Aksis</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Guhit na mulâ sa gitnâ hanggang sa gilid ng bilog</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Sentro</translation>
     </message>
   </context>
   <context>
@@ -1207,14 +1637,10 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
-    <name>Mesh_TrimByPlane</name>
+    <name>Mesh_BoundingBox</name>
     <message>
-      <source>Select plane</source>
-      <translation>Pumili ng plane</translation>
-    </message>
-    <message>
-      <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Mangyaring pumili ng plane kung saan ay ng trim ka ng mesh.</translation>
+      <source>Boundings of %1:</source>
+      <translation type="unfinished">Boundings of %1:</translation>
     </message>
   </context>
   <context>
@@ -1224,17 +1650,13 @@ Please run the command to repair folds first</source>
       <translation>OpenSCAD</translation>
     </message>
     <message>
-      <source>Unknwon error occured while running OpenSCAD.</source>
+      <source>Unknown error occurred while running OpenSCAD.</source>
       <translation>Hindi matukoy na kamalian na naganap habang ng run ang OpenSCAD.</translation>
     </message>
     <message>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Hindi matagpuan ang OpenSCAD sa iyong system. Mangyaring bisitahin ang http://www.openscad.org/index.html para i-install ito.</translation>
-    </message>
-    <message>
-      <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation>Hindi matukoy na kamalian na naganap habang ng run ang OpenSCAD.</translation>
     </message>
   </context>
   <context>
@@ -1247,156 +1669,8 @@ Please visit http://www.openscad.org/index.html to install it.</source>
   <context>
     <name>QObject</name>
     <message>
-      <source>Import mesh</source>
-      <translation>Import ang mesh</translation>
-    </message>
-    <message>
-      <source>Export mesh</source>
-      <translation>Export ang mesh</translation>
-    </message>
-    <message>
-      <source>Solid Mesh</source>
-      <translation>Solid na Mesh</translation>
-    </message>
-    <message>
-      <source>Boundings</source>
-      <translation>Mga Bounding</translation>
-    </message>
-    <message>
-      <source>Fill holes</source>
-      <translation>Punan ang mga hole</translation>
-    </message>
-    <message>
-      <source>Fill holes with maximum number of edges:</source>
-      <translation>Punan ang mga hole ng pinakamataas na bilang ng mga edge:</translation>
-    </message>
-    <message>
-      <source>Binary STL (*.stl)</source>
-      <translation type="unfinished">Binary STL (*.stl)</translation>
-    </message>
-    <message>
-      <source>ASCII STL (*.ast)</source>
-      <translation type="unfinished">ASCII STL (*.ast)</translation>
-    </message>
-    <message>
-      <source>Binary Mesh (*.bms)</source>
-      <translation type="unfinished">Binary Mesh (*.bms)</translation>
-    </message>
-    <message>
-      <source>Alias Mesh (*.obj)</source>
-      <translation type="unfinished">Alias Mesh (*.obj)</translation>
-    </message>
-    <message>
-      <source>Inventor V2.1 ascii (*.iv)</source>
-      <translation type="unfinished">Inventor V2.1 ascii (*.iv)</translation>
-    </message>
-    <message>
-      <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
-    </message>
-    <message>
-      <source>ASCII STL (*.stl)</source>
-      <translation type="unfinished">ASCII STL (*.stl)</translation>
-    </message>
-    <message>
-      <source>VRML V2.0 (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML V2.0 (*.wrl *.vrml)</translation>
-    </message>
-    <message>
-      <source>Compressed VRML 2.0 (*.wrz)</source>
-      <translation type="unfinished">Compressed VRML 2.0 (*.wrz)</translation>
-    </message>
-    <message>
-      <source>Nastran (*.nas *.bdf)</source>
-      <translation type="unfinished">Nastran (*.nas *.bdf)</translation>
-    </message>
-    <message>
-      <source>Python module def (*.py)</source>
-      <translation type="unfinished">Python module def (*.py)</translation>
-    </message>
-    <message>
-      <source>Meshing Tolerance</source>
-      <translation>Tolerance ng Meshing</translation>
-    </message>
-    <message>
-      <source>Enter tolerance for meshing geometry:</source>
-      <translation>I-enter ang tolerance para sa meshing geometry:</translation>
-    </message>
-    <message>
-      <source>The mesh '%1' is a solid.</source>
-      <translation>Ang mesh '%1' ay isang solid.</translation>
-    </message>
-    <message>
-      <source>The mesh '%1' is not a solid.</source>
-      <translation>Ang mesh '%1' ay hindi isang solid.</translation>
-    </message>
-    <message>
-      <source>Min=&lt;%1,%2,%3&gt;
-
-Max=&lt;%4,%5,%6&gt;</source>
-      <translation>Min=&lt;%1,%2,%3&gt;
-
-Max=&lt;%4,%5,%6&gt;</translation>
-    </message>
-    <message>
-      <source>[Points: %1, Edges: %2 Faces: %3]</source>
-      <translation type="unfinished">[Points: %1, Edges: %2 Faces: %3]</translation>
-    </message>
-    <message>
-      <source>Leave info mode</source>
-      <translation>Lisanin ang info mode</translation>
-    </message>
-    <message>
-      <source>Index: %1</source>
-      <translation>Index: %1</translation>
-    </message>
-    <message>
-      <source>Leave hole-filling mode</source>
-      <translation>Lisanin ang hole-filling mode</translation>
-    </message>
-    <message>
-      <source>Leave removal mode</source>
-      <translation>Lisanin ang removal mode</translation>
-    </message>
-    <message>
-      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</source>
-      <translation type="unfinished">All Mesh Files (*.stl *.ast *.bms *.obj *.ply)</translation>
-    </message>
-    <message>
-      <source>Stanford Polygon (*.ply)</source>
-      <translation type="unfinished">Stanford Polygon (*.ply)</translation>
-    </message>
-    <message>
-      <source>Object File Format (*.off)</source>
-      <translation type="unfinished">Object File Format (*.off)</translation>
-    </message>
-    <message>
-      <source>Standford Polygon (*.ply)</source>
-      <translation type="unfinished">Standford Polygon (*.ply)</translation>
-    </message>
-    <message>
-      <source>Delete selected faces</source>
-      <translation>Tanggalin ang mga napiling face</translation>
-    </message>
-    <message>
-      <source>Clear selected faces</source>
-      <translation>I-clear ang mga napiling face</translation>
-    </message>
-    <message>
-      <source>Annotation</source>
-      <translation>Annotation</translation>
-    </message>
-    <message>
-      <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
-      <translation type="unfinished">All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
-    </message>
-    <message>
-      <source>X3D Extensible 3D (*.x3d)</source>
-      <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
-    </message>
-    <message>
-      <source>Display components</source>
-      <translation>I-display ang mga component</translation>
+      <source>Import-Export</source>
+      <translation>Import-Export</translation>
     </message>
     <message>
       <source>All Mesh Files</source>
@@ -1423,20 +1697,44 @@ Max=&lt;%4,%5,%6&gt;</translation>
       <translation>Format ng Object File</translation>
     </message>
     <message>
-      <source>Inventor V2.1 ascii</source>
-      <translation>Inventor V2.1 ascii</translation>
+      <source>Inventor V2.1 ASCII</source>
+      <translation type="unfinished">Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
       <translation>Stanford Polygon</translation>
     </message>
     <message>
+      <source>NASTRAN</source>
+      <translation type="unfinished">NASTRAN</translation>
+    </message>
+    <message>
       <source>All Files</source>
       <translation>Lahat ng mga File</translation>
     </message>
     <message>
+      <source>Import mesh</source>
+      <translation>Import ang mesh</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation type="unfinished">Simple Model Format</translation>
+    </message>
+    <message>
+      <source>Inventor V2.1 ascii</source>
+      <translation>Inventor V2.1 ascii</translation>
+    </message>
+    <message>
       <source>X3D Extensible 3D</source>
       <translation>X3D Extensible 3D</translation>
+    </message>
+    <message>
+      <source>Compressed X3D</source>
+      <translation type="unfinished">Compressed X3D</translation>
+    </message>
+    <message>
+      <source>WebGL/X3D</source>
+      <translation type="unfinished">WebGL/X3D</translation>
     </message>
     <message>
       <source>VRML V2.0</source>
@@ -1455,12 +1753,44 @@ Max=&lt;%4,%5,%6&gt;</translation>
       <translation>Python module def</translation>
     </message>
     <message>
-      <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation>[Points: %1, Edges: %2, Faces: %3]</translation>
+      <source>Asymptote Format</source>
+      <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
-      <source>Import-Export</source>
-      <translation>Import-Export</translation>
+      <source>Export mesh</source>
+      <translation>Export ang mesh</translation>
+    </message>
+    <message>
+      <source>Meshing Tolerance</source>
+      <translation>Tolerance ng Meshing</translation>
+    </message>
+    <message>
+      <source>Enter tolerance for meshing geometry:</source>
+      <translation>I-enter ang tolerance para sa meshing geometry:</translation>
+    </message>
+    <message>
+      <source>The mesh '%1' is not a solid.</source>
+      <translation>Ang mesh '%1' ay hindi isang solid.</translation>
+    </message>
+    <message>
+      <source>The mesh '%1' is a solid.</source>
+      <translation>Ang mesh '%1' ay isang solid.</translation>
+    </message>
+    <message>
+      <source>Solid Mesh</source>
+      <translation>Solid na Mesh</translation>
+    </message>
+    <message>
+      <source>Boundings</source>
+      <translation>Mga Bounding</translation>
+    </message>
+    <message>
+      <source>Fill holes</source>
+      <translation>Punan ang mga hole</translation>
+    </message>
+    <message>
+      <source>Fill holes with maximum number of edges:</source>
+      <translation>Punan ang mga hole ng pinakamataas na bilang ng mga edge:</translation>
     </message>
     <message>
       <source>Scaling</source>
@@ -1469,6 +1799,46 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Enter scaling factor:</source>
       <translation>Ilagay ang scaling factor:</translation>
+    </message>
+    <message>
+      <source>[Points: %1, Edges: %2, Faces: %3]</source>
+      <translation>[Points: %1, Edges: %2, Faces: %3]</translation>
+    </message>
+    <message>
+      <source>Display components</source>
+      <translation>I-display ang mga component</translation>
+    </message>
+    <message>
+      <source>Display segments</source>
+      <translation type="unfinished">Display segments</translation>
+    </message>
+    <message>
+      <source>Leave info mode</source>
+      <translation>Lisanin ang info mode</translation>
+    </message>
+    <message>
+      <source>Index: %1</source>
+      <translation>Index: %1</translation>
+    </message>
+    <message>
+      <source>Leave hole-filling mode</source>
+      <translation>Lisanin ang hole-filling mode</translation>
+    </message>
+    <message>
+      <source>Leave removal mode</source>
+      <translation>Lisanin ang removal mode</translation>
+    </message>
+    <message>
+      <source>Delete selected faces</source>
+      <translation>Tanggalin ang mga napiling face</translation>
+    </message>
+    <message>
+      <source>Clear selected faces</source>
+      <translation>I-clear ang mga napiling face</translation>
+    </message>
+    <message>
+      <source>Annotation</source>
+      <translation>Annotation</translation>
     </message>
   </context>
   <context>

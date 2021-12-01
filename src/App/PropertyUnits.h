@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -45,7 +45,7 @@ namespace App
 {
 
 /** Float with Unit property
- * This is a property for float with a predefined Unit associated .
+ * This is a property for float with a predefined Unit associated.
  */
 class AppExport PropertyQuantity : public PropertyFloat
 {
@@ -77,7 +77,7 @@ protected:
 };
 
 /** Float with Unit property
- * This is a property for float with a predefined Unit associated .
+ * This is a property for float with a predefined Unit associated.
  */
 class AppExport PropertyQuantityConstraint : public PropertyQuantity
 {
@@ -87,16 +87,16 @@ public:
     PropertyQuantityConstraint(void):_ConstStruct(0){}
     virtual ~PropertyQuantityConstraint(){}
 
-    /// Constraint methods 
+    /// Constraint methods
     //@{
     /// the boundary struct
     struct Constraints {
         double LowerBound, UpperBound, StepSize;
     };
     /** setting the boundaries
-     * This sets the constraint struct. It can be dynamically 
+     * This sets the constraint struct. It can be dynamically
      * allocated or set as an static in the class the property
-     * blongs to:
+     * belongs to:
      * \code
      * const Constraints percent = {0.0,100.0,1.0}
      * \endcode
@@ -105,6 +105,10 @@ public:
     /// get the constraint struct
     const Constraints*  getConstraints(void) const;
     //@}
+
+    double getMinimum() const;
+    double getMaximum() const;
+    double getStepSize() const;
 
     virtual const char* getEditorName(void) const;
     virtual void setPyObject(PyObject *);
@@ -167,12 +171,24 @@ public:
  * property. On the Gui it has a quantity like RAD.
  */
 class AppExport PropertyAngle: public PropertyQuantityConstraint
-{ 
+{
     TYPESYSTEM_HEADER();
 public:
     PropertyAngle(void);
     virtual ~PropertyAngle(){}
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyAngleItem"; }
+};
+
+/** Frequency property
+ * This is a property for representing frequency. It is basically a float
+ * property. On the Gui it has a quantity like 1/s or Hz.
+ */
+class AppExport PropertyFrequency: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyFrequency(void);
+    virtual ~PropertyFrequency(){}
 };
 
 /** Speed property
@@ -211,6 +227,18 @@ public:
     virtual ~PropertyPressure(){}
 };
 
+/** Stiffness property
+ * This is a property for representing stiffness. It is basically a float
+ * property. On the Gui it has a quantity like m/s^2.
+ */
+class AppExport PropertyStiffness: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyStiffness(void);
+    virtual ~PropertyStiffness(){}
+};
+
 /** Force property
  * This is a property for representing acceleration. It is basically a float
  * property. On the Gui it has a quantity like m/s^2.
@@ -223,6 +251,17 @@ public:
     virtual ~PropertyForce(){}
 };
 
+/** VacuumPermittivity property
+ * This is a property for representing vacuum permittivity. It is basically a float
+ * property. On the Gui it has a quantity like s^4*A^2 / (m^3*kg).
+ */
+class AppExport PropertyVacuumPermittivity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyVacuumPermittivity(void);
+    virtual ~PropertyVacuumPermittivity(){}
+};
 
 } // namespace App
 

@@ -95,7 +95,7 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
         // read from buffer
         SoInput in;
         std::string buffer = ivObj->Buffer.getValue();
-        pcBuffer->removeAllChildren();
+        coinRemoveAllChildren(pcBuffer);
         if (buffer.empty()) return;
         in.setBuffer((void *)buffer.c_str(), buffer.size());
         SoSeparator * node = SoDB::readAll(&in);
@@ -112,7 +112,7 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
         QString fn = QString::fromUtf8(filename);
         QFile file(fn);
         SoInput in;
-        pcFile->removeAllChildren();
+        coinRemoveAllChildren(pcFile);
         if (!fn.isEmpty() && file.open(QFile::ReadOnly)) {
             QByteArray buffer = file.readAll();
             in.setBuffer((void *)buffer.constData(), buffer.length());

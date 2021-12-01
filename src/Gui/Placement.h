@@ -24,12 +24,12 @@
 #define GUI_PLACEMENT_H
 
 #include <Gui/InputVector.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Base/Placement.h>
 
-#include <boost/signals.hpp>
-#include <boost/bind.hpp>
+#include <boost_signals2.hpp>
 
 class QSignalMapper;
 
@@ -45,25 +45,31 @@ class GuiExport Placement : public Gui::LocationDialog
     Q_OBJECT
 
 public:
-    Placement(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    Placement(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~Placement();
     void accept();
     void reject();
 
+    void bindObject();
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
     void showDefaultButtons(bool);
 
 protected:
+    void open();
     void changeEvent(QEvent *e);
+    void keyPressEvent(QKeyEvent*);
 
 private Q_SLOTS:
+    void openTransaction();
     void on_applyButton_clicked();
     void on_applyIncrementalPlacement_toggled(bool);
     void onPlacementChanged(int);
     void on_resetButton_clicked();
     void on_centerOfMass_toggled(bool);
+    void on_selectedVertex_clicked();
+    void on_applyAxial_clicked();
 
 private:
     bool onApply();
@@ -83,8 +89,8 @@ Q_SIGNALS:
     void directionChanged();
 
 private:
-    typedef Gui::LocationInterfaceComp<Ui_Placement> Ui_PlacementComp;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef Gui::LocationUi<Ui_Placement> Ui_PlacementComp;
+    typedef boost::signals2::connection Connection;
     Ui_PlacementComp* ui;
     QSignalMapper* signalMapper;
     Connection connectAct;
@@ -92,6 +98,15 @@ private:
     Base::Vector3d cntOfMass;
     std::string propertyName; // the name of the placement property
     std::set<std::string> documents;
+    /**
+     * store these so we can reselect original object
+     * after user selects points and clicks Selected point(s)
+     */
+    std::vector<SelectionObject> selectionObjects;
+    /** If false apply the placement directly to the transform nodes,
+     * otherwise change the placement property.
+     */
+    bool changeProperty;
 
     friend class TaskPlacement;
 };
@@ -101,7 +116,7 @@ class GuiExport DockablePlacement : public Placement
     Q_OBJECT
 
 public:
-    DockablePlacement(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DockablePlacement(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DockablePlacement();
 
     void accept();
@@ -119,10 +134,12 @@ public:
 public:
     void setPropertyName(const QString&);
     void setPlacement(const Base::Placement&);
+    void bindObject();
     bool accept();
     bool reject();
     void clicked(int id);
 
+    void open();
     bool isAllowedAlterDocument(void) const
     { return true; }
     bool isAllowedAlterView(void) const

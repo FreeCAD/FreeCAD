@@ -183,7 +183,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
     int max_width = getMainWindow()->width();
     int top_width = 0;
-    
+
     ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                ->GetGroup("MainWindow")->GetGroup("Toolbars");
     QList<ToolBarItem*> items = toolBarItems->getItems();
@@ -250,6 +250,11 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         (*it)->hide();
         (*it)->toggleViewAction()->setVisible(false);
     }
+
+    hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("Preferences")->GetGroup("General");
+    bool lockToolBars = hPref->GetBool("LockToolBars", false);
+    setMovable(!lockToolBars);
 }
 
 void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
@@ -272,8 +277,8 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
             // set the tool button user data
             if (action) action->setData(QString::fromLatin1((*it)->command().c_str()));
         } else {
-            // Note: For toolbars we do not remove and readd the actions
-            // because this causes flicker effects. So, it could happen that the order of 
+            // Note: For toolbars we do not remove and re-add the actions
+            // because this causes flicker effects. So, it could happen that the order of
             // buttons doesn't match with the order of commands in the workbench.
             int index = actions.indexOf(action);
             actions.removeAt(index);
@@ -314,6 +319,12 @@ void ToolBarManager::restoreState() const
             toolbar->setVisible(hPref->GetBool(toolbarName.constData(), toolbar->isVisible()));
         }
     }
+
+
+    hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("Preferences")->GetGroup("General");
+    bool lockToolBars = hPref->GetBool("LockToolBars", false);
+    setMovable(!lockToolBars);
 }
 
 void ToolBarManager::retranslate() const
@@ -324,6 +335,13 @@ void ToolBarManager::retranslate() const
         (*it)->setWindowTitle(
             QApplication::translate("Workbench",
                                     (const char*)toolbarName));
+    }
+}
+
+void Gui::ToolBarManager::setMovable(bool moveable) const
+{
+    for (auto& tb : toolBars()) {
+        tb->setMovable(moveable);
     }
 }
 

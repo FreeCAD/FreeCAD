@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2008 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -67,7 +67,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
     Base::Builder3D builder;  
     std::vector<Base::Vector3f> PointNormals= Mesh->CalcVertexNormals();
     std::vector<Base::Vector3f> FaceNormals;
-    std::set<unsigned long> fliped;
+    std::set<MeshCore::FacetIndex> fliped;
 
     MeshFacetIterator it(*Mesh);
     for (  it.Init(); it.More(); it.Next() )
@@ -103,7 +103,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
         if(fliped.size() == 0)
             break;
 
-        for(std::set<unsigned long>::iterator It= fliped.begin();It!=fliped.end();++It)
+        for(std::set<MeshCore::FacetIndex>::iterator It= fliped.begin();It!=fliped.end();++It)
             alg.CollapseFacet(*It);
         fliped.clear();
     }
@@ -112,7 +112,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
 
     // search for intersected facets
     MeshCore::MeshEvalSelfIntersection eval(*Mesh);
-    std::vector<std::pair<unsigned long, unsigned long> > faces;
+    std::vector<std::pair<MeshCore::FacetIndex, MeshCore::FacetIndex> > faces;
     eval.GetIntersections(faces);
 
 
@@ -191,12 +191,12 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
   if (!gts_surface_is_orientable (s1)) {
     gts_object_destroy (GTS_OBJECT (s1));
     gts_object_destroy (GTS_OBJECT (s2));
-    throw "surface 1 is not an orientable manifold\n";
+    throw std::runtime_error("surface 1 is not an orientable manifold\n");
   }
   if (!gts_surface_is_orientable (s2)) {
     gts_object_destroy (GTS_OBJECT (s1));
     gts_object_destroy (GTS_OBJECT (s2));
-    throw "surface 2 is not an orientable manifold\n";
+    throw std::runtime_error("surface 2 is not an orientable manifold\n");
   }
 
   /* check that the surfaces are not self-intersecting */
@@ -211,7 +211,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
       gts_object_destroy (GTS_OBJECT (self_intersects));
       gts_object_destroy (GTS_OBJECT (s1));
       gts_object_destroy (GTS_OBJECT (s2));
-      throw "surface is self-intersecting\n";
+      throw std::runtime_error("surface is self-intersecting\n");
     }
     self_intersects = gts_surface_is_self_intersecting (s2);
     if (self_intersects != NULL) {
@@ -221,7 +221,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
       gts_object_destroy (GTS_OBJECT (self_intersects));
       gts_object_destroy (GTS_OBJECT (s1));
       gts_object_destroy (GTS_OBJECT (s2));
-      throw "surface is self-intersecting\n";
+      throw std::runtime_error("surface is self-intersecting\n");
     }
   }
 
@@ -285,7 +285,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
       gts_object_destroy (GTS_OBJECT (si));
       gts_bb_tree_destroy (tree1, true);
       gts_bb_tree_destroy (tree2, true);
-      throw "the resulting surface is self-intersecting\n";
+      throw std::runtime_error("the resulting surface is self-intersecting\n");
     }
   }
   // display summary information about the resulting surface 
@@ -571,8 +571,8 @@ void MeshAlgos::LoftOnCurve(MeshCore::MeshKernel &ResultMesh, const TopoDS_Shape
                      p3 = prePoint[l],
                      p4 = actPoint[l];
 
-            cVAry.push_back(MeshGeomFacet(p1,p2,p3));
-            cVAry.push_back(MeshGeomFacet(p3,p2,p4));
+            cVAry.emplace_back(p1,p2,p3);
+            cVAry.emplace_back(p3,p2,p4);
           }
         }
       }

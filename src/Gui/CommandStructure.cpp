@@ -43,24 +43,24 @@ using namespace Gui;
 //===========================================================================
 // Std_Part
 //===========================================================================
-DEF_STD_CMD_A(StdCmdPart);
+DEF_STD_CMD_A(StdCmdPart)
 
 StdCmdPart::StdCmdPart()
   : Command("Std_Part")
 {
-    sGroup        = QT_TR_NOOP("Structure");
+    sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create part");
     sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
     sWhatsThis    = "Std_Part";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Geofeaturegroup.svg";
+    sPixmap       = "Geofeaturegroup";
 }
 
 void StdCmdPart::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand("Add a part");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a part"));
     std::string FeatName = getUniqueObjectName("Part");
 
     std::string PartName;
@@ -69,7 +69,8 @@ void StdCmdPart::activated(int iMsg)
     // TODO We really must set label ourselves? (2015-08-17, Fat-Zer)
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'", PartName.c_str(),
             QObject::tr(PartName.c_str()).toUtf8().data());
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
+    doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
+                                 "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
             PARTKEY, PartName.c_str());
 
     updateActive();
@@ -83,24 +84,24 @@ bool StdCmdPart::isActive(void)
 //===========================================================================
 // Std_Group
 //===========================================================================
-DEF_STD_CMD_A(StdCmdGroup);
+DEF_STD_CMD_A(StdCmdGroup)
 
 StdCmdGroup::StdCmdGroup()
   : Command("Std_Group")
 {
-    sGroup        = QT_TR_NOOP("Structure");
+    sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create group");
     sToolTipText  = QT_TR_NOOP("Create a new group for ordering objects");
     sWhatsThis    = "Std_Group";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Group.svg";
+    sPixmap       = "folder";
 }
 
 void StdCmdGroup::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand("Add a group");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a group"));
 
     std::string GroupName;
     GroupName = getUniqueObjectName("Group");

@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -40,7 +41,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintGear, Fem::ConstraintBearing);
+PROPERTY_SOURCE(Fem::ConstraintGear, Fem::ConstraintBearing)
 
 ConstraintGear::ConstraintGear()
 {

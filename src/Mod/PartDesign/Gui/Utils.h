@@ -43,8 +43,28 @@ namespace Sketcher {
 
 namespace PartDesignGui {
 
+/// Activate edit mode of the given object
+bool setEdit(App::DocumentObject *obj, PartDesign::Body *body = 0);
+
 /// Return active body or show a warning message
-PartDesign::Body *getBody(bool messageIfNot, bool autoActivate=true, bool assertModern=true);
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate=true, bool assertModern=true,
+        App::DocumentObject **topParent=0, std::string *subname=0);
+
+/// Display a dialog to select or create a Body object when none is active
+PartDesign::Body * needActiveBodyMessage(App::Document *doc,
+                                         const QString& infoText=QString());
+
+/**
+ * Set given body active, and return pointer to it.
+ * \param body the pointer to the body
+ * \param doc the pointer to the document in question
+ * \param topParent and
+ * \param subname to be passed under certain circumstances
+ *        (currently only subshapebinder)
+ */
+PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
+                                  App::DocumentObject **topParent=0,
+                                  std::string *subname=0);
 
 /// Display error when there are existing Body objects, but none are active
 void needActiveBodyError(void);
@@ -57,7 +77,9 @@ PartDesign::Body * makeBody(App::Document *doc);
  * Also unlike Body::findBodyFor it checks if the active body has the feature first.
  */
 PartDesign::Body *getBodyFor(const App::DocumentObject*, bool messageIfNot,
-                             bool autoActivate=true, bool assertModern=true);
+                             bool autoActivate=true, bool assertModern=true,
+                             App::DocumentObject **topParent=0, std::string *subname=0);
+
 App::Part        *getPartFor(const App::DocumentObject*, bool messageIfNot);
 App::Part        *getActivePart();
 

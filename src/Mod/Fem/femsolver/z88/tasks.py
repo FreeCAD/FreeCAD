@@ -1,6 +1,7 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   Copyright (c) 2017 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,252 +21,152 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Z88 Tasks"
+__title__ = "FreeCAD FEM solver Z88 tasks"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import os
-import subprocess
 import os.path
+import subprocess
 
-import FreeCAD as App
-import femtools.femutils as FemUtils
-import feminout.importZ88O2Results as importZ88O2Results
+import FreeCAD
 
+from . import writer
 from .. import run
 from .. import settings
-from . import writer
-
-
-_inputFileName = None
+from feminout import importZ88O2Results
+from femmesh import meshsetsgetter
+from femtools import femutils
+from femtools import membertools
 
 
 class Check(run.Check):
 
     def run(self):
-        self.pushStatus("Checking analysis...\n")
-        self.checkMesh()
-        self.checkMaterial()
+        self.pushStatus("Checking analysis member...\n")
+        self.check_mesh_exists()
+        self.check_material_exists()
+        self.check_material_single()  # no multiple material
+        self.check_geos_beamsection_single()  # no multiple beamsection
+        self.check_geos_shellthickness_single()  # no multiple shellsection
+        self.check_geos_beamsection_and_shellthickness()  # either beams or shells
 
 
 class Prepare(run.Prepare):
 
     def run(self):
-        global _inputFileName
-        self.pushStatus("Preparing input files...\n")
-        c = _Container(self.analysis)
+        self.pushStatus("Preparing solver input...\n")
+
+        # get mesh set data
+        # TODO see calculix tasks get mesh set data
+        mesh_obj = membertools.get_mesh_to_solve(self.analysis)[0]  # pre check done already
+        meshdatagetter = meshsetsgetter.MeshSetsGetter(
+            self.analysis,
+            self.solver,
+            mesh_obj,
+            membertools.AnalysisMember(self.analysis),
+        )
+        meshdatagetter.get_mesh_sets()
+
+        # write solver input
         w = writer.FemInputWriterZ88(
-            self.analysis, self.solver, c.mesh, c.materials_linear,
-            c.materials_nonlinear, c.fixed_constraints,
-            c.displacement_constraints, c.contact_constraints,
-            c.planerotation_constraints, c.transform_constraints,
-            c.selfweight_constraints, c.force_constraints,
-            c.pressure_constraints, c.temperature_constraints,
-            c.heatflux_constraints, c.initialtemperature_constraints,
-            c.beam_sections, c.beam_rotations, c.shell_thicknesses, c.fluid_sections,
-            self.directory)
-        path = w.write_z88_input()
+            self.analysis,
+            self.solver,
+            mesh_obj,
+            meshdatagetter.member,
+            self.directory
+        )
+        path = w.write_solver_input()
         # report to user if task succeeded
         if path is not None:
-            self.pushStatus("Write completed!")
+            self.pushStatus("Writing solver input completed.")
         else:
-            self.pushStatus("Writing Z88 input files failed!")
-        _inputFileName = os.path.splitext(os.path.basename(path))[0]  # AFAIK empty for z88
+            self.pushStatus("Writing solver input failed.")
+            self.fail()
         # print(path)
-        # print(_inputFileName)
+        # z88 does not pass a main input file to the solver
+        # it passes the directory all input files are in
+        # not _inputFileName is needed
 
 
 class Solve(run.Solve):
 
     def run(self):
-        # AFAIK: z88r needs to be run twice, once in test mode and once in real solve mode
-        # the subprocess was just copied, it seems to work :-)
-        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values, may be compared with the used ones
         self.pushStatus("Executing test solver...\n")
-        binary = settings.getBinary("Z88")
+
+        # get solver binary
+        self.pushStatus("Get solver binary...\n")
+        binary = settings.get_binary("Z88")
+        if binary is None:
+            self.fail()  # a print has been made in settings module
+
+        # run solver test mode
+        # AFAIK: z88r needs to be run twice
+        # once in test mode and once in real solve mode
+        # the subprocess was just copied, it works :-)
+        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values
+        # may be compare with the used ones
+        self.pushStatus("Executing solver in test mode...\n")
         self._process = subprocess.Popen(
             [binary, "-t", "-choly"],
             cwd=self.directory,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         self.signalAbort.add(self._process.terminate)
-        output = self._observeSolver(self._process)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
 
-        self.pushStatus("Executing real solver...\n")
-        binary = settings.getBinary("Z88")
+        # run solver real mode
+        self.pushStatus("Executing solver in real mode...\n")
+        binary = settings.get_binary("Z88")
         self._process = subprocess.Popen(
             [binary, "-c", "-choly"],
             cwd=self.directory,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         self.signalAbort.add(self._process.terminate)
-        output = self._observeSolver(self._process)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
-        # if not self.aborted:
-        #     self._updateOutput(output)
-        del output   # get flake8 quiet
 
-    def _observeSolver(self, process):
-        output = ""
-        line = process.stdout.readline()
-        self.pushStatus(line)
-        output += line
-        line = process.stdout.readline()
-        while line:
-            line = "\n%s" % line.rstrip()
-            self.pushStatus(line)
-            output += line
-            line = process.stdout.readline()
-        return output
+        # for chatching the output see CalculiX or Elmer solver tasks module
 
 
 class Results(run.Results):
 
     def run(self):
-        prefs = App.ParamGet(
+        prefs = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
             self.purge_results()
-        self.load_results_z88o2()
+        self.load_results()
 
     def purge_results(self):
-        for m in FemUtils.getMember(self.analysis, "Fem::FemResultObject"):
-            if FemUtils.isOfType(m.Mesh, "FemMeshResult"):
+        self.pushStatus("Purge existing results...\n")
+        # TODO see calculix result tasks
+        for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
+            if femutils.is_of_type(m.Mesh, "Fem::MeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
-        App.ActiveDocument.recompute()
+        self.analysis.Document.recompute()
 
-    def load_results_z88o2(self):
+    def load_results(self):
+        self.pushStatus("Import new results...\n")
+        # displacements from z88o2 file
         disp_result_file = os.path.join(
-            self.directory, 'z88o2.txt')
+            self.directory, "z88o2.txt")
         if os.path.isfile(disp_result_file):
-            result_name_prefix = 'Z88_' + self.solver.AnalysisType + '_'
+            result_name_prefix = "Z88_" + self.solver.AnalysisType + "_"
             importZ88O2Results.import_z88_disp(
                 disp_result_file, self.analysis, result_name_prefix)
         else:
-            raise Exception(
-                'FEM: No results found at {}!'.format(disp_result_file))
+            # TODO: use solver framework status message system
+            FreeCAD.Console.PrintError(
+                "FEM: No results found at {}!\n"
+                .format(disp_result_file)
+            )
+            self.fail()
 
-
-class _Container(object):
-
-    def __init__(self, analysis):
-        self.mesh = None
-        self.materials_linear = []
-        self.materials_nonlinear = []
-        self.fixed_constraints = []
-        self.selfweight_constraints = []
-        self.force_constraints = []
-        self.pressure_constraints = []
-        self.beam_sections = []
-        self.beam_rotations = []
-        self.fluid_sections = []
-        self.shell_thicknesses = []
-        self.displacement_constraints = []
-        self.temperature_constraints = []
-        self.heatflux_constraints = []
-        self.initialtemperature_constraints = []
-        self.planerotation_constraints = []
-        self.contact_constraints = []
-        self.transform_constraints = []
-
-        for m in analysis.Group:
-            if m.isDerivedFrom("Fem::FemMeshObject"):
-                if not self.mesh:
-                    self.mesh = m
-                else:
-                    raise Exception('FEM: Multiple mesh in analysis not yet supported!')
-            elif m.isDerivedFrom("App::MaterialObjectPython"):
-                material_linear_dict = {}
-                material_linear_dict['Object'] = m
-                self.materials_linear.append(material_linear_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
-                material_nonlinear_dict = {}
-                material_nonlinear_dict['Object'] = m
-                self.materials_nonlinear.append(material_nonlinear_dict)
-            elif m.isDerivedFrom("Fem::ConstraintFixed"):
-                fixed_constraint_dict = {}
-                fixed_constraint_dict['Object'] = m
-                self.fixed_constraints.append(fixed_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::ConstraintSelfWeight":
-                selfweight_dict = {}
-                selfweight_dict['Object'] = m
-                self.selfweight_constraints.append(selfweight_dict)
-            elif m.isDerivedFrom("Fem::ConstraintForce"):
-                force_constraint_dict = {}
-                force_constraint_dict['Object'] = m
-                force_constraint_dict['RefShapeType'] = self.get_refshape_type(m)
-                self.force_constraints.append(force_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintPressure"):
-                PressureObjectDict = {}
-                PressureObjectDict['Object'] = m
-                self.pressure_constraints.append(PressureObjectDict)
-            elif m.isDerivedFrom("Fem::ConstraintDisplacement"):
-                displacement_constraint_dict = {}
-                displacement_constraint_dict['Object'] = m
-                self.displacement_constraints.append(displacement_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintTemperature"):
-                temperature_constraint_dict = {}
-                temperature_constraint_dict['Object'] = m
-                self.temperature_constraints.append(temperature_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintHeatflux"):
-                heatflux_constraint_dict = {}
-                heatflux_constraint_dict['Object'] = m
-                self.heatflux_constraints.append(heatflux_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintInitialTemperature"):
-                initialtemperature_constraint_dict = {}
-                initialtemperature_constraint_dict['Object'] = m
-                self.initialtemperature_constraints.append(
-                    initialtemperature_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintPlaneRotation"):
-                planerotation_constraint_dict = {}
-                planerotation_constraint_dict['Object'] = m
-                self.planerotation_constraints.append(planerotation_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintContact"):
-                contact_constraint_dict = {}
-                contact_constraint_dict['Object'] = m
-                self.contact_constraints.append(contact_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintTransform"):
-                transform_constraint_dict = {}
-                transform_constraint_dict['Object'] = m
-                self.transform_constraints.append(transform_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry1D":
-                beam_section_dict = {}
-                beam_section_dict['Object'] = m
-                self.beam_sections.append(beam_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementRotation1D":
-                beam_rotation_dict = {}
-                beam_rotation_dict['Object'] = m
-                self.beam_rotations.append(beam_rotation_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementFluid1D":
-                fluid_section_dict = {}
-                fluid_section_dict['Object'] = m
-                self.fluid_sections.append(fluid_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry2D":
-                shell_thickness_dict = {}
-                shell_thickness_dict['Object'] = m
-                self.shell_thicknesses.append(shell_thickness_dict)
-
-    def get_refshape_type(self, fem_doc_object):
-        # returns the reference shape type
-        # for force object:
-        # in GUI defined frc_obj all frc_obj have at least one ref_shape and ref_shape have all the same shape type
-        # for material object:
-        # in GUI defined material_obj could have no RefShape and RefShapes could be different type
-        # we're going to need the RefShapes to be the same type inside one fem_doc_object
-        # TODO: check if all RefShapes inside the object really have the same type
-        import femmesh.meshtools as FemMeshTools
-        if hasattr(fem_doc_object, 'References') and fem_doc_object.References:
-            first_ref_obj = fem_doc_object.References[0]
-            first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
-            st = first_ref_shape.ShapeType
-            print(fem_doc_object.Name + ' has ' + st + ' reference shapes.')
-            return st
-        else:
-            print(fem_doc_object.Name + ' has empty References.')
-            return ''
+##  @}

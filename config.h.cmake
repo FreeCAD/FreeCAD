@@ -114,6 +114,9 @@
 /* Define to 1 if you have the <values.h> header file. */
 #cmakedefine HAVE_VALUES_H
 
+/* Define to 1 if you have a C runtime with backtrace symbols. */
+#cmakedefine HAVE_BACKTRACE_SYMBOLS
+
 /* Name of package */
 #define PACKAGE "FreeCAD"
 

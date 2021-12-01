@@ -66,44 +66,6 @@ int ToroidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject* ToroidPy::uIso(PyObject * args)
-{
-    double u;
-    if (!PyArg_ParseTuple(args, "d", &u))
-        return 0;
-
-    try {
-        Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast
-            (getGeomToroidPtr()->handle());
-        Handle(Geom_Circle) c = Handle(Geom_Circle)::DownCast(torus->UIso(u));
-        return new CirclePy(new GeomCircle(c));
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
-PyObject* ToroidPy::vIso(PyObject * args)
-{
-    double v;
-    if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
-
-    try {
-        Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast
-            (getGeomToroidPtr()->handle());
-        Handle(Geom_Circle) c = Handle(Geom_Circle)::DownCast(torus->VIso(v));
-        return new CirclePy(new GeomCircle(c));
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
-    }
-}
-
 Py::Float ToroidPy::getMajorRadius(void) const
 {
     Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast
@@ -118,7 +80,7 @@ void ToroidPy::setMajorRadius(Py::Float arg)
             (getGeomToroidPtr()->handle());
         torus->SetMajorRadius((double)arg);
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         throw Py::RuntimeError("Major radius must be positive and higher than minor radius");
     }
 }
@@ -137,7 +99,7 @@ void ToroidPy::setMinorRadius(Py::Float arg)
             (getGeomToroidPtr()->handle());
         torus->SetMinorRadius((double)arg);
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         throw Py::RuntimeError("Minor radius must be positive and lower than major radius");
     }
 }
@@ -204,7 +166,7 @@ void ToroidPy::setAxis(Py::Object arg)
         axis.SetDirection(gp_Dir(dir_x, dir_y, dir_z));
         this_surf->SetAxis(axis);
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         throw Py::RuntimeError("cannot set axis");
     }
 }

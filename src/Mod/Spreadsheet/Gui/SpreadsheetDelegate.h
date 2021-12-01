@@ -45,8 +45,10 @@ public:
                       const QModelIndex &index) const;
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+Q_SIGNALS:
+    void finishedWithKey(int key, Qt::KeyboardModifiers modifiers);
 private Q_SLOTS:
-    void commitAndCloseEditor();
+    void on_editorFinishedWithKey(int key, Qt::KeyboardModifiers modifiers);
 private:
     Spreadsheet::Sheet * sheet;
 };

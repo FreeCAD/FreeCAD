@@ -23,6 +23,7 @@
 #define SKETCHERGUI_EditDatumDialog_H
 
 #include <QObject>
+#include <memory>
 
 namespace Sketcher {
 class Constraint;
@@ -31,21 +32,30 @@ class SketchObject;
 
 namespace SketcherGui {
 class ViewProviderSketch;
+class Ui_InsertDatum;
 
 class EditDatumDialog : public QObject {
-    Q_DECLARE_TR_FUNCTIONS(SketcherGui::EditDatumDialog)
+    Q_OBJECT
+
 public:
     EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr);
     EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr);
     ~EditDatumDialog();
 
     void exec(bool atCursor=true);
-    void customEvent(QEvent*);
 
 private:
     Sketcher::SketchObject* sketch;
     Sketcher::Constraint* Constr;
     int ConstrNbr;
+    std::unique_ptr<Ui_InsertDatum> ui_ins_datum;
+
+private Q_SLOTS:
+    void accepted();
+    void rejected();
+    void drivingToggled(bool);
+    void datumChanged();
+    void formEditorOpened(bool);
 };
 
 }

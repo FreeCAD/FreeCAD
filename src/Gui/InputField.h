@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Juergen Riegel                                     *
+ *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -66,12 +66,14 @@ class GuiExport InputField : public ExpressionLineEdit, public ExpressionBinding
     Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep )
     Q_PROPERTY(double maximum READ maximum WRITE setMaximum )
     Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
+    Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged)
     Q_PROPERTY(int historySize READ historySize WRITE setHistorySize )
     Q_PROPERTY(QString unit READ getUnitText WRITE setUnitText )
     Q_PROPERTY(int precision READ getPrecision WRITE setPrecision )
     Q_PROPERTY(QString format READ getFormat WRITE setFormat )
     Q_PROPERTY(Base::Quantity quantity READ getQuantity WRITE setValue )
     Q_PROPERTY(QString quantityString READ getQuantityString WRITE setQuantityString )
+    Q_PROPERTY(QString rawText READ rawText WRITE setRawText )
 
 
 public:
@@ -85,6 +87,8 @@ public:
 
     /// get the current value
     Base::Quantity getQuantity(void)const{return this->actQuantity;}
+    /// Get the current quantity without unit
+    double rawValue() const;
 
     /// get stored, valid quantity as a string (user string - avoid storing)
     QString getQuantityString(void) const;
@@ -92,16 +96,22 @@ public:
     /// set, validate and display quantity from a string. Must match existing units.
     void setQuantityString(const QString& text);
 
+    /// return the quantity in C locale, i.e. decimal separator is a dot.
+    QString rawText(void) const;
+
+    /// expects the string in C locale and internally converts it into the OS-specific locale
+    void setRawText(const QString& text);
+
     /// gives the current state of the user input, gives true if it is a valid input with correct quantity
     /// (shown by the green pixmap), returns false if the input is a unparsable string or has a wrong unit
     /// (shown by the red pixmap in the gui)
     bool hasValidInput() { return validInput;}
 
-    /** sets the Unit this field is working with. 
+    /** sets the Unit this field is working with.
      *  After setting the Unit the field will only accept
-     *  user input with this unit type. Or if the user input 
+     *  user input with this unit type. Or if the user input
      *  a value without unit, this one will be added to the resulting
-     *  Quantity. 
+     *  Quantity.
      */
     void setUnit(const Base::Unit&);
     const Base::Unit& getUnit() const;
@@ -110,33 +120,33 @@ public:
     void setToLastUsedValue(void);
     /// get the value of the singleStep property
     double singleStep(void)const;
-    /// set the value of the singleStep property 
+    /// set the value of the singleStep property
     void setSingleStep(double);
     /// get the value of the maximum property
     double maximum(void)const;
-    /// set the value of the maximum property 
+    /// set the value of the maximum property
     void setMaximum(double);
     /// get the value of the minimum property
     double minimum(void)const;
-    /// set the value of the minimum property 
+    /// set the value of the minimum property
     void setMinimum(double);
     /// get the value of the minimum property
     int historySize(void)const;
-    /// set the value of the minimum property 
+    /// set the value of the minimum property
     void setHistorySize(int);
-    /// set the unit by a string (can be used in the *.ui file)  
+    /// set the unit by a string (can be used in the *.ui file)
     void setUnitText(const QString&);
-    /// get the unit as a string (can be used in the *.ui file)  
-    QString getUnitText(void); 
+    /// get the unit as a string (can be used in the *.ui file)
+    QString getUnitText(void);
     /// get the value of the precision property
-    int getPrecision(void) const; 
-    /// set the value of the precision property (can be used in the *.ui file)  
+    int getPrecision(void) const;
+    /// set the value of the precision property (can be used in the *.ui file)
     void setPrecision(const int);
     /// get the value of the format property: "f" (fixed), "e" (scientific), "g" (general)
-    QString getFormat(void) const; 
-    /// set the value of the format property (can be used in the *.ui file)  
+    QString getFormat(void) const;
+    /// set the value of the format property (can be used in the *.ui file)
     void setFormat(const QString&);
-    /// set the number portion selected (use after setValue()) 
+    /// set the number portion selected (use after setValue())
     void selectNumber(void);
     /// input validation
     void fixup(QString& input) const;
@@ -149,11 +159,11 @@ public:
     QByteArray paramGrpPath () const;
     /// set the param group path where the widget writes and reads the default values
     void  setParamGrpPath  ( const QByteArray& name );
-    /// push a new value to the history, if no string given the actual text of the input field is used. 
+    /// push a new value to the history, if no string given the actual text of the input field is used.
     void pushToHistory(const QString &valueq = QString());
     /// get the history of the field, newest first
     std::vector<QString> getHistory(void);
-    /// push a new value to the history, if no string given the actual text of the input field is used. 
+    /// push a new value to the history, if no string given the actual text of the input field is used.
     void pushToSavedValues(const QString &valueq = QString());
     /// get the history of the field, newest first
     std::vector<QString> getSavedValues(void);
@@ -166,15 +176,15 @@ public:
 Q_SIGNALS:
     /** gets emitted if the user has entered a VALID input
      *  Valid means the user inputted string obeys all restrictions
-     *  like: minimum, maximum and/or the right Unit (if specified). 
-     *  If you want the unfiltered/unvalidated input use textChanged(const QString&) 
+     *  like: minimum, maximum and/or the right Unit (if specified).
+     *  If you want the unfiltered/non-validated input use textChanged(const QString&)
      *  instead:
      */
     void valueChanged(const Base::Quantity&);
     /** gets emitted if the user has entered a VALID input
      *  Valid means the user inputted string obeys all restrictions
-     *  like: minimum, maximum and/or the right Unit (if specified). 
-     *  If you want the unfiltered/unvalidated input use textChanged(const QString&) 
+     *  like: minimum, maximum and/or the right Unit (if specified).
+     *  If you want the unfiltered/non-validated input use textChanged(const QString&)
      *  instead:
      */
     void valueChanged(double);
@@ -200,7 +210,6 @@ private:
     void updateText(const Base::Quantity&);
 
 private:
-    QLabel* iconLabel;
     QByteArray m_sPrefGrp;
     bool validInput;
 

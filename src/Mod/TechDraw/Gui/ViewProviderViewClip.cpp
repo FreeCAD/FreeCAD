@@ -46,7 +46,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderViewClip, TechDrawGui::ViewProviderDraw
 
 ViewProviderViewClip::ViewProviderViewClip()
 {
-    sPixmap = "actions/techdraw-clip";
+    sPixmap = "actions/TechDraw_ClipGroup";
 
     // Do not show in property editor
     //DisplayMode.StatusBits.set(3, true);
@@ -59,30 +59,18 @@ ViewProviderViewClip::~ViewProviderViewClip()
 
 void ViewProviderViewClip::updateData(const App::Property* prop)
 {
-    //Base::Console().Log("ViewProviderViewClip::updateData - Update View: %s\n",prop->getName());
-    if (prop == &(getViewObject()->Height)      ||
-        prop == &(getViewObject()->Width)       ||
-        prop == &(getViewObject()->ShowFrame)   ||
-        prop == &(getViewObject()->ShowLabels)  ||
-        prop == &(getViewObject()->Views) ) {
-        // redraw QGIVP
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        }
-     }
      ViewProviderDrawingView::updateData(prop);
 }
 
 void ViewProviderViewClip::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
+    ViewProviderDrawingView::attach(pcFeat);
 }
 
 void ViewProviderViewClip::setDisplayMode(const char* ModeName)
 {
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
+    ViewProviderDrawingView::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderViewClip::getDisplayModes(void) const
@@ -132,6 +120,14 @@ void ViewProviderViewClip::hide(void)
 bool ViewProviderViewClip::isShow(void) const
 {
     return Visibility.getValue();
+}
+
+bool ViewProviderViewClip::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of Clip objects don't destroy anything
+    // thus we can pass this action
+    Q_UNUSED(obj)
+    return true;
 }
 
 TechDraw::DrawViewClip* ViewProviderViewClip::getViewObject() const

@@ -26,7 +26,7 @@
 #include <memory>
 #include <vector>
 
-#include <boost/signal.hpp>
+#include <boost_signals2.hpp>
 
 #include <QGraphicsScene>
 #include <QBrush>
@@ -81,12 +81,11 @@ namespace Gui
       void renameRejectedSlot();
       void editingStartSlot();
       void editingFinishedSlot();
-      void iconUpdateSlot(); //!< needed because python objects are not ready.
       
     private:
       Model(){}
       //documentObject slots.
-      typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+      typedef boost::signals2::connection Connection;
       Connection connectNewObject;
       Connection connectDelObject;
       Connection connectChgObject;
@@ -101,6 +100,7 @@ namespace Gui
       void slotChangeObject(const Gui::ViewProviderDocumentObject &VPDObjectIn, const App::Property& propertyIn);
       void slotInEdit(const Gui::ViewProviderDocumentObject &VPDObjectIn);
       void slotResetEdit(const Gui::ViewProviderDocumentObject &VPDObjectIn);
+      void slotChangeIcon(const Gui::ViewProviderDocumentObject &VPDObjectIn, std::shared_ptr<QGraphicsPixmapItem> icon);
       
       std::shared_ptr<GraphLinkContainer> graphLink;
       std::shared_ptr<Graph> theGraph;
@@ -127,7 +127,7 @@ namespace Gui
       float pointToIcon;                          //!< spacing from last column points to first icon.
       float iconToIcon;                           //!< spacing between icons.
       float iconToText;                           //!< spacing between last icon and text.
-      float rowPadding;                           //!< spaces added to rectangle bacground width ends.
+      float rowPadding;                           //!< spaces added to rectangle background width ends.
       std::vector<QBrush> backgroundBrushes;      //!< brushes to paint background rectangles.
       std::vector<QBrush> forgroundBrushes;       //!< brushes to paint points, connectors, text.
       void setupViewConstants();

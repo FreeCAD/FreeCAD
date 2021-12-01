@@ -32,4 +32,11 @@ namespace Py {
     bool TopoShape::accepts (PyObject *pyob) const;
 }
 
+namespace Part {
+    PartExport Py::Object shape2pyshape(const TopoShape &shape);
+    PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
+    PartExport void getPyShapes(PyObject *obj, std::vector<TopoShape> &shapes);
+    PartExport std::vector<TopoShape> getPyShapes(PyObject *obj);
+}
+
 #endif //PART_PYCXX_H

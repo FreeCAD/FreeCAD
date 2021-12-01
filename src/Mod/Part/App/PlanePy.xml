@@ -47,15 +47,5 @@ Part.Plane(A,B,C,D)
       </Documentation>
       <Parameter Name="Axis" Type="Object"/>
     </Attribute>
-    <Methode Name="uIso">
-      <Documentation>
-        <UserDocu>Builds the U isoparametric line of this plane</UserDocu>
-       </Documentation>
-    </Methode>
-    <Methode Name="vIso">
-      <Documentation>
-        <UserDocu>Builds the V isoparametric line of this plane</UserDocu>
-      </Documentation>
-    </Methode>
   </PythonExport>
 </GenerateModel>

@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -32,8 +32,6 @@
 # include <BRepAdaptor_Surface.hxx>
 #endif
 
-
-#include "FeatureLinearPattern.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
 #include <App/OriginFeature.h>
@@ -42,6 +40,8 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 
+#include "FeatureLinearPattern.h"
+
 using namespace PartDesign;
 
 namespace PartDesign {
@@ -49,12 +49,15 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
+const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences = { 1, INT_MAX, 1 };
+
 LinearPattern::LinearPattern()
 {
     ADD_PROPERTY_TYPE(Direction,(0),"LinearPattern",(App::PropertyType)(App::Prop_None),"Direction");
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Occurrences,(3));
+    Occurrences.setConstraints(&intOccurrences);
 }
 
 short LinearPattern::mustExecute() const
@@ -71,21 +74,19 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
 {
     double distance = Length.getValue();
     if (distance < Precision::Confusion())
-        throw Base::Exception("Pattern length too small");
+        throw Base::ValueError("Pattern length too small");
     int occurrences = Occurrences.getValue();
-    if (occurrences < 2)
-        throw Base::Exception("At least two occurrences required");
+    if (occurrences < 1)
+        throw Base::ValueError("At least one occurrence required");
     bool reversed = Reversed.getValue();
-
-    double offset = distance / (occurrences - 1);
 
     App::DocumentObject* refObject = Direction.getValue();
     if (refObject == NULL)
-        throw Base::Exception("No direction reference specified");
+        throw Base::ValueError("No direction reference specified");
 
     std::vector<std::string> subStrings = Direction.getSubValues();
     if (subStrings.empty())
-        throw Base::Exception("No direction reference specified");
+        throw Base::ValueError("No direction reference specified");
 
     gp_Dir dir;
     if (refObject->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
@@ -97,10 +98,25 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
         else if (subStrings[0] == "N_Axis")
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
-        else if (subStrings[0].size() > 4 && subStrings[0].substr(0,4) == "Axis") {
+        else if (subStrings[0].compare(0, 4, "Axis") == 0) {
             int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
             if (AxId >= 0 && AxId < refSketch->getAxisCount())
                 axis = refSketch->getAxis(AxId);
+        }
+        else if (subStrings[0].compare(0, 4, "Edge") == 0) {
+            Part::TopoShape refShape = refSketch->Shape.getShape();
+            TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
+            TopoDS_Edge refEdge = TopoDS::Edge(ref);
+            if (refEdge.IsNull())
+                throw Base::ValueError("Failed to extract direction edge");
+            BRepAdaptor_Curve adapt(refEdge);
+            if (adapt.GetType() != GeomAbs_Line)
+                throw Base::TypeError("Direction edge must be a straight line");
+
+            gp_Pnt p = adapt.Line().Location();
+            gp_Dir d = adapt.Line().Direction();
+            axis.setBase(Base::Vector3d(p.X(), p.Y(), p.Z()));
+            axis.setDirection(Base::Vector3d(d.X(), d.Y(), d.Z()));
         }
         axis *= refSketch->Placement.getValue();
         dir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
@@ -120,7 +136,7 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
         dir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         if (subStrings[0].empty())
-            throw Base::Exception("No direction reference specified");
+            throw Base::ValueError("No direction reference specified");
         Part::Feature* refFeature = static_cast<Part::Feature*>(refObject);
         Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
@@ -128,26 +144,26 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
         if (ref.ShapeType() == TopAbs_FACE) {
             TopoDS_Face refFace = TopoDS::Face(ref);
             if (refFace.IsNull())
-                throw Base::Exception("Failed to extract direction plane");
+                throw Base::ValueError("Failed to extract direction plane");
             BRepAdaptor_Surface adapt(refFace);
             if (adapt.GetType() != GeomAbs_Plane)
-                throw Base::Exception("Direction face must be planar");
+                throw Base::TypeError("Direction face must be planar");
 
             dir = adapt.Plane().Axis().Direction();
         } else if (ref.ShapeType() == TopAbs_EDGE) {
             TopoDS_Edge refEdge = TopoDS::Edge(ref);
             if (refEdge.IsNull())
-                throw Base::Exception("Failed to extract direction edge");
+                throw Base::ValueError("Failed to extract direction edge");
             BRepAdaptor_Curve adapt(refEdge);
             if (adapt.GetType() != GeomAbs_Line)
-                throw Base::Exception("Direction edge must be a straight line");
+                throw Base::ValueError("Direction edge must be a straight line");
 
             dir = adapt.Line().Direction();
         } else {
-            throw Base::Exception("Direction reference must be edge or face");
+            throw Base::ValueError("Direction reference must be edge or face");
         }
     } else {
-        throw Base::Exception("Direction reference must be edge/face of a feature or a datum line/plane");
+        throw Base::ValueError("Direction reference must be edge/face of a feature or a datum line/plane");
     }
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     dir.Transform(invObjLoc.Transformation());
@@ -163,12 +179,30 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     gp_Trsf trans;
     transformations.push_back(trans); // identity transformation
 
-    for (int i = 1; i < occurrences; i++) {
-        trans.SetTranslation(direction * i * offset);
-        transformations.push_back(trans);
+    if (occurrences > 1) {
+        double offset = distance / (occurrences - 1);
+        for (int i = 1; i < occurrences; i++) {
+            trans.SetTranslation(direction * i * offset);
+            transformations.push_back(trans);
+        }
     }
 
     return transformations;
+}
+
+void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+// transforms properties that had been changed
+{
+    // property Occurrences had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    if (prop == &Occurrences && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger OccurrencesProperty;
+        // restore the PropertyInteger to be able to set its value
+        OccurrencesProperty.Restore(reader);
+        Occurrences.setValue(OccurrencesProperty.getValue());
+    }
+    else {
+        Transformed::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 }

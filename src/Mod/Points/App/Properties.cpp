@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,6 +28,7 @@
 # include <algorithm>
 #endif
 
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>
@@ -39,13 +40,18 @@
 #include "Properties.h"
 #include "PointsPy.h"
 
+#include <QtConcurrentMap>
+#ifdef _MSC_VER
+# include <ppl.h>
+#endif
+
 using namespace Points;
 using namespace std;
 
-TYPESYSTEM_SOURCE(Points::PropertyGreyValue, App::PropertyFloat);
-TYPESYSTEM_SOURCE(Points::PropertyGreyValueList, App::PropertyLists);
-TYPESYSTEM_SOURCE(Points::PropertyNormalList, App::PropertyLists);
-TYPESYSTEM_SOURCE(Points::PropertyCurvatureList , App::PropertyLists);
+TYPESYSTEM_SOURCE(Points::PropertyGreyValue, App::PropertyFloat)
+TYPESYSTEM_SOURCE(Points::PropertyGreyValueList, App::PropertyLists)
+TYPESYSTEM_SOURCE(Points::PropertyNormalList, App::PropertyLists)
+TYPESYSTEM_SOURCE(Points::PropertyCurvatureList , App::PropertyLists)
 
 PropertyGreyValueList::PropertyGreyValueList()
 {
@@ -142,7 +148,7 @@ void PropertyGreyValueList::Restore(Base::XMLReader &reader)
     string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -316,7 +322,7 @@ void PropertyNormalList::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -387,9 +393,15 @@ void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
     aboutToSetValue();
 
     // Rotate the normal vectors
-    for (int ii=0; ii<getSize(); ii++) {
-        set1Value(ii, rot * operator[](ii));
-    }
+#ifdef _MSC_VER
+    Concurrency::parallel_for_each(_lValueList.begin(), _lValueList.end(), [rot](Base::Vector3f& value) {
+        value = rot * value;
+    });
+#else
+    QtConcurrent::blockingMap(_lValueList, [rot](Base::Vector3f& value) {
+        rot.multVec(value, value);
+    });
+#endif
 
     hasSetValue();
 }
@@ -576,7 +588,7 @@ void PropertyCurvatureList::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
