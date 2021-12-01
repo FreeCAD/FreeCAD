@@ -675,18 +675,33 @@ static Standard_Boolean IsLinear(const Adaptor3d_Curve& theC)
 
 bool GeomCurve::isLinear(Base::Vector3d *dir, Base::Vector3d *base) const
 {
-    Handle(Geom_Curve) s = Handle(Geom_Curve)::DownCast(handle());
-    return isLinear(s, dir, base);
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    return isLinear(c, dir, base);
 }
 
-bool GeomCurve::isLinear(const Handle(Geom_Curve) &s, Base::Vector3d *dir, Base::Vector3d *base)
+bool GeomCurve::isLinear(const Handle(Geom_Curve) &c, Base::Vector3d *dir, Base::Vector3d *base)
 {
-    if (!IsLinear(GeomAdaptor_Curve(s)))
+    GeomAdaptor_Curve adaptor(c);
+    if (!IsLinear(adaptor))
         return false;
+
     if (dir || base) {
+        if (adaptor.GetType() == GeomAbs_Line) {
+            // Special treatment of Geom_Line because it is infinite
+            Handle(Geom_Line) curv = Handle(Geom_Line)::DownCast(c);
+            if (base) {
+                gp_Pnt Pos = curv->Lin().Location();
+                *base = Base::Vector3d(Pos.X(), Pos.Y(), Pos.Z());
+            }
+            if (dir) {
+                gp_Dir Dir = curv->Lin().Direction();
+                *dir = Base::Vector3d(Dir.X(), Dir.Y(), Dir.Z());
+            }
+            return true;
+        }
         try {
-            GeomLProp_CLProps prop1(s,s->FirstParameter(),0,Precision::Confusion());
-            GeomLProp_CLProps prop2(s,s->LastParameter(),0,Precision::Confusion());
+            GeomLProp_CLProps prop1(c,c->FirstParameter(),0,Precision::Confusion());
+            GeomLProp_CLProps prop2(c,c->LastParameter(),0,Precision::Confusion());
             const gp_Pnt &p1 = prop1.Value();
             const gp_Pnt &p2 = prop2.Value();
             if (base)
