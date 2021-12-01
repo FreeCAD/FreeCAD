@@ -2631,11 +2631,12 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                 processed.push_back(*it);
             }
             else if (file.hasExtension("py")) {
-                try{
+                try {
+                    Base::Interpreter().addPythonPath(file.dirPath().c_str());
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
                     processed.push_back(*it);
                 }
-                catch(const PyException&) {
+                catch (const PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
                     processed.push_back(*it);
