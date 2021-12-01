@@ -412,11 +412,13 @@ public:
                 pixmapCopy = BitmapFactory().pixmapFromSvg("TreeDragCopy", size, colorMap);
                 pixmapLink = BitmapFactory().pixmapFromSvg("TreeDragLink", size, colorMap);
                 pixmapReplace = BitmapFactory().pixmapFromSvg("TreeDragReplace", size, colorMap);
+                pixmapForbid = BitmapFactory().pixmapFromSvg("TreeDragForbid", size, colorMap);
 #else
                 pixmapMove = BitmapFactory().pixmapFromSvg("TreeDragMove", size);
                 pixmapCopy = BitmapFactory().pixmapFromSvg("TreeDragCopy", size);
                 pixmapLink = BitmapFactory().pixmapFromSvg("TreeDragLink", size);
                 pixmapReplace = BitmapFactory().pixmapFromSvg("TreeDragReplace", size);
+                pixmapForbid = BitmapFactory().pixmapFromSvg("TreeDragForbid", size);
 #endif
             }
 
@@ -424,6 +426,7 @@ public:
             pxCopy = QPixmap();
             pxLink = QPixmap();
             pxReplace = QPixmap();
+            pxForbid = QPixmap();
 
             if (!pxObj.isNull()) {
                 if (!pxObj2.isNull()) {
@@ -458,10 +461,17 @@ public:
                 pxCursor = BitmapFactory().merge(pxCursor, pixmapReplace, BitmapFactoryInst::TopLeft);
                 pxReplace = pxCursor;
 
+                pxCursor = QPixmap(cursorSize, cursorSize);
+                pxCursor.fill(Qt::transparent);
+                // pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
+                pxCursor = BitmapFactory().merge(pxCursor, pixmapForbid, BitmapFactoryInst::TopLeft);
+                pxForbid = pxCursor;
+
                 pxMove.setDevicePixelRatio(dpr);
                 pxCopy.setDevicePixelRatio(dpr);
                 pxLink.setDevicePixelRatio(dpr);
                 pxReplace.setDevicePixelRatio(dpr);
+                pxForbid.setDevicePixelRatio(dpr);
             }
         }
 
@@ -478,6 +488,10 @@ public:
         case Qt::DragLinkCursor:
             if (!pxLink.isNull())
                 cursor = QCursor(replace?pxReplace:pxLink,hotX,hotY);
+            break;
+        case Qt::ForbiddenCursor:
+            if (!pxForbid.isNull())
+                cursor = QCursor(pxForbid,hotX,hotY);
             break;
         default:
             break;
@@ -534,10 +548,12 @@ public:
     QPixmap pxCopy;
     QPixmap pxLink;
     QPixmap pxReplace;
+    QPixmap pxForbid;
     QPixmap pixmapMove;
     QPixmap pixmapCopy;
     QPixmap pixmapLink;
     QPixmap pixmapReplace;
+    QPixmap pixmapForbid;
 
     bool restorePreselCursor = false;
     bool skipMouseRelease = false;

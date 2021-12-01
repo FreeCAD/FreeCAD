@@ -12,7 +12,7 @@
    viewBox="0 0 32 32"
    height="32"
    width="32"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="TreeDragReplace.svg">
   <sodipodi:namedview
      pagecolor="#ffffff"
@@ -23,15 +23,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1301"
-     inkscape:window-height="744"
+     inkscape:window-width="1869"
+     inkscape:window-height="1025"
      id="namedview13"
      showgrid="false"
-     inkscape:zoom="15.733333"
-     inkscape:cx="18.519957"
-     inkscape:cy="14.296658"
-     inkscape:window-x="65"
-     inkscape:window-y="24"
+     inkscape:zoom="11.125146"
+     inkscape:cx="7.6136725"
+     inkscape:cy="-1.6349879"
+     inkscape:window-x="51"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg4198" />
   <defs
@@ -48,6 +48,13 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <rect
+     style="opacity:1;fill:#fefefe;fill-opacity:1;stroke:#ffffff;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:63;stroke-opacity:1"
+     id="rect4804"
+     width="13"
+     height="10.788713"
+     x="18.5"
+     y="20.711287" />
   <path
      inkscape:connector-curvature="0"
      style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
