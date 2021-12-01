@@ -38,7 +38,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 
 from draftutils.messages import _msg
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftobjects.layer import Layer
 
 
@@ -239,15 +239,17 @@ class ViewProviderLayer:
             # and then sets the target property accordingly
             if hasattr(target_vobj, prop):
                 setattr(target_vobj, prop, getattr(vobj, prop))
-            else:
-                continue
 
-            # Use the line color for the text color if it exists
+            # Use the line color for the point color and text color
             if prop == "LineColor":
+                if hasattr(target_vobj, "PointColor"):
+                    target_vobj.PointColor = vobj.LineColor
                 if hasattr(target_vobj, "TextColor"):
                     target_vobj.TextColor = vobj.LineColor
-                if hasattr(target_vobj, "FontColor"):
-                    target_vobj.FontColor = vobj.LineColor
+            # Use the line width for the point size
+            elif prop == "LineWidth":
+                if hasattr(target_vobj, "PointSize"):
+                    target_vobj.PointSize = vobj.LineWidth
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
@@ -356,13 +358,13 @@ class ViewProviderLayer:
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/button_right.svg"),
-                                _tr("Activate this layer"),
+                                translate("draft", "Activate this layer"),
                                 menu)
         action1.triggered.connect(self.activate)
         menu.addAction(action1)
 
         action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectGroup.svg"),
-                                _tr("Select layer contents"),
+                                translate("draft", "Select layer contents"),
                                 menu)
         action2.triggered.connect(self.select_contents)
         menu.addAction(action2)
@@ -400,12 +402,12 @@ class ViewProviderLayerContainer:
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layer.svg"),
-                                _tr("Merge layer duplicates"),
+                                translate("draft", "Merge layer duplicates"),
                                 menu)
         action1.triggered.connect(self.merge_by_name)
         menu.addAction(action1)
         action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_NewLayer.svg"),
-                                _tr("Add new layer"),
+                                translate("draft", "Add new layer"),
                                 menu)
         action2.triggered.connect(self.add_layer)
         menu.addAction(action2)
@@ -416,7 +418,7 @@ class ViewProviderLayerContainer:
             return
 
         doc = App.ActiveDocument
-        doc.openTransaction(_tr("Merge layer duplicates"))
+        doc.openTransaction(translate("draft", "Merge layer duplicates"))
 
         layer_container = self.Object
         layers = []
@@ -448,12 +450,12 @@ class ViewProviderLayerContainer:
                     base.Group = base_group
                 to_delete.append(layer)
             elif layer.Label != base_label:
-                _msg(_tr("Relabeling layer:")
+                _msg(translate("draft", "Relabeling layer:")
                         + " '{}' -> '{}'".format(layer.Label, base_label))
                 layer.Label = base_label
 
         for layer in to_delete:
-            _msg(_tr("Merging layer:") + " '{}'".format(layer.Label))
+            _msg(translate("draft", "Merging layer:") + " '{}'".format(layer.Label))
             doc.removeObject(layer.Name)
 
         doc.recompute()
@@ -464,7 +466,7 @@ class ViewProviderLayerContainer:
         import Draft
 
         doc = App.ActiveDocument
-        doc.openTransaction(_tr("Add new layer"))
+        doc.openTransaction(translate("draft", "Add new layer"))
 
         Draft.make_layer()
 
