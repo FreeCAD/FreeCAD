@@ -116,7 +116,8 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
 
     // Create the layout containing the workspace and a tab bar
     QFrame* hbox = new QFrame(this);
-    hbox->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    hbox->setFrameShape(QFrame::StyledPanel);
+    hbox->setFrameShadow(QFrame::Sunken);
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setMargin(1);
     layout->addWidget(d->textEdit);

@@ -178,7 +178,8 @@ void TextEdit::complete()
 void TextEdit::createListBox()
 {
     listBox = new CompletionList(this);
-    listBox->setFrameStyle(QFrame::Box|QFrame::Raised);
+    listBox->setFrameStyle(QFrame::Box);
+    listBox->setFrameShadow(QFrame::Raised);
     listBox->setLineWidth(2);
     installEventFilter(listBox);
     viewport()->installEventFilter(listBox);

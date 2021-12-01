@@ -431,7 +431,8 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     // create the window for call tips
     d->callTipsList = new CallTipsList(this);
-    d->callTipsList->setFrameStyle(QFrame::Box|QFrame::Raised);
+    d->callTipsList->setFrameStyle(QFrame::Box);
+    d->callTipsList->setFrameShadow(QFrame::Raised);
     d->callTipsList->setLineWidth(2);
     installEventFilter(d->callTipsList);
     viewport()->installEventFilter(d->callTipsList);
