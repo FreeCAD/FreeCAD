@@ -220,6 +220,9 @@
            <property name="toolTip">
             <string>The directory in which the application will search for macros</string>
            </property>
+           <property name="mode">
+            <enum>Gui::FileChooser::Directory</enum>
+           </property>
            <property name="prefEntry" stdset="0">
             <cstring>MacroPath</cstring>
            </property>
