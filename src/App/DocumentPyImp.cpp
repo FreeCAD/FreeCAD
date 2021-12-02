@@ -148,6 +148,30 @@ PyObject*  DocumentPy::restore(PyObject * args)
     Py_Return;
 }
 
+PyObject* DocumentPy::isSaved(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    bool ok = getDocumentPtr()->isSaved();
+    return Py::new_reference_to(Py::Boolean(ok));
+}
+
+PyObject* DocumentPy::getProgramVersion(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    const char* version = getDocumentPtr()->getProgramVersion();
+    return Py::new_reference_to(Py::String(version));
+}
+
+PyObject* DocumentPy::getFileName(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    const char* fn = getDocumentPtr()->getFileName();
+    return Py::new_reference_to(Py::String(fn));
+}
+
 PyObject*  DocumentPy::mergeProject(PyObject * args)
 {
     char* filename;
@@ -446,12 +470,37 @@ PyObject*  DocumentPy::redo(PyObject * args)
     Py_Return;
 }
 
-PyObject*  DocumentPy::clearUndos(PyObject * args)
+PyObject* DocumentPy::clearUndos(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
     getDocumentPtr()->clearUndos();
     Py_Return;
+}
+
+PyObject* DocumentPy::clearDocument(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    getDocumentPtr()->clearDocument();
+    Py_Return;
+}
+
+PyObject* DocumentPy::setClosable(PyObject* args)
+{
+    PyObject* close;
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &close))
+        return nullptr;
+    getDocumentPtr()->setClosable(PyObject_IsTrue(close) ? true : false);
+    Py_Return;
+}
+
+PyObject* DocumentPy::isClosable(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    bool ok = getDocumentPtr()->isClosable();
+    return Py::new_reference_to(Py::Boolean(ok));
 }
 
 PyObject*  DocumentPy::recompute(PyObject * args)
@@ -495,6 +544,30 @@ PyObject*  DocumentPy::recompute(PyObject * args)
 
         return Py::new_reference_to(Py::Int(objectCount));
     } PY_CATCH;
+}
+
+PyObject* DocumentPy::mustExecute(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    bool ok = getDocumentPtr()->mustExecute();
+    return Py::new_reference_to(Py::Boolean(ok));
+}
+
+PyObject* DocumentPy::isTouched(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    bool ok = getDocumentPtr()->isTouched();
+    return Py::new_reference_to(Py::Boolean(ok));
+}
+
+PyObject* DocumentPy::purgeTouched(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    getDocumentPtr()->purgeTouched();
+    Py_Return;
 }
 
 PyObject*  DocumentPy::getObject(PyObject *args)
