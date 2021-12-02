@@ -398,7 +398,7 @@ void TaskBoxPrimitives::onCylinderRadiusChanged(double v) {
 void TaskBoxPrimitives::onCylinderXSkewChanged(double v) {
     PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         cyl->FirstAngle.setValue(v);
     }
@@ -415,7 +415,7 @@ void TaskBoxPrimitives::onCylinderXSkewChanged(double v) {
 void TaskBoxPrimitives::onCylinderYSkewChanged(double v) {
     PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         cyl->SecondAngle.setValue(v);
     }
@@ -572,7 +572,7 @@ void TaskBoxPrimitives::onPrismHeightChanged(double v) {
 void TaskBoxPrimitives::onPrismXSkewChanged(double v) {
     PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         sph->FirstAngle.setValue(v);
     }
@@ -589,7 +589,7 @@ void TaskBoxPrimitives::onPrismXSkewChanged(double v) {
 void TaskBoxPrimitives::onPrismYSkewChanged(double v) {
     PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         sph->SecondAngle.setValue(v);
     }
