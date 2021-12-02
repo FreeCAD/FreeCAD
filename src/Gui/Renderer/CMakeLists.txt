@@ -7,7 +7,8 @@ file(GLOB CMakeCache RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/CM
 set(Renderer_Headers Renderer.h)
 set(Renderer_HPP_SRCS ${Renderer_Headers})
 set(Renderer_CPP_SRCS Renderer.cpp)
-set(Renderer_LIBS ${Qt5Core_LIBRARIES}
+set(Renderer_LIBS FreeCADBase
+                  ${Qt5Core_LIBRARIES}
                   ${Qt5Widgets_LIBRARIES}
                   ${Qt5OpenGL_LIBRARIES})
 
