@@ -5511,6 +5511,7 @@ static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
         if(!PyObject_TypeCheck(pyobj,&Data::ComplexGeoDataPy::Type))
             return ret;
         auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
+        Base::Polygon2d loop;
         for(auto type : data->getElementTypes()) {
             size_t count = data->countSubElements(type);
             if(!count)
@@ -5530,10 +5531,37 @@ static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
                 // Call getFacesFromSubElement to obtain the triangulation of
                 // the segment.
                 data->getFacesFromSubElement(segment.get(),points,pointNormals,faces);
-                if(faces.empty())
+                if(faces.empty()) {
+                    data->getLinesFromSubElement(segment.get(),points,lines);
+                    if(lines.empty()) {
+                        if(points.empty())
+                            continue;
+                        auto v = proj(points[0]);
+                        if(polygon.Contains(Base::Vector2d(v.x,v.y)))
+                            ret.push_back(element);
+                        continue;
+                    }
+                    loop.DeleteAll();
+                    auto v = proj(points[lines.front().I1]);
+                    loop.Add(Base::Vector2d(v.x,v.y));
+                    for(auto &line : lines) {
+                        for(auto i=line.I1;i<line.I2;++i) {
+                            auto v = proj(points[i+1]);
+                            loop.Add(Base::Vector2d(v.x,v.y));
+                        }
+                    }
+                    if(polygon.Intersect(loop)
+                        // Center selection for edges doesn't seem to make much sense, or does it?
+                        //
+                        // && (mode!=CENTER || polygon.Contains(loop.CalcBoundBox().GetCenter())
+                      )
+                    {
+                        ret.push_back(element);
+                    }
                     continue;
+                }
 
-                Base::Polygon2d loop;
+                loop.DeleteAll();
                 bool hit = false;
                 for(auto &facet : faces) {
                     // back face cull
