@@ -36,6 +36,7 @@
 #include <Base/UnitsApi.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
 #include "ReferenceSelection.h"
+#include <Gui/Widgets.h>
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -51,6 +52,11 @@ TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderSketchBased *SketchBase
     proxy = new QWidget(this);
     ui->setupUi(proxy);
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+
+    Gui::ButtonGroup* group = new Gui::ButtonGroup(this);
+    group->addButton(ui->checkBoxMidplane);
+    group->addButton(ui->checkBoxReversed);
+    group->setExclusive(true);
 
     this->groupLayout()->addWidget(proxy);
 }
@@ -516,8 +522,6 @@ void TaskExtrudeParameters::onMidplaneChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Midplane.setValue(on);
-    // reversed is not sensible when midplane
-    ui->checkBoxReversed->setEnabled(!on);
     tryRecomputeFeature();
 }
 
@@ -525,8 +529,6 @@ void TaskExtrudeParameters::onReversedChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Reversed.setValue(on);
-    // midplane is not sensible when reversed
-    ui->checkBoxMidplane->setEnabled(!on);
     // update the direction
     tryRecomputeFeature();
     updateDirectionEdits();
