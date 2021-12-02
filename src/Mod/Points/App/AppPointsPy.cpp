@@ -87,6 +87,9 @@ private:
             if (file.hasExtension("asc")) {
                 reader.reset(new AscReader);
             }
+            else if (file.hasExtension("e57")) {
+                reader.reset(new E57Reader);
+            }
             else if (file.hasExtension("ply")) {
                 reader.reset(new PlyReader);
             }
@@ -198,6 +201,9 @@ private:
             std::unique_ptr<Reader> reader;
             if (file.hasExtension("asc")) {
                 reader.reset(new AscReader);
+            }
+            else if (file.hasExtension("e57")) {
+                reader.reset(new E57Reader);
             }
             else if (file.hasExtension("ply")) {
                 reader.reset(new PlyReader);
