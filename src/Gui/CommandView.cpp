@@ -900,10 +900,23 @@ void StdCmdToggleShowOnTop::activated(int iMsg)
     auto viewer = view->getViewer();
 
     std::set<App::SubObjectT> objs;
+
+    std::vector<App::SubObjectT> sels;
     for(auto sel : Selection().getSelectionT(gdoc->getDocument()->getName(),0)) {
         sel.setSubName(sel.getSubNameNoElement().c_str());
-        if(!objs.insert(sel).second)
-            continue;
+        objs.insert(sel).second;
+    }
+
+    if (Selection().hasPreselection()) {
+        auto presel = Selection().getPreselection().Object;
+        presel.setSubName(presel.getSubNameNoElement());
+        if (!objs.count(presel)) {
+            objs.clear();
+            objs.insert(presel);
+        }
+    }
+
+    for (auto &sel : objs) {
         bool selected = viewer->isInGroupOnTop(sel.getObjectName().c_str(),sel.getSubName().c_str());
         viewer->checkGroupOnTop(SelectionChanges(selected?SelectionChanges::RmvSelection:SelectionChanges::AddSelection,
                     sel.getDocumentName().c_str(), sel.getObjectName().c_str(), sel.getSubName().c_str()),true);
