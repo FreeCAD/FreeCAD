@@ -2105,8 +2105,11 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "--\n"
      "docName - document name. Empty string means the active document, and '*' means all document"},
     {"enablePickedList",      (PyCFunction) SelectionSingleton::sEnablePickedList, METH_VARARGS,
-     "Enable/disable pick list\n"
+     "Enable/disable picked list\n"
      "enablePickedList(boolean)"},
+    {"needPickedList",      (PyCFunction) SelectionSingleton::sNeedPickedList, METH_VARARGS,
+     "Check whether picked list is enabled\n"
+     "needPickedList() -> boolean"},
     {"getCompleteSelection", (PyCFunction) SelectionSingleton::sGetCompleteSelection, METH_VARARGS,
      "Return a list of selected objects of all documents.\n"
      "getCompleteSelection(resolve=1)"},
@@ -2391,6 +2394,14 @@ PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *a
 
     Selection().enablePickedList(PyObject_IsTrue(enable));
     Py_Return;
+}
+
+PyObject *SelectionSingleton::sNeedPickedList(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    return Py::new_reference_to(Py::Boolean(Selection().needPickedList()));
 }
 
 PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *args, PyObject *kwd)

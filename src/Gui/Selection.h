@@ -716,6 +716,7 @@ protected:
     static PyObject *sRemoveSelectionGate (PyObject *self,PyObject *args);
     static PyObject *sGetPickedList       (PyObject *self,PyObject *args);
     static PyObject *sEnablePickedList    (PyObject *self,PyObject *args);
+    static PyObject *sNeedPickedList      (PyObject *self,PyObject *args);
     static PyObject *sPreselect           (PyObject *self,PyObject *args);
     static PyObject *sSetVisible          (PyObject *self,PyObject *args);
     static PyObject *sPushSelStack        (PyObject *self,PyObject *args);
@@ -771,7 +772,7 @@ protected:
     mutable std::list<_SelObj> _SelList;
 
     mutable std::list<_SelObj> _PickedList;
-    bool _needPickedList;
+    bool _needPickedList = false;
 
     typedef std::set<App::SubObjectT> SelStackItem;
     std::deque<SelStackItem> _SelStackBack;
