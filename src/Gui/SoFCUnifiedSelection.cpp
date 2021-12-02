@@ -79,6 +79,7 @@
 
 #include <Inventor/SbDPLine.h>
 
+#include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <QApplication>
@@ -569,6 +570,17 @@ SoFCUnifiedSelection::Private::getPickedInfoOnTop(std::vector<PickedInfo> &ret,
         int pathLength = tmpPath.getLength();
         SoState * state = this->rayPickAction.getState();
         SoFCSwitch::setOverrideSwitch(state, true);
+        if (ViewParams::highlightPick()
+                && Selection().hasPreselection()
+                && !manager.isOnTop(Selection().getPreselection().Object.getSubNameNoElement(true), false)) {
+            if (auto path = this->manager.getHighlightPath()) {
+                tmpPath.append(path);
+                SoFCSwitch::pushSwitchPath(&tmpPath);
+                this->rayPickAction.apply(&tmpPath);
+                SoFCSwitch::popSwitchPath();
+                tmpPath.truncate(pathLength);
+            }
+        }
         for (auto it=paths.lower_bound(1); it!=paths.end(); ++it) {
             if (!it->second || !it->second->getLength())
                 continue;
@@ -631,7 +643,7 @@ SoFCUnifiedSelection::Private::getPickedList(const SbVec2s &pos,
 
     SoFCDisplayModeElement::set(this->rayPickAction.getState(),0,SbName::empty(),false);
 
-    if (ViewParams::getHiddenLineSelectionOnTop())
+    if (ViewParams::hiddenLineSelectionOnTop())
         this->rayPickAction.setPickBackFace(singlePick ? (pickBackFace ? pickBackFace : -1) : 0);
     else
         this->rayPickAction.setPickBackFace(singlePick ? pickBackFace : 0);
@@ -750,6 +762,19 @@ SoFCUnifiedSelection::Private::postProcessPickedList(std::vector<PickedInfo> &re
     }
     if(singlePick)
         ret.resize(1);
+    else if (ViewParams::hiddenLineSelectionOnTop()) {
+        for (auto it = ret.begin(); it != ret.end(); ++it) {
+            App::SubObjectT sobj(it->vpd->getObject(), it->subname.c_str());
+            if (!boost::starts_with(sobj.getOldElementName(), "Face")) {
+                if (it != ret.begin()) {
+                    PickedInfo info = std::move(*it);
+                    std::move_backward(ret.begin(), it, it+1);
+                    *ret.begin() = std::move(info);
+                }
+                break;
+            }
+        }
+    }
 }
 
 std::vector<App::SubObjectT>
@@ -1137,22 +1162,40 @@ SoFCUnifiedSelection::Private::setHighlight(SoFullPath *path,
             ontop = ontop || ViewParams::getShowPreSelectedFaceOnTop();
             if (ontop)
                 t = ViewParams::getTransparencyOnTop();
+            CoinPtr<SoPath> path(currentHighlight);
+
             App::SubObjectT obj(vpd->getObject(), subname);
+            bool wholeontop = !obj.hasSubElement();
+
             if (manager.isOnTop(obj.getSubNameNoElement(true), false)) {
                 ontop = true;
                 // we'll square the alpha make it more visible
                 float a = 1.f - ViewParams::getTransparencyOnTop();
                 t = 1.f - a*a;
             }
-            CoinPtr<SoPath> path(currentHighlight);
+            else if (!wholeontop && ontop && ViewParams::highlightPick()) {
+                SoDetail *_det = nullptr;
+                // Normal path obtained for ray pick action leads to the shape node
+                // that's got picked. But 'needPickedList' and 'highlightPick' requires
+                // to show other accompany nodes (points, lines, and faces) as well. So
+                // we re-obtain the path using getDetailPath() API.
+                detailPath->truncate(0);
+                detailPath->append(master);
+                if(vpd->getDetailPath(subname,detailPath,true,_det) && detailPath->getLength()) {
+                    path = detailPath;
+                    wholeontop = true;
+                }
+                delete _det;
+            }
+
             int offset = path->findNode(master);
             if (offset > 0) 
-                path.reset(currentHighlight->copy(offset));
+                path.reset(path->copy(offset));
             manager.setHighlight(path,
                                  det,
                                  master->colorHighlight.getValue().getPackedValue(t),
                                  ontop,
-                                 !obj.hasSubElement());
+                                 wholeontop);
             touch();
         }
         else {

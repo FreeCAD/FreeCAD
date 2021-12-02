@@ -363,6 +363,7 @@ public:
   static FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, VCacheSensor> vcachetable;
   std::unordered_map<PathPtr, PathCacheSensor, PathHasher, PathHasher> pathcachetable;
   RenderCachePtr highlightcache;
+  CoinPtr<SoPath> highlightpath;
   bool nosectionontop = false;
 
   SoCallbackAction *action;
@@ -517,7 +518,7 @@ SoFCRenderCacheManager::clear()
 }
 
 bool
-SoFCRenderCacheManager::isOnTop(const std::string & key, bool altonly)
+SoFCRenderCacheManager::isOnTop(const std::string & key, bool altonly) const
 {
   auto it = PRIVATE(this)->selcaches.find(key);
   if (it == PRIVATE(this)->selcaches.end())
@@ -535,6 +536,12 @@ SoFCRenderCacheManager::isOnTop(const std::string & key, bool altonly)
   return false;
 }
 
+SoPath *
+SoFCRenderCacheManager::getHighlightPath() const
+{
+  return PRIVATE(this)->highlightpath;
+}
+
 void
 SoFCRenderCacheManager::setHighlight(SoPath * path,
                                      const SoDetail * detail,
@@ -545,6 +552,8 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
   if (!path || path->getLength() == 0)
     return;
   SoState * state = PRIVATE(this)->action->getState();
+
+  PRIVATE(this)->highlightpath = path;
 
   RenderCachePtr cache;
   if (PRIVATE(this)->nosectionontop != ViewParams::getNoSectionOnTop()) {
@@ -597,6 +606,7 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
 void
 SoFCRenderCacheManager::clearHighlight()
 {
+  PRIVATE(this)->highlightpath.reset();
   PRIVATE(this)->highlightcache.reset();
   PRIVATE(this)->renderer->clearHighlight();
 }

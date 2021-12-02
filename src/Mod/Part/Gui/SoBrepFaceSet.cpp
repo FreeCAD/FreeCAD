@@ -554,10 +554,10 @@ void SoBrepFaceSet::glRender(SoGLRenderAction *action, bool inpath)
     if(ctx) {
         if(ctx->isSelected())
             selected = 1;
-        else if(ctx->isHighlighted() && Gui::Selection().needPickedList())
+        else if(ctx->isHighlighted() && ViewParams::highlightPick())
             selected = 2;
     } else if ((!ctx2 || ctx2->isSelectAll())
-                && (Gui::Selection().needPickedList() 
+                && (ViewParams::highlightPick() 
                     || (Gui::ViewParams::getShowSelectionOnTop()
                         && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox())))
     {
@@ -568,7 +568,7 @@ void SoBrepFaceSet::glRender(SoGLRenderAction *action, bool inpath)
                 if(sctx->isSelected()) {
                     selected = 1;
                     break;
-                } else if (sctx->isHighlighted() && Gui::Selection().needPickedList())
+                } else if (sctx->isHighlighted() && ViewParams::highlightPick())
                     selected = 2;
             }
         }
@@ -978,7 +978,7 @@ int SoBrepFaceSet::overrideMaterialBinding(
                 && ctx
                 && ctx->isHighlighted()
                 && !ctx->isHighlightAll()
-                && !Selection().needPickedList())
+                && !ViewParams::highlightPick())
     {
         // If show pre-selected face on top is enabled, the preselected face
         // highlight will be shown on top with transparency, so no need for
@@ -1044,7 +1044,7 @@ int SoBrepFaceSet::overrideMaterialBinding(
     if((mb==SoMaterialBindingElement::OVERALL || 
         (mb==SoMaterialBindingElement::PER_PART && diffuse_size>=partIndex.getNum())) 
         &&
-       (((selected || highlighted) && Gui::Selection().needPickedList()) || 
+       (((selected || highlighted) && ViewParams::highlightPick()) || 
         (trans0!=0.0 && ctx && (ctx->isSelected() || ctx->isHighlighted())) ||
         (ctx2 && ctx2->colors.size())))
     {
@@ -1052,7 +1052,7 @@ int SoBrepFaceSet::overrideMaterialBinding(
             state->push();
         pushed = 1;
 
-        if(selected && Gui::Selection().needPickedList()) {
+        if(selected && ViewParams::highlightPick()) {
             hasTransparency = true;
             if(trans0 < overrideTransparency) 
                 trans0 = overrideTransparency;

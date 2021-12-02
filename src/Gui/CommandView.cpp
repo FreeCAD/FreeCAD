@@ -3924,6 +3924,19 @@ VIEW_CMD_DEF(SelectionFaceWire, SelectionFaceWire)
 }
 
 //======================================================================
+// Std_AutoTransparentPick
+//======================================================================
+VIEW_CMD_DEF(AutoTransparentPick, AutoTransparentPick)
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Auto transparent pick");
+  sToolTipText  = ViewParams::docAutoTransparentPick();
+  sWhatsThis    = "Std_AutoTransparentPick";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
+}
+
+//======================================================================
 // Std_SelOnTop
 //======================================================================
 VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
@@ -4056,7 +4069,8 @@ public:
         addCommand(new StdCmdPreSelFaceOnTop());
         addCommand(new StdCmdPreSelFaceOutline());
         addCommand(new StdCmdPartialHighlightOnFullSelect());
-        addCommand(new StdCmdSelectionFaceWire());
+        // addCommand(new StdCmdSelectionFaceWire());
+        addCommand(new StdCmdAutoTransparentPick());
         addCommand(new StdCmdPreselEdgeOnly());
         addCommand("Std_TreePreSelection");
         addCommand(new StdCmd3DViewPreselection());

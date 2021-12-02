@@ -1804,6 +1804,32 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
 
       VertexCacheEntry newentry(ventry);
 
+      auto addWholeOnTop = [&](bool partial = false) {
+        if (!wholeontop)
+          return;
+        Material m = child.first;
+        m.order = material.order;
+        m.depthfunc = material.depthfunc;
+        if (partial) {
+          m.partialhighlight = 1;
+          material.partialhighlight = -1;
+          ++material.order;
+        }
+        else if (m.type != Material::Triangle) {
+          m.overrideflags.set(Material::FLAG_TRANSPARENCY);
+          m.diffuse = (m.diffuse & 0xffffff00) | 0xff;
+        }
+
+        if (m.type == Material::Triangle && alpha != 0xff) {
+          m.overrideflags.set(Material::FLAG_TRANSPARENCY);
+          m.diffuse = (m.diffuse & 0xffffff00) | (material.diffuse & 0xff);
+        }
+        res[m].push_back(ventry);
+        ++entrycount;
+        if (ventry.mergecount)
+          ++mergecount;
+      };
+
       auto checkHighlightIndices = [&](bool newcache) {
         auto cache = newentry.cache->checkHighlightIndices(&newentry.partidx, newcache);
         if (!cache) {
@@ -1823,22 +1849,7 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
         }
         if (newentry.partidx >= 0 || cache != newentry.cache) {
           newentry.cache = cache;
-          if (wholeontop) {
-            Material m = child.first;
-            m.order = material.order;
-            m.depthfunc = material.depthfunc;
-            m.partialhighlight = 1;
-            material.partialhighlight = -1;
-            ++material.order;
-            if (m.type == Material::Triangle && alpha != 0xff) {
-              m.overrideflags.set(Material::FLAG_TRANSPARENCY);
-              m.diffuse = (m.diffuse & 0xffffff00) | (material.diffuse & 0xff);
-            }
-            res[m].push_back(ventry);
-            ++entrycount;
-            if (ventry.mergecount)
-              ++mergecount;
-          }
+          addWholeOnTop(true);
         }
         return false;
       };
@@ -1865,12 +1876,14 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
           continue;
         }
         else if (pd) {
+          addWholeOnTop();
           if (pd->getCoordinateIndex() >= 0)
             newentry.partidx = pd->getCoordinateIndex();
           else
             continue;
         }
         else if (d) {
+          addWholeOnTop();
           const auto & indices = d->getIndices(SoFCDetail::Vertex);
           if (indices.size() == 1 && *indices.begin() >= 0) {
             newentry.partidx = *indices.begin();
@@ -1882,8 +1895,10 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
         else if (checkindices) {
           if (checkHighlightIndices(true))
             continue;
-        } else if (detail)
+        } else if (detail) {
+          addWholeOnTop();
           continue;
+        }
         break;
 
       case Material::Line:
@@ -1905,6 +1920,7 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
           continue;
         }
         else if (ld) {
+          addWholeOnTop();
           if (ld->getLineIndex() >= 0) {
             // Because of possible line strip, we do not use partidx for
             // partial rendering
@@ -1916,6 +1932,7 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
             continue;
         }
         else if (d) {
+          addWholeOnTop();
           const auto & indices = d->getIndices(SoFCDetail::Edge);
           if (indices.size() && *indices.begin()>=0) {
             newentry.cache = new SoFCVertexCache(*newentry.cache);
@@ -1925,8 +1942,10 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
         else if (checkindices) {
           if (checkHighlightIndices(true))
             continue;
-        } else if (detail)
+        } else if (detail) {
+          addWholeOnTop();
           continue;
+        }
         break;
 
       case Material::Triangle:
@@ -1959,12 +1978,14 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
           continue;
         }
         else if (fd) {
+          addWholeOnTop();
           if (fd->getPartIndex() >= 0)
             newentry.partidx = fd->getPartIndex();
           else
             continue;
         }
         else if (d) {
+          addWholeOnTop();
           const auto & indices = d->getIndices(SoFCDetail::Face);
           if (indices.size() == 1 && *indices.begin() >= 0)
             newentry.partidx = *indices.begin();
@@ -1976,8 +1997,11 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
         else if (checkindices) {
           if (checkHighlightIndices(true))
             continue;
-        } else if (detail)
+        } else if (detail) {
+          addWholeOnTop();
           continue;
+        }
+
         if (color && newentry.partidx >= 0) {
           uint32_t col = newentry.cache->getFaceColor(newentry.partidx);
           if ((col & 0xff) != 0xff && alpha == 0xff) {

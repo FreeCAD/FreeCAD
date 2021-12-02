@@ -43,6 +43,7 @@ public:
   void render(SoGLRenderAction *action);
   void clear();
 
+  SoPath *getHighlightPath() const;
   void setHighlight(SoPath * path,
                     const SoDetail * detail,
                     uint32_t color,
@@ -74,7 +75,7 @@ public:
 
   int clearSelection(bool alt = false);
 
-  bool isOnTop(const std::string & key, bool altonly = true);
+  bool isOnTop(const std::string & key, bool altonly = true) const;
 
   const SbFCMap<int, Gui::CoinPtr<SoPath> > & getSelectionPaths() const;
 

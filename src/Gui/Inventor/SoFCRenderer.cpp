@@ -239,6 +239,7 @@ public:
   SbFCVector<std::size_t> selsontop; // include only non-explicitly selected lines and points
   SbFCVector<std::size_t> selslineontop; // include only explicitly selected lines
   SbFCVector<std::size_t> selspointontop; // include only explictly selected points
+  SbFCVector<std::size_t> highlightlinesontop; // include pre-selected lines and points
   bool updateselection;
 
   std::unordered_map<CacheKeyPtr,
@@ -760,6 +761,7 @@ SoFCRenderer::clear()
   PRIVATE(this)->opaquehighlight.clear();
   PRIVATE(this)->opaquelineshighlight.clear();
   PRIVATE(this)->transphighlight.clear();
+  PRIVATE(this)->highlightlinesontop.clear();
   PRIVATE(this)->highlightkeys.clear();
 
   PRIVATE(this)->cachetable.clear();
@@ -806,6 +808,7 @@ SoFCRenderer::clearHighlight()
   PRIVATE(this)->highlightcaches.clear();
   PRIVATE(this)->opaquehighlight.clear();
   PRIVATE(this)->opaquelineshighlight.clear();
+  PRIVATE(this)->highlightlinesontop.clear();
   PRIVATE(this)->transphighlight.clear();
   PRIVATE(this)->hlentries.clear();
   PRIVATE(this)->applyKeys(PRIVATE(this)->highlightkeys, -1);
@@ -838,6 +841,7 @@ SoFCRenderer::setScene(const RenderCachePtr &cache)
   PRIVATE(this)->prevplane = SbPlane();
   PRIVATE(this)->opaquevcache.clear();
   PRIVATE(this)->opaqueontop.clear();
+  PRIVATE(this)->highlightlinesontop.clear();
   PRIVATE(this)->transpvcache.clear();
   PRIVATE(this)->transpontop.clear();
   PRIVATE(this)->cachetable.clear();
@@ -954,8 +958,10 @@ SoFCRenderer::setHighlight(VertexCacheMap && caches, bool wholeontop)
           PRIVATE(this)->transphighlight.emplace_back(idx);
         else if (material.type == Material::Triangle)
           PRIVATE(this)->opaquehighlight.emplace_back(idx);
-        else
+        else if (ventry.partidx < 0 && ventry.cache == ventry.cache->getWholeCache())
           PRIVATE(this)->opaquelineshighlight.emplace_back(idx);
+        else
+          PRIVATE(this)->highlightlinesontop.emplace_back(idx);
       }
       else {
         if (!fulltransp && (!material.pervertexcolor
@@ -963,8 +969,10 @@ SoFCRenderer::setHighlight(VertexCacheMap && caches, bool wholeontop)
         {
           if (material.type == Material::Triangle)
             PRIVATE(this)->opaquehighlight.emplace_back(idx);
-          else
+          else if (ventry.partidx < 0 && ventry.cache == ventry.cache->getWholeCache())
             PRIVATE(this)->opaquelineshighlight.emplace_back(idx);
+          else
+            PRIVATE(this)->highlightlinesontop.emplace_back(idx);
         }
 
         if (fulltransp || (material.pervertexcolor
@@ -2017,6 +2025,11 @@ SoFCRenderer::render(SoGLRenderAction * action)
   PRIVATE(this)->renderOpaque(action,
                               PRIVATE(this)->slentries,
                               PRIVATE(this)->selspointontop,
+                              RenderPassHighlight);
+
+  PRIVATE(this)->renderOpaque(action,
+                              PRIVATE(this)->hlentries,
+                              PRIVATE(this)->highlightlinesontop,
                               RenderPassHighlight);
 
   state->pop();

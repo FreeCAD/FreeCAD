@@ -181,3 +181,13 @@ void ViewParams::onEnableTaskPanelKeyTranslateChanged() {
 void ViewParams::init() {
     instance()->onDefaultFontSizeChanged();
 }
+
+bool ViewParams::highlightPick()
+{
+    return Selection().needPickedList() || AutoTransparentPick();
+}
+
+bool ViewParams::hiddenLineSelectionOnTop()
+{
+    return HiddenLineSelectionOnTop() || highlightPick();
+}

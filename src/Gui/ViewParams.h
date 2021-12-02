@@ -95,6 +95,8 @@ public:
        QT_TRANSLATE_NOOP("ViewParams","Show pre-selected face always on top")) \
     FC_VIEW_PARAM(ShowPreSelectedFaceOutline,bool,Bool,true, \
        QT_TRANSLATE_NOOP("ViewParams","Show pre-selected face outline")) \
+    FC_VIEW_PARAM(AutoTransparentPick,bool,Bool,false, \
+       QT_TRANSLATE_NOOP("ViewParams","Make pre-selected object transparent for picking hidden lines")) \
     FC_VIEW_PARAM(SelectElementOnTop,bool,Bool,false, \
        QT_TRANSLATE_NOOP("ViewParams","Do box/lasso element selection on already selected object(s)," \
                                       "if SelectionOnTop is enabled.")) \
@@ -408,6 +410,8 @@ public:
 
     static void useRenderer(bool enable);
     static bool isUsingRenderer();
+    static bool hiddenLineSelectionOnTop();
+    static bool highlightPick();
     static void init();
 
 private:
