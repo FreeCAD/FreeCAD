@@ -45,7 +45,7 @@ TextEdit::TextEdit(QWidget* parent)
     //Note: Set the correct context to this shortcut as we may use several instances of this
     //class at a time
     QShortcut* shortcut = new QShortcut(this);
-    shortcut->setKey(Qt::CTRL+Qt::Key_Space);
+    shortcut->setKey(QKeySequence(QString::fromLatin1("CTRL+Space")));
     shortcut->setContext(Qt::WidgetShortcut);
     connect(shortcut, SIGNAL(activated()), this, SLOT(complete()));
 
