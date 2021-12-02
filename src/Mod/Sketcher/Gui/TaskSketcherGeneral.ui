@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>312</width>
-    <height>254</height>
+    <width>396</width>
+    <height>302</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,7 +46,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="gridSize">
+      <widget class="Gui::PrefQuantitySpinBox" name="gridSize" native="true">
        <property name="toolTip">
         <string>Distance between two subsequent grid lines</string>
        </property>
@@ -79,32 +79,69 @@
     </layout>
    </item>
    <item>
-    <widget class="Gui::PrefCheckBox" name="checkBoxGridSnap">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="toolTip">
-      <string>New points will snap to the nearest grid line.
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="Gui::PrefCheckBox" name="checkBoxGridSnap">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid size to a grid line to snap.</string>
+       </property>
+       <property name="text">
+        <string>Grid snap</string>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>GridSnap</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/General</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBoxGridAutoScale">
+       <property name="toolTip">
+        <string>Auto change grid size depending on the zoom level of the current view.</string>
+       </property>
+       <property name="text">
+        <string>Grid auto scale</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="showOriginalColor">
+     <property name="toolTip">
+      <string>Do not change color for invalid or fully constrained sketch.</string>
      </property>
      <property name="text">
-      <string>Grid snap</string>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>GridSnap</cstring>
+      <string>Show original color</string>
      </property>
      <property name="prefPath" stdset="0">
       <cstring>Mod/Sketcher/General</cstring>
      </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>ShowOriginalColor</cstring>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxGridAutoScale">
+    <widget class="Gui::PrefCheckBox" name="autoTransparentPick">
      <property name="toolTip">
-      <string>Auto change grid size depending on the zoom level of the current view.</string>
+      <string>Auto make pre-selected shape transparent for picking
+hidden edges and points on picking external objects.</string>
      </property>
      <property name="text">
-      <string>Grid auto scale</string>
+      <string>Auto transparent on picking</string>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher/General</cstring>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>SketchAutoTransparentPick</cstring>
      </property>
     </widget>
    </item>

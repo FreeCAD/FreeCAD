@@ -93,6 +93,8 @@ void SketcherGeneralWidget::saveSettings()
     ui->checkBoxGridSnap->onSave();
     ui->checkBoxAutoconstraints->onSave();
     ui->checkBoxRedundantAutoconstraints->onSave();
+    ui->showOriginalColor->onSave();
+    ui->autoTransparentPick->onSave();
 
     saveOrderingOrder();
 }
@@ -117,6 +119,8 @@ void SketcherGeneralWidget::loadSettings()
     ui->checkBoxGridSnap->onRestore();
     ui->checkBoxAutoconstraints->onRestore();
     ui->checkBoxRedundantAutoconstraints->onRestore();
+    ui->showOriginalColor->onRestore();
+    ui->autoTransparentPick->onRestore();
 
     loadOrderingOrder();
 }

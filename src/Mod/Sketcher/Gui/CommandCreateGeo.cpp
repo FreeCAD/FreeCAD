@@ -60,7 +60,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCUnifiedSelection.h>
-
+#include <Gui/ViewParams.h>
 #include <Gui/ToolBarManager.h>
 
 #include "GeometryCreationMode.h"
@@ -6760,27 +6760,54 @@ cursor_external_color,
 "................................"};
 
 class DrawSketchHandlerExternal: public DrawSketchHandler
+                               , public ParameterGrp::ObserverType
 {
 public:
     std::vector<int> attaching;
     bool defining;
-    bool restorePickedList = false;
+    bool restoreHighlightPick = false;
+    ParameterGrp::handle hGrp;
+    ParameterGrp::handle hGrpView;
+    bool _activated = false;
+    bool _busy = false;
 
     DrawSketchHandlerExternal(bool defining=false)
         :attaching(0),defining(defining)
     {
+        init();
     }
 
     DrawSketchHandlerExternal(std::vector<int> &&geoIds)
         :attaching(std::move(geoIds)),defining(false)
     {
+        init();
+    }
+
+    void init() {
+        hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        hGrp->Attach(this);
+        hGrpView = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/View");
+        hGrpView->Attach(this);
     }
 
     virtual ~DrawSketchHandlerExternal()
     {
+        hGrp->Detach(this);
+        hGrpView->Detach(this);
         Gui::Selection().rmvSelectionGate();
-        if (restorePickedList)
-            Gui::Selection().enablePickedList(false);
+        if (restoreHighlightPick)
+            Gui::ViewParams::setAutoTransparentPick(false);
+    }
+
+    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+        if (strcmp(sReason, "SketchAutoTransparentPick") == 0)
+            setupTransparentPick();
+        else if (strcmp(sReason, "AutoTransparentPick") == 0) {
+            if (!_busy)
+                hGrp->SetBool("SketchAutoTransparentPick", false);
+        }
     }
 
     virtual bool allowExternalPick() const
@@ -6788,12 +6815,28 @@ public:
         return true;
     }
 
+    void setupTransparentPick()
+    {
+        Base::StateLocker guard(_busy);
+        bool enabled = hGrp->GetBool("SketchAutoTransparentPick", false);
+        if (!_activated || !enabled) {
+            if (restoreHighlightPick) {
+                restoreHighlightPick = false;
+                Gui::ViewParams::setAutoTransparentPick(false);
+            }
+        }
+        else if (_activated) {
+            if (!restoreHighlightPick) {
+                restoreHighlightPick = true;
+                Gui::ViewParams::setAutoTransparentPick(true);
+            }
+        }
+    }
+
     virtual void activated(ViewProviderSketch *sketchgui)
     {
-        if (!Gui::Selection().needPickedList()) {
-            restorePickedList = true;
-            Gui::Selection().enablePickedList(true);
-        }
+        _activated = true;
+        setupTransparentPick();
         if(attaching.size())
             sketchgui->showGeometry(false);
         sketchgui->setAxisPickStyle(false);
@@ -6819,10 +6862,8 @@ public:
 
     virtual void deactivated(ViewProviderSketch *sketchgui)
     {
-        if (restorePickedList) {
-            restorePickedList = false;
-            Gui::Selection().enablePickedList(false);
-        }
+        _activated = false;
+        setupTransparentPick();
         sketchgui->showGeometry();
         sketchgui->setAxisPickStyle(true);
     }
