@@ -4150,8 +4150,8 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
             }
         }
         break;
-    // case QEvent::MouseButtonDblClick:
     // case QEvent::NativeGesture:
+    case QEvent::MouseButtonDblClick:
     case QEvent::Wheel:
         if (!ViewParams::getDockOverlayWheelPassThrough())
             return false;
@@ -4199,8 +4199,9 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
             // event may be routed to the actual widget. Other types of event
             // probably do not matter.
             return true;
-        } else if (ev->type() != QEvent::MouseButtonPress 
-                && QApplication::mouseButtons()!=Qt::NoButton)
+        } else if (ev->type() != QEvent::MouseButtonPress
+                && ev->type() != QEvent::MouseButtonDblClick
+                && QApplication::mouseButtons() != Qt::NoButton)
             return false;
 
         if(isTreeViewDragging())
