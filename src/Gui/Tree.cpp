@@ -1372,6 +1372,38 @@ void TreeWidget::keyPressEvent(QKeyEvent *event)
         event->accept();
         onSearchObjects();
         return;
+    }else if(event->modifiers() == Qt::AltModifier) {
+        if(event->key() == Qt::Key_Left) {
+            for(auto &item: selectedItems()) {
+                item->setExpanded(false);
+            }
+            event->accept();
+            return;
+        }else if(event->key() == Qt::Key_Right) {
+            for(auto &item: selectedItems()) {
+                item->setExpanded(true);
+            }
+            event->accept();
+            return;
+        }else if(event->key() == Qt::Key_Up) {
+            for(auto &item: selectedItems()) {
+                item->setExpanded(true);
+                for (auto &child: childrenOfItem(*item)) {
+                    child->setExpanded(false);
+                }
+            }
+            event->accept();
+            return;
+        }else if(event->key() == Qt::Key_Down) {
+            for(auto &item: selectedItems()) {
+                item->setExpanded(true);
+                for (auto &child: childrenOfItem(*item)) {
+                    child->setExpanded(true);
+                }
+            }
+            event->accept();
+            return;
+        }
     }else if(event->key() == Qt::Key_Left) {
         auto index = currentIndex();
         if(index.column()==1) {
@@ -2913,6 +2945,18 @@ void TreeWidget::synchronizeSelectionCheckBoxes() {
         }
     }
     resizeColumnToContents(0);
+}
+
+QList<QTreeWidgetItem *> TreeWidget::childrenOfItem(const QTreeWidgetItem &item) const{
+    QList children = QList<QTreeWidgetItem *>();
+
+    // check item is in this tree
+    if (!this->indexFromItem(&item).isValid()) return children;
+
+    for (int i=0 ; i < item.childCount() ; i++) {
+        children.append(item.child(i));
+    }
+    return children;
 }
 
 void TreeWidget::onItemChanged(QTreeWidgetItem *item, int column) {
