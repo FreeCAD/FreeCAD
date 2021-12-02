@@ -42,6 +42,11 @@ class PartDesignExport ProfileBased : public PartDesign::FeatureAddSub
     PROPERTY_HEADER(PartDesign::SketchBased);
 
 public:
+    enum class ForbiddenAxis {
+        NoCheck = 0,
+        NotPerpendicularWithNormal = 1,
+        NotParallelWithNormal = 2
+    };
     ProfileBased();
 
     // Common properties for all sketch based features
@@ -182,7 +187,7 @@ protected:
     double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v);
     /// get Axis from ReferenceAxis
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
-                 Base::Vector3d& base, Base::Vector3d& dir, bool checkPerpendicular=true);
+                 Base::Vector3d& base, Base::Vector3d& dir, ForbiddenAxis checkAxis);
 
     void onChanged(const App::Property* prop);
 private:
