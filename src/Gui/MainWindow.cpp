@@ -1209,6 +1209,12 @@ void MainWindow::showEvent(QShowEvent* e)
 {
     std::clog << "Show main window" << std::endl;
     QMainWindow::showEvent(e);
+    QList<QDockWidget *> dockWidgets = instance->findChildren<QDockWidget *>();
+    for (auto &dockWidget : dockWidgets) {
+        if (dockWidget->isVisible()) {
+            dockWidget->raise();
+        }
+    }
 }
 
 void MainWindow::hideEvent(QHideEvent* e)
