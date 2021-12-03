@@ -73,16 +73,16 @@ def setFeedRate(commandlist, ToolController):
         if command.Name not in feedcommands + rapidcommands:
             continue
 
-        if _isVertical(machine.getPosition(), command):
+        if _isVertical(FreeCAD.Vector(machine.X, machine.Y, machine.Z), command):
             rate = (
                 ToolController.VertRapid.Value
-                if command in rapidcommands
+                if command.Name in rapidcommands
                 else ToolController.VertFeed.Value
             )
         else:
             rate = (
                 ToolController.HorizRapid.Value
-                if command in rapidcommands
+                if command.Name in rapidcommands
                 else ToolController.HorizFeed.Value
             )
 

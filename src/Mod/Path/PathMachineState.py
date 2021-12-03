@@ -58,48 +58,61 @@ class MachineState:
         "G59.9",
     ]
 
-    X: float = field(default=None)
-    Y: float = field(default=None)
-    Z: float = field(default=None)
-    A: float = field(default=None)
-    B: float = field(default=None)
-    C: float = field(default=None)
+    X: float = field(default=0)
+    Y: float = field(default=0)
+    Z: float = field(default=0)
+    A: float = field(default=0)
+    B: float = field(default=0)
+    C: float = field(default=0)
     F: float = field(default=None)
     Coolant: bool = field(default=False)
     WCS: str = field(default="G54")
     Spindle: str = field(default="off")
     S: int = field(default=0)
-    T: str = field(default=None)
+    T: int = field(default=None)
 
     def addCommand(self, command):
+        """Processes a command and updates the internal state of the machine. Returns true if the command has alterned the machine state"""
+        oldstate = self.getState()
         if command.Name == "M6":
-            self.T = command.Parameters["T"]
-            return
+            self.T = int(command.Parameters["T"])
+            return not oldstate == self.getState()
 
         if command.Name in ["M3", "M4"]:
             self.S = command.Parameters["S"]
-            self.SpindApple = "CW" if command.Name == "M3" else "CCW"
-            return
+            self.Spindle = "CW" if command.Name == "M3" else "CCW"
+            return not oldstate == self.getState()
 
         if command.Name in ["M2", "M5"]:
             self.S = 0
             self.Spindle = "off"
-            return
+            return not oldstate == self.getState()
 
         if command.Name in self.WCSLIST:
             self.WCS = command.Name
-            return
+            return not oldstate == self.getState()
 
         for p in command.Parameters:
             self.__setattr__(p, command.Parameters[p])
 
-    def getPosition(self):
-        """
-        Returns an App.Vector of the current location
-        """
-        x = 0 if self.X is None else self.X
-        y = 0 if self.Y is None else self.Y
-        z = 0 if self.Z is None else self.Z
+        return not oldstate == self.getState()
 
-        return FreeCAD.Vector(x, y, z)
+    def getState(self):
+        """
+        Returns a dictionary of the current machine state
+        """
+        state = {}
+        state['X'] = self.X
+        state['Y'] = self.Y
+        state['Z'] = self.Z
+        state['A'] = self.A
+        state['B'] = self.B
+        state['C'] = self.C
+        state['F'] = self.F
+        state['Coolant'] = self.Coolant
+        state['WCS'] = self.WCS
+        state['Spindle'] = self.Spindle
+        state['S'] = self.S
+        state['T'] = self.T
 
+        return state

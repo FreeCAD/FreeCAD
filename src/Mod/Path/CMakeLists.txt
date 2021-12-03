@@ -10,6 +10,8 @@ set(Path_Scripts
     Init.py
     PathCommands.py
     TestPathApp.py
+    PathMachineState.py
+    PathFeedRate.py
 )
 
 if(BUILD_GUI)
@@ -144,6 +146,7 @@ SET(PathScripts_SRCS
 
 SET(Generator_SRCS
     Generators/drill_generator.py
+    Generators/rotation_generator.py
 )
 
 SET(PathScripts_post_SRCS
@@ -221,8 +224,10 @@ SET(PathTests_SRCS
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathDrillGenerator.py
+    PathTests/TestPathRotationGenerator.py
     PathTests/TestPathGeom.py
     PathTests/TestPathHelix.py
+    PathTests/TestPathHelpers.py
     PathTests/TestPathLog.py
     PathTests/TestPathOpTools.py
     PathTests/TestPathPost.py
