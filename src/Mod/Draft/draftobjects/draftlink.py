@@ -187,9 +187,15 @@ class DraftLink(DraftObject):
                             "from '{}'\n".format(obj.Label, obj.Base.Label))
                 raise RuntimeError(_err_msg)
             else:
-                # Resetting the Placement of the copied shape does not work for
-                # Part_Vertex and Draft_Point objects, we need to transform:
-                shape = shape.transformGeometry(shape.Placement.Matrix.inverse())
+                place = shape.Placement
+                shape = shape.copy()
+                if place.__eq__(shape.Placement):
+                    shape.Placement = App.Placement()
+                else:
+                    # In some cases the copied shape has a different Placement.
+                    # This happens with Part_Vertex and Draft_Point objects.
+                    # In those cases we need to transform:
+                    shape = shape.transformGeometry(place.Matrix.inverse())
                 base = []
                 for i, pla in enumerate(pls):
                     vis = getattr(obj, 'VisibilityList', [])
