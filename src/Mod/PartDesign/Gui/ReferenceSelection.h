@@ -27,6 +27,12 @@
 #include <Gui/SelectionFilter.h>
 #include <Mod/PartDesign/Gui/EnumFlags.h>
 
+namespace App {
+class OriginGroupExtension;
+}
+namespace PartDesign {
+class Body;
+}
 namespace PartDesignGui {
 
 class ReferenceSelection : public Gui::SelectionFilterGate
@@ -47,6 +53,16 @@ public:
       * Optionally restrict the selection to planar edges/faces
       */
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
+
+private:
+    PartDesign::Body* getBody() const;
+    App::OriginGroupExtension* getOriginGroupExtension(PartDesign::Body *body) const;
+    bool allowOrigin(PartDesign::Body *body, App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const;
+    bool allowDatum(PartDesign::Body *body, App::DocumentObject* pObj) const;
+    bool allowPartFeature(App::DocumentObject* pObj, const char* sSubName) const;
+    bool isEdge(App::DocumentObject* pObj, const char* sSubName) const;
+    bool isFace(App::DocumentObject* pObj, const char* sSubName) const;
+    bool isCircle(App::DocumentObject* pObj, const char* sSubName) const;
 };
 
 class NoDependentsSelection : public Gui::SelectionFilterGate
