@@ -431,7 +431,8 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     // create the window for call tips
     d->callTipsList = new CallTipsList(this);
-    d->callTipsList->setFrameStyle(QFrame::Box|QFrame::Raised);
+    d->callTipsList->setFrameStyle(QFrame::Box);
+    d->callTipsList->setFrameShadow(QFrame::Raised);
     d->callTipsList->setLineWidth(2);
     installEventFilter(d->callTipsList);
     viewport()->installEventFilter(d->callTipsList);
@@ -1254,7 +1255,7 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
 
-    a = menu.addAction(tr("&Copy"), this, SLOT(copy()), Qt::CTRL+Qt::Key_C);
+    a = menu.addAction(tr("&Copy"), this, SLOT(copy()), QKeySequence(QString::fromLatin1("CTRL+C")));
     a->setEnabled(textCursor().hasSelection());
 
     a = menu.addAction(tr("&Copy command"), this, SLOT(onCopyCommand()));
@@ -1273,11 +1274,11 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 
     menu.addSeparator();
 
-    a = menu.addAction(tr("&Paste"), this, SLOT(paste()), Qt::CTRL+Qt::Key_V);
+    a = menu.addAction(tr("&Paste"), this, SLOT(paste()), QKeySequence(QString::fromLatin1("CTRL+V")));
     const QMimeData *md = QApplication::clipboard()->mimeData();
     a->setEnabled( mayPasteHere && md && canInsertFromMimeData(md));
 
-    a = menu.addAction(tr("Select All"), this, SLOT(selectAll()), Qt::CTRL+Qt::Key_A);
+    a = menu.addAction(tr("Select All"), this, SLOT(selectAll()), QKeySequence(QString::fromLatin1("CTRL+A")));
     a->setEnabled(!document()->isEmpty());
 
     a = menu.addAction(tr("Clear console"), this, SLOT(onClearConsole()));

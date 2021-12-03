@@ -3931,7 +3931,7 @@ void ViewProviderSketch::initItemsSizes()
         //
         // Rationale:
         // -> Other WBs use the default value as is
-        // -> If a user has a HDPI, he will eventually change the value for the other WBs
+        // -> If a user has a HDPI, they will eventually change the value for the other WBs
         // -> If we correct the value here in addition, we would get two times a resize
         edit->MarkerSize = markersize;
     }

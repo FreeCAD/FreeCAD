@@ -1011,7 +1011,7 @@ for len in max_mesh_sizes:
 """
 TODO
 class GmshTools should be splittet in two classes
-one class should only collect the mesh parameter from mesh object and his childs
+one class should only collect the mesh parameter from mesh object and its childs
 a second class only uses the collected parameter,
 writes the input file runs gmsh reads back the unv and returns a FemMesh
 gmsh binary will be collected in the second class

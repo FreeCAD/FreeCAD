@@ -36,6 +36,7 @@
 #include <Base/UnitsApi.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
 #include "ReferenceSelection.h"
+#include <Gui/Widgets.h>
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -51,6 +52,11 @@ TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderSketchBased *SketchBase
     proxy = new QWidget(this);
     ui->setupUi(proxy);
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+
+    Gui::ButtonGroup* group = new Gui::ButtonGroup(this);
+    group->addButton(ui->checkBoxMidplane);
+    group->addButton(ui->checkBoxReversed);
+    group->setExclusive(true);
 
     this->groupLayout()->addWidget(proxy);
 }
@@ -405,7 +411,9 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         // to distinguish that this is the direction selection
         selectionFace = false;
         setDirectionMode(num);
-        TaskSketchBasedParameters::onSelectReference(true, true, false, true, true);
+        TaskSketchBasedParameters::onSelectReference(true, AllowSelection::EDGE |
+                                                           AllowSelection::PLANAR |
+                                                           AllowSelection::CIRCLE);
     }
     else {
         if (lnk.getValue()) {
@@ -516,8 +524,6 @@ void TaskExtrudeParameters::onMidplaneChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Midplane.setValue(on);
-    // reversed is not sensible when midplane
-    ui->checkBoxReversed->setEnabled(!on);
     tryRecomputeFeature();
 }
 
@@ -525,8 +531,6 @@ void TaskExtrudeParameters::onReversedChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Reversed.setValue(on);
-    // midplane is not sensible when reversed
-    ui->checkBoxMidplane->setEnabled(!on);
     // update the direction
     tryRecomputeFeature();
     updateDirectionEdits();
@@ -562,7 +566,7 @@ void TaskExtrudeParameters::onButtonFace(const bool pressed)
     selectionFace = true;
 
     // only faces are allowed
-    TaskSketchBasedParameters::onSelectReference(pressed, false, true, false);
+    TaskSketchBasedParameters::onSelectReference(pressed, AllowSelection::FACE);
 
     // Update button if onButtonFace() is called explicitly
     ui->buttonFace->setChecked(pressed);

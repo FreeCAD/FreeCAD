@@ -352,17 +352,16 @@ void StdCmdFreezeViews::activated(int iMsg)
         getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn);
 
         QList<QAction*> acts = pcAction->actions();
-        int index = 0;
+        int index = 1;
         for (QList<QAction*>::ConstIterator it = acts.begin()+offset; it != acts.end(); ++it, index++) {
             if (!(*it)->isVisible()) {
                 savedViews++;
-                QString viewnr = QString(QObject::tr("Restore view &%1")).arg(index+1);
+                QString viewnr = QString(QObject::tr("Restore view &%1")).arg(index);
                 (*it)->setText(viewnr);
                 (*it)->setToolTip(QString::fromLatin1(ppReturn));
                 (*it)->setVisible(true);
-                if (index < 9) {
-                    int accel = Qt::CTRL+Qt::Key_1;
-                    (*it)->setShortcut(accel+index);
+                if (index < 10) {
+                    (*it)->setShortcut(QKeySequence(QString::fromLatin1("CTRL+%1").arg(index)));
                 }
                 break;
             }
@@ -499,9 +498,8 @@ void StdCmdFreezeViews::onRestoreViews()
             acts[i+offset]->setText(viewnr);
             acts[i+offset]->setToolTip(setting);
             acts[i+offset]->setVisible(true);
-            if ( i < 9 ) {
-                int accel = Qt::CTRL+Qt::Key_1;
-                acts[i+offset]->setShortcut(accel+i);
+            if (i < 9) {
+                acts[i+offset]->setShortcut(QKeySequence(QString::fromLatin1("CTRL+%1").arg(i+1)));
             }
         }
 

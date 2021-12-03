@@ -131,6 +131,8 @@ public:
 
     void synchronizeSelectionCheckBoxes();
 
+    QList<QTreeWidgetItem *> childrenOfItem(const QTreeWidgetItem &item) const;
+
 protected:
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg) override;

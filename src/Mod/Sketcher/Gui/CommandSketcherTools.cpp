@@ -1538,7 +1538,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
         }
     }
 
-    // Ask the user if he wants to clone or to simple copy
+    // Ask the user if they want to clone or to simple copy
 /*
     int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric constraints"),
                                     QObject::tr("Do you want to clone the object, i.e. substitute dimensional constraints by geometric constraints?"),

@@ -95,7 +95,7 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
             const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();
             Base::Vector3d base;
             Base::Vector3d dir;
-            getAxis(pcReferenceAxis, subReferenceAxis, base, dir, false);
+            getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotPerpendicularWithNormal);
             switch (addSubType) {
             case Type::Additive:
                 extrudeDirection = dir;

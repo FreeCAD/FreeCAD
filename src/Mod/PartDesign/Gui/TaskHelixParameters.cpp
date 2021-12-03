@@ -426,7 +426,9 @@ void TaskHelixParameters::onAxisChanged(int num)
     App::PropertyLinkSub& lnk = *(axesInList[num]);
     if (lnk.getValue() == 0) {
         // enter reference selection mode
-        TaskSketchBasedParameters::onSelectReference(true, true, false, true, true);
+        TaskSketchBasedParameters::onSelectReference(true, AllowSelection::EDGE |
+                                                           AllowSelection::PLANAR |
+                                                           AllowSelection::CIRCLE);
         return;
     }
     else {
@@ -436,7 +438,7 @@ void TaskHelixParameters::onAxisChanged(int num)
         }
         propReferenceAxis->Paste(lnk);
 
-        // in case user is in selection mode, but changed his mind before selecting anything.
+        // in case user is in selection mode, but changed their mind before selecting anything.
         exitSelectionMode();
     }
 

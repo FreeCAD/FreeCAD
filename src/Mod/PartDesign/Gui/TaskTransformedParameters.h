@@ -27,6 +27,7 @@
 #include <QComboBox>
 
 #include <Mod/Part/App/Part2DObject.h>
+#include <Mod/PartDesign/Gui/EnumFlags.h>
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
@@ -188,7 +189,7 @@ protected:
     void hideBase();
     void showBase();
 
-    void addReferenceSelectionGate(bool edge, bool face, bool planar=true, bool whole=false, bool circle=false);
+    void addReferenceSelectionGate(AllowSelectionFlags);
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;

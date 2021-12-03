@@ -90,9 +90,9 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     // Enable selection from origin of current part/
     if ( pObj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ) {
         bool fits = false;
-        if ( plane && pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ) {
+        if ( type.testFlag(AllowSelection::FACE) && pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ) {
             fits = true;
-        } else if ( edge && pObj->getTypeId().isDerivedFrom(App::Line::getClassTypeId()) ) {
+        } else if ( type.testFlag(AllowSelection::EDGE) && pObj->getTypeId().isDerivedFrom(App::Line::getClassTypeId()) ) {
             fits = true;
         }
 
@@ -107,8 +107,9 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
                         return true;
                     }
                 }
-            } catch (const Base::Exception&)
-            { }
+            }
+            catch (const Base::Exception&) {
+            }
         }
         return false; // The Plane/Axis doesn't fits our needs
     }
@@ -117,29 +118,32 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
         if (!body) { // Allow selecting Part::Datum features from the active Body
             return false;
-        } else if (!allowOtherBody && !body->hasObject(pObj)) {
+        } else if (!type.testFlag(AllowSelection::OTHERBODY) && !body->hasObject(pObj)) {
             return false;
         }
 
-        if (plane && (pObj->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())))
+        if (type.testFlag(AllowSelection::FACE) && (pObj->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())))
             return true;
-        if (edge && (pObj->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())))
+        if (type.testFlag(AllowSelection::EDGE) && (pObj->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())))
             return true;
-        if (point && (pObj->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())))
+        if (type.testFlag(AllowSelection::POINT) && (pObj->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())))
             return true;
 
         return false;
     }
 
-    if (!allowOtherBody) {
+    // The flag was used to be set. So, this block will never be treated and doesn't make really sense anyway
+#if 0
+    if (!type.testFlag(AllowSelection::OTHERBODY)) {
         if (support == NULL)
             return false;
         if (pObj != support)
             return false;
     }
+#endif
     // Handle selection of geometry elements
     if (!sSubName || sSubName[0] == '\0')
-        return whole;
+        return type.testFlag(AllowSelection::WHOLE);
 
     // resolve links if needed
     if (!pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
@@ -148,12 +152,12 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
     if (pObj && pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         std::string subName(sSubName);
-        if (edge && subName.compare(0, 4, "Edge") == 0) {
+        if (type.testFlag(AllowSelection::EDGE) && subName.compare(0, 4, "Edge") == 0) {
             const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
             TopoDS_Shape sh = shape.getSubShape(subName.c_str());
             const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
             if (!edgeShape.IsNull()) {
-                if (planar) {
+                if (type.testFlag(AllowSelection::PLANAR)) {
                     BRepAdaptor_Curve adapt(edgeShape);
                     if (adapt.GetType() == GeomAbs_Line)
                         return true;
@@ -162,12 +166,12 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
                 }
             }
         }
-        if (plane && subName.compare(0, 4, "Face") == 0) {
+        if (type.testFlag(AllowSelection::FACE) && subName.compare(0, 4, "Face") == 0) {
             const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
             TopoDS_Shape sh = shape.getSubShape(subName.c_str());
             const TopoDS_Face& face = TopoDS::Face(sh);
             if (!face.IsNull()) {
-                if (planar) {
+                if (type.testFlag(AllowSelection::PLANAR)) {
                     BRepAdaptor_Surface adapt(face);
                     if (adapt.GetType() == GeomAbs_Plane)
                         return true;
@@ -176,10 +180,10 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
                 }
             }
         }
-        if (point && subName.compare(0, 6, "Vertex") == 0) {
+        if (type.testFlag(AllowSelection::POINT) && subName.compare(0, 6, "Vertex") == 0) {
             return true;
         }
-        if (circle && subName.compare(0, 4, "Edge") == 0) {
+        if (type.testFlag(AllowSelection::CIRCLE) && subName.compare(0, 4, "Edge") == 0) {
             const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
             TopoDS_Shape sh = shape.getSubShape(subName.c_str());
             const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);

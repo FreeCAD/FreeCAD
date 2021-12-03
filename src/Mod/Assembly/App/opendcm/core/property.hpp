@@ -302,7 +302,7 @@ struct pts { //property type sequence
 /**
  * @brief Type traits to detect if the property has a default value
  *
- * If the user want to provide a default value for a property than he adds a default_value static function.
+ * If the user wants to provide a default value for a property than they add a default_value static function.
  * To check if the this function is available we add a type traits which searches for this special function.
  */
 BOOST_MPL_HAS_XXX_TRAIT_DEF(default_value)
@@ -312,7 +312,7 @@ BOOST_MPL_HAS_XXX_TRAIT_DEF(default_value)
 /**
  * @brief Functor to assign default values to property
  *
- * This functor holds a pointer to the PropertyOwner in question. The operator() get the properties which
+ * This functor holds a pointer to the PropertyOwner in question. The operator() gets the properties which
  * hold a default value and assigns this value to the property the owner holds.
  */
 template<typename PropertyOwner>

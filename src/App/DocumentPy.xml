@@ -38,6 +38,24 @@
         <UserDocu>Restore the document from disk</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="isSaved">
+      <Documentation>
+        <UserDocu>Checks if the document is saved</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getProgramVersion">
+      <Documentation>
+        <UserDocu>Get the program version that a project file was created with</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getFileName">
+      <Documentation>
+        <UserDocu>
+For a regular document it returns its file name property.
+For a temporary document it returns its transient directory.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="mergeProject">
       <Documentation>
         <UserDocu>Merges this document with another project file</UserDocu>
@@ -144,12 +162,42 @@ object of this document.
         <UserDocu>Clear the undo stack of the document</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="clearDocument">
+      <Documentation>
+        <UserDocu>Clear the whole document</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setClosable">
+      <Documentation>
+        <UserDocu>Set a flag that allows or forbids to close a document</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isClosable">
+      <Documentation>
+        <UserDocu>Check if the document can be closed. The default value is True</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="recompute">
       <Documentation>
         <UserDocu>recompute(objs=None): Recompute the document and returns the amount of recomputed features</UserDocu>
       </Documentation>
     </Methode>
-	<Methode Name="getObject">
+    <Methode Name="mustExecute">
+      <Documentation>
+        <UserDocu>Check if any object must be recomputed</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="purgeTouched">
+      <Documentation>
+        <UserDocu>Purge the touched state of all objects</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isTouched">
+      <Documentation>
+        <UserDocu>Check if any object is in touched state</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getObject">
 		<Documentation>
 			<UserDocu>Return the object with the given name</UserDocu>
 		</Documentation>

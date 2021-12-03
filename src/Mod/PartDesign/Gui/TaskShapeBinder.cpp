@@ -91,8 +91,8 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view, bool /*newObj*/,
     for (auto sub : subs)
         ui->listWidgetReferences->addItem(QString::fromStdString(sub));
  
-    //make sure th euser sees al important things: the base feature to select edges and the 
-    //spine/auxiliary spine he already selected
+    //make sure the user sees all important things: the base feature to select edges and the 
+    //spine/auxiliary spine they already selected
     if(obj) {
         auto* svp = doc->getViewProvider(obj);
         if(svp) {
@@ -148,8 +148,8 @@ TaskShapeBinder::~TaskShapeBinder()
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
     Gui::Document* doc = Gui::Application::Instance->activeDocument(); 
     
-    //make sure th euser sees al important things: the base feature to select edges and the 
-    //spine/auxiliary spine he already selected
+    //make sure the user sees all important things: the base feature to select edges and the 
+    //spine/auxiliary spine they already selected
     if(pipe->BaseFeature.getValue())
         doc->getViewProvider(pipe->BaseFeature.getValue())->hide();
     if(pipe->Spine.getValue()) {
