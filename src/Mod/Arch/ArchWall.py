@@ -832,8 +832,7 @@ class _Wall(ArchComponent.Component):
                         # let pass invalid objects if they have solids...
                         return
                 elif obj.Base.Shape.Solids:
-                    base = obj.Base.Shape.copy()
-
+                    base = Part.Shape(obj.Base.Shape)
                 # blocks calculation
                 elif hasattr(obj,"MakeBlocks") and hasattr(self,"basewires"):
                     if obj.MakeBlocks and self.basewires and extdata and obj.Width and obj.Height:
@@ -907,9 +906,9 @@ class _Wall(ArchComponent.Component):
                             rest = (interval - entires)
                             for i in range(entires):
                                 if i % 2: # odd
-                                    b = blocks2.copy()
+                                    b = Part.Shape(blocks2)
                                 else:
-                                    b = blocks1.copy()
+                                    b = Part.Shape(blocks1)
                                 if i:
                                     t = FreeCAD.Vector(svec)
                                     t.multiply(i)
