@@ -31,29 +31,28 @@
 #include <App/Application.h>
 #include <Gui/Application.h>
 
+#include "ui_DlgActiveBody.h"
 #include "DlgActiveBody.h"
 #include "ReferenceSelection.h"
 #include "Utils.h"
 
-Q_DECLARE_METATYPE(App::DocumentObject*);
+Q_DECLARE_METATYPE(App::DocumentObject*)
 
 using namespace PartDesignGui;
 
-DlgActiveBody::DlgActiveBody(QWidget *parent, App::Document*& doc,
-                             const QString& infoText)
-    : QDialog(parent),
-      ui(new Ui_DlgActiveBody),
-      _doc(doc),
-      activeBody(nullptr)
+DlgActiveBody::DlgActiveBody(QWidget *parent, App::Document*& doc, const QString& infoText)
+    : QDialog(parent)
+    , ui(new Ui_DlgActiveBody)
+    , _doc(doc)
+    , activeBody(nullptr)
 {
     ui->setupUi(this);
 
-    QObject::connect(ui->bodySelect, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
-                     this, SLOT(accept()));
+    connect(ui->bodySelect, SIGNAL(itemDoubleClicked(QListWidgetItem *)),
+            this, SLOT(accept()));
 
-    if(!infoText.isEmpty()) {
-        ui->label->setText(infoText + QString::fromUtf8("\n\n") +
-                           QObject::tr("Please select"));
+    if (!infoText.isEmpty()) {
+        ui->label->setText(infoText + QString::fromUtf8("\n\n") + tr("Please select"));
     }
 
     auto bodies = _doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
@@ -83,6 +82,10 @@ DlgActiveBody::DlgActiveBody(QWidget *parent, App::Document*& doc,
         if (first)
             first->setSelected(true);
     }
+}
+
+DlgActiveBody::~DlgActiveBody()
+{
 }
 
 void DlgActiveBody::accept()
