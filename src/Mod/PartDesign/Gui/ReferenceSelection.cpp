@@ -132,12 +132,15 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         return false;
     }
 
+    // The flag was used to be set. So, this block will never be treated and doesn't make really sense anyway
+#if 0
     if (!type.testFlag(AllowSelection::OTHERBODY)) {
         if (support == NULL)
             return false;
         if (pObj != support)
             return false;
     }
+#endif
     // Handle selection of geometry elements
     if (!sSubName || sSubName[0] == '\0')
         return type.testFlag(AllowSelection::WHOLE);
