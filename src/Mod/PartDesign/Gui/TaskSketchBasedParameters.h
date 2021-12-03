@@ -29,6 +29,7 @@
 #include "ViewProvider.h"
 
 #include "TaskFeatureParameters.h"
+#include "EnumFlags.h"
 
 namespace App {
 class Property;
@@ -53,7 +54,7 @@ protected:
     const QString onAddSelection(const Gui::SelectionChanges& msg);
     virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
-    void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar, const bool circle = false);
+    void onSelectReference(const bool pressed, AllowSelectionFlags);
     void exitSelectionMode();
     QVariant setUpToFace(const QString& text);
     /// Try to find the name of a feature with the given label.

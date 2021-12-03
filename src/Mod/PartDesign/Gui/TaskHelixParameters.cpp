@@ -426,7 +426,9 @@ void TaskHelixParameters::onAxisChanged(int num)
     App::PropertyLinkSub& lnk = *(axesInList[num]);
     if (lnk.getValue() == 0) {
         // enter reference selection mode
-        TaskSketchBasedParameters::onSelectReference(true, true, false, true, true);
+        TaskSketchBasedParameters::onSelectReference(true, AllowSelection::EDGE |
+                                                           AllowSelection::PLANAR |
+                                                           AllowSelection::CIRCLE);
         return;
     }
     else {

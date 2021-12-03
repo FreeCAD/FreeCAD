@@ -145,8 +145,11 @@ void TaskDressUpParameters::onButtonRefAdd(bool checked)
         clearButtons(refAdd);
         hideObject();
         selectionMode = refAdd;
+        AllowSelectionFlags allow;
+        allow.setFlag(AllowSelection::EDGE, allowEdges);
+        allow.setFlag(AllowSelection::FACE, allowFaces);
         Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allowEdges, allowFaces, false));
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
         DressUpView->highlightReferences(true);
     } else {
         exitSelectionMode();
@@ -160,8 +163,11 @@ void TaskDressUpParameters::onButtonRefRemove(const bool checked)
         clearButtons(refRemove);
         hideObject();
         selectionMode = refRemove;
-        Gui::Selection().clearSelection();        
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allowEdges, allowFaces, false));
+        AllowSelectionFlags allow;
+        allow.setFlag(AllowSelection::EDGE, allowEdges);
+        allow.setFlag(AllowSelection::FACE, allowFaces);
+        Gui::Selection().clearSelection();
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
         DressUpView->highlightReferences(true);
     }
     else {
