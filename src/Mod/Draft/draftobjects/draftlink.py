@@ -189,12 +189,12 @@ class DraftLink(DraftObject):
             else:
                 place = shape.Placement
                 shape = shape.copy()
-                if place.__eq__(shape.Placement):
+                if shape.Placement == place:
                     shape.Placement = App.Placement()
                 else:
-                    # In some cases the copied shape has a different Placement.
-                    # This happens with Part_Vertex and Draft_Point objects.
-                    # In those cases we need to transform:
+                    # In some cases the copied shape has a different Placement
+                    # than its original. This happens with Part_Vertex and
+                    # Draft_Point objects. In those cases we need to transform:
                     shape = shape.transformGeometry(place.Matrix.inverse())
                 base = []
                 for i, pla in enumerate(pls):
