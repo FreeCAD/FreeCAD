@@ -64,13 +64,14 @@ namespace Gui {
 class QuantitySpinBoxPrivate
 {
 public:
-    QuantitySpinBoxPrivate() :
+    QuantitySpinBoxPrivate(QuantitySpinBox *q) :
       validInput(true),
       pendingEmit(false),
       unitValue(0),
       maximum(DOUBLE_MAX),
       minimum(-DOUBLE_MAX),
-      singleStep(1.0)
+      singleStep(1.0),
+      q_ptr(q)
     {
     }
     ~QuantitySpinBoxPrivate()
@@ -89,6 +90,8 @@ public:
 
     bool validate(QString& input, Base::Quantity& result) const
     {
+        Q_Q(const QuantitySpinBox);
+
         // Do not accept empty strings because the parser will consider
         // " unit" as "1 unit" which is not the desired behaviour (see #0004104)
         if (input.isEmpty())
@@ -108,7 +111,7 @@ public:
         else if (state == QValidator::Intermediate) {
             tmp = tmp.trimmed();
             tmp += QLatin1Char(' ');
-            tmp += unitStr;
+            tmp += q->isBound()?QStringLiteral("mm"):unitStr; // In expressions, default unit is always "mm"
             Base::Quantity res2 = validateAndInterpret(tmp, pos, state);
             res2.setFormat(quantity.getFormat());
             if (state == QValidator::Acceptable) {
@@ -285,13 +288,15 @@ end:
     double minimum;
     double singleStep;
     std::unique_ptr<Base::UnitsSchema> scheme;
+    QuantitySpinBox *q_ptr;
+    Q_DECLARE_PUBLIC(QuantitySpinBox);
 };
 }
 
 QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     : QAbstractSpinBox(parent),
       ExpressionSpinBox(this),
-      d_ptr(new QuantitySpinBoxPrivate())
+      d_ptr(new QuantitySpinBoxPrivate(this))
 {
     d_ptr->locale = locale();
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
