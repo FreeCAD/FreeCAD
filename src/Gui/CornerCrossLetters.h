@@ -10,7 +10,7 @@ namespace Gui {
 // 21x27 is 3x a standard 5x7 representation with 1px margin
 // This allows good anti-aliasing aspect at any usable size
 // It is generated with Gimp using Bitstream Charter Bold font, 28 px, on transparent background
-// It is then directy exported as C source type after image is vertically flipped for direct GL usage
+// It is then directly exported as C source type after image is vertically flipped for direct GL usage
 // With enabled options "Use macros instead of struct" and "Save alpha channel"
 
 #define XPM_WIDTH (21)

@@ -137,7 +137,7 @@ private:
 
 /**
  * The CompletionList class provides a list box that pops up in a text edit if the user has pressed
- * an accelerator to complete the current word he is typing in.
+ * an accelerator to complete the current word they are typing in.
  * @author Werner Mayer
  */
 class CompletionList : public QListWidget

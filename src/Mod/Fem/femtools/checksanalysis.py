@@ -344,7 +344,7 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
             ):
                 message += (
                     "Mesh without geometry link. "
-                    "The mesh needs to know his geometry for the beam rotations.\n"
+                    "The mesh needs to know its geometry for the beam rotations.\n"
                 )
         if len(member.geos_beamrotation) > 1:
             message += (

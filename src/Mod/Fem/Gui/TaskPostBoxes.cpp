@@ -1138,7 +1138,7 @@ void TaskPostWarpVector::on_Max_valueChanged(double) {
 
     /*
      * problem, if warp_factor is 2000 one would like to input 4000 as max, one starts to input 4
-     * immediately the warp_factor is changed to 4 because 4 < 2000, but one has just input one character of his 4000
+     * immediately the warp_factor is changed to 4 because 4 < 2000, but one has just input one character of their 4000
      * I do not know how to solve this, but the code to set slider and spinbox is fine thus I leave it ...
      *
      * mhh it works if "apply changes to pipeline directly" button is deactivated, still it really confuses if

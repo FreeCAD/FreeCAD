@@ -436,7 +436,7 @@ void TaskHelixParameters::onAxisChanged(int num)
         }
         propReferenceAxis->Paste(lnk);
 
-        // in case user is in selection mode, but changed his mind before selecting anything.
+        // in case user is in selection mode, but changed their mind before selecting anything.
         exitSelectionMode();
     }
 

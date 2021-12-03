@@ -265,7 +265,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
         while(unsatisfied_groups) {
             // We tried hard not to arrive to an unsatisfied group, so we try harder
             // This loop has the advantage that the user will notice increased effort to solve,
-            // so may understand he is abusing the block constraint, while guaranteing that wrong
+            // so they may understand that they are abusing the block constraint, while guaranteeing that wrong
             // behaviour of the block constraint is not undetected.
 
             // Another QR iteration

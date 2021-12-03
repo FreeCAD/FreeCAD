@@ -2506,7 +2506,7 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
     }
 
     // TODO: the 0x8000 mask here is for caller to disambiguate the intention
-    // here, whether he wants to, say transform the link itself or the linked
+    // here, whether they want to, say transform the link itself or the linked
     // object. Use of a mask here will allow forwarding those editing modes that
     // are supported by both the link and the linked object, such as transform
     // and set color. We need to find a better place to declare this constant.

@@ -1015,7 +1015,7 @@ def get_ref_edgenodes_table(
                     nodecount += 1
             if nodecount > 1:
                 refedge_fem_faceelements.append(elem)
-        # for every refedge_fem_faceelement look which of his nodes is in
+        # for every refedge_fem_faceelement look which of its nodes is in
         # refedge_nodes --> add all these nodes to edge_table
         for elem in refedge_fem_faceelements:
             fe_refedge_nodes = []

@@ -536,7 +536,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
             Base::Console().Warning("Toolbar walkthrough: Unable to find actionMacros combo box\n");
         } else {
             int macroIndex = macroListBox->findText(fn); //fn is the macro filename
-            macroListBox->setCurrentIndex(macroIndex); //select it for the user so he doesn't have to
+            macroListBox->setCurrentIndex(macroIndex); //select it for the user so they don't have to
         }
 
         QLineEdit* menuText = setupCustomMacrosPage->findChild<QLineEdit*>(QString::fromLatin1("actionMenu"));
@@ -580,7 +580,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         moveActionRightButton->setStyleSheet(QString::fromLatin1("background-color: red"));
     }
     /** tailor instructions depending on whether user already has custom toolbar created
-     * if not he needs to click New button to create one first
+     * if not, they need to click New button to create one first
     **/
 
     QString instructions2 = tr("Walkthrough instructions: Click right arrow button (->), then Close.");

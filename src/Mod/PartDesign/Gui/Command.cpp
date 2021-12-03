@@ -1183,8 +1183,8 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         // a Part container and if not an error was raised and the function aborted.
         // First of all, for the user this wasn't obvious because the error message
         // was quite confusing (and thus the user may have done the wrong thing since
-        // he may have assumed the that the sketch was meant) and second there is no need
-        // that the body must be inside a Part container.
+        // they may have assumed the that the sketch was meant) and
+        // Second, there is no need that the body must be inside a Part container.
         // For more details see: https://forum.freecadweb.org/viewtopic.php?f=19&t=32164
         // The function has been modified not to expect the body to be in the Part
         // and it now directly invokes the 'makeCopy' dialog.

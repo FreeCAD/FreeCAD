@@ -367,7 +367,7 @@ public:
      * When undo, Gui component can query getAvailableUndo(id) to see if it is
      * possible to undo with a given ID. If there more than one undo
      * transactions, meaning that there are other transactions before the given
-     * ID. The Gui component shall ask user if he wants to undo multiple steps.
+     * ID. The Gui component shall ask user if they want to undo multiple steps.
      * And if the user agrees, call undo(id) to unroll all transaction before
      * and including the the one with the give ID. Same applies for redo.
      *
