@@ -68,6 +68,8 @@ class Text(gui_base_original.Creator):
             self.text = ''
             self.ui.sourceCmd = self
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Text")
+            self.ui.isRelative.hide()
+            self.ui.continueCmd.show()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.active = True
             self.ui.xValue.setFocus()
