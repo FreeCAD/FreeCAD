@@ -950,7 +950,6 @@ class DraftToolBar:
         self.extraLineUi()
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
-        self.undoButton.show()
         self.continueCmd.show()
 
     def wireUi(self, title=translate("draft", "DWire"), cancel=None, extra=None,
@@ -972,16 +971,13 @@ class DraftToolBar:
 
     def circleUi(self):
         self.pointUi(translate("draft", "Circle"),icon="Draft_Circle")
-        if Draft.getParam("UsePartPrimitives",False):
-            self.hasFill.setEnabled(False)
-        else:
-            self.hasFill.setEnabled(True)
-        self.hasFill.show()
-        self.continueCmd.show()
+        self.extUi()
+        self.isRelative.hide()
 
     def arcUi(self):
         self.pointUi(translate("draft", "Arc"),icon="Draft_Arc")
         self.continueCmd.show()
+        self.isRelative.hide()
 
     def rotateSetCenterUi(self):
         self.pointUi(translate("draft", "Rotate"),icon="Draft_Rotate")
@@ -1122,6 +1118,8 @@ class DraftToolBar:
         self.textbuffer=[]
         self.textline=0
         self.continueCmd.show()
+        # Change the checkbox label as the in-command shortcut cannot be used:
+        self.continueCmd.setText(translate("draft", "Continue"))
 
     def SSUi(self):
         ''' set up ui for ShapeString text entry '''
@@ -1234,7 +1232,6 @@ class DraftToolBar:
         self.continueCmd.show()
 
     def modUi(self):
-        self.undoButton.hide()
         self.isCopy.show()
         self.isSubelementMode.show()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
