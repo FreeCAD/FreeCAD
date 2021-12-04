@@ -47,6 +47,14 @@
       </Documentation>
       <Parameter Name="Construction" Type="Boolean"/>
       </Attribute>
+    <Attribute Name="GeometryLayerId" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                Returns the Id of the geometry Layer in which the geometry is located.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="GeometryLayerId" Type="Long"/>
+    </Attribute>
     <Attribute Name="InternalType" ReadOnly="false">
         <Documentation>
             <UserDocu>

@@ -90,6 +90,9 @@ public:
     virtual bool testGeometryMode(int flag) const override { return getGeoExt()->testGeometryMode(flag); }
     virtual void setGeometryMode(int flag, bool v=true) override { getGeoExt()->setGeometryMode(flag, v); }
 
+    virtual int getGeometryLayerId() const override { return getGeoExt()->getGeometryLayerId();}
+    virtual void setGeometryLayerId(int geolayer) override { getGeoExt()->setGeometryLayerId(geolayer);}
+
     // Convenience accessor
     bool getBlocked() const { return this->testGeometryMode(GeometryMode::Blocked);}
     void setBlocked(bool status = true) {this->setGeometryMode(GeometryMode::Blocked, status);}

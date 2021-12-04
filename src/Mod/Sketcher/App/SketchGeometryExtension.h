@@ -71,6 +71,9 @@ public:
     // Geometry functional mode
     virtual bool testGeometryMode(int flag) const = 0;
     virtual void setGeometryMode(int flag, bool v=true) = 0;
+
+    virtual int getGeometryLayerId() const = 0;
+    virtual void setGeometryLayerId(int geolayer) = 0;
 };
 
 class SketcherExport SketchGeometryExtension : public Part::GeometryPersistenceExtension, private ISketchGeometryExtension
@@ -95,6 +98,9 @@ public:
     virtual bool testGeometryMode(int flag) const override { return GeometryModeFlags.test((size_t)(flag)); };
     virtual void setGeometryMode(int flag, bool v=true) override { GeometryModeFlags.set((size_t)(flag), v); };
 
+    virtual int getGeometryLayerId() const override { return GeometryLayer;}
+    virtual void setGeometryLayerId(int geolayer) override { GeometryLayer = geolayer;}
+
     constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint" }};
 
     constexpr static std::array<const char *,GeometryMode::NumGeometryMode> geometrymode2str {{ "Blocked", "Construction" }};
@@ -116,6 +122,7 @@ private:
     long                          Id;
     InternalType::InternalType    InternalGeometryType;
     GeometryModeFlagType          GeometryModeFlags;
+    int                           GeometryLayer;
 
 private:
     static std::atomic<long> _GeometryID;

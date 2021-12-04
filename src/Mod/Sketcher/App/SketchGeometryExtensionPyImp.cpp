@@ -173,6 +173,16 @@ PyObject* SketchGeometryExtensionPy::setGeometryMode(PyObject *args)
     Py_Return;
 }
 
+Py::Long SketchGeometryExtensionPy::getGeometryLayerId(void) const
+{
+    return Py::Long(this->getSketchGeometryExtensionPtr()->getGeometryLayerId());
+}
+
+void SketchGeometryExtensionPy::setGeometryLayerId(Py::Long Id)
+{
+    this->getSketchGeometryExtensionPtr()->setGeometryLayerId(long(Id));
+}
+
 PyObject *SketchGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
@@ -182,3 +192,4 @@ int SketchGeometryExtensionPy::setCustomAttributes(const char* /*attr*/, PyObjec
 {
     return 0;
 }
+

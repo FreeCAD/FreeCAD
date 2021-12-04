@@ -41,12 +41,16 @@ TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryPersistenceExt
 // scoped within the class, multithread ready
 std::atomic<long> SketchGeometryExtension::_GeometryID;
 
-SketchGeometryExtension::SketchGeometryExtension():Id(++SketchGeometryExtension::_GeometryID),InternalGeometryType(InternalType::None)
+SketchGeometryExtension::SketchGeometryExtension(): Id(++SketchGeometryExtension::_GeometryID),
+                                                    InternalGeometryType(InternalType::None),
+                                                    GeometryLayer(0)
 {
 
 }
 
-SketchGeometryExtension::SketchGeometryExtension(long cid):Id(cid),InternalGeometryType(InternalType::None)
+SketchGeometryExtension::SketchGeometryExtension(long cid): Id(cid),
+                                                            InternalGeometryType(InternalType::None),
+                                                            GeometryLayer(0)
 {
 
 }
@@ -58,6 +62,7 @@ void SketchGeometryExtension::copyAttributes(Part::GeometryExtension * cpy) cons
     static_cast<SketchGeometryExtension *>(cpy)->Id = this->Id;
     static_cast<SketchGeometryExtension *>(cpy)->InternalGeometryType = this->InternalGeometryType;
     static_cast<SketchGeometryExtension *>(cpy)->GeometryModeFlags  = this->GeometryModeFlags;
+    static_cast<SketchGeometryExtension *>(cpy)->GeometryLayer  = this->GeometryLayer;
 }
 
 void SketchGeometryExtension::restoreAttributes(Base::XMLReader &reader)
@@ -70,6 +75,10 @@ void SketchGeometryExtension::restoreAttributes(Base::XMLReader &reader)
     InternalGeometryType = (InternalType::InternalType) reader.getAttributeAsInteger("internalGeometryType");
 
     GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
+
+    if(reader.hasAttribute("geometryLayer"))
+        GeometryLayer = reader.getAttributeAsInteger("geometryLayer");
+
 }
 
 void SketchGeometryExtension::saveAttributes(Base::Writer &writer) const
@@ -78,7 +87,8 @@ void SketchGeometryExtension::saveAttributes(Base::Writer &writer) const
 
     writer.Stream() // << "\" id=\"" << Id // This is removed as the stored Id is not used and it may interfere with RT's future implementation
                     << "\" internalGeometryType=\"" << (int) InternalGeometryType
-                    << "\" geometryModeFlags=\""    << GeometryModeFlags.to_string();
+                    << "\" geometryModeFlags=\""    << GeometryModeFlags.to_string()
+                    << "\" geometryLayer=\""        << GeometryLayer;
 }
 
 std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const

@@ -506,6 +506,16 @@ void  ExternalGeometryFacadePy::setConstruction(Py::Boolean arg)
         getExternalGeometryFacadePtr()->setConstruction(arg);
 }
 
+Py::Long ExternalGeometryFacadePy::getGeometryLayerId(void) const
+{
+    return Py::Long(this->getExternalGeometryFacadePtr()->getGeometryLayerId());
+}
+
+void ExternalGeometryFacadePy::setGeometryLayerId(Py::Long Id)
+{
+    this->getExternalGeometryFacadePtr()->setGeometryLayerId(long(Id));
+}
+
 Py::String ExternalGeometryFacadePy::getTag(void) const
 {
     std::string tmp = boost::uuids::to_string(getExternalGeometryFacadePtr()->getTag());
