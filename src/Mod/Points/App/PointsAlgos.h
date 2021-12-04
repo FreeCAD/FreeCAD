@@ -115,6 +115,14 @@ private:
         Eigen::MatrixXd& data);
 };
 
+class E57Reader : public Reader
+{
+public:
+    E57Reader();
+    ~E57Reader();
+    void read(const std::string& filename);
+};
+
 class Writer
 {
 public:
