@@ -26,10 +26,14 @@
 # include <QApplication>
 # include <QMenu>
 # include <QMouseEvent>
+# include <QPrinter>
+# include <QPrintDialog>
+# include <QPrintPreviewDialog>
 # include <QSlider>
 # include <QStatusBar>
 # include <QToolBar>
 # include <QTableWidgetItem>
+# include <QTextDocument>
 # include <QMessageBox>
 # include <QPalette>
 # include <cmath>
@@ -46,6 +50,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/ExpressionCompleter.h>
+#include <Gui/FileDialog.h>
 #include <LineEdit.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Mod/Spreadsheet/App/SheetPy.h>
@@ -191,22 +196,75 @@ bool SheetView::onHasMsg(const char *pMsg) const
         App::Document* doc = getAppDocument();
         return doc && doc->getAvailableUndos() > 0;
     }
-    else if (strcmp("Redo",pMsg) == 0) {
+    if (strcmp("Redo",pMsg) == 0) {
         App::Document* doc = getAppDocument();
         return doc && doc->getAvailableRedos() > 0;
     }
-    else if  (strcmp("Save",pMsg) == 0)
+    if  (strcmp("Save",pMsg) == 0)
         return true;
-    else if (strcmp("SaveAs",pMsg) == 0)
+    if (strcmp("SaveAs",pMsg) == 0)
         return true;
-    else if (strcmp("Cut",pMsg) == 0)
+    if (strcmp("Cut",pMsg) == 0)
         return true;
-    else if (strcmp("Copy",pMsg) == 0)
+    if (strcmp("Copy",pMsg) == 0)
         return true;
-    else if (strcmp("Paste",pMsg) == 0)
+    if (strcmp("Paste",pMsg) == 0)
         return true;
-    else
-        return false;
+    if (strcmp(pMsg, "Print") == 0)
+        return true;
+    if (strcmp(pMsg, "PrintPreview") == 0)
+        return true;
+    if (strcmp(pMsg, "PrintPdf") == 0)
+        return true;
+
+    return false;
+}
+
+/**
+ * Shows the printer dialog.
+ */
+void SheetView::print()
+{
+    QPrinter printer(QPrinter::ScreenResolution);
+    printer.setFullPage(true);
+    QPrintDialog dlg(&printer, this);
+    if (dlg.exec() == QDialog::Accepted) {
+        print(&printer);
+    }
+}
+
+void SheetView::printPreview()
+{
+    QPrinter printer(QPrinter::ScreenResolution);
+    QPrintPreviewDialog dlg(&printer, this);
+    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
+            this, SLOT(print(QPrinter *)));
+    dlg.exec();
+}
+
+void SheetView::print(QPrinter* printer)
+{
+#if 0
+    ui->cells->render(printer);
+#endif
+    std::unique_ptr<QTextDocument> document = std::make_unique<QTextDocument>();
+    document->setHtml(ui->cells->toHtml());
+    document->print(printer);
+}
+
+/**
+ * Prints the document into a Pdf file.
+ */
+void SheetView::printPdf()
+{
+    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
+        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+    if (!filename.isEmpty()) {
+        QPrinter printer(QPrinter::ScreenResolution);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(filename);
+        print(&printer);
+    }
 }
 
 void SheetView::setCurrentCell(QString str)

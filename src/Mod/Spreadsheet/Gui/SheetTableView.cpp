@@ -30,7 +30,9 @@
 # include <QMenu>
 # include <QMessageBox>
 # include <QMimeData>
+# include <QTextStream>
 #endif
+# include <QTextTableCell>
 
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
@@ -887,16 +889,18 @@ void SheetTableView::edit ( const QModelIndex & index )
     QTableView::edit(index);
 }
 
-void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
+void SheetTableView::contextMenuEvent(QContextMenuEvent *)
+{
     const QMimeData* mimeData = QApplication::clipboard()->mimeData();
-    if(!selectionModel()->hasSelection()) {
+    if (!selectionModel()->hasSelection()) {
         actionCut->setEnabled(false);
         actionCopy->setEnabled(false);
         actionDel->setEnabled(false);
         actionPaste->setEnabled(false);
         actionSplit->setEnabled(false);
         actionMerge->setEnabled(false);
-    }else{
+    }
+    else {
         actionPaste->setEnabled(mimeData && (mimeData->hasText() || mimeData->hasText()));
         actionCut->setEnabled(true);
         actionCopy->setEnabled(true);
@@ -906,6 +910,68 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
     }
 
     contextMenu->exec(QCursor::pos());
+}
+
+QString SheetTableView::toHtml() const
+{
+    std::set<App::CellAddress> cells = sheet->getCells()->getUsedCells();
+    int rowCount = 1;
+    int colCount = 1;
+    for (const auto& it : cells) {
+        rowCount = std::max(rowCount, it.row());
+        colCount = std::max(colCount, it.col());
+    }
+
+    std::unique_ptr<QTextDocument> doc(new QTextDocument);
+    doc->setDocumentMargin(10);
+    QTextCursor cursor(doc.get());
+
+    cursor.movePosition(QTextCursor::Start);
+
+    QTextTableFormat tableFormat;
+    tableFormat.setCellSpacing(0.0);
+    tableFormat.setCellPadding(2.0);
+
+    QTextCharFormat boldFormat;
+    QFont boldFont = boldFormat.font();
+    boldFont.setBold(true);
+    boldFormat.setFont(boldFont);
+
+    QColor bgColor;
+    bgColor.setNamedColor(QLatin1String("#f0f0f0"));
+    QTextCharFormat bgFormat;
+    bgFormat.setBackground(QBrush(bgColor));
+
+    QTextTable *table = cursor.insertTable(rowCount + 2, colCount + 2, tableFormat);
+    for (int row = 0; row < rowCount + 1; row++) {
+        QTextTableCell headerCell = table->cellAt(row+1, 0);
+        headerCell.setFormat(bgFormat);
+        QTextCursor headerCellCursor = headerCell.firstCursorPosition();
+        QString data = model()->headerData(row, Qt::Vertical).toString();
+        headerCellCursor.insertText(data, boldFormat);
+    }
+    for (int col = 0; col < colCount + 1; col++) {
+        QTextTableCell headerCell = table->cellAt(0, col+1);
+        headerCell.setFormat(bgFormat);
+        QTextCursor headerCellCursor = headerCell.firstCursorPosition();
+        QTextBlockFormat blockFormat = headerCellCursor.blockFormat();
+        blockFormat.setAlignment(Qt::AlignHCenter);
+        headerCellCursor.setBlockFormat(blockFormat);
+        QString data = model()->headerData(col, Qt::Horizontal).toString();
+        headerCellCursor.insertText(data, boldFormat);
+    }
+
+    for (const auto& it : cells) {
+        QTextCharFormat cellFormat;
+        QTextTableCell cell = table->cellAt(it.row() + 1, it.col() + 1);
+        QTextCursor cellCursor = cell.firstCursorPosition();
+        QString data = model()->data(model()->index(it.row(), it.col())).toString().simplified();
+        cellCursor.insertText(data, cellFormat);
+    }
+
+    cursor.movePosition(QTextCursor::End);
+    cursor.insertBlock();
+    return doc->toHtml();
 }
 
 #include "moc_SheetTableView.cpp"

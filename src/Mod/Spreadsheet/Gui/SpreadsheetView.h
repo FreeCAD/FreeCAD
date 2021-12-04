@@ -66,6 +66,14 @@ public:
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
 
+    /** @name Printing */
+    //@{
+    void print();
+    void printPdf();
+    void printPreview();
+    void print(QPrinter*);
+    //@}
+
     void updateCell(const App::Property * prop);
 
     Spreadsheet::Sheet * getSheet() { return sheet; }
