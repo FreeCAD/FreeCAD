@@ -75,6 +75,7 @@ class Point(gui_base_original.Creator):
         self.point = None
         if self.ui:
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Point")
+            self.ui.isRelative.hide()
             self.ui.continueCmd.show()
         # adding 2 callback functions
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.click)
