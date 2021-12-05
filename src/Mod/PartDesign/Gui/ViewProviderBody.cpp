@@ -812,42 +812,60 @@ std::string ViewProviderBody::dropObjectEx(App::DocumentObject *obj,
         if(source)
             source->removeObjects(move);
         body->addObjects(move);
-    }
-    else if (elements.size()) {
-        auto binder = static_cast<PartDesign::SubShapeBinder*>(
-                body->getDocument()->addObject("PartDesign::SubShapeBinder",
-                                               "Binder"));
-        std::map<App::DocumentObject *, std::vector<std::string> > links;
-        auto & subs = links[owner];
-        std::string sub(subname ? subname : "");
-        for (auto & element : elements)
-            subs.emplace_back(sub + element);
-        binder->setLinks(std::move(links));
-        body->addObject(binder);
-        obj = binder;
-    }
-    else if (!body->getPrevSolidFeature() && !body->BaseFeature.getValue()) {
-        if (owner == obj) {
-            body->BaseFeature.setValue(obj);
-            auto tip = body->Tip.getValue();
-            if (tip)
-                return std::string(tip->getNameInDocument()) + ".";
-            return std::string();
+    } else {
+        bool canWrap = true;
+        bool hasDep = false;
+        auto deps = obj->getOutList();
+        for (auto dep : deps) {
+            if (PartDesign::Body::findBodyOf(dep) == body) {
+                if (dep->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId()))
+                    FC_THROWM(Base::RuntimeError, "Feature has already been wrapped inside the body");
+                hasDep = true;
+            } else
+                canWrap = false;
         }
+        if (hasDep && canWrap) {
+            auto wrap = static_cast<PartDesign::FeatureWrap*>(
+                    body->newObjectAt("PartDesign::FeatureWrap", "Wrap", deps, false));
+            wrap->Label.setValue(obj->Label.getValue());
+            wrap->WrapFeature.setValue(obj);
+            obj = wrap;
+        }
+        else if (elements.size() || hasDep) {
+            auto binder = static_cast<PartDesign::SubShapeBinder*>(
+                    body->getDocument()->addObject("PartDesign::SubShapeBinder", "Binder"));
+            std::map<App::DocumentObject *, std::vector<std::string> > links;
+            auto & subs = links[owner];
+            std::string sub(subname ? subname : "");
+            for (auto & element : elements)
+                subs.emplace_back(sub + element);
+            binder->setLinks(std::move(links));
+            body->addObject(binder);
+            obj = binder;
+        }
+        else if (!body->getPrevSolidFeature() && !body->BaseFeature.getValue()) {
+            if (owner == obj) {
+                body->BaseFeature.setValue(obj);
+                auto tip = body->Tip.getValue();
+                if (tip)
+                    return std::string(tip->getNameInDocument()) + ".";
+                return std::string();
+            }
 
-        auto binder = static_cast<PartDesign::SubShapeBinder*>(
-                body->getDocument()->addObject("PartDesign::SubShapeBinder",
-                                                "BaseFeature"));
-        std::map<App::DocumentObject *, std::vector<std::string> > links;
-        auto & subs = links[owner];
-        if (subname && subname[0])
-            subs.emplace_back(subname);
-        binder->setLinks(std::move(links));
-        auto children = body->Group.getValues();
-        children.insert(children.begin(), binder);
-        body->Group.setValues(children);
-        body->BaseFeature.setValue(binder);
-        obj = binder;
+            auto binder = static_cast<PartDesign::SubShapeBinder*>(
+                    body->getDocument()->addObject("PartDesign::SubShapeBinder",
+                                                    "BaseFeature"));
+            std::map<App::DocumentObject *, std::vector<std::string> > links;
+            auto & subs = links[owner];
+            if (subname && subname[0])
+                subs.emplace_back(subname);
+            binder->setLinks(std::move(links));
+            auto children = body->Group.getValues();
+            children.insert(children.begin(), binder);
+            body->Group.setValues(children);
+            body->BaseFeature.setValue(binder);
+            obj = binder;
+        }
     }
     return std::string(obj->getNameInDocument()) + ".";
 }
