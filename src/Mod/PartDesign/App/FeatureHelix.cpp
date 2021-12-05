@@ -471,14 +471,14 @@ TopoDS_Shape Helix::generateHelixPath(void)
 // this function calculates self intersection safe pitch based on the profile bounding box.
 double Helix::safePitch()
 {
-    Base::Vector3d axis = Axis.getValue();
-    Base::Vector3d start = axis.Cross(getProfileNormal()); // pointing towards the helix start point
-    if (start.IsNull())
+    Base::Vector3d axisVec = Axis.getValue();
+    Base::Vector3d startVec = axisVec.Cross(getProfileNormal()); // pointing towards the helix start point
+    if (startVec.IsNull())
         return Precision::Confusion(); // if the axis orthogonal to the profile, any pitch > 0 is safe
 
     double angle = Angle.getValue() / 180.0 * M_PI;
-    gp_Dir direction(axis.x, axis.y, axis.z);
-    gp_Dir directionStart(start.x, start.y, start.z);
+    gp_Dir direction(axisVec.x, axisVec.y, axisVec.z);
+    gp_Dir directionStart(startVec.x, startVec.y, startVec.z);
     TopoDS_Shape sketchshape = getVerifiedFace();
     Bnd_Box boundingBox;
     BRepBndLib::Add(sketchshape, boundingBox);
@@ -487,20 +487,20 @@ double Helix::safePitch()
     double Xmin, Ymin, Zmin, Xmax, Ymax, Zmax;
     boundingBox.Get(Xmin, Ymin, Zmin, Xmax, Ymax, Zmax);
     double X = Xmax - Xmin, Y = Ymax - Ymin, Z = Zmax - Zmin;
-    gp_Vec boundingBoxVector(X, Y, Z);
+    gp_Vec boundingBoxVec(X, Y, Z);
 
     // Below is an approximation becaue since we take the bounding box it is
     // impossible to calculate it precisely. For example a circle has as bounding
     // box a square and thus results in a larger pitch than really necessary
 
     // minimal safe pitch if the angle is 0
-    double p0 = boundingBoxVector * direction;
+    double p0 = boundingBoxVec * direction;
 
     // if the angle is so large that the distange perpendicular to p0
     // between two turns is larger than the bounding box size in this direction
     // the pitch can be smaller than p0
-    if (tan(abs(angle)) * p0 > abs(boundingBoxVector * directionStart))
-        return abs(boundingBoxVector * directionStart) / tan(abs(angle));
+    if (tan(abs(angle)) * p0 > abs(boundingBoxVec * directionStart))
+        return abs(boundingBoxVec * directionStart) / tan(abs(angle));
     else
         return p0;
 }
