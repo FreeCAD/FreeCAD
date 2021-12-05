@@ -31,7 +31,7 @@ if [[ ${HOST} =~ "Darwin" ]]; then
 
   # install space-mouse
   if [ ! -d "/Library/Frameworks/3DconnexionClient.framework" ]; then
-    echo "Installing 3D connexion space mouse drivers."
+    echo "Installing 3D connexion spacemouse drivers."
     curl -o /tmp/3dFW.dmg -L 'https://download.3dconnexion.com/drivers/mac/10-6-6_360DF97D-ED08-4ccf-A55E-0BF905E58476/3DxWareMac_v10-6-6_r3234.dmg'
     hdiutil attach -readonly /tmp/3dFW.dmg
     sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
