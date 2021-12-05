@@ -471,35 +471,36 @@ TopoDS_Shape Helix::generateHelixPath(void)
 // this function calculates self intersection safe pitch based on the profile bounding box.
 double Helix::safePitch()
 {
-    Base::Vector3d v = Axis.getValue();
-    Base::Vector3d n = getProfileNormal();
-    Base::Vector3d s = v.Cross(n);  // pointing towards the desired helix start point.
-    if (s.IsNull())
-        return Precision::Confusion(); // if the axis orthogonal to the profile, any pitch >0 is safe
-
-    // Below is an approximation. It is possible to do the general way by solving for the pitch
-    // where the helix is self intersecting.
+    Base::Vector3d axis = Axis.getValue();
+    Base::Vector3d start = axis.Cross(getProfileNormal()); // pointing towards the helix start point
+    if (start.IsNull())
+        return Precision::Confusion(); // if the axis orthogonal to the profile, any pitch > 0 is safe
 
     double angle = Angle.getValue() / 180.0 * M_PI;
-
+    gp_Dir direction(axis.x, axis.y, axis.z);
+    gp_Dir directionStart(start.x, start.y, start.z);
     TopoDS_Shape sketchshape = getVerifiedFace();
-    Bnd_Box bb;
-    BRepBndLib::Add(sketchshape, bb);
+    Bnd_Box boundingBox;
+    BRepBndLib::Add(sketchshape, boundingBox);
 
+    // get boundary and dimensions of boundingBox
     double Xmin, Ymin, Zmin, Xmax, Ymax, Zmax;
-    bb.Get(Xmin, Ymin, Zmin, Xmax, Ymax, Zmax);
-
+    boundingBox.Get(Xmin, Ymin, Zmin, Xmax, Ymax, Zmax);
     double X = Xmax - Xmin, Y = Ymax - Ymin, Z = Zmax - Zmin;
+    gp_Vec boundingBoxVector(X, Y, Z);
 
-    gp_Dir dir(v.x, v.y, v.z);
-    gp_Vec bbvec(X, Y, Z);
+    // Below is an approximation becaue since we take the bounding box it is
+    // impossible to calculate it precisely. For example a circle has as bounding
+    // box a square and thus results in a larger pitch than really necessary
 
-    double p0 = bbvec * dir; // safe pitch if angle=0
+    // minimal safe pitch if the angle is 0
+    double p0 = boundingBoxVector * direction;
 
-    gp_Dir dir_s(s.x, s.y, s.z);
-
-    if (tan(abs(angle)) * p0 > abs(bbvec * dir_s))
-        return abs(bbvec * dir_s) / tan(abs(angle));
+    // if the angle is so large that the distange perpendicular to p0
+    // between two turns is larger than the bounding box size in this direction
+    // the pitch can be smaller than p0
+    if (tan(abs(angle)) * p0 > abs(boundingBoxVector * directionStart))
+        return abs(boundingBoxVector * directionStart) / tan(abs(angle));
     else
         return p0;
 }
