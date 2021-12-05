@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>Gui::Dialog::DlgSettingsAddonManager</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsAddonManager">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>390</width>
-    <height>247</height>
+    <height>628</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QCheckBox" name="checkUpdates">
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxcheckupdates">
      <property name="toolTip">
       <string>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
@@ -27,7 +27,55 @@ installed addons will be checked for available updates
      <property name="autoExclusive">
       <bool>false</bool>
      </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>AutoCheck</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
+     </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Cache update frequency</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefComboBox" name="guiprefcomboboxupdatefrequency">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>UpdateFrequencyComboEntry</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Addons</cstring>
+       </property>
+       <item>
+        <property name="text">
+         <string>Manual (no automatic updates)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Daily</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Weekly</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="label">
@@ -37,99 +85,147 @@ installed addons will be checked for available updates
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="customRepositories">
+    <widget class="Gui::PrefTextEdit" name="guipreftexteditcustomrepositories">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>48</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string>You can use this window to specify additional addon repositories
-to be scanned for available addons</string>
+to be scanned for available addons. To include a specific branch, add it to the end
+of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</string>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>CustomRepositories</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Addons</cstring>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Proxy</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="Gui::PrefRadioButton" name="guiprefradiobuttonnoproxy">
+        <property name="text">
+         <string>No proxy</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NoProxyCheck</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Addons</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefRadioButton" name="guiprefradiobuttonsystemproxy">
+        <property name="text">
+         <string>User system proxy</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SystemProxyCheck</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Addons</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefRadioButton" name="guiprefradiobuttonuserproxy">
+        <property name="text">
+         <string>User-defined proxy:</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UserProxyCheck</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Addons</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefLineEdit" name="guipreflineedituserproxy">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ProxyUrl</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Addons</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Vertical</enum>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="labelProxy">
-     <property name="text">
-      <string>Proxy </string>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QRadioButton" name="radioButtonNoProxy">
-     <property name="text">
-      <string>No proxy</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QRadioButton" name="radioButtonSystemProxy">
-     <property name="text">
-      <string>User system proxy</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QRadioButton" name="radioButtonUserProxy">
-     <property name="text">
-      <string>User defined proxy :</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="userProxy"/>
-   </item>
-   <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
+    </spacer>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefRadioButton</class>
+   <extends>QRadioButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>257</x>
-     <y>237</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>246</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>325</x>
-     <y>237</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>246</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
