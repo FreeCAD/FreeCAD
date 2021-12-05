@@ -256,6 +256,42 @@ void PrefLineEdit::savePreferences()
 
 // --------------------------------------------------------------------
 
+PrefTextEdit::PrefTextEdit(QWidget* parent)
+    : QTextEdit(parent), PrefWidget()
+{
+}
+
+PrefTextEdit::~PrefTextEdit()
+{
+}
+
+void PrefTextEdit::restorePreferences()
+{
+    if (getWindowParameter().isNull())
+    {
+        failedToRestore(objectName());
+        return;
+    }
+
+    QString text = this->toPlainText();
+    text = QString::fromUtf8(getWindowParameter()->GetASCII(entryName(), text.toUtf8()).c_str());
+    setText(text);
+}
+
+void PrefTextEdit::savePreferences()
+{
+    if (getWindowParameter().isNull())
+    {
+        failedToSave(objectName());
+        return;
+    }
+
+    QString text = this->toPlainText();
+    getWindowParameter()->SetASCII(entryName(), text.toUtf8());
+}
+
+// --------------------------------------------------------------------
+
 PrefFileChooser::PrefFileChooser ( QWidget * parent )
   : FileChooser(parent), PrefWidget()
 {
