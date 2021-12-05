@@ -35,7 +35,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label0">
+      <widget class="QLabel" name="labelAxis">
        <property name="text">
         <string>Axis:</string>
        </property>
@@ -88,7 +88,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayoutMode">
      <item>
-      <widget class="QLabel" name="label4">
+      <widget class="QLabel" name="labelInputMode">
        <property name="text">
         <string>Mode:</string>
        </property>
