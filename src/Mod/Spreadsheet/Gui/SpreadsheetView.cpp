@@ -226,6 +226,7 @@ bool SheetView::onHasMsg(const char *pMsg) const
 void SheetView::print()
 {
     QPrinter printer(QPrinter::ScreenResolution);
+    printer.setOrientation(QPrinter::Landscape);
     printer.setFullPage(true);
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
@@ -236,6 +237,7 @@ void SheetView::print()
 void SheetView::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
+    printer.setOrientation(QPrinter::Landscape);
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
             this, SLOT(print(QPrinter *)));
@@ -261,6 +263,7 @@ void SheetView::printPdf()
         QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
+        printer.setOrientation(QPrinter::Landscape);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         print(&printer);

@@ -931,6 +931,12 @@ QString SheetTableView::toHtml() const
     QTextTableFormat tableFormat;
     tableFormat.setCellSpacing(0.0);
     tableFormat.setCellPadding(2.0);
+    QVector<QTextLength> constraints;
+    for (int col = 0; col < colCount + 1; col++) {
+        constraints.append(QTextLength(QTextLength::FixedLength, sheet->getColumnWidth(col)));
+    }
+    constraints.prepend(QTextLength(QTextLength::FixedLength, 30.0));
+    tableFormat.setColumnWidthConstraints(constraints);
 
     QTextCharFormat boldFormat;
     QFont boldFont = boldFormat.font();
@@ -943,6 +949,8 @@ QString SheetTableView::toHtml() const
     bgFormat.setBackground(QBrush(bgColor));
 
     QTextTable *table = cursor.insertTable(rowCount + 2, colCount + 2, tableFormat);
+
+    // The header cells of the rows
     for (int row = 0; row < rowCount + 1; row++) {
         QTextTableCell headerCell = table->cellAt(row+1, 0);
         headerCell.setFormat(bgFormat);
@@ -950,6 +958,8 @@ QString SheetTableView::toHtml() const
         QString data = model()->headerData(row, Qt::Vertical).toString();
         headerCellCursor.insertText(data, boldFormat);
     }
+
+    // The header cells of the columns
     for (int col = 0; col < colCount + 1; col++) {
         QTextTableCell headerCell = table->cellAt(0, col+1);
         headerCell.setFormat(bgFormat);
@@ -961,11 +971,64 @@ QString SheetTableView::toHtml() const
         headerCellCursor.insertText(data, boldFormat);
     }
 
+    // The cells
     for (const auto& it : cells) {
+        if (sheet->isMergedCell(it)) {
+            int rows, cols;
+            sheet->getSpans(it, rows, cols);
+            table->mergeCells(it.row() + 1, it.col() + 1, rows, cols);
+        }
+        QModelIndex index = model()->index(it.row(), it.col());
+
         QTextCharFormat cellFormat;
         QTextTableCell cell = table->cellAt(it.row() + 1, it.col() + 1);
+
+        // font
+        QVariant font = model()->data(index, Qt::FontRole);
+        if (font.isValid()) {
+            cellFormat.setFont(font.value<QFont>());
+        }
+
+        // foreground
+        QVariant fgColor = model()->data(index, Qt::ForegroundRole);
+        if (fgColor.isValid()) {
+            cellFormat.setForeground(QBrush(fgColor.value<QColor>()));
+        }
+
+        // background
+        QVariant cbgClor = model()->data(index, Qt::BackgroundRole);
+        if (cbgClor.isValid()) {
+            QTextCharFormat bgFormat;
+            bgFormat.setBackground(QBrush(cbgClor.value<QColor>()));
+            cell.setFormat(bgFormat);
+        }
+
         QTextCursor cellCursor = cell.firstCursorPosition();
-        QString data = model()->data(model()->index(it.row(), it.col())).toString().simplified();
+
+        // alignment
+        QVariant align = model()->data(index, Qt::TextAlignmentRole);
+        if (align.isValid()) {
+            Qt::Alignment alignment = static_cast<Qt::Alignment>(align.toInt());
+            QTextBlockFormat blockFormat = cellCursor.blockFormat();
+            blockFormat.setAlignment(alignment);
+            cellCursor.setBlockFormat(blockFormat);
+
+            // This doesn't seem to have any effect on single cells but works if several
+            // cells are merged
+            QTextCharFormat::VerticalAlignment valign = QTextCharFormat::AlignMiddle;
+            QTextCharFormat format = cell.format();
+            if (alignment & Qt::AlignTop) {
+                valign = QTextCharFormat::AlignTop;
+            }
+            else if (alignment & Qt::AlignBottom) {
+                valign = QTextCharFormat::AlignBottom;
+            }
+            format.setVerticalAlignment(valign);
+            cell.setFormat(format);
+        }
+
+        // text
+        QString data = model()->data(index).toString().simplified();
         cellCursor.insertText(data, cellFormat);
     }
 
