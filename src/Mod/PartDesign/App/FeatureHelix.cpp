@@ -473,8 +473,29 @@ double Helix::safePitch()
 {
     Base::Vector3d axisVec = Axis.getValue();
     Base::Vector3d startVec = axisVec.Cross(getProfileNormal()); // pointing towards the helix start point
-    if (startVec.IsNull())
-        return Precision::Confusion(); // if the axis orthogonal to the profile, any pitch > 0 is safe
+    HelixMode mode = static_cast<HelixMode>(Mode.getValue());
+    double growthValue = Growth.getValue();
+    double turnsValue = Turns.getValue();
+
+    // handle case if axis is orthogonal to profile
+    // since startVec.IsNull() fails sometimes, for e.g. (0.0, 0.0, -0.0)
+    // we take the precision into account
+    if (startVec.Length() < Precision::Confusion()) {
+        // when not in growth mode any pitch > 0 is safe
+        if (mode != HelixMode::height_turns_growth) {
+                return Precision::Confusion();
+        }
+        // if growth is not zero, there will in many cases be intersections
+        // when the turn is >= 1, thus return an 'infinite' pitch
+        // Note: The resulting helix body is in this case often garbage since
+        // the OCC algorithm to create the helix fails.
+        // Nevertheless, the result is a valid body so it should be valuable for users
+        // to get this correct warning anyway.
+        else {
+            if (abs(turnsValue) >= 1.0 && abs(growthValue) > 0.0)
+                return Precision::Infinite();
+        }
+    }
 
     double angle = Angle.getValue() / 180.0 * M_PI;
     gp_Dir direction(axisVec.x, axisVec.y, axisVec.z);
@@ -493,16 +514,27 @@ double Helix::safePitch()
     // impossible to calculate it precisely. For example a circle has as bounding
     // box a square and thus results in a larger pitch than really necessary
 
-    // minimal safe pitch if the angle is 0
-    double p0 = boundingBoxVec * direction;
+    // minimal safe pitch if the angle or growth is 0
+    double pitch0 = boundingBoxVec * direction;
 
-    // if the angle is so large that the distange perpendicular to p0
-    // between two turns is larger than the bounding box size in this direction
-    // the pitch can be smaller than p0
-    if (tan(abs(angle)) * p0 > abs(boundingBoxVec * directionStart))
-        return abs(boundingBoxVec * directionStart) / tan(abs(angle));
-    else
-        return p0;
+    if (mode == HelixMode::height_turns_growth) {
+        // if the distange perpendicular to axisVec
+        // between two turns is larger than the bounding box size in this direction
+        // the minimal necessary pitch is zero
+        if (abs(growthValue) > abs(boundingBoxVec * directionStart))
+            return 0.0;
+        else
+            return pitch0;
+    }
+    else {
+        // if the angle is so large that the distange perpendicular to axisVec
+        // between two turns is larger than the bounding box size in this direction
+        // the pitch can be smaller than pitch0
+        if (tan(abs(angle)) * pitch0 > abs(boundingBoxVec * directionStart))
+            return abs(boundingBoxVec * directionStart) / tan(abs(angle));
+        else
+            return pitch0;
+    }
 }
 
 // this function proposes pitch and height
