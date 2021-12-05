@@ -29,6 +29,7 @@
 #include <QRadioButton>
 #include <QFontComboBox>
 #include <QFont>
+#include <QTextEdit>
 #include <Base/Parameter.h>
 #include "Widgets.h"
 #include "Window.h"
@@ -153,6 +154,27 @@ protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+};
+
+/**
+ * The PrefLineEdit class.
+ * \author Chris Hennes
+ */
+class GuiExport PrefTextEdit : public QTextEdit, public PrefWidget
+{
+    Q_OBJECT
+
+        Q_PROPERTY(QByteArray prefEntry READ entryName     WRITE setEntryName)
+        Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath)
+
+public:
+    PrefTextEdit(QWidget* parent = 0);
+    virtual ~PrefTextEdit();
+
+protected:
+    // restore from/save to parameters
+    void restorePreferences();
+    void savePreferences();
 };
 
 /**

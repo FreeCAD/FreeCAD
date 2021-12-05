@@ -171,6 +171,7 @@ void PreferenceUiForm::loadSettings()
     loadPrefWidgets<Gui::PrefSpinBox        *>();
     loadPrefWidgets<Gui::PrefDoubleSpinBox  *>();
     loadPrefWidgets<Gui::PrefLineEdit       *>();
+    loadPrefWidgets<Gui::PrefTextEdit       *>();
     loadPrefWidgets<Gui::PrefFileChooser    *>();
     loadPrefWidgets<Gui::PrefComboBox       *>();
     loadPrefWidgets<Gui::PrefFontBox        *>();
@@ -190,6 +191,7 @@ void PreferenceUiForm::saveSettings()
     savePrefWidgets<Gui::PrefSpinBox        *>();
     savePrefWidgets<Gui::PrefDoubleSpinBox  *>();
     savePrefWidgets<Gui::PrefLineEdit       *>();
+    savePrefWidgets<Gui::PrefTextEdit       *>();
     savePrefWidgets<Gui::PrefFileChooser    *>();
     savePrefWidgets<Gui::PrefComboBox       *>();
     savePrefWidgets<Gui::PrefFontBox        *>();
