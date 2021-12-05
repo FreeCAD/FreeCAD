@@ -203,7 +203,7 @@ Action * StdPerspectiveCamera::createAction(void)
 //===========================================================================
 
 // The two commands below are provided for convenience so that they can be bound
-// to a button of a space mouse
+// to a button of a spacemouse
 
 //===========================================================================
 // Std_ViewSaveCamera

@@ -53,7 +53,7 @@
  * So, to avoid entering Tilt mode, the style implements its own tap-and-hold
  * detection, and a special Pan state for the state machine - StickyPanState.
  *
- * This style wasn't tested with space mouse during development (I don't have one).
+ * This style wasn't tested with spacemouse during development (I don't have one).
  *
  * See also GestureNavigationStyle-state-machine-diagram.docx for a crude
  * diagram of the state machine.
