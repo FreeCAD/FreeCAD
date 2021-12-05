@@ -3639,7 +3639,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
             errMsg = "Unknown exception";
         }
         if(errMsg.size()) {
-            committer.close(true);
+            // Do not roll back to give user a chance to manually correct
+            //
+            // committer.close(true);
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
                     QString::fromUtf8(errMsg.c_str()));
             return;
@@ -3825,7 +3827,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
             errMsg = "Unknown exception";
         }
         if(errMsg.size()) {
-            committer.close(true);
+            // Do not roll back to give user a chance to manually correct
+            //
+            // committer.close(true);
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
                     QString::fromUtf8(errMsg.c_str()));
             return;
