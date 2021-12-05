@@ -79,6 +79,10 @@ class CommandAddonManager:
 
     lock = threading.Lock()
 
+    def __init__(self):
+        FreeCADGui.addPreferencePage(os.path.join(os.path.dirname(__file__),
+                                                               "AddonManagerOptions.ui"),"Addon Manager")
+
     def GetResources(self) -> Dict[str,str]:
         return {"Pixmap": "AddonManager",
                 "MenuText": QT_TRANSLATE_NOOP("Std_AddonMgr", "&Addon manager"),
@@ -129,12 +133,21 @@ class CommandAddonManager:
         h = pref.GetInt("WindowHeight", 600)
         self.dialog.resize(w, h)
 
-        # figure out our cache update frequency:
+        # figure out our cache update frequency: there is a combo box in the preferences dialog with three
+        # options: never, daily, and weekly. Check that first, but allow it to be overridden by a more specific
+        # DaysBetweenUpdates selection, if the user has provided it. For that parameter we use:
         # -1: Only manual updates (default)
         #  0: Update every launch
         # >0: Update every n days
         self.update_cache = False
-        days_between_updates = pref.GetInt("DaysBetweenUpdates", -1)
+        update_frequency = pref.GetInt("UpdateFrequencyComboEntry", 0)
+        if update_frequency == 0:
+            days_between_updates = -1
+        elif update_frequency == 1:
+            days_between_updates = 1
+        elif update_frequency == 2:
+            days_between_updates = 7
+        days_between_updates = pref.GetInt("DaysBetweenUpdates", days_between_updates)
         last_cache_update_string = pref.GetString("LastCacheUpdate", "never")
         cache_path = FreeCAD.getUserCachePath()
         am_path = os.path.join(cache_path,"AddonManager")
