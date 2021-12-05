@@ -153,7 +153,8 @@ in Part workbench, and equivalent features in PartDesign.</string>
       <item row="0" column="1">
        <widget class="Gui::PrefComboBox" name="comboBoxCommandOverride">
         <property name="toolTip">
-         <string>Override non-PartDesign command with an equivalent PartDesign command when operate on PartDesign feature.</string>
+         <string>Override non-PartDesign command with an equivalent PartDesign
+command when operate on PartDesign feature.</string>
         </property>
         <property name="currentIndex">
          <number>2</number>
@@ -191,7 +192,8 @@ in Part workbench, and equivalent features in PartDesign.</string>
       <item row="1" column="1">
        <widget class="Gui::PrefComboBox" name="comboBoxWrapFeature">
         <property name="toolTip">
-         <string>If a non-PartDesign object references a PartDesign feature, incorporate the object into PartDesign body using a wrap feature.</string>
+         <string>If a non-PartDesign object references a PartDesign feature, incorporate
+the object into PartDesign body using a wrap feature.</string>
         </property>
         <property name="currentIndex">
          <number>2</number>
