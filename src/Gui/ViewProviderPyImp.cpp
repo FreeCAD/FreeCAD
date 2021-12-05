@@ -289,6 +289,82 @@ PyObject* ViewProviderPy::replaceObject(PyObject *args)
     } PY_CATCH;
 }
 
+PyObject* ViewProviderPy::canReplaceObject(PyObject *args)
+{
+    PyObject *oldObj;
+    PyObject *newObj;
+    if (!PyArg_ParseTuple(args, "O!O!",
+                &App::DocumentObjectPy::Type,&oldObj,
+                &App::DocumentObjectPy::Type,&newObj))
+        return NULL;
+    PY_TRY {
+        bool ret = getViewProviderPtr()->canReplaceObject(
+                static_cast<App::DocumentObjectPy*>(oldObj)->getDocumentObjectPtr(),
+                static_cast<App::DocumentObjectPy*>(newObj)->getDocumentObjectPtr());
+        return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
+}
+
+PyObject* ViewProviderPy::reorderObjects(PyObject *args)
+{
+    PyObject *pyobj;
+    PyObject *pybefore;
+    if (!PyArg_ParseTuple(args, "OO!", &pyobj, &App::DocumentObjectPy::Type,&pybefore))
+        return nullptr;
+    PY_TRY {
+        std::vector<App::DocumentObject*> objs;
+        if (PyObject_TypeCheck(pyobj, &App::DocumentObjectPy::Type))
+            objs.push_back(static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr());
+        else if (PySequence_Check(pyobj)) {
+            Py::Sequence seq(pyobj);
+            for (Py::Sequence::iterator it = seq.begin(); it != seq.end(); ++it) {
+                PyObject* item = (*it).ptr();
+                if (!PyObject_TypeCheck(item, &App::DocumentObjectPy::Type))
+                    throw Base::TypeError("Expected document object inside sequence");
+                objs.push_back(static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
+            }
+        } else
+            throw Base::TypeError("Expected first argument to be document object or sequence of document objects");
+
+        bool ret = getViewProviderPtr()->reorderObjects(objs, 
+                static_cast<App::DocumentObjectPy*>(pybefore)->getDocumentObjectPtr());
+        return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
+}
+
+PyObject* ViewProviderPy::canReorderObject(PyObject *args)
+{
+    PyObject *pyobj;
+    PyObject *pybefore;
+    if (!PyArg_ParseTuple(args, "OO!", &pyobj, &App::DocumentObjectPy::Type,&pybefore))
+        return nullptr;
+    PY_TRY {
+        std::vector<App::DocumentObject*> objs;
+        if (PyObject_TypeCheck(pyobj, &App::DocumentObjectPy::Type))
+            objs.push_back(static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr());
+        else if (PySequence_Check(pyobj)) {
+            Py::Sequence seq(pyobj);
+            for (Py::Sequence::iterator it = seq.begin(); it != seq.end(); ++it) {
+                PyObject* item = (*it).ptr();
+                if (!PyObject_TypeCheck(item, &App::DocumentObjectPy::Type))
+                    throw Base::TypeError("Expected document object inside sequence");
+                objs.push_back(static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
+            }
+        } else
+            throw Base::TypeError("Expected first argument to be document object or sequence of document objects");
+
+        bool ret = true;
+        for (auto obj : objs) {
+            if (!getViewProviderPtr()->canReorderObject(obj,
+                    static_cast<App::DocumentObjectPy*>(pybefore)->getDocumentObjectPtr())) {
+                ret = false;
+                break;
+            }
+        }
+        return Py::new_reference_to(Py::Boolean(ret));
+    } PY_CATCH;
+}
+
 PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
 {
     char* mode;

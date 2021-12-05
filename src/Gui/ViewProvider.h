@@ -64,6 +64,7 @@ namespace Base {
 }
 namespace App {
   class Color;
+  class PropertyLinkList;
 }
 
 class SoGroup;
@@ -328,7 +329,7 @@ public:
      */
     virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements);
-    /** Replace an object to the view provider by drag and drop
+    /** Replace an object claimed by the view provider by drag and drop
      *
      * @param oldObj: object to be replaced
      * @param newObj: object to replace with
@@ -337,12 +338,37 @@ public:
      */
     virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj);
 
-    /** Query if it is possible to replace an object to the view provider by drag and drop
+    /** Query if it is possible to replace an object claimed by the view provider by drag and drop
      *
      * @param oldObj: object to be replaced
      * @param newObj: object to replace with
      */
     virtual bool canReplaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj);
+    /** Reorder child objects by drag and drop
+     *
+     * @param obj: objects to be reordered
+     * @param before: insert before this object, or nullptr to insert at the bottom
+     */
+    virtual bool reorderObjects(const std::vector<App::DocumentObject *> &objs, App::DocumentObject *before);
+
+    /** Query if it is possible to reorder an object to the view provider by drag and drop
+     *
+     * @param obj: object to be reordered
+     * @param before: insert before this object, or nullptr to insert at the bottom
+     */
+    virtual bool canReorderObject(App::DocumentObject *obj, App::DocumentObject *before);
+
+    /** Helper function to reorder object inside property link list
+     */
+    static bool reorderObjectsInProperty(App::PropertyLinkList *prop,
+                                         const std::vector<App::DocumentObject*> &objs,
+                                         App::DocumentObject *before);
+
+    /** Helper function to test if it can reorder object inside property link list
+     */
+    static bool canReorderObjectInProperty(App::PropertyLinkList *prop,
+                                           App::DocumentObject *obj,
+                                           App::DocumentObject *before);
     //@}
 
     /** Tell the tree view if this object should appear there */

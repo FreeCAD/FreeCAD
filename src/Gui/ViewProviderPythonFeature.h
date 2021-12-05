@@ -120,6 +120,8 @@ public:
             const char *, const std::vector<std::string> &elements, std::string &ret);
     ValueT replaceObject(App::DocumentObject *, App::DocumentObject *);
     ValueT canReplaceObject(App::DocumentObject *, App::DocumentObject *);
+    ValueT reorderObjects(const std::vector<App::DocumentObject *> &, App::DocumentObject *);
+    ValueT canReorderObject(App::DocumentObject *, App::DocumentObject *);
     //@}
 
     bool getLinkedViewProvider(ViewProviderDocumentObject *&res,
@@ -177,6 +179,8 @@ private:
     FC_PY_ELEMENT(getDropPrefix) \
     FC_PY_ELEMENT(replaceObject) \
     FC_PY_ELEMENT(canReplaceObject) \
+    FC_PY_ELEMENT(reorderObjects) \
+    FC_PY_ELEMENT(canReorderObject) \
     FC_PY_ELEMENT(getLinkedViewProvider) \
 
 #undef FC_PY_ELEMENT
@@ -596,6 +600,29 @@ protected:
             return false;
         default:
             return ViewProviderT::canReplaceObject(oldObj,newObj);
+        }
+    }
+
+    virtual bool reorderObjects(const std::vector<App::DocumentObject *> &objs, App::DocumentObject *before) override {
+        App::AutoTransaction committer;
+        switch (imp->reorderObjects(objs,before)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::reorderObjects(objs,before);
+        }
+    }
+
+    virtual bool canReorderObject(App::DocumentObject *obj, App::DocumentObject *before) override {
+        switch (imp->canReplaceObject(obj,before)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canReorderObject(obj,before);
         }
     }
 

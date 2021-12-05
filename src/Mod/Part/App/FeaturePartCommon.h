@@ -48,7 +48,7 @@ protected:
 
 class MultiCommon : public Part::Feature
 {
-    PROPERTY_HEADER(Part::MultiCommon);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::MultiCommon);
 
 public:
     MultiCommon();
@@ -60,13 +60,15 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual short mustExecute() const override;
     //@}
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "PartGui::ViewProviderMultiCommon";
     }
+
+    virtual App::PropertyLinkList *getShapeLinksProperty() override {return &Shapes;}
 
 };
 

@@ -32,7 +32,7 @@ namespace Part
 
 class Compound : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Compound);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Compound);
 
 public:
     Compound();
@@ -42,13 +42,14 @@ public:
 
     /** @name methods override feature */
     //@{
-    short mustExecute() const;
+    virtual short mustExecute() const override;
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "PartGui::ViewProviderCompound";
     }
+    virtual App::PropertyLinkList *getShapeLinksProperty() override {return &Links;}
     //@}
 };
 

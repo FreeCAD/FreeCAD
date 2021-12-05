@@ -57,7 +57,7 @@
 #include <App/Link.h>
 
 #include "Tree.h"
-#include "Command.h"
+#include "CommandT.h"
 #include "Document.h"
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
@@ -111,6 +111,7 @@ public:
     void updateSelection(QTreeWidgetItem *, bool unselect=false);
     void updateSelection();
     void updateItemSelection(DocumentObjectItem *);
+    void sortObjectItems();
 
     enum SelectionReason {
         SR_SELECT, // only select, no expansion
@@ -168,6 +169,8 @@ protected:
                     QTreeWidgetItem *parent=0, int index=-1,
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
+    void setupTreeRank(DocumentObjectItem *item);
+
     int findRootIndex(App::DocumentObject *childObj);
 
     DocumentObjectItem *findItemByObject(bool sync,
@@ -219,6 +222,7 @@ private:
 
     std::map<App::SubObjectT, std::vector<DocumentObjectItem*>> itemsOnTop;
     bool updatingItemsOnTop = false;
+    bool itemSorted = false;
 
     friend class TreeWidget;
     friend class DocumentObjectData;
@@ -302,6 +306,9 @@ public:
     void setCheckState(bool checked);
     void unselect();
 
+    void applyExpandedSnapshot(const std::vector<bool> &snapshot, std::vector<bool>::const_iterator &from);
+    void getExpandedSnapshot(std::vector<bool> &snapshot) const;
+
 private:
     QBrush bgBrush;
     DocumentItem *myOwner;
@@ -360,7 +367,25 @@ public:
         :master(master)
     {}
 
-    void setDragCursor(Qt::CursorShape shape, bool replace=true)
+    const char *getTreeName()
+    {
+        return master->getTreeName();
+    }
+
+    void checkDropEvent(QDropEvent *event, bool *replace = nullptr, bool *reorder = nullptr);
+
+    void setReorderingItem(QTreeWidgetItem *item)
+    {
+        if (item != reorderingItem)
+            master->scheduleDelayedItemsLayout();
+        reorderingItem = item;
+        if (item)
+            reorderingIndex = master->indexFromItem(item);
+        else
+            reorderingIndex = QModelIndex();
+    }
+
+    void setDragCursor(Qt::CursorShape shape, bool replace=true, bool reorder=false)
     {
         int cursorSize = 32;
         int iconSize = 24;
@@ -413,12 +438,14 @@ public:
                 pixmapLink = BitmapFactory().pixmapFromSvg("TreeDragLink", size, colorMap);
                 pixmapReplace = BitmapFactory().pixmapFromSvg("TreeDragReplace", size, colorMap);
                 pixmapForbid = BitmapFactory().pixmapFromSvg("TreeDragForbid", size, colorMap);
+                pixmapReorder = BitmapFactory().pixmapFromSvg("TreeDragReorder", size, colorMap);
 #else
                 pixmapMove = BitmapFactory().pixmapFromSvg("TreeDragMove", size);
                 pixmapCopy = BitmapFactory().pixmapFromSvg("TreeDragCopy", size);
                 pixmapLink = BitmapFactory().pixmapFromSvg("TreeDragLink", size);
                 pixmapReplace = BitmapFactory().pixmapFromSvg("TreeDragReplace", size);
                 pixmapForbid = BitmapFactory().pixmapFromSvg("TreeDragForbid", size);
+                pixmapReorder = BitmapFactory().pixmapFromSvg("TreeDragReorder", size);
 #endif
             }
 
@@ -427,6 +454,7 @@ public:
             pxLink = QPixmap();
             pxReplace = QPixmap();
             pxForbid = QPixmap();
+            pxReorder = QPixmap();
 
             if (!pxObj.isNull()) {
                 if (!pxObj2.isNull()) {
@@ -463,6 +491,12 @@ public:
 
                 pxCursor = QPixmap(cursorSize, cursorSize);
                 pxCursor.fill(Qt::transparent);
+                pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
+                pxCursor = BitmapFactory().merge(pxCursor, pixmapReorder, BitmapFactoryInst::TopLeft);
+                pxReorder = pxCursor;
+
+                pxCursor = QPixmap(cursorSize, cursorSize);
+                pxCursor.fill(Qt::transparent);
                 // pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
                 pxCursor = BitmapFactory().merge(pxCursor, pixmapForbid, BitmapFactoryInst::TopLeft);
                 pxForbid = pxCursor;
@@ -472,6 +506,7 @@ public:
                 pxLink.setDevicePixelRatio(dpr);
                 pxReplace.setDevicePixelRatio(dpr);
                 pxForbid.setDevicePixelRatio(dpr);
+                pxReorder.setDevicePixelRatio(dpr);
             }
         }
 
@@ -487,7 +522,7 @@ public:
             break;
         case Qt::DragLinkCursor:
             if (!pxLink.isNull())
-                cursor = QCursor(replace?pxReplace:pxLink,hotX,hotY);
+                cursor = QCursor(reorder ? pxReorder : (replace?pxReplace:pxLink), hotX, hotY);
             break;
         case Qt::ForbiddenCursor:
             if (!pxForbid.isNull())
@@ -548,11 +583,13 @@ public:
     QPixmap pxCopy;
     QPixmap pxLink;
     QPixmap pxReplace;
+    QPixmap pxReorder;
     QPixmap pxForbid;
     QPixmap pixmapMove;
     QPixmap pixmapCopy;
     QPixmap pixmapLink;
     QPixmap pixmapReplace;
+    QPixmap pixmapReorder;
     QPixmap pixmapForbid;
 
     bool restorePreselCursor = false;
@@ -560,6 +597,8 @@ public:
     bool checkHiddenItems = false;
     bool multiSelecting = false;
 
+    QTreeWidgetItem *reorderingItem = nullptr;
+    QModelIndex reorderingIndex;
     QTreeWidgetItem *tooltipItem = nullptr;
 };
 
@@ -928,6 +967,14 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
         painter->fillRect(rect, _TreeItemBackground);
     }
     style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, tree);
+
+    if (tree->pimpl->reorderingIndex == index) {
+        painter->save();
+        painter->setCompositionMode(QPainter::CompositionMode_Difference);
+        painter->setPen(Qt::white);
+        painter->drawLine(opt.rect.topLeft(), opt.rect.topRight());
+        painter->restore();
+    }
 }
 
 void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
@@ -2105,6 +2152,7 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
         QPoint cpos = QCursor::pos();
         if (ke->key() == Qt::Key_Escape) {
             if (_DraggingActive) {
+                pimpl->setReorderingItem(nullptr);
                 qApp->removeEventFilter(this);
                 _DraggingActive = false;
                 for (auto tree : TreeWidget::Instances)
@@ -2391,7 +2439,8 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
         QDragMoveEvent de(pos, _DropActions,
                 nullptr, event->buttons(), event->modifiers());
         bool replace = true;
-        _dragMoveEvent(&de, &replace);
+        bool reorder = false;
+        pimpl->checkDropEvent(&de, &replace, &reorder);
         Qt::CursorShape cursor;
         if(!de.isAccepted()) {
             cursor = Qt::ForbiddenCursor;
@@ -2411,10 +2460,12 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
                 break;
             }
         }
-        pimpl->setDragCursor(cursor, replace);
+        pimpl->setDragCursor(cursor, replace, reorder);
         toolTipTimer->start(300);
         return;
     }
+
+    pimpl->setReorderingItem(nullptr);
 
     QByteArray tag;
     auto oitem = pimpl->itemHitTest(event->pos(), &tag);
@@ -2476,19 +2527,30 @@ void TreeWidget::onToolTipTimer()
     }
 
     QString info;
-    if (!Obj->Label2.getStrValue().empty() && tag == Gui::treeBranchTag())
+    if (!Obj->Label2.getStrValue().empty() && (_DraggingActive || tag == Gui::treeBranchTag()))
         info = QString::fromUtf8(Obj->Label2.getValue());
-    else if (!Obj->isError()) {
-        if (tag == Gui::treeVisibilityIconTag())
+    else if (!_DraggingActive) {
+        if (Obj->isError())
+            info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
+        else if (tag == Gui::treeVisibilityIconTag())
             info = QObject::tr("Click to toggle visibility.\nAlt + click to toggle show on top.");
         else {
             info = item->object()->getToolTip(tag);
             if (info.isEmpty() && !Obj->Label2.getStrValue().empty())
                 info = QString::fromUtf8(Obj->Label2.getValue());
         }
-    } else {
-        info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
     }
+
+    if (_DraggingActive) {
+        if (!info.isEmpty())
+            info += QStringLiteral("\n\n");
+        info += tr("The drop action is auto selected depending on dropping site.\n\n"
+                   "You can hold Ctrl key while dropping if you want to drop without\n"
+                   "draggging object out, or make copy instead of move.\n\n"
+                   "You can hold Alt key to choose alternative drop action, including\n"
+                   "link, reorder, or replace depending on dropping site.");
+    }
+
     if (info.isEmpty()) {
         pimpl->tooltipItem = nullptr;
         ToolTip::hideText();
@@ -2857,21 +2919,21 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
     if (!event->isAccepted())
         return;
 
-    _dragMoveEvent(event);
+    pimpl->checkDropEvent(event);
 }
 
-void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
+void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool *pReorder)
 {
     auto modifier = (event->keyboardModifiers()
             & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
     QTreeWidgetItem* targetItem = nullptr;
     QAction *action = nullptr;
     if (_DraggingActive && _SelUpMenus.size()) {
-        QPoint pos = viewport()->mapToGlobal(event->pos());
+        QPoint pos = master->viewport()->mapToGlobal(event->pos());
         auto menu = _SelUpMenus.back();
         action = menu->actionAt(menu->mapFromGlobal(pos));
         if (action) {
-            targetItem = selectUp(action, nullptr, false);
+            targetItem = master->selectUp(action, nullptr, false);
             if (targetItem) {
                 menu->setActiveAction(action);
                 menu->onHovered(action);
@@ -2879,31 +2941,38 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
         }
     }
 
+    bool _replace, _reorder;
+    bool &replace = pReplace ? *pReplace : _replace;
+    bool &reorder = pReorder ? *pReorder : _reorder;
+    DocumentObjectItem *reorderParent = nullptr;
+    replace = true;
+    reorder = false;
+
     QByteArray tag;
     if (targetItem)
         tag = treeNoIconTag();
     else {
         DocumentItem *docItem = nullptr;
-        targetItem = pimpl->itemHitTest(event->pos(), &tag, &docItem);
+        targetItem = this->itemHitTest(event->pos(), &tag, &docItem);
         if (docItem)
             targetItem = docItem;
         if (targetItem)
-            setCurrentItem(targetItem, 0, QItemSelectionModel::NoUpdate);
+            master->setCurrentItem(targetItem, 0, QItemSelectionModel::NoUpdate);
     }
 
     event->setDropAction(Qt::MoveAction);
     event->accept();
-    if (!targetItem || this->isItemSelected(targetItem)) {
-        leaveEvent(0);
+    if (!targetItem || master->isItemSelected(targetItem)) {
+        master->leaveEvent(0);
         event->ignore();
     }
     else if (targetItem->type() == TreeWidget::DocumentType) {
-        leaveEvent(0);
+        master->leaveEvent(0);
         if(modifier== Qt::ControlModifier)
             event->setDropAction(Qt::CopyAction);
         else {
             bool alt = (modifier & Qt::AltModifier) ? true : false;
-            for (auto titem : selectedItems()) {
+            for (auto titem : master->selectedItems()) {
                 if (titem->type() != ObjectType)
                     continue;
                 auto item = static_cast<DocumentObjectItem*>(titem);
@@ -2922,25 +2991,24 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
             }
             if(alt) {
                 event->setDropAction(Qt::LinkAction);
-                if (replace)
-                    *replace = false;
+                replace = false;
             } else
                 event->setDropAction(Qt::MoveAction);
         }
     }
     else if (targetItem->type() == TreeWidget::ObjectType) {
         if (!action)
-            pimpl->checkItemEntered(targetItem, tag);
+            this->checkItemEntered(targetItem, tag);
 
         DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
         try {
-            auto items = selectedItems();
+            auto items = master->selectedItems();
 
             if(modifier == Qt::ControlModifier)
                 event->setDropAction(Qt::CopyAction);
-            else if((modifier & Qt::AltModifier) && items.size()==1)
+            else if(modifier & Qt::AltModifier)
                 event->setDropAction(Qt::LinkAction);
             else
                 event->setDropAction(Qt::MoveAction);
@@ -2948,9 +3016,10 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
             bool dropOnly = da==Qt::CopyAction || da==Qt::LinkAction;
 
             if (da!=Qt::LinkAction && !vp->canDropObjects()) {
-                if(!(event->possibleActions() & Qt::LinkAction) || items.size()!=1) {
+                if(!(event->possibleActions() & Qt::LinkAction)) {
                     TREE_TRACE("cannot drop");
                     event->ignore();
+                    this->setReorderingItem(nullptr);
                     return;
                 }
                 event->setDropAction(Qt::LinkAction);
@@ -2960,6 +3029,7 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
                 if (ti->type() != TreeWidget::ObjectType) {
                     TREE_TRACE("cannot drop");
                     event->ignore();
+                    this->setReorderingItem(nullptr);
                     return;
                 }
                 auto item = static_cast<DocumentObjectItem*>(ti);
@@ -2970,6 +3040,7 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
                     if(!(event->possibleActions() & Qt::CopyAction)) {
                         TREE_TRACE("Cannot drag object");
                         event->ignore();
+                        this->setReorderingItem(nullptr);
                         return;
                     }
                     event->setDropAction(Qt::CopyAction);
@@ -2982,45 +3053,58 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
                 // let the view provider decide to accept the object or ignore it
                 if (da!=Qt::LinkAction && !vp->canDropObjectEx(obj,owner,subname.c_str(), item->mySubs)) {
                     if(event->possibleActions() & Qt::LinkAction) {
-                        if(items.size()>1) {
-                            TREE_TRACE("Cannot replace with more than one object");
-                            event->ignore();
-                            return;
-                        }
                         event->setDropAction(Qt::LinkAction);
                         da = Qt::LinkAction;
                     } else {
                         TREE_TRACE("cannot drop " << obj->getFullName() << ' '
                                 << (owner?owner->getFullName():"<No Owner>") << '.' << subname);
                         event->ignore();
+                        this->setReorderingItem(nullptr);
                         return;
                     }
                 }
 
                 if (da == Qt::LinkAction) {
+                    auto targetObj = targetItemObj->object()->getObject();
                     if (modifier & Qt::ControlModifier) {
                         // CTRL + ALT to force link instead of replace operation
-                        if (replace)
-                            *replace = false;
+                        replace = false;
                         auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
                         if (!ext || !ext->getLinkedObjectProperty()
                                  || ext->getLinkedObjectProperty()->isReadOnly())
                         {
                             TREE_TRACE("Link operation not supported");
                             event->ignore();
+                            this->setReorderingItem(nullptr);
                             return;
                         }
-                    } else { 
-                        auto parentItem = targetItemObj->getParentItem();
-                        if (!parentItem 
-                                || !parentItem->object()->canReplaceObject(
-                                            targetItemObj->object()->getObject(), obj))
-                        {
-                            TREE_TRACE("Replace operation not supported");
+                    } else if (auto parentItem = targetItemObj->getParentItem()) {
+                        if (!reorder && !reorderParent && parentItem == item->parent())
+                            reorderParent = parentItem;
+                        else if (reorderParent && reorderParent != parentItem) {
+                            TREE_TRACE("Reorder operation not supported");
+                            reorderParent = nullptr;
+                        }
+
+                        // Check reorder first to give it priority over replace operation
+                        if (reorderParent && reorderParent->object()->canReorderObject(obj, targetObj)) {
+                            replace = false;
+                            reorder = true;
+                        }
+                        else if (items.size() > 1 || !parentItem->object()->canReplaceObject(targetObj, obj)) {
+                            TREE_TRACE("Replace/reorder operation not supported");
                             event->ignore();
+                            this->setReorderingItem(nullptr);
                             return;
                         }
-                    }
+                    } else if (reorderParent || item->getParentItem()
+                                             || obj->getDocument() != targetObj->getDocument()) {
+                        TREE_TRACE("Reorder operation not supported");
+                        event->ignore();
+                        this->setReorderingItem(nullptr);
+                        return;
+                    } else
+                        reorder = true;
                 }
             }
         } catch (Base::Exception &e){
@@ -3035,9 +3119,10 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
         }
     }
     else {
-        leaveEvent(0);
+        master->leaveEvent(0);
         event->ignore();
     }
+    this->setReorderingItem(reorder ? targetItem : nullptr);
 }
 
 struct ItemInfo {
@@ -3066,7 +3151,12 @@ struct ItemInfo2 {
 
 void TreeWidget::dropEvent(QDropEvent *event)
 {
-    //FIXME: This should actually be done inside dropMimeData
+    bool replace = true;
+    bool reorder = false;
+    pimpl->checkDropEvent(event, &replace, &reorder);
+    pimpl->setReorderingItem(nullptr);
+    if (!event->isAccepted())
+        return;
 
     Base::StateLocker guard(_Dropping);
     if (++_DropID == 0)
@@ -3119,37 +3209,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     std::string errMsg;
 
-    auto modifier = (event->keyboardModifiers()
-        & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
-    if(modifier == Qt::ControlModifier)
-        event->setDropAction(Qt::CopyAction);
-    else {
-        bool alt = (modifier & Qt::AltModifier) ? true : false;
-        if (targetItem->type() == DocumentType) {
-            for (auto titem : sels) {
-                if (titem->type() != ObjectType)
-                    continue;
-                auto item = static_cast<DocumentObjectItem*>(titem);
-                if (item->myOwner != targetItem) {
-                    // When drag object to an external document, reverse the Alt
-                    // modifier function, i.e. defaults to LinkAction, and
-                    // change to MoveAction if Alt pressed. The rational being
-                    // that, MoveAction will modify the current document, which
-                    // is not what user wants in most cases if the intention is
-                    // to drop on to a different document. So, we demands the
-                    // user to hold an extra key (Alt) to indicates he really
-                    // want the MoveAction.
-                    alt = !alt;
-                    break;
-                }
-            }
-        }
-        event->setDropAction(alt ? Qt::LinkAction : Qt::MoveAction);
-    }
-
     auto da = event->dropAction();
     bool dropOnly = da==Qt::CopyAction || da==Qt::LinkAction;
-    bool replace = true;
 
     if (targetItem->type() == TreeWidget::ObjectType) {
         // add object to group
@@ -3158,22 +3219,16 @@ void TreeWidget::dropEvent(QDropEvent *event)
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
         if(!vp || !vp->getObject() || !vp->getObject()->getNameInDocument()) {
-            FC_WARN("invalid object");
+            // Should have caught by checkDropEvent()
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_ERR("invalid object");
             return;
-        }
-
-        if (da!=Qt::LinkAction && !vp->canDropObjects()) {
-            if(!(event->possibleActions() & Qt::LinkAction) || itemInfo.size()!=1) {
-                FC_WARN("Cannot drop objects");
-                return; // no group like object
-            }
-            event->setDropAction(Qt::LinkAction);
-            da = Qt::LinkAction;
         }
 
         std::ostringstream targetSubname;
         App::DocumentObject *targetParent = 0;
         targetItemObj->getSubName(targetSubname,targetParent);
+        auto sels = Selection().getSelectionT(nullptr, 0);
         Selection().selStackPush();
         Selection().clearCompleteSelection();
 
@@ -3193,6 +3248,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
         bool setSelection = true;
         std::vector<App::SubObjectT> droppedObjects;
+        std::vector<ViewProviderDocumentObject*> reorderVps;
 
         std::vector<ItemInfo> infos;
         // Only keep text names here, because you never know when doing drag
@@ -3223,9 +3279,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
             info.subs.swap(v.second);
 
             // check if items can be dragged
-            if(!dropOnly &&
-               item->myOwner == targetItemObj->myOwner &&
-               vp->canDragAndDropObject(item->object()->getObject()))
+            if(!dropOnly && item->myOwner == targetItemObj->myOwner
+                         && vp->canDragAndDropObject(item->object()->getObject()))
             {
                 // check if items can be dragged
                 auto parentItem = item->getParentItem();
@@ -3241,55 +3296,67 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
             }
 
-            if (da!=Qt::LinkAction
-                    && !vp->canDropObjectEx(obj,owner,info.subname.c_str(),info.subs))
-            {
-                if(event->possibleActions() & Qt::LinkAction) {
-                    if(itemInfo.size()>1) {
-                        FC_WARN("Cannot replace with more than one object");
-                        return;
-                    }
-                    da = Qt::LinkAction;
-                }
-            }
-
-            if(da == Qt::LinkAction) {
-                // CTRL + ALT to force link instead of replace operation
-                replace = (modifier & Qt::ControlModifier) ? false : true;
-                if (replace) {
-                    auto parentItem = targetItemObj->getParentItem();
-                    if (!parentItem || !parentItem->object()->canReplaceObject(
-                                targetItemObj->object()->getObject(), obj))
-                    {
-                        FC_WARN("Replace operation not supported");
-                        return;
-                    }
-                } else {
-                    auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
-                    if (!ext || !ext->getLinkedObjectProperty()
-                             || ext->getLinkedObjectProperty()->isReadOnly())
-                    {
-                        FC_WARN("Link not support");
-                        return;
-                    }
-                }
-            }
+            if(reorder)
+                reorderVps.push_back(item->object());
         }
 
         // Open command
-        App::AutoTransaction committer("Drop object", true);
+        App::AutoTransaction committer(reorder ? "Move object" : "Drop object", true);
         try {
             auto targetObj = targetItemObj->object()->getObject();
 
-            std::set<App::DocumentObject*> inList;
             auto parentObj = targetObj;
-            if(da == Qt::LinkAction && targetItemObj->getParentItem())
-                parentObj = targetItemObj->getParentItem()->object()->getObject();
-            inList = parentObj->getInListEx(true);
-            inList.insert(parentObj);
+            auto parentItem = targetItemObj->getParentItem();
+            if(da == Qt::LinkAction && parentItem)
+                parentObj = parentItem->object()->getObject();
 
             std::string target = targetObj->getNameInDocument();
             auto targetDoc = targetObj->getDocument();
+
+            std::set<App::DocumentObject*> inList;
+
+            auto manager = Application::Instance->macroManager();
+            std::ostringstream ss;
+
+            if (reorder) {
+                droppedObjects = std::move(sels);
+
+                if (!parentItem) {
+                    ss << "reorderObjects([";
+                    for (auto vp : reorderVps)
+                        ss << vp->getObject()->getFullName(true) << ", ";
+                    ss << "], " << targetObj->getFullName(true) << ")";
+                    cmdAppDocument(targetObj, ss);
+                    targetItemObj->getOwnerDocument()->itemSorted = false;
+                    _updateStatus();
+                }
+                else {
+                    auto lines = manager->getLines();
+                    ss << parentItem->object()->getFullName(true)
+                        << ".reorderObjects([";
+
+                    std::vector<App::DocumentObject *> objs;
+                    for (auto vp : reorderVps) {
+                        objs.push_back(vp->getObject());
+                        ss << vp->getFullName(true) << ", ";
+                    }
+
+                    ss << "], " << targetObj->getFullName(true) << ')';
+
+                    if (!parentItem->object()->reorderObjects(objs, targetItemObj->object()->getObject()))
+                        throw Base::RuntimeError("Failed to reorder objects");
+
+                    if(manager->getLines() == lines)
+                        manager->addLine(MacroManager::Gui,ss.str().c_str());
+                    touched = true;
+                }
+                infos.clear();
+            }
+            else {
+                inList = parentObj->getInListEx(true);
+                inList.insert(parentObj);
+            }
+
             for (auto &info : infos) {
                 auto &subname = info.subname;
                 targetObj = targetDoc->getObject(target.c_str());
@@ -3363,8 +3430,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
                 auto dropParent = targetParent;
 
-                auto manager = Application::Instance->macroManager();
-                std::ostringstream ss;
+                ss.str("");
                 if(vpp) {
                     auto lines = manager->getLines();
                     ss << Command::getObjectCmd(vpp->getObject())
@@ -3549,6 +3615,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
                 droppedObjects.emplace_back(dropParent,dropName.c_str());
             }
+
             if(setSelection && droppedObjects.size()) {
                 Selection().selStackPush();
                 Selection().clearCompleteSelection();
@@ -3591,17 +3658,15 @@ void TreeWidget::dropEvent(QDropEvent *event)
             auto item = v.first;
             auto obj = item->object()->getObject();
             auto parentItem = item->getParentItem();
-            if(!parentItem) {
-                if(da==Qt::MoveAction && obj->getDocument()==thisDoc)
-                    continue;
-            }else if(dropOnly) {
-                parentItem = 0;
-            }else if(!parentItem->object()->canDragObjects()
-                    || !parentItem->object()->canDragObject(obj))
-            {
-                FC_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" <<
-                    parentItem->object()->getObject()->getFullName() << "'");
-                return;
+            if (parentItem) {
+                if(dropOnly)
+                    parentItem = 0;
+                else if(!parentItem->object()->canDragObjects()
+                        || !parentItem->object()->canDragObject(obj)) {
+                    FC_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" <<
+                        parentItem->object()->getObject()->getFullName() << "'");
+                    return;
+                }
             }
             infos.emplace_back();
             auto &info = infos.back();
@@ -3682,7 +3747,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     if(propPlacement)
                         propPlacement->setValueIfChanged(Base::Placement(mat));
                     droppedObjs.push_back(link);
-                }else if(info.parent.size()) {
+                } else if(info.parent.size()) {
                     auto parentDoc = App::GetApplication().getDocument(info.parentDoc.c_str());
                     if(!parentDoc) {
                         FC_WARN("Canont find document " << info.parentDoc);
@@ -3704,6 +3769,11 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     if(manager->getLines() == lines)
                         manager->addLine(MacroManager::Gui,ss.str().c_str());
 
+                    // check if the object has been deleted
+                    obj = doc->getObject(info.obj.c_str());
+                    if(!obj || !obj->getNameInDocument())
+                        continue;
+
                     //make sure it is not part of a geofeaturegroup anymore.
                     //When this has happen we need to handle all removed
                     //objects
@@ -3712,10 +3782,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         FCMD_OBJ_CMD(grp,"removeObject(" << Command::getObjectCmd(obj) << ")");
                     }
 
-                    // check if the object has been deleted
-                    obj = doc->getObject(info.obj.c_str());
-                    if(!obj || !obj->getNameInDocument())
-                        continue;
                     droppedObjs.push_back(obj);
                     if(propPlacement)
                         propPlacement->setValueIfChanged(Base::Placement(mat));
@@ -3729,8 +3795,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         auto copied = thisDoc->copyObject({obj},true);
                         if(copied.size())
                             res = copied.back();
-                    }else
-                        res =  thisDoc->moveObject(obj,true);
+                    } else
+                        res = thisDoc->moveObject(obj,true);
                     if(res) {
                         propPlacement = dynamic_cast<App::PropertyPlacement*>(
                                 res->getPropertyByName("Placement"));
@@ -3867,7 +3933,6 @@ void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::P
         }
     }
 }
-
 
 void TreeWidget::slotTouchedObject(const App::DocumentObject &obj) {
     ChangedObjects.insert(std::make_pair(const_cast<App::DocumentObject*>(&obj),0));
@@ -4091,6 +4156,7 @@ void TreeWidget::onUpdateStatus(void)
             }
         }
         docItem->_ExpandInfo.reset();
+        docItem->sortObjectItems();
     }
 
     if(Selection().hasSelection() && !selectTimer->isActive() && !this->isConnectionBlocked()) {
@@ -5384,6 +5450,71 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
     }
 }
 
+void DocumentObjectItem::getExpandedSnapshot(std::vector<bool> &snapshot) const
+{
+    snapshot.push_back(isExpanded());
+
+    for (int i = 0; i < childCount(); ++i) {
+        static_cast<const DocumentObjectItem *>(child(i))->getExpandedSnapshot(snapshot);
+    }
+}
+
+void DocumentObjectItem::applyExpandedSnapshot(const std::vector<bool> &snapshot, std::vector<bool>::const_iterator &from)
+{
+    setExpanded(*from++);
+
+    for (int i = 0; i < childCount(); ++i) {
+        static_cast<DocumentObjectItem *>(child(i))->applyExpandedSnapshot(snapshot, from);
+    }
+}
+
+void DocumentItem::sortObjectItems()
+{
+    if (itemSorted)
+        return;
+
+    itemSorted = true;
+    QSignalBlocker guard(getTree());
+
+    std::vector<DocumentObjectItem *> sortedItems;
+    sortedItems.reserve(this->childCount());
+
+    for (int i = 0; i < this->childCount(); ++i) {
+        QTreeWidgetItem *treeItem = this->child(i);
+        if (treeItem->type() == TreeWidget::ObjectType) 
+            sortedItems.push_back(static_cast<DocumentObjectItem *>(treeItem));
+    }
+
+    std::stable_sort(sortedItems.begin(), sortedItems.end(),
+        [](DocumentObjectItem *a, DocumentObjectItem *b) {
+            return a->object()->getObject()->TreeRank.getValue()
+                    < b->object()->getObject()->TreeRank.getValue();
+        });
+
+    int sortedIndex = 0;
+    std::vector<bool> expansion;
+    for (int i = 0; i < this->childCount(); ++i) {
+        QTreeWidgetItem *treeItem = this->child(i);
+        if (treeItem->type() != TreeWidget::ObjectType)
+            continue;
+
+        DocumentObjectItem *sortedItem = sortedItems[sortedIndex++];
+        if (sortedItem == treeItem)
+            continue;
+
+        expansion.clear();
+        sortedItem->getExpandedSnapshot(expansion);
+
+        this->removeChild(sortedItem);
+        this->insertChild(i, sortedItem);
+        if (!showHidden())
+            updateItemsVisibility(sortedItem, false);
+
+        std::vector<bool>::const_iterator expFrom = expansion.cbegin();
+        sortedItem->applyExpandedSnapshot(expansion, expFrom);
+    }
+}
+
 void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 {
     auto tree = getTree();
@@ -5409,6 +5540,19 @@ void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj) {
     getTree()->_updateStatus();
 }
 
+void DocumentItem::setupTreeRank(DocumentObjectItem *item)
+{
+    auto ranks = document()->getDocument()->treeRanks();
+    auto obj = item->object()->getObject();
+    if (obj->TreeRank.getValue() < ranks.second) {
+        obj->TreeRank.setValue(ranks.second + 1);
+        if (itemSorted) {
+            itemSorted = false;
+            getTree()->_updateStatus();
+        }
+    }
+}
+
 bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
             QTreeWidgetItem *parent, int index, DocumentObjectDataPtr data)
 {
@@ -5418,7 +5562,9 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
         obj.getObject()->testStatus(App::PartialObject))
         return false;
 
+    bool newData = false;
     if(!data) {
+        newData = true;
         auto &pdata = ObjectMap[obj.getObject()];
         if(!pdata) {
             pdata = std::make_shared<DocumentObjectData>(
@@ -5444,6 +5590,8 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     if(!parent || parent==this) {
         parent = this;
         data->rootItem = item;
+        if (newData)
+            setupTreeRank(item);
         if(index<0)
             index = findRootIndex(obj.getObject());
     }
@@ -5732,6 +5880,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
                 if(checkHidden)
                     updateItemsVisibility(childItem,false);
                 childItem->myData->rootItem = childItem;
+                setupTreeRank(childItem);
                 continue;
             }
         }
@@ -5816,6 +5965,16 @@ void TreeWidget::slotChangeObject(
     auto itEntry = ObjectTable.find(obj);
     if(itEntry == ObjectTable.end() || itEntry->second.empty())
         return;
+
+    if (&prop == &obj->TreeRank) {
+        if (auto docItem = getDocumentItem(view.getDocument())) {
+            if (docItem->itemSorted) {
+                docItem->itemSorted = false;
+                _updateStatus();
+            }
+        }
+        return;
+    }
 
     _updateStatus();
 

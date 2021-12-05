@@ -845,6 +845,22 @@ int ViewProvider::replaceObject(App::DocumentObject *oldObj, App::DocumentObject
     return 0;
 }
 
+bool ViewProvider::canReorderObject(App::DocumentObject *obj, App::DocumentObject *before)
+{
+    auto vp = Gui::Application::Instance->getViewProvider(
+            PartDesign::Body::findBodyOf(getObject()));
+    return vp && vp->canReorderObject(obj, before);
+}
+
+bool ViewProvider::reorderObjects(const std::vector<App::DocumentObject *> &objs, App::DocumentObject *before)
+{
+    auto vp = Gui::Application::Instance->getViewProvider(
+            PartDesign::Body::findBodyOf(getObject()));
+    if (vp)
+        return vp->reorderObjects(objs, before);
+    return false;
+}
+
 std::vector<App::DocumentObject*> ViewProvider::claimChildren(void) const
 {
     auto res = _claimChildren();

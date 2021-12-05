@@ -98,6 +98,33 @@ void ViewProviderPart::applyTransparency(const float& transparency,
     }
 }
 
+static inline App::PropertyLinkList *getShapesLinks(App::DocumentObject *obj)
+{
+    auto feat = Base::freecad_dynamic_cast<Part::Feature>(obj);
+    if (!feat)
+        return nullptr;
+    return feat->getShapeLinksProperty();
+}
+
+bool ViewProviderPart::canReplaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj)
+{
+    if (auto prop = getShapesLinks(getObject()))
+        return oldObj && newObj
+                      && prop->find(oldObj->getNameInDocument())
+                      && !prop->find(newObj->getNameInDocument());
+    return false;
+}
+
+bool ViewProviderPart::reorderObjects(const std::vector<App::DocumentObject *> &objs, App::DocumentObject *before)
+{
+    return Gui::ViewProvider::reorderObjectsInProperty(getShapesLinks(getObject()), objs, before);
+}
+
+bool ViewProviderPart::canReorderObject(App::DocumentObject *obj, App::DocumentObject *before)
+{
+    return Gui::ViewProvider::canReorderObjectInProperty(getShapesLinks(getObject()), obj, before);
+}
+
 // ----------------------------------------------------------------------------
 
 void ViewProviderShapeBuilder::buildNodes(const App::Property* , std::vector<SoNode*>& ) const

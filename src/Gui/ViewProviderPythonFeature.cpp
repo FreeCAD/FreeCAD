@@ -1559,6 +1559,58 @@ ViewProviderPythonFeatureImp::canReplaceObject(
     return Rejected;
 }
 
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::reorderObjects(
+        const std::vector<App::DocumentObject *> &objs, App::DocumentObject *before)
+{
+    FC_PY_CALL_CHECK(reorderObjects);
+
+    Base::PyGILStateLocker lock;
+    try {
+        Py::List list;
+        for (auto obj : objs) {
+            if (obj && obj->getNameInDocument())
+                list.append(Py::asObject(obj->getPyObject()));
+        }
+        Py::TupleN args(list, Py::asObject(before->getPyObject()));
+        Py::Boolean ok(Base::pyCall(py_canReorderObject.ptr(),args.ptr()));
+        return ok ? Accepted : Rejected;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return Rejected;
+}
+
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::canReorderObject(
+        App::DocumentObject *obj, App::DocumentObject *before)
+{
+    FC_PY_CALL_CHECK(canReorderObject);
+
+    Base::PyGILStateLocker lock;
+    try {
+        Py::TupleN args(Py::asObject(obj->getPyObject()),
+                        Py::asObject(before->getPyObject()));
+        Py::Boolean ok(Base::pyCall(py_canReorderObject.ptr(),args.ptr()));
+        return ok ? Accepted : Rejected;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return Rejected;
+}
+
 bool ViewProviderPythonFeatureImp::getLinkedViewProvider(
         ViewProviderDocumentObject *&vp, std::string *subname, bool recursive) const
 {

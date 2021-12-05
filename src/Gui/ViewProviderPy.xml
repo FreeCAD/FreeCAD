@@ -98,6 +98,31 @@ Returns 1 if succeeded, 0 if not found, -1 if not supported
 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="canReplaceObject">
+            <Documentation>
+                <UserDocu>Query if can replace a child object
+canReplaceObject(oldObj, newObj) -> Boolean
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="reorderObjects">
+            <Documentation>
+                <UserDocu>reorder child object(s)
+reorderObjects(obj, before) -> Boolean
+reorderObjects([obj...], before) -> Boolean
+--
+Returns True if succeeded, or else failed
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="canReorderObject">
+            <Documentation>
+                <UserDocu>Query if can reorder a child object
+canReorderObject(obj, before) -> Boolean
+canReorderObject([obj...], before) -> Boolean
+</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="doubleClicked">
             <Documentation>
                 <UserDocu>Trigger double clicking the corresponding tree item of this view object

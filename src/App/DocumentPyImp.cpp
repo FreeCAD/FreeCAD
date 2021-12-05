@@ -833,6 +833,33 @@ PyObject *DocumentPy::getDependentDocuments(PyObject *args) {
     } PY_CATCH;
 }
 
+PyObject* DocumentPy::reorderObjects(PyObject *args)
+{
+    PyObject *pyobj;
+    PyObject *pybefore;
+    if (!PyArg_ParseTuple(args, "OO!", &pyobj, &App::DocumentObjectPy::Type,&pybefore))
+        return nullptr;
+    PY_TRY {
+        std::vector<App::DocumentObject*> objs;
+        if (PyObject_TypeCheck(pyobj, &App::DocumentObjectPy::Type))
+            objs.push_back(static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr());
+        else if (PySequence_Check(pyobj)) {
+            Py::Sequence seq(pyobj);
+            for (Py::Sequence::iterator it = seq.begin(); it != seq.end(); ++it) {
+                PyObject* item = (*it).ptr();
+                if (!PyObject_TypeCheck(item, &App::DocumentObjectPy::Type))
+                    throw Base::TypeError("Expected document object inside sequence");
+                objs.push_back(static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
+            }
+        } else
+            throw Base::TypeError("Expected first argument to be document object or sequence of document objects");
+
+        getDocumentPtr()->reorderObjects(objs, 
+                static_cast<App::DocumentObjectPy*>(pybefore)->getDocumentObjectPtr());
+        Py_Return;
+    } PY_CATCH;
+}
+
 Py::Boolean DocumentPy::getRestoring(void) const
 {
     return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Restoring));
@@ -871,4 +898,10 @@ Py::String DocumentPy::getOldLabel() const
 Py::Boolean DocumentPy::getTemporary() const
 {
     return Py::Boolean(getDocumentPtr()->testStatus(Document::TempDoc));
+}
+
+Py::Tuple DocumentPy::getTreeRanks() const
+{
+    return Py::TupleN(Py::Int(getDocumentPtr()->treeRanks().first),
+                      Py::Int(getDocumentPtr()->treeRanks().second));
 }

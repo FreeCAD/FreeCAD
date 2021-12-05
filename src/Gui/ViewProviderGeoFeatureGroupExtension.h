@@ -67,9 +67,6 @@ public:
 
     virtual void extensionUpdateData(const App::Property*) override;
 
-    virtual int extensionCanReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) override;
-    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) override;
-
     virtual void extensionModeSwitchChange(void) override;
 
     static bool needUpdateChildren(App::DocumentObject *obj);

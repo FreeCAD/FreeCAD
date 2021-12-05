@@ -52,8 +52,8 @@ public:
 
     virtual void extensionAttach(App::DocumentObject* pcObject) override;
 
-    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) override;
-    virtual int extensionCanReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) override;
+    virtual int extensionReorderObjects(const std::vector<App::DocumentObject*> &objs, App::DocumentObject* before) override;
+    virtual int extensionCanReorderObject(App::DocumentObject* obj, App::DocumentObject* before) override;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension> ViewProviderGroupExtensionPython;

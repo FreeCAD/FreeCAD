@@ -142,26 +142,26 @@ std::vector<App::DocumentObject*> ViewProviderAuxGroup::claimChildren(void) cons
     return {};
 }
 
-int ViewProviderAuxGroup::replaceObject(App::DocumentObject *oldObj,
-                                        App::DocumentObject *newObj)
+bool ViewProviderAuxGroup::reorderObjects(const std::vector<App::DocumentObject*> &objs,
+                                          App::DocumentObject *before)
 {
     auto owner = Base::freecad_dynamic_cast<PartDesign::AuxGroup>(getObject());
-    if (!owner || !owner->isObjectAllowed(oldObj) || !owner->isObjectAllowed(newObj))
+    if (!owner)
         return 0;
     auto bodyVp = Gui::Application::Instance->getViewProvider(owner->getBody());
     if (bodyVp)
-        return bodyVp->replaceObject(oldObj, newObj);
+        return bodyVp->reorderObjects(objs, before);
     return 0;
 }
 
-bool ViewProviderAuxGroup::canReplaceObject(App::DocumentObject *oldObj,
-                                            App::DocumentObject *newObj)
+bool ViewProviderAuxGroup::canReorderObject(App::DocumentObject *obj,
+                                            App::DocumentObject *before)
 {
     auto owner = Base::freecad_dynamic_cast<PartDesign::AuxGroup>(getObject());
-    if (!owner || !owner->isObjectAllowed(oldObj) || !owner->isObjectAllowed(newObj))
+    if (!owner)
         return false;
     auto bodyVp = Gui::Application::Instance->getViewProvider(owner->getBody());
-    return bodyVp && bodyVp->canReplaceObject(oldObj, newObj);
+    return bodyVp && bodyVp->canReplaceObject(obj, before);
 }
 
 void ViewProviderAuxGroup::updateData(const App::Property *prop)

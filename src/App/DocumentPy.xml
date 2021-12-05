@@ -198,6 +198,16 @@ sort: whether to topologically sort the return list
               </UserDocu>
 		  </Documentation>
 	  </Methode>
+	  <Methode Name="reorderObjects">
+		  <Documentation>
+              <UserDocu>
+reorderObjects(obj, before)
+reorderObjects([obj...], before)
+
+Reorder object(s) in the tree view before a given object
+              </UserDocu>
+		  </Documentation>
+	  </Methode>
 	  <Attribute Name="DependencyGraph" ReadOnly="true">
 		<Documentation>
 			<UserDocu>The dependency graph as GraphViz text</UserDocu>
@@ -341,6 +351,12 @@ sort: whether to topologically sort the return list
             <UserDocu>Check if this is a temporary document</UserDocu>
         </Documentation>
         <Parameter Name="Temporary" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="TreeRanks" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Return a range of the first and last tree ranks for objects in this document</UserDocu>
+        </Documentation>
+        <Parameter Name="TreeRanks" Type="Tuple" />
     </Attribute>
     <CustomAttributes />
   </PythonExport>

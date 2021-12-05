@@ -175,4 +175,3 @@ void ViewProviderCompound::dropObject(App::DocumentObject* obj)
     pShapes.push_back(obj);
     pComp->Links.setValues(pShapes);
 }
-

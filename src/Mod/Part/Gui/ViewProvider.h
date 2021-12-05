@@ -44,16 +44,20 @@ public:
 
 class PartGuiExport ViewProviderPart : public ViewProviderPartExt
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPart);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPart);
 
 public:
     /// constructor
     ViewProviderPart();
     /// destructor
     virtual ~ViewProviderPart();
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked(void) override;
 
     virtual QPixmap getTagIcon() const;
+
+    virtual bool canReplaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) override;
+    virtual bool reorderObjects(const std::vector<App::DocumentObject *> &objs, App::DocumentObject *before) override;
+    virtual bool canReorderObject(App::DocumentObject *obj, App::DocumentObject *before) override;
 
 protected:
     void applyColor(const Part::ShapeHistory& hist,

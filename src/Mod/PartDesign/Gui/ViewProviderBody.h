@@ -35,6 +35,7 @@ class SbBox3f;
 class SoGetBoundingBoxAction;
 
 namespace PartDesign{
+class Body;
 class Feature;
 }
 
@@ -100,6 +101,8 @@ public:
 
     virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) override;
     virtual bool canReplaceObject(App::DocumentObject *, App::DocumentObject *) override;
+    virtual bool reorderObjects(const std::vector<App::DocumentObject*> &objs, App::DocumentObject* before) override;
+    virtual bool canReorderObject(App::DocumentObject* obj, App::DocumentObject* before) override;
 
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const override;
 
@@ -117,6 +120,12 @@ protected:
     /// Set Feature viewprovider into visual body mode
     void setVisualBodyMode(bool bodymode);
     virtual bool shouldCheckExport(App::DocumentObject *) const override;
+
+    bool _reorderObject(PartDesign::Body *body,
+                        App::DocumentObject *obj,
+                        App::DocumentObject *before,
+                        bool canSwap,
+                        bool &needCheckSiblings);
 
 private:
     static const char* BodyModeEnum[];

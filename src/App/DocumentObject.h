@@ -105,6 +105,8 @@ public:
 
     /// Allow control visibility status in App name space
     PropertyBool Visibility;
+    /// For control tree item order
+    App::PropertyInteger TreeRank;
 
     /// signal before changing a property of this object
     boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChange;

@@ -319,6 +319,9 @@ public:
     virtual bool canReplaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue) override;
     virtual int replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue) override;
 
+    virtual bool canReorderObject(App::DocumentObject* obj, App::DocumentObject* before) override;
+    virtual bool reorderObjects(const std::vector<App::DocumentObject*> &objs, App::DocumentObject* before) override;
+
 protected:
     Base::BoundBox3d _getBoundingBox(const char *subname=0,
             const Base::Matrix4D *mat=0, bool transform=true,

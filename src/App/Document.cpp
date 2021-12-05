@@ -186,6 +186,9 @@ struct DocumentP
     std::vector<DocumentObjectT> pendingRemove;
     std::vector<App::DocumentObject*> skippedObjs;
     long lastObjectId;
+    mutable std::pair<long, long> treeRanks = std::make_pair(0,0);
+    long treeRankRevision = 0;
+    long revision = 0; // will increase on object add or remove
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
     int iTransactionMode;
@@ -251,6 +254,7 @@ struct DocumentP
             entry = pcObject;
             break;
         }
+        ++revision;
         this->objectArray.push_back(pcObject);
         return id ? id : this->lastObjectId;
     }
@@ -1582,6 +1586,15 @@ void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Prop
 
 void Document::onChangedProperty(const DocumentObject *Who, const Property *What)
 {
+    if (What == &Who->TreeRank) {
+        if (d->treeRankRevision == d->revision) {
+            long r = Who->TreeRank.getValue();
+            if (r < d->treeRanks.first)
+                d->treeRanks.first = r;
+            else if (r > d->treeRanks.second)
+                d->treeRanks.second = r;
+        }
+    }
     signalChangedObject(*Who, *What);
 }
 
@@ -4327,6 +4340,7 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
     // Call the object-specific initialization
     if (!d->undoing && !d->rollback && isNew) {
+        pcObject->TreeRank.setValue(treeRanks().second + 1);
         pcObject->setupObject ();
     }
 
@@ -4424,6 +4438,7 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
 
         // Call the object-specific initialization
         if (!d->undoing && !d->rollback && isNew) {
+            pcObject->TreeRank.setValue(treeRanks().second + 1);
             pcObject->setupObject();
         }
 
@@ -4630,6 +4645,7 @@ void Document::removeObject(const char* sName)
     }
 
     d->objectMap.erase(pos);
+    ++d->revision;
 }
 
 /// Remove an object out of the document (internal)
@@ -4689,6 +4705,7 @@ void Document::_removeObject(DocumentObject* pcObject)
     pcObject->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
     d->objectIdMap.erase(pcObject->_Id);
     d->objectMap.erase(pos);
+    ++d->revision;
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if (*it == pcObject) {
@@ -4852,8 +4869,12 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     if(!obj)
         return 0;
     Document* that = obj->getDocument();
-    if (that == this)
-        return 0; // nothing todo
+    if (that == this) {
+        auto ranks = treeRanks();
+        if (obj->TreeRank.getValue() != ranks.second)
+            obj->TreeRank.setValue(ranks.second+1);
+        return 0;
+    }
 
     // True object move without copy is only safe when undo is off on both
     // documents.
@@ -5169,4 +5190,44 @@ void Document::setLastObjectId(long id) {
 
 void Document::afterImport(App::DocumentObject *obj) {
     obj->onDocumentRestored();
+}
+
+std::pair<long, long> Document::treeRanks() const
+{
+    if (d->objectArray.empty())
+        return std::make_pair(0,0);
+    if (d->treeRankRevision != d->revision) {
+        d->treeRankRevision = d->revision;
+        d->treeRanks.second = d->treeRanks.first = d->objectArray.front()->TreeRank.getValue();
+        for (auto obj : d->objectArray) {
+            long r = obj->TreeRank.getValue();
+            if (r < d->treeRanks.first)
+                d->treeRanks.first = r;
+            else if (r > d->treeRanks.second)
+                d->treeRanks.second = r;
+        }
+    }
+    return d->treeRanks;
+}
+
+void Document::reorderObjects(const std::vector<DocumentObject*> &_objs, DocumentObject *before)
+{
+    const char *msg = "Object does not belong to this document";
+    if (!before || before->getDocument() != this)
+        throw Base::RuntimeError(msg);
+        
+    for (auto obj : _objs) {
+        if (!obj || obj->getDocument() != this)
+            throw Base::RuntimeError(msg);
+    }
+    auto objs = _objs;
+    objs.erase(std::unique(objs.begin(), objs.end()), objs.end());
+    long beforeRank = before->TreeRank.getValue();
+    for (auto obj : d->objectArray) {
+        long rank = obj->TreeRank.getValue();
+        if (rank >= beforeRank)
+            obj->TreeRank.setValue(rank + (long)objs.size());
+    }
+    for (auto obj : objs)
+        obj->TreeRank.setValue(beforeRank++);
 }

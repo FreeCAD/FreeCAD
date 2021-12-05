@@ -3923,10 +3923,21 @@ void ViewProviderLink::setTransformation(const SbMatrix &rcMatrix)
 bool ViewProviderLink::canReplaceObject(App::DocumentObject* oldValue,
                                        App::DocumentObject* newValue)
 {
-    (void)oldValue;
-    (void)newValue;
+    if (!oldValue || !newValue)
+        return false;
     auto ext = getLinkExtension();
-    return ext && !ext->getLinkedObjectProperty() && ext->getElementListProperty();
+    if (!ext)
+        return false;
+    if (!ext->getLinkedObjectProperty())
+        return false;
+    if (hasElements(ext))
+        return false;
+    if(!hasSubName && linkView->isLinked()) {
+        auto linked = getLinkedView(false,ext);
+        if(linked)
+            return linked->canReplaceObject(oldValue, newValue);
+    }
+    return false;
 }
 
 int ViewProviderLink::replaceObject(App::DocumentObject* oldValue,
@@ -3935,22 +3946,53 @@ int ViewProviderLink::replaceObject(App::DocumentObject* oldValue,
     auto ext = getLinkExtension();
     if(!ext)
         return 0;
-    if (ext->getLinkedObjectProperty() || !ext->getElementListProperty())
-        return 0;
+    if (ext->getLinkedObjectProperty()) {
+        if(hasElements(ext))
+            return -1;
+        if(!hasSubName && linkView->isLinked()) {
+            auto linked = getLinkedView(false,ext);
+            if(linked)
+                return linked->replaceObject(oldValue, newValue);
+        }
+    }
+    return -1;
+}
 
-    auto prop = ext->getElementListProperty();
-    int idx=-1, idx2=-1;
-    prop->find(oldValue->getNameInDocument(), &idx);
-    if (idx < 0)
+bool ViewProviderLink::canReorderObject(App::DocumentObject* obj,
+                                       App::DocumentObject* before)
+{
+    auto ext = getLinkExtension();
+    if (!ext)
+        return false;
+    if (!ext->getLinkedObjectProperty())
+        return canReorderObjectInProperty(ext->getElementListProperty(), obj, before);
+    if(hasElements(ext))
+        return false;
+    if(!hasSubName && linkView->isLinked()) {
+        auto linked = getLinkedView(false,ext);
+        if(linked)
+            return linked->canReorderObject(obj, before);
+    }
+    return false;
+}
+
+bool ViewProviderLink::reorderObjects(const std::vector<App::DocumentObject*> &objs,
+                                    App::DocumentObject* before)
+{
+    auto ext = getLinkExtension();
+    if(!ext)
         return 0;
-    prop->find(newValue->getNameInDocument(), &idx2);
-    if (idx2 < 0)
-        return ViewProviderDocumentObject::replaceObject(oldValue, newValue);
-    auto children = prop->getValues();
-    children.erase(children.begin()+idx2);
-    children.insert(children.begin()+idx, newValue);
-    prop->setValues(children);
-    return 1;
+    if (ext->getLinkedObjectProperty()) {
+        if(hasElements(ext))
+            return -1;
+        if(!hasSubName && linkView->isLinked()) {
+            auto linked = getLinkedView(false,ext);
+            if(linked)
+                return linked->reorderObjects(objs, before);
+        }
+    }
+        
+    return reorderObjectsInProperty(ext->getElementListProperty(), objs, before);
 }
 
 static const QByteArray &_refreshIconTag()

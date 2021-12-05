@@ -820,6 +820,73 @@ bool ViewProvider::canReplaceObject(App::DocumentObject* oldValue, App::Document
     return res>=0;
 }
 
+bool ViewProvider::reorderObjects(const std::vector<App::DocumentObject*> &objs, App::DocumentObject* before)
+{
+    for (auto obj : objs) {
+        if(!canReorderObject(obj, before))
+            return false;
+    }
+
+    int res = -1;
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
+        res = ext->extensionReorderObjects(objs, before);
+        return res>=0;
+    });
+    return res>0;
+}
+
+bool ViewProvider::canReorderObject(App::DocumentObject* obj, App::DocumentObject* before)
+{
+    int res = -1;
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
+        res = ext->extensionCanReorderObject(obj, before);
+        return res>=0;
+    });
+
+    return res>=0;
+}
+
+bool ViewProvider::reorderObjectsInProperty(App::PropertyLinkList *prop,
+                                            const std::vector<App::DocumentObject*> &objs,
+                                            App::DocumentObject *before)
+{
+    int index;
+    if (!prop || !before || !prop->find(before->getNameInDocument(), &index))
+        return false;
+
+    auto value = prop->getValues();
+    for (auto obj : objs) {
+        if (!obj)
+            return false;
+        bool found = false;
+        // It's possible for the property list to contain multiple entries of
+        // the same object. Make sure to remove all of them.
+        for (int i=0; i<(int)value.size(); ++i) {
+            if (value[i] == obj) {
+                value[i] = nullptr;
+                if (i < index)
+                    --index;
+                found = true;
+            }
+        }
+        // Note, if there are duplicates in objs, this function will fail.
+        if (!found)
+            return false;
+    }
+    value.erase(std::remove(value.begin(), value.end(), nullptr), value.end());
+    value.insert(value.begin() + index, objs.begin(), objs.end());
+    prop->setValues(value);
+    return true;
+}
+
+bool ViewProvider::canReorderObjectInProperty(App::PropertyLinkList *prop,
+                                              App::DocumentObject *obj,
+                                              App::DocumentObject *before)
+{
+    return prop && obj && before && obj != before
+                && prop->find(obj->getNameInDocument()) && prop->find(before->getNameInDocument());
+}
+
 void ViewProvider::Restore(Base::XMLReader& reader) {
     // Because some PropertyLists type properties are stored in a separate file,
     // and is thus restored outside this function. So we rely on Gui::Document

@@ -876,11 +876,64 @@ int ViewProviderBody::replaceObject(App::DocumentObject *oldObj, App::DocumentOb
     auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
     if (!body || !canReplaceObject(oldObj, newObj))
         return 0;
+    App::AutoTransaction committer("Reorder body feature");
+    bool needCheckSiblings = false;
+    if (!_reorderObject(body, newObj, oldObj, true, needCheckSiblings))
+        return 0;
+    if (needCheckSiblings) {
+        checkingSiblings = false;
+        if (!checkSiblings())
+            buildExport();
+    }
+    Gui::Command::updateActive();
+    return 1;
+}
+
+bool ViewProviderBody::reorderObjects(const std::vector<App::DocumentObject *> &objs,
+                                      App::DocumentObject *before)
+{
+    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body)
+        return false;
+
+    App::DocumentObject *last = before;
+    for (auto obj : objs) {
+        if (!canReorderObject(obj, last))
+            return false;
+        last = obj;
+    }
+
+    App::AutoTransaction committer("Reorder body feature");
+    bool needCheckSiblings = false;
+
+    last = before;
+    for (auto obj : objs) {
+        if (!_reorderObject(body, obj, last, true, needCheckSiblings))
+            return false;
+        last = obj;
+    }
+    if (needCheckSiblings) {
+        checkingSiblings = false;
+        if (!checkSiblings())
+            buildExport();
+    }
+    Gui::Command::updateActive();
+    return 1;
+}
+
+bool ViewProviderBody::_reorderObject(PartDesign::Body *body,
+                                      App::DocumentObject *obj,
+                                      App::DocumentObject *before,
+                                      bool canSwap,
+                                      bool &needCheckSiblings)
+{
+    auto oldObj = before;
+    auto newObj = obj;
 
     int i, j;
     if (!body->Group.find(oldObj->getNameInDocument(), &i)
             || !body->Group.find(newObj->getNameInDocument(), &j))
-        return 0;
+        return false;
 
     auto secondFeat = Base::freecad_dynamic_cast<PartDesign::Feature>(oldObj);
     auto firstFeat = Base::freecad_dynamic_cast<PartDesign::Feature>(newObj);
@@ -900,13 +953,13 @@ int ViewProviderBody::replaceObject(App::DocumentObject *oldObj, App::DocumentOb
     }
 
     // first, second refers to the order after replaceObject() operation
-    if (i > j)
+    if (canSwap && i > j)
         std::swap(secondFeat, firstFeat);
-
-    App::AutoTransaction committer("Reorder body feature");
 
     auto objs = body->Group.getValues();
     objs.erase(objs.begin() + j);
+    if (!canSwap && j < i)
+        --i;
     objs.insert(objs.begin() + i, newObj);
 
     Base::StateLocker guard(checkingSiblings); // delay sibling check
@@ -937,14 +990,14 @@ int ViewProviderBody::replaceObject(App::DocumentObject *oldObj, App::DocumentOb
         if (body->Tip.getValue() == firstFeat)
             body->setTip(secondFeat);
 
-        checkingSiblings = false;
-
-        if (!checkSiblings())
-            buildExport();
+        needCheckSiblings = true;
     }
+    return true;
+}
 
-    Gui::Command::updateActive();
-    return 1;
+bool ViewProviderBody::canReorderObject(App::DocumentObject* obj, App::DocumentObject* before)
+{
+    return canReplaceObject(before, obj);
 }
 
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void) const {

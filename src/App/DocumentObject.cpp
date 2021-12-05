@@ -77,6 +77,10 @@ DocumentObject::DocumentObject(void)
     ADD_PROPERTY_TYPE(Label2,(""),"Base",Prop_None,"User description of the object (UTF8)");
     Label2.setStatus(App::Property::Output,true);
     ADD_PROPERTY_TYPE(ExpressionEngine,(),"Base",Prop_Hidden,"Property expressions");
+    ADD_PROPERTY_TYPE(TreeRank, (0), "Base", App::Prop_None, "Tree view root item ordering key");
+    TreeRank.setStatus(App::Property::Hidden, true);
+    TreeRank.setStatus(App::Property::NoRecompute, true);
+    TreeRank.setStatus(App::Property::Output, true);
 
     ADD_PROPERTY(Visibility, (true));
 

@@ -77,6 +77,12 @@ public:
     virtual int extensionCanReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) 
         { return -1; }
 
+    virtual int extensionReorderObjects(const std::vector<App::DocumentObject*> & /*obj*/, App::DocumentObject* /*before*/)
+        { return -1; }
+
+    virtual int extensionCanReorderObject(App::DocumentObject* /*obj*/, App::DocumentObject* /*before*/) 
+        { return -1; }
+
     /// Hides the view provider
     virtual void extensionHide(void) { }
     /// Shows the view provider

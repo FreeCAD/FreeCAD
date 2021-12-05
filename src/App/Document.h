@@ -573,6 +573,12 @@ public:
     long getLastObjectId() const;
     void setLastObjectId(long id); 
 
+    /// Return a revision number that will change on object addition or removal
+    long getRevision() const;
+
+    std::pair<long, long> treeRanks() const;
+    void reorderObjects(const std::vector<App::DocumentObject *> &objs, App::DocumentObject *before);
+
     void afterImport(App::DocumentObject *obj);
 
     friend class Application;

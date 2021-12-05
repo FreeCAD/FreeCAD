@@ -45,6 +45,11 @@ namespace Data
 struct HistoryItem;
 }
 
+namespace App
+{
+class PropertyLinkList;
+}
+
 namespace Part
 {
 
@@ -74,6 +79,8 @@ public:
     virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
 
     virtual PyObject* getPyObject(void) override;
+
+    virtual App::PropertyLinkList *getShapeLinksProperty() {return nullptr;}
 
     static std::list<Data::HistoryItem> getElementHistory(App::DocumentObject *obj,
             const char *name, bool recursive=true, bool sameType=false);
