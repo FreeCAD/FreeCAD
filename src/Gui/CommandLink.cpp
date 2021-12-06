@@ -47,6 +47,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
 #include <App/AutoTransaction.h>
 #include <App/Part.h>
@@ -770,17 +771,36 @@ bool StdCmdLinkImport::isActive() {
     return true;
 }
 
+static void newImportGroup(std::vector<App::DocumentObject*> &&objs)
+{
+    for (auto it = objs.begin(); it != objs.end();) {
+        if (App::GroupExtension::getAnyGroupOfObject(*it))
+            it = objs.erase(it);
+        else
+            ++it;
+    }
+
+    if (objs.empty())
+        return;
+
+    auto doc = App::GetApplication().getActiveDocument();
+    auto grp = static_cast<App::DocumentObjectGroup*>(doc->addObject("App::DocumentObjectGroup", "Imports"));
+    grp->addObjects(objs);
+    grp->Visibility.setValue(false);
+}
+
 void StdCmdLinkImport::activated(int) {
     App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Import links"));
     try {
         WaitCursor wc;
         wc.setIgnoreEvents(WaitCursor::NoEvents);
+        std::vector<App::DocumentObject *> imports;
         for(auto &v : getLinkImportSelections()) {
             auto doc = v.first;
-            // TODO: Is it possible to do this using interpreter?
-            for(auto obj : doc->importLinks(v.second))
-                obj->Visibility.setValue(false);
+            auto objs = doc->importLinks(v.second);
+            imports.insert(imports.end(), objs.begin(), objs.end());
         }
+        newImportGroup(std::move(imports));
 
         updateActive();
 
@@ -819,10 +839,8 @@ void StdCmdLinkImportAll::activated(int) {
         WaitCursor wc;
         wc.setIgnoreEvents(WaitCursor::NoEvents);
         auto doc = App::GetApplication().getActiveDocument();
-        if(doc) {
-            for(auto obj : doc->importLinks())
-                obj->Visibility.setValue(false);
-        }
+        if(doc)
+            newImportGroup(doc->importLinks());
         updateActive();
     } catch (const Base::Exception& e) {
         committer.close(true);
