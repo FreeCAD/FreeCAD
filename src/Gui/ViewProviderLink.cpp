@@ -3944,7 +3944,7 @@ int ViewProviderLink::replaceObject(App::DocumentObject* oldValue,
                                     App::DocumentObject* newValue)
 {
     auto ext = getLinkExtension();
-    if(!ext)
+    if(!ext || !oldValue || !newValue)
         return 0;
     if (ext->getLinkedObjectProperty()) {
         if(hasElements(ext))
@@ -3954,8 +3954,30 @@ int ViewProviderLink::replaceObject(App::DocumentObject* oldValue,
             if(linked)
                 return linked->replaceObject(oldValue, newValue);
         }
+        return -1;
     }
-    return -1;
+    auto prop = ext->getElementListProperty();
+    if (!prop)
+        return -1;
+    int idx=-1, idx2=-1;
+    prop->find(oldValue->getNameInDocument(), &idx);
+    if (idx < 0)
+        return 0;
+    prop->find(newValue->getNameInDocument(), &idx2);
+    if (idx2 < 0) {
+        if (newValue->getDocument() != getDocument()->getDocument()) {
+            auto link = static_cast<App::Link*>(
+                    getDocument()->getDocument()->addObject("App::Link", "Link"));
+            link->LinkedObject.setValue(newValue);
+            newValue = link;
+        }
+        return ViewProviderDocumentObject::replaceObject(oldValue, newValue);
+    }
+    auto children = prop->getValues();
+    children.erase(children.begin()+idx2);
+    children.insert(children.begin()+idx, newValue);
+    prop->setValues(children);
+    return 1;
 }
 
 bool ViewProviderLink::canReorderObject(App::DocumentObject* obj,
