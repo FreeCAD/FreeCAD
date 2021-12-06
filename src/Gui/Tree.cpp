@@ -2532,8 +2532,6 @@ void TreeWidget::onToolTipTimer()
     else if (!_DraggingActive) {
         if (Obj->isError())
             info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
-        else if (tag == Gui::treeVisibilityIconTag())
-            info = QObject::tr("Click to toggle visibility.\nAlt + click to toggle show on top.");
         else {
             info = item->object()->getToolTip(tag);
             if (info.isEmpty() && !Obj->Label2.getStrValue().empty())
@@ -2728,17 +2726,7 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
     auto oitem = pimpl->itemHitTest(event->pos(), &tag);
     if (oitem) {
         setCurrentItem(oitem, 0, QItemSelectionModel::NoUpdate);
-        if (tag == Gui::treeVisibilityIconTag()) {
-            if (event->button() == Qt::LeftButton) {
-                if (event->modifiers() & Qt::AltModifier)
-                    pimpl->toggleItemShowOnTop(oitem);
-                else
-                    pimpl->toggleItemVisibility(oitem);
-                pimpl->skipMouseRelease = true;
-                event->setAccepted(true);
-                return;
-            }
-        } else if (event->modifiers() & Qt::AltModifier) {
+        if ((event->modifiers() & Qt::AltModifier) || tag == treeVisibilityIconTag()) {
             ViewProviderDocumentObject* vp = oitem->object();
             auto editDoc = Application::Instance->editDocument();
             App::AutoTransaction committer("Item clicked", true);
@@ -2754,10 +2742,24 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
                 }
             } catch (Base::Exception &e) {
                 e.ReportException();
+                return;
             } catch (std::exception &e) {
                 FC_ERR("C++ exception: " << e.what());
+                return;
             } catch (...) {
                 FC_ERR("Unknown exception");
+                return;
+            }
+        }
+        if (tag == Gui::treeVisibilityIconTag()) {
+            if (event->button() == Qt::LeftButton) {
+                if (event->modifiers() & Qt::AltModifier)
+                    pimpl->toggleItemShowOnTop(oitem);
+                else
+                    pimpl->toggleItemVisibility(oitem);
+                pimpl->skipMouseRelease = true;
+                event->setAccepted(true);
+                return;
             }
         }
     }

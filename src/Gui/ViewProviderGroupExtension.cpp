@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMouseEvent>
 #endif
 
 //#include "ViewProviderGroupExtensionPy.h"
@@ -168,6 +169,27 @@ int ViewProviderGroupExtension::extensionReorderObjects(const std::vector<App::D
 {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     return ViewProvider::reorderObjectsInProperty(&group->Group, objs, before) ? 1 : 0;
+}
+
+bool ViewProviderGroupExtension::extensionGetToolTip(const QByteArray &tag, QString &tooltip) const
+{
+    if (tag == Gui::treeVisibilityIconTag())
+        tooltip += QObject::tr("\nCtrl + click to toggle all children visibility");
+    return false;
+}
+
+bool ViewProviderGroupExtension::extensionIconMouseEvent(QMouseEvent *event, const QByteArray &tag)
+{
+    if (tag == Gui::treeVisibilityIconTag()) {
+        if (event->button() == Qt::LeftButton && event->modifiers() == Qt::ControlModifier) {
+            if (auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer())) {
+                App::GroupExtension::ToggleNestedVisibility guard;
+                vp->Visibility.setValue(!vp->Visibility.getValue());
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 namespace Gui {

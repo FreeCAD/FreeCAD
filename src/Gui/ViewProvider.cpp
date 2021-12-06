@@ -1262,9 +1262,16 @@ void ViewProvider::setLinkVisible(bool visible) {
 QString ViewProvider::getToolTip(const QByteArray &tag) const
 {
     QString tooltip;
+    if (tag == Gui::treeVisibilityIconTag()) {
+        // Default function implemented in tree view
+        tooltip = QObject::tr("Click to toggle visibility.\n"
+                              "Alt + click to toggle show on top.");
+    }
+
     foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
         return ext->extensionGetToolTip(tag, tooltip);
     });
+
     return tooltip;
 }
 
@@ -1274,5 +1281,5 @@ bool ViewProvider::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
     foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
         return (res = ext->extensionIconMouseEvent(ev, tag));
     });
-    return false;
+    return res;
 }

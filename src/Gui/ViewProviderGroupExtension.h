@@ -54,6 +54,9 @@ public:
 
     virtual int extensionReorderObjects(const std::vector<App::DocumentObject*> &objs, App::DocumentObject* before) override;
     virtual int extensionCanReorderObject(App::DocumentObject* obj, App::DocumentObject* before) override;
+
+    virtual bool extensionGetToolTip(const QByteArray &tag, QString &tooltip) const override;
+    virtual bool extensionIconMouseEvent(QMouseEvent *, const QByteArray &) override;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension> ViewProviderGroupExtensionPython;
