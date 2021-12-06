@@ -1404,10 +1404,11 @@ void LinkBaseExtension::onExtendedUnsetupObject() {
 DocumentObject *LinkBaseExtension::getTrueLinkedObject(
         bool recurse, Base::Matrix4D *mat, int depth, bool noElement) const
 {
-    if(noElement && extensionIsDerivedFrom(LinkElement::getExtensionClassTypeId())
-            && !static_cast<const LinkElement*>(this)->canDelete())
-    {
-        return 0;
+    if (noElement) {
+        if (auto linkElement = Base::freecad_dynamic_cast<LinkElement>(getContainer())) {
+            if (!linkElement->canDelete())
+                return 0;
+        }
     }
 
     auto ret = getLink(depth);
