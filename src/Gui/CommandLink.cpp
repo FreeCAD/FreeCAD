@@ -670,7 +670,7 @@ static bool linkConvertible(bool unlink) {
         auto obj = sel.vp->getObject();
         if(unlink) {
             auto linked = obj->getLinkedObject(false);
-            if(!linked || linked == obj)
+            if(!linked || linked == obj || linked->getDocument() != obj->getDocument())
                 return false;
         }
         ++count;
