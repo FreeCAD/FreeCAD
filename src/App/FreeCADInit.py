@@ -133,6 +133,9 @@ def InitApplications():
 	if os.path.isdir(HomeMod):
 		HomeMods = os.listdir(HomeMod)
 		for i in HomeMods: ModDict[i.lower()] = os.path.join(HomeMod,i)
+	elif os.path.isdir(os.path.join(os.path.expanduser("~"),".FreeCAD","Mod")):
+		# Check if old location exists
+		Wrn ("User path has changed to " + FreeCAD.getUserAppDataDir() + ". Please move user modules and macros\n")
 	# Search for additional modules in the macro directory
 	if os.path.isdir(MacroMod):
 		MacroMods = os.listdir(MacroMod)

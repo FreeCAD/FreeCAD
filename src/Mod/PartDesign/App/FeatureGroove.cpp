@@ -208,7 +208,7 @@ void Groove::updateAxis(void)
     const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
     Base::Vector3d base;
     Base::Vector3d dir;
-    getAxis(pcReferenceAxis, subReferenceAxis, base, dir);
+    getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotParallelWithNormal);
 
     if (dir.Length() > Precision::Confusion()) {
         Base.setValue(base.x,base.y,base.z);

@@ -163,6 +163,9 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
     std::string prefix = "BLOCKS ";
     prefix += name;
     prefix += " ";
+    auto checkScale = [=](double v) {
+        return v != 0.0 ? v : 1.0;
+    };
     for(std::map<std::string,std::vector<Part::TopoShape*> > ::const_iterator i = layers.begin(); i != layers.end(); ++i) {
         std::string k = i->first;
         if(k.substr(0, prefix.size()) == prefix) {
@@ -178,7 +181,7 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
             if (!comp.IsNull()) {
                 Part::TopoShape* pcomp = new Part::TopoShape(comp);
                 Base::Matrix4D mat;
-                mat.scale(scale[0],scale[1],scale[2]);
+                mat.scale(checkScale(scale[0]),checkScale(scale[1]),checkScale(scale[2]));
                 mat.rotZ(rotation);
                 mat.move(point[0]*optionScaling,point[1]*optionScaling,point[2]*optionScaling);
                 pcomp->transformShape(mat,true);

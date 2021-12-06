@@ -47,7 +47,6 @@
 #include <math.h>
 
 #include "MDIViewPage.h"
-#include "MDIViewPagePy.h"
 
 #include <Base/Stream.h>
 #include <Base/Tools.h>
@@ -71,6 +70,7 @@
 
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawView.h>
@@ -1373,6 +1373,87 @@ MDIViewPage *MDIViewPage::getFromScene(const QGraphicsScene *scene)
     }
 
     return nullptr;
+}
+
+// ----------------------------------------------------------------------------
+
+void MDIViewPagePy::init_type()
+{
+    behaviors().name("MDIViewPagePy");
+    behaviors().doc("Python binding class for the MDI view page class");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+
+    add_varargs_method("getPage", &MDIViewPagePy::getPage, "getPage() returns the page being displayed");
+    add_varargs_method("cast_to_base", &MDIViewPagePy::cast_to_base, "cast_to_base() cast to MDIView class");
+    behaviors().readyType();
+}
+
+MDIViewPagePy::MDIViewPagePy(MDIViewPage *mdi)
+  : base(mdi)
+{
+}
+
+MDIViewPagePy::~MDIViewPagePy()
+{
+}
+
+Py::Object MDIViewPagePy::repr()
+{
+    std::ostringstream s_out;
+    if (!getMDIViewPagePtr())
+        throw Py::RuntimeError("Cannot print representation of deleted object");
+    s_out << "MDI view page";
+    return Py::String(s_out.str());
+}
+
+// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// a trick is to use MDIViewPy as class member and override getattr() to
+// join the attributes of both classes. This way all methods of MDIViewPy
+// appear for SheetViewPy, too.
+Py::Object MDIViewPagePy::getattr(const char * attr)
+{
+    if (!getMDIViewPagePtr()) {
+        std::ostringstream s_out;
+        s_out << "Cannot access attribute '" << attr << "' of deleted object";
+        throw Py::RuntimeError(s_out.str());
+    }
+    std::string name( attr );
+    if (name == "__dict__" || name == "__class__") {
+        Py::Dict dict_self(BaseType::getattr("__dict__"));
+        Py::Dict dict_base(base.getattr("__dict__"));
+        for (auto it : dict_base) {
+            dict_self.setItem(it.first, it.second);
+        }
+        return dict_self;
+    }
+
+    try {
+        return BaseType::getattr(attr);
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+        return base.getattr(attr);
+    }
+}
+
+MDIViewPage* MDIViewPagePy::getMDIViewPagePtr()
+{
+    return qobject_cast<MDIViewPage*>(base.getMDIViewPtr());
+}
+
+Py::Object MDIViewPagePy::getPage(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::asObject(new TechDraw::DrawPagePy(getMDIViewPagePtr()->getPage()));
+}
+
+Py::Object MDIViewPagePy::cast_to_base(const Py::Tuple&)
+{
+    return Gui::MDIViewPy::create(base.getMDIViewPtr());
 }
 
 #include <Mod/TechDraw/Gui/moc_MDIViewPage.cpp>

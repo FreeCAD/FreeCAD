@@ -681,7 +681,7 @@ void DrawingView::viewAll()
 
 PyObject* DrawingView::getPyObject()
 {
-    Py_Return;
+    return Gui::MDIView::getPyObject();
 }
 
 #include "moc_DrawingView.cpp"

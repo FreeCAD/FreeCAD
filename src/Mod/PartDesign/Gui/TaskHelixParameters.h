@@ -49,13 +49,14 @@ class TaskHelixParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskHelixParameters(ViewProviderHelix *HelixView,QWidget *parent = 0);
+    TaskHelixParameters(ViewProviderHelix* HelixView, QWidget* parent = 0);
     ~TaskHelixParameters();
 
     virtual void apply() override;
 
     static bool showPreview(PartDesign::Helix*);
 
+private:
     /**
      * @brief fillAxisCombo fills the combo and selects the item according to
      * current value of revolution object's axis reference.
@@ -64,7 +65,10 @@ public:
      * list (if necessary), and selected. If the list is empty, it will be refilled anyway.
      */
     void fillAxisCombo(bool forceRefill = false);
-    void addAxisToCombo(App::DocumentObject *linkObj, std::string linkSubname, QString itemText);
+    void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText);
+    void addSketchAxes();
+    void addPartAxes();
+    int addCurrentLink();
 
 private Q_SLOTS:
     void onPitchChanged(double);
@@ -81,9 +85,9 @@ private Q_SLOTS:
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     bool updateView() const;
-    void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
+    void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
     void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
 
@@ -95,13 +99,20 @@ protected:
     App::PropertyBool*        propReversed;
     App::PropertyLinkSub*     propReferenceAxis;
     App::PropertyAngle*       propAngle;
-    App::PropertyLength*      propGrowth;
+    App::PropertyDistance*    propGrowth;
     App::PropertyEnumeration* propMode;
     App::PropertyBool*        propOutside;
 
 
 private:
+    void initializeHelix();
+    void connectSlots();
     void updateUI();
+    void updateStatus();
+    void assignProperties();
+    void setValuesFromProperties();
+    void bindProperties();
+    void showCoordinateAxes();
 
 private:
     QWidget* proxy;
@@ -124,7 +135,7 @@ class TaskDlgHelixParameters : public TaskDlgSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskDlgHelixParameters(ViewProviderHelix *HelixView);
+    TaskDlgHelixParameters(ViewProviderHelix* HelixView);
 
     ViewProviderHelix* getHelixView() const
     { return static_cast<ViewProviderHelix*>(vp); }

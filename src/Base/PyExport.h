@@ -79,7 +79,7 @@ class PyObjectBase;
  *  @remark One big consequence of this specification is that the programmer must know whether the Python interpreter
  *  gets the Python object or not. If the interpreter gets the object then it decrements the counter later on when
  *  the internal variable is freed. In case the interpreter doesn't get this object then the programmer must do the
- *  decrement on his own.
+ *  decrement on their own.
  *
  *  @note To not to undermine this specification the programmer must make sure to get the Python object always via
  *  GetPyObject().

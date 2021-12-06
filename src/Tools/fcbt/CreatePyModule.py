@@ -115,6 +115,7 @@ def validateApp(AppName):
 		sys.exit()
 
 sys.stdout.write("Please enter a name for your application:")
+sys.stdout.flush()
 AppName = sys.stdin.readline()[:-1]
 validateApp(AppName)
 createApp(AppName)

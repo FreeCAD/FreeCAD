@@ -87,6 +87,7 @@
 #include "SoFCDB.h"
 #include "PythonConsolePy.h"
 #include "PythonDebugger.h"
+#include "MainWindowPy.h"
 #include "MDIViewPy.h"
 #include "View3DPy.h"
 #include "DlgOnlineHelpImp.h"
@@ -99,6 +100,7 @@
 #include "ExpressionBindingPy.h"
 #include "ViewProviderLinkPy.h"
 
+#include "EditorView.h"
 #include "TextDocumentEditorView.h"
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
@@ -137,6 +139,7 @@
 #include <Gui/Quarter/Quarter.h>
 #include "View3DViewerPy.h"
 #include <Gui/GuiInitScript.h>
+#include <LibraryVersions.h>
 
 
 using namespace Gui;
@@ -450,6 +453,8 @@ Application::Application(bool GUIenabled)
         Py_DECREF(descr);
     }
 
+    App::Application::Config()["COIN_VERSION"] = COIN_VERSION;
+
     // Python console binding
     PythonDebugModule           ::init_module();
     PythonStdout                ::init_type();
@@ -457,6 +462,7 @@ Application::Application(bool GUIenabled)
     OutputStdout                ::init_type();
     OutputStderr                ::init_type();
     PythonStdin                 ::init_type();
+    MainWindowPy                ::init_type();
     MDIViewPy                   ::init_type();
     View3DInventorPy            ::init_type();
     View3DInventorViewerPy      ::init_type();
@@ -1782,6 +1788,8 @@ void Application::initTypes(void)
     Gui::AbstractSplitView                      ::init();
     Gui::SplitView3DInventor                    ::init();
     Gui::TextDocumentEditorView                 ::init();
+    Gui::EditorView                             ::init();
+    Gui::PythonEditorView                       ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtension                  ::init();

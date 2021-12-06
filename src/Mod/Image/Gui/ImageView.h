@@ -40,6 +40,8 @@ class ImageGuiExport ImageView : public Gui::MDIView
 {
     Q_OBJECT
 
+    TYPESYSTEM_HEADER();
+
 public:
     ImageView(QWidget* parent);
     virtual ~ImageView();

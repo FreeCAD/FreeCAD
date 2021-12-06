@@ -25,6 +25,8 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <limits>
+# include <QApplication>
+# include <QVBoxLayout>
 #endif
 
 #ifdef FC_OS_WIN32

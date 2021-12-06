@@ -147,6 +147,8 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskFeatureParameters.h
     TaskSketchBasedParameters.cpp
     TaskSketchBasedParameters.h
+    TaskExtrudeParameters.cpp
+    TaskExtrudeParameters.h
     TaskPadParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
@@ -224,6 +226,7 @@ SET(PartDesignGuiModule_SRCS
     Command.cpp
     CommandPrimitive.cpp
     CommandBody.cpp
+    EnumFlags.h
     Resources/PartDesign.qrc
     PreCompiled.cpp
     PreCompiled.h

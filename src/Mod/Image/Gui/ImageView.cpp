@@ -36,6 +36,8 @@ using namespace ImageGui;
 
 /* TRANSLATOR ImageGui::ImageView */
 
+TYPESYSTEM_SOURCE_ABSTRACT(ImageGui::ImageView, Gui::MDIView)
+
 ImageView::ImageView(QWidget* parent)
   : MDIView(0, parent), _ignoreCloseEvent(false)
 {

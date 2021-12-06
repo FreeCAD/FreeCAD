@@ -25,33 +25,27 @@
 #define GUI_ReferenceSelection_H
 
 #include <Gui/SelectionFilter.h>
+#include <Mod/PartDesign/Gui/EnumFlags.h>
 
+namespace App {
+class OriginGroupExtension;
+}
+namespace PartDesign {
+class Body;
+}
 namespace PartDesignGui {
 
 class ReferenceSelection : public Gui::SelectionFilterGate
 {
-    // TODO Replace this set of bools with bitwice enum (2015-09-04, Fat-Zer)
     const App::DocumentObject* support;
-    // If set to true, allow picking edges or planes or both
-    bool edge, plane;
-    // If set to true, allow only linear edges and planar faces
-    bool planar;
-    // If set to true, allow picking datum points
-    bool point;
-    // If set to true, allow picking objects from another body in the same part
-    bool allowOtherBody;
-    // Allow whole object selection
-    bool whole;
-    // Allow picking circular edges (incl arcs)
-    bool circle;
+    AllowSelectionFlags type;
 
 public:
     ReferenceSelection(const App::DocumentObject* support_,
-                       const bool edge_, const bool plane_, const bool planar_,
-                       const bool point_ = false, bool whole_ = false, bool circle_ = false)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0),
-          support(support_), edge(edge_), plane(plane_),
-          planar(planar_), point(point_), allowOtherBody(true), whole(whole_), circle(circle_)
+                       AllowSelectionFlags type)
+        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
+        , support(support_)
+        , type(type)
     {
     }
     /**
@@ -59,6 +53,16 @@ public:
       * Optionally restrict the selection to planar edges/faces
       */
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
+
+private:
+    PartDesign::Body* getBody() const;
+    App::OriginGroupExtension* getOriginGroupExtension(PartDesign::Body *body) const;
+    bool allowOrigin(PartDesign::Body *body, App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const;
+    bool allowDatum(PartDesign::Body *body, App::DocumentObject* pObj) const;
+    bool allowPartFeature(App::DocumentObject* pObj, const char* sSubName) const;
+    bool isEdge(App::DocumentObject* pObj, const char* sSubName) const;
+    bool isFace(App::DocumentObject* pObj, const char* sSubName) const;
+    bool isCircle(App::DocumentObject* pObj, const char* sSubName) const;
 };
 
 class NoDependentsSelection : public Gui::SelectionFilterGate

@@ -32,10 +32,10 @@ class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderMirrored);
 public:
-    ViewProviderMirrored()
-        { featureName = std::string("Mirrored");
-	   sPixmap = "PartDesign_Mirrored.svg";
-	}
+    ViewProviderMirrored() {
+        featureName = std::string("Mirrored");
+        sPixmap = "PartDesign_Mirrored.svg";
+    }
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view

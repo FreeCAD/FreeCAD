@@ -56,6 +56,7 @@
 #include "DlgExpressionInput.h"
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
+#include "ui_DlgTreeWidget.h"
 
 using namespace Gui;
 using namespace App;
@@ -526,8 +527,9 @@ void ClearLineEdit::updateClearButton(const QString& text)
  */
 CheckListDialog::CheckListDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
+    , ui(new Ui_DlgTreeWidget)
 {
-    ui.setupUi(this);
+    ui->setupUi(this);
 }
 
 /**
@@ -544,7 +546,7 @@ CheckListDialog::~CheckListDialog()
 void CheckListDialog::setCheckableItems( const QStringList& items )
 {
     for ( QStringList::ConstIterator it = items.begin(); it != items.end(); ++it ) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui.treeWidget);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
         item->setText(0, *it);
         item->setCheckState(0, Qt::Unchecked);
     }
@@ -557,7 +559,7 @@ void CheckListDialog::setCheckableItems( const QStringList& items )
 void CheckListDialog::setCheckableItems( const QList<CheckListItem>& items )
 {
     for ( QList<CheckListItem>::ConstIterator it = items.begin(); it != items.end(); ++it ) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui.treeWidget);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
         item->setText(0, (*it).first);
         item->setCheckState(0, ( (*it).second ? Qt::Checked : Qt::Unchecked));
     }
@@ -576,7 +578,7 @@ QStringList CheckListDialog::getCheckedItems() const
  */
 void CheckListDialog::accept ()
 {
-    QTreeWidgetItemIterator it(ui.treeWidget, QTreeWidgetItemIterator::Checked);
+    QTreeWidgetItemIterator it(ui->treeWidget, QTreeWidgetItemIterator::Checked);
     while (*it) {
         checked.push_back((*it)->text(0));
         ++it;
@@ -1661,5 +1663,35 @@ void ExpLineEdit::keyPressEvent(QKeyEvent *event)
     if (!hasExpression())
         QLineEdit::keyPressEvent(event);
 }
+
+// --------------------------------------------------------------------
+
+ButtonGroup::ButtonGroup(QObject *parent)
+  : QButtonGroup(parent)
+  , _exclusive(true)
+{
+    QButtonGroup::setExclusive(false);
+
+    connect(this, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked),
+            [=](QAbstractButton *button) {
+        if (exclusive()) {
+            for (auto btn : buttons()) {
+                if (btn && btn != button && btn->isCheckable())
+                    btn->setChecked(false);
+            }
+        }
+    });
+}
+
+void ButtonGroup::setExclusive(bool on)
+{
+    _exclusive = on;
+}
+
+bool ButtonGroup::exclusive() const
+{
+    return _exclusive;
+}
+
 
 #include "moc_Widgets.cpp"

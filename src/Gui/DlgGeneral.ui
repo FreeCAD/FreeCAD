@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>425</width>
-    <height>578</height>
+    <height>598</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -89,13 +89,29 @@
            </item>
           </layout>
          </item>
+         <item row="1" column="0">
+          <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
+           <property name="toolTip">
+            <string>If enabled, numerical keypad decimal separator will be substituted with locale separator</string>
+           </property>
+           <property name="text">
+            <string>Substitute decimal separator (needs restart)</string>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>SubstituteDecimalSeparator</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>General</cstring>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
-         <string>Preference Packs</string>
+         <string>Preference packs</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
@@ -577,13 +593,13 @@ horizontal space in Python console</string>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

@@ -53,6 +53,14 @@ void MDIViewPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
+    behaviors().set_tp_new(extension_object_new);
+
+    add_varargs_method("printView",&MDIViewPy::printView,"printView()");
+    add_varargs_method("printPdf",&MDIViewPy::printPdf,"printPdf()");
+    add_varargs_method("printPreview",&MDIViewPy::printPreview,"printPreview()");
+
+    add_varargs_method("undoActions",&MDIViewPy::undoActions,"undoActions()");
+    add_varargs_method("redoActions",&MDIViewPy::redoActions,"redoActions()");
 
     add_varargs_method("message",&MDIViewPy::sendMessage,"deprecated: use sendMessage");
     add_varargs_method("sendMessage",&MDIViewPy::sendMessage,"sendMessage(str)");
@@ -60,6 +68,26 @@ void MDIViewPy::init_type()
     add_varargs_method("fitAll",&MDIViewPy::fitAll,"fitAll()");
     add_varargs_method("setActiveObject", &MDIViewPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
     add_varargs_method("getActiveObject", &MDIViewPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
+    add_varargs_method("cast_to_base", &MDIViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
+}
+
+PyObject *MDIViewPy::extension_object_new(struct _typeobject * /*type*/, PyObject * /*args*/, PyObject * /*kwds*/)
+{
+    return new MDIViewPy(nullptr);
+}
+
+Py::Object MDIViewPy::type()
+{
+    return Py::Object( reinterpret_cast<PyObject *>( behaviors().type_object() ) );
+}
+
+Py::ExtensionObject<MDIViewPy> MDIViewPy::create(MDIView *mdi)
+{
+    Py::Callable class_type(type());
+    Py::Tuple arg;
+    auto inst = Py::ExtensionObject<MDIViewPy>(class_type.apply(arg, Py::Dict()));
+    inst.extensionObject()->_view = mdi;
+    return inst;
 }
 
 MDIViewPy::MDIViewPy(MDIView *mdi)
@@ -79,8 +107,71 @@ Py::Object MDIViewPy::repr()
     std::ostringstream s_out;
     if (!_view)
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << "MDIView";
+    s_out << _view->getTypeId().getName();
     return Py::String(s_out.str());
+}
+
+Py::Object MDIViewPy::printView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    if (_view)
+        _view->print();
+
+    return Py::None();
+}
+
+Py::Object MDIViewPy::printPdf(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    if (_view)
+        _view->printPdf();
+
+    return Py::None();
+}
+
+Py::Object MDIViewPy::printPreview(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    if (_view)
+        _view->printPreview();
+
+    return Py::None();
+}
+
+Py::Object MDIViewPy::undoActions(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    Py::List list;
+    if (_view) {
+        QStringList undo = _view->undoActions();
+        for (const auto& it : undo)
+            list.append(Py::String(it.toStdString()));
+    }
+
+    return list;
+}
+
+Py::Object MDIViewPy::redoActions(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    Py::List list;
+    if (_view) {
+        QStringList redo = _view->redoActions();
+        for (const auto& it : redo)
+            list.append(Py::String(it.toStdString()));
+    }
+
+    return list;
 }
 
 Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
@@ -197,4 +288,9 @@ Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
             Py::asObject(obj->getPyObject()),
             Py::asObject(parent->getPyObject()),
             Py::String(subname.c_str()));
+}
+
+Py::Object MDIViewPy::cast_to_base(const Py::Tuple&)
+{
+    return Py::Object(this);
 }

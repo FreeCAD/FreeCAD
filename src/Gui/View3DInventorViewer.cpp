@@ -150,6 +150,8 @@
 
 #include "ViewProviderLink.h"
 
+#include "CornerCrossLetters.h"
+
 FC_LOG_LEVEL_INIT("3DViewer",true,true)
 
 //#define FC_LOGGING_CB
@@ -3266,13 +3268,6 @@ void View3DInventorViewer::setViewing(SbBool enable)
     inherited::setViewing(enable);
 }
 
-//****************************************************************************
-
-// Bitmap representations of an "X", a "Y" and a "Z" for the axis cross.
-static GLubyte xbmp[] = { 0x11,0x11,0x0a,0x04,0x0a,0x11,0x11 };
-static GLubyte ybmp[] = { 0x04,0x04,0x04,0x04,0x0a,0x11,0x11 };
-static GLubyte zbmp[] = { 0x1f,0x10,0x08,0x04,0x02,0x01,0x1f };
-
 void View3DInventorViewer::drawAxisCross(void)
 {
     // FIXME: convert this to a superimposition scenegraph instead of
@@ -3429,12 +3424,15 @@ void View3DInventorViewer::drawAxisCross(void)
     else
         glColor3fv(SbVec3f(0.0f, 0.0f, 0.0f).getValue());
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glPixelZoom((float)axiscrossSize/30, (float)axiscrossSize/30); // 30 = 3 (character pixmap ratio) * 10 (default axiscrossSize)
     glRasterPos2d(xpos[0], xpos[1]);
-    glBitmap(8, 7, 0, 0, 0, 0, xbmp);
+    glDrawPixels(XPM_WIDTH, XPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, XPM_PIXEL_DATA);
     glRasterPos2d(ypos[0], ypos[1]);
-    glBitmap(8, 7, 0, 0, 0, 0, ybmp);
+    glDrawPixels(YPM_WIDTH, YPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, YPM_PIXEL_DATA);
     glRasterPos2d(zpos[0], zpos[1]);
-    glBitmap(8, 7, 0, 0, 0, 0, zbmp);
+    glDrawPixels(ZPM_WIDTH, ZPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, ZPM_PIXEL_DATA);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, unpack);
     glPopMatrix();
@@ -3453,11 +3451,33 @@ void View3DInventorViewer::drawAxisCross(void)
 // Draw an arrow for the axis representation directly through OpenGL.
 void View3DInventorViewer::drawArrow(void)
 {
-    glBegin(GL_LINES);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1.0f, 0.0f, 0.0f);
-    glEnd();
     glDisable(GL_CULL_FACE);
+    glBegin(GL_QUADS);
+    glVertex3f(0.0f, -0.02f, 0.02f);
+    glVertex3f(0.0f, 0.02f, 0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, 0.02f, 0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, -0.02f, 0.02f);
+
+    glVertex3f(0.0f, -0.02f, -0.02f);
+    glVertex3f(0.0f, 0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, 0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, -0.02f, -0.02f);
+
+    glVertex3f(0.0f, -0.02f, 0.02f);
+    glVertex3f(0.0f, -0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, -0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, -0.02f, 0.02f);
+
+    glVertex3f(0.0f, 0.02f, 0.02f);
+    glVertex3f(0.0f, 0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, 0.02f, -0.02f);
+    glVertex3f(1.0f - 1.0f / 3.0f, 0.02f, 0.02f);
+
+    glVertex3f(0.0f, 0.02f, 0.02f);
+    glVertex3f(0.0f, 0.02f, -0.02f);
+    glVertex3f(0.0f, -0.02f, -0.02f);
+    glVertex3f(0.0f, -0.02f, 0.02f);
+    glEnd();
     glBegin(GL_TRIANGLES);
     glVertex3f(1.0f, 0.0f, 0.0f);
     glVertex3f(1.0f - 1.0f / 3.0f, +0.5f / 4.0f, 0.0f);

@@ -47,7 +47,7 @@ public:
     App::PropertyVector Binormal;
     App::PropertyEnumeration Transition;
     App::PropertyEnumeration Transformation;
-    App::PropertyXLinkSubList Sections;
+    App::PropertyLinkSubList Sections;
 
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;

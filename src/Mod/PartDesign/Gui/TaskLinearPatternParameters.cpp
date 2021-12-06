@@ -333,7 +333,7 @@ void TaskLinearPatternParameters::onDirectionChanged(int /*num*/)
             showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
-            addReferenceSelectionGate(true, true);
+            addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR);
         } else {
             exitSelectionMode();
             pcLinearPattern->Direction.Paste(dirLinks.getCurrentLink());

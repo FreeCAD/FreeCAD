@@ -83,6 +83,8 @@ public:
 
 /* TRANSLATOR Gui::EditorView */
 
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::EditorView, Gui::MDIView)
+
 /**
  *  Constructs a EditorView which is a child of 'parent', with the
  *  name 'name'.
@@ -114,7 +116,8 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
 
     // Create the layout containing the workspace and a tab bar
     QFrame* hbox = new QFrame(this);
-    hbox->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    hbox->setFrameShape(QFrame::StyledPanel);
+    hbox->setFrameShadow(QFrame::Sunken);
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setMargin(1);
     layout->addWidget(d->textEdit);
@@ -586,6 +589,8 @@ void EditorView::focusInEvent (QFocusEvent *)
 
 // ---------------------------------------------------------
 
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonEditorView, Gui::EditorView)
+
 PythonEditorView::PythonEditorView(PythonEditor* editor, QWidget* parent)
   : EditorView(editor, parent), _pye(editor)
 {
@@ -816,9 +821,16 @@ void SearchBar::findText(bool skip, bool next, const QString& str)
 
     textEditor->setTextCursor(newCursor);
 
-    QPalette palette;
-    palette.setColor(QPalette::Active, QPalette::Base, found ? Qt::white : QColor(255, 80, 80));
-    searchText->setPalette(palette);
+    QString styleSheet;
+    if (!found) {
+        styleSheet = QString::fromLatin1(
+            " QLineEdit {\n"
+            "     background-color: rgb(221,144,161);\n"
+            " }\n"
+        );
+    }
+
+    searchText->setStyleSheet(styleSheet);
 }
 
 void SearchBar::updateButtons()

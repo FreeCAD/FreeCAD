@@ -1037,6 +1037,7 @@ SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 SET(Widget_CPP_SRCS
     FileDialog.cpp
     MainWindow.cpp
+    MainWindowPy.cpp
     PrefWidgets.cpp
     InputField.cpp
     ProgressBar.cpp
@@ -1054,6 +1055,7 @@ SET(Widget_CPP_SRCS
 SET(Widget_HPP_SRCS
     FileDialog.h
     MainWindow.h
+    MainWindowPy.h
     PrefWidgets.h
     InputField.h
     ProgressBar.h

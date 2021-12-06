@@ -83,7 +83,7 @@ class Snapper:
 
     def __init__(self):
         self.activeview = None
-        self.lastObj = [None, None]
+        self.lastObj = []
         self.maxEdges = 0
         self.radius = 0
         self.constraintAxis = None
@@ -264,10 +264,6 @@ class Snapper:
 
         # Setup trackers if needed
         self.setTrackers()
-
-        # Show the grid if it's off (new view, for ex)
-        if self.grid and Draft.getParam("grid", True):
-            self.grid.on()
 
         # Get current snap radius
         self.radius = self.getScreenDist(Draft.getParam("snapRange", 8),
@@ -475,15 +471,15 @@ class Snapper:
                 # snap to corners of section planes
                 snaps.extend(self.snapToEndpoints(obj.Shape))
 
+        # updating last objects list
+        if obj.Name in self.lastObj:
+            self.lastObj.remove(obj.Name)
+        self.lastObj.append(obj.Name)
+        if len(self.lastObj) > 8:
+            self.lastObj = self.lastObj[-8:]
+
         if not snaps:
             return None
-
-        # updating last objects list
-        if not self.lastObj[1]:
-            self.lastObj[1] = obj.Name
-        elif self.lastObj[1] != obj.Name:
-            self.lastObj[0] = self.lastObj[1]
-            self.lastObj[1] = obj.Name
 
         # calculating the nearest snap point
         shortest = 1000000000000000000
@@ -614,9 +610,9 @@ class Snapper:
                         self.setCursor(tsnap[1])
                         return tsnap[2], eline
 
-        for o in (self.lastObj[1], self.lastObj[0]):
-            if o and (self.isEnabled('Extension')
-                      or self.isEnabled('Parallel')):
+        for o in self.lastObj:
+            if (self.isEnabled('Extension')
+                    or self.isEnabled('Parallel')):
                 ob = App.ActiveDocument.getObject(o)
                 if not ob:
                     continue
@@ -634,10 +630,10 @@ class Snapper:
                         if DraftGeomUtils.geomType(e) != "Line":
                             continue
                         np = self.getPerpendicular(e,point)
-                        if DraftGeomUtils.isPtOnEdge(np,e):
-                            continue
                         if (np.sub(point)).Length < self.radius:
                             if self.isEnabled('Extension'):
+                                if DraftGeomUtils.isPtOnEdge(np,e):
+                                    continue
                                 if np != e.Vertexes[0].Point:
                                     p0 = e.Vertexes[0].Point
                                     if self.tracker and not self.selectMode:
@@ -668,20 +664,19 @@ class Snapper:
                                                 self.lastExtensions[1] = self.lastExtensions[0]
                                                 self.lastExtensions[0] = ne
                                     return np,ne
-                        else:
-                            if self.isEnabled('Parallel'):
-                                if last:
-                                    ve = DraftGeomUtils.vec(e)
-                                    if not DraftVecUtils.isNull(ve):
-                                        de = Part.LineSegment(last,last.add(ve)).toShape()
-                                        np = self.getPerpendicular(de,point)
-                                        if (np.sub(point)).Length < self.radius:
-                                            if self.tracker and not self.selectMode:
-                                                self.tracker.setCoords(np)
-                                                self.tracker.setMarker(self.mk['parallel'])
-                                                self.tracker.on()
-                                            self.setCursor('parallel')
-                                            return np,de
+                        elif self.isEnabled('Parallel'):
+                            if last:
+                                ve = DraftGeomUtils.vec(e)
+                                if not DraftVecUtils.isNull(ve):
+                                    de = Part.LineSegment(last,last.add(ve)).toShape()
+                                    np = self.getPerpendicular(de,point)
+                                    if (np.sub(point)).Length < self.radius:
+                                        if self.tracker and not self.selectMode:
+                                            self.tracker.setCoords(np)
+                                            self.tracker.setMarker(self.mk['parallel'])
+                                            self.tracker.on()
+                                        self.setCursor('parallel')
+                                        return np,de
         return point,eline
 
 
@@ -999,8 +994,8 @@ class Snapper:
         snaps = []
         if self.isEnabled("Intersection"):
             # get the stored objects to calculate intersections
-            if self.lastObj[0]:
-                obj = App.ActiveDocument.getObject(self.lastObj[0])
+            for o in self.lastObj[:-1]:
+                obj = App.ActiveDocument.getObject(o)
                 if obj:
                     if obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis"):
                         if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
@@ -1230,6 +1225,7 @@ class Snapper:
         self.selectMode = False
         self.running = False
         self.holdPoints = []
+        self.lastObj = []
 
 
     def setSelectMode(self, mode):

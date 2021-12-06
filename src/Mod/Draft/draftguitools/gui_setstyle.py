@@ -123,7 +123,7 @@ class Draft_SetStyle_TaskPanel:
         return QtGui.QColor.fromRgbF(r,g,b)
 
     def getValues(self):
-        
+
         preset = {}
         preset["LineColor"] = self.form.LineColor.property("color").rgb()<<8
         preset["LineWidth"] = self.form.LineWidth.value()
@@ -143,7 +143,7 @@ class Draft_SetStyle_TaskPanel:
         return preset
 
     def setValues(self,preset):
-        
+
         from PySide import QtCore,QtGui
         self.form.LineColor.setProperty("color",self.getColor(preset.get("LineColor",255)))
         self.form.LineWidth.setValue(preset.get("LineWidth",1))
@@ -169,6 +169,8 @@ class Draft_SetStyle_TaskPanel:
 
         FreeCAD.ParamGet(self.p+"View").SetUnsigned("DefaultShapeLineColor",self.form.LineColor.property("color").rgb()<<8)
         FreeCAD.ParamGet(self.p+"View").SetInt("DefaultShapeLineWidth",self.form.LineWidth.value())
+        FreeCAD.ParamGet(self.p+"View").SetUnsigned("DefaultShapeVertexColor",self.form.LineColor.property("color").rgb()<<8)
+        FreeCAD.ParamGet(self.p+"View").SetInt("DefaultShapePointSize",self.form.LineWidth.value())
         FreeCAD.ParamGet(self.p+"Mod/Draft").SetInt("DefaultDrawStyle",self.form.DrawStyle.currentIndex())
         FreeCAD.ParamGet(self.p+"Mod/Draft").SetInt("DefaultDisplayMode",self.form.DisplayMode.currentIndex())
         FreeCAD.ParamGet(self.p+"View").SetUnsigned("DefaultShapeColor",self.form.ShapeColor.property("color").rgb()<<8)
@@ -195,18 +197,17 @@ class Draft_SetStyle_TaskPanel:
                     vobj.LineColor = self.form.LineColor.property("color").getRgbF()
                 if "LineWidth" in vobj.PropertiesList:
                     vobj.LineWidth = self.form.LineWidth.value()
+                if "PointColor" in vobj.PropertiesList:
+                    vobj.PointColor = self.form.LineColor.property("color").getRgbF()
+                if "PointSize" in vobj.PropertiesList:
+                    vobj.PointSize = self.form.LineWidth.value()
                 if "DrawStyle" in vobj.PropertiesList:
                     vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][self.form.DrawStyle.currentIndex()]
                 if "DisplayMode" in vobj.PropertiesList:
                     dmodes = ["Flat Lines","Wireframe","Shaded","Points"]
                     dm = dmodes[self.form.DisplayMode.currentIndex()]
-                    if hasattr(vobj,"Proxy") and hasattr(vobj.Proxy,"getDisplayModes"):
-                        dmodes = vobj.Proxy.getDisplayModes(vobj)
-                    if dm in dmodes:
-                        try:
-                            vobj.DisplayMode = dm
-                        except Exception:
-                            pass
+                    if dm in vobj.getEnumerationsOfProperty("DisplayMode"):
+                        vobj.DisplayMode = dm
                 if "ShapeColor" in vobj.PropertiesList:
                     vobj.ShapeColor = self.form.ShapeColor.property("color").getRgbF()
                 if "Transparency" in vobj.PropertiesList:
@@ -233,7 +234,7 @@ class Draft_SetStyle_TaskPanel:
                     vobj.LineSpacing = self.form.LineSpacing.value()
 
     def onApplyDim(self,index):
-        
+
         import Draft
         objs = FreeCAD.ActiveDocument.Objects
         dims = Draft.getObjectsOfType(objs,"LinearDimension")

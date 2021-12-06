@@ -116,7 +116,7 @@ void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::str
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
 
-        if (aSubName.size() > 4 && aSubName.substr(0,4) == "Edge") {
+        if (aSubName.compare(0, 4, "Edge") == 0) {
             TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(aSubName.c_str()));
             const TopTools_ListOfShape& los = mapEdgeFace.FindFromKey(edge);
 
@@ -138,7 +138,7 @@ void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::str
 
             i++;
         }
-        else if(aSubName.size() > 4 && aSubName.substr(0,4) == "Face") {
+        else if(aSubName.compare(0, 4, "Face") == 0) {
             TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(aSubName.c_str()));
 
             TopTools_IndexedMapOfShape mapOfFaces;

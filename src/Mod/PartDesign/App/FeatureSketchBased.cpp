@@ -65,7 +65,6 @@
 # include <GProp_GProps.hxx>
 # include <BRepGProp.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
-# include <TopExp.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <BRepLProp_SLProps.hxx>
 # include <BRepGProp_Face.hxx>
@@ -843,13 +842,13 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
 
             for (std::vector<std::string>::iterator it = subValues.begin(); it != subValues.end(); ++it) {
                 std::string shapetype;
-                if (it->size() > 4 && it->substr(0,4) == "Face") {
+                if (it->compare(0, 4, "Face") == 0) {
                     shapetype = "Face";
                 }
-                else if (it->size() > 4 && it->substr(0,4) == "Edge") {
+                else if (it->compare(0, 4, "Edge") == 0) {
                     shapetype = "Edge";
                 }
-                else if (it->size() > 6 && it->substr(0,6) == "Vertex") {
+                else if (it->compare(0, 6, "Vertex") == 0) {
                     shapetype = "Vertex";
                 }
                 else {
@@ -1041,10 +1040,49 @@ double ProfileBased::getReversedAngle(const Base::Vector3d &b, const Base::Vecto
 }
 
 void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std::vector<std::string> &subReferenceAxis,
-                          Base::Vector3d& base, Base::Vector3d& dir, bool checkPerpendicular)
+                           Base::Vector3d& base, Base::Vector3d& dir, ProfileBased::ForbiddenAxis checkAxis)
 {
+    auto verifyAxisFunc = [](ProfileBased::ForbiddenAxis checkAxis, const gp_Pln& sketchplane, const gp_Dir& dir) {
+        switch (checkAxis) {
+        case ForbiddenAxis::NotPerpendicularWithNormal:
+            // If perpendicular to the normal then it's parallel to the plane
+            if (sketchplane.Axis().Direction().IsNormal(dir, Precision::Angular()))
+                throw Base::ValueError("Axis must not be parallel to the sketch plane");
+            break;
+        case ForbiddenAxis::NotParallelWithNormal:
+            // If parallel with the normal then it's perpendicular to the plane
+            if (sketchplane.Axis().Direction().IsParallel(dir, Precision::Angular()))
+                throw Base::ValueError("Axis must not be perpendicular to the sketch plane");
+            break;
+        default:
+            break;
+        }
+    };
+
+    auto getAxisFromEdge = [](const TopoDS_Edge& refEdge, Base::Vector3d& base, Base::Vector3d& dir) {
+        if (refEdge.IsNull())
+            throw Base::ValueError("Failed to extract rotation edge");
+        BRepAdaptor_Curve adapt(refEdge);
+        gp_Pnt b;
+        gp_Dir d;
+        if (adapt.GetType() == GeomAbs_Line) {
+            b = adapt.Line().Location();
+            d = adapt.Line().Direction();
+        }
+        else if (adapt.GetType() == GeomAbs_Circle) {
+            b = adapt.Circle().Location();
+            d = adapt.Circle().Axis().Direction();
+        }
+        else {
+            throw Base::TypeError("Edge must be a straight line, circle or arc of circle");
+        }
+
+        base = Base::Vector3d(b.X(), b.Y(), b.Z());
+        dir = Base::Vector3d(d.X(), d.Y(), d.Z());
+    };
+
     dir = Base::Vector3d(0,0,0); // If unchanged signals that no valid axis was found
-    if (pcReferenceAxis == NULL)
+    if (!pcReferenceAxis)
         return;
 
     App::DocumentObject* profile = Profile.getValue();
@@ -1074,7 +1112,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
                 hasValidAxis = true;
                 axis = sketch->getAxis(Part::Part2DObject::N_Axis);
             }
-            else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0, 4) == "Axis") {
+            else if (subReferenceAxis[0].compare(0, 4, "Axis") == 0) {
                 int AxId = std::atoi(subReferenceAxis[0].substr(4, 4000).c_str());
                 if (AxId >= 0 && AxId < sketch->getAxisCount()) {
                     hasValidAxis = true;
@@ -1103,9 +1141,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         base = line->getBasePoint();
         dir = line->getDirection();
 
-        // Check that axis is perpendicular with sketch plane!
-        if (checkPerpendicular && sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
-            throw Base::ValueError("Rotation axis must not be perpendicular with the sketch plane");
+        verifyAxisFunc(checkAxis, sketchplane, gp_Dir(dir.x, dir.y, dir.z));
         return;
     }
 
@@ -1114,9 +1150,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         base = Base::Vector3d(0,0,0);
         line->Placement.getValue().multVec(Base::Vector3d (1,0,0), dir);
 
-        // Check that axis is perpendicular with sketch plane!
-        if (checkPerpendicular && sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
-            throw Base::ValueError("Rotation axis must not be perpendicular with the sketch plane");
+        verifyAxisFunc(checkAxis, sketchplane, gp_Dir(dir.x, dir.y, dir.z));
         return;
     }
 
@@ -1135,34 +1169,13 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         }
 
         if (ref.ShapeType() == TopAbs_EDGE) {
-            TopoDS_Edge refEdge = TopoDS::Edge(ref);
-            if (refEdge.IsNull())
-                throw Base::ValueError("Failed to extract rotation edge");
-            BRepAdaptor_Curve adapt(refEdge);
-            gp_Pnt b;
-            gp_Dir d;
-            if (adapt.GetType() == GeomAbs_Line) {
-                b = adapt.Line().Location();
-                d = adapt.Line().Direction();
-            } else if (adapt.GetType() == GeomAbs_Circle) {
-                b = adapt.Circle().Location();
-                d = adapt.Circle().Axis().Direction();
-            } else {
-                throw Base::TypeError("Rotation edge must be a straight line, circle or arc of circle");
-            }
-            base = Base::Vector3d(b.X(), b.Y(), b.Z());
-            dir = Base::Vector3d(d.X(), d.Y(), d.Z());
-            // Check that axis is co-planar with sketch plane!
-            // Check that axis is perpendicular with sketch plane!
-            if (sketchplane.Axis().Direction().IsParallel(d, Precision::Angular()))
-                throw Base::ValueError("Rotation axis must not be perpendicular with the sketch plane");
+            getAxisFromEdge(TopoDS::Edge(ref), base, dir);
+            verifyAxisFunc(checkAxis, sketchplane, gp_Dir(dir.x, dir.y, dir.z));
             return;
-        } else {
-            throw Base::TypeError("Rotation reference must be an edge");
         }
     }
 
-    throw Base::TypeError("Rotation axis reference is invalid");
+    throw Base::TypeError("Unsupported geometry type to get reference axis");
 }
 
 Base::Vector3d ProfileBased::getProfileNormal() const {
@@ -1180,18 +1193,21 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
     }
     else {
         TopoDS_Shape shape = getVerifiedFace(true);
-        if (shape == TopoDS_Shape())
+        if (shape.IsNull())
             return SketchVector;
 
-        if (shape.ShapeType() == TopAbs_FACE) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+        // the shape can be a single face or a compound of faces, only consider the first face
+        TopExp_Explorer ex(shape, TopAbs_FACE);
+        if (ex.More()) {
+            TopoDS_Face face = TopoDS::Face(ex.Current());
+            BRepAdaptor_Surface adapt(face);
             double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
             double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
             BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
             if(prop.IsNormalDefined()) {
                 gp_Pnt pnt; gp_Vec vec;
                 // handles the orientation state of the shape
-                BRepGProp_Face(TopoDS::Face(shape)).Normal(u,v,pnt,vec);
+                BRepGProp_Face(face).Normal(u,v,pnt,vec);
                 SketchVector = Base::Vector3d(vec.X(), vec.Y(), vec.Z());
             }
         }

@@ -26,13 +26,15 @@
 #ifndef PARTDESIGNGUI_DLGACTIVEBODY_H
 #define PARTDESIGNGUI_DLGACTIVEBODY_H
 
+#include <QDialog>
+#include <memory>
 #include <App/Document.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
-// TODO: Apparently this header can be avoided. See ./Command.cpp:74.
-#include "ui_DlgActiveBody.h"
 
 namespace PartDesignGui {
+class Ui_DlgActiveBody;
 
 /** Dialog box to ask user to pick a Part Design body to make active
  *  or make a new one
@@ -44,9 +46,10 @@ class PartDesignGuiExport DlgActiveBody : public QDialog
 public:
     DlgActiveBody(QWidget* parent, App::Document*& doc,
                   const QString& infoText=QString());
+    ~DlgActiveBody();
 
     void accept() override;
-    PartDesign::Body* getActiveBody() { return activeBody; };
+    PartDesign::Body* getActiveBody() const { return activeBody; }
 
 private:
     std::unique_ptr<Ui_DlgActiveBody> ui;

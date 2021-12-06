@@ -246,7 +246,7 @@ void TaskMirroredParameters::onPlaneChanged(int /*num*/)
             showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
-            addReferenceSelectionGate(false, true);
+            addReferenceSelectionGate(AllowSelection::FACE | AllowSelection::PLANAR);
         } else {
             exitSelectionMode();
             pcMirrored->MirrorPlane.Paste(planeLinks.getCurrentLink());

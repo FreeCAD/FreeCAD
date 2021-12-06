@@ -330,13 +330,13 @@ public:
     //@}
 
     /** @name methods for the open handler
-     *  With this facility a Application module can register
-     *  a ending (filetype) which he can handle to open.
+     *  With this facility an Application module can register
+     *  an ending (filetype) which it can handle to open.
      *  The ending and the module name are stored and if the file
-     *  type is opened the module get loaded and need to register a
+     *  type is opened the module gets loaded and needs to register an
      *  OpenHandler class in the OpenHandlerFactorySingleton.
-     *  After the module is loaded a OpenHandler of this type is created
-     *  and the file get loaded.
+     *  After the module is loaded, an OpenHandler of this type is created
+     *  and the file gets loaded.
      *  @see OpenHandler
      *  @see OpenHandlerFactorySingleton
      */
@@ -446,7 +446,7 @@ protected:
     void renameDocument(const char *OldName, const char *NewName);
 
     /** @name I/O of the document
-     * This slot get connected to all App::Documents created
+     * This slot gets connected to all App::Documents created
      */
     //@{
     void slotBeforeChangeDocument(const App::Document&, const App::Property&);

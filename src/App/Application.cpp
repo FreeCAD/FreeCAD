@@ -138,6 +138,7 @@
 #include <QFileInfo>
 #include <QProcessEnvironment>
 #include <QStandardPaths>
+#include <LibraryVersions.h>
 
 using namespace App;
 using namespace std;
@@ -2525,6 +2526,19 @@ void Application::initConfig(int argc, char ** argv)
 
     // capture path
     SaveEnv("PATH");
+
+    // Save version numbers of the libraries
+#ifdef OCC_VERSION_STRING_EXT
+    mConfig["OCC_VERSION"] = OCC_VERSION_STRING_EXT;
+#endif
+    mConfig["BOOST_VERSION"] = BOOST_LIB_VERSION;
+    mConfig["PYTHON_VERSION"] = PY_VERSION;
+    mConfig["QT_VERSION"] = QT_VERSION_STR;
+    mConfig["EIGEN_VERSION"] = FC_EIGEN3_VERSION;
+    mConfig["PYSIDE_VERSION"] = FC_PYSIDE_VERSION;
+    mConfig["XERCESC_VERSION"] = FC_XERCESC_VERSION;
+
+
     logStatus();
 }
 
@@ -2617,11 +2631,12 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                 processed.push_back(*it);
             }
             else if (file.hasExtension("py")) {
-                try{
+                try {
+                    Base::Interpreter().addPythonPath(file.dirPath().c_str());
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
                     processed.push_back(*it);
                 }
-                catch(const PyException&) {
+                catch (const PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
                     processed.push_back(*it);
@@ -2879,6 +2894,7 @@ QString getUserHome()
  * Returns a directory location where persistent data shared across applications can be stored.
  * This method returns the old non-XDG-compliant root path where to store config files and application data.
  */
+#if defined(FC_OS_WIN32)
 QString getOldGenericDataLocation(QString home)
 {
 #if defined(FC_OS_WIN32)
@@ -2894,6 +2910,7 @@ QString getOldGenericDataLocation(QString home)
 
     return home;
 }
+#endif
 
 /*!
  * \brief getSubDirectories
@@ -3104,17 +3121,6 @@ void Application::ExtractUserPath()
     //
     boost::filesystem::path config = findPath(configHome, customHome, subdirs, true);
     mConfig["UserConfigPath"] = pathToString(config) + PATHSEP;
-
-    std::vector<std::string> oldsubdirs;
-    getOldDataLocation(mConfig, oldsubdirs);
-    boost::filesystem::path appData = findPath(getOldGenericDataLocation(homePath), customData, oldsubdirs, false);
-
-    // If in new location user.cfg doesn't exist but in the old location then copy it
-    boost::filesystem::path oldUsercfg = appData / "user.cfg";
-    boost::filesystem::path newUsercfg = config / "user.cfg";
-    if (boost::filesystem::exists(oldUsercfg) && !boost::filesystem::exists(newUsercfg)) {
-        boost::filesystem::copy(oldUsercfg, newUsercfg);
-    }
 
 
     // User cache path

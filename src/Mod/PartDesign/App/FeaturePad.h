@@ -24,30 +24,17 @@
 #ifndef PARTDESIGN_Pad_H
 #define PARTDESIGN_Pad_H
 
-#include <App/PropertyUnits.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-
-#include "FeatureSketchBased.h"
+#include "FeatureExtrude.h"
 
 namespace PartDesign
 {
 
-class PartDesignExport Pad : public ProfileBased
+class PartDesignExport Pad : public FeatureExtrude
 {
     PROPERTY_HEADER(PartDesign::Pad);
 
 public:
     Pad();
-
-    App::PropertyEnumeration Type;
-    App::PropertyLength      Length;
-    App::PropertyLength      Length2;
-    App::PropertyBool        UseCustomVector;
-    App::PropertyVector      Direction;
-    App::PropertyBool        AlongSketchNormal;
-    App::PropertyLength      Offset;
-    App::PropertyLinkSub     ReferenceAxis;
 
     /** @name methods override feature */
     //@{
@@ -64,17 +51,15 @@ public:
       * If Reversed is true then the direction of revolution will be reversed.
       * The created material will be fused with the sketch support (if there is one)
       */
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute();
     /// returns the type name of the view provider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartDesignGui::ViewProviderPad";
     }
     //@}
 
 private:
     static const char* TypeEnums[];
-    //static const char* SideEnums[];
 };
 
 } //namespace PartDesign

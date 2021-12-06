@@ -212,7 +212,9 @@ void TaskDraftParameters::onButtonPlane(bool checked)
         hideObject();
         selectionMode = plane;
         Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), true, true, true));
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), AllowSelection::EDGE |
+                                                                                  AllowSelection::FACE |
+                                                                                  AllowSelection::PLANAR));
     }
 }
 
@@ -223,7 +225,8 @@ void TaskDraftParameters::onButtonLine(bool checked)
         hideObject();
         selectionMode = line;
         Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), true, false, true));
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), AllowSelection::EDGE |
+                                                                                  AllowSelection::PLANAR));
     }
 }
 

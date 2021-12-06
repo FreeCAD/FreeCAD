@@ -203,7 +203,7 @@ Action * StdPerspectiveCamera::createAction(void)
 //===========================================================================
 
 // The two commands below are provided for convenience so that they can be bound
-// to a button of a space mouse
+// to a button of a spacemouse
 
 //===========================================================================
 // Std_ViewSaveCamera
@@ -352,17 +352,16 @@ void StdCmdFreezeViews::activated(int iMsg)
         getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn);
 
         QList<QAction*> acts = pcAction->actions();
-        int index = 0;
+        int index = 1;
         for (QList<QAction*>::ConstIterator it = acts.begin()+offset; it != acts.end(); ++it, index++) {
             if (!(*it)->isVisible()) {
                 savedViews++;
-                QString viewnr = QString(QObject::tr("Restore view &%1")).arg(index+1);
+                QString viewnr = QString(QObject::tr("Restore view &%1")).arg(index);
                 (*it)->setText(viewnr);
                 (*it)->setToolTip(QString::fromLatin1(ppReturn));
                 (*it)->setVisible(true);
-                if (index < 9) {
-                    int accel = Qt::CTRL+Qt::Key_1;
-                    (*it)->setShortcut(accel+index);
+                if (index < 10) {
+                    (*it)->setShortcut(QKeySequence(QString::fromLatin1("CTRL+%1").arg(index)));
                 }
                 break;
             }
@@ -499,9 +498,8 @@ void StdCmdFreezeViews::onRestoreViews()
             acts[i+offset]->setText(viewnr);
             acts[i+offset]->setToolTip(setting);
             acts[i+offset]->setVisible(true);
-            if ( i < 9 ) {
-                int accel = Qt::CTRL+Qt::Key_1;
-                acts[i+offset]->setShortcut(accel+i);
+            if (i < 9) {
+                acts[i+offset]->setShortcut(QKeySequence(QString::fromLatin1("CTRL+%1").arg(i+1)));
             }
         }
 
@@ -3684,116 +3682,6 @@ void StdTreeDrag::activated(int)
     }
 }
 
-//===========================================================================
-// Std_GroupMoveUp
-//===========================================================================
-DEF_STD_CMD_A(StdGroupMoveUp)
-
-StdGroupMoveUp::StdGroupMoveUp()
-  : Command("Std_GroupMoveUp")
-{
-    sGroup       = QT_TR_NOOP("TreeView");
-    sMenuText    = QT_TR_NOOP("Move up in group");
-    sToolTipText = QT_TR_NOOP("Move object one place higher in its group");
-    sStatusTip   = sToolTipText;
-    sWhatsThis   = "Std_GroupMoveUp";
-    sPixmap      = "button_up";
-    sAccel       = "Alt+Up";
-    eType        = 0;
-}
-
-void StdGroupMoveUp::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    TreeWidget *tree = TreeWidget::instance();
-    if (!tree) {
-        return;
-    }
-
-    std::vector<DocumentObjectItem *> selected;
-    if (!tree->getSelectedSiblingObjectItems(selected)) {
-        return;
-    }
-
-    DocumentObjectItem *previous;
-    if (!tree->allowMoveUpInGroup(selected, &previous)) {
-        return;
-    }
-
-    TreeWidget::moveSiblings(selected, previous, -1);
-}
-
-bool StdGroupMoveUp::isActive(void)
-{
-    TreeWidget *tree = TreeWidget::instance();
-    if (!tree) {
-        return false;
-    }
-
-    std::vector<DocumentObjectItem *> selected;
-    if (!tree->getSelectedSiblingObjectItems(selected)) {
-        return false;
-    }
-
-    return tree->allowMoveUpInGroup(selected);
-}
-
-//===========================================================================
-// Std_GroupMoveDown
-//===========================================================================
-DEF_STD_CMD_A(StdGroupMoveDown)
-
-StdGroupMoveDown::StdGroupMoveDown()
-  : Command("Std_GroupMoveDown")
-{
-    sGroup       = QT_TR_NOOP("TreeView");
-    sMenuText    = QT_TR_NOOP("Move down in group");
-    sToolTipText = QT_TR_NOOP("Move object one place lower in its group");
-    sStatusTip   = sToolTipText;
-    sWhatsThis   = "Std_GroupMoveDown";
-    sPixmap      = "button_down";
-    sAccel       = "Alt+Down";
-    eType        = 0;
-}
-
-void StdGroupMoveDown::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    TreeWidget *tree = TreeWidget::instance();
-    if (!tree) {
-        return;
-    }
-
-    std::vector<DocumentObjectItem *> selected;
-    if (!tree->getSelectedSiblingObjectItems(selected)) {
-        return;
-    }
-
-    DocumentObjectItem *next ;
-    if (!tree->allowMoveDownInGroup(selected, &next)) {
-        return;
-    }
-
-    TreeWidget::moveSiblings(selected, next, +1);
-}
-
-bool StdGroupMoveDown::isActive(void)
-{
-    TreeWidget *tree = TreeWidget::instance();
-    if (!tree) {
-        return false;
-    }
-
-    std::vector<DocumentObjectItem *> selected;
-    if (!tree->getSelectedSiblingObjectItems(selected)) {
-        return false;
-    }
-
-    return tree->allowMoveDownInGroup(selected);
-}
-
 //======================================================================
 // Std_TreeViewActions
 //===========================================================================
@@ -3828,11 +3716,6 @@ public:
 
         addCommand(new StdTreeDrag(),cmds.size());
         addCommand(new StdTreeSelection(),cmds.size());
-
-        addCommand();
-
-        addCommand(new StdGroupMoveUp());
-        addCommand(new StdGroupMoveDown());
     };
     virtual const char* className() const {return "StdCmdTreeViewActions";}
 };

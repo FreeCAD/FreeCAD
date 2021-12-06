@@ -52,7 +52,7 @@ public:
     App::PropertyFloatConstraint   Turns;
     App::PropertyBool        LeftHanded;
     App::PropertyAngle       Angle;
-    App::PropertyLength      Growth;
+    App::PropertyDistance    Growth;
     App::PropertyEnumeration Mode;
     App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;
@@ -64,7 +64,7 @@ public:
 
     /** @name methods override feature */
     //@{
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn* execute(void);
     short mustExecute() const;
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {

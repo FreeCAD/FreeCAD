@@ -60,6 +60,8 @@
 #include "Utils.h"
 #include "TaskFeaturePick.h"
 
+Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet);
+
 using namespace PartDesignGui;
 using namespace Gui;
 
@@ -540,21 +542,26 @@ bool TaskPipeParameters::accept()
                 copies.push_back(pcPipe->AuxillerySpine.getValue());
             }
 
-            std::vector<App::DocumentObject*> objs;
+            std::vector<App::PropertyLinkSubList::SubSet> subSets;
             int index = 0;
-            for (App::DocumentObject* obj : pcPipe->Sections.getValues()) {
-                if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
-                    objs.push_back(PartDesignGui::TaskFeaturePick::makeCopy(obj, "", dlg.radioIndependent->isChecked()));
-                    copies.push_back(objs.back());
+            for (auto &subSet : pcPipe->Sections.getSubListValues()) {
+                if (!pcActiveBody->hasObject(subSet.first) &&
+                    !pcActiveBody->getOrigin()->hasObject(subSet.first)) {
+                    subSets.push_back(
+                        std::make_pair(
+                            PartDesignGui::TaskFeaturePick::makeCopy(
+                                subSet.first, "", dlg.radioIndependent->isChecked()),
+                            subSet.second));
+                    copies.push_back(subSets.back().first);
                 }
                 else {
-                    objs.push_back(obj);
+                    subSets.push_back(subSet);
                 }
 
                 index++;
             }
 
-            pcPipe->Sections.setValues(objs);
+            pcPipe->Sections.setSubListValues(subSets);
         }
     }
 
@@ -931,15 +938,18 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
 
+    connect(ui->listWidgetReferences->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
-    for (auto obj : pipe->Sections.getValues()) {
-        Gui::Application::Instance->showViewProvider(obj);
-        QString label = make2DLabel(obj, pipe->Sections.getSubValues(obj));
+    for (auto &subSet : pipe->Sections.getSubListValues()) {
+        Gui::Application::Instance->showViewProvider(subSet.first);
+        QString label = make2DLabel(subSet.first, subSet.second);
         QListWidgetItem* item = new QListWidgetItem();
         item->setText(label);
-        item->setData(Qt::UserRole, QByteArray(obj->getNameInDocument()));
+        item->setData(Qt::UserRole, QVariant::fromValue(subSet));
         ui->listWidgetReferences->addItem(item);
     }
 
@@ -955,6 +965,27 @@ TaskPipeScaling::~TaskPipeScaling()
     if (vp) {
         static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
     }
+}
+
+void TaskPipeScaling::indexesMoved()
+{
+    QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
+    if (!model)
+        return;
+
+    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+    auto originals = pipe->Sections.getSubListValues();
+
+    QByteArray name;
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; i++) {
+        QModelIndex index = model->index(i, 0);
+        originals[i] = index.data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>();
+    }
+
+    pipe->Sections.setSubListValues(originals);
+    recomputeFeature();
+    updateUI(ui->stackedWidget->currentIndex());
 }
 
 void TaskPipeScaling::clearButtons(const selectionModes notThis)
@@ -1022,7 +1053,8 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg)
                 if (selectionMode == refAdd) {
                     QListWidgetItem* item = new QListWidgetItem();
                     item->setText(label);
-                    item->setData(Qt::UserRole, QByteArray(msg.pObjectName));
+                    item->setData(Qt::UserRole,
+                                  QVariant::fromValue(std::make_pair(object, std::vector<std::string>(1, msg.pSubName))));
                     ui->listWidgetReferences->addItem(item);
                 }
                 else if (selectionMode == refRemove) {
@@ -1098,7 +1130,7 @@ void TaskPipeScaling::onDeleteSection()
     int row = ui->listWidgetReferences->currentRow();
     QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
-        QByteArray data = item->data(Qt::UserRole).toByteArray();
+        QByteArray data(item->data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>().first->getNameInDocument());
         delete item;
 
         // search inside the list of sections

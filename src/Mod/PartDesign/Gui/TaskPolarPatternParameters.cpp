@@ -324,7 +324,7 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
             showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
-            addReferenceSelectionGate(true, false, false, false, true);
+            addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::CIRCLE);
         } else {
             exitSelectionMode();
             pcPolarPattern->Axis.Paste(axesLinks.getCurrentLink());

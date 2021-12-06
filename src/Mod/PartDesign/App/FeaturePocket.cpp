@@ -57,7 +57,7 @@ using namespace PartDesign;
 
 const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace","TwoLengths",NULL};
 
-PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
+PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::FeatureExtrude)
 
 Pocket::Pocket()
 {
@@ -81,23 +81,7 @@ Pocket::Pocket()
     Length2.setConstraints(nullptr);
 }
 
-short Pocket::mustExecute() const
-{
-    if (Placement.isTouched() ||
-        Type.isTouched() ||
-        Length.isTouched() ||
-        Length2.isTouched() ||
-        Offset.isTouched() ||
-        UseCustomVector.isTouched() ||
-        Direction.isTouched() ||
-        ReferenceAxis.isTouched() ||
-        AlongSketchNormal.isTouched() ||
-        UpToFace.isTouched())
-        return 1;
-    return ProfileBased::mustExecute();
-}
-
-App::DocumentObjectExecReturn *Pocket::execute(void)
+App::DocumentObjectExecReturn *Pocket::execute()
 {
     // Handle legacy features, these typically have Type set to 3 (previously NULL, now UpToFace),
     // empty FaceName (because it didn't exist) and a value for Length
@@ -136,10 +120,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         return new App::DocumentObjectExecReturn(text);
     }
 
-    // get the Sketch plane
-    Base::Placement SketchPos    = obj->Placement.getValue();
     // get the normal vector of the sketch
-    Base::Vector3d  SketchVector = getProfileNormal();
+    Base::Vector3d SketchVector = getProfileNormal();
 
     // turn around for pockets
     SketchVector *= -1;
@@ -150,52 +132,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
         base.Move(invObjLoc);
 
-        Base::Vector3d pocketDirection;
-
-        if (!UseCustomVector.getValue()) {
-            if (!ReferenceAxis.getValue()) {
-                // use sketch's normal vector for direction
-                pocketDirection = SketchVector;
-                AlongSketchNormal.setReadOnly(true);
-            }
-            else {
-                // update Direction from ReferenceAxis
-                try {
-                    App::DocumentObject* pcReferenceAxis = ReferenceAxis.getValue();
-                    const std::vector<std::string>& subReferenceAxis = ReferenceAxis.getSubValues();
-                    Base::Vector3d base;
-                    Base::Vector3d dir;
-                    getAxis(pcReferenceAxis, subReferenceAxis, base, dir, false);
-                    pocketDirection = -dir;
-                }
-                catch (const Base::Exception& e) {
-                    return new App::DocumentObjectExecReturn(e.what());
-                }
-            }
-        }
-        else {
-            // use the given vector
-            // if null vector, use SketchVector
-            if ((fabs(Direction.getValue().x) < Precision::Confusion())
-                && (fabs(Direction.getValue().y) < Precision::Confusion())
-                && (fabs(Direction.getValue().z) < Precision::Confusion())) {
-                Direction.setValue(SketchVector);
-            }
-            pocketDirection = Direction.getValue();
-        }
-
-        // disable options of UseCustomVector  
-        Direction.setReadOnly(!UseCustomVector.getValue());
-        ReferenceAxis.setReadOnly(UseCustomVector.getValue());
-        // UseCustomVector allows AlongSketchNormal but !UseCustomVector does not forbid it
-        if (UseCustomVector.getValue())
-            AlongSketchNormal.setReadOnly(false);
+        Base::Vector3d pocketDirection = computeDirection(SketchVector);
 
         // create vector in pocketing direction with length 1
         gp_Dir dir(pocketDirection.x, pocketDirection.y, pocketDirection.z);
-
-        // store the finally used direction to display it in the dialog
-        Direction.setValue(dir.X(), dir.Y(), dir.Z());
 
         // The length of a gp_Dir is 1 so the resulting pocket would have
         // the length L in the direction of dir. But we want to have its height in the
@@ -217,10 +157,6 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             L = L / factor;
             L2 = L2 / factor;
         }
-
-        // explicitly set the Direction so that the dialog shows also the used direction
-        // if the sketch's normal vector was used
-        Direction.setValue(pocketDirection);
 
         dir.Transform(invObjLoc.Transformation());
 
@@ -259,19 +195,9 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopExp_Explorer Ex(supportface,TopAbs_WIRE);
             if (!Ex.More())
                 supportface = TopoDS_Face();
-#if 0
-            BRepFeat_MakePrism PrismMaker;
-            PrismMaker.Init(base, profileshape, supportface, dir, 0, 1);
-            PrismMaker.Perform(upToFace);
-
-            if (!PrismMaker.IsDone())
-                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
-            TopoDS_Shape prism = PrismMaker.Shape();
-#else
             TopoDS_Shape prism;
             PrismMode mode = PrismMode::CutFromBase;
             generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
-#endif
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
@@ -287,7 +213,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             }
 
             this->Shape.setValue(getSolid(prism));
-        } else {
+        }
+        else {
             TopoDS_Shape prism;
             generatePrism(prism, profileshape, method, dir, L, L2,
                         Midplane.getValue(), Reversed.getValue());
@@ -322,7 +249,6 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-
         if (std::string(e.GetMessageString()) == "TopoDS::Face" &&
             (std::string(Type.getValueAsString()) == "UpToFirst" || std::string(Type.getValueAsString()) == "UpToFace"))
             return new App::DocumentObjectExecReturn("Could not create face from sketch.\n"

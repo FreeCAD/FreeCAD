@@ -35,6 +35,33 @@
    </Mapping>
 </ButtonMap>
 
+<ButtonMap DeviceName="SpaceExplorer">
+   <Mapping>
+      <Map Description="1"             KeyCode="0"  DownTime="short" Command=""/>
+      <Map Description="2"             KeyCode="1"  DownTime="short" Command=""/>
+      <Map Description="Top"           KeyCode="2"  DownTime="short" Command="Std_ViewTop"/>
+      <Map Description="Left"          KeyCode="3"  DownTime="short" Command="Std_ViewLeft"/>
+      <Map Description="Right"         KeyCode="4"  DownTime="short" Command="Std_ViewRight"/>
+      <Map Description="Front"         KeyCode="5"  DownTime="short" Command="Std_ViewFront"/>
+      <Map Description="ESC"           KeyCode="6"  DownTime="short" Command=""/>
+      <Map Description="ALT"           KeyCode="7"  DownTime="short" Command=""/>
+      <Map Description="SHIFT"         KeyCode="8"  DownTime="short" Command=""/>
+      <Map Description="CTRL"          KeyCode="9"  DownTime="short" Command=""/>
+      <Map Description="Fit"           KeyCode="10" DownTime="short" Command="Std_ViewFitAll"/>
+      <Map Description="PANEL"         KeyCode="11" DownTime="short" Command=""/>
+      <Map Description="+"             KeyCode="12" DownTime="short" Command=""/>
+      <Map Description="-"             KeyCode="13" DownTime="short" Command=""/>
+      <Map Description="2D"            KeyCode="14" DownTime="short" Command="Std_ViewHome"/>
+   </Mapping>
+</ButtonMap>
+
+<ButtonMap DeviceName="SpaceNavigator">
+   <Mapping>
+      <Map Description="1"             KeyCode="0"  DownTime="short" Command="Std_ViewHome"/>
+      <Map Description="2"             KeyCode="1"  DownTime="short" Command="Std_ViewFitAll"/>
+   </Mapping>
+</ButtonMap>
+
 <ButtonMap DeviceName="SpacePilot">
    <Mapping>
       <Map Description="1"             KeyCode="0"  DownTime="short" Command=""/>

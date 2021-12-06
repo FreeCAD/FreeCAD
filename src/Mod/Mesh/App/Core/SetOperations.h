@@ -76,7 +76,7 @@ protected:
   float               _minDistanceToPoint;   /** Minimal distance to facet corner points */
 
 private:
-  // Helper class cutting edge to his two attached facets
+  // Helper class cutting edge to its two attached facets
   class Edge
   {
     public:

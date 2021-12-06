@@ -77,10 +77,10 @@ PythonEditor::PythonEditor(QWidget* parent)
 
     // set acelerators
     QShortcut* comment = new QShortcut(this);
-    comment->setKey(Qt::ALT + Qt::Key_C);
+    comment->setKey(QKeySequence(QString::fromLatin1("ALT+C")));
 
     QShortcut* uncomment = new QShortcut(this);
-    uncomment->setKey(Qt::ALT + Qt::Key_U);
+    uncomment->setKey(QKeySequence(QString::fromLatin1("ALT+U")));
 
     connect(comment, SIGNAL(activated()),
             this, SLOT(onComment()));
@@ -157,8 +157,8 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     QMenu* menu = createStandardContextMenu();
     if (!isReadOnly()) {
         menu->addSeparator();
-        menu->addAction( tr("Comment"), this, SLOT( onComment() ), Qt::ALT + Qt::Key_C );
-        menu->addAction( tr("Uncomment"), this, SLOT( onUncomment() ), Qt::ALT + Qt::Key_U );
+        menu->addAction( tr("Comment"), this, SLOT( onComment() ), QKeySequence(QString::fromLatin1("ALT+C")));
+        menu->addAction( tr("Uncomment"), this, SLOT( onUncomment() ), QKeySequence(QString::fromLatin1("ALT+U")));
     }
 
     menu->exec(e->globalPos());

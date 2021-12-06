@@ -3239,10 +3239,10 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
     }
 
     if (constraint->Type == Sketcher::Diameter){
-        valueStr.insert(0, QChar(8960)); // Diameter sign
+        valueStr.prepend(QChar(216)); // Diameter sign
     }
     else if (constraint->Type == Sketcher::Radius){
-        valueStr.insert(0, QChar(82)); // Capital letter R
+        valueStr.prepend(QChar(82)); // Capital letter R
     }
 
     /**
@@ -3931,7 +3931,7 @@ void ViewProviderSketch::initItemsSizes()
         //
         // Rationale:
         // -> Other WBs use the default value as is
-        // -> If a user has a HDPI, he will eventually change the value for the other WBs
+        // -> If a user has a HDPI, they will eventually change the value for the other WBs
         // -> If we correct the value here in addition, we would get two times a resize
         edit->MarkerSize = markersize;
     }

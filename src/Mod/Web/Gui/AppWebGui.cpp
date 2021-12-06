@@ -170,6 +170,7 @@ PyMOD_INIT_FUNC(WebGui)
 
     // instantiating the commands
     CreateWebCommands();
+    WebGui::BrowserView::init();
     WebGui::Workbench::init();
 
      // add resources and reloads the translators

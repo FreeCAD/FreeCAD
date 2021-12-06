@@ -74,17 +74,48 @@ short Loft::mustExecute() const
 
 App::DocumentObjectExecReturn *Loft::execute(void)
 {
+    auto getSectionShape =
+        [](App::DocumentObject* feature, const std::vector<std::string> &subs) -> TopoDS_Shape {
+            if (!feature ||
+                !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+                throw Base::TypeError("Loft: Invalid profile/section");
+
+            auto subName = subs.empty() ? "" : subs.front();
+
+            // only take the entire shape when we have a sketch selected, but
+            // not a point of the sketch
+            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
+                subName.compare(0, 6, "Vertex") != 0)
+                return static_cast<Part::Part2DObject*>(feature)->Shape.getValue();
+            else {
+                if(subName.empty())
+                    throw Base::ValueError("No valid subelement linked in Part::Feature");
+                return static_cast<Part::Feature*>(feature)->Shape.getShape().getSubShape(subName.c_str());
+            }
+        };
+
+    auto addWiresToWireSections =
+        [](TopoDS_Shape& section,
+           std::vector<std::vector<TopoDS_Shape>>& wiresections) -> size_t {
+            TopExp_Explorer ex;
+            size_t i=0;
+            bool initialWireSectionsEmpty = wiresections.empty();
+            for (ex.Init(section, TopAbs_WIRE); ex.More(); ex.Next(), ++i) {
+                // if profile was just a point then this is where we can first set our list
+                if (i>=wiresections.size()) {
+                    if (initialWireSectionsEmpty)
+                        wiresections.emplace_back(1, ex.Current());
+                    else
+                        throw Base::ValueError("Loft: Sections need to have the same amount of inner wires (except profile and last section, which can be points)");
+                }
+                else
+                    wiresections[i].push_back(TopoDS::Wire(ex.Current()));
+            }
+            return i;
+        };
 
     std::vector<TopoDS_Wire> wires;
-    try {
-        wires = getProfileWires();
-    } catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
-
-    TopoDS_Shape sketchshape = getVerifiedFace();
-    if (sketchshape.IsNull())
-        return new App::DocumentObjectExecReturn("Loft: Creating a face from sketch failed");
+    TopoDS_Shape profilePoint;
 
     // if the Base property has a valid shape, fuse the pipe into it
     TopoDS_Shape base;
@@ -102,80 +133,109 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             base.Move(invObjLoc);
 
         // build up multisections
-        auto multisections = Sections.getValues();
+        auto multisections = Sections.getSubListValues();
         if (multisections.empty())
             return new App::DocumentObjectExecReturn("Loft: At least one section is needed");
 
-        std::vector<std::vector<TopoDS_Wire>> wiresections;
-        for (TopoDS_Wire& wire : wires)
-            wiresections.emplace_back(1, wire);
+        TopoDS_Shape profileShape = getSectionShape(Profile.getValue(),
+                                                    Profile.getSubValues());
+        if (profileShape.IsNull())
+            return new App::DocumentObjectExecReturn("Loft: Could not obtain profile shape");
 
-        for (auto obj : multisections) {
-            if (!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
-                return  new App::DocumentObjectExecReturn("Loft: All sections need to be part features");
+        std::vector<std::vector<TopoDS_Shape>> wiresections;
 
-            // if the section is an object's face then take just the face
-            TopoDS_Shape shape;
-            if (obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-                shape = static_cast<Part::Part2DObject*>(obj)->Shape.getValue();
-            else {
-                auto subValues = Sections.getSubValues(obj);
-                if (subValues.empty())
-                    throw Base::ValueError("Loft: No valid subelement linked in Part::Feature");
-
-                shape = static_cast<Part::Feature*>(obj)->Shape.getShape().getSubShape(subValues[0].c_str());
-            }
-
+        size_t numWires = addWiresToWireSections(profileShape, wiresections);
+        if (numWires == 0) {
+            // profileShape had no wires so only other valid option is point section
             TopExp_Explorer ex;
-            size_t i=0;
-            for (ex.Init(shape, TopAbs_WIRE); ex.More(); ex.Next(), ++i) {
-                if (i>=wiresections.size())
-                    return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
-                wiresections[i].push_back(TopoDS::Wire(ex.Current()));
+            size_t i = 0;
+            for (ex.Init(profileShape, TopAbs_VERTEX); ex.More(); ex.Next(), ++i) {
+                profilePoint = ex.Current();
             }
-            if (i<wiresections.size())
-                    return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
+            if (i > 1)
+                return new App::DocumentObjectExecReturn("Loft: When using points for profile/sections, the sketch should have a single point");
+        }
 
+        bool isLastSectionVertex = false;
+
+        for (auto &subSet : multisections) {
+            if (!subSet.first->isDerivedFrom(Part::Feature::getClassTypeId()))
+                return new App::DocumentObjectExecReturn("Loft: All sections need to be part features");
+
+            // if the selected subvalue is a point, pick that even if we have a sketch
+            TopoDS_Shape shape = getSectionShape(subSet.first, subSet.second);
+            if (shape.IsNull())
+                return new App::DocumentObjectExecReturn("Loft: Could not obtain section shape");
+
+            size_t numWiresAdded = addWiresToWireSections(shape, wiresections);
+            if (numWiresAdded == 0) {
+                TopExp_Explorer ex;
+                size_t j = 0;
+                for (ex.Init(shape, TopAbs_VERTEX); ex.More(); ex.Next(), ++j) {
+                    if (isLastSectionVertex)
+                        return new App::DocumentObjectExecReturn("Loft: Only the profile and last section can be vertices");
+                    isLastSectionVertex = true;
+                    for (auto &wires : wiresections)
+                        wires.push_back(ex.Current());
+                }
+                if (j > 1)
+                    return new App::DocumentObjectExecReturn("Loft: When using points for profile/sections, the sketch should have a single point");
+            }
+            if (!isLastSectionVertex && numWiresAdded < wiresections.size())
+                return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
         }
 
         // build all shells
         std::vector<TopoDS_Shape> shells;
-        for (std::vector<TopoDS_Wire>& wires : wiresections) {
 
+        TopoDS_Shape copyProfilePoint(profilePoint);
+        if (!profilePoint.IsNull())
+            copyProfilePoint.Move(invObjLoc);
+
+        for (auto& wires : wiresections) {
             BRepOffsetAPI_ThruSections mkTS(false, Ruled.getValue(), Precision::Confusion());
 
-            for (TopoDS_Wire& wire : wires)   {
-                 wire.Move(invObjLoc);
-                 mkTS.AddWire(wire);
+            if (!profilePoint.IsNull())
+                mkTS.AddVertex(TopoDS::Vertex(copyProfilePoint));
+
+            for (auto& shape : wires) {
+                shape.Move(invObjLoc);
+                if (shape.ShapeType() == TopAbs_VERTEX)
+                    mkTS.AddVertex(TopoDS::Vertex(shape));
+                else
+                    mkTS.AddWire(TopoDS::Wire(shape));
             }
 
             mkTS.Build();
             if (!mkTS.IsDone())
                 return new App::DocumentObjectExecReturn("Loft could not be built");
 
-            //build the shell use simulate to get the top and bottom wires in an easy way
+            // build the shell use simulate to get the top and bottom wires in an easy way
             shells.push_back(mkTS.Shape());
         }
 
-        //build the top and bottom face, sew the shell and build the final solid
-        TopoDS_Shape front = getVerifiedFace();
-        front.Move(invObjLoc);
-        std::vector<TopoDS_Wire> backwires;
-        for (std::vector<TopoDS_Wire>& wires : wiresections)
-            backwires.push_back(wires.back());
-
-        TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
-
+        // build the top and bottom faces (where possible), sew the shell,
+        // and build the final solid
         BRepBuilderAPI_Sewing sewer;
         sewer.SetTolerance(Precision::Confusion());
-        sewer.Add(front);
-        sewer.Add(back);
+        if (profilePoint.IsNull()) {
+            TopoDS_Shape front = getVerifiedFace();
+            front.Move(invObjLoc);
+            sewer.Add(front);
+        }
+        if (!isLastSectionVertex) {
+            std::vector<TopoDS_Wire> backwires;
+            for (auto& wires : wiresections)
+                backwires.push_back(TopoDS::Wire(wires.back()));
+            TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
+            sewer.Add(back);
+        }
         for (TopoDS_Shape& s : shells)
             sewer.Add(s);
 
         sewer.Perform();
 
-        //build the solid
+        // build the solid
         BRepBuilderAPI_MakeSolid mkSolid;
         mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
         if (!mkSolid.IsDone())

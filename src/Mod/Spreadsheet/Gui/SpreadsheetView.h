@@ -66,6 +66,14 @@ public:
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
 
+    /** @name Printing */
+    //@{
+    void print();
+    void printPdf();
+    void printPreview();
+    void print(QPrinter*);
+    //@}
+
     void updateCell(const App::Property * prop);
 
     Spreadsheet::Sheet * getSheet() { return sheet; }
@@ -130,6 +138,13 @@ public:
     Py::Object repr();
     Py::Object getattr(const char *);
     Py::Object getSheet(const Py::Tuple&);
+    Py::Object cast_to_base(const Py::Tuple&);
+    
+    Py::Object selectedRanges(const Py::Tuple&);
+    Py::Object selectedCells(const Py::Tuple&);
+    Py::Object select(const Py::Tuple&);
+    Py::Object currentIndex(const Py::Tuple&);
+    Py::Object setCurrentIndex(const Py::Tuple&);
 
     SheetView* getSheetViewPtr();
 

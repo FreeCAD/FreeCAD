@@ -346,7 +346,7 @@ public:
      *
      * The dependency is a map from document object to a set of property names.
      * An object identifier may references multiple objects using syntax like
-     * 'Part.Group[0].Width'. 
+     * 'Part.Group[0].Width'.
      *
      * Also, we use set of string instead of set of Property pointer, because
      * the property may not exist at the time this ObjectIdentifier is
@@ -368,7 +368,7 @@ public:
 
     /** Get dependencies of this object identifier
      *
-     * @param deps: returns the depdenencies.
+     * @param deps: returns the dependencies.
      * @param needProps: whether need property dependencies.
      * @param labels: optional return of any label references.
      *
@@ -378,7 +378,7 @@ public:
      * dependencies will be returned.
      */
     void getDep(Dependencies &deps, bool needProps, std::vector<std::string> *labels=0) const;
-    
+
     /// Returns all label references
     void getDepLabels(std::vector<std::string> &labels) const;
 
