@@ -155,6 +155,9 @@ public:
     void setShowable(bool enable);
     bool isShowable() const;
 
+    /** Start the edit mode with ViewProvider::Default */
+    void startDefaultEditMode();
+
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
@@ -202,6 +205,9 @@ protected:
     //@}
 
     virtual void setModeSwitch() override;
+
+    /** Adds a menu item and bind it with \ref startDefaultEditMode().  */
+    void addDefaultAction(QMenu*, const QString&);
 
 protected:
     App::DocumentObject *pcObject;

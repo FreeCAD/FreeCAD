@@ -24,7 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
 # include <QByteArray>
+# include <QMenu>
 # include <qpixmap.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -47,7 +49,9 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObserver.h>
 #include <App/Origin.h>
+#include "ActionFunction.h"
 #include "Application.h"
+#include "Command.h"
 #include "Document.h"
 #include "Selection.h"
 #include "MainWindow.h"
@@ -254,6 +258,25 @@ void ViewProviderDocumentObject::setShowable(bool enable)
         if (which >= 0)
             ViewProvider::hide();
     }
+}
+
+void ViewProviderDocumentObject::startDefaultEditMode()
+{
+    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+    Gui::Command::openCommand(text.toUtf8());
+
+    Gui::Document* document = this->getDocument();
+    if (document) {
+        document->setEdit(this, ViewProvider::Default);
+    }
+}
+
+void ViewProviderDocumentObject::addDefaultAction(QMenu* menu, const QString& text)
+{
+    QAction* act = menu->addAction(text);
+    act->setData(QVariant((int)ViewProvider::Default));
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    func->trigger(act, boost::bind(&ViewProviderDocumentObject::startDefaultEditMode, this));
 }
 
 void ViewProviderDocumentObject::setModeSwitch() {
