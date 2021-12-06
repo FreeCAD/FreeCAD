@@ -538,9 +538,9 @@ void GroupExtension::extensionOnChanged(const Property* p) {
                         continue;
                     touched = true;
                     obj->Visibility.setValue(vis);
-                    if(vis) 
-                        ++visCount;
                 }
+                if(vis) 
+                    ++visCount;
             }
 
             if(hiddenChildren && vis && !visCount) {
@@ -601,6 +601,8 @@ void GroupExtension::slotChildChanged(const Property &prop) {
                         continue;
                     if(!obj->Visibility.getValue()) 
                         hc.emplace(obj->getNameInDocument(),"");
+                    else
+                        hc.erase(obj->getNameInDocument());
                 }
                 hiddenChildren->setValues(std::move(hc));
             }
