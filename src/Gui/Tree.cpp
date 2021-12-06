@@ -600,6 +600,7 @@ public:
     QTreeWidgetItem *reorderingItem = nullptr;
     QModelIndex reorderingIndex;
     QTreeWidgetItem *tooltipItem = nullptr;
+    App::DocumentObjectT syncViewObject;
 };
 
 
@@ -2545,8 +2546,8 @@ void TreeWidget::onToolTipTimer()
         info += tr("The drop action is auto selected depending on dropping site.\n\n"
                    "You can hold Ctrl key while dropping if you want to drop without\n"
                    "draggging object out, or make copy instead of move.\n\n"
-                   "You can hold Alt key to choose alternative drop action, including\n"
-                   "link, reorder, or replace depending on dropping site.");
+                   "You can hold Alt or Ctrl + Alt key to choose alternative drop action,\n"
+                   "including link, reorder, or replace depending on dropping site.");
     }
 
     if (info.isEmpty()) {
@@ -3007,6 +3008,7 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
 
         try {
             auto items = master->selectedItems();
+            auto originalAction = event->dropAction();
 
             if(modifier == Qt::ControlModifier)
                 event->setDropAction(Qt::CopyAction);
@@ -3015,6 +3017,7 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
             else
                 event->setDropAction(Qt::MoveAction);
             auto da = event->dropAction();
+
             bool dropOnly = da==Qt::CopyAction || da==Qt::LinkAction;
 
             if (da!=Qt::LinkAction && !vp->canDropObjects()) {
@@ -3068,7 +3071,8 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
 
                 if (da == Qt::LinkAction) {
                     auto targetObj = targetItemObj->object()->getObject();
-                    if (modifier & Qt::ControlModifier) {
+                    if ((originalAction != Qt::LinkAction && (modifier & Qt::AltModifier))
+                            || ((modifier & Qt::AltModifier) && (modifier & Qt::ControlModifier))) {
                         // CTRL + ALT to force link instead of replace operation
                         replace = false;
                         auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
