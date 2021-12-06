@@ -72,9 +72,7 @@ void ViewProviderPrimitive::attach(App::DocumentObject* obj) {
 
 void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit primitive"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit primitive"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 

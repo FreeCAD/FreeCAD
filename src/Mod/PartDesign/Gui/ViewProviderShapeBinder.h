@@ -25,6 +25,7 @@
 #define PARTGUI_ViewProviderShapeBinder_H
 
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesignGui {
 
@@ -73,6 +74,10 @@ public:
     virtual bool setEdit(int ModNum) override;
 
 private:
+    enum {
+        Synchronize = 0,
+        SelectObject = 1
+    };
     void updatePlacement(bool transaction);
 };
 

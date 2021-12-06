@@ -53,9 +53,7 @@ ViewProviderHelix::~ViewProviderHelix()
 
 void ViewProviderHelix::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit helix"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit helix"));
     PartDesignGui::ViewProviderAddSub::setupContextMenu(menu, receiver, member);
 }
 

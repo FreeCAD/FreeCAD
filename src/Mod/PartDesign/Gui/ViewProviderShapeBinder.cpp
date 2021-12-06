@@ -33,7 +33,9 @@
 #endif
 
 #include <Base/Console.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 
@@ -188,9 +190,23 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxiliar
 
 void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    Q_UNUSED(receiver)
+    Q_UNUSED(member)
+
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit shape binder"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit shape binder"));
     act->setData(QVariant((int)ViewProvider::Default));
+
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    func->trigger(act, [this]() {
+        QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+        Gui::Command::openCommand(text.toUtf8());
+
+        Gui::Document* document = this->getDocument();
+        if (document) {
+            document->setEdit(this, ViewProvider::Default);
+        }
+    });
 }
 
 //=====================================================================================
@@ -257,18 +273,18 @@ void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Synchronize"), receiver, member);
-    act->setData(QVariant((int)0));
+    act->setData(QVariant((int)Synchronize));
     act = menu->addAction(QObject::tr("Select bound object"), receiver, member);
-    act->setData(QVariant((int)1));
+    act->setData(QVariant((int)SelectObject));
 }
 
 bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
     
     switch(ModNum) {
-    case 0:
+    case Synchronize:
         updatePlacement(true);
         break;
-    case 1: {
+    case SelectObject: {
         auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
         if(!self || !self->Support.getValue())
             break;

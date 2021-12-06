@@ -60,9 +60,7 @@ std::vector<App::DocumentObject*> ViewProviderHole::claimChildren(void)const
 
 void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit hole"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit hole"));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
