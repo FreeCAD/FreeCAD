@@ -696,9 +696,16 @@ void populateMenu(QMenu *menu, MenuType type, bool popup)
         }
         lockMenu->addSeparator();
 
+        bool relocate = false;
+        QRect rectMain(mw->mapToGlobal(QPoint(0,0)), QSize(mw->width()-20, mw->height()-20));
+
         for (auto toolbar : mw->findChildren<QToolBar*>()) {
             auto action = toolbar->toggleViewAction();
             auto parent = toolbar->parentWidget();
+
+            relocate = relocate || (toolbar->isFloating()
+                    && !rectMain.contains(toolbar->mapToGlobal(QPoint(0,0))));
+
             if (parent == mw || parent == mw->statusBar()) {
                 // Some misbehaved code may force the toolbar to be visible
                 // while hiding its action, which causes the user to be unable
@@ -735,6 +742,23 @@ void populateMenu(QMenu *menu, MenuType type, bool popup)
                 }
 #endif
             }
+        }
+
+        if (relocate) {
+            // At least for MacOS, it is possible to move the toolbar outside
+            // the screen making it impossible to move back
+            menu->addAction(QObject::tr("Relocate outlier toolbars"), [rectMain]() {
+                for (auto tb : getMainWindow()->findChildren<QToolBar*>()) {
+                    if (!tb->isFloating())
+                        continue;
+                    QPoint pos = tb->mapToGlobal(QPoint(0,0));
+                    if (rectMain.contains(pos))
+                        continue;
+                    tb->move(QPoint(std::min(std::max(pos.x(), rectMain.left()), rectMain.right()),
+                                    std::min(std::max(pos.y(), rectMain.top()), rectMain.bottom())));
+                }
+            });
+            menu->addSeparator();
         }
         break;
     }
