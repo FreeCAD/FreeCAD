@@ -127,7 +127,7 @@ class AddonManagerRepo:
                 "branch":self.branch,
                 "repo_type":int(self.repo_type),
                 "description":self.description,
-                "cached_icon_filename":self.cached_icon_filename}
+                "cached_icon_filename":self.get_cached_icon_filename()}
         
     def contains_workbench(self) -> bool:
         """ Determine if this package contains (or is) a workbench """
@@ -165,6 +165,9 @@ class AddonManagerRepo:
 
         if self.cached_icon_filename:
             return self.cached_icon_filename
+
+        if not self.metadata:
+            return ""
 
         real_icon = self.metadata.Icon
         if not real_icon:

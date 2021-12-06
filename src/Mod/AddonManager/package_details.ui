@@ -43,10 +43,6 @@
        </property>
       </spacer>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="layoutDetailsInstallButtons">
      <item>
       <widget class="QPushButton" name="buttonInstall">
        <property name="toolTip">
