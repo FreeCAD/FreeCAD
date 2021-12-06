@@ -27,6 +27,7 @@ INSTALL(
 
 SET(PathScripts_SRCS
     PathCommands.py
+    PathScripts/drillableLib.py
     PathScripts/PathAdaptive.py
     PathScripts/PathAdaptiveGui.py
     PathScripts/PathAreaOp.py
@@ -211,6 +212,7 @@ SET(Tools_Shape_SRCS
 SET(PathTests_SRCS
     PathTests/__init__.py
     PathTests/boxtest.fcstd
+    PathTests/Drilling_1.FCStd
     PathTests/PathTestUtils.py
     PathTests/test_adaptive.fcstd
     PathTests/test_centroid_00.ngc
@@ -224,6 +226,7 @@ SET(PathTests_SRCS
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathDrillGenerator.py
+    PathTests/TestPathDrillable.py
     PathTests/TestPathRotationGenerator.py
     PathTests/TestPathGeom.py
     PathTests/TestPathHelix.py

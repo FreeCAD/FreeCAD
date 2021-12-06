@@ -187,6 +187,7 @@ class ObjectJob:
             "Base",
             QtCore.QT_TRANSLATE_NOOP("PathJob", "Select the Type of Job"),
         )
+        obj.setEditorMode("JobType", 2)  # Hide
 
         obj.addProperty(
             "App::PropertyBool",
@@ -494,6 +495,8 @@ class ObjectJob:
                 "Base",
                 QtCore.QT_TRANSLATE_NOOP("PathJob", "Select the Type of Job"),
             )
+            obj.setEditorMode("JobType", 2)  # Hide
+
             obj.JobType = ["2D", "2.5D", "Lathe", "Multiaxis"]
 
     def onChanged(self, obj, prop):

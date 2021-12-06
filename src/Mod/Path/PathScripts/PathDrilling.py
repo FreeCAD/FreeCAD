@@ -43,9 +43,11 @@ __doc__ = "Path Drilling operation."
 __contributors__ = "IMBack!"
 
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
-
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):

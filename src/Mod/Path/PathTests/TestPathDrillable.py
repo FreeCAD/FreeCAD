@@ -26,9 +26,12 @@ import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
 import PathScripts.drillableLib as drillableLib
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class TestPathDrillable(PathTestUtils.PathTestBase):
     def setUp(self):
