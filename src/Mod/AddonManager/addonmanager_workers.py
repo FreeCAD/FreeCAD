@@ -25,15 +25,14 @@
 import os
 import re
 import shutil
-import sys
 import json
 import tempfile
 import hashlib
 import threading
 import queue
-from typing import Union
+from typing import Union, List
 
-from PySide2 import QtCore, QtGui, QtWidgets, QtNetwork
+from PySide2 import QtCore, QtGui, QtNetwork
 
 import FreeCAD
 if FreeCAD.GuiUp:
@@ -68,8 +67,6 @@ try:
     have_markdown = True
 except ImportError:
     pass
-
-from io import BytesIO
 
 #  @package AddonManager_workers
 #  \ingroup ADDONMANAGER
@@ -203,13 +200,22 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
         self.cache_file = cache_file
 
     def run(self):
+        metadata_cache_path = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata")
         with open(self.cache_file,"r") as f:
             data = f.read()
-            dict_data = json.loads(data)
-            for item in dict_data:
-                if QtCore.QThread.currentThread().isInterruptionRequested():
-                    return
-                self.addon_repo.emit(AddonManagerRepo.from_cache(item))
+            if data:
+                dict_data = json.loads(data)
+                for item in dict_data:
+                    if QtCore.QThread.currentThread().isInterruptionRequested():
+                        return
+                    repo = AddonManagerRepo.from_cache(item)
+                    repo_metadata_cache_path = os.path.join(metadata_cache_path, repo.name, "package.xml")
+                    if os.path.isfile(repo_metadata_cache_path):
+                        try:
+                            repo.metadata = FreeCAD.Metadata(repo_metadata_cache_path)
+                        except Exception:
+                            pass
+                    self.addon_repo.emit(repo)
         self.done.emit()
 
 class LoadMacrosFromCacheWorker(QtCore.QThread):
@@ -231,50 +237,6 @@ class LoadMacrosFromCacheWorker(QtCore.QThread):
                 self.add_macro_signal.emit(AddonManagerRepo.from_macro(new_macro))
         self.done.emit()
 
-class LoadMetadataFromCacheWorker(QtCore.QThread):
-    
-    done = QtCore.Signal()
-    package_updated = QtCore.Signal(AddonManagerRepo)
-
-    def __init__(self):
-        QtCore.QThread.__init__(self)
-
-    def run(self):
-        cache_path = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata")
-        package_names = []
-        if os.path.isdir(cache_path):
-            for dir in os.listdir(cache_path):
-                if QtCore.QThread.currentThread().isInterruptionRequested():
-                    return
-                dir_path = os.path.join(cache_path, dir)
-                if not os.path.isdir(dir_path):
-                    continue
-                xml_cache = os.path.join(dir_path, "package.xml")
-                try:
-                    meta = FreeCAD.Metadata(xml_cache)
-                except Exception:
-                    FreeCAD.Console.PrintWarning(f"Failed to create Metadata from {xml_cache}\n")
-                    continue
-                name = dir # Do not use metadata name here, we want to match the legacy fetch code
-                url = None
-                branch = None
-                for meta_url in meta.Urls:
-                    if meta_url["type"] == "repository":
-                        url = meta_url["location"]
-                        branch = meta_url["branch"]
-                        break
-                addondir = os.path.join(FreeCAD.getUserAppDataDir(),"Mod",name)
-                if os.path.exists(addondir) and os.listdir(addondir):
-                    state = AddonManagerRepo.UpdateStatus.UNCHECKED
-                else:
-                    state = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-                cached_package = AddonManagerRepo(name, url, state, branch)
-                cached_package.metadata = meta
-                cached_package.repo_type = AddonManagerRepo.RepoType.PACKAGE
-                cached_package.description = meta.Description
-                self.package_updated.emit(cached_package)
-        self.done.emit()
-
 class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
     """This worker checks for available updates for all workbenches"""
 
@@ -284,7 +246,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
     progress_made = QtCore.Signal(int, int)
     done = QtCore.Signal()
 
-    def __init__(self, repos:[AddonManagerRepo]):
+    def __init__(self, repos:List[AddonManagerRepo]):
 
         QtCore.QThread.__init__(self)
         self.repos = repos
@@ -986,7 +948,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                         answer += ":\n<b>" + f + "</b>"
         self.success.emit(self.repo, answer)
 
-    def check_python_dependencies(self, baseurl:str) -> [bool,str]:
+    def check_python_dependencies(self, baseurl:str) -> Union[bool,str]:
         """checks if the repo contains a metadata.txt and check its contents"""
 
         ok = True
@@ -995,7 +957,10 @@ class InstallWorkbenchWorker(QtCore.QThread):
         if not depsurl.endswith("/"):
             depsurl += "/"
         depsurl += "master/metadata.txt"
-        mu = utils.urlopen(depsurl)
+        try:
+            mu = utils.urlopen(depsurl)
+        except Exception:
+            return True,"No metadata.txt found"
         if mu:
             # metadata.txt found
             depsfile = mu.read()
@@ -1189,22 +1154,24 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                 self.downloaders.append(downloader)
 
         # Run a local event loop until we've processed all of the downloads:
-        # this is local
-        # to this thread, and does not affect the main event loop
+        # this is local to this thread, and does not affect the main event loop
         ui_updater = QtCore.QTimer()
         ui_updater.timeout.connect(self.send_ui_update)
         ui_updater.start(100) # Send an update back to the main thread every 100ms
         self.num_downloads_required = len(self.downloaders)
         self.num_downloads_completed = UpdateMetadataCacheWorker.AtomicCounter()
+        aborted = False
         while True:
-            if current_thread.isInterruptionRequested():
+            if current_thread.isInterruptionRequested() and not aborted:
                 for downloader in self.downloaders:
                     downloader.abort()
-            QtCore.QCoreApplication.processEvents()
-            if self.num_downloads_completed.get() == self.num_downloads_required:
+                aborted = True
+            QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
+            if self.num_downloads_completed.get() >= self.num_downloads_required:
                 break
 
-        if current_thread.isInterruptionRequested():
+        if aborted:
+            FreeCAD.Console.PrintMessage("Metadata update cancelled\n")
             return
         
         # Update and serialize the updated index, overwriting whatever was
@@ -1224,6 +1191,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         # Called by the QNetworkAccessManager's sub-threads when a fetch
         # process completed (in any state)
         self.num_downloads_completed.increment()
+        reply.deleteLater()
 
     def on_updated(self, repo):
         # Called if this repo got new metadata and/or a new icon

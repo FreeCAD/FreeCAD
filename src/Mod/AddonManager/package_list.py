@@ -54,7 +54,7 @@ class PackageList(QWidget):
         
         self.item_filter = PackageListFilter()
         self.ui.listPackages.setModel (self.item_filter)
-        self.item_delegate = PackageListItemDelegate()
+        self.item_delegate = PackageListItemDelegate(self.ui.listPackages)
         self.ui.listPackages.setItemDelegate(self.item_delegate)
 
         self.ui.listPackages.clicked.connect(self.on_listPackages_clicked)
@@ -420,6 +420,7 @@ class Ui_PackageList(object):
         self.listPackages.setResizeMode(QListView.Adjust)
         self.listPackages.setUniformItemSizes(False)
         self.listPackages.setAlternatingRowColors(True)
+        self.listPackages.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.verticalLayout.addWidget(self.listPackages)
 

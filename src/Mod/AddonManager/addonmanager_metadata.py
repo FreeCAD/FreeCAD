@@ -68,7 +68,8 @@ class MetadataDownloadWorker(QObject):
         self.fetch_task.sslErrors.connect(self.on_ssl_error)
 
     def abort(self):
-        self.fetch_task.abort()
+        if not self.fetch_task.isFinished():
+            self.fetch_task.abort()
 
     def on_redirect(self, url):
         # For now just blindly follow all redirects
@@ -110,6 +111,8 @@ class MetadataDownloadWorker(QObject):
                 # the cache
                 self.update_local_copy(new_xml)
         elif self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError:
+            pass
+        elif self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:
             pass
         else:
             FreeCAD.Console.PrintWarning(f"Failed to connect to {self.url}:\n {self.fetch_task.error()}\n")

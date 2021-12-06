@@ -35,13 +35,15 @@ from addonmanager_utilities import translate  # this needs to be as is for pylup
 from addonmanager_workers import ShowWorker, GetMacroDetailsWorker
 from AddonManagerRepo import AddonManagerRepo
 
+import inspect
+
 class PackageDetails(QWidget):
 
-    backClicked = Signal()
-    installClicked = Signal()
-    uninstallClicked = Signal()
-    updateClicked = Signal()
-    executeClicked = Signal()
+    back = Signal()
+    install = Signal(AddonManagerRepo)
+    uninstall = Signal(AddonManagerRepo)
+    update = Signal(AddonManagerRepo)
+    execute = Signal(AddonManagerRepo)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -51,14 +53,14 @@ class PackageDetails(QWidget):
         self.worker = None
         self.repo = None
 
-        self.ui.buttonBack.clicked.connect(self.backClicked.emit)
+        self.ui.buttonBack.clicked.connect(self.back.emit)
         self.ui.buttonRefresh.clicked.connect(self.refresh)
-        self.ui.buttonExecute.clicked.connect(self.executeClicked.emit)
-        self.ui.buttonInstall.clicked.connect(self.installClicked.emit)
-        self.ui.buttonUninstall.clicked.connect(self.uninstallClicked.emit)
-        self.ui.buttonUpdate.clicked.connect(self.updateClicked.emit)
+        self.ui.buttonExecute.clicked.connect(lambda: self.execute.emit(self.repo))
+        self.ui.buttonInstall.clicked.connect(lambda: self.install.emit(self.repo))
+        self.ui.buttonUninstall.clicked.connect(lambda: self.uninstall.emit(self.repo))
+        self.ui.buttonUpdate.clicked.connect(lambda: self.update.emit(self.repo))
 
-    def show_repo(self, repo:AddonManagerRepo) -> None:
+    def show_repo(self, repo:AddonManagerRepo, reload:bool = False) -> None:
 
         self.repo = repo
 
@@ -67,7 +69,12 @@ class PackageDetails(QWidget):
                 self.worker.requestInterruption()
                 self.worker.wait()
 
-        self.check_and_clean_cache(repo)
+        # Always load bare macros from scratch, we need to grab their code, which isn't cached
+        force_reload = reload
+        if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+            force_reload = True
+
+        self.check_and_clean_cache(force_reload)
 
         if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
             self.show_macro(repo)
@@ -95,6 +102,10 @@ class PackageDetails(QWidget):
             self.ui.buttonInstall.hide()
             self.ui.buttonUninstall.show()
             self.ui.buttonUpdate.hide()
+        elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+            self.ui.buttonInstall.hide()
+            self.ui.buttonUninstall.show()
+            self.ui.buttonUpdate.hide()
 
     @classmethod
     def cache_path(self, repo:AddonManagerRepo) -> str:
@@ -115,6 +126,12 @@ class PackageDetails(QWidget):
             last_cache_update = date.fromtimestamp(timestamp)
             delta_update = timedelta(days=days_between_updates)
             if date.today() >= last_cache_update + delta_update or download_interrupted or force:
+                if force:
+                    FreeCAD.Console.PrintMessage(f"Forced README cache update for {self.repo.name}\n")
+                elif download_interrupted:
+                    FreeCAD.Console.PrintMessage(f"Restarting interrupted README download for {self.repo.name}\n")
+                else:
+                    FreeCAD.Console.PrintMessage(f"Cache expired, downloading README for {self.repo.name} again\n")
                 os.remove(readme_cache_file)
                 if os.path.isdir(readme_images_path):
                     shutil.rmtree(readme_images_path)
@@ -195,35 +212,33 @@ class Ui_PackageDetails(object):
         self.layoutDetailsBackButton.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_2.addLayout(self.layoutDetailsBackButton)
-
-        self.layoutDetailsInstallButtons = QHBoxLayout()
-        self.layoutDetailsInstallButtons.setObjectName(u"layoutDetailsInstallButtons")
         self.buttonInstall = QPushButton(PackageDetails)
         self.buttonInstall.setObjectName(u"buttonInstall")
 
-        self.layoutDetailsInstallButtons.addWidget(self.buttonInstall)
+        self.layoutDetailsBackButton.addWidget(self.buttonInstall)
 
         self.buttonUninstall = QPushButton(PackageDetails)
         self.buttonUninstall.setObjectName(u"buttonUninstall")
 
-        self.layoutDetailsInstallButtons.addWidget(self.buttonUninstall)
+        self.layoutDetailsBackButton.addWidget(self.buttonUninstall)
 
         self.buttonUpdate = QPushButton(PackageDetails)
         self.buttonUpdate.setObjectName(u"buttonUpdate")
 
-        self.layoutDetailsInstallButtons.addWidget(self.buttonUpdate)
+        self.layoutDetailsBackButton.addWidget(self.buttonUpdate)
 
         self.buttonExecute = QPushButton(PackageDetails)
         self.buttonExecute.setObjectName(u"buttonExecute")
 
-        self.layoutDetailsInstallButtons.addWidget(self.buttonExecute)
+        self.layoutDetailsBackButton.addWidget(self.buttonExecute)
 
 
-        self.verticalLayout_2.addLayout(self.layoutDetailsInstallButtons)
+        self.verticalLayout_2.addLayout(self.layoutDetailsBackButton)
 
         self.textBrowserReadMe = QTextBrowser(PackageDetails)
         self.textBrowserReadMe.setObjectName(u"textBrowserReadMe")
+        self.textBrowserReadMe.setOpenExternalLinks(True)
+        self.textBrowserReadMe.setOpenLinks(True)
 
         self.verticalLayout_2.addWidget(self.textBrowserReadMe)
 

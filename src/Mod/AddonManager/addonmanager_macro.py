@@ -26,7 +26,7 @@ import re
 import sys
 import codecs
 import shutil
-from typing import Dict, Union
+from typing import Dict, Union, List
 
 import FreeCAD
 
@@ -184,7 +184,7 @@ class Macro(object):
         self.code = code
         self.parsed = True
 
-    def install(self, macro_dir:str) -> bool:
+    def install(self, macro_dir:str) -> (bool, List[str]):
         """Install a macro and all its related files
 
         Returns True if the macro was installed correctly.
@@ -195,41 +195,40 @@ class Macro(object):
         """
 
         if not self.code:
-            return False
+            return False,["No code"]
         if not os.path.isdir(macro_dir):
             try:
                 os.makedirs(macro_dir)
             except OSError:
-                FreeCAD.Console.PrintError(f"Failed to create {macro_dir}\n")
-                return False
+                return False, [f"Failed to create {macro_dir}"]
         macro_path = os.path.join(macro_dir, self.filename)
         try:
             with codecs.open(macro_path, 'w', 'utf-8') as macrofile:
                 macrofile.write(self.code)
         except IOError:
-            FreeCAD.Console.PrintError(f"Failed to write {macro_path}\n")
-            return False
+            return False, [f"Failed to write {macro_path}"]
         # Copy related files, which are supposed to be given relative to
         # self.src_filename.
         base_dir = os.path.dirname(self.src_filename)
+        warnings = []
         for other_file in self.other_files:
             dst_dir = os.path.join(macro_dir, os.path.dirname(other_file))
             if not os.path.isdir(dst_dir):
                 try:
                     os.makedirs(dst_dir)
                 except OSError:
-                    FreeCAD.Console.PrintError(f"Failed to create {dst_dir}\n")
-                    return False
+                    return False, [f"Failed to create {dst_dir}"]
             src_file = os.path.join(base_dir, other_file)
             dst_file = os.path.join(macro_dir, other_file)
             try:
                 shutil.copy(src_file, dst_file)
             except IOError:
-                FreeCAD.Console.PrintError(f"Failed to copy {src_file} to {dst_file}\n")
-                return False
+                warnings.append(f"Failed to copy {src_file} to {dst_file}")
+        if len(warnings) > 0:
+            return False, warnings
     
         FreeCAD.Console.PrintMessage(f"Macro {self.name} was installed successfully.\n")
-        return True
+        return True, []
 
 
     def remove(self) -> bool:

@@ -196,11 +196,11 @@ class CommandAddonManager:
         self.dialog.buttonPauseUpdate.clicked.connect(self.stop_update)
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
-        self.packageDetails.executeClicked.connect(self.executemacro)
-        self.packageDetails.installClicked.connect(self.install)
-        self.packageDetails.uninstallClicked.connect(self.remove)
-        self.packageDetails.updateClicked.connect(self.remove)
-        self.packageDetails.backClicked.connect(self.on_buttonBack_clicked)
+        self.packageDetails.execute.connect(self.executemacro)
+        self.packageDetails.install.connect(self.install)
+        self.packageDetails.uninstall.connect(self.remove)
+        self.packageDetails.update.connect(self.update)
+        self.packageDetails.back.connect(self.on_buttonBack_clicked)
 
         # center the dialog over the FreeCAD window
         mw = FreeCADGui.getMainWindow()
@@ -254,13 +254,25 @@ class CommandAddonManager:
                     if not thread.isFinished():
                         thread.requestInterruption()
                         oktoclose = False
-        if not oktoclose:
+        while not oktoclose:
             oktoclose = True
             for worker in self.workers:
                 if hasattr(self, worker):
                     thread = getattr(self, worker)
                     if thread:
-                        thread.wait()
+                        thread.wait(25)
+                    if not thread.isFinished():
+                        oktoclose = False
+            QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
+
+        # Write the cache data
+        for repo in self.item_model.repos:
+            if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+                self.cache_macro(repo)
+            else:
+                self.cache_package(repo)
+        self.write_package_cache()
+        self.write_macro_cache()
 
         # all threads have finished
         if oktoclose:
@@ -345,15 +357,28 @@ class CommandAddonManager:
     def populate_packages_table(self) -> None:
         self.item_model.clear()
         self.current_progress_region += 1
-        if self.update_cache or not os.path.isfile(self.get_cache_file_name("package_cache.json")):
+
+        use_cache = not self.update_cache
+        if use_cache:
+            if os.path.isfile(self.get_cache_file_name("package_cache.json")):
+                with open(self.get_cache_file_name("package_cache.json"),"r") as f:
+                    data = f.read()
+                    try:
+                        from_json = json.loads(data)
+                        if len(from_json) == 0:
+                            use_cache = False
+                    except Exception as e:
+                        use_cache = False
+            else:
+                use_cache = False
+
+        if not use_cache:
             self.update_cache = True # Make sure to trigger the other cache updates, if the json file was missing
             self.update_worker = UpdateWorker()
             self.update_worker.status_message.connect(self.show_information)
             self.update_worker.addon_repo.connect(self.add_addon_repo)
-            self.update_worker.addon_repo.connect(self.cache_package)
             self.update_progress_bar(10,100)
             self.update_worker.done.connect(self.do_next_startup_phase) # Link to step 2
-            self.update_worker.done.connect(self.write_package_cache)
             self.update_worker.start()
         else:
             self.update_worker = LoadPackagesFromCacheWorker(self.get_cache_file_name("package_cache.json"))
@@ -371,6 +396,7 @@ class CommandAddonManager:
         package_cache_path = self.get_cache_file_name("package_cache.json")
         with open(package_cache_path,"w") as f:
             f.write(json.dumps(self.package_cache))
+            self.package_cache = []
 
     def activate_table_widgets(self) -> None:
         self.packageList.setEnabled(True)
@@ -384,9 +410,7 @@ class CommandAddonManager:
             self.macro_worker.status_message_signal.connect(self.show_information)
             self.macro_worker.progress_made.connect(self.update_progress_bar)
             self.macro_worker.add_macro_signal.connect(self.add_addon_repo)
-            self.macro_worker.add_macro_signal.connect(self.cache_macro)
             self.macro_worker.done.connect(self.do_next_startup_phase) # Link to step 3
-            self.macro_worker.done.connect(self.write_macro_cache)
             self.macro_worker.start()
         else:
             self.macro_worker = LoadMacrosFromCacheWorker(self.get_cache_file_name("macro_cache.json"))
@@ -403,6 +427,7 @@ class CommandAddonManager:
         macro_cache_path = self.get_cache_file_name("macro_cache.json")
         with open(macro_cache_path,"w") as f:
             f.write(json.dumps(self.macro_cache))
+            self.macro_cache = []
         
     def update_metadata_cache(self) -> None:
         self.current_progress_region += 1
@@ -414,10 +439,7 @@ class CommandAddonManager:
             self.update_metadata_cache_worker.package_updated.connect(self.on_package_updated)
             self.update_metadata_cache_worker.start()
         else:
-            self.update_metadata_cache_worker = LoadMetadataFromCacheWorker()
-            self.update_metadata_cache_worker.done.connect(self.do_next_startup_phase) # Link to step 4
-            self.update_metadata_cache_worker.package_updated.connect(self.on_package_updated)
-            self.update_metadata_cache_worker.start()
+            self.do_next_startup_phase()
 
     def on_buttonUpdateCache_clicked(self) -> None:
         self.update_cache = True
@@ -545,18 +567,12 @@ class CommandAddonManager:
 
         self.item_model.append_item(repo)
 
-    def install(self) -> None:
+    def install(self, repo:AddonManagerRepo) -> None:
         """installs or updates a workbench, macro, or package"""
 
         if hasattr(self, "install_worker") and self.install_worker:
             if self.install_worker.isRunning():
                 return
-
-        if not hasattr(self, "selected_repo"):
-            FreeCAD.Console.PrintWarning ("Internal error: no selected repo\n")
-            return
-
-        repo = self.selected_repo
 
         if not repo:
             return
@@ -576,13 +592,17 @@ class CommandAddonManager:
             # To try to ensure atomicity, test the installation into a temp directory first,
             # and assume if that worked we have good odds of the real installation working
             failed = False
+            errors = []
             with tempfile.TemporaryDirectory() as dir:
-                temp_install_succeeded = macro.install(dir)
+                temp_install_succeeded, error_list = macro.install(dir)
                 if not temp_install_succeeded:
                     failed = True
+                    errors = error_list
 
             if not failed:
-                failed = macro.install(self.macro_repo_dir)
+                real_install_succeeded, errors = macro.install(self.macro_repo_dir)
+                if not real_install_succeeded:
+                    failed = True
 
             if not failed:
                 message = translate("AddonsInstaller",
@@ -590,8 +610,14 @@ class CommandAddonManager:
                                     "now available from the Macros dialog.")
                 self.on_package_installed (repo, message)
             else:
-                message = translate("AddonsInstaller", "Installation of macro failed. See console for failure details.")
+                message = translate("AddonsInstaller", "Installation of macro failed" + ":")
+                for error in errors:
+                    message += "\n  * "
+                    message += error
                 self.on_installation_failed (repo, message)
+
+    def update(self, repo:AddonManagerRepo) -> None:
+        self.install(repo)
 
     def update_all(self) -> None:
         """ Asynchronously apply all available updates: individual failures are noted, but do not stop other updates """
@@ -682,12 +708,11 @@ class CommandAddonManager:
                                       translate("AddonsInstaller", "Installation succeeded"),
                                       message,
                                       QtWidgets.QMessageBox.Close)
-        self.dialog.progressBar.hide()
-        self.table_row_selected(self.dialog.listPackages.selectionModel().selectedIndexes()[0], QtCore.QModelIndex())
         if repo.contains_workbench():
             self.item_model.update_item_status(repo.name, AddonManagerRepo.UpdateStatus.PENDING_RESTART)
         else:
             self.item_model.update_item_status(repo.name, AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
+        self.packageDetails.show_repo(repo, reload=True)
 
     def on_installation_failed(self, _:AddonManagerRepo, message:str) -> None:
         QtWidgets.QMessageBox.warning(None,
@@ -696,10 +721,10 @@ class CommandAddonManager:
                                       QtWidgets.QMessageBox.Close) 
         self.dialog.progressBar.hide()
 
-    def executemacro(self) -> None:
+    def executemacro(self, repo:AddonManagerRepo) -> None:
         """executes a selected macro"""
 
-        macro = self.selected_repo.macro
+        macro = repo.macro
         if not macro or not macro.code:
             return
 
@@ -713,7 +738,7 @@ class CommandAddonManager:
                 temp_install_succeeded = macro.install(dir)
                 if not temp_install_succeeded:
                     message = translate("AddonsInstaller", "Execution of macro failed. See console for failure details.")
-                    self.on_installation_failed (self.selected_repo, message)
+                    self.on_installation_failed (repo, message)
                     return
                 else:
                     macro_path = os.path.join(dir,macro.filename)
@@ -727,59 +752,28 @@ class CommandAddonManager:
         os.chmod(path, stat.S_IWRITE)
         func(path)
 
-    def remove(self) -> None:
+    def remove(self, repo:AddonManagerRepo) -> None:
         """uninstalls a macro or workbench"""
 
-        if self.selected_repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH or \
-           self.selected_repo.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+        if repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH or \
+           repo.repo_type == AddonManagerRepo.RepoType.PACKAGE:
             basedir = FreeCAD.getUserAppDataDir()
             moddir = basedir + os.sep + "Mod"
-            clonedir = moddir + os.sep + self.selected_repo.name
+            clonedir = moddir + os.sep + repo.name
             if os.path.exists(clonedir):
                 shutil.rmtree(clonedir, onerror=self.remove_readonly)
-                self.dialog.textBrowserReadMe.setText(translate("AddonsInstaller",
-                                                          "Addon successfully removed. Please restart FreeCAD."))
-                self.item_model.update_item_status(self.selected_repo.name, AddonManagerRepo.UpdateStatus.NOT_INSTALLED)
+                self.item_model.update_item_status(repo.name, AddonManagerRepo.UpdateStatus.NOT_INSTALLED)
                 self.addon_removed = True  # A value to trigger the restart message on dialog close
+                self.packageDetails.show_repo(repo, reload=True)
             else:
                 self.dialog.textBrowserReadMe.setText(translate("AddonsInstaller", "Unable to remove this addon with the Addon Manager."))
 
-        elif self.selected_repo.repo_type == AddonManagerRepo.RepoType.MACRO:
-            macro = self.selected_repo.macro
+        elif repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+            macro = repo.macro
             if macro.remove():
-                self.dialog.textBrowserReadMe.setText(translate("AddonsInstaller", "Macro successfully removed."))
-                self.item_model.update_item_status(self.selected_repo.name, AddonManagerRepo.UpdateStatus.NOT_INSTALLED)
+                self.item_model.update_item_status(repo.name, AddonManagerRepo.UpdateStatus.NOT_INSTALLED)
+                self.packageDetails.show_repo(repo, reload=True)
             else:
                 self.dialog.textBrowserReadMe.setText(translate("AddonsInstaller", "Macro could not be removed."))
-
-    def show_config(self) -> None:
-        """shows the configuration dialog"""
-
-        self.config = FreeCADGui.PySideUic.loadUi(os.path.join(os.path.dirname(__file__), "AddonManagerOptions.ui"))
-
-        # restore stored values
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        self.config.checkUpdates.setChecked(pref.GetBool("AutoCheck", False))
-        self.config.customRepositories.setPlainText(pref.GetString("CustomRepositories", ""))
-        self.config.radioButtonNoProxy.setChecked(pref.GetBool("NoProxyCheck", True))
-        self.config.radioButtonSystemProxy.setChecked(pref.GetBool("SystemProxyCheck", False))
-        self.config.radioButtonUserProxy.setChecked(pref.GetBool("UserProxyCheck", False))
-        self.config.userProxy.setPlainText(pref.GetString("ProxyUrl", ""))
-
-        # center the dialog over the Addon Manager
-        self.config.move(self.dialog.frameGeometry().topLeft() +
-                         self.dialog.rect().center() -
-                         self.config.rect().center())
-
-        ret = self.config.exec_()
-
-        if ret:
-            # OK button has been pressed
-            pref.SetBool("AutoCheck", self.config.checkUpdates.isChecked())
-            pref.SetString("CustomRepositories", self.config.customRepositories.toPlainText())
-            pref.SetBool("NoProxyCheck", self.config.radioButtonNoProxy.isChecked())
-            pref.SetBool("SystemProxyCheck", self.config.radioButtonSystemProxy.isChecked())
-            pref.SetBool("UserProxyCheck", self.config.radioButtonUserProxy.isChecked())
-            pref.SetString("ProxyUrl", self.config.userProxy.toPlainText())
 
 # @}
