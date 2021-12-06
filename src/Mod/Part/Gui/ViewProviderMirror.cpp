@@ -524,9 +524,7 @@ ViewProviderOffset::~ViewProviderOffset()
 
 void ViewProviderOffset::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit offset"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit offset"));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
@@ -610,9 +608,7 @@ ViewProviderThickness::~ViewProviderThickness()
 
 void ViewProviderThickness::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit thickness"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit thickness"));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
