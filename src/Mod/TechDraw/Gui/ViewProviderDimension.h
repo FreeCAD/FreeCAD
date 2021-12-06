@@ -76,7 +76,6 @@ public:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
-    void startDefaultEditMode();
 
     virtual TechDraw::DrawViewDimension* getViewObject() const;
 

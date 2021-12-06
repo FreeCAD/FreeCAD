@@ -135,17 +135,6 @@ void ViewProviderDimension::setupContextMenu(QMenu* menu, QObject* receiver, con
     ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
 }
 
-void ViewProviderDimension::startDefaultEditMode()
-{
-    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-    Gui::Command::openCommand(text.toUtf8());
-
-    Gui::Document* document = this->getDocument();
-    if (document) {
-        document->setEdit(this, ViewProvider::Default);
-    }
-}
-
 bool ViewProviderDimension::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
