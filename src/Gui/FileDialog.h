@@ -58,7 +58,7 @@ public:
                                          Options options = ShowDirsOnly );
     static QStringList getOpenFileNames( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
                                          QString filter = QString(), QString * selectedFilter = 0, Options options = Options(),
-                                         FileMode fileMode = ExistingFile);
+                                         FileMode fileMode = ExistingFiles);
 
     /*! Return the last directory a file was read from or saved to. */
     static QString getWorkingDirectory();
