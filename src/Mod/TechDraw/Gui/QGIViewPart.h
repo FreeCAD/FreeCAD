@@ -96,7 +96,7 @@ public:
 protected:
     QPainterPath drawPainterPath(TechDraw::BaseGeom *baseGeom) const;
     void drawViewPart();
-    QGIFace* drawFace(TechDraw::Face* f, int idx);
+    QGIFace* drawFace(TechDraw::FacePtr f, int idx);
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 

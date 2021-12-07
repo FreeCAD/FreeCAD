@@ -104,12 +104,12 @@ public:
     //! Returns 2D bounding box
     Base::BoundBox3d calcBoundingBox() const;
 
-    const std::vector<Vertex *>   & getVertexGeometry() const { return vertexGeom; }
+    const std::vector<VertexPtr>   & getVertexGeometry() const { return vertexGeom; }
     const std::vector<BaseGeom *> & getEdgeGeometry() const { return edgeGeom; }
     const std::vector<BaseGeom *> getVisibleFaceEdges(bool smooth, bool seam) const;
-    const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; }
+    const std::vector<FacePtr>     & getFaceGeometry() const { return faceGeom; }
     
-    void setVertexGeometry(std::vector<Vertex*> newVerts) {vertexGeom = newVerts; }
+    void setVertexGeometry(std::vector<VertexPtr> newVerts) {vertexGeom = newVerts; }
     void setEdgeGeometry(std::vector<BaseGeom*> newGeoms) {edgeGeom = newGeoms; }
 
     void projectShape(const TopoDS_Shape &input,
@@ -120,7 +120,7 @@ public:
                              const gp_Ax2 &CS);
 
     void extractGeometry(edgeClass category, bool visible);
-    void addFaceGeom(Face * f);
+    void addFaceGeom(FacePtr f);
     void clearFaceGeom();
     void setIsoCount(int i) { m_isoCount = i; }
     void setParentName(std::string n);                          //for debug messages
@@ -146,7 +146,7 @@ public:
     TopoDS_Shape getHidSeam(void)    { return hidSeam; }
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
-    void addVertex(TechDraw::Vertex* v);
+    void addVertex(TechDraw::VertexPtr v);
     void addEdge(TechDraw::BaseGeom* bg);
 
 
@@ -193,8 +193,8 @@ protected:
 
     // Geometry
     std::vector<BaseGeom *> edgeGeom;
-    std::vector<Vertex *> vertexGeom;
-    std::vector<Face *> faceGeom;
+    std::vector<VertexPtr> vertexGeom;
+    std::vector<FacePtr> faceGeom;
 
     bool findVertex(Base::Vector3d v);
 

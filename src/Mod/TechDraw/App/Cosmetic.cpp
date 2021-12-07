@@ -1121,13 +1121,13 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
 
     double scale = partFeat->getScale();
 
-    std::vector<TechDraw::Vertex*> points;
+    std::vector<TechDraw::VertexPtr> points;
     for (auto& vn: vertNames) {
         if (TechDraw::DrawUtil::getGeomTypeFromName(vn) != "Vertex") {
             continue;
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(vn);
-        TechDraw::Vertex* v = partFeat->getProjVertexByIndex(idx);
+        TechDraw::VertexPtr v = partFeat->getProjVertexByIndex(idx);
         if (v != nullptr) {
             points.push_back(v);
         }

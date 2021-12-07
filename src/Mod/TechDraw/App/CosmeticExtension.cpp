@@ -115,7 +115,7 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(std::s
         return result;
     }
     int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::Vertex* v = dvp->getProjVertexByIndex(idx);
+    TechDraw::VertexPtr v = dvp->getProjVertexByIndex(idx);
     if (v == nullptr) {
         return result;
     }

@@ -721,7 +721,7 @@ PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::Vertex* vert = dvp->getProjVertexByIndex(vertexIndex);
+    TechDraw::VertexPtr vert = dvp->getProjVertexByIndex(vertexIndex);
     if (vert == nullptr) {
         throw Py::ValueError("wrong vertIndex");
     }
@@ -772,7 +772,7 @@ PyObject* DrawViewPartPy::getVertexBySelection(PyObject *args)
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::Vertex* vert = dvp->getProjVertexByIndex(vertexIndex);
+    TechDraw::VertexPtr vert = dvp->getProjVertexByIndex(vertexIndex);
     if (vert == nullptr) {
         throw Py::ValueError("wrong vertIndex");
     }
