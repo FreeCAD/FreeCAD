@@ -44,8 +44,8 @@ from draftmake.make_bspline import makeBSpline
 
 def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
     """offset(object,delta,[copymode],[bind])
-    
-    Offset the given wire by applying the given delta Vector to its first 
+
+    Offset the given wire by applying the given delta Vector to its first
     vertex.
 
     Parameters
@@ -63,7 +63,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
     copy : bool
         If bind is True, and provided the wire is open, the original
         and the offset wires will be bound by their endpoints, forming a face.
-    
+
     sym : bool
         if sym is True, bind must be true too, and the offset is made on both
         sides, the total width being the given delta length.
@@ -203,10 +203,10 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
                     newobj.Closed = obj.Shape.isClosed()
             except Part.OCCError:
                 pass
-            if not(newobj) and newwire:
+            if (not newobj) and newwire:
                 newobj = App.ActiveDocument.addObject("Part::Feature","Offset")
                 newobj.Shape = newwire
-            else:
+            if not newobj:
                 print("Draft.offset: Unable to create an offset")
         if newobj:
             gui_utils.formatObject(newobj,obj)
