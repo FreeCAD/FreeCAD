@@ -71,6 +71,12 @@ protected:
     void setEditViewer(View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(View3DInventorViewer*) override;
     //@}
+
+    virtual void onDragStart(SoDragger *d);
+    virtual void onDragFinish(SoDragger *d);
+    virtual void onDragMotion(SoDragger *d);
+    virtual Base::Matrix4D getDragOffset();
+
     SoFCCSysDragger *csysDragger = nullptr;
 
 private:
@@ -78,7 +84,7 @@ private:
     static void dragFinishCallback(void * data, SoDragger * d);
     static void dragMotionCallback(void * data, SoDragger * d);
 
-    static void updatePlacementFromDragger(ViewProviderDragger *sudoThis, SoFCCSysDragger *draggerIn);
+    void updatePlacementFromDragger(SoFCCSysDragger *draggerIn);
 
     bool checkLink(int mode);
 

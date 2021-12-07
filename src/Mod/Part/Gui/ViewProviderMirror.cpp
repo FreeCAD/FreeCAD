@@ -51,6 +51,8 @@
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/Command.h>
+#include <Gui/SoFCCSysDragger.h>
 #include "ViewProviderMirror.h"
 #include "DlgFilletEdges.h"
 #include "TaskOffset.h"
@@ -64,13 +66,10 @@ PROPERTY_SOURCE(PartGui::ViewProviderMirror, PartGui::ViewProviderPart)
 ViewProviderMirror::ViewProviderMirror()
 {
     sPixmap = "Part_Mirror";
-    pcEditNode = new SoSeparator();
-    pcEditNode->ref();
 }
 
 ViewProviderMirror::~ViewProviderMirror()
 {
-    pcEditNode->unref();
 }
 
 void ViewProviderMirror::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -84,93 +83,71 @@ void ViewProviderMirror::setupContextMenu(QMenu* menu, QObject* receiver, const 
 bool ViewProviderMirror::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        // get the properties from the mirror feature
-        Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
-        Base::BoundBox3d bbox = mf->Shape.getBoundingBox();
-        float len = (float)bbox.CalcDiagonalLength();
-        Base::Vector3d base = mf->Base.getValue();
-        Base::Vector3d norm = mf->Normal.getValue();
-        Base::Vector3d cent = bbox.GetCenter();
-        base = cent.ProjectToPlane(base, norm);
-
-        // setup the graph for editing the mirror plane
-        SoTransform* trans = new SoTransform;
-        SbRotation rot(SbVec3f(0,0,1), SbVec3f(norm.x,norm.y,norm.z));
-        trans->rotation.setValue(rot);
-        trans->translation.setValue(base.x,base.y,base.z);
-        trans->center.setValue(0.0f,0.0f,0.0f);
-
-        SoMaterial* color = new SoMaterial();
-        color->diffuseColor.setValue(0,0,1);
-        color->transparency.setValue(0.5);
-        SoCoordinate3* points = new SoCoordinate3();
-        points->point.setNum(4);
-        points->point.set1Value(0, -len/2,-len/2,0);
-        points->point.set1Value(1,  len/2,-len/2,0);
-        points->point.set1Value(2,  len/2, len/2,0);
-        points->point.set1Value(3, -len/2, len/2,0);
-        SoFaceSet* face = new SoFaceSet();
-        pcEditNode->addChild(trans);
-        pcEditNode->addChild(color);
-        pcEditNode->addChild(points);
-        pcEditNode->addChild(face);
-
-        // Now we replace the SoTransform node by a manipulator
-        // Note: Even SoCenterballManip inherits from SoTransform
-        // we cannot use it directly (in above code) because the
-        // translation and center fields are overridden.
-        SoSearchAction sa;
-        sa.setInterest(SoSearchAction::FIRST);
-        sa.setSearchingAll(false);
-        sa.setNode(trans);
-        sa.apply(pcEditNode);
-        SoPath * path = sa.getPath();
-        if (path) {
-            SoCenterballManip * manip = new SoCenterballManip;
-            manip->replaceNode(path);
-
-            SoDragger* dragger = manip->getDragger();
-            dragger->addStartCallback(dragStartCallback, this);
-            dragger->addFinishCallback(dragFinishCallback, this);
-            dragger->addMotionCallback(dragMotionCallback, this);
-        }
-        pcRoot->addChild(pcEditNode);
+        ModNum = ViewProvider::TransformAt;
+        editing = true;
     }
-    else {
-        ViewProviderPart::setEdit(ModNum);
+    if (!ViewProviderPart::setEdit(ModNum)) {
+        editing = false;
+        return false;
     }
-
     return true;
 }
 
 void ViewProviderMirror::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
-        SoCenterballManip* manip = static_cast<SoCenterballManip *>(pcEditNode->getChild(0));
+    ViewProviderPart::unsetEdit(ModNum);
+    editing = false;
+}
 
-        SbVec3f move = manip->translation.getValue();
-        SbVec3f center = manip->center.getValue();
-        SbRotation rot = manip->rotation.getValue();
+void ViewProviderMirror::onDragStart(SoDragger *d)
+{
+    if (editing)
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit mirror plane"));
+    else
+        ViewProviderPart::onDragStart(d);
+}
 
-        // get the whole translation
-        move += center;
-        rot.multVec(center,center);
-        move -= center;
+Base::Matrix4D ViewProviderMirror::getDragOffset()
+{
+    Part::Mirroring* pMirroring = static_cast<Part::Mirroring*>(getObject()); 
+    Base::Vector3d base = pMirroring->Base.getValue();
+    Base::Vector3d norm = pMirroring->Normal.getValue();
+    return Base::Placement(base, Base::Rotation(Base::Vector3d(0,0,1), norm)).toMatrix();
+}
 
-        // the new axis of the plane
-        SbVec3f norm(0,0,1);
-        rot.multVec(norm,norm);
-
-        // apply the new values
-        Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
-        mf->Base.setValue(move[0],move[1],move[2]);
-        mf->Normal.setValue(norm[0],norm[1],norm[2]);
-
-        pcRoot->removeChild(pcEditNode);
-        Gui::coinRemoveAllChildren(pcEditNode);
+void ViewProviderMirror::onDragFinish(SoDragger *d)
+{
+    if (!editing) {
+        ViewProviderPart::onDragFinish(d);
+        return;
     }
-    else {
-        ViewProviderPart::unsetEdit(ModNum);
+
+    Gui::SoFCCSysDragger *dragger = static_cast<Gui::SoFCCSysDragger *>(d);
+    SbVec3f v;
+    SbRotation r;
+    v = dragger->translation.getValue();
+    r = dragger->rotation.getValue();
+    float q1,q2,q3,q4;
+    r.getValue(q1,q2,q3,q4);
+
+    try {
+        Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
+        mf->Base.setValue(v[0], v[1], v[2]);
+        Base::Rotation rot(q1, q2, q2, q4);
+        mf->Normal.setValue(rot.multVec(Base::Vector3d(0,0,1)));
+        Gui::Command::updateActive();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
+
+    Gui::Application::Instance->activeDocument()->commitCommand();
+}
+
+void ViewProviderMirror::onDragMotion(SoDragger *d)
+{
+    if (!editing) {
+        ViewProviderPart::onDragMotion(d);
+        return;
     }
 }
 
@@ -191,31 +168,6 @@ bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
         Gui::Application::Instance->showViewProvider(pSource);
 
     return true;
-}
-
-void ViewProviderMirror::dragStartCallback(void *, SoDragger *)
-{
-    // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit Mirror"));
-}
-
-void ViewProviderMirror::dragFinishCallback(void *, SoDragger *)
-{
-    // This is called when a manipulator has done manipulating
-    Gui::Application::Instance->activeDocument()->commitCommand();
-}
-
-void ViewProviderMirror::dragMotionCallback(void *data, SoDragger *drag)
-{
-    ViewProviderMirror* that = reinterpret_cast<ViewProviderMirror*>(data);
-    const SbMatrix& mat = drag->getMotionMatrix();
-    // the new axis of the plane
-    SbRotation rot(mat);
-    SbVec3f norm(0,0,1);
-    rot.multVec(norm,norm);
-    Part::Mirroring* mf = static_cast<Part::Mirroring*>(that->getObject());
-    mf->Base.setValue(mat[3][0],mat[3][1],mat[3][2]);
-    mf->Normal.setValue(norm[0],norm[1],norm[2]);
 }
 
 // ----------------------------------------------------------------------------

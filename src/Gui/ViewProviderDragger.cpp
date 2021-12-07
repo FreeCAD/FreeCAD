@@ -189,6 +189,11 @@ Base::Matrix4D ViewProviderDragger::getDragOffset(const ViewProviderDocumentObje
     return res;
 }
 
+Base::Matrix4D ViewProviderDragger::getDragOffset()
+{
+    return getDragOffset(this);
+}
+
 bool ViewProviderDragger::setEdit(int ModNum)
 {
   if (ModNum != ViewProvider::Transform 
@@ -205,7 +210,7 @@ bool ViewProviderDragger::setEdit(int ModNum)
     App::GeoFeature *geoFeature = static_cast<App::GeoFeature *>(genericObject);
 
     if (ModNum == TransformAt) {
-        this->dragOffset = getDragOffset(this);
+        this->dragOffset = getDragOffset();
     } else
         this->dragOffset = Base::Matrix4D();
     
@@ -288,26 +293,38 @@ void ViewProviderDragger::unsetEditViewer(Gui::View3DInventorViewer* viewer)
   }
 }
 
-void ViewProviderDragger::dragStartCallback(void *, SoDragger *)
+void ViewProviderDragger::dragStartCallback(void *data, SoDragger *d)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
+    reinterpret_cast<ViewProviderDragger*>(data)->onDragStart(d);
 }
 
 void ViewProviderDragger::dragFinishCallback(void *data, SoDragger *d)
 {
     // This is called when a manipulator has done manipulating
-
-    ViewProviderDragger* sudoThis = reinterpret_cast<ViewProviderDragger *>(data);
-    SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger *>(d);
-    updatePlacementFromDragger(sudoThis, dragger);
-
-    Gui::Application::Instance->activeDocument()->commitCommand();
+    reinterpret_cast<ViewProviderDragger *>(data)->onDragFinish(d);
 }
 
 void ViewProviderDragger::dragMotionCallback(void *data, SoDragger *d)
 {
-    ViewProviderDragger* sudoThis = reinterpret_cast<ViewProviderDragger *>(data);
+    reinterpret_cast<ViewProviderDragger *>(data)->onDragMotion(d);
+}
+
+void ViewProviderDragger::onDragStart(SoDragger *)
+{
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
+}
+
+void ViewProviderDragger::onDragFinish(SoDragger *d)
+{
+    SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger *>(d);
+    updatePlacementFromDragger(dragger);
+
+    Gui::Application::Instance->activeDocument()->commitCommand();
+}
+
+void ViewProviderDragger::onDragMotion(SoDragger *d)
+{
     SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger *>(d);
     SbVec3f v;
     SbRotation r;
@@ -316,12 +333,12 @@ void ViewProviderDragger::dragMotionCallback(void *data, SoDragger *d)
     float q1,q2,q3,q4;
     r.getValue(q1,q2,q3,q4);
     Base::Placement pla(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(q1,q2,q3,q4));
-    updateTransform(pla * sudoThis->dragOffset, sudoThis->pcTransform);
+    updateTransform(pla * this->dragOffset, this->pcTransform);
 }
 
-void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoThis, SoFCCSysDragger* draggerIn)
+void ViewProviderDragger::updatePlacementFromDragger(SoFCCSysDragger* draggerIn)
 {
-  App::DocumentObject *genericObject = sudoThis->getObject();
+  App::DocumentObject *genericObject = this->getObject();
   if (!genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
     return;
   App::GeoFeature *geoFeature = static_cast<App::GeoFeature *>(genericObject);
@@ -332,7 +349,7 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
   float q1,q2,q3,q4;
   r.getValue(q1,q2,q3,q4);
   Base::Placement pla(Base::Vector3d(v[0],v[1],v[2]),Base::Rotation(q1,q2,q3,q4));
-  geoFeature->Placement.setValue(pla * sudoThis->dragOffset);
+  geoFeature->Placement.setValue(pla * this->dragOffset);
   draggerIn->clearIncrementCounts();
 }
 

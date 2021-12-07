@@ -31,29 +31,29 @@ namespace PartGui {
 
 class PartGuiExport ViewProviderMirror : public ViewProviderPart
 {
-    PROPERTY_HEADER(PartGui::ViewProviderMirror);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderMirror);
 
 public:
     ViewProviderMirror();
     virtual ~ViewProviderMirror();
     /** @name Edit methods */
     //@{
-    void setupContextMenu(QMenu*, QObject*, const char*);
-    std::vector<App::DocumentObject*> claimChildren() const;
-    bool onDelete(const std::vector<std::string> &);
+    virtual void setupContextMenu(QMenu*, QObject*, const char*) override;
+    virtual std::vector<App::DocumentObject*> claimChildren() const override;
+    virtual bool onDelete(const std::vector<std::string> &) override;
     
 protected:
-    bool setEdit(int ModNum);
-    void unsetEdit(int ModNum);
+    virtual bool setEdit(int ModNum) override;
+    virtual void unsetEdit(int ModNum) override;
     //@}
 
-private:
-    static void dragStartCallback(void * data, SoDragger * d);
-    static void dragFinishCallback(void * data, SoDragger * d);
-    static void dragMotionCallback(void * data, SoDragger * d);
+    virtual void onDragStart(SoDragger *d) override;
+    virtual void onDragFinish(SoDragger *d) override;
+    virtual void onDragMotion(SoDragger *d) override;
+    virtual Base::Matrix4D getDragOffset() override;
 
 private:
-    SoSeparator* pcEditNode;
+    bool editing = false;
 };
 
 class PartGuiExport ViewProviderFillet : public ViewProviderPart
