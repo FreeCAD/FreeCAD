@@ -519,8 +519,8 @@ std::string SubObjectT::getSubObjectPython(bool force) const {
     if(!force && subname.empty())
         return getObjectPython();
     std::stringstream str;
-    str << "(" << getObjectPython() << ",u'"
-        << Base::Tools::escapedUnicodeFromUtf8(subname.c_str()) << "')";
+    str << "(" << getObjectPython() << ", '"
+        << Base::Tools::escapedUnicodeFromUtf8(normalized().subname.c_str()) << "')";
     return str.str();
 }
 
