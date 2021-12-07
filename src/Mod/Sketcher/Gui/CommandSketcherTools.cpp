@@ -1350,7 +1350,7 @@ public:
             setPositionText(endpoint, text);
 
             EditCurve[1] = endpoint;
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr1, endpoint, Base::Vector2d(0.0, 0.0), AutoConstraint::VERTEX)) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
@@ -1362,7 +1362,7 @@ public:
     virtual bool pressButton(Base::Vector2d)
     {
         if (Mode == STATUS_SEEK_First) {
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             Mode = STATUS_End;
         }
         return true;
@@ -1415,7 +1415,7 @@ public:
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
             EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
 
             // no code after this line, Handler gets deleted in ViewProvider
             sketchgui->purgeHandler();
@@ -1899,7 +1899,7 @@ public:
             setPositionText(endpoint, text);
 
             EditCurve[1] = endpoint;
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr1, endpoint, Base::Vector2d(0.0, 0.0), AutoConstraint::VERTEX))
             {
                 renderSuggestConstraintsCursor(sugConstr1);
@@ -1913,7 +1913,7 @@ public:
     virtual bool pressButton(Base::Vector2d)
     {
         if (Mode == STATUS_SEEK_First) {
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             Mode = STATUS_End;
         }
         return true;
@@ -1952,7 +1952,7 @@ public:
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
 
             // no code after this line, Handler is deleted in ViewProvider
             sketchgui->purgeHandler();
