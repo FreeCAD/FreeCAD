@@ -97,12 +97,6 @@ namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
 
-const int GeoEnum::RtPnt  = -1;
-const int GeoEnum::HAxis  = -1;
-const int GeoEnum::VAxis  = -2;
-const int GeoEnum::RefExt = -3;
-
-
 PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
 
 

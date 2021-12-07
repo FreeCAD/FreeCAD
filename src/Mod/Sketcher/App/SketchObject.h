@@ -42,16 +42,10 @@
 
 #include "SketchGeometryExtension.h"
 
+#include "GeoEnum.h"
+
 namespace Sketcher
 {
-
-struct SketcherExport GeoEnum
-{
-    static const int RtPnt;
-    static const int HAxis;
-    static const int VAxis;
-    static const int RefExt;
-};
 
 class SketchAnalysis;
 
