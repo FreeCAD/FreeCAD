@@ -138,7 +138,7 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void userInput(const QString & text);
-    void handlePendingEmit();
+    void handlePendingEmit(bool updateUnit = true);
 
 protected:
     virtual void setExpression(std::shared_ptr<App::Expression> expr);
@@ -156,7 +156,7 @@ protected:
 private:
     void validateInput();
     void updateText(const Base::Quantity&);
-    void updateFromCache(bool);
+    void updateFromCache(bool notify, bool updateUnit = true);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
     QString getUserString(const Base::Quantity& val) const;
 
