@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007                                                    *
- *   Stephane Routelous <stephane.routelous@exotk.org                      *
+ *   Copyright (c) 2007 Stephane Routelous <stephane.routelous@exotk.org>  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

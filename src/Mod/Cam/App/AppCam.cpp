@@ -1,7 +1,7 @@
 /***************************************************************************
- *   Copyright (c) 2007                                                    *
- *   Joachim Zettler <Joachim.Zettler@gmx.de>                              *
- *   Jürgen Riegel <Juergen.Riegel@web.de                                  *
+ *   Copyright (c) 2007 Joachim Zettler <Joachim.Zettler@gmx.de>           *
+ *   Copyright (c) 2007 Jürgen Riegel <Juergen.Riegel@web.de>              *
+ *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *

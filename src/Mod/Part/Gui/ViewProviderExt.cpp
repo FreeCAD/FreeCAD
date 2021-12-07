@@ -971,16 +971,19 @@ void ViewProviderPartExt::updateVisual()
         bounds.SetGap(0.0);
         Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-        Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 *
-            Deviation.getValue();
+        Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
+
+        // Since OCCT 7.6 a value of equal 0 is not allowed any more, this can happen if a single vertex
+        // should be displayed.
+        if (deflection < gp::Resolution())
+            deflection = Precision::Confusion();
 
         // create or use the mesh on the data structure
 #if OCC_VERSION_HEX >= 0x060600
         Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
-        BRepMesh_IncrementalMesh(cShape,deflection,Standard_False,
-                AngDeflectionRads,Standard_True);
+        BRepMesh_IncrementalMesh(cShape, deflection, Standard_False, AngDeflectionRads, Standard_True);
 #else
-        BRepMesh_IncrementalMesh(cShape,deflection);
+        BRepMesh_IncrementalMesh(cShape, deflection);
 #endif
         // We must reset the location here because the transformation data
         // are set in the placement property
@@ -1290,6 +1293,10 @@ void ViewProviderPartExt::updateVisual()
         faceset ->coordIndex  .finishEditing();
         faceset ->partIndex   .finishEditing();
         lineset ->coordIndex  .finishEditing();
+    }
+    catch (const Standard_Failure& e) {
+        FC_ERR("Cannot compute Inventor representation for the shape of "
+               << pcObject->getFullName() << ": " << e.GetMessageString());
     }
     catch (...) {
         FC_ERR("Cannot compute Inventor representation for the shape of " << pcObject->getFullName());

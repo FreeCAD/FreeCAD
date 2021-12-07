@@ -51,88 +51,87 @@ public:
         Other
     };
     /**
-     * Konstruktor
+     * Constructor
      * @param iSize Length of Knots vector
      */
     SplineBasisfunction(int iSize);
 
     /**
-     * Konstruktor
-     * @param vKnots Knotenvektor
-     * @param iOrder Ordnung (Grad+1) des Basis-Polynoms
+     * Constructor
+     * @param vKnots Knot vector
+     * @param iOrder Order (degree + 1) of the basic polynomial
      */
     SplineBasisfunction(TColStd_Array1OfReal& vKnots, int iOrder=1);
 
     /**
-     * Konstruktor
-     * @param vKnots Knotenvektor der Form (Wert)
-     * @param vMults Knotenvektor der Form (Vielfachheit)
-     * @param iSize Laenge des Knotenvektors
-     * Die Arrays @a vKnots und @a vMults muessen die gleiche besitzen und die Summe der Werte in @a vMults
-     * muss identisch mit @a iSize sein.
-     * @param iOrder Ordnung (Grad+1) des Basis-Polynoms
+     * Constructor
+     * @param vKnots Knot vector of shape (value)
+     * @param vMults Knot vector of shape (multiplicity)
+     * @param iSize Length of the knot vector
+     * The arrays @a vKnots and @a vMults have to be of the same size
+     * and the sum of the values in @a vMults has to be identical to @a iSize.
+     * @param iOrder Order (degree + 1) of the basic polynomial
      */
     SplineBasisfunction(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iSize, int iOrder=1);
 
     virtual ~SplineBasisfunction();
 
     /**
-     * Gibt an, ob der Funktionswert Nik(t) an der Stelle fParam
-     * 0, 1 oder ein Wert dazwischen ergibt.
-     * Dies dient dazu, um die Berechnung zu u.U. zu beschleunigen.
+     * Indicates whether the function value Nik(t) at the point fParam
+     * results in 0, 1 or a value in between.
+     * This serves to speed up the calculation under certain circumstances.
      *
      * @param iIndex Index
-     * @param fParam Parameterwert
+     * @param fParam Parameter value
      * @return ValueT
      */
     virtual ValueT LocalSupport(int iIndex, double fParam)=0;
     /**
-     * Berechnet den Funktionswert Nik(t) an der Stelle fParam
-     * (aus: Piegl/Tiller 96 The NURBS-Book)
+     * Calculates the function value Nik(t) at the point fParam
+     * (from: Piegl/Tiller 96 The NURBS-Book)
      *
      * @param iIndex Index
-     * @param fParam Parameterwert
-     * @return Funktionswert Nik(t)
+     * @param fParam Parameter value
+     * @return Function value Nik(t)
      */
     virtual double BasisFunction(int iIndex, double fParam)=0;
     /**
-     * Berechnet die Funktionswerte der ersten iMaxDer Ableitungen an der
-     * Stelle fParam (aus: Piegl/Tiller 96 The NURBS-Book)
+     * Calculates the function values of the first iMaxDer derivatives on the
+     * fParam position (from: Piegl/Tiller 96 The NURBS-Book)
      *
      * @param iIndex  Index
-     * @param iMaxDer max. Ableitung
-     * @param fParam  Parameterwert.
-     * @return Derivat Liste der Funktionswerte
+     * @param iMaxDer max. derivative
+     * @param fParam  Parameter value.
+     * @return Derivative list of function values
      *
-     *  Die Liste muss fuer iMaxDer+1 Elemente ausreichen.
+     * The list must be sufficiently long for iMaxDer+1 elements.
      */
     virtual void DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fParam,
                                             TColStd_Array1OfReal& Derivat)=0;
 
     /**
-     * Berechnet die k-te Ableitung an der Stelle fParam
+     * Calculates the kth derivative at the point fParam
      */
     virtual double DerivativeOfBasisFunction(int iIndex, int k, double fParam)=0;
 
     /**
-     * Setzt den Knotenvektor und die Ordnung fest. Die Groesse des Knotenvektors muss exakt so gross sein,
-     * wie im Konstruktor festgelegt.
+     * Sets the knot vector and the order. The size of the knot vector has to be exactly as
+     * large as defined in the constructor.
      */
     virtual void SetKnots(TColStd_Array1OfReal& vKnots, int iOrder=1);
 
     /**
-     * Setzt den Knotenvektor und die Ordnung fest. uebergeben wird der Knotenvektor der Form
-     * (Wert, Vielfachheit). Intern wird dieser in einen Knotenvektor der Form (Wert,1)
-     * umgerechnet. Die Groesse dieses neuen Vektors muss exakt so gross sein, wie im Konstruktor
-     * festgelegt.
+     * Sets the knot vector and the order. The knot vector in the form of (Value, Multiplicity)
+     * is passed on. Internally, this is converted into a knot vector in the form of (value, 1).
+     * The size of this new vector has to be exactly as big as specified in the constructor.
      */
     virtual void SetKnots(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iOrder=1);
 
 protected: //Member
-    // Knotenvektor
+    // Knot vector
     TColStd_Array1OfReal _vKnotVector;
 
-    // Ordnung (=Grad+1)
+    // Order (=Degree+1)
     int _iOrder;
 };
 
@@ -141,113 +140,111 @@ class ReenExport BSplineBasis : public SplineBasisfunction
 public:
 
     /**
-     * Konstruktor
-     * @param iSize Laenge des Knotenvektors
+     * Constructor
+     * @param iSize Length of the knot vector
      */
     BSplineBasis(int iSize);
 
     /**
-     * Konstruktor
-     * @param vKnots Knotenvektor
-     * @param iOrder Ordnung (Grad+1) des Basis-Polynoms
+     * Constructor
+     * @param vKnots Knot vector
+     * @param iOrder Order (degree + 1) of the basic polynomial
      */
     BSplineBasis(TColStd_Array1OfReal& vKnots, int iOrder=1);
 
     /**
-     * Konstruktor
-     * @param vKnots Knotenvektor der Form (Wert)
-     * @param vMults Knotenvektor der Form (Vielfachheit)
-     * @param iSize Laenge des Knotenvektors
-     * Die Arrays @a vKnots und @a vMults muessen die gleiche besitzen und die Summe der Werte in @a vMults
-     * muss identisch mit @a iSize sein.
-     * @param iOrder Ordnung (Grad+1) des Basis-Polynoms
+     * Constructor
+     * @param vKnots Knot vector of shape (value)
+     * @param vMults Knot vector of shape (multiplicity)
+     * @param iSize Length of the knot vector
+     * The arrays @a vKnots and @a vMults have to be of the same size and the
+     * sum of the values in @a vMults has to be identical to @a iSize.
+     * @param iOrder Order (degree + 1) of the basic polynomial
      */
     BSplineBasis(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iSize, int iOrder=1);
 
     /**
-     * Bestimmt den Knotenindex zum Parameterwert (aus: Piegl/Tiller 96 The NURBS-Book)
-     * @param fParam Parameterwert
-     * @return Knotenindex
+     * Specifies the knot index for the parameter value (from: Piegl/Tiller 96 The NURBS-Book)
+     * @param fParam Parameter value
+     * @return Knot index
      */
     virtual int FindSpan(double fParam);
 
     /**
-     * Berechnet die Funktionswerte der an der Stelle fParam
-     * nicht verschwindenden Basisfunktionen. Es muss darauf geachtet werden, dass
-     * die Liste fuer d(=Grad des B-Splines) Elemente (0,...,d-1) ausreicht.
-     * (aus: Piegl/Tiller 96 The NURBS-Book)
+     * Calculates the function values of the basic functions that do not vanish at fParam.
+     * It must be ensured that the list for d (= degree of the B-spline) 
+     * elements (0, ..., d-1) is sufficient (from: Piegl/Tiller 96 The NURBS-Book)
      * @param fParam Parameter
-     * @param vFuncVals Liste der Funktionswerte
-     * Index, Parameterwert
+     * @param vFuncVals List of function values
+     * Index, Parameter value
      */
     virtual void AllBasisFunctions(double fParam, TColStd_Array1OfReal& vFuncVals);
 
     /**
-     * Gibt an, ob der Funktionswert Nik(t) an der Stelle fParam
-     * 0, 1 oder ein Wert dazwischen ergibt.
-     * Dies dient dazu, um die Berechnung zu u.U. zu beschleunigen.
+     * Specifies whether the function value Nik(t) at the position fParam
+     * results in 0, 1 or a value in between.
+     * This serves to speed up the calculation under certain circumstances.
      *
      * @param iIndex Index
-     * @param fParam Parameterwert
+     * @param fParam Parameter value
      * @return ValueT
      */
     virtual ValueT LocalSupport(int iIndex, double fParam);
 
     /**
-     * Berechnet den Funktionswert Nik(t) an der Stelle fParam
-     * (aus: Piegl/Tiller 96 The NURBS-Book)
+     * Calculates the function value Nik(t) at the point fParam
+     * (from: Piegl/Tiller 96 The NURBS-Book)
      * @param iIndex Index
-     * @param fParam Parameterwert
-     * @return Funktionswert Nik(t)
+     * @param fParam Parameter value
+     * @return Function value Nik(t)
      */
     virtual double BasisFunction(int iIndex, double fParam);
 
     /**
-     * Berechnet die Funktionswerte der ersten iMaxDer Ableitungen an der Stelle fParam
-     * (aus: Piegl/Tiller 96 The NURBS-Book)
+     * Calculates the function values of the first iMaxDer derivatives at the point fParam
+     * (from: Piegl/Tiller 96 The NURBS-Book)
      * @param iIndex Index
-     * @param iMaxDer max. Ableitung
-     * @param fParam Parameterwert.
+     * @param iMaxDer max. derivative
+     * @param fParam Parameter value
      * @param Derivat
-     * Die Liste muss fuer iMaxDer+1 Elemente ausreichen.
-     * @return Liste der Funktionswerte
+     * The list must be sufficiently long for iMaxDer+1 elements.
+     * @return List of function values
      */
     virtual void DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fParam,
                                             TColStd_Array1OfReal& Derivat);
 
     /**
-     * Berechnet die k-te Ableitung an der Stelle fParam
+     * Calculates the kth derivative at the point fParam
      */
     virtual double DerivativeOfBasisFunction(int iIndex, int k, double fParam);
 
     /**
-     * Berechnet das Integral des Produkts zweier B-Splines bzw. deren Ableitungen.
-     * Der Integrationsbereich erstreckt sich ueber den ganzen Definitionsbereich.
-     * Berechnet wird das Integral mittels der Gauss'schen Quadraturformeln.
+     * Calculates the integral of the product of two B-splines or their derivatives.
+     * The integration area extends over the entire domain of definition.
+     * The integral is calculated by means of the Gaussian quadrature formulas.
      */
     virtual double GetIntegralOfProductOfBSplines(int i, int j, int r, int s);
 
     /**
-     * Destruktor
+     * Destructor
      */
     virtual~ BSplineBasis();
 
 protected:
 
     /**
-     * Berechnet die Nullstellen der Legendre-Polynome und die
-     * zugehoerigen Gewichte
+     * Calculates the roots of the Legendre-Polynomials and the corresponding weights
      */
     virtual void GenerateRootsAndWeights(TColStd_Array1OfReal& vAbscissas, TColStd_Array1OfReal& vWeights);
 
     /**
-     * Berechnet die Integrationsgrenzen (Indexe der Knoten)
+     * Calculates the limits of integration (Indexes of the knots)
      */
     virtual void FindIntegrationArea(int iIdx1, int iIdx2, int& iBegin, int& iEnd);
 
     /**
-     * Berechnet in Abhaengigkeit vom Grad die Anzahl der zu verwendenden Nullstellen/Gewichte
-     * der Legendre-Polynome
+     * Calculates the number of roots/weights of the Legendre-Polynomials to be used as a function
+     * of the degree
      */
     int CalcSize(int r, int s);
 };
@@ -256,11 +253,11 @@ class ReenExport ParameterCorrection
 {
 
 public:
-    // Konstruktor
-    ParameterCorrection(unsigned usUOrder=4,               //Ordnung in u-Richtung (Ordnung=Grad+1)
-                        unsigned usVOrder=4,               //Ordnung in v-Richtung
-                        unsigned usUCtrlpoints=6,          //Anz. der Kontrollpunkte in u-Richtung
-                        unsigned usVCtrlpoints=6);         //Anz. der Kontrollpunkte in v-Richtung
+    // Constructor
+    ParameterCorrection(unsigned usUOrder=4,               //Order in u-direction (order = degree + 1)
+                        unsigned usVOrder=4,               //Order in v-direction
+                        unsigned usUCtrlpoints=6,          //Qty. of the control points in the u-direction
+                        unsigned usVCtrlpoints=6);         //Qty. of the control points in the v-direction
 
     virtual ~ParameterCorrection()
     {
@@ -270,219 +267,220 @@ public:
 
 protected:
     /**
-     * Berechnet die Eigenvektoren der Kovarianzmatrix
+     * Calculates the eigenvectors of the covariance matrix
      */
     virtual void CalcEigenvectors();
 
     /**
-     * Projiziert die Kontrollpunkte auf die Fit-Ebene
+     * Projects the control points onto the fit plane
      */
     void ProjectControlPointsOnPlane();
 
     /**
-     * Berechnet eine initiale Flaeche zu Beginn des Algorithmus. Dazu wird die Ausgleichsebene zu der
-     * Punktwolke berechnet.
-     * Die Punkte werden bzgl. der Basis bestehend aus den Eigenvektoren der Kovarianzmatrix berechnet und
-     * auf die Ausgleichsebene projiziert. Von diesen Punkten wird die Boundingbox berechnet, dann werden
-     * die u/v-Parameter fuer die Punkte berechnet.
+     * Calculates an initial area at the beginning of the algorithm.
+     * For this purpose, the best-fit plane for the point cloud is calculated.
+     * The points are calculated with respect to the base consisting of the
+     * eigenvectors of the covariance matrix and projected onto the best-fit plane.
+     * The bounding box is calculated from these points, then the u/v parameters for
+     * the points are calculated.
      */
     virtual bool DoInitialParameterCorrection(double fSizeFactor=0.0f);
 
     /**
-     * Berechnet die u.v-Werte der Punkte
+     * Calculates the (u, v) values of the points
      */
     virtual bool GetUVParameters(double fSizeFactor);
 
     /**
-     * Fuehrt eine Parameterkorrektur durch.
+     * Carries out a parameter correction.
      */
     virtual void DoParameterCorrection(int iIter)=0;
 
     /**
-     * Loest Gleichungssystem
+     * Solves system of equations
      */
     virtual bool SolveWithoutSmoothing()=0;
 
     /**
-     * Loest ein regulaeres Gleichungssystem
+     * Solve a regular system of equations
      */
     virtual bool SolveWithSmoothing(double fWeight)=0;
 
 public:
     /**
-     * Berechnet eine B-Spline-Flaeche.aus den geg. Punkten
+     * Calculates a B-spline surface from the given points
      */
     virtual Handle(Geom_BSplineSurface) CreateSurface(const TColgp_Array1OfPnt& points,
                                                      int iIter,
                                                      bool bParaCor,
                                                      double fSizeFactor=0.0f);
     /**
-     * Setzen der u/v-Richtungen
-     * Dritter Parameter gibt an, ob die Richtungen tatsaechlich verwendet werden sollen.
+     * Setting the u/v directions
+     * The third parameter specifies whether the directions should actually be used.
      */
     virtual void SetUV(const Base::Vector3d& clU, const Base::Vector3d& clV, bool bUseDir=true);
 
     /**
-     * Gibt die u/v/w-Richtungen zurueck
+     * Returns the u/v/w directions
      */
     virtual void GetUVW(Base::Vector3d& clU, Base::Vector3d& clV, Base::Vector3d& clW) const;
 
     /**
-     *
+     * Get the center of gravity
      */
     virtual Base::Vector3d GetGravityPoint() const;
 
     /**
-     * Verwende Glaettungsterme
+     * Use smoothing-terms
      */
     virtual void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f);
 
 protected:
-    bool                    _bGetUVDir;        //! Stellt fest, ob u/v-Richtung vorgegeben wird
-    bool                    _bSmoothing;       //! Glaettung verwenden
-    double                  _fSmoothInfluence; //! Einfluss der Glaettung
-    unsigned                _usUOrder;         //! Ordnung in u-Richtung
-    unsigned                _usVOrder;         //! Ordnung in v-Richtung
-    unsigned                _usUCtrlpoints;    //! Anzahl der Kontrollpunkte in u-Richtung
-    unsigned                _usVCtrlpoints;    //! Anzahl der Kontrollpunkte in v-Richtung
-    Base::Vector3d          _clU;              //! u-Richtung
-    Base::Vector3d          _clV;              //! v-Richtung
-    Base::Vector3d          _clW;              //! w-Richtung (senkrecht zu u-und v-Richtung)
-    TColgp_Array1OfPnt*     _pvcPoints;        //! Punktliste der Rohdaten
-    TColgp_Array1OfPnt2d*   _pvcUVParam;       //! Parameterwerte zu den Punkten aus der Liste
-    TColgp_Array2OfPnt      _vCtrlPntsOfSurf;  //! Array von Kontrollpunkten
-    TColStd_Array1OfReal    _vUKnots;          //! Knotenvektor der B-Spline-Flaeche in u-Richtung
-    TColStd_Array1OfReal    _vVKnots;          //! Knotenvektor der B-Spline-Flaeche in v-Richtung
-    TColStd_Array1OfInteger _vUMults;          //! Vielfachheit der Knoten im Knotenvektor
-    TColStd_Array1OfInteger _vVMults;          //! Vielfachheit der Knoten im Knotenvektor
+    bool                    _bGetUVDir;        //! Determines whether u/v direction is given
+    bool                    _bSmoothing;       //! Use smoothing
+    double                  _fSmoothInfluence; //! Influence of smoothing
+    unsigned                _usUOrder;         //! Order in u-direction
+    unsigned                _usVOrder;         //! Order in v-direction
+    unsigned                _usUCtrlpoints;    //! Number of control points in the u-direction
+    unsigned                _usVCtrlpoints;    //! Number of control points in the v-direction
+    Base::Vector3d          _clU;              //! u-direction
+    Base::Vector3d          _clV;              //! v-direction
+    Base::Vector3d          _clW;              //! w-direction (perpendicular to u & v directions)
+    TColgp_Array1OfPnt*     _pvcPoints;        //! Raw data point list
+    TColgp_Array1OfPnt2d*   _pvcUVParam;       //! Parameter value for the points in the list
+    TColgp_Array2OfPnt      _vCtrlPntsOfSurf;  //! Array of control points
+    TColStd_Array1OfReal    _vUKnots;          //! Knot vector of the B-spline surface in the u-direction
+    TColStd_Array1OfReal    _vVKnots;          //! Knot vector of the B-spline surface in the v-direction
+    TColStd_Array1OfInteger _vUMults;          //! Multiplicity of the knots in the knot vector
+    TColStd_Array1OfInteger _vVMults;          //! Multiplicity of the knots in the knot vector
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Diese Klasse berechnet auf einer beliebigen Punktwolke (auch scattered data) eine
- * B-Spline-Flaeche. Die Flaeche wird iterativ mit Hilfe einer Parameterkorrektur erzeugt.
- * Siehe dazu Hoschek/Lasser 2. Auflage (1992).
- * Erweitert wird die Approximation um Glaettungsterme, so dass glatte Flaechen erzeugt werden
- * koennen.
+ * This class calculates a B-spline area on any point cloud (AKA scattered data).
+ * The surface is generated iteratively with the help of a parameter correction.
+ * See Hoschek/Lasser 2nd ed. (1992).
+ * The approximation is expanded to include smoothing terms so that smooth surfaces
+ * can be generated.
  */
 
 class ReenExport BSplineParameterCorrection : public ParameterCorrection
 {
 public:
-    // Konstruktor
-    BSplineParameterCorrection(unsigned usUOrder=4,               //Ordnung in u-Richtung (Ordnung=Grad+1)
-                               unsigned usVOrder=4,               //Ordnung in v-Richtung
-                               unsigned usUCtrlpoints=6,          //Anz. der Kontrollpunkte in u-Richtung
-                               unsigned usVCtrlpoints=6);         //Anz. der Kontrollpunkte in v-Richtung
+    // Constructor
+    BSplineParameterCorrection(unsigned usUOrder=4,               //Order in u-direction (order = degree + 1)
+                               unsigned usVOrder=4,               //Order in the v-direction
+                               unsigned usUCtrlpoints=6,          //Qty. of the control points in u-direction
+                               unsigned usVCtrlpoints=6);         //Qty. of the control points in v-direction
 
-    virtual ~BSplineParameterCorrection(){};
+    virtual ~BSplineParameterCorrection(){}
 
 protected:
     /**
-     * Initialisierung
+     * Initialization
      */
     virtual void Init();
 
     /**
-     * Fuehrt eine Parameterkorrektur durch.
+     * Carries out a parameter correction.
      */
     virtual void DoParameterCorrection(int iIter);
 
     /**
-     * Loest ein ueberbestimmtes LGS mit Hilfe der Householder-Transformation
+     * Solve an overdetermined LGS with the help of the Householder-Tansformation
      */
     virtual bool SolveWithoutSmoothing();
 
     /**
-     * Loest ein regulaeres Gleichungssystem durch LU-Zerlegung. Es fliessen je nach Gewichtung
-     * Glaettungsterme mit ein
+     * Solve a regular system of equations by LU decomposition. Depending on the weighting,
+     * smoothing terms are included
      */
     virtual bool SolveWithSmoothing(double fWeight);
 
 public:
     /**
-     * Setzen des Knotenvektors
+     * Setting the knot vector
      */
     void SetUKnots(const std::vector<double>& afKnots);
 
     /**
-     * Setzen des Knotenvektors
+     * Setting the knot vector
      */
     void SetVKnots(const std::vector<double>& afKnots);
 
     /**
-     * Gibt die erste Matrix der Glaettungsterme zurueck, falls berechnet
+     * Returns the first matrix of smoothing terms, if calculated
      */
     virtual const math_Matrix& GetFirstSmoothMatrix() const;
 
     /**
-     * Gibt die zweite Matrix der Glaettungsterme zurueck, falls berechnet
+     * Returns the second matrix of smoothing terms, if calculated
      */
     virtual const math_Matrix& GetSecondSmoothMatrix() const;
 
     /**
-     * Gibt die dritte Matrix der Glaettungsterme zurueck, falls berechnet
+     * Returns the third matrix of smoothing terms, if calculated
      */
     virtual const math_Matrix& GetThirdSmoothMatrix() const;
 
     /**
-     * Setzt die erste Matrix der Glaettungsterme
+     * Sets the first matrix of the smoothing terms
      */
     virtual void SetFirstSmoothMatrix(const math_Matrix& rclMat);
 
     /**
-     * Setzt die zweite Matrix der Glaettungsterme
+     * Sets the second matrix of smoothing terms
      */
     virtual void SetSecondSmoothMatrix(const math_Matrix& rclMat);
 
     /**
-     * Setzt die dritte Matrix der Glaettungsterme
+     * Sets the third matrix of smoothing terms
      */
     virtual void SetThirdSmoothMatrix(const math_Matrix& rclMat);
 
     /**
-     * Verwende Glaettungsterme
+     * Use smoothing-terms
      */
     virtual void EnableSmoothing(bool bSmooth=true, double fSmoothInfl=1.0f);
 
     /**
-     * Verwende Glaettungsterme
+     * Use smoothing-terms
      */
     virtual void EnableSmoothing(bool bSmooth, double fSmoothInfl,
                                  double fFirst, double fSec,  double fThird);
 
 protected:
     /**
-     * Berechnet die Matrix zu den Glaettungstermen
-     * (siehe Dissertation U.Dietz)
+     * Calculates the matrix for the smoothing terms
+     * (see U.Dietz dissertation)
      */
     virtual void CalcSmoothingTerms(bool bRecalc, double fFirst, double fSecond, double fThird);
 
     /**
-     * Berechnet die Matrix zum ersten Glaettungsterm
-     * (siehe Diss. U.Dietz)
+     * Calculates the matrix for the first smoothing term
+     * (see U.Dietz dissertation)
      */
     virtual void CalcFirstSmoothMatrix(Base::SequencerLauncher&);
 
     /**
-     * Berechnet die Matrix zum zweiten Glaettunsterm
-     * (siehe Diss. U.Dietz)
+     * Calculates the matrix for the second smoothing term
+     * (see U.Dietz dissertation)
      */
     virtual void CalcSecondSmoothMatrix(Base::SequencerLauncher&);
 
     /**
-     * Berechnet die Matrix zum dritten Glaettungsterm
+     * Calculates the matrix for the third smoothing term
      */
     virtual void CalcThirdSmoothMatrix(Base::SequencerLauncher&);
 
 protected:
-    BSplineBasis           _clUSpline;        //! B-Spline-Basisfunktion in u-Richtung
-    BSplineBasis           _clVSpline;        //! B-Spline-Basisfunktion in v-Richtung
-    math_Matrix            _clSmoothMatrix;   //! Matrix der Glaettungsfunktionale
-    math_Matrix            _clFirstMatrix;    //! Matrix der 1. Glaettungsfunktionale
-    math_Matrix            _clSecondMatrix;   //! Matrix der 2. Glaettungsfunktionale
-    math_Matrix            _clThirdMatrix;    //! Matrix der 3. Glaettungsfunktionale
+    BSplineBasis           _clUSpline;        //! B-spline basic function in the u-direction
+    BSplineBasis           _clVSpline;        //! B-spline basic function in the v-direction
+    math_Matrix            _clSmoothMatrix;   //! Matrix of smoothing functionals
+    math_Matrix            _clFirstMatrix;    //! Matrix of the 1st smoothing functionals
+    math_Matrix            _clSecondMatrix;   //! Matrix of the 2nd smoothing functionals
+    math_Matrix            _clThirdMatrix;    //! Matrix of the 3rd smoothing functionals
 };
 
 } // namespace Reen

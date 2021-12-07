@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2007                                                    *
- *   Human Rezaijafari <H.Rezai@web.de>                                    *
+ *   Copyright (c) 2007 Human Rezaijafari <H.Rezai@web.de>                 *
+ *                                                                         *
  *   This file is part of the FreeCAD CAM development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *

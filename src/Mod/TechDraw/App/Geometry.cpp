@@ -1447,10 +1447,10 @@ Vertex::Vertex(Base::Vector3d v) : Vertex(v.x,v.y)
 }
 
 
-bool Vertex::isEqual(Vertex* v, double tol)
+bool Vertex::isEqual(const Vertex& v, double tol)
 {
     bool result = false;
-    double dist = (pnt - (v->pnt)).Length();
+    double dist = (pnt - (v.pnt)).Length();
     if (dist <= tol) {
         result = true;
     }

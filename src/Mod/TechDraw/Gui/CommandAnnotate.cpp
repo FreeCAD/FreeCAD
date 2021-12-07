@@ -1094,7 +1094,7 @@ void execLine2Points(Gui::Command* cmd)
     if (!vertexNames.empty()) {
         for (auto& v2d: vertexNames) {
             int idx = DrawUtil::getIndexFromName(v2d);
-            TechDraw::Vertex* v = baseFeat->getProjVertexByIndex(idx);
+            TechDraw::VertexPtr v = baseFeat->getProjVertexByIndex(idx);
             if (v) {
                 Base::Vector3d p = DrawUtil::invertY(v->pnt);
                 points.push_back(p / scale);
@@ -1213,7 +1213,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                     }
                 }
             } else if (geomType == "Vertex") {
-                TechDraw::Vertex* tdv = objFeat->getProjVertexByIndex(idx);
+                TechDraw::VertexPtr tdv = objFeat->getProjVertexByIndex(idx);
                 if (tdv != nullptr) {
                     std::string delTag = tdv->cosmeticTag;
                     if (!delTag.empty()) {

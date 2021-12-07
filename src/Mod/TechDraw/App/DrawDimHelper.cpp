@@ -126,8 +126,8 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
     std::vector<std::string> cvTags;
     std::string tag0;
     std::string tag1;
-    TechDraw::Vertex* v0 = nullptr;
-    TechDraw::Vertex* v1 = nullptr;
+    TechDraw::VertexPtr v0;
+    TechDraw::VertexPtr v1;
     if (subElements.size() > 1) {
         int idx0 = DrawUtil::getIndexFromName(subElements[0]);
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);

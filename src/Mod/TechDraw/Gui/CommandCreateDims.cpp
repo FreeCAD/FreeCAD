@@ -1610,7 +1610,7 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     if(SubNames.size() == 2) {                                         //there are 2
         int eId,vId;
         TechDraw::BaseGeom* e;
-        TechDraw::Vertex* v;
+        TechDraw::VertexPtr v;
         if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
             eId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);

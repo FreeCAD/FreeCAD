@@ -93,7 +93,7 @@ public:
 
     void sectionExec(TopoDS_Shape s);
 
-    std::vector<TechDraw::Face*> getTDFaceGeometry() {return tdSectionFaces;}
+    std::vector<TechDraw::FacePtr> getTDFaceGeometry() {return tdSectionFaces;}
 
     void setCSFromBase(const std::string sectionName);
     gp_Ax2 getCSFromBase(const std::string sectionName) const;
@@ -107,7 +107,7 @@ public:
     TechDraw::DrawViewPart* getBaseDVP() const;
     TechDraw::DrawProjGroupItem* getBaseDPGI() const;
 
-    TopoDS_Compound getSectionFaces() { return sectionFaces;};
+    TopoDS_Compound getSectionFaces() { return sectionFaces;}
 //    std::vector<TopoDS_Wire> getSectionFaceWires(void) { return sectionFaceWires; }   //obs?
     TopoDS_Face getSectionTFace(int i);
     void makeLineSets(void) ;
@@ -127,7 +127,7 @@ protected:
     TopoDS_Compound sectionFaces;    //tSectionFaces
 //    std::vector<TopoDS_Wire> sectionFaceWires;   //obs??? getSectionFaceWires
     std::vector<LineSet> m_lineSets;
-    std::vector<TechDraw::Face*> tdSectionFaces;
+    std::vector<TechDraw::FacePtr> tdSectionFaces;
 
 
     gp_Pln getSectionPlane() const;

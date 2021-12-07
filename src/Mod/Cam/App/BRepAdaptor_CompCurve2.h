@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007                                                    *
- *   Joachim Zettler <Joachim.Zettler@gmx.de>                              *
+ *   Copyright (c) 2007 Joachim Zettler <Joachim.Zettler@gmx.de>           *
  *   Adapted by Joachim Zettler to use with a WireExplorer made            *
  *   by Stephane Routelous                                                 *
  *                                                                         *

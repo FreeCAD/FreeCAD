@@ -509,7 +509,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
         for (; sectionExpl.More(); sectionExpl.Next()) {
             iface++;
             const TopoDS_Face& face = TopoDS::Face(sectionExpl.Current());
-            TechDraw::Face* sectionFace = new TechDraw::Face();
+            TechDraw::FacePtr sectionFace(std::make_shared<TechDraw::Face>());
             TopExp_Explorer expFace(face, TopAbs_WIRE);
             int iwire = 0;
             for ( ; expFace.More(); expFace.Next()) {
