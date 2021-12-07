@@ -6926,7 +6926,7 @@ public:
                         Gui::Command::openCommand(
                                 QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                "addExternal(Part.importExternalObject(%s, %s),%s)",
+                                "addExternal(Part.importExternalObject(%s, %s), %s)",
                                 msg.pOriginalMsg ?
                                     msg.pOriginalMsg->Object.getSubObjectPython() :
                                     msg.Object.getSubObjectPython(),
