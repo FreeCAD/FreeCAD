@@ -149,7 +149,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
 
     updateUI();
-    this->blockConnection(false);
+    this->blockSelection(false);
 }
 
 TaskPipeParameters::~TaskPipeParameters()
@@ -664,7 +664,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
         QGenericReturnArgument(), Q_ARG(int,pipe->Mode.getValue()));
-    this->blockConnection(false);
+    this->blockSelection(false);
 }
 
 TaskPipeOrientation::~TaskPipeOrientation()
@@ -960,7 +960,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
         QGenericReturnArgument(), Q_ARG(int,pipe->Transformation.getValue()));
-    this->blockConnection(false);
+    this->blockSelection(false);
 }
 
 TaskPipeScaling::~TaskPipeScaling()

@@ -169,10 +169,10 @@ void ViewProviderDrawingView::hide(void)
             //      block/unblock selection protects against crash in Gui::SelectionSingleton::setVisible
             MDIViewPage* mdi = getMDIViewPage();
             if (mdi != nullptr) {                  //if there is no mdivp, there is nothing to hide!
-                mdi->blockSelection(true);
+                mdi->blockSceneSelection(true);
                 qView->hide();
                 ViewProviderDocumentObject::hide();
-                mdi->blockSelection(false);
+                mdi->blockSceneSelection(false);
             }
         }
     }

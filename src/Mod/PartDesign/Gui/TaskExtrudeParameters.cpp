@@ -406,8 +406,6 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
     // or we are normal to a face
     App::PropertyLinkSub& lnk = *(axesInList[num]);
     if (num == DirectionModes::Select) {
-        // enter reference selection mode
-        this->blockConnection(false);
         // to distinguish that this is the direction selection
         selectionFace = false;
         setDirectionMode(num);

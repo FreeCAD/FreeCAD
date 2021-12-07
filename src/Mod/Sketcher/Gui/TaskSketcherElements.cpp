@@ -509,7 +509,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
     std::string doc_name = sketchView->getSketchObject()->getDocument()->getName();
     std::string obj_name = sketchView->getSketchObject()->getNameInDocument();
 
-    bool block = this->blockConnection(true); // avoid to be notified by itself
+    bool block = this->blockSelection(true); // avoid to be notified by itself
     Gui::Selection().clearSelection();
 
     std::vector<std::string> elementSubNames;
@@ -603,7 +603,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
         Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), elementSubNames);
     }
 
-    this->blockConnection(block);
+    this->blockSelection(block);
     ui->listWidgetElements->blockSignals(false);
 
     if (focusItemIndex>-1 && focusItemIndex<ui->listWidgetElements->count())

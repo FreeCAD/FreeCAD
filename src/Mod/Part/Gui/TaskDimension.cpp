@@ -583,9 +583,9 @@ void PartGui::TaskMeasureLinear::selectionClearDelayedSlot()
   //clearing selections are not working as I hoped. Apparently the observer callback gets called
   //before the actual selection takes place. Resulting in selections being left. this addresses this
   //by being called from the event loop.
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::buildDimension() {
@@ -663,13 +663,13 @@ void PartGui::TaskMeasureLinear::selection1Slot(bool checked)
   }
   buttonSelectedIndex = 0;
 
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   //we should only be working with 1 entity, but oh well do the loop anyway.
   std::vector<DimSelections::DimSelection>::const_iterator it;
   for (it = selections1.selections.begin(); it != selections1.selections.end(); ++it)
     Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::selection2Slot(bool checked)
@@ -677,22 +677,22 @@ void PartGui::TaskMeasureLinear::selection2Slot(bool checked)
   if (!checked)
     return;
   buttonSelectedIndex = 1;
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   std::vector<DimSelections::DimSelection>::const_iterator it;
   for (it = selections2.selections.begin(); it != selections2.selections.end(); ++it)
     Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::resetDialogSlot(bool)
 {
   clearSelectionStrings();
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   stepped->getButton(0)->setChecked(true);
   stepped->getButton(1)->setEnabled(false);
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::toggle3dSlot(bool)
@@ -1664,9 +1664,9 @@ void PartGui::TaskMeasureAngular::selectionClearDelayedSlot()
   //clearing selections are not working as I hoped. Apparently the observer callback gets called
   //before the actual selection takes place. Resulting in selections being left. this addresses this
   //by being called from the event loop.
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::DimSelections& selection)
@@ -1796,12 +1796,12 @@ void PartGui::TaskMeasureAngular::selection1Slot(bool checked)
   if (checked)
   {
     buttonSelectedIndex = 0;
-    this->blockConnection(true);
+    this->blockSelection(true);
     Gui::Selection().clearSelection();
     std::vector<DimSelections::DimSelection>::const_iterator it;
     for (it = selections1.selections.begin(); it != selections1.selections.end(); ++it)
       Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-    this->blockConnection(false);
+    this->blockSelection(false);
   }
   else
   {
@@ -1814,22 +1814,22 @@ void PartGui::TaskMeasureAngular::selection2Slot(bool checked)
 {
   if (checked)
     buttonSelectedIndex = 1;
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   std::vector<DimSelections::DimSelection>::const_iterator it;
   for (it = selections2.selections.begin(); it != selections2.selections.end(); ++it)
     Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureAngular::resetDialogSlot(bool)
 {
   clearSelection();
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   stepped->getButton(0)->setChecked(true);
   stepped->getButton(1)->setEnabled(false);
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureAngular::toggle3dSlot(bool)

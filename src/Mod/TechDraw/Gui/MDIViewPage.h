@@ -72,7 +72,7 @@ public:
     /// QGraphicsScene selection routines
     void selectQGIView(App::DocumentObject *obj, bool state);
     void clearSceneSelection();
-    void blockSelection(bool isBlocked);
+    void blockSceneSelection(bool isBlocked);
 
     void attachTemplate(TechDraw::DrawTemplate *obj);
     void updateTemplate(bool force = false);

@@ -424,7 +424,7 @@ void DlgPropertyLink::closeEvent(QCloseEvent *ev) {
 }
 
 void DlgPropertyLink::attachObserver() {
-    if(isConnectionAttached())
+    if(isSelectionAttached())
         return;
 
     Gui::Selection().selStackPush();
@@ -443,7 +443,7 @@ void DlgPropertyLink::attachObserver() {
     }
     auto view = qobject_cast<Gui::PropertyView*>(parentView.data());
     if(view)
-        view->blockConnection(true);
+        view->blockSelection(true);
 }
 
 void DlgPropertyLink::showEvent(QShowEvent *ev) {
@@ -465,7 +465,7 @@ void DlgPropertyLink::leaveEvent(QEvent *ev) {
 }
 
 void DlgPropertyLink::detachObserver() {
-    if(isConnectionAttached())
+    if(isSelectionAttached())
         detachSelection();
 
     auto view = qobject_cast<Gui::PropertyView*>(parentView.data());
@@ -480,7 +480,7 @@ void DlgPropertyLink::detachObserver() {
         savedSelections.clear();
     }
     if(view)
-        view->blockConnection(false);
+        view->blockSelection(false);
 
     parentView = nullptr;
 }
@@ -521,13 +521,13 @@ void DlgPropertyLink::onItemSelectionChanged()
 
     // Sync 3d view selection. To give a better visual feedback, we
     // only keep the latest selection.
-    bool blocked = blockConnection(true);
+    bool blocked = blockSelection(true);
     Gui::Selection().clearSelection();
     for(auto &sobj : sobjs)
         Gui::Selection().addSelection(sobj.getDocumentName().c_str(),
                                       sobj.getObjectName().c_str(),
                                       sobj.getSubName().c_str());
-    blockConnection(blocked);
+    blockSelection(blocked);
 
     // Enforce single parent
     if(singleParent && currentObj && currentObj!=obj) {

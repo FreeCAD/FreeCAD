@@ -144,7 +144,7 @@ void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::string subName(msg.pSubName);
             if (!subName.empty()) {
                 // From the shape get all faces and add them to the selection
-                bool blocked = blockConnection(true);
+                bool blocked = blockSelection(true);
                 App::Document* doc = App::GetApplication().getDocument(msg.pDocName);
                 App::DocumentObject* obj = doc->getObject(msg.pObjectName);
                 if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
@@ -161,7 +161,7 @@ void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
                     }
                 }
 
-                blockConnection(blocked);
+                blockSelection(blocked);
             }
         }
     }

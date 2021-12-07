@@ -951,9 +951,9 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         if(isFilter(ConstraintFilter::SpecialFilterValue::Selection)) {
             updateSelectionFilter();
 
-            bool block = this->blockConnection(true); // avoid to be notified by itself
+            bool block = this->blockSelection(true); // avoid to be notified by itself
             updateList();
-            this->blockConnection(block);
+            this->blockSelection(block);
         }
         else if (isFilter(ConstraintFilter::SpecialFilterValue::AssociatedConstraints)) {
             associatedConstraintsFilter.clear();
@@ -988,9 +988,9 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
 
                         if(isFilter(ConstraintFilter::SpecialFilterValue::Selection)) {
                             updateSelectionFilter();
-                            bool block = this->blockConnection(true); // avoid to be notified by itself
+                            bool block = this->blockSelection(true); // avoid to be notified by itself
                             updateList();
-                            this->blockConnection(block);
+                            this->blockSelection(block);
                         }
                     }
                 }
@@ -1116,7 +1116,7 @@ void TaskSketcherConstraints::on_listWidgetConstraints_itemSelectionChanged(void
     std::string doc_name = sketchView->getSketchObject()->getDocument()->getName();
     std::string obj_name = sketchView->getSketchObject()->getNameInDocument();
 
-    bool block = this->blockConnection(true); // avoid to be notified by itself
+    bool block = this->blockSelection(true); // avoid to be notified by itself
     Gui::Selection().clearSelection();
 
     std::vector<std::string> constraintSubNames;
@@ -1129,7 +1129,7 @@ void TaskSketcherConstraints::on_listWidgetConstraints_itemSelectionChanged(void
     if(!constraintSubNames.empty())
         Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
 
-    this->blockConnection(block);
+    this->blockSelection(block);
 }
 
 void TaskSketcherConstraints::on_listWidgetConstraints_itemActivated(QListWidgetItem *item)

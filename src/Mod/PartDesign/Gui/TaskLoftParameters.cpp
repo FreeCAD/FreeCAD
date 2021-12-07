@@ -304,7 +304,7 @@ void TaskLoftParameters::exitSelectionMode()
 {
     selectionMode = none;
     Gui::Selection().clearSelection();
-    this->blockConnection(true);
+    this->blockSelection(true);
 }
 
 void TaskLoftParameters::changeEvent(QEvent * /*e*/)
@@ -327,7 +327,7 @@ void TaskLoftParameters::onProfileButton(bool checked)
         clearButtons(refProfile);
         Gui::Selection().clearSelection();
         selectionMode = refProfile;
-        this->blockConnection(false);
+        this->blockSelection(false);
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
@@ -338,7 +338,7 @@ void TaskLoftParameters::onRefButtonAdd(bool checked)
         clearButtons(refAdd);
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
-        this->blockConnection(false);
+        this->blockSelection(false);
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
@@ -349,7 +349,7 @@ void TaskLoftParameters::onRefButtonRemove(bool checked)
         clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
-        this->blockConnection(false);
+        this->blockSelection(false);
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }

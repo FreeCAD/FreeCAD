@@ -506,7 +506,7 @@ void DlgFilletEdges::toggleCheckState(const QModelIndex& index)
     QString name = QString::fromLatin1("Edge%1").arg(id);
     Qt::CheckState checkState = static_cast<Qt::CheckState>(check.toInt());
 
-    bool block = this->blockConnection(true);
+    bool block = this->blockSelection(true);
 
     // is item checked
     if (checkState & Qt::Checked) {
@@ -522,7 +522,7 @@ void DlgFilletEdges::toggleCheckState(const QModelIndex& index)
             (const char*)name.toLatin1());
     }
 
-    this->blockConnection(block);
+    this->blockSelection(block);
 }
 
 void DlgFilletEdges::findShapes()

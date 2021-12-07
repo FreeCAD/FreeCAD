@@ -628,9 +628,9 @@ void TreeWidget::checkTopParent(App::DocumentObject*& obj, std::string& subname)
         auto it = tree->DocumentMap.find(Application::Instance->getDocument(obj->getDocument()));
         if (it != tree->DocumentMap.end()) {
             if (tree->statusTimer->isActive()) {
-                bool locked = tree->blockConnection(true);
+                bool locked = tree->blockSelection(true);
                 tree->_updateStatus(false);
-                tree->blockConnection(locked);
+                tree->blockSelection(locked);
             }
             auto parent = it->second->getTopParent(obj, subname);
             if (parent)
@@ -1204,7 +1204,7 @@ DocumentItem* TreeWidget::getDocumentItem(const Gui::Document* doc) const {
 }
 
 void TreeWidget::selectAllInstances(const ViewProviderDocumentObject& vpd) {
-    if (!isConnectionAttached())
+    if (!isSelectionAttached())
         return;
 
     if (selectTimer->isActive())
@@ -1233,9 +1233,9 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
     std::vector<SelInfo> ret;
 
     TreeWidget* tree = instance();
-    if (!tree || !tree->isConnectionAttached()) {
+    if (!tree || !tree->isSelectionAttached()) {
         for (auto pTree : Instances)
-            if (pTree->isConnectionAttached()) {
+            if (pTree->isSelectionAttached()) {
                 tree = pTree;
                 break;
             }
@@ -1286,7 +1286,7 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
 }
 
 void TreeWidget::selectAllLinks(App::DocumentObject* obj) {
-    if (!isConnectionAttached())
+    if (!isSelectionAttached())
         return;
 
     if (!obj || !obj->getNameInDocument()) {
@@ -2620,14 +2620,14 @@ void TreeWidget::onUpdateStatus(void)
         docItem->_ExpandInfo.reset();
     }
 
-    if (Selection().hasSelection() && !selectTimer->isActive() && !this->isConnectionBlocked()) {
-        this->blockConnection(true);
+    if (Selection().hasSelection() && !selectTimer->isActive() && !this->isSelectionBlocked()) {
+        this->blockSelection(true);
         currentDocItem = 0;
         for (auto& v : DocumentMap) {
             v.second->setSelected(false);
             v.second->selectItems();
         }
-        this->blockConnection(false);
+        this->blockSelection(false);
     }
 
     auto activeDocItem = getDocumentItem(Application::Instance->activeDocument());
@@ -2745,7 +2745,7 @@ void TreeWidget::scrollItemToTop()
 {
     auto doc = Application::Instance->activeDocument();
     for (auto tree : Instances) {
-        if (!tree->isConnectionAttached() || tree->isConnectionBlocked())
+        if (!tree->isSelectionAttached() || tree->isSelectionBlocked())
             continue;
 
         tree->_updateStatus(false);
@@ -2753,13 +2753,13 @@ void TreeWidget::scrollItemToTop()
         if (doc && Gui::Selection().hasSelection(doc->getDocument()->getName(), false)) {
             auto it = tree->DocumentMap.find(doc);
             if (it != tree->DocumentMap.end()) {
-                bool lock = tree->blockConnection(true);
+                bool lock = tree->blockSelection(true);
                 it->second->selectItems(DocumentItem::SR_FORCE_EXPAND);
-                tree->blockConnection(lock);
+                tree->blockSelection(lock);
             }
         }
         else {
-            tree->blockConnection(true);
+            tree->blockSelection(true);
             for (int i = 0; i < tree->rootItem->childCount(); i++) {
                 auto docItem = dynamic_cast<DocumentItem*>(tree->rootItem->child(i));
                 if (!docItem)
@@ -2772,7 +2772,7 @@ void TreeWidget::scrollItemToTop()
                     break;
                 }
             }
-            tree->blockConnection(false);
+            tree->blockSelection(false);
         }
         tree->selectTimer->stop();
         tree->_updateStatus(false);
@@ -2781,7 +2781,7 @@ void TreeWidget::scrollItemToTop()
 
 void TreeWidget::expandSelectedItems(TreeItemMode mode)
 {
-    if (!isConnectionAttached())
+    if (!isSelectionAttached())
         return;
 
     for (auto item : selectedItems()) {
@@ -2897,15 +2897,15 @@ void TreeWidget::changeEvent(QEvent* e)
 
 void TreeWidget::onItemSelectionChanged()
 {
-    if (!this->isConnectionAttached()
-        || this->isConnectionBlocked()
+    if (!this->isSelectionAttached()
+        || this->isSelectionBlocked()
         || updateBlocked)
         return;
 
     _LastSelectedTreeWidget = this;
 
     // block tmp. the connection to avoid to notify us ourself
-    bool lock = this->blockConnection(true);
+    bool lock = this->blockSelection(true);
 
     if (selectTimer->isActive())
         onSelectTimer();
@@ -2972,7 +2972,7 @@ void TreeWidget::onItemSelectionChanged()
             Gui::Selection().selStackPush(true, true);
     }
 
-    this->blockConnection(lock);
+    this->blockSelection(lock);
 }
 
 static bool isSelectionCheckBoxesEnabled() {
@@ -3020,7 +3020,7 @@ void TreeWidget::onSelectTimer() {
     _updateStatus(false);
 
     bool syncSelect = TreeParams::Instance()->SyncSelection();
-    bool locked = this->blockConnection(true);
+    bool locked = this->blockSelection(true);
     if (Selection().hasSelection()) {
         for (auto& v : DocumentMap) {
             v.second->setSelected(false);
@@ -3033,7 +3033,7 @@ void TreeWidget::onSelectTimer() {
         for (auto& v : DocumentMap)
             v.second->clearSelection();
     }
-    this->blockConnection(locked);
+    this->blockSelection(locked);
     selectTimer->stop();
     return;
 }
@@ -3168,7 +3168,7 @@ TreeDockWidget::~TreeDockWidget()
 }
 
 void TreeWidget::selectLinkedObject(App::DocumentObject* linked) {
-    if (!isConnectionAttached() || isConnectionBlocked())
+    if (!isSelectionAttached() || isSelectionBlocked())
         return;
 
     auto linkedVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
@@ -3469,13 +3469,13 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         if (obj->getDocument() == doc)
             docItem->_ParentMap.erase(obj);
 
-        bool lock = blockConnection(true);
+        bool lock = blockSelection(true);
         for (auto cit = items.begin(), citNext = cit; cit != items.end(); cit = citNext) {
             ++citNext;
             (*cit)->myOwner = 0;
             delete* cit;
         }
-        blockConnection(lock);
+        blockSelection(lock);
 
         // Check for any child of the deleted object that is not in the tree, and put it
         // under document item.
@@ -3606,9 +3606,9 @@ void DocumentItem::populateItem(DocumentObjectItem* item, bool refresh, bool del
             if (item->myData->removeChildrenFromRoot) {
                 if (childItem->myData->rootItem) {
                     assert(childItem != childItem->myData->rootItem);
-                    bool lock = getTree()->blockConnection(true);
+                    bool lock = getTree()->blockSelection(true);
                     delete childItem->myData->rootItem;
-                    getTree()->blockConnection(lock);
+                    getTree()->blockSelection(lock);
                 }
             }
             else if (childItem->requiredAtRoot()) {
@@ -3679,9 +3679,9 @@ void DocumentItem::populateItem(DocumentObjectItem* item, bool refresh, bool del
             }
         }
 
-        bool lock = getTree()->blockConnection(true);
+        bool lock = getTree()->blockSelection(true);
         delete ci;
-        getTree()->blockConnection(lock);
+        getTree()->blockSelection(lock);
     }
     if (updated)
         getTree()->_updateStatus();
@@ -4517,7 +4517,7 @@ void DocumentItem::selectAllInstances(const ViewProviderDocumentObject& vpd) {
     if (ObjectMap.find(pObject) == ObjectMap.end())
         return;
 
-    bool lock = getTree()->blockConnection(true);
+    bool lock = getTree()->blockSelection(true);
 
     // We are trying to select all items corresponding to a given view
     // provider, i.e. all appearance of the object inside all its parent items
@@ -4542,7 +4542,7 @@ void DocumentItem::selectAllInstances(const ViewProviderDocumentObject& vpd) {
         first = item;
     END_FOREACH_ITEM;
 
-    getTree()->blockConnection(lock);
+    getTree()->blockSelection(lock);
     if (first) {
         treeWidget()->scrollToItem(first);
         updateSelection();
@@ -4594,9 +4594,9 @@ void DocumentItem::updateItemsVisibility(QTreeWidgetItem* item, bool show) {
 }
 
 void DocumentItem::updateSelection() {
-    bool lock = getTree()->blockConnection(true);
+    bool lock = getTree()->blockSelection(true);
     updateSelection(this, false);
-    getTree()->blockConnection(lock);
+    getTree()->blockSelection(lock);
 }
 
 // ----------------------------------------------------------------------------

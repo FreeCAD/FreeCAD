@@ -232,9 +232,9 @@ public:
     SelectionObserver(const Gui::ViewProviderDocumentObject *vp, bool attach=true, int resolve=1);
 
     virtual ~SelectionObserver();
-    bool blockConnection(bool block);
-    bool isConnectionBlocked() const;
-    bool isConnectionAttached() const;
+    bool blockSelection(bool block);
+    bool isSelectionBlocked() const;
+    bool isSelectionAttached() const;
 
     /** Attaches to the selection. */
     void attachSelection();
@@ -251,7 +251,7 @@ private:
     std::string filterDocName;
     std::string filterObjName;
     int resolve;
-    bool blockSelection;
+    bool blockedSelection;
 };
 
 /**

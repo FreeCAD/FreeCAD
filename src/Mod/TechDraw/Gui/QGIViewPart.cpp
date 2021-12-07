@@ -769,7 +769,7 @@ void QGIViewPart::removePrimitives()
     QList<QGraphicsItem*> children = childItems();
     MDIViewPage* mdi = getMDIViewPage();
     if (mdi != nullptr) {
-        getMDIViewPage()->blockSelection(true);
+        getMDIViewPage()->blockSceneSelection(true);
     }
     for (auto& c:children) {
          QGIPrimPath* prim = dynamic_cast<QGIPrimPath*>(c);
@@ -780,7 +780,7 @@ void QGIViewPart::removePrimitives()
          }
      }
     if (mdi != nullptr) {
-        getMDIViewPage()->blockSelection(false);
+        getMDIViewPage()->blockSceneSelection(false);
     }
 }
 

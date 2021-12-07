@@ -64,7 +64,7 @@ TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider
     : TaskFeatureParameters(vp, parent, pixmapname, parname)
 {
     // disable selection
-    this->blockConnection(true);
+    this->blockSelection(true);
 }
 
 const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChanges& msg)
@@ -123,14 +123,14 @@ void TaskSketchBasedParameters::onSelectReference(AllowSelectionFlags allow) {
 
         if (AllowSelectionFlags::Int(allow) != int(AllowSelection::NONE)) {
             startReferenceSelection(pcSketchBased, prevSolid);
-            this->blockConnection(false);
+            this->blockSelection(false);
             Gui::Selection().clearSelection();
             Gui::Selection().addSelectionGate(new ReferenceSelection(prevSolid, allow));
         }
         else {
             Gui::Selection().rmvSelectionGate();
             finishReferenceSelection(pcSketchBased, prevSolid);
-            this->blockConnection(true);
+            this->blockSelection(true);
         }
     }
 }

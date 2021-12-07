@@ -351,7 +351,7 @@ void PropertyView::onTimer() {
     clearPropertyItemSelection();
     timer->stop();
 
-    if(!this->isConnectionAttached())
+    if(!this->isSelectionAttached())
         return;
 
     if(!Gui::Selection().hasSelection()) {

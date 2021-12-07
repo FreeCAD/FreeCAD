@@ -293,7 +293,7 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
         return;
     detachSelection();
 
-    blockSelection(true);
+    blockSceneSelection(true);
     // when closing the view from GUI notify the view provider to mark it invisible
     if (_pcDocument && !m_objectName.empty()) {
         App::Document* doc = _pcDocument->getDocument();
@@ -304,7 +304,7 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
                 vp->hide();
         }
     }
-    blockSelection(false);
+    blockSceneSelection(false);
 }
 
 void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
@@ -406,11 +406,11 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
 {
     //if this page has a QView for this obj, delete it.
-    blockSelection(true);
+    blockSceneSelection(true);
     if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         (void) m_view->removeQViewByName(obj.getNameInDocument());
     }
-    blockSelection(false);
+    blockSceneSelection(false);
 }
 
 void MDIViewPage::onTimer() {
@@ -774,7 +774,7 @@ void MDIViewPage::print(QPrinter* printer)
 #endif
 
     //bool block =
-    static_cast<void> (blockConnection(true)); // avoid to be notified by itself
+    static_cast<void> (blockSelection(true)); // avoid to be notified by itself
     Gui::Selection().clearSelection();
 
     bool saveState = m_vpPage->getFrameState();
@@ -801,7 +801,7 @@ void MDIViewPage::print(QPrinter* printer)
     m_vpPage->setTemplateMarkers(saveState);
     m_view->refreshViews();
     //bool block =
-    static_cast<void> (blockConnection(false));
+    static_cast<void> (blockSelection(false));
 }
 
 PyObject* MDIViewPage::getPyObject()
@@ -851,7 +851,7 @@ void MDIViewPage::saveSVG()
     if (fn.isEmpty()) {
       return;
     }
-    static_cast<void> (blockConnection(true)); // avoid to be notified by itself
+    static_cast<void> (blockSelection(true)); // avoid to be notified by itself
 
     m_view->saveSvg(fn);
 }
@@ -967,7 +967,7 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
 }
 
 //flag to prevent selection activity within mdivp
-void MDIViewPage::blockSelection(const bool state)
+void MDIViewPage::blockSceneSelection(const bool state)
 {
     isSelectionBlocked = state;
 }
@@ -977,7 +977,7 @@ void MDIViewPage::blockSelection(const bool state)
 void MDIViewPage::clearSceneSelection()
 {
 //    Base::Console().Message("MDIVP::clearSceneSelection()\n");
-    blockSelection(true);
+    blockSceneSelection(true);
     m_qgSceneSelected.clear();
 
     std::vector<QGIView *> views = m_view->getViews();
@@ -1004,7 +1004,7 @@ void MDIViewPage::clearSceneSelection()
         }
     }
 
-    blockSelection(false);
+    blockSceneSelection(false);
 }
 
 //!Update QGIView's selection state based on Selection made outside Drawing Interface
@@ -1012,12 +1012,12 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 {
     QGIView *view = m_view->findQViewForDocObj(obj);
 
-    blockSelection(true);
+    blockSceneSelection(true);
     if(view) {
         view->setGroupSelection(isSelected);
         view->updateView();
     }
-    blockSelection(false);
+    blockSceneSelection(false);
 }
 
 //! invoked by selection change made in Tree via father MDIView
@@ -1030,21 +1030,21 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
         clearSceneSelection();
     } else if(msg.Type == Gui::SelectionChanges::SetSelection) {                     //replace entire selection set
         clearSceneSelection();
-        blockSelection(true);
+        blockSceneSelection(true);
         for (auto& so: selObjs){
             if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
                 selectQGIView(so.pObject, true);
             }
         }
-        blockSelection(false);
+        blockSceneSelection(false);
     } else if(msg.Type == Gui::SelectionChanges::AddSelection) {
-        blockSelection(true);
+        blockSceneSelection(true);
         for (auto& so: selObjs){
             if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
                 selectQGIView(so.pObject, true);
             }
         }
-        blockSelection(false);
+        blockSceneSelection(false);
     } else {
         Base::Console().Log("MDIVP::onSelectionChanged - unhandled: %d\n", msg.Type);
     }
@@ -1123,8 +1123,8 @@ void MDIViewPage::sceneSelectionChanged()
 //Note: Qt says: "no guarantee of selection order"!!!
 void MDIViewPage::setTreeToSceneSelect(void)
 {
-    bool saveBlock = blockConnection(true); // block selectionChanged signal from Tree/Observer
-    blockSelection(true);
+    bool saveBlock = blockSelection(true); // block selectionChanged signal from Tree/Observer
+    blockSceneSelection(true);
     Gui::Selection().clearSelection();
     QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
     for (QList<QGraphicsItem*>::iterator it = sceneSel.begin(); it != sceneSel.end(); ++it) {
@@ -1268,8 +1268,8 @@ void MDIViewPage::setTreeToSceneSelect(void)
         }
     }
 
-    blockSelection(false);
-    blockConnection(saveBlock);
+    blockSceneSelection(false);
+    blockSelection(saveBlock);
 }
 
 bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel)

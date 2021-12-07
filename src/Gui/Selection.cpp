@@ -85,21 +85,23 @@ bool SelectionGateFilterExternal::allow(App::Document *doc ,App::DocumentObject 
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-SelectionObserver::SelectionObserver(bool attach,int resolve)
-    :resolve(resolve),blockSelection(false)
+SelectionObserver::SelectionObserver(bool attach, int resolve)
+    : resolve(resolve)
+    , blockedSelection(false)
 {
-    if(attach)
+    if (attach)
         attachSelection();
 }
 
-SelectionObserver::SelectionObserver(const ViewProviderDocumentObject *vp,bool attach,int resolve)
-    :resolve(resolve),blockSelection(false)
+SelectionObserver::SelectionObserver(const ViewProviderDocumentObject *vp,bool attach, int resolve)
+    : resolve(resolve)
+    , blockedSelection(false)
 {
-    if(vp && vp->getObject() && vp->getObject()->getDocument()) {
+    if (vp && vp->getObject() && vp->getObject()->getDocument()) {
         filterDocName = vp->getObject()->getDocument()->getName();
         filterObjName = vp->getObject()->getNameInDocument();
     }
-    if(attach)
+    if (attach)
         attachSelection();
 }
 
@@ -109,22 +111,19 @@ SelectionObserver::~SelectionObserver()
     detachSelection();
 }
 
-bool SelectionObserver::blockConnection(bool block)
+bool SelectionObserver::blockSelection(bool block)
 {
-    bool ok = blockSelection;
-    if (block)
-        blockSelection = true;
-    else
-        blockSelection = false;
+    bool ok = blockedSelection;
+    blockedSelection = block;
     return ok;
 }
 
-bool SelectionObserver::isConnectionBlocked() const
+bool SelectionObserver::isSelectionBlocked() const
 {
-    return blockSelection;
+    return blockedSelection;
 }
 
-bool SelectionObserver::isConnectionAttached() const
+bool SelectionObserver::isSelectionAttached() const
 {
     return connectSelection.connected();
 }
@@ -147,7 +146,7 @@ void SelectionObserver::attachSelection()
 
 void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg) {
     try {
-        if (blockSelection)
+        if (blockedSelection)
             return;
         onSelectionChanged(msg);
     } catch (Base::Exception &e) {
@@ -164,7 +163,7 @@ void SelectionObserver::detachSelection()
 {
     if (connectSelection.connected()) {
         connectSelection.disconnect();
-        if(filterDocName.size())
+        if (filterDocName.size())
             Selection().rmvSelectionGate();
     }
 }
