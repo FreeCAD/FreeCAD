@@ -612,6 +612,8 @@ public:
     bool skipMouseRelease = false;
     bool checkHiddenItems = false;
     bool multiSelecting = false;
+    bool checkActiveDocument = false;
+    bool mousePressed = false;
 
     QTreeWidgetItem *reorderingItem = nullptr;
     bool reorderBefore = true;
@@ -2744,6 +2746,8 @@ void TreeWidget::Private::toggleItemVisibility(DocumentObjectItem *oitem)
 void TreeWidget::mousePressEvent(QMouseEvent *event) {
     if (_DraggingActive)
         return;
+
+    Base::StateLocker flag(pimpl->mousePressed);
     QByteArray tag;
     auto oitem = pimpl->itemHitTest(event->pos(), &tag);
     if (oitem) {
@@ -2833,8 +2837,16 @@ void TreeWidget::mouseReleaseEvent(QMouseEvent *ev)
 
     if (pimpl->skipMouseRelease)
         pimpl->skipMouseRelease = false;
-    else
+    else {
         QTreeWidget::mouseReleaseEvent(ev);
+
+        if (pimpl->checkActiveDocument) {
+            auto gdoc = Application::Instance->getDocument(
+                    App::GetApplication().getActiveDocument());
+            if (gdoc)
+                slotActiveDocument(*gdoc);
+        }
+    }
 }
 
 void TreeWidget::startDragging() {
@@ -2948,6 +2960,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
 void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, int *pReorder)
 {
+    checkActiveDocument = false;
+
     auto modifier = (event->keyboardModifiers()
             & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
     QTreeWidgetItem* targetItem = nullptr;
@@ -3196,6 +3210,8 @@ struct ItemInfo2 {
 
 void TreeWidget::dropEvent(QDropEvent *event)
 {
+    ToolTip::hideText();
+
     bool replace = true;
     int reorder = 0;
     pimpl->checkDropEvent(event, &replace, &reorder);
@@ -3999,25 +4015,35 @@ void TreeWidget::slotRelabelDocument(const Gui::Document& Doc)
 
 void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
 {
+    if (pimpl->mousePressed) {
+       pimpl->checkActiveDocument  = true;
+       return;
+    }
+    if (pimpl->checkActiveDocument) {
+        if (QApplication::mouseButtons() != Qt::NoButton)
+            return;
+        pimpl->checkActiveDocument = false;
+    }
+
     auto jt = DocumentMap.find(&Doc);
     if (jt == DocumentMap.end())
         return; // signal is emitted before the item gets created
 
     int displayMode = TreeParams::DocumentMode();
-    for (auto it = DocumentMap.begin();
-         it != DocumentMap.end(); ++it)
-    {
+    for (auto it = DocumentMap.begin(); it != DocumentMap.end(); ++it) {
         QFont f = it->second->font(0);
         f.setBold(it == jt);
         if(!it->first->getDocument()->testStatus(App::Document::TempDoc))
             it->second->setHidden(0 == displayMode && it != jt && !pimpl->multiSelecting);
-        if (2 == displayMode && !pimpl->multiSelecting) {
+        if (2 == displayMode && !pimpl->multiSelecting)
             it->second->setExpanded(it == jt);
-            if (currentItem())
-                scrollToItem(currentItem());
-        }
         // this must be done as last step
         it->second->setFont(0, f);
+    }
+
+    if (auto item = dynamic_cast<DocumentObjectItem*>(currentItem())) {
+        if (item->getOwnerDocument() == jt->second)
+            scrollToItem(currentItem());
     }
 }
 
