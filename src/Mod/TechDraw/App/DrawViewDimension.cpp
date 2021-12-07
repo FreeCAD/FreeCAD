@@ -644,9 +644,9 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);
         int idx2 = DrawUtil::getIndexFromName(subElements[2]);
 
-        TechDraw::Vertex* vert0 = getViewPart()->getProjVertexByIndex(idx0);
-        TechDraw::Vertex* vert1 = getViewPart()->getProjVertexByIndex(idx1);
-        TechDraw::Vertex* vert2 = getViewPart()->getProjVertexByIndex(idx2);
+        TechDraw::VertexPtr vert0 = getViewPart()->getProjVertexByIndex(idx0);
+        TechDraw::VertexPtr vert1 = getViewPart()->getProjVertexByIndex(idx1);
+        TechDraw::VertexPtr vert2 = getViewPart()->getProjVertexByIndex(idx2);
         if (!vert0 || !vert1 || !vert2) {
              Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
              return App::DocumentObject::StdReturn;
@@ -1134,8 +1134,8 @@ pointPair DrawViewDimension::getPointsTwoVerts()
 
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-    TechDraw::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
-    TechDraw::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
+    TechDraw::VertexPtr v0 = getViewPart()->getProjVertexByIndex(idx0);
+    TechDraw::VertexPtr v1 = getViewPart()->getProjVertexByIndex(idx1);
     if ((v0 == nullptr) ||
         (v1 == nullptr) ) {
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt (3)\n",getNameInDocument());
@@ -1153,7 +1153,7 @@ pointPair DrawViewDimension::getPointsEdgeVert()
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
     TechDraw::BaseGeom* e;
-    TechDraw::Vertex* v;
+    TechDraw::VertexPtr v;
     if (DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge") {
         e = getViewPart()->getGeomByIndex(idx0);
         v = getViewPart()->getProjVertexByIndex(idx1);
@@ -1222,7 +1222,7 @@ bool DrawViewDimension::checkReferences2D() const
                             break;
                         }
                     } else if (DrawUtil::getGeomTypeFromName(s) == "Vertex") {
-                        TechDraw::Vertex* v = getViewPart()->getProjVertexByIndex(idx);
+                        TechDraw::VertexPtr v = getViewPart()->getProjVertexByIndex(idx);
                         if (v == nullptr) {
                             result = false;
                             break;

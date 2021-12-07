@@ -128,8 +128,8 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
     Base::Vector3d refMin = endPoints.first;
     Base::Vector3d refMax = endPoints.second;
 
-    TechDraw::Vertex* v0 = nullptr;
-    TechDraw::Vertex* v1 = nullptr;
+    TechDraw::VertexPtr v0 = nullptr;
+    TechDraw::VertexPtr v1 = nullptr;
     std::vector<std::string> cTags = CosmeticTags.getValues();
     if (cTags.size() > 1) {
         v0 = dvp->getProjVertexByCosTag(cTags[0]);
@@ -184,8 +184,8 @@ pointPair DrawViewDimExtent::getPointsTwoVerts()
     pointPair result;
     result.first = Base::Vector3d(0.0, 0.0, 0.0);
     result.second = Base::Vector3d(0.0, 0.0, 0.0);
-    TechDraw::Vertex* v0 = nullptr;
-    TechDraw::Vertex* v1 = nullptr;
+    TechDraw::VertexPtr v0 = nullptr;
+    TechDraw::VertexPtr v1 = nullptr;
     TechDraw::DrawViewPart* dvp = getViewPart();
     if (dvp == nullptr) {
         return result;

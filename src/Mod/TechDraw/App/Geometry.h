@@ -38,6 +38,8 @@
 #include <TopoDS_Wire.hxx>
 #include <TopoDS_Face.hxx>
 
+#include <memory>
+
 namespace TechDraw {
 
 enum ExtractionType {               //obs
@@ -297,6 +299,7 @@ class TechDrawExport Face
         TopoDS_Face toOccFace(void) const;
         std::vector<Wire *> wires;
 };
+using FacePtr = std::shared_ptr<Face>;
 
 class TechDrawExport Vertex
 {
@@ -317,7 +320,7 @@ class TechDrawExport Vertex
         int ref3D;                        //obs. never used.
         bool isCenter;
         TopoDS_Vertex occVertex;
-        bool isEqual(Vertex* v, double tol);
+        bool isEqual(const Vertex& v, double tol);
         Base::Vector3d point(void) const { return Base::Vector3d(pnt.x,pnt.y,0.0); }
         void point(Base::Vector3d v){ pnt = Base::Vector3d(v.x, v.y); }
         bool cosmetic;
@@ -338,6 +341,7 @@ class TechDrawExport Vertex
 
         boost::uuids::uuid tag;
 };
+using VertexPtr = std::shared_ptr<Vertex>;
 
 /// Encapsulates some useful static methods
 class TechDrawExport GeometryUtils

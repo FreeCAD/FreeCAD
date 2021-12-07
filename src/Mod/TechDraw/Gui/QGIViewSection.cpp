@@ -90,7 +90,7 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
-    std::vector<TechDraw::Face *>::iterator fit = sectionFaces.begin();
+    std::vector<TechDraw::FacePtr>::iterator fit = sectionFaces.begin();
     int i = 0;
     for(; fit != sectionFaces.end(); fit++, i++) {
         QGIFace* newFace = drawFace(*fit,-1);

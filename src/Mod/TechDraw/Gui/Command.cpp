@@ -823,7 +823,7 @@ bool _checkDirectPlacement(const QGIViewPart *viewPart, const std::vector<std::s
     std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(subNames[0]);
     if (geoType == "Vertex") {
         int index = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
-        TechDraw::Vertex *vertex = static_cast<DrawViewPart *>(viewPart->getViewObject())->getProjVertexByIndex(index);
+        TechDraw::VertexPtr vertex = static_cast<DrawViewPart *>(viewPart->getViewObject())->getProjVertexByIndex(index);
         if (vertex) {
             placement = viewPart->mapToScene(Rez::guiX(vertex->x()), Rez::guiX(vertex->y()));
             return true;

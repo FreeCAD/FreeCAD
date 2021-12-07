@@ -470,8 +470,8 @@ void QGIViewPart::drawViewPart()
         // Draw Faces
         std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
         std::vector<TechDraw::DrawGeomHatch*> geomObjs = viewPart->getGeomHatches();
-        const std::vector<TechDraw::Face *> &faceGeoms = viewPart->getFaceGeometry();
-        std::vector<TechDraw::Face *>::const_iterator fit = faceGeoms.begin();
+        const std::vector<TechDraw::FacePtr> &faceGeoms = viewPart->getFaceGeometry();
+        std::vector<TechDraw::FacePtr>::const_iterator fit = faceGeoms.begin();
         for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
             QGIFace* newFace = drawFace(*fit,i);
             newFace->isHatched(false);
@@ -637,8 +637,8 @@ void QGIViewPart::drawViewPart()
         }
     }
 
-    const std::vector<TechDraw::Vertex *> &verts = viewPart->getVertexGeometry();
-    std::vector<TechDraw::Vertex *>::const_iterator vert = verts.begin();
+    const std::vector<TechDraw::VertexPtr> &verts = viewPart->getVertexGeometry();
+    std::vector<TechDraw::VertexPtr>::const_iterator vert = verts.begin();
     double cAdjust = vp->CenterScale.getValue();
 
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
@@ -711,7 +711,7 @@ bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
     return result;
 }
 
-QGIFace* QGIViewPart::drawFace(TechDraw::Face* f, int idx)
+QGIFace* QGIViewPart::drawFace(TechDraw::FacePtr f, int idx)
 {
 //    Base::Console().Message("QGIVP::drawFace - %d\n", idx);
     std::vector<TechDraw::Wire *> fWires = f->wires;
