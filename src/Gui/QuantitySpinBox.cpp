@@ -554,7 +554,7 @@ void QuantitySpinBox::userInput(const QString & text)
 
     if (keyboardTracking()) {
         d->cached = res;
-        handlePendingEmit();
+        handlePendingEmit(false);
     }
     else {
         d->cached = res;
@@ -585,18 +585,19 @@ void QuantitySpinBox::openFormulaDialog()
     Q_EMIT showFormulaDialog(true);
 }
 
-void QuantitySpinBox::handlePendingEmit()
+void QuantitySpinBox::handlePendingEmit(bool updateUnit /* = true */)
 {
-    updateFromCache(true);
+    updateFromCache(true, updateUnit);
 }
 
-void QuantitySpinBox::updateFromCache(bool notify)
+void QuantitySpinBox::updateFromCache(bool notify, bool updateUnit /* = true */)
 {
     Q_D(QuantitySpinBox);
     if (d->pendingEmit) {
         double factor;
         const Base::Quantity& res = d->cached;
-        QString text = getUserString(res, factor, d->unitStr);
+        auto tmpUnit(d->unitStr);
+        QString text = getUserString(res, factor, updateUnit ? d->unitStr : tmpUnit);
         d->unitValue = res.getValue() / factor;
         d->quantity = res;
 
@@ -782,7 +783,8 @@ void QuantitySpinBox::stepBy(int steps)
     else if (val < d->minimum)
         val = d->minimum;
 
-    lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(d->unitStr));
+    Quantity quant(val, d->unitStr);
+    updateText(quant);
     updateFromCache(true);
     update();
     selectNumber();
