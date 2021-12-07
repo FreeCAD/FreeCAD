@@ -817,7 +817,7 @@ bool ViewProvider::canReplaceObject(App::DocumentObject* oldValue, App::Document
         // no one implements this function, fallback to canDropObject
         return canDropObject(newValue);
     }
-    return res>=0;
+    return res>0;
 }
 
 bool ViewProvider::reorderObjects(const std::vector<App::DocumentObject*> &objs, App::DocumentObject* before)
@@ -843,7 +843,7 @@ bool ViewProvider::canReorderObject(App::DocumentObject* obj, App::DocumentObjec
         return res>=0;
     });
 
-    return res>=0;
+    return res>0;
 }
 
 bool ViewProvider::reorderObjectsInProperty(App::PropertyLinkList *prop,

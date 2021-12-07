@@ -285,7 +285,9 @@ PyObject* ViewProviderPy::replaceObject(PyObject *args)
         int ret = getViewProviderPtr()->replaceObject(
                 static_cast<App::DocumentObjectPy*>(oldObj)->getDocumentObjectPtr(),
                 static_cast<App::DocumentObjectPy*>(newObj)->getDocumentObjectPtr());
-        return Py::new_reference_to(Py::Int(ret));
+        if (ret <= 0)
+            throw Base::RuntimeError("Failed to replace object");
+        Py_Return;
     } PY_CATCH;
 }
 
@@ -328,7 +330,9 @@ PyObject* ViewProviderPy::reorderObjects(PyObject *args)
 
         bool ret = getViewProviderPtr()->reorderObjects(objs, 
                 static_cast<App::DocumentObjectPy*>(pybefore)->getDocumentObjectPtr());
-        return Py::new_reference_to(Py::Boolean(ret));
+        if (!ret)
+            throw Base::RuntimeError("Failed to reorder objects");
+        Py_Return;
     } PY_CATCH;
 }
 

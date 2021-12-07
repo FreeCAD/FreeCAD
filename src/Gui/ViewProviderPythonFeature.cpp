@@ -1573,7 +1573,7 @@ ViewProviderPythonFeatureImp::reorderObjects(
                 list.append(Py::asObject(obj->getPyObject()));
         }
         Py::TupleN args(list, Py::asObject(before->getPyObject()));
-        Py::Boolean ok(Base::pyCall(py_canReorderObject.ptr(),args.ptr()));
+        Py::Boolean ok(Base::pyCall(py_reorderObjects.ptr(),args.ptr()));
         return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {

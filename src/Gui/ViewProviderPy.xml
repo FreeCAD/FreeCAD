@@ -92,9 +92,9 @@ canDragAndDropObject(obj)
         <Methode Name="replaceObject">
             <Documentation>
                 <UserDocu>replace a child object
-replaceObject(oldObj, newObj) -> Int
+replaceObject(oldObj, newObj)
 --
-Returns 1 if succeeded, 0 if not found, -1 if not supported
+Throw exception if failed
 </UserDocu>
             </Documentation>
         </Methode>
@@ -108,10 +108,10 @@ canReplaceObject(oldObj, newObj) -> Boolean
         <Methode Name="reorderObjects">
             <Documentation>
                 <UserDocu>reorder child object(s)
-reorderObjects(obj, before) -> Boolean
-reorderObjects([obj...], before) -> Boolean
+reorderObjects(obj, before)
+reorderObjects([obj...], before)
 --
-Returns True if succeeded, or else failed
+Throw exception if failed
 </UserDocu>
             </Documentation>
         </Methode>
