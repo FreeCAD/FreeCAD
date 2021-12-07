@@ -29,7 +29,7 @@ Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
 may not be removed completely yet. This must be checked.
 """
 ## @package svg
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to return the SVG representation of shapes.
 
 import math
@@ -51,7 +51,7 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 # Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
 
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 
 

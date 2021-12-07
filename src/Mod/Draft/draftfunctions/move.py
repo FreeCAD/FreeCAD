@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to move objects from one position to another."""
 ## @package move
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to move objects from one position to another.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.utils as utils

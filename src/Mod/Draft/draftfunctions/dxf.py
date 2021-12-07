@@ -28,7 +28,7 @@ Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
 may not be removed completely yet. This must be checked.
 """
 ## @package dxf
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to return the DXF representation of shapes.
 
 import lazy_loader.lazy_loader as lz
@@ -46,7 +46,7 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
 
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 
 def _get_proj(vec, plane=None):

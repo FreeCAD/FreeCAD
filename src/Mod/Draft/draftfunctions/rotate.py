@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to rotate shapes around a center and axis."""
 ## @package rotate
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to rotate shapes around a center and axis.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import math
 

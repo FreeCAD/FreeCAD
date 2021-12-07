@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to create a fusion of two shapes."""
 ## @package fuse
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to create a fusion of two shapes.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils

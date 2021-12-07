@@ -24,10 +24,10 @@
 # ***************************************************************************
 """Provides functions to create non-parametric arrayed copies."""
 ## @package array
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to create non-parametric arrayed copies.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.utils as utils

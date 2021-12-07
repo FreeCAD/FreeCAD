@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to create an extrusion object from a profile."""
 ## @package extrude
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to create an extrusion object from a profile.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils

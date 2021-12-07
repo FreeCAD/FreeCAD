@@ -25,7 +25,7 @@
 See also the `downgrade` function.
 """
 ## @package downgrade
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to upgrade objects by different methods.
 
 import re
@@ -51,7 +51,7 @@ Arch = lz.LazyLoader("Arch", globals(), "Arch")
 
 _DEBUG = False
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 
 
