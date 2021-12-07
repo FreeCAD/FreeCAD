@@ -82,12 +82,11 @@ void ActivateBSplineHandler(Gui::Document *doc,DrawSketchHandler *handler)
     }
 }
 
-void ShowRestoreInformationLayer(SketcherGui::ViewProviderSketch* vp, char * visibleelementname)
+void ShowRestoreInformationLayer(const char * visibleelementname)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     bool status = hGrp->GetBool(visibleelementname, true);
     hGrp->SetBool(visibleelementname, !status);
-    vp->showRestoreInformationLayer();
 }
 
 // Show/Hide B-spline degree
@@ -111,9 +110,7 @@ void CmdSketcherBSplineDegree::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::Document * doc = getActiveGuiDocument();
-    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    ShowRestoreInformationLayer(vp, "BSplineDegreeVisible");
+    ShowRestoreInformationLayer("BSplineDegreeVisible");
 }
 
 bool CmdSketcherBSplineDegree::isActive(void)
@@ -142,9 +139,7 @@ void CmdSketcherBSplinePolygon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::Document * doc = getActiveGuiDocument();
-    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    ShowRestoreInformationLayer(vp, "BSplineControlPolygonVisible");
+    ShowRestoreInformationLayer("BSplineControlPolygonVisible");
 }
 
 bool CmdSketcherBSplinePolygon::isActive(void)
@@ -173,9 +168,7 @@ void CmdSketcherBSplineComb::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::Document * doc = getActiveGuiDocument();
-    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    ShowRestoreInformationLayer(vp, "BSplineCombVisible");
+    ShowRestoreInformationLayer("BSplineCombVisible");
 }
 
 bool CmdSketcherBSplineComb::isActive(void)
@@ -204,9 +197,7 @@ void CmdSketcherBSplineKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::Document * doc = getActiveGuiDocument();
-    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    ShowRestoreInformationLayer(vp, "BSplineKnotMultiplicityVisible");
+    ShowRestoreInformationLayer("BSplineKnotMultiplicityVisible");
 }
 
 bool CmdSketcherBSplineKnotMultiplicity::isActive(void)
@@ -235,9 +226,7 @@ void CmdSketcherBSplinePoleWeight::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::Document* doc = getActiveGuiDocument();
-    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    ShowRestoreInformationLayer(vp, "BSplinePoleWeightVisible");
+    ShowRestoreInformationLayer("BSplinePoleWeightVisible");
 }
 
 bool CmdSketcherBSplinePoleWeight::isActive(void)
