@@ -50,7 +50,7 @@
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
 
-Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet);
+Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -304,6 +304,7 @@ void TaskLoftParameters::exitSelectionMode()
 {
     selectionMode = none;
     Gui::Selection().clearSelection();
+    this->blockConnection(true);
 }
 
 void TaskLoftParameters::changeEvent(QEvent * /*e*/)
@@ -326,6 +327,7 @@ void TaskLoftParameters::onProfileButton(bool checked)
         clearButtons(refProfile);
         Gui::Selection().clearSelection();
         selectionMode = refProfile;
+        this->blockConnection(false);
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
@@ -336,6 +338,7 @@ void TaskLoftParameters::onRefButtonAdd(bool checked)
         clearButtons(refAdd);
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
+        this->blockConnection(false);
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
@@ -346,6 +349,7 @@ void TaskLoftParameters::onRefButtonRemove(bool checked)
         clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
+        this->blockConnection(false);
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }

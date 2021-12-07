@@ -560,8 +560,6 @@ void TaskExtrudeParameters::getReferenceAxis(App::DocumentObject*& obj, std::vec
 
 void TaskExtrudeParameters::onButtonFace(const bool pressed)
 {
-    this->blockConnection(!pressed);
-
     // to distinguish that this is the direction selection
     selectionFace = true;
 

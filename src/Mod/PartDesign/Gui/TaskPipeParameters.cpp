@@ -60,7 +60,7 @@
 #include "Utils.h"
 #include "TaskFeaturePick.h"
 
-Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet);
+Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -149,6 +149,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
 
     updateUI();
+    this->blockConnection(false);
 }
 
 TaskPipeParameters::~TaskPipeParameters()
@@ -663,6 +664,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
         QGenericReturnArgument(), Q_ARG(int,pipe->Mode.getValue()));
+    this->blockConnection(false);
 }
 
 TaskPipeOrientation::~TaskPipeOrientation()
@@ -958,6 +960,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
         QGenericReturnArgument(), Q_ARG(int,pipe->Transformation.getValue()));
+    this->blockConnection(false);
 }
 
 TaskPipeScaling::~TaskPipeScaling()
