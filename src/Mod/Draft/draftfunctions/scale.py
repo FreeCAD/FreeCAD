@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to scale shapes."""
 ## @package scale
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to scale shapes.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import DraftVecUtils

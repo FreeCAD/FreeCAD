@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to join wires together into a single wire."""
 ## @package join
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to join wires together into a single wire.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 

@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to split wires into separate wire objects."""
 ## @package split
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to split wires into separate wire objects.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import draftutils.utils as utils
 import draftmake.make_wire as make_wire

@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to create offsets of different shapes."""
 ## @package offset
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to create offsets of different shapes.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import math
 

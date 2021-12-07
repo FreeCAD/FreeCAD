@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to create a cut object from two objects."""
 ## @package cut
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to create a cut object from two objects.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
