@@ -212,6 +212,8 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         # thus need to sort its edges same order 
         edges = Part.__sortEdges__(wire.Edges)
         #edges = wire.Edges
+    elif isinstance(wire, Part.Edge):
+        edges = [wire]
     elif isinstance(wire, list):
         if isinstance(wire[0], Part.Edge):
             edges = wire.copy()
