@@ -37,7 +37,7 @@ namespace Sketcher
  This is mandatory in order to keep the handling of constraint types upward compatible which means that
  this program version ignores later introduced constraint types when reading them from a project file.
  */
-enum ConstraintType {
+enum ConstraintType : int {
     None = 0,
     Coincident = 1,
     Horizontal = 2,
