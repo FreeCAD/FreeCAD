@@ -363,17 +363,16 @@ void TaskHelixParameters::updateUI()
 void TaskHelixParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        exitSelectionMode();
         std::vector<std::string> axis;
         App::DocumentObject* selObj;
         if (getReferencedSelection(vp->getObject(), msg, selObj, axis) && selObj) {
+            exitSelectionMode();
             propReferenceAxis->setValue(selObj, axis);
             recomputeFeature();
             updateUI();
         }
     }
 }
-
 
 void TaskHelixParameters::onPitchChanged(double len)
 {
