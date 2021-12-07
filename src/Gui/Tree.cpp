@@ -372,20 +372,21 @@ public:
         return master->getTreeName();
     }
 
-    void checkDropEvent(QDropEvent *event, bool *replace = nullptr, bool *reorder = nullptr);
+    void checkDropEvent(QDropEvent *event, bool *replace = nullptr, int *reorder = nullptr);
 
-    void setReorderingItem(QTreeWidgetItem *item)
+    void setReorderingItem(QTreeWidgetItem *item, bool before = true)
     {
         if (item != reorderingItem)
             master->scheduleDelayedItemsLayout();
         reorderingItem = item;
+        reorderBefore = before;
         if (item)
             reorderingIndex = master->indexFromItem(item);
         else
             reorderingIndex = QModelIndex();
     }
 
-    void setDragCursor(Qt::CursorShape shape, bool replace=true, bool reorder=false)
+    void setDragCursor(Qt::CursorShape shape, bool replace=true, int reorder=0)
     {
         int cursorSize = 32;
         int iconSize = 24;
@@ -439,6 +440,7 @@ public:
                 pixmapReplace = BitmapFactory().pixmapFromSvg("TreeDragReplace", size, colorMap);
                 pixmapForbid = BitmapFactory().pixmapFromSvg("TreeDragForbid", size, colorMap);
                 pixmapReorder = BitmapFactory().pixmapFromSvg("TreeDragReorder", size, colorMap);
+                pixmapReorderDown = BitmapFactory().pixmapFromSvg("TreeDragReorderDown", size, colorMap);
 #else
                 pixmapMove = BitmapFactory().pixmapFromSvg("TreeDragMove", size);
                 pixmapCopy = BitmapFactory().pixmapFromSvg("TreeDragCopy", size);
@@ -446,6 +448,7 @@ public:
                 pixmapReplace = BitmapFactory().pixmapFromSvg("TreeDragReplace", size);
                 pixmapForbid = BitmapFactory().pixmapFromSvg("TreeDragForbid", size);
                 pixmapReorder = BitmapFactory().pixmapFromSvg("TreeDragReorder", size);
+                pixmapReorderDown = BitmapFactory().pixmapFromSvg("TreeDragReorderDown", size);
 #endif
             }
 
@@ -455,6 +458,7 @@ public:
             pxReplace = QPixmap();
             pxForbid = QPixmap();
             pxReorder = QPixmap();
+            pxReorderDown = QPixmap();
 
             if (!pxObj.isNull()) {
                 if (!pxObj2.isNull()) {
@@ -497,6 +501,12 @@ public:
 
                 pxCursor = QPixmap(cursorSize, cursorSize);
                 pxCursor.fill(Qt::transparent);
+                pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
+                pxCursor = BitmapFactory().merge(pxCursor, pixmapReorderDown, BitmapFactoryInst::TopLeft);
+                pxReorderDown = pxCursor;
+
+                pxCursor = QPixmap(cursorSize, cursorSize);
+                pxCursor.fill(Qt::transparent);
                 // pxCursor = BitmapFactory().merge(pxCursor, pxObj, BitmapFactoryInst::BottomRight);
                 pxCursor = BitmapFactory().merge(pxCursor, pixmapForbid, BitmapFactoryInst::TopLeft);
                 pxForbid = pxCursor;
@@ -507,26 +517,30 @@ public:
                 pxReplace.setDevicePixelRatio(dpr);
                 pxForbid.setDevicePixelRatio(dpr);
                 pxReorder.setDevicePixelRatio(dpr);
+                pxReorderDown.setDevicePixelRatio(dpr);
             }
         }
 
         QCursor cursor(shape);
         switch(shape) {
         case Qt::DragMoveCursor:
-            if (!pxMove.isNull())
-                cursor = QCursor(pxMove,hotX,hotY);
+            cursor = QCursor(pxMove,hotX,hotY);
             break;
         case Qt::DragCopyCursor:
-            if (!pxCopy.isNull())
-                cursor = QCursor(pxCopy,hotX,hotY);
+            cursor = QCursor(pxCopy,hotX,hotY);
             break;
         case Qt::DragLinkCursor:
-            if (!pxLink.isNull())
-                cursor = QCursor(reorder ? pxReorder : (replace?pxReplace:pxLink), hotX, hotY);
+            if (reorder > 0)
+                cursor = QCursor(pxReorder, hotX, hotY);
+            else if (reorder < 0)
+                cursor = QCursor(pxReorderDown, hotX, hotY);
+            else if (replace)
+                cursor = QCursor(pxReplace, hotX, hotY);
+            else
+                cursor = QCursor(pxLink, hotX, hotY);
             break;
         case Qt::ForbiddenCursor:
-            if (!pxForbid.isNull())
-                cursor = QCursor(pxForbid,hotX,hotY);
+            cursor = QCursor(pxForbid,hotX,hotY);
             break;
         default:
             break;
@@ -584,12 +598,14 @@ public:
     QPixmap pxLink;
     QPixmap pxReplace;
     QPixmap pxReorder;
+    QPixmap pxReorderDown;
     QPixmap pxForbid;
     QPixmap pixmapMove;
     QPixmap pixmapCopy;
     QPixmap pixmapLink;
     QPixmap pixmapReplace;
     QPixmap pixmapReorder;
+    QPixmap pixmapReorderDown;
     QPixmap pixmapForbid;
 
     bool restorePreselCursor = false;
@@ -598,9 +614,9 @@ public:
     bool multiSelecting = false;
 
     QTreeWidgetItem *reorderingItem = nullptr;
+    bool reorderBefore = true;
     QModelIndex reorderingIndex;
     QTreeWidgetItem *tooltipItem = nullptr;
-    App::DocumentObjectT syncViewObject;
 };
 
 
@@ -973,7 +989,12 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
         painter->save();
         painter->setCompositionMode(QPainter::CompositionMode_Difference);
         painter->setPen(Qt::white);
-        painter->drawLine(opt.rect.topLeft(), opt.rect.topRight());
+        if (tree->pimpl->reorderBefore)
+            painter->drawLine(opt.rect.topLeft(), opt.rect.topRight());
+        else {
+            int y = opt.rect.bottom()-1;
+            painter->drawLine(QPoint(opt.rect.left(), y), QPoint(opt.rect.right(), y));
+        }
         painter->restore();
     }
 }
@@ -2440,7 +2461,7 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
         QDragMoveEvent de(pos, _DropActions,
                 nullptr, event->buttons(), event->modifiers());
         bool replace = true;
-        bool reorder = false;
+        int reorder = 0;
         pimpl->checkDropEvent(&de, &replace, &reorder);
         Qt::CursorShape cursor;
         if(!de.isAccepted()) {
@@ -2925,7 +2946,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
     pimpl->checkDropEvent(event);
 }
 
-void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool *pReorder)
+void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, int *pReorder)
 {
     auto modifier = (event->keyboardModifiers()
             & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
@@ -2944,12 +2965,13 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
         }
     }
 
-    bool _replace, _reorder;
+    bool _replace;
     bool &replace = pReplace ? *pReplace : _replace;
-    bool &reorder = pReorder ? *pReorder : _reorder;
+    int _reorder;
+    int &reorder = pReorder ? *pReorder : _reorder;
     DocumentObjectItem *reorderParent = nullptr;
     replace = true;
-    reorder = false;
+    reorder = 0;
 
     QByteArray tag;
     if (targetItem)
@@ -2963,6 +2985,8 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
             master->setCurrentItem(targetItem, 0, QItemSelectionModel::NoUpdate);
     }
 
+    auto items = master->selectedItems();
+
     event->setDropAction(Qt::MoveAction);
     event->accept();
     if (!targetItem || master->isItemSelected(targetItem)) {
@@ -2975,7 +2999,7 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
             event->setDropAction(Qt::CopyAction);
         else {
             bool alt = (modifier & Qt::AltModifier) ? true : false;
-            for (auto titem : master->selectedItems()) {
+            for (auto titem : items) {
                 if (titem->type() != ObjectType)
                     continue;
                 auto item = static_cast<DocumentObjectItem*>(titem);
@@ -3007,7 +3031,6 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
         try {
-            auto items = master->selectedItems();
             auto originalAction = event->dropAction();
 
             if(modifier == Qt::ControlModifier)
@@ -3071,20 +3094,25 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
 
                 if (da == Qt::LinkAction) {
                     auto targetObj = targetItemObj->object()->getObject();
-                    if ((originalAction != Qt::LinkAction && (modifier & Qt::AltModifier))
-                            || ((modifier & Qt::AltModifier) && (modifier & Qt::ControlModifier))) {
-                        // CTRL + ALT to force link instead of replace operation
-                        replace = false;
-                        auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
-                        if (!ext || !ext->getLinkedObjectProperty()
-                                 || ext->getLinkedObjectProperty()->isReadOnly())
-                        {
-                            TREE_TRACE("Link operation not supported");
-                            event->ignore();
-                            this->setReorderingItem(nullptr);
-                            return;
+                    if (replace) {
+                        // Check if force to link action. Not to be confused with
+                        // Qt::LinkAction, which is used to indicated possible FC
+                        // action of link, replace or reorder.
+                        if ((originalAction != Qt::LinkAction && (modifier & Qt::AltModifier))
+                                || ((modifier & Qt::AltModifier) && (modifier & Qt::ControlModifier))) {
+                            // CTRL + ALT to force link instead of replace operation
+                            auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
+                            if (ext && ext->getLinkedObjectProperty()
+                                    && !ext->getLinkedObjectProperty()->isReadOnly())
+                            {
+                                replace = false;
+                                continue;
+                            }
                         }
-                    } else if (auto parentItem = targetItemObj->getParentItem()) {
+                    }
+
+                    // Check for reorder and replace
+                    if (auto parentItem = targetItemObj->getParentItem()) {
                         if (!reorder && !reorderParent && parentItem == item->parent())
                             reorderParent = parentItem;
                         else if (reorderParent && reorderParent != parentItem) {
@@ -3095,9 +3123,9 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
                         // Check reorder first to give it priority over replace operation
                         if (reorderParent && reorderParent->object()->canReorderObject(obj, targetObj)) {
                             replace = false;
-                            reorder = true;
+                            reorder = 1;
                         }
-                        else if (items.size() > 1 || !parentItem->object()->canReplaceObject(targetObj, obj)) {
+                        else if (!replace || items.size() > 1 || !parentItem->object()->canReplaceObject(targetObj, obj)) {
                             TREE_TRACE("Replace/reorder operation not supported");
                             event->ignore();
                             this->setReorderingItem(nullptr);
@@ -3110,7 +3138,7 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
                         this->setReorderingItem(nullptr);
                         return;
                     } else
-                        reorder = true;
+                        reorder = 1;
                 }
             }
         } catch (Base::Exception &e){
@@ -3128,7 +3156,18 @@ void TreeWidget::Private::checkDropEvent(QDropEvent *event, bool *pReplace, bool
         master->leaveEvent(0);
         event->ignore();
     }
-    this->setReorderingItem(reorder ? targetItem : nullptr);
+
+    if (event->isAccepted() && reorder) {
+        int maxIdx = -1;
+        auto parent = targetItem->parent();
+        for (auto item : items)
+            maxIdx = std::max(maxIdx, parent->indexOfChild(item));
+        if (maxIdx < parent->indexOfChild(targetItem)) {
+            // indicates we are dragging object downwards, 
+            reorder = -1;
+        }
+    }
+    this->setReorderingItem(reorder && event->isAccepted() ? targetItem : nullptr, reorder > 0);
 }
 
 struct ItemInfo {
@@ -3158,7 +3197,7 @@ struct ItemInfo2 {
 void TreeWidget::dropEvent(QDropEvent *event)
 {
     bool replace = true;
-    bool reorder = false;
+    int reorder = 0;
     pimpl->checkDropEvent(event, &replace, &reorder);
     pimpl->setReorderingItem(nullptr);
     if (!event->isAccepted())
@@ -3255,6 +3294,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         bool setSelection = true;
         std::vector<App::SubObjectT> droppedObjects;
         std::vector<ViewProviderDocumentObject*> reorderVps;
+        auto targetObj = targetItemObj->object()->getObject();
 
         std::vector<ItemInfo> infos;
         // Only keep text names here, because you never know when doing drag
@@ -3309,8 +3349,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
         // Open command
         App::AutoTransaction committer(reorder ? "Move object" : "Drop object", true);
         try {
-            auto targetObj = targetItemObj->object()->getObject();
-
             auto parentObj = targetObj;
             auto parentItem = targetItemObj->getParentItem();
             if(da == Qt::LinkAction && parentItem)
@@ -3328,34 +3366,30 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 droppedObjects = std::move(sels);
 
                 if (!parentItem) {
-                    ss << "reorderObjects([";
+                    ss << "App.getDocument('" << targetObj->getDocument()->getName() << "').reorderObjects([";
                     for (auto vp : reorderVps)
                         ss << vp->getObject()->getFullName(true) << ", ";
-                    ss << "], " << targetObj->getFullName(true) << ")";
-                    cmdAppDocument(targetObj, ss);
-                    targetItemObj->getOwnerDocument()->itemSorted = false;
+                    ss << "], " << targetObj->getFullName(true) << ")\n";
+
+                    if (reorder < 0)
+                        ss << "App.getDocument('" << targetObj->getDocument()->getName() << "').reorderObjects("
+                           << targetObj->getFullName(true) << ", "
+                           << reorderVps[0]->getObject()->getFullName(true) << ")";
                     _updateStatus();
                 }
                 else {
-                    auto lines = manager->getLines();
-                    ss << parentItem->object()->getFullName(true)
-                        << ".reorderObjects([";
+                    ss << parentItem->object()->getFullName(true) << ".reorderObjects([";
+                    for (auto vp : reorderVps)
+                        ss << vp->getObject()->getFullName(true) << ", ";
+                    ss << "], " << targetObj->getFullName(true) << ")\n";
 
-                    std::vector<App::DocumentObject *> objs;
-                    for (auto vp : reorderVps) {
-                        objs.push_back(vp->getObject());
-                        ss << vp->getFullName(true) << ", ";
-                    }
-
-                    ss << "], " << targetObj->getFullName(true) << ')';
-
-                    if (!parentItem->object()->reorderObjects(objs, targetItemObj->object()->getObject()))
-                        throw Base::RuntimeError("Failed to reorder objects");
-
-                    if(manager->getLines() == lines)
-                        manager->addLine(MacroManager::Gui,ss.str().c_str());
+                    if (reorder < 0)
+                        ss << parentItem->object()->getFullName(true)
+                           << ".reorderObjects(" << targetObj->getFullName(true) << ","
+                           << reorderVps[0]->getObject()->getFullName(true) << ")";
                     touched = true;
                 }
+                Command::runCommand(Command::Gui, ss.str().c_str());
                 infos.clear();
             }
             else {

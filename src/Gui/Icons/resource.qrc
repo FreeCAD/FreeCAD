@@ -95,6 +95,7 @@
         <file>TreeDragLink.svg</file>
         <file>TreeDragReplace.svg</file>
         <file>TreeDragReorder.svg</file>
+        <file>TreeDragReorderDown.svg</file>
         <file>TreeDragForbid.svg</file>
         <file>TreeError.svg</file>
         <file>TreeRecompute.svg</file>
