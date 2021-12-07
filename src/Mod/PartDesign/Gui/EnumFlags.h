@@ -33,7 +33,7 @@ namespace PartDesignGui {
 // https://stackoverflow.com/questions/1448396/how-to-use-enums-as-flags-in-c
 
 enum class AllowSelection {
-    NONE           = 0,
+    NONE           = 0,      /**< This is used to indicate to stop the selection */
     EDGE           = 1 << 0, /**< Allow picking edges */
     FACE           = 1 << 1, /**< Allow picking faces */
     PLANAR         = 1 << 2, /**< Allow only linear edges and planar faces */

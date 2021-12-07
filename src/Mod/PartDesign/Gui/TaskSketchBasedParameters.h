@@ -54,7 +54,13 @@ protected:
     const QString onAddSelection(const Gui::SelectionChanges& msg);
     virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
-    void onSelectReference(const bool pressed, AllowSelectionFlags);
+    /*!
+     * \brief onSelectReference
+     * Start reference selection mode to allow to select objects of the type defined
+     * with \a AllowSelectionFlags.
+     * If AllowSelection::NONE is passed the selection mode is finished.
+     */
+    void onSelectReference(AllowSelectionFlags);
     void exitSelectionMode();
     QVariant setUpToFace(const QString& text);
     /// Try to find the name of a feature with the given label.

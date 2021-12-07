@@ -112,7 +112,7 @@ void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* pr
     }
 }
 
-void TaskSketchBasedParameters::onSelectReference(const bool pressed, AllowSelectionFlags allow) {
+void TaskSketchBasedParameters::onSelectReference(AllowSelectionFlags allow) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
 
     PartDesign::ProfileBased* pcSketchBased = dynamic_cast<PartDesign::ProfileBased*>(vp->getObject());
@@ -120,7 +120,7 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, AllowSelec
         // The solid this feature will be fused to
         App::DocumentObject* prevSolid = pcSketchBased->getBaseObject( /* silent =*/ true );
 
-        if (pressed) {
+        if (AllowSelectionFlags::Int(allow) != int(AllowSelection::NONE)) {
             startReferenceSelection(pcSketchBased, prevSolid);
             Gui::Selection().clearSelection();
             Gui::Selection().addSelectionGate(new ReferenceSelection(prevSolid, allow));
@@ -135,7 +135,7 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, AllowSelec
 
 void TaskSketchBasedParameters::exitSelectionMode()
 {
-    onSelectReference(false, AllowSelection::NONE);
+    onSelectReference(AllowSelection::NONE);
 }
 
 QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)

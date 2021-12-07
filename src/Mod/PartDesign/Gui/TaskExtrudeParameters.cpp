@@ -411,9 +411,9 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         // to distinguish that this is the direction selection
         selectionFace = false;
         setDirectionMode(num);
-        TaskSketchBasedParameters::onSelectReference(true, AllowSelection::EDGE |
-                                                           AllowSelection::PLANAR |
-                                                           AllowSelection::CIRCLE);
+        TaskSketchBasedParameters::onSelectReference(AllowSelection::EDGE |
+                                                     AllowSelection::PLANAR |
+                                                     AllowSelection::CIRCLE);
     }
     else {
         if (lnk.getValue()) {
@@ -566,7 +566,7 @@ void TaskExtrudeParameters::onButtonFace(const bool pressed)
     selectionFace = true;
 
     // only faces are allowed
-    TaskSketchBasedParameters::onSelectReference(pressed, AllowSelection::FACE);
+    TaskSketchBasedParameters::onSelectReference(pressed ? AllowSelection::FACE : AllowSelection::NONE);
 
     // Update button if onButtonFace() is called explicitly
     ui->buttonFace->setChecked(pressed);
