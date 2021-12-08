@@ -211,7 +211,7 @@ void ViewProviderWrap::setupContextMenu(QMenu* menu, QObject* receiver, const ch
             continue;
 
         int data = action->data().toInt();
-        if (data == Gui::ViewProvider::Color && (data & 0x8000))
+        if (data == Gui::ViewProvider::Color)
             menu->removeAction(action);
         else
             action->setData(data & 0x8000);
