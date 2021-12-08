@@ -51,6 +51,7 @@ void DocumentParams::OnChange(Base::Subject<const char*> &, const char* sReason)
     if(it == funcs.end())
         return;
     it->second(this);
+    signalParamChanged(sReason);
 }
 
 DocumentParams *DocumentParams::instance() {

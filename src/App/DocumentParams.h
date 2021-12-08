@@ -23,6 +23,7 @@
 #ifndef DOCUMENT_PARAMS_H
 #define DOCUMENT_PARAMS_H
 
+#include <boost_signals2.hpp>
 #include <Base/Parameter.h>
 #include "DynamicProperty.h"
 
@@ -55,6 +56,8 @@ public:
     ParameterGrp::handle getHandle() {
         return handle;
     }
+
+    boost::signals2::signal<void (const char*)> signalParamChanged;
 
 #define FC_DOCUMENT_PARAMS \
     FC_DOCUMENT_PARAM(prefAuthor, std::string, ASCII, "") \
@@ -91,12 +94,14 @@ public:
 #define FC_DOCUMENT_PARAM(_name,_ctype,_type,_def) \
     static const _ctype & _name() { return instance()->_##_name; }\
     static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static void set##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     static void update##_name(DocumentParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
 
 #undef FC_DOCUMENT_PARAM2
 #define FC_DOCUMENT_PARAM2(_name,_ctype,_type,_def) \
     static const _ctype & _name() { return instance()->_##_name; }\
     static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static void set##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     void on##_name##Changed();\
     static void update##_name(DocumentParams *self) { \
         auto _v = self->handle->Get##_type(#_name,_def); \

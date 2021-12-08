@@ -26,6 +26,7 @@
 # include <sstream>
 #endif
 
+#include <array>
 #include <QColorDialog>
 
 #include <boost_bind_bind.hpp>
@@ -50,6 +51,7 @@
 #include "ViewParams.h"
 
 #include <App/Document.h>
+#include <App/DocumentParams.h>
 #include <App/DocumentObject.h>
 
 FC_LOG_LEVEL_INIT("Gui",true,true)
@@ -60,7 +62,7 @@ namespace bp = boost::placeholders;
 class ElementColors::Private: public Gui::SelectionGate
 {
 public:
-    typedef boost::signals2::connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
     std::unique_ptr<Ui_TaskElementColors> ui;
     ViewProviderDocumentObject *vp;
     ViewProviderDocumentObject *vpParent;
@@ -69,11 +71,13 @@ public:
     std::vector<QListWidgetItem*> items;
     Connection connectDelDoc;
     Connection connectDelObj;
+    Connection connParam;
     QPixmap px;
     bool busy;
     bool touched;
     bool restoreOnTop;
     bool hasEditView = false;
+    bool restoreParam;
 
     std::string editDoc;
     std::string editObj;
@@ -83,6 +87,16 @@ public:
     Private(ViewProviderDocumentObject* vp, const char *element="")
         : ui(new Ui_TaskElementColors()), vp(vp),editElement(element)
     {
+        restoreParam = !App::DocumentParams::ViewObjectTransaction();
+        if (restoreParam) {
+            App::DocumentParams::setViewObjectTransaction(true);
+            connParam = App::DocumentParams::instance()->signalParamChanged.connect(
+                [this](const char *name) {
+                    if (boost::equals(name, "ViewObjectTransaction"))
+                        restoreParam = false;
+                });
+        }
+
         vpDoc = vp->getDocument();
         vpParent = vp;
         auto doc = Application::Instance->editDocument();
@@ -122,6 +136,8 @@ public:
 
     ~Private() {
         setOnTop(true, true);
+        if (restoreParam)
+            App::DocumentParams::setViewObjectTransaction(false);
     }
 
     void setOnTop(bool restore = false, bool del = false)
@@ -431,6 +447,25 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
     :d(new Private(vp))
 {
     d->ui->setupUi(this);
+
+    std::array<const char *, 4> names = {"MapFaceColor", "MapLineColor", "MapPointColor", "ForceMapColors"};
+    for (auto name : names) {
+        auto checkbox = findChild<QCheckBox*>(QString::fromLatin1(name));
+        if (checkbox) {
+            if (auto prop = Base::freecad_dynamic_cast<App::PropertyBool>(vp->getPropertyByName(name))) {
+                checkbox->setChecked(prop->getValue());
+                QObject::connect(checkbox, &QCheckBox::toggled, [this, name](bool checked) {
+                    auto prop = Base::freecad_dynamic_cast<App::PropertyBool>(d->vp->getPropertyByName(name));
+                    if (prop) {
+                        prop->setValue(checked);
+                        d->touched = true;
+                    }
+                });
+            } else
+                checkbox->hide();
+        }
+    }
+
     d->ui->objectLabel->setText(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->elementList->setMouseTracking(true); // needed for itemEntered() to work
 
@@ -453,8 +488,6 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
 
 ElementColors::~ElementColors()
 {
-    d->connectDelDoc.disconnect();
-    d->connectDelObj.disconnect();
     Selection().rmvSelectionGate();
 }
 

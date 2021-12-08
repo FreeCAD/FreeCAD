@@ -7,38 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>483</width>
-    <height>406</height>
+    <height>431</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Set element color</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QLabel" name="objectLabel">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QListWidget" name="elementList">
-       <property name="selectionMode">
-        <enum>QAbstractItemView::ExtendedSelection</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="4" column="0">
-    <widget class="QCheckBox" name="recompute">
-     <property name="text">
-      <string>Recompute after commit</string>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
     <layout class="QGridLayout" name="gridLayout_6">
      <item row="0" column="2">
@@ -78,12 +53,125 @@
      </item>
     </layout>
    </item>
-   <item row="5" column="0">
-    <widget class="QCheckBox" name="onTop">
-     <property name="text">
-      <string>Show on top</string>
-     </property>
-    </widget>
+   <item row="4" column="0">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="MapLineColor">
+       <property name="toolTip">
+        <string>Enable mapping line (edge) color from shapes in history.
+
+If enabled, lines that does not have explicit color set will
+be colored according to its ancestor shapes. Lines that do
+not have ancestor will be assigned the default line color
+of this object. 
+
+Disable this option if you want to reset the line color of
+the whole object.</string>
+       </property>
+       <property name="text">
+        <string>Map line color</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QCheckBox" name="MapFaceColor">
+       <property name="toolTip">
+        <string>Enable mapping face color from shapes in history.
+
+If enabled, faces that does not have explicit color
+set will be colored according to its ancestor shapes.
+Faces that do not have ancestor will be assigned the
+default face color of this object. 
+
+Disable this option if you want to reset the  face color
+of the whole object.</string>
+       </property>
+       <property name="text">
+        <string>Map face color</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="MapTransparency">
+       <property name="toolTip">
+        <string>Enable mapping transparency from shapes in history.
+
+If enabled, faces that does not have explicit transparency
+(alpha setting in color dialog) set will get the transparency
+value from its ancestor shapes. Faces that do not have
+ancestor will be assigned the default transparency of this
+object.
+
+Disable this option if you want to reset the whole object
+transparency.</string>
+       </property>
+       <property name="text">
+        <string>Map transparency</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QCheckBox" name="ForceMapColors">
+       <property name="toolTip">
+        <string>Force mapping color for this object even if it does not claim
+any children, i.e. no explicit shape history.</string>
+       </property>
+       <property name="text">
+        <string>Force map colors</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QCheckBox" name="MapPointColor">
+       <property name="toolTip">
+        <string>Enable mapping point (vertex) color from shapes in history.
+
+If enabled, points that does not have explicit color set will
+be colored according to its ancestor shapes. Points that do
+not have ancestor will be assigned the default point color
+of this object. 
+
+Disable this option if you want to reset the point color of
+the whole object.</string>
+       </property>
+       <property name="text">
+        <string>Map point color</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="recompute">
+       <property name="text">
+        <string>Recompute after commit</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="onTop">
+       <property name="text">
+        <string>Show on top</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="objectLabel">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListWidget" name="elementList">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
