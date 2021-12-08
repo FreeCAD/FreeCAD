@@ -83,10 +83,23 @@ Quantity::Quantity(const Quantity& that)
     *this = that ;
 }
 
-Quantity::Quantity(double Value, const Unit& unit)
+Quantity::Quantity(double value, const Unit& unit)
 {
     this->_Unit = unit;
-    this->_Value = Value;
+    this->_Value = value;
+}
+
+Quantity::Quantity(double value, const QString& unit)
+{
+    try {
+        auto tmpQty = parse(unit);
+        this->_Unit = tmpQty.getUnit();
+        this->_Value = value * tmpQty.getValue();
+    }
+    catch (const Base::Exception&) {
+        this->_Value = 0.0;
+        this->_Unit = Unit();
+    }
 }
 
 double Quantity::getValueAs(const Quantity &q)const

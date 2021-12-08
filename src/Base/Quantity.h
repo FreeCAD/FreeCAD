@@ -113,7 +113,8 @@ public:
     /// default constructor
     Quantity(void);
     Quantity(const Quantity&);
-    explicit Quantity(double Value, const Unit& unit=Unit());
+    explicit Quantity(double value, const Unit& unit=Unit());
+    explicit Quantity(double value, const QString& unit);
     /// Destruction
     ~Quantity () {}
 
