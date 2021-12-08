@@ -510,7 +510,7 @@ double Helix::safePitch()
     double X = Xmax - Xmin, Y = Ymax - Ymin, Z = Zmax - Zmin;
     gp_Vec boundingBoxVec(X, Y, Z);
 
-    // Below is an approximation becaue since we take the bounding box it is
+    // Below is an approximation because since we take the bounding box it is
     // impossible to calculate it precisely. For example a circle has as bounding
     // box a square and thus results in a larger pitch than really necessary
 
@@ -518,7 +518,7 @@ double Helix::safePitch()
     double pitch0 = boundingBoxVec * direction;
 
     if (mode == HelixMode::height_turns_growth) {
-        // if the distange perpendicular to axisVec
+        // if the distance perpendicular to axisVec
         // between two turns is larger than the bounding box size in this direction
         // the minimal necessary pitch is zero
         if (abs(growthValue) > abs(boundingBoxVec * directionStart))
@@ -527,7 +527,7 @@ double Helix::safePitch()
             return pitch0;
     }
     else {
-        // if the angle is so large that the distange perpendicular to axisVec
+        // if the angle is so large that the distance perpendicular to axisVec
         // between two turns is larger than the bounding box size in this direction
         // the pitch can be smaller than pitch0
         if (tan(abs(angle)) * pitch0 > abs(boundingBoxVec * directionStart))

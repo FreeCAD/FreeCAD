@@ -135,13 +135,13 @@ def generate(normalVector, aMin=-360, aMax=360, cMin=-360, cMax=360, compound=Fa
     to align the vector the positive Y axis. Then around the X axis
     (A rotation).
 
-    The min and max arguments dictate the range of motion allowed rotation in the respective
-    axis.
-    Default assumes continous rotation.
+    The min and max arguments dictate the range of motion allowed rotation in
+    the respective axis.
+    Default assumes continuous rotation.
 
-    returns a list of path commands for the shortest valid solution
+    Returns a list of path commands for the shortest valid solution
 
-    if compound is False, axis moves will be broken out to individual commands
+    If compound is False, axis moves will be broken out to individual commands
 
     The normalVector input from a typical face (f) can be obtained like this:
 

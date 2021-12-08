@@ -77,7 +77,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         return allowDatum(body, pObj);
     }
 
-    // The flag was used to be set. So, this block will never be treated and doesn't make really sense anyway
+    // The flag was used to be set. So, this block will never be treated and really doesn't make sense anyway
 #if 0
     if (!type.testFlag(AllowSelection::OTHERBODY)) {
         if (support == NULL)
