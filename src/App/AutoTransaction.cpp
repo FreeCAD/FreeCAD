@@ -35,9 +35,13 @@ using namespace App;
 
 static int _TransactionLock;
 static int _TransactionClosed;
+static int _TransactionViewObject;
 
-AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
+AutoTransaction::AutoTransaction(const char *name, bool tmpName, bool recordViewObject) {
     auto &app = GetApplication();
+    recordViewObj = recordViewObject;
+    if (recordViewObject)
+        ++_TransactionViewObject;
     if(name && name[0] && app._activeTransactionGuard>=0) {
         if(!app.getActiveTransaction()
                 || (!tmpName && app._activeTransactionTmpName))
@@ -66,6 +70,8 @@ AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
 AutoTransaction::~AutoTransaction() {
     auto &app = GetApplication();
     FC_TRACE("before destruct auto Transaction " << app._activeTransactionGuard);
+    if (recordViewObj)
+        --_TransactionViewObject;
     if(app._activeTransactionGuard<0)
         ++app._activeTransactionGuard;
     else if(!app._activeTransactionGuard) {
@@ -85,6 +91,11 @@ AutoTransaction::~AutoTransaction() {
         {}
     }
     FC_TRACE("destruct auto Transaction " << app._activeTransactionGuard);
+}
+
+bool AutoTransaction::recordViewObjectChange()
+{
+    return _TransactionViewObject > 0;
 }
 
 void AutoTransaction::close(bool abort) {

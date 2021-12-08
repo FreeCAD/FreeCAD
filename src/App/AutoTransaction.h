@@ -41,6 +41,7 @@ public:
      * considered as temporary, and subsequent construction of this class (or
      * calling Application::setActiveTransaction()) can override the transaction
      * name.
+     * @param reorderViewObject: whether to reocord property changes in view object
      *
      * The constructor increments an internal counter
      * (Application::_activeTransactionGuard). The counter prevents any new
@@ -48,7 +49,7 @@ public:
      * current active transaction until it reaches zero. It does not have any
      * effect on aborting transaction, though.
      */
-    AutoTransaction(const char *name=0, bool tmpName=false);
+    AutoTransaction(const char *name=0, bool tmpName=false, bool recordViewObject=false);
 
     /** Destructor
      *
@@ -77,8 +78,12 @@ public:
      */
     static void setEnable(bool enable);
 
+    /// Check if view object changes are recorded in transaction
+    static bool recordViewObjectChange();
+
 private:
     int tid = 0;
+    bool recordViewObj;
 };
 
 
@@ -124,6 +129,7 @@ private:
 
 private:
     bool active;
+    bool recordVObj;
 };
 
 } // namespace App
