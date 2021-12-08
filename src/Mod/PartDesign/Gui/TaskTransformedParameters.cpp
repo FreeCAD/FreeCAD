@@ -170,6 +170,9 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
 
 void TaskTransformedParameters::setupTransaction()
 {
+    if (!isEnabledTransaction())
+        return;
+
     auto obj = getObject();
     if (!obj)
         return;
@@ -183,6 +186,16 @@ void TaskTransformedParameters::setupTransaction()
     std::string n("Edit ");
     n += obj->Label.getValue();
     transactionID = App::GetApplication().setActiveTransaction(n.c_str());
+}
+
+void TaskTransformedParameters::setEnabledTransaction(bool on)
+{
+    enableTransaction = on;
+}
+
+bool TaskTransformedParameters::isEnabledTransaction() const
+{
+    return enableTransaction;
 }
 
 void TaskTransformedParameters::onButtonAddFeature(bool checked)
@@ -322,13 +335,15 @@ PartDesignGui::ViewProviderTransformed *TaskTransformedParameters::getTopTransfo
     } else {
         rv = TransformedView;
     }
-    assert (rv);
-
     return rv;
 }
 
 PartDesign::Transformed *TaskTransformedParameters::getTopTransformedObject() const {
-    App::DocumentObject *transform = getTopTransformedView()->getObject();
+    ViewProviderTransformed* vp = getTopTransformedView();
+    if (!vp)
+        return nullptr;
+
+    App::DocumentObject *transform = vp->getObject();
     assert (transform->isDerivedFrom(PartDesign::Transformed::getClassTypeId()));
     return static_cast<PartDesign::Transformed*>(transform);
 }
@@ -344,6 +359,9 @@ PartDesign::Transformed *TaskTransformedParameters::getObject() const {
 
 App::DocumentObject *TaskTransformedParameters::getBaseObject() const {
     PartDesign::Feature* feature = getTopTransformedObject ();
+    if (!feature)
+        return nullptr;
+
     // NOTE: getBaseObject() throws if there is no base; shouldn't happen here.
     App::DocumentObject *base = feature->getBaseObject(true);
     if(!base) {
@@ -355,7 +373,8 @@ App::DocumentObject *TaskTransformedParameters::getBaseObject() const {
 }
 
 App::DocumentObject* TaskTransformedParameters::getSketchObject() const {
-    return getTopTransformedObject()->getSketchObject();
+    PartDesign::Transformed* feature = getTopTransformedObject();
+    return feature ? feature->getSketchObject() : nullptr;
 }
 
 void TaskTransformedParameters::hideObject()
