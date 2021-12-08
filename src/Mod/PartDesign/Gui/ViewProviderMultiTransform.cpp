@@ -39,6 +39,12 @@ TaskDlgFeatureParameters *ViewProviderMultiTransform::getEditDialog() {
     return new TaskDlgMultiTransformParameters (this);
 }
 
+void ViewProviderMultiTransform::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    this->addDefaultAction(menu, QObject::tr("Edit %1").arg(QString::fromStdString(featureName)));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
+
 std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren(void) const
 {
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());

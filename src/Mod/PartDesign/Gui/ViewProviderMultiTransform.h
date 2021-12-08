@@ -37,14 +37,13 @@ public:
 	   sPixmap = "PartDesign_MultiTransform.svg"; }
 
     std::vector<App::DocumentObject*> claimChildren(void) const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
 
     virtual bool onDelete(const std::vector<std::string> &);
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
     virtual TaskDlgFeatureParameters *getEditDialog();
-
-
 };
 
 
