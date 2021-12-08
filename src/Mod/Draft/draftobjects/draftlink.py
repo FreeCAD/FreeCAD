@@ -189,7 +189,9 @@ class DraftLink(DraftObject):
             else:
                 # Resetting the Placement of the copied shape does not work for
                 # Part_Vertex and Draft_Point objects, we need to transform:
-                shape = shape.transformGeometry(shape.Placement.Matrix.inverse())
+                place = shape.Placement
+                shape = shape.copy()
+                shape.transformShape(place.Matrix.inverse())
                 base = []
                 for i, pla in enumerate(pls):
                     vis = getattr(obj, 'VisibilityList', [])
