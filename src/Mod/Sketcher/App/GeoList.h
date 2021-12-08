@@ -58,7 +58,7 @@ namespace Sketcher {
  *  Internal and external geometries are present in a single geometry vector one after the other.
  *
  * N.B.: Note that the index of the geomlist (all layers) and the GeoId can be converted
- * from each other at needed using the member fuctions (and sometimes the statics).
+ * from each other at needed using the member functions (and sometimes the statics).
  */
 template <typename T>
 class GeoListModel {

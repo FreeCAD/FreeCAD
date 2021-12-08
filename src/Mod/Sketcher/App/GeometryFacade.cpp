@@ -102,7 +102,7 @@ void GeometryFacade::initExtension()
 
 void GeometryFacade::initExtension() const
 {
-    // const Geometry without SketchGeometryExtension cannot initiliase a GeometryFacade
+    // const Geometry without SketchGeometryExtension cannot initialise a GeometryFacade
     assert(Geo->hasExtension(SketchGeometryExtension::getClassTypeId()));
 
     auto ext = std::static_pointer_cast<const SketchGeometryExtension>(Geo->getExtension(SketchGeometryExtension::getClassTypeId()).lock());
