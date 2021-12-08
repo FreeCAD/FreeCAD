@@ -1524,7 +1524,7 @@ void E57Reader::read(const std::string& filename)
                      }
                 }
                 else {
-                    Base::Console().Message("Missing channels xyz.");
+                    Base::Console().Error("Missing channels xyz.");
                 }
             }
         }
