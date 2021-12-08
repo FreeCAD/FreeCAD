@@ -143,6 +143,14 @@ public:
 
     virtual void apply() = 0;
 
+    /*!
+     * \brief setEnabledTransaction
+     * The transaction handling of this panel can be disabled if there is another
+     * instance that does it already, e.g. TaskDlgMultiTransformParameters.
+     * By default, transactions are enabled.
+     */
+    void setEnabledTransaction(bool);
+    bool isEnabledTransaction() const;
     void setupTransaction();
 
     int getTransactionID() const {
@@ -213,6 +221,7 @@ protected:
     QWidget* proxy;
     ViewProviderTransformed *TransformedView;
     int transactionID = 0;
+    bool enableTransaction = true;
 
     enum selectionModes { none, addFeature, removeFeature, reference };
     selectionModes selectionMode;

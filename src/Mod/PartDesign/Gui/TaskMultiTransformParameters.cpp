@@ -275,6 +275,7 @@ void TaskMultiTransformParameters::onTransformEdit()
     else
         return; // TODO: Show an error?
 
+    subTask->setEnabledTransaction(isEnabledTransaction());
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             subTask, SLOT(onUpdateView(bool)));
 }
@@ -293,7 +294,9 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirrored"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirrored"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::Mirrored','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -319,7 +322,9 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make LinearPattern"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make LinearPattern"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -355,7 +360,9 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "PolarPattern"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "PolarPattern"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::PolarPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -381,7 +388,9 @@ void TaskMultiTransformParameters::onTransformAddScaled()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scaled"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scaled"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::Scaled','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -494,7 +503,6 @@ void TaskMultiTransformParameters::onUpdateView(bool on)
 {
     blockUpdate = !on;
     if (on) {
-        setupTransaction();
         recomputeFeature();
     }
 }
@@ -539,6 +547,7 @@ TaskDlgMultiTransformParameters::TaskDlgMultiTransformParameters(ViewProviderMul
     : TaskDlgTransformedParameters(MultiTransformView)
 {
     parameter = new TaskMultiTransformParameters(MultiTransformView);
+    parameter->setEnabledTransaction(false);
 
     Content.push_back(parameter);
 }
