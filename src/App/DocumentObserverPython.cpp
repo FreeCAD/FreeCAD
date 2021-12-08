@@ -86,6 +86,14 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     }\
     while(0);
 
+#define FC_PY_ELEMENT_ARG3(_name1, _name2) do {\
+        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
+        if (!py##_name1.py.isNone())\
+            py##_name1.slot = App::GetApplication().signal##_name2.connect(\
+                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1, bp::_2, bp::_3));\
+    }\
+    while(0);
+
     FC_PY_ELEMENT_ARG1(CreatedDocument, NewDocument)
     FC_PY_ELEMENT_ARG1(DeletedDocument, DeleteDocument)
     FC_PY_ELEMENT_ARG1(RelabelDocument, RelabelDocument)
@@ -111,6 +119,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     FC_PY_ELEMENT_ARG1(CloseTransaction, CloseTransaction)
     FC_PY_ELEMENT_ARG2(StartSaveDocument, StartSaveDocument)
     FC_PY_ELEMENT_ARG2(FinishSaveDocument, FinishSaveDocument)
+    FC_PY_ELEMENT_ARG3(DocumentFilesSaved, DocumentFilesSaved)
     FC_PY_ELEMENT_ARG1(AppendDynamicProperty, AppendDynamicProperty)
     FC_PY_ELEMENT_ARG1(RemoveDynamicProperty, RemoveDynamicProperty)
     FC_PY_ELEMENT_ARG2(ChangePropertyEditor, ChangePropertyEditor)
@@ -576,7 +585,7 @@ void DocumentObserverPython::slotDocumentFilesSaved(const App::Document& doc,
         for(const auto &v : files)
             list.append(Py::TupleN(Py::String(v.first),Py::Int(v.second)));
         args.setItem(2, list);
-        Base::pyCall(pyFinishSaveDocument.ptr(),args.ptr());
+        Base::pyCall(pyDocumentFilesSaved.ptr(),args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text

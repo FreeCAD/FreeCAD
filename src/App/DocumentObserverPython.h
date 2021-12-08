@@ -154,6 +154,7 @@ private:
     Connection pyCloseTransaction;
     Connection pyStartSaveDocument;
     Connection pyFinishSaveDocument;
+    Connection pyDocumentFilesSaved;
     Connection pyAppendDynamicProperty;
     Connection pyRemoveDynamicProperty;
     Connection pyChangePropertyEditor;
