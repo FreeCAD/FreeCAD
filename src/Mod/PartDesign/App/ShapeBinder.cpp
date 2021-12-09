@@ -70,6 +70,11 @@ ShapeBinder::~ShapeBinder()
     this->connectDocumentChangedObject.disconnect();
 }
 
+void ShapeBinder::onChanged(const App::Property* prop)
+{
+    Feature::onChanged(prop);
+}
+
 short int ShapeBinder::mustExecute(void) const {
 
     if (Support.isTouched())
@@ -80,29 +85,45 @@ short int ShapeBinder::mustExecute(void) const {
     return Part::Feature::mustExecute();
 }
 
+Part::TopoShape ShapeBinder::updatedShape() const
+{
+    Part::TopoShape shape;
+    App::GeoFeature* obj = nullptr;
+    std::vector<std::string> subs;
+
+    ShapeBinder::getFilteredReferences(&Support, obj, subs);
+
+    //if we have a link we rebuild the shape, but we change nothing if we are a simple copy
+    if (obj) {
+        shape = ShapeBinder::buildShapeFromReferences(obj, subs);
+        //now, shape is in object's CS, and includes local Placement of obj but nothing else.
+
+        if (TraceSupport.getValue()) {
+            //compute the transform, and apply it to the shape.
+            Base::Placement sourceCS = //full placement of container of obj
+                    obj->globalPlacement() * obj->Placement.getValue().inverse();
+            Base::Placement targetCS = //full placement of container of this shapebinder
+                    this->globalPlacement() * this->Placement.getValue().inverse();
+            Base::Placement transform = targetCS.inverse() * sourceCS;
+            shape.setPlacement(transform * shape.getPlacement());
+        }
+    }
+
+    return shape;
+}
+
+bool ShapeBinder::hasPlacementChanged() const
+{
+    Part::TopoShape shape(updatedShape());
+    Base::Placement placement(shape.getTransform());
+    return this->Placement.getValue() != placement;
+}
+
 App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
 
     if (!this->isRestoring()) {
-        App::GeoFeature* obj = nullptr;
-        std::vector<std::string> subs;
-
-        ShapeBinder::getFilteredReferences(&Support, obj, subs);
-
-        //if we have a link we rebuild the shape, but we change nothing if we are a simple copy
-        if (obj) {
-            Part::TopoShape shape(ShapeBinder::buildShapeFromReferences(obj, subs));
-            //now, shape is in object's CS, and includes local Placement of obj but nothing else.
-
-            if (TraceSupport.getValue()) {
-                //compute the transform, and apply it to the shape.
-                Base::Placement sourceCS = //full placement of container of obj
-                        obj->globalPlacement() * obj->Placement.getValue().inverse();
-                Base::Placement targetCS = //full placement of container of this shapebinder
-                        this->globalPlacement() * this->Placement.getValue().inverse();
-                Base::Placement transform = targetCS.inverse() * sourceCS;
-                shape.setPlacement(transform * shape.getPlacement());
-            }
-
+        Part::TopoShape shape(updatedShape());
+        if (!shape.isNull()) {
             this->Placement.setValue(shape.getTransform());
             this->Shape.setValue(shape);
         }
@@ -111,7 +132,8 @@ App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
     return Part::Feature::execute();
 }
 
-void ShapeBinder::getFilteredReferences(App::PropertyLinkSubList* prop, App::GeoFeature*& obj,
+void ShapeBinder::getFilteredReferences(const App::PropertyLinkSubList* prop,
+                                        App::GeoFeature*& obj,
                                         std::vector< std::string >& subobjects)
 {
     obj = nullptr;
@@ -253,7 +275,8 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
     if (obj) {
         if (obj == &Obj) {
             // the directly referenced object has changed
-            enforceRecompute();
+            if (hasPlacementChanged())
+                enforceRecompute();
         }
         else if (Obj.hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
             // check if the changed property belongs to a group-like object
@@ -266,7 +289,8 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
 
             auto it = std::find(chain.begin(), chain.end(), &Obj);
             if (it != chain.end()) {
-                enforceRecompute();
+                if (hasPlacementChanged())
+                    enforceRecompute();
             }
         }
     }
