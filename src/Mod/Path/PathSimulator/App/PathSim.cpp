@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Shsi Seger <shaise at gmail>                       *
+ *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
