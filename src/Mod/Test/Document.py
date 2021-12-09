@@ -1379,8 +1379,6 @@ class DocumentPropertyCases(unittest.TestCase):
 class DocumentExpressionCases(unittest.TestCase):
   def setUp(self):
     self.Doc = FreeCAD.newDocument()
-    self.Obj1 = self.Doc.addObject("App::FeatureTest","Test")
-    self.Obj2 = self.Doc.addObject("App::FeatureTest","Test")
 
   def assertAlmostEqual (self, v1, v2) :
     if (math.fabs(v2-v1) > 1E-12) :
@@ -1388,6 +1386,8 @@ class DocumentExpressionCases(unittest.TestCase):
 
 
   def testExpression(self):
+    self.Obj1 = self.Doc.addObject("App::FeatureTest","Test")
+    self.Obj2 = self.Doc.addObject("App::FeatureTest","Test")
     # set the object twice to test that the backlinks are removed when overwriting the expression
     self.Obj2.setExpression('Placement.Rotation.Angle', u'%s.Placement.Rotation.Angle' % self.Obj1.Name)
     self.Obj2.setExpression('Placement.Rotation.Angle', u'%s.Placement.Rotation.Angle' % self.Obj1.Name)
@@ -1405,6 +1405,48 @@ class DocumentExpressionCases(unittest.TestCase):
     self.Obj2.Placement = self.Obj2.Placement
     # must not raise a topological error
     self.assertEqual(self.Doc.recompute(), 2)
+
+  def testIssue4649(self):
+      class Cls():
+          def __init__(self, obj):
+              self.MonitorChanges = False
+              obj.Proxy = self
+              obj.addProperty('App::PropertyFloat', "propA", "group")
+              obj.addProperty('App::PropertyFloat', "propB", "group")
+              self.MonitorChanges = True
+              obj.setExpression("propB", '6*9')
+          def onChanged(self, obj, prop):
+              print("onChanged",self, obj, prop)
+              if (self.MonitorChanges and prop == "propA"):
+                  print('Removing expression...')
+                  obj.setExpression("propB", None)
+
+      obj = self.Doc.addObject("App::DocumentObjectGroupPython", "Obj")
+      Cls(obj)
+      self.Doc.openTransaction("Expression")
+      obj.setExpression("propA", '42')
+      self.Doc.recompute()
+      self.Doc.commitTransaction()
+      self.assertTrue(('propB', None) in obj.ExpressionEngine)
+      self.assertTrue(('propA', "42") in obj.ExpressionEngine)
+
+      self.Doc.undo()
+      self.assertFalse(('propB', None) in obj.ExpressionEngine)
+      self.assertFalse(('propA', "42") in obj.ExpressionEngine)
+
+      self.Doc.redo()
+      self.assertTrue(('propB', None) in obj.ExpressionEngine)
+      self.assertTrue(('propA', "42") in obj.ExpressionEngine)
+
+      self.Doc.recompute()
+      obj.ExpressionEngine
+
+      TempPath = tempfile.gettempdir()
+      SaveName = TempPath + os.sep + "ExpressionTests.FCStd"
+      self.Doc.saveAs(SaveName)
+      FreeCAD.closeDocument(self.Doc.Name)
+      self.Doc = FreeCAD.openDocument(SaveName)
+
 
   def tearDown(self):
     #closing doc
