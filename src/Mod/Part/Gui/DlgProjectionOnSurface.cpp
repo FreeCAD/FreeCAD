@@ -118,7 +118,7 @@ public:
     std::string subName(sSubName);
     if (subName.empty()) return false;
 
-    auto subShape = aPart->Shape.getShape().getSubShape(sSubName);
+    auto subShape = aPart->Shape.getShape().getSubShape(sSubName, true);
     if (subShape.IsNull()) return false;
     auto type = subShape.ShapeType();
     if (type != TopAbs_FACE) return false;
