@@ -335,10 +335,6 @@ static QBrush _TreeItemBackground;
 static TreeWidget *_LastSelectedTreeWidget;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
-#define FC_CUSTOM_DRAG_AND_DROP
-#ifndef FC_CUSTOM_DRAG_AND_DROP
-static bool _DragEventFilter;
-#endif
 static bool _DraggingActive;
 static bool _Dropping;
 static int _DropID;
@@ -1106,6 +1102,8 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->showHiddenAction->setCheckable(true);
     connect(this->showHiddenAction, SIGNAL(toggled(bool)),
             this, SLOT(onShowHidden()));
+    this->showHiddenAction->setShortcut(QKeySequence(QString::fromLatin1("T, S")));
+    addAction(this->showHiddenAction);
 
     this->showTempDocAction = new QAction(this);
     this->showTempDocAction->setCheckable(true);
@@ -2168,23 +2166,27 @@ bool TreeWidget::event(QEvent *e)
 }
 
 bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
-    (void)o;
+    if (!_DraggingActive) {
+        if (ev->type() == QEvent::Shortcut)
+            FC_MSG("triggered " << static_cast<QShortcutEvent*>(ev)->key().toString().toLatin1().constData());
+        return QTreeWidget::eventFilter(o, ev);
+    }
+
     switch (ev->type()) {
     case QEvent::KeyPress:
     case QEvent::KeyRelease: {
         QKeyEvent *ke = static_cast<QKeyEvent *>(ev);
         QPoint cpos = QCursor::pos();
         if (ke->key() == Qt::Key_Escape) {
-            if (_DraggingActive) {
-                pimpl->setReorderingItem(nullptr);
-                qApp->removeEventFilter(this);
-                _DraggingActive = false;
-                for (auto tree : TreeWidget::Instances)
-                    tree->setAutoScroll(false);
-                qApp->restoreOverrideCursor();
-                return true;
-            }
-        } else if(_DraggingActive && _SelUpMenus.size()) {
+            pimpl->setReorderingItem(nullptr);
+            qApp->removeEventFilter(this);
+            ToolTip::hideText();
+            _DraggingActive = false;
+            for (auto tree : TreeWidget::Instances)
+                tree->setAutoScroll(false);
+            qApp->restoreOverrideCursor();
+            return true;
+        } else if(_SelUpMenus.size()) {
             auto tree = instance();
             if (tree) {
                 QMouseEvent me(QEvent::MouseMove,
@@ -2215,67 +2217,62 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
         break;
     }
     case QEvent::MouseButtonPress:
-        if(_DraggingActive)
-            return true;
-        break;
+        return true;
     case QEvent::MouseMove: {
-        if(_DraggingActive) {
-            QMouseEvent *me = static_cast<QMouseEvent*>(ev);
-            if (_SelUpMenus.size()) {
-                mouseMoveEvent(me);
-                return true;
-            }
-            for(auto tree : Instances) {
-                QPoint pos = tree->mapFromGlobal(me->globalPos());
-                if(pos.x() >= 0 && pos.y() >= 0
-                        && pos.x() < tree->width()
-                        && pos.y() < tree->height())
-                    return false;
-            }
-            pimpl->setDragCursor(Qt::ForbiddenCursor);
+        QMouseEvent *me = static_cast<QMouseEvent*>(ev);
+        ToolTip::hideText();
+        if (_SelUpMenus.size()) {
+            mouseMoveEvent(me);
             return true;
         }
-        break;
+        for(auto tree : Instances) {
+            QPoint pos = tree->mapFromGlobal(me->globalPos());
+            if(pos.x() >= 0 && pos.y() >= 0
+                    && pos.x() < tree->width()
+                    && pos.y() < tree->height())
+                return false;
+        }
+        pimpl->setDragCursor(Qt::ForbiddenCursor);
+        return true;
     }
     case QEvent::MouseButtonRelease: {
-        if(_DraggingActive) {
-            QMouseEvent *me = static_cast<QMouseEvent*>(ev);
-            _DraggingActive = false;
-            for (auto tree : TreeWidget::Instances)
-                tree->setAutoScroll(false);
-            qApp->removeEventFilter(this);
-            qApp->restoreOverrideCursor();
+        QMouseEvent *me = static_cast<QMouseEvent*>(ev);
+        _DraggingActive = false;
+        for (auto tree : TreeWidget::Instances)
+            tree->setAutoScroll(false);
+        qApp->removeEventFilter(this);
+        qApp->restoreOverrideCursor();
+        pimpl->setReorderingItem(nullptr);
+        ToolTip::hideText();
 
-            if(me->button() == Qt::LeftButton) {
-                if (_SelUpMenus.size()) {
-                    auto pos = viewport()->mapFromGlobal(me->globalPos());
-                    QDragMoveEvent de(pos, _DropActions, nullptr, me->buttons(), me->modifiers());
-                    dropEvent(&de);
-                    for (auto menu : _SelUpMenus)
-                        menu->hide();
-                    return true;
-                }
-
-                for(auto tree : Instances) {
-                    QPoint pos = tree->mapFromGlobal(me->globalPos());
-                    if(pos.x() < 0 || pos.y() < 0
-                            || pos.x() >= tree->width()
-                            || pos.y() >= tree->height())
-                        continue;
-                    QDropEvent de(tree->viewport()->mapFromGlobal(me->globalPos()),
-                        _DropActions, nullptr, me->buttons(), me->modifiers());
-                    tree->dropEvent(&de);
-                    break;
-                }
+        if(me->button() == Qt::LeftButton) {
+            if (_SelUpMenus.size()) {
+                auto pos = viewport()->mapFromGlobal(me->globalPos());
+                QDragMoveEvent de(pos, _DropActions, nullptr, me->buttons(), me->modifiers());
+                dropEvent(&de);
+                for (auto menu : _SelUpMenus)
+                    menu->hide();
+                return true;
             }
-            return true;
+
+            for(auto tree : Instances) {
+                QPoint pos = tree->mapFromGlobal(me->globalPos());
+                if(pos.x() < 0 || pos.y() < 0
+                        || pos.x() >= tree->width()
+                        || pos.y() >= tree->height())
+                    continue;
+                QDropEvent de(tree->viewport()->mapFromGlobal(me->globalPos()),
+                    _DropActions, nullptr, me->buttons(), me->modifiers());
+                tree->dropEvent(&de);
+                break;
+            }
         }
-        break;
+        return true;
     }
     default:
         break;
     }
-    return false;
+    return QTreeWidget::eventFilter(o, ev);
 }
 
 namespace Gui {
@@ -2854,22 +2851,16 @@ void TreeWidget::startDragging() {
         return;
     if(selectedItems().empty())
         return;
-#if 1
     _DropActions = model()->supportedDragActions();
     qApp->installEventFilter(this);
     pimpl->setDragCursor(Qt::DragMoveCursor);
     _DraggingActive = true;
     for (auto tree : TreeWidget::Instances)
         tree->setAutoScroll(true);
-#else
-    setState(DraggingState);
-    startDrag(model()->supportedDragActions());
-#endif
 }
 
 void TreeWidget::startDrag(Qt::DropActions supportedActions)
 {
-#ifdef FC_CUSTOM_DRAG_AND_DROP
     // We use our own drag and drop implementation in order to get customized
     // drag cursor on the Qt::LinkAction (actually used for replace action most
     // of the time)
@@ -2882,26 +2873,6 @@ void TreeWidget::startDrag(Qt::DropActions supportedActions)
     _DraggingActive = true;
     for (auto tree : TreeWidget::Instances)
         tree->setAutoScroll(true);
-#else
-    QTreeWidget::startDrag(supportedActions);
-    if(_DragEventFilter) {
-        _DragEventFilter = false;
-        qApp->removeEventFilter(this);
-    }
-
-    // The following code is necessary for dragging between the tree view to
-    // work. Note that the standard behaivor of drag and drop between different
-    // QTreeWidget is to move the item from one to the other, and obviously we
-    // don't want that. The trick is to NOT call QDropEvent::acceptDropAction()
-    // inside dropEvent(), and add the following code to manually terminate the
-    // the drop.
-    for(auto tree : Instances) {
-        if(tree->state() == DraggingState) {
-            tree->setState(NoState);
-            tree->stopAutoScroll();
-        }
-    }
-#endif
 }
 
 QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
@@ -2940,17 +2911,6 @@ void TreeWidget::dragLeaveEvent(QDragLeaveEvent * event)
 
 void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-#ifndef FC_CUSTOM_DRAG_AND_DROP
-    // Qt5 does not change drag cursor in response to modifier key press,
-    // because QDrag installs a event filter that eats up key event. We install
-    // a filter after Qt and generate fake mouse move event in response to key
-    // press event, which triggers QDrag to update its cursor
-    if(!_DragEventFilter) {
-        _DragEventFilter = true;
-        qApp->installEventFilter(this);
-    }
-#endif
-
     QTreeWidget::dragMoveEvent(event);
     if (!event->isAccepted())
         return;
