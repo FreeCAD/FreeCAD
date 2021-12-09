@@ -1,7 +1,7 @@
 /***************************************************************************
- *   Copyright (c) 2007                                                    *
- *   Joachim Zettler <Joachim.Zettler@gmx.de>                              *
- *   Werner Mayer <wmayer@users.sourceforge.net>                           *
+ *   Copyright (c) 2007 Joachim Zettler <Joachim.Zettler@gmx.de>           *
+ *   Copyright (c) 2007 Werner Mayer <wmayer@users.sourceforge.net>        *
+ *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
