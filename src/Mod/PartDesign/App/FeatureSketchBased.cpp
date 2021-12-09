@@ -588,8 +588,10 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
             // midplane makes no sense here
             Loffset = -L2;
             Ltotal += L2;
-        } else if (midplane)
-            Loffset = -Ltotal/2;
+        }
+        else if (midplane) {
+            Loffset = -Ltotal / 2;
+        }
 
         TopoDS_Shape from = sketchshape;
         if (method == "TwoLengths" || midplane) {
@@ -597,8 +599,17 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
             mov.SetTranslation(Loffset * gp_Vec(dir));
             TopLoc_Location loc(mov);
             from = sketchshape.Moved(loc);
-        } else if (reversed)
+        }
+        else if (reversed) {
             Ltotal *= -1.0;
+        }
+
+        if (fabs(Ltotal) < Precision::Confusion()) {
+            if (addSubType == Type::Additive)
+                throw Base::ValueError("Cannot create a pad with a height of zero.");
+            else
+                throw Base::ValueError("Cannot create a pocket with a depth of zero.");
+        }
 
         // Its better not to use BRepFeat_MakePrism here even if we have a support because the
         // resulting shape creates problems with Pocket
