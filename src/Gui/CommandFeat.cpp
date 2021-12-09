@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
-# include <QDockWidget>
 #endif
 
 #include <App/DocumentObject.h>
@@ -169,19 +167,8 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         //show the python console if it's not already visible, and set the keyboard focus to it
         QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
         PythonConsole *pcPython = qobject_cast<PythonConsole*>(pc);
-        if (pcPython){
-            QDockWidget* dw = nullptr;
-            QWidget* par = pcPython->parentWidget();
-            while (par){
-                dw = qobject_cast<QDockWidget*>(par);
-                if (dw){
-                    break;
-                }
-                par = par->parentWidget();
-            }
-            if (dw && !dw->toggleViewAction()->isChecked()){
-                dw->toggleViewAction()->activate(QAction::Trigger);
-            }
+        if (pcPython) {
+            DockWindowManager::instance()->activate(pcPython);
             pcPython->setFocus();
         }
     }

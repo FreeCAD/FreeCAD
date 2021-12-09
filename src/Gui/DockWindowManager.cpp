@@ -240,6 +240,26 @@ void DockWindowManager::removeDockWindow(QWidget* widget)
 }
 
 /**
+ * If the corresponding dock widget isn't visible then activate it.
+ */
+void DockWindowManager::activate(QWidget* widget)
+{
+    QDockWidget* dw = nullptr;
+    QWidget* par = widget->parentWidget();
+    while (par) {
+        dw = qobject_cast<QDockWidget*>(par);
+        if (dw) {
+            break;
+        }
+        par = par->parentWidget();
+    }
+
+    if (dw && !dw->toggleViewAction()->isChecked()) {
+        dw->toggleViewAction()->activate(QAction::Trigger);
+    }
+}
+
+/**
  * Sets the window title for the dockable windows.
  */
 void DockWindowManager::retranslate()

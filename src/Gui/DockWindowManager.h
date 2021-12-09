@@ -25,8 +25,11 @@
 #define GUI_DOCKWINDOWMANAGER_H
 
 #include <QStringList>
+#include <QObject>
+#include <FCGlobal.h>
 
 class QDockWidget;
+class QWidget;
 
 namespace Gui {
 
@@ -57,7 +60,7 @@ private:
  * Class that manages the widgets inside a QDockWidget.
  * \author Werner Mayer
  */
-class GuiExport DockWindowManager : QObject
+class GuiExport DockWindowManager : public QObject
 {
     Q_OBJECT
 
@@ -86,6 +89,8 @@ public:
     QWidget* getDockWindow(const char* name) const;
     /// Returns a list of all widgets which set to a QDockWidget.
     QList<QWidget*> getDockWindows() const;
+    /// If the corresponding dock widget isn't visible then activate it
+    void activate(QWidget* widget);
 
     void saveState();
     void loadState();

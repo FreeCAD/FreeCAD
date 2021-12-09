@@ -36,6 +36,7 @@
 
 #include <Base/Interpreter.h>
 #include "ReportView.h"
+#include "DockWindowManager.h"
 #include "FileDialog.h"
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
@@ -245,20 +246,10 @@ ReportOutputObserver::ReportOutputObserver(ReportOutput *report)
     this->reportView = report;
 }
 
-void ReportOutputObserver::showReportView(){
+void ReportOutputObserver::showReportView()
+{
     // get the QDockWidget parent of the report view
-    QDockWidget* dw = nullptr;
-    QWidget* par = reportView->parentWidget();
-    while (par) {
-        dw = qobject_cast<QDockWidget*>(par);
-        if (dw)
-            break;
-        par = par->parentWidget();
-    }
-
-    if (dw && !dw->toggleViewAction()->isChecked()) {
-        dw->toggleViewAction()->activate(QAction::Trigger);
-    }
+    DockWindowManager::instance()->activate(reportView);
 }
 
 bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
