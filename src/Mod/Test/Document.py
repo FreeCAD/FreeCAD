@@ -1423,6 +1423,7 @@ class DocumentExpressionCases(unittest.TestCase):
 
       obj = self.Doc.addObject("App::DocumentObjectGroupPython", "Obj")
       Cls(obj)
+      self.Doc.UndoMode = 1
       self.Doc.openTransaction("Expression")
       obj.setExpression("propA", '42')
       self.Doc.recompute()
@@ -1431,9 +1432,8 @@ class DocumentExpressionCases(unittest.TestCase):
       self.assertTrue(('propA', "42") in obj.ExpressionEngine)
 
       self.Doc.undo()
-      # FIXME. check why this fails in command line mode
-      #self.assertFalse(('propB', None) in obj.ExpressionEngine)
-      #self.assertFalse(('propA', "42") in obj.ExpressionEngine)
+      self.assertFalse(('propB', None) in obj.ExpressionEngine)
+      self.assertFalse(('propA', "42") in obj.ExpressionEngine)
 
       self.Doc.redo()
       self.assertTrue(('propB', None) in obj.ExpressionEngine)
