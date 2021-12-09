@@ -34,6 +34,7 @@
 # include <TopExp_Explorer.hxx>
 # include <ShapeExtend_Explorer.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
+# include <QKeyEvent>
 # include <QMessageBox>
 # include <Python.h>
 # include <Inventor/system/inttypes.h>
@@ -55,6 +56,8 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Utilities.h>
+
+FC_LOG_LEVEL_INIT("Part",true,true)
 
 using namespace PartGui;
 
@@ -125,7 +128,7 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     this->autoSolid();
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgExtrusion::~DlgExtrusion()
@@ -136,7 +139,6 @@ DlgExtrusion::~DlgExtrusion()
     }
 
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void DlgExtrusion::changeEvent(QEvent *e)
@@ -145,6 +147,13 @@ void DlgExtrusion::changeEvent(QEvent *e)
         ui->retranslateUi(this);
     }
     QDialog::changeEvent(e);
+}
+
+void DlgExtrusion::keyPressEvent(QKeyEvent* ke)
+{
+    // The extrusion dialog is embedded into a task panel
+    // which is a parent widget and will handle the event
+    ke->ignore();
 }
 
 void DlgExtrusion::on_rbDirModeCustom_toggled(bool on)
@@ -176,7 +185,7 @@ void DlgExtrusion::on_btnSelectEdge_clicked()
         try{
             QString code = QString::fromLatin1(
                         "import Show\n"
-                        "tv = Show.TempoVis(App.ActiveDocument)\n"
+                        "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::DlgExtrusion')\n"
                         "tv.hide([%1])"
                         );
             std::vector<App::DocumentObject*>sources = getShapesToExtrude();
@@ -268,7 +277,7 @@ App::DocumentObject& DlgExtrusion::getShapeToExtrude() const
 {
     std::vector<App::DocumentObject*> objs = this->getShapesToExtrude();
     if (objs.size() == 0)
-        throw Base::Exception("No shapes selected");
+        throw Base::ValueError("No shapes selected");
     return *(objs[0]);
 }
 
@@ -393,7 +402,7 @@ void DlgExtrusion::accept()
     try{
         apply();
         QDialog::accept();
-    } catch (Base::AbortException){
+    } catch (Base::AbortException&){
 
     };
 }
@@ -425,9 +434,8 @@ void DlgExtrusion::apply()
             assert(sourceObj);
 
             if (!sourceObj->isDerivedFrom(Part::Feature::getClassTypeId())){
-                std::stringstream errmsg;
-                errmsg << "Object " << sourceObj->getNameInDocument() << " is not Part object (has no OCC shape). Can't extrude it.\n";
-                Base::Console().Error(errmsg.str().c_str());
+                FC_ERR("Object " << sourceObj->getFullName() 
+                        << " is not Part object (has no OCC shape). Can't extrude it.");
                 continue;
             }
 
@@ -439,32 +447,32 @@ void DlgExtrusion::apply()
                 //label = QString::fromLatin1("%1_Extrude").arg((*it)->text(0));
             }
 
-            Gui::Command::doCommand(Gui::Command::Doc, "f = FreeCAD.getDocument('%s').addObject('Part::Extrusion', '%s')", sourceObj->getDocument()->getName(), name.c_str());
+            FCMD_OBJ_DOC_CMD(sourceObj,"addObject('Part::Extrusion','" << name << "')");
+            auto newObj = sourceObj->getDocument()->getObject(name.c_str());
 
-            this->writeParametersToFeature(*(sourceObj->getDocument()->getObject(name.c_str())), sourceObj);
+            this->writeParametersToFeature(*newObj, sourceObj);
 
-            std::string sourceObjectName = sourceObj->getNameInDocument();
-            Gui::Command::copyVisual(name.c_str(), "ShapeColor", sourceObjectName.c_str());
-            Gui::Command::copyVisual(name.c_str(), "LineColor", sourceObjectName.c_str());
-            Gui::Command::copyVisual(name.c_str(), "PointColor", sourceObjectName.c_str());
+            Gui::Command::copyVisual(newObj, "ShapeColor", sourceObj);
+            Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
+            Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
 
-            Gui::Command::doCommand(Gui::Command::Gui,"f.Base.ViewObject.hide()");
+            FCMD_OBJ_HIDE(sourceObj);
         }
 
         activeDoc->commitTransaction();
         Gui::Command::updateActive();
     }
-    catch (Base::AbortException){
+    catch (Base::AbortException&){
         throw;
     }
     catch (Base::Exception &err){
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Extrusion failed.\n\n%1").arg(QString::fromUtf8(err.what())));
+            tr("Creating Extrusion failed.\n%1").arg(QString::fromUtf8(err.what())));
         return;
     }
     catch(...) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Extrusion failed.\n\n%1").arg(QString::fromUtf8("Unknown error")));
+            tr("Creating Extrusion failed.\n%1").arg(QString::fromUtf8("Unknown error")));
         return;
     }
 }
@@ -576,13 +584,13 @@ std::vector<App::DocumentObject*> DlgExtrusion::getShapesToExtrude() const
     QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
     App::Document* doc = App::GetApplication().getDocument(this->document.c_str());
     if (!doc)
-        throw Base::Exception("Document lost");
+        throw Base::RuntimeError("Document lost");
 
     std::vector<App::DocumentObject*> objects;
     for (int i = 0; i < items.size(); i++) {
         App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj)
-            throw Base::Exception("Object not found");
+            throw Base::RuntimeError("Object not found");
         objects.push_back(obj);
     }
     return objects;
@@ -614,7 +622,7 @@ bool DlgExtrusion::validate()
     }
     if (this->getDirMode() == Part::Extrusion::dmEdge && !hasValidAxisLink){
         if (errmsg.length() > 0)
-            QMessageBox::critical(this, windowTitle(), tr("Revolution axis link is invalid.\n\n%1").arg(errmsg));
+            QMessageBox::critical(this, windowTitle(), tr("Extrusion direction link is invalid.\n\n%1").arg(errmsg));
         else
             QMessageBox::critical(this, windowTitle(), tr("Direction mode is to use an edge, but no edge is linked."));
         ui->txtLink->setFocus();
@@ -649,7 +657,7 @@ bool DlgExtrusion::validate()
     if (this->getDirMode() == Part::Extrusion::dmCustom){
         if(this->getDir().Length() < Precision::Confusion()){
             QMessageBox::critical(this, windowTitle(),
-                tr("Extrusion direction is zero-length. It must be non-zero."));
+                tr("Extrusion direction vector is zero-length. It must be non-zero."));
             ui->dirX->setFocus();
             return false;
         }
@@ -744,7 +752,7 @@ void TaskExtrusion::clicked(int id)
     if (id == QDialogButtonBox::Apply) {
         try{
             widget->apply();
-        } catch (Base::AbortException){
+        } catch (Base::AbortException&){
 
         };
     }

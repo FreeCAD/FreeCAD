@@ -113,7 +113,7 @@ struct EmptyModule {
     template<typename T>
     struct type {
         struct inheriter {
-	  void system_sub(boost::shared_ptr<T> subsys) {};
+	  void system_sub(std::shared_ptr<T> subsys) {};
 	};
         typedef mpl::vector<>	properties;
         typedef mpl::vector<>   objects;
@@ -129,7 +129,7 @@ struct EmptyModule {
 template <class T>
 struct is_shared_ptr : boost::mpl::false_ {};
 template <class T>
-struct is_shared_ptr<boost::shared_ptr<T> > : boost::mpl::true_ {};
+struct is_shared_ptr<std::shared_ptr<T> > : boost::mpl::true_ {};
 
 template<typename Sys, typename M1, typename M2, typename  M3>
 struct inheriter : public M1::inheriter, public M2::inheriter, public M3::inheriter,
@@ -201,12 +201,12 @@ public:
     //we hold our own PropertyOwner which we use for system settings. Don't inherit it as the user 
     //should not access the settings via the proeprty getter and setter functions.
     typedef PropertyOwner<typename details::properties_by_kind<properties, setting_property>::type> OptionOwner;
-    boost::shared_ptr<OptionOwner> m_options;
+    std::shared_ptr<OptionOwner> m_options;
 
 
 protected:
     //object storage
-    typedef typename mpl::transform<objects, boost::shared_ptr<mpl::_1> >::type sp_objects;
+    typedef typename mpl::transform<objects, std::shared_ptr<mpl::_1> >::type sp_objects;
     typedef typename mpl::fold< sp_objects, mpl::vector<>,
             mpl::push_back<mpl::_1, std::vector<mpl::_2> > >::type 	object_vectors;
     typedef typename fusion::result_of::as_vector<object_vectors>::type Storage;
@@ -215,7 +215,7 @@ protected:
     friend struct Object;
 
 #ifdef USE_LOGGING
-    boost::shared_ptr< sink_t > sink;
+    std::shared_ptr< sink_t > sink;
 #endif
 
 public:
@@ -230,25 +230,25 @@ public:
     void clear();
 
     template<typename Object>
-    typename std::vector< boost::shared_ptr<Object> >::iterator begin();
+    typename std::vector< std::shared_ptr<Object> >::iterator begin();
 
     template<typename Object>
-    typename std::vector< boost::shared_ptr<Object> >::iterator end();
+    typename std::vector< std::shared_ptr<Object> >::iterator end();
 
     template<typename Object>
-    std::vector< boost::shared_ptr<Object> >& objectVector();
+    std::vector< std::shared_ptr<Object> >& objectVector();
 
     template<typename Object>
-    void push_back(boost::shared_ptr<Object> ptr);
+    void push_back(std::shared_ptr<Object> ptr);
 
     template<typename Object>
-    void erase(boost::shared_ptr<Object> ptr);
+    void erase(std::shared_ptr<Object> ptr);
 
     SolverInfo solve();
     
-    boost::shared_ptr< System > createSubsystem();
-    typename std::vector< boost::shared_ptr<System> >::iterator beginSubsystems();
-    typename std::vector< boost::shared_ptr<System> >::iterator endSubsystems();
+    std::shared_ptr< System > createSubsystem();
+    typename std::vector< std::shared_ptr<System> >::iterator beginSubsystems();
+    typename std::vector< std::shared_ptr<System> >::iterator endSubsystems();
     
     //a kernel has it's own settings, therefore we need to decide which is accessed
     template<typename Option>
@@ -278,11 +278,11 @@ public:
 
     System* clone() const;
 
-    boost::shared_ptr<Cluster> m_cluster;
-    boost::shared_ptr<Storage> m_storage;
+    std::shared_ptr<Cluster> m_cluster;
+    std::shared_ptr<Storage> m_storage;
     Shedule m_sheduler;
     Kernel  m_kernel;
-    std::vector<boost::shared_ptr<System> > m_subsystems;
+    std::vector<std::shared_ptr<System> > m_subsystems;
 
 #ifdef USE_LOGGING
     template<typename Expr>
@@ -297,7 +297,7 @@ public:
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
 template<typename Object>
-typename std::vector< boost::shared_ptr<Object> >::iterator System<KernelType, T1, T2, T3>::begin() {
+typename std::vector< std::shared_ptr<Object> >::iterator System<KernelType, T1, T2, T3>::begin() {
 
     typedef typename mpl::find<objects, Object>::type iterator;
     typedef typename mpl::distance<typename mpl::begin<objects>::type, iterator>::type distance;
@@ -307,7 +307,7 @@ typename std::vector< boost::shared_ptr<Object> >::iterator System<KernelType, T
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
 template<typename Object>
-typename std::vector< boost::shared_ptr<Object> >::iterator System<KernelType, T1, T2, T3>::end() {
+typename std::vector< std::shared_ptr<Object> >::iterator System<KernelType, T1, T2, T3>::end() {
 
     typedef typename mpl::find<objects, Object>::type iterator;
     typedef typename mpl::distance<typename mpl::begin<objects>::type, iterator>::type distance;
@@ -317,7 +317,7 @@ typename std::vector< boost::shared_ptr<Object> >::iterator System<KernelType, T
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
 template<typename Object>
-std::vector< boost::shared_ptr<Object> >& System<KernelType, T1, T2, T3>::objectVector() {
+std::vector< std::shared_ptr<Object> >& System<KernelType, T1, T2, T3>::objectVector() {
 
     typedef typename mpl::find<objects, Object>::type iterator;
     typedef typename mpl::distance<typename mpl::begin<objects>::type, iterator>::type distance;
@@ -327,15 +327,15 @@ std::vector< boost::shared_ptr<Object> >& System<KernelType, T1, T2, T3>::object
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
 template<typename Object>
-void System<KernelType, T1, T2, T3>::push_back(boost::shared_ptr<Object> ptr) {
+void System<KernelType, T1, T2, T3>::push_back(std::shared_ptr<Object> ptr) {
     objectVector<Object>().push_back(ptr);
 };
 
 template< typename KernelType, typename T1, typename T2, typename T3 >
 template<typename Object>
-void System<KernelType, T1, T2, T3>::erase(boost::shared_ptr<Object> ptr) {
+void System<KernelType, T1, T2, T3>::erase(std::shared_ptr<Object> ptr) {
 
-    std::vector< boost::shared_ptr<Object> >& vec = objectVector<Object>();
+    std::vector< std::shared_ptr<Object> >& vec = objectVector<Object>();
     vec.erase(std::remove(vec.begin(), vec.end(), ptr), vec.end());
 };
 

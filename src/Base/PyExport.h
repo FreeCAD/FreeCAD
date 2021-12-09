@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -79,7 +79,7 @@ class PyObjectBase;
  *  @remark One big consequence of this specification is that the programmer must know whether the Python interpreter
  *  gets the Python object or not. If the interpreter gets the object then it decrements the counter later on when
  *  the internal variable is freed. In case the interpreter doesn't get this object then the programmer must do the
- *  decrement on his own.
+ *  decrement on their own.
  *
  *  @note To not to undermine this specification the programmer must make sure to get the Python object always via
  *  GetPyObject().
@@ -168,22 +168,22 @@ public:
         return *this;
     }
 
-    /// derefrence operators
+    /// dereference operators
     HandledType &operator*() {
         return *_pHandels;
     }
 
-    /// derefrence operators
+    /// dereference operators
     HandledType *operator->() {
         return _pHandels;
     }
 
-    /// derefrence operators
+    /// dereference operators
     const HandledType &operator*() const {
         return _pHandels;
     }
 
-    /// derefrence operators
+    /// dereference operators
     const HandledType *operator->() const {
         return _pHandels;
     }

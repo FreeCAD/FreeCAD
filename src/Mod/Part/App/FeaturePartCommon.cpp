@@ -89,9 +89,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
 
     std::vector<App::DocumentObject*>::iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            s.push_back(static_cast<Part::Feature*>(*it)->Shape.getValue());
-        }
+        s.push_back(Feature::getShape(*it));
     }
 
     bool argumentsAreInCompound = false;
@@ -116,7 +114,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
             std::vector<ShapeHistory> history;
             TopoDS_Shape resShape = s.front();
             if (resShape.IsNull())
-                throw Base::RuntimeError("Input shape is null");
+                throw NullShapeException("Input shape is null");
 
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
                 if (it->IsNull())
@@ -126,7 +124,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                 BRepAlgoAPI_Common mkCommon(resShape, *it);
                 // Let's check if the fusion has been successful
                 if (!mkCommon.IsDone()) 
-                    throw Base::Exception("Intersection failed");
+                    throw BooleanException("Intersection failed");
                 resShape = mkCommon.Shape();
 
                 ShapeHistory hist1 = buildHistory(mkCommon, TopAbs_FACE, resShape, mkCommon.Shape1());
@@ -142,7 +140,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                 }
             }
             if (resShape.IsNull())
-                throw Base::Exception("Resulting shape is invalid");
+                throw NullShapeException("Resulting shape is invalid");
 
             Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                 .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
@@ -161,7 +159,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                     for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
                         *jt = joinHistory(*jt, hist);
                 }
-                catch (Standard_Failure) {
+                catch (Standard_Failure&) {
                     // do nothing
                 }
             }
@@ -196,7 +194,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
         }
     }
     else {
-        throw Base::Exception("Not enough shape objects linked");
+        throw Base::CADKernelError("Not enough shape objects linked");
     }
 
     return App::DocumentObject::StdReturn;

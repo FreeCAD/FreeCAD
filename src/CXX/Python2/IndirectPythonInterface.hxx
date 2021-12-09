@@ -193,7 +193,7 @@ PYCXX_EXPORT int &_Py_UnicodeFlag();
 PYCXX_EXPORT void _XINCREF( PyObject *op );
 PYCXX_EXPORT void _XDECREF( PyObject *op );
 
-PYCXX_EXPORT char *__Py_PackageContext();
+PYCXX_EXPORT const char *__Py_PackageContext();
 }
 
 #endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__

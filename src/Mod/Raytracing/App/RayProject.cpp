@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -59,7 +59,7 @@ void RayProject::onDocumentRestored()
             fi.setFile(PageResult.getValue());
         std::string path = App::Application::getResourceDir() + "Mod/Raytracing/Templates/" + fi.fileName();
         // try to find the template in user dir/Templates first
-        Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
+        Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "data/Mod/Raytracing/Templates/" + fi.fileName());
         if (tempfi.exists())
             path = tempfi.filePath();
         Template.setValue(path);
@@ -86,8 +86,7 @@ App::DocumentObjectExecReturn *RayProject::execute(void)
     ofstream ofile(tempName.c_str());
 
     // copy the input of the resource file
-    while (!file.eof()) {
-        getline (file,line);
+    while (getline (file,line)) {
         // check if the marker in the template is found
         if(line.find("//RaytracingContent") == string::npos)
             // if not -  write through

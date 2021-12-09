@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -20,14 +19,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 ''' Used to create CNC machine fixture offsets such as G54,G55, etc...'''
 
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore, QtGui
+import PathScripts.PathUtils as PathUtils
+from PySide import QtCore#, QtGui
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -46,7 +47,10 @@ class Fixture:
         obj.Path = Path.Path(str(obj.Fixture))
         obj.Label = "Fixture" + str(fixture)
         if obj.Active:
-            obj.Path = Path.Path(str(obj.Fixture))
+            job = PathUtils.findParentJob(obj)
+            c1 = Path.Command(str(obj.Fixture))
+            c2 = Path.Command("G0" + str(job.Stock.Shape.BoundBox.ZMax))
+            obj.Path = Path.Path([c1, c2])
             obj.ViewObject.Visibility = True
         else:
             obj.Path = Path.Path("(inactive operation)")
@@ -76,13 +80,10 @@ class _ViewProviderFixture:
         return None
 
     def getIcon(self):  # optional
-        return ":/icons/Path-Datums.svg"
-
-#    def attach(self): #optional
-#        # this is executed on object creation and object load from file
-#        pass
+        return ":/icons/Path_Datums.svg"
 
     def onChanged(self, vobj, prop):  # optional
+        # pylint: disable=unused-argument
         mode = 2
         vobj.setEditorMode('LineWidth', mode)
         vobj.setEditorMode('MarkerColor', mode)
@@ -110,7 +111,7 @@ class _ViewProviderFixture:
 class CommandPathFixture:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Datums',
+        return {'Pixmap': 'Path_Datums',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Fixture", "Fixture"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Fixture", "Creates a Fixture Offset object")}
 
@@ -118,7 +119,7 @@ class CommandPathFixture:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):

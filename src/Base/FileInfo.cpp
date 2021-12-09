@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2005                        *
+ *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -151,14 +150,14 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
     wchar_t buf[MAX_PATH + 2];
 
     // Path where the file is located
-    std::wstring path; 
+    std::wstring path;
     if (Path)
         path = ConvertToWideString(std::string(Path));
     else
         path = ConvertToWideString(getTempPath());
 
-    // File name in the path 
-    std::wstring file; 
+    // File name in the path
+    std::wstring file;
     if (FileName)
         file = ConvertToWideString(std::string(FileName));
     else
@@ -179,7 +178,7 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
     else
         buf = getTempPath();
 
-    // File name in the path 
+    // File name in the path
     if (FileName) {
         buf += "/";
         buf += FileName;
@@ -189,6 +188,7 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
         buf += "/fileXXXXXX";
     }
 
+    /* coverity[secure_temp] mkstemp uses 0600 as the mode and is safe */
     int id = mkstemp(const_cast<char*>(buf.c_str()));
     if (id > -1) {
         FILE* file = fdopen(id, "w");
@@ -251,10 +251,10 @@ std::string FileInfo::fileNamePure () const
 {
     std::string temp = fileName();
     std::string::size_type pos = temp.find_last_of('.');
-  
+
     if (pos != std::string::npos)
         return temp.substr(0,pos);
-    else 
+    else
         return temp;
 }
 
@@ -483,6 +483,9 @@ bool FileInfo::renameFile(const char* NewName)
         int code = errno;
         std::clog << "Error in renameFile: " << strerror(code) << " (" << code << ")" << std::endl;
     }
+    else {
+        FileName = NewName;
+    }
 
     return res;
 }
@@ -526,7 +529,7 @@ bool FileInfo::deleteDirectory(void) const
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     return rmdir(FileName.c_str()) == 0;
 #else
-#   error "FileInfo::createDirectory() not implemented for this platform!"
+#   error "FileInfo::rmdir() not implemented for this platform!"
 #endif
 }
 
@@ -537,7 +540,12 @@ bool FileInfo::deleteDirectoryRecursive(void) const
 
     for (std::vector<Base::FileInfo>::iterator It = List.begin();It!=List.end();++It) {
         if (It->isDir()) {
-            It->setPermissions(FileInfo::ReadWrite);
+            // At least on Linux, directory needs execute permission to be
+            // deleted. We don't really need to set permission for directory
+            // anyway, since FC code does not touch directory permission.
+            //
+            // It->setPermissions(FileInfo::ReadWrite);
+
             It->deleteDirectoryRecursive();
         }
         else if (It->isFile()) {
@@ -584,7 +592,7 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent(void) const
     {
         std::string dir = dentry->d_name;
         if (dir != "." && dir != "..")
-            List.push_back(FileInfo(FileName + "/" + dir));
+            List.emplace_back(FileName + "/" + dir);
     }
     closedir(dp);
 #else

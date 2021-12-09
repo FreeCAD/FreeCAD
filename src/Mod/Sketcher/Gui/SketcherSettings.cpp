@@ -31,6 +31,7 @@
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
+#include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsColors.h"
 #include "TaskSketcherGeneral.h"
 #include <Base/Console.h>
@@ -48,13 +49,63 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     : PreferencePage(parent), ui(new Ui_SketcherSettings)
 {
     ui->setupUi(this);
-    QGroupBox* groupBox = new QGroupBox(this);
-    QGridLayout* gridLayout = new QGridLayout(groupBox);
+    QGridLayout* gridLayout = new QGridLayout(ui->placeholder);
     gridLayout->setSpacing(0);
     gridLayout->setMargin(0);
-    form = new SketcherGeneralWidget(groupBox);
+    form = new SketcherGeneralWidget(ui->placeholder);
     gridLayout->addWidget(form, 0, 0, 1, 1);
-    ui->gridLayout_3->addWidget(groupBox, 1, 0, 1, 1);
+}
+
+/**
+ *  Destroys the object and frees any allocated resources
+ */
+SketcherSettings::~SketcherSettings()
+{
+    // no need to delete child widgets, Qt does it all for us
+}
+
+void SketcherSettings::saveSettings()
+{
+    // Sketch editing
+    ui->checkBoxAdvancedSolverTaskBox->onSave();
+    ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
+    ui->checkBoxEnableEscape->onSave();
+    ui->checkBoxNotifyConstraintSubstitutions->onSave();
+    ui->checkBoxAutoRemoveRedundants->onSave();
+    form->saveSettings();
+}
+
+void SketcherSettings::loadSettings()
+{
+    // Sketch editing
+    ui->checkBoxAdvancedSolverTaskBox->onRestore();
+    ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
+    ui->checkBoxEnableEscape->onRestore();
+    ui->checkBoxNotifyConstraintSubstitutions->onRestore();
+    ui->checkBoxAutoRemoveRedundants->onRestore();
+    form->loadSettings();
+}
+
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void SketcherSettings::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    else {
+        QWidget::changeEvent(e);
+    }
+}
+
+
+/* TRANSLATOR SketcherGui::SketcherSettingsDisplay */
+
+SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
+    : PreferencePage(parent), ui(new Ui_SketcherSettingsDisplay)
+{
+    ui->setupUi(this);
 
     QList < QPair<Qt::PenStyle, int> > styles;
     styles << qMakePair(Qt::SolidLine, 0xffff)
@@ -83,32 +134,31 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     connect(ui->btnTVApply, SIGNAL(clicked(bool)), this, SLOT(onBtnTVApplyClicked(bool)));
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
-SketcherSettings::~SketcherSettings()
+SketcherSettingsDisplay::~SketcherSettingsDisplay()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
-void SketcherSettings::saveSettings()
+void SketcherSettingsDisplay::saveSettings()
 {
-    // Sketch editing
     ui->EditSketcherFontSize->onSave();
+    ui->viewScalingFactor->onSave();
     ui->SegmentsPerGeometry->onSave();
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
     ui->constraintMode->onSave();
     ui->checkBoxHideUnits->onSave();
-    ui->checkBoxAdvancedSolverTaskBox->onSave();
-    ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
+    ui->checkBoxShowDimensionalName->onSave();
+    ui->prefDimensionalStringFormat->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
     ui->checkBoxTVRestoreCamera->onSave();
-    ui->checkBoxNotifyConstraintSubstitutions->onSave();
-    form->saveSettings();
+    ui->checkBoxTVForceOrtho->onSave();
+    ui->checkBoxTVSectionView->onSave();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     QVariant data = ui->comboBox->itemData(ui->comboBox->currentIndex());
@@ -116,23 +166,24 @@ void SketcherSettings::saveSettings()
     hGrp->SetInt("GridLinePattern", pattern);
 }
 
-void SketcherSettings::loadSettings()
+void SketcherSettingsDisplay::loadSettings()
 {
-    // Sketch editing
     ui->EditSketcherFontSize->onRestore();
+    ui->viewScalingFactor->onRestore();
     ui->SegmentsPerGeometry->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
     ui->constraintMode->onRestore();
     ui->checkBoxHideUnits->onRestore();
-    ui->checkBoxAdvancedSolverTaskBox->onRestore();
-    ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
+    ui->checkBoxShowDimensionalName->onRestore();
+    ui->prefDimensionalStringFormat->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
     ui->checkBoxTVRestoreCamera->onRestore();
-    ui->checkBoxNotifyConstraintSubstitutions->onRestore();
-    form->loadSettings();
+    ui->checkBoxTVForceOrtho->onRestore();
+    this->ui->checkBoxTVForceOrtho->setEnabled(this->ui->checkBoxTVRestoreCamera->isChecked());
+    ui->checkBoxTVSectionView->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
@@ -144,7 +195,7 @@ void SketcherSettings::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettings::changeEvent(QEvent *e)
+void SketcherSettingsDisplay::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -154,7 +205,7 @@ void SketcherSettings::changeEvent(QEvent *e)
     }
 }
 
-void SketcherSettings::onBtnTVApplyClicked(bool)
+void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
 {
     QString errMsg;
     try{
@@ -164,11 +215,15 @@ void SketcherSettings::onBtnTVApplyClicked(bool)
             "        sketch.ViewObject.HideDependent = %s\n"
             "        sketch.ViewObject.ShowLinks = %s\n"
             "        sketch.ViewObject.ShowSupport = %s\n"
-            "        sketch.ViewObject.RestoreCamera = %s\n",
+            "        sketch.ViewObject.RestoreCamera = %s\n"
+            "        sketch.ViewObject.ForceOrtho = %s\n"
+            "        sketch.ViewObject.SectionView = %s\n",
             this->ui->checkBoxTVHideDependent->isChecked() ? "True": "False",
             this->ui->checkBoxTVShowLinks->isChecked()     ? "True": "False",
             this->ui->checkBoxTVShowSupport->isChecked()   ? "True": "False",
-            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True": "False");
+            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True": "False",
+            this->ui->checkBoxTVForceOrtho->isChecked()    ? "True": "False",
+            this->ui->checkBoxTVSectionView->isChecked()   ? "True": "False");
     } catch (Base::PyException &e){
         Base::Console().Error("SketcherSettings::onBtnTVApplyClicked:\n");
         e.ReportException();
@@ -189,14 +244,6 @@ SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
     : PreferencePage(parent), ui(new Ui_SketcherSettingsColors)
 {
     ui->setupUi(this);
-
-    // Don't need them at the moment
-    ui->label_16->hide();
-    ui->SketcherDatumWidth->hide();
-    ui->label_12->hide();
-    ui->DefaultSketcherVertexWidth->hide();
-    ui->label_13->hide();
-    ui->DefaultSketcherLineWidth->hide();
 }
 
 /**
@@ -205,7 +252,6 @@ SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
 SketcherSettingsColors::~SketcherSettingsColors()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void SketcherSettingsColors::saveSettings()
@@ -217,16 +263,19 @@ void SketcherSettingsColors::saveSettings()
     ui->EditedVertexColor->onSave();
     ui->ConstructionColor->onSave();
     ui->ExternalColor->onSave();
+    ui->InvalidSketchColor->onSave();
     ui->FullyConstrainedColor->onSave();
+    ui->InternalAlignedGeoColor->onSave();
+    ui->FullyConstraintElementColor->onSave();
+    ui->FullyConstraintConstructionElementColor->onSave();
+    ui->FullyConstraintInternalAlignmentColor->onSave();
+    ui->FullyConstraintConstructionPointColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
     ui->DatumColor->onSave();
     ui->ExprBasedConstrDimColor->onSave();
-
-    ui->SketcherDatumWidth->onSave();
-    ui->DefaultSketcherVertexWidth->onSave();
-    ui->DefaultSketcherLineWidth->onSave();
+    ui->DeactivatedConstrDimColor->onSave();
 
     ui->CursorTextColor->onSave();
     ui->CursorCrosshairColor->onSave();
@@ -242,16 +291,19 @@ void SketcherSettingsColors::loadSettings()
     ui->EditedVertexColor->onRestore();
     ui->ConstructionColor->onRestore();
     ui->ExternalColor->onRestore();
+    ui->InvalidSketchColor->onRestore();
     ui->FullyConstrainedColor->onRestore();
+    ui->InternalAlignedGeoColor->onRestore();
+    ui->FullyConstraintElementColor->onRestore();
+    ui->FullyConstraintConstructionElementColor->onRestore();
+    ui->FullyConstraintInternalAlignmentColor->onRestore();
+    ui->FullyConstraintConstructionPointColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
     ui->DatumColor->onRestore();
     ui->ExprBasedConstrDimColor->onRestore();
-
-    ui->SketcherDatumWidth->onRestore();
-    ui->DefaultSketcherVertexWidth->onRestore();
-    ui->DefaultSketcherLineWidth->onRestore();
+    ui->DeactivatedConstrDimColor->onRestore();
 
     ui->CursorTextColor->onRestore();
     ui->CursorCrosshairColor->onRestore();

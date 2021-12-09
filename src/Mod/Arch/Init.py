@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -23,7 +21,8 @@
 
 # add import/export types
 FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
-FreeCAD.addExportType("Industry Foundation Classes (*.ifc)","importIFC")
+FreeCAD.addExportType("Industry Foundation Classes (*.ifc)","exportIFC")
+FreeCAD.addExportType("Industry Foundation Classes - IFCJSON (*.ifcJSON)","exportIFC")
 FreeCAD.addImportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
 FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
 FreeCAD.addExportType("WebGL file (*.html)","importWebGL")
@@ -32,3 +31,4 @@ FreeCAD.addImportType("Collada (*.dae)","importDAE")
 FreeCAD.addExportType("Collada (*.dae)","importDAE")
 FreeCAD.addImportType("3D Studio mesh (*.3ds)","import3DS")
 FreeCAD.addImportType("SweetHome3D XML export (*.zip)","importSH3D")
+FreeCAD.addImportType("Shapefile (*.shp)","importSHP")

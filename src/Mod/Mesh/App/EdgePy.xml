@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="EdgePy"
+      Twin="Edge"
+      TwinPointer="Edge"
+      Include="Mod/Mesh/App/Edge.h"
+      FatherInclude="Base/PyObjectBase.h"
+      Namespace="Mesh"
+      Constructor="true"
+      Delete="true"
+      FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+        <DeveloperDocu>Edge in a Mesh</DeveloperDocu>
+        <UserDocu>Edge in mesh
+This is an edge of a facet in a MeshObject. You can get it by e.g. iterating over the facets of a
+mesh and calling getEdge(index).
+        </UserDocu>
+    </Documentation>
+    <Methode Name="intersectWithEdge">
+          <Documentation>
+              <UserDocu>intersectWithEdge(Edge) -> list
+Get a list of intersection points with another edge.
+              </UserDocu>
+          </Documentation>
+    </Methode>
+    <Methode Name="isParallel">
+          <Documentation>
+              <UserDocu>isParallel(Edge) -> bool
+Checks if the two edges are parallel.
+              </UserDocu>
+          </Documentation>
+    </Methode>
+    <Methode Name="isCollinear">
+          <Documentation>
+              <UserDocu>isCollinear(Edge) -> bool
+Checks if the two edges are collinear.
+              </UserDocu>
+          </Documentation>
+    </Methode>
+    <Methode Name="unbound">
+        <Documentation>
+            <UserDocu>method unbound()
+Cut the connection to a MeshObject. The edge becomes
+free and is more or less a simple edge.
+After calling unbound() no topological operation will
+work!
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Attribute Name="Index" ReadOnly="true">
+          <Documentation>
+              <UserDocu>The index of this edge of the facet</UserDocu>
+          </Documentation>
+          <Parameter Name="Index" Type="Long"/>
+    </Attribute>
+    <Attribute Name="Points" ReadOnly="true">
+          <Documentation>
+              <UserDocu>A list of points of the edge</UserDocu>
+          </Documentation>
+          <Parameter Name="Points" Type="List"/>
+    </Attribute>
+    <Attribute Name="PointIndices" ReadOnly="true">
+          <Documentation>
+              <UserDocu>The index tuple of point vertices of the mesh this edge is built of</UserDocu>
+          </Documentation>
+          <Parameter Name="PointIndices" Type="Tuple"/>
+    </Attribute>
+    <Attribute Name="NeighbourIndices" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The index tuple of neighbour facets of the mesh this edge is adjacent with</UserDocu>
+            </Documentation>
+            <Parameter Name="NeighbourIndices" Type="Tuple"/>
+    </Attribute>
+    <Attribute Name="Length" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The length of the edge</UserDocu>
+            </Documentation>
+            <Parameter Name="Length" Type="Float"/>
+    </Attribute>
+    <Attribute Name="Bound" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Bound state of the edge</UserDocu>
+        </Documentation>
+        <Parameter Name="Bound" Type="Boolean"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

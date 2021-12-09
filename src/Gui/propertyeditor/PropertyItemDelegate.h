@@ -49,7 +49,9 @@ public Q_SLOTS:
     void valueChanged();
 
 private:
+    mutable QWidget *expressionEditor;
     mutable bool pressed;
+    bool changed;
 };
 
 } // namespace PropertyEditor

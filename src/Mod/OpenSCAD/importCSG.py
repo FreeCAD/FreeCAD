@@ -33,14 +33,7 @@ __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
 
 printverbose = False
 
-import FreeCAD, os, sys
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    gui = True
-else:
-    if printverbose: print("FreeCAD Gui not present.")
-    gui = False
-
+import FreeCAD, io, os
 
 import ply.lex as lex
 import ply.yacc as yacc
@@ -52,24 +45,66 @@ from OpenSCADUtils import *
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 printverbose = params.GetBool('printVerbose',False)
 
-if open.__module__ == '__builtin__':
-    pythonopen = open # to distinguish python built-in open function from the one declared here
+if FreeCAD.GuiUp:
+    gui = True
+else:
+    if printverbose: print("FreeCAD Gui not present.")
+    gui = False
+
+hassetcolor=[]
+alreadyhidden=[]
 
 # Get the token map from the lexer.  This is required.
 import tokrules
 from tokrules import tokens
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text):
-        "convenience function for Qt translator"
-        from PySide import QtGui
-        return QtGui.QApplication.translate(context, text, None, _encoding)
-except AttributeError:
-    def translate(context, text):
-        "convenience function for Qt translator"
-        from PySide import QtGui
-        return QtGui.QApplication.translate(context, text, None)
+def shallHide(subject):
+    for obj in subject.OutListRecursive:
+        if "Matrix_Union" in str(obj.FullName):
+            return False
+        if "Extrude" in str(obj.FullName):
+            return True
+    return False
+
+def setColorRecursively(obj, color, transp):
+    '''
+    For some reason a part made by cutting or fusing other parts do not have a color
+    unless its constituents are also colored. This code sets colors for those
+    constituents unless already set elsewhere.
+    '''
+    obj.ViewObject.ShapeColor = color
+    obj.ViewObject.Transparency = transp
+    # Add any other relevant features to this list
+    boolean_features = ["Part::Fuse", "Part::MultiFuse", "Part::Cut",
+                        "Part::Common", "Part::MultiCommon"]
+    if obj.TypeId in boolean_features:
+        for currentObject in obj.OutList:
+            if printverbose: print(f"Fixing up colors for: {currentObject.FullName}")
+            if currentObject not in hassetcolor:
+                setColorRecursively(currentObject, color, transp)
+
+def fixVisibility():
+    for obj in FreeCAD.ActiveDocument.Objects:
+         if(( obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse") and shallHide(obj)):
+            if "Group" in obj.FullName:
+                alreadyhidden.append(obj)
+                obj.ViewObject.Visibility=False
+                for currentObject in obj.OutList:
+                    if(currentObject not in alreadyhidden):
+                        currentObject.ViewObject.Visibility=True
+
+if gui:
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text):
+            "convenience function for Qt translator"
+            from PySide import QtGui
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+    except AttributeError:
+        def translate(context, text):
+            "convenience function for Qt translator"
+            from PySide import QtGui
+            return QtGui.QApplication.translate(context, text, None)
 
 def open(filename):
     "called when freecad opens a file."
@@ -98,7 +133,7 @@ def insert(filename,docname):
     "called when freecad imports a file"
     global doc
     global pathName
-    groupname = os.path.splitext(os.path.basename(filename))[0]
+    groupname_unused = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc=FreeCAD.getDocument(docname)
     except NameError:
@@ -132,11 +167,11 @@ def processcsg(filename):
     # Build the parser   
     if printverbose: print('Load Parser')
     # No debug out otherwise Linux has protection exception
-    parser = yacc.yacc(debug=0)
+    parser = yacc.yacc(debug=False)
     if printverbose: print('Parser Loaded')
     # Give the lexer some input
     #f=open('test.scad', 'r')
-    f = pythonopen(filename, 'r')
+    f = io.open(filename, 'r', encoding="utf8")
     #lexer.input(f.read())
 
     if printverbose: print('Start Parser')
@@ -147,6 +182,9 @@ def processcsg(filename):
     if printverbose:
         print('End Parser')
         print(result)
+    fixVisibility()
+    hassetcolor.clear()
+    alreadyhidden.clear()
     FreeCAD.Console.PrintMessage('End processing CSG file\n')
     doc.recompute()
 
@@ -179,6 +217,7 @@ def p_group_action1(p):
         p[0] = [fuse(p[5],"Group")]
     else :
         p[0] = p[5]
+
 
 def p_group_action2(p) :
     'group_action2 : group LPAREN RPAREN SEMICOL'
@@ -340,9 +379,10 @@ def p_operation(p):
               | intersection_action
               | union_action
               | rotate_extrude_action
-              | linear_extrude_with_twist
+              | linear_extrude_with_transform
               | rotate_extrude_file
               | import_file1
+              | resize_action
               | surface_action
               | projection_action
               | hull_action
@@ -381,6 +421,7 @@ def CGALFeatureObj(name,children,arguments=[]):
 
 def p_offset_action(p):
     'offset_action : offset LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
+    subobj=None
     if len(p[6]) == 0:
         newobj = placeholder('group',[],'{}')
     elif (len(p[6]) == 1 ): #single object
@@ -403,8 +444,8 @@ def p_offset_action(p):
        newobj=doc.addObject("Part::Offset",'offset')
        newobj.Shape = subobj[0].Shape.makeOffset(offset)
     newobj.Document.recompute()
-    subobj[0].ViewObject.hide()
-#    if gui:
+    if gui:
+        subobj[0].ViewObject.hide()
 #        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
 #            GetBool('useViewProviderTree'):
 #            from OpenSCADFeatures import ViewProviderTree
@@ -422,16 +463,54 @@ def p_minkowski_action(p):
     minkowski_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
     p[0] = [ CGALFeatureObj(p[1],p[6],p[3]) ]
 
+def p_resize_action(p):
+    '''
+    resize_action : resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE '''
+    new_size = p[3]['newsize']
+    auto    = p[3]['auto'] 
+    p[6][0].recompute()
+    if p[6][0].Shape.isNull():
+        doc.recompute()
+    p[6][0].Shape.tessellate(0.05)
+    old_bbox = p[6][0].Shape.BoundBox
+    old_size = [old_bbox.XLength, old_bbox.YLength, old_bbox.ZLength]
+    for r in range(0,3) :
+        if auto[r] == '1' :
+           new_size[r] = new_size[0]
+        if new_size[r] == '0' :
+           new_size[r] = str(old_size[r])
+
+    # Calculate a transform matrix from the current bounding box to the new one:
+    transform_matrix = FreeCAD.Matrix()
+
+    scale = FreeCAD.Vector(float(new_size[0])/old_size[0], 
+                           float(new_size[1])/old_size[1], 
+                           float(new_size[2])/old_size[2])
+
+    transform_matrix.scale(scale)
+
+    new_part=doc.addObject("Part::FeaturePython",'Matrix Deformation')
+    new_part.Shape = p[6][0].Shape.transformGeometry(transform_matrix)
+    if gui:
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetBool('useViewProviderTree'):
+            from OpenSCADFeatures import ViewProviderTree
+            ViewProviderTree(new_part.ViewObject)
+        else:
+            new_part.ViewObject.Proxy = 0
+        p[6][0].ViewObject.hide()
+    p[0] = [new_part]
+     
+
 def p_not_supported(p):
     '''
     not_supported : glide LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  | resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | subdiv LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   '''
     if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('usePlaceholderForUnsupported'):
         from PySide import QtGui
-        QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
+        QtGui.QMessageBox.critical(None, translate('OpenSCAD',"Unsupported Function")+" : "+p[1],translate('OpenSCAD',"Press OK"))
     else:
         p[0] = [placeholder(p[1],p[6],p[3])]
 
@@ -471,8 +550,12 @@ def p_color_action(p):
     transp = 100 - int(math.floor(100*float(p[3][3]))) #Alpha
     if gui:
         for obj in p[6]:
-            obj.ViewObject.ShapeColor =color
-            obj.ViewObject.Transparency = transp
+            if shallHide(obj):
+                if "Group" in obj.FullName:
+                    obj.ViewObject.Visibility=False
+                    alreadyhidden.append(obj)
+            setColorRecursively(obj, color, transp)
+            hassetcolor.append(obj)
     p[0] = p[6]
 
 # Error rule for syntax errors
@@ -521,7 +604,7 @@ def p_difference_action(p):
     if printverbose: print(len(p[5]))
     if printverbose: print(p[5])
     if (len(p[5]) == 0 ): #nochild
-        mycut = placeholder('group',[],'{}')
+        mycut_unused = placeholder('group',[],'{}')
     elif (len(p[5]) == 1 ): #single object
         p[0] = p[5]
     else:
@@ -568,7 +651,7 @@ def p_intersection_action(p):
     p[0] = [mycommon]
     if printverbose: print("End Intersection")
 
-def process_rotate_extrude(obj):
+def process_rotate_extrude(obj, angle):
     newobj=doc.addObject("Part::FeaturePython",'RefineRotateExtrude')
     RefineShape(newobj,obj)
     if gui:
@@ -583,28 +666,64 @@ def process_rotate_extrude(obj):
     myrev.Source = newobj
     myrev.Axis = (0.00,1.00,0.00)
     myrev.Base = (0.00,0.00,0.00)
-    myrev.Angle = 360.00
+    myrev.Angle = angle
     myrev.Placement=FreeCAD.Placement(FreeCAD.Vector(),FreeCAD.Rotation(0,0,90))
     if gui:
         newobj.ViewObject.hide()
     return(myrev)
 
+def process_rotate_extrude_prism(obj, angle, n):
+    newobj=doc.addObject("Part::FeaturePython",'PrismaticToroid')
+    PrismaticToroid(newobj, obj, angle, n)
+    newobj.Placement=FreeCAD.Placement(FreeCAD.Vector(),FreeCAD.Rotation(0,0,90))
+    if gui:
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetBool('useViewProviderTree'):
+            from OpenSCADFeatures import ViewProviderTree
+            ViewProviderTree(newobj.ViewObject)
+        else:
+            newobj.ViewObject.Proxy = 0
+        obj.ViewObject.hide()
+    return(newobj)
+
 def p_rotate_extrude_action(p): 
     'rotate_extrude_action : rotate_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
-    if printverbose: print("Rotate Extrude")
+    if printverbose: print("Rotate Extrude") 
+    angle = 360.0
+    if 'angle' in p[3]:
+        angle = float(p[3]['angle'])
+    n = int(round(float(p[3]['$fn'])))
+    fnmax = FreeCAD.ParamGet(\
+        "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+        GetInt('useMaxFN', 16)
     if (len(p[6]) > 1) :
         part = fuse(p[6],"Rotate Extrude Union")
     else :
         part = p[6][0]
-    p[0] = [process_rotate_extrude(part)]
+
+    if n < 3 or fnmax != 0 and n > fnmax:
+        p[0] = [process_rotate_extrude(part,angle)]
+    else:
+        p[0] = [process_rotate_extrude_prism(part,angle,n)]
     if printverbose: print("End Rotate Extrude")
 
 def p_rotate_extrude_file(p):
     'rotate_extrude_file : rotate_extrude LPAREN keywordargument_list RPAREN SEMICOL'
     if printverbose: print("Rotate Extrude File")
+    angle = 360.0
+    if 'angle' in p[3]:
+        angle = float(p[3]['angle'])
     filen,ext =p[3]['file'] .rsplit('.',1)
     obj = process_import_file(filen,ext,p[3]['layer'])
-    p[0] = [process_rotate_extrude(obj)]
+    n = int(round(float(p[3]['$fn'])))
+    fnmax = FreeCAD.ParamGet(\
+        "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+        GetInt('useMaxFN', 16)
+
+    if n < 3 or fnmax != 0 and n > fnmax:
+        p[0] = [process_rotate_extrude(obj,angle)]
+    else:
+        p[0] = [process_rotate_extrude_prism(obj,angle,n)]
     if printverbose: print("End Rotate Extrude File")
 
 def process_linear_extrude(obj,h) :
@@ -630,9 +749,9 @@ def process_linear_extrude(obj,h) :
         newobj.ViewObject.hide()
     return(mylinear)
 
-def process_linear_extrude_with_twist(base,height,twist) :   
-    newobj=doc.addObject("Part::FeaturePython",'twist_extrude')
-    Twist(newobj,base,height,-twist) #base is an FreeCAD Object, height and twist are floats
+def process_linear_extrude_with_transform(base,height,twist,scale) :   
+    newobj=doc.addObject("Part::FeaturePython",'transform_extrude')
+    Twist(newobj,base,height,-twist,scale) #base is an FreeCAD Object, height and twist are floats, scale is a two-component vector of floats
     if gui:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('useViewProviderTree'):
@@ -644,15 +763,19 @@ def process_linear_extrude_with_twist(base,height,twist) :
     #ViewProviderTree(obj.ViewObject)
     return(newobj)
 
-def p_linear_extrude_with_twist(p):
-    'linear_extrude_with_twist : linear_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
-    if printverbose: print("Linear Extrude With Twist")
+def p_linear_extrude_with_transform(p):
+    'linear_extrude_with_transform : linear_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
+    if printverbose: print("Linear Extrude With Transform")
     h = float(p[3]['height'])
-    if printverbose: print("Twist : ",p[3])
+    if printverbose: print("Height : ",h)
+    s = [1.0,1.0]
+    t = 0.0
+    if 'scale' in p[3]:
+        s = [float(p[3]['scale'][0]), float(p[3]['scale'][1])]
+        if printverbose: print ("Scale: " + str(s))
     if 'twist' in p[3]:
         t = float(p[3]['twist'])
-    else:
-        t = 0
+        if printverbose: print("Twist : ",t)
     # Test if null object like from null text
     if (len(p[6]) == 0) :
         p[0] = []
@@ -661,14 +784,16 @@ def p_linear_extrude_with_twist(p):
         obj = fuse(p[6],"Linear Extrude Union")
     else :
         obj = p[6][0]
-    if t:
-        newobj = process_linear_extrude_with_twist(obj,h,t)
+    if t != 0.0 or s[0] != 1.0 or s[1] != 1.0:
+        newobj = process_linear_extrude_with_transform(obj,h,t,s)
     else:
         newobj = process_linear_extrude(obj,h)
     if p[3]['center']=='true' :
        center(newobj,0,0,h)
     p[0] = [newobj]
-    if printverbose: print("End Linear Extrude with twist")
+    if gui:
+        obj.ViewObject.hide()
+    if printverbose: print("End Linear Extrude with Transform")
 
 def p_import_file1(p):
     'import_file1 : import LPAREN keywordargument_list RPAREN SEMICOL'
@@ -731,7 +856,6 @@ def process_mesh_file(fname,ext):
 
 
 def processTextCmd(t):
-    import os
     from OpenSCADUtils import callopenscadstring
     tmpfilename = callopenscadstring(t,'dxf')
     from OpenSCAD2Dgeom import importDXFface 
@@ -775,6 +899,10 @@ def p_multmatrix_action(p):
     transform_matrix = FreeCAD.Matrix()
     if printverbose: print("Multmatrix")
     if printverbose: print(p[3])
+    if gui:
+        parentcolor=p[6][0].ViewObject.ShapeColor
+        parenttransparency=p[6][0].ViewObject.Transparency
+
     m1l=sum(p[3],[])
     if any('x' in me for me in m1l): #hexfloats
         m1l=[float.fromhex(me) for me in m1l]
@@ -837,10 +965,10 @@ def p_multmatrix_action(p):
             part.ViewObject.hide()
     else :
         if printverbose: print("Transform Geometry")
-#       Need to recompute to stop transformGeometry causing a crash        
-        doc.recompute()
+        part.recompute()
+        if part.Shape.isNull():
+            doc.recompute()
         new_part = doc.addObject("Part::Feature","Matrix Deformation")
-      #  new_part.Shape = part.Base.Shape.transformGeometry(transform_matrix)
         new_part.Shape = part.Shape.transformGeometry(transform_matrix) 
         if gui:
             part.ViewObject.hide()
@@ -854,6 +982,9 @@ def p_multmatrix_action(p):
         p[0] = [newobj]
     else :
         p[0] = [new_part]
+    if gui:
+        new_part.ViewObject.ShapeColor=parentcolor
+        new_part.ViewObject.Transparency = parenttransparency
     if printverbose: print("Multmatrix applied")
     
 def p_matrix(p):
@@ -908,7 +1039,7 @@ def p_cylinder_action(p):
     n = int(round(float(p[3]['$fn'])))
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetInt('useMaxFN')
+        GetInt('useMaxFN', 16)
     if printverbose: print(p[3])
     if h > 0:
         if ( r1 == r2 and r1 > 0):
@@ -925,7 +1056,7 @@ def p_cylinder_action(p):
                     try :
                         import Draft
                         mycyl.Base = Draft.makePolygon(n,r1,face=True)
-                    except :
+                    except Exception:
                         # If Draft can't import (probably due to lack of Pivy on Mac and
                         # Linux builds of FreeCAD), this is a fallback.
                         # or old level of FreeCAD
@@ -1017,7 +1148,7 @@ def p_circle_action(p) :
     n = int(p[3]['$fn'])
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetInt('useMaxFN',50)
+        GetInt('useMaxFN',16)
     # Alter Max polygon to control if polygons are circles or polygons
     # in the modules preferences
     import Draft
@@ -1156,9 +1287,12 @@ def p_polyhedron_action(p) :
         pp =[v2(v[k]) for k in i]
         # Add first point to end of list to close polygon
         pp.append(pp[0])
-        print(pp)
         w = Part.makePolygon(pp)
-        f = Part.Face(w)
+        try:
+           f = Part.Face(w)
+        except Exception:
+            secWireList = w.Edges[:]
+            f = Part.makeFilledFace(Part.__sortEdges__(secWireList))
         #f = make_face(v[int(i[0])],v[int(i[1])],v[int(i[2])])
         faces_list.append(f)
     shell=Part.makeShell(faces_list)
@@ -1171,25 +1305,28 @@ def p_polyhedron_action(p) :
 def p_projection_action(p) :
     'projection_action : projection LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     if printverbose: print('Projection')
-    if p[3]['cut']=='true' :
-        planedim=1e9 # large but finite
-        #infinite planes look bad in the GUI
-        planename='xy_plane_used_for_project_cut'
-        obj=doc.addObject('Part::MultiCommon','projection_cut')
-        plane = doc.getObject(planename)
-        if not plane:
-            plane=doc.addObject("Part::Plane",planename)
-            plane.Length=planedim*2
-            plane.Width=planedim*2
-            plane.Placement = FreeCAD.Placement(FreeCAD.Vector(\
-                     -planedim,-planedim,0),FreeCAD.Rotation())
-            if gui:
-                plane.ViewObject.hide()
+
+    doc.recompute()
+    p[6][0].Shape.tessellate(0.05) # Ensure the bounding box calculation is not done with the splines, which can give a bad result
+    bbox = p[6][0].Shape.BoundBox
+    for shape in p[6]:
+        shape.Shape.tessellate(0.05)
+        bbox.add(shape.Shape.BoundBox)
+    plane = doc.addObject("Part::Plane","xy_plane_used_for_projection")
+    plane.Length = bbox.XLength
+    plane.Width = bbox.YLength
+    plane.Placement = FreeCAD.Placement(FreeCAD.Vector(\
+                     bbox.XMin,bbox.YMin,0),FreeCAD.Rotation())
+    if gui:
+        plane.ViewObject.hide()
+
+    if p[3]['cut'] == 'true' :
+        obj = doc.addObject('Part::MultiCommon','projection_cut')
         if (len(p[6]) > 1):
             subobj = [fuse(p[6],"projection_cut_implicit_group")]
         else:
             subobj = p[6]
-        obj.Shapes = [plane]+subobj
+        obj.Shapes = [plane] + subobj
         if gui:
             subobj[0].ViewObject.hide()
         p[0] = [obj]
@@ -1197,6 +1334,6 @@ def p_projection_action(p) :
         if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
                 GetBool('usePlaceholderForUnsupported'):
             from PySide import QtGui
-            QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
+            QtGui.QMessageBox.critical(None, translate('OpenSCAD',"Unsupported Function") + " : " + p[1],translate('OpenSCAD',"Press OK"))
         else:
             p[0] = [placeholder(p[1],p[6],p[3])]

@@ -30,6 +30,9 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/elements/SoReplacedElement.h>
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 
 namespace MeshGui {
 
@@ -48,7 +51,7 @@ public:
     SoSFBool  render;
 
 protected:
-    virtual ~SoPolygon() {};
+    virtual ~SoPolygon() {}
     virtual void GLRender(SoGLRenderAction *action);
     virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
     virtual void rayPick (SoRayPickAction *action);

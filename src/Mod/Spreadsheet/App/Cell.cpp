@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,15 +25,25 @@
 #ifndef _PreComp_
 #endif
 
+#include <QLocale>
+
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include "Cell.h"
 #include "Utils.h"
 #include <boost/tokenizer.hpp>
 #include <Base/Reader.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <Base/Writer.h>
-#include <App/Expression.h>
+#include <Base/Console.h>
+#include <App/ExpressionParser.h>
 #include "Sheet.h"
 #include <iomanip>
+#include <cctype>
+
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
 
 #ifdef _MSC_VER
 #define __func__ __FUNCTION__
@@ -42,6 +52,22 @@
 using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
+
+/////////////////////////////////////////////////////////
+
+// expose the read() function for simpler partial xml reading in setExpression()
+class ReaderPrivate: public Base::XMLReader {
+public:
+    ReaderPrivate(const char* FileName, std::istream &is)
+        :XMLReader(FileName,is)
+    {}
+
+    bool read() {
+        return XMLReader::read();
+    }
+};
+
+///////////////////////////////////////////////////////////
 
 const int Cell::EXPRESSION_SET       = 1;
 const int Cell::ALIGNMENT_SET        = 4;
@@ -81,11 +107,10 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     : address(_address)
     , owner(_owner)
     , used(0)
-    , expression(0)
     , alignment(ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER)
     , style()
     , foregroundColor(0, 0, 0, 1)
-    , backgroundColor(1, 1, 1, 0)
+    , backgroundColor(1, 1, 1, 1)
     , displayUnit()
     , alias()
     , computedUnit()
@@ -100,7 +125,7 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     : address(other.address)
     , owner(_owner)
     , used(other.used)
-    , expression(other.expression ? other.expression->copy() : 0)
+    , expression(other.expression ? other.expression->copy() : nullptr)
     , alignment(other.alignment)
     , style(other.style)
     , foregroundColor(other.foregroundColor)
@@ -112,6 +137,7 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     , colSpan(other.colSpan)
 {
     setUsed(MARK_SET, false);
+    setDirty();
 }
 
 Cell &Cell::operator =(const Cell &rhs)
@@ -120,7 +146,7 @@ Cell &Cell::operator =(const Cell &rhs)
 
     address = rhs.address;
 
-    setExpression(rhs.expression ? rhs.expression->copy() : 0);
+    setExpression(App::ExpressionPtr(rhs.expression ? rhs.expression->copy() : nullptr));
     setAlignment(rhs.alignment);
     setStyle(rhs.style);
     setBackground(rhs.backgroundColor);
@@ -131,7 +157,9 @@ Cell &Cell::operator =(const Cell &rhs)
     setSpans(rhs.rowSpan, rhs.colSpan);
 
     setUsed(MARK_SET, false);
+    setDirty();
 
+    signaller.tryInvoke();
     return *this;
 }
 
@@ -142,8 +170,6 @@ Cell &Cell::operator =(const Cell &rhs)
 
 Cell::~Cell()
 {
-    if (expression)
-        delete expression;
 }
 
 /**
@@ -151,22 +177,42 @@ Cell::~Cell()
   *
   */
 
-void Cell::setExpression(App::Expression *expr)
+void Cell::setExpression(App::ExpressionPtr &&expr)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
+
+    owner->setDirty(address);
 
     /* Remove dependencies */
     owner->removeDependencies(address);
 
-    if (expression)
-        delete expression;
-    expression = expr;
-    setUsed(EXPRESSION_SET, expression != 0);
+    if(expr && expr->comment.size()) {
+        if(!boost::starts_with(expr->comment,"<Cell "))
+            FC_WARN("Unknown style of cell "
+                << owner->sheet()->getFullName() << '.' << address.toString());
+        else {
+            try {
+                std::istringstream in(expr->comment);
+                ReaderPrivate reader("<memory>", in);
+                reader.read();
+                restore(reader,true);
+            }catch(Base::Exception &e) {
+                e.ReportException();
+                FC_ERR("Failed to restore style of cell "
+                    << owner->sheet()->getFullName() << '.' 
+                    << address.toString() << ": " << e.what());
+            }
+        }
+        expr->comment.clear();
+    }
+
+    expression = std::move(expr);
+    setUsed(EXPRESSION_SET, !!expression);
 
     /* Update dependencies */
     owner->addDependencies(address);
 
-    owner->rebuildDocDepList();
+    signaller.tryInvoke();
 }
 
 /**
@@ -174,9 +220,23 @@ void Cell::setExpression(App::Expression *expr)
   *
   */
 
-const App::Expression *Cell::getExpression() const
+const App::Expression *Cell::getExpression(bool withFormat) const
 {
-    return expression;
+    if(withFormat && expression) {
+        if((used & (ALIGNMENT_SET
+                                | STYLE_SET
+                                | FOREGROUND_COLOR_SET
+                                | BACKGROUND_COLOR_SET
+                                | DISPLAY_UNIT_SET 
+                                | ALIAS_SET
+                                | SPANS_SET)))
+        {
+            std::ostringstream ss;
+            save(ss,"",true);
+            expression->comment = ss.str();
+        }
+    }
+    return expression.get();
 }
 
 /**
@@ -184,11 +244,14 @@ const App::Expression *Cell::getExpression() const
   *
   */
 
-bool Cell::getStringContent(std::string & s) const
+bool Cell::getStringContent(std::string & s, bool persistent) const
 {
     if (expression) {
-        if (freecad_dynamic_cast<App::StringExpression>(expression)) {
-            s = static_cast<App::StringExpression*>(expression)->getText();
+        s.clear();
+        if(expression->hasComponent())
+            s = "=" + expression->toString(persistent);
+        else if (freecad_dynamic_cast<App::StringExpression>(expression.get())) {
+            s = static_cast<App::StringExpression*>(expression.get())->getText();
             char * end;
             errno = 0;
             double d = strtod(s.c_str(), &end);
@@ -196,12 +259,12 @@ bool Cell::getStringContent(std::string & s) const
             if (!*end && errno == 0)
                 s = "'" + s;
         }
-        else if (freecad_dynamic_cast<App::ConstantExpression>(expression))
+        else if (freecad_dynamic_cast<App::ConstantExpression>(expression.get()))
             s = "=" + expression->toString();
-        else if (freecad_dynamic_cast<App::NumberExpression>(expression))
+        else if (freecad_dynamic_cast<App::NumberExpression>(expression.get()))
             s = expression->toString();
         else
-            s = "=" + expression->toString();
+            s = "=" + expression->toString(persistent);
 
         return true;
     }
@@ -211,44 +274,107 @@ bool Cell::getStringContent(std::string & s) const
     }
 }
 
+void Cell::afterRestore() {
+    auto expr = freecad_dynamic_cast<StringExpression>(expression.get());
+    if(expr) 
+        setContent(expr->getText().c_str());
+}
+
 void Cell::setContent(const char * value)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
-    App::Expression * expr = 0;
+    ExpressionPtr newExpr;
 
-    setUsed(PARSE_EXCEPTION_SET, false);
-    if (value != 0) {
+    clearException();
+    if (value) {
+        if (owner->sheet()->isRestoring()) {
+            expression.reset(new App::StringExpression(owner->sheet(), value));
+            setUsed(EXPRESSION_SET, true);
+            return;
+        }
         if (*value == '=') {
             try {
-                expr = App::ExpressionParser::parse(owner->sheet(), value + 1);
+                newExpr = ExpressionPtr(App::ExpressionParser::parse(owner->sheet(), value + 1));
             }
             catch (Base::Exception & e) {
-                expr = new App::StringExpression(owner->sheet(), value);
+                newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value);
                 setParseException(e.what());
             }
         }
-        else if (*value == '\'')
-            expr = new App::StringExpression(owner->sheet(), value + 1);
+        else if (*value == '\'') {
+            newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value + 1);
+        }
         else if (*value != '\0') {
+            // check if value is just a number
             char * end;
             errno = 0;
-            double float_value = strtod(value, &end);
-            if (!*end && errno == 0)
-                expr = new App::NumberExpression(owner->sheet(), Quantity(float_value));
-            else {
-                try {
-                    expr = ExpressionParser::parse(owner->sheet(), value);
-                    if (expr)
-                        delete expr->eval();
-                }
-                catch (Base::Exception &) {
-                    expr = new App::StringExpression(owner->sheet(), value);
+            const double float_value = strtod(value, &end);
+            if (errno == 0) {
+                const bool isEndEmpty = *end == '\0' || strspn(end, " \t\n\r") == strlen(end);
+                if (isEndEmpty) {
+                    newExpr = std::make_unique<App::NumberExpression>(owner->sheet(), Quantity(float_value));
                 }
             }
+
+            // if not a float, check if it is a quantity or compatible fraction
+            const bool isStartingWithNumber = value != end;
+            if (!newExpr && isStartingWithNumber) {
+                try {
+                    ExpressionPtr parsedExpr(App::ExpressionParser::parse(owner->sheet(), value));
+
+                    if (const auto fraction = freecad_dynamic_cast<OperatorExpression>(parsedExpr.get())) {
+                        if (fraction->getOperator() == OperatorExpression::UNIT) {
+                            const auto left = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
+                            const auto right = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+                            if (left && right) {
+                                newExpr = std::move(parsedExpr);
+                            }
+                        }
+                        else if (fraction->getOperator() == OperatorExpression::DIV) {
+                            // only the following types of fractions are ok:
+                            //     1/2, 1m/2, 1/2s, 1m/2s, 1/m
+
+                            // check for numbers in (de)nominator
+                            const bool isNumberNom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
+                            const bool isNumberDenom = freecad_dynamic_cast<NumberExpression>(fraction->getRight());
+
+                            // check for numbers with units in (de)nominator
+                            const auto opNom = freecad_dynamic_cast<OperatorExpression>(fraction->getLeft());
+                            const auto opDenom = freecad_dynamic_cast<OperatorExpression>(fraction->getRight());
+                            const bool isQuantityNom = opNom && opNom->getOperator() == OperatorExpression::UNIT;
+                            const bool isQuantityDenom = opDenom && opDenom->getOperator() == OperatorExpression::UNIT;
+
+                            // check for units in denomainator
+                            const auto uDenom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+                            const bool isUnitDenom = uDenom && uDenom->getTypeId() == UnitExpression::getClassTypeId();
+
+                            const bool isNomValid = isNumberNom || isQuantityNom;
+                            const bool isDenomValid = isNumberDenom || isQuantityDenom || isUnitDenom;
+                            if (isNomValid && isDenomValid) {
+                                newExpr = std::move(parsedExpr);
+                            }
+                        }
+                    }
+                    else if (const auto number = freecad_dynamic_cast<NumberExpression>(parsedExpr.get())) {
+                        // NumbersExpressions can accept more than can be parsed with strtod.
+                        //   Example: 12.34 and 12,34 are both valid NumberExpressions
+                        newExpr = std::move(parsedExpr);
+                    }
+                }
+                catch (...) {}
+            }
         }
+
+        if (!newExpr && *value != '\0') {
+            newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value);
+        }
+
+        // trying to add an empty string will make newExpr = nullptr
     }
 
-    setExpression(expr);
+    // set expression, or delete the current expression by setting nullptr if empty string was entered
+    setExpression(std::move(newExpr));
+    signaller.tryInvoke();
 }
 
 /**
@@ -265,6 +391,8 @@ void Cell::setAlignment(int _alignment)
 
         alignment = _alignment;
         setUsed(ALIGNMENT_SET, alignment != (ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER));
+        setDirty();
+        signaller.tryInvoke();
     }
 }
 
@@ -291,6 +419,9 @@ void Cell::setStyle(const std::set<std::string> & _style)
 
         style = _style;
         setUsed(STYLE_SET, style.size() > 0);
+        setDirty();
+
+        signaller.tryInvoke();
     }
 }
 
@@ -317,6 +448,9 @@ void Cell::setForeground(const App::Color &color)
 
         foregroundColor = color;
         setUsed(FOREGROUND_COLOR_SET, foregroundColor != App::Color(0, 0, 0, 1));
+        setDirty();
+
+        signaller.tryInvoke();
     }
 }
 
@@ -343,6 +477,9 @@ void Cell::setBackground(const App::Color &color)
 
         backgroundColor = color;
         setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 0));
+        setDirty();
+
+        signaller.tryInvoke();
     }
 }
 
@@ -368,10 +505,10 @@ void Cell::setDisplayUnit(const std::string &unit)
 {
     DisplayUnit newDisplayUnit;
     if (unit.size() > 0) {
-        boost::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
+        std::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
 
         if (!e)
-            throw Base::Exception("Invalid unit");
+            throw Base::UnitsMismatchError("Invalid unit");
         newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
     }
 
@@ -380,6 +517,9 @@ void Cell::setDisplayUnit(const std::string &unit)
 
         displayUnit = newDisplayUnit;
         setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
+        setDirty();
+
+        signaller.tryInvoke();
     }
 }
 
@@ -403,18 +543,27 @@ void Cell::setAlias(const std::string &n)
 
         owner->revAliasProp.erase(alias);
 
-        alias = n;
-
         // Update owner
-        if (alias != "") {
+        if (!n.empty()) {
             owner->aliasProp[address] = n;
             owner->revAliasProp[n] = address;
         }
-        else
+        else {
             owner->aliasProp.erase(address);
+        }
+
+        if (!alias.empty()) {
+            // The property may have been added in Sheet::updateAlias
+            auto * docObj = static_cast<App::DocumentObject*>(owner->getContainer());
+            docObj->removeDynamicProperty(alias.c_str());
+        }
+
+        alias = n;
 
         setUsed(ALIAS_SET, !alias.empty());
+        setDirty();
 
+        signaller.tryInvoke();
     }
 }
 
@@ -435,6 +584,9 @@ void Cell::setComputedUnit(const Base::Unit &unit)
 
     computedUnit = unit;
     setUsed(COMPUTED_UNIT_SET, !computedUnit.isEmpty());
+    setDirty();
+
+    signaller.tryInvoke();
 }
 
 /**
@@ -465,6 +617,8 @@ void Cell::setSpans(int rows, int columns)
         colSpan = (columns == -1 ? 1 : columns);
         setUsed(SPANS_SET, (rowSpan != 1 || colSpan != 1) );
         setUsed(SPANS_UPDATED);
+        setDirty();
+        signaller.tryInvoke();
     }
 }
 
@@ -480,20 +634,32 @@ bool Cell::getSpans(int &rows, int &columns) const
     return isUsed(SPANS_SET);
 }
 
-void Cell::setException(const std::string &e)
+void Cell::setException(const std::string &e, bool silent)
 {
+    if(!silent && e.size() && owner && owner->sheet()) {
+        FC_ERR(owner->sheet()->getFullName() << '.' 
+                << address.toString() << ": " << e);
+    }
     exceptionStr = e;
     setUsed(EXCEPTION_SET);
 }
 
 void Cell::setParseException(const std::string &e)
 {
+    if(e.size() && owner && owner->sheet()) {
+        FC_ERR(owner->sheet()->getFullName() << '.' 
+                << address.toString() << ": " << e);
+    }
     exceptionStr = e;
     setUsed(PARSE_EXCEPTION_SET);
 }
 
 void Cell::setResolveException(const std::string &e)
 {
+    if(e.size() && owner && owner->sheet()) {
+        FC_LOG(owner->sheet()->getFullName() << '.' 
+                << address.toString() << ": " << e);
+    }
     exceptionStr = e;
     setUsed(RESOLVE_EXCEPTION_SET);
 }
@@ -505,14 +671,22 @@ void Cell::clearResolveException()
 
 void Cell::clearException()
 {
-    if (!isUsed(PARSE_EXCEPTION_SET))
-        exceptionStr = "";
+    exceptionStr.clear();
     setUsed(EXCEPTION_SET, false);
+    setUsed(RESOLVE_EXCEPTION_SET, false);
+    setUsed(PARSE_EXCEPTION_SET, false);
 }
 
 void Cell::clearDirty()
 {
-    owner->clearDirty(address);
+    if(owner)
+        owner->clearDirty(address);
+}
+
+void Cell::setDirty()
+{
+    if(owner)
+        owner->setDirty(address);
 }
 
 /**
@@ -530,7 +704,7 @@ void Cell::moveAbsolute(CellAddress newAddress)
   *
   */
 
-void Cell::restore(Base::XMLReader &reader)
+void Cell::restore(Base::XMLReader &reader, bool checkAlias)
 {
     const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : 0;
     const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : 0;
@@ -585,7 +759,7 @@ void Cell::restore(Base::XMLReader &reader)
     }
     if (displayUnit)
         setDisplayUnit(displayUnit);
-    if (alias)
+    if (alias && (!checkAlias || !owner->revAliasProp.count(alias)))
         setAlias(alias);
 
     if (rowSpan || colSpan) {
@@ -601,46 +775,52 @@ void Cell::restore(Base::XMLReader &reader)
   *
   */
 
-void Cell::save(Base::Writer &writer) const
-{
+void Cell::save(Base::Writer &writer) const {
+    save(writer.Stream(),writer.ind(),false);
+}
+
+void Cell::save(std::ostream &os, const char *indent, bool noContent) const {
     if (!isUsed())
         return;
 
-    writer.Stream() << writer.ind() << "<Cell ";
+    os << indent << "<Cell ";
 
-    writer.Stream() << "address=\"" << address.toString() << "\" ";
+    if (!noContent) {
+        os << "address=\"" << address.toString() << "\" ";
 
-    if (isUsed(EXPRESSION_SET)) {
-        std::string content;
-
-        getStringContent(content);
-        writer.Stream() << "content=\"" << App::Property::encodeAttribute(content) << "\" ";
+        if(isUsed(EXPRESSION_SET)) {
+            std::string content;
+            getStringContent(content,true);
+            os << "content=\"" << App::Property::encodeAttribute(content) << "\" ";
+        }
     }
 
     if (isUsed(ALIGNMENT_SET))
-        writer.Stream() << "alignment=\"" << encodeAlignment(alignment) << "\" ";
+        os << "alignment=\"" << encodeAlignment(alignment) << "\" ";
 
     if (isUsed(STYLE_SET))
-        writer.Stream() << "style=\"" << encodeStyle(style) << "\" ";
+        os << "style=\"" << encodeStyle(style) << "\" ";
 
     if (isUsed(FOREGROUND_COLOR_SET))
-        writer.Stream() << "foregroundColor=\"" << encodeColor(foregroundColor) << "\" ";
+        os << "foregroundColor=\"" << encodeColor(foregroundColor) << "\" ";
 
     if (isUsed(BACKGROUND_COLOR_SET))
-        writer.Stream() << "backgroundColor=\"" << encodeColor(backgroundColor) << "\" ";
+        os << "backgroundColor=\"" << encodeColor(backgroundColor) << "\" ";
 
     if (isUsed(DISPLAY_UNIT_SET))
-        writer.Stream() << "displayUnit=\"" << App::Property::encodeAttribute(displayUnit.stringRep) << "\" ";
+        os << "displayUnit=\"" << App::Property::encodeAttribute(displayUnit.stringRep) << "\" ";
 
     if (isUsed(ALIAS_SET))
-        writer.Stream() << "alias=\"" << App::Property::encodeAttribute(alias) << "\" ";
+        os << "alias=\"" << App::Property::encodeAttribute(alias) << "\" ";
 
     if (isUsed(SPANS_SET)) {
-        writer.Stream() << "rowSpan=\"" << rowSpan<< "\" ";
-        writer.Stream() << "colSpan=\"" << colSpan << "\" ";
+        os << "rowSpan=\"" << rowSpan<< "\" ";
+        os << "colSpan=\"" << colSpan << "\" ";
     }
 
-    writer.Stream() << "/>" << std::endl;
+    os << "/>";
+    if(!noContent)
+        os << std::endl;
 }
 
 /**
@@ -654,8 +834,6 @@ void Cell::setUsed(int mask, bool state)
         used |= mask;
     else
         used &= ~mask;
-
-    owner->setDirty(address);
 }
 
 /**
@@ -696,24 +874,28 @@ void Cell::visit(App::ExpressionVisitor &v)
 
 int Cell::decodeAlignment(const std::string & itemStr, int alignment)
 {
-    if (itemStr == "himplied")
-        alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_HIMPLIED;
-    else if (itemStr == "left")
+    if (itemStr == "himplied") {
+        if(!(alignment & ALIGNMENT_HORIZONTAL))
+            alignment |= ALIGNMENT_LEFT;
+        alignment |= Cell::ALIGNMENT_HIMPLIED;
+    } else if (itemStr == "left")
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_LEFT;
     else if (itemStr == "center")
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_HCENTER;
     else if (itemStr == "right")
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_RIGHT;
-    else if (itemStr == "vimplied")
-        alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_VIMPLIED;
-    else if (itemStr == "top")
+    else if (itemStr == "vimplied") {
+        if(!(alignment & ALIGNMENT_VERTICAL))
+            alignment |= ALIGNMENT_VCENTER;
+        alignment |= Cell::ALIGNMENT_VIMPLIED;
+    } else if (itemStr == "top")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_TOP;
     else if (itemStr == "vcenter")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_VCENTER;
     else if (itemStr == "bottom")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_BOTTOM;
-    else
-        throw Base::Exception("Invalid alignment.");
+    else if(itemStr.size())
+        throw Base::ValueError("Invalid alignment.");
 
     return alignment;
 }
@@ -831,4 +1013,57 @@ App::Color Cell::decodeColor(const std::string & color, const App::Color & defau
         return defaultColor;
 }
 
+//roughly based on Spreadsheet/Gui/SheetModel.cpp
+std::string Cell::getFormattedQuantity(void)
+{
+    std::string result;
+    QString qFormatted;
+    App::CellAddress thisCell = getAddress();
+    Property* prop = owner->sheet()->getPropertyByName(thisCell.toString().c_str());
+
+    if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+        const App::PropertyString * stringProp = static_cast<const App::PropertyString*>(prop);
+        qFormatted = QString::fromUtf8(stringProp->getValue());
+
+    } else if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
+        double rawVal = static_cast<App::PropertyQuantity*>(prop)->getValue();
+        const App::PropertyQuantity * floatProp = static_cast<const App::PropertyQuantity*>(prop);
+        DisplayUnit du;
+        bool hasDisplayUnit = getDisplayUnit(du);
+        double duScale = du.scaler;
+        const Base::Unit& computedUnit = floatProp->getUnit();
+        qFormatted = QLocale().toString(rawVal,'f',Base::UnitsApi::getDecimals());
+        if (hasDisplayUnit) {
+            if (computedUnit.isEmpty() || computedUnit == du.unit) {
+                QString number =
+                    QLocale().toString(rawVal / duScale,'f',Base::UnitsApi::getDecimals());
+                qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            }
+        }
+
+    } else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())){
+        double rawVal = static_cast<const App::PropertyFloat*>(prop)->getValue();
+        DisplayUnit du;
+        bool hasDisplayUnit = getDisplayUnit(du);
+        double duScale = du.scaler;
+        qFormatted = QLocale().toString(rawVal,'f',Base::UnitsApi::getDecimals());
+        if (hasDisplayUnit) {
+            QString number = QLocale().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
+            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+        }
+    } else if (prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        double rawVal = static_cast<const App::PropertyInteger*>(prop)->getValue();
+        DisplayUnit du;
+        bool hasDisplayUnit = getDisplayUnit(du);
+        double duScale = du.scaler;
+        int iRawVal = std::round(rawVal);
+        qFormatted = QLocale().toString(iRawVal);
+        if (hasDisplayUnit) {
+            QString number = QLocale().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
+            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+        }
+    }
+    result = Base::Tools::toStdString(qFormatted);
+    return result;
+}
 

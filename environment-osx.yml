@@ -1,0 +1,49 @@
+name: freecad_dev
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - cxx-compiler
+  - cmake
+  - ninja
+  - git
+  - doxygen
+  - python
+  - qt
+  - boost-cpp
+  - xerces-c
+  - zlib
+  - vtk
+  - swig
+  - eigen
+  - occt
+  - pybind11
+  - coin3d
+  - pivy
+  - smesh
+  - netgen=6.2.1808*
+  - hdf5
+  - freetype
+  - pcl
+  - six
+  - ply
+  - tbb-devel
+  - pyside2
+  - numpy
+  - six
+  - pyyaml
+  - libspnav
+  - libxcb
+  - xorg-libxt
+# Linux ONLY items
+  # - mesa-libgl-devel      # [linux]
+  # - mesa-dri-drivers      # [linux]
+  # - mesa-libegl-devel     # [linux]
+  # - libselinux            # [linux]
+  # - libxdamage            # [linux]
+  # - libxfixes             # [linux]
+  # - libxxf86vm            # [linux]
+  # - libxext               # [linux]
+  # - xorg-x11-server-xvfb  # [linux]
+  # - libxau                # [linux]
+  # - libxi-devel           # [linux]

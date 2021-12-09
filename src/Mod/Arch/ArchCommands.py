@@ -1,9 +1,6 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -29,20 +26,21 @@ from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
-    from DraftTools import translate, utf8_decode
+    from draftutils.translate import translate
+    from draftutils.utils import utf8_decode
 else:
     # \cond
     def translate(ctxt,txt):
         return txt
     # \endcond
 
-__title__="FreeCAD Arch Commands"
+__title__  = "FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchCommands
 #  \ingroup ARCH
-#  \brief Utility functions for theArch Workbench
+#  \brief Utility functions for the Arch Workbench
 #
 #  This module provides general functions used by Arch tools
 #  and utility commands
@@ -65,7 +63,7 @@ def string_replace(text, pattern, replacement):
     if sys.version_info.major < 3:
         text = text.encode("utf8")
     return text.replace(pattern, replacement)
-    
+
 
 def getStringList(objects):
     '''getStringList(objects): returns a string defining a list
@@ -94,6 +92,8 @@ def getDefaultColor(objectType):
         c = p.GetUnsigned("RebarColor",3111475967)
     elif objectType == "Panel":
         c = p.GetUnsigned("PanelColor",3416289279)
+    elif objectType == "Space":
+        c = p.GetUnsigned("defaultSpaceColor",4278190080)
     elif objectType == "Helpers":
         c = p.GetUnsigned("ColorHelpers",674321151)
     elif objectType == "Construction":
@@ -114,16 +114,16 @@ def addComponents(objectsList,host):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
-    if hostType in ["Floor","Building","Site","BuildingPart"]:
+    if hostType in ["Floor","Building","Site","Project","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
-    elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
+    elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
         import DraftGeomUtils
         a = host.Additions
         if hasattr(host,"Axes"):
             x = host.Axes
         for o in objectsList:
-            if o.isDerivedFrom("Part::Feature"):
+            if hasattr(o,'Shape'):
                 if Draft.getType(o) == "Window":
                     if hasattr(o,"Hosts"):
                         if not host in o.Hosts:
@@ -161,7 +161,7 @@ def removeComponents(objectsList,host=None):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     if host:
-        if Draft.getType(host) in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
+        if Draft.getType(host) in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
             if hasattr(host,"Tool"):
                 if objectsList[0] == host.Tool:
                     host.Tool = None
@@ -235,7 +235,7 @@ def makeComponent(baseobj=None,name="Component",delete=False):
         ArchComponent.ViewProviderComponent(obj.ViewObject)
     if baseobj:
         import Part
-        if baseobj.isDerivedFrom("Part::Feature"):
+        if hasattr(baseobj,'Shape'):
             obj.Shape = baseobj.Shape
             obj.Placement = baseobj.Placement
             if delete:
@@ -273,6 +273,8 @@ def setAsSubcomponent(obj):
             color = getDefaultColor("Construction")
             if hasattr(obj.ViewObject,"LineColor"):
                 obj.ViewObject.LineColor = color
+            if hasattr(obj.ViewObject, "PointColor"):
+                obj.ViewObject.PointColor = color
             if hasattr(obj.ViewObject,"ShapeColor"):
                 obj.ViewObject.ShapeColor = color
             if hasattr(obj.ViewObject,"Transparency"):
@@ -396,9 +398,11 @@ def closeHole(shape):
     else:
         return solid
 
-def getCutVolume(cutplane,shapes):
-    """getCutVolume(cutplane,shapes): returns a cut face and a cut volume
-    from the given shapes and the given cutting plane"""
+def getCutVolume(cutplane,shapes,clip=False,depth=None):
+    """getCutVolume(cutplane,shapes,[clip,depth]): returns a cut face and a cut volume
+    from the given shapes and the given cutting plane. If clip is True, the cutvolume will
+    also cut off everything outside the cutplane projection. If depth is non-zero, geometry
+    further than this distance will be clipped off"""
     if not shapes:
         return None,None,None
     if not cutplane.Faces:
@@ -412,7 +416,6 @@ def getCutVolume(cutplane,shapes):
         bb.add(sh.BoundBox)
     bb.enlarge(1)
     # building cutplane space
-    placement = None
     um = vm = wm = 0
     try:
         if hasattr(cutplane,"Shape"):
@@ -460,6 +463,19 @@ def getCutVolume(cutplane,shapes):
         cutvolume = cutface.extrude(cutnormal)
         cutnormal = cutnormal.negative()
         invcutvolume = cutface.extrude(cutnormal)
+        if clip:
+            extrudedplane = p.extrude(cutnormal)
+            bordervolume = invcutvolume.cut(extrudedplane)
+            cutvolume = cutvolume.fuse(bordervolume)
+            cutvolume = cutvolume.removeSplitter()
+            invcutvolume = extrudedplane
+            cutface = p
+        if depth:
+            depthnormal = DraftVecUtils.scaleTo(cutnormal,depth)
+            depthvolume = cutface.extrude(depthnormal)
+            depthclipvolume = invcutvolume.cut(depthvolume)
+            cutvolume = cutvolume.fuse(depthclipvolume)
+            cutvolume = cutvolume.removeSplitter()
         return cutface,cutvolume,invcutvolume
 
 def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
@@ -474,7 +490,7 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
                 pts.append(FreeCAD.Vector(pp[0],pp[1],pp[2]))
             try:
                 f = Part.Face(Part.makePolygon(pts))
-            except:
+            except Exception:
                 print("getShapeFromMesh: error building face from polygon")
                 #pass
             else:
@@ -508,7 +524,7 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
                     wires = nwires
                 try:
                     faces.append(makeFace(wires,method=int(cut)+1))
-                except:
+                except Exception:
                     return None
     try:
         se = Part.makeShell(faces)
@@ -561,9 +577,8 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
 
     name = obj.Name
     if "Mesh" in obj.PropertiesList:
-        faces = []
         mesh = obj.Mesh
-        plac = obj.Placement
+        #plac = obj.Placement
         solid = getShapeFromMesh(mesh,fast,tol,flat,cut)
         if solid:
             if solid.isClosed() and solid.isValid():
@@ -618,7 +633,7 @@ def removeShape(objs,mark=True):
                     v1 = dims[0].multVec(v1)
                     v2 = dims[0].multVec(v2)
                     line = Draft.makeLine(v1,v2)
-                    wal = ArchWall.makeWall(line,width=width,height=dims[3],name=name)
+                    ArchWall.makeWall(line,width=width,height=dims[3],name=name)
         else:
             if mark:
                 obj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
@@ -654,7 +669,11 @@ def download(url,force=False):
     '''download(url,force=False): downloads a file from the given URL and saves it in the
     macro path. Returns the path to the saved file. If force is True, the file will be
     downloaded again evn if it already exists.'''
-    import urllib2, os
+    try:
+        from urllib.request import urlopen
+    except ImportError:
+        from urllib2 import urlopen
+    import os
     name = url.split('/')[-1]
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
     macropath = p.GetString("MacroPath","")
@@ -665,24 +684,24 @@ def download(url,force=False):
         return filepath
     try:
         FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
-        response = urllib2.urlopen(url)
+        response = urlopen(url)
         s = response.read()
         f = open(filepath,'wb')
         f.write(s)
         f.close()
-    except:
+    except Exception:
         return None
     else:
         return filepath
 
 def check(objectslist,includehidden=False):
     """check(objectslist,includehidden=False): checks if the given objects contain only solids"""
-    objs = Draft.getGroupContents(objectslist)
+    objs = Draft.get_group_contents(objectslist)
     if not includehidden:
         objs = Draft.removeHidden(objs)
     bad = []
     for o in objs:
-        if not o.isDerivedFrom("Part::Feature"):
+        if not hasattr(o,'Shape'):
             bad.append([o,"is not a Part-based object"])
         else:
             s = o.Shape
@@ -730,10 +749,16 @@ def pruneIncluded(objectslist,strict=False):
         if obj.isDerivedFrom("Part::Feature"):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder","Window","Roof"]):
+                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site","Project"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
-                            if hasattr(parent,"CloneOf"):
+                            if hasattr(parent,"Host") and (parent.Host == obj):
+                                pass
+                            elif hasattr(parent,"Hosts") and (obj in parent.Hosts):
+                                pass
+                            elif hasattr(parent,"TypeId") and (parent.TypeId == "Part::Mirroring"):
+                                pass
+                            elif hasattr(parent,"CloneOf"):
                                 if parent.CloneOf:
                                     if parent.CloneOf.Name != obj.Name:
                                         toplevel = False
@@ -746,6 +771,8 @@ def pruneIncluded(objectslist,strict=False):
                             toplevel = True
         if toplevel:
             newlist.append(obj)
+        else:
+            FreeCAD.Console.PrintLog("pruning "+obj.Label+"\n")
     return newlist
 
 def getAllChildren(objectlist):
@@ -818,7 +845,7 @@ def survey(callback=False):
                         newsels.append(o)
                 if newsels:
                     for o in newsels:
-                        if o.Object.isDerivedFrom("Part::Feature"):
+                        if hasattr(o.Object, 'Shape'):
                             n = o.Object.Label
                             showUnit = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True)
                             t = ""
@@ -1020,7 +1047,8 @@ class SurveyTaskPanel:
         if hasattr(FreeCAD,"SurveyObserver"):
             u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalLength,FreeCAD.Units.Length)
             t = u.getUserPreferred()[0]
-            t = t.encode("utf8")
+            if sys.version_info.major < 3:
+                t = t.encode("utf8")
             if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True):
                 QtGui.QApplication.clipboard().setText(t)
             else:
@@ -1165,35 +1193,37 @@ def cleanArchSplitter(objects=None):
     if not isinstance(objects,list):
         objects = [objects]
     for obj in objects:
-        if obj.isDerivedFrom("Part::Feature"):
+        if hasattr(obj,'Shape'):
             if hasattr(obj,"Base"):
                 if obj.Base:
                     print("Attempting to clean splitters from ", obj.Label)
-                    if obj.Base.isDerivedFrom("Part::Feature"):
-                        if not obj.Base.Shape.isNull():
-                            obj.Base.Shape = obj.Base.Shape.removeSplitter()
+                    base = obj.Base.getLinkedObject()
+                    if base.isDerivedFrom("Part::Feature"):
+                        if not base.Shape.isNull():
+                            base.Shape = base.Shape.removeSplitter()
     FreeCAD.ActiveDocument.recompute()
 
 
 def rebuildArchShape(objects=None):
-    """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected 
+    """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected
     if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
-    import FreeCAD,FreeCADGui,Part
-    if not objects:
+    import FreeCAD,Part
+    if not objects and FreeCAD.GuiUp:
         objects = FreeCADGui.Selection.getSelection()
     if not isinstance(objects,list):
         objects = [objects]
     for obj in objects:
         success = False
-        if obj.isDerivedFrom("Part::Feature"):
+        if hasattr(obj,'Shape'):
             if hasattr(obj,"Base"):
                 if obj.Base:
                     try:
                         print("Attempting to rebuild ", obj.Label)
-                        if obj.Base.isDerivedFrom("Part::Feature"):
-                            if not obj.Base.Shape.isNull():
+                        base = obj.Base.getLinkedObject()
+                        if base.isDerivedFrom("Part::Feature"):
+                            if not base.Shape.isNull():
                                 faces = []
-                                for f in obj.Base.Shape.Faces:
+                                for f in base.Shape.Faces:
                                     f2 = Part.Face(f.Wires)
                                     #print("rebuilt face: isValid is ", f2.isValid())
                                     faces.append(f2)
@@ -1208,18 +1238,48 @@ def rebuildArchShape(objects=None):
                                                 solid = Part.Solid(solid)
                                             #print("rebuilt solid: isValid is ",solid.isValid())
                                             if solid.isValid():
-                                                obj.Base.Shape = solid
+                                                base.Shape = solid
                                                 success = True
-                    except:
+                    except Exception:
                         pass
         if not success:
             print ("Failed to rebuild a valid solid for object ",obj.Name)
     FreeCAD.ActiveDocument.recompute()
 
 
-def getExtrusionData(shape):
-    """getExtrusionData(shape): returns a base face and an extrusion vector
-    if this shape can be described as a perpendicular extrusion, or None if not."""
+def getExtrusionData(shape,sortmethod="area"):
+    """If a shape has been extruded, returns the base face, and extrusion vector.
+
+    Determines if a shape appears to have been extruded from some base face, and
+    extruded at the normal from that base face. IE: it looks like a cuboid.
+    https://en.wikipedia.org/wiki/Cuboid#Rectangular_cuboid
+
+    If this is the case, returns what appears to be the base face, and the vector
+    used to make that extrusion.
+
+    The base face is determined based on the sortmethod parameter, which can either
+    be:
+
+    "area" = Of the faces with the smallest area, the one with the lowest z coordinate.
+    "z" = The face with the lowest z coordinate.
+    a 3D vector = the face which center is closest to the given 3D point
+
+    Parameters
+    ----------
+    shape: <Part.Shape>
+        Shape to examine.
+    sortmethod: {"area", "z"}
+        Which sorting algorithm to use to determine the base face.
+
+    Returns
+    -------
+    Extrusion data: list
+        Two item list containing the base face, and the vector used to create the
+        extrusion. In that order.
+    Failure: None
+        Returns None if the object does not appear to be an extrusion.
+    """
+
     if shape.isNull():
         return None
     if not shape.Solids:
@@ -1253,25 +1313,35 @@ def getExtrusionData(shape):
                 if round(f[1].getAngle(faces[pair[0]][1]),4) != 1.5708:
                     ok = False
         if ok:
-            valids.append([faces[pair[0]][0],faces[pair[1]][0].CenterOfMass.sub(faces[pair[0]][0].CenterOfMass)])
-    for v in valids:
-        # prefer vertical extrusions
-        if v[1].getAngle(FreeCAD.Vector(0,0,1)) < 0.0001:
-            return v
-    # otherwise return the first found
+            # prefer the face with the lowest z
+            if faces[pair[0]][0].CenterOfMass.z < faces[pair[1]][0].CenterOfMass.z:
+                valids.append([faces[pair[0]][0],faces[pair[1]][0].CenterOfMass.sub(faces[pair[0]][0].CenterOfMass)])
+            else:
+                valids.append([faces[pair[1]][0],faces[pair[0]][0].CenterOfMass.sub(faces[pair[1]][0].CenterOfMass)])
     if valids:
+        if sortmethod == "z":
+            valids.sort(key=lambda v: v[0].CenterOfMass.z)
+        elif sortmethod == "area":
+            # sort by smallest area
+            valids.sort(key=lambda v: v[0].Area)
+        else:
+            valids.sort(key=lambda v: (v[0].CenterOfMass.sub(sortmethod)).Length)
         return valids[0]
     return None
 
 def printMessage( message ):
     FreeCAD.Console.PrintMessage( message )
     if FreeCAD.GuiUp :
-        reply = QtGui.QMessageBox.information( None , "" , message.decode('utf8') )
+        if sys.version_info.major < 3:
+            message = message.decode("utf8")
+        QtGui.QMessageBox.information( None , "" , message )
 
 def printWarning( message ):
     FreeCAD.Console.PrintMessage( message )
     if FreeCAD.GuiUp :
-        reply = QtGui.QMessageBox.warning( None , "" , message.decode('utf8') )
+        if sys.version_info.major < 3:
+            message = message.decode("utf8")
+        QtGui.QMessageBox.warning( None , "" , message )
 
 
 # command definitions ###############################################
@@ -1486,20 +1556,6 @@ class _CommandCheck:
                 FreeCADGui.Selection.addSelection(i[0])
 
 
-class _CommandIfcExplorer:
-    "the Arch Ifc Explorer command definition"
-    def GetResources(self):
-        return {'Pixmap'  : 'IFC',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_IfcExplorer","Ifc Explorer"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Explore the contents of an IFC file")}
-
-    def Activated(self):
-        if hasattr(self,"dialog"):
-            del self.dialog
-        import importIFC
-        self.dialog = importIFC.explore()
-
-
 class _CommandSurvey:
     "the Arch Survey command definition"
     def GetResources(self):
@@ -1647,7 +1703,7 @@ class _ToggleSubs:
             if hasattr(obj, "Subtractions"):
                 for sub in obj.Subtractions:
                     if not (Draft.getType(sub) in ["Window","Roof"]):
-                        if mode == None:
+                        if mode is None:
                             # take the first sub as base
                             mode = sub.ViewObject.isVisible()
                         if mode == True:
@@ -1665,7 +1721,6 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
     FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
     FreeCADGui.addCommand('Arch_Check',_CommandCheck())
-    FreeCADGui.addCommand('Arch_IfcExplorer',_CommandIfcExplorer())
     FreeCADGui.addCommand('Arch_Survey',_CommandSurvey())
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
     FreeCADGui.addCommand('Arch_Component',_CommandComponent())

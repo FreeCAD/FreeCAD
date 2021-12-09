@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,13 +21,12 @@
  ***************************************************************************/
 
 
-
-
 #ifndef _AppPlacement_h_
 #define _AppPlacement_h_
 
 #include <Base/Placement.h>
 
+#include "FeaturePython.h"
 #include "GeoFeature.h"
 #include "PropertyGeo.h"
 
@@ -58,7 +57,7 @@ public:
   /// Constructor
   Placement(void);
   virtual ~Placement();
-  
+
   /// returns the type name of the ViewProvider
   virtual const char* getViewProviderName(void) const {
       return "Gui::ViewProviderPlacement";
@@ -66,6 +65,7 @@ public:
 
 
 };
+typedef App::FeaturePythonT<App::Placement> PlacementPython;
 
 
 

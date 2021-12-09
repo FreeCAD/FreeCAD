@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,43 +23,43 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QCoreApplication>
+# include <QTextStream>
 #endif
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
+#include "Workbench.h"
 
 
 using namespace std;
 
-DEF_STD_CMD(CmdStartConstraintAxle);
+DEF_STD_CMD(CmdStartPage)
 
-CmdStartConstraintAxle::CmdStartConstraintAxle()
-	:Command("Start_ConstraintAxle")
+CmdStartPage::CmdStartPage()
+	:Command("Start_StartPage")
 {
     sAppModule      = "Start";
     sGroup          = QT_TR_NOOP("Start");
-    sMenuText       = QT_TR_NOOP("Constraint Axle...");
-    sToolTipText    = QT_TR_NOOP("Set an axle constraint between two objects");
-    sWhatsThis      = "Start_ConstraintAxle";
+    sMenuText       = QT_TR_NOOP("Start Page");
+    sToolTipText    = QT_TR_NOOP("Displays the start page in a browser view");
+    sWhatsThis      = "Start_StartPage";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/document-new";
+    sPixmap         = "StartWorkbench";
 }
 
-
-void CmdStartConstraintAxle::activated(int iMsg)
+void CmdStartPage::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    // load the file with the module
-    //Command::doCommand(Command::Gui, "import Start, StartGui");
+    StartGui::Workbench::loadStartPage();
 }
-
 
 
 void CreateStartCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdStartConstraintAxle());
+    rcCmdMgr.addCommand(new CmdStartPage());
  }

@@ -26,6 +26,7 @@
 #define SPREADSHEET_ViewProviderImagePlane_H
 
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/ViewProviderPythonFeature.h>
 #include <QPointer>
 
 namespace Spreadsheet {
@@ -39,7 +40,7 @@ class SheetView;
 
 class SpreadsheetGuiExport ViewProviderSheet : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(SpreadsheetGui::ViewProviderSheet);
+    PROPERTY_HEADER_WITH_OVERRIDE(SpreadsheetGui::ViewProviderSheet);
 
 public:
     /// constructor.
@@ -48,29 +49,37 @@ public:
     /// destructor.
     ~ViewProviderSheet();
 
-    void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
-    std::vector<std::string> getDisplayModes() const;
+    void setDisplayMode(const char* ModeName) override;
+    virtual bool useNewSelectionModel(void) const override {return false;}
+    std::vector<std::string> getDisplayModes() const override;
 
-    virtual bool doubleClicked(void);
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
+    virtual bool doubleClicked(void) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
     Spreadsheet::Sheet* getSpreadsheetObject() const;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    virtual void beforeDelete() override;
 
-    QIcon getIcon() const;
+    QIcon getIcon() const override;
 
-    virtual bool setEdit(int ModNum);
+    virtual bool setEdit(int ModNum) override;
 
-    virtual bool isShow(void) const { return true; }
+    virtual bool isShow(void) const override { return true; }
+
+    virtual Gui::MDIView *getMDIView() const override;
+
+    inline SheetView* getView() const { return view; }
+
+    PyObject *getPyObject() override;
 
 protected:
     SheetView* showSpreadsheetView();
-    void updateData(const App::Property *prop);
+    void updateData(const App::Property *prop) override;
 private:
     QPointer<SheetView> view;
 };
+
+typedef Gui::ViewProviderPythonFeatureT<ViewProviderSheet> ViewProviderSheetPython;
 
 } //namespace Spreadsheet
 

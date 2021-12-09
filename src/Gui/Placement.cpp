@@ -22,9 +22,14 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QSignalMapper>
 #include <QDockWidget>
 #include <QMessageBox>
+#include <QClipboard>
+#include <QMetaObject>
+#include <boost_bind_bind.hpp>
+#endif
 
 #include "Placement.h"
 #include "ui_Placement.h"
@@ -43,6 +48,7 @@
 #include <Base/UnitsApi.h>
 
 using namespace Gui::Dialog;
+namespace bp = boost::placeholders;
 
 namespace Gui { namespace Dialog {
 class find_placement
@@ -81,14 +87,18 @@ public:
 
 Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
   : Gui::LocationDialog(parent, fl)
+  , changeProperty(false)
 {
+    selectionObjects = Gui::Selection().getSelectionEx();
+
     propertyName = "Placement"; // default name
     ui = new Ui_PlacementComp(this);
-    ui->applyPlacementChange->hide();
+    ui->gridLayout->removeItem(ui->vSpacer);
 
     ui->xPos->setUnit(Base::Unit::Length);
     ui->yPos->setUnit(Base::Unit::Length);
     ui->zPos->setUnit(Base::Unit::Length);
+    ui->axialPos->setUnit(Base::Unit::Length);
     ui->xCnt->setValue(Base::Quantity(0, Base::Unit::Length));
     ui->yCnt->setValue(Base::Quantity(0, Base::Unit::Length));
     ui->zCnt->setValue(Base::Quantity(0, Base::Unit::Length));
@@ -112,7 +122,7 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
     connect(signalMapper, SIGNAL(mapped(int)),
             this, SLOT(onPlacementChanged(int)));
     connectAct = Application::Instance->signalActiveDocument.connect
-        (boost::bind(&Placement::slotActiveDocument, this, _1));
+        (boost::bind(&Placement::slotActiveDocument, this, bp::_1));
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (activeDoc) documents.insert(activeDoc->getName());
 
@@ -133,11 +143,37 @@ void Placement::showDefaultButtons(bool ok)
     ui->oKButton->setVisible(ok);
     ui->closeButton->setVisible(ok);
     ui->applyButton->setVisible(ok);
+    ui->buttonBoxLayout->invalidate();
+    if (ok) {
+        ui->buttonBoxLayout->insertSpacerItem(0, ui->buttonBoxSpacer);
+    }
+    else {
+        ui->buttonBoxLayout->removeItem(ui->buttonBoxSpacer);
+    }
+}
+
+void Placement::open()
+{
+    if (propertyName != "Placement") {
+        changeProperty = true;
+        openTransaction();
+    }
 }
 
 void Placement::slotActiveDocument(const Gui::Document& doc)
 {
     documents.insert(doc.getDocument()->getName());
+
+    if (changeProperty) {
+        QMetaObject::invokeMethod(this, "openTransaction", Qt::QueuedConnection);
+    }
+}
+
+void Placement::openTransaction()
+{
+    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    if (activeDoc)
+        activeDoc->openTransaction("Placement");
 }
 
 QWidget* Placement::getInvalidInput() const
@@ -156,21 +192,27 @@ void Placement::revertTransformation()
         Gui::Document* document = Application::Instance->getDocument(it->c_str());
         if (!document) continue;
 
-        std::vector<App::DocumentObject*> obj = document->getDocument()->
-            getObjectsOfType(App::DocumentObject::getClassTypeId());
-        if (!obj.empty()) {
-            for (std::vector<App::DocumentObject*>::iterator it=obj.begin();it!=obj.end();++it) {
-                std::map<std::string,App::Property*> props;
-                (*it)->getPropertyMap(props);
-                // search for the placement property
-                std::map<std::string,App::Property*>::iterator jt;
-                jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
-                if (jt != props.end()) {
-                    Base::Placement cur = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
-                    Gui::ViewProvider* vp = document->getViewProvider(*it);
-                    if (vp) vp->setTransformation(cur.toMatrix());
+        if (!changeProperty) {
+            std::vector<App::DocumentObject*> obj = document->getDocument()->
+                getObjectsOfType(App::DocumentObject::getClassTypeId());
+            if (!obj.empty()) {
+                for (std::vector<App::DocumentObject*>::iterator it=obj.begin();it!=obj.end();++it) {
+                    std::map<std::string,App::Property*> props;
+                    (*it)->getPropertyMap(props);
+                    // search for the placement property
+                    std::map<std::string,App::Property*>::iterator jt;
+                    jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
+                    if (jt != props.end()) {
+                        App::PropertyPlacement* property = static_cast<App::PropertyPlacement*>(jt->second);
+                        Base::Placement cur = property->getValue();
+                        Gui::ViewProvider* vp = document->getViewProvider(*it);
+                        if (vp) vp->setTransformation(cur.toMatrix());
+                    }
                 }
             }
+        }
+        else {
+            document->abortCommand();
         }
     }
 }
@@ -191,14 +233,20 @@ void Placement::applyPlacement(const Base::Placement& p, bool incremental)
             std::map<std::string,App::Property*>::iterator jt;
             jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
             if (jt != props.end()) {
-                Base::Placement cur = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
+                App::PropertyPlacement* property = static_cast<App::PropertyPlacement*>(jt->second);
+                Base::Placement cur = property->getValue();
                 if (incremental)
                     cur = p * cur;
                 else
                     cur = p;
 
-                Gui::ViewProvider* vp = document->getViewProvider(*it);
-                if (vp) vp->setTransformation(cur.toMatrix());
+                if (!changeProperty) {
+                    Gui::ViewProvider* vp = document->getViewProvider(*it);
+                    if (vp) vp->setTransformation(cur.toMatrix());
+                }
+                else {
+                    property->setValue(cur);
+                }
             }
         }
     }
@@ -212,47 +260,60 @@ void Placement::applyPlacement(const QString& data, bool incremental)
     Gui::Document* document = Application::Instance->activeDocument();
     if (!document) return;
 
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
-        (App::DocumentObject::getClassTypeId(), document->getDocument()->getName());
-    if (!sel.empty()) {
-        document->openCommand("Placement");
-        for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
-            std::map<std::string,App::Property*> props;
-            (*it)->getPropertyMap(props);
-            // search for the placement property
-            std::map<std::string,App::Property*>::iterator jt;
-            jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
-            if (jt != props.end()) {
-                QString cmd;
-                if (incremental)
-                    cmd = QString::fromLatin1(
-                        "App.getDocument(\"%1\").%2.%3=%4.multiply(App.getDocument(\"%1\").%2.%3)")
-                        .arg(QLatin1String((*it)->getDocument()->getName()))
-                        .arg(QLatin1String((*it)->getNameInDocument()))
-                        .arg(QLatin1String(this->propertyName.c_str()))
-                        .arg(data);
-                else {
-                    cmd = QString::fromLatin1(
-                        "App.getDocument(\"%1\").%2.%3=%4")
-                        .arg(QLatin1String((*it)->getDocument()->getName()))
-                        .arg(QLatin1String((*it)->getNameInDocument()))
-                        .arg(QLatin1String(this->propertyName.c_str()))
-                        .arg(data);
-                }
-
-                Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
-            }
-        }
-
+    // When directly changing the property we now only have to commit the transaction,
+    // do a recompute and open a new transaction
+    if (changeProperty) {
         document->commitCommand();
         try {
             document->getDocument()->recompute();
         }
         catch (...) {
         }
+        document->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
     }
     else {
-        Base::Console().Warning("No object selected.\n");
+        std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
+            (App::DocumentObject::getClassTypeId(), document->getDocument()->getName());
+        if (!sel.empty()) {
+            document->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
+            for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
+                std::map<std::string,App::Property*> props;
+                (*it)->getPropertyMap(props);
+                // search for the placement property
+                std::map<std::string,App::Property*>::iterator jt;
+                jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
+                if (jt != props.end()) {
+                    QString cmd;
+                    if (incremental)
+                        cmd = QString::fromLatin1(
+                            "App.getDocument(\"%1\").%2.%3=%4.multiply(App.getDocument(\"%1\").%2.%3)")
+                            .arg(QLatin1String((*it)->getDocument()->getName()))
+                            .arg(QLatin1String((*it)->getNameInDocument()))
+                            .arg(QLatin1String(this->propertyName.c_str()))
+                            .arg(data);
+                    else {
+                        cmd = QString::fromLatin1(
+                            "App.getDocument(\"%1\").%2.%3=%4")
+                            .arg(QLatin1String((*it)->getDocument()->getName()))
+                            .arg(QLatin1String((*it)->getNameInDocument()))
+                            .arg(QLatin1String(this->propertyName.c_str()))
+                            .arg(data);
+                    }
+
+                    Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
+                }
+            }
+
+            document->commitCommand();
+            try {
+                document->getDocument()->recompute();
+            }
+            catch (...) {
+            }
+        }
+        else {
+            Base::Console().Warning("No object selected.\n");
+        }
     }
 }
 
@@ -296,6 +357,183 @@ void Placement::on_centerOfMass_toggled(bool on)
     }
 }
 
+void Placement::on_selectedVertex_clicked()
+{
+    cntOfMass.Set(0,0,0);
+    ui->centerOfMass->setChecked(false);
+
+    bool success=false;
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    std::vector<Base::Vector3d> picked;
+    //combine all pickedpoints into single vector
+    //even if points are from separate objects
+    Base::Vector3d firstSelected; //first selected will be central point when 3 points picked
+    for (std::vector<Gui::SelectionObject>::iterator it=selection.begin(); it!=selection.end(); ++it){
+        std::vector<Base::Vector3d> points = it->getPickedPoints();
+        if (it==selection.begin() && points.size()>0){
+            firstSelected=points[0];
+        }
+        picked.insert(picked.begin(),points.begin(),points.end());
+    }
+    //we have to clear selection and reselect original object(s)
+    //else later on the rotation is applied twice because there will
+    //be 2 (vertex) objects in the selection, and even if both are subobjects
+    //of the same object the rotation still gets applied twice
+    Gui::Selection().clearSelection();
+    //reselect original object that was selected when placement dlg first opened
+    for (auto it : selectionObjects)
+        Gui::Selection().addSelection(it);
+
+    if (picked.size() == 1) {
+        ui->xCnt->setValue(picked[0].x);
+        ui->yCnt->setValue(picked[0].y);
+        ui->zCnt->setValue(picked[0].z);
+        cntOfMass.x=picked[0].x;
+        cntOfMass.y=picked[0].y;
+        cntOfMass.z=picked[0].z;
+        success=true;
+    }
+    else if (picked.size() == 2) {
+        //average the coords to get center of rotation
+        ui->xCnt->setValue((picked[0].x+picked[1].x)/2.0);
+        ui->yCnt->setValue((picked[0].y+picked[1].y)/2.0);
+        ui->zCnt->setValue((picked[0].z+picked[1].z)/2.0);
+        cntOfMass.x=(picked[0].x+picked[1].x)/2.0;
+        cntOfMass.y=(picked[0].y+picked[1].y)/2.0;
+        cntOfMass.z=(picked[0].z+picked[1].z)/2.0;
+        //setup a customized axis since the user selected 2 points
+        //keep any existing angle, but setup our own axis
+        Base::Placement plm = getPlacement();
+        Base::Rotation rot = plm.getRotation();
+        Base::Vector3d tmp;
+        double angle;
+        rot.getRawValue(tmp, angle);
+        Base::Vector3d axis;
+        if (firstSelected==picked[0]){
+            axis = Base::Vector3d(picked[1]-picked[0]);
+        }
+        else {
+            axis = Base::Vector3d(picked[0]-picked[1]);
+        }
+        double length = axis.Length();
+        Base::Console().Message("Distance: %.8f\n",length);
+        if (QApplication::keyboardModifiers() == Qt::ShiftModifier){ //copy to clipboard on Shift+click
+            QLocale loc;
+            QApplication::clipboard()->setText(loc.toString(length,'g',8));
+        }
+        else {
+            Base::Console().Message("(Shift + click Selected points button to copy distance to clipboard)\n");
+        }
+        axis.Normalize();
+        rot.setValue(axis, angle);
+        plm.setRotation(rot);
+        setPlacementData(plm); //creates custom axis, if needed
+        ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
+        ui->stackedWidget->setCurrentIndex(0);
+        success=true;
+    }
+    else if (picked.size() == 3){
+        /* User selected 3 points, so we find the plane defined by those
+         * and use the normal vector that contains the first point picked
+         * as the axis of rotation.
+         */
+
+        Base::Vector3d a, b(firstSelected), c; //b is on central axis
+        if (picked[0] == firstSelected){
+            a = picked[1];
+            c = picked[2];
+        }
+        else if (picked[1]==firstSelected){
+            a = picked[0];
+            c = picked[2];
+        }
+        else if (picked[2] == firstSelected){
+            a = picked[0];
+            c = picked[1];
+        }
+
+        Base::Vector3d norm((a-b).Cross(c-b));
+        norm.Normalize();
+        ui->xCnt->setValue(b.x);
+        ui->yCnt->setValue(b.y);
+        ui->zCnt->setValue(b.z);
+        cntOfMass.x=b.x;
+        cntOfMass.y=b.y;
+        cntOfMass.z=b.z;
+        //setup a customized axis normal to the plane
+        //keep any existing angle, but setup our own axis
+        Base::Placement plm = getPlacement();
+        Base::Rotation rot = plm.getRotation();
+        Base::Vector3d tmp;
+        double angle;
+        rot.getRawValue(tmp, angle);
+        double length = (a-c).Length();
+        Base::Console().Message("Distance: %.8f\n",length);
+        Base::Vector3d v1(a-b);
+        Base::Vector3d v2(c-b);
+        v1.Normalize();
+        v2.Normalize();
+        double targetAngle = Base::toDegrees(v2.GetAngle(v1));
+        Base::Console().Message("Target angle: %.8f degrees, complementary: %.8f degrees\n",targetAngle, 90.0-targetAngle);
+        if (QApplication::keyboardModifiers() == Qt::ShiftModifier){ //copy to clipboard on Shift+click
+            QLocale loc;
+            QApplication::clipboard()->setText(loc.toString(targetAngle,'g',8));
+            Base::Console().Message("(Angle copied to clipboard, but you might need to use a negative (-) angle sometimes.)\n");
+        }
+        else {
+            Base::Console().Message("(Shift + click Selected points button to copy angle to clipboard)\n");
+        }
+        rot.setValue(norm, angle);
+        plm.setRotation(rot);
+        setPlacementData(plm); //creates custom axis, if needed
+        ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
+        ui->stackedWidget->setCurrentIndex(0);
+        success=true;
+    }
+
+    if (!success){
+        Base::Console().Warning("Placement selection error.  Select either 1 or 2 points.\n");
+        QMessageBox msgBox;
+        msgBox.setText(tr("Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, \
+face, or edge.  If on a face or edge the point used will be the point at the mouse position along \
+face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are \
+selected the midpoint between them will be the center of rotation and a new custom axis will be \
+created, if needed.  If 3 points are selected the first point becomes the center of rotation and \
+lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle \
+information is provided in the report view, which can be useful when aligning objects.  For your \
+convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard."));
+        msgBox.exec();
+        ui->xCnt->setValue(0);
+        ui->yCnt->setValue(0);
+        ui->zCnt->setValue(0);
+        return;
+    }
+}
+
+void Placement::on_applyAxial_clicked()
+{
+    signalMapper->blockSignals(true);
+    double axPos = ui->axialPos->value().getValue();
+    Base::Placement p = getPlacementData();
+    double angle;
+    Base::Vector3d axis;
+    p.getRotation().getValue(axis, angle);
+    Base::Vector3d curPos (p.getPosition());
+    Base::Vector3d newPos;
+    Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
+    if (km == Qt::ShiftModifier){ //go opposite direction on Shift+click
+        newPos = Base::Vector3d(curPos.x-(axis.x*axPos),curPos.y-(axis.y*axPos),curPos.z-(axis.z*axPos));
+    }
+    else {
+        newPos = Base::Vector3d(curPos.x+(axis.x*axPos),curPos.y+(axis.y*axPos),curPos.z+(axis.z*axPos));
+    }
+    ui->xPos->setValue(Base::Quantity(newPos.x,Base::Unit::Length));
+    ui->yPos->setValue(Base::Quantity(newPos.y,Base::Unit::Length));
+    ui->zPos->setValue(Base::Quantity(newPos.z,Base::Unit::Length));
+    signalMapper->blockSignals(false);
+    onPlacementChanged(0);
+}
+
 void Placement::on_applyIncrementalPlacement_toggled(bool on)
 {
     if (on) {
@@ -310,6 +548,13 @@ void Placement::on_applyIncrementalPlacement_toggled(bool on)
     }
 }
 
+void Placement::keyPressEvent(QKeyEvent* ke)
+{
+    // The placement dialog is embedded into a task panel
+    // which is a parent widget and will handle the event
+    ke->ignore();
+}
+
 void Placement::reject()
 {
     Base::Placement plm;
@@ -319,6 +564,13 @@ void Placement::reject()
     /*emit*/ placementChanged(data, true, false);
 
     revertTransformation();
+
+    // One of the quantity spin boxes still can emit a signal when it has the focus
+    // but its content is not fully updated.
+    // In order to override again the placement the signalMapper is blocked
+    // See related forum thread:
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44341#p378659
+    QSignalBlocker block(signalMapper);
     QDialog::reject();
 }
 
@@ -385,6 +637,21 @@ void Placement::on_resetButton_clicked()
     }
 
     onPlacementChanged(0);
+}
+
+void Placement::bindObject()
+{
+    if (!selectionObjects.empty()) {
+        App::DocumentObject* obj = selectionObjects.front().getObject();
+
+        ui->xPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.x")));
+        ui->yPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.y")));
+        ui->zPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.z")));
+
+        ui->yawAngle  ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Yaw")));
+        ui->pitchAngle->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Pitch")));
+        ui->rollAngle ->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Rotation.Roll")));
+    }
 }
 
 void Placement::directionActivated(int index)
@@ -592,13 +859,23 @@ TaskPlacement::~TaskPlacement()
     // automatically deleted in the sub-class
 }
 
+void TaskPlacement::bindObject()
+{
+    widget->bindObject();
+}
+
+void TaskPlacement::open()
+{
+    widget->open();
+}
+
 void TaskPlacement::setPropertyName(const QString& name)
 {
     widget->propertyName = (const char*)name.toLatin1();
 }
 
 QDialogButtonBox::StandardButtons TaskPlacement::getStandardButtons() const
-{ 
+{
     return QDialogButtonBox::Ok|
            QDialogButtonBox::Cancel|
            QDialogButtonBox::Apply;

@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -8,102 +6,49 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64px"
-   height="64px"
+   version="1.1"
    id="svg4594"
-   sodipodi:version="0.32"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Draft_Text.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   version="1.1">
+   height="64px"
+   width="64px">
   <defs
      id="defs4596">
     <linearGradient
        id="linearGradient3792">
       <stop
-         style="stop-color:#fce94f;stop-opacity:1"
+         id="stop3794"
          offset="0"
-         id="stop3794" />
+         style="stop-color:#fce94f;stop-opacity:1" />
       <stop
-         style="stop-color:#c4a000;stop-opacity:1"
+         id="stop3796"
          offset="1"
-         id="stop3796" />
+         style="stop-color:#c4a000;stop-opacity:1" />
     </linearGradient>
-    <inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 32 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="64 : 32 : 1"
-       inkscape:persp3d-origin="32 : 21.333333 : 1"
-       id="perspective4602" />
     <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3792"
-       id="linearGradient3806"
-       x1="4115.4229"
-       y1="1473.5258"
-       x2="4157.8677"
+       gradientUnits="userSpaceOnUse"
        y2="1734.2576"
-       gradientUnits="userSpaceOnUse" />
+       x2="4157.8677"
+       y1="1473.5258"
+       x1="4115.4229"
+       id="linearGradient3806"
+       xlink:href="#linearGradient3792" />
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="10.193662"
-     inkscape:cx="5.6740566"
-     inkscape:cy="31.594522"
-     inkscape:current-layer="g3491"
-     showgrid="true"
-     inkscape:document-units="px"
-     inkscape:grid-bbox="true"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:snap-global="true"
-     inkscape:window-maximized="1">
-    <inkscape:grid
-       type="xygrid"
-       id="grid2986"
-       empspacing="2"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true" />
-  </sodipodi:namedview>
   <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
+     id="layer1">
     <g
-       id="g3491"
-       inkscape:export-filename="/home/yorik/Documents/Lab/Draft/icons/text.png"
-       inkscape:export-xdpi="7.820137"
-       inkscape:export-ydpi="7.820137"
-       transform="matrix(0.1649204,0,0,0.1649204,-643.71716,-232.01446)">
+       transform="matrix(0.1649204,0,0,0.1649204,-643.71716,-232.01446)"
+       id="g3491">
       <path
-         id="text2714"
-         d="m 4151.8039,1655.4317 -109.1436,0 -33.475,40.7475 c -3.5157,5.2084 -2.3853,4.766 -2.9061,7.7608 0,6.0635 3.9238,9.9135 12.127,12.127 l 0,12.1271 -97.0165,0 0,-12.1271 c 5.4688,-1.0416 14.9354,-3.4593 18.1906,-6.0635 3.2552,-2.6042 6.0635,-6.0635 12.1271,-12.1271 l 139.4612,-200.0965 c 4.4269,-6.5102 5.282,-8.2206 6.0635,-12.1271 1.3019,-5.9893 0.9676,-9.5226 -6.0635,-12.127 l 0,-12.1271 97.0165,0 0,12.1271 c -12.1271,0 -17.1492,0.595 -18.1906,6.0635 -0.7815,3.7763 -0.6532,6.3037 0.9096,11.1211 l 60.3515,205.4688 c 2.6039,8.724 2.8332,10.5692 5.4377,13.8243 2.6039,3.1251 6.9184,5.0219 12.1271,6.0635 l 0,12.1271 -97.0165,0 0,-12.1271 c 8.9841,-1.4322 10.8248,-5.4864 12.1271,-12.127 0.5206,-2.7344 1.5622,-6.7885 0,-12.1271 l -12.1271,-36.3812 m 0,-36.3812 -24.2541,-97.0165 -72.7624,97.0165 97.0165,0"
          style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:url(#linearGradient3806);fill-opacity:1;stroke:#302b00;stroke-width:12.12706251000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Copperplate Gothic Bold;-inkscape-font-specification:'Copperplate Gothic Bold, Bold'"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="ccccccccscccccccccccccccccccccc" />
+         d="m 4151.8039,1655.4317 -109.1436,0 -33.475,40.7475 c -3.5157,5.2084 -2.3853,4.766 -2.9061,7.7608 0,6.0635 3.9238,9.9135 12.127,12.127 l 0,12.1271 -97.0165,0 0,-12.1271 c 5.4688,-1.0416 14.9354,-3.4593 18.1906,-6.0635 3.2552,-2.6042 6.0635,-6.0635 12.1271,-12.1271 l 139.4612,-200.0965 c 4.4269,-6.5102 5.282,-8.2206 6.0635,-12.1271 1.3019,-5.9893 0.9676,-9.5226 -6.0635,-12.127 l 0,-12.1271 97.0165,0 0,12.1271 c -12.1271,0 -17.1492,0.595 -18.1906,6.0635 -0.7815,3.7763 -0.6532,6.3037 0.9096,11.1211 l 60.3515,205.4688 c 2.6039,8.724 2.8332,10.5692 5.4377,13.8243 2.6039,3.1251 6.9184,5.0219 12.1271,6.0635 l 0,12.1271 -97.0165,0 0,-12.1271 c 8.9841,-1.4322 10.8248,-5.4864 12.1271,-12.127 0.5206,-2.7344 1.5622,-6.7885 0,-12.1271 l -12.1271,-36.3812 m 0,-36.3812 -24.2541,-97.0165 -72.7624,97.0165 97.0165,0"
+         id="text2714" />
       <path
-         id="text2714-1"
-         d="m 4159.5466,1643.3046 -122.0515,0 -36.1634,43.7572 c -8.9781,11.6058 -6.5743,17.6706 -7.5981,18.9453 0,5.6501 9.2106,8.5485 16.6543,10.6111 l 1.2403,-0.1378 -78.1114,-0.4134 -3.7208,2.894 c 4.9624,-0.9706 23.3368,-5.4284 26.2906,-7.855 2.9538,-2.4267 7.4313,-8.4063 12.2445,-15.4346 l 117.1771,-168.1251 c 4.017,-6.0664 15.8176,-22.4055 19.0073,-28.5262 3.3862,-5.5809 9.1465,-22.5163 2.7663,-24.9431 l -10.1978,-0.5513 85.1396,0 -13.0918,-0.6889 c -11.0041,0 -10.738,5.2398 -11.5452,9.233 -0.709,3.5189 0.6477,7.8032 2.0658,12.2922 l 55.5901,189.1168 c 2.3628,8.1291 2.4331,9.7107 3.8319,14.9489 3.6029,9.9401 1.3166,12.3967 6.0431,13.3673 l 17.6394,4.272 -84.8895,0 12.5405,-6.2013 c 4.9826,-8.914 5.1625,-6.4905 6.3443,-12.6783 0.4724,-2.548 -2.5789,-12.6647 -3.9965,-17.6393 l -12.9335,-35.4166 m 4.4613,-18.4109 -33.36,-122.5662 -89.8152,122.4284 122.0295,0.024"
          style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:none;stroke:#fce94f;stroke-width:12.1270628;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Copperplate Gothic Bold;-inkscape-font-specification:'Copperplate Gothic Bold, Bold'"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="ccccccccscccccccccccccccccccccc" />
+         d="m 4159.5466,1643.3046 -122.0515,0 -36.1634,43.7572 c -8.9781,11.6058 -6.5743,17.6706 -7.5981,18.9453 0,5.6501 9.2106,8.5485 16.6543,10.6111 l 1.2403,-0.1378 -78.1114,-0.4134 -3.7208,2.894 c 4.9624,-0.9706 23.3368,-5.4284 26.2906,-7.855 2.9538,-2.4267 7.4313,-8.4063 12.2445,-15.4346 l 117.1771,-168.1251 c 4.017,-6.0664 15.8176,-22.4055 19.0073,-28.5262 3.3862,-5.5809 9.1465,-22.5163 2.7663,-24.9431 l -10.1978,-0.5513 85.1396,0 -13.0918,-0.6889 c -11.0041,0 -10.738,5.2398 -11.5452,9.233 -0.709,3.5189 0.6477,7.8032 2.0658,12.2922 l 55.5901,189.1168 c 2.3628,8.1291 2.4331,9.7107 3.8319,14.9489 3.6029,9.9401 1.3166,12.3967 6.0431,13.3673 l 17.6394,4.272 -84.8895,0 12.5405,-6.2013 c 4.9826,-8.914 5.1625,-6.4905 6.3443,-12.6783 0.4724,-2.548 -2.5789,-12.6647 -3.9965,-17.6393 l -12.9335,-35.4166 m 4.4613,-18.4109 -33.36,-122.5662 -89.8152,122.4284 122.0295,0.024"
+         id="text2714-1" />
       <path
-         id="text2714-7"
-         d="m 4151.8039,1655.4317 -109.1436,0 -33.4751,40.7475 c -3.5156,5.2084 -2.3852,4.766 -2.9061,7.7608 0,6.0635 3.9239,9.9135 12.1271,12.127 l 0,12.1271 -97.0165,0 0,-12.1271 c 5.4688,-1.0416 14.9354,-3.4593 18.1906,-6.0635 3.2552,-2.6042 6.0635,-6.0635 12.1271,-12.1271 l 139.4611,-200.0965 c 4.4269,-6.5102 5.2821,-8.2206 6.0636,-12.1271 1.3019,-5.9893 0.9676,-9.5226 -6.0636,-12.127 l 0,-12.1271 97.0165,0 0,12.1271 c -12.127,0 -17.1492,0.595 -18.1906,6.0635 -0.7814,3.7763 -0.6531,6.3037 0.9097,11.1211 l 60.3514,205.4688 c 2.6039,8.724 2.8333,10.5692 5.4378,13.8243 2.6038,3.1251 6.9183,5.0219 12.1271,6.0635 l 0,12.1271 -97.0165,0 0,-12.1271 c 8.984,-1.4322 10.8247,-5.4864 12.127,-12.127 0.5207,-2.7344 1.5623,-6.7885 0,-12.1271 l -12.127,-36.3812 m 0,-36.3812 -24.2542,-97.0165 -72.7623,97.0165 97.0165,0"
          style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:none;stroke:#302b00;stroke-width:12.1270628;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Copperplate Gothic Bold;-inkscape-font-specification:'Copperplate Gothic Bold, Bold'"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="ccccccccscccccccccccccccccccccc" />
+         d="m 4151.8039,1655.4317 -109.1436,0 -33.4751,40.7475 c -3.5156,5.2084 -2.3852,4.766 -2.9061,7.7608 0,6.0635 3.9239,9.9135 12.1271,12.127 l 0,12.1271 -97.0165,0 0,-12.1271 c 5.4688,-1.0416 14.9354,-3.4593 18.1906,-6.0635 3.2552,-2.6042 6.0635,-6.0635 12.1271,-12.1271 l 139.4611,-200.0965 c 4.4269,-6.5102 5.2821,-8.2206 6.0636,-12.1271 1.3019,-5.9893 0.9676,-9.5226 -6.0636,-12.127 l 0,-12.1271 97.0165,0 0,12.1271 c -12.127,0 -17.1492,0.595 -18.1906,6.0635 -0.7814,3.7763 -0.6531,6.3037 0.9097,11.1211 l 60.3514,205.4688 c 2.6039,8.724 2.8333,10.5692 5.4378,13.8243 2.6038,3.1251 6.9183,5.0219 12.1271,6.0635 l 0,12.1271 -97.0165,0 0,-12.1271 c 8.984,-1.4322 10.8247,-5.4864 12.127,-12.127 0.5207,-2.7344 1.5623,-6.7885 0,-12.1271 l -12.127,-36.3812 m 0,-36.3812 -24.2542,-97.0165 -72.7623,97.0165 97.0165,0"
+         id="text2714-7" />
     </g>
   </g>
   <metadata
@@ -114,7 +59,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Draft_Text</dc:title>
+        <dc:title></dc:title>
         <cc:license
            rdf:resource="" />
         <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>

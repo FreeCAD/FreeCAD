@@ -1,0 +1,18 @@
+multmatrix([[1, 0, 0, -24], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]) {
+	union() {
+		cube(size = [15, 15, 15], center = true);
+		sphere($fn = 0, $fa = 12, $fs = 2, r = 10);
+	}
+}
+intersection() {
+	cube(size = [15, 15, 15], center = true);
+	sphere($fn = 0, $fa = 12, $fs = 2, r = 10);
+}
+multmatrix([[1, 0, 0, 24], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]) {
+	difference() {
+		cube(size = [15, 15, 15], center = true);
+		sphere($fn = 0, $fa = 12, $fs = 2, r = 10);
+	}
+}
+group();
+

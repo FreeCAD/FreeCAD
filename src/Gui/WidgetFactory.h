@@ -25,7 +25,6 @@
 #define GUI_WIDGETFACTORY_H
 
 #include <vector>
-#include <QUiLoader>
 
 #include <Base/Factory.h>
 #include <Base/PyObjectBase.h>
@@ -34,45 +33,16 @@
 #include "PropertyPage.h"
 #include <CXX/Extensions.hxx>
 
+QT_BEGIN_NAMESPACE
+class QDir;
+QT_END_NAMESPACE
+
 namespace Gui {
   namespace Dialog{
     class PreferencePage;
   }
 
-class GuiExport PythonWrapper
-{
-public:
-    PythonWrapper();
-    bool loadCoreModule();
-    bool loadGuiModule();
-    bool loadWidgetsModule();
-
-    bool toCString(const Py::Object&, std::string&);
-    QObject* toQObject(const Py::Object&);
-    Py::Object fromQWidget(QWidget*, const char* className=0);
-    const char* getWrapperName(QObject*) const;
-    /*!
-      Create a Python wrapper for the icon. The icon must be created on the heap
-      and the Python wrapper takes ownership of it.
-     */
-    Py::Object fromQIcon(const QIcon*);
-    static void createChildrenNameAttributes(PyObject* root, QObject* object);
-    static void setParent(PyObject* pyWdg, QObject* parent);
-};
-
-class PySideUicModule : public Py::ExtensionModule<PySideUicModule>
-{
-
-public:
-    PySideUicModule();
-    virtual ~PySideUicModule() {}
-
-private:
-    Py::Object loadUiType(const Py::Tuple& args);
-    Py::Object loadUi(const Py::Tuple& args);
-};
-
-/** 
+/**
  * The widget factory provides methods for the dynamic creation of widgets.
  * To create these widgets once they must be registered to the factory.
  * To register them use WidgetProducer or any subclasses; to register a
@@ -85,8 +55,8 @@ public:
     static WidgetFactoryInst& instance();
     static void destruct ();
 
-    QWidget* createWidget (const char* sName, QWidget* parent=0) const;
-    Gui::Dialog::PreferencePage* createPreferencePage (const char* sName, QWidget* parent=0) const;
+    QWidget* createWidget (const char* sName, QWidget* parent=nullptr) const;
+    Gui::Dialog::PreferencePage* createPreferencePage (const char* sName, QWidget* parent=nullptr) const;
     QWidget* createPrefWidget(const char* sName, QWidget* parent, const char* sPref);
 
 private:
@@ -104,60 +74,15 @@ inline WidgetFactoryInst& WidgetFactory()
 // --------------------------------------------------------------------
 
 /**
- * The UiLoader class provides the abitlity to use the widget factory 
- * framework of FreeCAD within the framework provided by Qt. This class
- * extends QUiLoader by the creation of FreeCAD specific widgets.
- * @author Werner Mayer
- */
-class UiLoader : public QUiLoader
-{
-public:
-    UiLoader(QObject* parent=0);
-    virtual ~UiLoader();
-
-    /**
-     * Creates a widget of the type \a className with the parent \a parent.
-     * For more details see the documentation to QWidgetFactory.
-     */
-    QWidget* createWidget(const QString & className, QWidget * parent=0, 
-                          const QString& name = QString());
-private:
-    QStringList cw;
-};
-
-// --------------------------------------------------------------------
-
-class UiLoaderPy : public Py::PythonExtension<UiLoaderPy> 
-{
-public:
-    static void init_type(void);    // announce properties and methods
-
-    UiLoaderPy();
-    ~UiLoaderPy();
-
-    Py::Object repr();
-    Py::Object createWidget(const Py::Tuple&);
-    Py::Object load(const Py::Tuple&);
-
-private:
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
-
-private:
-    UiLoader loader;
-};
-
-// --------------------------------------------------------------------
-
-/**
- * The WidgetProducer class is a value-based template class that provides 
- * the ability to create widgets dynamically. 
+ * The WidgetProducer class is a value-based template class that provides
+ * the ability to create widgets dynamically.
  * \author Werner Mayer
  */
 template <class CLASS>
 class WidgetProducer : public Base::AbstractProducer
 {
 public:
-    /** 
+    /**
      * Register a special type of widget to the WidgetFactoryInst.
      */
     WidgetProducer ()
@@ -168,27 +93,27 @@ public:
 
     virtual ~WidgetProducer (){}
 
-    /** 
+    /**
      * Creates an instance of the specified widget.
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 
 // --------------------------------------------------------------------
 
 /**
- * The PrefPageProducer class is a value-based template class that provides 
- * the ability to create preference pages dynamically. 
+ * The PrefPageProducer class is a value-based template class that provides
+ * the ability to create preference pages dynamically.
  * \author Werner Mayer
  */
 template <class CLASS>
 class PrefPageProducer : public Base::AbstractProducer
 {
 public:
-    /** 
+    /**
      * Register a special type of preference page to the WidgetFactoryInst.
      */
     PrefPageProducer (const char* group)
@@ -212,7 +137,7 @@ public:
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 
@@ -224,7 +149,7 @@ public:
 class GuiExport PrefPageUiProducer : public Base::AbstractProducer
 {
 public:
-    /** 
+    /**
      * Register a special type of preference page to the WidgetFactoryInst.
      */
     PrefPageUiProducer (const char* filename, const char* group);
@@ -246,7 +171,7 @@ private:
 class GuiExport PrefPagePyProducer : public Base::AbstractProducer
 {
 public:
-    /** 
+    /**
      * Register a special type of preference page to the WidgetFactoryInst.
      */
     PrefPagePyProducer (const Py::Object&, const char* group);
@@ -263,15 +188,15 @@ private:
 // --------------------------------------------------------------------
 
 /**
- * The CustomPageProducer class is a value-based template class that provides 
- * the ability to create custom pages dynamically. 
+ * The CustomPageProducer class is a value-based template class that provides
+ * the ability to create custom pages dynamically.
  * \author Werner Mayer
  */
 template <class CLASS>
 class CustomPageProducer : public Base::AbstractProducer
 {
 public:
-    /** 
+    /**
      * Register a special type of customize page to the WidgetFactoryInst.
      */
     CustomPageProducer ()
@@ -290,12 +215,12 @@ public:
 
     virtual ~CustomPageProducer (){}
 
-    /** 
+    /**
      * Creates an instance of the specified widget.
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 
@@ -356,10 +281,10 @@ private:
  * d = Gui.createDialog("test.ui")
  * \endcode
  *
- * you can create a PyResource object containing the widget. If a relative file name 
- * is given PyResource looks first in the current working directory and afterwards in 
+ * you can create a PyResource object containing the widget. If a relative file name
+ * is given PyResource looks first in the current working directory and afterwards in
  * the home path where FreeCAD resides.
- * 
+ *
  * If the appropriate .ui file cannot be found or creation fails an exception is thrown.
  * In case the widget in the .ui file does not inherit from QDialog it is embedded in a
  * \ref ContainerDialog object.
@@ -405,7 +330,7 @@ private:
 class PyResource : public Py::PythonExtension<PyResource>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     PyResource();
     ~PyResource();
@@ -458,7 +383,7 @@ class GuiExport PreferencePagePython : public PreferencePage
     Q_OBJECT
 
 public:
-    PreferencePagePython(const Py::Object& dlg, QWidget* parent = 0);
+    PreferencePagePython(const Py::Object& dlg, QWidget* parent = nullptr);
     virtual ~PreferencePagePython();
 
     void loadSettings();

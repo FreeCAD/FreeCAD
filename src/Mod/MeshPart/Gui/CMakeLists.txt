@@ -34,15 +34,8 @@ set(MeshPartGui_LIBS
     FreeCADGui
 )
 
-set(MeshPartGui_MOC_HDRS
-    CurveOnMesh.h
-    TaskCurveOnMesh.h
-    Tessellation.h
-)
-fc_wrap_cpp(MeshPartGui_MOC_SRCS ${MeshPartGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${MeshPartGui_MOC_SRCS})
-
 set(MeshPartGui_UIC_SRCS
+    CrossSections.ui
     TaskCurveOnMesh.ui
     Tessellation.ui
 )
@@ -60,6 +53,9 @@ SET(MeshPartGui_SRCS
     ${MeshPartGui_UIC_HDRS}
     AppMeshPartGui.cpp
     Command.cpp
+    CrossSections.ui
+    CrossSections.cpp
+    CrossSections.h
     CurveOnMesh.cpp
     CurveOnMesh.h
     Resources/MeshPart.qrc
@@ -75,25 +71,37 @@ SET(MeshPartGui_SRCS
     Workbench.h
 )
 
-add_library(MeshPartGui SHARED ${MeshPartGui_SRCS})
+set(MeshPartGui_Scripts
+    ../InitGui.py
+)
+
+set(FLATMESH_PY_SRCS
+    MeshFlatteningCommand.py
+)
+
+add_library(MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
 
+# external SMESH doesn't support C++17 yet
+if(FREECAD_USE_EXTERNAL_SMESH)
+    set_target_properties(MeshPartGui PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(MeshPartGui PROPERTIES CXX_STANDARD 14)
+endif()
 
-fc_target_copy_resource(MeshPartGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/MeshPart
-    ${CMAKE_BINARY_DIR}/Mod/MeshPart
-    InitGui.py)
 
 SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)
 SET_PYTHON_PREFIX_SUFFIX(MeshPartGui)
 
+fc_target_copy_resource_flat(MeshPartGui
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/MeshPart
+    ${MeshPartGui_Scripts}
+)
+
+fc_copy_sources(MeshPartGui
+   "${CMAKE_BINARY_DIR}/Mod/MeshPart"
+    ${FLATMESH_PY_SRCS}
+)
+
 INSTALL(TARGETS MeshPartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-
-
-SET(FLATMESH_PY_SRCS
-    MeshFlatteningCommand.py
-    )
-
-fc_copy_sources(MeshPartGui "${CMAKE_BINARY_DIR}/Mod/MeshPart" ${FLATMESH_PY_SRCS})
 INSTALL(FILES ${FLATMESH_PY_SRCS} DESTINATION Mod/MeshPart)

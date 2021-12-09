@@ -64,10 +64,7 @@
 #include <BRep_Tool.hxx>
 
 #include <BRepAdaptor_CompCurve.hxx>
-#include <BRepAdaptor_HCompCurve.hxx>
 #include <Approx_Curve3d.hxx>
-#include <BRepAdaptor_HCurve.hxx>
-#include <BRepAdaptor_HCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
@@ -75,12 +72,21 @@
 #include <Geom2d_BSplineCurve.hxx>
 #include <BRepLProp_CLProps.hxx>
 #include <Standard_Failure.hxx>
+#include <Standard_Version.hxx>
+#if OCC_VERSION_HEX < 0x070600
+#include <BRepAdaptor_HCurve.hxx>
+#endif
 
 #include "DrawingExport.h"
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
 
+#if OCC_VERSION_HEX >= 0x070600
+using BRepAdaptor_HCurve = BRepAdaptor_Curve;
+#endif
+
 using namespace Drawing;
+using namespace std;
 
 TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
 {
@@ -107,7 +113,7 @@ TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
         center.ChangeCoord().Divide(3);
         curv /= 3;
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         // if getting center of curvature fails, e.g.
         // for straight lines it raises LProp_NotDefined
         return TopoDS_Edge();
@@ -350,7 +356,7 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
         str << "\" />";
         out << str.str();
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         printGeneric(c, id, out);
     }
 }
@@ -417,15 +423,15 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         str << "\" />";
         out << str.str();
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         printGeneric(c, id, out);
     }
 }
 
-void SVGOutput::printGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+void SVGOutput::printGeneric(const BRepAdaptor_Curve& bac, int id, std::ostream& out)
 {
     TopLoc_Location location;
-    Handle(Poly_Polygon3D) polygon = BRep_Tool::Polygon3D(c.Edge(), location);
+    Handle(Poly_Polygon3D) polygon = BRep_Tool::Polygon3D(bac.Edge(), location);
     if (!polygon.IsNull()) {
         const TColgp_Array1OfPnt& nodes = polygon->Nodes();
         char c = 'M';
@@ -435,13 +441,13 @@ void SVGOutput::printGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& o
             c = 'L';
         }
         out << "\" />" << endl;
-    } else if (c.GetType() == GeomAbs_Line) {
+    } else if (bac.GetType() == GeomAbs_Line) {
         //BRep_Tool::Polygon3D assumes the edge has polygon representation - ie already been "tessellated"
         //this is not true for all edges, especially "floating edges"
-        double f = c.FirstParameter();
-        double l = c.LastParameter();
-        gp_Pnt s = c.Value(f);
-        gp_Pnt e = c.Value(l);
+        double f = bac.FirstParameter();
+        double l = bac.LastParameter();
+        gp_Pnt s = bac.Value(f);
+        gp_Pnt e = bac.Value(l);
         char c = 'M';
         out << "<path id= \"" /*<< ViewName*/ << id << "\" d=\" "; 
         out << c << " " << s.X() << " " << s.Y()<< " " ; 
@@ -723,7 +729,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         //str << "\" />";
         out << str.str();
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         printGeneric(c, id, out);
     }
 }

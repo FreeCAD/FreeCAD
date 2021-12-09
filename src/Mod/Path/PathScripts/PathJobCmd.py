@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -25,77 +23,25 @@
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
+import PathScripts.PathJobDlg as PathJobDlg
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import PathScripts.PathUtil as PathUtil
-import glob
 import json
 import os
 
 from PySide import QtCore, QtGui
 
-# Qt tanslation handling
+
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-class DlgJobCreate:
 
-    def __init__(self, parent=None):
-        self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
-        sel = FreeCADGui.Selection.getSelection()
-        if sel:
-            selected = sel[0].Label
-        else:
-            selected = None
-        index = 0
-        for base in PathJob.ObjectJob.baseCandidates():
-            if base.Label == selected:
-                index = self.dialog.cbModel.count()
-            self.dialog.cbModel.addItem(base.Label)
-        self.dialog.cbModel.setCurrentIndex(index)
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
-        templateFiles = []
-        for path in PathPreferences.searchPaths():
-            templateFiles.extend(self.templateFilesIn(path))
-
-        template = {}
-        for tFile in templateFiles:
-            name = os.path.split(os.path.splitext(tFile)[0])[1][4:]
-            if name in template:
-                basename = name
-                i = 0
-                while name in template:
-                    i = i + 1
-                    name = basename + " (%s)" % i
-            PathLog.track(name, tFile)
-            template[name] = tFile
-        selectTemplate = PathPreferences.defaultJobTemplate()
-        index = 0
-        self.dialog.cbTemplate.addItem('<none>', '')
-        for name in sorted(template.keys()):
-            if template[name] == selectTemplate:
-                index = self.dialog.cbTemplate.count()
-            self.dialog.cbTemplate.addItem(name, template[name])
-        self.dialog.cbTemplate.setCurrentIndex(index)
-
-    def templateFilesIn(self, path):
-        '''templateFilesIn(path) ... answer all file in the given directory which fit the job template naming convention.
-        PathJob template files are name job_*.json'''
-        PathLog.track(path)
-        return glob.glob(path + '/job_*.json')
-
-    def getModel(self):
-        '''answer the base model selected for the job'''
-        label = self.dialog.cbModel.currentText()
-        return filter(lambda obj: obj.Label == label, FreeCAD.ActiveDocument.Objects)[0]
-
-    def getTemplate(self):
-        '''answer the file name of the template to be assigned'''
-        return self.dialog.cbTemplate.itemData(self.dialog.cbTemplate.currentIndex())
-
-    def exec_(self):
-        return self.dialog.exec_()
 
 class CommandJobCreate:
     '''
@@ -104,8 +50,11 @@ class CommandJobCreate:
     and a template to be used for the initial creation.
     '''
 
+    def __init__(self):
+        pass
+
     def GetResources(self):
-        return {'Pixmap': 'Path-Job',
+        return {'Pixmap': 'Path_Job',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
                 'Accel': "P, J",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object")}
@@ -114,10 +63,14 @@ class CommandJobCreate:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        dialog = DlgJobCreate()
+        dialog = PathJobDlg.JobCreate()
+        dialog.setupTemplate()
+        dialog.setupModel()
         if dialog.exec_() == 1:
-            self.Execute(dialog.getModel(), dialog.getTemplate())
-            FreeCAD.ActiveDocument.recompute()
+            models = dialog.getModels()
+            if models:
+                self.Execute(models, dialog.getTemplate())
+                FreeCAD.ActiveDocument.recompute()
 
     @classmethod
     def Execute(cls, base, template):
@@ -126,90 +79,8 @@ class CommandJobCreate:
             template = "'%s'" % template
         else:
             template = 'None'
-        FreeCADGui.doCommand('PathScripts.PathJobGui.Create(App.ActiveDocument.%s, %s)' % (base.Name, template))
+        FreeCADGui.doCommand('PathScripts.PathJobGui.Create(%s, %s)' % ([o.Name for o in base], template))
 
-
-class DlgJobTemplateExport:
-    DataObject = QtCore.Qt.ItemDataRole.UserRole
-
-    def __init__(self, job, parent=None):
-        self.job = job
-        self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobTemplateExport.ui")
-
-        if job.PostProcessor:
-            ppHint = "%s %s %s" % (job.PostProcessor, job.PostProcessorArgs, job.PostProcessorOutputFile)
-            self.dialog.postProcessingHint.setText(ppHint)
-        else:
-            self.dialog.postProcessingGroup.setEnabled(False)
-            self.dialog.postProcessingGroup.setChecked(False)
-
-        if job.Stock and not PathJob.isResourceClone(job, 'Stock', 'Stock'):
-            stockType = PathStock.StockType.FromStock(job.Stock)
-            if stockType == PathStock.StockType.FromBase:
-                seHint = translate('PathJob', "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f") % (job.Stock.ExtXneg, job.Stock.ExtXpos, job.Stock.ExtYneg, job.Stock.ExtYpos, job.Stock.ExtZneg, job.Stock.ExtZpos)
-                self.dialog.stockPlacement.setChecked(False)
-            elif stockType == PathStock.StockType.CreateBox:
-                seHint = translate('PathJob', "Box: %.2f x %.2f x %.2f") % (job.Stock.Length, job.Stock.Width, job.Stock.Height)
-            elif stockType == PathStock.StockType.CreateCylinder:
-                seHint = translate('PathJob', "Cylinder: %.2f x %.2f") % (job.Stock.Radius, job.Stock.Height)
-            else:
-                seHint = '-'
-                PathLog.error(translate('PathJob', 'Unsupported stock type'))
-            self.dialog.stockExtentHint.setText(seHint)
-            spHint = "%s" % job.Stock.Placement
-            self.dialog.stockPlacementHint.setText(spHint)
-
-        rapidChanged = not job.SetupSheet.Proxy.hasDefaultToolRapids()
-        depthsChanged = not job.SetupSheet.Proxy.hasDefaultOperationDepths()
-        heightsChanged = not job.SetupSheet.Proxy.hasDefaultOperationHeights()
-        settingsChanged = rapidChanged or depthsChanged or heightsChanged
-        self.dialog.settingsGroup.setChecked(settingsChanged)
-        self.dialog.settingToolRapid.setChecked(rapidChanged)
-        self.dialog.settingOperationDepths.setChecked(depthsChanged)
-        self.dialog.settingOperationHeights.setChecked(heightsChanged)
-
-        for tc in sorted(job.ToolController, key=lambda o: o.Label):
-            item = QtGui.QListWidgetItem(tc.Label)
-            item.setData(self.DataObject, tc)
-            item.setCheckState(QtCore.Qt.CheckState.Checked)
-            self.dialog.toolsList.addItem(item)
-
-        self.dialog.toolsGroup.clicked.connect(self.checkUncheckTools)
-
-    def checkUncheckTools(self):
-        state = QtCore.Qt.CheckState.Checked if self.dialog.toolsGroup.isChecked() else QtCore.Qt.CheckState.Unchecked
-        for i in range(self.dialog.toolsList.count()):
-            self.dialog.toolsList.item(i).setCheckState(state)
-
-    def includePostProcessing(self):
-        return self.dialog.postProcessingGroup.isChecked()
-
-    def includeToolControllers(self):
-        tcs = []
-        for i in range(self.dialog.toolsList.count()):
-            item = self.dialog.toolsList.item(i)
-            if item.checkState() == QtCore.Qt.CheckState.Checked:
-                tcs.append(item.data(self.DataObject))
-        return tcs
-
-    def includeStock(self):
-        return self.dialog.stockGroup.isChecked()
-    def includeStockExtent(self):
-        return self.dialog.stockExtent.isChecked()
-    def includeStockPlacement(self):
-        return self.dialog.stockPlacement.isChecked()
-
-    def includeSettings(self):
-        return self.dialog.settingsGroup.isChecked()
-    def includeSettingToolRapid(self):
-        return self.dialog.settingToolRapid.isChecked()
-    def includeSettingOperationHeights(self):
-        return self.dialog.settingOperationHeights.isChecked()
-    def includeSettingOperationDepths(self):
-        return self.dialog.settingOperationDepths.isChecked()
-
-    def exec_(self):
-        return self.dialog.exec_()
 
 class CommandJobTemplateExport:
     '''
@@ -219,8 +90,11 @@ class CommandJobTemplateExport:
     on Job creation and be available for selection.
     '''
 
+    def __init__(self):
+        pass
+
     def GetResources(self):
-        return {'Pixmap': 'Path-ExportTemplate',
+        return {'Pixmap': 'Path_ExportTemplate',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Exports Path Job as a template to be used for other jobs")}
 
@@ -239,20 +113,27 @@ class CommandJobTemplateExport:
                 return job
         return None
 
-
     def IsActive(self):
         return self.GetJob() is not None
 
     def Activated(self):
         job = self.GetJob()
-        dialog = DlgJobTemplateExport(job)
+        dialog = PathJobDlg.JobTemplateExport(job)
         if dialog.exec_() == 1:
-            foo = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
-                    "Path - Job Template",
-                    PathPreferences.filePath(),
-                    "job_*.json")[0]
-            if foo: 
-                self.Execute(job, foo, dialog)
+            self.SaveDialog(job, dialog)
+
+    @classmethod
+    def SaveDialog(cls, job, dialog):
+        foo = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
+                "Path - Job Template",
+                PathPreferences.filePath(),
+                "job_*.json")[0]
+        if foo:
+            if not os.path.basename(foo).startswith('job_'):
+                foo = os.path.join(os.path.dirname(foo), 'job_' + os.path.basename(foo))
+            if not foo.endswith('.json'):
+                foo = foo + '.json'
+            cls.Execute(job, foo, dialog)
 
     @classmethod
     def Execute(cls, job, path, dialog=None):
@@ -265,7 +146,7 @@ class CommandJobTemplateExport:
             attrs.pop(PathJob.JobTemplate.PostProcessorOutputFile, None)
 
         # tool controller settings
-        toolControllers = dialog.includeToolControllers() if dialog else job.ToolController
+        toolControllers = dialog.includeToolControllers() if dialog else job.Tools.Group
         if toolControllers:
             tcAttrs = [tc.Proxy.templateAttrs(tc) for tc in toolControllers]
             attrs[PathJob.JobTemplate.ToolController] = tcAttrs
@@ -283,7 +164,12 @@ class CommandJobTemplateExport:
         # setup sheet
         setupSheetAttrs = None
         if dialog:
-            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(dialog.includeSettingToolRapid(), dialog.includeSettingOperationHeights(), dialog.includeSettingOperationDepths())
+            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(
+                dialog.includeSettingToolRapid(),
+                dialog.includeSettingCoolant(),
+                dialog.includeSettingOperationHeights(),
+                dialog.includeSettingOperationDepths(),
+                dialog.includeSettingOpsSettings())
         else:
             setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(True, True, True)
         if setupSheetAttrs:
@@ -291,13 +177,13 @@ class CommandJobTemplateExport:
 
         encoded = job.Proxy.setupSheet.encodeTemplateAttributes(attrs)
         # write template
-        with open(PathUtil.toUnicode(path), 'wb') as fp:
+        with open(PathUtil.toUnicode(path), 'w') as fp:
             json.dump(encoded, fp, sort_keys=True, indent=2)
+
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Job', CommandJobCreate())
     FreeCADGui.addCommand('Path_ExportTemplate', CommandJobTemplateExport())
 
-FreeCAD.Console.PrintLog("Loading PathJobGui... done\n")
-
+FreeCAD.Console.PrintLog("Loading PathJobCmd... done\n")

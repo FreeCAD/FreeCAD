@@ -53,11 +53,6 @@ add_library(Spreadsheet SHARED ${Spreadsheet_SRCS})
 target_link_libraries(Spreadsheet ${Spreadsheet_LIBS})
 
 
-fc_target_copy_resource(Spreadsheet 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Spreadsheet
-    ${CMAKE_BINARY_DIR}/Mod/Spreadsheet
-    Init.py TestSpreadsheet.py importXLSX.py)
-
 SET_BIN_DIR(Spreadsheet Spreadsheet /Mod/Spreadsheet)
 SET_PYTHON_PREFIX_SUFFIX(Spreadsheet)
 

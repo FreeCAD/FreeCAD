@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 wandererfan <WandererFan@gmail.com>                *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -43,7 +43,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderSpreadsheet, TechDrawGui::ViewProviderS
 
 ViewProviderSpreadsheet::ViewProviderSpreadsheet()
 {
-    sPixmap = "TechDraw_Tree_Spreadsheet";
+    sPixmap = "TechDraw_TreeSpreadsheet";
 }
 
 ViewProviderSpreadsheet::~ViewProviderSpreadsheet()

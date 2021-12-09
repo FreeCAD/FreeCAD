@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,23 +23,25 @@
 #ifndef DlgPartImportIgesImp_H
 #define DlgPartImportIgesImp_H
 
-#include "ui_DlgPartImportIges.h"
-
+#include <QDialog>
+#include <memory>
 
 namespace PartGui {
-
-class DlgPartImportIgesImp : public QDialog, public Ui_DlgPartImportIges
+class Ui_DlgPartImportIges;
+class DlgPartImportIgesImp : public QDialog
 { 
     Q_OBJECT
 
 public:
-  DlgPartImportIgesImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+  DlgPartImportIgesImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
   ~DlgPartImportIgesImp();
 
 public Q_SLOTS:
   virtual void OnApply();
   virtual void onChooseFileName();
 
+private:
+  std::unique_ptr<Ui_DlgPartImportIges> ui;
 };
 
 } // namespace PartGui

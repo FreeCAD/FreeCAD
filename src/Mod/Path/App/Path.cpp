@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,14 +24,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/regex.hpp>
 #endif
 
-#include <boost/regex.hpp>
-
-#include <Base/Writer.h>
+#include <App/Application.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Parameter.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
-#include <Base/Exception.h>
+#include <Base/Writer.h>
 
 // KDL stuff - at the moment, not used
 //#include "Mod/Robot/App/kdl_cp/path_line.hpp"
@@ -40,11 +42,12 @@
 //#include "Mod/Robot/App/kdl_cp/utilities/error.h"
 
 #include "Path.h"
+#include <Mod/Path/App/PathSegmentWalker.h>
 
 using namespace Path;
 using namespace Base;
 
-TYPESYSTEM_SOURCE(Path::Toolpath , Base::Persistence);
+TYPESYSTEM_SOURCE(Path::Toolpath , Base::Persistence)
 
 Toolpath::Toolpath()
 {
@@ -65,6 +68,9 @@ Toolpath::~Toolpath()
 
 Toolpath &Toolpath::operator=(const Toolpath& otherPath)
 {
+    if (this == &otherPath)
+        return *this;
+
     clear();
     vpcCommands.resize(otherPath.vpcCommands.size());
     int i = 0;
@@ -76,7 +82,7 @@ Toolpath &Toolpath::operator=(const Toolpath& otherPath)
     return *this;
 }
 
-void Toolpath::clear(void) 
+void Toolpath::clear(void)
 {
     for(std::vector<Command*>::iterator it = vpcCommands.begin();it!=vpcCommands.end();++it)
         delete ( *it );
@@ -99,7 +105,7 @@ void Toolpath::insertCommand(const Command &Cmd, int pos)
         Command *tmp = new Command(Cmd);
         vpcCommands.insert(vpcCommands.begin()+pos,tmp);
     } else {
-        throw Base::Exception("Index not in range");
+        throw Base::IndexError("Index not in range");
     }
     recalculate();
 }
@@ -112,7 +118,7 @@ void Toolpath::deleteCommand(int pos)
     } else if (pos <= static_cast<int>(vpcCommands.size())) {
         vpcCommands.erase (vpcCommands.begin()+pos);
     } else {
-        throw Base::Exception("Index not in range");
+        throw Base::IndexError("Index not in range");
     }
     recalculate();
 }
@@ -126,7 +132,7 @@ double Toolpath::getLength()
     Vector3d next;
     for(std::vector<Command*>::const_iterator it = vpcCommands.begin();it!=vpcCommands.end();++it) {
         std::string name = (*it)->Name;
-        next = (*it)->getPlacement().getPosition();
+        next = (*it)->getPlacement(last).getPosition();
         if ( (name == "G0") || (name == "G00") || (name == "G1") || (name == "G01") ) {
             // straight line
             l += (next - last).Length();
@@ -141,6 +147,143 @@ double Toolpath::getLength()
         }
     }
     return l;
+}
+
+double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double vRapid)
+{
+    // check the feedrates are set
+    if ((hFeed == 0) || (vFeed == 0)) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
+        if (!hGrp->GetBool("WarningsSuppressAllSpeeds", true)) {
+            Base::Console().Warning("Feed Rate Error: Check Tool Controllers have Feed Rates");
+        }
+        return 0;
+    }
+
+    if (hRapid == 0) {
+        hRapid = hFeed;
+    }
+
+    if (vRapid == 0) {
+        vRapid = vFeed;
+    }
+
+    if (vpcCommands.size() == 0) {
+        return 0;
+    }
+    double l = 0;
+    double time = 0;
+    bool verticalMove = false;
+    Vector3d last(0,0,0);
+    Vector3d next;
+    for (std::vector<Command*>::const_iterator it = vpcCommands.begin();it!=vpcCommands.end();++it) {
+        std::string name = (*it)->Name;
+        float feedrate = (*it)->getParam("F");
+
+        l = 0;
+        verticalMove = false;
+        feedrate = hFeed;
+        next = (*it)->getPlacement(last).getPosition();
+
+        if (last.z != next.z){
+            verticalMove = true;
+            feedrate = vFeed;
+        }
+
+        if ((name == "G0") || (name == "G00")){
+            // Rapid Move
+            l += (next - last).Length();
+            feedrate = hRapid;
+            if(verticalMove){
+                feedrate = vRapid;
+            }
+        }else if ((name == "G1") || (name == "G01")) {
+            // Feed Move
+            l += (next - last).Length();
+        }else if ((name == "G2") || (name == "G02") || (name == "G3") || (name == "G03") ) {
+            // Arc Move
+            Vector3d center = (*it)->getCenter();
+            double radius = (last - center).Length();
+            double angle = (next - center).GetAngle(last - center);
+            l += angle * radius;
+        }
+
+        time += l / feedrate;
+        last = next;
+    }
+    return time;
+}
+
+class BoundBoxSegmentVisitor : public PathSegmentVisitor
+{
+public:
+    BoundBoxSegmentVisitor()
+    { }
+
+    virtual void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts)
+    {
+      (void)id;
+      processPt(last);
+      processPts(pts);
+      processPt(next);
+    }
+    virtual void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts)
+    {
+      (void)id;
+      processPt(last);
+      processPts(pts);
+      processPt(next);
+    }
+    virtual void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center)
+    {
+      (void)id;
+      (void)center;
+      processPt(last);
+      processPts(pts);
+      processPt(next);
+    }
+    virtual void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
+                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q)
+    {
+      (void)id;
+      (void)q; // always within the bounds of p
+      processPt(last);
+      processPts(pts);
+      processPts(p);
+      processPt(next);
+    }
+    virtual void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next)
+    {
+      (void)id;
+      processPt(last);
+      processPt(next);
+    }
+
+    Base::BoundBox3d bb;
+
+private:
+    void processPts(const std::deque<Base::Vector3d> &pts) {
+        for (std::deque<Base::Vector3d>::const_iterator it=pts.begin(); pts.end() != it; ++it) {
+            processPt(*it);
+        }
+    }
+    void processPt(const Base::Vector3d &pt) {
+        bb.MaxX = std::max(bb.MaxX, pt.x);
+        bb.MinX = std::min(bb.MinX, pt.x);
+        bb.MaxY = std::max(bb.MaxY, pt.y);
+        bb.MinY = std::min(bb.MinY, pt.y);
+        bb.MaxZ = std::max(bb.MaxZ, pt.z);
+        bb.MinZ = std::min(bb.MinZ, pt.z);
+    }
+};
+
+Base::BoundBox3d Toolpath::getBoundBox() const
+{
+    BoundBoxSegmentVisitor visitor;
+    PathSegmentWalker walker(*this);
+    walker.walk(visitor, Vector3d(0, 0, 0));
+    
+    return visitor.bb;
 }
 
 static void bulkAddCommand(const std::string &gcodestr, std::vector<Command*> &commands, bool &inches)
@@ -164,12 +307,12 @@ static void bulkAddCommand(const std::string &gcodestr, std::vector<Command*> &c
 void Toolpath::setFromGCode(const std::string instr)
 {
     clear();
-    
+
     // remove comments
     //boost::regex e("\\(.*?\\)");
     //std::string str = boost::regex_replace(instr, e, "");
     std::string str(instr);
-    
+
     // split input string by () or G or M commands
     std::string mode = "command";
     std::size_t found = str.find_first_of("(gGmM");
@@ -186,7 +329,7 @@ void Toolpath::setFromGCode(const std::string instr)
             }
             mode = "comment";
             last = found;
-            found = str.find_first_of(")", found+1);
+            found = str.find_first_of(')', found+1);
         } else if (str[found] == ')') {
             // end of comment
             std::string gcodestr = str.substr(last, found-last+1);
@@ -222,23 +365,23 @@ std::string Toolpath::toGCode(void) const
         result += "\n";
     }
     return result;
-}    
+}
 
 void Toolpath::recalculate(void) // recalculates the path cache
 {
-    
+
     if(vpcCommands.size()==0)
         return;
-        
+
     // TODO recalculate the KDL stuff. At the moment, this is unused.
 
 #if 0
     // delete the old and create a new one
-    if(pcPath) 
+    if(pcPath)
         delete (pcPath);
-        
+
     pcPath = new KDL::Path_Composite();
-    
+
     KDL::Path *tempPath;
     KDL::Frame Last;
 
@@ -282,7 +425,7 @@ void Toolpath::recalculate(void) // recalculates the path cache
             }
         }
     } catch (KDL::Error &e) {
-        throw Base::Exception(e.Description());
+        throw Base::RuntimeError(e.Description());
     }
 #endif
 }
@@ -338,7 +481,7 @@ void Toolpath::Restore(XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -347,7 +490,7 @@ void Toolpath::RestoreDocFile(Base::Reader &reader)
 {
     std::string gcode;
     std::string line;
-    while (reader >> line) { 
+    while (reader >> line) {
         gcode += line;
         gcode += " ";
     }
@@ -358,4 +501,4 @@ void Toolpath::RestoreDocFile(Base::Reader &reader)
 
 
 
- 
+

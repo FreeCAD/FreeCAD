@@ -30,7 +30,6 @@
 #include <Base/Parameter.h>
 #include <App/PropertyLinks.h>
 #include "ViewProviderFemPostFunction.h"
-#include <boost/signals.hpp>
 
 class QComboBox;
 class Ui_TaskPostDisplay;
@@ -139,15 +138,15 @@ public:
     ~TaskPostBox();
 
     virtual void applyPythonCode() = 0;
-    virtual bool isGuiTaskOnly() {return false;}; //return true if only gui properties are manipulated
+    virtual bool isGuiTaskOnly() {return false;} //return true if only gui properties are manipulated
 
 protected:
-    App::DocumentObject*                getObject() {return m_object;};
+    App::DocumentObject*                getObject() {return m_object;}
     template<typename T>
-    T* getTypedObject() {return static_cast<T*>(m_object);};
-    Gui::ViewProviderDocumentObject*    getView() {return m_view;};
+    T* getTypedObject() {return static_cast<T*>(m_object);}
+    Gui::ViewProviderDocumentObject*    getView() {return m_view;}
     template<typename T>
-    T* getTypedView() {return static_cast<T*>(m_view);};
+    T* getTypedView() {return static_cast<T*>(m_view);}
 
     bool autoApply();
     void recompute();
@@ -203,7 +202,7 @@ public:
     ~TaskPostDisplay();
 
     virtual void applyPythonCode();
-    virtual bool isGuiTaskOnly() {return true;};
+    virtual bool isGuiTaskOnly() {return true;}
 
 private Q_SLOTS:
     void on_Representation_activated(int i);

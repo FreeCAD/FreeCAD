@@ -33,13 +33,13 @@ class PythonConsole;
 
 /**
  * Python class for redirection of stdout to FreeCAD's Python
- * console window. This allows to show all Python messages in  
+ * console window. This allows to show all Python messages in
  * the same window where the commands are performed.
  * @see PythonStderr
  * @see PythonConsole
  * @author Werner Mayer
  */
-class PythonStdout : public Py::PythonExtension<PythonStdout> 
+class PythonStdout : public Py::PythonExtension<PythonStdout>
 {
 private:
     PythonConsole* pyConsole;
@@ -59,13 +59,13 @@ public:
 
 /**
  * Python class for redirection of stderr to FreeCAD's Python
- * console window. This allows to show all Python messages in 
+ * console window. This allows to show all Python messages in
  * the same window where the commands are performed.
  * @see PythonStdout
  * @see PythonConsole
  * @author Werner Mayer
  */
-class PythonStderr : public Py::PythonExtension<PythonStderr> 
+class PythonStderr : public Py::PythonExtension<PythonStderr>
 {
 private:
     PythonConsole* pyConsole;
@@ -108,13 +108,13 @@ public:
 
 /**
  * Python class for redirection of stderr to FreeCAD's output
- * console window. This allows to report all Python errors to 
+ * console window. This allows to report all Python errors to
  * the output window which simplifies error tracking.
  * @see PythonStdout
  * @see PythonStderr
  * @author Werner Mayer
  */
-class OutputStderr : public Py::PythonExtension<OutputStderr> 
+class OutputStderr : public Py::PythonExtension<OutputStderr>
 {
 public:
     static void init_type(void);    // announce properties and methods
@@ -133,7 +133,7 @@ public:
  * Python class for redirection of stdin to an input dialog of Qt.
  * @author Werner Mayer
  */
-class PythonStdin : public Py::PythonExtension<PythonStdin> 
+class PythonStdin : public Py::PythonExtension<PythonStdin>
 {
 private:
     PythonConsole* pyConsole;

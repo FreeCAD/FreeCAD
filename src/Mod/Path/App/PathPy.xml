@@ -40,6 +40,12 @@ commands (optional) is a list of Path commands</UserDocu>
             </Documentation>
             <Parameter Name="Center" Type="Object"/>
         </Attribute>
+        <Attribute Name="BoundBox" ReadOnly="true">
+            <Documentation>
+                <UserDocu>the extent of this path</UserDocu>
+            </Documentation>
+            <Parameter Name="BoundBox" Type="Object"/>
+        </Attribute>
         <Methode Name="addCommands">
             <Documentation>
                 <UserDocu>adds a command or a list of commands at the end of the path</UserDocu>
@@ -70,6 +76,11 @@ deletes the command found at the given position or from the end of the path</Use
         <Methode Name="copy" Const="true">
             <Documentation>
                 <UserDocu>returns a copy of this path</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getCycleTime" Const="true">
+            <Documentation>
+                <UserDocu>return the cycle time estimation for this path in s</UserDocu>
             </Documentation>
         </Methode>
         <!--<ClassDeclarations>

@@ -237,7 +237,7 @@ private:
 
 
 
-}; // namespace KDL
+} // namespace KDL
 
 
 

@@ -63,7 +63,7 @@ protected:
     bool dimReferencesSelection(const TechDraw::DrawViewDimension* dim) const;
 
 private:
-    Ui_TaskLinkDim * ui;
+    std::unique_ptr<Ui_TaskLinkDim> ui;
     const std::vector<App::DocumentObject*> m_parts;
     const std::vector<std::string> m_subs;
     TechDraw::DrawPage* m_page;

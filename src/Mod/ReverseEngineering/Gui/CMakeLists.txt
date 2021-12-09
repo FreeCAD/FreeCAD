@@ -19,7 +19,7 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(ReenGui_LIBS
     ReverseEngineering
-    FreeCADGui
+    MeshGui
 )
 
 if(BUILD_QT5)
@@ -28,16 +28,11 @@ else()
     qt4_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
 endif()
 
-set(ReenGui_MOC_HDRS
-    FitBSplineSurface.h
-    Poisson.h
-)
-fc_wrap_cpp(ReenGui_MOC_SRCS ${ReenGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${ReenGui_MOC_SRCS})
-
 set(Dialogs_UIC_SRCS
     FitBSplineSurface.ui
     Poisson.ui
+    Segmentation.ui
+    SegmentationManual.ui
 )
 
 if(BUILD_QT5)
@@ -53,6 +48,10 @@ SET(Dialogs_SRCS
     FitBSplineSurface.h
     Poisson.cpp
     Poisson.h
+    Segmentation.cpp
+    Segmentation.h
+    SegmentationManual.cpp
+    SegmentationManual.h
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
@@ -68,24 +67,18 @@ SET(ReenGui_SRCS
     Workbench.h
 )
 
-add_library(ReverseEngineeringGui SHARED ${ReenGui_SRCS})
-target_link_libraries(ReverseEngineeringGui ${ReenGui_LIBS})
-
-
-fc_target_copy_resource(ReverseEngineeringGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/ReverseEngineering
-    ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering
-    InitGui.py)
-
-SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
-SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)
-
-install(TARGETS ReverseEngineeringGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(ReverseEngineeringGuiIcon_SVG
     Resources/icons/ReverseEngineeringWorkbench.svg
 )
 
+add_library(ReverseEngineeringGui SHARED ${ReenGui_SRCS} ${ReverseEngineeringGuiIcon_SVG})
+target_link_libraries(ReverseEngineeringGui ${ReenGui_LIBS})
+
+
+SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
+SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)
+
 fc_copy_sources(ReverseEngineeringGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/ReverseEngineering" ${ReverseEngineeringGuiIcon_SVG})
 
-INSTALL(FILES ${ReverseEngineeringGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/ReverseEngineering/Resources/icons")
+install(TARGETS ReverseEngineeringGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(FILES ${ReverseEngineeringGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/ReverseEngineering/Resources/icons")

@@ -77,13 +77,19 @@ public:
     QPixmap pixmap(const char* name) const;
     /** Retrieves a pixmap by name and size created by an
      * scalable vector graphics (SVG).
+     *
+     * @param colorMapping - a dictionary of substitute colors.
+     * Can be used to customize icon color scheme, e.g. crosshair color
      */
-    QPixmap pixmapFromSvg(const char* name, const QSize& size) const;
+    QPixmap pixmapFromSvg(const char* name, const QSizeF& size,
+                          const std::map<unsigned long, unsigned long>& colorMapping = std::map<unsigned long, unsigned long>()) const;
     /** This method is provided for convenience and does the same
      * as the method above except that it creates the pixmap from
      * a byte array.
+     * @param colorMapping - see above.
      */
-    QPixmap pixmapFromSvg(const QByteArray& contents, const QSize& size) const;
+    QPixmap pixmapFromSvg(const QByteArray& contents, const QSizeF& size,
+                          const std::map<unsigned long, unsigned long>& colorMapping = std::map<unsigned long, unsigned long>()) const;
     /** Returns the names of all registered pixmaps.
     * To get the appropriate pixmaps call pixmap() for each name.
     */
@@ -91,15 +97,15 @@ public:
     /** Resizes the area of a pixmap
      * If the new size is greater than the old one the pixmap
      * will be placed in the center. The border area will be made
-     * depending on \a bgmode transparent or opaque. 
+     * depending on \a bgmode transparent or opaque.
      */
     QPixmap resize(int w, int h, const QPixmap& p, Qt::BGMode bgmode) const;
     /** Creates an opaque or transparent area in a pixmap
      * If the background mode is opaque then this method can
-     * be used for drawing a smaller pixmap into pixmap \a p. 
+     * be used for drawing a smaller pixmap into pixmap \a p.
      * Note: To draw a smaller pixmap into another one the
-     * area in the resulting pixmap for the small pixmapmust 
-     * be opaque in every pixel, otherwise the drawing may fail. 
+     * area in the resulting pixmap for the small pixmapmust
+     * be opaque in every pixel, otherwise the drawing may fail.
      *
      * If the background mode is transparent then this method can
      * be used for resizing the pixmap \a p and make the new space
@@ -107,17 +113,17 @@ public:
      */
     QPixmap fillRect(int x, int y, int w, int h, const QPixmap& p, Qt::BGMode) const;
     /** Merges the two pixmaps  \a p1 and \a p2 to one pixmap in
-     * vertical order if \a vertical is true, in horizontal order 
+     * vertical order if \a vertical is true, in horizontal order
      * otherwise. The method resizes the resulting pixmap.
      */
     QPixmap merge(const QPixmap& p1, const QPixmap& p2, bool vertical) const;
     /** Merges the two pixmaps  \a p1 and \a p2 to one pixmap.
-     * The position of the smaller pimxap \a p2 is drawn into the given
+     * The position of the smaller pixmap \a p2 is drawn into the given
      * position \a pos of the bigger pixmap \a p1. This method does not
      * resize the resulting pixmap.
      */
     QPixmap merge(const QPixmap& p1, const QPixmap& p2, Position pos = BitmapFactoryInst::BottomLeft) const;
-    /** Creates a disabled pixmap of the given pixmap \a p by changing the brightness 
+    /** Creates a disabled pixmap of the given pixmap \a p by changing the brightness
      * of all opaque pixels to a higher value.
      */
     QPixmap disabled(const QPixmap& p) const;
@@ -127,6 +133,9 @@ public:
     /** Converts a SoSFImage into a QImage.
      */
     void convert(const SoSFImage& img, QImage& out) const;
+
+    /// Helper method to merge a pixmap into one corner of a QIcon
+    static QIcon mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position);
 
 private:
     bool loadPixmap(const QString& path, QPixmap&) const;

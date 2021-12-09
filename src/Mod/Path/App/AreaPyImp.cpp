@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Base/VectorPy.h>
 
@@ -45,6 +46,9 @@ static PyObject * areaAbort(PyObject *, PyObject *args, PyObject *kwd) {
 static PyObject * areaSetParams(PyObject *, PyObject *args, PyObject *kwd) {
 
     static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_STATIC_CONF),NULL};
+
+    if(args && PySequence_Size(args)>0) 
+        PyErr_SetString(PyExc_ValueError,"Non-keyword argument is not supported");
 
     //Declare variables defined in the NAME field of the CONF parameter list
     PARAM_PY_DECLARE(PARAM_FNAME,AREA_PARAMS_STATIC_CONF);
@@ -92,13 +96,9 @@ static PyObject * areaGetParamsDesc(PyObject *, PyObject *args, PyObject *kwd) {
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "|O",kwlist,&pcObj))
         return 0;
 
-#if PY_MAJOR_VERSION < 3
-    if(PyObject_IsTrue(pcObj)) 
-        return PyString_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_STATIC_CONF));
-#else
     if(PyObject_IsTrue(pcObj)) 
         return PyUnicode_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_STATIC_CONF));
-#endif
+
     PyObject *dict = PyDict_New();
     PARAM_PY_DICT_SET_DOC(dict,NAME,AREA_PARAMS_STATIC_CONF)
     return dict;
@@ -148,7 +148,7 @@ static const PyMethodDef areaOverrides[] = {
         "of this Area is used if section mode is 'Workplane'.",
     },
     {
-        "setDefaultParams",(PyCFunction)areaSetParams, METH_VARARGS|METH_KEYWORDS|METH_STATIC,
+        "setDefaultParams",reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>(areaSetParams)), METH_VARARGS|METH_KEYWORDS|METH_STATIC,
         "setDefaultParams(key=value...):\n"
         "Static method to set the default parameters of all following Path.Area, plus the following\n"
         "additional parameters.\n"
@@ -158,13 +158,13 @@ static const PyMethodDef areaOverrides[] = {
         "getDefaultParams(): Static method to return the current default parameters."
     },
     {
-        "abort",(PyCFunction)areaAbort, METH_VARARGS|METH_KEYWORDS|METH_STATIC,
+        "abort",reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>(areaAbort)), METH_VARARGS|METH_KEYWORDS|METH_STATIC,
         "abort(aborting=True): Static method to abort any ongoing operation\n"
         "\nTo ensure no stray abortion is left in the previous operation, it is advised to manually clear\n"
         "the aborting flag by calling abort(False) before starting a new operation.",
     },
     {
-        "getParamsDesc",(PyCFunction)areaGetParamsDesc, METH_VARARGS|METH_KEYWORDS|METH_STATIC,
+        "getParamsDesc",reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>(areaGetParamsDesc)), METH_VARARGS|METH_KEYWORDS|METH_STATIC,
         "getParamsDesc(as_string=False): Returns a list of supported parameters and their descriptions.\n"
         "\n* as_string: if False, then return a dictionary of documents of all supported parameters."
     },
@@ -203,10 +203,16 @@ std::string AreaPy::representation(void) const
 
 PyObject *AreaPy::PyMake(struct _typeobject *, PyObject *args, PyObject *kwd)  // Python wrapper
 {
-    std::unique_ptr<AreaPy> ret(new AreaPy(new Area));
-    if(!ret->setParams(args,kwd))
-        return 0;
-    return ret.release();
+    AreaPy* ret = new AreaPy(new Area);
+    if(!ret->setParams(args,kwd)) {
+        Py_DecRef(ret);
+        return nullptr;
+    }
+
+    // If setParams() was successful it increments the ref counter.
+    // So, it must be decremented again.
+    Py_DecRef(ret);
+    return ret;
 }
 
 // constructor method
@@ -234,9 +240,11 @@ PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds,"|hO",kwlist,&index,&pcObj))
         return 0;
 
-    if(PyObject_IsTrue(pcObj))
-        getAreaPtr()->clean();
-    return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->getShape(index)));
+    PY_TRY {
+        if(PyObject_IsTrue(pcObj))
+            getAreaPtr()->clean();
+        return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->getShape(index)));
+    } PY_CATCH_OCC
 }
 
 PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
@@ -254,28 +262,30 @@ PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
                 kwlist,&pcObj,PARAM_REF(PARAM_FARG,AREA_PARAMS_OPCODE)))
         return 0;
 
-    if (PyObject_TypeCheck(pcObj, &(Part::TopoShapePy::Type))) {
-        getAreaPtr()->add(GET_TOPOSHAPE(pcObj),op);
-        Py_INCREF(this);
-        return this;
-    } else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
-             PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
-        Py::Sequence shapeSeq(pcObj);
-        for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
-            PyObject* item = (*it).ptr();
-            if(!PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-                PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
-                return 0;
+    PY_TRY {
+        if (PyObject_TypeCheck(pcObj, &(Part::TopoShapePy::Type))) {
+            getAreaPtr()->add(GET_TOPOSHAPE(pcObj),op);
+            Py_INCREF(this);
+            return this;
+        } else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+                PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+            Py::Sequence shapeSeq(pcObj);
+            for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+                PyObject* item = (*it).ptr();
+                if(!PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                    PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
+                    return 0;
+                }
             }
+            for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it){
+                PyObject* item = (*it).ptr();
+                getAreaPtr()->add(GET_TOPOSHAPE(item),
+                        PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OPCODE));
+            }
+            Py_INCREF(this);
+            return this;
         }
-        for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it){
-            PyObject* item = (*it).ptr();
-            getAreaPtr()->add(GET_TOPOSHAPE(item),
-                    PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OPCODE));
-        }
-        Py_INCREF(this);
-        return this;
-    }
+    } PY_CATCH_OCC
 
     PyErr_SetString(PyExc_TypeError, "shape must be 'TopoShape' or list of 'TopoShape'");
     return 0;
@@ -297,10 +307,12 @@ PyObject* AreaPy::makeOffset(PyObject *args, PyObject *keywds)
                 &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_OFFSET)))
         return 0;
 
-    //Expand the variable as function call arguments
-    TopoDS_Shape resultShape = getAreaPtr()->makeOffset(index,
-                        PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
-    return Py::new_reference_to(Part::shape2pyshape(resultShape));
+    PY_TRY {
+        //Expand the variable as function call arguments
+        TopoDS_Shape resultShape = getAreaPtr()->makeOffset(index,
+                            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
+        return Py::new_reference_to(Part::shape2pyshape(resultShape));
+    } PY_CATCH_OCC
 }
 
 PyObject* AreaPy::makePocket(PyObject *args, PyObject *keywds)
@@ -317,9 +329,11 @@ PyObject* AreaPy::makePocket(PyObject *args, PyObject *keywds)
                 &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_POCKET)))
         return 0;
 
-    TopoDS_Shape resultShape = getAreaPtr()->makePocket(index,
-                        PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_POCKET));
-    return Py::new_reference_to(Part::shape2pyshape(resultShape));
+    PY_TRY {
+        TopoDS_Shape resultShape = getAreaPtr()->makePocket(index,
+                            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_POCKET));
+        return Py::new_reference_to(Part::shape2pyshape(resultShape));
+    } PY_CATCH_OCC
 }
 
 PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
@@ -337,36 +351,38 @@ PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
                 &heights, &(Part::TopoShapePy::Type), &plane))
         return 0;
 
-    std::vector<double> h;
-    if(heights) {
-        if (PyObject_TypeCheck(heights, &(PyFloat_Type)))
-            h.push_back(PyFloat_AsDouble(heights));
-        else if (PyObject_TypeCheck(heights, &(PyList_Type)) ||
-            PyObject_TypeCheck(heights, &(PyTuple_Type))) {
-            Py::Sequence shapeSeq(heights);
-            h.reserve(shapeSeq.size());
-            for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
-                PyObject* item = (*it).ptr();
-                if(!PyObject_TypeCheck(item, &(PyFloat_Type))) {
-                    PyErr_SetString(PyExc_TypeError, "heights must only contain float type");
-                    return 0;
+    PY_TRY {
+        std::vector<double> h;
+        if(heights) {
+            if (PyObject_TypeCheck(heights, &(PyFloat_Type)))
+                h.push_back(PyFloat_AsDouble(heights));
+            else if (PyObject_TypeCheck(heights, &(PyList_Type)) ||
+                PyObject_TypeCheck(heights, &(PyTuple_Type))) {
+                Py::Sequence shapeSeq(heights);
+                h.reserve(shapeSeq.size());
+                for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+                    PyObject* item = (*it).ptr();
+                    if(!PyObject_TypeCheck(item, &(PyFloat_Type))) {
+                        PyErr_SetString(PyExc_TypeError, "heights must only contain float type");
+                        return 0;
+                    }
+                    h.push_back(PyFloat_AsDouble(item));
                 }
-                h.push_back(PyFloat_AsDouble(item));
+            }else{
+                PyErr_SetString(PyExc_TypeError, "heights must be of type float or list/tuple of float");
+                return 0;
             }
-        }else{
-            PyErr_SetString(PyExc_TypeError, "heights must be of type float or list/tuple of float");
-            return 0;
         }
-    }
 
-    std::vector<std::shared_ptr<Area> > sections = getAreaPtr()->makeSections(
-                        PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA),
-                        h,plane?GET_TOPOSHAPE(plane):TopoDS_Shape());
+        std::vector<std::shared_ptr<Area> > sections = getAreaPtr()->makeSections(
+                            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA),
+                            h,plane?GET_TOPOSHAPE(plane):TopoDS_Shape());
 
-    Py::List ret;
-    for(auto &area : sections) 
-        ret.append(Py::asObject(new AreaPy(new Area(*area,true))));
-    return Py::new_reference_to(ret);
+        Py::List ret;
+        for(auto &area : sections) 
+            ret.append(Py::asObject(new AreaPy(new Area(*area,true))));
+        return Py::new_reference_to(ret);
+    } PY_CATCH_OCC
 }
 
 PyObject* AreaPy::setDefaultParams(PyObject *, PyObject *)
@@ -390,14 +406,16 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
-        return 0;
+        return nullptr;
 
-    //populate 'params' with the CONF variables
-    PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
+    PY_TRY {
+        //populate 'params' with the CONF variables
+        PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
 
-    getAreaPtr()->setParams(params);
-    Py_INCREF(this);
-    return this;
+        getAreaPtr()->setParams(params);
+        Py_INCREF(this);
+        return this;
+    } PY_CATCH_OCC
 }
 
 PyObject* AreaPy::getParams(PyObject *args)

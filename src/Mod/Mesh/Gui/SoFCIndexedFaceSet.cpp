@@ -23,8 +23,15 @@
 
 #include "PreCompiled.h"
 
+#ifndef FC_OS_WIN32
+# ifndef GL_GLEXT_PROTOTYPES
+# define GL_GLEXT_PROTOTYPES 1
+# endif
+#endif
+
 #ifndef _PreComp_
 # include <algorithm>
+# include <climits>
 # ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
@@ -51,6 +58,7 @@
 
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/SoFCSelectionAction.h>
+#include <Gui/GLBuffer.h>
 #include "SoFCIndexedFaceSet.h"
 
 #define RENDER_GL_VAO
@@ -62,141 +70,10 @@ using namespace MeshGui;
 
 #if defined RENDER_GL_VAO
 
-class CoinOpenGLBuffer {
-public:
-    CoinOpenGLBuffer(GLenum type)
-      : target(type)
-      , bufferId(0)
-      , context(-1)
-      , currentContext(-1)
-      , glue(0)
-    {
-        SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
-    }
-    ~CoinOpenGLBuffer()
-    {
-        SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
-
-        destroy();
-    }
-    void setCurrentContext(uint32_t ctx)
-    {
-        currentContext = ctx;
-        glue = cc_glglue_instance(currentContext);
-    }
-    bool create()
-    {
-        if (bufferId > 0)
-            return true;
-#ifdef FC_OS_WIN32
-        PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
-#endif
-        glGenBuffersARB(1, &bufferId);
-        context = currentContext;
-        return true;
-    }
-    bool isCreated() const
-    {
-        return (bufferId > 0);
-    }
-    void destroy()
-    {
-        // schedule delete for all allocated GL resources
-        if (bufferId > 0) {
-            void * ptr0 = (void*) ((uintptr_t) bufferId);
-            SoGLCacheContextElement::scheduleDeleteCallback(context, buffer_delete, ptr0);
-            bufferId = 0;
-        }
-    }
-    void allocate(const void *data, int count)
-    {
-        if (bufferId > 0) {
-#ifdef FC_OS_WIN32
-            PFNGLBUFFERDATAPROC glBufferDataARB = (PFNGLBUFFERDATAPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
-#endif
-            glBufferDataARB(target, count, data, GL_STATIC_DRAW);
-        }
-    }
-    bool bind()
-    {
-        if (bufferId) {
-            if (context != currentContext) {
-                SoDebugError::postWarning("CoinOpenGLBuffer::bind",
-                                          "buffer not created");
-                return false;
-            }
-#ifdef FC_OS_WIN32
-            PFNGLBINDBUFFERPROC glBindBufferARB = (PFNGLBINDBUFFERPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
-#endif
-            glBindBufferARB(target, bufferId);
-            return true;
-        }
-        return false;
-    }
-    void release()
-    {
-        if (bufferId) {
-#ifdef FC_OS_WIN32
-            PFNGLBINDBUFFERPROC glBindBufferARB = (PFNGLBINDBUFFERPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
-#endif
-            glBindBufferARB(target, 0);
-        }
-    }
-    GLuint getBufferId() const
-    {
-        return bufferId;
-    }
-    uint32_t getBoundContext() const
-    {
-        return context;
-    }
-    int size() const
-    {
-        GLint value = -1;
-        if (bufferId > 0) {
-#ifdef FC_OS_WIN32
-            PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv = (PFNGLGETBUFFERPARAMETERIVPROC)cc_glglue_getprocaddress(glue, "glGetBufferParameterivARB");
-#endif
-            glGetBufferParameteriv(target, GL_BUFFER_SIZE, &value);
-        }
-        return value;
-    }
-
-private:
-    static void context_destruction_cb(uint32_t context, void * userdata)
-    {
-        CoinOpenGLBuffer * self = static_cast<CoinOpenGLBuffer*>(userdata);
-
-        if (self->context == context && self->bufferId) {
-#ifdef FC_OS_WIN32
-            const cc_glglue * glue = cc_glglue_instance((int) context);
-            PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
-#endif
-
-            GLuint buffer = self->bufferId;
-            glDeleteBuffersARB(1, &buffer);
-            self->context = -1;
-            self->bufferId = 0;
-        }
-    }
-    static void buffer_delete(void * closure, uint32_t contextid)
-    {
-        const cc_glglue * glue = cc_glglue_instance((int) contextid);
-        GLuint id = (GLuint) ((uintptr_t) closure);
-        cc_glglue_glDeleteBuffers(glue, 1, &id);
-    }
-
-    GLenum target;
-    GLuint bufferId;
-    uint32_t context;
-    uint32_t currentContext;
-    const cc_glglue* glue;
-};
-
 class MeshRenderer::Private {
 public:
-    CoinOpenGLBuffer vertices;
-    CoinOpenGLBuffer indices;
+    Gui::OpenGLMultiBuffer vertices;
+    Gui::OpenGLMultiBuffer indices;
     const SbColor * pcolors;
     SoMaterialBindingElement::Binding matbinding;
     bool initialized;
@@ -209,6 +86,8 @@ public:
         std::vector<float>& vertex, std::vector<int32_t>& index);
     void renderFacesGLArray(SoGLRenderAction*);
     void renderCoordsGLArray(SoGLRenderAction *);
+    void update();
+    bool needUpdate(SoGLRenderAction *);
 
 private:
     void renderGLArray(SoGLRenderAction *, GLenum);
@@ -232,18 +111,15 @@ bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *action) const
     static bool init = false;
     static bool vboAvailable = false;
     if (!init) {
-        std::string ext = (const char*)(glGetString(GL_EXTENSIONS));
-        vboAvailable = (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
+        vboAvailable = Gui::OpenGLBuffer::isVBOSupported(action->getCacheContext());
+        if (!vboAvailable) {
+            SoDebugError::postInfo("MeshRenderer",
+                                   "GL_ARB_vertex_buffer_object extension not supported");
+        }
         init = true;
     }
 
-    if (!vboAvailable)
-        return false;
-
-    // if no buffer is created we must pass here in order to create it afterwards
-    if (!indices.isCreated())
-        return true;
-    return indices.getBoundContext() == action->getCacheContext();
+    return vboAvailable;
 }
 
 void MeshRenderer::Private::generateGLArrays(SoGLRenderAction* action,
@@ -257,11 +133,9 @@ void MeshRenderer::Private::generateGLArrays(SoGLRenderAction* action,
     vertices.setCurrentContext(action->getCacheContext());
     indices.setCurrentContext(action->getCacheContext());
 
-    if (!initialized) {
-        vertices.create();
-        indices.create();
-        initialized = true;
-    }
+    initialized = true;
+    vertices.create();
+    indices.create();
 
     vertices.bind();
     vertices.allocate(&(vertex[0]),
@@ -286,8 +160,9 @@ void MeshRenderer::Private::renderGLArray(SoGLRenderAction *action, GLenum mode)
     vertices.setCurrentContext(action->getCacheContext());
     indices.setCurrentContext(action->getCacheContext());
 
-    glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
 
     vertices.bind();
     indices.bind();
@@ -303,8 +178,9 @@ void MeshRenderer::Private::renderGLArray(SoGLRenderAction *action, GLenum mode)
     vertices.release();
     indices.release();
 
-    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
@@ -315,6 +191,18 @@ void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 void MeshRenderer::Private::renderCoordsGLArray(SoGLRenderAction *action)
 {
     renderGLArray(action, GL_POINTS);
+}
+
+void MeshRenderer::Private::update()
+{
+    vertices.destroy();
+    indices.destroy();
+}
+
+bool MeshRenderer::Private::needUpdate(SoGLRenderAction *action)
+{
+    return !vertices.isCreated(action->getCacheContext()) ||
+           !indices.isCreated(action->getCacheContext());
 }
 #elif defined RENDER_GLARRAYS
 class MeshRenderer::Private {
@@ -336,6 +224,13 @@ public:
         std::vector<float>& vertex, std::vector<int32_t>& index);
     void renderFacesGLArray(SoGLRenderAction *action);
     void renderCoordsGLArray(SoGLRenderAction *action);
+    void update()
+    {
+    }
+    bool needUpdate(SoGLRenderAction *)
+    {
+        return false;
+    }
 };
 
 bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *) const
@@ -443,6 +338,13 @@ public:
     void renderCoordsGLArray(SoGLRenderAction *)
     {
     }
+    void update()
+    {
+    }
+    bool needUpdate(SoGLRenderAction *)
+    {
+        return false;
+    }
 };
 #endif
 
@@ -454,6 +356,16 @@ MeshRenderer::MeshRenderer()
 MeshRenderer::~MeshRenderer()
 {
     delete p;
+}
+
+void MeshRenderer::update()
+{
+    p->update();
+}
+
+bool MeshRenderer::needUpdate(SoGLRenderAction *action)
+{
+    return p->needUpdate(action);
 }
 
 void MeshRenderer::generateGLArrays(SoGLRenderAction* action, SoMaterialBindingElement::Binding matbind,
@@ -503,14 +415,26 @@ bool MeshRenderer::canRenderGLArray(SoGLRenderAction *action) const
 
 bool MeshRenderer::matchMaterial(SoState* state) const
 {
+    // FIXME: There is sometimes a minor problem that in wireframe
+    // mode the colors do not match. The steps to reproduce
+    // * set mesh to shaded mode
+    // * open function to remove components and select an area
+    // * set to wireframe mode
+    // => the material of the shaded mode instead of that of the
+    // wireframe mode
     SoMaterialBindingElement::Binding matbind =
         SoMaterialBindingElement::get(state);
+    if (p->matbinding != matbind)
+        return false;
+    // the buffer doesn't contain color information
+    if (matbind == SoMaterialBindingElement::OVERALL)
+        return true;
     const SbColor * pcolors = 0;
     SoGLLazyElement* gl = SoGLLazyElement::getInstance(state);
     if (gl) {
         pcolors = gl->getDiffusePointer();
     }
-    return p->matbinding == matbind && p->pcolors == pcolors;
+    return p->pcolors == pcolors;
 }
 
 bool MeshRenderer::shouldRenderDirectly(bool direct)
@@ -525,7 +449,7 @@ bool MeshRenderer::shouldRenderDirectly(bool direct)
 
 // ----------------------------------------------------------------------------
 
-SO_ENGINE_SOURCE(SoFCMaterialEngine);
+SO_ENGINE_SOURCE(SoFCMaterialEngine)
 
 SoFCMaterialEngine::SoFCMaterialEngine()
 {
@@ -556,7 +480,7 @@ void SoFCMaterialEngine::evaluate()
 
 // ----------------------------------------------------------------------------
 
-SO_NODE_SOURCE(SoFCIndexedFaceSet);
+SO_NODE_SOURCE(SoFCIndexedFaceSet)
 
 void SoFCIndexedFaceSet::initClass()
 {
@@ -564,7 +488,7 @@ void SoFCIndexedFaceSet::initClass()
 }
 
 SoFCIndexedFaceSet::SoFCIndexedFaceSet()
-  : renderTriangleLimit(100000)
+  : renderTriangleLimit(UINT_MAX)
   , selectBuf(0)
 {
     SO_NODE_CONSTRUCTOR(SoFCIndexedFaceSet);
@@ -592,27 +516,62 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
         return;
     }
 
+#if defined(RENDER_GL_VAO)
+    SoState * state = action->getState();
+
+    // get the VBO status of the viewer
+    SbBool useVBO = true;
+    Gui::SoGLVBOActivatedElement::get(state, useVBO);
+
+    // Check for a matching OpenGL context
+    if (!render.canRenderGLArray(action))
+        useVBO = false;
+
+    // use VBO for fast rendering if possible
+    if (useVBO) {
+        if (updateGLArray.getValue()) {
+            updateGLArray.setValue(false);
+            render.update();
+            generateGLArrays(action);
+        }
+        else if (render.needUpdate(action)) {
+            generateGLArrays(action);
+        }
+
+        if (render.matchMaterial(state)) {
+            SoMaterialBundle mb(action);
+            mb.sendFirst();
+            render.renderFacesGLArray(action);
+        }
+        else {
+            drawFaces(action);
+        }
+    }
+    else {
+        drawFaces(action);
+    }
+#else
+    drawFaces(action);
+#endif
+}
+
+void SoFCIndexedFaceSet::drawFaces(SoGLRenderAction *action)
+{
     SoState * state = action->getState();
     SbBool mode = Gui::SoFCInteractiveElement::get(state);
 
-#if defined(RENDER_GL_VAO)
-    if (mode == false || render.matchMaterial(state)) {
-#else
     unsigned int num = this->coordIndex.getNum()/4;
     if (mode == false || num <= this->renderTriangleLimit) {
-#endif
-#if defined (RENDER_GLARRAYS) || defined(RENDER_GL_VAO)
-
-        SbBool matchCtx = render.canRenderGLArray(action);
-#if 0
+#ifdef RENDER_GLARRAYS
         SoMaterialBindingElement::Binding matbind =
             SoMaterialBindingElement::get(state);
 
+        SbBool matchCtx = render.canRenderGLArray(action);
         if (matbind == SoMaterialBindingElement::OVERALL && matchCtx) {
             SoMaterialBundle mb(action);
             mb.sendFirst();
-            if (updateGLArray) {
-                updateGLArray = false;
+            if (updateGLArray.getValue()) {
+                updateGLArray.setValue(false);
                 generateGLArrays(action);
             }
             render.renderFacesGLArray(action);
@@ -620,27 +579,6 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
         else {
             inherited::GLRender(action);
         }
-#else
-        // get the VBO status of the viewer
-        SbBool hasVBO = true;
-        //Gui::SoGLVBOActivatedElement::get(state, hasVBO);
-        if (!matchCtx)
-            hasVBO = false;
-
-        if (hasVBO && updateGLArray.getValue()) {
-            updateGLArray = false;
-            generateGLArrays(action);
-        }
-
-        if (hasVBO && render.matchMaterial(state)) {
-            SoMaterialBundle mb(action);
-            mb.sendFirst();
-            render.renderFacesGLArray(action);
-        }
-        else {
-            inherited::GLRender(action);
-        }
-#endif
 #else
         inherited::GLRender(action);
 #endif
@@ -677,6 +615,13 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
 
         drawCoords(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
                    normals, nindices, &mb, mindices, binding, &tb, tindices);
+
+        // getVertexData() internally calls readLockNormalCache() that read locks
+        // the normal cache. When the cache is not needed any more we must call
+        // readUnlockNormalCache()
+        if (normalCacheUsed)
+            this->readUnlockNormalCache();
+
         // Disable caching for this node
         SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
 #endif
@@ -763,7 +708,7 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement * const vertexli
 
 void SoFCIndexedFaceSet::invalidate()
 {
-    updateGLArray = true;
+    updateGLArray.setValue(true);
 }
 
 void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
@@ -822,7 +767,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
             // the nindices must have the length of numindices
             int32_t vertex = 0;
             int index = 0;
-            float t = transp[0];
+            float t = transp ? transp[0] : 0;
             for (std::size_t i=0; i<numTria; i++) {
                 const SbColor& c = pcolors[i];
                 for (int j=0; j<3; j++) {
@@ -860,7 +805,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
             // the nindices must have the length of numindices
             int32_t vertex = 0;
             int index = 0;
-            float t = transp[0];
+            float t = transp ? transp[0] : 0;
             for (std::size_t i=0; i<numTria; i++) {
                 for (int j=0; j<3; j++) {
                     const SbColor& c = pcolors[mindices[index]];
@@ -948,6 +893,12 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
     }
 
     render.generateGLArrays(action, matbind, face_vertices, face_indices);
+
+    // getVertexData() internally calls readLockNormalCache() that read locks
+    // the normal cache. When the cache is not needed any more we must call
+    // readUnlockNormalCache()
+    if (normalCacheUsed)
+        this->readUnlockNormalCache();
 }
 
 void SoFCIndexedFaceSet::doAction(SoAction * action)
@@ -1057,15 +1008,13 @@ void SoFCIndexedFaceSet::stopSelection(SoAction * action)
     GLint index=0;
     for (GLint ii=0;ii<hits && index<bufSize;ii++) {
         GLint ct = (GLint)selectBuf[index];
-        hit.push_back(std::pair<double,unsigned int>
-            (selectBuf[index+1]/4294967295.0,selectBuf[index+3]));
+        hit.emplace_back(selectBuf[index+1]/4294967295.0,selectBuf[index+3]);
         index = index+ct+3;
     }
 
     delete [] selectBuf;
     selectBuf = 0;
-    bool sorted = true;
-    if(sorted) std::sort(hit.begin(),hit.end());
+    std::sort(hit.begin(),hit.end());
 
     Gui::SoGLSelectAction *doaction = static_cast<Gui::SoGLSelectAction*>(action);
     doaction->indices.reserve(hit.size());

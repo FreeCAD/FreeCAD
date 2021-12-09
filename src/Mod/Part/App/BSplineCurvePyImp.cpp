@@ -37,8 +37,8 @@
 # include <TColStd_HArray1OfReal.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_HArray1OfBoolean.hxx>
-
 # include <Precision.hxx>
+# include <cmath>
 #endif
 
 #include <Base/VectorPy.h>
@@ -60,7 +60,7 @@ std::string BSplineCurvePy::representation(void) const
 
 PyObject *BSplineCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of BSplineCurvePy and the Twin object 
+    // create a new instance of BSplineCurvePy and the Twin object
     return new BSplineCurvePy(new GeomBSplineCurve);
 }
 
@@ -76,7 +76,7 @@ int BSplineCurvePy::PyInit(PyObject* args, PyObject* kwd)
     // poles, [ periodic, degree, interpolate ]
     // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
     obj = buildFromPolesMultsKnots(args,kwd);
-   
+
     if (obj) {
         Py_DECREF(obj);
         return 0;
@@ -250,11 +250,7 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long val(*it);
-#else
-            Py::Int val(*it);
-#endif
             m(index++) = (int)val;
         }
 
@@ -298,7 +294,17 @@ PyObject* BSplineCurvePy::segment(PyObject * args)
     try {
         Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
             (getGeometryPtr()->handle());
-        curve->Segment(u1,u2);
+        Handle(Geom_BSplineCurve) tempCurve = Handle(Geom_BSplineCurve)::DownCast
+            (curve->Copy());
+        tempCurve->Segment(u1,u2);
+        if (std::abs(tempCurve->FirstParameter()-u1) > Precision::Approximation() ||
+            std::abs(tempCurve->LastParameter()-u2) > Precision::Approximation()) {
+            Standard_Failure::Raise("Failed to segment BSpline curve");
+            return 0;
+        }
+        else {
+            curve->Segment(u1,u2);
+        }
         Py_Return;
     }
     catch (Standard_Failure& e) {
@@ -456,7 +462,7 @@ PyObject* BSplineCurvePy::getPoles(PyObject * args)
             gp_Pnt pnt = p(i);
             Base::VectorPy* vec = new Base::VectorPy(Base::Vector3d(
                 pnt.X(), pnt.Y(), pnt.Z()));
-            poles.append(Py::Object(vec));
+            poles.append(Py::asObject(vec));
         }
         return Py::new_reference_to(poles);
     }
@@ -684,28 +690,28 @@ Py::Long BSplineCurvePy::getDegree(void) const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(curve->Degree()); 
+    return Py::Long(curve->Degree());
 }
 
 Py::Long BSplineCurvePy::getMaxDegree(void) const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(curve->MaxDegree()); 
+    return Py::Long(curve->MaxDegree());
 }
 
 Py::Long BSplineCurvePy::getNbPoles(void) const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(curve->NbPoles()); 
+    return Py::Long(curve->NbPoles());
 }
 
 Py::Long BSplineCurvePy::getNbKnots(void) const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(curve->NbKnots()); 
+    return Py::Long(curve->NbKnots());
 }
 
 Py::Object BSplineCurvePy::getStartPoint(void) const
@@ -728,14 +734,14 @@ Py::Object BSplineCurvePy::getFirstUKnotIndex(void) const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(curve->FirstUKnotIndex()); 
+    return Py::Long(curve->FirstUKnotIndex());
 }
 
 Py::Object BSplineCurvePy::getLastUKnotIndex(void) const
 {
     Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
         (getGeometryPtr()->handle());
-    return Py::Long(curve->LastUKnotIndex()); 
+    return Py::Long(curve->LastUKnotIndex());
 }
 
 Py::List BSplineCurvePy::getKnotSequence(void) const
@@ -791,6 +797,7 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
     PyObject* obj;
     Standard_Integer degMin=3;
     Standard_Integer degMax=8;
+    Standard_Integer segMax=8;
     char* continuity = "C2";
     double tol3d = 1e-3;
     char* parType = "ChordLength";
@@ -798,30 +805,12 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
     double weight1 = 0;
     double weight2 = 0;
     double weight3 = 0;
-    
-    static char* kwds_interp[] = {"Points", "DegMax", "Continuity", "Tolerance", "DegMin", "ParamType", "Parameters",
-                                  "LengthWeight", "CurvatureWeight", "TorsionWeight", NULL};
-    
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
-                                     &obj, &degMax,
-                                     &continuity, &tol3d, &degMin, 
-                                     &parType, &par,
-                                     &weight1, &weight2, &weight3))
-        return 0;
-    
-    try {
-        Py::Sequence list(obj);
-        TColgp_Array1OfPnt pnts(1,list.size());
-        Standard_Integer index = 1;
-        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            Base::Vector3d vec = Py::Vector(*it).toVector();
-            pnts(index++) = gp_Pnt(vec.x,vec.y,vec.z);
-        }
 
-        if (degMin > degMax) {
-            Standard_Failure::Raise("DegMin must be lower or equal to DegMax");
-        }
-        
+    // Approximate this curve with a given continuity and degree
+    static char* kwds_reapprox[] = {"MaxDegree", "MaxSegments", "Continuity", "Tolerance", nullptr};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "i|isd", kwds_reapprox,
+                                    &tol3d, &degMax, &segMax, &continuity)) {
+
         GeomAbs_Shape c;
         std::string str = continuity;
         if (str == "C0")
@@ -840,7 +829,56 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
             c = GeomAbs_CN;
         else
             c = GeomAbs_C2;
-        
+
+        bool ok = this->getGeomBSplineCurvePtr()->approximate(tol3d, segMax, degMax, c);
+        return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+
+    // Approximate a list of points
+    //
+    static char* kwds_interp[] = {"Points", "DegMax", "Continuity", "Tolerance", "DegMin", "ParamType", "Parameters",
+                                  "LengthWeight", "CurvatureWeight", "TorsionWeight", nullptr};
+
+    PyErr_Clear();
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
+                                     &obj, &degMax,
+                                     &continuity, &tol3d, &degMin,
+                                     &parType, &par,
+                                     &weight1, &weight2, &weight3))
+        return nullptr;
+
+    try {
+        Py::Sequence list(obj);
+        TColgp_Array1OfPnt pnts(1,list.size());
+        Standard_Integer index = 1;
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            Base::Vector3d vec = Py::Vector(*it).toVector();
+            pnts(index++) = gp_Pnt(vec.x,vec.y,vec.z);
+        }
+
+        if (degMin > degMax) {
+            Standard_Failure::Raise("DegMin must be lower or equal to DegMax");
+        }
+
+        GeomAbs_Shape c;
+        std::string str = continuity;
+        if (str == "C0")
+            c = GeomAbs_C0;
+        else if (str == "G1")
+            c = GeomAbs_G1;
+        else if (str == "C1")
+            c = GeomAbs_C1;
+        else if (str == "G2")
+            c = GeomAbs_G2;
+        else if (str == "C2")
+            c = GeomAbs_C2;
+        else if (str == "C3")
+            c = GeomAbs_C3;
+        else if (str == "CN")
+            c = GeomAbs_CN;
+        else
+            c = GeomAbs_C2;
+
         if (weight1 || weight2 || weight3) {
             // It seems that this function only works with Continuity = C0, C1 or C2
             GeomAPI_PointsToBSpline fit(pnts, weight1, weight2, weight3, degMax, c, tol3d);
@@ -854,7 +892,7 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
                 return 0; // goes to the catch block
             }
         }
-        
+
         if (par) {
             Py::Sequence plist(par);
             TColStd_Array1OfReal parameters(1,plist.size());
@@ -863,7 +901,7 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
                 Py::Float f(*it);
                 parameters(index++) = static_cast<double>(f);
             }
-            
+
             GeomAPI_PointsToBSpline fit(pnts, parameters, degMin, degMax, c, tol3d);
             Handle(Geom_BSplineCurve) spline = fit.Curve();
             if (!spline.IsNull()) {
@@ -875,7 +913,7 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
                 return 0; // goes to the catch block
             }
         }
-        
+
         Approx_ParametrizationType pt;
         std::string pstr = parType;
         if (pstr == "Uniform")
@@ -916,7 +954,7 @@ PyObject* BSplineCurvePy::getCardinalSplineTangents(PyObject *args, PyObject *kw
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector v(*it);
             Base::Vector3d pnt = v.toVector();
-            interpPoints.push_back(gp_Pnt(pnt.x,pnt.y,pnt.z));
+            interpPoints.emplace_back(pnt.x,pnt.y,pnt.z);
         }
 
         GeomBSplineCurve* bspline = this->getGeomBSplineCurvePtr();
@@ -938,7 +976,7 @@ PyObject* BSplineCurvePy::getCardinalSplineTangents(PyObject *args, PyObject *kw
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector v(*it);
             Base::Vector3d pnt = v.toVector();
-            interpPoints.push_back(gp_Pnt(pnt.x,pnt.y,pnt.z));
+            interpPoints.emplace_back(pnt.x,pnt.y,pnt.z);
         }
 
         Py::Sequence list2(tgs);
@@ -1211,11 +1249,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             Py::Sequence multssq(mults);
             Standard_Integer index = 1;
             for (Py::Sequence::iterator it = multssq.begin(); it != multssq.end() && index <= occmults.Length(); ++it) {
-#if PY_MAJOR_VERSION >= 3
                 Py::Long mult(*it);
-#else
-                Py::Int mult(*it);
-#endif
                 if (index < occmults.Length() || PyObject_Not(periodic)) {
                     sum_of_mults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
                 }
@@ -1231,7 +1265,15 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
                 occmults.SetValue(occmults.Length(), degree+1);
                 sum_of_mults = occmults.Length()+2*degree;
             }
-            else { sum_of_mults = occmults.Length()-1;}
+            else {
+                sum_of_mults = occmults.Length()-1;
+            }
+        }
+        // check multiplicity of inner knots
+        for (Standard_Integer i=2; i < occmults.Length(); i++) {
+            if (occmults(i) > degree) {
+                Standard_Failure::Raise("multiplicity of inner knot higher than degree");
+            }
         }
         if (knots != Py_None) { //knots are given
             Py::Sequence knotssq(knots);
@@ -1364,5 +1406,5 @@ PyObject* BSplineCurvePy::getCustomAttributes(const char* /*attr*/) const
 
 int BSplineCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

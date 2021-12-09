@@ -26,6 +26,7 @@
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 class gp_Pnt;
 class gp_Pln;
@@ -34,6 +35,8 @@ class gp_Pln;
 /// Base class of all additive features in PartDesign
 namespace PartDesign
 {
+
+typedef Part::TopoShape TopoShape;
 
 class Body;
 
@@ -50,6 +53,7 @@ public:
 
     /// Base feature which this feature will be fused into or cut out of
     App::PropertyLink   BaseFeature;
+    App::PropertyLinkHidden _Body;
 
     short mustExecute() const;
 
@@ -57,7 +61,7 @@ public:
     static bool isDatum(const App::DocumentObject* feature);
 
     /// Returns the body the feature is in, or none
-    Body* getFeatureBody();
+    Body* getFeatureBody() const;
     
     /**
      * Returns the BaseFeature property's object (if any)
@@ -69,7 +73,7 @@ public:
     /// Returns the BaseFeature property's shape (if any)
     virtual const TopoDS_Shape& getBaseShape() const;
     /// Returns the BaseFeature property's TopoShape (if any)
-    const Part::TopoShape getBaseTopoShape() const;
+    Part::TopoShape getBaseTopoShape(bool silent=false) const;
 
     virtual PyObject* getPyObject(void);
 

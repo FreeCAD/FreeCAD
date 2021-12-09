@@ -170,6 +170,17 @@ typedef __int64             int64_t;
 typedef unsigned __int64    uint64_t;
 #endif
 
+/* avoid to redefine the HAVE_* in Coin's inttypes.h file */
+#define COIN_CONFIGURE_BUILD
+/* The <inttypes.h> header file. */
+#define HAVE_INTTYPES_H 1
+/* The <stdint.h> header file. */
+#define HAVE_STDINT_H 1
+/* The <sys/types.h> header file. */
+#define HAVE_SYS_TYPES_H 1
+/* The <stddef.h> header file. */
+#define HAVE_STDDEF_H 1
+
 #endif
 
 
@@ -293,39 +304,7 @@ typedef unsigned __int64    uint64_t;
 
 //**************************************************************************
 // Windows import export DLL defines
-#if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
-#   ifdef FCApp
-#       define AppExport   __declspec(dllexport)
-#       define DataExport  __declspec(dllexport)
-#   else
-#       define AppExport   __declspec(dllimport)
-#       define DataExport  __declspec(dllimport)
-#   endif
-#   ifdef FCBase
-#       define BaseExport  __declspec(dllexport)
-#   else
-#       define BaseExport  __declspec(dllimport)
-#   endif
-#   ifdef FCGui
-#       define GuiExport   __declspec(dllexport)
-#   else
-#       define GuiExport   __declspec(dllimport)
-#   endif
-#else
-#   ifndef BaseExport
-#       define BaseExport
-#   endif
-#   ifndef GuiExport
-#       define GuiExport
-#   endif
-#   ifndef AppExport
-#       define AppExport
-#   endif
-#   ifndef DataExport
-#       define DataExport
-#   endif
-#endif
-
+#include <FCGlobal.h>
 
 //**************************************************************************
 // here get the warnings of too long specifiers disabled (needed for VC6)

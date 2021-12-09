@@ -25,9 +25,12 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
-#include <QMenu>
+# include <QMenu>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include "Utils.h"
 #include "ViewProviderLoft.h"
 //#include "TaskLoftParameters.h"
 #include "TaskLoftParameters.h"
@@ -38,8 +41,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+
 
 using namespace PartDesignGui;
 
@@ -73,22 +75,15 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
 
 void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit loft"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
-}
-
-bool ViewProviderLoft::doubleClicked(void)
-{
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
-    return true;
+    addDefaultAction(menu, QObject::tr("Edit loft"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderLoft::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default)        
+    if (ModNum == ViewProvider::Default)
         setPreviewDisplayMode(true);
-        
+
     return ViewProviderAddSub::setEdit(ModNum);
 }
 
@@ -98,7 +93,6 @@ TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog() {
 
 
 void ViewProviderLoft::unsetEdit(int ModNum) {
-    
     setPreviewDisplayMode(false);
     ViewProviderAddSub::unsetEdit(ModNum);
 }
@@ -127,9 +121,9 @@ void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxiliary*/
     Part::Feature* base;
     if(!auxiliary)
         base = static_cast<Part::Feature*>(pcLoft->Spine.getValue());
-    else 
+    else
         base = static_cast<Part::Feature*>(pcLoft->AuxillerySpine.getValue());
-    
+
     if (base == NULL) return;
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));
@@ -138,10 +132,10 @@ void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxiliary*/
     std::vector<std::string> edges;
     if(!auxiliary)
         edges = pcLoft->Spine.getSubValuesStartsWith("Edge");
-    else 
+    else
         edges = pcLoft->AuxillerySpine.getSubValuesStartsWith("Edge");
 
-    if (on) {        
+    if (on) {
          if (!edges.empty() && originalLineColors.empty()) {
             TopTools_IndexedMapOfShape eMap;
             TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
@@ -168,11 +162,11 @@ QIcon ViewProviderLoft::getIcon(void) const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Loft*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive_");
+        str += QString::fromLatin1("Additive");
     else
-        str += QString::fromLatin1("Subtractive_");
- 
+        str += QString::fromLatin1("Subtractive");
+
     str += QString::fromLatin1("Loft.svg");
-    return Gui::BitmapFactory().pixmap(str.toStdString().c_str());
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

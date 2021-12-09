@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <QCoreApplication>
-# include <QTextStream>
 #endif
 
 #include "Workbench.h"
@@ -44,6 +43,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 
 #include <Mod/Start/App/StartConfiguration.h>
 
@@ -61,6 +61,16 @@ StartGui::Workbench::~Workbench()
 
 void StartGui::Workbench::activated()
 {
+    // Automatically display the StartPage only the very first time
+    static bool first = true;
+    if (first) {
+        loadStartPage();
+        first = false;
+    }
+}
+
+void StartGui::Workbench::loadStartPage()
+{
     // Ensure that we don't open the Start page multiple times
     QString title = QCoreApplication::translate("Workbench", "Start page");
     QList<QWidget*> ch = Gui::getMainWindow()->windows();
@@ -71,38 +81,39 @@ void StartGui::Workbench::activated()
 
     try {
         QByteArray utf8Title = title.toUtf8();
-        QByteArray cmd;
-        QTextStream str(&cmd);
-        str << "import WebGui" << endl;
-        str << "from StartPage import StartPage" << endl;
-        str << endl;
-        str << "class WebPage(object):" << endl;
-        str << "    def __init__(self):" << endl;
-        str << "        self.browser=WebGui.openBrowserWindow('" << utf8Title << "')" << endl;
+        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(utf8Title);
+        std::stringstream str;
+        str << "import WebGui,sys,Start" << std::endl;
+        str << "from StartPage import StartPage" << std::endl;
+        str << std::endl;
+        str << "class WebPage(object):" << std::endl;
+        str << "    def __init__(self):" << std::endl;
+        str << "        self.browser=WebGui.openBrowserWindow(u\"" << escapedstr.c_str() << "\")" << std::endl;
 #if defined(FC_OS_WIN32)
-        str << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+        str << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
 #else
-        str << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+        str << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
 #endif
-        str << "    def onChange(self, par, reason):" << endl;
-        str << "        if reason == 'RecentFiles':" << endl;
+        str << "    def onChange(self, par, reason):" << std::endl;
+        str << "        if reason == 'RecentFiles':" << std::endl;
 #if defined(FC_OS_WIN32)
-        str << "            self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+        str << "            self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
 #else
-        str << "            self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
+        str << "            self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
 #endif
-        str << endl;
-        str << "class WebView(object):" << endl;
-        str << "    def __init__(self):" << endl;
-        str << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')" << endl;
-        str << "        self.webPage = WebPage()" << endl;
-        str << "        self.pargrp.Attach(self.webPage)" << endl;
-        str << "    def __del__(self):" << endl;
-        str << "        self.pargrp.Detach(self.webPage)" << endl;
-        str << endl;
-        str << "webView=WebView()" << endl;
+        str << std::endl;
+        str << "class WebView(object):" << std::endl;
+        str << "    def __init__(self):" << std::endl;
+        str << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')" << std::endl;
+        str << "        self.webPage = WebPage()" << std::endl;
+        str << "        self.pargrp.Attach(self.webPage)" << std::endl;
+        str << "    def __del__(self):" << std::endl;
+        str << "        self.pargrp.Detach(self.webPage)" << std::endl;
+        str << std::endl;
+        str << "webView=WebView()" << std::endl;
+        str << "StartPage.checkPostOpenStartPage()" << std::endl;
 
-        Base::Interpreter().runString(cmd);
+        Base::Interpreter().runString(str.str().c_str());
         // Gui::Command::runCommand(Gui::Command::Gui, cmd);
     }
     catch (const Base::Exception& e) {
@@ -128,10 +139,13 @@ Gui::ToolBarItem* StartGui::Workbench::setupToolBars() const
     // web navigation toolbar
     Gui::ToolBarItem* navigation = new Gui::ToolBarItem(root);
     navigation->setCommand("Navigation");
-    *navigation << "Web_OpenWebsite" 
-                << "Separator" 
-                << "Web_BrowserBack" 
-                << "Web_BrowserNext" 
+    *navigation << "Web_BrowserSetURL"
+                << "Separator"
+                << "Web_OpenWebsite"
+                << "Start_StartPage"
+                << "Separator"
+                << "Web_BrowserBack"
+                << "Web_BrowserNext"
                 << "Web_BrowserRefresh"
                 << "Web_BrowserStop"
                 << "Separator"
@@ -152,6 +166,6 @@ Gui::DockWindowItems* StartGui::Workbench::setupDockWindows() const
 {
     Gui::DockWindowItems* root = Gui::StdWorkbench::setupDockWindows();
     root->setVisibility(false); // hide all dock windows by default
-    root->setVisibility("Std_CombiView",true); // except of the combi view
+    root->setVisibility("Std_ComboView",true); // except of the combo view
     return root;
 }

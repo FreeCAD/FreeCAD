@@ -28,6 +28,9 @@
 #include <Mod/Mesh/App/WildMagic4/Wm4QuadricSurface.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Eigen.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ImplicitSurface.h>
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 #include <algorithm>
 #include <list>
 #include <set>
@@ -35,6 +38,7 @@
 
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
+#include <Base/BoundBox.h>
 
 namespace Wm4
 {
@@ -94,6 +98,7 @@ protected:
 }
 
 namespace MeshCore {
+class MeshPointArray;
 
 /**
  * Abstract base class for approximation of a geometry to a given set of points.
@@ -126,6 +131,10 @@ public:
      */
     void AddPoints(const std::list<Base::Vector3f> &rsPointList);
     /**
+     * Add points for the fit algorithm.
+     */
+    void AddPoints(const MeshPointArray &points);
+    /**
      * Get all added points.
      */
     const std::list<Base::Vector3f>& GetPoints() const { return _vPoints; }
@@ -138,7 +147,7 @@ public:
      * Determines the number of the current added points.
      * @return Number of points
      */
-    unsigned long CountPoints() const;
+    std::size_t CountPoints() const;
     /**
      * Deletes the inserted points and frees any allocated resources.
      */
@@ -159,14 +168,6 @@ public:
     bool Done() const;
 
 protected:
-    /**
-     * Converts point from Wm4::Vector3 to Base::Vector3f.
-     */
-    static void Convert( const Wm4::Vector3<double>&, Base::Vector3f&);
-    /**
-     * Converts point from Base::Vector3f to Wm4::Vector3.
-     */
-    static void Convert( const Base::Vector3f&, Wm4::Vector3<double>&);
     /**
      * Creates a vector of Wm4::Vector3 elements.
      */
@@ -236,6 +237,12 @@ public:
      * array is returned.
      */
     std::vector<Base::Vector3f> GetLocalPoints() const;
+    /**
+     * Returns the local bounding box of the transformed points relative to the
+     * coordinate system of the plane. If this method is called before the plane is
+     *  computed an invalid bounding box is returned.
+     */
+    Base::BoundBox3f GetBoundings() const;
 
 protected:
     Base::Vector3f _vBase; /**< Base vector of the plane. */
@@ -267,13 +274,13 @@ public:
     /**
      * Destruction
      */
-    virtual ~QuadraticFit(){};
+    virtual ~QuadraticFit(){}
     /**
      * Get the quadric coefficients
      * @param ulIndex Number of coefficient (0..9)
      * @return double value of coefficient
      */
-    double GetCoeff(unsigned long ulIndex) const;
+    double GetCoeff(std::size_t ulIndex) const;
     /**
      * Get the quadric coefficients as reference to the
      * internal array
@@ -342,7 +349,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~SurfaceFit(){};
+    virtual ~SurfaceFit(){}
 
     bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfCurv1,
                           Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, double &dDistance);
@@ -350,10 +357,126 @@ public:
     float Fit();
     double Value(double x, double y) const;
     void GetCoefficients(double& a,double& b,double& c,double& d,double& e,double& f) const;
+    /**
+     * @brief Transform
+     * Transforms points from the local coordinate system to the world coordinate system
+     */
+    void Transform(std::vector<Base::Vector3f>&) const;
+    void Transform(std::vector<Base::Vector3d>&) const;
+    /**
+     * @brief toBezier
+     * @param umin Parameter range
+     * @param umax Parameter range
+     * @param vmin Parameter range
+     * @param vmax Parameter range
+     * @return control points of the Bezier surface
+     */
+    std::vector<Base::Vector3d> toBezier(double umin=0.0, double umax=1.0, double vmin=0.0, double vmax=1.0) const;
 
 protected:
     double PolynomFit();
     double _fCoeff[ 10 ];  /**< Ziel der Koeffizienten aus dem Fit */
+};
+
+// -------------------------------------------------------------------------------
+
+/**
+ * Approximation of a cylinder into a given set of points.
+ */
+class MeshExport CylinderFit : public Approximation
+{
+public:
+    /**
+     * Construction
+     */
+    CylinderFit();
+    /**
+     * Destruction
+     */
+    virtual ~CylinderFit();
+    float GetRadius() const;
+    Base::Vector3f GetBase() const;
+    void SetInitialValues(const Base::Vector3f&, const Base::Vector3f&);
+    /**
+     * Returns the axis of the fitted cylinder. If Fit() has not been called the null vector is
+     * returned.
+     */
+    Base::Vector3f GetAxis() const;
+    /**
+     * Returns an initial axis based on point normals.
+     */
+    Base::Vector3f GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const;
+    /**
+     * Fit a cylinder into the given points. If the fit fails FLOAT_MAX is returned.
+     */
+    float Fit();
+    /**
+     * Returns the distance from the point \a rcPoint to the fitted cylinder. If Fit() has not been
+     * called FLOAT_MAX is returned.
+     */
+    float GetDistanceToCylinder(const Base::Vector3f &rcPoint) const;
+    /**
+     * Returns the standard deviation from the points to the fitted cylinder. If Fit() has not been
+     * called FLOAT_MAX is returned.
+     */
+    float GetStdDeviation() const;
+    /**
+     * Projects the points onto the fitted cylinder.
+     */
+    void ProjectToCylinder();
+    /**
+     * Get the bottom and top points of the cylinder. The distance of these
+     * points gives the height of the cylinder.
+     */
+    void GetBounding(Base::Vector3f& bottom, Base::Vector3f& top) const;
+
+protected:
+    Base::Vector3f _vBase; /**< Base vector of the cylinder. */
+    Base::Vector3f _vAxis; /**< Axis of the cylinder. */
+    float _fRadius; /**< Radius of the cylinder. */
+    bool _initialGuess;
+};
+
+// -------------------------------------------------------------------------------
+
+/**
+ * Approximation of a sphere into a given set of points.
+ */
+class MeshExport SphereFit : public Approximation
+{
+public:
+    /**
+     * Construction
+     */
+    SphereFit();
+    /**
+     * Destruction
+     */
+    virtual ~SphereFit();
+    float GetRadius() const;
+    Base::Vector3f GetCenter() const;
+    /**
+     * Fit a sphere into the given points. If the fit fails FLOAT_MAX is returned.
+     */
+    float Fit();
+    /**
+     * Returns the distance from the point \a rcPoint to the fitted sphere. If Fit() has not been
+     * called FLOAT_MAX is returned.
+     */
+    float GetDistanceToSphere(const Base::Vector3f &rcPoint) const;
+    /**
+     * Returns the standard deviation from the points to the fitted sphere. If Fit() has not been
+     * called FLOAT_MAX is returned.
+     */
+    float GetStdDeviation() const;
+    /**
+     * Projects the points onto the fitted sphere.
+     */
+    void ProjectToSphere();
+
+protected:
+    Base::Vector3f _vCenter; /**< Center of the sphere. */
+    float _fRadius; /**< Radius of the cylinder. */
 };
 
 // -------------------------------------------------------------------------------
@@ -391,7 +514,7 @@ public:
             dKoeff[ ct ] = pKoef[ ct ];
     }
     /**
-     * Destruktor. Deletes the ImpicitSurface instance
+     * Destructor. Deletes the ImpicitSurface instance
      * of the WildMagic library
      */
     ~FunctionContainer(){ delete pImplSurf; }
@@ -425,7 +548,9 @@ public:
     Base::Vector3f GetGradient( double x, double y, double z ) const
     {
         Wm4::Vector3<double> grad = pImplSurf->GetGradient( Wm4::Vector3<double>(x, y, z) );
-        return Base::Vector3f( (float)grad.X(), (float)grad.Y(), (float)grad.Z() );
+        return Base::Vector3f(static_cast<float>(grad.X()),
+                              static_cast<float>(grad.Y()),
+                              static_cast<float>(grad.Z()));
     }
 
     Base::Matrix4D GetHessian( double x, double y, double z ) const
@@ -445,16 +570,16 @@ public:
         double zx = - ( Fx(x,y,z) / dQuot );
         double zy = - ( Fy(x,y,z) / dQuot );
         
-        double zxx = - ( 2.0f * ( dKoeff[5] + dKoeff[6] * zx * zx + dKoeff[8] * zx ) ) / dQuot;
-        double zyy = - ( 2.0f * ( dKoeff[5] + dKoeff[6] * zy * zy + dKoeff[9] * zy ) ) / dQuot;
+        double zxx = - ( 2.0 * ( dKoeff[5] + dKoeff[6] * zx * zx + dKoeff[8] * zx ) ) / dQuot;
+        double zyy = - ( 2.0 * ( dKoeff[5] + dKoeff[6] * zy * zy + dKoeff[9] * zy ) ) / dQuot;
         double zxy = - ( dKoeff[6] * zx * zy + dKoeff[7] + dKoeff[8] * zy + dKoeff[9] * zx ) / dQuot;
 
         double dNen = 1 + zx*zx + zy*zy;
-        double dNenSqrt = (double)sqrt( dNen );
+        double dNenSqrt = sqrt( dNen );
         double K = ( zxx * zyy - zxy * zxy ) / ( dNen * dNen );
-        double H = 0.5f * ( ( 1.0f+zx*zx - 2*zx*zy*zxy + (1.0f+zy*zy)*zxx ) / ( dNenSqrt * dNenSqrt * dNenSqrt ) ) ;
+        double H = 0.5 * ( ( 1.0+zx*zx - 2*zx*zy*zxy + (1.0+zy*zy)*zxx ) / ( dNenSqrt * dNenSqrt * dNenSqrt ) ) ;
 
-        double dDiscr = (double)sqrt(fabs(H*H-K));
+        double dDiscr = sqrt(fabs(H*H-K));
         rfCurv0 = H - dDiscr;
         rfCurv1 = H + dDiscr;
 
@@ -472,22 +597,22 @@ public:
     //+++++++++ 1. derivations ++++++++++++++++++++++++++++++++
     double Fx ( double x, double y, double z )
     {
-        return( dKoeff[1] + 2.0f*dKoeff[4]*x + dKoeff[7]*y + dKoeff[8]*z );
+        return( dKoeff[1] + 2.0*dKoeff[4]*x + dKoeff[7]*y + dKoeff[8]*z );
     }
     double Fy ( double x, double y, double z ) 
     {
-        return( dKoeff[2] + 2.0f*dKoeff[5]*y + dKoeff[7]*x + dKoeff[9]*z );
+        return( dKoeff[2] + 2.0*dKoeff[5]*y + dKoeff[7]*x + dKoeff[9]*z );
     }
     double Fz ( double x, double y, double z ) 
     {
-        return( dKoeff[3] + 2.0f*dKoeff[6]*z + dKoeff[8]*x + dKoeff[9]*y );
+        return( dKoeff[3] + 2.0*dKoeff[6]*z + dKoeff[8]*x + dKoeff[9]*y );
     }
 
     //+++++++++ 2. derivations ++++++++++++++++++++++++++++++++
     double Fxx( double x, double y, double z ) 
     {
         (void)x; (void)y; (void)z;
-        return( 2.0f*dKoeff[4] );
+        return( 2.0*dKoeff[4] );
     }
     double Fxy( double x, double y, double z ) 
     {
@@ -502,7 +627,7 @@ public:
     double Fyy( double x, double y, double z ) 
     {
         (void)x; (void)y; (void)z;
-        return( 2.0f*dKoeff[5] );
+        return( 2.0*dKoeff[5] );
     }
     double Fyz( double x, double y, double z ) 
     {
@@ -512,7 +637,7 @@ public:
     double Fzz( double x, double y, double z ) 
     {
         (void)x; (void)y; (void)z;
-        return( 2.0f*dKoeff[6] );
+        return( 2.0*dKoeff[6] );
     }
    
 protected:
@@ -523,7 +648,7 @@ private:
     /**
      * Private construction.
      */
-    FunctionContainer(){};
+    FunctionContainer(){}
 };
 
 class MeshExport PolynomialFit : public Approximation

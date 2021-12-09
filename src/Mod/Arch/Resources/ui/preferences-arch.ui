@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>428</width>
-    <height>703</height>
+    <width>446</width>
+    <height>811</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,84 +27,68 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
-          <property name="text">
-           <string>Auto-join walls</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>autoJoinWalls</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+        <property name="text">
+         <string>Auto-join walls</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>autoJoinWalls</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_10">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_8">
-          <property name="toolTip">
-           <string>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</string>
-          </property>
-          <property name="text">
-           <string>Join walls base sketches when possible</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>joinWallSketches</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_8">
+        <property name="toolTip">
+         <string>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</string>
+        </property>
+        <property name="text">
+         <string>Join walls base sketches when possible</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>joinWallSketches</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox">
-          <property name="toolTip">
-           <string>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</string>
-          </property>
-          <property name="text">
-           <string>Remove external geometry of base sketches when needed</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>archRemoveExternal</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox">
+        <property name="toolTip">
+         <string>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</string>
+        </property>
+        <property name="text">
+         <string>Remove external geometry of base sketches when needed</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>archRemoveExternal</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_7">
-          <property name="toolTip">
-           <string>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</string>
-          </property>
-          <property name="text">
-           <string>Apply Draft construction style to subcomponents</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>applyconstructionStyle</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_7">
+        <property name="toolTip">
+         <string>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</string>
+        </property>
+        <property name="text">
+         <string>Apply Draft construction style to subcomponents</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>applyconstructionStyle</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_14">
@@ -112,6 +96,9 @@
          <spacer name="horizontalSpacer_9">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -142,6 +129,172 @@
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
           </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_17">
+        <item>
+         <spacer name="horizontalSpacer_10">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Interval between file checks for references</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="spinBox_2">
+          <property name="suffix">
+           <string> seconds</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>9999</number>
+          </property>
+          <property name="value">
+           <number>60</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ReferenceCheckInterval</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_4">
+        <property name="toolTip">
+         <string>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</string>
+        </property>
+        <property name="text">
+         <string>Set "Move with host" property to True by default</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MoveWithHost</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_5">
+        <property name="text">
+         <string>Set "Move base" property to True by default</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MoveBase</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_6">
+        <property name="toolTip">
+         <string>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</string>
+        </property>
+        <property name="text">
+         <string>Use material color as shape color</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseMaterialColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>IFC version</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_12">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox">
+          <property name="toolTip">
+           <string>The IFC version will change which attributes and products are supported</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>IfcVersion</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>IFC4</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>IFC2X3</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -429,7 +582,8 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit">
           <property name="toolTip">
-           <string>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</string>
+           <string>This is the SVG stroke-dasharray property to apply
+to projections of hidden objects.</string>
           </property>
           <property name="text">
            <string>30, 10</string>
@@ -488,7 +642,8 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
           <property name="toolTip">
-           <string>Scaling factor for patterns used by object that have a Footprint display mode</string>
+           <string>Scaling factor for patterns used by object that have
+a Footprint display mode</string>
           </property>
           <property name="decimals">
            <number>4</number>
@@ -530,7 +685,7 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit_2">
           <property name="toolTip">
-           <string>The URL of a bim server instance (www.bimserver.org)  to connect to.</string>
+           <string>The URL of a bim server instance (www.bimserver.org) to connect to.</string>
           </property>
           <property name="text">
            <string>http://localhost:8082</string>
@@ -550,7 +705,9 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
-           <string>If this is checked, the &quot;Open BimServer in browser&quot; button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</string>
+           <string>If this is selected, the "Open BimServer in browser"
+button will open the Bim Server interface in an external browser
+instead of the FreeCAD web workbench</string>
           </property>
           <property name="text">
            <string>Open in external browser</string>
@@ -626,6 +783,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

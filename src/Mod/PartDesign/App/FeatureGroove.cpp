@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -36,7 +36,9 @@
 # include <gp_Lin.hxx>
 #endif
 
+#include <QCoreApplication>
 #include <Base/Axis.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
@@ -49,7 +51,11 @@ using namespace PartDesign;
 namespace PartDesign {
 
 
+/* TRANSLATOR PartDesign::Groove */
+
 PROPERTY_SOURCE(PartDesign::Groove, PartDesign::ProfileBased)
+
+const App::PropertyAngle::Constraints Groove::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
 
 Groove::Groove()
 {
@@ -58,6 +64,7 @@ Groove::Groove()
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0f,0.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Groove", App::Prop_None, "Angle");
+    Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Groove",(App::PropertyType)(App::Prop_None),"Reference axis of Groove");
 }
 
@@ -76,12 +83,13 @@ App::DocumentObjectExecReturn *Groove::execute(void)
 {
     // Validate parameters
     double angle = Angle.getValue();
-    if (angle < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Angle of groove too small");
     if (angle > 360.0)
         return new App::DocumentObjectExecReturn("Angle of groove too large");
 
     angle = Base::toRadians<double>(angle);
+    if (angle < Precision::Angular())
+        return new App::DocumentObjectExecReturn("Angle of groove too small");
+
     // Reverse angle if selected
     if (Reversed.getValue() && !Midplane.getValue())
         angle *= (-1.0);
@@ -97,8 +105,13 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     TopoDS_Shape base;
     try {
         base = getBaseShape();
-    } catch (const Base::Exception&) {
-        return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the groove!");
+    }
+    catch (const Base::Exception&) {
+        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
+                                    "  - the active Body does not contain a base shape, so there is no\n"
+                                    "  material to be removed;\n"
+                                    "  - the selected sketch does not belong to the active Body."));
+        return new App::DocumentObjectExecReturn(text);
     }
 
     updateAxis();
@@ -149,20 +162,21 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             BRepAlgoAPI_Cut mkCut(base, result);
             // Let's check if the fusion has been successful
             if (!mkCut.IsDone())
-                throw Base::Exception("Cut out of base feature failed");
+                throw Base::CADKernelError("Cut out of base feature failed");
 
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
-            int solidCount = countSolids(result);
+            solRes = refineShapeIfActive(solRes);
+            this->Shape.setValue(getSolid(solRes));
+
+            int solidCount = countSolids(solRes);
             if (solidCount > 1) {
                 return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
             }
-
-            solRes = refineShapeIfActive(solRes);
-            this->Shape.setValue(getSolid(solRes));
+            
         }
         else
             return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
@@ -194,7 +208,7 @@ void Groove::updateAxis(void)
     const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
     Base::Vector3d base;
     Base::Vector3d dir;
-    getAxis(pcReferenceAxis, subReferenceAxis, base, dir);
+    getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotParallelWithNormal);
 
     if (dir.Length() > Precision::Confusion()) {
         Base.setValue(base.x,base.y,base.z);

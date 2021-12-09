@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -40,6 +40,7 @@
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/PartPyCXX.h>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>
@@ -48,10 +49,7 @@
 #include <TopExp_Explorer.hxx>
 #include <gp_Lin.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepAdaptor_CompCurve.hxx>
-#include <BRepAdaptor_HCompCurve.hxx>
-#include <Approx_Curve3d.hxx>
-#include <BRepAdaptor_HCurve.hxx>
+#include <BRepAdaptor_Curve.hxx>
 
 #include "CommandPy.h"
 #include "PathPy.h"
@@ -92,16 +90,12 @@
     catch(const char *e)                                            \
     {                                                               \
         PyErr_SetString(Base::BaseExceptionFreeCADError,e);         \
-    } throw Py::Exception();                                                               
-
-namespace Part {
-extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
-}
+    } throw Py::Exception();
 
 namespace Path {
 class Module : public Py::ExtensionModule<Module>
 {
-    
+
 public:
 
     Module() : Py::ExtensionModule<Module>("Path")
@@ -127,7 +121,7 @@ public:
             PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
         );
         add_keyword_method("sortWires",&Module::sortWires,
-            "sortWires(shapes, start=Vector(), "  
+            "sortWires(shapes, start=Vector(), "
             PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_ARC_PLANE)
             PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ")\n"
             "\nReturns (wires,end), where 'wires' is sorted across Z value and with optimized travel distance,\n"
@@ -154,12 +148,12 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
         Base::FileInfo file(EncodedName.c_str());
-        
+
         if (PyObject_TypeCheck(pObj, &(App::DocumentObjectPy::Type))) {
             App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();
             if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Path::Feature"))) {
                 const Toolpath& path = static_cast<Path::Feature*>(obj)->Path.getValue();
-                std::string gcode = path.toGCode();    
+                std::string gcode = path.toGCode();
                 std::ofstream ofile(EncodedName.c_str());
                 ofile << gcode;
                 ofile.close();
@@ -191,7 +185,7 @@ private:
             pcDoc = App::GetApplication().getDocument(DocName);
         else
             pcDoc = App::GetApplication().getActiveDocument();
-        if (!pcDoc) 
+        if (!pcDoc)
             pcDoc = App::GetApplication().newDocument(DocName);
 
         try {
@@ -260,7 +254,7 @@ private:
                     Path::Toolpath result;
                     bool first = true;
                     Base::Placement last;
-                    
+
                     TopExp_Explorer ExpEdges (shape,TopAbs_EDGE);
                     while (ExpEdges.More()) {
                         const TopoDS_Edge& edge = TopoDS::Edge(ExpEdges.Current());
@@ -286,7 +280,7 @@ private:
                                 else {
                                     Path::Command cmd;
                                     cmd.setFromPlacement(tpl);
-                        
+
                                     // write arc data if needed
                                     BRepAdaptor_Curve adapt(edge);
                                     if (adapt.GetType() == GeomAbs_Circle) {
@@ -330,8 +324,8 @@ private:
         PyObject *return_end=Py_False;
         static char* kwd_list[] = {"shapes", "start", "return_end",
                 PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_PATH), NULL};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), 
-                "O|O!O" PARAM_PY_KWDS(AREA_PARAMS_PATH), 
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
+                "O|O!O" PARAM_PY_KWDS(AREA_PARAMS_PATH),
                 kwd_list, &pShapes, &(Base::VectorPy::Type), &start, &return_end,
                 PARAM_REF(PARAM_FARG,AREA_PARAMS_PATH)))
             throw Py::Exception();
@@ -340,7 +334,7 @@ private:
         if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type)))
             shapes.push_back(static_cast<Part::TopoShapePy*>(pShapes)->getTopoShapePtr()->getShape());
         else if (PyObject_TypeCheck(pShapes, &(PyList_Type)) ||
-                PyObject_TypeCheck(pShapes, &(PyTuple_Type))) 
+                PyObject_TypeCheck(pShapes, &(PyTuple_Type)))
         {
             Py::Sequence shapeSeq(pShapes);
             for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
@@ -379,21 +373,22 @@ private:
         PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SORT)
         PyObject *pShapes=NULL;
         PyObject *start=NULL;
-        static char* kwd_list[] = {"shapes", "start", 
-                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_ARC_PLANE), 
+        static char* kwd_list[] = {"shapes", "start",
+                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_ARC_PLANE),
                 PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SORT), NULL};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), 
-                "O|O!" 
-                PARAM_PY_KWDS(AREA_PARAMS_ARC_PLANE) 
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
+                "O|O!"
+                PARAM_PY_KWDS(AREA_PARAMS_ARC_PLANE)
                 PARAM_PY_KWDS(AREA_PARAMS_SORT),
-                kwd_list, &pShapes, &(Base::VectorPy::Type), &start, 
+                kwd_list, &pShapes, &(Base::VectorPy::Type), &start,
                 PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
                 PARAM_REF(PARAM_FARG,AREA_PARAMS_SORT)))
             throw Py::Exception();
 
         std::list<TopoDS_Shape> shapes;
-        if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type)))
+        if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type))) {
             shapes.push_back(static_cast<Part::TopoShapePy*>(pShapes)->getTopoShapePtr()->getShape());
+        }
         else if (PyObject_TypeCheck(pShapes, &(PyList_Type)) ||
                 PyObject_TypeCheck(pShapes, &(PyTuple_Type))) {
             Py::Sequence shapeSeq(pShapes);
@@ -412,26 +407,23 @@ private:
             Base::Vector3d vec = static_cast<Base::VectorPy*>(start)->value();
             pstart.SetCoord(vec.x, vec.y, vec.z);
         }
-        
+
         try {
             bool need_arc_plane = arc_plane==Area::ArcPlaneAuto;
             std::list<TopoDS_Shape> wires = Area::sortWires(shapes,start!=0,&pstart,
                     &pend, 0, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
-            PyObject *list = PyList_New(0);
-            for(auto &wire : wires)
-                PyList_Append(list,Py::new_reference_to(
-                            Part::shape2pyshape(TopoDS::Wire(wire))));
-            PyObject *ret = PyTuple_New(need_arc_plane?3:2);
-            PyTuple_SetItem(ret,0,list);
-            PyTuple_SetItem(ret,1,new Base::VectorPy(
-                        Base::Vector3d(pend.X(),pend.Y(),pend.Z())));
-            if(need_arc_plane)
-#if PY_MAJOR_VERSION < 3
-                PyTuple_SetItem(ret,2,PyInt_FromLong(arc_plane));
-#else
-                PyTuple_SetItem(ret,2,PyLong_FromLong(arc_plane));
-#endif
-            return Py::asObject(ret);
+            Py::List list;
+            for(auto &wire : wires) {
+                list.append(Part::shape2pyshape(TopoDS::Wire(wire)));
+            }
+
+            Py::Tuple ret(need_arc_plane ? 3 : 2);
+            ret.setItem(0, list);
+            ret.setItem(1, Py::asObject(new Base::VectorPy(Base::Vector3d(pend.X(),pend.Y(),pend.Z()))));
+            if (need_arc_plane)
+                ret.setItem(2, Py::Long(arc_plane));
+
+            return ret;
         } PATH_CATCH
     }
 };

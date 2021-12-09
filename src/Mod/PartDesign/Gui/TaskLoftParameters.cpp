@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QAction>
 # include <QRegExp>
 # include <QTextStream>
 # include <QMessageBox>
@@ -49,24 +50,28 @@
 #include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
 
+Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
+
 using namespace PartDesignGui;
 using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
 
-TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*/, QWidget *parent)
-    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_Additive_Loft",tr("Loft parameters"))
+TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj*/, QWidget *parent)
+    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft parameters"))
+    , ui(new Ui_TaskLoftParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskLoftParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    connect(ui->buttonProfileBase, SIGNAL(toggled(bool)),
+            this, SLOT(onProfileButton(bool)));
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
             this, SLOT(onRefButtonAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onRefButtonRemvove(bool)));
+            this, SLOT(onRefButtonRemove(bool)));
     connect(ui->checkBoxRuled, SIGNAL(toggled(bool)),
             this, SLOT(onRuled(bool)));
     connect(ui->checkBoxClosed, SIGNAL(toggled(bool)),
@@ -74,30 +79,69 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
 
+    // Create context menu
+    QAction* remove = new QAction(tr("Remove"), this);
+    remove->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    remove->setShortcutVisibleInContextMenu(true);
+#endif
+    ui->listWidgetReferences->addAction(remove);
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
+
+    connect(ui->listWidgetReferences->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+
     this->groupLayout()->addWidget(proxy);
 
     // Temporarily prevent unnecessary feature recomputes
-    for(QWidget* child : proxy->findChildren<QWidget*>())
+    for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(true);
-    
+
     //add the profiles
-    for(auto obj : static_cast<PartDesign::Loft*>(LoftView->getObject())->Sections.getValues()) {
-    
-        QString objn = QString::fromLatin1(obj->getNameInDocument());
-        if(!objn.isEmpty())
-            ui->listWidgetReferences->addItem(objn);
-    }        
+    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(LoftView->getObject());
+    App::DocumentObject* profile = loft->Profile.getValue();
+    if (profile) {
+        Gui::Application::Instance->showViewProvider(profile);
+
+        // TODO: if it is a single vertex of a sketch, use that subshape's name
+        QString label = make2DLabel(profile, loft->Profile.getSubValues());
+        ui->profileBaseEdit->setText(label);
+    }
+
+    for (auto &subSet : loft->Sections.getSubListValues()) {
+        Gui::Application::Instance->showViewProvider(subSet.first);
+
+        // TODO: if it is a single vertex of a sketch, use that subshape's name
+        QString label = make2DLabel(subSet.first, subSet.second);
+        QListWidgetItem* item = new QListWidgetItem();
+        item->setText(label);
+        item->setData(Qt::UserRole, QVariant::fromValue(subSet));
+        ui->listWidgetReferences->addItem(item);
+    }
+
+    // get options
+    ui->checkBoxRuled->setChecked(loft->Ruled.getValue());
+    ui->checkBoxClosed->setChecked(loft->Closed.getValue());
 
     // activate and de-activate dialog elements as appropriate
-    for(QWidget* child : proxy->findChildren<QWidget*>())
+    for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);
 
-    updateUI(0);
+    updateUI();
 }
 
-void TaskLoftParameters::updateUI(int index)
+TaskLoftParameters::~TaskLoftParameters()
 {
-    Q_UNUSED(index);
+}
+
+void TaskLoftParameters::updateUI()
+{
+    // we must assure the changed loft is kept visible on section changes,
+    // see https://forum.freecadweb.org/viewtopic.php?f=3&t=63252
+    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
+    vp->makeTemporaryVisible(!loft->Sections.getValues().empty());
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -107,30 +151,40 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            if (selectionMode == refAdd) {
-                QString objn = QString::fromStdString(msg.pObjectName);
-                if(!objn.isEmpty())
-                    ui->listWidgetReferences->addItem(objn);
+            App::Document* document = App::GetApplication().getDocument(msg.pDocName);
+            App::DocumentObject* object = document ? document->getObject(msg.pObjectName) : nullptr;
+            if (object) {
+                // TODO: if it is a single vertex of a sketch, use that subshape's name
+                QString label = make2DLabel(object, {msg.pSubName});
+                if (selectionMode == refProfile) {
+                    ui->profileBaseEdit->setText(label);
+                }
+                else if (selectionMode == refAdd) {
+                    QListWidgetItem* item = new QListWidgetItem();
+                    item->setText(label);
+                    item->setData(Qt::UserRole,
+                                  QVariant::fromValue(std::make_pair(object, std::vector<std::string>(1, msg.pSubName))));
+                    ui->listWidgetReferences->addItem(item);
+                }
+                else if (selectionMode == refRemove) {
+                    removeFromListWidget(ui->listWidgetReferences, label);
+                }
             }
-            else if (selectionMode == refRemove) {
-                QString objn = QString::fromStdString(msg.pObjectName);
-                if(!objn.isEmpty())
-                    removeFromListWidget(ui->listWidgetReferences, objn);
-            }
+
             clearButtons();
             //static_cast<ViewProviderLoft*>(vp)->highlightReferences(false, true);
             recomputeFeature();
         }
+
         clearButtons();
         exitSelectionMode();
+        updateUI();
     }
 }
 
-
 bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) const {
 
-    if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
-                (selectionMode == refAdd) || (selectionMode == refRemove))) {
+    if (msg.Type == Gui::SelectionChanges::AddSelection && selectionMode != none) {
 
         if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
             return false;
@@ -144,24 +198,35 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
         //supported, not individual edges of a part
 
         //change the references
-        std::vector<App::DocumentObject*> refs = static_cast<PartDesign::Loft*>(vp->getObject())->Sections.getValues();
-        App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
-        std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
+        PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
+        App::DocumentObject* obj = loft->getDocument()->getObject(msg.pObjectName);
 
-        if (selectionMode == refAdd) {
-            if (f == refs.end())
-                refs.push_back(obj);
-            else
-                return false; // duplicate selection
-        } else {
-            if (f != refs.end())
-                refs.erase(f);
-            else
-                return false;
+        if (selectionMode == refProfile) {
+            loft->Profile.setValue(obj, {msg.pSubName});
+            return true;
         }
+        else if (selectionMode == refAdd || selectionMode == refRemove) {
+            // now check the sections
+            std::vector<App::DocumentObject*> refs = loft->Sections.getValues();
+            std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
 
-        static_cast<PartDesign::Loft*>(vp->getObject())->Sections.setValues(refs);
-        return true;
+            if (selectionMode == refAdd) {
+                if (f == refs.end())
+                    loft->Sections.addValue(obj, {msg.pSubName});
+                else
+                    return false; // duplicate selection
+            }
+            else if (selectionMode == refRemove) {
+                if (f != refs.end())
+                    // Removing just the object this way instead of `refs.erase` and
+                    // `setValues(ref)` cleanly ensures subnames are preserved.
+                    loft->Sections.removeValue(obj);
+                else
+                    return false;
+            }
+
+            return true;
+        }
     }
 
     return false;
@@ -171,68 +236,79 @@ void TaskLoftParameters::removeFromListWidget(QListWidget* widget, QString name)
 
     QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
     if (!items.empty()) {
-        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
-            QListWidgetItem* it = widget->takeItem(widget->row(*i));
-            delete it;
+        for (QList<QListWidgetItem*>::const_iterator it = items.begin(); it != items.end(); ++it) {
+            QListWidgetItem* item = widget->takeItem(widget->row(*it));
+            delete item;
         }
     }
 }
 
-void TaskLoftParameters::clearButtons() {
+void TaskLoftParameters::onDeleteSection()
+{
+    // Delete the selected profile
+    int row = ui->listWidgetReferences->currentRow();
+    QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
+    if (item) {
+        QByteArray data(item->data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>().first->getNameInDocument());
+        delete item;
 
-    ui->buttonRefAdd->setChecked(false);
-    ui->buttonRefRemove->setChecked(false);
+        // search inside the list of sections
+        PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
+        std::vector<App::DocumentObject*> refs = loft->Sections.getValues();
+        App::DocumentObject* obj = loft->getDocument()->getObject(data.constData());
+        std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
+        if (f != refs.end()) {
+            // Removing just the object this way instead of `refs.erase` and
+            // `setValues(ref)` cleanly ensures subnames are preserved.
+            loft->Sections.removeValue(obj);
+
+            //static_cast<ViewProviderLoft*>(vp)->highlightReferences(false, true);
+            recomputeFeature();
+            updateUI();
+        }
+    }
 }
 
-void TaskLoftParameters::exitSelectionMode() {
+void TaskLoftParameters::indexesMoved()
+{
+    QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
+    if (!model)
+        return;
 
+    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
+    auto originals = loft->Sections.getSubListValues();
+
+    QByteArray name;
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; i++) {
+        QModelIndex index = model->index(i, 0);
+        originals[i] = index.data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>();
+    }
+
+    loft->Sections.setSubListValues(originals);
+    recomputeFeature();
+    updateUI();
+}
+
+void TaskLoftParameters::clearButtons(const selectionModes notThis)
+{
+    if (notThis != refProfile)
+        ui->buttonProfileBase->setChecked(false);
+    if (notThis != refAdd)
+        ui->buttonRefAdd->setChecked(false);
+    if (notThis != refRemove)
+        ui->buttonRefRemove->setChecked(false);
+}
+
+void TaskLoftParameters::exitSelectionMode()
+{
     selectionMode = none;
     Gui::Selection().clearSelection();
-}
-
-TaskLoftParameters::~TaskLoftParameters()
-{
-    delete ui;
+    this->blockSelection(true);
 }
 
 void TaskLoftParameters::changeEvent(QEvent * /*e*/)
-{/*
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
-        ui->spinOffset->blockSignals(true);
-        ui->lengthEdit->blockSignals(true);
-        ui->lengthEdit2->blockSignals(true);
-        ui->lineFaceName->blockSignals(true);
-        ui->changeMode->blockSignals(true);
-        int index = ui->changeMode->currentIndex();
-        ui->retranslateUi(proxy);
-        ui->changeMode->clear();
-        ui->changeMode->addItem(tr("Dimension"));
-        ui->changeMode->addItem(tr("To last"));
-        ui->changeMode->addItem(tr("To first"));
-        ui->changeMode->addItem(tr("Up to face"));
-        ui->changeMode->addItem(tr("Two dimensions"));
-        ui->changeMode->setCurrentIndex(index);
-
-        QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
-        QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
-        int faceId = -1;
-        bool ok = false;
-        if (upToFace.indexOf("Face") == 0) {
-            faceId = upToFace.remove(0,4).toInt(&ok);
-        }
-#if QT_VERSION >= 0x040700
-        ui->lineFaceName->setPlaceholderText(tr("No face selected"));
-#endif
-        ui->lineFaceName->setText(ok ?
-                                  parts[0] + QString::fromLatin1(":") + tr("Face") + QString::number(faceId) :
-                                  tr("No face selected"));
-        ui->spinOffset->blockSignals(false);
-        ui->lengthEdit->blockSignals(false);
-        ui->lengthEdit2->blockSignals(false);
-        ui->lineFaceName->blockSignals(false);
-        ui->changeMode->blockSignals(false);
-    }*/
+{
 }
 
 void TaskLoftParameters::onClosed(bool val) {
@@ -245,19 +321,35 @@ void TaskLoftParameters::onRuled(bool val) {
     recomputeFeature();
 }
 
-void TaskLoftParameters::onRefButtonAdd(bool checked) {
+void TaskLoftParameters::onProfileButton(bool checked)
+{
     if (checked) {
+        clearButtons(refProfile);
         Gui::Selection().clearSelection();
-        selectionMode = refAdd;
+        selectionMode = refProfile;
+        this->blockSelection(false);
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
 
-void TaskLoftParameters::onRefButtonRemvove(bool checked) {
-
+void TaskLoftParameters::onRefButtonAdd(bool checked)
+{
     if (checked) {
+        clearButtons(refAdd);
+        Gui::Selection().clearSelection();
+        selectionMode = refAdd;
+        this->blockSelection(false);
+        //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
+    }
+}
+
+void TaskLoftParameters::onRefButtonRemove(bool checked)
+{
+    if (checked) {
+        clearButtons(refRemove);
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
+        this->blockSelection(false);
         //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
     }
 }
@@ -288,8 +380,8 @@ bool TaskDlgLoftParameters::accept()
     // TODO Fill this with commands (2015-09-11, Fat-Zer)
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(vp->getObject());
 
-    for(App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")", obj->getNameInDocument());
+    for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
+        FCMD_OBJ_HIDE(obj);
     }
 
 

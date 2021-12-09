@@ -32,6 +32,8 @@
 
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -46,6 +48,7 @@
 #include <Gui/WaitCursor.h>
 
 #include "../App/PointsFeature.h"
+#include "../App/Structured.h"
 #include "../App/Properties.h"
 #include "DlgPointsReadImp.h"
 #include "ViewProvider.h"
@@ -56,7 +59,7 @@
 //===========================================================================
 // CmdPointsImport
 //===========================================================================
-DEF_STD_CMD_A(CmdPointsImport);
+DEF_STD_CMD_A(CmdPointsImport)
 
 CmdPointsImport::CmdPointsImport()
   : Command("Points_Import")
@@ -75,17 +78,15 @@ void CmdPointsImport::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
-      QString::null, QString(), QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
-      .arg(QObject::tr("Point formats")).arg(QObject::tr("All Files")));
+      QString(), QString(), QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+      .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
     if (fn.isEmpty())
         return;
 
     if (!fn.isEmpty()) {
-        QFileInfo fi;
-        fi.setFile(fn);
-
+        fn = Base::Tools::escapeEncodeFilename(fn);
         Gui::Document* doc = getActiveGuiDocument();
-        openCommand("Import points");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Import points"));
         addModule(Command::App, "Points");
         doCommand(Command::Doc, "Points.insert(\"%s\", \"%s\")",
                   fn.toUtf8().data(), doc->getDocument()->getName());
@@ -103,7 +104,7 @@ bool CmdPointsImport::isActive(void)
         return false;
 }
 
-DEF_STD_CMD_A(CmdPointsExport);
+DEF_STD_CMD_A(CmdPointsExport)
 
 CmdPointsExport::CmdPointsExport()
   : Command("Points_Export")
@@ -125,12 +126,13 @@ void CmdPointsExport::activated(int iMsg)
     std::vector<App::DocumentObject*> points = getSelection().getObjectsOfType(Points::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end(); ++it) {
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-          QString::null, QString(), QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
-          .arg(QObject::tr("Point formats")).arg(QObject::tr("All Files")));
+          QString(), QString(), QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+          .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
         if (fn.isEmpty())
             break;
 
         if (!fn.isEmpty()) {
+            fn = Base::Tools::escapeEncodeFilename(fn);
             doCommand(Command::Doc, "Points.export([App.ActiveDocument.%s], \"%s\")",
                       (*it)->getNameInDocument(), fn.toUtf8().data());
         }
@@ -142,7 +144,7 @@ bool CmdPointsExport::isActive(void)
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
 
-DEF_STD_CMD_A(CmdPointsTransform);
+DEF_STD_CMD_A(CmdPointsTransform)
 
 CmdPointsTransform::CmdPointsTransform()
   :Command("Points_Transform")
@@ -164,7 +166,7 @@ void CmdPointsTransform::activated(int iMsg)
     Base::Placement trans;
     trans.setRotation(Base::Rotation(Base::Vector3d(0.0, 0.0, 1.0), 1.570796));
 
-    openCommand("Transform points");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Transform points"));
     //std::vector<App::DocumentObject*> points = getSelection().getObjectsOfType(Points::Feature::getClassTypeId());
     //for (std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end(); ++it) {
     //    Base::Placement p = static_cast<Points::Feature*>(*it)->Placement.getValue();
@@ -179,7 +181,7 @@ bool CmdPointsTransform::isActive(void)
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
 
-DEF_STD_CMD_A(CmdPointsConvert);
+DEF_STD_CMD_A(CmdPointsConvert)
 
 CmdPointsConvert::CmdPointsConvert()
   :Command("Points_Convert")
@@ -190,24 +192,34 @@ CmdPointsConvert::CmdPointsConvert()
     sToolTipText  = QT_TR_NOOP("Convert to points");
     sWhatsThis    = "Points_Convert";
     sStatusTip    = QT_TR_NOOP("Convert to points");
+    sPixmap       = "Points_Convert";
 }
 
 void CmdPointsConvert::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    double STD_OCC_TOLERANCE = 1e-6;
+
+    int decimals = Base::UnitsApi::getDecimals();
+    double tolerance_from_decimals = pow(10., -decimals);
+
+    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
 
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Distance"),
-        QObject::tr("Enter maximum distance:"), 0.1, 0.05, 10.0, 2, &ok);
+        QObject::tr("Enter maximum distance:"), 0.1, minimal_tolerance, 10.0, decimals, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
 
     Gui::WaitCursor wc;
-    openCommand("Convert to points");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to points"));
     std::vector<App::DocumentObject*> geoObject = getSelection().getObjectsOfType(Base::Type::fromName("App::GeoFeature"));
 
     bool addedPoints = false;
     for (std::vector<App::DocumentObject*>::iterator it = geoObject.begin(); it != geoObject.end(); ++it) {
+        Base::Placement globalPlacement = static_cast<App::GeoFeature*>(*it)->globalPlacement();
+        Base::Placement localPlacement = static_cast<App::GeoFeature*>(*it)->Placement.getValue();
+        localPlacement = globalPlacement * localPlacement.inverse();
         const App::PropertyComplexGeoData* prop = static_cast<App::GeoFeature*>(*it)->getPropertyOfGeometry();
         if (prop) {
             const Data::ComplexGeoData* data = prop->getComplexData();
@@ -240,6 +252,7 @@ void CmdPointsConvert::activated(int iMsg)
                 for (std::vector<Base::Vector3d>::iterator pt = vertexes.begin(); pt != vertexes.end(); ++pt)
                     kernel.push_back(*pt);
                 fea->Points.setValue(kernel);
+                fea->Placement.setValue(localPlacement);
 
                 App::Document* doc = (*it)->getDocument();
                 doc->addObject(fea, "Points");
@@ -260,7 +273,7 @@ bool CmdPointsConvert::isActive(void)
     return getSelection().countObjectsOfType(Base::Type::fromName("App::GeoFeature")) > 0;
 }
 
-DEF_STD_CMD_A(CmdPointsPolyCut);
+DEF_STD_CMD_A(CmdPointsPolyCut)
 
 CmdPointsPolyCut::CmdPointsPolyCut()
   :Command("Points_PolyCut")
@@ -295,7 +308,7 @@ void CmdPointsPolyCut::activated(int iMsg)
         }
 
         Gui::ViewProvider* pVP = getActiveGuiDocument()->getViewProvider( *it );
-        pVP->startEditing();
+        pVP->startEditing(Gui::ViewProvider::Cutting);
     }
 }
 
@@ -316,6 +329,7 @@ CmdPointsMerge::CmdPointsMerge()
     sToolTipText  = QT_TR_NOOP("Merge several point clouds into one");
     sWhatsThis    = "Points_Merge";
     sStatusTip    = QT_TR_NOOP("Merge several point clouds into one");
+    sPixmap       = "Points_Merge";
 }
 
 void CmdPointsMerge::activated(int iMsg)
@@ -347,6 +361,114 @@ bool CmdPointsMerge::isActive(void)
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 1;
 }
 
+DEF_STD_CMD_A(CmdPointsStructure)
+
+CmdPointsStructure::CmdPointsStructure()
+  :Command("Points_Structure")
+{
+    sAppModule    = "Points";
+    sGroup        = QT_TR_NOOP("Points");
+    sMenuText     = QT_TR_NOOP("Structured point cloud");
+    sToolTipText  = QT_TR_NOOP("Convert points to structured point cloud");
+    sWhatsThis    = "Points_Structure";
+    sStatusTip    = QT_TR_NOOP("Convert points to structured point cloud");
+    sPixmap       = "Points_Structure";
+}
+
+void CmdPointsStructure::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    doc->openTransaction("Structure point cloud");
+
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
+    for (auto it : docObj) {
+        std::string name = it->Label.getValue();
+        name += " (Structured)";
+        Points::Structured* output = static_cast<Points::Structured*>(doc->addObject("Points::Structured", name.c_str()));
+        output->Label.setValue(name);
+
+        // Already sorted, so just make a copy
+        if (it->getTypeId().isDerivedFrom(Points::Structured::getClassTypeId())) {
+            Points::Structured* input = static_cast<Points::Structured*>(it);
+
+            Points::PointKernel* kernel = output->Points.startEditing();
+            const Points::PointKernel& k = input->Points.getValue();
+
+            kernel->resize(k.size());
+            for (std::size_t i=0; i<k.size(); ++i) {
+                kernel->setPoint(i, k.getPoint(i));
+            }
+            output->Points.finishEditing();
+            output->Width.setValue(input->Width.getValue());
+            output->Height.setValue(input->Height.getValue());
+        }
+        // Sort the points
+        else {
+            Points::Feature* input = static_cast<Points::Feature*>(it);
+
+            Points::PointKernel* kernel = output->Points.startEditing();
+            const Points::PointKernel& k = input->Points.getValue();
+
+            Base::BoundBox3d bbox = input->Points.getBoundingBox();
+            double width = bbox.LengthX();
+            double height = bbox.LengthY();
+
+            // Count the number of different x or y values to get the size
+            std::set<double> countX, countY;
+            for (std::size_t i=0; i<k.size(); ++i) {
+                Base::Vector3d pnt = k.getPoint(i);
+                countX.insert(pnt.x);
+                countY.insert(pnt.y);
+            }
+
+            long width_l = long(countX.size());
+            long height_l = long(countY.size());
+
+            double dx = width / (width_l - 1);
+            double dy = height / (height_l - 1);
+
+            // Pre-fill the vector with <nan, nan, nan> points and afterwards replace them
+            // with valid point coordinates
+            double nan = std::numeric_limits<double>::quiet_NaN();
+            std::vector<Base::Vector3d> sortedPoints(width_l * height_l, Base::Vector3d(nan, nan, nan));
+
+            for (std::size_t i=0; i<k.size(); ++i) {
+                Base::Vector3d pnt = k.getPoint(i);
+                double xi = (pnt.x - bbox.MinX) / dx;
+                double yi = (pnt.y - bbox.MinY) / dy;
+
+                double xx = std::fabs(xi - std::round(xi));
+                double yy = std::fabs(yi - std::round(yi));
+                if (xx < 0.01 && yy < 0.01) {
+                    xi = std::round(xi);
+                    yi = std::round(yi);
+                    long index = long(yi * width_l + xi);
+                    sortedPoints[index] = pnt;
+                }
+            }
+
+            kernel->resize(sortedPoints.size());
+            for (std::size_t index = 0; index < sortedPoints.size(); index++) {
+                kernel->setPoint(index, sortedPoints[index]);
+            }
+
+            output->Points.finishEditing();
+            output->Width.setValue(width_l);
+            output->Height.setValue(height_l);
+        }
+    }
+
+    doc->commitTransaction();
+    updateActive();
+}
+
+bool CmdPointsStructure::isActive(void)
+{
+    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) == 1;
+}
+
 void CreatePointsCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -356,4 +478,5 @@ void CreatePointsCommands(void)
     rcCmdMgr.addCommand(new CmdPointsConvert());
     rcCmdMgr.addCommand(new CmdPointsPolyCut());
     rcCmdMgr.addCommand(new CmdPointsMerge());
+    rcCmdMgr.addCommand(new CmdPointsStructure());
 }

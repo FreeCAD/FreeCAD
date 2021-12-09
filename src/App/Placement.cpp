@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -51,6 +51,14 @@ Placement::~Placement(void)
 
 
 
+// Python feature ---------------------------------------------------------
+namespace App {
+PROPERTY_SOURCE_TEMPLATE(App::PlacementPython, App::Placement)
+template<> const char* App::PlacementPython::getViewProviderName(void) const {
+   return "Gui::ViewProviderPlacementPython";
+}
+template class AppExport FeaturePythonT<App::Placement>;
+}
 
 
 

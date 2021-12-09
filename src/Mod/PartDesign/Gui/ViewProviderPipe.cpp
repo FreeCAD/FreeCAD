@@ -25,9 +25,12 @@
 
 #ifndef _PreComp_
 # include <QMessageBox>
-#include <QMenu>
+# include <QMenu>
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include "Utils.h"
 #include "ViewProviderPipe.h"
 //#include "TaskPipeParameters.h"
 #include "TaskPipeParameters.h"
@@ -38,8 +41,7 @@
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+
 
 using namespace PartDesignGui;
 
@@ -63,6 +65,11 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
     if (sketch != NULL)
         temp.push_back(sketch);
 
+    for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
+        if (obj != NULL && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+            temp.push_back(obj);
+    }
+
     App::DocumentObject* spine = pcPipe->Spine.getValue();
     if (spine != NULL && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(spine);
@@ -76,21 +83,14 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
 
 void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit pipe"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
-}
-
-bool ViewProviderPipe::doubleClicked(void)
-{
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
-    return true;
+    addDefaultAction(menu, QObject::tr("Edit pipe"));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderPipe::setEdit(int ModNum) {
-    if (ModNum == ViewProvider::Default ) 
+    if (ModNum == ViewProvider::Default )
         setPreviewDisplayMode(true);
-    
+
     return PartDesignGui::ViewProvider::setEdit(ModNum);
 }
 
@@ -122,46 +122,71 @@ bool ViewProviderPipe::onDelete(const std::vector<std::string> &s)
 
 
 
-void ViewProviderPipe::highlightReferences(const bool on, bool auxiliary)
+void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, bool on)
 {
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
-    Part::Feature* base;
-    if(!auxiliary)
-        base = static_cast<Part::Feature*>(pcPipe->Spine.getValue());
-    else 
-        base = static_cast<Part::Feature*>(pcPipe->AuxillerySpine.getValue());
-    
-    if (base == NULL) return;
+
+    switch (mode) {
+    case Spine:
+        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->Spine.getValue()),
+                            pcPipe->Spine.getSubValuesStartsWith("Edge"), on);
+        break;
+    case AuxiliarySpine:
+        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->AuxillerySpine.getValue()),
+                            pcPipe->AuxillerySpine.getSubValuesStartsWith("Edge"), on);
+        break;
+    case Profile:
+        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->Profile.getValue()),
+                            pcPipe->Profile.getSubValuesStartsWith("Edge"), on);
+        break;
+    case Section:
+        {
+            std::vector<App::DocumentObject*> sections = pcPipe->Sections.getValues();
+            for (auto it : sections) {
+                highlightReferences(dynamic_cast<Part::Feature*>(it),
+                                    std::vector<std::string>(), on);
+            }
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vector<std::string>& edges, bool on) {
+
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));
-    if (svp == NULL) return;
+    if (svp == nullptr)
+        return;
 
-    std::vector<std::string> edges;
-    if(!auxiliary)
-        edges = pcPipe->Spine.getSubValuesStartsWith("Edge");
-    else 
-        edges = pcPipe->AuxillerySpine.getSubValuesStartsWith("Edge");
+    std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
 
-    if (on) {        
-         if (!edges.empty() && originalLineColors.empty()) {
+    if (on) {
+         if (edgeColors.empty()) {
             TopTools_IndexedMapOfShape eMap;
             TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
-            originalLineColors = svp->LineColorArray.getValues();
-            std::vector<App::Color> colors = originalLineColors;
+            edgeColors = svp->LineColorArray.getValues();
+            std::vector<App::Color> colors = edgeColors;
             colors.resize(eMap.Extent(), svp->LineColor.getValue());
 
-            for (std::string e : edges) {
-                int idx = std::stoi(e.substr(4)) - 1;
-                assert ( idx >= 0 );
-                if ( idx < (ssize_t) colors.size() )
-                    colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+            if (!edges.empty()) {
+                for (std::string e : edges) {
+                    int idx = std::stoi(e.substr(4)) - 1;
+                    assert ( idx >= 0 );
+                    if ( idx < (ssize_t) colors.size() )
+                        colors[idx] = App::Color(1.0f,0.0f,1.0f); // magenta
+                }
+            }
+            else {
+                std::fill(colors.begin(), colors.end(), App::Color(0.6f,0.0f,1.0f)); // purple
             }
             svp->LineColorArray.setValues(colors);
         }
     } else {
-        if (!edges.empty() && !originalLineColors.empty()) {
-            svp->LineColorArray.setValues(originalLineColors);
-            originalLineColors.clear();
+        if (!edgeColors.empty()) {
+            svp->LineColorArray.setValues(edgeColors);
+            edgeColors.clear();
         }
     }
 }
@@ -170,11 +195,11 @@ QIcon ViewProviderPipe::getIcon(void) const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Pipe*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive_");
+        str += QString::fromLatin1("Additive");
     else
-        str += QString::fromLatin1("Subtractive_");
- 
+        str += QString::fromLatin1("Subtractive");
+
     str += QString::fromLatin1("Pipe.svg");
-    return Gui::BitmapFactory().pixmap(str.toStdString().c_str());
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

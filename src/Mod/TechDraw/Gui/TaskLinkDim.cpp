@@ -86,7 +86,6 @@ TaskLinkDim::TaskLinkDim(std::vector<App::DocumentObject*> parts, std::vector<st
 
 TaskLinkDim::~TaskLinkDim()
 {
-    delete ui;
 }
 
 void TaskLinkDim::loadAvailDims()
@@ -99,12 +98,7 @@ void TaskLinkDim::loadAvailDims()
     std::vector<App::DocumentObject*> pageViews = m_page->Views.getValues();
     std::vector<App::DocumentObject*>::iterator itView = pageViews.begin();
     std::string result;
-    int selRefType = 0;   //invalidRef;
-    if (m_subs.size() == 1) {
-        selRefType = TechDraw::DrawViewDimension::getRefType1(m_subs[0]);
-    } else {
-        selRefType = TechDraw::DrawViewDimension::getRefType2(m_subs[0],m_subs[1]);
-    }
+    int selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
     int found = 0;
     for (; itView != pageViews.end(); itView++) {
         if ((*itView)->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
@@ -154,13 +148,7 @@ bool TaskLinkDim::dimReferencesSelection(const TechDraw::DrawViewDimension* dim)
         return result;
     }
 
-    //Part::Feature* refPart = static_cast<Part::Feature*>(dim->References3D.getValues().at(0));
-    std::vector<Part::Feature*> refParts;
-    std::vector<App::DocumentObject*> docObjs = dim->References3D.getValues();
-    for (auto& d: docObjs) {
-        Part::Feature* part = static_cast<Part::Feature*>(d);
-        refParts.push_back(part);
-    }
+    std::vector<App::DocumentObject*> refParts = dim->References3D.getValues();
     std::vector<std::string> refSubs = dim->References3D.getSubValues();
     if (refParts.size() == m_parts.size()) {
         if(refParts.size() == 0) {
@@ -277,7 +265,7 @@ TaskDlgLinkDim::TaskDlgLinkDim(std::vector<App::DocumentObject*> parts,std::vect
     TaskDialog()
 {
     widget  = new TaskLinkDim(parts,subs,page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Dimension_Link"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_LinkDimension"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

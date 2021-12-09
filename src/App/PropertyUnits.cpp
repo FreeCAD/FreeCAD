@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -40,6 +40,8 @@
 #include "PropertyUnits.h"
 #include <Base/PyObjectBase.h>
 #include <Base/QuantityPy.h>
+#include <Base/UnitPy.h>
+#include "Expression.h"
 
 using namespace App;
 using namespace Base;
@@ -54,7 +56,7 @@ const PropertyQuantityConstraint::Constraints AngleStandard = {-360,360,1.0};
 // PropertyQuantity
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat);
+TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat)
 
 Base::Quantity PropertyQuantity::getQuantityValue(void) const
 {
@@ -76,25 +78,10 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
     Base::Quantity quant;
 
     if (PyUnicode_Check(value)){
-#if PY_MAJOR_VERSION >= 3
         quant = Quantity::parse(QString::fromUtf8(PyUnicode_AsUTF8(value)));
     }
-#else
-        PyObject* unicode = PyUnicode_AsUTF8String(value);
-        std::string Str;
-        Str = PyString_AsString(unicode);
-        quant = Quantity::parse(QString::fromUtf8(Str.c_str()));
-        Py_DECREF(unicode);
-    }
-    else if (PyString_Check(value))
-        quant = Quantity::parse(QString::fromLatin1(PyString_AsString(value)));
-#endif
     else if (PyFloat_Check(value))
         quant = Quantity(PyFloat_AsDouble(value),_Unit);
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(value))
-        quant = Quantity((double)PyInt_AsLong(value),_Unit);
-#endif
     else if (PyLong_Check(value))
         quant = Quantity((double)PyLong_AsLong(value),_Unit);
     else if (PyObject_TypeCheck(value, &(QuantityPy::Type))) {
@@ -113,28 +100,40 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
 
 void PropertyQuantity::setPyObject(PyObject *value)
 {
-    Base::Quantity quant= createQuantityFromPy(value);
-
-    Unit unit = quant.getUnit();
-    if (unit.isEmpty()){
-        PropertyFloat::setValue(quant.getValue());
-        return;
+    // Set the unit if Unit object supplied, else check the unit
+    // and set the value
+    
+    if (PyObject_TypeCheck(value, &(UnitPy::Type))) {
+        Base::UnitPy  *pcObject = static_cast<Base::UnitPy*>(value);
+        Base::Unit unit = *(pcObject->getUnitPtr());
+        aboutToSetValue();
+        _Unit = unit;
+        hasSetValue();
     }
+    else {
+        Base::Quantity quant= createQuantityFromPy(value);
 
-    if (unit != _Unit)
-        throw Base::UnitsMismatchError("Not matching Unit!");
+        Unit unit = quant.getUnit();
+        if (unit.isEmpty()){
+            PropertyFloat::setValue(quant.getValue());
+            return;
+        }
 
-    PropertyFloat::setValue(quant.getValue());
+        if (unit != _Unit)
+            throw Base::UnitsMismatchError("Not matching Unit!");
+
+        PropertyFloat::setValue(quant.getValue());
+    }
 }
 
 void PropertyQuantity::setPathValue(const ObjectIdentifier & /*path*/, const boost::any &value)
 {
-    if (value.type() == typeid(double))
-        setValue(boost::any_cast<double>(value));
-    else if (value.type() == typeid(Base::Quantity))
-        setValue((boost::any_cast<Quantity>(value)).getValue());
-    else
-        throw bad_cast();
+    auto q = App::anyToQuantity(value);
+    aboutToSetValue();
+    if(!q.getUnit().isEmpty())
+        _Unit = q.getUnit();
+    _dValue=q.getValue();
+    setValue(q.getValue());
 }
 
 const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*/) const
@@ -147,7 +146,7 @@ const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*
 // PropertyQuantityConstraint
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyQuantityConstraint, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertyQuantityConstraint, App::PropertyQuantity)
 
 
 
@@ -165,6 +164,27 @@ const char* PropertyQuantityConstraint::getEditorName(void) const
 const PropertyQuantityConstraint::Constraints*  PropertyQuantityConstraint::getConstraints(void) const
 {
     return _ConstStruct;
+}
+
+double PropertyQuantityConstraint::getMinimum() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->LowerBound;
+    return std::numeric_limits<double>::min();
+}
+
+double PropertyQuantityConstraint::getMaximum() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->UpperBound;
+    return std::numeric_limits<double>::max();
+}
+
+double PropertyQuantityConstraint::getStepSize() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->StepSize;
+    return 1.0;
 }
 
 void PropertyQuantityConstraint::setPyObject(PyObject *value)
@@ -197,7 +217,7 @@ void PropertyQuantityConstraint::setPyObject(PyObject *value)
 // PropertyDistance
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyDistance, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertyDistance, App::PropertyQuantity)
 
 PropertyDistance::PropertyDistance()
 {
@@ -206,10 +226,22 @@ PropertyDistance::PropertyDistance()
 
 //**************************************************************************
 //**************************************************************************
+// PropertyFrequency
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyFrequency, App::PropertyQuantity)
+
+PropertyFrequency::PropertyFrequency()
+{
+    setUnit(Base::Unit::Frequency);
+}
+
+//**************************************************************************
+//**************************************************************************
 // PropertySpeed
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertySpeed, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertySpeed, App::PropertyQuantity)
 
 PropertySpeed::PropertySpeed()
 {
@@ -221,7 +253,7 @@ PropertySpeed::PropertySpeed()
 // PropertyAcceleration
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyAcceleration, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertyAcceleration, App::PropertyQuantity)
 
 PropertyAcceleration::PropertyAcceleration()
 {
@@ -233,7 +265,7 @@ PropertyAcceleration::PropertyAcceleration()
 // PropertyLength
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint);
+TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint)
 
 PropertyLength::PropertyLength()
 {
@@ -246,7 +278,7 @@ PropertyLength::PropertyLength()
 // PropertyArea
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyArea, App::PropertyQuantityConstraint);
+TYPESYSTEM_SOURCE(App::PropertyArea, App::PropertyQuantityConstraint)
 
 PropertyArea::PropertyArea()
 {
@@ -259,7 +291,7 @@ PropertyArea::PropertyArea()
 // PropertyVolume
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyVolume, App::PropertyQuantityConstraint);
+TYPESYSTEM_SOURCE(App::PropertyVolume, App::PropertyQuantityConstraint)
 
 PropertyVolume::PropertyVolume()
 {
@@ -272,7 +304,7 @@ PropertyVolume::PropertyVolume()
 // PropertyAngle
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyAngle, App::PropertyQuantityConstraint);
+TYPESYSTEM_SOURCE(App::PropertyAngle, App::PropertyQuantityConstraint)
 
 PropertyAngle::PropertyAngle()
 {
@@ -285,7 +317,7 @@ PropertyAngle::PropertyAngle()
 // PropertyPressure
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPressure, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertyPressure, App::PropertyQuantity)
 
 PropertyPressure::PropertyPressure()
 {
@@ -294,13 +326,36 @@ PropertyPressure::PropertyPressure()
 
 //**************************************************************************
 //**************************************************************************
+// PropertyStiffness
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyStiffness, App::PropertyQuantity)
+
+PropertyStiffness::PropertyStiffness()
+{
+    setUnit(Base::Unit::Stiffness);
+}
+
+//**************************************************************************
+//**************************************************************************
 // PropertyForce
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyForce, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertyForce, App::PropertyQuantity)
 
 PropertyForce::PropertyForce()
 {
     setUnit(Base::Unit::Force);
 }
 
+//**************************************************************************
+//**************************************************************************
+// PropertyVacuumPermittivity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVacuumPermittivity, App::PropertyQuantity)
+
+PropertyVacuumPermittivity::PropertyVacuumPermittivity()
+{
+    setUnit(Base::Unit::VacuumPermittivity);
+}

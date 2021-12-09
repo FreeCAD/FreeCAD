@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -307,8 +307,10 @@ private:
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->getTypeId().isDerivedFrom(pointsId)) {
-
+                    // get relative placement
                     Points::Feature* fea = static_cast<Points::Feature*>(obj);
+                    Base::Placement globalPlacement = fea->globalPlacement();
+
                     const PointKernel& kernel = fea->Points.getValue();
                     std::unique_ptr<Writer> writer;
                     if (file.hasExtension("asc")) {
@@ -354,6 +356,7 @@ private:
                         writer->setNormals(nor->getValues());
                     }
 
+                    writer->setPlacement(globalPlacement);
                     writer->write(encodedName);
 
                     break;

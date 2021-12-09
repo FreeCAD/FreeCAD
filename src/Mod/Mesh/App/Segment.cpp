@@ -43,7 +43,7 @@ Segment::Segment(MeshObject* mesh, bool mod)
 {
 }
 
-Segment::Segment(MeshObject* mesh, const std::vector<unsigned long>& inds, bool mod)
+Segment::Segment(MeshObject* mesh, const std::vector<FacetIndex>& inds, bool mod)
   : _mesh(mesh)
   , _indices(inds)
   , _save(false)
@@ -53,7 +53,7 @@ Segment::Segment(MeshObject* mesh, const std::vector<unsigned long>& inds, bool 
         _mesh->updateMesh(inds);
 }
 
-void Segment::addIndices(const std::vector<unsigned long>& inds)
+void Segment::addIndices(const std::vector<FacetIndex>& inds)
 {
     _indices.insert(_indices.end(), inds.begin(), inds.end());
     std::sort(_indices.begin(), _indices.end());
@@ -62,23 +62,34 @@ void Segment::addIndices(const std::vector<unsigned long>& inds)
         _mesh->updateMesh(inds);
 }
 
-void Segment::removeIndices(const std::vector<unsigned long>& inds)
+void Segment::removeIndices(const std::vector<FacetIndex>& inds)
 {
     // make difference
-    std::vector<unsigned long> result;
-    std::set<unsigned long> s1(_indices.begin(), _indices.end());
-    std::set<unsigned long> s2(inds.begin(), inds.end());
+    std::vector<FacetIndex> result;
+    std::set<FacetIndex> s1(_indices.begin(), _indices.end());
+    std::set<FacetIndex> s2(inds.begin(), inds.end());
     std::set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(),
-        std::back_insert_iterator<std::vector<unsigned long> >(result));
+        std::back_insert_iterator<std::vector<FacetIndex> >(result));
   
     _indices = result;
     if (_modifykernel)
         _mesh->updateMesh();
 }
 
-const std::vector<unsigned long>& Segment::getIndices() const
+const std::vector<FacetIndex>& Segment::getIndices() const
 {
     return _indices;
+}
+
+Segment::Segment(const Segment& s)
+  : _mesh(s._mesh)
+  , _indices(s._indices)
+  , _name(s._name)
+  , _color(s._color)
+  , _save(s._save)
+  , _modifykernel(s._modifykernel)
+{
+
 }
 
 const Segment& Segment::operator = (const Segment& s)
@@ -98,7 +109,7 @@ bool Segment::operator == (const Segment& s) const
 
 // ----------------------------------------------------------------------------
 
-Segment::const_facet_iterator::const_facet_iterator(const Segment* segm, std::vector<unsigned long>::const_iterator it)
+Segment::const_facet_iterator::const_facet_iterator(const Segment* segm, std::vector<FacetIndex>::const_iterator it)
   : _segment(segm), _f_it(segm->_mesh->getKernel()), _it(it)
 {
     this->_f_it.Set(0);

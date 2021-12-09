@@ -4,7 +4,7 @@
 pkgname=freecad-svn 
 pkgver=2152 
 pkgrel=2 
-pkgdesc="A general purpose 3D CAD modeler, aimed directly at mechanical engineering and product design but also architecture or other engineering specialties" 
+pkgdesc="A general purpose 3D CAD modeler, aimed directly at mechanical engineering and product design but also architecture or other engineering specialities" 
 arch=('x86_64') 
 url="https://sourceforge.net/apps/mediawiki/free-cad/" 
 license=('GPL') 

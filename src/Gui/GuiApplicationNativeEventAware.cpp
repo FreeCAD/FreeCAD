@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <algorithm>
+#include <iomanip>
+#include <sstream>
 
 #include <QGlobalStatic>
-#ifdef Q_WS_X11
-#include <QX11Info>
-#endif
 #include <QMainWindow>
 #include <QWidget>
 #include <FCConfig.h>
@@ -34,140 +34,49 @@
 #include "SpaceballEvent.h"
 #include "Application.h"
 
-//linux dependency libspnav-dev
-#ifdef Q_WS_X11
-#ifdef SPNAV_FOUND
-#include <spnav.h>
-#endif
-#endif
-
-#ifdef _USE_3DCONNEXION_SDK
-//windows
-#ifdef Q_OS_WIN
-Gui::GUIApplicationNativeEventAware* Gui::GUIApplicationNativeEventAware::gMouseInput = 0;
-#endif
-#endif //_USE_3DCONNEXION_SDK
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+#if defined(Q_OS_LINUX)
+  #if defined(SPNAV_USE_X11)
+    #include "3Dconnexion/GuiNativeEventLinuxX11.h"
+  #else
+    #include "3Dconnexion/GuiNativeEventLinux.h"
+  #endif
+#elif defined(Q_OS_WIN)
+  #include "3Dconnexion/GuiNativeEventWin32.h"
+#elif defined(Q_OS_MACX)
+  #include "3Dconnexion/GuiNativeEventMac.h"
+#endif // Platform switch
+#endif // Spacemice
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, char *argv[]) :
         QApplication (argc, argv), spaceballPresent(false)
 {
-    mainWindow = 0;
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+    nativeEvent = new Gui::GuiNativeEvent(this);
+#endif
 }
 
 Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
 {
-#ifdef Q_WS_X11
-#ifdef SPNAV_FOUND
-    if (spnav_close())
-        Base::Console().Log("Couldn't disconnect from spacenav daemon\n");
-    else
-        Base::Console().Log("Disconnected from spacenav daemon\n");
-#endif
-#endif
-
-#ifdef _USE_3DCONNEXION_SDK
-#ifdef Q_OS_WIN
-    if (gMouseInput == this) {
-        gMouseInput = 0;
-        Base::Console().Log("3Dconnexion device detached.\n");
-    }
-#endif
-//mac
-#ifdef Q_OS_MACX
-    // if 3Dconnexion library was loaded at runtime
-    if (InstallConnexionHandlers) {
-        // Close our connection with the 3dx driver
-        if (tdxClientID)
-            UnregisterConnexionClient(tdxClientID);
-        CleanupConnexionHandlers();
-        Base::Console().Log("Disconnected from 3Dconnexion driver\n");
-    }
-#endif
-#endif
 }
 
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {
-    mainWindow = window;
-
-#ifdef Q_WS_X11
-#ifdef SPNAV_FOUND
-    if (spnav_x11_open(QX11Info::display(), window->winId()) == -1)
-        Base::Console().Log("Couldn't connect to spacenav daemon\n");
-    else
-    {
-        Base::Console().Log("Connected to spacenav daemon\n");
-        spaceballPresent = true;
-    }
-#endif
-#endif
-
-#ifdef _USE_3DCONNEXION_SDK
-#ifdef Q_OS_WIN
-    spaceballPresent = Is3dmouseAttached();
-
-    if (spaceballPresent) {
-        fLast3dmouseInputTime = 0;
-
-        if (InitializeRawInput((HWND)mainWindow->winId())){
-            gMouseInput = this;
-#if QT_VERSION >= 0x050000
-            qApp->installNativeEventFilter(new Gui::RawInputEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter));
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+    nativeEvent->initSpaceball(window);
 #else
-            qApp->setEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter);
+    Q_UNUSED(window);
 #endif
-            Base::Console().Log("3Dconnexion device initialized.\n");
-        } else {
-            Base::Console().Log("3Dconnexion device is attached, but not initialized.\n");
-        }
-    } else {
-        Base::Console().Log("3Dconnexion device not attached.\n");
-    }
-#endif // #ifdef Q_OS_WIN
-//mac
-#ifdef Q_OS_MACX
-    OSStatus err;
-    /* make sure the framework is installed */
-    if (InstallConnexionHandlers == NULL)
-    {
-        Base::Console().Log("3Dconnexion framework not found!\n");
-        return;
-    }
-    /* install 3dx message handler in order to receive driver events */
-    err = InstallConnexionHandlers(tdx_drv_handler, 0L, 0L);
-    assert(err == 0);
-    if (err)
-    {
-        Base::Console().Log("Error installing 3Dconnexion handler\n");
-        return;
-    }
-    /* register our app with the driver */
-    // Pascal string Application name required to register driver for application
-    UInt8  tdxAppName[] = {7,'F','r','e','e','C','A','D'};
-    // 32bit appID to register driver for application
-    UInt32 tdxAppID = 'FCAd';
-    tdxClientID = RegisterConnexionClient( tdxAppID, tdxAppName,
-                                           kConnexionClientModeTakeOver,
-                                           kConnexionMaskAll );
-    if (tdxClientID == 0)
-    {
-        Base::Console().Log("Couldn't connect to 3Dconnexion driver\n");
-        return;
-    }
-    
-    Base::Console().Log("3Dconnexion driver initialized. Client ID: %d\n", tdxClientID);
-    spaceballPresent = true;
-#endif
-#endif // _USE_3DCONNEXION_SDK
-
     Spaceball::MotionEvent::MotionEventType = QEvent::registerEventType();
     Spaceball::ButtonEvent::ButtonEventType = QEvent::registerEventType();
 }
 
 bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object, QEvent *event)
 {
-    if (!activeWindow())
+    if (!activeWindow()) {
+        qDebug("No active window\n");
         return true;
+    }
 
     QApplication::notify(object, event);
     if (event->type() == Spaceball::MotionEvent::MotionEventType)
@@ -198,6 +107,39 @@ bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object,
     return true;
 }
 
+void Gui::GUIApplicationNativeEventAware::postMotionEvent(std::vector<int> motionDataArray)
+{
+	auto currentWidget(focusWidget());
+    if (!currentWidget) {
+        return;
+    }
+    importSettings(motionDataArray);
+
+	Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
+    motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
+    motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
+    this->postEvent(currentWidget, motionEvent);
+}
+
+void Gui::GUIApplicationNativeEventAware::postButtonEvent(int buttonNumber, int buttonPress)
+{
+	auto currentWidget(focusWidget());
+    if (!currentWidget) {
+        return;
+    }
+
+    Spaceball::ButtonEvent *buttonEvent = new Spaceball::ButtonEvent();
+    buttonEvent->setButtonNumber(buttonNumber);
+    if (buttonPress)
+    {
+	  buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
+    }
+    else
+    {
+	  buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
+    }
+    this->postEvent(currentWidget, buttonEvent);
+}
 
 float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
 {
@@ -211,43 +153,32 @@ float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
     }
 }
 
-// This function modifies motionDataArray to be OS independent
-// on some OSes these axes are inverted, and some are switched - this method sets them up like this:
-
-// motionDataArray[0] - pan Left - Right with mouse - pan Left(Left) - Right(Left) on screen
-// motionDataArray[1] - pan Front - Back with mouse - pan Up(Front) - Down(Back)   on screen
-// motionDataArray[2] - pan Up - Down    with mouse - zoom In(Up) - Out(Down)      on screen
-// motionDataArray[3] - lean mouse Left-Right       - rotate around Vertical    axis on screen
-// motionDataArray[4] - lean mouse Front - Back     - rotate around Horizointal axis on screen on screen
-// motionDataArray[5] - Spin mouse                  - rotate around "Zoom"      axis on screen
-
-
-bool Gui::GUIApplicationNativeEventAware::setOSIndependentMotionData()
-{
-#ifdef SPNAV_FOUND
-    int temp;
-    motionDataArray[0] = -motionDataArray[0];
-    motionDataArray[3] = -motionDataArray[3];
-
-    temp = motionDataArray[1];
-    motionDataArray[1] = -motionDataArray[2];
-    motionDataArray[2] = -temp;
-
-    temp = motionDataArray[4];
-    motionDataArray[4] = -motionDataArray[5];
-    motionDataArray[5] = -temp;
-#elif _USE_3DCONNEXION_SDK
-    motionDataArray[0] = -motionDataArray[0];
-    motionDataArray[3] = -motionDataArray[3];
-#else
-    return false;
-#endif
-    return true;
-}
-
-void Gui::GUIApplicationNativeEventAware::importSettings()
+void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motionDataArray)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Spaceball")->GetGroup("Motion");
+
+    // Remapping of motion data
+    long remap = group->GetInt("Remapping", 12345);
+    if (remap != 12345) {
+        std::stringstream s;
+        s << std::setfill('0') << std::setw(6) << remap;
+
+        std::string str;
+        s >> str;
+
+        // the string must have a length of 6 and it must contain all digits 0,...,5
+        std::string::size_type pos1 = str.find_first_not_of("012345");
+        std::string::size_type pos2 = std::string("012345").find_first_not_of(str);
+        if (pos1 == std::string::npos && pos2 == std::string::npos) {
+            std::vector<int> vec(str.size());
+            std::transform(str.begin(), str.end(), vec.begin(), [](char c) -> int { return c - '0';});
+
+            std::vector<int> copy = motionDataArray;
+            for (int i=0; i<6; i++) {
+                motionDataArray[i] = copy[vec[i]];
+            }
+        }
+    }
 
     // here I import settings from a dialog. For now they are set as is
     bool  dominant           = group->GetBool("Dominant"); // Is dominant checked
@@ -374,142 +305,5 @@ void Gui::GUIApplicationNativeEventAware::importSettings()
         }
     }
 }
-
-
-#ifdef Q_WS_X11
-bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
-{
-#ifdef SPNAV_FOUND
-    /*
-    First we check if we have a motion flush event:
-    - If there are unprocessed motion events we are in a flooding situation.
-      In that case we wait with generating a Spaceball event.
-    - A motion event counter of 0 indicates that FreeCAD is ready to process
-      the event. A Spaceball event, using the saved motion data, is posted.
-    */
-    static Display* display = QX11Info::display();
-    static Atom motion_flush_event = XInternAtom(display, "FCMotionFlushEvent", false);
-    static int nMotionEvents = 0;
-
-    QWidget *currentWidget = this->focusWidget();
-    if (!currentWidget)
-        currentWidget = mainWindow;
-
-    if (event->type == ClientMessage)
-    {
-        Atom message_type = event->xclient.message_type;
-        
-        if (message_type == motion_flush_event)
-        {
-            nMotionEvents--;
-            if (nMotionEvents == 0)
-            {
-                importSettings();
-                
-                Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
-                
-                motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
-                motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
-
-                this->postEvent(currentWidget, motionEvent);
-            }
-            
-            return true;
-        } // XEvent: motion_flush_event
-    } // XEvent: ClientMessage
-
-    /*
-    From here on we deal with spacenav events only:
-    - motion: The event data is saved and a self addressed flush event
-              is sent through the window system (XEvent). 
-              In the case of an event flooding, the motion data is added up.
-    - button: A Spaceball event is posted (QInputEvent).
-    */
-    spnav_event navEvent;
-    if (!spnav_x11_event(event, &navEvent))
-        return false;
-
-    if (navEvent.type == SPNAV_EVENT_MOTION)
-    {
-        /*
-        If the motion data of the preceding event has not been processed
-        through posting an Spaceball event (flooding situation), 
-        the motion data provided by the incoming event is added to the saved data. 
-        */
-    	int dx, dy, dz, drx, dry, drz;
-
-        if (nMotionEvents == 0)
-        {
-            dx = 0;
-            dy = 0;
-            dz = 0;
-            drx = 0;
-            dry = 0;
-            drz = 0;
-        }
-        else
-        {
-            dx = motionDataArray[0];
-            dy = motionDataArray[1];
-            dz = motionDataArray[2];
-            drx = motionDataArray[3];
-            dry = motionDataArray[4];
-            drz = motionDataArray[5];
-        }
-        
-        motionDataArray[0] = navEvent.motion.x;
-        motionDataArray[1] = navEvent.motion.y;
-        motionDataArray[2] = navEvent.motion.z;
-        motionDataArray[3] = navEvent.motion.rx;
-        motionDataArray[4] = navEvent.motion.ry;
-        motionDataArray[5] = navEvent.motion.rz;
-
-        if (!setOSIndependentMotionData()) return false;
-        
-        motionDataArray[0] += dx;
-        motionDataArray[1] += dy;
-        motionDataArray[2] += dz;
-        motionDataArray[3] += drx;
-        motionDataArray[4] += dry;
-        motionDataArray[5] += drz;
-        
-        /*
-        Send a self addressed flush event through the window system. This will
-        trigger a Spaceball event if FreeCAD is ready to do so.
-        */
-        nMotionEvents++;
-        XClientMessageEvent flushEvent;
-        
-        flushEvent.display = display;
-        flushEvent.window = event->xclient.window;
-        flushEvent.type = ClientMessage;
-        flushEvent.format = 8;    
-        flushEvent.message_type = motion_flush_event;
-        
-        XSendEvent (display, flushEvent.window, False, 0, (XEvent*)&flushEvent); // siehe spnavd, False, 0
-        
-        return true;
-    }
-
-    if (navEvent.type == SPNAV_EVENT_BUTTON)
-    {
-        Spaceball::ButtonEvent *buttonEvent = new Spaceball::ButtonEvent();
-        buttonEvent->setButtonNumber(navEvent.button.bnum);
-        if (navEvent.button.press)
-            buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
-        else
-            buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
-        this->postEvent(currentWidget, buttonEvent);
-        return true;
-    }
-
-    Base::Console().Log("Unknown spaceball event\n");
-    return true;
-#else
-    Q_UNUSED(event); 
-    return false;
-#endif // SPNAV_FOUND
-}
-#endif // Q_WS_X11
 
 #include "moc_GuiApplicationNativeEventAware.cpp"

@@ -1,6 +1,5 @@
-
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -190,7 +188,7 @@ TopoShapePyOld::~TopoShapePyOld()						// Everything handled in parent
 //--------------------------------------------------------------------------
 // TopoShapePyOld Attributes
 //--------------------------------------------------------------------------
-PyObject *TopoShapePyOld::_getattr(char *attr)				// __getattr__ function: note only need to handle new state
+PyObject *TopoShapePyOld::_getattr(const char *attr)				// __getattr__ function: note only need to handle new state
 { 
 	try{
 		// Access the number of attributes at this label
@@ -205,7 +203,7 @@ PyObject *TopoShapePyOld::_getattr(char *attr)				// __getattr__ function: note 
 	}
 } 
 
-int TopoShapePyOld::_setattr(char *attr, PyObject *value) 	// __setattr__ function: note only need to handle new state
+int TopoShapePyOld::_setattr(const char *attr, PyObject *value) 	// __setattr__ function: note only need to handle new state
 { 
 	if (Base::streq(attr, "Real"))						// settable new state
 		; 

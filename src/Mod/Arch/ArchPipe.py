@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2016 - Yorik van Havre <yorik@uncreated.net>            *
+#*   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -24,8 +22,7 @@
 
 import FreeCAD, ArchComponent
 if FreeCAD.GuiUp:
-    import FreeCADGui, Arch_rc, os
-    from PySide import QtCore, QtGui
+    import FreeCADGui, Arch_rc
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -43,9 +40,9 @@ else:
 #  This module provides tools to build Pipe and Pipe connector objects.
 #  Pipes are tubular objects extruded along a base line.
 
-__title__ = "Arch Pipe tools"
+__title__  = "Arch Pipe tools"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):
@@ -119,7 +116,7 @@ class _CommandPipe:
         s = FreeCADGui.Selection.getSelection()
         if s:
             for obj in s:
-                if obj.isDerivedFrom("Part::Feature"):
+                if hasattr(obj,'Shape'):
                     if len(obj.Shape.Wires) == 1:
                         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Pipe"))
                         FreeCADGui.addModule("Arch")
@@ -185,21 +182,29 @@ class _ArchPipe(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Pipe Segment"
+        # IfcPipeSegment is new in IFC4
+        from ArchIFC import IfcTypes
+        if "Pipe Segment" in IfcTypes:
+            obj.IfcType = "Pipe Segment"
+        else:
+            # IFC2x3 does not know a Pipe Segment
+            obj.IfcType = "Undefined"
 
     def setProperties(self,obj):
 
         pl = obj.PropertiesList
         if not "Diameter" in pl:
-            obj.addProperty("App::PropertyLength", "Diameter",    "Pipe", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
+            obj.addProperty("App::PropertyLength", "Diameter",     "Pipe", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
         if not "Length" in pl:
-            obj.addProperty("App::PropertyLength", "Length",      "Pipe", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
+            obj.addProperty("App::PropertyLength", "Length",       "Pipe", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
         if not "Profile" in pl:
-            obj.addProperty("App::PropertyLink",   "Profile",     "Pipe", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"))
+            obj.addProperty("App::PropertyLink",   "Profile",      "Pipe", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"))
         if not "OffsetStart" in pl:
-            obj.addProperty("App::PropertyLength", "OffsetStart", "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"))
+            obj.addProperty("App::PropertyLength", "OffsetStart",  "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"))
         if not "OffsetEnd" in pl:
-            obj.addProperty("App::PropertyLength", "OffsetEnd",   "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"))
+            obj.addProperty("App::PropertyLength", "OffsetEnd",    "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"))
+        if not "WallThickness" in pl:
+            obj.addProperty("App::PropertyLength", "WallThickness","Pipe", QT_TRANSLATE_NOOP("App::Property","The wall thickness of this pipe, if not based on a profile"))
         self.Type = "Pipe"
 
     def onDocumentRestored(self,obj):
@@ -232,17 +237,43 @@ class _ArchPipe(ArchComponent.Component):
             FreeCAD.Console.PrintError(translate("Arch","Unable to build the profile")+"\n")
             return
         # move and rotate the profile to the first point
-        delta = w.Vertexes[0].Point-p.CenterOfMass
+        if hasattr(p,"CenterOfMass"):
+            c = p.CenterOfMass
+        else:
+            c = p.BoundBox.Center
+        delta = w.Vertexes[0].Point-c
         p.translate(delta)
-        v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
+        import Draft
+        if Draft.getType(obj.Base) == "BezCurve":
+            v1 = obj.Base.Placement.multVec(obj.Base.Points[1])-w.Vertexes[0].Point
+        else:
+            v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
         v2 = DraftGeomUtils.getNormal(p)
         rot = FreeCAD.Rotation(v2,v1)
-        p.rotate(p.CenterOfMass,rot.Axis,math.degrees(rot.Angle))
+        p.rotate(w.Vertexes[0].Point,rot.Axis,math.degrees(rot.Angle))
+        shapes = []
         try:
-            sh = w.makePipeShell([p],True,False,2)
-        except:
+            if p.Faces:
+                for f in p.Faces:
+                    sh = w.makePipeShell([f.OuterWire],True,False,2)
+                    for shw in f.Wires:
+                        if shw.hashCode() != f.OuterWire.hashCode():
+                            sh2 = w.makePipeShell([shw],True,False,2)
+                            sh = sh.cut(sh2)
+                    shapes.append(sh)
+            elif p.Wires:
+                for pw in p.Wires:
+                    sh = w.makePipeShell([pw],True,False,2)
+                    shapes.append(sh)
+        except Exception:
             FreeCAD.Console.PrintError(translate("Arch","Unable to build the pipe")+"\n")
         else:
+            if len(shapes) == 0:
+                return
+            elif len(shapes) == 1:
+                sh = shapes[0]
+            else:
+                sh = Part.makeCompound(shapes)
             obj.Shape = sh
             if obj.Base:
                 obj.Length = w.Length
@@ -253,7 +284,7 @@ class _ArchPipe(ArchComponent.Component):
 
         import Part
         if obj.Base:
-            if not obj.Base.isDerivedFrom("Part::Feature"):
+            if not hasattr(obj.Base,'Shape'):
                 FreeCAD.Console.PrintError(translate("Arch","The base object is not a Part")+"\n")
                 return
             if len(obj.Base.Shape.Wires) != 1:
@@ -273,11 +304,8 @@ class _ArchPipe(ArchComponent.Component):
 
         import Part
         if obj.Profile:
-            if not obj.Profile.isDerivedFrom("Part::Part2DObject"):
+            if not obj.Profile.getLinkedObject().isDerivedFrom("Part::Part2DObject"):
                 FreeCAD.Console.PrintError(translate("Arch","The profile is not a 2D Part")+"\n")
-                return
-            if len(obj.Profile.Shape.Wires) != 1:
-                FreeCAD.Console.PrintError(translate("Arch","Too many wires in the profile")+"\n")
                 return
             if not obj.Profile.Shape.Wires[0].isClosed():
                 FreeCAD.Console.PrintError(translate("Arch","The profile is not closed")+"\n")
@@ -287,6 +315,11 @@ class _ArchPipe(ArchComponent.Component):
             if obj.Diameter.Value == 0:
                 return
             p = Part.Wire([Part.Circle(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),obj.Diameter.Value/2).toShape()])
+            if obj.WallThickness.Value and (obj.WallThickness.Value < obj.Diameter.Value/2):
+                p2 = Part.Wire([Part.Circle(FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1),(obj.Diameter.Value/2-obj.WallThickness.Value)).toShape()])
+                p = Part.Face(p)
+                p2 = Part.Face(p2)
+                p = p.cut(p2)
         return p
 
 
@@ -314,7 +347,7 @@ class _ArchPipeConnector(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Pipe Fitting"
+        obj.IfcType = "Pipe Fitting"
 
     def setProperties(self,obj):
 

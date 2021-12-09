@@ -1,6 +1,7 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,60 +21,78 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Elmer"
+__title__ = "FreeCAD FEM solver object Elmer"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
-import femtools.femutils as FemUtils
-
-from .. import run
-from .. import solverbase
 from . import tasks
-
-from .equations import heat
 from .equations import elasticity
 from .equations import electrostatic
-from .equations import fluxsolver
 from .equations import flow
+from .equations import flux
+from .equations import electricforce
+from .equations import heat
+from .. import run
+from .. import solverbase
+from femtools import femutils
 
 
 def create(doc, name="ElmerSolver"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
 class Proxy(solverbase.Proxy):
     """Proxy for FemSolverElmers Document Object."""
 
-    Type = "Fem::FemSolverObjectElmer"
+    Type = "Fem::SolverElmer"
 
     _EQUATIONS = {
         "Heat": heat,
         "Elasticity": elasticity,
         "Electrostatic": electrostatic,
-        "Fluxsolver": fluxsolver,
+        "Flux": flux,
+        "Electricforce": electricforce,
         "Flow": flow,
     }
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        obj.addProperty(
-            "App::PropertyInteger", "SteadyStateMaxIterations",
-            "Steady State", "")
-        obj.addProperty(
-            "App::PropertyInteger", "SteadyStateMinIterations",
-            "Steady State", "")
-        obj.addProperty(
-            "App::PropertyLink", "ElmerResult",
-            "Base", "", 4 | 8)
-        obj.addProperty(
-            "App::PropertyLink", "ElmerOutput",
-            "Base", "", 4 | 8)
 
+        obj.addProperty(
+            "App::PropertyInteger",
+            "SteadyStateMaxIterations",
+            "Steady State",
+            ""
+        )
         obj.SteadyStateMaxIterations = 1
+
+        obj.addProperty(
+            "App::PropertyInteger",
+            "SteadyStateMinIterations",
+            "Steady State",
+            ""
+        )
         obj.SteadyStateMinIterations = 0
+
+        obj.addProperty(
+            "App::PropertyLink",
+            "ElmerResult",
+            "Base",
+            "",
+            4 | 8
+        )
+
+        obj.addProperty(
+            "App::PropertyLink",
+            "ElmerOutput",
+            "Base",
+            "",
+            4 | 8
+        )
 
     def createMachine(self, obj, directory, testmode=False):
         return run.Machine(
@@ -95,4 +114,6 @@ class ViewProxy(solverbase.ViewProxy):
     """Proxy for FemSolverElmers View Provider."""
 
     def getIcon(self):
-        return ":/icons/fem-elmer.svg"
+        return ":/icons/FEM_SolverElmer.svg"
+
+##  @}

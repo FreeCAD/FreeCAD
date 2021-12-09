@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,7 +38,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintPlaneRotation, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintPlaneRotation, Fem::Constraint)
 
 ConstraintPlaneRotation::ConstraintPlaneRotation()
 {

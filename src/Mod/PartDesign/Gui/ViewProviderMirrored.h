@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -32,10 +32,10 @@ class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderMirrored);
 public:
-    ViewProviderMirrored()
-        { featureName = std::string("Mirrored");
-	   sPixmap = "PartDesign_Mirrored.svg";
-	}
+    ViewProviderMirrored() {
+        featureName = std::string("Mirrored");
+        sPixmap = "PartDesign_Mirrored.svg";
+    }
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view

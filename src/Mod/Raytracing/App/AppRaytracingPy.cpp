@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,6 +39,8 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <App/Application.h>
+
+using namespace std;
 
 
 namespace Raytracing {
@@ -201,10 +203,6 @@ private:
                     vecs[i][l] = PyFloat_AsDouble(temp);
                 else if (PyLong_Check(temp))
                     vecs[i][l] = (double) PyLong_AsLong(temp);
-#if PY_MAJOR_VERSION < 3
-                else if (PyInt_Check(temp))
-                    vecs[i][l] = (double)  PyInt_AsLong(temp);
-#endif
                 else
                     throw Py::ValueError("Wrong parameter format, four Tuple of three floats needed!");
             }
@@ -224,7 +222,7 @@ private:
         if (! PyArg_ParseTuple(args.ptr(), "ss",&FileName,&DestDir))
             throw Py::Exception();
 
-        std::string resName = App::GetApplication().getHomePath(); 
+        std::string resName = App::Application::getHomePath();
         resName += "Mod"; 
         resName += PATHSEP ;
         resName += "Raytracing"; 

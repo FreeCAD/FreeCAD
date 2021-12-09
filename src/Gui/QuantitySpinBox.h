@@ -24,9 +24,9 @@
 #ifndef GUI_QUANTITYSPINBOX_H
 #define GUI_QUANTITYSPINBOX_H
 
-#include <QAbstractSpinBox>
+#include <Base/UnitsSchema.h>
 #include <Gui/MetaTypes.h>
-#include "ExpressionBinding.h"
+#include <Gui/SpinBox.h>
 
 #ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Quantity)
@@ -35,7 +35,7 @@ Q_DECLARE_METATYPE(Base::Quantity)
 namespace Gui {
 
 class QuantitySpinBoxPrivate;
-class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionBinding
+class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionSpinBox
 {
     Q_OBJECT
 
@@ -49,8 +49,6 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionBind
     Q_PROPERTY(QString expression READ expressionText)
 
 public:
-    using ExpressionBinding::apply;
-
     explicit QuantitySpinBox(QWidget *parent = 0);
     virtual ~QuantitySpinBox();
 
@@ -65,7 +63,7 @@ public:
 
     /** Sets the Unit this widget is working with.
      *  After setting the Unit the widget will only accept
-     *  user input with this unit type. Or if the user input 
+     *  user input with this unit type. Or if the user input
      *  a value without unit, this one will be added to the resulting
      *  Quantity.
      */
@@ -78,18 +76,30 @@ public:
 
     /// Get the value of the singleStep property
     double singleStep() const;
-    /// Set the value of the singleStep property 
+    /// Set the value of the singleStep property
     void setSingleStep(double val);
 
     /// Gets the value of the minimum property
     double minimum() const;
-    /// Sets the value of the minimum property 
+    /// Sets the value of the minimum property
     void setMinimum(double min);
 
     /// Gets the value of the maximum property
     double maximum() const;
-    /// Sets the value of the maximum property 
+    /// Sets the value of the maximum property
     void setMaximum(double max);
+
+    /// Gets the number of decimals
+    int decimals() const;
+    /// Sets the number of decimals
+    void setDecimals(int v);
+
+    /// Sets a specific unit schema to handle quantities.
+    /// The system-wide schema won't be used any more.
+    void setSchema(const Base::UnitSystem& s);
+
+    /// Clears the schemaand again use the system-wide schema.
+    void clearSchema();
 
     /// Gets the path of the bound property
     QString boundToName() const;
@@ -111,11 +121,14 @@ public:
     virtual QValidator::State validate(QString &input, int &pos) const;
     virtual void fixup(QString &str) const;
 
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
     bool event(QEvent *event);
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setNumberExpression(App::NumberExpression*);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
+    using ExpressionSpinBox::apply;
 
 public Q_SLOTS:
     /// Sets the field with a quantity
@@ -125,22 +138,25 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void userInput(const QString & text);
-    void openFormulaDialog();
-    void finishFormulaDialog();
-    
-    //get notified on expression change
-    virtual void onChange();
+    void handlePendingEmit();
 
 protected:
+    virtual void openFormulaDialog();
     virtual StepEnabled stepEnabled() const;
     virtual void showEvent(QShowEvent * event);
+    virtual void hideEvent(QHideEvent * event);
+    virtual void closeEvent(QCloseEvent * event);
     virtual void focusInEvent(QFocusEvent * event);
     virtual void focusOutEvent(QFocusEvent * event);
     virtual void keyPressEvent(QKeyEvent *event);
     virtual void resizeEvent(QResizeEvent *event);
+    virtual void paintEvent(QPaintEvent *event);
 
 private:
     void updateText(const Base::Quantity&);
+    void updateFromCache(bool);
+    QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
+    QString getUserString(const Base::Quantity& val) const;
 
 Q_SIGNALS:
     /** Gets emitted if the user has entered a VALID input
@@ -153,6 +169,14 @@ Q_SIGNALS:
      *  like: minimum, maximum and/or the right Unit (if specified).
      */
     void valueChanged(double);
+    /**
+     * The new value is passed in \a text with unit.
+     */
+    void textChanged(const QString&);
+    /** Gets emitted if formula dialog is about to be opened (true)
+     *  or finished (false).
+     */
+    void showFormulaDialog(bool);
 
 private:
     QScopedPointer<QuantitySpinBoxPrivate> d_ptr;

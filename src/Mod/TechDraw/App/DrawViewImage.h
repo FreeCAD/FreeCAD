@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan   (wandererfan@gmail.com)              *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,7 +24,6 @@
 #define _DrawViewImage_h_
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
 #include "DrawView.h"
 #include <App/FeaturePython.h>

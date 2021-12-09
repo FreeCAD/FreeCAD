@@ -67,7 +67,7 @@ public:
     }
 };
 
-/** 
+/**
  * The MainWindow class provides a main window with menu bar, toolbars, dockable windows,
  * a status bar and mainly a workspace for the MDI windows.
  * @author Werner Mayer
@@ -75,8 +75,15 @@ public:
 class GuiExport MainWindow : public QMainWindow
 {
     Q_OBJECT
- 
+
 public:
+    enum ConfirmSaveResult {
+        Cancel = 0,
+        Save,
+        SaveAll,
+        Discard,
+        DiscardAll
+    };
     /**
      * Constructs an empty main window. For default \a parent is 0, as there usually is
      * no toplevel window there.
@@ -97,7 +104,7 @@ public:
      * Removes an MDI window from the main window's workspace and its associated tab without
      * deleting the widget. If the main windows does not have such a window nothing happens.
      */
-    void removeWindow(MDIView* view);
+    void removeWindow(MDIView* view, bool close=true);
     /**
      * Returns a list of all MDI windows in the worpspace.
      */
@@ -119,6 +126,10 @@ public:
      */
     void appendRecentFile(const QString& filename);
     /**
+     * MRU: Appends \a macro to the list of recent macros.
+     */
+    void appendRecentMacro(const QString& filename);
+    /**
      * Returns true that the context menu contains the 'Customize...' menu item.
      */
     QMenu * createPopupMenu();
@@ -131,13 +142,15 @@ public:
     void startSplasher(void);
     /** Stops the splasher after startup. */
     void stopSplasher(void);
+    /* The image of the About dialog, it might be empty. */
+    QPixmap aboutImage() const;
     /* The image of the splash screen of the application. */
     QPixmap splashImage() const;
     /** Shows the online documentation. */
     void showDocumentation(const QString& help);
     //@}
 
-    /** @name Layout Methods 
+    /** @name Layout Methods
      */
     //@{
     /// Loads the main window settings.
@@ -178,7 +191,17 @@ public:
     void unsetUrlHandler(const QString &scheme);
     //@}
 
+    void updateActions(bool delay = false);
+
+    enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp};
+    void showStatus(int type, const QString & message);
+
+
 public Q_SLOTS:
+    /**
+     * Updates the standard actions of a text editor such as Cut, Copy, Paste, Undo and Redo.
+     */
+    void updateEditorActions();
     /**
      * Sets text to the pane in the status bar.
      */
@@ -200,11 +223,12 @@ public Q_SLOTS:
      */
     void closeActiveWindow ();
     /**
-     * Closes all child windows. 
-     * The windows are closed in random order. The operation stops
-     * if a window does not accept the close event.
+     * Closes all document window.
      */
-    void closeAllWindows ();
+    bool closeAllDocuments (bool close=true);
+    /** Pop up a message box asking for saving document
+     */
+    int confirmSave(const char *docName, QWidget *parent=0, bool addCheckBox=false);
     /**
      * Activates the next window in the child window chain.
      */
@@ -223,6 +247,9 @@ public Q_SLOTS:
     void whatsThis();
     void switchToTopLevelMode();
     void switchToDockedMode();
+
+    void statusMessageChanged();
+
     void showMessage (const QString & message, int timeout = 0);
 
 protected:
@@ -275,14 +302,10 @@ private Q_SLOTS:
      * Fills up the menu with the current dock windows.
      */
     void onDockWindowMenuAboutToShow();
-    /** 
+    /**
      * This method gets frequently activated and test the commands if they are still active.
      */
-    void updateActions();
-    /**
-     * \internal
-     */
-    void showMainWindow();
+    void _updateActions();
     /**
      * \internal
      */
@@ -291,6 +314,10 @@ private Q_SLOTS:
      * \internal
      */
     void processMessages(const QList<QByteArray> &);
+    /**
+     * \internal
+     */
+    void clearStatus();
 
 Q_SIGNALS:
     void timeEvent();
@@ -316,29 +343,24 @@ inline MainWindow* getMainWindow()
  * error messages are in red. Log messages are completely ignored.
  * The class is implemented to be thread-safe.
  * @see Console
- * @see ConsoleObserver
+ * @see ILogger
  * @author Werner Mayer
  */
-class StatusBarObserver: public WindowParameter, public Base::ConsoleObserver
+class StatusBarObserver: public WindowParameter, public Base::ILogger
 {
 public:
     StatusBarObserver();
     virtual ~StatusBarObserver();
 
     /** Observes its parameter group. */
-    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
-    /// get called when a Warning is issued
-    void Warning(const char *m);
-    /// get called when a Message is issued
-    void Message(const char * m);
-    /// get called when a Error is issued
-    void Error  (const char *m);
-    /// get called when a Log Message is issued
-    void Log    (const char *);
+    void SendLog(const std::string& msg, Base::LogStyle level) override;
+
     /// name of the observer
-    const char *Name(void){return "StatusBar";}
+    const char *Name(void) override {return "StatusBar";}
 
+    friend class MainWindow;
 private:
     QString msg, wrn, err;
 };

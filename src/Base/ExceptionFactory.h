@@ -53,12 +53,12 @@ class BaseExport ExceptionFactory : public Factory
 public:
     static ExceptionFactory& Instance(void);
     static void Destruct (void);
-    
+
     void raiseException(PyObject * pydict) const;
-    
+
 private:
     static ExceptionFactory* _pcSingleton;
-    
+
     ExceptionFactory(){}
     ~ExceptionFactory(){}
 };
@@ -73,9 +73,9 @@ public:
     {
         ExceptionFactory::Instance().AddProducer(typeid(CLASS).name(), this);
     }
-    
+
     virtual ~ExceptionProducer (){}
-    
+
     void raiseException(PyObject * pydict) const
     {
         CLASS c;

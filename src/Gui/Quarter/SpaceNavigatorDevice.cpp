@@ -128,7 +128,7 @@ const SoEvent *
 SpaceNavigatorDevice::translateEvent(QEvent * event)
 {
   Q_UNUSED(event); 
-  SoEvent * ret = NULL;
+  SoEvent * ret = nullptr;
 
 #ifdef HAVE_SPACENAV_LIB
   NativeEvent * ce = dynamic_cast<NativeEvent *>(event);

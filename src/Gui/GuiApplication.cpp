@@ -26,11 +26,14 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <stdexcept>
+# include <QAbstractSpinBox>
 # include <QByteArray>
+# include <QComboBox>
 # include <QDataStream>
 # include <QDebug>
 # include <QFileInfo>
 # include <QFileOpenEvent>
+# include <QKeyEvent>
 # include <QSessionManager>
 # include <QTimer>
 #endif
@@ -62,14 +65,9 @@ using namespace Gui;
 GUIApplication::GUIApplication(int & argc, char ** argv)
     : GUIApplicationNativeEventAware(argc, argv)
 {
-#if QT_VERSION > 0x050000
-    // In Qt 4.x 'commitData' is a virtual method
     connect(this, SIGNAL(commitDataRequest(QSessionManager &)),
             SLOT(commitData(QSessionManager &)), Qt::DirectConnection);
-#endif
-#if QT_VERSION >= 0x050600
     setFallbackSessionManagementEnabled(false);
-#endif
 }
 
 GUIApplication::~GUIApplication()
@@ -84,7 +82,7 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
         return false;
     }
     try {
-        if (event->type() == Spaceball::ButtonEvent::ButtonEventType || 
+        if (event->type() == Spaceball::ButtonEvent::ButtonEventType ||
             event->type() == Spaceball::MotionEvent::MotionEventType)
             return processSpaceballEvent(receiver, event);
         else
@@ -108,31 +106,29 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
     }
 
     // Print some more information to the log file (if active) to ease bug fixing
-    if (receiver && event) {
-        try {
-            std::stringstream dump;
-            dump << "The event type " << (int)event->type() << " was sent to "
-                 << receiver->metaObject()->className() << "\n";
-            dump << "Object tree:\n";
-            if (receiver->isWidgetType()) {
-                QWidget* w = qobject_cast<QWidget*>(receiver);
-                while (w) {
-                    dump << "\t";
-                    dump << w->metaObject()->className();
-                    QString name = w->objectName();
-                    if (!name.isEmpty())
-                        dump << " (" << (const char*)name.toUtf8() << ")";
-                    w = w->parentWidget();
-                    if (w)
-                        dump << " is child of\n";
-                }
-                std::string str = dump.str();
-                Base::Console().Log("%s",str.c_str());
+    try {
+        std::stringstream dump;
+        dump << "The event type " << (int)event->type() << " was sent to "
+             << receiver->metaObject()->className() << "\n";
+        dump << "Object tree:\n";
+        if (receiver->isWidgetType()) {
+            QWidget* w = qobject_cast<QWidget*>(receiver);
+            while (w) {
+                dump << "\t";
+                dump << w->metaObject()->className();
+                QString name = w->objectName();
+                if (!name.isEmpty())
+                    dump << " (" << (const char*)name.toUtf8() << ")";
+                w = w->parentWidget();
+                if (w)
+                    dump << " is child of\n";
             }
+            std::string str = dump.str();
+            Base::Console().Log("%s",str.c_str());
         }
-        catch (...) {
-            Base::Console().Log("Invalid recipient and/or event in GUIApplication::notify\n");
-        }
+    }
+    catch (...) {
+        Base::Console().Log("Invalid recipient and/or event in GUIApplication::notify\n");
     }
 
     return true;
@@ -181,7 +177,7 @@ public:
       , running(false)
     {
         timer->setSingleShot(true);
-        std::string exeName = App::GetApplication().getExecutableName();
+        std::string exeName = App::Application::getExecutableName();
         serverName = QString::fromStdString(exeName);
     }
 
@@ -305,5 +301,53 @@ void GUISingleApplication::processMessages()
     d_ptr->messages.clear();
     Q_EMIT messageReceived(msg);
 }
+
+// ----------------------------------------------------------------------------
+
+WheelEventFilter::WheelEventFilter(QObject* parent)
+  : QObject(parent)
+{
+}
+
+bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
+{
+    if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel)
+        return true;
+    QAbstractSpinBox* sb = qobject_cast<QAbstractSpinBox*>(obj);
+    if (sb) {
+        if (ev->type() == QEvent::Show) {
+            sb->setFocusPolicy(Qt::StrongFocus);
+        }
+        else if (ev->type() == QEvent::Wheel) {
+            return !sb->hasFocus();
+        }
+    }
+    return false;
+}
+
+KeyboardFilter::KeyboardFilter(QObject* parent)
+  : QObject(parent)
+{
+}
+
+bool KeyboardFilter::eventFilter(QObject* obj, QEvent* ev)
+{
+    if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
+        QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
+        Qt::KeyboardModifiers mod = kev->modifiers();
+        int key = kev->key();
+        if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma))
+        {
+            QChar dp = QLocale().decimalPoint();
+            if (key != dp) {
+                QKeyEvent modifiedKeyEvent(kev->type(), dp.digitValue(), mod, QString(dp), kev->isAutoRepeat(), kev->count());
+                qApp->sendEvent(obj, &modifiedKeyEvent);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 
 #include "moc_GuiApplication.cpp"

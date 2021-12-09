@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
-    <height>766</height>
+    <width>408</width>
+    <height>678</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -187,41 +187,13 @@
       <item>
        <widget class="QWidget" name="paramImageParam" native="true">
         <layout class="QFormLayout" name="formLayout_3">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+         </property>
          <item row="1" column="0">
           <widget class="QLabel" name="label_D">
            <property name="text">
             <string>D = </string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_d">
-           <property name="text">
-            <string>d =</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_H">
-           <property name="text">
-            <string>H =</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_a">
-           <property name="text">
-            <string>α = </string>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="label_S">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>S = </string>
            </property>
           </widget>
          </item>
@@ -235,6 +207,13 @@
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_d">
+           <property name="text">
+            <string>d =</string>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="1">
           <widget class="Gui::InputField" name="value_d">
            <property name="text">
@@ -242,6 +221,13 @@
            </property>
            <property name="unit" stdset="0">
             <string>mm</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_H">
+           <property name="text">
+            <string>H =</string>
            </property>
           </widget>
          </item>
@@ -255,6 +241,13 @@
            </property>
           </widget>
          </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_a">
+           <property name="text">
+            <string>α = </string>
+           </property>
+          </widget>
+         </item>
          <item row="4" column="1">
           <widget class="Gui::InputField" name="value_a">
            <property name="text">
@@ -262,6 +255,16 @@
            </property>
            <property name="unit" stdset="0">
             <string>°</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_S">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>S = </string>
            </property>
           </widget>
          </item>
@@ -284,10 +287,22 @@
       <item>
        <widget class="QLabel" name="image">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>210</width>
+          <height>297</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>210</width>
+          <height>297</height>
+         </size>
         </property>
         <property name="text">
          <string>Image</string>

@@ -89,9 +89,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
 
     std::vector<App::DocumentObject*>::iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            s.push_back(static_cast<Part::Feature*>(*it)->Shape.getValue());
-        }
+        s.push_back(Feature::getShape(*it));
     }
 
     bool argumentsAreInCompound = false;
@@ -117,16 +115,16 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
 #if OCC_VERSION_HEX <= 0x060800
             TopoDS_Shape resShape = s.front();
             if (resShape.IsNull())
-                throw Base::Exception("Input shape is null");
+                throw NullShapeException("Input shape is null");
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
                 if (it->IsNull())
-                    throw Base::Exception("Input shape is null");
+                    throw NullShapeException("Input shape is null");
 
                 // Let's call algorithm computing a fuse operation:
                 BRepAlgoAPI_Fuse mkFuse(resShape, *it);
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone()) 
-                    throw Base::Exception("Fusion failed");
+                    throw BooleanException("Fusion failed");
                 resShape = mkFuse.Shape();
 
                 ShapeHistory hist1 = buildHistory(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape1());
@@ -186,7 +184,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                     for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
                         *jt = joinHistory(*jt, hist);
                 }
-                catch (Standard_Failure) {
+                catch (Standard_Failure&) {
                     // do nothing
                 }
             }
@@ -222,7 +220,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
         }
     }
     else {
-        throw Base::Exception("Not enough shape objects linked");
+        throw Base::CADKernelError("Not enough shape objects linked");
     }
 
     return App::DocumentObject::StdReturn;

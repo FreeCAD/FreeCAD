@@ -44,17 +44,19 @@ public:
     FaceColors(ViewProviderPartExt* vp, QWidget* parent = 0);
     ~FaceColors();
 
+    void open();
     bool accept();
     bool reject();
 
 private Q_SLOTS:
     void on_colorButton_changed();
     void on_defaultButton_clicked();
-    void on_boxSelection_clicked();
+    void on_boxSelection_toggled(bool checked);
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void changeEvent(QEvent *e);
+    void slotUndoDocument(const Gui::Document& Doc);
     void slotDeleteDocument(const Gui::Document&);
     void slotDeleteObject(const Gui::ViewProvider&);
     void updatePanel();

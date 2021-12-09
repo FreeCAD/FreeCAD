@@ -317,7 +317,7 @@ namespace boost
 		{
 			return (it.rep->get_data().attrib & _A_HIDDEN) != 0;
 		}
-		template <> bool get<user_read>(dir_it const &it)
+		template <> bool get<user_read>(dir_it const & /*it*/)
 		{
 			return true;
 		}

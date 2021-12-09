@@ -22,12 +22,17 @@
         <string>Default algorithm used for Sketch solving</string>
        </property>
        <property name="text">
-        <string>Default Solver:</string>
+        <string>Default solver:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::PrefComboBox" name="comboBoxDefaultSolver">
+       <property name="toolTip">
+        <string>Solver is used for solving the geometry.
+LevenbergMarquardt and DogLeg are trust region optimization algorithms.
+BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</string>
+       </property>
        <property name="currentIndex">
         <number>2</number>
        </property>
@@ -70,6 +75,9 @@
      </item>
      <item>
       <widget class="Gui::PrefComboBox" name="comboBoxDogLegGaussStep">
+       <property name="toolTip">
+        <string>Step type used in the DogLeg algorithm</string>
+       </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
@@ -106,12 +114,15 @@
         <string>Maximum number of iterations of the default algorithm</string>
        </property>
        <property name="text">
-        <string>Maximum Iterations:</string>
+        <string>Maximum iterations:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::PrefSpinBox" name="spinBoxMaxIter">
+       <property name="toolTip">
+        <string>Maximum iterations to find convergence before solver is stopped</string>
+       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
@@ -151,6 +162,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Maximum iterations will be multiplied by number of parameters</string>
+       </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
@@ -181,6 +195,10 @@
      </item>
      <item>
       <widget class="Gui::PrefLineEdit" name="lineEditConvergence">
+       <property name="toolTip">
+        <string>Threshold for squared error that is used
+to determine whether a solution converges or not</string>
+       </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
        </property>
@@ -280,12 +298,17 @@
         <string>Algorithm used for the rank revealing QR decomposition</string>
        </property>
        <property name="text">
-        <string>QR Algorithm:</string>
+        <string>QR algorithm:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::PrefComboBox" name="comboBoxQRMethod">
+       <property name="toolTip">
+        <string>During diagnosing the QR rank of matrix is calculated.
+Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
+Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</string>
+       </property>
        <property name="currentIndex">
         <number>1</number>
        </property>
@@ -320,6 +343,9 @@
      </item>
      <item>
       <widget class="Gui::PrefLineEdit" name="lineEditQRPivotThreshold">
+       <property name="toolTip">
+        <string>During a QR, values under the pivot threshold are treated as zero</string>
+       </property>
        <property name="text">
         <string>1E-13</string>
        </property>
@@ -344,12 +370,15 @@
         <string>Solving algorithm used for determination of Redundant constraints</string>
        </property>
        <property name="text">
-        <string>Redundant Solver:</string>
+        <string>Redundant solver:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::PrefComboBox" name="comboBoxRedundantDefaultSolver">
+       <property name="toolTip">
+        <string>Solver used to determine whether a group is redundant or conflicting</string>
+       </property>
        <property name="currentIndex">
         <number>2</number>
        </property>
@@ -386,14 +415,14 @@
         <string>Maximum number of iterations of the solver used for determination of Redundant constraints</string>
        </property>
        <property name="text">
-        <string>Red. Max Iterations:</string>
+        <string>Redundant max. iterations:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::PrefSpinBox" name="spinBoxRedundantSolverMaxIterations">
        <property name="toolTip">
-        <string/>
+        <string>Same as 'Maximum iterations', but for redundant solving</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -422,12 +451,15 @@
         <string>If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</string>
        </property>
        <property name="text">
-        <string>Red. Sketch size multiplier:</string>
+        <string>Redundant sketch size multiplier:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::PrefCheckBox" name="checkBoxRedundantSketchSizeMultiplier">
+       <property name="toolTip">
+        <string>Same as 'Sketch size multiplier', but for redundant solving</string>
+       </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
@@ -452,12 +484,15 @@
         <string>Error threshold under which convergence is reached for the solving of redundant constraints</string>
        </property>
        <property name="text">
-        <string>Red. Convergence</string>
+        <string>Redundant convergence</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::PrefLineEdit" name="lineEditRedundantConvergence">
+       <property name="toolTip">
+        <string>Same as 'Convergence', but for redundant solving</string>
+       </property>
        <property name="text">
         <string>1E-10</string>
        </property>
@@ -479,7 +514,7 @@
      <item>
       <widget class="QLabel" name="labelRedundantSolverParam1">
        <property name="text">
-        <string>Red. Param1</string>
+        <string>Redundant param1</string>
        </property>
       </widget>
      </item>
@@ -503,7 +538,7 @@
      <item>
       <widget class="QLabel" name="labelRedundantSolverParam2">
        <property name="text">
-        <string>Red. Param2</string>
+        <string>Redundant param2</string>
        </property>
       </widget>
      </item>
@@ -527,7 +562,7 @@
      <item>
       <widget class="QLabel" name="labelRedundantSolverParam3">
        <property name="text">
-        <string>Red. Param3</string>
+        <string>Redundant param3</string>
        </property>
       </widget>
      </item>
@@ -554,12 +589,15 @@
         <string>Degree of verbosity of the debug output to the console</string>
        </property>
        <property name="text">
-        <string>Console Debug mode:</string>
+        <string>Console debug mode:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::PrefComboBox" name="comboBoxDebugMode">
+       <property name="toolTip">
+        <string>Verbosity of console output</string>
+       </property>
        <property name="currentIndex">
         <number>1</number>
        </property>

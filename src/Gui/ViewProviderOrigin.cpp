@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -29,7 +29,6 @@
 # include <QPixmap>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <boost/bind.hpp>
 #endif
 
 
@@ -64,10 +63,11 @@ PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderDocumentObject)
  */
 ViewProviderOrigin::ViewProviderOrigin()
 {
-    ADD_PROPERTY_TYPE ( Size, (Base::Vector3d(10,10,10)), 0, App::Prop_ReadOnly,
-    QT_TRANSLATE_NOOP("App::Property", "The displayed size of the origin"));
+    ADD_PROPERTY_TYPE ( Size, (Base::Vector3d(10,10,10)), 0, App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "The displayed size of the origin"));
+    Size.setStatus(App::Property::ReadOnly, true);
 
-    sPixmap = "CoordinateSystem";
+    sPixmap = "Std_CoordinateSystem";
     Visibility.setValue(false);
 
     pcGroupChildren = new SoGroup();
@@ -153,6 +153,12 @@ void ViewProviderOrigin::resetTemporaryVisibility() {
     tempVisMap.clear ();
 }
 
+double ViewProviderOrigin::defaultSize()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    return 0.25 * hGrp->GetFloat("NewDocumentCameraScale",100.0);
+}
+
 bool ViewProviderOrigin::isTemporaryVisibility() {
     return !tempVisMap.empty();
 }
@@ -194,7 +200,11 @@ void ViewProviderOrigin::onChanged(const App::Property* prop) {
             if (vpLineZ) { vpLineZ->Size.setValue ( szZ ); }
 
         } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what() );
+            // While restoring a document don't report errors if one of the lines or planes
+            // cannot be found.
+            App::Document* doc = getObject()->getDocument();
+            if (!doc->testStatus(App::Document::Restoring))
+                Base::Console().Error ("%s\n", ex.what() );
         }
     }
 
@@ -208,7 +218,10 @@ bool ViewProviderOrigin::onDelete(const std::vector<std::string> &) {
         return false;
     }
 
-    for (auto obj: origin->OriginFeatures.getValues() ) {
+    auto objs = origin->OriginFeatures.getValues();
+    origin->OriginFeatures.setValues({});
+
+    for (auto obj: objs ) {
         Gui::Command::doCommand( Gui::Command::Doc, "App.getDocument(\"%s\").removeObject(\"%s\")",
                 obj->getDocument()->getName(), obj->getNameInDocument() );
     }

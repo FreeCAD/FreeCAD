@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,7 @@
 
 #include <CXX/Objects.hxx>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -43,9 +44,9 @@
 
 using namespace Mesh;
 
-TYPESYSTEM_SOURCE(Mesh::PropertyNormalList, App::PropertyLists);
-TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList , App::PropertyLists);
-TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel , App::PropertyComplexGeoData);
+TYPESYSTEM_SOURCE(Mesh::PropertyNormalList, App::PropertyLists)
+TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList , App::PropertyLists)
+TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel , App::PropertyComplexGeoData)
 
 PropertyNormalList::PropertyNormalList()
 {
@@ -146,7 +147,7 @@ void PropertyNormalList::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -349,7 +350,7 @@ void PropertyCurvatureList::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
     
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -528,11 +529,11 @@ void PropertyMeshKernel::transformGeometry(const Base::Matrix4D &rclMat)
     hasSetValue();
 }
 
-void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<unsigned long, Base::Vector3f> >& inds)
+void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<PointIndex, Base::Vector3f> >& inds)
 {
     aboutToSetValue();
     MeshCore::MeshKernel& kernel = _meshObject->getKernel();
-    for (std::vector<std::pair<unsigned long, Base::Vector3f> >::const_iterator it = inds.begin(); it != inds.end(); ++it)
+    for (std::vector<std::pair<PointIndex, Base::Vector3f> >::const_iterator it = inds.begin(); it != inds.end(); ++it)
         kernel.SetPoint(it->first, it->second);
     hasSetValue();
 }
@@ -540,7 +541,7 @@ void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<unsigned lo
 PyObject *PropertyMeshKernel::getPyObject(void)
 {
     if (!meshPyObject) {
-        meshPyObject = new MeshPy(&*_meshObject);
+        meshPyObject = new MeshPy(&*_meshObject); // Lgtm[cpp/resource-not-released-in-destructor] ** Not destroyed in this class because it is reference-counted and destroyed elsewhere
         meshPyObject->setConst(); // set immutable
         meshPyObject->parentProperty = this;
     }
@@ -606,7 +607,7 @@ void PropertyMeshKernel::Restore(Base::XMLReader &reader)
         hasSetValue();
     } 
     else {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }

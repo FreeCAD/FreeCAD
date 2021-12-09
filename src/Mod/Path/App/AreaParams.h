@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -27,7 +27,7 @@
 // #define AREA_OFFSET_ALGO
 
 /** \file
- * Parameters definition for Path::Area and its companion 
+ * Parameters definition for Path::Area and its companion
  * See \ref ParamPage "here" for details of parameter definition.
  */
 
@@ -37,7 +37,7 @@
 #define AREA_CLIPPER_FILL_TYPE \
     (NonZero)(EvenOdd)(Positive)(Negative),(ClipperLib::PolyFillType,ClipperLib::pft)
 
-/** Paramerters of clipper fill types */
+/** Parameters of clipper fill types */
 #define AREA_PARAMS_CLIPPER_FILL \
     ((enum2,subject_fill,SubjectFill,0,\
         "ClipperLib subject fill type. \nSee https://goo.gl/5pYQQP",AREA_CLIPPER_FILL_TYPE))\
@@ -72,7 +72,7 @@
         "'Edges' means separate to edges before Union. ClipperLib seems to have an.\n"\
         "urge to close open wires.",(None)(Union)(Edges)))\
     AREA_PARAMS_DEFLECTION \
-    AREA_PARAMS_CLIPPER_FILL 
+    AREA_PARAMS_CLIPPER_FILL
 
 #define AREA_PARAMS_FIT_ARCS \
     ((bool,fit_arcs,FitArcs,true,"Enable arc fitting"))
@@ -94,9 +94,9 @@
         "ClipperLib operate on integers. This is the scale factor to convert\n"\
         "floating points.",App::PropertyFloat))
 
-/** Pocket parameters 
+/** Pocket parameters
  *
- * These parameters cooresponds to CAreaPocketParams in libarea
+ * These parameters corresponds to CAreaPocketParams in libarea
  * */
 #define AREA_PARAMS_POCKET \
     ((enum,mode,PocketMode,0,"Selects the pocket toolpath pattern",\
@@ -105,6 +105,9 @@
 	((double,extra_offset,PocketExtraOffset,0.0,"Extra offset for pocketing",App::PropertyDistance))\
 	((double,stepover,PocketStepover,0.0,\
         "Cutter diameter to step over on each pass. If =0, use ToolRadius.",App::PropertyLength))\
+	((double,last_stepover,PocketLastStepover,0.0,\
+        "Cutter diameter to step over for the last loop when using offset pocket.\n"\
+        "If =0, use 0.5*ToolRadius.", App::PropertyLength))\
 	((bool,from_center,FromCenter,false,"Start pocketing from center"))\
 	((double,angle,Angle,45,"Pattern angle in degree",App::PropertyAngle))\
 	((double,angle_shift,AngleShift,0.0,"Pattern angle shift for each section", App::PropertyAngle))\
@@ -129,7 +132,10 @@
         "Offset value, positive for expansion, negative for shrinking",App::PropertyDistance))\
     ((long,extra_pass,ExtraPass,0,"Number of extra offset pass to generate."))\
     ((double,stepover,Stepover,0.0,\
-        "Cutter diameter to step over on each pass. If =0, use Offset",App::PropertyLength))
+        "Cutter diameter to step over on each pass. If =0, use Offset",App::PropertyLength))\
+	((double,last_stepover,LastStepover,0.0,\
+        "Cutter diameter to step over for the last loop when shrinking with ExtraPass<0, i.e. for\n"\
+        "offset pocketing. If =0, use 0.5*Offset.", App::PropertyLength))
 
 #define AREA_PARAMS_SECTION_EXTRA \
     ((enum,mode,SectionMode,2,"Section offset coordinate mode.\n"\
@@ -220,7 +226,7 @@
         "as connected. You may want to set this to the tool diameter to keep the tool down.",\
         App::PropertyLength))\
     ((enum, retract_axis, RetractAxis, 2,"Tool retraction axis",(X)(Y)(Z)))
-       
+
 /** Area path generation parameters */
 #define AREA_PARAMS_PATH \
     AREA_PARAMS_ARC_PLANE \

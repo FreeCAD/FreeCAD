@@ -1,6 +1,7 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,49 +21,70 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Elasticity"
+__title__ = "FreeCAD FEM solver Elmer equation object Elasticity"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
-import femtools.femutils as FemUtils
+from femtools import femutils
 from ... import equationbase
 from . import linear
 
 
 def create(doc, name="Elasticity"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
 class Proxy(linear.Proxy, equationbase.ElasticityProxy):
 
-    Type = "Fem::FemEquationElmerElasticity"
+    Type = "Fem::EquationElmerElasticity"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyBool", "DoFrequencyAnalysis",
-            "Elasticity", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "DoFrequencyAnalysis",
+            "Elasticity",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyInteger", "EigenmodesCount",
-            "Elasticity", "Select type of solver for linear system")
+            "App::PropertyInteger",
+            "EigenmodesCount",
+            "Elasticity",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyBool", "CalculateStrains",
-            "Elasticity", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "CalculateStrains",
+            "Elasticity",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyBool", "CalculateStresses",
-            "Elasticity", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "CalculateStresses",
+            "Elasticity",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyBool", "CalculatePrincipal",
-            "Elasticity", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "CalculatePrincipal",
+            "Elasticity",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyBool", "CalculatePangle",
-            "Elasticity", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "CalculatePangle",
+            "Elasticity",
+            ""
+        )
         obj.EigenmodesCount = 5
         obj.Priority = 10
 
 
 class ViewProxy(linear.ViewProxy, equationbase.ElasticityViewProxy):
     pass
+
+##  @}

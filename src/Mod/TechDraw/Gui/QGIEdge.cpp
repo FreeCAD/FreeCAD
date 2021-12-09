@@ -24,9 +24,9 @@
 #ifndef _PreComp_
 #include <assert.h>
 #include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPainterPathStroker>
 #include <QStyleOptionGraphicsItem>
 #endif
@@ -36,9 +36,11 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "PreferencesGui.h"
 #include "QGIEdge.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIEdge::QGIEdge(int index) :
     projIndex(index),
@@ -48,10 +50,13 @@ QGIEdge::QGIEdge(int index) :
 {
     m_width = 1.0;
     setCosmetic(isCosmetic);
+    setFill(Qt::NoBrush);
 }
 
+//NOTE this refers to Qt cosmetic lines
 void QGIEdge::setCosmetic(bool state)
 {
+//    Base::Console().Message("QGIE::setCosmetic(%d)\n", state);
     isCosmetic = state;
     if (state) {
         setWidth(0.0);
@@ -65,23 +70,23 @@ void QGIEdge::setHiddenEdge(bool b) {
     } else {
         m_styleCurrent = Qt::SolidLine;
     }
-    update();
 }
 
 void QGIEdge::setPrettyNormal() {
+//    Base::Console().Message("QGIE::setPrettyNormal()\n");
     if (isHiddenEdge) {
         m_colCurrent = getHiddenColor();
     } else {
         m_colCurrent = getNormalColor();
     }
-    update();
+    //should call QGIPP::setPrettyNormal()?
 }
 
 QColor QGIEdge::getHiddenColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("HiddenColor", 0x08080800));
+    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("HiddenColor", 0x000000FF));
     return fcColor.asValue<QColor>();
 }
 
@@ -89,9 +94,17 @@ Qt::PenStyle QGIEdge::getHiddenStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("HiddenLine",1));
+    //Qt::PenStyle - NoPen, Solid, Dashed, ...
+    //Preferences::General - Solid, Dashed                                     
+    Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("HiddenLine",0) + 1);
     return hidStyle;
 }
+
+ double QGIEdge::getEdgeFuzz(void) const
+{
+    return PreferencesGui::edgeFuzz();
+}
+
 
 QRectF QGIEdge::boundingRect() const
 {
@@ -102,7 +115,7 @@ QPainterPath QGIEdge::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(2.0);
+    stroker.setWidth(getEdgeFuzz());
     outline = stroker.createStroke(path());
     return outline;
 }
@@ -110,6 +123,8 @@ QPainterPath QGIEdge::shape() const
 void QGIEdge::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
+
+    //~ painter->drawRect(boundingRect());          //good for debugging
 
     QGIPrimPath::paint (painter, &myOption, widget);
 }

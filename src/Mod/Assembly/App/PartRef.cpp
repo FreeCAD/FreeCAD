@@ -100,7 +100,7 @@ bool PartRef::holdsObject(App::DocumentObject* obj) const {
     return std::find(vector.begin(), vector.end(), obj)!=vector.end();
 }
 
-void PartRef::setCalculatedPlacement(boost::shared_ptr< Part3D > part) {
+void PartRef::setCalculatedPlacement(std::shared_ptr< Part3D > part) {
 
     //part is the same as m_part, so it doasn't matter which one we use
     Base::Placement p = dcm::get<Base::Placement>(part);
@@ -135,7 +135,7 @@ void PartRef::ensureInitialisation() {
     if(!ass)
       throw AssemblyItemException();
     
-    boost::shared_ptr<Solver> solver = ass->m_solver;
+    std::shared_ptr<Solver> solver = ass->m_solver;
     if(!solver) 
       throw AssemblyItemException();  
     
@@ -153,13 +153,13 @@ void PartRef::ensureInitialisation() {
 }
 
 
-boost::shared_ptr< Geometry3D > PartRef::getGeometry3D(const char* Type) {
+std::shared_ptr< Geometry3D > PartRef::getGeometry3D(const char* Type) {
 
     //check if the item is initialized
     if(!m_part)
-        return boost::shared_ptr< Geometry3D >();
+        return std::shared_ptr< Geometry3D >();
 
-    boost::shared_ptr<Geometry3D> geometry;
+    std::shared_ptr<Geometry3D> geometry;
     if(m_part->hasGeometry3D(Type)) {
         return m_part->getGeometry3D(Type);
     }
@@ -171,7 +171,7 @@ boost::shared_ptr< Geometry3D > PartRef::getGeometry3D(const char* Type) {
             ts = static_cast<Part::Feature*>(obj)->Shape.getShape();
         }
         else
-            return boost::shared_ptr< Geometry3D >();
+            return std::shared_ptr< Geometry3D >();
 
         TopoDS_Shape s = ts.getSubShape(Type);
         if(s.ShapeType() == TopAbs_FACE) {
@@ -194,7 +194,7 @@ boost::shared_ptr< Geometry3D > PartRef::getGeometry3D(const char* Type) {
             }
             default:
                 Base::Console().Message("Unsupported Surface Geometry Type at selection\n");
-                return boost::shared_ptr< Geometry3D >();
+                return std::shared_ptr< Geometry3D >();
             }
 
         }
@@ -210,7 +210,7 @@ boost::shared_ptr< Geometry3D > PartRef::getGeometry3D(const char* Type) {
                 }
                 default:
                     Base::Console().Message("Unsupported Curve Geometry Type at selection \n");
-                    return boost::shared_ptr< Geometry3D >();
+                    return std::shared_ptr< Geometry3D >();
                 }
 
             }
@@ -223,7 +223,7 @@ boost::shared_ptr< Geometry3D > PartRef::getGeometry3D(const char* Type) {
                 }
                 else {
                     Base::Console().Message("Unsupported Topology Type at selection\n");
-                    return boost::shared_ptr< Geometry3D >();
+                    return std::shared_ptr< Geometry3D >();
                 }
     };
 

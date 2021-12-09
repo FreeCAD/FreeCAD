@@ -44,7 +44,7 @@ public:
 protected:
     void updateValues(void);
 private:
-    Ui_SketcherRegularPolygonDialog* ui;
+    std::unique_ptr<Ui_SketcherRegularPolygonDialog> ui;
 };
 
 }

@@ -32,6 +32,8 @@
 #include "Command.h"
 #include "Application.h"
 #include "Document.h"
+#include "MainWindow.h"
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/GroupExtension.h>
@@ -43,7 +45,7 @@ using namespace Gui;
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExtension)
 
-ViewProviderGroupExtension::ViewProviderGroupExtension()  : visible(false)
+ViewProviderGroupExtension::ViewProviderGroupExtension()  : guard(false)
 {
     initExtensionType(ViewProviderGroupExtension::getExtensionClassTypeId());
 }
@@ -66,7 +68,7 @@ void ViewProviderGroupExtension::extensionDragObject(App::DocumentObject* obj) {
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
             "App.getDocument(\"%s\").getObject(\"%s\"))",
-            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(), 
+            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(),
             obj->getDocument()->getName(), obj->getNameInDocument() );
 }
 
@@ -84,7 +86,7 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
 
     //we cannot drop thing of this group into it again
     if (group->hasObject(obj))
-        return false;  
+        return false;
 
     if (group->allowObject(obj))
         return true;
@@ -101,79 +103,79 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     QString cmd;
     cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
                         "App.getDocument(\"%1\").getObject(\"%3\"))")
-                        .arg(QString::fromLatin1(doc->getName()))
-                        .arg(QString::fromLatin1(grp->getNameInDocument()))
-                        .arg(QString::fromLatin1(obj->getNameInDocument()));
+                        .arg(QString::fromLatin1(doc->getName()),
+                             QString::fromLatin1(grp->getNameInDocument()),
+                             QString::fromLatin1(obj->getNameInDocument()));
 
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }
 
 std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
 
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();    
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     return std::vector<App::DocumentObject*>(group->Group.getValues());
 }
 
 void ViewProviderGroupExtension::extensionShow(void) {
 
+    // avoid possible infinite recursion
+    if (guard)
+        return;
+    Base::StateLocker lock(guard);
+
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
-    if (!getExtendedViewProvider()->isRestoring() && !this->visible) {
+    if (!getExtendedViewProvider()->isRestoring() ) {
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-
-        const std::vector<App::DocumentObject*> & links = group->Group.getValues();
-        Gui::Document* doc = Application::Instance->getDocument(group->getExtendedObject()->getDocument());
-        for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-            ViewProvider* view = doc->getViewProvider(*it);
-            if (view) 
-                view->show();
+        for(auto obj : group->Group.getValues()) {
+            if(obj && !obj->Visibility.getValue())
+                obj->Visibility.setValue(true);
         }
     }
 
     ViewProviderExtension::extensionShow();
-    this->visible = true;
 }
 
 void ViewProviderGroupExtension::extensionHide(void) {
 
+    // avoid possible infinite recursion
+    if (guard)
+        return;
+    Base::StateLocker lock(guard);
+
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
-    if (!getExtendedViewProvider()->isRestoring() && this->visible) {
-
+    //
+    // Property::User1 is used by ViewProviderDocumentObject to mark for
+    // temporary visibility changes. Do not propagate the change to children.
+    if (!getExtendedViewProvider()->isRestoring()
+            && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1))
+    {
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-
-        const std::vector<App::DocumentObject*> & links = group->Group.getValues();
-        Gui::Document* doc = Application::Instance->getDocument(getExtendedViewProvider()->getObject()->getDocument());
-        // doc pointer can be null in case the document is about to be destroyed
-        // See https://forum.freecadweb.org/viewtopic.php?f=22&t=26797&p=218804#p218521
-        if (doc) {
-            for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-                ViewProvider* view = doc->getViewProvider(*it);
-                if (view)
-                    view->hide();
-            }
+        for(auto obj : group->Group.getValues()) {
+            if(obj && obj->Visibility.getValue())
+                obj->Visibility.setValue(false);
         }
     }
-
     ViewProviderExtension::extensionHide();
-    this->visible = false;
 }
 
 bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& ) {
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-    // If the group is nonempty ask the user if he wants to delete its content
-    if ( group->Group.getSize () ) {
-        QMessageBox::StandardButton choice = 
-            QMessageBox::question ( 0, QObject::tr ( "Delete group content?" ), 
+    // If the group is nonempty ask the user if they want to delete its content
+    if (group->Group.getSize() > 0) {
+        QMessageBox::StandardButton choice =
+            QMessageBox::question(getMainWindow(), QObject::tr ( "Delete group content?" ),
                 QObject::tr ( "The %1 is not empty, delete its content as well?")
-                    .arg ( QString::fromUtf8 ( getExtendedViewProvider()->getObject()->Label.getValue () ) ), 
+                    .arg ( QString::fromUtf8 ( getExtendedViewProvider()->getObject()->Label.getValue () ) ),
                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
 
-        if ( choice == QMessageBox::Yes ) {
+        if (choice == QMessageBox::Yes) {
             Gui::Command::doCommand(Gui::Command::Doc,
                     "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-                    ,getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument());
+                    , getExtendedViewProvider()->getObject()->getDocument()->getName()
+                    , getExtendedViewProvider()->getObject()->getNameInDocument());
         }
     }
     return true;

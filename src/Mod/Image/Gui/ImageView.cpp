@@ -36,6 +36,8 @@ using namespace ImageGui;
 
 /* TRANSLATOR ImageGui::ImageView */
 
+TYPESYSTEM_SOURCE_ABSTRACT(ImageGui::ImageView, Gui::MDIView)
+
 ImageView::ImageView(QWidget* parent)
   : MDIView(0, parent), _ignoreCloseEvent(false)
 {
@@ -89,6 +91,10 @@ ImageView::ImageView(QWidget* parent)
 
   // Create the actions, menus and toolbars
   createActions();
+
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+          ("User parameter:BaseApp/Preferences/View");
+  _invertZoom = hGrp->GetBool("InvertZoom", true);
 
   // connect other slots
   connect(_pGLImageBox, SIGNAL(drawGraphics()), this, SLOT(drawGraphics()));
@@ -354,12 +360,12 @@ void ImageView::mousePressEvent(QMouseEvent* cEvent)
       _currY = box_y;
       switch(cEvent->buttons())
       {
-          case Qt::MidButton:
+          case Qt::MiddleButton:
               _currMode = panning;
               this->setCursor(QCursor(Qt::ClosedHandCursor));
               startDrag();
               break;
-          //case Qt::LeftButton | Qt::MidButton:
+          //case Qt::LeftButton | Qt::MiddleButton:
           //    _currMode = zooming;
           //    break;
           case Qt::LeftButton:
@@ -388,7 +394,7 @@ void ImageView::mouseDoubleClickEvent(QMouseEvent* cEvent)
        int box_y = cEvent->y() - offset.y();
        _currX = box_x;
        _currY = box_y;
-       if(cEvent->button() == Qt::MidButton)
+       if(cEvent->button() == Qt::MiddleButton)
        {
            double icX = _pGLImageBox->WCToIC_X(_currX);
            double icY = _pGLImageBox->WCToIC_Y(_currY);
@@ -404,7 +410,9 @@ void ImageView::mouseDoubleClickEvent(QMouseEvent* cEvent)
 // Mouse move event
 void ImageView::mouseMoveEvent(QMouseEvent* cEvent)
 {
+#if QT_VERSION < 0x050900
     QApplication::flush();
+#endif
 
    // Mouse event coordinates are relative to top-left of image view (including toolbar!)
    // Get current cursor position relative to top-left of image box
@@ -470,11 +478,24 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
        // Mouse event coordinates are relative to top-left of image view (including toolbar!)
        // Get current cursor position relative to top-left of image box
        QPoint offset = _pGLImageBox->pos();
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+       QPoint pos = cEvent->position().toPoint();
+       int box_x = pos.x() - offset.x();
+       int box_y = pos.y() - offset.y();
+#else
        int box_x = cEvent->x() - offset.x();
        int box_y = cEvent->y() - offset.y();
+#endif
 
        // Zoom around centrally displayed image point
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+       int numTicks = cEvent->angleDelta().y() / 120;
+#else
        int numTicks = cEvent->delta() / 120;
+#endif
+       if (_invertZoom)
+           numTicks = -numTicks;
+
        int ICx, ICy;
        _pGLImageBox->getCentrePoint(ICx, ICy);
        _pGLImageBox->setZoomFactor(_pGLImageBox->getZoomFactor() / pow(2.0, (double)numTicks), true, ICx, ICy);
@@ -533,7 +554,7 @@ QString ImageView::createStatusBarText()
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
-                  .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
+                  .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
     }
     else if ((colorFormat == IB_CF_RGB24) || 
              (colorFormat == IB_CF_RGB48))
@@ -543,7 +564,7 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, blue) != 0))
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
-                  .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
+                  .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
         else
             txt = QString::fromLatin1("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
@@ -558,7 +579,7 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, red) != 0))
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
-                  .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
+                  .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
         else
             txt = QString::fromLatin1("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
@@ -574,7 +595,7 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 2, blue) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 3, alpha) != 0))
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
-                  .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
+                  .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
         else
             txt = QString::fromLatin1("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
@@ -590,7 +611,7 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 2, red) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 3, alpha) != 0))
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
-                  .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
+                  .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
         else
             txt = QString::fromLatin1("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)

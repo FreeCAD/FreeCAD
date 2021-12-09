@@ -26,14 +26,16 @@
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoClipPlane.h>
 # include <Inventor/nodes/SoGroup.h>
+# include <Inventor/sensors/SoTimerSensor.h>
+# include <QDockWidget>
 # include <QPointer>
 # include <cmath>
 #endif
-# include <Inventor/sensors/SoTimerSensor.h>
 
 #include "Clipping.h"
 #include "ui_Clipping.h"
 #include "Application.h"
+#include "DockWindowManager.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 
@@ -87,7 +89,7 @@ public:
     }
     static void moveCallback(void * data, SoSensor * sensor)
     {
-        Q_UNUSED(sensor); 
+        Q_UNUSED(sensor);
         Private* self = reinterpret_cast<Private*>(data);
         if (self->view) {
             Gui::View3DInventorViewer* view = self->view->getViewer();
@@ -101,7 +103,8 @@ public:
 /* TRANSLATOR Gui::Dialog::Clipping */
 
 Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
-  : QWidget(parent), d(new Private)
+  : QDialog(parent)
+  , d(new Private)
 {
     // create widgets
     d->ui.setupUi(this);
@@ -183,6 +186,18 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
     }
 }
 
+Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view)
+{
+    // embed this dialog into a QDockWidget
+    Clipping* clipping = new Clipping(view);
+    Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
+    QDockWidget* dw = pDockMgr->addDockWindow("Clipping", clipping, Qt::LeftDockWidgetArea);
+    dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
+    dw->show();
+
+    return clipping;
+}
+
 /** Destroys the object and frees any allocated resources */
 Clipping::~Clipping()
 {
@@ -192,6 +207,15 @@ Clipping::~Clipping()
     d->node->removeChild(d->clipView);
     d->node->unref();
     delete d;
+}
+
+void Clipping::reject()
+{
+    QDialog::reject();
+    QDockWidget* dw = qobject_cast<QDockWidget*>(parent());
+    if (dw) {
+        dw->deleteLater();
+    }
 }
 
 void Clipping::on_groupBoxX_toggled(bool on)
@@ -334,24 +358,6 @@ void Clipping::on_dirZ_valueChanged(double)
     SbVec3f normal(x,y,z);
     if (normal.sqrLength() > 0.0f)
         d->clipView->plane.setValue(SbPlane(normal,pln.getDistanceFromOrigin()));
-}
-
-// ---------------------------------------
-
-/* TRANSLATOR Gui::Dialog::TaskClipping */
-
-TaskClipping::TaskClipping(Gui::View3DInventor* view)
-{
-    QWidget* widget = new Clipping(view);
-    Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, 0);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
-}
-
-TaskClipping::~TaskClipping()
-{
-    // automatically deleted in the sub-class
 }
 
 #include "moc_Clipping.cpp"

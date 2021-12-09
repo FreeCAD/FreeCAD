@@ -28,6 +28,8 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
@@ -39,7 +41,6 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoScale.h>
-# include <Precision.hxx>
 #endif
 
 #include "Mod/Fem/App/FemConstraintPlaneRotation.h"
@@ -54,7 +55,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPlaneRotation, FemGui::ViewProv
 
 ViewProviderFemConstraintPlaneRotation::ViewProviderFemConstraintPlaneRotation()
 {
-    sPixmap = "fem-constraint-planerotation";
+    sPixmap = "FEM_ConstraintPlaneRotation";
     //Note change "planerotation" in line above to new constraint name, make sure it is the same as in taskFem* cpp file
     ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
 }
@@ -118,7 +119,7 @@ void ViewProviderFemConstraintPlaneRotation::updateData(const App::Property* pro
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
         // Points and Normals are always updated together
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             //Define base and normal directions

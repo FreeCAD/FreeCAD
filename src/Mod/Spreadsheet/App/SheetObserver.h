@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,6 +29,7 @@ namespace Spreadsheet {
 
 class PropertySheet;
 
+// SheetObserver is obsolete as PropertySheet is now derived from PropertyLinkBase
 class SheetObserver : public App::DocumentObserver {
 public:
     SheetObserver(App::Document* document, PropertySheet *_sheet);

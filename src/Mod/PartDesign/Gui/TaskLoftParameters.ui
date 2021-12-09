@@ -29,6 +29,32 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupprofile">
+     <property name="title">
+      <string>Profile</string>
+     </property>
+     <layout class="QVBoxLayout">
+      <item>
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QToolButton" name="buttonProfileBase">
+          <property name="text">
+           <string>Object</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="profileBaseEdit"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QToolButton" name="buttonRefAdd">
@@ -72,7 +98,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetReferences"/>
+    <widget class="QListWidget" name="listWidgetReferences">
+     <property name="toolTip">
+      <string>List can be reordered by dragging</string>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line">

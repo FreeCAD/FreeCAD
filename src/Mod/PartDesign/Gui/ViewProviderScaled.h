@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -32,9 +32,10 @@ class PartDesignGuiExport ViewProviderScaled : public ViewProviderTransformed
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderScaled);
 public:
-    ViewProviderScaled()
-        { featureName = std::string("Scaled");
-	   sPixmap = "PartDesign_Scaled.svg"; }
+    ViewProviderScaled() {
+        featureName = std::string("Scaled");
+        sPixmap = "PartDesign_Scaled.svg";
+    }
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view

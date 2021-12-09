@@ -27,7 +27,7 @@
 #include "GuiApplicationNativeEventAware.h"
 #include <Base/Interpreter.h> // For Base::SystemExitException
 #include <QList>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class QSessionManager;
 
@@ -51,7 +51,7 @@ public:
     bool notify (QObject * receiver, QEvent * event);
 
     /// Pointer to exceptions caught in Qt event handler
-    boost::shared_ptr<Base::SystemExitException> caughtException;
+    std::shared_ptr<Base::SystemExitException> caughtException;
 
 public Q_SLOTS:
     void commitData(QSessionManager &manager);
@@ -81,6 +81,24 @@ Q_SIGNALS:
 private:
     class Private;
     QScopedPointer<Private> d_ptr;
+};
+
+class WheelEventFilter : public QObject
+{
+    Q_OBJECT
+
+public:
+    WheelEventFilter(QObject* parent);
+    bool eventFilter(QObject* obj, QEvent* ev);
+};
+
+class KeyboardFilter : public QObject
+{
+    Q_OBJECT
+
+public:
+    KeyboardFilter(QObject* parent);
+    bool eventFilter(QObject* obj, QEvent* ev);
 };
 
 }

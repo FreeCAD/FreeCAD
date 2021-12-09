@@ -39,9 +39,7 @@
 #include <QHeaderView>
 #include <QDebug>
 #include <QKeyEvent>
-#if QT_VERSION >= 0x050000
 #include <QStandardPaths>
-#endif
 #include <QTextDocument>
 
 #include <App/Document.h>
@@ -53,6 +51,7 @@
 #include "MainWindow.h"
 #include "FileDialog.h"
 #include "ui_DlgAuthorization.h"
+#include "Tools.h"
 
 using namespace Gui::Dialog;
 
@@ -100,7 +99,7 @@ SqueezeLabel::SqueezeLabel(QWidget *parent) : QLabel(parent)
 void SqueezeLabel::paintEvent(QPaintEvent *event)
 {
     QFontMetrics fm = fontMetrics();
-    if (fm.width(text()) > contentsRect().width()) {
+    if (Gui::QtTools::horizontalAdvance(fm, text()) > contentsRect().width()) {
         QString elided = fm.elidedText(text(), Qt::ElideMiddle, width());
         QString oldText = text();
         setText(elided);
@@ -129,7 +128,7 @@ AutoSaver::~AutoSaver()
 
 void AutoSaver::changeOccurred()
 {
-    if (m_firstChange.isNull())
+    if (!m_firstChange.isValid())
         m_firstChange.start();
 
     if (m_firstChange.elapsed() > MAXWAIT) {
@@ -153,7 +152,7 @@ void AutoSaver::saveIfNecessary()
     if (!m_timer.isActive())
         return;
     m_timer.stop();
-    m_firstChange = QTime();
+    m_firstChange = QElapsedTimer();
     if (!QMetaObject::invokeMethod(parent(), "save", Qt::DirectConnection)) {
         qWarning() << "AutoSaver: error invoking slot save() on parent";
     }
@@ -170,11 +169,7 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent)
             SLOT(proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
 
     QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
-#if QT_VERSION >= 0x050000
     QString location = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-#else
-    QString location = QDesktopServices::storageLocation(QDesktopServices::CacheLocation);
-#endif
     diskCache->setCacheDirectory(location);
     setCache(diskCache);
 }
@@ -191,11 +186,7 @@ void NetworkAccessManager::authenticationRequired(QNetworkReply *reply, QAuthent
     dialog.adjustSize();
 
     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
-#if QT_VERSION >= 0x050000
-    introMessage = introMessage.arg(QString(reply->url().toString()).toHtmlEscaped()).arg(QString(reply->url().toString()).toHtmlEscaped());
-#else
-    introMessage = introMessage.arg(Qt::escape(reply->url().toString())).arg(Qt::escape(reply->url().toString()));
-#endif
+    introMessage = introMessage.arg(QString(reply->url().toString()).toHtmlEscaped(), QString(reply->url().toString()).toHtmlEscaped());
     passwordDialog.siteDescription->setText(introMessage);
     passwordDialog.siteDescription->setWordWrap(true);
 
@@ -217,11 +208,7 @@ void NetworkAccessManager::proxyAuthenticationRequired(const QNetworkProxy &prox
     dialog.adjustSize();
 
     QString introMessage = tr("<qt>Connect to proxy \"%1\" using:</qt>");
-#if QT_VERSION >= 0x050000
     introMessage = introMessage.arg(QString(proxy.hostName()).toHtmlEscaped());
-#else
-    introMessage = introMessage.arg(Qt::escape(proxy.hostName()));
-#endif
     proxyDialog.siteDescription->setText(introMessage);
     proxyDialog.siteDescription->setWordWrap(true);
 
@@ -286,12 +273,8 @@ void DownloadItem::init()
 
 QString DownloadItem::getDownloadDirectory() const
 {
-    QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
-#if QT_VERSION >= 0x050000
+    QString exe = QString::fromStdString(App::Application::getExecutableName());
     QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-#else
-    QString path = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
-#endif
     QString dirPath = QDir(path).filePath(exe);
     Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                ->GetGroup("Preferences")->GetGroup("General");
@@ -300,7 +283,7 @@ QString DownloadItem::getDownloadDirectory() const
         dirPath = QString::fromUtf8(dir.c_str());
     }
 
-    if (QFileInfo(dirPath).exists() || QDir().mkpath(dirPath)) {
+    if (QFileInfo::exists(dirPath) || QDir().mkpath(dirPath)) {
         return dirPath;
     }
     else {
@@ -516,19 +499,17 @@ void DownloadItem::metaDataChanged()
         if (url != redirectUrl) {
             url = redirectUrl;
 
-            if (m_reply) {
-                disconnect(m_reply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
-                disconnect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
-                           this, SLOT(error(QNetworkReply::NetworkError)));
-                disconnect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
-                           this, SLOT(downloadProgress(qint64, qint64)));
-                disconnect(m_reply, SIGNAL(metaDataChanged()),
-                           this, SLOT(metaDataChanged()));
-                disconnect(m_reply, SIGNAL(finished()),
-                           this, SLOT(finished()));
-                m_reply->close();
-                m_reply->deleteLater();
-            }
+            disconnect(m_reply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
+            disconnect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+                       this, SLOT(error(QNetworkReply::NetworkError)));
+            disconnect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
+                       this, SLOT(downloadProgress(qint64, qint64)));
+            disconnect(m_reply, SIGNAL(metaDataChanged()),
+                       this, SLOT(metaDataChanged()));
+            disconnect(m_reply, SIGNAL(finished()),
+                       this, SLOT(finished()));
+            m_reply->close();
+            m_reply->deleteLater();
 
             m_reply = DownloadManager::getInstance()->networkAccessManager()->get(QNetworkRequest(url));
             init();
@@ -579,17 +560,17 @@ void DownloadItem::updateInfoLabel()
             .arg(timeRemaining)
             .arg(timeRemainingString);
         info = QString(tr("%1 of %2 (%3/sec) %4"))
-            .arg(dataString(m_bytesReceived))
-            .arg(bytesTotal == 0 ? tr("?") : dataString(bytesTotal))
-            .arg(dataString((int)speed))
-            .arg(remaining);
+            .arg(dataString(m_bytesReceived),
+                 bytesTotal == 0 ? tr("?") : dataString(bytesTotal),
+                 dataString((int)speed),
+                 remaining);
     } else {
         if (m_bytesReceived == bytesTotal)
             info = dataString(m_output.size());
         else
             info = tr("%1 of %2 - Stopped")
-                .arg(dataString(m_bytesReceived))
-                .arg(dataString(bytesTotal));
+                .arg(dataString(m_bytesReceived),
+                     dataString(bytesTotal));
     }
     downloadInfoLabel->setText(info);
 }

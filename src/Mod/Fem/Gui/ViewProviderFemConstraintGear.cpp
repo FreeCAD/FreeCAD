@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,11 +26,13 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
 # include <Inventor/SbMatrix.h>
-# include <Precision.hxx>
+
 # include <QMessageBox>
 #endif
 
@@ -47,7 +50,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintGear, FemGui::ViewProviderFemCo
 
 ViewProviderFemConstraintGear::ViewProviderFemConstraintGear()
 {
-    sPixmap = "fem-constraint-gear";
+    sPixmap = "FEM_ConstraintGear";
 }
 
 ViewProviderFemConstraintGear::~ViewProviderFemConstraintGear()
@@ -113,7 +116,7 @@ void ViewProviderFemConstraintGear::updateData(const App::Property* prop)
     if (strcmp(prop->getName(),"BasePoint") == 0) {
         if (pcConstraint->Height.getValue() > Precision::Confusion()) {
             // Remove and recreate the symbol
-            pShapeSep->removeAllChildren();
+            Gui::coinRemoveAllChildren(pShapeSep);
 
             Base::Vector3d base = pcConstraint->BasePoint.getValue();
             Base::Vector3d axis = pcConstraint->Axis.getValue();

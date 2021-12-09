@@ -33,7 +33,7 @@ using namespace App;
 PROPERTY_SOURCE(App::MeasureDistance, App::DocumentObject)
 
 
-MeasureDistance::MeasureDistance() 
+MeasureDistance::MeasureDistance()
 {
     ADD_PROPERTY_TYPE(P1,(Base::Vector3d()),"Measurement",Prop_None,"First point of measurement");
     ADD_PROPERTY_TYPE(P2,(Base::Vector3d()),"Measurement",Prop_None,"Second point of measurement");

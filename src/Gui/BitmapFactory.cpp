@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QString>
 # include <QApplication>
 # include <QBitmap>
 # include <QDir>
@@ -37,15 +38,6 @@
 # include <sstream>
 #endif
 
-#if defined (FC_OS_WIN32) && QT_VERSION < 0x050000
-#define QTWEBKIT
-#endif
-
-#ifdef QTWEBKIT
-#include <QWebView>
-#include <QWebFrame>
-#endif
-
 #include <string>
 #include <Inventor/fields/SoSFImage.h>
 
@@ -57,7 +49,7 @@
 using namespace Gui;
 
 /* XPM */
-static const char *px[]={
+static const char *not_found[]={
 "24 24 2 1",
 "# c #000000",
 ". c #ffffff",
@@ -105,15 +97,15 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
         std::map<std::string,std::string>::const_iterator it;
         it = App::GetApplication().Config().find("ProgramIcons");
         if (it != App::GetApplication().Config().end()) {
-            QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+            QString home = QString::fromStdString(App::Application::getHomePath());
             QString path = QString::fromUtf8(it->second.c_str());
             if (QDir(path).isRelative()) {
                 path = QFileInfo(QDir(home), path).absoluteFilePath();
             }
             _pcSingleton->addPath(path);
         }
-        _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromUtf8(App::GetApplication().getHomePath())));
-        _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromUtf8(App::GetApplication().Config()["UserAppData"].c_str())));
+        _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromStdString(App::Application::getHomePath())));
+        _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromStdString(App::Application::getUserAppDataDir())));
         _pcSingleton->addPath(QLatin1String(":/icons/"));
         _pcSingleton->addPath(QLatin1String(":/Icons/"));
     }
@@ -177,9 +169,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
         filters << QString::fromLatin1("*.%1").arg(QString::fromLatin1(*it).toLower());
 
     QStringList paths = QDir::searchPaths(QString::fromLatin1("icons"));
-#if QT_VERSION >= 0x040500
     paths.removeDuplicates();
-#endif
     for (QStringList::ConstIterator pt = paths.begin(); pt != paths.end(); ++pt) {
         QDir d(*pt);
         d.setNameFilters(filters);
@@ -188,9 +178,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
             files << it->absoluteFilePath();
     }
 
-#if QT_VERSION >= 0x040500
     files.removeDuplicates();
-#endif
     return files;
 }
 
@@ -278,8 +266,8 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         if (!loadPixmap(fileName, icon)) {
             // Go through supported file formats
             for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
-                QString path = QString::fromLatin1("%1.%2").arg(fileName).
-                    arg(QString::fromLatin1((*fm).toLower().constData()));
+                QString path = QString::fromLatin1("%1.%2").arg(fileName,
+                    QString::fromLatin1((*fm).toLower().constData()));
                 if (loadPixmap(path, icon)) {
                     break;
                 }
@@ -293,10 +281,11 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     }
 
     Base::Console().Warning("Cannot find icon: %s\n", name);
-    return QPixmap(px);
+    return QPixmap(not_found);
 }
 
-QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSize& size) const
+QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
+    const std::map<unsigned long, unsigned long>& colorMapping) const
 {
     // If an absolute path is given
     QPixmap icon;
@@ -325,113 +314,38 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSize& size) co
         QFile file(iconPath);
         if (file.open(QFile::ReadOnly | QFile::Text)) {
             QByteArray content = file.readAll();
-            icon = pixmapFromSvg(content, size);
+            icon = pixmapFromSvg(content, size, colorMapping);
         }
     }
 
     return icon;
 }
 
-QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize& size) const
+QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, const QSizeF& size,
+                                         const std::map<unsigned long, unsigned long>& colorMapping) const
 {
-#ifdef QTWEBKIT
-    // There is a crash when using the Webkit engine in debug mode
-    // for a couple of SVG files. Thus, use the qsvg plugin.
-#if QT_VERSION < 0x040800 || !defined(_DEBUG)
-    QWebView webView;
-    QPalette pal = webView.palette();
-    pal.setColor(QPalette::Background, Qt::transparent);
-    webView.setPalette(pal);
-    webView.setContent(contents, QString::fromLatin1("image/svg+xml"));
-    QString node = QString::fromLatin1("document.rootElement.nodeName");
-    QWebFrame* frame = webView.page()->mainFrame();
-    if (!frame) {
-        return QPixmap();
+    QString stringContents = QString::fromUtf8(originalContents);
+    for ( const auto &colorToColor : colorMapping ) {
+        ulong fromColor = colorToColor.first;
+        ulong toColor = colorToColor.second;
+        QString fromColorString = QString::fromLatin1(":#%1;").arg(fromColor, 6, 16,  QChar::fromLatin1('0'));
+        QString toColorString = QString::fromLatin1(":#%1;").arg(toColor, 6, 16,  QChar::fromLatin1('0'));
+        stringContents = stringContents.replace(fromColorString, toColorString);
     }
+    QByteArray contents = stringContents.toUtf8();
 
-    QString root = frame->evaluateJavaScript(node).toString();
-    if (root.isEmpty() || root.compare(QLatin1String("svg"), Qt::CaseInsensitive)) {
-        return QPixmap();
-    }
-
-    QString w = QString::fromLatin1("document.rootElement.width.baseVal.value");
-    QString h = QString::fromLatin1("document.rootElement.height.baseVal.value");
-    double ww = frame->evaluateJavaScript(w).toDouble();
-    double hh = frame->evaluateJavaScript(h).toDouble();
-    if (ww == 0.0 || hh == 0.0)
-        return QPixmap();
-
-    QImage image(size, QImage::Format_ARGB32_Premultiplied);
-    image.fill(0x00000000);
-
-    QPainter p(&image);
-    qreal xs = size.isValid() ? size.width() / ww : 1.0;
-    qreal ys = size.isValid() ? size.height() / hh : 1.0;
-    p.scale(xs, ys);
-
-    // the best quality
-    p.setRenderHint(QPainter::Antialiasing);
-    p.setRenderHint(QPainter::TextAntialiasing);
-    p.setRenderHint(QPainter::SmoothPixmapTransform);
-    p.setOpacity(0); // important to keep transparent background
-    frame->render(&p);
-    p.end();
-
-    return QPixmap::fromImage(image);
-#else // QT_VERSION
-    QWebPage webPage;
-    QPalette pal = webPage.palette();
-    pal.setColor(QPalette::Background, Qt::transparent);
-    webPage.setPalette(pal);
-    QWebFrame* frame = webPage.mainFrame();
-    if (!frame) {
-        return QPixmap();
-    }
-    frame->setContent(contents, QString::fromLatin1("image/svg+xml"));
-    // Important to exclude user events here because otherwise
-    // it may happen that an item the icon is created for gets
-    // deleted in the meantime. This happens e.g. dragging over
-    // the categories in the commands panel very quickly.
-    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-    webPage.setViewportSize(webPage.mainFrame()->contentsSize());
-
-    double ww = webPage.viewportSize().width();
-    double hh = webPage.viewportSize().height();
-    if (ww == 0.0 || hh == 0.0)
-        return QPixmap();
-
-    QImage image(size, QImage::Format_ARGB32_Premultiplied);
-    image.fill(0x00000000);
-
-    QPainter p(&image);
-    qreal xs = size.isValid() ? size.width() / ww : 1.0;
-    qreal ys = size.isValid() ? size.height() / hh : 1.0;
-    p.scale(xs, ys);
-
-    // the best quality
-    p.setRenderHint(QPainter::Antialiasing);
-    p.setRenderHint(QPainter::TextAntialiasing);
-    p.setRenderHint(QPainter::SmoothPixmapTransform);
-    p.setOpacity(0); // important to keep transparent background
-    frame->render(&p);
-    p.end();
-
-    return QPixmap::fromImage(image);
-#endif // QT_VERSION
-#else //QTWEBKIT
-    QImage image(size, QImage::Format_ARGB32_Premultiplied);
+    QImage image(size.toSize(), QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
 
     QPainter p(&image);
     // tmp. disable the report window to suppress some bothering warnings
-    Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, false);
+    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
     QSvgRenderer svg(contents);
-    Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, true);
+    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
     svg.render(&p);
     p.end();
 
     return QPixmap::fromImage(image);
-#endif
 }
 
 QStringList BitmapFactoryInst::pixmapNames() const
@@ -492,8 +406,7 @@ QPixmap BitmapFactoryInst::resize(int w, int h, const QPixmap& p, Qt::BGMode bgm
         QColor dl = pal.color(QPalette::Disabled, QPalette::Light);
         QColor dt = pal.color(QPalette::Disabled, QPalette::Text);
 
-        QPixmap pm = pix;
-        pm = QPixmap(w,h);
+        QPixmap pm(w,h);
         pm.fill(dl);
 
         QPainter pt;
@@ -572,20 +485,22 @@ QPixmap BitmapFactoryInst::merge(const QPixmap& p1, const QPixmap& p2, Position 
 {
     // does the similar as the method above except that this method does not resize the resulting pixmap
     int x = 0, y = 0;
+    qreal dpr1 = p1.devicePixelRatio();
+    qreal dpr2 = p2.devicePixelRatio();
 
     switch (pos)
     {
-    case Qt::TopLeftCorner:
+    case TopLeft:
         break;
-    case Qt::TopRightCorner:
-        x = p1.width () - p2.width ();
+    case TopRight:
+        x = p1.width ()/dpr1 - p2.width ()/dpr2;
         break;
-    case Qt::BottomLeftCorner:
-        y = p1.height() - p2.height();
+    case BottomLeft:
+        y = p1.height()/dpr1 - p2.height()/dpr2;
         break;
-    case Qt::BottomRightCorner:
-        x = p1.width () - p2.width ();
-        y = p1.height() - p2.height();
+    case BottomRight:
+        x = p1.width ()/dpr1 - p2.width ()/dpr2;
+        y = p1.height()/dpr1 - p2.height()/dpr2;
         break;
     }
 
@@ -615,7 +530,11 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     size[0] = p.width();
     size[1] = p.height();
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    int buffersize = static_cast<int>(p.sizeInBytes());
+#else
     int buffersize = p.byteCount();
+#endif
     int numcomponents = 0;
     QVector<QRgb> table = p.colorTable();
     if (!table.isEmpty()) {
@@ -644,13 +563,13 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     int width  = (int)size[0];
     int height = (int)size[1];
 
-    for (int y = 0; y < height; y++) 
+    for (int y = 0; y < height; y++)
     {
         unsigned char * line = &bytes[width*numcomponents*(height-(y+1))];
-        for (int x = 0; x < width; x++) 
+        for (int x = 0; x < width; x++)
         {
             QRgb rgb = p.pixel(x,y);
-            switch (numcomponents) 
+            switch (numcomponents)
             {
             default:
                 break;
@@ -687,19 +606,21 @@ void BitmapFactoryInst::convert(const SoSFImage& p, QImage& img) const
     int numcomponents;
 
     const unsigned char * bytes = p.getValue(size, numcomponents);
+    if (!bytes)
+        return;
 
     int width  = (int)size[0];
     int height = (int)size[1];
 
     img = QImage(width, height, QImage::Format_RGB32);
     QRgb * bits = (QRgb*) img.bits();
-    
-    for (int y = 0; y < height; y++) 
+
+    for (int y = 0; y < height; y++)
     {
         const unsigned char * line = &bytes[width*numcomponents*(height-(y+1))];
-        for (int x = 0; x < width; x++) 
+        for (int x = 0; x < width; x++)
         {
-            switch (numcomponents) 
+            switch (numcomponents)
             {
             default:
             case 1:
@@ -721,3 +642,17 @@ void BitmapFactoryInst::convert(const SoSFImage& p, QImage& img) const
     }
 }
 
+QIcon BitmapFactoryInst::mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position)
+{
+    QIcon overlayedIcon;
+
+    int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+
+    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::Off),
+                                                       px,position), QIcon::Normal, QIcon::Off);
+
+    overlayedIcon.addPixmap(Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::On ),
+                                                       px,position), QIcon::Normal, QIcon::Off);
+
+    return overlayedIcon;
+}

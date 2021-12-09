@@ -54,7 +54,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* pnt = new Gui::ToolBarItem( root );
     pnt->setCommand("Points tools");
-    *pnt << "Points_Import" << "Points_Export" << "Separator" << "Points_PolyCut";
+    *pnt << "Points_Import"
+         << "Points_Export"
+         << "Separator"
+         << "Points_Convert"
+         << "Points_Structure"
+         << "Points_Merge"
+         << "Points_PolyCut";
     return root;
 }
 
@@ -64,7 +70,11 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     Gui::ToolBarItem* pnt = new Gui::ToolBarItem( root );
     pnt->setCommand("Points tools");
-    *pnt << "Points_Import" << "Points_Export";
+    *pnt << "Points_Import"
+         << "Points_Export"
+         << "Points_Convert"
+         << "Points_Structure"
+         << "Points_Merge";
     return root;
 }
 
@@ -74,11 +84,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* item = root->findItem("&Windows");
     Gui::MenuItem* pnts = new Gui::MenuItem;
     root->insertItem(item, pnts);
- 
+
     pnts->setCommand("&Points");
-    *pnts << "Points_Convert" << "Separator" << "Points_Import"
-          << "Points_Export" << "Separator" << "Points_PolyCut"
+    *pnts << "Points_Convert"
+          << "Points_Structure"
+          << "Separator"
+          << "Points_Import"
+          << "Points_Export"
+          << "Separator"
+          << "Points_PolyCut"
           << "Points_Merge";
     return root;
 }
-

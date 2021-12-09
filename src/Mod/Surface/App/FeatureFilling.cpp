@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
+ *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -298,6 +298,7 @@ App::DocumentObjectExecReturn *Filling::execute(void)
         }
 
         // Add the constraints of border curves/faces (bound)
+        int numBoundaries = BoundaryEdges.getSize();
         addConstraints(builder, BoundaryEdges, BoundaryFaces, BoundaryOrder, Standard_True);
 
         // Add additional edge constraints if available (unbound)
@@ -316,7 +317,8 @@ App::DocumentObjectExecReturn *Filling::execute(void)
         }
 
         //Build the face
-        builder.Build();
+        if (numBoundaries > 1)
+            builder.Build();
         if (!builder.IsDone()) {
             Standard_Failure::Raise("Failed to create a face from constraints");
         }
@@ -327,7 +329,6 @@ App::DocumentObjectExecReturn *Filling::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }

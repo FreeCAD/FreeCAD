@@ -49,24 +49,6 @@ else()
     qt4_wrap_ui(RobotGui_UIC_HDRS ${RobotGui_UIC_SRCS})
 endif()
 
-set(RobotGui_MOC_HDRS
-    TaskTrajectory.h
-    TaskRobot6Axis.h
-    TrajectorySimulate.h
-    TaskDlgSimulate.h
-    TaskDlgEdge2Trac.h
-    TaskDlgTrajectoryDressUp.h
-    TaskDlgTrajectoryCompound.h
-    TaskRobotMessages.h
-    TaskRobotControl.h
-    TaskEdge2TracParameter.h
-    TaskTrajectoryDressUpParameter.h
-    TaskWatcher.h
-)
-fc_wrap_cpp(RobotGui_MOC_SRCS ${RobotGui_MOC_HDRS})
-SOURCE_GROUP("Qt" FILES ${PartDesignGui_MOC_SRCS})
-
-
 SET(RobotGui_SRCS_Module
     AppRobotGui.cpp
     Resources/Robot.qrc
@@ -148,26 +130,25 @@ SET(RobotGui_SRCS
     ${RobotGui_SRCS_TaskDlg}
 )
 
-
-
-add_library(RobotGui SHARED ${RobotGui_SRCS})
-target_link_libraries(RobotGui ${RobotGui_LIBS})
-
-
-fc_target_copy_resource(RobotGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Robot
-    ${CMAKE_BINARY_DIR}/Mod/Robot
-    InitGui.py MovieTool.py)
-
-SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
-SET_PYTHON_PREFIX_SUFFIX(RobotGui)
-
-INSTALL(TARGETS RobotGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(RobotGuiIcon_SVG
     Resources/icons/RobotWorkbench.svg
 )
 
+
+add_library(RobotGui SHARED ${RobotGui_SRCS} ${RobotGuiIcon_SVG})
+target_link_libraries(RobotGui ${RobotGui_LIBS})
+
+unset(_flag_found CACHE)
+check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)
+if (_flag_found)
+    target_compile_options(RobotGui PRIVATE -Wno-deprecated-copy)
+endif ()
+
+
+SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
+SET_PYTHON_PREFIX_SUFFIX(RobotGui)
+
 fc_copy_sources(RobotGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot" ${RobotGuiIcon_SVG})
 
+INSTALL(TARGETS RobotGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${RobotGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Robot/Resources/icons")

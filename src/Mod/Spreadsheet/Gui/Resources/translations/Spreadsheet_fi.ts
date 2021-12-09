@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fi" sourcelanguage="en">
+<TS version="2.1" language="fi" sourcelanguage="en">
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Taulukkolaskenta</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Solu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Käytä</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation type="unfinished">Apply the changes to the current cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Poista</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation type="unfinished">Deletes the contents of the current cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Laske</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation type="unfinished">Updates the values handled by controllers</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Luo laskentataulukko</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Taulukkolaskenta</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+    </message>
+  </context>
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +199,8 @@
       <translation>Pystysuoraan tasaus keskelle</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Tasaa yläreunaan pystysuorassa valittujen solujen sisältö</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Tasaa keskelle valittujen solujen sisältö</translation>
     </message>
   </context>
   <context>
@@ -147,8 +244,8 @@
       <translation>Yhdistä solut</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Yhdistä valitut solut laskentataulukossa</translation>
+      <source>Merge selected cells</source>
+      <translation>Yhdistä valitut solut</translation>
     </message>
   </context>
   <context>
@@ -159,11 +256,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation type="unfinished">Set alias</translation>
+      <translation>Aseta vaihtoehtoinen nimi /alias</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation type="unfinished">Set alias for selected cell</translation>
+      <translation>Aseta vaihtoehtoinen nimi (alias) valitulle solulle</translation>
     </message>
   </context>
   <context>
@@ -177,8 +274,8 @@
       <translation>Jaa solu</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Jaa laskentataulukon aiemmin yhdistetyt solut</translation>
+      <source>Split previously merged cells</source>
+      <translation>Jaa aiemmin yhdistetyt solut</translation>
     </message>
   </context>
   <context>
@@ -192,8 +289,8 @@
       <translation>Lihavoitu teksti</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Määritä lihavoitu teksti valituissa soluissa</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Lihavoi valittujen solujen teksti</translation>
     </message>
   </context>
   <context>
@@ -207,8 +304,8 @@
       <translation>Kursivoitu teksti</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Määritä kursivoitu teksti valituissa soluissa</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Muuta valittujen solujen teksti kursiiviksi</translation>
     </message>
   </context>
   <context>
@@ -222,15 +319,98 @@
       <translation>Alleviivaa teksti</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Määritä alleviivattu teksti valituissa soluissa</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Alleviivaa teksti valituissa soluissa</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Mukautettu</translation>
+      <source>Custom Color</source>
+      <translation>Mukautettu väri</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Yhdistä solut</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Jaa solu</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Vasemman tasauksen solu</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Keskitetyn tasauksen solu</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Oikean tasauksen solu</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Yläreunaan tasattu solu</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Alareunaan tasattu solu</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Pystysuoraan keskelle tasatut solut</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Aseta lihavointi</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Aseta kursivoitu teksti</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Aseta alleviivausteksti</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Luo laskentataulukko</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Aseta solun ominaisuudet</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Muokkaa solua</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Lisää rivejä</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Poista rivejä</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Lisää sarakkeita</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Tyhjennä solu(t)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Etualan väri</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Taustaväri</translation>
     </message>
   </context>
   <context>
@@ -331,28 +511,48 @@
       <translation>Vie tiedosto</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Solun sisältö</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Näytä laskentataulukko</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Aseta solun(solujen) edustan väri</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Asettaa tulostaulun solun(solujen) edustan värin</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Aseta solun(solujen) taustan väri</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Asettaa laskentataulun(-taulujen) taustavärin</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Taulukkolaskenta</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation>Laskentataulu ei tue alueen valintaa liittämisen yhteydessä.
+Valitse vain yksi solu.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation>Kopioi ja liitä epäonnistui</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Vaihtoehtoinen nimi (alias) sisältää virheellisiä merkkejä!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Viittaa soluihin vaihtoehtoisella nimellä (alias), esimerkiksi
+Spreadsheet.my_alias_name sijasta Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -426,8 +626,8 @@
       <translation>Vaaleanharmaa</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Mukautettu</translation>
+      <source>Custom Color</source>
+      <translation>Mukautettu väri</translation>
     </message>
   </context>
   <context>
@@ -437,8 +637,73 @@
       <translation>Lomake</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Sisältö</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Sisältö:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias (vaihtoehtoinen nimi):</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Viittaa soluihin vaihtoehtoisella nimellä (alias), esimerkiksi
+Spreadsheet.my_alias_name sijasta Spreadsheet.B1</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Taulukkolaskenta</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation type="unfinished">Import/Export Settings</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation type="unfinished">Delimiter Character: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation type="unfinished">\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation type="unfinished">Escape Character: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation type="unfinished">tab</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation type="unfinished">Quote Character: </translation>
     </message>
   </context>
   <context>
@@ -451,24 +716,64 @@
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Lisää rivejä</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Poista rivejä</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Lisää sarakkeita</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Poista sarakkeita</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Ominaisuudet...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

@@ -36,7 +36,7 @@
 # include <QRegExp>
 #endif
 
-#include <Inventor/sensors/SoTimerSensor.h>
+#include "SoMouseWheelEvent.h"
 
 #include <App/Application.h>
 #include "NavigationStyle.h"
@@ -51,7 +51,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::InventorNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::InventorNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::InventorNavigationStyle, Gui::UserNavigationStyle)
 
 InventorNavigationStyle::InventorNavigationStyle()
 {
@@ -96,12 +96,10 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
     const SoType type(ev->getTypeId());
 
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-    const SbVec2s size(vp.getViewportSizePixels());
-    const SbVec2f prevnormalized = this->lastmouseposition;
     const SbVec2s pos(ev->getPosition());
-    const SbVec2f posn((float) pos[0] / (float) std::max((int)(size[0] - 1), 1),
-                       (float) pos[1] / (float) std::max((int)(size[1] - 1), 1));
+    const SbVec2f posn = normalizePixelPos(pos);
 
+    const SbVec2f prevnormalized = this->lastmouseposition;
     this->lastmouseposition = posn;
 
     // Set to true if any event processing happened. Note that it is not
@@ -115,18 +113,10 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mismatches in state of the modifier keys happens if the user
     // presses or releases them outside the viewer window.
-    if (this->ctrldown != ev->wasCtrlDown()) {
-        this->ctrldown = ev->wasCtrlDown();
-    }
-    if (this->shiftdown != ev->wasShiftDown()) {
-        this->shiftdown = ev->wasShiftDown();
-    }
-    if (this->altdown != ev->wasAltDown()) {
-        this->altdown = ev->wasAltDown();
-    }
+    syncModifierKeys(ev);
 
     // give the nodes in the foreground root the chance to handle events (e.g color bar)
-    if (!processed && !viewer->isEditing()) {
+    if (!viewer->isEditing()) {
         processed = handleEventInForeground(ev);
         if (processed)
             return true;
@@ -134,37 +124,8 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Keyboard handling
     if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
-        const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
-        switch (event->getKey()) {
-        case SoKeyboardEvent::LEFT_CONTROL:
-        case SoKeyboardEvent::RIGHT_CONTROL:
-            this->ctrldown = press;
-            break;
-        case SoKeyboardEvent::LEFT_SHIFT:
-        case SoKeyboardEvent::RIGHT_SHIFT:
-            this->shiftdown = press;
-            break;
-        case SoKeyboardEvent::LEFT_ALT:
-        case SoKeyboardEvent::RIGHT_ALT:
-            this->altdown = press;
-            break;
-        case SoKeyboardEvent::H:
-            processed = true;
-            viewer->saveHomePosition();
-            break;
-        case SoKeyboardEvent::S:
-        case SoKeyboardEvent::HOME:
-        case SoKeyboardEvent::LEFT_ARROW:
-        case SoKeyboardEvent::UP_ARROW:
-        case SoKeyboardEvent::RIGHT_ARROW:
-        case SoKeyboardEvent::DOWN_ARROW:
-            if (!this->isViewing())
-                this->setViewing(true);
-            break;
-        default:
-            break;
-        }
+        const SoKeyboardEvent * const event = static_cast<const SoKeyboardEvent *>(ev);
+        processed = processKeyboardEvent(event);
     }
 
     // Mouse Button / Spaceball Button handling
@@ -218,30 +179,8 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
                 processed = true;
                 this->lockrecenter = true;
             }
-            // issue #0002433: avoid to swallow the UP event if down the
-            // scene graph somewhere a dialog gets opened
-            else if (press) {
-                SbTime tmp = (ev->getTime() - mouseDownConsumedEvent.getTime());
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                // a double-click?
-                if (tmp.getValue() < dci) {
-                    mouseDownConsumedEvent = *event;
-                    mouseDownConsumedEvent.setTime(ev->getTime());
-                    processed = true;
-                }
-                else {
-                    mouseDownConsumedEvent.setTime(ev->getTime());
-                    // 'ANY' is used to mark that we don't know yet if it will
-                    // be a double-click event.
-                    mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
-                }
-            }
-            else if (!press) {
-                if (mouseDownConsumedEvent.getButton() == SoMouseButtonEvent::BUTTON1) {
-                    // now handle the postponed event
-                    inherited::processSoEvent(&mouseDownConsumedEvent);
-                    mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
-                }
+            else {
+                processed = processClickEvent(event);
             }
             break;
         case SoMouseButtonEvent::BUTTON2:
@@ -250,8 +189,8 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->lockrecenter = true;
             if (!viewer->isEditing()) {
                 // If we are in zoom or pan mode ignore RMB events otherwise
-                // the canvas doesn't get any release events 
-                if (this->currentmode != NavigationStyle::ZOOMING && 
+                // the canvas doesn't get any release events
+                if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING) {
                     if (this->isPopupMenuEnabled()) {
                         if (!press) { // release right mouse button
@@ -284,14 +223,6 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
             }
             this->button3down = press;
             break;
-        case SoMouseButtonEvent::BUTTON4:
-            doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
-            processed = true;
-            break;
-        case SoMouseButtonEvent::BUTTON5:
-            doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
-            processed = true;
-            break;
         default:
             break;
         }
@@ -320,7 +251,7 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event * const>(ev);
+        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -396,7 +327,9 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if ((curmode == NavigationStyle::SELECTION ||
+    if (ev->isOfType(SoMouseWheelEvent::getClassTypeId()))
+        processed = inherited::processSoEvent(ev);
+    else if ((curmode == NavigationStyle::SELECTION ||
          newmode == NavigationStyle::SELECTION ||
          viewer->isEditing()) && !processed)
         processed = inherited::processSoEvent(ev);

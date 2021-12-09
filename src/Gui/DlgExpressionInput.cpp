@@ -30,17 +30,18 @@
 #include "DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
 #include "ExpressionCompleter.h"
+#include "Tools.h"
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <App/Application.h>
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/DocumentObject.h>
 
 using namespace App;
 using namespace Gui::Dialog;
 
 DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
-                                       boost::shared_ptr<const Expression> _expression,
+                                       std::shared_ptr<const Expression> _expression,
                                        const Base::Unit & _impliedUnit, QWidget *parent)
   : QDialog(parent)
   , ui(new Ui::DlgExpressionInput)
@@ -55,14 +56,19 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // Setup UI
     ui->setupUi(this);
 
-    if (expression) {
-        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
-        textChanged(Base::Tools::fromStdString(expression->toString()));
-    }
-
     // Connect signal(s)
     connect(ui->expression, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
     connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
+
+    if (expression) {
+        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
+    }
+    else {
+        QVariant text = parent->property("text");
+        if (text.canConvert(QMetaType::QString)) {
+            ui->expression->setText(text.toString());
+        }
+    }
 
     // Set document object on line edit to create auto completer
     DocumentObject * docObj = path.getDocumentObject();
@@ -72,7 +78,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // rectangle to appear. To avoid this the 'NoSystemBackground' parameter can be
     // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
     bool noBackground = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", true);
+        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", false);
 
     if (noBackground) {
 #if defined(Q_OS_MAC)
@@ -90,6 +96,11 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         ui->horizontalSpacer_3->changeSize(0, 2);
         ui->verticalLayout->setContentsMargins(9, 9, 9, 9);
         this->adjustSize();
+        // It is strange that (at least on Linux) DlgExpressionInput will shrink
+        // to be narrower than ui->expression after calling adjustSize() above.
+        // Why?
+        if(this->width() < ui->expression->width() + 18)
+            this->resize(ui->expression->width()+18,this->height());
     }
     ui->expression->setFocus();
 }
@@ -110,17 +121,17 @@ void DlgExpressionInput::textChanged(const QString &text)
     try {
         //resize the input field according to text size
         QFontMetrics fm(ui->expression->font());
-        int width = fm.width(text) + 15;
+        int width = QtTools::horizontalAdvance(fm, text) + 15;
         if (width < minimumWidth)
             ui->expression->setMinimumWidth(minimumWidth);
         else
             ui->expression->setMinimumWidth(width);
-        
+
         if(this->width() < ui->expression->minimumWidth())
             setMinimumWidth(ui->expression->minimumWidth());
 
         //now handle expression
-        boost::shared_ptr<Expression> expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
+        std::shared_ptr<Expression> expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
 
         if (expr) {
             std::string error = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);
@@ -134,22 +145,37 @@ void DlgExpressionInput::textChanged(const QString &text)
             ui->okBtn->setEnabled(true);
             ui->msg->clear();
 
+            //set default palette as we may have read text right now
+            ui->msg->setPalette(ui->okBtn->palette());
+
             NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
                 Base::Quantity value = n->getQuantity();
+                QString msg = value.getUserString();
 
-                if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
-                    throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
+                if (!value.isValid()) {
+                    throw Base::ValueError("Not a number");
+                }
+                else if (!impliedUnit.isEmpty()) {
+                    if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
+                        throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
-                value.setUnit(impliedUnit);
+                    value.setUnit(impliedUnit);
 
-                ui->msg->setText(value.getUserString());
+                }
+                else if (!value.getUnit().isEmpty()) {
+                    msg += QString::fromUtf8(" (Warning: unit discarded)");
+
+                    QPalette p(ui->msg->palette());
+                    p.setColor(QPalette::WindowText, Qt::red);
+                    ui->msg->setPalette(p);
+                }
+
+                ui->msg->setText(msg);
             }
             else
                 ui->msg->setText(Base::Tools::fromStdString(result->toString()));
 
-            //set default palette as we may have read text right now
-            ui->msg->setPalette(ui->okBtn->palette());
         }
     }
     catch (Base::Exception & e) {
@@ -235,6 +261,13 @@ void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
         if (!on)
             this->reject();
     }
+}
+
+void DlgExpressionInput::show()
+{
+    QDialog::show();
+    this->activateWindow();
+    ui->expression->selectAll();
 }
 
 void DlgExpressionInput::showEvent(QShowEvent* ev)

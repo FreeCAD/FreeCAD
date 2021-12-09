@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2006     *
+ *   Copyright (c) 2006 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,6 +28,7 @@
 // QtCore
 #include <qglobal.h>
 #include <QBuffer>
+#include <QElapsedTimer>
 #include <qeventloop.h>
 #include <qfile.h>
 #include <QLibraryInfo>
@@ -48,9 +49,7 @@
 #include <qtimer.h>
 #include <qtranslator.h>
 #include <QUrl>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include <qvariant.h>
 #include <QWaitCondition>
 // QtGui
@@ -68,9 +67,7 @@
 #include <qcolordialog.h>
 #include <qcombobox.h>
 #include <qcursor.h>
-#if QT_VERSION >= 0x040200
 #include <QDesktopServices>
-#endif
 #include <QDesktopWidget>
 #include <QDialogButtonBox>
 #include <QDockWidget>
@@ -93,6 +90,7 @@
 #include <QItemDelegate>
 #include <QStyledItemDelegate>
 #include <QItemEditorFactory>
+#include <QKeyEvent>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
@@ -101,9 +99,7 @@
 #include <QMainWindow>
 #include <qmenubar.h>
 #include <qmessagebox.h>
-#if QT_VERSION >= 0x050000
 #include <QMessageLogContext>
-#endif
 #include <QMimeData>
 #include <qmovie.h>
 #include <qpainter.h>
@@ -112,6 +108,7 @@
 #include <QPixmapCache>
 #include <QPlainTextEdit>
 #include <QPrinter>
+#include <QPrinterInfo>
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrintPreviewWidget>
@@ -161,17 +158,6 @@
 // QtSvg
 #include <QSvgRenderer>
 #include <QSvgWidget>
-// QtUiTools
-#include <QUiLoader>
-#include <QtDesigner/QFormBuilder>
-
-// QtWebKit
-#if QT_VERSION >= 0x040400
-// Only needed in Web module
-//#include <QWebFrame>
-//#include <QWebView>
-//#include <QWebSettings>
-#endif
 
 #include "qmath.h"
 #include <QGraphicsView>

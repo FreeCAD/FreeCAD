@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,10 +30,12 @@
 #include <Base/Matrix.h>
 #include <Base/BoundBox.h>
 #include <Base/Placement.h>
+#include <Base/Unit.h>
 
 #include "Property.h"
 #include "PropertyLinks.h"
 #include "ComplexGeoData.h"
+#include <FCGlobal.h>
 
 namespace Base {
 class Writer;
@@ -55,7 +57,7 @@ class Placement;
  */
 class AppExport PropertyVector: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -76,26 +78,34 @@ public:
     void setValue(double x, double y, double z);
 
     /// Get valid paths for this property; used by auto completer
-    void getPaths(std::vector<ObjectIdentifier> &paths) const;
+    void getPaths(std::vector<ObjectIdentifier> &paths) const override;
 
     /** This method returns a string representation of the property
      */
     const Base::Vector3d &getValue(void) const;
-    const char* getEditorName(void) const {
+    const char* getEditorName(void) const override {
         return "Gui::PropertyEditor::PropertyVectorItem";
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
-    virtual unsigned int getMemSize (void) const {
+    virtual unsigned int getMemSize (void) const override {
         return sizeof(Base::Vector3d);
+    }
+
+    virtual const boost::any getPathValue(const ObjectIdentifier &path) const override;
+
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const override;
+
+    virtual Base::Unit getUnit() const {
+        return Base::Unit();
     }
 
 private:
@@ -120,7 +130,9 @@ public:
      */
     virtual ~PropertyVectorDistance();
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    virtual Base::Unit getUnit() const {
+        return Base::Unit::Length;
+    }
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyVectorDistanceItem";
@@ -144,7 +156,9 @@ public:
      */
     virtual ~PropertyPosition();
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    virtual Base::Unit getUnit() const {
+        return Base::Unit::Length;
+    }
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPositionItem";
@@ -168,16 +182,20 @@ public:
      */
     virtual ~PropertyDirection();
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    virtual Base::Unit getUnit() const {
+        return Base::Unit::Length;
+    }
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyDirectionItem";
     }
 };
 
-class AppExport PropertyVectorList: public PropertyLists
+class AppExport PropertyVectorList: public PropertyListsT<Base::Vector3d>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+    typedef PropertyListsT<Base::Vector3d> inherited;
 
 public:
     /**
@@ -192,47 +210,27 @@ public:
      */
     virtual ~PropertyVectorList();
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
-
-    /** Sets the property
-     */
-    void setValue(const Base::Vector3d&);
     void setValue(double x, double y, double z);
+    using inherited::setValue;
 
-    /// index operator
-    const Base::Vector3d& operator[] (const int idx) const {
-        return _lValueList.operator[] (idx);
+    virtual PyObject *getPyObject(void) override;
+
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
+
+    virtual void SaveDocFile (Base::Writer &writer) const override;
+    virtual void RestoreDocFile(Base::Reader &reader) override;
+
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
+
+    virtual unsigned int getMemSize (void) const override;
+    const char* getEditorName(void) const override {
+        return "Gui::PropertyEditor::PropertyVectorListItem";
     }
 
-    void set1Value (const int idx, const Base::Vector3d& value) {
-        _lValueList.operator[] (idx) = value;
-    }
-
-    void setValues (const std::vector<Base::Vector3d>& values);
-
-    void setValue (void){}
-
-    const std::vector<Base::Vector3d> &getValues(void) const {
-        return _lValueList;
-    }
-
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
-
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
-
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
-
-    virtual unsigned int getMemSize (void) const;
-
-private:
-    std::vector<Base::Vector3d> _lValueList;
+protected:
+    Base::Vector3d getPyValue(PyObject *) const override;
 };
 
 /// Property representing a 4x4 matrix
@@ -284,12 +282,13 @@ private:
     Base::Matrix4D _cMat;
 };
 
-/** Vector properties
- * This is the father of all properties handling Integers.
+/// Property representing a placement
+/*!
+ * Encapsulates a Base::Placement in a Property
  */
 class AppExport PropertyPlacement: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -308,31 +307,41 @@ public:
      */
     void setValue(const Base::Placement &pos);
 
+    /** Sets property only if changed
+     * @param pos: input placement
+     * @param tol: position tolerance
+     * @param atol: angular tolerance
+     */
+    bool setValueIfChanged(const Base::Placement &pos, 
+            double tol=1e-7, double atol=1e-12);
+
     /** This method returns a string representation of the property
      */
     const Base::Placement &getValue(void) const;
 
     /// Get valid paths for this property; used by auto completer
-    void getPaths(std::vector<ObjectIdentifier> &paths) const;
+    void getPaths(std::vector<ObjectIdentifier> &paths) const override;
 
-    void setPathValue(const ObjectIdentifier &path, const boost::any &value);
+    void setPathValue(const ObjectIdentifier &path, const boost::any &value) override;
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    virtual const boost::any getPathValue(const ObjectIdentifier &path) const override;
 
-    const char* getEditorName(void) const {
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const override;
+
+    const char* getEditorName(void) const override {
         return "Gui::PropertyEditor::PropertyPlacementItem";
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
-    virtual unsigned int getMemSize (void) const {
+    virtual unsigned int getMemSize (void) const override {
         return sizeof(Base::Placement);
     }
 
@@ -371,9 +380,9 @@ public:
 };
 
 
-class AppExport PropertyPlacementList: public PropertyLists
+class AppExport PropertyPlacementList: public PropertyListsT<Base::Placement>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -383,46 +392,88 @@ public:
 
     virtual ~PropertyPlacementList();
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    virtual PyObject *getPyObject(void) override;
+
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
+
+    virtual void SaveDocFile (Base::Writer &writer) const override;
+    virtual void RestoreDocFile(Base::Reader &reader) override;
+
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
+
+    virtual unsigned int getMemSize (void) const override;
+
+protected:
+    Base::Placement getPyValue(PyObject *) const override;
+};
+
+
+/// Property representing a rotation
+/*!
+ * Encapsulates a Base::Rotation in a Property
+ */
+class AppExport PropertyRotation : public Property
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyRotation();
+
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    virtual ~PropertyRotation();
 
     /** Sets the property
      */
-    void setValue(const Base::Placement&);
+    void setValue(const Base::Rotation &rot);
 
-    /// index operator
-    const Base::Placement& operator[] (const int idx) const {
-        return _lValueList.operator[] (idx);
+    /** Sets property only if changed
+     * @param pos: input placement
+     * @param tol: position tolerance
+     * @param atol: angular tolerance
+     */
+    bool setValueIfChanged(const Base::Rotation &rot, double atol=1e-12);
+
+    /** This method returns a string representation of the property
+     */
+    const Base::Rotation &getValue() const;
+
+    /// Get valid paths for this property; used by auto completer
+    void getPaths(std::vector<ObjectIdentifier> &paths) const override;
+
+    void setPathValue(const ObjectIdentifier &path, const boost::any &value) override;
+
+    virtual const boost::any getPathValue(const ObjectIdentifier &path) const override;
+
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const override;
+
+    const char* getEditorName() const override {
+        return "Gui::PropertyEditor::PropertyRotationItem";
     }
 
-    void set1Value (const int idx, const Base::Placement& value) {
-        _lValueList.operator[] (idx) = value;
+    virtual PyObject *getPyObject() override;
+    virtual void setPyObject(PyObject *) override;
+
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
+
+    virtual Property *Copy() const override;
+    virtual void Paste(const Property &from) override;
+
+    virtual unsigned int getMemSize () const override {
+        return sizeof(Base::Placement);
     }
-
-    void setValues (const std::vector<Base::Placement>& values);
-
-    void setValue (void){}
-
-    const std::vector<Base::Placement> &getValues(void) const {
-        return _lValueList;
-    }
-
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
-
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
-
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
-
-    virtual unsigned int getMemSize (void) const;
 
 private:
-    std::vector<Base::Placement> _lValueList;
+    Base::Rotation _rot;
 };
 
 

@@ -1,5 +1,6 @@
 /******************************************************************************
- *   Copyright (c)2012 Konstantinos Poulios <logari81@gmail.com>              *
+ *   Copyright (c) 2012 Konstantinos Poulios <logari81@gmail.com>             *
+ *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
  *   This library is free software; you can redistribute it and/or            *
@@ -24,27 +25,27 @@
 #define GUI_ReferenceSelection_H
 
 #include <Gui/SelectionFilter.h>
+#include <Mod/PartDesign/Gui/EnumFlags.h>
 
+namespace App {
+class OriginGroupExtension;
+}
+namespace PartDesign {
+class Body;
+}
 namespace PartDesignGui {
 
 class ReferenceSelection : public Gui::SelectionFilterGate
 {
-    // TODO Replace this set of bools with bitwice enum (2015-09-04, Fat-Zer)
     const App::DocumentObject* support;
-    // If set to true, allow picking edges or planes or both
-    bool edge, plane;
-    // If set to true, allow only linear edges and planar faces
-    bool planar;
-    // If set to true, allow picking datum points
-    bool point;
-    // If set to true, allow picking objects from another body in the same part
-    bool allowOtherBody;
+    AllowSelectionFlags type;
 
 public:
     ReferenceSelection(const App::DocumentObject* support_,
-                       const bool edge_, const bool plane_, const bool planar_, const bool point_ = false)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0),
-          support(support_), edge(edge_), plane(plane_), planar(planar_), point(point_), allowOtherBody(true)
+                       AllowSelectionFlags type)
+        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
+        , support(support_)
+        , type(type)
     {
     }
     /**
@@ -52,6 +53,16 @@ public:
       * Optionally restrict the selection to planar edges/faces
       */
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
+
+private:
+    PartDesign::Body* getBody() const;
+    App::OriginGroupExtension* getOriginGroupExtension(PartDesign::Body *body) const;
+    bool allowOrigin(PartDesign::Body *body, App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const;
+    bool allowDatum(PartDesign::Body *body, App::DocumentObject* pObj) const;
+    bool allowPartFeature(App::DocumentObject* pObj, const char* sSubName) const;
+    bool isEdge(App::DocumentObject* pObj, const char* sSubName) const;
+    bool isFace(App::DocumentObject* pObj, const char* sSubName) const;
+    bool isCircle(App::DocumentObject* pObj, const char* sSubName) const;
 };
 
 class NoDependentsSelection : public Gui::SelectionFilterGate
@@ -83,7 +94,7 @@ public:
 };
 // Convenience methods
 /// Extract reference from Selection
-void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
+bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
                             App::DocumentObject*& selObj, std::vector<std::string>& selSub);
 /// Return reference as string for UI elements (format <obj>:<subelement>
 QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub);

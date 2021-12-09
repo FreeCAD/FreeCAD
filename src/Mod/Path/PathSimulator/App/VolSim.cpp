@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Shsi Seger (shaise at gmail) 2017                       *
+/**************************************************************************
+*   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -21,7 +21,16 @@
 ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <algorithm>
+#include <Base/Console.h>
+
+#include <BRepCheck_Analyzer.hxx>
+#include <BRepClass3d_SolidClassifier.hxx>
+#include <gp_Pnt.hxx>
+
+#ifndef _PreComp_
+# include <algorithm>
+#endif
+
 #include "VolSim.h"
 
 //************************************************************************************************************
@@ -103,7 +112,7 @@ float cStock::FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool s
 			}
 		}
 
-		// sweep up y direction 
+		// sweep up y direction
 		if (yu_ok)
 		{
 			int ty = yp + y_size;
@@ -124,7 +133,7 @@ float cStock::FindRectTop(int & xp, int & yp, int & x_size, int & y_size, bool s
 			}
 		}
 
-		// sweep down y direction 
+		// sweep down y direction
 		if (yd_ok)
 		{
 			int ty = yp - 1;
@@ -249,7 +258,7 @@ void cStock::FindRectBot(int & xp, int & yp, int & x_size, int & y_size, bool sc
 			}
 		}
 
-		// sweep up y direction 
+		// sweep up y direction
 		if (yu_ok)
 		{
 			int ty = yp + y_size;
@@ -270,7 +279,7 @@ void cStock::FindRectBot(int & xp, int & yp, int & x_size, int & y_size, bool sc
 			}
 		}
 
-		// sweep down y direction 
+		// sweep down y direction
 		if (yd_ok)
 		{
 			int ty = yp - 1;
@@ -502,7 +511,7 @@ void cStock::CreatePocket(float cxf, float cyf, float radf, float height)
 
 void cStock::ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool & tool)
 {
-	// tanslate coordinates
+	// translate coordinates
 	Point3D pi1 = ToInner(p1);
 	Point3D pi2 = ToInner(p2);
 	float rad = tool.radius;
@@ -552,7 +561,7 @@ void cStock::ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool & tool)
 	for (float r = 0.5f; r <= rad; r += (float)SIM_WALK_RES)
 	{
 		Point3D cupCirc(perpDirX * r, perpDirY * r, pi2.z);
-		float rotang = 180 * SIM_WALK_RES / (3.1415926535 * r); 
+		float rotang = 180 * SIM_WALK_RES / (3.1415926535 * r);
 		cupCirc.SetRotationAngle(-rotang);
 		float z = pi2.z + tool.GetToolProfileAt(r / rad);
 		for (float a = 0; a < cupAngle; a += rotang)
@@ -571,7 +580,7 @@ void cStock::ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool & tool)
 
 void cStock::ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimTool & tool, bool isCCW)
 {
-	// tanslate coordinates
+	// translate coordinates
 	Point3D pi1 = ToInner(p1);
 	Point3D pi2 = ToInner(p2);
 	Point3D centi(cent.x / m_res, cent.y / m_res, cent.z);
@@ -593,7 +602,7 @@ void cStock::ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimT
 	cpx += pi1.x;
 	cpy += pi1.y;
 	double eang = atan2(pi2.y - cpy, pi2.x - cpx); // end angle
-	
+
 	double ang = eang - sang;
 	if (!isCCW && ang > 0)
 		ang -= 2 * 3.1415926;
@@ -609,7 +618,7 @@ void cStock::ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimT
 	{
 		cupCirc.x = xynorm.x * r;
 		cupCirc.y = xynorm.y * r;
-		float rotang = (float)SIM_WALK_RES / r; 
+		float rotang = (float)SIM_WALK_RES / r;
 		int ndivs = (int)(ang / rotang) + 1;
 		if (!isCCW)
 			rotang = -rotang;
@@ -708,41 +717,98 @@ void Point3D::UpdateCmd(Path::Command & cmd)
 //************************************************************************************************************
 // Simulation tool
 //************************************************************************************************************
-float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the radius of the tool (0 is center)
-{
-	switch (type)
-	{
-	case FLAT:
-		return 0;
+cSimTool::cSimTool(const TopoDS_Shape& toolShape, float res){
 
-	case CHAMFER:
-	{
-		if (pos < 0) return -chamRatio * pos;
-		return chamRatio * pos;
+	BRepCheck_Analyzer aChecker(toolShape);
+    bool shapeIsValid = aChecker.IsValid() ? true : false;
+
+	if(!shapeIsValid){
+		throw Base::RuntimeError("Path Simulation: Error in tool geometry");
 	}
 
-	case ROUND:
-		pos *= radius;
-		return radius - sqrt(dradius - pos * pos);
-		break;
+	Bnd_Box boundBox;
+    BRepBndLib::Add(toolShape, boundBox);
+
+	boundBox.SetGap(0.0);
+	Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+	boundBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+	radius = (xMax - xMin) / 2;
+	length = zMax - zMin;
+
+	Base::Vector3d pnt;
+	pnt.x = 0;
+	pnt.y = 0;
+	pnt.z = 0;
+
+	int radValue = (int)(radius / res) + 1;
+
+	// Measure the performance of the profile extraction
+	//auto start = std::chrono::high_resolution_clock::now();
+
+	for (int x = 0; x < radValue; x++)
+	{
+		// find the face of the tool by checking z points across the
+		// radius to see if the point is inside the shape
+		pnt.x =  x * res;
+		bool inside = isInside(toolShape, pnt, res);
+
+		// move down until the point is outside the shape
+		while(inside && std::abs(pnt.z) < length ){
+			pnt.z -= res;
+			inside = isInside(toolShape, pnt, res);
+		}
+
+		// move up until the point is first inside the shape and record the position
+		while (!inside && pnt.z < length)
+		{
+			pnt.z += res;
+			inside = isInside(toolShape, pnt, res);
+
+			if (inside){
+				toolShapePoint shapePoint;
+				shapePoint.radiusPos = pnt.x;
+				shapePoint.heightPos = pnt.z;
+				m_toolShape.push_back(shapePoint);
+				break;
+			}
+		}
 	}
-	return 0;
+
+	// Report the performance of the profile extraction
+	//auto stop = std::chrono::high_resolution_clock::now();
+	//auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+	//Base::Console().Log("cSimTool::cSimTool - Tool Profile Extraction Took: %i ms\n", duration.count() / 1000);
+
 }
 
-void cSimTool::InitTool()  // pos is 0..1 location along the radius of the tool
+float cSimTool::GetToolProfileAt(float pos)  // pos is -1..1 location along the radius of the tool (0 is center)
 {
-	switch (type)
-	{
-	case CHAMFER:
-		chamRatio = radius * tan((90.0 - tipAngle / 2) * 3.1415926535 / 180);
-		break;
+	try{
+		float radPos = std::abs(pos) * radius;
+		toolShapePoint test; test.radiusPos = radPos;
+		auto it = std::lower_bound(m_toolShape.begin(), m_toolShape.end(), test, toolShapePoint::less_than());
+		return it->heightPos;
+	}catch(...){
+		return 0;
+	}
+}
 
-	case ROUND:
-		dradius = radius * radius;
-		break;
+bool cSimTool::isInside(const TopoDS_Shape& toolShape, Base::Vector3d pnt, float res)
+{
+    bool checkFace = true;
+    TopAbs_State stateIn = TopAbs_IN;
 
-	case FLAT:
-		break;
+    try {
+        BRepClass3d_SolidClassifier solidClassifier(toolShape);
+        gp_Pnt vertex = gp_Pnt(pnt.x, pnt.y, pnt.z);
+        solidClassifier.Perform(vertex, res);
+        bool inside = (solidClassifier.State() == stateIn);
+        if (checkFace && solidClassifier.IsOnAFace()){
+            inside = true;
+		}
+    	return inside;
+   	 }catch (...) {
+        return false;
 	}
 }
 

@@ -23,6 +23,26 @@
         <UserDocu>Activate this workbench</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="listToolbars">
+      <Documentation>
+        <UserDocu>Show a list of all toolbars</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getToolbarItems">
+      <Documentation>
+        <UserDocu>Show a dict of all toolbars and their commands</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="listCommandbars">
+      <Documentation>
+        <UserDocu>Show a list of all command bars</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="listMenus">
+      <Documentation>
+        <UserDocu>Show a list of all menus</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

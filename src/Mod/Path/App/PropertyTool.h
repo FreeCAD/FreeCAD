@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,7 +24,7 @@
 #ifndef PROPERTYTOOL_H
 #define PROPERTYTOOL_H
 
-#include "Tooltable.h"
+#include "Tool.h"
 #include <App/Property.h>
 
 namespace Path

@@ -32,6 +32,7 @@
 
 #include "TextEdit.h"
 #include "SyntaxHighlighter.h"
+#include "Tools.h"
 
 using namespace Gui;
 
@@ -44,9 +45,24 @@ TextEdit::TextEdit(QWidget* parent)
     //Note: Set the correct context to this shortcut as we may use several instances of this
     //class at a time
     QShortcut* shortcut = new QShortcut(this);
-    shortcut->setKey(Qt::CTRL+Qt::Key_Space);
+    shortcut->setKey(QKeySequence(QString::fromLatin1("CTRL+Space")));
     shortcut->setContext(Qt::WidgetShortcut);
     connect(shortcut, SIGNAL(activated()), this, SLOT(complete()));
+
+    QShortcut* shortcutFind = new QShortcut(this);
+    shortcutFind->setKey(QKeySequence::Find);
+    shortcutFind->setContext(Qt::WidgetShortcut);
+    connect(shortcutFind, SIGNAL(activated()), this, SIGNAL(showSearchBar()));
+
+    QShortcut* shortcutNext = new QShortcut(this);
+    shortcutNext->setKey(QKeySequence::FindNext);
+    shortcutNext->setContext(Qt::WidgetShortcut);
+    connect(shortcutNext, SIGNAL(activated()), this, SIGNAL(findNext()));
+
+    QShortcut* shortcutPrev = new QShortcut(this);
+    shortcutPrev->setKey(QKeySequence::FindPrevious);
+    shortcutPrev->setContext(Qt::WidgetShortcut);
+    connect(shortcutPrev, SIGNAL(activated()), this, SIGNAL(findPrevious()));
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -67,7 +83,7 @@ void TextEdit::keyPressEvent(QKeyEvent* e)
         QTextCursor cursor = textCursor();
         cursor.movePosition(QTextCursor::StartOfWord);
         // the cursor has moved to outside the word prefix
-        if (cursor.position() < cursorPosition-wordPrefix.length() || 
+        if (cursor.position() < cursorPosition-wordPrefix.length() ||
             cursor.position() > cursorPosition) {
             listBox->hide();
             return;
@@ -94,7 +110,7 @@ void TextEdit::complete()
     wordPrefix = para.mid(wordStart, cursorPos - wordStart);
     if (wordPrefix.isEmpty())
         return;
-    
+
     QStringList list = toPlainText().split(QRegExp(QLatin1String("\\W+")));
     QMap<QString, QString> map;
     QStringList::Iterator it = list.begin();
@@ -103,7 +119,7 @@ void TextEdit::complete()
             map[(*it).toLower()] = *it;
         ++it;
     }
-    
+
     if (map.count() == 1) {
         insertPlainText((*map.begin()).mid(wordPrefix.length()));
     } else if (map.count() > 1) {
@@ -148,7 +164,7 @@ void TextEdit::complete()
                 w += style()->pixelMetric(QStyle::PM_ScrollBarExtent);
             listBox->setGeometry(posX, posY+fontMetrics().height(), w, h);
         }
-        
+
         listBox->setCurrentRow(0);
         listBox->show();
     }
@@ -162,7 +178,8 @@ void TextEdit::complete()
 void TextEdit::createListBox()
 {
     listBox = new CompletionList(this);
-    listBox->setFrameStyle(QFrame::Box|QFrame::Raised);
+    listBox->setFrameStyle(QFrame::Box);
+    listBox->setFrameShadow(QFrame::Raised);
     listBox->setLineWidth(2);
     installEventFilter(listBox);
     viewport()->installEventFilter(listBox);
@@ -199,7 +216,7 @@ struct TextEditorP
 
 /**
  *  Constructs a TextEditor which is a child of 'parent' and does the
- *  syntax highlighting for the Python language. 
+ *  syntax highlighting for the Python language.
  */
 TextEditor::TextEditor(QWidget* parent)
   : TextEdit(parent), WindowParameter("Editor"), highlighter(0)
@@ -239,7 +256,7 @@ TextEditor::~TextEditor()
 
 int TextEditor::lineNumberAreaWidth()
 {
-    return fontMetrics().width(QLatin1String("0000"))+10;
+    return QtTools::horizontalAdvance(fontMetrics(), QLatin1String("0000")) + 10;
 }
 
 void TextEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
@@ -273,9 +290,11 @@ void TextEditor::highlightCurrentLine()
     if (!isReadOnly()) {
         QTextEdit::ExtraSelection selection;
         QColor lineColor = d->colormap[QLatin1String("Current line highlight")];
-        unsigned long col = (lineColor.red() << 24) | (lineColor.green() << 16) | (lineColor.blue() << 8);
+        unsigned int col = (lineColor.red() << 24) | (lineColor.green() << 16) | (lineColor.blue() << 8);
         ParameterGrp::handle hPrefGrp = getWindowParameter();
-        col = hPrefGrp->GetUnsigned( "Current line highlight", col);
+        unsigned long value = static_cast<unsigned long>(col);
+        value = hPrefGrp->GetUnsigned( "Current line highlight", value);
+        col = static_cast<unsigned int>(value);
         lineColor.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
         selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
@@ -289,10 +308,10 @@ void TextEditor::highlightCurrentLine()
 
 void TextEditor::drawMarker(int line, int x, int y, QPainter* p)
 {
-    Q_UNUSED(line); 
-    Q_UNUSED(x); 
-    Q_UNUSED(y); 
-    Q_UNUSED(p); 
+    Q_UNUSED(line);
+    Q_UNUSED(x);
+    Q_UNUSED(y);
+    Q_UNUSED(p);
 }
 
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
@@ -415,10 +434,10 @@ void TextEditor::keyPressEvent (QKeyEvent * e)
     TextEdit::keyPressEvent( e );
 }
 
-/** Sets the font, font size and tab size of the editor. */  
+/** Sets the font, font size and tab size of the editor. */
 void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReason)
 {
-    Q_UNUSED(rCaller); 
+    Q_UNUSED(rCaller);
     ParameterGrp::handle hPrefGrp = getWindowParameter();
     if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
 #ifdef FC_OS_LINUX
@@ -427,15 +446,17 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
         int fontSize = hPrefGrp->GetInt("FontSize", 10);
 #endif
         QString fontFamily = QString::fromLatin1(hPrefGrp->GetASCII( "Font", "Courier" ).c_str());
-        
+
         QFont font(fontFamily, fontSize);
         setFont(font);
     } else {
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
-            unsigned long col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
-            col = hPrefGrp->GetUnsigned( sReason, col);
+            unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+            unsigned long value = static_cast<unsigned long>(col);
+            value = hPrefGrp->GetUnsigned(sReason, value);
+            col = static_cast<unsigned int>(value);
             color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
             if (this->highlighter)
                 this->highlighter->setColor(QLatin1String(sReason), color);
@@ -445,8 +466,12 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
     if (strcmp(sReason, "TabSize") == 0 || strcmp(sReason, "FontSize") == 0) {
         int tabWidth = hPrefGrp->GetInt("TabSize", 4);
         QFontMetrics metric(font());
-        int fontSize = metric.width(QLatin1String("0"));
+        int fontSize = QtTools::horizontalAdvance(metric, QLatin1Char('0'));
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
         setTabStopWidth(tabWidth * fontSize);
+#else
+        setTabStopDistance(tabWidth * fontSize);
+#endif
     }
 
     // Enables/Disables Line number in the Macro Editor from Edit->Preferences->Editor menu.
@@ -496,7 +521,7 @@ CompletionList::CompletionList(QPlainTextEdit* parent)
     pal.setColor(QPalette::Inactive, QPalette::HighlightedText, pal.color(QPalette::Active, QPalette::HighlightedText));
     parent->setPalette( pal );
 
-    connect(this, SIGNAL(itemActivated(QListWidgetItem *)), 
+    connect(this, SIGNAL(itemActivated(QListWidgetItem *)),
             this, SLOT(completionItem(QListWidgetItem *)));
 }
 
@@ -505,7 +530,7 @@ CompletionList::~CompletionList()
 }
 
 void CompletionList::findCurrentWord(const QString& wordPrefix)
-{ 
+{
     for (int i=0; i<count(); ++i) {
         QString text = item(i)->text();
         if (text.startsWith(wordPrefix)) {
@@ -514,10 +539,11 @@ void CompletionList::findCurrentWord(const QString& wordPrefix)
         }
     }
 
-    setItemSelected(currentItem(), false);
+    if (currentItem())
+        currentItem()->setSelected(false);
 }
 
-/** 
+/**
  * Get all incoming events of the text edit and redirect some of them, like key up and
  * down, mouse press events, ... to the widget itself.
  */
@@ -569,4 +595,4 @@ void CompletionList::completionItem(QListWidgetItem *item)
     textEdit->ensureCursorVisible();
 }
 
-#include "moc_TextEdit.cpp" 
+#include "moc_TextEdit.cpp"

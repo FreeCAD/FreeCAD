@@ -569,7 +569,7 @@ int System::Write8be (FILE* pkFile, int iQuantity, const void* pvData)
 const char* System::GetPath (const char* acDirectory, const char* acFilename)
 {
     // #0000656: WildMagic4 doesn't build on 64-bit Mac OS
-#if defined(__APPLE__) && !defined(__x86_64__)
+#if defined(__APPLE__) && !defined(__aarch64__) && !defined(__x86_64__)
     // An application-relative path is needed for the applications to be able
     // to find the input data sets.  Unfortunately, there is no exact way to
     // predict which directory the application is run from, since this depends

@@ -8,6 +8,7 @@
 #include "Point.h"
 #include "AreaDxf.h"
 #include "kurve/geometry.h"
+#include "Adaptive.hpp"
 
 #if defined (_POSIX_C_SOURCE)
 #   undef    _POSIX_C_SOURCE
@@ -29,14 +30,17 @@
 #pragma implementation
 #endif
 
-#include <boost/progress.hpp>
-#include <boost/timer.hpp>
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
+
+//#include <boost/progress.hpp>
+//#include <boost/timer.hpp>
 #include <boost/foreach.hpp>
-#include <boost/python.hpp>
+#include <boost_python.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/class.hpp>
 #include <boost/python/wrapper.hpp>
 #include <boost/python/call.hpp>
+
 
 #include "clipper.hpp"
 using namespace ClipperLib;
@@ -73,6 +77,8 @@ static void print_curve(const CCurve& c)
 	std::size_t nvertices = c.m_vertices.size();
 #if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
 	printf("number of vertices = %d\n", nvertices);
+#elif defined(_WIN32)
+	printf("number of vertices = %Iu\n", nvertices);
 #else
 	printf("number of vertices = %lu\n", nvertices);
 #endif
@@ -135,7 +141,7 @@ static CArea AreaFromDxf(const char* filepath)
 
 static void append_point(CCurve& c, const Point& p)
 {
-	c.m_vertices.push_back(CVertex(p));
+	c.m_vertices.emplace_back(p);
 }
 
 static boost::python::tuple nearest_point_to_curve(CCurve& c1, const CCurve& c2)
@@ -237,8 +243,7 @@ boost::python::list spanIntersect(const Span& span1, const Span& span2) {
 }
 
 //Matrix(boost::python::list &l){}
-
-boost::shared_ptr<geoff_geometry::Matrix> matrix_constructor(const boost::python::list& lst) {
+std::shared_ptr<geoff_geometry::Matrix> matrix_constructor(const boost::python::list& lst) {
 	double m[16] = {1,0,0,0,0,1,0,0, 0,0,1,0, 0,0,0,1};
 
   boost::python::ssize_t n = boost::python::len(lst);
@@ -250,7 +255,7 @@ boost::shared_ptr<geoff_geometry::Matrix> matrix_constructor(const boost::python
 	if(j>=16)break;
   }
 
-  return boost::shared_ptr<geoff_geometry::Matrix>( new geoff_geometry::Matrix(m) );
+  return std::shared_ptr<geoff_geometry::Matrix>( new geoff_geometry::Matrix(m) );
 }
 
 boost::python::list InsideCurves(const CArea& a, const CCurve& curve) {
@@ -291,8 +296,83 @@ double AreaGetArea(const CArea& a)
 	return a.GetArea();
 }
 
+
+
+// Adaptive2d.Execute wrapper
+bp::list AdaptiveExecute(AdaptivePath::Adaptive2d& ada,const boost::python::list &stock_paths, const boost::python::list &in_paths,  boost::python::object progressCallbackFn) {
+	bp::list out_list;
+
+	// convert stock paths
+	AdaptivePath::DPaths stock_dpaths;
+	for(bp::ssize_t i=0;i<bp::len(stock_paths);i++) {
+		bp::list in_path=bp::extract<boost::python::list>(stock_paths[i]);
+		AdaptivePath::DPath dpath;
+		for(bp::ssize_t j=0;j<bp::len(in_path);j++) {
+			bp::list in_point = bp::extract<bp::list>(in_path[j]);
+			dpath.push_back(pair<double,double>(bp::extract<double>(in_point[0]),bp::extract<double>(in_point[1])));
+		}
+		stock_dpaths.push_back(dpath);
+	}
+
+	// convert inputs
+	AdaptivePath::DPaths dpaths;
+	for(bp::ssize_t i=0;i<bp::len(in_paths);i++) {
+		bp::list in_path=bp::extract<boost::python::list>(in_paths[i]);
+		AdaptivePath::DPath dpath;
+		for(bp::ssize_t j=0;j<bp::len(in_path);j++) {
+			bp::list in_point = bp::extract<bp::list>(in_path[j]);
+			dpath.push_back(pair<double,double>(bp::extract<double>(in_point[0]),bp::extract<double>(in_point[1])));
+		}
+		dpaths.push_back(dpath);
+	}
+	// Execute with callback
+	std::list<AdaptivePath::AdaptiveOutput> result=ada.Execute(stock_dpaths,dpaths,[progressCallbackFn](AdaptivePath::TPaths tp)->bool {
+		bp::list out_paths;
+		for(const auto & in_pair : tp) {
+			bp::list path;
+			for(const auto & in_pt : in_pair.second) {
+				path.append(bp::make_tuple(in_pt.first,in_pt.second));
+			}
+			out_paths.append(bp::make_tuple(in_pair.first,path));
+		}
+		return bp::extract<bool>(progressCallbackFn(out_paths));
+	});
+	// convert outputs back
+	BOOST_FOREACH(const auto & res, result) {
+		out_list.append(res);
+	}
+	return out_list;
+}
+
+  // Converts a std::pair instance to a Python tuple.
+  template <typename T1, typename T2>
+  struct std_pair_to_tuple
+  {
+    static PyObject* convert(std::pair<T1, T2> const& p)
+    {
+      return boost::python::incref(
+        boost::python::make_tuple(p.first, p.second).ptr());
+    }
+    static PyTypeObject const *get_pytype () {
+		return &PyTuple_Type;
+		}
+  };
+
+  boost::python::list AdaptiveOutput_AdaptivePaths(const AdaptivePath::AdaptiveOutput &ado) {
+	   bp::list  olist;
+	   for(auto & ap : ado.AdaptivePaths) {
+		   bp::list op;
+		   for(auto & pt : ap.second) {
+			   op.append(bp::make_tuple(pt.first, pt.second));
+		   }
+		   olist.append(bp::make_tuple(ap.first, op));
+	   }
+	   return olist;
+  }
+
+
 BOOST_PYTHON_MODULE(area) {
-	bp::class_<Point>("Point") 
+	bp::class_<Point>("Point")
         .def(bp::init<double, double>())
         .def(bp::init<Point>())
         .def(bp::other<double>() * bp::self)
@@ -406,7 +486,7 @@ BOOST_PYTHON_MODULE(area) {
         .def("GetArea",&AreaGetArea)
     ;
 
-	bp::class_<geoff_geometry::Matrix, boost::shared_ptr<geoff_geometry::Matrix> > ("Matrix")
+	bp::class_<geoff_geometry::Matrix, std::shared_ptr<geoff_geometry::Matrix> > ("Matrix")
         .def(bp::init<geoff_geometry::Matrix>())
 	    .def("__init__", bp::make_constructor(&matrix_constructor))
 	    .def("TransformedPoint", &transformed_point)
@@ -418,4 +498,48 @@ BOOST_PYTHON_MODULE(area) {
     bp::def("holes_linked", holes_linked);
     bp::def("AreaFromDxf", AreaFromDxf);
     bp::def("TangentialArc", TangentialArc);
+
+
+	using namespace AdaptivePath;
+
+	boost::python::to_python_converter<std::pair<double, double>, std_pair_to_tuple<double, double>,true>();
+
+
+	bp::enum_<MotionType>("AdaptiveMotionType")
+	 .value("Cutting", MotionType::mtCutting)
+     .value("LinkClear", MotionType::mtLinkClear)
+	 .value("LinkNotClear", MotionType::mtLinkNotClear)
+	 .value("LinkClearAtPrevPass", MotionType::mtLinkClearAtPrevPass);
+
+	bp::enum_<OperationType>("AdaptiveOperationType")
+	 .value("ClearingInside", OperationType::otClearingInside)
+	 .value("ClearingOutside", OperationType::otClearingOutside)
+     .value("ProfilingInside", OperationType::otProfilingInside)
+	 .value("ProfilingOutside", OperationType::otProfilingOutside);
+
+	bp::class_<AdaptiveOutput> ("AdaptiveOutput")
+		.def(bp::init<>())
+		.add_property("HelixCenterPoint", bp::make_getter(&AdaptiveOutput::HelixCenterPoint, bp::return_value_policy<bp::return_by_value>()))
+		.add_property("StartPoint", bp::make_getter(&AdaptiveOutput::StartPoint, bp::return_value_policy<bp::return_by_value>()))
+		.add_property("AdaptivePaths", &AdaptiveOutput_AdaptivePaths)
+		.def_readonly("ReturnMotionType",&AdaptiveOutput::ReturnMotionType);
+
+	bp::class_<Adaptive2d>("Adaptive2d")
+		.def(bp::init<>())
+		.def("Execute",&AdaptiveExecute)
+	 	.def_readwrite("stepOverFactor", &Adaptive2d::stepOverFactor)
+	 	.def_readwrite("toolDiameter", &Adaptive2d::toolDiameter)
+		.def_readwrite("stockToLeave", &Adaptive2d::stockToLeave)
+		.def_readwrite("helixRampDiameter", &Adaptive2d::helixRampDiameter)
+		.def_readwrite("forceInsideOut", &Adaptive2d::forceInsideOut)
+		.def_readwrite("finishingProfile", &Adaptive2d::finishingProfile)
+		//.def_readwrite("polyTreeNestingLimit", &Adaptive2d::polyTreeNestingLimit)
+		.def_readwrite("tolerance", &Adaptive2d::tolerance)
+		.def_readwrite("keepToolDownDistRatio", &Adaptive2d::keepToolDownDistRatio)
+		.def_readwrite("opType", &Adaptive2d::opType);
+
+
 }
+
+
+

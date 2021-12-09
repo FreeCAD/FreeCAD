@@ -24,8 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/signals.hpp>
-# include <boost/bind.hpp>
+# include <boost_signals2.hpp>
+# include <boost_bind_bind.hpp>
 # include <qapplication.h>
 # include <qregexp.h>
 # include <QEvent>
@@ -36,6 +36,7 @@
 
 
 #include "MDIView.h"
+#include "MDIViewPy.h"
 #include "Command.h"
 #include "Document.h"
 #include "Application.h"
@@ -43,19 +44,25 @@
 #include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView,Gui::BaseView);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView,Gui::BaseView)
 
 
 MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wflags)
-  : QMainWindow(parent, wflags), BaseView(pcDocument),currentMode(Child), wstate(Qt::WindowNoState)
+  : QMainWindow(parent, wflags)
+  , BaseView(pcDocument)
+  , pythonObject(nullptr)
+  , currentMode(Child)
+  , wstate(Qt::WindowNoState)
+  , ActiveObjects(pcDocument)
 {
     setAttribute(Qt::WA_DeleteOnClose);
-    
+
     if (pcDocument)
     {
       connectDelObject = pcDocument->signalDeletedObject.connect
-        (boost::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, _1));
+        (boost::bind(&ActiveObjectList::objectDeleted, &ActiveObjects, bp::_1));
       assert(connectDelObject.connected());
     }
 }
@@ -82,6 +89,12 @@ MDIView::~MDIView()
     }
     if (connectDelObject.connected())
       connectDelObject.disconnect();
+
+    if (pythonObject) {
+        Base::PyGILStateLocker lock;
+        Py_DECREF(pythonObject);
+        pythonObject = nullptr;
+    }
 }
 
 void MDIView::deleteSelf()
@@ -94,10 +107,6 @@ void MDIView::deleteSelf()
     QWidget* parent = this->parentWidget();
     if (qobject_cast<QMdiSubWindow*>(parent)) {
         // https://forum.freecadweb.org/viewtopic.php?f=22&t=23070
-#if QT_VERSION < 0x050000
-        // With Qt5 this would lead to some annoying flickering
-        getMainWindow()->removeWindow(this);
-#endif
         parent->close();
     }
     else {
@@ -108,6 +117,15 @@ void MDIView::deleteSelf()
     if (_pcDocument)
         onClose();
     _pcDocument = 0;
+}
+
+PyObject* MDIView::getPyObject()
+{
+    if (!pythonObject)
+        pythonObject = new MDIViewPy(this);
+
+    Py_INCREF(pythonObject);
+    return pythonObject;
 }
 
 void MDIView::setOverrideCursor(const QCursor& c)
@@ -167,7 +185,7 @@ bool MDIView::canClose(void)
 {
     if (!bIsPassive && getGuiDocument() && getGuiDocument()->isLastView()) {
         this->setFocus(); // raises the view to front
-        return (getGuiDocument()->canClose());
+        return (getGuiDocument()->canClose(true,true));
     }
 
     return true;
@@ -189,7 +207,7 @@ void MDIView::closeEvent(QCloseEvent *e)
         // and thus the notification in QMdiSubWindow::closeEvent of
         // other mdi windows to get maximized if this window
         // is maximized will fail.
-        // This odd behaviour is caused by the invocation of 
+        // This odd behaviour is caused by the invocation of
         // d->mdiArea->removeSubWindow(parent) which we must let there
         // because otherwise other parts don't work as they should.
         QMainWindow::closeEvent(e);
@@ -221,6 +239,34 @@ void MDIView::printPdf()
 void MDIView::printPreview()
 {
     std::cerr << "Printing preview not implemented for " << this->metaObject()->className() << std::endl;
+}
+
+QStringList MDIView::undoActions() const
+{
+    QStringList actions;
+    Gui::Document* doc = getGuiDocument();
+    if (doc) {
+        std::vector<std::string> vecUndos = doc->getUndoVector();
+        for (std::vector<std::string>::iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
+            actions << QCoreApplication::translate("Command", i->c_str());
+        }
+    }
+
+    return actions;
+}
+
+QStringList MDIView::redoActions() const
+{
+    QStringList actions;
+    Gui::Document* doc = getGuiDocument();
+    if (doc) {
+        std::vector<std::string> vecRedos = doc->getRedoVector();
+        for (std::vector<std::string>::iterator i = vecRedos.begin(); i != vecRedos.end(); ++i) {
+            actions << QCoreApplication::translate("Command", i->c_str());
+        }
+    }
+
+    return actions;
 }
 
 QSize MDIView::minimumSizeHint () const
@@ -284,9 +330,9 @@ void MDIView::setCurrentViewMode(ViewMode mode)
             {
                 if (this->currentMode == Child) {
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-                        getMainWindow()->removeWindow(this);
+                        getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | 
+                    setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
                                  Qt::WindowMinMaxButtonsHint);
                     if (this->wstate & Qt::WindowMaximized)
                         showMaximized();
@@ -305,7 +351,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     else
                         showNormal();
                 }
-            
+
                 this->currentMode = TopLevel;
                 update();
             }   break;
@@ -314,7 +360,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
             {
                 if (this->currentMode == Child) {
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-                        getMainWindow()->removeWindow(this);
+                        getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
                     setParent(0, Qt::Window);
                     showFullScreen();
@@ -323,7 +369,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     this->wstate = windowState();
                     showFullScreen();
                 }
-                
+
                 this->currentMode = FullScreen;
                 update();
             }   break;

@@ -39,6 +39,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderCompound,PartGui::ViewProviderPart)
 
 ViewProviderCompound::ViewProviderCompound()
 {
+    sPixmap = "Part_Compound.svg";
 }
 
 ViewProviderCompound::~ViewProviderCompound()
@@ -71,6 +72,24 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             (prop)->getValues();
         Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
         std::vector<App::DocumentObject*> sources = objComp->Links.getValues();
+
+        if (hist.size() != sources.size()) {
+            // avoid duplicates without changing the order
+            // See also Compound::execute
+            std::set<App::DocumentObject*> tempSources;
+            std::vector<App::DocumentObject*> filter;
+            for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it) {
+                Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+                if (objBase) {
+                    auto pos = tempSources.insert(objBase);
+                    if (pos.second) {
+                        filter.push_back(objBase);
+                    }
+                }
+            }
+
+            sources = filter;
+        }
         if (hist.size() != sources.size())
             return;
 
@@ -83,7 +102,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
-            Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            Part::Feature* objBase = dynamic_cast<Part::Feature*>(Part::Feature::getShapeOwner(*it));
             if (!objBase)
                 continue;
 
@@ -92,15 +111,17 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             TopTools_IndexedMapOfShape baseMap;
             TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
 
-            Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(objBase);
-            std::vector<App::Color> baseCol = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
-            applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),baseCol);
-            if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
-                applyColor(hist[index], baseCol, compCol);
-            }
-            else if (!baseCol.empty() && baseCol[0] != this->ShapeColor.getValue()) {
-                baseCol.resize(baseMap.Extent(), baseCol[0]);
-                applyColor(hist[index], baseCol, compCol);
+            auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
+            if (vpBase) {
+                std::vector<App::Color> baseCol = vpBase->DiffuseColor.getValues();
+                applyTransparency(vpBase->Transparency.getValue(),baseCol);
+                if (static_cast<int>(baseCol.size()) == baseMap.Extent()) {
+                    applyColor(hist[index], baseCol, compCol);
+                }
+                else if (!baseCol.empty() && baseCol[0] != this->ShapeColor.getValue()) {
+                    baseCol.resize(baseMap.Extent(), baseCol[0]);
+                    applyColor(hist[index], baseCol, compCol);
+                }
             }
         }
 
@@ -154,3 +175,4 @@ void ViewProviderCompound::dropObject(App::DocumentObject* obj)
     pShapes.push_back(obj);
     pComp->Links.setValues(pShapes);
 }
+

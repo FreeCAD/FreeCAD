@@ -90,6 +90,11 @@ void ViewProviderMeshDefects::onChanged(const App::Property* prop)
     if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
     }
+    // Visibility changes must be handled here because in the base class it changes the attribute of the feature
+    // and thus affects the visibility of the mesh view provider which is undesired behaviour
+    else if (prop == &Visibility) {
+        Visibility.getValue() ? show() : hide();
+    }
     else {
         ViewProviderDocumentObject::onChanged(prop);
     }
@@ -144,7 +149,7 @@ void ViewProviderMeshOrientation::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcFaceRoot, "Face");
 }
 
-void ViewProviderMeshOrientation::showDefects(const std::vector<unsigned long>& inds)
+void ViewProviderMeshOrientation::showDefects(const std::vector<Mesh::ElementIndex>& inds)
 {
     Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
@@ -152,9 +157,9 @@ void ViewProviderMeshOrientation::showDefects(const std::vector<unsigned long>& 
     pcCoords->point.deleteValues(0);
     pcCoords->point.setNum(3*inds.size());
     MeshCore::MeshFacetIterator cF(rMesh);
-    unsigned long i=0;
-    unsigned long j=0;
-    for (std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
+    int i=0;
+    int j=0;
+    for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
         cF.Set(*it);
         for (int k=0; k<3; k++) {
             Base::Vector3f cP = cF->_aclPoints[k];
@@ -209,7 +214,7 @@ void ViewProviderMeshNonManifolds::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcLineRoot, "Line");
 }
 
-void ViewProviderMeshNonManifolds::showDefects(const std::vector<unsigned long>& inds)
+void ViewProviderMeshNonManifolds::showDefects(const std::vector<Mesh::ElementIndex>& inds)
 {
     if ((inds.size() % 2) != 0)
         return;
@@ -219,9 +224,9 @@ void ViewProviderMeshNonManifolds::showDefects(const std::vector<unsigned long>&
     pcCoords->point.deleteValues(0);
     pcCoords->point.setNum(inds.size());
     MeshCore::MeshPointIterator cP(rMesh);
-    unsigned long i=0;
-    unsigned long j=0;
-    for (std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
+    int i=0;
+    int j=0;
+    for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
         cP.Set(*it);
         pcCoords->point.set1Value(i++,cP->x,cP->y,cP->z);
         ++it; // go to end point
@@ -274,15 +279,15 @@ void ViewProviderMeshNonManifoldPoints::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcPointRoot, "Point");
 }
 
-void ViewProviderMeshNonManifoldPoints::showDefects(const std::vector<unsigned long>& inds)
+void ViewProviderMeshNonManifoldPoints::showDefects(const std::vector<Mesh::ElementIndex>& inds)
 {
     Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
     pcCoords->point.deleteValues(0);
     pcCoords->point.setNum(inds.size());
     MeshCore::MeshPointIterator cP(rMesh);
-    unsigned long i = 0;
-    for ( std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it ) {
+    int i = 0;
+    for ( std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it ) {
         cP.Set(*it);
         pcCoords->point.set1Value(i++,cP->x,cP->y,cP->z);
     }
@@ -338,7 +343,7 @@ void ViewProviderMeshDuplicatedFaces::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcFaceRoot, "Face");
 }
 
-void ViewProviderMeshDuplicatedFaces::showDefects(const std::vector<unsigned long>& inds)
+void ViewProviderMeshDuplicatedFaces::showDefects(const std::vector<Mesh::ElementIndex>& inds)
 {
     Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
@@ -346,9 +351,9 @@ void ViewProviderMeshDuplicatedFaces::showDefects(const std::vector<unsigned lon
     pcCoords->point.deleteValues(0);
     pcCoords->point.setNum(3*inds.size());
     MeshCore::MeshFacetIterator cF(rMesh);
-    unsigned long i=0;
-    unsigned long j=0;
-    for (std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
+    int i=0;
+    int j=0;
+    for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
         cF.Set(*it);
         for (int k=0; k<3; k++) {
             Base::Vector3f cP = cF->_aclPoints[k];
@@ -403,15 +408,15 @@ void ViewProviderMeshDuplicatedPoints::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcPointRoot, "Point");
 }
 
-void ViewProviderMeshDuplicatedPoints::showDefects(const std::vector<unsigned long>& inds)
+void ViewProviderMeshDuplicatedPoints::showDefects(const std::vector<Mesh::ElementIndex>& inds)
 {
     Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
     pcCoords->point.deleteValues(0);
     pcCoords->point.setNum(inds.size());
     MeshCore::MeshPointIterator cP(rMesh);
-    unsigned long i = 0;
-    for ( std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it ) {
+    int i = 0;
+    for ( std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it ) {
         cP.Set(*it);
         pcCoords->point.set1Value(i++,cP->x,cP->y,cP->z);
     }
@@ -460,7 +465,7 @@ void ViewProviderMeshDegenerations::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcLineRoot, "Line");
 }
 
-void ViewProviderMeshDegenerations::showDefects(const std::vector<unsigned long>& inds)
+void ViewProviderMeshDegenerations::showDefects(const std::vector<Mesh::ElementIndex>& inds)
 {
     Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
@@ -468,9 +473,9 @@ void ViewProviderMeshDegenerations::showDefects(const std::vector<unsigned long>
     pcCoords->point.deleteValues(0);
     pcCoords->point.setNum(2*inds.size());
     MeshCore::MeshFacetIterator cF(rMesh);
-    unsigned long i=0;
-    unsigned long j=0;
-    for (std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
+    int i=0;
+    int j=0;
+    for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
         cF.Set(*it);
         const MeshCore::MeshPoint& rE0 = cF->_aclPoints[0]; 
         const MeshCore::MeshPoint& rE1 = cF->_aclPoints[1];
@@ -566,7 +571,7 @@ void ViewProviderMeshIndices::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcFaceRoot, "Face");
 }
 
-void ViewProviderMeshIndices::showDefects(const std::vector<unsigned long>& inds)
+void ViewProviderMeshIndices::showDefects(const std::vector<Mesh::ElementIndex>& inds)
 {
     Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
@@ -575,9 +580,9 @@ void ViewProviderMeshIndices::showDefects(const std::vector<unsigned long>& inds
         pcCoords->point.deleteValues(0);
         pcCoords->point.setNum(3*inds.size());
         MeshCore::MeshFacetIterator cF(rMesh);
-        unsigned long i=0;
-        unsigned long j=0;
-        for (std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
+        int i=0;
+        int j=0;
+        for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
             cF.Set(*it);
             for (int k=0; k<3; k++) {
                 Base::Vector3f cP = cF->_aclPoints[k];
@@ -633,7 +638,7 @@ void ViewProviderMeshSelfIntersections::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcLineRoot, "Line");
 }
 
-void ViewProviderMeshSelfIntersections::showDefects(const std::vector<unsigned long>& indices)
+void ViewProviderMeshSelfIntersections::showDefects(const std::vector<Mesh::ElementIndex>& indices)
 {
     if (indices.size() % 2 != 0)
         return;
@@ -641,11 +646,11 @@ void ViewProviderMeshSelfIntersections::showDefects(const std::vector<unsigned l
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
     MeshCore::MeshEvalSelfIntersection eval(rMesh);
   
-    std::vector<std::pair<unsigned long, unsigned long> > intersection;
-    std::vector<unsigned long>::const_iterator it;
+    std::vector<std::pair<Mesh::ElementIndex, Mesh::ElementIndex> > intersection;
+    std::vector<Mesh::ElementIndex>::const_iterator it;
     for (it = indices.begin(); it != indices.end(); ) {
-        unsigned long id1 = *it; ++it;
-        unsigned long id2 = *it; ++it;
+        Mesh::ElementIndex id1 = *it; ++it;
+        Mesh::ElementIndex id2 = *it; ++it;
         intersection.push_back(std::make_pair(id1,id2));
     }
 
@@ -654,8 +659,8 @@ void ViewProviderMeshSelfIntersections::showDefects(const std::vector<unsigned l
 
     pcCoords->point.deleteValues(0);
     pcCoords->point.setNum(2*lines.size());
-    unsigned long i=0;
-    unsigned long j=0;
+    int i=0;
+    int j=0;
     for (std::vector<std::pair<Base::Vector3f, Base::Vector3f> >::const_iterator it = lines.begin(); it != lines.end(); ++it) {
         pcCoords->point.set1Value(i++,it->first.x,it->first.y,it->first.z);
         pcCoords->point.set1Value(i++,it->second.x,it->second.y,it->second.z);
@@ -713,7 +718,7 @@ void ViewProviderMeshFolds::attach(App::DocumentObject* pcFeat)
     addDisplayMaskMode(pcFaceRoot, "Face");
 }
 
-void ViewProviderMeshFolds::showDefects(const std::vector<unsigned long>& inds)
+void ViewProviderMeshFolds::showDefects(const std::vector<Mesh::ElementIndex>& inds)
 {
     Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
@@ -721,9 +726,9 @@ void ViewProviderMeshFolds::showDefects(const std::vector<unsigned long>& inds)
     pcCoords->point.deleteValues(0);
     pcCoords->point.setNum(3*inds.size());
     MeshCore::MeshFacetIterator cF(rMesh);
-    unsigned long i=0;
-    unsigned long j=0;
-    for (std::vector<unsigned long>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
+    int i=0;
+    int j=0;
+    for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
         cF.Set(*it);
         for (int k=0; k<3; k++) {
             Base::Vector3f cP = cF->_aclPoints[k];

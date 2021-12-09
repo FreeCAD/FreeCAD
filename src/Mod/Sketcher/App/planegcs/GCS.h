@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Konstantinos Poulios      (logari81@gmail.com) 2011     *
+ *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,17 @@
 #include <boost/concept_check.hpp>
 #include <boost/graph/graph_concepts.hpp>
 
+#include <Eigen/QR>
+
+#define EIGEN_VERSION (EIGEN_WORLD_VERSION * 10000 \
++ EIGEN_MAJOR_VERSION * 100 \
++ EIGEN_MINOR_VERSION)
+
+#if EIGEN_VERSION >= 30202
+    #define EIGEN_SPARSEQR_COMPATIBLE
+    #include <Eigen/Sparse>
+#endif
+
 namespace GCS
 {
     ///////////////////////////////////////
@@ -51,22 +62,35 @@ namespace GCS
         LevenbergMarquardt = 1,
         DogLeg = 2
     };
-    
+
     enum DogLegGaussStep {
         FullPivLU = 0,
         LeastNormFullPivLU = 1,
         LeastNormLdlt = 2
     };
-    
+
     enum QRAlgorithm {
         EigenDenseQR = 0,
         EigenSparseQR = 1
     };
-    
+
     enum DebugMode {
         NoDebug = 0,
         Minimal = 1,
         IterationLevel = 2
+    };
+
+    // Magic numbers for Constraint tags
+    // - Positive Tags identify a higher level constraint form which the solver constraint originates
+    // - Negative Tags represent temporary constraints, used for example in moving operations, these
+    // have a different handling in component splitting, see GCS::initSolution. Lifetime is defined by
+    // the container object via GCS::clearByTag.
+    //      -   -1 is typically used as tag for these temporary constraints, its parameters are enforced with
+    //          a lower priority than the main system (real sketcher constraints). It gives a nice effect when
+    //          dragging the edge of an unconstrained circle, that the center won't move if the edge can be dragged,
+    //          and only when/if the edge cannot be dragged, e.g. radius constraint, the center is moved).
+    enum SpecialTag {
+        DefaultTemporaryConstraint = -1
     };
 
     class System
@@ -77,8 +101,12 @@ namespace GCS
         VEC_pD plist; // list of the unknown parameters
         VEC_pD pdrivenlist; // list of parameters of driven constraints
         MAP_pD_I pIndex;
-        
-        VEC_pD pdependentparameters; // list of dependent parameters by the system
+
+        VEC_pD pDependentParameters; // list of dependent parameters by the system
+
+        // This is a map of primary and secondary identifiers that are found dependent by the solver
+        // GCS ignores from a type point
+        std::vector< std::vector<double *> > pDependentParametersGroups;
 
         std::vector<Constraint *> clist;
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
@@ -97,15 +125,71 @@ namespace GCS
 
         int dofs;
         std::set<Constraint *> redundant;
-        VEC_I conflictingTags, redundantTags;
+        VEC_I conflictingTags, redundantTags, partiallyRedundantTags;
 
         bool hasUnknowns;  // if plist is filled with the unknown parameters
         bool hasDiagnosis; // if dofs, conflictingTags, redundantTags are up to date
         bool isInit;       // if plists, clists, reductionmaps are up to date
 
+        bool emptyDiagnoseMatrix; // false only if there is at least one driving constraint.
+
         int solve_BFGS(SubSystem *subsys, bool isFine=true, bool isRedundantsolving=false);
         int solve_LM(SubSystem *subsys, bool isRedundantsolving=false);
         int solve_DL(SubSystem *subsys, bool isRedundantsolving=false);
+
+        void makeReducedJacobian(Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap, GCS::VEC_pD &pdiagnoselist, std::map< int , int> &tagmultiplicity);
+
+        void makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
+                                        const std::map<int,int> &jacobianconstraintmap,
+                                        Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
+                                        int &rank, Eigen::MatrixXd &R, bool transposeJ = true, bool silent = false);
+
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
+        void makeSparseQRDecomposition( const Eigen::MatrixXd &J,
+                                        const std::map<int,int> &jacobianconstraintmap,
+                                        Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
+                                        int &rank, Eigen::MatrixXd &R, bool transposeJ = true, bool silent = false);
+#endif
+        // This function name is long for a reason:
+        // - Only for DenseQR
+        // - Only for Transposed Jacobian QR decomposition
+        void identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
+                                        const Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
+                                        const GCS::VEC_pD &pdiagnoselist,
+                                        int paramsNum, int rank
+        );
+
+        template <typename T>
+        void identifyConflictingRedundantConstraints(   Algorithm alg,
+                                                        const T & qrJT,
+                                                        const std::map<int,int> &jacobianconstraintmap,
+                                                        const std::map< int , int> &tagmultiplicity,
+                                                        GCS::VEC_pD &pdiagnoselist,
+                                                        Eigen::MatrixXd &R,
+                                                        int constrNum, int rank,
+                                                        int &nonredundantconstrNum
+        );
+
+        void eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd &R, int rank);
+
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
+        void identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
+                                                  const std::map<int,int> &jacobianconstraintmap,
+                                                  const GCS::VEC_pD &pdiagnoselist,
+                                                  bool silent=true);
+#endif
+
+        void identifyDependentParametersDenseQR(  const Eigen::MatrixXd &J,
+                                                  const std::map<int,int> &jacobianconstraintmap,
+                                                  const GCS::VEC_pD &pdiagnoselist,
+                                                  bool silent=true);
+
+        template <typename T>
+        void identifyDependentParameters(   T & qrJ,
+                                            Eigen::MatrixXd &Rparams,
+                                            int rank,
+                                            const GCS::VEC_pD &pdiagnoselist,
+                                            bool silent=true);
 
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
@@ -122,18 +206,18 @@ namespace GCS
         double qrpivotThreshold;
         DebugMode debugMode;
         double LM_eps;
-        double LM_eps1;          
+        double LM_eps1;
         double LM_tau;
         double DL_tolg;
-        double DL_tolx;          
+        double DL_tolx;
         double DL_tolf;
         double LM_epsRedundant;
-        double LM_eps1Redundant;          
+        double LM_eps1Redundant;
         double LM_tauRedundant;
         double DL_tolgRedundant;
-        double DL_tolxRedundant;          
-        double DL_tolfRedundant;        
-    
+        double DL_tolxRedundant;
+        double DL_tolfRedundant;
+
     public:
         System();
         /*System(std::vector<Constraint *> clist_);*/
@@ -211,9 +295,9 @@ namespace GCS
 
         int addConstraintCircleRadius(Circle &c, double *radius, int tagId=0, bool driving = true);
         int addConstraintArcRadius(Arc &a, double *radius, int tagId=0, bool driving = true);
-        int addConstraintCircleDiameter(Circle &c, double *radius, int tagId=0, bool driving = true);
-        int addConstraintArcDiameter(Arc &a, double *radius, int tagId=0, bool driving = true);
-        int addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId=0, bool driving = true);
+        int addConstraintCircleDiameter(Circle &c, double *diameter, int tagId=0, bool driving = true);
+        int addConstraintArcDiameter(Arc &a, double *diameter, int tagId=0, bool driving = true);
+        int addConstraintEqualLength(Line &l1, Line &l2, int tagId=0, bool driving = true);
         int addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId=0, bool driving = true);
         int addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId=0, bool driving = true);
         int addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId=0, bool driving = true);
@@ -227,7 +311,7 @@ namespace GCS
                                    double* n1, double* n2,
                                    bool flipn1, bool flipn2,
                                    int tagId, bool driving = true);
-        
+
         // internal alignment constraints
         int addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType, int tagId=0, bool driving = true);
         int addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId=0, bool driving = true);
@@ -241,9 +325,9 @@ namespace GCS
         int addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, int tagId=0, bool driving = true);
         int addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, int poleindex, int tag=0, bool driving = true);
 
-        double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p);
-        double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2);
-        void calculateNormalAtPoint(Curve &crv, Point &p, double &rtnX, double &rtnY);
+        double calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p) const;
+        double calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p1, Point &p2) const;
+        void calculateNormalAtPoint(const Curve &crv, const Point &p, double &rtnX, double &rtnY) const;
 
         // Calculates errors of all constraints which have a tag equal to
         // the one supplied. Individual errors are summed up using RMS.
@@ -251,7 +335,7 @@ namespace GCS
         // If there's only one, a signed value is returned.
         // Effectively, it calculates the error of a UI constraint
         double calculateConstraintErrorByTag(int tagId);
-        
+
         void rescaleConstraint(int id, double coeff);
 
         void declareUnknowns(VEC_pD &params);
@@ -277,8 +361,19 @@ namespace GCS
           { conflictingOut = hasDiagnosis ? conflictingTags : VEC_I(0); }
         void getRedundant(VEC_I &redundantOut) const
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
-        void getDependentParams(VEC_pD &pconstraintplistOut) const
-          { pconstraintplistOut = pdependentparameters;}
+        void getPartiallyRedundant (VEC_I &partiallyredundantOut) const
+          { partiallyredundantOut = hasDiagnosis ? partiallyRedundantTags : VEC_I(0); }
+        void getDependentParams(VEC_pD &pdependentparameterlist) const
+          { pdependentparameterlist = pDependentParameters;}
+        void getDependentParamsGroups(std::vector<std::vector<double *>> &pdependentparametergroups) const
+          { pdependentparametergroups = pDependentParametersGroups;}
+        bool isEmptyDiagnoseMatrix() const {return emptyDiagnoseMatrix;}
+
+        bool hasConflicting() const {return !(hasDiagnosis && conflictingTags.empty());}
+        bool hasRedundant() const {return !(hasDiagnosis && redundantTags.empty());}
+        bool hasPartiallyRedundant() const {return !(hasDiagnosis && partiallyRedundantTags.empty());}
+
+        void invalidatedDiagnosis();
     };
 
 

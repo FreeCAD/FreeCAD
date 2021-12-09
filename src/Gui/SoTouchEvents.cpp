@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2015     *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com)>      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,7 +41,7 @@ SO_EVENT_SOURCE(SoGesturePanEvent);
 
 SoGesturePanEvent::SoGesturePanEvent(QPanGesture* qpan, QWidget *widget)
 {
-    Q_UNUSED(widget); 
+    Q_UNUSED(widget);
     totalOffset = SbVec2f(qpan->offset().x(), -qpan->offset().y());
     deltaOffset = SbVec2f(qpan->delta().x(), -qpan->delta().y());
     state = SbGestureState(qpan->state());
@@ -84,8 +83,8 @@ SoGesturePinchEvent::SoGesturePinchEvent(QPinchGesture* qpinch, QWidget *widget)
     deltaZoom = qpinch->scaleFactor();
     totalZoom = qpinch->totalScaleFactor();
 
-    deltaAngle = qpinch->rotationAngle();
-    totalAngle = qpinch->totalRotationAngle();
+    deltaAngle = -unbranchAngle((qpinch->rotationAngle()-qpinch->lastRotationAngle()) / 180.0 * M_PI);
+    totalAngle = -qpinch->totalRotationAngle() / 180 * M_PI;
 
     state = SbGestureState(qpinch->state());
 
@@ -102,13 +101,25 @@ SbBool SoGesturePinchEvent::isSoGesturePinchEvent(const SoEvent *ev) const
     return ev->isOfType(SoGesturePinchEvent::getClassTypeId());
 }
 
+/*!
+ * \brief SoGesturePinchEvent::unbranchAngle : utility function to bring an angle into -pi..pi region.
+ * \param ang - in radians
+ * \return
+ */
+double SoGesturePinchEvent::unbranchAngle(double ang)
+{
+    const double Pi = 3.14159265358979323846;
+    return ang - 2.0*Pi*floor((ang+Pi)/(2.0*Pi));
+}
+
+
 //----------------------------SoGestureSwipeEvent--------------------------------
 
 SO_EVENT_SOURCE(SoGestureSwipeEvent);
 
 SoGestureSwipeEvent::SoGestureSwipeEvent(QSwipeGesture *qwsipe, QWidget *widget)
 {
-    Q_UNUSED(widget); 
+    Q_UNUSED(widget);
     angle = qwsipe->swipeAngle();
     switch (qwsipe->verticalDirection()){
     case QSwipeGesture::Up :

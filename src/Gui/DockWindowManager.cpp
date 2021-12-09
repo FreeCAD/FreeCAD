@@ -154,8 +154,10 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
 
     // set object name and window title needed for i18n stuff
     dw->setObjectName(QLatin1String(name));
-    dw->setWindowTitle(QDockWidget::trUtf8(name));
-    dw->setFeatures(QDockWidget::AllDockWidgetFeatures);
+    dw->setWindowTitle(QDockWidget::tr(name));
+    dw->setFeatures(QDockWidget::DockWidgetClosable
+                    | QDockWidget::DockWidgetMovable
+                    | QDockWidget::DockWidgetFloatable);
 
     d->_dockedWindows.push_back(dw);
     return dw;
@@ -238,6 +240,26 @@ void DockWindowManager::removeDockWindow(QWidget* widget)
 }
 
 /**
+ * If the corresponding dock widget isn't visible then activate it.
+ */
+void DockWindowManager::activate(QWidget* widget)
+{
+    QDockWidget* dw = nullptr;
+    QWidget* par = widget->parentWidget();
+    while (par) {
+        dw = qobject_cast<QDockWidget*>(par);
+        if (dw) {
+            break;
+        }
+        par = par->parentWidget();
+    }
+
+    if (dw && !dw->toggleViewAction()->isChecked()) {
+        dw->toggleViewAction()->activate(QAction::Trigger);
+    }
+}
+
+/**
  * Sets the window title for the dockable windows.
  */
 void DockWindowManager::retranslate()
@@ -257,14 +279,14 @@ void DockWindowManager::retranslate()
  * \li Std_PropertyView
  * \li Std_ReportView
  * \li Std_ToolBox
- * \li Std_CombiView
+ * \li Std_ComboView
  * \li Std_SelectionView
  *
  * To avoid name clashes the caller should use names of the form \a module_widgettype, i. e. if a analyse dialog for
- * the mesh module is added the name must then be Mesh_AnalyzeDialog. 
+ * the mesh module is added the name must then be Mesh_AnalyzeDialog.
  *
- * To make use of dock windows when a workbench gets loaded the method setupDockWindows() must reimplemented in a 
- * subclass of Gui::Workbench. 
+ * To make use of dock windows when a workbench gets loaded the method setupDockWindows() must reimplemented in a
+ * subclass of Gui::Workbench.
  */
 bool DockWindowManager::registerDockWindow(const char* name, QWidget* widget)
 {
@@ -375,6 +397,21 @@ void DockWindowManager::saveState()
         if (dw) {
             QByteArray dockName = dw->toggleViewAction()->data().toByteArray();
             hPref->SetBool(dockName.constData(), dw->isVisible());
+        }
+    }
+}
+
+void DockWindowManager::loadState()
+{
+    ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("MainWindow")->GetGroup("DockWindows");
+    const QList<DockWindowItem>& dockItems = d->_dockWindowItems.dockWidgets();
+    for (QList<DockWindowItem>::ConstIterator it = dockItems.begin(); it != dockItems.end(); ++it) {
+        QDockWidget* dw = findDockWidget(d->_dockedWindows, it->name);
+        if (dw) {
+            QByteArray dockName = it->name.toLatin1();
+            bool visible = hPref->GetBool(dockName.constData(), it->visibility);
+            dw->setVisible(visible);
         }
     }
 }

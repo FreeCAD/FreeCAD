@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,18 +24,50 @@
 #ifndef PART_TOPOSHAPE_H
 #define PART_TOPOSHAPE_H
 
-#include <iostream>
+#include <iosfwd>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <App/ComplexGeoData.h>
+#include <Base/Exception.h>
 
 class gp_Ax1;
 class gp_Ax2;
+class gp_Pln;
 class gp_Vec;
+
+namespace App {
+class Color;
+}
 
 namespace Part
 {
+
+/* A special sub-class to indicate null shapes
+ */
+class PartExport NullShapeException : public Base::ValueError
+{
+public:
+   /// Construction
+   NullShapeException();
+   NullShapeException(const char * sMessage);
+   NullShapeException(const std::string& sMessage);
+   /// Destruction
+   virtual ~NullShapeException() throw() {}
+};
+
+/* A special sub-class to indicate boolean failures
+ */
+class PartExport BooleanException : public Base::CADKernelError
+{
+public:
+   /// Construction
+   BooleanException();
+   BooleanException(const char * sMessage);
+   BooleanException(const std::string& sMessage);
+   /// Destruction
+   virtual ~BooleanException() throw() {}
+};
 
 class PartExport ShapeSegment : public Data::Segment
 {
@@ -78,16 +110,18 @@ public:
     /// set the transformation of the CasCade Shape
     void setTransform(const Base::Matrix4D& rclTrf);
     /// set the transformation of the CasCade Shape
-    void setPlacement(const Base::Placement& rclTrf);
+    void setShapePlacement(const Base::Placement& rclTrf);
+    /// get the transformation of the CasCade Shape
+    Base::Placement getShapePlacement(void) const;
     /// get the transformation of the CasCade Shape
     Base::Matrix4D getTransform(void) const;
-    /// get the transformation of the CasCade Shape
-    Base::Placement getPlacemet(void) const;
     /// Bound box from the CasCade shape
     Base::BoundBox3d getBoundBox(void)const;
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     static void convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf);
     static void convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx);
+    static Base::Matrix4D convert(const gp_Trsf& trsf);
+    static gp_Trsf convert(const Base::Matrix4D& mtrx);
     //@}
 
     /** @name Subelement management */
@@ -101,22 +135,30 @@ public:
     /// get the subelement by type and number
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
     /** Get lines from segment */
-    virtual void getLinesFromSubelement(
+    virtual void getLinesFromSubElement(
         const Data::Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Line> &lines) const;
     /** Get faces from segment */
-    virtual void getFacesFromSubelement(
+    virtual void getFacesFromSubElement(
         const Data::Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &PointNormals,
         std::vector<Facet> &faces) const;
     //@}
     /// get the Topo"sub"Shape with the given name
-    TopoDS_Shape getSubShape(const char* Type) const;
+    TopoDS_Shape getSubShape(const char* Type, bool silent=false) const;
+    TopoDS_Shape getSubShape(TopAbs_ShapeEnum type, int idx, bool silent=false) const;
+    std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE) const;
+    std::vector<TopoDS_Shape> getSubShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE) const;
     unsigned long countSubShapes(const char* Type) const;
+    unsigned long countSubShapes(TopAbs_ShapeEnum type) const;
+    bool hasSubShape(const char *Type) const;
+    bool hasSubShape(TopAbs_ShapeEnum type) const;
     /// get the Topo"sub"Shape with the given name
-    PyObject * getPySubShape(const char* Type) const;
+    PyObject * getPySubShape(const char* Type, bool silent=false) const;
+    PyObject * getPyObject();
+    void setPyObject(PyObject*);
 
     /** @name Save/restore */
     //@{
@@ -144,7 +186,7 @@ public:
     void exportBrep(std::ostream&) const;
     void exportBinary(std::ostream&);
     void exportStl (const char *FileName, double deflection) const;
-    void exportFaceSet(double, double, std::ostream&) const;
+    void exportFaceSet(double, double, const std::vector<App::Color>&, std::ostream&) const;
     void exportLineSet(std::ostream&) const;
     //@}
 
@@ -154,6 +196,10 @@ public:
     bool isValid() const;
     bool analyze(bool runBopCheck, std::ostream&) const;
     bool isClosed() const;
+    bool isCoplanar(const TopoShape &other, double tol=-1) const;
+    bool findPlane(gp_Pln &pln, double tol=-1) const;
+    /// Returns true if the expansion of the shape is infinite, false otherwise
+    bool isInfinite() const;
     //@}
 
     /** @name Boolean operation*/
@@ -203,11 +249,17 @@ public:
     TopoDS_Shape revolve(const gp_Ax1&, double d, Standard_Boolean isSolid=Standard_False) const;
     TopoDS_Shape makeSweep(const TopoDS_Shape& profile, double, int) const;
     TopoDS_Shape makeTube(double radius, double tol, int cont, int maxdeg, int maxsegm) const;
+    TopoDS_Shape makeTorus(Standard_Real radius1, Standard_Real radius2,
+        Standard_Real angle1, Standard_Real angle2, Standard_Real angle3,
+        Standard_Boolean isSolid=Standard_True) const;
     TopoDS_Shape makeHelix(Standard_Real pitch, Standard_Real height,
         Standard_Real radius, Standard_Real angle=0,
         Standard_Boolean left=Standard_False, Standard_Boolean style=Standard_False) const;
     TopoDS_Shape makeLongHelix(Standard_Real pitch, Standard_Real height,
         Standard_Real radius, Standard_Real angle=0,
+        Standard_Boolean left=Standard_False) const;
+    TopoDS_Shape makeSpiralHelix(Standard_Real radiusbottom, Standard_Real radiustop,
+        Standard_Real height, Standard_Real nbturns=1, Standard_Real breakperiod=1,
         Standard_Boolean left=Standard_False) const;
     TopoDS_Shape makeThread(Standard_Real pitch, Standard_Real depth,
         Standard_Real height, Standard_Real radius) const;
@@ -228,16 +280,17 @@ public:
     //@{
     void transformGeometry(const Base::Matrix4D &rclMat);
     TopoDS_Shape transformGShape(const Base::Matrix4D&) const;
-    void transformShape(const Base::Matrix4D&, bool copy);
+    bool transformShape(const Base::Matrix4D&, bool copy, bool checkScale=false);
     TopoDS_Shape mirror(const gp_Ax2&) const;
     TopoDS_Shape toNurbs() const;
     TopoDS_Shape replaceShape(const std::vector< std::pair<TopoDS_Shape,TopoDS_Shape> >& s) const;
     TopoDS_Shape removeShape(const std::vector<TopoDS_Shape>& s) const;
-    void sewShape();
+    void sewShape(double tolerance = 1.0e-06);
     bool fix(double, double, double);
     bool removeInternalWires(double);
     TopoDS_Shape removeSplitter() const;
     TopoDS_Shape defeaturing(const std::vector<TopoDS_Shape>& s) const;
+    TopoDS_Shape makeShell(const TopoDS_Shape&) const;
     //@}
 
     /** @name Getting basic geometric entities */
@@ -249,10 +302,72 @@ public:
     virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
         float Accuracy, uint16_t flags=0) const;
     void setFaces(const std::vector<Base::Vector3d> &Points,
-                  const std::vector<Facet> &faces, float Accuracy=1.0e-06);
+                  const std::vector<Facet> &faces, double tolerance=1.0e-06);
     void getDomains(std::vector<Domain>&) const;
     //@}
 
+    /** @name Element name mapping aware shape maker 
+     *
+     * To be complete in next batch of patches
+     */
+    //@{
+    TopoShape &makECompound(const std::vector<TopoShape> &shapes, const char *op=0, bool force=true);
+
+    TopoShape &makEWires(const TopoShape &shape, const char *op=0, bool fix=false, double tol=0.0);
+    TopoShape makEWires(const char *op=0, bool fix=false, double tol=0.0) const {
+        return TopoShape().makEWires(*this,op,fix,tol);
+    }
+    TopoShape &makEFace(const std::vector<TopoShape> &shapes, const char *op=0, const char *maker=0);
+    TopoShape &makEFace(const TopoShape &shape, const char *op=0, const char *maker=0);
+    TopoShape makEFace(const char *op=0, const char *maker=0) const {
+        return TopoShape().makEFace(*this,op,maker);
+    }
+    bool _makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
+            const char *op=0, bool checkScale=false, bool copy=false);
+
+    TopoShape &makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
+            const char *op=0, bool checkScale=false, bool copy=false) {
+        _makETransform(shape,mat,op,checkScale,copy);
+        return *this;
+    }
+    TopoShape makETransform(const Base::Matrix4D &mat, const char *op=0, 
+            bool checkScale=false, bool copy=false) const {
+        return TopoShape().makETransform(*this,mat,op,checkScale,copy);
+    }
+
+    TopoShape &makETransform(const TopoShape &shape, const gp_Trsf &trsf, 
+            const char *op=0, bool copy=false);
+    TopoShape makETransform(const gp_Trsf &trsf, const char *op=0, bool copy=false) const {
+        return TopoShape().makETransform(*this,trsf,op,copy);
+    }
+
+    void move(const TopLoc_Location &loc) {
+        _Shape.Move(loc);
+    }
+    TopoShape moved(const TopLoc_Location &loc) const {
+        TopoShape ret(*this);
+        ret._Shape.Move(loc);
+        return ret;
+    }
+
+    TopoShape &makEGTransform(const TopoShape &shape, const Base::Matrix4D &mat, 
+            const char *op=0, bool copy=false);
+    TopoShape makEGTransform(const Base::Matrix4D &mat, const char *op=0, bool copy=false) const {
+        return TopoShape().makEGTransform(*this,mat,op,copy);
+    }
+
+    TopoShape &makERefine(const TopoShape &shape, const char *op=0, bool no_fail=true);
+    TopoShape makERefine(const char *op=0, bool no_fail=true) const {
+        return TopoShape().makERefine(*this,op,no_fail);
+    }
+    //@}
+
+    static TopAbs_ShapeEnum shapeType(const char *type,bool silent=false);
+    static TopAbs_ShapeEnum shapeType(char type,bool silent=false);
+    TopAbs_ShapeEnum shapeType(bool silent=false) const;
+    static const std::string &shapeName(TopAbs_ShapeEnum type,bool silent=false);
+    const std::string &shapeName(bool silent=false) const;
+    static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const char *name);
 private:
     TopoDS_Shape _Shape;
 };

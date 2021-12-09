@@ -11,7 +11,7 @@ from OpenSCADFeatures import *
 from OpenSCAD2Dgeom import *
 from OpenSCADUtils import *
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open # to distinguish python built-in open function from the one declared here
 
 def openscadmesh(doc,scadstr,objname):
@@ -40,8 +40,7 @@ def openscadmesh(doc,scadstr,objname):
 class Node:
     #fnmin=12 # maximal fn for implicit polygon rendering
     fnmin= FreeCAD.ParamGet(\
-        "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetInt('useMaxFN')
+        "User parameter:BaseApp/Preferences/Mod/OpenSCAD").GetInt('useMaxFN')
     planedim=1e10 #size of the square used as x-y-plane
     def __init__(self,name,arguments=None,children=None,):
         pass
@@ -58,8 +57,8 @@ class Node:
         return str1+')'
     
     def __nonzero__(self):
-        '''a Node is not obsolete if doesn't have children. Only if as neither name children or
-        arguments'''
+        '''A Node is not obsolete if doesn't have children. 
+        Only if as neither name children or arguments'''
         return bool(self.name or self.arguments or self.children)
 
     def __len__(self):
@@ -87,6 +86,7 @@ class Node:
         import FreeCAD,Part
         if not doc:
             doc=FreeCAD.newDocument()
+        obj=None
         namel=self.name.lower()
         multifeature={'union':"Part::MultiFuse",'imp_union':"Part::MultiFuse",
                       'intersection':"Part::MultiCommon"}
@@ -389,8 +389,7 @@ class Node:
                     try:
                         f=edgestofaces(edges)
                     except Part.OCCError:
-                        FreeCAD.Console.PrintError(\
- 'processing of dxf import failed\nPlease rework \'%s\' manually\n' % layera)
+                        FreeCAD.Console.PrintError('processing of dxf import failed\nPlease rework \'%s\' manually\n' % layera)
                         f=Part.Shape() #empty Shape
                     obj=doc.addObject("Part::FeaturePython",'import_dxf_%s_%s'%(objname,layera))
                     #obj=doc.addObject('Part::Feature',)
@@ -399,8 +398,7 @@ class Node:
                     obj.Shape=f
 
                 else:
-                    FreeCAD.Console.ErrorMessage(\
-                            'Filetype of %s not supported\n' % (filename))
+                    FreeCAD.Console.ErrorMessage('Filetype of %s not supported\n' % (filename))
                     raise(NotImplementedError)
                 if obj: #handle origin and scale
                     if scale is not None and scale !=1:
@@ -530,10 +528,10 @@ class Node:
 
     def flattengroups(self,name='group'):
         """removes group node with only one child and no arguments and empty groups"""
-        node=self
-        while (node.name==name and len(node.children)==1 and len(node.arguments)==0):
-            node=node.children[0]
-        node.children=[child for child in node.children if not (len(child.children)==0 and child.name==name)]
+        node = self
+        while (node.name == name and len(node.children) == 1 and len(node.arguments) == 0):
+            node = node.children[0]
+        node.children = [child for child in node.children if not (len(child.children) == 0 and child.name == name)]
         if node.children:
             node.children = [child.flattengroups() for child in node.children]
         return node
@@ -688,5 +686,3 @@ def insert(filename,docname):
 
 global dxfcache
 dxfcache = {}
-
-

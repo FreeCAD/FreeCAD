@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QCheckBox>
+# include <QLineEdit>
 # include <QMenu>
 #endif
 
@@ -35,12 +37,13 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
 
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 
 using namespace Gui;
 using namespace DrawingGui;
 using namespace std;
+namespace bp = boost::placeholders;
 
 
 #ifndef PI
@@ -88,17 +91,15 @@ void pagesize(string & page_template, int dims[4], int block[4])
 
     try
     {
-        while (!file.eof())
+        while (getline (file,line))
         {
-            getline (file,line);
-
             if (line.find("<!-- Working space") != string::npos)
             {
-                sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &dims[0], &dims[1], &dims[2], &dims[3]);        //eg "    <!-- Working space 10 10 410 287 -->"
+                (void)sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &dims[0], &dims[1], &dims[2], &dims[3]);        //eg "    <!-- Working space 10 10 410 287 -->"
                 getline (file,line);
 
                 if (line.find("<!-- Title block") != string::npos)
-                    sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &t0, &t1, &t2, &t3);    //eg "    <!-- Working space 10 10 410 287 -->"
+                    (void)sscanf(line.c_str(), "%*s %*s %*s %d %d %d %d", &t0, &t1, &t2, &t3);    //eg "    <!-- Working space 10 10 410 287 -->"
 
                 break;
             }
@@ -107,7 +108,7 @@ void pagesize(string & page_template, int dims[4], int block[4])
                 break;
         }
     }
-    catch (Standard_Failure)
+    catch (Standard_Failure&)
     { }
 
 
@@ -229,7 +230,7 @@ void orthoview::smooth(bool state)
     this_view->ShowSmoothLines.setValue(state);
 }
 
-void orthoview::set_projection(gp_Ax2 cs)
+void orthoview::set_projection(const gp_Ax2& cs)
 {
     gp_Ax2  actual_cs;
     gp_Dir  actual_X;
@@ -304,9 +305,9 @@ OrthoViews::OrthoViews(App::Document* doc, const char * pagename, const char * p
     num_gaps_x = num_gaps_y = 0;
 
     this->connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
-        (&OrthoViews::slotDeletedObject, this, _1));
+        (&OrthoViews::slotDeletedObject, this, bp::_1));
     this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(boost::bind
-        (&OrthoViews::slotDeletedDocument, this, _1));
+        (&OrthoViews::slotDeletedDocument, this, bp::_1));
 }
 
 OrthoViews::~OrthoViews()
@@ -314,7 +315,11 @@ OrthoViews::~OrthoViews()
     for (int i = views.size() - 1; i >= 0; i--)
         delete views[i];
 
-    page->recomputeFeature();
+    try {
+        page->recomputeFeature();
+    }
+    catch (...) {
+    }
 }
 
 void OrthoViews::slotDeletedDocument(const App::Document& Obj)
@@ -641,11 +646,12 @@ void OrthoViews::del_view(int rel_x, int rel_y)             // remove a view fro
 
     if (num > 0)
     {
-        connectDocumentDeletedObject.block();
-        views[num]->deleteme();
-        delete views[num];
-        views.erase(views.begin() + num);
-        connectDocumentDeletedObject.unblock();
+        {
+            boost::signals2::shared_connection_block blocker(connectDocumentDeletedObject);
+            views[num]->deleteme();
+            delete views[num];
+            views.erase(views.begin() + num);
+        }
 
         min_r_x = max_r_x = 0;
         min_r_y = max_r_y = 0;
@@ -667,14 +673,13 @@ void OrthoViews::del_view(int rel_x, int rel_y)             // remove a view fro
 
 void OrthoViews::del_all()
 {
-    connectDocumentDeletedObject.block();
+    boost::signals2::shared_connection_block blocker(connectDocumentDeletedObject);
     for (int i = views.size() - 1; i >= 0; i--)          // count downwards to delete from back
     {
         views[i]->deleteme();
         delete views[i];
         views.pop_back();
     }
-    connectDocumentDeletedObject.unblock();
 }
 
 int OrthoViews::is_Ortho(int rel_x, int rel_y)              // is the view at r_x, r_y an ortho or axo one?

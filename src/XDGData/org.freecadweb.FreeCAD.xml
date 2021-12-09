@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+  <mime-type type="application/x-extension-fcstd">
+    <!-- <sub-class-of type="application/zip"/> -->
+    <comment>FreeCAD document files</comment>
+    <glob pattern="*.fcstd"/>
+    <icon name="org.freecadweb.FreeCAD"/>
+  </mime-type>
+</mime-info>

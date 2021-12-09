@@ -35,16 +35,20 @@
 #include <Base/Placement.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
+#include <App/DocumentObserver.h>
 #include <App/PropertyStandard.h>
 #include <Gui/Widgets.h>
 #include <Gui/ExpressionBinding.h>
 #include <Gui/MetaTypes.h>
+#include <FCGlobal.h>
 
 #ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
+Q_DECLARE_METATYPE(QList<Base::Vector3d>)
 Q_DECLARE_METATYPE(Base::Matrix4D)
 Q_DECLARE_METATYPE(Base::Placement)
+Q_DECLARE_METATYPE(Base::Rotation)
 Q_DECLARE_METATYPE(Base::Quantity)
 Q_DECLARE_METATYPE(QList<Base::Quantity>)
 #endif
@@ -63,7 +67,12 @@ void _class_::init(void) { \
 }
 
 namespace Gui {
-namespace Dialog { class TaskPlacement; }
+
+namespace Dialog { 
+class TaskPlacement; 
+class DlgPropertyLink;
+}
+
 namespace PropertyEditor {
 
 class PropertyItem;
@@ -125,6 +134,10 @@ public:
     virtual QVariant editorData(QWidget *editor) const;
     virtual bool isSeparator() const { return false; }
 
+    QWidget* createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    void setExpressionEditorData(QWidget *editor, const QVariant& data) const;
+    QVariant expressionEditorData(QWidget *editor) const;
+
     /**override the bind functions to ensure we issue the propertyBound() call, which is then overloaded by 
        childs which like to be informed of a binding*/
     virtual void bind(const App::Property& prop);
@@ -135,6 +148,7 @@ public:
     void setParent(PropertyItem* parent);
     PropertyItem *parent() const;
     void appendChild(PropertyItem *child);
+    void insertChild(int, PropertyItem *child);
     void removeChildren(int from, int to);
     PropertyItem *takeChild(int);
 
@@ -144,17 +158,22 @@ public:
     void setDecimals(int);
     int decimals() const;
 
+    void setLinked(bool);
+    bool isLinked() const;
+
     PropertyItem *child(int row);
     int childCount() const;
     int columnCount() const;
     QString propertyName() const;
     void setPropertyName(const QString&);
     void setPropertyValue(const QString&);
-    QVariant data(int column, int role) const;
+    virtual QVariant data(int column, int role) const;
     bool setData (const QVariant& value);
     Qt::ItemFlags flags(int column) const;
     int row() const;
     void reset();
+
+    bool hasAnyExpression() const;
 
 protected:
     PropertyItem();
@@ -166,18 +185,20 @@ protected:
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
     virtual void initialize();
-    QString pythonIdentifier(const App::Property*) const;
 
-private:
+    //gets called when the bound expression is changed
+    virtual void onChange();
+
+protected:
     QString propName;
     QString displayText;
-    QVariant propData;
     std::vector<App::Property*> propertyItems;
     PropertyItem *parentItem;
     QList<PropertyItem*> childItems;
     bool readonly;
     int precision;
     bool cleared;
+    bool linked;
 };
 
 /**
@@ -374,7 +395,7 @@ protected:
  * Change a floating point number.
  * \author Werner Mayer
  */
-class GuiExport PropertyAngleItem : public PropertyFloatItem
+class GuiExport PropertyAngleItem : public PropertyUnitConstraintItem
 {
     Q_OBJECT
     PROPERTYITEM_HEADER
@@ -445,6 +466,58 @@ private:
     PropertyFloatItem* m_x;
     PropertyFloatItem* m_y;
     PropertyFloatItem* m_z;
+};
+
+class VectorListWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    VectorListWidget (int decimals, QWidget * parent = nullptr);
+    virtual ~VectorListWidget();
+
+    QVariant value() const;
+
+public Q_SLOTS:
+    void setValue(const QVariant&);
+
+protected:
+    void showValue(const QVariant& data);
+    void resizeEvent(QResizeEvent*);
+
+private Q_SLOTS:
+    void buttonClicked();
+
+Q_SIGNALS:
+    void valueChanged(const QVariant &);
+
+private:
+    int decimals;
+    QVariant variant;
+    QLineEdit *lineEdit;
+    QPushButton *button;
+};
+
+/**
+ * Edit properties of vector list type.
+ * \author Werner Mayer
+ */
+class GuiExport PropertyVectorListItem : public PropertyItem
+{
+    Q_OBJECT
+    PROPERTYITEM_HEADER
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+protected:
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+protected:
+    PropertyVectorListItem();
 };
 
 /**
@@ -585,6 +658,65 @@ private:
     PropertyFloatItem* m_a44; 
 };
 
+class RotationHelper
+{
+public:
+    RotationHelper();
+    void setChanged(bool);
+    bool hasChangedAndReset();
+    bool isAxisInitialized() const;
+    void setValue(const Base::Vector3d& axis, double angle);
+    void getValue(Base::Vector3d& axis, double& angle) const;
+    double getAngle(const Base::Rotation& val) const;
+    Base::Rotation setAngle(double);
+    Base::Vector3d getAxis() const;
+    Base::Rotation setAxis(const Base::Rotation& value, const Base::Vector3d& axis);
+    void assignProperty(const Base::Rotation& value, double eps);
+
+private:
+    bool init_axis;
+    bool changed_value;
+    double rot_angle;
+    Base::Vector3d rot_axis;
+};
+
+/**
+ * Edit properties of rotation type.
+ * \author Werner Mayer
+ */
+class GuiExport PropertyRotationItem: public PropertyItem
+{
+    Q_OBJECT
+    Q_PROPERTY(Base::Quantity Angle READ getAngle WRITE setAngle DESIGNABLE true USER true)
+    Q_PROPERTY(Base::Vector3d Axis READ getAxis WRITE setAxis DESIGNABLE true USER true)
+    PROPERTYITEM_HEADER
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+    virtual void propertyBound();
+    virtual void assignProperty(const App::Property*);
+
+    Base::Quantity getAngle() const;
+    void setAngle(Base::Quantity);
+    Base::Vector3d getAxis() const;
+    void setAxis(const Base::Vector3d&);
+
+protected:
+    PropertyRotationItem();
+    ~PropertyRotationItem();
+    virtual QVariant toolTip(const App::Property*) const;
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+private:
+    mutable RotationHelper h;
+    PropertyUnitItem * m_a;
+    PropertyVectorItem* m_d;
+};
+
 class PlacementEditor : public Gui::LabelButton
 {
     Q_OBJECT
@@ -640,14 +772,13 @@ protected:
     virtual void setValue(const QVariant&);
 
 private:
-    bool init_axis;
-    bool changed_value;
-    double rot_angle;
-    Base::Vector3d rot_axis;
+    mutable RotationHelper h;
     PropertyUnitItem * m_a;
     PropertyVectorItem* m_d;
     PropertyVectorDistanceItem* m_p;
 };
+
+class PropertyStringListItem;
 
 /**
  * Edit properties of enum type. 
@@ -656,18 +787,26 @@ private:
 class GuiExport PropertyEnumItem: public PropertyItem
 {
     Q_OBJECT
+    Q_PROPERTY(QStringList Enum READ getEnum WRITE setEnum DESIGNABLE true USER true)
     PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
     virtual QVariant editorData(QWidget *editor) const;
 
+    QStringList getEnum() const;
+    void setEnum(QStringList);
+
 protected:
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
+    virtual void propertyBound();
 
 protected:
     PropertyEnumItem();
+
+private:
+    PropertyStringListItem* m_enum;
 };
 
 /**
@@ -932,25 +1071,26 @@ class LinkSelection : public QObject
     Q_OBJECT
 
 public:
-    LinkSelection(const QStringList&);
+    LinkSelection(const App::SubObjectT &);
     ~LinkSelection();
 
 public Q_SLOTS:
     void select();
 
 private:
-    QStringList link;
+    App::SubObjectT link;
 };
+
 
 class LinkLabel : public QWidget
 {
     Q_OBJECT
 
 public:
-    LinkLabel (QWidget * parent = 0);
+    LinkLabel (QWidget * parent, const App::Property *prop);
     virtual ~LinkLabel();
-    void setPropertyLink(const QStringList& o);
-    QStringList propertyLink() const;
+    void updatePropertyLink();
+    QVariant propertyLink() const;
 
 protected:
     void resizeEvent(QResizeEvent*);
@@ -958,14 +1098,18 @@ protected:
 protected Q_SLOTS:
     void onLinkActivated(const QString&);
     void onEditClicked();
+    void onLinkChanged();
 
 Q_SIGNALS:
-    void linkChanged(const QStringList&);
+    void linkChanged(const QVariant&);
 
 private:
     QLabel* label;
     QPushButton* editButton;
-    QStringList link;
+    QVariant link;
+    App::DocumentObjectT objProp;
+
+    Gui::Dialog::DlgPropertyLink* dlg;
 };
 
 /**
@@ -977,61 +1121,28 @@ class GuiExport PropertyLinkItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
-    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
-    virtual QVariant editorData(QWidget *editor) const;
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const override;
+    virtual QVariant editorData(QWidget *editor) const override;
 
 protected:
-    virtual QVariant toString(const QVariant&) const;
-    virtual QVariant value(const App::Property*) const;
-    virtual void setValue(const QVariant&);
+    virtual QVariant toString(const QVariant&) const override;
+    virtual QVariant value(const App::Property*) const override;
+    virtual void setValue(const QVariant&) override;
+    virtual QVariant data(int column, int role) const override;
 
 protected:
     PropertyLinkItem();
-};
-
-class LinkListLabel : public QWidget
-{
-    Q_OBJECT
-
-public:
-    LinkListLabel (QWidget * parent = 0);
-    virtual ~LinkListLabel();
-    void setPropertyLinkList(const QVariantList& o);
-    QVariantList propertyLinkList() const;
-
-protected:
-    void resizeEvent(QResizeEvent*);
-
-protected Q_SLOTS:
-    void onEditClicked();
-
-Q_SIGNALS:
-    void linkChanged(const QVariantList&);
-
-private:
-    QLabel* label;
-    QPushButton* editButton;
-    QVariantList links;
 };
 
 /**
  * Edit properties of link list type.
  * \author Werner Mayer
  */
-class GuiExport PropertyLinkListItem: public PropertyItem
+class GuiExport PropertyLinkListItem: public PropertyLinkItem
 {
     Q_OBJECT
     PROPERTYITEM_HEADER
-
-    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
-    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
-    virtual QVariant editorData(QWidget *editor) const;
-
-protected:
-    virtual QVariant toString(const QVariant&) const;
-    virtual QVariant value(const App::Property*) const;
-    virtual void setValue(const QVariant&);
 
 protected:
     PropertyLinkListItem();
@@ -1043,13 +1154,8 @@ public:
     PropertyItemEditorFactory();
     virtual ~PropertyItemEditorFactory();
 
-#if (QT_VERSION >= 0x050300)
     virtual QWidget *createEditor(int userType, QWidget *parent) const;
     virtual QByteArray valuePropertyName(int userType) const;
-#else
-    virtual QWidget * createEditor(QVariant::Type type, QWidget * parent) const;
-    virtual QByteArray valuePropertyName (QVariant::Type type) const;
-#endif
 };
 
 } // namespace PropertyEditor

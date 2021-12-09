@@ -29,6 +29,7 @@
 # include <QImage>
 # include <QMessageBox>
 # include <QImageReader>
+# include <QKeyEvent>
 #endif
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
@@ -55,13 +56,16 @@ TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
     ui->setupUi(this);
     ui->checkGlobal->hide();
 
+    // set a dummy string which is not a valid file name
+    fileName = QLatin1String("<>");
+
     // add all supported QImage formats
     QStringList formats;
     QList<QByteArray> qtformats = QImageReader::supportedImageFormats();
     for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
         formats << QString::fromLatin1("*.%1").arg(QLatin1String(*it));
     }
-    
+
     ui->fileChooser->setFilter(tr("Image files (%1)").arg(formats.join(QLatin1String(" "))));
 
     this->tex = new SoTexture2();
@@ -111,11 +115,25 @@ void TextureMapping::changeEvent(QEvent *e)
     }
 }
 
+void TextureMapping::keyPressEvent(QKeyEvent *e)
+{
+    // The texture mapping dialog is embedded into a task panel
+    // which is a parent widget and will handle the event
+    e->ignore();
+}
+
 void TextureMapping::on_fileChooser_fileNameSelected(const QString& s)
 {
     QImage image;
     if (!image.load(s)) {
-        QMessageBox::warning(this, tr("No image"), tr("The specified file is not a valid image file."));
+        // This slot is always invoked when leaving the focus of the line edit
+        // and to avoid to run into an infinite loop of popping up the dialog
+        // there is a check to report the last selected file name (which might
+        // be an empty string) only once.
+        if (fileName != s) {
+            QMessageBox::warning(this, tr("No image"), tr("The specified file is not a valid image file."));
+            fileName = s;
+        }
         return;
     }
 

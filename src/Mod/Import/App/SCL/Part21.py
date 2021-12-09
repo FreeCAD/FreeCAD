@@ -116,8 +116,8 @@ class Part21Parser:
         #        del self._number_of_ancestors[item]
 
     def get_schema_name(self):
-        return self._schema_name
         print(schema_name)
+        return self._schema_name
 
     def get_number_of_instances(self):
         return len(list(self._instances_definition.keys()))

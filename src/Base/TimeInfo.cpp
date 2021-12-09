@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Riegel         <juergen.riegel@web.de>                  *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +26,9 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <QDateTime>
+# if defined(FC_OS_LINUX) || defined(__MINGW32__)
+# include <sys/time.h>
+# endif
 #endif
 
 #include "TimeInfo.h"
@@ -57,7 +60,7 @@ TimeInfo::~TimeInfo()
 
 void TimeInfo::setCurrent(void)
 {
-#if defined (FC_OS_BSD)
+#if defined (FC_OS_BSD) || defined(FC_OS_LINUX) || defined(__MINGW32__)
     struct timeval t;
     gettimeofday(&t, NULL);
     timebuffer.time = t.tv_sec;
@@ -65,7 +68,7 @@ void TimeInfo::setCurrent(void)
 #elif defined(FC_OS_WIN32)
     _ftime(&timebuffer);
 #else
-    ftime(&timebuffer);
+    ftime(&timebuffer); // deprecated
 #endif
 }
 
@@ -76,18 +79,8 @@ void TimeInfo::setTime_t (uint64_t seconds)
 
 std::string TimeInfo::currentDateTimeString()
 {
-#if (QT_VERSION >= 0x050300)
     return QDateTime::currentDateTime().toTimeSpec(Qt::OffsetFromUTC)
         .toString(Qt::ISODate).toStdString();
-#else
-    QDateTime local = QDateTime::currentDateTime();
-    QDateTime utc = local.toUTC();
-    utc.setTimeSpec(Qt::LocalTime);
-    int utcOffset = utc.secsTo(local);
-    local.setUtcOffset(utcOffset);
-    QString dm = local.toString(Qt::ISODate);
-    return dm.toStdString();
-#endif
 }
 
 std::string TimeInfo::diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd )

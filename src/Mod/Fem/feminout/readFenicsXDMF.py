@@ -1,6 +1,7 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
-# *   Copyright (c) 2017 - Johannes Hartung <j.hartung@gmx.net>             *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -19,23 +20,33 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from __future__ import print_function
 
 __title__ = "FreeCAD Fenics XDMF mesh reader"
 __author__ = "Johannes Hartung"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package importFenicsXDMF
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh XDMF reader for FEM workbench
 
+from FreeCAD import Console
+
 
 def read_fenics_mesh_xdmf(xdmffilename):
 
-    print("Not operational, yet")
+    Console.PrintMessage("Not operational, yet\n")
 
-    return {'Nodes': {},
-            'Hexa8Elem': {}, 'Penta6Elem': {}, 'Tetra4Elem': {}, 'Tetra10Elem': {},
-            'Penta15Elem': {}, 'Hexa20Elem': {}, 'Tria3Elem': {}, 'Tria6Elem': {},
-            'Quad4Elem': {}, 'Quad8Elem': {}, 'Seg2Elem': {}
-            }
+    return {
+        "Nodes": {},
+        "Hexa8Elem": {},
+        "Penta6Elem": {},
+        "Tetra4Elem": {},
+        "Tetra10Elem": {},
+        "Penta15Elem": {},
+        "Hexa20Elem": {},
+        "Tria3Elem": {},
+        "Tria6Elem": {},
+        "Quad4Elem": {},
+        "Quad8Elem": {},
+        "Seg2Elem": {}
+    }

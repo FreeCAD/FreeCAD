@@ -27,6 +27,9 @@
 #include <QDialog>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 
 class QButtonGroup;
 
@@ -73,7 +76,7 @@ class MeshGuiExport SmoothingDialog : public QDialog
     Q_OBJECT
 
 public:
-    SmoothingDialog(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    SmoothingDialog(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~SmoothingDialog();
 
     int iterations() const

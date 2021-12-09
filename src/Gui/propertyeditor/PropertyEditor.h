@@ -27,19 +27,26 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 #include <QTreeView>
 
+#include <App/DocumentObserver.h>
 #include "PropertyItem.h"
 #include "PropertyModel.h"
 
 namespace App {
 class Property;
+class Document;
 }
 
 namespace Gui {
+
+class PropertyView;
+
 namespace PropertyEditor {
 
+class PropertyItemDelegate;
 class PropertyModel;
 /*!
  Put this into the .qss file after Gui--PropertyEditor--PropertyEditor
@@ -66,11 +73,13 @@ public:
     ~PropertyEditor();
 
     /** Builds up the list view with the properties. */
-    void buildUp(const PropertyModel::PropertyList& props);
+    void buildUp(PropertyModel::PropertyList &&props = PropertyModel::PropertyList(), bool checkDocument=false);
     void updateProperty(const App::Property&);
     void updateEditorMode(const App::Property&);
-    void appendProperty(const App::Property&);
+    bool appendProperty(const App::Property&);
     void removeProperty(const App::Property&);
+    void setAutomaticExpand(bool);
+    bool isAutomaticExpand(bool) const;
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
     /*! Reset the internal state of the view. */
@@ -81,6 +90,11 @@ public:
     QColor groupTextColor() const;
     void setGroupTextColor(const QColor& c);
 
+    bool isBinding() const { return binding; }
+
+protected Q_SLOTS:
+    void onItemActivated(const QModelIndex &index);
+
 protected:
     virtual void closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
     virtual void commitData (QWidget * editor);
@@ -89,20 +103,35 @@ protected:
     virtual void rowsInserted (const QModelIndex & parent, int start, int end);
     virtual void drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const;
     virtual QStyleOptionViewItem viewOptions() const;
+    virtual void contextMenuEvent(QContextMenuEvent *event);
+    virtual bool event(QEvent*);
 
 private:
     void setEditorMode(const QModelIndex & parent, int start, int end);
     void updateItemEditor(bool enable, int column, const QModelIndex& parent);
+    void setupTransaction(const QModelIndex &);
+    void closeTransaction();
+    void recomputeDocument(App::Document*);
 
 private:
+    PropertyItemDelegate *delegate;
     PropertyModel* propertyModel;
     QStringList selectedProperty;
     PropertyModel::PropertyList propList;
+    std::unordered_set<const App::PropertyContainer*> propOwners;
+    bool autoexpand;
     bool autoupdate;
     bool committing;
     bool delaybuild;
+    bool binding;
+    bool checkDocument;
+
+    int transactionID = 0;
+
     QColor groupColor;
     QBrush background;
+
+    friend class Gui::PropertyView;
 };
 
 } //namespace PropertyEditor

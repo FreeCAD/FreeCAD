@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,7 +58,7 @@ public:
 class AppExport ComplexGeoData: public Base::Persistence, public Base::Handled
 {
     TYPESYSTEM_HEADER();
- 
+
 public:
     struct Line  {uint32_t I1; uint32_t I2;};
     struct Facet {uint32_t I1; uint32_t I2; uint32_t I3;};
@@ -85,12 +85,12 @@ public:
     /// get subelement by combined name
     virtual Segment* getSubElementByName(const char* Name) const;
     /** Get lines from segment */
-    virtual void getLinesFromSubelement(
+    virtual void getLinesFromSubElement(
         const Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Line> &lines) const;
     /** Get faces from segment */
-    virtual void getFacesFromSubelement(
+    virtual void getFacesFromSubElement(
         const Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &PointNormals,
@@ -109,11 +109,11 @@ public:
      * using the setTransform() method.
      */
     void setPlacement(const Base::Placement& rclPlacement);
-    /** Return the current transformation as placement using 
+    /** Return the current transformation as placement using
      * getTransform().
      */
     Base::Placement getPlacement() const;
-    /** Override the current transformation with the new one. 
+    /** Override the current transformation with the new one.
      * This method has to be handled by the child classes.
      * the actual placement and matrix is not part of this class.
      */
@@ -156,6 +156,41 @@ public:
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     //@}
 
+    /** @name Element name mapping */
+    //@{
+    /// Special prefix to mark the beginning of a mapped sub-element name
+    static const std::string &elementMapPrefix();
+    /// Special postfix to mark the following tag
+    static const std::string &tagPostfix();
+    /// Special postfix to mark the index of an array element
+    static const std::string &indexPostfix();
+    /// Special prefix to mark a missing element
+    static const std::string &missingPrefix();
+    /// Check if a subname contains missing element
+    static bool hasMissingElement(const char *subname);
+    /** Check if the name starts with elementMapPrefix()
+     *
+     * @param name: input name
+     * @return Returns the name stripped with elementMapPrefix(), or 0 if not
+     * start with the prefix
+     */
+    static const char *isMappedElement(const char *name);
+
+    /// Strip out the trailing element name if there is mapped element name precedes it.
+    static std::string newElementName(const char *name);
+    /// Strip out the mapped element name if there is one.
+    static std::string oldElementName(const char *name);
+    /// Strip out the old and new element name if there is one.
+    static std::string noElementName(const char *name);
+
+    /// Find the start of an element name in a subname
+    static const char *findElementName(const char *subname);
+
+    static inline const char *hasMappedElementName(const char *subname) {
+        return isMappedElement(findElementName(subname));
+    }
+    //@}
+
 protected:
 
     /// from local to outside
@@ -166,11 +201,13 @@ protected:
     /// from local to inside
     inline Base::Vector3f transformToInside(const Base::Vector3d& vec) const
     {
-        Base::Matrix4D tmpM(getTransform()); 
+        Base::Matrix4D tmpM(getTransform());
         tmpM.inverse();
         Base::Vector3d tmp = tmpM * vec;
         return Base::Vector3f((float)tmp.x,(float)tmp.y,(float)tmp.z);
     }
+public:
+    mutable long Tag;
 };
 
 } //namespace App

@@ -301,7 +301,7 @@ Py::Object PythonDebugExcept::excepthook(const Py::Tuple& args)
             //get the pointer to the frame held by the bottom traceback object - this
             //should be where the exception occurred.
             tracebackobject* pTb = (tracebackobject*)tb;
-            while (pTb->tb_next != NULL) 
+            while (pTb->tb_next != NULL)
             {
                 pTb = pTb->tb_next;
             }
@@ -316,7 +316,7 @@ Py::Object PythonDebugExcept::excepthook(const Py::Tuple& args)
 // -----------------------------------------------------
 
 namespace Gui {
-class PythonDebuggerPy : public Py::PythonExtension<PythonDebuggerPy> 
+class PythonDebuggerPy : public Py::PythonExtension<PythonDebuggerPy>
 {
 public:
     PythonDebuggerPy(PythonDebugger* d) : dbg(d), depth(0) { }
@@ -437,11 +437,7 @@ void PythonDebugger::runFile(const QString& fn)
         dict = PyModule_GetDict(module);
         dict = PyDict_Copy(dict);
         if (PyDict_GetItemString(dict, "__file__") == NULL) {
-#if PY_MAJOR_VERSION >= 3
             PyObject *f = PyUnicode_FromString((const char*)pxFileName);
-#else
-            PyObject *f = PyString_FromString((const char*)pxFileName);
-#endif
             if (f == NULL) {
                 fclose(fp);
                 return;
@@ -580,11 +576,7 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
 
     //no = frame->f_tstate->recursion_depth;
     //std::string funcname = PyString_AsString(frame->f_code->co_name);
-#if PY_MAJOR_VERSION >= 3
     QString file = QString::fromUtf8(PyUnicode_AsUTF8(frame->f_code->co_filename));
-#else
-    QString file = QString::fromUtf8(PyString_AsString(frame->f_code->co_filename));
-#endif
     switch (what) {
     case PyTrace_CALL:
         self->depth++;

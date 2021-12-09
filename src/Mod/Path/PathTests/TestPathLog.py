@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -35,11 +33,11 @@ class TestPathLog(unittest.TestCase):
         PathLog.untrackAllModules()
 
     def callerFile(self):
-        return PathLog._caller()[0]
+        return PathLog._caller()[0] # pylint: disable=protected-access
     def callerLine(self):
-        return PathLog._caller()[1]
+        return PathLog._caller()[1] # pylint: disable=protected-access
     def callerFunc(self):
-        return PathLog._caller()[2]
+        return PathLog._caller()[2] # pylint: disable=protected-access
 
     def test00(self):
         """Check for proper module extraction."""

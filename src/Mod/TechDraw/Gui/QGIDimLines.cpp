@@ -30,11 +30,18 @@
 #include <QStyleOptionGraphicsItem>
 #include <QPainterPathStroker>
 #include <QPainter>
+#include <QPainterPath>
 #endif
 
+#include <App/Application.h>
+#include <Base/Parameter.h>
+#include <Base/Console.h>
+
+#include "PreferencesGui.h"
 #include "QGIDimLines.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIDimLines::QGIDimLines()
 {
@@ -50,11 +57,35 @@ void QGIDimLines::draw()
 {
 }
 
-//probably don't need this paint
+QPainterPath QGIDimLines::shape() const
+{
+    QPainterPath outline;
+    QPainterPathStroker stroker;
+    stroker.setWidth(getEdgeFuzz());
+    outline = stroker.createStroke(path());
+    return outline;
+}
+
+double QGIDimLines::getEdgeFuzz(void) const
+{
+    return PreferencesGui::edgeFuzz();
+}
+
+
+QRectF QGIDimLines::boundingRect() const
+{
+    return shape().controlPointRect().adjusted(-3, -3, 3, 3);
+}
+
 void QGIDimLines::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+//    painter->drawRect(boundingRect());   //good for debugging
+//    painter->drawPath(shape());          //good for debugging
+
     QGIPrimPath::paint (painter, &myOption, widget);
 }
+
+

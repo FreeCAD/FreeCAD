@@ -230,7 +230,7 @@ void ReadDyna::ReadConstraints(std::ifstream &inputfile)
 
         for (i = 0; i < 10; i++,j++)
             Info[j] = str[i];
-        First = atoi(Info);   //Constainted Point
+        First = atoi(Info);   //Constrained Point
 
         j = 0;
 
@@ -267,10 +267,10 @@ void ReadDyna::ReadConstraints(std::ifstream &inputfile)
 
 /*! \brief Triangulator
 
- This will triuangulate the squares, taking note of the constraining point that might come into play.
+ This will triangulate the squares, taking note of the constraining point that might come into play.
 
- To date, only three things are considered now:- No constrains in the edges, One Constrain in the edges, and Two
- Constrains next to each other (not opposite each other!) in the edges
+ To date, only three things are considered now: No constraints in the edges, One Constraint in the edges, and Two
+ Constraints next to each other (not opposite each other!) in the edges
 
  Sparing some commenting... I got lost inside of it too...
 */

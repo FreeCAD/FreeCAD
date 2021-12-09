@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -32,9 +32,10 @@ class PartDesignGuiExport ViewProviderPolarPattern : public ViewProviderTransfor
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderPolarPattern);
 public:
-    ViewProviderPolarPattern()
-        { featureName = std::string("PolarPattern");
-	   sPixmap = "PartDesign_PolarPattern.svg"; }
+    ViewProviderPolarPattern() {
+        featureName = std::string("PolarPattern");
+        sPixmap = "PartDesign_PolarPattern.svg";
+    }
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view

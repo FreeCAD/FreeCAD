@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="no" sourcelanguage="en">
+<TS version="2.1" language="no" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +102,8 @@
       <translation>Senterjuster vertikalt</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Sentrer innholdet i  merkede celler vertikalt</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Senterjuster innholdet i de valgte cellene vertikalt</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Slå sammen celler</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Slå sammen merkede celler i regnearket</translation>
+      <source>Merge selected cells</source>
+      <translation>Slå sammen valgte celler</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation type="unfinished">Set alias</translation>
+      <translation>Angi alias</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation type="unfinished">Set alias for selected cell</translation>
+      <translation>Angi alias for valgte celler</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Splitt celler</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Del tidligere sammenslåtte celler i regnearket</translation>
+      <source>Split previously merged cells</source>
+      <translation>Del tidligere sammenslåtte celler</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Fet tekst</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Angi fet tekst i merkede celler</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Gjør teksten i valgte celler fet</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Kursiv tekst</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Angi kursiv tekst i merkede celler</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Gjør teksten i valgte celler kursiv</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,98 @@
       <translation>Understreke tekst</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Angi understreket tekst i merkede celler</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Understrek teksten i valgte celler</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Egendefinert</translation>
+      <source>Custom Color</source>
+      <translation>Egendefinert farge</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Slå sammen celler</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Splitt celler</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation type="unfinished">Left-align cell</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation type="unfinished">Center cell</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation type="unfinished">Right-align cell</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation type="unfinished">Top-align cell</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation type="unfinished">Bottom-align cell</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation type="unfinished">Vertically center cells</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation type="unfinished">Set bold text</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation type="unfinished">Set italic text</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation type="unfinished">Set underline text</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation type="unfinished">Create Spreadsheet</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation type="unfinished">Set cell properties</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation type="unfinished">Edit cell</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Sett inn rader</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Fjern rader</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Sett inn kolonner</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation type="unfinished">Clear cell(s)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation type="unfinished">Set foreground color</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation type="unfinished">Set background color</translation>
     </message>
   </context>
   <context>
@@ -257,7 +340,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Horisontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -265,7 +348,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Midtstill</translation>
     </message>
     <message>
       <source>Right</source>
@@ -273,7 +356,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Vertikal</translation>
     </message>
     <message>
       <source>Top</source>
@@ -331,28 +414,46 @@
       <translation>Eksporter fil</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Celleinnhold</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Vis regneark</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Angi forgrunnsfarge for cellen(e)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Angi forgrunnsfarge for cellen(e) i regnearket</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Angi bakgrunnsfarge for cellen(e)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Angi bakgrunnsfarge for cellen(e) i regnearket</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Regneark</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation>Regnearket støtter ikke valg av område ved innliming. Velg kun en celle.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation>Kopier og lim feilet</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Aliaset inneholder ugyldige tegn!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Referer til celler med alias, for eksempel Spreadsheet.mitt_alias i stedet for Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -426,8 +527,8 @@
       <translation>Lys grå</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Egendefinert</translation>
+      <source>Custom Color</source>
+      <translation>Egendefinert farge</translation>
     </message>
   </context>
   <context>
@@ -437,38 +538,87 @@
       <translation>Skjema</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Innhold</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Innhold:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Referer til celler med alias, for eksempel Spreadsheet.mitt_alias i stedet for Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
-      <translation type="unfinished">Unnamed</translation>
+      <translation>Uten navn</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Sett inn rader</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Fjern rader</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Sett inn kolonner</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Fjern kolonner</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Egenskaper...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

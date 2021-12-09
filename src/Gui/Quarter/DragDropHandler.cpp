@@ -50,7 +50,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 
 #include <Quarter/QuarterWidget.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
@@ -152,7 +152,7 @@ DragDropHandlerP::dropEvent(QDropEvent * event)
 
   // attempt to import it
   root = SoDB::readAll(&in);
-  if (root == NULL) return;
+  if (root == nullptr) return;
 
   // set new scenegraph
   this->quarterwidget->setSceneGraph(root);

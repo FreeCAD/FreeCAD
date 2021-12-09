@@ -27,9 +27,9 @@
 #include <QContextMenuEvent>
 #include <QGraphicsScene>
 #include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
 #include <QPainterPathStroker>
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyleOptionGraphicsItem>
 #include <QBitmap>
 #include <QFile>
@@ -59,9 +59,13 @@
 #include "ZVALUE.h"
 //
 #include "Rez.h"
+#include "DrawGuiUtil.h"
+#include <QByteArrayMatcher>
 #include "QGCustomSvg.h"
+#include "QGCustomImage.h"
 #include "QGCustomRect.h"
 #include "QGIViewPart.h"
+#include "QGIPrimPath.h"
 #include "QGIFace.h"
 
 using namespace TechDrawGui;
@@ -69,36 +73,44 @@ using namespace TechDraw;
 
 QGIFace::QGIFace(int index) :
     projIndex(index),
-    m_colDefFill(Qt::white),
-    m_styleDef(Qt::SolidPattern),
-    m_styleSelect(Qt::SolidPattern)
+    m_hideSvgTiles(false)
 {
     m_segCount = 0;
-    setFillMode(NoFill);
+//    setFillMode(NoFill);
     isHatched(false);
     setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
 
     //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
     setStyle(Qt::DashLine);
-
-    m_styleNormal = m_styleDef;
-    m_fillStyle = m_styleDef;
-    m_colNormalFill = m_colDefFill;
     m_geomColor = QColor(Qt::black);
     setLineWeight(0.5);                   //0 = cosmetic
     
     setPrettyNormal();
     m_texture = QPixmap();                      //empty texture
 
-    m_svg = new QGCustomSvg();
+    m_image = new QGCustomImage();
+    m_image->setParentItem(this);
 
     m_rect = new QGCustomRect();
     m_rect->setParentItem(this);
 
     m_svgCol = SVGCOLDEFAULT;
     m_fillScale = 1.0;
-    
+
     getParameters();
+ 
+    m_styleDef = Qt::SolidPattern;
+    m_styleSelect = Qt::SolidPattern;
+
+    if (m_defClearFace) {
+        setFillMode(NoFill);
+        m_colDefFill = Qt::transparent;
+        setFill(Qt::transparent, m_styleDef);
+    } else {
+        setFillMode(PlainFill);
+        m_colDefFill = Qt::white;
+        setFill(m_colDefFill, m_styleDef);
+    }
 }
 
 QGIFace::~QGIFace()
@@ -112,10 +124,12 @@ void QGIFace::draw()
 
     if (isHatched()) {   
         if (m_mode == GeomHatchFill) {
+            //GeomHatch does not appear in pdf if clipping is set to true
+            setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
             if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
-                m_fillStyle = m_styleDef;
-                m_styleNormal = m_fillStyle;
+                m_fillStyleCurrent = m_styleDef;
+                m_styleNormal = m_fillStyleCurrent;
                 for (auto& ls: m_lineSets) {
                     lineSetToFillItems(ls);
                 }
@@ -129,52 +143,60 @@ void QGIFace::draw()
                 if (ext.toUpper() == QString::fromUtf8("SVG")) {
                     setFillMode(SvgFill);
                     m_brush.setTexture(QPixmap());
-                    m_fillStyle = m_styleDef;
-                    m_styleNormal = m_fillStyle;
+                    m_styleNormal = m_styleDef;
+                    m_fillStyleCurrent = m_styleNormal;
                     loadSvgHatch(m_fileSpec);
-                    buildSvgHatch();
-                    toggleSvg(true);
+                    if (m_hideSvgTiles) {
+                        //bitmap hatch doesn't need clipping
+                        setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
+                        buildPixHatch();
+                        m_rect->hide();
+                        m_image->show();
+                    } else {
+                        //SVG tiles need to be clipped
+                        setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
+                        buildSvgHatch();
+                        m_image->hide();
+                        m_rect->show();
+                    }
                 } else if ((ext.toUpper() == QString::fromUtf8("JPG"))   ||
                          (ext.toUpper() == QString::fromUtf8("PNG"))   ||
                          (ext.toUpper() == QString::fromUtf8("JPEG"))  ||
                          (ext.toUpper() == QString::fromUtf8("BMP")) ) {
                     setFillMode(BitmapFill);
-                    toggleSvg(false);
-                    m_fillStyle   = Qt::TexturePattern;
+                    m_fillStyleCurrent = Qt::TexturePattern;
                     m_texture = textureFromBitmap(m_fileSpec);
                     m_brush.setTexture(m_texture);
                 }
             }
+        } else if (m_mode == PlainFill) {
+            setFill(m_colNormalFill, m_styleNormal);
         }
     }
     show();
 }
 
 void QGIFace::setPrettyNormal() {
+//    Base::Console().Message("QGIF::setPrettyNormal() - hatched: %d\n", isHatched());
     if (isHatched()  &&
         (m_mode == BitmapFill) ) {                               //hatch with bitmap fill
-        m_fillStyle = Qt::TexturePattern;
+        m_fillStyleCurrent = Qt::TexturePattern;
         m_brush.setTexture(m_texture);
     } else {
-        m_fillStyle = m_styleNormal;
         m_brush.setTexture(QPixmap());
-        m_brush.setStyle(m_fillStyle);
-        m_fillColor = m_colNormalFill;
     }
     QGIPrimPath::setPrettyNormal();
 }
 
 void QGIFace::setPrettyPre() {
+//    Base::Console().Message("QGIF::setPrettyPre()\n");
     m_brush.setTexture(QPixmap());
-    m_fillStyle = m_styleSelect;
-    m_fillColor = getPreColor();
     QGIPrimPath::setPrettyPre();
 }
 
 void QGIFace::setPrettySel() {
+//    Base::Console().Message("QGIF::setPrettySel()\n");
     m_brush.setTexture(QPixmap());
-    m_fillStyle = m_styleSelect;
-    m_fillColor = getSelectColor();
     QGIPrimPath::setPrettySel();
 }
 
@@ -189,7 +211,7 @@ void QGIFace::setDrawEdges(bool b) {
 void QGIFace::setHatchFile(std::string fileSpec)
 {
     m_fileSpec = fileSpec;
-}   
+}
  
 void QGIFace::loadSvgHatch(std::string fileSpec)
 {
@@ -200,9 +222,16 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
         return;
     }
     m_svgXML = f.readAll();
-    if (!m_svg->load(&m_svgXML)) {
-        Base::Console().Error("Error - Could not load hatch into SVG renderer for %s\n", fileSpec.c_str());
-        return;
+
+    // search in the file for the "stroke" specification in order to find out what declaration style is used
+    // this is necessary to apply a color set by the user to the SVG
+    QByteArray pattern("stroke:");
+    QByteArrayMatcher matcher(pattern);
+    int pos = 0;
+    if (matcher.indexIn(m_svgXML, pos) != -1) {
+        SVGCOLPREFIX = "stroke:"; // declaration part of a style="" statement
+    } else {
+        SVGCOLPREFIX = "stroke=\""; // declaration of its own
     }
 }
 
@@ -285,7 +314,7 @@ QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d
     return fillItem;
 }
 
-QGraphicsPathItem*  QGIFace::geomToLine(TechDrawGeometry::BaseGeom* base, LineSet& ls)
+QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeom* base, LineSet& ls)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
     Base::Vector3d start(base->getStartPoint().x,
@@ -302,7 +331,7 @@ QGraphicsPathItem*  QGIFace::geomToLine(TechDrawGeometry::BaseGeom* base, LineSe
 
 
 //! make a fragment (length = remain) of a dashed line, with pattern starting at +offset
-QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDrawGeometry::BaseGeom* base, double remain, LineSet& ls)
+QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDraw::BaseGeom* base, double remain, LineSet& ls)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
     Base::Vector3d start(base->getStartPoint().x,
@@ -514,9 +543,10 @@ void QGIFace::buildSvgHatch()
     m_rect->centerAt(fCenter);
     r = m_rect->rect();
     QByteArray before,after;
-    before.append(QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT));
-    after.append(QString::fromStdString(SVGCOLPREFIX + m_svgCol));
+    before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
+    after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
     QByteArray colorXML = m_svgXML.replace(before,after);
+    long int tileCount = 0;
     for (int iw = 0; iw < int(nw); iw++) {
         for (int ih = 0; ih < int(nh); ih++) {
             QGCustomSvg* tile = new QGCustomSvg();
@@ -525,13 +555,104 @@ void QGIFace::buildSvgHatch()
                 tile->setParentItem(m_rect);
                 tile->setPos(iw*wTile,-h + ih*hTile);
             }
+            tileCount++;
+            if (tileCount > m_maxTile) {
+                Base::Console().Warning("SVG tile count exceeded: %ld\n",tileCount);
+                break;
+            }
+        }
+        if (tileCount > m_maxTile) {
+            break;
         }
     }
 }
 
 void QGIFace::clearSvg()
 {
-    toggleSvg(false);
+    hideSvg(true);
+}
+
+void QGIFace::buildPixHatch()
+{
+    double wTile = SVGSIZEW * m_fillScale;
+    double hTile = SVGSIZEH * m_fillScale;
+    double w = m_outline.boundingRect().width();
+    double h = m_outline.boundingRect().height();
+    QRectF r = m_outline.boundingRect();
+    QPointF fCenter = r.center();
+    double nw = ceil(w / wTile);
+    double nh = ceil(h / hTile);
+    w = nw * wTile;
+    h = nh * hTile;
+
+    m_rect->setRect(0.,0.,w,-h);
+    m_rect->centerAt(fCenter);
+
+    r = m_rect->rect();
+    QByteArray before,after;
+    before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
+    after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
+    QByteArray colorXML = m_svgXML.replace(before,after);
+    QSvgRenderer renderer;
+    bool success = renderer.load(colorXML);
+    if (!success) {
+        Base::Console().Error("QGIF::buildPixHatch - renderer failed to load\n");
+    }
+
+    QImage imageIn(64, 64, QImage::Format_ARGB32);
+    imageIn.fill(Qt::transparent);
+    QPainter painter(&imageIn);
+
+    renderer.render(&painter);
+    if (imageIn.isNull()) {
+        Base::Console().Error("QGIF::buildPixHatch - imageIn is null\n");
+        return;
+    }
+
+    QPixmap pm(64, 64);
+    pm  = QPixmap::fromImage(imageIn);
+    pm = pm.scaled(wTile, hTile);
+    if (pm.isNull()) {
+        Base::Console().Error("QGIF::buildPixHatch - pm is null\n");
+        return;
+    }
+
+    QImage tileField(w, h, QImage::Format_ARGB32);
+    QPointF fieldCenter(w / 2.0, h / 2.0);
+
+    tileField.fill(Qt::transparent);
+    QPainter painter2(&tileField);
+    QPainter::RenderHints hints = painter2.renderHints();
+    hints = hints & QPainter::Antialiasing;
+    painter2.setRenderHints(hints);
+    QPainterPath clipper = path();
+    QPointF offset = (fieldCenter - fCenter);
+    clipper.translate(offset);
+    painter2.setClipPath(clipper);
+
+    long int tileCount = 0;
+    for (int iw = 0; iw < int(nw); iw++) {
+        for (int ih = 0; ih < int(nh); ih++) {
+            painter2.drawPixmap(QRectF(iw*wTile, ih*hTile, wTile, hTile),   //target rect
+                               pm,                                           //map
+                               QRectF(0, 0, wTile, hTile));  //source rect
+            tileCount++;
+            if (tileCount > m_maxTile) {
+                Base::Console().Warning("Pixmap tile count exceeded: %ld\n",tileCount);
+                break;
+            }
+        }
+        if (tileCount > m_maxTile) {
+            break;
+        }
+    }
+    QPixmap bigMap(fabs(r.width()), fabs(r.height()));
+    bigMap = QPixmap::fromImage(tileField);
+
+    QPixmap nothing;
+    m_image->setPixmap(nothing);
+    m_image->load(bigMap);
+    m_image->centerAt(fCenter);
 }
 
 //this isn't used currently
@@ -563,14 +684,9 @@ void QGIFace::setHatchScale(double s)
 }
 
 //QtSvg does not handle clipping, so we must be able to turn the hatching on/off
-void QGIFace::toggleSvg(bool b)
+void QGIFace::hideSvg(bool b)
 {
-    if (b) {
-        m_rect->show();
-    } else {
-        m_rect->hide();
-    }
-    update();
+    m_hideSvgTiles = b;
 }
 
 QPixmap QGIFace::textureFromBitmap(std::string fileSpec)
@@ -586,21 +702,6 @@ QPixmap QGIFace::textureFromBitmap(std::string fileSpec)
     return pix;
 }
 
-void QGIFace::setFill(QColor c, Qt::BrushStyle s) {
-    m_colNormalFill = c;
-    m_styleNormal = s;
-}
-
-void QGIFace::setFill(QBrush b) {
-    m_colNormalFill = b.color();
-    m_styleNormal = b.style();
-}
-
-void QGIFace::resetFill() {
-    m_colNormalFill = m_colDefFill;
-    m_styleNormal = m_styleDef;
-}
-
 void QGIFace::setLineWeight(double w) {
     m_geomWeight = w;
 }
@@ -611,8 +712,20 @@ void QGIFace::getParameters(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
 
     m_maxSeg = hGrp->GetInt("MaxSeg",10000l);
-}
 
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    m_maxTile = hGrp->GetInt("MaxSVGTile",10000l);
+
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color temp = hGrp->GetUnsigned("FaceColor",0xffffffff);
+    setFillColor(temp.asValue<QColor>());
+
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    m_defClearFace = hGrp->GetBool("ClearFace",false);
+}
 
 QRectF QGIFace::boundingRect() const
 {
@@ -627,10 +740,8 @@ QPainterPath QGIFace::shape() const
 void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
+//    painter->drawRect(boundingRect());          //good for debugging
 
-    m_brush.setStyle(m_fillStyle);
-    m_brush.setColor(m_fillColor);
-    setBrush(m_brush);
     QGIPrimPath::paint (painter, &myOption, widget);
 }
 

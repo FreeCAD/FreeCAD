@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
- 
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopoDS_Shape.hxx>
@@ -37,6 +37,7 @@
 # include <Geom2dAPI_ProjectPointOnCurve.hxx>
 # include <GeomAPI.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <IntRes2d_IntersectionSegment.hxx>
 #endif
 
 #ifndef M_PI
@@ -107,11 +108,11 @@ Base::Axis Part2DObject::getAxis(int axId) const
 }
 
 bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
-                                  int GeoId, const Base::Vector3d &point,
-                                  int &GeoId1, Base::Vector3d &intersect1,
-                                  int &GeoId2, Base::Vector3d &intersect2)
+                                  int geometryIndex, const Base::Vector3d &point,
+                                  int &geometryIndex1, Base::Vector3d &intersect1,
+                                  int &geometryIndex2, Base::Vector3d &intersect2)
 {
-    if (GeoId >= int(geomlist.size()))
+    if ( geometryIndex >= int(geomlist.size()))
         return false;
 
     gp_Pln plane(gp_Pnt(0,0,0),gp_Dir(0,0,1));
@@ -119,8 +120,9 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
     Standard_Boolean periodic=Standard_False;
     double period = 0;
     Handle(Geom2d_Curve) primaryCurve;
-    Handle(Geom_Geometry) geom = (geomlist[GeoId])->handle();
+    Handle(Geom_Geometry) geom = (geomlist[geometryIndex])->handle();
     Handle(Geom_Curve) curve3d = Handle(Geom_Curve)::DownCast(geom);
+
     if (curve3d.IsNull())
         return false;
     else {
@@ -139,49 +141,88 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
     double pickedParam = Projector.LowerDistanceParameter();
 
     // find intersection points
-    GeoId1 = -1;
-    GeoId2 = -1;
+    geometryIndex1 = -1;
+    geometryIndex2 = -1;
     double param1=-1e10,param2=1e10;
     gp_Pnt2d p1,p2;
     Handle(Geom2d_Curve) secondaryCurve;
     for (int id=0; id < int(geomlist.size()); id++) {
         // #0000624: Trim tool doesn't work with construction lines
-        if (id != GeoId/* && !geomlist[id]->Construction*/) {
+        if (id != geometryIndex/* && !geomlist[id]->Construction*/) {
             geom = (geomlist[id])->handle();
             curve3d = Handle(Geom_Curve)::DownCast(geom);
             if (!curve3d.IsNull()) {
                 secondaryCurve = GeomAPI::To2d(curve3d, plane);
                 // perform the curves intersection
+
+                std::vector<gp_Pnt2d> points;
+
+                // #2463 Check for endpoints of secondarycurve on primary curve
+                // If the OCCT Intersector should detect endpoint tangency when trimming, then
+                // this is just a work-around until that bug is fixed.
+                // https://www.freecadweb.org/tracker/view.php?id=2463
+                // https://tracker.dev.opencascade.org/view.php?id=30217
+                if (geomlist[id]->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
+
+                    Part::GeomBoundedCurve * bcurve = static_cast<Part::GeomBoundedCurve *>(geomlist[id]);
+
+                    points.emplace_back(bcurve->getStartPoint().x,bcurve->getStartPoint().y);
+                    points.emplace_back(bcurve->getEndPoint().x,bcurve->getEndPoint().y);
+                }
+
                 Intersector.Init(primaryCurve, secondaryCurve, 1.0e-12);
-                for (int i=1; i <= Intersector.NbPoints(); i++) {
-                    gp_Pnt2d p = Intersector.Point(i);
+
+                for (int i=1; i <= Intersector.NbPoints(); i++)
+                    points.push_back(Intersector.Point(i));
+
+                if (Intersector.NbSegments() > 0) {
+                    const Geom2dInt_GInter& gInter = Intersector.Intersector();
+                    for (int i=1; i <= gInter.NbSegments(); i++) {
+                        const IntRes2d_IntersectionSegment& segm = gInter.Segment(i);
+                        if (segm.HasFirstPoint()) {
+                            const IntRes2d_IntersectionPoint& fp = segm.FirstPoint();
+                            points.push_back(fp.Value());
+                        }
+                        if (segm.HasLastPoint()) {
+                            const IntRes2d_IntersectionPoint& fp = segm.LastPoint();
+                            points.push_back(fp.Value());
+                        }
+                    }
+                }
+
+                for (auto p : points) {
                     // get the parameter of the intersection point on the primary curve
                     Projector.Init(p, primaryCurve);
+
+                    if (Projector.NbPoints()<1 || Projector.LowerDistance() > Precision::Confusion())
+                        continue;
+
                     double param = Projector.LowerDistanceParameter();
+
                     if (periodic) {
                         // transfer param into the interval (pickedParam-period pickedParam]
                         param = param - period * ceil((param-pickedParam) / period);
                         if (param > param1) {
                             param1 = param;
                             p1 = p;
-                            GeoId1 = id;
+                            geometryIndex1 = id;
                         }
                         param -= period; // transfer param into the interval (pickedParam pickedParam+period]
                         if (param < param2) {
                             param2 = param;
                             p2 = p;
-                            GeoId2 = id;
+                            geometryIndex2 = id;
                         }
                     }
                     else if (param < pickedParam && param > param1) {
                         param1 = param;
                         p1 = p;
-                        GeoId1 = id;
+                        geometryIndex1 = id;
                     }
                     else if (param > pickedParam && param < param2) {
                         param2 = param;
                         p2 = p;
-                        GeoId2 = id;
+                        geometryIndex2 = id;
                     }
                 }
             }
@@ -192,18 +233,18 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
         // in case both points coincide, cancel the selection of one of both
         if (fabs(param2-param1-period) < 1e-10) {
             if (param2 - pickedParam >= pickedParam - param1)
-                GeoId2 = -1;
+                geometryIndex2 = -1;
             else
-                GeoId1 = -1;
+                geometryIndex1 = -1;
         }
     }
 
-    if (GeoId1 < 0 && GeoId2 < 0)
+    if ( geometryIndex1 < 0 && geometryIndex2 < 0)
         return false;
 
-    if (GeoId1 >= 0)
+    if ( geometryIndex1 >= 0)
         intersect1 = Base::Vector3d(p1.X(),p1.Y(),0.f);
-    if (GeoId2 >= 0)
+    if ( geometryIndex2 >= 0)
         intersect2 = Base::Vector3d(p2.X(),p2.Y(),0.f);
     return true;
 }
@@ -232,6 +273,9 @@ void Part2DObject::handleChangedPropertyType(Base::XMLReader &reader,
             static_cast<App::PropertyLinkSubList*>(prop)->setValue(tmp.getValue(), tmp.getSubValues());
         }
         this->MapMode.setValue(Attacher::mmFlatFace);
+    }
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 
@@ -262,4 +306,3 @@ namespace App {
 // explicit template instantiation
   template class PartExport FeaturePythonT<Part::Part2DObject>;
 }
-

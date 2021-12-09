@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pl" sourcelanguage="en">
+<TS version="2.1" language="pl" sourcelanguage="en">
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Komórka</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Zastosuj</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Zastosuj zmiany do bieżącej komórki</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Usuń</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Usuwa zawartość bieżącej komórki</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Oblicz</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Aktualizuje wartości obsługiwane przez kontrolery</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Utwórz Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Dodaj kontroler</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Dodaj kontroler właściwości</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Dodaj kontroler</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Do wybranego arkusza kalkulacyjnego dodaje kontroler komórki</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Dodaje do aktywnego dokumentu obiekt arkusza kalkulacyjnego</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Dodaj kontroler właściwości</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Do wybranego arkusza kalkulacyjnego dodaje kontroler własności</translation>
+    </message>
+  </context>
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -9,11 +106,11 @@
     </message>
     <message>
       <source>Create spreadsheet</source>
-      <translation>Utworzyć arkusz kalkulacyjny</translation>
+      <translation>Utwórz arkusz</translation>
     </message>
     <message>
       <source>Create a new spreadsheet</source>
-      <translation>Utwórz nowy arkusz kalkulacyjny</translation>
+      <translation>Utwórz nowy arkusz</translation>
     </message>
   </context>
   <context>
@@ -24,7 +121,7 @@
     </message>
     <message>
       <source>Align bottom</source>
-      <translation>Wyrównaj do dołu</translation>
+      <translation>Wyrównaj w dół</translation>
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
@@ -39,11 +136,11 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation>Wyrównaj do środka</translation>
+      <translation>Wyśrodkuj w poziomie</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Wyrównaj do środka zawartość wybranych komórek</translation>
+      <translation>Wyśrodkuj zawartość wybranych komórek</translation>
     </message>
   </context>
   <context>
@@ -84,11 +181,11 @@
     </message>
     <message>
       <source>Align top</source>
-      <translation>Wyrównaj do góry</translation>
+      <translation>Wyrównaj w górę</translation>
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Wyrównaj do góry zawartość wybranych komórek</translation>
+      <translation>Wyrównaj w górę zawartość wybranych komórek</translation>
     </message>
   </context>
   <context>
@@ -99,11 +196,11 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Wyrównaj do środka pionowo</translation>
+      <translation>Wyśrodkuj w pionie</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Wyrównaj do środka pionowo zawartość wybranych komórek</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Wyśrodkuj w pionie zawartość wybranych komórek</translation>
     </message>
   </context>
   <context>
@@ -114,11 +211,11 @@
     </message>
     <message>
       <source>Export spreadsheet</source>
-      <translation>Eksportuj arkusz kalkulacyjny</translation>
+      <translation>Eksportuj arkusz</translation>
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation>Eksportuj arkusz kalkulacyjny do pliku CSV</translation>
+      <translation>Eksportuj arkusz do pliku CSV</translation>
     </message>
   </context>
   <context>
@@ -129,11 +226,11 @@
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation>Importuj arkusz kalkulacyjny</translation>
+      <translation>Importuj arkusz</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation>Importuj plik CSV do arkusza</translation>
+      <translation>Importuj zawartość pliku CSV do arkusza</translation>
     </message>
   </context>
   <context>
@@ -147,8 +244,8 @@
       <translation>Scal komórki</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Scal wybrane komórki w arkuszu kalkulacyjnym</translation>
+      <source>Merge selected cells</source>
+      <translation>Scal wybrane komórki</translation>
     </message>
   </context>
   <context>
@@ -177,8 +274,8 @@
       <translation>Podziel komórkę</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Rozdziel uprzednio scalone komórki w arkuszu kalkulacyjnym</translation>
+      <source>Split previously merged cells</source>
+      <translation>Rozdziel uprzednio scalone komórki</translation>
     </message>
   </context>
   <context>
@@ -189,11 +286,11 @@
     </message>
     <message>
       <source>Bold text</source>
-      <translation>Tekst pogrubiony</translation>
+      <translation>Pogrubienie</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Ustaw pogrubiony tekst w zaznaczonych komórkach</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Umieść tekst w zaznaczonych komórkach pogrubioną czcionką</translation>
     </message>
   </context>
   <context>
@@ -207,8 +304,8 @@
       <translation>Kursywa</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Ustaw kursywę w zaznaczonych komórkach</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Umieść tekst w zaznaczonych komórkach pochyłą czcionką</translation>
     </message>
   </context>
   <context>
@@ -219,18 +316,101 @@
     </message>
     <message>
       <source>Underline text</source>
-      <translation>Podkreśl tekst</translation>
+      <translation>Podkreślenie</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
+      <source>Underline text in selected cells</source>
       <translation>Podkreśl tekst w zaznaczonych komórkach</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Niestandardowe</translation>
+      <source>Custom Color</source>
+      <translation>Kolor użytkownika</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Scal komórki</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Podziel komórkę</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Wyrównaj komórkę do lewej</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Wyśrodkuj komórkę</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Wyrównaj komórkę do prawej</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Wyrównaj komórkę do góry</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Wyrównaj komórkę do dołu</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Wyśrodkuj komórkę w pionie</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Ustaw pogrubiony tekst</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Ustaw pochylony tekst</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Ustaw podkreślony tekst</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Utwórz Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Ustaw właściwości komórki</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Edytuj komórkę</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Wstaw wiersze</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Usuń wiersze</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Wstaw kolumny</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Wyczyść komórkę(i)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Ustawia kolor pierwszoplanowy</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Ustaw kolor tła</translation>
     </message>
   </context>
   <context>
@@ -253,35 +433,35 @@
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation>Wyrów&amp;nanie</translation>
+      <translation>&amp;Wyrównanie</translation>
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Pozioma</translation>
+      <translation>Poziomo</translation>
     </message>
     <message>
       <source>Left</source>
-      <translation>Lewa</translation>
+      <translation>W lewo</translation>
     </message>
     <message>
       <source>Center</source>
-      <translation>Środek</translation>
+      <translation>Wyśrodkowane</translation>
     </message>
     <message>
       <source>Right</source>
-      <translation>Prawo</translation>
+      <translation>W prawo</translation>
     </message>
     <message>
       <source>Vertical</source>
-      <translation>Pionowa</translation>
+      <translation>Pionowo</translation>
     </message>
     <message>
       <source>Top</source>
-      <translation>Góra</translation>
+      <translation>W górę</translation>
     </message>
     <message>
       <source>Bottom</source>
-      <translation>U dołu</translation>
+      <translation>W dół</translation>
     </message>
     <message>
       <source>&amp;Style</source>
@@ -305,7 +485,7 @@
     </message>
     <message>
       <source>Unit string</source>
-      <translation>Ciąg jednostek</translation>
+      <translation>Nazwa jednostki</translation>
     </message>
     <message>
       <source>A&amp;lias</source>
@@ -331,28 +511,48 @@
       <translation>Eksportuj plik</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Zawartość komórki</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
-      <translation>Pokaż arkusz kalkulacyjny</translation>
+      <translation>Pokaż arkusz</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Ustaw kolor komórki</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Ustawia kolor tła komórki(ek) Arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Ustaw kolor tła komórki(ek)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Ustawia kolor tła komórki(ek) Arkusza kalkulacyjnego</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation>Arkusz kalkulacyjny nie obsługuje wyboru zakresu podczas wklejania.
+Wybierz tylko jedną komórkę.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation>Kopiowanie i wklejanie nie powiodło się</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Określenie nazwy zawiera nieprawidłowe znaki!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Odniesienie do komórki według oznaczenia nazwy (alias), np.
+Arkusz.mój_alias zamiast Arkusz.B1</translation>
     </message>
   </context>
   <context>
@@ -426,8 +626,8 @@
       <translation>Jasnoszary</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Niestandardowe</translation>
+      <source>Custom Color</source>
+      <translation>Kolor użytkownika</translation>
     </message>
   </context>
   <context>
@@ -437,8 +637,73 @@
       <translation>Formularz</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Zawartość</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Zawartość:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Odniesienie do komórki według oznaczenia nazwy (alias), np.
+Arkusz.mój_alias zamiast Arkusz.B1</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation>Ustawienia importu / eksportu</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak używany do określenia granic ciągów znaków, zazwyczaj jest to pojedynczy cudzysłów (') lub podwójny cudzysłów (&amp;quot;). Musi to być pojedynczy znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation>Znak separatora: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak "escape", zwykle backslash (\), używany do wskazywania specjalnych niedrukowalnych znaków, np. \t = tabulator. Musi to być pojedynczy znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation>\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation>Znak "Escape": </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak do użycia jako separator pól.  Domyślnie jest nim tabulator, ale często używane są również przecinki (,) i średniki (;). Wybierz preferowany znak z listy lub wpisz własny w polu. Musi to być pojedynczy znak lub kod znaku&lt;span style=" font-style:italic;"&gt;tabulator&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;przecinek&lt;/span&gt;, lub &lt;span style=" font-style:italic;"&gt;średnik&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation>zakładka</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation>Znak cytatu: </translation>
     </message>
   </context>
   <context>
@@ -451,24 +716,80 @@
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Wstaw wiersze</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Usuń wiersze</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Wstaw kolumny</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Usuwanie kolumn</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Właściwości...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz powyżej</numerusform>
+        <numerusform>Wstaw %n wiersze powyżej</numerusform>
+        <numerusform>Wstaw %n wierszy powyżej</numerusform>
+        <numerusform>Wstaw %n wiersz(y) powyżej</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz poniżej</numerusform>
+        <numerusform>Wstaw %n wiersze poniżej</numerusform>
+        <numerusform>Wstaw %n wierszy poniżej</numerusform>
+        <numerusform>Wstaw %n wiersz(y) poniżej</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Wstaw %n wiersz, który nie jest sąsiadujący</numerusform>
+        <numerusform>Wstaw %n wiersze, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Usuń wiersz</numerusform>
+        <numerusform>Usuń wiersze</numerusform>
+        <numerusform>Usuń wierszy</numerusform>
+        <numerusform>Usuń wiersz(e)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumn z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumn z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumn(y) z prawej strony</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Wstaw %n kolumnę, która nie jest sąsiadująca</numerusform>
+        <numerusform>Wstaw %n kolumny, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Usuń kolumnę</numerusform>
+        <numerusform>Usuń kolumny</numerusform>
+        <numerusform>Usuń kolumn</numerusform>
+        <numerusform>Usuń kolumn(y)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

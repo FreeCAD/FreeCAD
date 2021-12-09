@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                        *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,7 +19,8 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
+
 from __future__ import print_function
 
 TOOLTIP='''
@@ -35,11 +36,14 @@ now = datetime.datetime.now()
 SHOW_EDITOR = True
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
 
 def export(objectslist, filename,argstring):
+    "called when freecad exports a list of objects"
+    # pylint: disable=unused-argument
+
     output = '''(This output produced with the dump post processor)
 (Dump is useful for inspecting the raw commands in your paths)
 (but is not useful for driving machines.)
@@ -48,7 +52,6 @@ def export(objectslist, filename,argstring):
 
 '''
 
-    "called when freecad exports a list of objects"
     for obj in objectslist:
 
         if not hasattr(obj, "Path"):
@@ -91,4 +94,4 @@ def parse(pathobj):
             out += str(c) + "\n"
         return out
 
-print(__name__ + " gcode postprocessor loaded.")
+# print(__name__ + " gcode postprocessor loaded.")

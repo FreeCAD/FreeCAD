@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Juergen Riegel (FreeCAD@juergen-riegel.net)        *
+ *   Copyright (c) 2009 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -100,21 +100,39 @@ Py::String SelectionObjectPy::getDocumentName(void) const
 
 Py::Object SelectionObjectPy::getDocument(void) const
 {
-    return Py::Object(getSelectionObjectPtr()->getObject()->getDocument()->getPyObject(), true);
+    App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
+    if (!obj)
+        throw Py::RuntimeError("Cannot get document of deleted object");
+    return Py::Object(obj->getDocument()->getPyObject(), true);
 }
 
 Py::Object SelectionObjectPy::getObject(void) const
 {
-    return Py::Object(getSelectionObjectPtr()->getObject()->getPyObject(), true);
+    App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
+    if (!obj)
+        throw Py::RuntimeError("Object already deleted");
+    return Py::Object(obj->getPyObject(), true);
 }
 
 Py::Tuple SelectionObjectPy::getSubObjects(void) const
 {
-    std::vector<PyObject *> objs = getSelectionObjectPtr()->getObject()->getPySubObjects(getSelectionObjectPtr()->getSubNames());
+    App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
+    if (!obj)
+        throw Py::RuntimeError("Cannot get sub-objects of deleted object");
 
-    Py::Tuple temp(objs.size());
+    std::vector<PyObject *> subObjs;
+
+    for(const auto &subname : getSelectionObjectPtr()->getSubNames()) {
+        PyObject *pyObj=0;
+        Base::Matrix4D mat;
+        obj->getSubObject(subname.c_str(),&pyObj,&mat);
+        if(pyObj)
+            subObjs.push_back(pyObj);
+    }
+
+    Py::Tuple temp(subObjs.size());
     Py::sequence_index_type index = 0;
-    for(std::vector<PyObject *>::const_iterator it= objs.begin();it!=objs.end();++it)
+    for(std::vector<PyObject *>::const_iterator it= subObjs.begin();it!=subObjs.end();++it)
         temp.setItem(index++, Py::asObject(*it));
 
     return temp;
@@ -144,5 +162,5 @@ PyObject *SelectionObjectPy::getCustomAttributes(const char* /*attr*/) const
 
 int SelectionObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

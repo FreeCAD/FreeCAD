@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sl" sourcelanguage="en">
+<TS version="2.1" language="sl" sourcelanguage="en">
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Preglednica</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Celica</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Uveljavi</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Uveljavi spremembe na trenutnem polju</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Izbriši</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Izbriše vsebino trenutnega polja</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Izračunaj</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Posodobi vrednosti, ki jih upravlja krmilnik</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Ustvari preglednico</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Dodaj krmilnik</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Dodaj lastnostni krmilnik</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Dodaj krmilnik</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Doda izbrani preglednici krmilnik polj</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Preglednica</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Doda dejavnemu dokumentu predmet preglednico</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Dodaj lastnostni krmilnik</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Doda izbrani preglednici lastnostni krmilnik</translation>
+    </message>
+  </context>
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -28,7 +125,7 @@
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Poravnaj vsebino izbranih celic na dno</translation>
+      <translation>Poravnaj vsebino izbranih polj na dno</translation>
     </message>
   </context>
   <context>
@@ -43,7 +140,7 @@
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Poravnaj vsebino izbranih celic na sredino</translation>
+      <translation>Poravnaj vsebino izbranih polj na sredino</translation>
     </message>
   </context>
   <context>
@@ -58,7 +155,7 @@
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
-      <translation>Poravnaj vsebino izbranih celic levo</translation>
+      <translation>Poravnaj vsebino izbranih polj levo</translation>
     </message>
   </context>
   <context>
@@ -73,7 +170,7 @@
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
-      <translation>Poravnaj vsebino izbranih celic desno</translation>
+      <translation>Poravnaj vsebino izbranih polj desno</translation>
     </message>
   </context>
   <context>
@@ -88,7 +185,7 @@
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Poravnaj vsebino izbranih celic na vrh</translation>
+      <translation>Poravnaj vsebino izbranih polj na vrh</translation>
     </message>
   </context>
   <context>
@@ -99,11 +196,11 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Poravnaj navpično sredinsko</translation>
+      <translation>Sredinso poravnaj po navpičnici</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Poravnaj vsebino izbranih celic navpično sredinsko</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Poravnaj po navpičnici vsebino izbranih polj na sredino</translation>
     </message>
   </context>
   <context>
@@ -144,11 +241,11 @@
     </message>
     <message>
       <source>Merge cells</source>
-      <translation>Združi celice</translation>
+      <translation>Združi polja</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Združi izbrane celice v preglednici</translation>
+      <source>Merge selected cells</source>
+      <translation>Združi izbrana polja</translation>
     </message>
   </context>
   <context>
@@ -163,7 +260,7 @@
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Nastavi vzdevek izbrane celice</translation>
+      <translation>Nastavi izbranemu polju vzdevek</translation>
     </message>
   </context>
   <context>
@@ -174,11 +271,11 @@
     </message>
     <message>
       <source>Split cell</source>
-      <translation>Razcepi celice</translation>
+      <translation>Razcepi polja</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Razcepi prej združene celice v preglednici</translation>
+      <source>Split previously merged cells</source>
+      <translation>Razcepi predhodno združena polja</translation>
     </message>
   </context>
   <context>
@@ -192,8 +289,8 @@
       <translation>Krepko besedilo</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Nastavi krepko besedilo za izbrane celice</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Nastavi besedilo v izbranih poljih na krepko</translation>
     </message>
   </context>
   <context>
@@ -207,8 +304,8 @@
       <translation>Ležeče besedilo</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Nastavi ležeče besedilo za izbrane celice</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Nastavi besedilo v izbranih poljih na ležeče</translation>
     </message>
   </context>
   <context>
@@ -222,22 +319,105 @@
       <translation>Podčrtaj besedilo</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Nastavi podčrtano besedilo za izbrane celice</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Podčrtano besedilo v izbranih poljih</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Po meri</translation>
+      <source>Custom Color</source>
+      <translation>Barva po meri</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Združi polja</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Razcepi polja</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Levo poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Sredinjenje polja</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Desno poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Gornje poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Spodnje poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Sredinjenje polj po navpičnici</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Nastavi na krepko besedilo</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Nastavi na ležeče besedilo</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Nastavi na podčrtano besedilo</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Ustvari preglednico</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Nastavi lastnosti polja</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Uredi polje</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Vstavi vrstice</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Odstrani vrstice</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Vstavi stolpce</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Počisti polje (i, a)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Nastavi barvo ospredja</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Nastavi barvo ozadja</translation>
     </message>
   </context>
   <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
-      <translation>Lastnosti celice</translation>
+      <translation>Lastnosti polja</translation>
     </message>
     <message>
       <source>&amp;Color</source>
@@ -257,7 +437,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Vodoravno</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +453,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Navpično</translation>
     </message>
     <message>
       <source>Top</source>
@@ -313,7 +493,7 @@
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation>Vzdevek te celice</translation>
+      <translation>Vzdevek tega polja</translation>
     </message>
   </context>
   <context>
@@ -331,39 +511,59 @@
       <translation>Izvozi datoteko</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Vsebina celice</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Prikaži preglednico</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation>Nastavi barvo pisave celic(e)</translation>
+      <translation>Nastavi barvo pisave polij</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Nastavi barvo pisave celic(e) v preglednici</translation>
+      <translation>Nastavi barvo pisave v poljih preglednice</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation>Nastavi barvo ozadja celic(e)</translation>
+      <translation>Nastavi barvo ozadja polij</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Nastavi barvo ozadja celic(e) v preglednici</translation>
+      <translation>Nastavi barvo ozadja polij v preglednici</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Preglednica</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation>Preglednica pri lepljenju na podpira obsegovnega izbora.
+Izberite le eno polje.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation>Kopiranje in Lepljenje spodletelo</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Vzdevek vsebuje neveljavne znake!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Na polje se sklicuj z vzdevkom, npr.
+Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
   </context>
   <context>
     <name>QtColorPicker</name>
     <message>
       <source>Black</source>
-      <translation>Črna</translation>
+      <translation>Črno</translation>
     </message>
     <message>
       <source>White</source>
-      <translation>Bela</translation>
+      <translation>Belo</translation>
     </message>
     <message>
       <source>Red</source>
@@ -426,8 +626,8 @@
       <translation>Svetlo siva</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Po meri</translation>
+      <source>Custom Color</source>
+      <translation>Barva po meri</translation>
     </message>
   </context>
   <context>
@@ -437,8 +637,73 @@
       <translation>Oblika</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Vsebina</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Vsebina:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Vzdevek:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Na polje se sklicuj z vzdevkom, npr.
+Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Preglednica</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation>Uvozi/Izvozi nastavitve</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak, ki ločuje nize, navadno opuščaj (') ali narekovaj (&amp;quot;). Biti pa mora le en znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation>Ločilni znak: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Izogibajte se znakom, navadno leva poševnica (\), ki navadno označuje posebne, nenatisljive znake npr. \t = tab. Biti pa mora le en znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation>\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation>Izogibajte se znakom: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak, ki ločuje polja. Privzeto je to zamikalka (tab), včasih pa se uporablja tudi vejico (,) ali podpičje (;). Izberite s seznama ali v polje vnesite sami. Biti mora en sam znak ali ena izmed besed &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation>zamikalka</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation>Narekovaj: </translation>
     </message>
   </context>
   <context>
@@ -451,24 +716,80 @@
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Vstavi vrstice</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Odstrani vrstice</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Vstavi stolpce</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Odstrani stolpce</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Lastnosti …</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Vstavi zgoraj %n vrsto</numerusform>
+        <numerusform>Vstavi zgoraj %n vrsti</numerusform>
+        <numerusform>Vstavi zgoraj %n vrste</numerusform>
+        <numerusform>Vstavi zgoraj %n vrst</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Vstavi spodaj %n vrsto</numerusform>
+        <numerusform>Vstavi spodaj %n vrsti</numerusform>
+        <numerusform>Vstavi spodaj %n vrste</numerusform>
+        <numerusform>Vstavi spodaj %n vrst</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Vstavi %n nezvezno vrstico</numerusform>
+        <numerusform>Vstavi %n nezvezni vrstici</numerusform>
+        <numerusform>Vstavi %n nezvezne vrstice</numerusform>
+        <numerusform>Vstavi %n nezveznih vrstic</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Odstrani vrstico</numerusform>
+        <numerusform>Odstrani vrstici</numerusform>
+        <numerusform>Odstrani vrstice</numerusform>
+        <numerusform>Odstrani vrstice</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Vstavi %n stolpec levo</numerusform>
+        <numerusform>Vstavi %n stolpca levo</numerusform>
+        <numerusform>Vstavi %n stolpce levo</numerusform>
+        <numerusform>Vstavi %n stolpcev levo</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Vstavi %n stolpec desno</numerusform>
+        <numerusform>Vstavi %n stolpca desno</numerusform>
+        <numerusform>Vstavi %n stolpce desno</numerusform>
+        <numerusform>Vstavi %n stolpcev desno</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Vstavi %n nezvezen stolpec</numerusform>
+        <numerusform>Vstavi %n nezvezna stolpca</numerusform>
+        <numerusform>Vstavi %n nezvezne stolpce</numerusform>
+        <numerusform>Vstavi %n nezveznih stolpcev</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Odstrani stolpec</numerusform>
+        <numerusform>Odstrani stolpca</numerusform>
+        <numerusform>Odstrani stolpce</numerusform>
+        <numerusform>Odstrani stolpce</numerusform>
+      </translation>
     </message>
   </context>
   <context>

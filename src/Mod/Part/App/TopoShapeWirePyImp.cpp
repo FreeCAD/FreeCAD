@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,16 +36,16 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
 # include <gp_Ax1.hxx>
+# include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <GProp_PrincipalProps.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <GCPnts_UniformDeflection.hxx>
+# include <GCPnts_TangentialDeflection.hxx>
+# include <GCPnts_QuasiUniformAbscissa.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
 #endif
-
-#include <BRepGProp.hxx>
-#include <GProp_GProps.hxx>
-#include <GProp_PrincipalProps.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <GCPnts_UniformDeflection.hxx>
-#include <GCPnts_TangentialDeflection.hxx>
-#include <GCPnts_QuasiUniformAbscissa.hxx>
-#include <GCPnts_QuasiUniformDeflection.hxx>
+#include <BRepOffsetAPI_MakeEvolved.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -79,13 +79,20 @@ std::string TopoShapeWirePy::representation(void) const
 
 PyObject *TopoShapeWirePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of TopoShapeWirePy and the Twin object 
+    // create a new instance of TopoShapeWirePy and the Twin object
     return new TopoShapeWirePy(new TopoShape);
 }
 
 // constructor method
 int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Wire
+        getTopoShapePtr()->setShape(TopoDS_Wire());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pcObj;
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj)) {
         BRepBuilderAPI_MakeWire mkWire;
@@ -108,7 +115,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -151,7 +158,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -242,7 +249,7 @@ PyObject* TopoShapeWirePy::makeOffset(PyObject *args)
 
     BRepOffsetAPI_MakeOffset mkOffset(w);
     mkOffset.Perform(dist);
-    
+
     return new TopoShapePy(new TopoShape(mkOffset.Shape()));
 }
 
@@ -256,7 +263,7 @@ PyObject* TopoShapeWirePy::makePipe(PyObject *args)
             return new TopoShapePy(new TopoShape(shape));
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return 0;
         }
@@ -285,20 +292,80 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
                     sections.Append(shape);
                 }
             }
-            TopoDS_Shape shape = this->getTopoShapePtr()->makePipeShell(sections, 
+            TopoDS_Shape shape = this->getTopoShapePtr()->makePipeShell(sections,
                 PyObject_IsTrue(make_solid) ? Standard_True : Standard_False,
                 PyObject_IsTrue(is_Frenet)  ? Standard_True : Standard_False,
                 transition);
             return new TopoShapePy(new TopoShape(shape));
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return NULL;
         }
     }
 
     return 0;
+}
+
+/*
+import PartEnums
+v = App.Vector
+profile = Part.makePolygon([v(0.,0.,0.), v(-60.,-60.,-100.), v(-60.,-60.,-140.)])
+spine = Part.makePolygon([v(0.,0.,0.), v(100.,0.,0.), v(100.,100.,0.), v(0.,100.,0.), v(0.,0.,0.)])
+evolve = spine.makeEvolved(Profile=profile, Join=PartEnums.JoinType.Arc)
+*/
+PyObject* TopoShapeWirePy::makeEvolved(PyObject *args, PyObject *kwds)
+{
+    PyObject* Profile;
+    PyObject* AxeProf = Py_True;
+    PyObject* Solid = Py_False;
+    PyObject* ProfOnSpine = Py_False;
+    int JoinType = int(GeomAbs_Arc);
+    double Tolerance = 0.0000001;
+
+    static char* kwds_evolve[] = {"Profile", "Join", "AxeProf", "Solid", "ProfOnSpine", "Tolerance", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|iO!O!O!d", kwds_evolve,
+                                     &TopoShapeWirePy::Type, &Profile, &JoinType,
+                                     &PyBool_Type, &AxeProf, &PyBool_Type, &Solid,
+                                     &PyBool_Type, &ProfOnSpine, &Tolerance))
+        return nullptr;
+
+    const TopoDS_Wire& spine = TopoDS::Wire(getTopoShapePtr()->getShape());
+    BRepBuilderAPI_FindPlane findPlane(spine);
+    if (!findPlane.Found()) {
+        PyErr_SetString(PartExceptionOCCError, "No planar wire");
+        return nullptr;
+    }
+
+    const TopoDS_Wire& profile = TopoDS::Wire(static_cast<TopoShapeWirePy*>(Profile)->getTopoShapePtr()->getShape());
+
+    GeomAbs_JoinType joinType;
+    switch (JoinType) {
+    case GeomAbs_Tangent:
+        joinType = GeomAbs_Tangent;
+        break;
+    case GeomAbs_Intersection:
+        joinType = GeomAbs_Intersection;
+        break;
+    default:
+        joinType = GeomAbs_Arc;
+        break;
+    }
+
+    try {
+        BRepOffsetAPI_MakeEvolved evolved(spine, profile, joinType,
+                                          PyObject_IsTrue(AxeProf) ? Standard_True : Standard_False,
+                                          PyObject_IsTrue(Solid) ? Standard_True : Standard_False,
+                                          PyObject_IsTrue(ProfOnSpine) ? Standard_True : Standard_False,
+                                          Tolerance);
+        TopoDS_Shape shape = evolved.Shape();
+        return Py::new_reference_to(shape2pyshape(shape));
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
 }
 
 PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
@@ -327,18 +394,20 @@ PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
     }
 }
 
-PyObject* TopoShapeWirePy::approximate(PyObject *args)
+PyObject* TopoShapeWirePy::approximate(PyObject *args, PyObject *kwds)
 {
     double tol2d = gp::Resolution();
     double tol3d = 0.0001;
     int maxseg=10, maxdeg=3;
-    if (!PyArg_ParseTuple(args, "ddii",&tol2d,&tol3d,&maxseg,&maxdeg))
+
+    static char* kwds_approx[] = {"Tol2d","Tol3d","MaxSegments","MaxDegree",NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|ddii", kwds_approx, &tol2d, &tol3d, &maxseg, &maxdeg))
         return 0;
     try {
         BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
-        Handle(Adaptor3d_HCurve) hcurve = adapt.Trim(adapt.FirstParameter(),
-                                                    adapt.LastParameter(),
-                                                    tol2d);
+        auto hcurve = adapt.Trim(adapt.FirstParameter(),
+                                 adapt.LastParameter(),
+                                 tol2d);
         Approx_Curve3d approx(hcurve, tol3d, GeomAbs_C0, maxseg, maxdeg);
         if (approx.IsDone()) {
             return new BSplineCurvePy(new GeomBSplineCurve(approx.Curve()));
@@ -348,7 +417,7 @@ PyObject* TopoShapeWirePy::approximate(PyObject *args)
             return 0;
         }
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
         PyErr_SetString(PartExceptionOCCError, "failed to approximate wire");
         return 0;
     }
@@ -368,17 +437,10 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
         // use no kwds
         PyObject* dist_or_num;
         if (PyArg_ParseTuple(args, "O", &dist_or_num)) {
-#if PY_MAJOR_VERSION >= 3
             if (PyLong_Check(dist_or_num)) {
                 numPoints = PyLong_AsLong(dist_or_num);
                 uniformAbscissaPoints = true;
             }
-#else
-            if (PyInt_Check(dist_or_num)) {
-                numPoints = PyInt_AsLong(dist_or_num);
-                uniformAbscissaPoints = true;
-            }
-#endif
             else if (PyFloat_Check(dist_or_num)) {
                 distance = PyFloat_AsDouble(dist_or_num);
                 uniformAbscissaDistance = true;
@@ -527,6 +589,37 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
     return 0;
 }
 
+Py::String TopoShapeWirePy::getContinuity() const
+{
+    BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));
+    std::string cont;
+    switch (adapt.Continuity()) {
+    case GeomAbs_C0:
+        cont = "C0";
+        break;
+    case GeomAbs_G1:
+        cont = "G1";
+        break;
+    case GeomAbs_C1:
+        cont = "C1";
+        break;
+    case GeomAbs_G2:
+        cont = "G2";
+        break;
+    case GeomAbs_C2:
+        cont = "C2";
+        break;
+    case GeomAbs_C3:
+        cont = "C3";
+        break;
+    case GeomAbs_CN:
+        cont = "CN";
+        break;
+    }
+
+    return Py::String(cont);
+}
+
 Py::Object TopoShapeWirePy::getMass(void) const
 {
     GProp_GProps props;
@@ -646,7 +739,7 @@ PyObject *TopoShapeWirePy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeWirePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

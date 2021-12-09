@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,9 +52,15 @@ class AppExport PropertyFile : public PropertyString
 public:
     PropertyFile(void);
     virtual ~PropertyFile();
-    
+
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyFileItem"; }
+
+    virtual void setFilter(const std::string filter);
+    virtual std::string getFilter(void) const;
+
+private:
+    std::string m_filter;
 };
 
 /** File include properties
@@ -104,6 +110,8 @@ public:
       */
     std::string getExchangeTempFile(void) const;
     std::string getOriginalFileName(void) const;
+
+    bool isEmpty(void) const {return _cValue.empty();}
 
 protected:
     // get the transient path if the property is in a DocumentObject

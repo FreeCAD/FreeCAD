@@ -26,10 +26,12 @@
 # include <QSurfaceFormat>
 # include <QMessageBox>
 # include <QPainter>
+# include <QPainterPath>
 #endif
 
 #if defined(__MINGW32__)
 # include <GL/gl.h>
+# include <GL/glu.h>
 # include <GL/glext.h>
 #elif defined (FC_OS_MACOSX)
 # include <OpenGL/gl.h>
@@ -39,9 +41,13 @@
 # include <Windows.h>
 # include <GL/gl.h>
 # include <GL/glu.h>
+# if defined(_MSC_VER) && _MSC_VER >= 1910
+# include <GL/glext.h>
+# endif
 #else
 # include <GL/gl.h>
 # include <GL/glu.h>
+# include <GL/glext.h>
 #endif
 
 #include "OpenGLImageBox.h"
@@ -298,8 +304,10 @@ void GLImageBox::getDisplayedImageAreaSize(int &dx, int &dy)
             dx = 0;
             dy = 0;
         }
-        dx = ibrx - itlx + 1;
-        dy = ibry - itly + 1;
+        else {
+            dx = ibrx - itlx + 1;
+            dy = ibry - itly + 1;
+        }
     }
 }
 

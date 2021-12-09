@@ -69,7 +69,7 @@ class TemplatePyMod_Cmd2:
         p=PolygonCreator(d,v,10)
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
+        if FreeCAD.ActiveDocument is None:
             return False
         else:
             return True
@@ -159,7 +159,7 @@ class TemplatePyMod_Cmd5:
 		from pivy import coin
 
 		global myRenderArea
-		if myRenderArea == None:
+		if myRenderArea is None:
 			root = coin.SoSeparator()
 			myCamera = coin.SoPerspectiveCamera()
 			myMaterial = coin.SoMaterial()

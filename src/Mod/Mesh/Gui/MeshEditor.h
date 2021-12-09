@@ -25,7 +25,7 @@
 
 #include <QObject>
 #include <Mod/Mesh/Gui/ViewProvider.h>
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 
 class SoCoordinate3;
 class SoFaceSet;
@@ -58,7 +58,7 @@ public:
     void attach(App::DocumentObject* obj);
     void setDisplayMode(const char* ModeName);
     const char* getDefaultDisplayMode() const;
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
     SoPickedPoint* getPickedPoint(const SbVec2s& pos, const Gui::View3DInventorViewer* viewer) const;
 
     ViewProviderMesh* mesh;
@@ -110,8 +110,8 @@ public:
     virtual ~MeshHoleFiller()
     {
     }
-    virtual bool fillHoles(Mesh::MeshObject&, const std::list<std::vector<unsigned long> >&,
-                           unsigned long, unsigned long)
+    virtual bool fillHoles(Mesh::MeshObject&, const std::list<std::vector<Mesh::PointIndex> >&,
+                           Mesh::PointIndex, Mesh::PointIndex)
     {
         return false;
     }
@@ -138,14 +138,14 @@ private Q_SLOTS:
     void closeBridge();
 
 private:
-    typedef std::vector<unsigned long> TBoundary;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef std::vector<Mesh::PointIndex> TBoundary;
+    typedef boost::signals2::connection Connection;
 
     static void fileHoleCallback(void * ud, SoEventCallback * n);
     void createPolygons();
     SoNode* getPickedPolygon(const SoRayPickAction& action) const;
     float findClosestPoint(const SbLine& ray, const TBoundary& polygon,
-                           unsigned long&, SbVec3f&) const;
+                           Mesh::PointIndex&, SbVec3f&) const;
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
 
 private:
@@ -157,8 +157,8 @@ private:
     std::map<SoNode*, TBoundary> myPolygons;
     Mesh::Feature* myMesh;
     int myNumPoints;
-    unsigned long myVertex1;
-    unsigned long myVertex2;
+    Mesh::PointIndex myVertex1;
+    Mesh::PointIndex myVertex2;
     TBoundary myPolygon;
     MeshHoleFiller& myHoleFiller;
     Connection myConnection;

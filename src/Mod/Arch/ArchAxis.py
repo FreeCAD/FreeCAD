@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,7 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,math,DraftVecUtils,ArchCommands
+import six
+
+import FreeCAD,Draft,math,ArchCommands
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -37,9 +37,9 @@ else:
         return txt
     # \endcond
 
-__title__="FreeCAD Axis System"
+__title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchAxis
 #  \ingroup ARCH
@@ -57,7 +57,7 @@ def makeAxis(num=5,size=1000,name="Axes"):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Axis")
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Axis")
     obj.Label = translate("Arch",name)
     _Axis(obj)
     if FreeCAD.GuiUp:
@@ -217,6 +217,9 @@ class _Axis:
             obj.addProperty("App::PropertyPlacement","Placement","Base","")
         if not "Shape" in pl:
             obj.addProperty("Part::PropertyPartShape","Shape","Base","")
+        if not "Limit" in pl:
+            obj.addProperty("App::PropertyLength","Limit","Axis", QT_TRANSLATE_NOOP("App::Property","If not zero, the axes are not represented as one full line but as two lines of the given length"))
+            obj.Limit=0
         self.Type = "Axis"
 
     def onDocumentRestored(self,obj):
@@ -225,10 +228,11 @@ class _Axis:
 
     def execute(self,obj):
 
+        pl = obj.Placement
         import Part
         geoms = []
         dist = 0
-        if obj.Distances:
+        if obj.Distances and obj.Length.Value:
             if len(obj.Distances) == len(obj.Angles):
                 for i in range(len(obj.Distances)):
                     if hasattr(obj.Length,"Value"):
@@ -239,16 +243,26 @@ class _Axis:
                     ang = math.radians(obj.Angles[i])
                     p1 = Vector(dist,0,0)
                     p2 = Vector(dist+(l/math.cos(ang))*math.sin(ang),l,0)
-                    geoms.append(Part.LineSegment(p1,p2).toShape())
+                    if hasattr(obj,"Limit") and obj.Limit.Value:
+                        p3 = p2.sub(p1)
+                        p3.normalize()
+                        p3.multiply(-obj.Limit.Value)
+                        p4 = p1.sub(p2)
+                        p4.normalize()
+                        p4.multiply(-obj.Limit.Value)
+                        geoms.append(Part.LineSegment(p1,p1.add(p4)).toShape())
+                        geoms.append(Part.LineSegment(p2,p2.add(p3)).toShape())
+                    else:
+                        geoms.append(Part.LineSegment(p1,p2).toShape())
         if geoms:
             sh = Part.Compound(geoms)
-            sh.Placement = obj.Placement
             obj.Shape = sh
+            obj.Placement = pl
 
     def onChanged(self,obj,prop):
 
         if prop in ["Angles","Distances","Placement"]:
-            self.execute(obj)
+            obj.touch()
 
     def __getstate__(self):
 
@@ -294,10 +308,11 @@ class _ViewProviderAxis:
 
     def setProperties(self,vobj):
 
+        ts = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("textheight",350)
         pl = vobj.PropertiesList
         if not "BubbleSize" in pl:
             vobj.addProperty("App::PropertyLength","BubbleSize","Axis", QT_TRANSLATE_NOOP("App::Property","The size of the axis bubbles"))
-            vobj.BubbleSize = 500
+            vobj.BubbleSize = ts*1.42
         if not "NumberingStyle" in pl:
             vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Axis", QT_TRANSLATE_NOOP("App::Property","The numbering style"))
             vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
@@ -305,16 +320,16 @@ class _ViewProviderAxis:
         if not "DrawStyle" in pl:
             vobj.addProperty("App::PropertyEnumeration","DrawStyle","Axis",QT_TRANSLATE_NOOP("App::Property","The type of line to draw this axis"))
             vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
-            vobj.DrawStyle = "Dashdot"
+        vobj.DrawStyle = "Dashdot"
         if not "BubblePosition" in pl:
             vobj.addProperty("App::PropertyEnumeration","BubblePosition","Axis",QT_TRANSLATE_NOOP("App::Property","Where to add bubbles to this axis: Start, end, both or none"))
-            vobj.BubblePosition = ["Start","End","Both","None"]
+            vobj.BubblePosition = ["Start","End","Both","None","Arrow left","Arrow right","Bar left","Bar right"]
         if not "LineWidth" in pl:
             vobj.addProperty("App::PropertyFloat","LineWidth","Axis",QT_TRANSLATE_NOOP("App::Property","The line width to draw this axis"))
             vobj.LineWidth = 1
         if not "LineColor" in pl:
             vobj.addProperty("App::PropertyColor","LineColor","Axis",QT_TRANSLATE_NOOP("App::Property","The color of this axis"))
-            vobj.LineColor = ArchCommands.getDefaultColor("Helpers")
+        vobj.LineColor = ArchCommands.getDefaultColor("Helpers")
         if not "StartNumber" in pl:
             vobj.addProperty("App::PropertyInteger","StartNumber","Axis",QT_TRANSLATE_NOOP("App::Property","The number of the first axis"))
             vobj.StartNumber = 1
@@ -323,7 +338,7 @@ class _ViewProviderAxis:
             vobj.FontName = Draft.getParam("textfont","Arial,Sans")
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","Axis",QT_TRANSLATE_NOOP("App::Property","The font size"))
-            vobj.FontSize = 350
+            vobj.FontSize = ts
         if not "ShowLabel" in pl:
             vobj.addProperty("App::PropertyBool","ShowLabel","Axis",QT_TRANSLATE_NOOP("App::Property","If true, show the labels"))
         if not "LabelOffset" in pl:
@@ -388,7 +403,7 @@ class _ViewProviderAxis:
                     i = 0
                     for e in obj.Shape.Edges:
                         for v in e.Vertexes:
-                            verts.append([v.X,v.Y,v.Z])
+                            verts.append(tuple(obj.Placement.inverse().multVec(v.Point)))
                             vset.append(i)
                             i += 1
                         vset.append(-1)
@@ -432,50 +447,100 @@ class _ViewProviderAxis:
                         self.bubbletexts = []
                         pos = ["Start"]
                         if hasattr(vobj,"BubblePosition"):
-                            if vobj.BubblePosition == "Both":
+                            if vobj.BubblePosition in ["Both","Arrow left","Arrow right","Bar left","Bar right"]:
                                 pos = ["Start","End"]
                             elif vobj.BubblePosition == "None":
                                 pos = []
                             else:
                                 pos = [vobj.BubblePosition]
-                        for i in range(len(vobj.Object.Shape.Edges)):
+                        for i in range(len(vobj.Object.Distances)):
                             for p in pos:
-                                verts = vobj.Object.Shape.Edges[i].Vertexes
-                                if p == "Start":
-                                    p1 = verts[0].Point
-                                    p2 = verts[1].Point
+                                if hasattr(vobj.Object,"Limit") and vobj.Object.Limit.Value:
+                                    verts = [vobj.Object.Placement.inverse().multVec(vobj.Object.Shape.Edges[i].Vertexes[0].Point),
+                                             vobj.Object.Placement.inverse().multVec(vobj.Object.Shape.Edges[i+1].Vertexes[0].Point)]
                                 else:
-                                    p1 = verts[1].Point
-                                    p2 = verts[0].Point
+                                    verts = [vobj.Object.Placement.inverse().multVec(v.Point) for v in vobj.Object.Shape.Edges[i].Vertexes]
+                                arrow = None
+                                if p == "Start":
+                                    p1 = verts[0]
+                                    p2 = verts[1]
+                                    if vobj.BubblePosition.endswith("left"):
+                                        arrow = True
+                                    elif vobj.BubblePosition.endswith("right"):
+                                        arrow = False
+                                else:
+                                    p1 = verts[1]
+                                    p2 = verts[0]
+                                    if vobj.BubblePosition.endswith("left"):
+                                        arrow = False
+                                    elif vobj.BubblePosition.endswith("right"):
+                                        arrow = True
                                 dv = p2.sub(p1)
                                 dv.normalize()
                                 if hasattr(vobj.BubbleSize,"Value"):
                                     rad = vobj.BubbleSize.Value/2
                                 else:
                                     rad = vobj.BubbleSize/2
-                                center = p2.add(dv.scale(rad,rad,rad))
-                                buf = Part.makeCircle(rad,center).writeInventor()
-                                try:
-                                    cin = coin.SoInput()
-                                    cin.setBuffer(buf)
-                                    cob = coin.SoDB.readAll(cin)
-                                except:
-                                    import re
-                                    # workaround for pivy SoInput.setBuffer() bug
-                                    buf = buf.replace("\n","")
-                                    pts = re.findall("point \[(.*?)\]",buf)[0]
-                                    pts = pts.split(",")
-                                    pc = []
-                                    for p in pts:
-                                        v = p.strip().split()
-                                        pc.append([float(v[0]),float(v[1]),float(v[2])])
+                                center = p2.add(Vector(dv).multiply(rad))
+                                normal = vobj.Object.Placement.Rotation.multVec(Vector(0,0,1))
+                                chord = dv.cross(normal)
+                                if arrow == True:
+                                    p3 = p2.add(Vector(chord).multiply(rad/2).negative())
+                                    if vobj.BubblePosition.startswith("Arrow"):
+                                        p4 = p3.add(Vector(dv).multiply(rad*2).negative())
+                                        p5 = p2.add(Vector(dv).multiply(rad).negative()).add(Vector(chord).multiply(rad*1.5).negative())
+                                        pts = [tuple(p3),tuple(p5),tuple(p4),tuple(p3)]
+                                        center = p5.add(Vector(chord).multiply(rad*2.5))
+                                    else:
+                                        p4 = p3.add(Vector(dv).multiply(rad/2).negative())
+                                        p5 = p4.add(Vector(chord).multiply(rad*1.5).negative())
+                                        p6 = p5.add(Vector(dv).multiply(rad/2))
+                                        pts = [tuple(p3),tuple(p6),tuple(p5),tuple(p4),tuple(p3)]
+                                        center = p5.add(Vector(chord).multiply(rad*3))
                                     coords = coin.SoCoordinate3()
-                                    coords.point.setValues(0,len(pc),pc)
-                                    line = coin.SoLineSet()
+                                    coords.point.setValues(0,len(pts),pts)
+                                    line = coin.SoFaceSet()
+                                    line.numVertices.setValue(-1)
+                                elif arrow == False:
+                                    p3 = p2.add(Vector(chord).multiply(rad/2))
+                                    if vobj.BubblePosition.startswith("Arrow"):
+                                        p4 = p3.add(Vector(dv).multiply(rad*2).negative())
+                                        p5 = p2.add(Vector(dv).multiply(rad).negative()).add(Vector(chord).multiply(rad*1.5))
+                                        pts = [tuple(p3),tuple(p4),tuple(p5),tuple(p3)]
+                                        center = p5.add(Vector(chord).multiply(rad*2.5).negative())
+                                    else:
+                                        p4 = p3.add(Vector(dv).multiply(rad/2).negative())
+                                        p5 = p4.add(Vector(chord).multiply(rad*1.5))
+                                        p6 = p5.add(Vector(dv).multiply(rad/2))
+                                        pts = [tuple(p3),tuple(p4),tuple(p5),tuple(p6),tuple(p3)]
+                                        center = p5.add(Vector(chord).multiply(rad*3).negative())
+                                    coords = coin.SoCoordinate3()
+                                    coords.point.setValues(0,len(pts),pts)
+                                    line = coin.SoFaceSet()
                                     line.numVertices.setValue(-1)
                                 else:
-                                    coords = cob.getChild(1).getChild(0).getChild(2)
-                                    line = cob.getChild(1).getChild(0).getChild(3)
+                                    buf = Part.makeCircle(rad,center).writeInventor()
+                                    try:
+                                        cin = coin.SoInput()
+                                        cin.setBuffer(buf)
+                                        cob = coin.SoDB.readAll(cin)
+                                    except Exception:
+                                        import re
+                                        # workaround for pivy SoInput.setBuffer() bug
+                                        buf = buf.replace("\n","")
+                                        pts = re.findall("point \[(.*?)\]",buf)[0]
+                                        pts = pts.split(",")
+                                        pc = []
+                                        for point in pts:
+                                            v = point.strip().split()
+                                            pc.append([float(v[0]),float(v[1]),float(v[2])])
+                                        coords = coin.SoCoordinate3()
+                                        coords.point.setValues(0,len(pc),pc)
+                                        line = coin.SoLineSet()
+                                        line.numVertices.setValue(-1)
+                                    else:
+                                        coords = cob.getChild(1).getChild(0).getChild(2)
+                                        line = cob.getChild(1).getChild(0).getChild(3)
                                 self.bubbles.addChild(coords)
                                 self.bubbles.addChild(line)
                                 st = coin.SoSeparator()
@@ -490,7 +555,7 @@ class _ViewProviderAxis:
                                     if vobj.FontName:
                                         try:
                                             fn = str(vobj.FontName)
-                                        except:
+                                        except Exception:
                                             pass
                                 fo.name = fn
                                 fo.size = fs
@@ -516,7 +581,7 @@ class _ViewProviderAxis:
                     t.string = self.getNumber(vobj,num)
                     num += 1
                     if hasattr(vobj,"BubblePosition"):
-                        if vobj.BubblePosition == "Both":
+                        if vobj.BubblePosition in ["Both","Arrow left","Arrow right","Bar left","Bar right"]:
                             if not alt:
                                 num -= 1
                     alt = not alt
@@ -528,7 +593,11 @@ class _ViewProviderAxis:
             if hasattr(vobj,"ShowLabel") and hasattr(vobj.Object,"Labels"):
                 if vobj.ShowLabel:
                     self.labels = coin.SoSeparator()
-                    for i in range(len(vobj.Object.Shape.Edges)):
+                    if hasattr(vobj.Object,"Limit") and vobj.Object.Limit.Value:
+                        n = len(vobj.Object.Shape.Edges)/2
+                    else:
+                        n = len(vobj.Object.Shape.Edges)
+                    for i in range(n):
                         if len(vobj.Object.Labels) > i:
                             if vobj.Object.Labels[i]:
                                 import Draft
@@ -542,7 +611,7 @@ class _ViewProviderAxis:
                                 tx = coin.SoAsciiText()
                                 tx.justification = coin.SoText2.LEFT
                                 t = vobj.Object.Labels[i]
-                                if isinstance(t,unicode):
+                                if six.PY2 and isinstance(t,six.text_type):
                                     t = t.encode("utf8")
                                 tx.string.setValue(t)
                                 if hasattr(vobj,"FontSize"):
@@ -558,7 +627,7 @@ class _ViewProviderAxis:
                                     if vobj.FontName:
                                         try:
                                             fn = str(vobj.FontName)
-                                        except:
+                                        except Exception:
                                             pass
                                 fo.name = fn
                                 fo.size = fs
@@ -575,7 +644,10 @@ class _ViewProviderAxis:
                ('C',100),('XC',90),('L',50),('XL',40),
                ('X',10),('IX',9),('V',5),('IV',4),('I',1))
         if hasattr(vobj.Object,"CustomNumber") and vobj.Object.CustomNumber:
-            return vobj.Object.CustomNumber.encode("utf8")
+            if six.PY2:
+                return vobj.Object.CustomNumber.encode("utf8")
+            else:
+                return vobj.Object.CustomNumber
         elif hasattr(vobj,"NumberingStyle"):
             if vobj.NumberingStyle == "1,2,3":
                 return str(num+1)
@@ -585,7 +657,7 @@ class _ViewProviderAxis:
                 return str(num+1).zfill(3)
             elif vobj.NumberingStyle == "A,B,C":
                 result = ""
-                base = num/26
+                base = num//26
                 if base:
                     result += chars[base].upper()
                 remainder = num % 26
@@ -593,7 +665,7 @@ class _ViewProviderAxis:
                 return result
             elif vobj.NumberingStyle == "a,b,c":
                 result = ""
-                base = num/26
+                base = num//26
                 if base:
                     result += chars[base]
                 remainder = num % 26
@@ -749,7 +821,7 @@ class _AxisTaskPanel:
         l = []
         for i in range(self.tree.topLevelItemCount()):
             it = self.tree.findItems(str(i+1),QtCore.Qt.MatchExactly,0)[0]
-            if (remove == None) or (remove != i):
+            if (remove is None) or (remove != i):
                 if it.text(1):
                     d.append(float(it.text(1)))
                 else:
@@ -996,8 +1068,9 @@ class AxisSystemTaskPanel:
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
         elif obj.isDerivedFrom("App::DocumentObjectGroup"):
             return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
-        else:
-            return QtGui.QIcon(":/icons/Tree_Part.svg")
+        elif hasattr(obj.ViewObject, "Icon"):
+            return QtGui.QIcon(obj.ViewObject.Icon)
+        return QtGui.QIcon(":/icons/Part_3D_object.svg")
 
     def update(self):
 

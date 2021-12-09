@@ -1,26 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="tr" sourcelanguage="en">
+<TS version="2.1" language="tr" sourcelanguage="en">
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Hesap Tablosu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Hücre</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Uygula</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation type="unfinished">Apply the changes to the current cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Sil</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation type="unfinished">Deletes the contents of the current cell</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Hesapla</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation type="unfinished">Updates the values handled by controllers</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Elektronik Tablo Oluştur</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Denetleyici ekle</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Özellik denetleyici ekle</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Denetleyici ekle</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Hesap Tablosu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Etkin belgeye bir hesap tablosu nesnesi ekler</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Özellik denetleyici ekle</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Seçili hesap tablosuna bir özellik denetleyici ekler</translation>
+    </message>
+  </context>
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Create spreadsheet</source>
-      <translation>Yeni hesap tablosu yarat</translation>
+      <translation>Yeni hesap tablosu oluştur</translation>
     </message>
     <message>
       <source>Create a new spreadsheet</source>
-      <translation>Yeni bir e-tablo oluşturma</translation>
+      <translation>Yeni bir hesap tablosu oluştur</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Align bottom</source>
@@ -35,7 +132,7 @@
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Align center</source>
@@ -50,7 +147,7 @@
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Align left</source>
@@ -65,7 +162,7 @@
     <name>CmdSpreadsheetAlignRight</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Align right</source>
@@ -80,7 +177,7 @@
     <name>CmdSpreadsheetAlignTop</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Align top</source>
@@ -95,67 +192,67 @@
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Vertically center-align</source>
       <translation>Dikeyde ortala</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Seçilen hücrelerin içeriğini dikey olarak hizala</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Seçilen hücrelerin içeriğini dikey olarak merkeze hizalayın</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Export spreadsheet</source>
-      <translation>İşlem tablosunu dışa aktar</translation>
+      <translation>Hesap tablosunu dışa aktar</translation>
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation>İşlem tablosunu CSV dosyasına aktar</translation>
+      <translation>Hesap tablosunu CSV dosyasına aktar</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation>İşlem Tablosunu İçe Aktar</translation>
+      <translation>Hesap tablosunu içe aktar</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation>İşlem tablosunu CSV dosyasına içe aktar</translation>
+      <translation>CSV dosyasını hesap tablosuna (içe) aktar</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Merge cells</source>
       <translation>Hücreleri birleştir</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Seçili hücreleri işlem tablosunda birleştir</translation>
+      <source>Merge selected cells</source>
+      <translation>Seçili hücreleri birleştir</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Set alias</source>
@@ -170,67 +267,150 @@
     <name>CmdSpreadsheetSplitCell</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Split cell</source>
       <translation>Hücreyi Böl</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>İşlem tablosunda daha önceden birleştirilen hücreleri ayır</translation>
+      <source>Split previously merged cells</source>
+      <translation>Daha önce birleştirilmiş hücreleri Böl</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Bold text</source>
       <translation>Kalın metin</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Seçilen hücrelerdeki yazıları kalınlaştır</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Seçili hücrelerdeki metni kalın olarak ayarla</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Italic text</source>
       <translation>İtalik metin</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Seçilen hücrelerdeki yazıları yatay yap</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Seçili hücrelerdeki metni italik olarak ayarla</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Underline text</source>
       <translation>Altı çizili metin</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Seçilen hücrelerdeki yazıların altını çiz</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Seçili hücrelerde metnin altını çiz</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Özel</translation>
+      <source>Custom Color</source>
+      <translation>Özel Renk</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Hücreleri birleştir</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Hücreyi Böl</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Sola hizalı hücre</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Ortala</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Sağa hizalı hücre</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Yukarı hizalı hücre</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Aşağı hizalı hücre</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Hücreleri dikey olarak ortala</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Metni kalınlaştır</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Metni eğimle</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Metnin altını çiz</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Elektronik Tablo Oluştur</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Hücre özelliklerini ayarla</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Hücreyi düzenle</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Satır ekle</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Satır sil</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Sütun ekle</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Hücreyi(leri) temizle</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Ön plan rengini ayarla</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Arka plan rengini ayarla</translation>
     </message>
   </context>
   <context>
@@ -328,15 +508,11 @@
     </message>
     <message>
       <source>Export file</source>
-      <translation>dosyayı dışa aktar</translation>
-    </message>
-    <message>
-      <source>Cell contents</source>
-      <translation>Hücre içeriği</translation>
+      <translation>Dosyayı Dışarı Aktar</translation>
     </message>
     <message>
       <source>Show spreadsheet</source>
-      <translation>İşlem tablosunu göster</translation>
+      <translation>Hesap tablosunu göster</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
@@ -344,7 +520,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Elektronik tablo hücre(ler) in ön plan rengini ayarlar</translation>
+      <translation>Hesap tablo hücre(ler) inin ön plan rengini ayarlar</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
@@ -352,7 +528,30 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Elektronik tablo hücre(lerinin) arka plan rengini ayarlar</translation>
+      <translation>Hesap tablosu hücre(ler) inin arka plan rengini ayarlar</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Hesap Tablosu</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation>Hesap tablosu, yapıştırma esnasında aralık seçimini desteklemiyor.
+Lütfen yalnızca bir hücre seçin.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation>Kopyala Yapıştır başarısız oldu</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Alias geçersiz karakterler içeriyor!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
     </message>
   </context>
   <context>
@@ -426,8 +625,8 @@
       <translation>Açık gri</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Özel</translation>
+      <source>Custom Color</source>
+      <translation>Özel Renk</translation>
     </message>
   </context>
   <context>
@@ -437,8 +636,72 @@
       <translation>Şekil:</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;İçerikler</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;İçerik:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Hesap Tablosu</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation>İçe/Dışa Aktarma Ayarları</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation type="unfinished">Delimiter Character: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation type="unfinished">\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation type="unfinished">Escape Character: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation type="unfinished">tab</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation type="unfinished">Quote Character: </translation>
     </message>
   </context>
   <context>
@@ -451,31 +714,71 @@
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Satır ekle</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Satır sil</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Sütun ekle</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Sütun sil</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Özellikler...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Üste %n satır ekle</numerusform>
+        <numerusform>Üste %n satır ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Alta %n satır ekle</numerusform>
+        <numerusform>Alta %n satır ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Bitişik olmayan %n satır ekle</numerusform>
+        <numerusform>Bitişik olmayan %n satır ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Satır(lar) ı sil</numerusform>
+        <numerusform>Satır(lar) ı sil</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Sola %n sütun(lar) ekle</numerusform>
+        <numerusform>Sola %n sütun(lar) ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Sağa %n sütun(lar) ekle</numerusform>
+        <numerusform>Sağa %n sütun(lar) ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Bitişik olmayan %n sütun ekle</numerusform>
+        <numerusform>Bitişik olmayan %n sütun ekle</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Sütun(lar) kaldır</numerusform>
+        <numerusform>Sütun(lar) kaldır</numerusform>
+      </translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
   </context>
 </TS>

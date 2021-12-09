@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com      *
+ *   Copyright (c) 2015 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,7 +26,6 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
 
 class Ui_TaskSketcherSolverAdvanced;
 
@@ -77,7 +76,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskSketcherSolverAdvanced* ui;
+    std::unique_ptr<Ui_TaskSketcherSolverAdvanced> ui;
 };
 
 } //namespace SketcherGui

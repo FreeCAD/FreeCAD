@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,22 +53,34 @@
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
-#include <io.h>
 #include <fcntl.h>
 #include <assert.h>
 
+#include <array>
 #include <vector>
 #include <list>
 #include <set>
 #include <map>
 
-// Boost
-#include <boost/signals.hpp>
-#include <boost/bind.hpp>
+#include <fstream>
+#include <string>
+#include <cstdio>
+#include <cstdlib>
+#include <stdexcept>
+#include <tuple>
 
-#include <boost/tuple/tuple.hpp>
+#include <cmath>
+#include <ctime>
+
+// QT
+#include <QtGlobal>
+
+// Boost
+#include <boost_signals2.hpp>
+#include <boost/bind/bind.hpp>
+
 #include <boost/utility.hpp>
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 
 #include <boost/program_options.hpp>
 //namespace po = boost::program_options;
@@ -77,12 +89,20 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
 
+#include <boost/uuid/uuid_io.hpp>
+
 #include "OpenCascadeAll.h"
+#include <math_Gauss.hxx>
+#include <math_Matrix.hxx>
+#include <Poly_Connect.hxx>
 
 #elif defined(FC_OS_WIN32)
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
-#include <windows.h>
+#endif
+#include <Windows.h>
+#include <io.h>
 #endif //_PreComp_
 
 #ifndef _Standard_Version_HeaderFile

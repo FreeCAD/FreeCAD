@@ -29,7 +29,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 #include <QScrollArea>
 
 #if !defined (QSINT_ACTIONPANEL)
@@ -47,11 +47,11 @@ class Property;
 namespace Gui {
 class ControlSingleton;
 namespace DockWnd{
-class CombiView;
+class ComboView;
 }
 namespace TaskView {
 
-typedef boost::signals::connection Connection;
+typedef boost::signals2::connection Connection;
 class TaskEditControl;
 class TaskDialog;
 
@@ -180,7 +180,7 @@ public:
     virtual void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                           Gui::SelectionSingleton::MessageType Reason);
 
-    friend class Gui::DockWnd::CombiView;
+    friend class Gui::DockWnd::ComboView;
     friend class Gui::ControlSingleton;
 
     void addTaskWatcher(const std::vector<TaskWatcher*> &Watcher);
@@ -196,7 +196,9 @@ protected Q_SLOTS:
     void clicked (QAbstractButton * button);
 
 protected:
-    void keyPressEvent(QKeyEvent*);
+    virtual void keyPressEvent(QKeyEvent*);
+    virtual bool event(QEvent*);
+
     void addTaskWatcher(void);
     void removeTaskWatcher(void);
     /// update the visibility of the TaskWatcher accordant to the selection

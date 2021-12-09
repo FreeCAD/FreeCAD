@@ -57,7 +57,7 @@ del rob,Start,t,l,w
 # 
 # Working with the robot document objects:
 # first create a robot in the active document
-if(App.activeDocument() == None):App.newDocument()
+if(App.activeDocument() is None):App.newDocument()
 
 App.activeDocument().addObject("Robot::RobotObject","Robot")
 # Define the visual representation and the kinematic definition (see [[6-Axis Robot]] for details about that)
@@ -105,4 +105,3 @@ ExportCompactSub(App.activeDocument().Robot,App.activeDocument().Trajectory,temp
 for w in App.activeDocument().Trajectory.Trajectory.Waypoints:
 	(A,B,C) = (w.Pos.Rotation.toEuler())
 	print("LIN {X %.3f,Y %.3f,Z %.3f,A %.3f,B %.3f,C %.3f} ; %s"%(w.Pos.Base.x,w.Pos.Base.y,w.Pos.Base.z,A,B,C,w.Name))
-

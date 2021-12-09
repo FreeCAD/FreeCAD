@@ -28,18 +28,17 @@
 # include <Precision.hxx>
 # include <QApplication>
 # include <Standard_Version.hxx>
-#endif
-
 # include <QMessageBox>
+#endif
 
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
@@ -50,7 +49,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "CommandConstraints.h"
+#include "Utils.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -61,8 +60,7 @@ bool isSketcherVirtualSpaceActive(Gui::Document *doc, bool actsOnSelection )
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
-                ->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
+            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
                 if (!actsOnSelection)
                     return true;
                 else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
@@ -70,17 +68,14 @@ bool isSketcherVirtualSpaceActive(Gui::Document *doc, bool actsOnSelection )
             }
         }
     }
-
     return false;
 }
 
-void ActivateVirtualSpaceHandler(Gui::Document *doc,DrawSketchHandler *handler)
+void ActivateVirtualSpaceHandler(Gui::Document *doc, DrawSketchHandler *handler)
 {
     if (doc) {
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
-           (SketcherGui::ViewProviderSketch::getClassTypeId())) {
-
-            SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
             vp->activateHandler(handler);
         }
@@ -88,42 +83,40 @@ void ActivateVirtualSpaceHandler(Gui::Document *doc,DrawSketchHandler *handler)
 }
 
 // Show/Hide B-spline degree
-DEF_STD_CMD_A(CmdSketcherSwitchVirtualSpace);
+DEF_STD_CMD_A(CmdSketcherSwitchVirtualSpace)
 
 CmdSketcherSwitchVirtualSpace::CmdSketcherSwitchVirtualSpace()
-:Command("Sketcher_SwitchVirtualSpace")
+    : Command("Sketcher_SwitchVirtualSpace")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Switch virtual space");
     sToolTipText    = QT_TR_NOOP("Switches the selected constraints or the view to the other virtual space");
     sWhatsThis      = "Sketcher_SwitchVirtualSpace";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SwitchVirtualSpace";
-    sAccel          = "";
+    sAccel          = "Z, Z";
     eType           = ForEdit;
 }
 
 void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool modeChange=true;
-    
+    bool modeChange = true;
+
     std::vector<Gui::SelectionObject> selection;
-    
-    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0){
+
+    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0) {
         // Now we check whether we have a constraint selected or not.
-        
-        // get the selection
         selection = getSelection().getSelectionEx();
-        
+
         // only one sketch with its subelements are allowed to be selected
-        if (selection.size() != 1) {
+        if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
-        
+
         // get the needed lists and objects
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
@@ -131,23 +124,22 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
                                  QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
-        
-        for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+
+        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             // see if we have constraints, if we do it is not a mode change, but a toggle.
-            if (it->size() > 10 && it->substr(0,10) == "Constraint")
-                modeChange=false;
+            if (it->size() > 10 && it->substr(0, 10) == "Constraint")
+                modeChange = false;
         }
     }
 
     if (modeChange) {
-        Gui::Document * doc= getActiveGuiDocument();
+        Gui::Document * doc = getActiveGuiDocument();
 
         SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-
         vp->setIsShownVirtualSpace(!vp->getIsShownVirtualSpace());
     }
-    else // toggle the selected constraint(s)
-    {
+    // toggle the selected constraint(s)
+    else {
         // get the needed lists and objects
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
@@ -155,26 +147,24 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
                                  QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
-        
+
         SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-        
+
         // undo command open
-        openCommand("Toggle constraints to the other virtual space");
-        
-        int successful=SubNames.size();
+        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle constraints to the other virtual space"));
+
+        int successful = SubNames.size();
         // go through the selected subelements
-        for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             // only handle constraints
             if (it->size() > 10 && it->substr(0,10) == "Constraint") {
                 int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
-                Gui::Command::openCommand("Update constraint's virtual space");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
                 try {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleVirtualSpace(%d)",
-                                            Obj->getNameInDocument(),
-                                            ConstrId);
+                    Gui::cmdAppObjectArgs(Obj, "toggleVirtualSpace(%d)", ConstrId);
                 }
-                catch(const Base::Exception&) {
+                catch (const Base::Exception&) {
                     successful--;
                 }
             }
@@ -185,16 +175,15 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         else
             abortCommand();
 
-        tryAutoRecompute();
-
-        // clear the selection (convenience)
+        // recomputer and clear the selection (convenience)
+        tryAutoRecompute(Obj);
         getSelection().clearSelection();
     }
 }
 
 bool CmdSketcherSwitchVirtualSpace::isActive(void)
 {
-    return isSketcherVirtualSpaceActive( getActiveGuiDocument(), false );
+    return isSketcherVirtualSpaceActive(getActiveGuiDocument(), false);
 }
 
 void CreateSketcherCommandsVirtualSpace(void)

@@ -1,52 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="eu" sourcelanguage="en">
+<TS version="2.1" language="eu" sourcelanguage="en">
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+496"/>
       <source>File</source>
       <translation>Fitxategia</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>&amp;Export project...</source>
       <translation>&amp;Esportatu proiektua...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Export a Raytracing project to a file</source>
       <translation>Esportatu izpi-hedaketako proiektu bat fitxategi batera</translation>
-    </message>
-    <message>
-      <source>Export the Povray project file</source>
-      <translation>Esportatu Povray proiektu-fitxategia</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-      <location line="+207"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>New Luxrender project</source>
       <translation>Luxrender proiektu berria</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Insert new Luxrender project into the document</source>
       <translation>Txertatu Luxrender proiektu berria dokumentuan</translation>
     </message>
     <message>
-      <location line="+45"/>
       <source>No template</source>
       <translation>Txantiloirik ez</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>No template available</source>
       <translation>Ez dago txantiloirik eskuragarri</translation>
     </message>
@@ -54,57 +42,37 @@
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <location line="-341"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Insert part</source>
       <translation>Txertatu zatia</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Insert a new part object into a Raytracing project</source>
       <translation>Txertatu pieza berri bat izpi-hedaketako proiektu batean</translation>
-    </message>
-    <message>
-      <source>Insert a new part object into a Povray project</source>
-      <translation>Txertatu pieza berri bat Povray proiektu batean</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <location line="-100"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
     <message>
-      <source>New Povray project</source>
-      <translation>Povray proiektu berria</translation>
-    </message>
-    <message>
-      <source>Insert new Povray project into the document</source>
-      <translation>Txertatu Povray proiektu berria dokumentuan</translation>
-    </message>
-    <message>
-      <location line="+1"/>
       <source>New POV-Ray project</source>
       <translation>POV-Ray proiektu berria</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Insert new POV-Ray project into the document</source>
       <translation>Txertatu POV-Ray proiektu berria dokumentuan</translation>
     </message>
     <message>
-      <location line="+45"/>
       <source>No template</source>
       <translation>Txantiloirik ez</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>No template available</source>
       <translation>Ez dago txantiloirik eskuragarri</translation>
     </message>
@@ -112,17 +80,14 @@
   <context>
     <name>CmdRaytracingRender</name>
     <message>
-      <location line="+196"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>&amp;Render</source>
       <translation>E&amp;rrendatu</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Renders the current raytracing project with an external renderer</source>
       <translation>Uneko izpi-hedaketako proiektua errendatzen du kanpoko errendatzaile batekin</translation>
     </message>
@@ -130,17 +95,14 @@
   <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-      <location line="+243"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>&amp;Reset Camera</source>
       <translation>&amp;Berrezarri kamera</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Sets the camera of the selected Raytracing project to match the current view</source>
       <translation>Hautatutako izpi-hedaketako proiektuaren kamera ezartzen du uneko bistarekin bat etor dadin</translation>
     </message>
@@ -148,426 +110,272 @@
   <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-      <location line="-723"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Export camera to POV-Ray...</source>
       <translation>Esportatu kamera POV-Ray formatura...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
       <translation>Esportatu 3D bista aktiboko kameraren posizioa POV-Ray formatuko fitxategi batera</translation>
-    </message>
-    <message>
-      <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-      <translation>Esportatu 3D bista aktiboko kameraren posizioa POV-Ray formatuko fitxategi batera</translation>
-    </message>
-    <message>
-      <source>Export camera to povray...</source>
-      <translation>Esportatu kamera povray formatura...</translation>
-    </message>
-    <message>
-      <source>Export the camera positon of the active 3D view in PovRay format to a file</source>
-      <translation>Esportatu 3D bista aktiboko kameraren posizioa Povray formatuko fitxategi batera</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWritePart</name>
     <message>
-      <location line="+91"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Export part to POV-Ray...</source>
       <translation>Esportatu pieza POV-Ray formatura...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Write the selected Part (object) as a POV-Ray file</source>
       <translation>Idatzi hautatutako pieza (objektua) POV-Ray fitxategi gisa</translation>
-    </message>
-    <message>
-      <source>Export part to povray...</source>
-      <translation>Esportatu pieza povray formatura...</translation>
-    </message>
-    <message>
-      <source>Write the selected Part (object) as a povray file</source>
-      <translation>Idatzi hautatutako pieza (objektua) Povray fitxategi gisa</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWriteView</name>
     <message>
-      <location line="-79"/>
-      <location line="+139"/>
-      <location line="+93"/>
-      <location line="+391"/>
       <source>No perspective camera</source>
       <translation>Ez dago perspektiba-kamerarik</translation>
     </message>
     <message>
-      <location line="-622"/>
-      <location line="+139"/>
-      <location line="+93"/>
-      <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
+      <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>Kameraren uneko bista ez da perspektiban eta, beraz, POV-Ray irudiaren emaitza zuk espero zenuenaren desberdina izan daiteke.
-Jarraitu?</translation>
+      <translation>Uneko bistaren kamera ez dago perspektiban eta emaitzatzat emango duen POV-Ray irudia espero denaren desberdina izan daiteke.
+Jarraitu nahi duzu?</translation>
     </message>
     <message>
-      <location line="-109"/>
-      <source>Export view to POV-Ray...</source>
-      <translation>Esportatu bista POV-Ray formatura...</translation>
-    </message>
-    <message>
-      <location line="+1"/>
-      <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-      <translation>Idatzi 3D bista aktiboa eta haren eduki guztiak POV-Ray fitxategi batera</translation>
-    </message>
-    <message>
-      <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
-Do you want to continue?</source>
-      <translation>Kameraren uneko bista ez da perspektiban eta, beraz, Povray irudiaren emaitza zuk espero zenuenaren desberdina izan daiteke.
-Jarraitu?</translation>
-    </message>
-    <message>
-      <location line="-2"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
     <message>
-      <source>Export view to povray...</source>
-      <translation>Esportatu bista povray formatura...</translation>
+      <source>Export view to POV-Ray...</source>
+      <translation>Esportatu bista POV-Ray formatura...</translation>
     </message>
     <message>
-      <source>Write the active 3D view with camera and all its content to a povray file</source>
-      <translation>Idatzi 3D bista aktiboa eta haren eduki guztiak povray fitxategi batera</translation>
+      <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
+      <translation>Idatzi 3D bista aktiboa eta haren eduki guztiak POV-Ray fitxategi batera</translation>
     </message>
     <message>
-      <location line="+501"/>
-      <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
+      <source>No template</source>
+      <translation>Txantiloirik ez</translation>
+    </message>
+    <message>
+      <source>Cannot create a project because there is no template installed.</source>
+      <translation>Ezin izan da proiektua sortu ez dagoelako txantiloirik instalatuta.</translation>
+    </message>
+    <message>
+      <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>Kameraren uneko bista ez da perspektiban eta, beraz, luxrender irudiaren emaitza zuk espero zenuenaren desberdina izan daiteke.
-Jarraitu?</translation>
+      <translation>Uneko bistaren kamera ez dago perspektiban eta emaitzatzat emango duen luxrender irudia espero denaren desberdina izan daiteke.
+Jarraitu nahi duzu?</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <source>Povray(*.pov)</source>
-      <translation>Povray (*.pov)</translation>
-    </message>
-    <message>
-      <source>POV-Ray (*.pov)</source>
-      <translation>POV-Ray (*.pov)</translation>
-    </message>
-    <message>
-      <source>All Files (*.*)</source>
-      <translation>Fitxategi guztiak (*.*)</translation>
-    </message>
-    <message>
-      <location line="-585"/>
-      <location line="+51"/>
-      <location line="+63"/>
-      <location line="+276"/>
-      <source>Export page</source>
-      <translation>Esportatu orria</translation>
-    </message>
-    <message>
-      <source>POV-Ray(*.pov)</source>
-      <translation>POV-Ray (*.pov)</translation>
-    </message>
-    <message>
-      <location line="-103"/>
-      <location line="+87"/>
-      <location line="+63"/>
-      <location line="+243"/>
-      <source>Wrong selection</source>
-      <translation>Hautapen okerra</translation>
-    </message>
-    <message>
-      <location line="-392"/>
-      <source>Select a Part object.</source>
-      <translation>Hautatu objektu zati bat.</translation>
-    </message>
-    <message>
-      <location line="+10"/>
-      <location line="+12"/>
-      <source>No Raytracing project to insert</source>
-      <translation>Ez dago izpi-hedaketako proiekturik txertatzeko</translation>
-    </message>
-    <message>
-      <location line="-11"/>
-      <source>Create a Raytracing project to insert a view.</source>
-      <translation>Sortu izpi-hedaketako proiektu bat bista bat txertatzeko.</translation>
-    </message>
-    <message>
-      <location line="+12"/>
-      <source>Select a Raytracing project to insert the view.</source>
-      <translation>Hautatu izpi-hedaketako proiektu bat bista txertatzeko.</translation>
-    </message>
-    <message>
-      <location line="+64"/>
-      <location line="+63"/>
-      <location line="+243"/>
-      <source>Select one Raytracing project object.</source>
-      <translation>Hautatu izpi-hedaketako proiektu bateko objektu bat.</translation>
-    </message>
-    <message>
-      <location line="-302"/>
-      <source>Luxrender</source>
-      <translation>Luxrender</translation>
-    </message>
-    <message>
-      <location line="+74"/>
-      <location line="+6"/>
-      <source>POV-Ray not found</source>
-      <translation>POV-Ray ez da aurkitu</translation>
-    </message>
-    <message>
-      <location line="-5"/>
-      <source>Please set the path to the POV-Ray executable in the preferences.</source>
-      <translation>Ezarri POV-Ray exekutagarriaren bidea hobespenetan.</translation>
-    </message>
-    <message>
-      <location line="+6"/>
-      <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-      <translation>Zuzendu POV-Ray exekutagarriaren bidea hobespenetan.</translation>
-    </message>
-    <message>
-      <location line="+75"/>
-      <source>Lux project file missing</source>
-      <translation>Lux proiektuaren fitxategia falta da</translation>
-    </message>
-    <message>
-      <location line="+1"/>
-      <source>The Lux project file doesn't exist.</source>
-      <translation>Lux proiektu-fitxategia ez da existitzen.</translation>
-    </message>
-    <message>
-      <location line="-69"/>
-      <location line="+6"/>
-      <source>Luxrender not found</source>
-      <translation>Ez da aurkitu luxrender</translation>
-    </message>
-    <message>
-      <location line="-475"/>
-      <location line="+51"/>
-      <location line="+62"/>
-      <location line="+272"/>
       <source>POV-Ray</source>
       <translation>POV-Ray</translation>
     </message>
     <message>
-      <location line="-384"/>
-      <location line="+51"/>
-      <location line="+62"/>
-      <location line="+276"/>
-      <location line="+109"/>
       <source>All Files</source>
       <translation>Fitxategi guztiak</translation>
     </message>
     <message>
-      <location line="-29"/>
+      <source>Export page</source>
+      <translation>Esportatu orria</translation>
+    </message>
+    <message>
+      <source>Wrong selection</source>
+      <translation>Hautapen okerra</translation>
+    </message>
+    <message>
+      <source>Select a Part object.</source>
+      <translation>Hautatu objektu zati bat.</translation>
+    </message>
+    <message>
+      <source>No Raytracing project to insert</source>
+      <translation>Ez dago izpi-hedaketako proiekturik txertatzeko</translation>
+    </message>
+    <message>
+      <source>Create a Raytracing project to insert a view.</source>
+      <translation>Sortu izpi-hedaketako proiektu bat bista bat txertatzeko.</translation>
+    </message>
+    <message>
+      <source>Select a Raytracing project to insert the view.</source>
+      <translation>Hautatu izpi-hedaketako proiektu bat bista txertatzeko.</translation>
+    </message>
+    <message>
+      <source>Select one Raytracing project object.</source>
+      <translation>Hautatu izpi-hedaketako proiektu bateko objektu bat.</translation>
+    </message>
+    <message>
+      <source>Luxrender</source>
+      <translation>Luxrender</translation>
+    </message>
+    <message>
+      <source>POV-Ray not found</source>
+      <translation>POV-Ray ez da aurkitu</translation>
+    </message>
+    <message>
+      <source>Please set the path to the POV-Ray executable in the preferences.</source>
+      <translation>Ezarri POV-Ray exekutagarriaren bidea hobespenetan.</translation>
+    </message>
+    <message>
+      <source>Please correct the path to the POV-Ray executable in the preferences.</source>
+      <translation>Zuzendu POV-Ray exekutagarriaren bidea hobespenetan.</translation>
+    </message>
+    <message>
+      <source>Luxrender not found</source>
+      <translation>Ez da aurkitu luxrender</translation>
+    </message>
+    <message>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
       <translation>Ezarri luxrender edo luxconsole exekutagarriaren bidea hobespenetan.</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
       <translation>Zuzendu luxrender edo luxconsole exekutagarriaren bidea hobespenetan.</translation>
     </message>
     <message>
-      <location line="+12"/>
       <source>POV-Ray file missing</source>
       <translation>POV-Ray fitxategia falta da</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>The POV-Ray project file doesn't exist.</source>
       <translation>POV-Ray proiektu-fitxategia ez da existitzen.</translation>
     </message>
     <message>
-      <source>Rendered image (*.bmp)</source>
-      <translation>Errendatutako irudia (*.bmp)</translation>
-    </message>
-    <message>
-      <source>Rendered image (*.png)</source>
-      <translation>Errendatutako irudia (*.png)</translation>
-    </message>
-    <message>
-      <location line="+6"/>
-      <location line="+2"/>
-      <location line="+3"/>
       <source>Rendered image</source>
       <translation>Errendatutako irudia</translation>
     </message>
     <message>
-      <source>No Povray project to insert</source>
-      <translation>Ez dago Povray proiekturik txertatzeko</translation>
+      <source>Lux project file missing</source>
+      <translation>Lux proiektuaren fitxategia falta da</translation>
     </message>
     <message>
-      <source>Create a Povray project to insert a view.</source>
-      <translation>Sortu Povray proiektu bat bista bat txertatzeko.</translation>
-    </message>
-    <message>
-      <source>Select a Povray project to insert the view.</source>
-      <translation>Hautatu Povray proiektu bat bista txertatzeko.</translation>
-    </message>
-    <message>
-      <source>Select one Povray project object.</source>
-      <translation>Hautatu Povray proiektu-objektu bat.</translation>
+      <source>The Lux project file doesn't exist.</source>
+      <translation>Lux proiektu-fitxategia ez da existitzen.</translation>
     </message>
   </context>
   <context>
     <name>RaytracingGui::DlgSettingsRay</name>
     <message>
-      <location filename="../../DlgSettingsRay.ui" line="+14"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
     <message>
-      <location line="+103"/>
-      <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-      <translation>POV-Ray exekutagarriaren bidea, FreeCADetik errendatu nahi baduzu</translation>
-    </message>
-    <message>
-      <location line="+13"/>
-      <source>POV-Ray executable:</source>
-      <translation>POV-Ray exekutagarria:</translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source>POV-Ray output parameters:</source>
-      <translation>POV-Ray irteera-parametroak:</translation>
-    </message>
-    <message>
-      <location line="+9"/>
-      <source>The POV-Ray parameters to be passed to the render.</source>
-      <translation>Errendatzaileari pasatuko zaizkion POV-Ray parametroak.</translation>
-    </message>
-    <message>
-      <location line="+95"/>
-      <source>Directories</source>
-      <translation>Direktorioak</translation>
-    </message>
-    <message>
-      <location line="+53"/>
-      <source>Default Project dir:</source>
-      <translation>Proiektu-direktorio lehenetsia:</translation>
-    </message>
-    <message>
-      <location line="-26"/>
-      <source>Camera file name:</source>
-      <translation>Kameraren fitxategiaren izena:</translation>
-    </message>
-    <message>
-      <location line="-216"/>
-      <source>Max mesh deviation:</source>
-      <translation>Sarearen desbideratze maximoa:</translation>
-    </message>
-    <message>
-      <location line="+57"/>
-      <source>Render</source>
-      <translation>Errendatu</translation>
-    </message>
-    <message>
-      <location line="+40"/>
-      <source>+P +A</source>
-      <translation>+P +A</translation>
-    </message>
-    <message>
-      <location line="+13"/>
-      <source>+W: </source>
-      <translation>+W: </translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source>The width of the rendered image</source>
-      <translation>Errendatutako irudiaren zabalera</translation>
-    </message>
-    <message>
-      <location line="+19"/>
-      <source> +H : </source>
-      <translation> +H : </translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source>The height of the rendered image</source>
-      <translation>Errendatutako irudiaren altuera</translation>
-    </message>
-    <message>
-      <location line="+21"/>
-      <source>Luxrender executable:</source>
-      <translation>Luxrender exekutagarria:</translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source>The path to the luxrender (or luxconsole) executable</source>
-      <translation>Luxrender edo (luxconsole) exekutagarriaren bidea</translation>
-    </message>
-    <message>
-      <location line="+38"/>
-      <source>Part file name:</source>
-      <translation>Piezaren fitxategiaren izena:</translation>
-    </message>
-    <message>
-      <location line="+17"/>
-      <location line="+23"/>
-      <location line="+16"/>
-      <source>Used by utility tools</source>
-      <translation>Utilitate-tresnek erabilia</translation>
-    </message>
-    <message>
-      <location line="-13"/>
-      <source>TempCamera.inc</source>
-      <translation>TempCamera.inc</translation>
-    </message>
-    <message>
-      <location line="+16"/>
-      <source>TempPart.inc</source>
-      <translation>TempPart.inc</translation>
-    </message>
-    <message>
-      <location line="-294"/>
       <source>Mesh export settings</source>
-      <translation>Sarea esportatzeko ezarpenak</translation>
+      <translation>Amarauna esportatzeko ezarpenak</translation>
     </message>
     <message>
-      <source>max mesh deviation:</source>
-      <translation>sarearen desbideratze maximoa:</translation>
+      <source>Max mesh deviation:</source>
+      <translation>Amaraunaren desbideratze maximoa:</translation>
     </message>
     <message>
-      <location line="+54"/>
       <source>Do not calculate vertex normals</source>
       <translation>Ez kalkulatu erpinen normalak</translation>
     </message>
     <message>
-      <location line="+13"/>
       <source>Write u,v coordinates</source>
       <translation>Idatzi u.v koordenatuak</translation>
+    </message>
+    <message>
+      <source>Render</source>
+      <translation>Errendatu</translation>
+    </message>
+    <message>
+      <source>POV-Ray executable:</source>
+      <translation>POV-Ray exekutagarria:</translation>
+    </message>
+    <message>
+      <source>POV-Ray output parameters:</source>
+      <translation>POV-Ray irteera-parametroak:</translation>
+    </message>
+    <message>
+      <source>The POV-Ray parameters to be passed to the render.</source>
+      <translation>Errendatzaileari pasatuko zaizkion POV-Ray parametroak.</translation>
+    </message>
+    <message>
+      <source>+P +A</source>
+      <translation>+P +A</translation>
+    </message>
+    <message>
+      <source>+W: </source>
+      <translation>+W: </translation>
+    </message>
+    <message>
+      <source>The width of the rendered image</source>
+      <translation>Errendatutako irudiaren zabalera</translation>
+    </message>
+    <message>
+      <source> +H : </source>
+      <translation> +H : </translation>
+    </message>
+    <message>
+      <source>The height of the rendered image</source>
+      <translation>Errendatutako irudiaren altuera</translation>
+    </message>
+    <message>
+      <source>Luxrender executable:</source>
+      <translation>Luxrender exekutagarria:</translation>
+    </message>
+    <message>
+      <source>The path to the luxrender (or luxconsole) executable</source>
+      <translation>Luxrender edo (luxconsole) exekutagarriaren bidea</translation>
+    </message>
+    <message>
+      <source>Directories</source>
+      <translation>Direktorioak</translation>
+    </message>
+    <message>
+      <source>Part file name:</source>
+      <translation>Piezaren fitxategiaren izena:</translation>
+    </message>
+    <message>
+      <source>Camera file name:</source>
+      <translation>Kameraren fitxategiaren izena:</translation>
+    </message>
+    <message>
+      <source>Used by utility tools</source>
+      <translation>Utilitate-tresnek erabilia</translation>
+    </message>
+    <message>
+      <source>Default Project dir:</source>
+      <translation>Proiektu-direktorio lehenetsia:</translation>
+    </message>
+    <message>
+      <source>TempCamera.inc</source>
+      <translation>TempCamera.inc</translation>
+    </message>
+    <message>
+      <source>TempPart.inc</source>
+      <translation>TempPart.inc</translation>
+    </message>
+  </context>
+  <context>
+    <name>RaytracingGui::DlgSettingsRayImp</name>
+    <message>
+      <source>The path to the POV-Ray executable, if you want to render from %1</source>
+      <translation>POV-Ray exekutagarriaren bidea, %1 aplikaziotik errendatu nahi baduzu</translation>
     </message>
   </context>
   <context>
     <name>RaytracingGui::ViewProviderLux</name>
     <message>
-      <location filename="../../ViewProvider.cpp" line="+68"/>
       <source>Edit LuxRender project</source>
       <translation>Editatu Luxrender proiektua</translation>
     </message>
     <message>
-      <location line="+24"/>
       <source>LuxRender template</source>
       <translation>Luxrender txantiloia</translation>
     </message>
     <message>
-      <location line="+0"/>
       <source>Select a LuxRender template</source>
       <translation>Hautatu Luxrender txantiloi bat</translation>
     </message>
@@ -575,17 +383,14 @@ Jarraitu?</translation>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location line="+48"/>
       <source>Edit Povray project</source>
       <translation>Editatu Povray proiektua</translation>
     </message>
     <message>
-      <location line="+24"/>
       <source>Povray template</source>
       <translation>Povray txantiloia</translation>
     </message>
     <message>
-      <location line="+0"/>
       <source>Select a Povray template</source>
       <translation>Hautatu Povray txantiloi bat</translation>
     </message>
@@ -593,7 +398,6 @@ Jarraitu?</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+37"/>
       <source>&amp;Raytracing</source>
       <translation>&amp;Izpi-hedaketa</translation>
     </message>

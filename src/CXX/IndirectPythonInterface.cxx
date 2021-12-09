@@ -549,7 +549,7 @@ PYCXX_EXPORT int &_Py_InteractiveFlag()              { return Py_InteractiveFlag
 PYCXX_EXPORT int &_Py_OptimizeFlag()                 { return Py_OptimizeFlag; }
 PYCXX_EXPORT int &_Py_NoSiteFlag()                   { return Py_NoSiteFlag; }
 PYCXX_EXPORT int &_Py_VerboseFlag()                  { return Py_VerboseFlag; }
-PYCXX_EXPORT char *__Py_PackageContext()             { return _Py_PackageContext; }
+PYCXX_EXPORT const char *__Py_PackageContext()       { return _Py_PackageContext; }
 
 //
 //    Needed to keep the abstactions for delayload interface

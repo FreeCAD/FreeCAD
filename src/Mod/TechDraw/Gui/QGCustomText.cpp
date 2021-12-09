@@ -41,31 +41,31 @@
 #include <qmath.h>
 #include <QRectF>
 #include "Rez.h"
+#include "ZVALUE.h"
+#include "DrawGuiUtil.h"
+#include "QGICMark.h"
 #include "QGIView.h"
+#include "PreferencesGui.h"
 #include "QGCustomText.h"
 
 using namespace TechDrawGui;
 
-QGCustomText::QGCustomText()
+QGCustomText::QGCustomText(QGraphicsItem* parent) :
+    QGraphicsTextItem(parent), isHighlighted(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
 
-    isHighlighted = false;
     m_colCurrent = getNormalColor();
+    m_colNormal  = m_colCurrent;
+    tightBounding = false;
 }
 
 void QGCustomText::centerAt(QPointF centerPos)
 {
       centerAt(centerPos.x(),centerPos.y());
-//    QRectF box = boundingRect();
-//    double width = box.width();
-//    double height = box.height();
-//    double newX = centerPos.x() - width/2.;
-//    double newY = centerPos.y() - height/2.;
-//    setPos(newX,newY);
 }
 
 void QGCustomText::centerAt(double cX, double cY)
@@ -78,8 +78,52 @@ void QGCustomText::centerAt(double cX, double cY)
     setPos(newX,newY);
 }
 
+void QGCustomText::justifyLeftAt(QPointF centerPos, bool vCenter)
+{
+    justifyLeftAt(centerPos.x(),centerPos.y(), vCenter);
+}
+
+void QGCustomText::justifyLeftAt(double cX, double cY, bool vCenter)
+{
+    QRectF box = boundingRect();
+    double height = box.height();
+    double newY = cY - height;
+    if (vCenter) {
+        newY = cY - height/2.;
+    }
+    setPos(cX,newY);
+}
+
+void QGCustomText::justifyRightAt(QPointF centerPos, bool vCenter)
+{
+    justifyRightAt(centerPos.x(),centerPos.y(), vCenter);
+}
+
+void QGCustomText::justifyRightAt(double cX, double cY, bool vCenter)
+{
+    QRectF box = boundingRect();
+    double width = box.width();
+    double height = box.height();
+    double newX = cX - width;
+    double newY = cY - height;
+    if (vCenter) {
+        newY = cY - height/2.;
+    }
+    setPos(newX,newY);
+}
+
+double QGCustomText::getHeight(void)
+{
+    return boundingRect().height();
+}
+
+double QGCustomText::getWidth(void)
+{
+    return boundingRect().width();
+}
 QVariant QGCustomText::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+//    Base::Console().Message("QGCT::itemChange - this: %X change: %d\n", this, change);
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             setPrettySel();
@@ -101,97 +145,100 @@ void QGCustomText::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGCustomText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    if(!isSelected() && !isHighlighted) {
+    if(!isSelected()) {
         setPrettyNormal();
     }
     QGraphicsTextItem::hoverLeaveEvent(event);
 }
 
 void QGCustomText::setPrettyNormal() {
-    m_colCurrent = getNormalColor();
+    m_colCurrent = m_colNormal;
+    setDefaultTextColor(m_colCurrent);
     update();
 }
 
 void QGCustomText::setPrettyPre() {
     m_colCurrent = getPreColor();
+    setDefaultTextColor(m_colCurrent);
     update();
 }
 
 void QGCustomText::setPrettySel() {
     m_colCurrent = getSelectColor();
+    setDefaultTextColor(m_colCurrent);
     update();
+}
+
+void QGCustomText::setColor(QColor c)
+{
+    m_colNormal = c;
+    m_colCurrent = c;
+    QGraphicsTextItem::setDefaultTextColor(c);
+}
+
+void QGCustomText::setTightBounding(bool tight)
+{
+    tightBounding = tight;
 }
 
 void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    //svg text is much larger than screen text.  scene units(mm or 0.1mm in hirez) vs points.
-    //need to scale text if going to svg.
-    //TODO: magic translation happens. why? approx: right ~8mm  down: 12mm + (3mm per mm of text height)
-    //SVG transform matrix translation values are different for same font size + different fonts (Sans vs Ubuntu vs Arial)???
-    //                     scale values are same for same font size + different fonts.
-    //calculate dots/mm 
-    //in hirez - say factor = 10, we have 10 dpmm in scene space. 
-    //  so 254dpi / 72pts/in  => 3.53 dppt 
-    double dpmm = 3.53;         //dots/pt
-    double svgMagicX = Rez::guiX(8.0);                      //8mm -> 80 gui dots
-    double svgMagicY = Rez::guiX(12.0);
-    double svgMagicYoffset = Rez::guiX(3.0);                // 3mm per mm of font size => 30gunits / mm of font size
-    double fontSize = Rez::appX(font().pointSizeF());       //gui pts 4mm text * 10 scunits/mm = size 40 text but still only 4mm
-    double ty = svgMagicY + (svgMagicYoffset*fontSize)/dpmm;
-                    // 12mm (in gunits) + [3mm (in gunits) * (# of mm)]/ [dots per mm]  works out to dots?
-    QPointF svgMove(-svgMagicX/dpmm,ty);
+//    painter->setPen(Qt::green);
+//    painter->drawRect(boundingRect());          //good for debugging
 
-    QPaintDevice* hw = painter->device();
-    QSvgGenerator* svg = dynamic_cast<QSvgGenerator*>(hw);
-    if (svg) {
-        painter->scale(Rez::appX(dpmm),Rez::appX(dpmm));
-        painter->translate(svgMove);
-    } else {
-        painter->scale(1.0,1.0);
-    }
-
-    setDefaultTextColor(m_colCurrent);
     QGraphicsTextItem::paint (painter, &myOption, widget);
 }
 
-QColor QGCustomText::getNormalColor()
+QRectF QGCustomText::boundingRect() const
 {
-    QColor result;
-    QGIView *parent;
-    QGraphicsItem* qparent = parentItem();
-    if (qparent == nullptr) {
-        parent = nullptr;
+    if (toPlainText().isEmpty()) {
+        return QRectF();
+    } else if (tightBounding) {
+        return tightBoundingRect();
     } else {
-        parent = dynamic_cast<QGIView *> (qparent);
+        return QGraphicsTextItem::boundingRect();
     }
+}
 
-    if (parent != nullptr) {
-        result = parent->getNormalColor();
-    } else {
-        Base::Reference<ParameterGrp> hGrp = getParmGroup();
-        App::Color fcColor;
-        fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
-        result = fcColor.asValue<QColor>();
-    }
+QRectF QGCustomText::tightBoundingRect() const
+{
+    QFontMetrics qfm(font());
+    QRectF result = QGraphicsTextItem::boundingRect();
+    QRectF tight = qfm.tightBoundingRect(toPlainText());
+    qreal x_adj = (result.width() - tight.width())/4.0;
+    qreal y_adj = (result.height() - tight.height())/4.0;
+
+    // Adjust the bounding box 50% towards the Qt tightBoundingRect(),
+    // except chomp some extra empty space above the font (1.75*y_adj)
+    result.adjust(x_adj, 1.75*y_adj, -x_adj, -y_adj);
+
     return result;
+}
+
+// Calculate the amount of difference between tight and relaxed bounding boxes
+QPointF QGCustomText::tightBoundingAdjust() const
+{
+    QRectF original = QGraphicsTextItem::boundingRect();
+    QRectF tight = tightBoundingRect();
+
+    return QPointF(tight.x()-original.x(), tight.y()-original.y());
+}
+
+QColor QGCustomText::getNormalColor()    //preference!
+{
+    return PreferencesGui::normalQColor();
 }
 
 QColor QGCustomText::getPreColor()
 {
-    Base::Reference<ParameterGrp> hGrp = getParmGroup();
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0xFFFF0000));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::preselectQColor();
 }
 
 QColor QGCustomText::getSelectColor()
 {
-    Base::Reference<ParameterGrp> hGrp = getParmGroup();
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::selectQColor();
 }
 
 Base::Reference<ParameterGrp> QGCustomText::getParmGroup()
@@ -200,3 +247,19 @@ Base::Reference<ParameterGrp> QGCustomText::getParmGroup()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     return hGrp;
 }
+
+void QGCustomText::makeMark(double x, double y)
+{
+    QGICMark* cmItem = new QGICMark(-1);
+    cmItem->setParentItem(this);
+    cmItem->setPos(x,y);
+    cmItem->setThick(1.0);
+    cmItem->setSize(40.0);
+    cmItem->setZValue(ZVALUE::VERTEX);
+}
+
+void QGCustomText::makeMark(Base::Vector3d v)
+{
+    makeMark(v.x,v.y);
+}
+

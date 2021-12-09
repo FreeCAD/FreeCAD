@@ -1,16 +1,23 @@
-; Generic glass material
+; Glass-Generic
 ; (c) 2015 Przemo Firszt (CC-BY 3.0)
-; Information about the content of such cards you can find here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Glass
 Description = Generic soda-lime glass
 DescriptionDE = Normalglas
 DescriptionPL = Szkło sodowe
 Father = Glass
-ProductURL = https://en.wikipedia.org/wiki/Soda-lime_glass
-YoungsModulus = 72000 MPa
-PoissonRatio = 0.22
+
+[Mechanical]
 Density = 2520 kg/m^3
-ThermalExpansionCoefficient = 9.00E-006
+PoissonRatio = 0.22
+YoungsModulus = 72000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000009 m/m/K
+
+[Cost]
+ProductURL = https://en.wikipedia.org/wiki/Soda-lime_glass

@@ -23,13 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-
+# include <TopoDS.hxx>
+# include <Precision.hxx>
 #endif
 
 #include "FeatureThickness.h"
 #include <Base/Exception.h>
-#include <TopoDS.hxx>
-#include <Precision.hxx>
+
 
 using namespace PartDesign;
 
@@ -46,6 +46,7 @@ Thickness::Thickness()
     ADD_PROPERTY_TYPE(Join,(long(0)),"Thickness",App::Prop_None,"Join type");
     Join.setEnums(JoinEnums);
     ADD_PROPERTY_TYPE(Reversed,(false),"Thickness",App::Prop_None,"Apply the thickness towards the solids interior");
+    ADD_PROPERTY_TYPE(Intersection,(false),"Thickness",App::Prop_None,"Enable intersection-handling");
 }
 
 short Thickness::mustExecute() const
@@ -76,6 +77,7 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     }
 
     bool reversed = Reversed.getValue();
+    bool intersection = Intersection.getValue();
     double thickness =  (reversed ? -1. : 1. )*Value.getValue();
     double tol = Precision::Confusion();
     short mode = (short)Mode.getValue();
@@ -85,7 +87,7 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
         join = 2;
 
     if (fabs(thickness) > 2*tol)
-        this->Shape.setValue(getSolid(TopShape.makeThickSolid(closingFaces, thickness, tol, false, false, mode, join)));
+        this->Shape.setValue(getSolid(TopShape.makeThickSolid(closingFaces, thickness, tol, intersection, false, mode, join)));
     else
         this->Shape.setValue(getSolid(TopShape.getShape()));
     return App::DocumentObject::StdReturn;

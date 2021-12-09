@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -37,7 +35,7 @@ __url__ = "http://www.freecadweb.org"
 
 # config
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
-SCHEMA = "http://www.steptools.com/support/stdev_docs/ifcbim/ifc4.exp" # only for internal prser
+SCHEMA = "http://www.steptools.com/support/stdev_docs/ifcbim/ifc4.exp" # only for internal parser
 MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
 DEBUG = True # this is only for the python console, this value is overridden when importing through the GUI
 SKIP = ["IfcBuildingElementProxy","IfcFlowTerminal","IfcFurnishingElement"] # default. overwritten by the GUI options
@@ -491,7 +489,7 @@ def makeWall(entity,shape=None,name="Wall"):
             return wall
         if DEBUG: print("    error: skipping wall",entity.id)
         return None
-    except:
+    except Exception:
         if DEBUG: print("    error: skipping wall",entity)
         return None
 
@@ -526,7 +524,7 @@ def makeWindow(entity,shape=None,name="Window"):
             return window
         if DEBUG: print("    error: skipping window",entity.id)
         return None
-    except:
+    except Exception:
         if DEBUG: print("    error: skipping window",entity)
         return None
 
@@ -573,7 +571,7 @@ def makeStructure(entity,shape=None,ifctype=None,name="Structure"):
             return structure
         if DEBUG: print("    error: skipping structure",entity.id)
         return None
-    except:
+    except Exception:
         if DEBUG: print("    error: skipping structure",entity)
         return None
 
@@ -596,7 +594,7 @@ def makeSite(entity,shape=None,name="Site"):
             site.Terrain = body
         if DEBUG: print("    made site object  ",entity,":",site)
         return site
-    except:
+    except Exception:
         return None
         
 def makeSpace(entity,shape=None,name="Space"):
@@ -613,7 +611,7 @@ def makeSpace(entity,shape=None,name="Space"):
                 body.ViewObject.hide()
                 if DEBUG: print("    made space object  ",entity,":",space)
                 return space
-    except:
+    except Exception:
         return None
 
 
@@ -628,7 +626,7 @@ def makeRoof(entity,shape=None,name="Roof"):
                 roof.Shape = shape
                 if DEBUG: print("    made roof object  ",entity,":",roof)
                 return roof
-    except:
+    except Exception:
         return None
 
 # geometry helpers ###################################################################
@@ -683,7 +681,7 @@ def getShape(obj,objid):
                     brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OBJECT_PLACEMENT | ss)
                 else:
                     brep_data = IfcImport.create_shape(obj, ss)
-        except:
+        except Exception:
             print("Unable to retrieve shape data")
     else:
         brep_data = obj.mesh.brep_data
@@ -700,7 +698,7 @@ def getShape(obj,objid):
                 os.remove(tf)
             else:
                 sh.importBrepFromString(brep_data)
-        except:
+        except Exception:
             print("    error: malformed shape")
             return None
         else:
@@ -718,7 +716,7 @@ def getShape(obj,objid):
                     solid = Part.makeSolid(shell)
                     if solid:
                         sh = solid
-            except:
+            except Exception:
                 if DEBUG: print("    failed to retrieve solid from object ",objid)
         else:
             if DEBUG: print("    object ", objid, " doesn't contain any geometry")
@@ -910,7 +908,7 @@ def group(entity,ifc,mode=None):
             cell = Arch.makeBuilding(comps,name=name)
         if label and cell:
             cell.Label = label
-    except:
+    except Exception:
         if DEBUG: print("error: skipping group ",entity.id)
         
 def getWire(entity,placement=None):
@@ -973,7 +971,8 @@ def export(exportList,filename):
     txt = []
 
     # get all children and reorder list to get buildings and floors processed first
-    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Draft.get_group_contents(exportList, walls=True,
+                                           addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
 
     sites = []
@@ -1016,15 +1015,17 @@ def export(exportList,filename):
         # setting the IFC type
         if hasattr(obj,"Role"):
             ifctype = obj.Role.replace(" ","")
+        elif otype == "Foundation":
+            ifctype = "Footing"
+        elif otype == "Rebar":
+            ifctype = "ReinforcingBar"
+        elif otype == "Undefined":
+            ifctype = "BuildingElementProxy"
+        elif otype.startswith("Part::"):
+            ifctype = "BuildingElementProxy"
         else:
             ifctype = otype
-        if ifctype == "Foundation":
-            ifctype = "Footing"
-        elif ifctype == "Rebar":
-            ifctype = "ReinforcingBar"
-        elif ifctype in ["Part","Undefined"]:
-            ifctype = "BuildingElementProxy"
-            
+
         # getting the "Force BREP" flag
         brepflag = False
         if hasattr(obj,"IfcAttributes"):
@@ -1107,7 +1108,7 @@ def export(exportList,filename):
                 extra = [obj.Width.Value*scaling, obj.Height.Value*scaling]
             elif otype == "Space":
                 extra = ["ELEMENT","INTERNAL",getIfcElevation(obj)]
-            elif otype == "Part":
+            elif otype.startswith("Part::"):
                 extra = ["ELEMENT"]
             if not ifctype in supportedIfcTypes:
                 if DEBUG: print("   Type ",ifctype," is not supported yet. Exporting as IfcBuildingElementProxy instead")
@@ -1145,7 +1146,7 @@ def export(exportList,filename):
             if DEBUG: print("Object type ", otype, " is not supported yet.")
 
     # processing groups
-    for name,entities in groups.iteritems():
+    for name,entities in groups.items():
         if entities:
             o = FreeCAD.ActiveDocument.getObject(name)
             if o:
@@ -1207,7 +1208,7 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
                 if DraftVecUtils.angle(v2,v1,normal) >= 0:
                     # inverting verts order if the direction is couterclockwise
                     verts.reverse()
-            except:
+            except Exception:
                 pass
             for v in verts:
                 pt = v.Point
@@ -1681,14 +1682,14 @@ class IfcDocument:
         self.filename = filename
         self.data = f.entById
         self.Entities = {0:f.header}
-        for k,e in self.data.iteritems():
+        for k,e in self.data.items():
             eid = int(e['id'])
             self.Entities[eid] = IfcEntity(e,self)
         if DEBUG: print(len(self.Entities),"entities created. Creating attributes...")
-        for k,ent in self.Entities.iteritems():
+        for k,ent in self.Entities.items():
             if DEBUG: print("attributing entity ",ent)
             if hasattr(ent,"attributes"):
-                for k,v in ent.attributes.iteritems():
+                for k,v in ent.attributes.items():
                     if DEBUG: print("parsing attribute: ",k," value ",v)
                     if isinstance(v,str):
                         val = self.__clean__(v)
@@ -1738,7 +1739,7 @@ class IfcDocument:
                         val =  self.getEnt(int(val))
                         if not val:
                             val = value
-        except:
+        except Exception:
             if DEBUG: print("error parsing attribute",value)
             val = value
         return val
@@ -1754,7 +1755,7 @@ class IfcDocument:
         elif isinstance(ref,str):
             l = []
             ref = ref.upper()
-            for k,ob in self.Entities.iteritems():
+            for k,ob in self.Entities.items():
                 if hasattr(ob,"type"):
                     if ob.type == ref:
                         l.append(ob)
@@ -1765,7 +1766,7 @@ class IfcDocument:
         "searches entities types for partial match"
         l = []
         pat = pat.upper()
-        for k,ob in self.Entities.iteritems():
+        for k,ob in self.Entities.items():
             if hasattr(ob,"type"):
                 if pat in ob.type:
                     if not ob.type in l:
@@ -1836,7 +1837,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
             elif e.type in ["IFCROOF"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Roof_Tree.svg"))
             elif e.type in ["IFCEXTRUDEDAREASOLID","IFCCLOSEDSHELL"]:
-                item.setIcon(1,QtGui.QIcon(":icons/Tree_Part.svg"))
+                item.setIcon(1, QtGui.QIcon(":/icons/Part_3D_object.svg"))
             elif e.type in ["IFCFACE"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Draft_SwitchMode.svg"))
             elif e.type in ["IFCARBITRARYCLOSEDPROFILEDEF","IFCPOLYLOOP"]:
@@ -2040,7 +2041,7 @@ class IfcWriter(object):
                 if APPLYFIX:
                     print("IfcWriter: Applying fix...")
                     self._fix(path)
-            except:
+            except Exception:
                 print("IfcWriter: Error writing to "+path)
             else:
                 print("IfcWriter: Successfully written to "+path)
@@ -2174,7 +2175,7 @@ class IfcWriter(object):
         prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,representations])
         try:
             elt = create(self._fileobject,elttype,[uid(),self._owner,name,description,None,placement,prd,None]+extra)
-        except:
+        except Exception:
             print("unable to create an ",elttype, " with attributes: ",[uid(),self._owner,str(name),description,None,placement,prd,None]+extra)
             try:
                 if hasattr(ifcw,"Entity"):
@@ -2183,7 +2184,7 @@ class IfcWriter(object):
                     o = ifcw.entity_instance(elttype)
                 print("supported attributes are: ")
                 print(getPropertyNames(o))
-            except:
+            except Exception:
                 print("unable to create an element of type '"+elttype+"'")
             print("WARNING: skipping object '"+name+"' of type "+elttype)
             return None

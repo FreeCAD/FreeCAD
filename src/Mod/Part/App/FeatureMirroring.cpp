@@ -88,6 +88,9 @@ void Mirroring::handleChangedPropertyType(Base::XMLReader &reader, const char *T
 
         Normal.setValue(v.getValue());
     }
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 App::DocumentObjectExecReturn *Mirroring::execute(void)
@@ -95,14 +98,11 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
     App::DocumentObject* link = Source.getValue();
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *source = static_cast<Part::Feature*>(link);
     Base::Vector3d base = Base.getValue();
     Base::Vector3d norm = Normal.getValue();
 
     try {
-        const TopoDS_Shape& shape = source->Shape.getValue();
+        const TopoDS_Shape& shape = Feature::getShape(link);
         if (shape.IsNull())
             Standard_Failure::Raise("Cannot mirroR empty shape");
         gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));

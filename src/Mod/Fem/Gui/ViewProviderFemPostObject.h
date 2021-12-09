@@ -80,7 +80,7 @@ public:
 
     App::PropertyEnumeration            Field;
     App::PropertyEnumeration            VectorMode;
-    App::PropertyPercent                Transperency;
+    App::PropertyPercent                Transparency;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);
@@ -119,7 +119,7 @@ public:
 protected:
     virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();
-    void update();
+    void updateVtk();
 
     SoCoordinate3*              m_coordinates;
     SoIndexedPointSet*          m_markers;
@@ -150,7 +150,7 @@ private:
     void WritePointData(vtkPoints *points, vtkDataArray *normals,
                         vtkDataArray *tcoords);
     void WriteColorData(bool ResetColorBarRange);
-    void WriteTransperency();
+    void WriteTransparency();
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
     bool m_blockPropertyChanges;

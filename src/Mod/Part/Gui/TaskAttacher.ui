@@ -118,10 +118,10 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>AttachmentOffset property. The placement is expressed in local space of object being attached.</string>
+      <string/>
      </property>
      <property name="title">
-      <string>Attachment Offset:</string>
+      <string>Attachment Offset (in local coordinates):</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
@@ -133,7 +133,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>X:</string>
+         <string>In x-direction:</string>
         </property>
         <property name="buddy">
          <cstring>labelOffset</cstring>
@@ -149,12 +149,12 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Y:</string>
+         <string>In y-direction:</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetY" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetY">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -166,6 +166,13 @@
           <width>0</width>
           <height>5</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -178,12 +185,12 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Z:</string>
+         <string>In z-direction:</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetZ" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetZ">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -195,6 +202,13 @@
           <width>0</width>
           <height>5</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -207,7 +221,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Yaw:</string>
+         <string>Around x-axis:</string>
         </property>
        </widget>
       </item>
@@ -220,7 +234,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Pitch:</string>
+         <string>Around y-axis:</string>
         </property>
        </widget>
       </item>
@@ -233,12 +247,12 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Roll:</string>
+         <string>Around z-axis:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetX" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetX">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -251,71 +265,93 @@
           <height>5</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetYaw" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Rotation around the x-axis
+Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>-360.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>360.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetPitch" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetPitch">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Rotation around the y-axis
+Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>-360.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>360.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetYaw">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Rotation around the z-axis
+Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>-360.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>360.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -324,6 +360,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="checkBoxFlip">
+     <property name="toolTip">
+      <string>Flip side of attachment and offset</string>
+     </property>
      <property name="text">
       <string>Flip sides</string>
      </property>
@@ -339,7 +378,7 @@
   </customwidget>
   <customwidget>
    <class>Gui::PrefQuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
@@ -356,9 +395,9 @@
   <tabstop>attachmentOffsetX</tabstop>
   <tabstop>attachmentOffsetY</tabstop>
   <tabstop>attachmentOffsetZ</tabstop>
-  <tabstop>attachmentOffsetYaw</tabstop>
-  <tabstop>attachmentOffsetPitch</tabstop>
   <tabstop>attachmentOffsetRoll</tabstop>
+  <tabstop>attachmentOffsetPitch</tabstop>
+  <tabstop>attachmentOffsetYaw</tabstop>
   <tabstop>checkBoxFlip</tabstop>
  </tabstops>
  <resources/>

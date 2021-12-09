@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -31,6 +31,8 @@
 # include <BRepAdaptor_Surface.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -54,6 +56,7 @@
 
 #include "TaskTransformedParameters.h"
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -62,22 +65,22 @@ using namespace Gui;
 
 TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + TransformedView->featureName).c_str()),
-              QString::fromLatin1((TransformedView->featureName + " parameters").c_str()),
-              true,
-              parent),
-      proxy(nullptr),
-      TransformedView(TransformedView),
-      parentTask(nullptr),
-      insideMultiTransform(false),
-      blockUpdate(false)
+              QString::fromLatin1((TransformedView->featureName + " parameters").c_str()), true, parent)
+    , proxy(nullptr)
+    , TransformedView(TransformedView)
+    , parentTask(nullptr)
+    , insideMultiTransform(false)
+    , blockUpdate(false)
 {
     selectionMode = none;
 
     if (TransformedView) {
         Gui::Document* doc = TransformedView->getDocument();
         this->attachDocument(doc);
-        this->enableNotifications(DocumentObserver::Delete);
     }
+
+    // remember initial transaction ID
+    App::GetApplication().getActiveTransaction(&transactionID);
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
@@ -114,6 +117,14 @@ int TaskTransformedParameters::getUpdateViewTimeout() const
     return 500;
 }
 
+void TaskTransformedParameters::addObject(App::DocumentObject*)
+{
+}
+
+void TaskTransformedParameters::removeObject(App::DocumentObject*)
+{
+}
+
 bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection && (
@@ -130,16 +141,23 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
             std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
             std::vector<App::DocumentObject*>::iterator o = std::find(originals.begin(), originals.end(), selectedObject);
             if (selectionMode == addFeature) {
-                if (o == originals.end())
+                if (o == originals.end()) {
                     originals.push_back(selectedObject);
-                else
+                    addObject(selectedObject);
+                }
+                else {
                     return false; // duplicate selection
+                }
             } else {
-                if (o != originals.end())
+                if (o != originals.end()) {
                     originals.erase(o);
-                else
+                    removeObject(selectedObject);
+                }
+                else {
                     return false;
+                }
             }
+            setupTransaction();
             pcTransformed->Originals.setValues(originals);
             recomputeFeature();
 
@@ -148,6 +166,36 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
     }
 
     return false;
+}
+
+void TaskTransformedParameters::setupTransaction()
+{
+    if (!isEnabledTransaction())
+        return;
+
+    auto obj = getObject();
+    if (!obj)
+        return;
+
+    int tid = 0;
+    App::GetApplication().getActiveTransaction(&tid);
+    if (tid && tid == transactionID)
+        return;
+
+    // open a transaction if none is active
+    std::string n("Edit ");
+    n += obj->Label.getValue();
+    transactionID = App::GetApplication().setActiveTransaction(n.c_str());
+}
+
+void TaskTransformedParameters::setEnabledTransaction(bool on)
+{
+    enableTransaction = on;
+}
+
+bool TaskTransformedParameters::isEnabledTransaction() const
+{
+    return enableTransaction;
 }
 
 void TaskTransformedParameters::onButtonAddFeature(bool checked)
@@ -162,11 +210,28 @@ void TaskTransformedParameters::onButtonAddFeature(bool checked)
     }
 }
 
+// Make sure only some feature before the given one is visible
+void TaskTransformedParameters::checkVisibility() {
+    auto feat = getObject();
+    auto body = feat->getFeatureBody();
+    if(!body) return;
+    auto inset = feat->getInListEx(true);
+    inset.emplace(feat);
+    for(auto o : body->Group.getValues()) {
+        if(!o->Visibility.getValue()
+                || !o->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            continue;
+        if(inset.count(o))
+            break;
+        return;
+    }
+    FCMD_OBJ_SHOW(getBaseObject());
+}
+
 void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
 {
     if (checked) {
-        hideObject();
-        showBase();
+        checkVisibility();
         selectionMode = removeFeature;
         Gui::Selection().clearSelection();
     } else {
@@ -270,13 +335,15 @@ PartDesignGui::ViewProviderTransformed *TaskTransformedParameters::getTopTransfo
     } else {
         rv = TransformedView;
     }
-    assert (rv);
-
     return rv;
 }
 
 PartDesign::Transformed *TaskTransformedParameters::getTopTransformedObject() const {
-    App::DocumentObject *transform = getTopTransformedView()->getObject();
+    ViewProviderTransformed* vp = getTopTransformedView();
+    if (!vp)
+        return nullptr;
+
+    App::DocumentObject *transform = vp->getObject();
     assert (transform->isDerivedFrom(PartDesign::Transformed::getClassTypeId()));
     return static_cast<PartDesign::Transformed*>(transform);
 }
@@ -290,70 +357,105 @@ PartDesign::Transformed *TaskTransformedParameters::getObject() const {
         return nullptr;
 }
 
-Part::Feature *TaskTransformedParameters::getBaseObject() const {
+App::DocumentObject *TaskTransformedParameters::getBaseObject() const {
     PartDesign::Feature* feature = getTopTransformedObject ();
-    // NOTE: getBaseObject() throws if there is no base; shouldn't happen here.
-    return feature->getBaseObject();
-}
+    if (!feature)
+        return nullptr;
 
-const std::vector<App::DocumentObject*> & TaskTransformedParameters::getOriginals(void) const {
-    return getTopTransformedObject()->Originals.getValues();
+    // NOTE: getBaseObject() throws if there is no base; shouldn't happen here.
+    App::DocumentObject *base = feature->getBaseObject(true);
+    if(!base) {
+        auto body = feature->getFeatureBody();
+        if(body)
+            base = body->getPrevSolidFeature(feature);
+    }
+    return base;
 }
 
 App::DocumentObject* TaskTransformedParameters::getSketchObject() const {
-    return getTopTransformedObject()->getSketchObject();
+    PartDesign::Transformed* feature = getTopTransformedObject();
+    return feature ? feature->getSketchObject() : nullptr;
 }
 
 void TaskTransformedParameters::hideObject()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        doc->setHide(getTopTransformedObject()->getNameInDocument());
+    try {
+        FCMD_OBJ_HIDE(getTopTransformedObject());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
     }
 }
 
 void TaskTransformedParameters::showObject()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        doc->setShow(getTopTransformedObject()->getNameInDocument());
+    try {
+        FCMD_OBJ_SHOW(getTopTransformedObject());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
     }
 }
 
 void TaskTransformedParameters::hideBase()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        try {
-            doc->setHide(getBaseObject()->getNameInDocument());
-        } catch (const Base::Exception &) { }
+    try {
+        FCMD_OBJ_HIDE(getBaseObject());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
     }
 }
 
 void TaskTransformedParameters::showBase()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        try {
-            doc->setShow(getBaseObject()->getNameInDocument());
-        } catch (const Base::Exception &) { }
+    try {
+        FCMD_OBJ_SHOW(getBaseObject());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
     }
 }
 
 void TaskTransformedParameters::exitSelectionMode()
 {
-    clearButtons();
-    selectionMode = none;
-    Gui::Selection().rmvSelectionGate();
-    showObject();
-    hideBase();
+    try {
+        clearButtons();
+        selectionMode = none;
+        Gui::Selection().rmvSelectionGate();
+        showObject();
+    } catch(Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
-void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
+void TaskTransformedParameters::addReferenceSelectionGate(AllowSelectionFlags allow)
 {
-    std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(new ReferenceSelection(getBaseObject(), edge, face, /*point =*/ true));
+    std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(new ReferenceSelection(getBaseObject(), allow));
     std::unique_ptr<Gui::SelectionFilterGate> gateDepPtr(new NoDependentsSelection(getTopTransformedObject()));
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
+}
+
+void TaskTransformedParameters::indexesMoved()
+{
+    QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
+    if (!model)
+        return;
+
+    PartDesign::Transformed* pcTransformed = getObject();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+
+    QByteArray name;
+    int rows = model->rowCount();
+    for (int i = 0; i < rows; i++) {
+        QModelIndex index = model->index(i, 0);
+        name = index.data(Qt::UserRole).toByteArray().constData();
+        originals[i] = pcTransformed->getDocument()->getObject(name.constData());
+    }
+
+    setupTransaction();
+    pcTransformed->Originals.setValues(originals);
+    recomputeFeature();
 }
 
 //**************************************************************************
@@ -374,19 +476,7 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransform
 
 bool TaskDlgTransformedParameters::accept()
 {
-    std::string name = vp->getObject()->getNameInDocument();
-
-    //Gui::Command::openCommand(featureName + " changed");
-    std::vector<App::DocumentObject*> originals = parameter->getOriginals();
-    std::stringstream str;
-    str << "App.ActiveDocument." << name.c_str() << ".Originals = [";
-    for (std::vector<App::DocumentObject*>::const_iterator it = originals.begin(); it != originals.end(); ++it)
-    {
-        if ((*it) != NULL)
-            str << "App.ActiveDocument." << (*it)->getNameInDocument() << ",";
-    }
-    str << "]";
-    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
+    parameter->exitSelectionMode();
 
     // Continue (usually in virtual method accept())
     return TaskDlgFeatureParameters::accept ();
@@ -396,7 +486,6 @@ bool TaskDlgTransformedParameters::reject()
 {
     // ensure that we are not in selection mode
     parameter->exitSelectionMode();
-
     return TaskDlgFeatureParameters::reject ();
 }
 
@@ -449,9 +538,9 @@ void ComboLinks::clear()
 App::PropertyLinkSub &ComboLinks::getLink(int index) const
 {
     if (index < 0 || index > (ssize_t) linksInList.size()-1)
-        throw Base::Exception("ComboLinks::getLink:Index out of range");
+        throw Base::IndexError("ComboLinks::getLink:Index out of range");
     if (linksInList[index]->getValue() && doc && !(doc->isIn(linksInList[index]->getValue())))
-        throw Base::Exception("Linked object is not in the document; it may have been deleted");
+        throw Base::ValueError("Linked object is not in the document; it may have been deleted");
     return *(linksInList[index]);
 }
 

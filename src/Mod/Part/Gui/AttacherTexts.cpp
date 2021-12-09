@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2016     *
+ *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,13 +52,13 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
             return TwoStrings(qApp->translate("Attacher3D", "Translate origin","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Origin is aligned to match Vertex. Orientation is controlled by Placement property.","Attachment3D mode tooltip"));
         case mmObjectXY:
-            return TwoStrings(qApp->translate("Attacher3D", "Object's  X Y Z","Attachment3D mode caption"),
+            return TwoStrings(qApp->translate("Attacher3D", "Object's X Y Z","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "Placement is made equal to Placement of linked object.","Attachment3D mode tooltip"));
         case mmObjectXZ:
-            return TwoStrings(qApp->translate("Attacher3D", "Object's  X Z-Y","Attachment3D mode caption"),
+            return TwoStrings(qApp->translate("Attacher3D", "Object's X Z Y","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.","Attachment3D mode tooltip"));
         case mmObjectYZ:
-            return TwoStrings(qApp->translate("Attacher3D", "Object's  Y Z X","Attachment3D mode caption"),
+            return TwoStrings(qApp->translate("Attacher3D", "Object's Y Z X","Attachment3D mode caption"),
                               qApp->translate("Attacher3D", "X', Y', Z' axes are matched with object's local Y, Z, X, respectively.","Attachment3D mode tooltip"));
         case mmFlatFace:
             return TwoStrings(qApp->translate("Attacher3D", "XY on plane","Attachment3D mode caption"),
@@ -134,7 +133,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
             return TwoStrings(qApp->translate("Attacher2D", "Object's XZ","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Plane is aligned to XZ local plane of linked object.","AttachmentPlane mode tooltip"));
         case mmObjectYZ:
-            return TwoStrings(qApp->translate("Attacher2D", "Object's  YZ","AttachmentPlane mode caption"),
+            return TwoStrings(qApp->translate("Attacher2D", "Object's YZ","AttachmentPlane mode caption"),
                               qApp->translate("Attacher2D", "Plane is aligned to YZ local plane of linked object.","AttachmentPlane mode tooltip"));
         case mmFlatFace:
             return TwoStrings(qApp->translate("Attacher2D", "Plane face","AttachmentPlane mode caption"),
@@ -349,7 +348,7 @@ QString getShapeTypeText(eRefType type)
         }
     }
 
-    throw Base::Exception("getShTypeText: type value is wrong, or a string is missing in the list");
+    throw Base::TypeError("getShTypeText: type value is wrong, or a string is missing in the list");
 }
 
 QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
@@ -369,7 +368,7 @@ QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
 
 // --------------------Py interface---------------------
 
-PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args)
 {
     int modeIndex = 0;
     char* attacherType;
@@ -400,7 +399,7 @@ PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args, Py
     }
 }
 
-PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObject *args)
 {
     int refTypeIndex = 0;
     if (!PyArg_ParseTuple(args, "i", &refTypeIndex))
@@ -419,9 +418,9 @@ PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObje
 
 
 PyMethodDef AttacherGuiPy::Methods[] = {
-    {"getModeStrings",             (PyCFunction) AttacherGuiPy::sGetModeStrings, 1,
+    {"getModeStrings",             (PyCFunction) AttacherGuiPy::sGetModeStrings, METH_VARARGS,
      "getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description."},
-    {"getRefTypeUserFriendlyName", (PyCFunction) AttacherGuiPy::sGetRefTypeUserFriendlyName, 1,
+    {"getRefTypeUserFriendlyName", (PyCFunction) AttacherGuiPy::sGetRefTypeUserFriendlyName, METH_VARARGS,
      "getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type."},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2005     *
+ *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,27 +26,50 @@
 
 #include <Base/PyObjectBase.h>
 #include <CXX/Extensions.hxx>
+#include <Gui/MDIView.h>
+#include <Gui/MDIViewPy.h>
 
 class SoEventCallback;
+class SoDragger;
 class QImage;
 
 namespace Gui {
 
 class View3DInventor;
 
+class Camera
+{
+public:
+    enum Orientation {
+        Top,
+        Bottom,
+        Front,
+        Rear,
+        Left,
+        Right,
+        Isometric,
+        Dimetric,
+        Trimetric,
+    };
+
+    static SbRotation rotation(Orientation view);
+};
+
 class View3DInventorPy : public Py::PythonExtension<View3DInventorPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    using BaseType = Py::PythonExtension<View3DInventorPy>;
+    static void init_type();    // announce properties and methods
 
     View3DInventorPy(View3DInventor *vi);
     ~View3DInventorPy();
 
+    View3DInventor* getView3DIventorPtr();
     Py::Object repr();
     Py::Object getattr(const char *);
     int setattr(const char *, const Py::Object &);
+    Py::Object cast_to_base(const Py::Tuple&);
 
-    Py::Object message(const Py::Tuple&);
     Py::Object fitAll(const Py::Tuple&);
     Py::Object boxZoom(const Py::Tuple&, const Py::Dict&);
     Py::Object viewBottom(const Py::Tuple&);
@@ -55,7 +78,10 @@ public:
     Py::Object viewRear(const Py::Tuple&);
     Py::Object viewRight(const Py::Tuple&);
     Py::Object viewTop(const Py::Tuple&);
-    Py::Object viewAxonometric(const Py::Tuple&);
+    Py::Object viewIsometric(const Py::Tuple&);
+    Py::Object viewDimetric(const Py::Tuple&);
+    Py::Object viewTrimetric(const Py::Tuple&);
+    Py::Object viewDefaultOrientation(const Py::Tuple&);
     Py::Object viewPosition(const Py::Tuple&);
     Py::Object viewRotateLeft(const Py::Tuple&);
     Py::Object viewRotateRight(const Py::Tuple&);
@@ -65,6 +91,8 @@ public:
     Py::Object stopAnimating(const Py::Tuple&);
     Py::Object setAnimationEnabled(const Py::Tuple&);
     Py::Object isAnimationEnabled(const Py::Tuple&);
+    Py::Object setPopupMenuEnabled(const Py::Tuple&);
+    Py::Object isPopupMenuEnabled(const Py::Tuple&);
     Py::Object dump(const Py::Tuple&);
     Py::Object dumpNode(const Py::Tuple&);
     Py::Object setStereoType(const Py::Tuple&);
@@ -107,6 +135,14 @@ public:
     Py::Object getActiveObject(const Py::Tuple&);
     Py::Object getViewProvidersOfType(const Py::Tuple&);
     Py::Object redraw(const Py::Tuple&);
+    Py::Object setName(const Py::Tuple&);
+    Py::Object toggleClippingPlane(const Py::Tuple& args, const Py::Dict &);
+    Py::Object hasClippingPlane(const Py::Tuple& args);
+    Py::Object graphicsView(const Py::Tuple& args);
+    Py::Object setCornerCrossVisible(const Py::Tuple& args);
+    Py::Object isCornerCrossVisible(const Py::Tuple& args);
+    Py::Object setCornerCrossSize(const Py::Tuple& args);
+    Py::Object getCornerCrossSize(const Py::Tuple& args);
 
 private:
     static void eventCallback(void * ud, SoEventCallback * n);
@@ -118,11 +154,11 @@ private:
     typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
     static method_varargs_handler pycxx_handler;
     static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
+    Py::Object getattribute(const char *);
 
 private:
+    Gui::MDIViewPy base;
     std::list<PyObject*> callbacks;
-    View3DInventor* _view;
-    friend class View3DInventor;
 };
 
 } // namespace Gui

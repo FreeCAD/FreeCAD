@@ -20,6 +20,12 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
+# pragma clang diagnostic ignored "-Winconsistent-missing-override"
+#endif
+
 #include "SMESH_ControlsDef.hxx"
 
 #include "SMDS_BallElement.hxx"
@@ -4765,3 +4771,7 @@ bool TMeshModifTracer::IsMeshModified()
   }
   return modified;
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif

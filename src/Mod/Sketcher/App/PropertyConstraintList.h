@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@
 #include <App/Property.h>
 #include <Mod/Part/App/Geometry.h>
 #include "Constraint.h"
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 #include <boost/unordered/unordered_map.hpp>
 
 namespace Base {
@@ -45,7 +45,7 @@ class Constraint;
 
 class SketcherExport PropertyConstraintList : public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -60,10 +60,10 @@ public:
      */
     virtual ~PropertyConstraintList();
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
-    
-    const char* getEditorName(void) const {
+    virtual void setSize(int newSize) override;
+    virtual int getSize(void) const override;
+
+    const char* getEditorName(void) const override {
         return "SketcherGui::PropertyConstraintListItem";
     }
 
@@ -87,50 +87,61 @@ public:
     void setValues(const std::vector<Constraint*>&);
 
     /*!
+      Sets a vector of constraint to the property.
+      The values of the array are moved, and the ownership of constraints
+      inside are taken by this property
+    */
+    void setValues(std::vector<Constraint*>&&);
+
+    /*!
      Index operator
      \note If the geometry is invalid then the index operator
            returns null. This must be checked by the caller.
     */
     const Constraint *operator[] (const int idx) const {
-        return invalidGeometry ? 0 : _lValueList[idx];
+        return (invalidGeometry || invalidIndices) ? 0 : _lValueList[idx];
     }
 
     const std::vector<Constraint*> &getValues(void) const {
-        return invalidGeometry ? _emptyValueList : _lValueList;
+        return (invalidGeometry || invalidIndices) ? _emptyValueList : _lValueList;
     }
     const std::vector<Constraint*> &getValuesForce(void) const {//to suppress check for invalid geometry, to be used for sketch repairing.
         return  _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
-    virtual void Save(Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save(Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const App::Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const App::Property &from) override;
 
-    virtual unsigned int getMemSize(void) const;
+    virtual unsigned int getMemSize(void) const override;
 
     void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
-    void checkGeometry(const std::vector<Part::Geometry *> &GeoList);
+    bool checkGeometry(const std::vector<Part::Geometry *> &GeoList);
     bool scanGeometry(const std::vector<Part::Geometry *> &GeoList) const;
+
+    bool checkConstraintIndices(int geomax, int geomin);
 
     /// Return status of geometry for better error reporting
     bool hasInvalidGeometry() const { return invalidGeometry; }
 
 
     const Constraint *getConstraint(const App::ObjectIdentifier &path) const;
-    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
-    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const;
-    virtual const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
-    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value) override;
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const override;
+    virtual App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const override;
+    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
+
+    virtual bool getPyPathValue(const App::ObjectIdentifier &path, Py::Object &res) const override;
 
     typedef std::pair<int, const Constraint*> ConstraintInfo ;
 
-    boost::signal<void (const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &)> signalConstraintsRenamed;
-    boost::signal<void (const std::set<App::ObjectIdentifier> &)> signalConstraintsRemoved;
+    boost::signals2::signal<void (const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &)> signalConstraintsRenamed;
+    boost::signals2::signal<void (const std::set<App::ObjectIdentifier> &)> signalConstraintsRemoved;
 
     static std::string getConstraintName(const std::string &name, int i);
 
@@ -152,8 +163,10 @@ private:
 
     std::vector<unsigned int> validGeometryKeys;
     bool invalidGeometry;
+    bool restoreFromTransaction;
+    bool invalidIndices;
 
-    void applyValues(const std::vector<Constraint*>&);
+    void applyValues(std::vector<Constraint*>&&);
     void applyValidGeometryKeys(const std::vector<unsigned int> &keys);
 
     static std::vector<Constraint *> _emptyValueList;

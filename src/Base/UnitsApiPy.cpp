@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "UnitsApi.h"
 #include "Quantity.h"
-#include "QuantityPy.h" 
+#include "QuantityPy.h"
 
 
 
@@ -43,7 +43,7 @@ using namespace Base;
 
 // UnitsApi Methods						// Methods structure
 PyMethodDef UnitsApi::Methods[] = {
-    //{"translateUnit",  (PyCFunction) UnitsApi::sTranslateUnit  ,1,
+    //{"translateUnit",  (PyCFunction) UnitsApi::sTranslateUnit, METH_VARARGS,
     // "translateUnit(string) -> double\n\n"
     // "calculate a mathematical expression with units to a number. \n"
     // "can be used for simple unit translation like: \n"
@@ -51,24 +51,24 @@ PyMethodDef UnitsApi::Methods[] = {
     // " or for more complex espressions:\n"
     // " translateUnit('sin(pi)/50.0 m/s^2')\n"
     //},
-    //{"getWithPrefs",  (PyCFunction) UnitsApi::sGetWithPrefs  ,1,
+    //{"getWithPrefs",  (PyCFunction) UnitsApi::sGetWithPrefs, METH_VARARGS,
     // "getWithPrefs(type,[string|float|int]) -> double\n\n"
     // "Translation to internal regarding user prefs \n"
     // " That means if no unit is issued the user prefs are in \n"
     // " charge. If one unit is used the user prefs get ignored\n"
     // " type can be: \n"
-    // " Length  \n"  
-    // " Area  \n"  
-    // " Volume  \n"  
-    // " Angle  \n" 
+    // " Length  \n"
+    // " Area  \n"
+    // " Volume  \n"
+    // " Angle  \n"
     // " TimeSpan  \n"
     // " Velocity  \n"
-    // " Acceleration \n" 
+    // " Acceleration \n"
     // " Mass   \n"
     // " Temperature \n"
 
     //},
-    {"parseQuantity",  (PyCFunction) UnitsApi::sParseQuantity  ,1,
+    {"parseQuantity",  (PyCFunction) UnitsApi::sParseQuantity, METH_VARARGS,
      "parseQuantity(string) -> Base.Quantity()\n\n"
      "calculate a mathematical expression with units to a quantity object. \n"
      "can be used for simple unit translation like: \n"
@@ -76,15 +76,19 @@ PyMethodDef UnitsApi::Methods[] = {
      "or for more complex espressions:\n"
      "parseQuantity('sin(pi)/50.0 m/s^2')\n"
     },
-    {"listSchemas",  (PyCFunction) UnitsApi::sListSchemas  ,1,
+    {"listSchemas",  (PyCFunction) UnitsApi::sListSchemas, METH_VARARGS,
      "listSchemas() -> a tuple of schemas\n\n"
      "listSchemas(int) -> description of the given schema\n\n"
     },
-    {"getSchema",  (PyCFunction) UnitsApi::sGetSchema  ,1,
+    {"getSchema",  (PyCFunction) UnitsApi::sGetSchema, METH_VARARGS,
      "getSchema() -> int\n\n"
      "The int is the position of the tuple returned by listSchemas"
     },
-    {"schemaTranslate",  (PyCFunction) UnitsApi::sSchemaTranslate  ,1,
+    {"setSchema",  (PyCFunction) UnitsApi::sSetSchema, METH_VARARGS,
+     "setSchema(int) -> None\n\n"
+     "Sets the current schema to the given number, if possible"
+    },
+    {"schemaTranslate",  (PyCFunction) UnitsApi::sSchemaTranslate, METH_VARARGS,
      "schemaTranslate(Quantity, int) -> tuple\n\n"
      "Translate a quantity to a given schema"
     },
@@ -92,7 +96,7 @@ PyMethodDef UnitsApi::Methods[] = {
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
-//PyObject* UnitsApi::sTranslateUnit(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+//PyObject* UnitsApi::sTranslateUnit(PyObject * /*self*/, PyObject *args)
 //{
 //    char *pstr;
 //    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
@@ -110,7 +114,7 @@ PyMethodDef UnitsApi::Methods[] = {
 //    }
 //}
 //
-//PyObject* UnitsApi::sGetWithPrefs(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+//PyObject* UnitsApi::sGetWithPrefs(PyObject * /*self*/, PyObject *args)
 //{
 //    char     *type;
 //    PyObject *obj;
@@ -138,7 +142,7 @@ PyMethodDef UnitsApi::Methods[] = {
 //    }
 //}
 
-PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args)
 {
     char *pstr;
     if (!PyArg_ParseTuple(args, "et", "utf-8", &pstr))     // convert args: Python->C
@@ -162,10 +166,10 @@ PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args,PyObject 
     return new QuantityPy(new Quantity(rtn));
 }
 
-PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args)
 {
     if (PyArg_ParseTuple(args, "")) {
-        int num = NumUnitSystemTypes;
+        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         Py::Tuple tuple(num);
         for (int i=0; i<num; i++) {
             tuple.setItem(i, Py::String(UnitsApi::getDescription(static_cast<UnitSystem>(i))));
@@ -177,7 +181,7 @@ PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args,PyObject * 
     PyErr_Clear();
     int index;
     if (PyArg_ParseTuple(args, "i", &index)) {
-        int num = NumUnitSystemTypes;
+        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         if (index < 0 || index >= num) {
             PyErr_SetString(PyExc_ValueError, "invalid schema value");
             return 0;
@@ -190,7 +194,7 @@ PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args,PyObject * 
     return 0;
 }
 
-PyObject* UnitsApi::sGetSchema(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* UnitsApi::sGetSchema(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
@@ -198,7 +202,22 @@ PyObject* UnitsApi::sGetSchema(PyObject * /*self*/, PyObject *args,PyObject * /*
     return Py_BuildValue("i", static_cast<int>(actSystem));
 }
 
-PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* UnitsApi::sSetSchema(PyObject * /*self*/, PyObject *args)
+{
+    PyErr_Clear();
+    int index;
+    if (PyArg_ParseTuple(args, "i", &index)) {
+        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
+        if (index < 0 || index >= num) {
+            PyErr_SetString(PyExc_ValueError, "invalid schema value");
+            return 0;
+        }
+        setSchema((UnitSystem)index);
+    }
+    Py_Return;
+}
+
+PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)
 {
     PyObject* q;
     int index;

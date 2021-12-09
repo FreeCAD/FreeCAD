@@ -1,6 +1,6 @@
 /*
  * Extends the QuarterWidget with all functions the SoQtViewer has
- * Copyright (C) 2014  Stefan Tröger <stefantroeger@gmx.net>
+ * Copyright (c) 2014 Stefan Tröger <stefantroeger@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,9 +47,9 @@ typedef void SoQTQuarterAdaptorCB(void* data, SoQTQuarterAdaptor* viewer);
 class QUARTER_DLL_API SoQTQuarterAdaptor :  public QuarterWidget {
 
 public:
-    explicit SoQTQuarterAdaptor(QWidget* parent = 0, const QtGLWidget* sharewidget = 0, Qt::WindowFlags f = 0);
-    explicit SoQTQuarterAdaptor(const QtGLFormat& format, QWidget* parent = 0, const QtGLWidget* shareWidget = 0, Qt::WindowFlags f = 0);
-    explicit SoQTQuarterAdaptor(QtGLContext* context, QWidget* parent = 0, const QtGLWidget* sharewidget = 0, Qt::WindowFlags f = 0);
+    explicit SoQTQuarterAdaptor(QWidget* parent = nullptr, const QtGLWidget* sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+    explicit SoQTQuarterAdaptor(const QtGLFormat& format, QWidget* parent = nullptr, const QtGLWidget* shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+    explicit SoQTQuarterAdaptor(QtGLContext* context, QWidget* parent = nullptr, const QtGLWidget* sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     virtual ~SoQTQuarterAdaptor();
 
     //the functions available in soqtviewer but missing in quarter
@@ -59,38 +59,38 @@ public:
     QWidget* getGLWidget() const;
 
     virtual void setCameraType(SoType type);
-    SoCamera * getCamera(void) const;
+    SoCamera * getCamera() const;
 
-    const SbViewportRegion & getViewportRegion(void) const;
+    const SbViewportRegion & getViewportRegion() const;
 
     virtual void setViewing(SbBool enable);
-    SbBool isViewing(void) const;
+    SbBool isViewing() const;
 
-    void interactiveCountInc(void);
-    void interactiveCountDec(void);
-    int  getInteractiveCount(void) const;
+    void interactiveCountInc();
+    void interactiveCountDec();
+    int  getInteractiveCount() const;
 
-    void addStartCallback(SoQTQuarterAdaptorCB* func, void* data = NULL);
-    void addFinishCallback(SoQTQuarterAdaptorCB* func, void* data = NULL);
-    void removeStartCallback(SoQTQuarterAdaptorCB* func, void* data = NULL);
-    void removeFinishCallback(SoQTQuarterAdaptorCB* func, void* data = NULL);
+    void addStartCallback(SoQTQuarterAdaptorCB* func, void* data = nullptr);
+    void addFinishCallback(SoQTQuarterAdaptorCB* func, void* data = nullptr);
+    void removeStartCallback(SoQTQuarterAdaptorCB* func, void* data = nullptr);
+    void removeFinishCallback(SoQTQuarterAdaptorCB* func, void* data = nullptr);
 
     virtual void setSeekMode(SbBool enable);
-    SbBool isSeekMode(void) const;
+    SbBool isSeekMode() const;
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
     void setSeekTime(const float seconds);
-    float getSeekTime(void) const;
+    float getSeekTime() const;
     void setSeekDistance(const float distance);
-    float getSeekDistance(void) const;
+    float getSeekDistance() const;
     void setSeekValueAsPercentage(const SbBool on);
-    SbBool isSeekValuePercentage(void) const;
+    SbBool isSeekValuePercentage() const;
 
-    virtual float getPickRadius(void) const {return this->pickRadius;}
+    virtual float getPickRadius() const {return this->pickRadius;}
     virtual void setPickRadius(float pickRadius);
 
-    virtual void saveHomePosition(void);
-    virtual void resetToHomePosition(void);
+    virtual void saveHomePosition();
+    virtual void resetToHomePosition();
 
     virtual void setSceneGraph(SoNode* root) {
         QuarterWidget::setSceneGraph(root);
@@ -100,7 +100,7 @@ public:
     virtual void paintEvent(QPaintEvent*);
 
     //this functions still need to be ported
-    virtual void afterRealizeHook(void) {} //enables spacenav and joystick in soqt, dunno if this is needed
+    virtual void afterRealizeHook() {} //enables spacenav and joystick in soqt, dunno if this is needed
 
 private:
     void init();
@@ -109,7 +109,7 @@ private:
     void getCameraCoordinateSystem(SoCamera * camera, SoNode * root, SbMatrix & matrix, SbMatrix & inverse);
     static void seeksensorCB(void * data, SoSensor * s);
     void moveCameraScreen(const SbVec2f & screenpos);
-    void resetFrameCounter(void);
+    void resetFrameCounter();
     SbVec2f addFrametime(double ft);
 
     bool m_viewingflag;
@@ -117,9 +117,8 @@ private:
     SoCallbackList m_interactionStartCallback;
     SoCallbackList m_interactionEndCallback;
 
-    // Keep track of the frames-per-second counter.
-    std::vector<float> frames;
-    float totaldraw;
+    double frametime;
+    double drawtime;
     double starttime;
     int framecount;
 

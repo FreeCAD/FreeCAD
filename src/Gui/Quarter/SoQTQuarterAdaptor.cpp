@@ -34,6 +34,12 @@
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
 
+#if !defined(FC_OS_MACOSX)
+# include <GL/gl.h>
+# include <GL/glu.h>
+# include <GL/glext.h>
+#endif
+
 static unsigned char fps2dfont[][12] = {
     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
     {  0,  0, 12, 12,  0,  8, 12, 12, 12, 12, 12,  0 }, // !
@@ -162,7 +168,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::init()
     m_seekdistanceabs = false;
     m_seekperiod = 2.0f;
     m_inseekmode = false;
-    m_storedcamera = 0;
+    m_storedcamera = nullptr;
     m_viewingflag = false;
     pickRadius = 5.0;
 
@@ -212,8 +218,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
     SbBool oldisperspective = cam ? cam->getTypeId().isDerivedFrom(perspectivetype) : false;
     SbBool newisperspective = type.isDerivedFrom(perspectivetype);
 
-    if((oldisperspective && newisperspective) ||
-       (!oldisperspective && !newisperspective)) // Same old, same old..
+    if (oldisperspective == newisperspective) // Same old, same old..
         return;
 
 
@@ -253,6 +258,11 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertOrtho2Perspective(const SoOrthographicCamera* in,
         SoPerspectiveCamera* out)
 {
+    if (!in || !out) {
+        Base::Console().Log("Quarter::convertOrtho2Perspective",
+                            "Cannot convert camera settings due to wrong input.");
+        return;
+    }
     out->aspectRatio.setValue(in->aspectRatio.getValue());
     out->focalDistance.setValue(in->focalDistance.getValue());
     out->orientation.setValue(in->orientation.getValue());
@@ -288,12 +298,12 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertPerspective2Ortho(const So
     out->height = 2.0f * focaldist * (float)tan(in->heightAngle.getValue() / 2.0);
 }
 
-SoCamera* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCamera(void) const
+SoCamera* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCamera() const
 {
     return getSoRenderManager()->getCamera();
 }
 
-const SbViewportRegion & SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getViewportRegion(void) const
+const SbViewportRegion & SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getViewportRegion() const
 {
     return getSoRenderManager()->getViewportRegion();
 }
@@ -308,17 +318,17 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(SbBool enable)
     if(m_viewingflag) {
         SoGLRenderAction* action = getSoRenderManager()->getGLRenderAction();
 
-        if(action != NULL)
+        if(action != nullptr)
             SoLocateHighlight::turnOffCurrentHighlight(action);
     }
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isViewing(void) const
+SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isViewing() const
 {
     return m_viewingflag;
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountInc(void)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountInc()
 {
     // Catch problems with missing interactiveCountDec() calls.
     assert(m_interactionnesting < 100);
@@ -328,7 +338,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountInc(void)
     }
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountDec(void)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountDec()
 {
     if(--m_interactionnesting <= 0) {
         m_interactionEndCallback.invokeCallbacks(this);
@@ -336,7 +346,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountDec(void)
     }
 }
 
-int SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getInteractiveCount(void) const
+int SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getInteractiveCount() const
 {
     return m_interactionnesting;
 }
@@ -362,22 +372,22 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::removeFinishCallback(SIM::Coin3D:
 }
 
 
-float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekDistance(void) const
+float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekDistance() const
 {
     return m_seekdistance;
 }
 
-float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekTime(void) const
+float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekTime() const
 {
     return m_seekperiod;
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekMode(void) const
+SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekMode() const
 {
     return m_inseekmode;
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekValuePercentage(void) const
+SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekValuePercentage() const
 {
     return m_seekdistanceabs ? false : true;
 }
@@ -531,7 +541,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seeksensorCB(void* data, SoSensor
     if(end) thisp->setSeekMode(false);
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition(void)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition()
 {
     SoCamera* cam = getSoRenderManager()->getCamera();
     if (!cam) {
@@ -552,7 +562,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition(void)
     m_storedcamera->copyFieldValues(getSoRenderManager()->getCamera());
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetToHomePosition(void)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetToHomePosition()
 {
     SoCamera* cam = getSoRenderManager()->getCamera();
     if (!cam) {
@@ -709,32 +719,37 @@ bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::processSoEvent(const SoEvent* eve
 */
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::paintEvent(QPaintEvent* event)
 {
+    double start = SbTime::getTimeOfDay().getValue();
     QuarterWidget::paintEvent(event);
-
-    this->framesPerSecond = addFrametime(SbTime::getTimeOfDay().getValue());
+    this->framesPerSecond = addFrametime(start);
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetFrameCounter(void)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetFrameCounter()
 {
     this->framecount = 0;
-    this->frames.assign(100, 0.0f);
-    this->totaldraw = 0.0f;
+    this->frametime = 0.0f;
+    this->drawtime = 0.0f;
     this->starttime = SbTime::getTimeOfDay().getValue();
     this->framesPerSecond = SbVec2f(0, 0);
 }
 
-SbVec2f SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFrametime(double timeofday)
+SbVec2f SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFrametime(double starttime)
 {
-    int framearray_size = 100;
     this->framecount++;
 
-    int arrayptr = (this->framecount - 1) % framearray_size;
+    double timeofday = SbTime::getTimeOfDay().getValue();
 
-    double renderTime = timeofday - this->starttime;
-    this->totaldraw += (float(renderTime) - this->frames[arrayptr]);
-    float drawfps = this->totaldraw / std::min<int>(this->framecount, framearray_size);
+    // draw time is the actual time spent on rendering
+    double drawtime = timeofday - starttime;
+#define FPS_FACTOR 0.7
+    this->drawtime = (drawtime*FPS_FACTOR) + this->drawtime*(1.0-FPS_FACTOR);
 
-    this->frames[arrayptr] = static_cast<float>(renderTime);
+    // frame time is the time spent since the last frame. There could an
+    // indefinite pause between the last frame because the scene is not
+    // changing. So we limit the skew to 5 second.
+    double frametime = std::min(timeofday-this->starttime, std::max(drawtime,5000.0));
+    this->frametime = (frametime*FPS_FACTOR) + this->frametime*(1.0-FPS_FACTOR);
+
     this->starttime = timeofday;
-    return SbVec2f(1000 * drawfps, 1.0f / drawfps);
+    return SbVec2f(1000 * this->drawtime, 1.0f / this->frametime);
 }

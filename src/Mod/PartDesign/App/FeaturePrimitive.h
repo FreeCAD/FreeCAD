@@ -29,6 +29,7 @@
 
 #include "FeatureAddSub.h"
 #include <Mod/Part/App/AttachExtension.h>
+#include <Mod/Part/App/PrismExtension.h>
 
 namespace PartDesign
 {
@@ -51,20 +52,19 @@ public:
     
     FeaturePrimitive();
     
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderPrimitive";
     }
     Type         getPrimitiveType() {return primitiveType;}
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape& oldShape) const;    
-    virtual void onChanged(const App::Property* prop);
-    virtual PyObject* getPyObject();
+    virtual void onChanged(const App::Property* prop) override;
+    virtual PyObject* getPyObject() override;
     
     /// Do nothing, just to suppress warning, must be redefined in derived classes
-    virtual App::DocumentObjectExecReturn* execute() {
+    virtual App::DocumentObjectExecReturn* execute() override {
         return PartDesign::FeatureAddSub::execute();
     }
 protected:
-    void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
+    void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
     //make the boolean ops with the primitives provided by the derived features
     App::DocumentObjectExecReturn* execute(const TopoDS_Shape& primitiveShape);
     Type primitiveType = Box;   
@@ -107,7 +107,7 @@ class PartDesignExport SubtractiveBox : public Box {
 };
 
 
-class PartDesignExport Cylinder : public PartDesign::FeaturePrimitive {
+class PartDesignExport Cylinder : public PartDesign::FeaturePrimitive, public Part::PrismExtension {
 
     PROPERTY_HEADER(PartDesign::Cylinder);
 
@@ -124,9 +124,6 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
-    
-protected:
-    
 };
 
 class PartDesignExport AdditiveCylinder : public Cylinder {
@@ -308,14 +305,13 @@ class PartDesignExport SubtractiveTorus : public Torus {
 };
 
 
-class PartDesignExport Prism : public PartDesign::FeaturePrimitive {
+class PartDesignExport Prism : public PartDesign::FeaturePrimitive, public Part::PrismExtension {
 
     PROPERTY_HEADER(PartDesign::Prism);
 
 public:
-    
     Prism();
-    
+
     App::PropertyIntegerConstraint Polygon;
     App::PropertyLength Circumradius;
     App::PropertyLength Height;
@@ -325,9 +321,6 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
-    
-protected:
-    
 };
 
 class PartDesignExport AdditivePrism : public Prism {

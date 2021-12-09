@@ -22,8 +22,8 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERVIEWSECTION_H
-#define DRAWINGGUI_VIEWPROVIDERVIEWSECTION_H
+#ifndef TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
+#define TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
 
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -44,10 +44,11 @@ public:
     /// destructor
     virtual ~ViewProviderViewSection();
 
-    App::PropertyBool   ShowCutSurface;
+    App::PropertyBool   ShowCutSurface;        //obsolete - use CutSurfaceDisplay
     App::PropertyColor  CutSurfaceColor;
-    App::PropertyBool   HatchCutSurface;
+    App::PropertyBool   HatchCutSurface;       //obsolete - use CutSurfaceDisplay
     App::PropertyColor  HatchColor;
+    App::PropertyColor  GeomHatchColor;
     App::PropertyFloat  WeightPattern;
 
 
@@ -57,11 +58,15 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property *prop);
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+    virtual bool doubleClicked(void);
 
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
 
     void updateGraphic(void);
     void getParameters(void);
+    virtual bool canDelete(App::DocumentObject* obj) const;
 
     virtual TechDraw::DrawViewSection* getViewObject() const;
 };
@@ -69,4 +74,4 @@ public:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERVIEW_H
+#endif // TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H

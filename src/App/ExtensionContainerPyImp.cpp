@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2016     *
+ *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -112,6 +112,30 @@ int ExtensionContainerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
 {
+    if (Base::streq(attr, "__dict__")) {
+        PyObject* dict = PyDict_New();
+        PyObject* props = PropertyContainerPy::getCustomAttributes("__dict__");
+        if (props && PyDict_Check(props)) {
+            PyDict_Merge(dict, props, 0);
+            Py_DECREF(props);
+        }
+
+        ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
+        for (; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
+            // The PyTypeObject is shared by all instances of this type and therefore
+            // we have to add new methods only once.
+            PyObject* obj = (*it).second->getExtensionPyObject();
+            PyTypeObject *tp = Py_TYPE(obj);
+            if (tp && tp->tp_dict) {
+                Py_XINCREF(tp->tp_dict);
+                PyDict_Merge(dict, tp->tp_dict, 0);
+                Py_XDECREF(tp->tp_dict);
+            }
+            Py_DECREF(obj);
+        }
+
+        return dict;
+    }
     // Search for the method called 'attr' in the extensions. If the search with
     // Py_FindMethod is successful then a PyCFunction_New instance is returned
     // with the PyObject pointer of the extension to make sure the method will
@@ -150,19 +174,21 @@ int ExtensionContainerPy::setCustomAttributes(const char* /*attr*/, PyObject * /
 PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
 
     char *type;
-    if (!PyArg_ParseTuple(args, "s", &type)) 
+    PyObject *deriv = Py_True;
+    if (!PyArg_ParseTuple(args, "s|O", &type, &deriv))
         return NULL;                                         // NULL triggers exception 
 
     //get the extension type asked for
+    bool derived = PyObject_IsTrue(deriv);
     Base::Type extension =  Base::Type::fromName(type);
-    if(extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
+    if (extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
         std::stringstream str;
         str << "No extension found of type '" << type << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
 
     bool val = false;
-    if (getExtensionContainerPtr()->hasExtension(extension)) {
+    if (getExtensionContainerPtr()->hasExtension(extension, derived)) {
         val = true;
     }
 
@@ -172,9 +198,15 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
 PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
 
     char *typeId;
-    PyObject* proxy;
-    if (!PyArg_ParseTuple(args, "sO", &typeId, &proxy))
+    PyObject* proxy = nullptr;
+    if (!PyArg_ParseTuple(args, "s|O", &typeId, &proxy))
         return NULL;
+
+    if (proxy) {
+        PyErr_SetString(PyExc_DeprecationWarning, "Second argument is deprecated. It is ignored and will be removed in future versions. "
+                                                  "The default Python feature proxy is used for extension method overrides.");
+        PyErr_Print();
+    }
 
     //get the extension type asked for
     Base::Type extension =  Base::Type::fromName(typeId);
@@ -183,7 +215,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         str << "No extension found of type '" << typeId << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
-
+    
     //register the extension
     App::Extension* ext = static_cast<App::Extension*>(extension.createInstance());
     //check if this really is a python extension!
@@ -193,19 +225,11 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         str << "Extension is not a python addable version: '" << typeId << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
-
+    
+    GetApplication().signalBeforeAddingDynamicExtension(*getExtensionContainerPtr(), typeId);
     ext->initExtension(getExtensionContainerPtr());
 
-    //set the proxy to allow python overrides
-    App::Property* pp = ext->extensionGetPropertyByName("ExtensionProxy");
-    if (!pp) {
-        std::stringstream str;
-        str << "Accessing the proxy property failed!" << std::ends;
-        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
-    }
-    static_cast<PropertyPythonObject*>(pp)->setPyObject(proxy);
-
-    // The PyTypeObject is shared by all instances of this type and therefore
+      // The PyTypeObject is shared by all instances of this type and therefore
     // we have to add new methods only once.
     PyObject* obj = ext->getExtensionPyObject();
     PyMethodDef* meth = reinterpret_cast<PyMethodDef*>(obj->ob_type->tp_methods);
@@ -236,6 +260,9 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     }
 
     Py_DECREF(obj);
+    
+    //throw the appropriate event
+    GetApplication().signalAddedDynamicExtension(*getExtensionContainerPtr(), typeId);
 
     Py_Return;
 }

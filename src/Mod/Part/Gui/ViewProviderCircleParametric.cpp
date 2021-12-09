@@ -36,12 +36,12 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderCircleParametric, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderCircleParametric, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderCircleParametric::ViewProviderCircleParametric()
 {
-  sPixmap = "Part_Circle_Parametric.svg";
+  sPixmap = "Part_Circle_Parametric";
 }
 
 ViewProviderCircleParametric::~ViewProviderCircleParametric()

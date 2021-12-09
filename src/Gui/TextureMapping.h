@@ -39,7 +39,7 @@ class GuiExport TextureMapping : public QDialog
     Q_OBJECT
 
 public:
-    TextureMapping(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    TextureMapping(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~TextureMapping();
     void accept();
     void reject();
@@ -50,11 +50,13 @@ private Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
+    void keyPressEvent(QKeyEvent *e);
 
 private:
     SoGroup* grp;
     SoTexture2* tex;
     SoTextureCoordinateEnvironment* env;
+    QString fileName;
     Ui_TextureMapping* ui;
 };
 

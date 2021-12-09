@@ -33,13 +33,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>345</width>
-        <height>385</height>
+        <width>347</width>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">
        <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path-BaseGeometry.svg</normaloff>:/icons/Path-BaseGeometry.svg</iconset>
+        <normaloff>:/icons/Path_BaseGeometry.svg</normaloff>:/icons/Path_BaseGeometry.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Base Geometry</string>
@@ -111,13 +111,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>345</width>
-        <height>385</height>
+        <width>347</width>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">
        <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path-Depths.svg</normaloff>:/icons/Path-Depths.svg</iconset>
+        <normaloff>:/icons/Path_Depths.svg</normaloff>:/icons/Path_Depths.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Depths</string>
@@ -152,20 +152,13 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="Gui::InputField" name="finishDepth">
+        <widget class="Gui::InputField" name="stepDown">
          <property name="unit" stdset="0">
           <string notr="true">mm</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLabel" name="label_13">
-         <property name="text">
-          <string>Finish Depth</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Step Down</string>
@@ -173,9 +166,16 @@
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="Gui::InputField" name="stepDown">
+        <widget class="Gui::InputField" name="finishDepth">
          <property name="unit" stdset="0">
           <string notr="true">mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Finish Step Down</string>
          </property>
         </widget>
        </item>
@@ -186,13 +186,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>345</width>
-        <height>385</height>
+        <width>347</width>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">
        <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path-Heights.svg</normaloff>:/icons/Path-Heights.svg</iconset>
+        <normaloff>:/icons/Path_Heights.svg</normaloff>:/icons/Path_Heights.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Heights</string>
@@ -236,19 +236,19 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>345</width>
-        <height>385</height>
+        <width>347</width>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">
        <iconset resource="../Path.qrc">
-        <normaloff>:/icons/Path-OperationB.svg</normaloff>:/icons/Path-OperationB.svg</iconset>
+        <normaloff>:/icons/Path_OperationB.svg</normaloff>:/icons/Path_OperationB.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Operation</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="0">
         <widget class="QFrame" name="frame_2">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -256,27 +256,35 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
            <widget class="QLabel" name="label_8">
             <property name="text">
              <string>ToolController</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="0" column="1">
            <widget class="QComboBox" name="uiToolController"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Coolant Mode</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="coolantController">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item>
+       <item row="1" column="0">
         <widget class="QFrame" name="frame">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -309,7 +317,7 @@
          </layout>
         </widget>
        </item>
-       <item>
+       <item row="2" column="0">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

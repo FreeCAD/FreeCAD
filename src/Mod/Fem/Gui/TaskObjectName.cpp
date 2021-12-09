@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,10 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QString>
+# include <QSlider>
 #endif
 
-#include <QString>
-#include <QSlider>
+
 #include "ui_TaskObjectName.h"
 #include "TaskObjectName.h"
 #include <Gui/Application.h>
@@ -44,7 +45,7 @@ using namespace FemGui;
 using namespace Gui;
 
 TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"),
+    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"),
       tr("TaskObjectName"),
       true,
       parent),

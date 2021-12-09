@@ -58,32 +58,14 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskRevolutionParameters */
 
 TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* RevolutionView, QWidget *parent)
-    : TaskSketchBasedParameters(RevolutionView, parent, "PartDesign_Revolution",tr("Revolution parameters"))
+    : TaskSketchBasedParameters(RevolutionView, parent, "PartDesign_Revolution", tr("Revolution parameters"))
+    , ui(new Ui_TaskRevolutionParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskRevolutionParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
-
-    connect(ui->revolveAngle, SIGNAL(valueChanged(double)),
-            this, SLOT(onAngleChanged(double)));
-    connect(ui->axis, SIGNAL(activated(int)),
-            this, SLOT(onAxisChanged(int)));
-    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
-            this, SLOT(onMidplane(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onReversed(bool)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
-
     this->groupLayout()->addWidget(proxy);
-
-    // Temporarily prevent unnecessary feature recomputes
-    ui->revolveAngle->blockSignals(true);
-    ui->axis->blockSignals(true);
-    ui->checkBoxMidplane->blockSignals(true);
-    ui->checkBoxReversed->blockSignals(true);
 
     //bind property mirrors
     PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
@@ -93,6 +75,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         this->propMidPlane = &(rev->Midplane);
         this->propReferenceAxis = &(rev->ReferenceAxis);
         this->propReversed = &(rev->Reversed);
+        ui->revolveAngle->bind(rev->Angle);
     } else {
         assert(pcFeat->isDerivedFrom(PartDesign::Groove::getClassTypeId()));
         PartDesign::Groove* rev = static_cast<PartDesign::Groove*>(vp->getObject());
@@ -100,30 +83,19 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         this->propMidPlane = &(rev->Midplane);
         this->propReferenceAxis = &(rev->ReferenceAxis);
         this->propReversed = &(rev->Reversed);
+        ui->revolveAngle->bind(rev->Angle);
     }
 
-    double l = propAngle->getValue();
-    bool mirrored = propMidPlane->getValue();
-    bool reversed = propReversed->getValue();
+    ui->checkBoxMidplane->setChecked(propMidPlane->getValue());
+    ui->checkBoxReversed->setChecked(propReversed->getValue());
 
-    ui->revolveAngle->setValue(l);
+    ui->revolveAngle->setValue(propAngle->getValue());
+    ui->revolveAngle->setMaximum(propAngle->getMaximum());
+    ui->revolveAngle->setMinimum(propAngle->getMinimum());
+
     blockUpdate = false;
     updateUI();
-
-
-    ui->checkBoxMidplane->setChecked(mirrored);
-    ui->checkBoxReversed->setChecked(reversed);
-
-    if (pcFeat->isDerivedFrom(PartDesign::Revolution::getClassTypeId())) {
-        ui->revolveAngle->bind(static_cast<PartDesign::Revolution *>(pcFeat)->Angle);
-    } else if (pcFeat->isDerivedFrom(PartDesign::Groove::getClassTypeId())) {
-        ui->revolveAngle->bind(static_cast<PartDesign::Groove *> (pcFeat)->Angle);
-    }
-
-    ui->revolveAngle->blockSignals(false);
-    ui->axis->blockSignals(false);
-    ui->checkBoxMidplane->blockSignals(false);
-    ui->checkBoxReversed->blockSignals(false);
+    connectSignals();
 
     setFocus ();
 
@@ -172,9 +144,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         }
 
         //add part axes
-        App::DocumentObject* obj = vp->getObject();
-
-        PartDesign::Body * body = PartDesign::Body::findBodyOf ( obj );
+        PartDesign::Body * body = PartDesign::Body::findBodyOf ( pcFeat );
         if (body) {
             try {
                 App::Origin* orig = body->getOrigin();
@@ -225,6 +195,20 @@ void TaskRevolutionParameters::addAxisToCombo(App::DocumentObject* linkObj,
     lnk.setValue(linkObj,std::vector<std::string>(1,linkSubname));
 }
 
+void TaskRevolutionParameters::connectSignals()
+{
+    connect(ui->revolveAngle, SIGNAL(valueChanged(double)),
+            this, SLOT(onAngleChanged(double)));
+    connect(ui->axis, SIGNAL(activated(int)),
+            this, SLOT(onAxisChanged(int)));
+    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
+            this, SLOT(onMidplane(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onReversed(bool)));
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
+}
+
 void TaskRevolutionParameters::updateUI()
 {
     if (blockUpdate)
@@ -243,13 +227,12 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
         exitSelectionMode();
         std::vector<std::string> axis;
         App::DocumentObject* selObj;
-        getReferencedSelection(vp->getObject(), msg, selObj, axis);
-        if(!selObj)
-            return;
-        propReferenceAxis->setValue(selObj, axis);
+        if (getReferencedSelection(vp->getObject(), msg, selObj, axis) && selObj) {
+            propReferenceAxis->setValue(selObj, axis);
 
-        recomputeFeature();
-        updateUI();
+            recomputeFeature();
+            updateUI();
+        }
     }
 }
 
@@ -272,11 +255,16 @@ void TaskRevolutionParameters::onAxisChanged(int num)
 
     App::DocumentObject *oldRefAxis = propReferenceAxis->getValue();
     std::vector<std::string> oldSubRefAxis = propReferenceAxis->getSubValues();
+    std::string oldRefName;
+    if (!oldSubRefAxis.empty())
+        oldRefName = oldSubRefAxis.front();
 
     App::PropertyLinkSub &lnk = *(axesInList[num]);
     if (lnk.getValue() == 0) {
         // enter reference selection mode
-        TaskSketchBasedParameters::onSelectReference(true, true, false, true);
+        TaskSketchBasedParameters::onSelectReference(AllowSelection::EDGE |
+                                                     AllowSelection::PLANAR |
+                                                     AllowSelection::CIRCLE);
     } else {
         if (!pcRevolution->getDocument()->isIn(lnk.getValue())){
             Base::Console().Error("Object was deleted\n");
@@ -289,13 +277,17 @@ void TaskRevolutionParameters::onAxisChanged(int num)
     try {
         App::DocumentObject *newRefAxis = propReferenceAxis->getValue();
         const std::vector<std::string> &newSubRefAxis = propReferenceAxis->getSubValues();
+        std::string newRefName;
+        if (!newSubRefAxis.empty())
+            newRefName = newSubRefAxis.front();
+
         if (oldRefAxis != newRefAxis ||
             oldSubRefAxis.size() != newSubRefAxis.size() ||
-            oldSubRefAxis[0] != newSubRefAxis[0]) {
+            oldRefName != newRefName) {
             bool reversed = propReversed->getValue();
-            if(pcRevolution->isDerivedFrom(PartDesign::Revolution::getClassTypeId()))
+            if (pcRevolution->isDerivedFrom(PartDesign::Revolution::getClassTypeId()))
                 reversed = static_cast<PartDesign::Revolution*>(pcRevolution)->suggestReversed();
-            if(pcRevolution->isDerivedFrom(PartDesign::Groove::getClassTypeId()))
+            if (pcRevolution->isDerivedFrom(PartDesign::Groove::getClassTypeId()))
                 reversed = static_cast<PartDesign::Groove*>(pcRevolution)->suggestReversed();
 
             if (reversed != propReversed->getValue()) {
@@ -375,8 +367,6 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
         ex.ReportException();
     }
 
-    delete ui;
-
     for (size_t i = 0; i < axesInList.size(); i++) {
         delete axesInList[i];
     }
@@ -392,17 +382,16 @@ void TaskRevolutionParameters::changeEvent(QEvent *e)
 
 void TaskRevolutionParameters::apply()
 {
-    std::string name = vp->getObject()->getNameInDocument();
-
-    //Gui::Command::openCommand("Revolution changed");
+    //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Revolution changed"));
     ui->revolveAngle->apply();
     std::vector<std::string> sub;
     App::DocumentObject* obj;
     getReferenceAxis(obj, sub);
     std::string axis = buildLinkSingleSubPythonStr(obj, sub);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ReferenceAxis = %s",name.c_str(),axis.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(), getMidplane() ? 1 : 0);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(), getReversed() ? 1 : 0);
+    auto tobj = vp->getObject();
+    FCMD_OBJ_CMD(tobj,"ReferenceAxis = " << axis);
+    FCMD_OBJ_CMD(tobj,"Midplane = " << (getMidplane() ? 1 : 0));
+    FCMD_OBJ_CMD(tobj,"Reversed = " << (getReversed() ? 1 : 0));
 }
 
 //**************************************************************************

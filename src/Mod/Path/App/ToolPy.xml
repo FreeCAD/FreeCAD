@@ -5,7 +5,7 @@
         Name="ToolPy"
         Twin="Tool"
         TwinPointer="Tool"
-        Include="Mod/Path/App/Tooltable.h"
+        Include="Mod/Path/App/Tool.h"
         Namespace="Path"
         FatherInclude="Base/PersistencePy.h"
         FatherNamespace="Base"

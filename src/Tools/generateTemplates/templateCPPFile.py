@@ -9,11 +9,11 @@ import generateBase.generateTools
 class TemplateCPPFile (template.ModelTemplate):
   def Generate(self):
     generateBase.generateTools.ensureDir(self.path)
-    print "Generate() App Dir"
+    print ("Generate() App Dir")
 
 Template = """
 /***************************************************************************
- *   Copyright (c) YEAR YOUR NAME         <Your e-mail address>            *
+ *   Copyright (c) YEAR YOUR NAME <Your e-mail address>                    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

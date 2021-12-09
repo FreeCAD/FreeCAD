@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Juergen Riegel                                     *
+ *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,11 +34,13 @@
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/PropertyUnits.h>
+#include <App/ExpressionParser.h>
 #include <App/DocumentObject.h>
 #include "ExpressionCompleter.h"
 #include "Command.h"
 #include "InputField.h"
 #include "BitmapFactory.h"
+#include "QuantitySpinBox_p.h"
 #include "propertyeditor/PropertyItem.h"
 
 using namespace Gui;
@@ -76,7 +78,8 @@ InputField::InputField(QWidget * parent)
     SaveSize(5)
 {
     setValidator(new InputValidator(this));
-    iconLabel = new QLabel(this);
+    setFocusPolicy(Qt::WheelFocus);
+    iconLabel = new ExpressionLabel(this);
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
@@ -111,7 +114,7 @@ void InputField::bind(const App::ObjectIdentifier &_path)
     DocumentObject * docObj = getPath().getDocumentObject();
 
     if (docObj) {
-        boost::shared_ptr<const Expression> expr(docObj->getExpression(getPath()).expression);
+        std::shared_ptr<const Expression> expr(docObj->getExpression(getPath()).expression);
 
         if (expr)
             newInput(Tools::fromStdString(expr->toString()));
@@ -143,7 +146,7 @@ QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
         .arg(size.width())
         .arg(size.height());
     QPixmap icon;
-    if (QPixmapCache::find(key, icon))
+    if (QPixmapCache::find(key, &icon))
         return icon;
 
     icon = BitmapFactory().pixmapFromSvg(name, size);
@@ -155,7 +158,7 @@ QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
 void InputField::updateText(const Base::Quantity& quant)
 {
     if (isBound()) {
-        boost::shared_ptr<const Expression> e(getPath().getDocumentObject()->getExpression(getPath()).expression);
+        std::shared_ptr<const Expression> e(getPath().getDocumentObject()->getExpression(getPath()).expression);
 
         if (e) {
             setText(Tools::fromStdString(e->toString()));
@@ -238,7 +241,7 @@ void InputField::newInput(const QString & text)
         fixup(input);
 
         if (isBound()) {
-            boost::shared_ptr<Expression> e(ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8()));
+            std::shared_ptr<Expression> e(ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8()));
 
             setExpression(e);
 
@@ -312,7 +315,7 @@ void InputField::pushToHistory(const QString &valueq)
     for(std::vector<QString>::const_iterator it = hist.begin();it!=hist.end();++it)
         if( *it == val)
             return;
-    
+
     std::string value(val.toUtf8());
     if(_handle.isValid()){
         char hist1[21];
@@ -431,6 +434,11 @@ void InputField::setValue(const double& value)
     setValue(Base::Quantity(value, actUnit));
 }
 
+double InputField::rawValue() const
+{
+    return this->actQuantity.getValue();
+}
+
 void InputField::setUnit(const Base::Unit& unit)
 {
     actUnit = unit;
@@ -457,13 +465,32 @@ void InputField::setQuantityString(const QString& text)
     updateText(actQuantity);
 }
 
+/// return the quantity in C locale, i.e. decimal separator is a dot.
+QString InputField::rawText(void) const
+{
+    double  factor;
+    QString unit;
+    double value = actQuantity.getValue();
+    actQuantity.getUserString(factor, unit);
+    return QString::fromLatin1("%1 %2").arg(value / factor).arg(unit);
+}
+
+/// expects the string in C locale and internally converts it into the OS-specific locale
+void InputField::setRawText(const QString& text)
+{
+    Base::Quantity quant = Base::Quantity::parse(text);
+    // Input and then format the quantity
+    newInput(quant.getUserString());
+    updateText(actQuantity);
+}
+
 /// get the value of the singleStep property
 double InputField::singleStep(void)const
 {
     return StepSize;
 }
 
-/// set the value of the singleStep property 
+/// set the value of the singleStep property
 void InputField::setSingleStep(double s)
 {
     StepSize = s;
@@ -475,7 +502,7 @@ double InputField::maximum(void)const
     return Maximum;
 }
 
-/// set the value of the maximum property 
+/// set the value of the maximum property
 void InputField::setMaximum(double m)
 {
     Maximum = m;
@@ -491,7 +518,7 @@ double InputField::minimum(void)const
     return Minimum;
 }
 
-/// set the value of the minimum property 
+/// set the value of the minimum property
 void InputField::setMinimum(double m)
 {
     Minimum = m;
@@ -555,7 +582,7 @@ int InputField::historySize(void)const
     return HistorySize;
 }
 
-// set the value of the minimum property 
+// set the value of the minimum property
 void InputField::setHistorySize(int i)
 {
     assert(i>=0);
@@ -631,18 +658,24 @@ void InputField::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Up:
         {
             double val = actUnitValue + StepSize;
-            Base::Quantity quant = actQuantity;
-            quant.setValue(val);
-            this->setText(quant.getUserString());
+            if (val > Maximum)
+                val = Maximum;
+            double dFactor;
+            QString unitStr;
+            actQuantity.getUserString(dFactor, unitStr);
+            this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(unitStr));
             event->accept();
         }
         break;
     case Qt::Key_Down:
         {
             double val = actUnitValue - StepSize;
-            Base::Quantity quant = actQuantity;
-            quant.setValue(val);
-            this->setText(quant.getUserString());
+            if (val < Minimum)
+                val = Minimum;
+            double dFactor;
+            QString unitStr;
+            actQuantity.getUserString(dFactor, unitStr);
+            this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(unitStr));
             event->accept();
         }
         break;
@@ -659,16 +692,19 @@ void InputField::wheelEvent (QWheelEvent * event)
         return;
     }
 
-    double step = event->delta() > 0 ? StepSize : -StepSize;
-    double val = actUnitValue + step;
+    double factor = event->modifiers() & Qt::ControlModifier ? 10 : 1;
+    double step = event->angleDelta().y() > 0 ? StepSize : -StepSize;
+    double val = actUnitValue + factor * step;
     if (val > Maximum)
         val = Maximum;
     else if (val < Minimum)
         val = Minimum;
 
-    Base::Quantity quant = actQuantity;
-    quant.setValue(val);
-    this->setText(quant.getUserString());
+    double dFactor;
+    QString unitStr;
+    actQuantity.getUserString(dFactor, unitStr);
+
+    this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(unitStr));
     selectNumber();
     event->accept();
 }

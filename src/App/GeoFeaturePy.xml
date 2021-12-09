@@ -33,6 +33,17 @@ for a mesh the value Mesh and so on.
 If an object has no such property then None is returned.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getPropertyOfGeometry">
+      <Documentation>
+        <UserDocu>Returns the property of the actual geometry or None.
+For example for a part object it returns its Shape property,
+for a mesh its Mesh property and so on.
+If an object has no such property then None is returned.
+Unlike to getPropertyNameOfGeometry this function returns the geometry,
+not its name.
+</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

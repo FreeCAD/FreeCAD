@@ -8,26 +8,27 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
+generate_from_xml(ViewProviderSpreadsheetPy)
+
+# The XML files
+set(SpreadsheetGui_XML_SRCS
+    ViewProviderSpreadsheetPy.xml
+)
+
 set(SpreadsheetGui_LIBS
     Spreadsheet
     FreeCADGui
 )
 
-set(SpreadsheetGui_MOC_HDRS
-    LineEdit.h
-    SpreadsheetView.h
-    SheetModel.h
-    SheetTableView.h
-    SpreadsheetDelegate.h
-    Workbench.h
-    PropertiesDialog.h
-    qtcolorpicker.h
-)
-
 if(BUILD_QT5)
+    set_property(SOURCE qtcolorpicker.h qtcolorpicker.cpp PROPERTY SKIP_AUTOMOC ON)
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker-internal.cpp
         COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.cpp
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.cpp)
+
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker.cpp
+        COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker.cpp ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.h
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.h)
 else()
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker-internal.cpp
         COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/qtcolorpicker.cpp
@@ -35,10 +36,7 @@ else()
 endif()
 
 set_property(SOURCE qtcolorpicker.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker-internal.cpp)
-
-fc_wrap_cpp(SpreadsheetGui_MOC_SRCS ${SpreadsheetGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${SpreadsheetGui_MOC_SRCS})
-
+set_property(SOURCE qtcolorpicker.h APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_qtcolorpicker.cpp)
 
 SET(SpreadsheetGui_RES_SRCS
     Resources/Spreadsheet.qrc
@@ -62,14 +60,18 @@ else()
 endif()
 
 SET(SpreadsheetGui_SRCS
-#   ${SpreadsheetGui_MOC_SRCS}
     ${SpreadsheetGui_QRC_SRCS}
+    ${SpreadsheetGui_XML_SRCS}
     AppSpreadsheetGui.cpp
     Command.cpp
+    DlgSettings.ui
+    DlgSettingsImp.cpp
+    DlgSettingsImp.h
     LineEdit.h
     LineEdit.cpp
     ViewProviderSpreadsheet.cpp
     ViewProviderSpreadsheet.h
+    ViewProviderSpreadsheetPyImp.cpp
     Resources/Spreadsheet.qrc
     SpreadsheetView.cpp
     SpreadsheetView.h
@@ -90,23 +92,37 @@ SET(SpreadsheetGui_SRCS
     ${SpreadsheetGui_UIC_HDRS}
 )
 
-add_library(SpreadsheetGui SHARED ${SpreadsheetGui_SRCS})
-target_link_libraries(SpreadsheetGui ${SpreadsheetGui_LIBS})
-
-fc_target_copy_resource(SpreadsheetGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Spreadsheet
-    ${CMAKE_BINARY_DIR}/Mod/Spreadsheet
-    InitGui.py)
-
-SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
-SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)
-
-INSTALL(TARGETS SpreadsheetGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(SpreadsheetGuiIcon_SVG
     Resources/icons/SpreadsheetWorkbench.svg
 )
 
+set(SpreadsheetGui_MOC_HDRS
+    DlgSettingsImp.h
+)
+
+SOURCE_GROUP("Moc" FILES ${SpreadsheetGui_MOC_SRCS})
+
+SET(Resource_SRCS
+    ${Resource_SRCS}
+    Resources/Spreadsheet.qrc
+)
+
+set(SpreadsheetGui_UIC_SRCS
+    DlgSettings.ui
+)
+
+
+if (BUILD_QT5)
+    qt5_wrap_ui(SpreadsheetGui_UIC_HDRS ${SpreadsheetGui_UIC_SRCS})
+endif()
+
+add_library(SpreadsheetGui SHARED ${SpreadsheetGui_SRCS} ${SpreadsheetGuiIcon_SVG})
+target_link_libraries(SpreadsheetGui ${SpreadsheetGui_LIBS})
+
+SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
+SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)
+
 fc_copy_sources(SpreadsheetGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Spreadsheet" ${SpreadsheetGuiIcon_SVG})
 
+INSTALL(TARGETS SpreadsheetGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${SpreadsheetGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Spreadsheet/Resources/icons")

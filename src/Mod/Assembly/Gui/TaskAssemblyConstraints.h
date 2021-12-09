@@ -29,7 +29,6 @@
 #include "ViewProviderConstraint.h"
 #include <opendcm/core.hpp>
 #include <Solver/Solver.h>
-#include <boost/signals.hpp>
 #include "ui_TaskAssemblyConstraints.h"
 
 namespace App {
@@ -68,7 +67,7 @@ private:
     dcm::SolutionSpace getSolutionSpace();
     void setPossibleConstraints();
     void setPossibleOptions();
-    bool isCombination(boost::shared_ptr<Geometry3D> g1, boost::shared_ptr<Geometry3D> g2, dcm::geometry::types t1, dcm::geometry::types t2);
+    bool isCombination(std::shared_ptr<Geometry3D> g1, std::shared_ptr<Geometry3D> g2, dcm::geometry::types t1, dcm::geometry::types t2);
 };
 
 } //namespace AssemblyGui

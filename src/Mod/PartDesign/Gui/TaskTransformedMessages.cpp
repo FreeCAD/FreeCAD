@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "ui_TaskTransformedMessages.h"
@@ -32,20 +33,19 @@
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 
-#include <boost/bind.hpp>
-
 #include "ViewProviderTransformed.h"
 
 using namespace PartDesignGui;
 using namespace Gui::TaskView;
+namespace bp = boost::placeholders;
 
 TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transformedView_)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Transformed feature messages"),true, 0),
-      transformedView(transformedView_)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Transformed feature messages"), true, 0)
+    , transformedView(transformedView_)
+    , ui(new Ui_TaskTransformedMessages)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskTransformedMessages();
     ui->setupUi(proxy);
     // set a minimum height to avoid a sudden resize and to
     // lose focus of the currently used spin boxes
@@ -53,14 +53,14 @@ TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transf
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
+    ui->labelTransformationStatus->setText(transformedView->getMessage());
 
-    connectionDiagnosis = transformedView->signalDiagnosis.connect(boost::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this,_1));
+    connectionDiagnosis = transformedView->signalDiagnosis.connect(boost::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this, bp::_1));
 }
 
 TaskTransformedMessages::~TaskTransformedMessages()
 {
     connectionDiagnosis.disconnect();
-    delete ui;
 }
 
 void TaskTransformedMessages::slotDiagnosis(QString msg)

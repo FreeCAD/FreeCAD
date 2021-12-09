@@ -32,11 +32,7 @@
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/for_each.hpp>
 
-#ifndef BOOST_105400
 #include <boost/any.hpp>
-#else
-#include <boost_any_1_55.hpp>
-#endif
 #include <boost/fusion/include/as_vector.hpp>
 
 #include <boost/preprocessor.hpp>
@@ -69,7 +65,7 @@ class Constraint {
     typedef typename Kernel::DynStride DS;
     typedef typename Kernel::MappedEquationSystem MES;
 
-    typedef boost::shared_ptr<details::Geometry<Kernel, Dim, typename Sys::geometries> > geom_ptr;
+    typedef std::shared_ptr<details::Geometry<Kernel, Dim, typename Sys::geometries> > geom_ptr;
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
     //metafunction to create equation from consraint and tags

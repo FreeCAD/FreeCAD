@@ -56,7 +56,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="Gui::PrefFileChooser" name="prefStartPage" native="true">
+       <widget class="Gui::PrefFileChooser" name="prefStartPage">
         <property name="prefEntry" stdset="0">
          <cstring>Startpage</cstring>
         </property>

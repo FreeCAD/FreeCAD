@@ -28,6 +28,8 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
@@ -38,7 +40,6 @@
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoMaterialBinding.h>
-# include <Precision.hxx>
 #endif
 
 #include "Mod/Fem/App/FemConstraintInitialTemperature.h"
@@ -53,7 +54,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintInitialTemperature, FemGui::Vie
 
 ViewProviderFemConstraintInitialTemperature::ViewProviderFemConstraintInitialTemperature()
 {
-    sPixmap = "fem-constraint-InitialTemperature";
+    sPixmap = "FEM_ConstraintInitialTemperature";
     ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
 }
 

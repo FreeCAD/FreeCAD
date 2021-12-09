@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2015              *
+ *   Copyright (c) 2015 Yorik van Havre (yorik@uncreated.net)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -83,7 +83,7 @@ namespace Import
         void exportText(const char* text, Base::Vector3d position1, Base::Vector3d position2, double size, int just);
         void exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
                              Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
-                             char* dimText);
+                             char* dimText, int type);
         void exportAngularDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
                              Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
                              Base::Vector3d apexPoint,
@@ -100,15 +100,15 @@ namespace Import
         static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);
 
     protected:
-        void exportCircle(BRepAdaptor_Curve c);
-        void exportEllipse(BRepAdaptor_Curve c);
-        void exportArc(BRepAdaptor_Curve c);
-        void exportEllipseArc(BRepAdaptor_Curve c);
-        void exportBSpline(BRepAdaptor_Curve c);
-        void exportBCurve(BRepAdaptor_Curve c);
-        void exportLine(BRepAdaptor_Curve c);
-        void exportLWPoly(BRepAdaptor_Curve c);   //LWPolyline not supported in R12?
-        void exportPolyline(BRepAdaptor_Curve c);
+        void exportCircle(BRepAdaptor_Curve& c);
+        void exportEllipse(BRepAdaptor_Curve& c);
+        void exportArc(BRepAdaptor_Curve& c);
+        void exportEllipseArc(BRepAdaptor_Curve& c);
+        void exportBSpline(BRepAdaptor_Curve& c);
+        void exportBCurve(BRepAdaptor_Curve& c);
+        void exportLine(BRepAdaptor_Curve& c);
+        void exportLWPoly(BRepAdaptor_Curve& c);   //LWPolyline not supported in R12?
+        void exportPolyline(BRepAdaptor_Curve& c);
 
 //        std::string m_optionSource;
         double optionMaxLength;

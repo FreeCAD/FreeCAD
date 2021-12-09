@@ -1,22 +1,27 @@
-; S340MC - 1.0974 - SEW 092
+; Steel-S340MC
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = S340MC
 NameDE = QStE340 TM
 DescriptionDE = gut biegbar, Fahrgestellrahmen, Hilfsrahmen, nicht für Punktlasten
 Father = Metal
-YoungsModulus = 210000 MPa
-UltimateTensileStrength = 480
-PoissonRatio = 0.3
-Density = 7800 kg/m^3
 KindOfMaterial = Cold forming steel
 KindOfMaterialDE = Kaltumformstahl
 MaterialNumber = 1.0974
-ModulusOfShare = 81000
 Norm = SEW 092
-ThermalExpansionCoefficient = 1.10E-005
+
+[Mechanical]
+Density = 7800 kg/m^3
+PoissonRatio = 0.3
+ShearModulus = 81000 MPa
 UltimateStrain = 25
-YieldStrength = 340
+UltimateTensileStrength = 480 MPa
+YieldStrength = 340 MPa
+YoungsModulus = 210000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000011 m/m/K

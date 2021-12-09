@@ -82,9 +82,9 @@ int Hyperbola2dPy::PyInit(PyObject* args, PyObject* kwds)
                                          Base::Vector2dPy::type_object(), &pV1,
                                          Base::Vector2dPy::type_object(), &pV2,
                                          Base::Vector2dPy::type_object(), &pV3)) {
-        Base::Vector2d v1 = Py::Vector2d(pV1).getCxxObject()->value();
-        Base::Vector2d v2 = Py::Vector2d(pV2).getCxxObject()->value();
-        Base::Vector2d v3 = Py::Vector2d(pV3).getCxxObject()->value();
+        Base::Vector2d v1 = Py::toVector2d(pV1);
+        Base::Vector2d v2 = Py::toVector2d(pV2);
+        Base::Vector2d v3 = Py::toVector2d(pV3);
         GCE2d_MakeHyperbola me(gp_Pnt2d(v1.x,v1.y),
                                gp_Pnt2d(v2.x,v2.y),
                                gp_Pnt2d(v3.x,v3.y));
@@ -105,7 +105,7 @@ int Hyperbola2dPy::PyInit(PyObject* args, PyObject* kwds)
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!dd", keywords_cmm,
                                         Base::Vector2dPy::type_object(), &pV,
                                         &major, &minor)) {
-        Base::Vector2d c = Py::Vector2d(pV).getCxxObject()->value();;
+        Base::Vector2d c = Py::toVector2d(pV);
         GCE2d_MakeHyperbola me(gp_Ax2d(gp_Pnt2d(c.x,c.y), gp_Dir2d(0.0,1.0)),
                                major, minor);
         if (!me.IsDone()) {
@@ -160,26 +160,14 @@ Py::Object Hyperbola2dPy::getFocus1(void) const
 {
     Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
     gp_Pnt2d loc = hyperbola->Focus1();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(loc.X()));
-    arg.setItem(1, Py::Float(loc.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
 Py::Object Hyperbola2dPy::getFocus2(void) const
 {
     Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(getGeom2dHyperbolaPtr()->handle());
     gp_Pnt2d loc = hyperbola->Focus2();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(loc.X()));
-    arg.setItem(1, Py::Float(loc.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
 PyObject *Hyperbola2dPy::getCustomAttributes(const char* /*attr*/) const

@@ -36,12 +36,12 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderConeParametric, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderConeParametric, PartGui::ViewProviderPrimitive)
 
        
 ViewProviderConeParametric::ViewProviderConeParametric()
 {
-  sPixmap = "Tree_Part_Cone_Parametric.svg";
+  sPixmap = "Part_Cone_Parametric";
 }
 
 ViewProviderConeParametric::~ViewProviderConeParametric()

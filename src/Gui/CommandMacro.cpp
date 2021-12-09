@@ -39,12 +39,12 @@ using namespace Gui;
 //===========================================================================
 // Std_DlgMacroRecord
 //===========================================================================
-DEF_STD_CMD_A(StdCmdDlgMacroRecord);
+DEF_STD_CMD_A(StdCmdDlgMacroRecord)
 
 StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
   : Command("Std_DlgMacroRecord")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("&Macro recording ...");
     sToolTipText  = QT_TR_NOOP("Opens a dialog to record a macro");
     sWhatsThis    = "Std_DlgMacroRecord";
@@ -55,7 +55,7 @@ StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
 
 void StdCmdDlgMacroRecord::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Dialog::DlgMacroRecordImp cDlg(getMainWindow());
     cDlg.exec();
 }
@@ -68,12 +68,12 @@ bool StdCmdDlgMacroRecord::isActive(void)
 //===========================================================================
 // Std_MacroStopRecord
 //===========================================================================
-DEF_STD_CMD_A(StdCmdMacroStopRecord);
+DEF_STD_CMD_A(StdCmdMacroStopRecord)
 
 StdCmdMacroStopRecord::StdCmdMacroStopRecord()
   : Command("Std_MacroStopRecord")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("S&top macro recording");
     sToolTipText  = QT_TR_NOOP("Stop the macro recording session");
     sWhatsThis    = "Std_MacroStopRecord";
@@ -84,7 +84,7 @@ StdCmdMacroStopRecord::StdCmdMacroStopRecord()
 
 void StdCmdMacroStopRecord::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     getGuiApplication()->macroManager()->commit();
 }
 
@@ -96,12 +96,12 @@ bool StdCmdMacroStopRecord::isActive(void)
 //===========================================================================
 // Std_DlgMacroExecute
 //===========================================================================
-DEF_STD_CMD_A(StdCmdDlgMacroExecute);
+DEF_STD_CMD_A(StdCmdDlgMacroExecute)
 
 StdCmdDlgMacroExecute::StdCmdDlgMacroExecute()
   : Command("Std_DlgMacroExecute")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Macros ...");
     sToolTipText  = QT_TR_NOOP("Opens a dialog to let you execute a recorded macro");
     sWhatsThis    = "Std_DlgMacroExecute";
@@ -112,7 +112,7 @@ StdCmdDlgMacroExecute::StdCmdDlgMacroExecute()
 
 void StdCmdDlgMacroExecute::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Dialog::DlgMacroExecuteImp cDlg(getMainWindow());
     cDlg.exec();
 }
@@ -125,12 +125,12 @@ bool StdCmdDlgMacroExecute::isActive(void)
 //===========================================================================
 // Std_DlgMacroExecuteDirect
 //===========================================================================
-DEF_STD_CMD_A(StdCmdDlgMacroExecuteDirect);
+DEF_STD_CMD_A(StdCmdDlgMacroExecuteDirect)
 
 StdCmdDlgMacroExecuteDirect::StdCmdDlgMacroExecuteDirect()
   : Command("Std_DlgMacroExecuteDirect")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Execute macro");
     sToolTipText  = QT_TR_NOOP("Execute the macro in the editor");
     sWhatsThis    = "Std_DlgMacroExecuteDirect";
@@ -142,7 +142,7 @@ StdCmdDlgMacroExecuteDirect::StdCmdDlgMacroExecuteDirect()
 
 void StdCmdDlgMacroExecuteDirect::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"Run\")");
 }
 
@@ -151,12 +151,37 @@ bool StdCmdDlgMacroExecuteDirect::isActive(void)
     return getGuiApplication()->sendHasMsgToActiveView("Run");
 }
 
-DEF_STD_CMD_A(StdCmdMacroStartDebug);
+DEF_STD_CMD_A(StdCmdMacroAttachDebugger)
+
+StdCmdMacroAttachDebugger::StdCmdMacroAttachDebugger()
+  : Command("Std_MacroAttachDebugger")
+{
+    sGroup        = "Macro";
+    sMenuText     = QT_TR_NOOP("Attach to remote debugger...");
+    sToolTipText  = QT_TR_NOOP("Attach to a remotely running debugger");
+    sWhatsThis    = "Std_MacroAttachDebugger";
+    sStatusTip    = QT_TR_NOOP("Attach to a remotely running debugger");
+    eType         = 0;
+}
+
+void StdCmdMacroAttachDebugger::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Gui, "from freecad.gui import RemoteDebugger\n"
+                   "RemoteDebugger.attachToRemoteDebugger()");
+}
+
+bool StdCmdMacroAttachDebugger::isActive(void)
+{
+    return true;
+}
+
+DEF_STD_CMD_A(StdCmdMacroStartDebug)
 
 StdCmdMacroStartDebug::StdCmdMacroStartDebug()
   : Command("Std_MacroStartDebug")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Debug macro");
     sToolTipText  = QT_TR_NOOP("Start debugging of macro");
     sWhatsThis    = "Std_MacroStartDebug";
@@ -168,7 +193,7 @@ StdCmdMacroStartDebug::StdCmdMacroStartDebug()
 
 void StdCmdMacroStartDebug::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
     if (!dbg->isRunning())
         doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"StartDebug\")");
@@ -181,12 +206,12 @@ bool StdCmdMacroStartDebug::isActive(void)
     return getGuiApplication()->sendHasMsgToActiveView("StartDebug");
 }
 
-DEF_STD_CMD_A(StdCmdMacroStopDebug);
+DEF_STD_CMD_A(StdCmdMacroStopDebug)
 
 StdCmdMacroStopDebug::StdCmdMacroStopDebug()
   : Command("Std_MacroStopDebug")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Stop debugging");
     sToolTipText  = QT_TR_NOOP("Stop debugging of macro");
     sWhatsThis    = "Std_MacroStopDebug";
@@ -198,7 +223,7 @@ StdCmdMacroStopDebug::StdCmdMacroStopDebug()
 
 void StdCmdMacroStopDebug::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Application::Instance->macroManager()->debugger()->tryStop();
 }
 
@@ -208,12 +233,12 @@ bool StdCmdMacroStopDebug::isActive(void)
     return dbg->isRunning();
 }
 
-DEF_STD_CMD_A(StdCmdMacroStepOver);
+DEF_STD_CMD_A(StdCmdMacroStepOver)
 
 StdCmdMacroStepOver::StdCmdMacroStepOver()
   : Command("Std_MacroStepOver")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Step over");
     sToolTipText  = QT_TR_NOOP("Step over");
     sWhatsThis    = "Std_MacroStepOver";
@@ -225,7 +250,7 @@ StdCmdMacroStepOver::StdCmdMacroStepOver()
 
 void StdCmdMacroStepOver::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Application::Instance->macroManager()->debugger()->stepOver();
 }
 
@@ -235,12 +260,12 @@ bool StdCmdMacroStepOver::isActive(void)
     return dbg->isRunning();
 }
 
-DEF_STD_CMD_A(StdCmdMacroStepInto);
+DEF_STD_CMD_A(StdCmdMacroStepInto)
 
 StdCmdMacroStepInto::StdCmdMacroStepInto()
   : Command("Std_MacroStepInto")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Step into");
     sToolTipText  = QT_TR_NOOP("Step into");
     //sWhatsThis    = "Std_MacroStepOver";
@@ -252,7 +277,7 @@ StdCmdMacroStepInto::StdCmdMacroStepInto()
 
 void StdCmdMacroStepInto::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Application::Instance->macroManager()->debugger()->stepInto();
 }
 
@@ -262,12 +287,12 @@ bool StdCmdMacroStepInto::isActive(void)
     return dbg->isRunning();
 }
 
-DEF_STD_CMD_A(StdCmdToggleBreakpoint);
+DEF_STD_CMD_A(StdCmdToggleBreakpoint)
 
 StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
   : Command("Std_ToggleBreakpoint")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Toggle breakpoint");
     sToolTipText  = QT_TR_NOOP("Toggle breakpoint");
     sWhatsThis    = "Std_ToggleBreakpoint";
@@ -279,7 +304,7 @@ StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
 
 void StdCmdToggleBreakpoint::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"ToggleBreakpoint\")");
 }
 
@@ -297,6 +322,7 @@ void CreateMacroCommands(void)
     rcCmdMgr.addCommand(new StdCmdMacroStopRecord());
     rcCmdMgr.addCommand(new StdCmdDlgMacroExecute());
     rcCmdMgr.addCommand(new StdCmdDlgMacroExecuteDirect());
+    rcCmdMgr.addCommand(new StdCmdMacroAttachDebugger());
     rcCmdMgr.addCommand(new StdCmdMacroStartDebug());
     rcCmdMgr.addCommand(new StdCmdMacroStopDebug());
     rcCmdMgr.addCommand(new StdCmdMacroStepOver());

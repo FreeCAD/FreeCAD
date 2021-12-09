@@ -64,6 +64,8 @@
 #include <QtGui/QMouseEvent>
 #include <math.h>
 
+#include <QScreen>
+
 #include "qtcolorpicker.h"
 
 /*! \class QtColorPicker
@@ -168,7 +170,7 @@ class ColorPickerItem : public QFrame
     Q_OBJECT
 
 public:
-    ColorPickerItem(const QColor &color = Qt::white, const QString &text = QString::null,
+    ColorPickerItem(const QColor &color = Qt::white, const QString &text = QString(),
               QWidget *parent = 0);
     ~ColorPickerItem();
 
@@ -312,7 +314,8 @@ void QtColorPicker::buttonPressed(bool toggled)
     if (!toggled)
         return;
 
-    const QRect desktop = QApplication::desktop()->geometry();
+    const QRect desktop = QApplication::primaryScreen()->geometry();
+
     // Make sure the popup is inside the desktop.
     QPoint pos = mapToGlobal(rect().bottomLeft());
     if (pos.x() < desktop.left())
@@ -442,7 +445,7 @@ void QtColorPicker::setCurrentColor(const QColor &color)
 
     ColorPickerItem *item = popup->find(color);
     if (!item) {
-    insertColor(color, tr("Custom"));
+    insertColor(color, tr("Custom Color"));
     item = popup->find(color);
     }
 
@@ -904,7 +907,7 @@ void ColorPickerPopup::getColorFromDialog()
     return;
 
     //QColor col = QColor::fromRgba(rgb);
-    insertColor(col, tr("Custom"), -1);
+    insertColor(col, tr("Custom Color"), -1);
     lastSel = col;
     Q_EMIT selected(col);
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2015              *
+ *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,11 +30,9 @@
 #ifdef FC_OS_WIN32
 # define DraftUtilsExport  __declspec(dllexport)
 # define PartExport __declspec(dllexport)
-# define BaseExport  __declspec(dllimport)
 #else // for Linux
 # define DraftUtilsExport
 # define PartExport
-# define BaseExport
 #endif
 
 #ifdef _MSC_VER

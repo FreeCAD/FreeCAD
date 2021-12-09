@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2014     *
+ *   Copyright (c) 2014 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,11 +34,11 @@ class View3DInventorViewer;
 
 /**
  * @brief Python interface for View3DInventorViewer
- * 
+ *
  * The interface does not offer all methods the c++ View3DInventorViewer counterpart has, respectively
- * also not everything the QuarterWidget and the SoQtQuarterAdaptor offers. It only exposes 
+ * also not everything the QuarterWidget and the SoQtQuarterAdaptor offers. It only exposes
  * methods with additioanl functionality in comparison to the View3DInventorPy class. Everything that
- * can be done from there has no interface here. 
+ * can be done from there has no interface here.
  */
 class View3DInventorViewerPy : public Py::PythonExtension<View3DInventorViewerPy>
 {
@@ -64,6 +64,13 @@ public:
     Py::Object getPoint(const Py::Tuple& args);
     Py::Object getPickRadius(const Py::Tuple& args);
     Py::Object setPickRadius(const Py::Tuple& args);
+
+    Py::Object setupEditingRoot(const Py::Tuple &args);
+    Py::Object resetEditingRoot(const Py::Tuple &args);
+
+    Py::Object setBackgroundColor(const Py::Tuple& args);
+    Py::Object setRedirectToSceneGraph(const Py::Tuple& args);
+    Py::Object isRedirectedToSceneGraph(const Py::Tuple& args);
 
     // NaviCube handling
     Py::Object setEnabledNaviCube(const Py::Tuple& args);

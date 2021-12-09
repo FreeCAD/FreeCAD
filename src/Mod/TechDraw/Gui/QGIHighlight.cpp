@@ -32,27 +32,41 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include <Mod/TechDraw/App/DrawUtil.h>
+
 #include <qmath.h>
 #include "Rez.h"
+#include "DrawGuiUtil.h"
+#include "PreferencesGui.h"
 #include "QGIView.h"
 #include "QGIHighlight.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIHighlight::QGIHighlight()
 {
     m_refText = "";
     m_refSize = 0.0;
+    setInteractive(false);
+
     m_circle = new QGraphicsEllipseItem();
     addToGroup(m_circle);
+    m_circle->setFlag(QGraphicsItem::ItemIsSelectable, false);
+
     m_rect = new QGCustomRect();
     addToGroup(m_rect);
+    m_rect->setFlag(QGraphicsItem::ItemIsSelectable, false);
+
     m_reference = new QGCustomText();
     addToGroup(m_reference);
+    m_reference->setFlag(QGraphicsItem::ItemIsSelectable, false);
 
     setWidth(Rez::guiX(0.75));
-    setStyle(getHighlightStyle());
-    setColor(getHighlightColor());
+}
+
+QGIHighlight::~QGIHighlight()
+{
 
 }
 
@@ -81,14 +95,30 @@ void QGIHighlight::makeHighlight()
 void QGIHighlight::makeReference()
 {
     prepareGeometryChange();
-    m_refFont.setPointSize(m_refSize);
+    m_refFont.setPixelSize(QGIView::calculateFontPixelSize(m_refSize));
     m_reference->setFont(m_refFont);
     m_reference->setPlainText(QString::fromUtf8(m_refText));
     double fudge = Rez::guiX(1.0);
-//    m_reference->centerAt(m_end.x() + fudge, m_start.y() - fudge);
-    m_reference->setPos(m_end.x() + fudge, m_start.y() - m_refSize - fudge);
+    QPointF newPos(m_end.x() + fudge, m_start.y() - m_refSize - fudge);
+    m_reference->setPos(newPos);   
+
+    double highRot = rotation();
+    if (!TechDraw::DrawUtil::fpCompare(highRot,0.0)) {
+        QRectF refBR = m_reference->boundingRect();
+        QPointF refCenter = refBR.center();
+        m_reference->setTransformOriginPoint(refCenter);
+        m_reference->setRotation(-highRot);
+    }
 }
 
+void QGIHighlight::setInteractive(bool state)
+{
+//    setAcceptHoverEvents(state);
+    setFlag(QGraphicsItem::ItemIsSelectable, state);
+    setFlag(QGraphicsItem::ItemIsMovable, state);
+    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, state);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, state);
+}
 
 void QGIHighlight::setBounds(double x1,double y1,double x2,double y2)
 {
@@ -108,36 +138,29 @@ void QGIHighlight::setFont(QFont f, double fsize)
 }
 
 
+//obs?
 QColor QGIHighlight::getHighlightColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionColor", 0x08080800));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::sectionLineQColor();
 }
 
+//obs??
 Qt::PenStyle QGIHighlight::getHighlightStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("SectionLine",2));
-    return sectStyle;
+    return PreferencesGui::sectionLineStyle();
 }
 
 int QGIHighlight::getHoleStyle()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    int style = hGrp->GetInt("MattingStyle", 1l);
-    return style;
+    return PreferencesGui::mattingStyle();
 }
-
 
 void QGIHighlight::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
+//    myOption.state &= ~QStyle::State_Selected;
 
     setTools();
+//    painter->drawRect(boundingRect());          //good for debugging
     QGIDecoration::paint (painter, &myOption, widget);
 }
 
@@ -154,3 +177,4 @@ void QGIHighlight::setTools()
 
     m_reference->setDefaultTextColor(m_colCurrent);
 }
+

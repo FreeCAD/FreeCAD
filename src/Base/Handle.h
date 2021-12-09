@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -31,6 +30,9 @@
 #include <string>
 #include <map>
 #include <typeinfo>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 class QAtomicInt;
 
@@ -170,6 +172,9 @@ public:
 
     int getRefCount(void) const;
     const Handled& operator = (const Handled&);
+
+private:
+    Handled(const Handled&);
 
 private:
     QAtomicInt* _lRefCount;

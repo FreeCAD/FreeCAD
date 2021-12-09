@@ -26,7 +26,6 @@
 
 #include "TaskView.h"
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
 #include <App/PropertyLinks.h>
 
 
@@ -69,7 +68,7 @@ public:
     /// set the TaskSelectLinkProperty active, means setting the selection and control it
     void activate(void);
 
-    /// call this to accept the changes the user has made and send back to the Propterty (Ok)
+    /// call this to accept the changes the user has made and send back to the Property (Ok)
     bool accept(void);
     /// This discards the changes of the user and leaves the Property untouched (Cancel)
     bool reject(void);

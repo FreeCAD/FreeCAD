@@ -35,23 +35,19 @@ public:
     ~QGIVertex() {}
 
     enum {Type = QGraphicsItem::UserType + 105};
-    int type() const { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    int type() const override { return Type;}
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
 
     int getProjIndex() const { return projIndex; }
 
     float getRadius() { return m_radius; }
-    void setRadius(float r);
-    Qt::BrushStyle getFill() { return m_fill; }
-    void setFill(Qt::BrushStyle f) { m_fill = f; }
+    virtual void setRadius(float r);
 
 protected:
     int projIndex;
+    float m_radius;
 
 private:
-    float m_radius;
-    QBrush m_brush;
-    Qt::BrushStyle m_fill;
 };
 
 }

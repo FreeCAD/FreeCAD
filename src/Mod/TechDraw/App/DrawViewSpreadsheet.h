@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan    (wandererfan@gmail.com)             *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -56,6 +56,7 @@ public:
 
 
     virtual App::DocumentObjectExecReturn *execute(void);
+    virtual short mustExecute() const;
     std::string getSheetImage(void);
 
     virtual const char* getViewProviderName(void) const {
@@ -67,6 +68,8 @@ protected:
     std::vector<std::string> getAvailColumns(void);
     std::string getSVGHead(void);
     std::string getSVGTail(void);
+    int colInList(const std::vector<std::string>& list,
+                   const std::string& toFind);
 
 private:
 };

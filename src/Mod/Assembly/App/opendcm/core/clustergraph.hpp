@@ -31,7 +31,7 @@
 #include <boost/mpl/find.hpp>
 
 #include <boost/iterator/transform_iterator.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/enable_shared_from_this.hpp>
 
 #include <boost/fusion/include/as_vector.hpp>
@@ -63,14 +63,14 @@ namespace details {
  * @brief Creates a fusion::vector of boost shared_ptr's from the given types
  *
  * Creates a shared pointer sequence (sps) of the supplied types by converting them to
- * boost::shared_ptr's first and creating a fusion::vector of all pointers afterwards which can be
+ * std::shared_ptr's first and creating a fusion::vector of all pointers afterwards which can be
  * accessed by the type typedef. Usage: @code sps<types>::type @endcode
  *
  * @tparam seq the mpl::sequence with the types to convert to shared_ptr's
  **/
 template<typename seq>
 struct sps { //shared_ptr sequence
-    typedef typename mpl::transform<seq, boost::shared_ptr<mpl::_1> >::type spv;
+    typedef typename mpl::transform<seq, std::shared_ptr<mpl::_1> >::type spv;
     typedef typename fusion::result_of::as_vector<spv>::type type;
 };
 /**@}*/
@@ -153,7 +153,7 @@ struct cluster_error : virtual boost::exception {};
 /**
  * @brief Pointer type to share a common ID generator @ref IDgen
  **/
-typedef boost::shared_ptr<IDgen> IDpointer;
+typedef std::shared_ptr<IDgen> IDpointer;
 
 }
 
@@ -302,7 +302,7 @@ public:
     typedef typename boost::graph_traits<Graph>::edge_iterator     local_edge_iterator;
     typedef typename boost::graph_traits<Graph>::out_edge_iterator local_out_edge_iterator;
 
-    typedef std::map<LocalVertex, boost::shared_ptr<ClusterGraph> > ClusterMap;
+    typedef std::map<LocalVertex, std::shared_ptr<ClusterGraph> > ClusterMap;
 
 
     struct global_extractor  {
@@ -321,7 +321,7 @@ public:
     template<typename Obj>
     struct object_extractor  {
 
-        typedef boost::shared_ptr<Obj> base_type;
+        typedef std::shared_ptr<Obj> base_type;
         typedef base_type& result_type;
         typedef typename mpl::find<objects, Obj>::type iterator;
         typedef typename mpl::distance<typename mpl::begin<objects>::type, iterator>::type distance;
@@ -345,7 +345,7 @@ public:
     /**
      * @brief Iterator for objects of given type
      *
-     * Allows to iterate over all objects of given type, dereferencing gives the boost::shared_ptr<Obj>
+     * Allows to iterate over all objects of given type, dereferencing gives the std::shared_ptr<Obj>
      *
      * @tparam Obj the object type to iterate over
      **/
@@ -383,7 +383,7 @@ public:
      *
      * @param g the parent cluster graph
      **/
-    ClusterGraph(boost::shared_ptr<ClusterGraph> g) : m_parent(g), m_id(new details::IDgen) {
+    ClusterGraph(std::shared_ptr<ClusterGraph> g) : m_parent(g), m_id(new details::IDgen) {
         if(g)
             m_id = g->m_id;
     };
@@ -402,7 +402,7 @@ public:
      * copied graph
      */
     template<typename Functor>
-    void copyInto(boost::shared_ptr<ClusterGraph> into, Functor& functor) const;
+    void copyInto(std::shared_ptr<ClusterGraph> into, Functor& functor) const;
 
     /**
      * @brief Compare by address, not by content
@@ -466,9 +466,9 @@ public:
      * subcluster is fully defined by its object and the vertex descriptor which is it's position
      * in the current cluster.
      *
-     * @return :pair< boost::shared_ptr< ClusterGraph >, LocalVertex > Subcluster and its descriptor
+     * @return :pair< std::shared_ptr< ClusterGraph >, LocalVertex > Subcluster and its descriptor
      **/
-    std::pair<boost::shared_ptr<ClusterGraph>, LocalVertex> createCluster();
+    std::pair<std::shared_ptr<ClusterGraph>, LocalVertex> createCluster();
 
     /**
      * @brief Returns the parent cluster
@@ -478,14 +478,14 @@ public:
      *
      * @return :shared_ptr< ClusterGraph > the parent cluster or empty pointer
      **/
-    boost::shared_ptr<ClusterGraph> parent();
+    std::shared_ptr<ClusterGraph> parent();
 
     /**
      * @brief const version of \ref parent()
      *
      * @return :shared_ptr< ClusterGraph >
      **/
-    const boost::shared_ptr<ClusterGraph> parent() const;
+    const std::shared_ptr<ClusterGraph> parent() const;
 
     /**
      * @brief Is this the toplevel cluster?
@@ -499,14 +499,14 @@ public:
      *
      * @return :shared_ptr< ClusterGraph >
      **/
-    boost::shared_ptr<ClusterGraph>	 root();
+    std::shared_ptr<ClusterGraph>	 root();
 
     /**
      * @brief const equivalent of \ref root()
      *
      * @return :shared_ptr< ClusterGraph >
      **/
-    const boost::shared_ptr<ClusterGraph> root() const;
+    const std::shared_ptr<ClusterGraph> root() const;
 
     /**
      * @brief Iterators for all subclusters
@@ -554,9 +554,9 @@ public:
      * a cluster an empty pointer is returned.
      *
      * @param v The vertex for which the cluster is wanted
-     * @return boost::shared_ptr<ClusterGraph> the coresponding cluster orempty pointer
+     * @return std::shared_ptr<ClusterGraph> the coresponding cluster orempty pointer
      **/
-    boost::shared_ptr<ClusterGraph> getVertexCluster(LocalVertex v);
+    std::shared_ptr<ClusterGraph> getVertexCluster(LocalVertex v);
 
     /**
      * @brief Get the vertex descrptor which descripes the clusters position in the graph
@@ -566,17 +566,17 @@ public:
      * @param g the graph for which the vertex is searched
      * @return :LocalVertex
      **/
-    LocalVertex	getClusterVertex(boost::shared_ptr<ClusterGraph> g);
+    LocalVertex	getClusterVertex(std::shared_ptr<ClusterGraph> g);
 
     /**
      * @brief Convenience function for \ref removeCluster
      **/
     template<typename Functor>
-    void removeCluster(boost::shared_ptr<ClusterGraph> g, Functor& f);
+    void removeCluster(std::shared_ptr<ClusterGraph> g, Functor& f);
     /**
      * @brief Convenience function for \ref removeCluster
      **/
-    void removeCluster(boost::shared_ptr<ClusterGraph> g);
+    void removeCluster(std::shared_ptr<ClusterGraph> g);
     /**
      * @brief Delete all subcluster
      *
@@ -764,7 +764,7 @@ public:
      * @param v GlobalVertex for which the containing local one is wanted
      * @return fusion::vector<LocalVertex, ClusterGraph*, bool> with the containing LocalVertex, the cluster which holds it and a bool indicator if function was successful.
      **/
-    fusion::vector<LocalVertex, boost::shared_ptr<ClusterGraph>, bool> getLocalVertexGraph(GlobalVertex v);
+    fusion::vector<LocalVertex, std::shared_ptr<ClusterGraph>, bool> getLocalVertexGraph(GlobalVertex v);
 
 
     /* *******************************************************
@@ -853,7 +853,7 @@ public:
     * @return shared_ptr< Obj > the pointer to the desired object
     **/
     template<typename Obj, typename key>
-    boost::shared_ptr<Obj> getObject(key k);
+    std::shared_ptr<Obj> getObject(key k);
 
     /**
      * @brief Set a object at the specified vertex or edge
@@ -869,7 +869,7 @@ public:
      * @return void
      **/
     template<typename Obj, typename key>
-    void setObject(key k, boost::shared_ptr<Obj> val);
+    void setObject(key k, std::shared_ptr<Obj> val);
 
     /**
      * @brief Get iterator range for all GlobalEdge objects hold by this local edge
@@ -974,7 +974,7 @@ public:
      * @param cg reference to the subcluster to which v should be moved
      * @return LocalVertex the local descriptor of the moved vertex in the subcluster
      **/
-    LocalVertex moveToSubcluster(LocalVertex v, boost::shared_ptr<ClusterGraph> cg);
+    LocalVertex moveToSubcluster(LocalVertex v, std::shared_ptr<ClusterGraph> cg);
 
     /**
      * @brief Move a vertex to a subcluster
@@ -1003,7 +1003,7 @@ public:
      * @param cg reference to the subcluster to which v should be moved
      * @return LocalVertex the local descriptor of the moved vertex in the subcluster
      **/
-    LocalVertex moveToSubcluster(LocalVertex v, LocalVertex Cluster, boost::shared_ptr<ClusterGraph> cg);
+    LocalVertex moveToSubcluster(LocalVertex v, LocalVertex Cluster, std::shared_ptr<ClusterGraph> cg);
 
 
     /**
@@ -1046,7 +1046,7 @@ protected:
     /* Searches the local vertex holding the specified global one in this and all it's subclusters.
      * If found, the holding local vertex and the graph in which it is valid will be returned.
      * */
-    fusion::vector<LocalVertex, boost::shared_ptr<ClusterGraph>, bool> getContainingVertexGraph(GlobalVertex id);
+    fusion::vector<LocalVertex, std::shared_ptr<ClusterGraph>, bool> getContainingVertexGraph(GlobalVertex id);
 
     /* Searches the global edge in all local edges of this graph, and returns the local
      * one which holds the global edge. If not successful the local edge returned will be

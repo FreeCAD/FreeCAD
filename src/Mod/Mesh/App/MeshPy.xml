@@ -91,7 +91,14 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				<UserDocu>Get the part outside the intersection</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="coarsen">
+        <Methode Name="section" Const="true" Keyword="true">
+            <Documentation>
+                <UserDocu>Get the section curves of this and the given mesh object.
+lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="coarsen">
 			<Documentation>
 				<UserDocu>Coarse the mesh</UserDocu>
 			</Documentation>
@@ -136,7 +143,17 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				<UserDocu>Remove a list of facet indices from the mesh</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getInternalFacets" Const="true">
+        <Methode Name="removeNeedles">
+            <Documentation>
+                <UserDocu>Remove all edges that are smaller than a given length</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removeFullBoundaryFacets">
+            <Documentation>
+                <UserDocu>Remove facets whose all three points are on the boundary</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getInternalFacets" Const="true">
 			<Documentation>
 				<UserDocu>Builds a list of facet indices with triangles that are inside a volume mesh</UserDocu>
 			</Documentation>
@@ -167,7 +184,12 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="countSegments" Const="true">
+        <Methode Name="addSegment">
+            <Documentation>
+                <UserDocu>Add a list of facet indices that describes a segment to the mesh</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="countSegments" Const="true">
 			<Documentation>
 				<UserDocu>Get the number of segments which may also be 0</UserDocu>
 			</Documentation>
@@ -219,7 +241,7 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Check if the mesh has non-manifolds</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="removeNonManifolds">
+        <Methode Name="removeNonManifolds">
 			<Documentation>
 				<UserDocu>Remove non-manifolds</UserDocu>
 			</Documentation>
@@ -274,7 +296,40 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="countComponents" Const="true">
+        <Methode Name="hasPointsOnEdge" Const="true">
+            <Documentation>
+                <UserDocu>Check if points lie on edges</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removePointsOnEdge" Keyword="true">
+            <Documentation>
+                <UserDocu>removePointsOnEdge(FillBoundary=False)
+Remove points that lie on edges.
+If FillBoundary is True then the holes by removing the affected facets
+will be re-filled.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasInvalidNeighbourhood" Const="true">
+            <Documentation>
+                <UserDocu>Check if the mesh has invalid neighbourhood indices</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasPointsOutOfRange" Const="true">
+            <Documentation>
+                <UserDocu>Check if the mesh has point indices that are out of range</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasFacetsOutOfRange" Const="true">
+            <Documentation>
+                <UserDocu>Check if the mesh has facet indices that are out of range</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasCorruptedFacets" Const="true">
+            <Documentation>
+                <UserDocu>Check if the mesh has corrupted facets</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="countComponents" Const="true">
 			<Documentation>
 				<UserDocu>Get the number of topologic independent areas</UserDocu>
 			</Documentation>
@@ -289,7 +344,12 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Repair any invalid indices</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="fixDeformations">
+        <Methode Name="fixCaps">
+            <Documentation>
+                <UserDocu>Repair caps by swapping the edge</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="fixDeformations">
 			<Documentation>
 				<UserDocu>Repair deformed facets</UserDocu>
 			</Documentation>
@@ -387,7 +447,16 @@ The argument int is the mode: 0=inner, 1=outer
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<!-- The Const here is just a hack -->
+        <Methode Name="trimByPlane">
+            <Documentation>
+                <UserDocu>Trims the mesh with a given plane
+trimByPlane(Vector, Vector) -> None
+The plane is defined by a base and normal vector. Depending on the
+direction of the normal the part above or below will be kept.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <!-- The Const here is just a hack -->
 		<Methode Name="harmonizeNormals" Const="true">
 			<Documentation>
 				<UserDocu>Adjust wrong oriented facets</UserDocu>
@@ -422,7 +491,12 @@ smooth([iteration=1,maxError=FLT_MAX])</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="optimizeTopology" Const="true">
+        <Methode Name="mergeFacets">
+            <Documentation>
+                <UserDocu>Merge facets to optimize topology</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="optimizeTopology" Const="true">
 			<Documentation>
 				<UserDocu>Optimize the edges to get nicer facets</UserDocu>
 			</Documentation>
@@ -449,10 +523,17 @@ an empty dictionary if there is no intersection.
 				<UserDocu>getPlanarSegments(dev,[min faces=0]) -> list
 Get all planes of the mesh as segment.
 In the worst case each triangle can be regarded as single
-plane if none of its neighours is coplanar.</UserDocu>
+plane if none of its neighbors are coplanar.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getSegmentsByCurvature" Const="true">
+        <Methode Name="getSegmentsOfType" Const="true">
+            <Documentation>
+                <UserDocu>getSegmentsOfType(type, dev,[min faces=0]) -> list
+Get all segments of type.
+Type can be Plane, Cylinder or Sphere</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getSegmentsByCurvature" Const="true">
 			<Documentation>
 				<UserDocu>getSegmentsByCurvature(list) -> list
 The argument list gives a list if tuples where it defines the preferred maximum curvature,
@@ -464,7 +545,15 @@ mesh.getSegmentsByCurvature([c,p])
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Points" ReadOnly="true">
+    <Methode Name="getCurvaturePerVertex" Const="true">
+      <Documentation>
+        <UserDocu>
+getCurvaturePerVertex() -> list
+The items in the list contains minimum and maximum curvature with their directions
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="Points" ReadOnly="true">
 			<Documentation>
 				<UserDocu>A collection of the mesh points
 With this attribute it is possible to get access to the points of the mesh

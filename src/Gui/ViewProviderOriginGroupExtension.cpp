@@ -25,6 +25,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <boost_bind_bind.hpp>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include "ViewProviderOriginGroupExtension.h"
@@ -39,11 +42,10 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
-#include <boost/bind.hpp>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/nodes/SoSeparator.h>
 
 using namespace Gui;
+namespace bp = boost::placeholders;
+
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderOriginGroupExtension, Gui::ViewProviderGeoFeatureGroupExtension)
 
@@ -64,7 +66,7 @@ std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::constructChi
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
     if(!group)
         return children;
-    
+
     App::DocumentObject *originObj = group->Origin.getValue();
 
     // Origin must be first
@@ -97,14 +99,14 @@ void ViewProviderOriginGroupExtension::extensionAttach(App::DocumentObject *pcOb
     assert ( gdoc );
 
     connectChangedObjectApp = adoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectApp, this, _1) );
-    
+            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectApp, this, bp::_1) );
+
     connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectGui, this, _1) );
+            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectGui, this, bp::_1) );
 }
 
 void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property* prop ) {
-    
+
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
     if ( group && prop == &group->Group ) {
         updateOriginSize();
@@ -122,7 +124,7 @@ void ViewProviderOriginGroupExtension::slotChangedObjectApp ( const App::Documen
 
 void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& vp) {
     if ( !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () )) {
-        // Ignore origins to avoid infinite recursion (not likely in a well-formed document, 
+        // Ignore origins to avoid infinite recursion (not likely in a well-formed document,
         //          but may happen in documents designed in old versions of assembly branch )
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
         App::DocumentObject *obj = vp.getObject ();
@@ -134,12 +136,14 @@ void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewPro
 }
 
 void ViewProviderOriginGroupExtension::updateOriginSize () {
-    
-    if(getExtendedViewProvider()->getObject()->isRemoving() ||
-       getExtendedViewProvider()->getObject()->getDocument()->testStatus(App::Document::Restoring))
+    auto owner = getExtendedViewProvider()->getObject();
+
+    if(!owner->getNameInDocument() ||
+       owner->isRemoving() ||
+       owner->getDocument()->testStatus(App::Document::Restoring))
         return;
-    
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
+
+    auto* group = owner->getExtensionByType<App::OriginGroupExtension>();
     if(!group)
         return;
 
@@ -152,26 +156,24 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
 
         Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider(origin);
         if (!vp) {
-            throw Base::RuntimeError ("No view provider linked to the Origin");
+            Base::Console().Error ("No view provider linked to the Origin\n");
+            return;
         }
         assert ( vp->isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) );
         vpOrigin = static_cast <Gui::ViewProviderOrigin *> ( vp );
     } catch (const Base::Exception &ex) {
-        // if is restoring it is normal that the origin property is null until after restored, so no need to report this.
-        if(!getExtendedViewProvider()->getDocument()->getDocument()->testStatus(App::Document::Restoring))
-            Base::Console().Error ("%s\n", ex.what() );
+        Base::Console().Error ("%s\n", ex.what() );
         return;
     }
 
-
     Gui::Document* gdoc = getExtendedViewProvider()->getDocument();
-    if(!gdoc) 
+    if(!gdoc)
         return;
-    
+
     Gui::MDIView* view = gdoc->getViewOfViewProvider(getExtendedViewProvider());
     if(!view)
         return;
-    
+
     Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
     SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
 
@@ -186,7 +188,7 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
         bboxAction.apply ( vp->getRoot () );
         bbox.extendBy ( bboxAction.getBoundingBox () );
     };
-    
+
     // get the bounding box values
     SbVec3f max = bbox.getMax();
     SbVec3f min = bbox.getMin();

@@ -20,8 +20,24 @@ if(WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(PYSIDE_BIN_DIR ${PYTHON_BIN_DIR})
 endif(WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
-FIND_PROGRAM(PYSIDE2UICBINARY NAMES python2-pyside2-uic pyside2-uic pyside2-uic-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} HINTS ${PYSIDE_BIN_DIR})
-FIND_PROGRAM(PYSIDE2RCCBINARY NAMES pyside2-rcc pyside2-rcc-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} HINTS ${PYSIDE_BIN_DIR})
+# Since Qt v5.14, pyside2-uic and pyside2-rcc are directly provided by Qt5Core uic and rcc, with '-g python' option
+# We test Qt5Core version to act accordingly
+
+FIND_PACKAGE(Qt5Core)
+
+IF(Qt5Core_VERSION VERSION_LESS 5.14)
+  # Legacy (< 5.14)
+  FIND_PROGRAM(PYSIDE2UICBINARY NAMES python2-pyside2-uic pyside2-uic pyside2-uic-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} pyuic5 HINTS ${PYSIDE_BIN_DIR})
+  FIND_PROGRAM(PYSIDE2RCCBINARY NAMES pyside2-rcc pyside2-rcc-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} pyrcc5 HINTS ${PYSIDE_BIN_DIR})
+  set(UICOPTIONS "")
+  set(RCCOPTIONS "")
+ELSE(Qt5Core_VERSION VERSION_LESS 5.14)
+  # New (>= 5.14)
+  FIND_PROGRAM(PYSIDE2UICBINARY NAMES uic-qt5 uic pyside2-uic)
+  set(UICOPTIONS "--generator=python")
+  FIND_PROGRAM(PYSIDE2RCCBINARY NAMES rcc-qt5 rcc pyside2-rcc)
+  set(RCCOPTIONS "--generator=python" "--compress-algo=zlib" "--compress=1")
+ENDIF(Qt5Core_VERSION VERSION_LESS 5.14)
 
 MACRO(PYSIDE_WRAP_UI outfiles)
   FOREACH(it ${ARGN})
@@ -31,21 +47,22 @@ MACRO(PYSIDE_WRAP_UI outfiles)
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
-    if(WIN32)
+    if(WIN32 OR APPLE)
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-          COMMAND ${PYSIDE2UICBINARY} ${infile} -o ${outfile}
+          COMMAND ${PYSIDE2UICBINARY} ${UICOPTIONS} ${infile} -o ${outfile}
           MAIN_DEPENDENCY ${infile}
         )
-    else(WIN32)
+    else()
         # Especially on Open Build Service we don't want changing date like
-        # pyside2-uic generates in comments at beginning.
-        EXECUTE_PROCESS(
-          COMMAND ${PYSIDE2UICBINARY} ${infile}
-          COMMAND sed "/^# /d"
-          OUTPUT_FILE ${outfile}
+        # pyside2-uic generates in comments at beginning., which is why
+        # we follow the tool command with a POSIX-friendly sed.
+        ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
+          COMMAND "${PYSIDE2UICBINARY}" ${UICOPTIONS} "${infile}" -o "${outfile}"
+          COMMAND sed "/^# /d" "${outfile}" >"${outfile}.tmp" && mv "${outfile}.tmp" "${outfile}"
+          MAIN_DEPENDENCY "${infile}"
         )
-    endif(WIN32)
-    SET(${outfiles} ${${outfiles}} ${outfile})
+    endif()
+    list(APPEND ${outfiles} ${outfile})
   ENDFOREACH(it)
 ENDMACRO (PYSIDE_WRAP_UI)
 
@@ -53,25 +70,26 @@ MACRO(PYSIDE_WRAP_RC outfiles)
   FOREACH(it ${ARGN})
     GET_FILENAME_COMPONENT(outfile ${it} NAME_WE)
     GET_FILENAME_COMPONENT(infile ${it} ABSOLUTE)
-    SET(outfile ${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py)
+    SET(outfile "${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py")
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
-    if(WIN32)
+    if(WIN32 OR APPLE)
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-          COMMAND ${PYSIDE2RCCBINARY} ${infile} -o ${outfile}
+          COMMAND ${PYSIDE2RCCBINARY} ${RCCOPTIONS} ${infile} -o ${outfile}
           MAIN_DEPENDENCY ${infile}
         )
-    else(WIN32)
+    else()
         # Especially on Open Build Service we don't want changing date like
-        # pyside2-rcc generates in comments at beginning.
-        EXECUTE_PROCESS(
-          COMMAND ${PYSIDE2RCCBINARY} ${infile}
-          COMMAND sed "/^# /d"
-          OUTPUT_FILE ${outfile}
-       )
-    endif(WIN32)
-    SET(${outfiles} ${${outfiles}} ${outfile})
+        # pyside-rcc generates in comments at beginning, which is why
+        # we follow the tool command with in-place sed.
+        ADD_CUSTOM_COMMAND(OUTPUT "${outfile}"
+          COMMAND "${PYSIDE2RCCBINARY}" ${RCCOPTIONS} "${infile}" ${PY_ATTRIBUTE} -o "${outfile}"
+          COMMAND sed "/^# /d" "${outfile}" >"${outfile}.tmp" && mv "${outfile}.tmp" "${outfile}"
+          MAIN_DEPENDENCY "${infile}"
+        )
+    endif()
+    list(APPEND ${outfiles} ${outfile})
   ENDFOREACH(it)
 ENDMACRO (PYSIDE_WRAP_RC)
 

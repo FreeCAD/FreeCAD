@@ -1,221 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sv-SE" sourcelanguage="en">
+<TS version="2.1" language="sv-SE" sourcelanguage="en">
   <context>
-    <name>CmdApproxPlane</name>
+    <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
       <source>Reverse Engineering</source>
       <translation>Reverse Engineering</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Approximate plane...</source>
-      <translation>Approximerar ett plan...</translation>
+      <source>Cylinder</source>
+      <translation>Cylinder</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <source>Approximate a cylinder</source>
+      <translation>Approximera en cylinder</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxPlane</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Reverse Engineering</translation>
+    </message>
+    <message>
+      <source>Plane...</source>
+      <translation>Plan...</translation>
+    </message>
+    <message>
       <source>Approximate a plane</source>
       <translation>Approximera ett plan</translation>
     </message>
   </context>
   <context>
-    <name>CmdApproxSurface</name>
+    <name>CmdApproxPolynomial</name>
     <message>
-      <location line="-37"/>
       <source>Reverse Engineering</source>
       <translation>Reverse Engineering</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <source>Polynomial surface</source>
+      <translation>Polynom yta</translation>
+    </message>
+    <message>
+      <source>Approximate a polynomial surface</source>
+      <translation>Approximera en polynom yta</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxSphere</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Reverse Engineering</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sfär</translation>
+    </message>
+    <message>
+      <source>Approximate a sphere</source>
+      <translation>Approximera en sfär</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxSurface</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Reverse Engineering</translation>
+    </message>
+    <message>
       <source>Approximate B-spline surface...</source>
-      <translation type="unfinished">Approximate B-spline surface...</translation>
+      <translation>Uppskatta B-spline-yta...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-spline surface</source>
-      <translation type="unfinished">Approximate a B-spline surface</translation>
+      <translation>Uppskatta B-spline-yta</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshBoundary</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Reverse Engineering</translation>
     </message>
     <message>
-      <source>Approximate B-Spline surface...</source>
-      <translation type="unfinished">Approximate B-Spline surface...</translation>
+      <source>Wire from mesh boundary...</source>
+      <translation type="unfinished">Wire from mesh boundary...</translation>
     </message>
     <message>
-      <source>Approximate surface...</source>
-      <translation>Approximera yta...</translation>
-    </message>
-    <message>
-      <source>Approximate a B-Spline surface</source>
-      <translation>Approximera en B-Spline yta</translation>
+      <source>Create wire from mesh boundaries</source>
+      <translation type="unfinished">Create wire from mesh boundaries</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location line="+134"/>
       <source>Reverse Engineering</source>
       <translation>Reverse Engineering</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Poisson...</source>
-      <translation type="unfinished">Poisson...</translation>
+      <translation>Poisson...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Poisson surface reconstruction</source>
-      <translation type="unfinished">Poisson surface reconstruction</translation>
+      <translation>Rekonstruktion av Poisson-yta</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentation</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Reverse Engineering</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation...</source>
+      <translation type="unfinished">Mesh segmentation...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Skapa nät segment</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentationFromComponents</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Reverse Engineering</translation>
+    </message>
+    <message>
+      <source>From components</source>
+      <translation>Från komponenter</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from components</source>
+      <translation type="unfinished">Create mesh segments from components</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentationManual</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Reverse Engineering</translation>
+    </message>
+    <message>
+      <source>Manual segmentation...</source>
+      <translation>Manuell segmentering...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments manually</source>
+      <translation type="unfinished">Create mesh segments manually</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location line="+32"/>
       <source>Reverse Engineering</source>
       <translation>Reverse Engineering</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Structured point clouds</source>
-      <translation type="unfinished">Structured point clouds</translation>
+      <translation>Strukturerade punktmoln</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation type="unfinished">Triangulation of structured point clouds</translation>
+      <translation>Triangulering av strukturerade punktmoln</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Fit plane</source>
+      <translation>Passa plan</translation>
+    </message>
+    <message>
+      <source>Fit cylinder</source>
+      <translation>Passa cylinder</translation>
+    </message>
+    <message>
+      <source>Fit sphere</source>
+      <translation>Passa sfär</translation>
+    </message>
+    <message>
+      <source>Fit polynomial surface</source>
+      <translation>Passa polynom yta</translation>
     </message>
     <message>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Visa triangulering</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Placering</translation>
+    </message>
+    <message>
+      <source>Fit B-Spline</source>
+      <translation>Passa B-Spline</translation>
+    </message>
+    <message>
+      <source>Poisson reconstruction</source>
+      <translation type="unfinished">Poisson reconstruction</translation>
+    </message>
+    <message>
+      <source>Segmentation</source>
+      <translation>Segmentering</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <source>Fit B-Spline surface</source>
-      <translation type="unfinished">Fit B-Spline surface</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>Passa in B-spline-yta</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>u-Direction</source>
-      <translation type="unfinished">u-Direction</translation>
+      <translation>u-riktning</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <location line="+67"/>
       <source>Degree</source>
       <translation>Grad</translation>
     </message>
     <message>
-      <location line="-38"/>
-      <location line="+67"/>
       <source>Control points</source>
       <translation>Kontrollpunkter</translation>
     </message>
     <message>
-      <location line="-35"/>
       <source>v-Direction</source>
-      <translation type="unfinished">v-Direction</translation>
+      <translation>v-riktning</translation>
     </message>
     <message>
-      <location line="+67"/>
       <source>Settings</source>
       <translation>Inställningar</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Iterations</source>
-      <translation type="unfinished">Iterations</translation>
+      <translation>Iterationer</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Size factor</source>
-      <translation type="unfinished">Size factor</translation>
+      <translation>Storleksfaktor</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Smoothing</source>
       <translation>Utjämning</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>Total Weight</source>
       <translation>Total vikt</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
+      <translation>Gradientlängd</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>Böjningsenergi</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>Böjningsvariation</translation>
     </message>
     <message>
-      <location line="+32"/>
       <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
+      <translation>Användardefinierade u-/v-riktningar</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Skapa placering</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="+146"/>
+      <source>Input error</source>
+      <translation>Inmatningsfel</translation>
+    </message>
+    <message>
       <source>Wrong selection</source>
       <translation>Fel val</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
-    </message>
-    <message>
-      <location line="+28"/>
-      <source>Input error</source>
-      <translation>Inmatningsfel</translation>
+      <translation>Vänligen markera ett enstaka placeringsobjekt för att hämta lokal riktning.</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::PoissonWidget</name>
     <message>
-      <location filename="../../Poisson.ui" line="+14"/>
       <source>Poisson</source>
-      <translation type="unfinished">Poisson</translation>
+      <translation>Poisson</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Parametrar</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>Octree-djup</translation>
     </message>
     <message>
-      <location line="+20"/>
       <source>Solver divide</source>
-      <translation type="unfinished">Solver divide</translation>
+      <translation>Lösningsdivision</translation>
     </message>
     <message>
-      <location line="+20"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>Urval per nod</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="+109"/>
       <source>Input error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -223,30 +313,157 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="-159"/>
-      <location line="+135"/>
       <source>Wrong selection</source>
       <translation>Fel val</translation>
     </message>
     <message>
-      <location line="-134"/>
-      <location line="+135"/>
+      <source>Please select a point cloud or mesh.</source>
+      <translation type="unfinished">Please select a point cloud or mesh.</translation>
+    </message>
+    <message>
       <source>Please select a single point cloud.</source>
-      <translation type="unfinished">Please select a single point cloud.</translation>
+      <translation>Vänligen välj ett enstaka punktmoln.</translation>
     </message>
   </context>
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>Triangulering av vy misslyckades</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Nätsegmentering</translation>
+    </message>
+    <message>
+      <source>Create compound</source>
+      <translation type="unfinished">Create compound</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Utjämnat nät</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plan</translation>
+    </message>
+    <message>
+      <source>Curvature tolerance</source>
+      <translation>Kurvtolerans</translation>
+    </message>
+    <message>
+      <source>Distance to plane</source>
+      <translation>Avstånd till plan</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minsta antal ytor</translation>
+    </message>
+    <message>
+      <source>Create mesh from unused triangles</source>
+      <translation>Skapa nät från oanvända trianglar</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::SegmentationManual</name>
+    <message>
+      <source>Manual segmentation</source>
+      <translation>Manuell segmentering</translation>
+    </message>
+    <message>
+      <source>Select</source>
+      <translation>Markera</translation>
+    </message>
+    <message>
+      <source>Components</source>
+      <translation>Komponenter</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Område</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Välj hela komponenten</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Markera triangel</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; ytor än</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>Alla</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Rensa</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plan</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerans</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minsta antal ytor</translation>
+    </message>
+    <message>
+      <source>Detect</source>
+      <translation>Upptäck</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cylinder</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sfär</translation>
+    </message>
+    <message>
+      <source>Region options</source>
+      <translation>Region alternativ</translation>
+    </message>
+    <message>
+      <source>Respect only visible triangles</source>
+      <translation>Respektera endast synliga trianglar</translation>
+    </message>
+    <message>
+      <source>Respect only triangles with normals facing screen</source>
+      <translation>Respekt endast trianglar med normaler vända mot skärmen</translation>
+    </message>
+    <message>
+      <source>Segmentation</source>
+      <translation>Segmentering</translation>
+    </message>
+    <message>
+      <source>Cut segment from mesh</source>
+      <translation>Skär segment från nät</translation>
+    </message>
+    <message>
+      <source>Hide segment</source>
+      <translation>Dölj segment</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::TaskSegmentationManual</name>
+    <message>
+      <source>Create</source>
+      <translation>Skapa</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
       <translation>Reverse Engineering</translation>
     </message>

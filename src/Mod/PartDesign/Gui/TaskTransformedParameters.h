@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -27,6 +27,7 @@
 #include <QComboBox>
 
 #include <Mod/Part/App/Part2DObject.h>
+#include <Mod/PartDesign/Gui/EnumFlags.h>
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
@@ -133,14 +134,28 @@ public:
 
     /// Get the TransformedFeature object associated with this task
     // Either through the ViewProvider or the currently active subFeature of the parentTask
-    Part::Feature *getBaseObject() const;
+    App::DocumentObject *getBaseObject() const;
 
     /// Get the sketch object of the first original either of the object associated with this feature or with the parent feature (MultiTransform mode)
-    App::DocumentObject* getSketchObject() const;   
+    App::DocumentObject* getSketchObject() const;
 
     void exitSelectionMode();
 
     virtual void apply() = 0;
+
+    /*!
+     * \brief setEnabledTransaction
+     * The transaction handling of this panel can be disabled if there is another
+     * instance that does it already, e.g. TaskDlgMultiTransformParameters.
+     * By default, transactions are enabled.
+     */
+    void setEnabledTransaction(bool);
+    bool isEnabledTransaction() const;
+    void setupTransaction();
+
+    int getTransactionID() const {
+        return transactionID;
+    }
 
 protected Q_SLOTS:
     /**
@@ -162,6 +177,7 @@ protected Q_SLOTS:
     void onButtonAddFeature(const bool checked);
     void onButtonRemoveFeature(const bool checked);
     virtual void onFeatureDeleted(void)=0;
+    void indexesMoved();
 
 protected:
     /**
@@ -181,12 +197,16 @@ protected:
     void hideBase();
     void showBase();
 
-    void addReferenceSelectionGate(bool edge, bool face);    
+    void addReferenceSelectionGate(AllowSelectionFlags);
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;
 
+    void checkVisibility();
+
 protected:
+    virtual void addObject(App::DocumentObject*);
+    virtual void removeObject(App::DocumentObject*);
     /** Notifies when the object is about to be removed. */
     virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
     virtual void changeEvent(QEvent *e) = 0;
@@ -200,6 +220,8 @@ protected:
 protected:
     QWidget* proxy;
     ViewProviderTransformed *TransformedView;
+    int transactionID = 0;
+    bool enableTransaction = true;
 
     enum selectionModes { none, addFeature, removeFeature, reference };
     selectionModes selectionMode;
@@ -209,7 +231,7 @@ protected:
     /// Flag indicating whether this object is a container for MultiTransform
     bool insideMultiTransform;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
-    bool blockUpdate;    
+    bool blockUpdate;
 };
 
 /// simulation dialog for the TaskView

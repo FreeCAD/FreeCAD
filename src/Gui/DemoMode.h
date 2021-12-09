@@ -44,15 +44,14 @@ class GuiExport DemoMode : public QDialog
     Q_OBJECT
 
 public:
-    DemoMode(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DemoMode(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DemoMode();
 
     void accept();
     void reject();
 
 protected Q_SLOTS:
-    void on_playButton_clicked();
-    void on_stopButton_clicked();
+    void on_playButton_toggled(bool);
     void on_fullscreen_toggled(bool);
     void on_timerCheck_toggled(bool);
     void on_speedSlider_valueChanged(int);

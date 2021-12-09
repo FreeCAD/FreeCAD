@@ -30,7 +30,7 @@
 
 #include "SMESH_StdMeshers.hxx"
 
-#include "SMDS_MeshElement.hxx"
+#include "SMDS_MeshNode.hxx"
 
 #include <TopTools_DataMapOfShapeShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>

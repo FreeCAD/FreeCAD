@@ -34,8 +34,9 @@
 # include <cfloat>
 # include <QFuture>
 # include <QFutureWatcher>
+# include <QKeyEvent>
 # include <QtConcurrentMap>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <Python.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -60,6 +61,7 @@
 #include <Base/UnitsApi.h>
 
 using namespace PartGui;
+namespace bp = boost::placeholders;
 #undef CS_FUTURE // multi-threading causes some problems
 
 namespace PartGui {
@@ -122,9 +124,10 @@ private:
 }
 
 CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), bbox(bb)
+  : QDialog(parent, fl)
+  , ui(new Ui_CrossSections)
+  , bbox(bb)
 {
-    ui = new Ui_CrossSections();
     ui->setupUi(this);
     ui->position->setRange(-DBL_MAX, DBL_MAX);
     ui->position->setUnit(Base::Unit::Length);
@@ -149,7 +152,6 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
 CrossSections::~CrossSections()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
     if (view) {
         view->getViewer()->removeViewProvider(vp);
     }
@@ -174,6 +176,13 @@ void CrossSections::changeEvent(QEvent *e)
     else {
         QDialog::changeEvent(e);
     }
+}
+
+void CrossSections::keyPressEvent(QKeyEvent* ke)
+{
+    // The cross-sections dialog is embedded into a task panel
+    // which is a parent widget and will handle the event
+    ke->ignore();
 }
 
 void CrossSections::accept()
@@ -210,7 +219,7 @@ void CrossSections::apply()
     for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
         Part::CrossSection cs(a,b,c,static_cast<Part::Feature*>(*it)->Shape.getValue());
         QFuture< std::list<TopoDS_Wire> > future = QtConcurrent::mapped
-            (d, boost::bind(&Part::CrossSection::section, &cs, _1));
+            (d, boost::bind(&Part::CrossSection::section, &cs, bp::_1));
         future.waitForFinished();
         QFuture< std::list<TopoDS_Wire> >::const_iterator ft;
         TopoDS_Compound comp;

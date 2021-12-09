@@ -1,5 +1,5 @@
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2004                       *   
+#*   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -10,16 +10,15 @@
 #*   for detail see the LICENCE text file.                                 *
 #*                                                                         *
 #*   FreeCAD is distributed in the hope that it will be useful,            *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 #*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 #*   GNU Library General Public License for more details.                  *
 #*                                                                         *
 #*   You should have received a copy of the GNU Library General Public     *
-#*   License along with FreeCAD; if not, write to the Free Software        * 
+#*   License along with FreeCAD; if not, write to the Free Software        *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2004                                                   *
 #***************************************************************************/
 
 import FreeCAD, os, unittest, tempfile, math
@@ -38,7 +37,7 @@ class ConsoleTestCase(unittest.TestCase):
         # http://python-kurs.eu/threads.php
         try:
             import _thread as thread, time
-        except:
+        except Exception:
             import thread, time
         def adder():
             lock.acquire()
@@ -59,7 +58,7 @@ class ConsoleTestCase(unittest.TestCase):
         # http://python-kurs.eu/threads.php
         try:
             import _thread as thread, time
-        except:
+        except Exception:
             import thread, time
         def adder():
             self.count=self.count+1
@@ -105,7 +104,7 @@ class ConsoleTestCase(unittest.TestCase):
 class ParameterTestCase(unittest.TestCase):
     def setUp(self):
         self.TestPar = FreeCAD.ParamGet("System parameter:Test")
-        
+
     def testGroup(self):
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testGroup\n")
         # check on Group creation
@@ -113,10 +112,10 @@ class ParameterTestCase(unittest.TestCase):
         self.failUnless(self.TestPar.HasGroup("44"),"Test on created group failed")
         # check on Deletion
         self.TestPar.RemGroup("44")
-        self.failUnless(not self.TestPar.HasGroup("44"),"Test on delete group failed")
-        Temp =0
+        self.failUnless(self.TestPar.HasGroup("44"),"A referenced group must not be deleted")
+        Temp = 0
 
-        #check on special conditions
+    # check on special conditions
     def testInt(self):
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testInt\n")
         #Temp = FreeCAD.ParamGet("System parameter:Test/44")
@@ -126,7 +125,7 @@ class ParameterTestCase(unittest.TestCase):
         # check on Deletion
         self.TestPar.RemInt("44")
         self.failUnless(self.TestPar.GetInt("44",1) == 1,"Deletion error at Int")
-        
+
 
     def testBool(self):
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testBool\n")
@@ -156,6 +155,18 @@ class ParameterTestCase(unittest.TestCase):
         # check on Deletion
         self.TestPar.RemString("44")
         self.failUnless(self.TestPar.GetString("44","hallo") == "hallo","Deletion error at String")
+
+    def testAngle(self):
+        v1 = FreeCAD.Vector(0,0,0.000001)
+        v2 = FreeCAD.Vector(0,0.000001,0)
+        self.assertAlmostEqual(v1.getAngle(v2), math.pi/2)
+        self.assertAlmostEqual(v2.getAngle(v1), math.pi/2)
+
+    def testAngleWithNullVector(self):
+        v1 = FreeCAD.Vector(0,0,0)
+        v2 = FreeCAD.Vector(0,1,0)
+        self.assertTrue(math.isnan(v1.getAngle(v2)))
+        self.assertTrue(math.isnan(v2.getAngle(v1)))
 
     def testMatrix(self):
         m=FreeCAD.Matrix(4,2,1,0,1,1,1,0,0,0,1,0,0,0,0,1)
@@ -233,6 +244,58 @@ class ParameterTestCase(unittest.TestCase):
         r.invert()
         self.assertTrue(r.isSame(s))
 
+        # gimbal lock (north pole)
+        r=FreeCAD.Rotation()
+        r.setYawPitchRoll(20, 90, 10)
+        a=r.getYawPitchRoll()
+        s=FreeCAD.Rotation()
+        s.setYawPitchRoll(*a)
+        self.assertAlmostEqual(a[0], 0.0)
+        self.assertAlmostEqual(a[1], 90.0)
+        self.assertAlmostEqual(a[2], -10.0)
+        self.assertTrue(r.isSame(s, 1e-12))
+
+        # gimbal lock (south pole)
+        r=FreeCAD.Rotation()
+        r.setYawPitchRoll(20, -90, 10)
+        a=r.getYawPitchRoll()
+        s=FreeCAD.Rotation()
+        s.setYawPitchRoll(*a)
+        self.assertAlmostEqual(a[0], 0.0)
+        self.assertAlmostEqual(a[1], -90.0)
+        self.assertAlmostEqual(a[2], 30.0)
+        self.assertTrue(r.isSame(s, 1e-12))
+
+    def testYawPitchRoll(self):
+        def getYPR1(yaw, pitch, roll):
+            r = FreeCAD.Rotation()
+            r.setYawPitchRoll(yaw, pitch, roll)
+            return r
+        def getYPR2(yaw, pitch, roll):
+            rx = FreeCAD.Rotation()
+            ry = FreeCAD.Rotation()
+            rz = FreeCAD.Rotation()
+
+            rx.Axis = FreeCAD.Vector(1,0,0)
+            ry.Axis = FreeCAD.Vector(0,1,0)
+            rz.Axis = FreeCAD.Vector(0,0,1)
+
+            rx.Angle = math.radians(roll)
+            ry.Angle = math.radians(pitch)
+            rz.Angle = math.radians(yaw)
+
+            return rz.multiply(ry).multiply(rx)
+
+        angles = []
+        angles.append((10,10,10))
+        angles.append((13,45,-24))
+        angles.append((10,-90,20))
+
+        for i in angles:
+            r = getYPR1(*i)
+            s = getYPR2(*i)
+            self.assertTrue(r.isSame(s, 1e-12))
+
     def testBounding(self):
         b=FreeCAD.BoundBox()
         b.setVoid()
@@ -263,7 +326,7 @@ class ParameterTestCase(unittest.TestCase):
                 Temp.SetInt(str(l),4711)
                 Temp.SetBool(str(l),1)
         Temp = 0
-        
+
     def testExportImport(self):
         # Parameter testing
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testNesting\n")
@@ -283,7 +346,7 @@ class ParameterTestCase(unittest.TestCase):
         Temp.Import(TempPath)
         self.failUnless(Temp.GetFloat("ExTest") == 4711.4711,"ExportImport error")
         Temp = 0
-        
+
     def tearDown(self):
         #remove all
         TestPar = FreeCAD.ParamGet("System parameter:Test")

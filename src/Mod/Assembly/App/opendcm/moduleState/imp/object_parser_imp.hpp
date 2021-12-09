@@ -56,7 +56,7 @@ obj_parser<Sys, ObjList, Object, Par>::obj_parser(): obj_parser::base_type(start
 };
 
 template<typename Sys, typename ObjList, typename Object, typename Par>
-void obj_parser<Sys, ObjList, Object, Par>::setProperties(boost::shared_ptr<Object> ptr, typename details::pts<typename Object::PropertySequence>::type& seq) {
+void obj_parser<Sys, ObjList, Object, Par>::setProperties(std::shared_ptr<Object> ptr, typename details::pts<typename Object::PropertySequence>::type& seq) {
     if(ptr) ptr->m_properties = seq;
 };
 

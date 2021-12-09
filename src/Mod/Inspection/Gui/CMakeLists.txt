@@ -15,12 +15,6 @@ set(InspectionGui_LIBS
     FreeCADGui
 )
 
-set(InspectionGui_MOC_HDRS
-    VisualInspection.h
-)
-fc_wrap_cpp(InspectionGui_MOC_SRCS ${InspectionGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${InspectionGui_MOC_SRCS})
-
 set(Dialogs_UIC_SRCS
     VisualInspection.ui
 )
@@ -53,24 +47,28 @@ SET(InspectionGui_SRCS
     Workbench.h
 )
 
-add_library(InspectionGui SHARED ${InspectionGui_SRCS})
-target_link_libraries(InspectionGui ${InspectionGui_LIBS})
-
-
-fc_target_copy_resource(InspectionGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Inspection
-    ${CMAKE_BINARY_DIR}/Mod/Inspection
-    InitGui.py)
-
-SET_BIN_DIR(InspectionGui InspectionGui /Mod/Inspection)
-SET_PYTHON_PREFIX_SUFFIX(InspectionGui)
-
-INSTALL(TARGETS InspectionGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+set(InspectionGui_Scripts
+    ../InitGui.py
+)
 
 SET(InspectionGuiIcon_SVG
     Resources/icons/InspectionWorkbench.svg
 )
 
+add_library(InspectionGui SHARED ${InspectionGui_SRCS} ${InspectionGui_Scripts} ${InspectionGuiIcon_SVG})
+target_link_libraries(InspectionGui ${InspectionGui_LIBS})
+
+
+fc_target_copy_resource_flat(InspectionGui
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Inspection
+    ${InspectionGui_Scripts}
+)
+
+SET_BIN_DIR(InspectionGui InspectionGui /Mod/Inspection)
+SET_PYTHON_PREFIX_SUFFIX(InspectionGui)
+
 fc_copy_sources(InspectionGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Inspection" ${InspectionGuiIcon_SVG})
 
+INSTALL(TARGETS InspectionGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${InspectionGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Inspection/Resources/icons")

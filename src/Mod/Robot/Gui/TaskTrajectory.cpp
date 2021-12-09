@@ -113,7 +113,7 @@ TaskTrajectory::~TaskTrajectory()
    
 }
 
-void TaskTrajectory::viewTool(const Base::Placement pos)
+void TaskTrajectory::viewTool(const Base::Placement& pos)
 {
     double A,B,C;
     pos.getRotation().getYawPitchRoll(A,B,C);

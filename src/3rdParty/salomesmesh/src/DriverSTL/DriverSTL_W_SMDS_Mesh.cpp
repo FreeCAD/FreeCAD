@@ -23,7 +23,9 @@
 #include "DriverSTL_W_SMDS_Mesh.h"
 
 #ifdef WIN32
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #endif
 
 #include <Basics_Utils.hxx>
@@ -291,7 +293,7 @@ namespace
     try {
       axes = gp_Ax2( p0, normal, v01 );
     }
-    catch ( Standard_Failure ) {
+    catch ( Standard_Failure &) {
       return false;
     }
     for ( size_t i = 0; i < nbNodes; ++i )

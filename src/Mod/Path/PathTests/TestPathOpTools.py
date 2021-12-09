@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -24,7 +22,6 @@
 
 import FreeCAD
 import Part
-import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathOpTools as PathOpTools
 import PathScripts.PathLog as PathLog
@@ -73,12 +70,18 @@ def makeWire(pts):
     edges.append(Part.Edge(Part.LineSegment(last, first)))
     return Part.Wire(edges)
 
+def wireMarkers(wire):
+    pts = [wire.Edges[0].valueAt(wire.Edges[0].FirstParameter)]
+    for edge in wire.Edges:
+        pts.append(edge.valueAt(edge.LastParameter))
+    return pts
+
 
 class TestPathOpTools(PathTestUtils.PathTestBase):
 
     @classmethod
     def setUpClass(cls):
-        global doc
+        global doc # pylint: disable=global-statement
         doc = FreeCAD.openDocument(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_geomop.fcstd')
 
     @classmethod
@@ -142,7 +145,7 @@ class TestPathOpTools(PathTestUtils.PathTestBase):
         self.assertEqual(1, len(wire.Edges))
         self.assertRoughly(7, wire.Edges[0].Curve.Radius)
         self.assertCoincide(Vector(0, 0, 1), wire.Edges[0].Curve.Axis)
-        
+
         wire = PathOpTools.offsetWire(small, obj.Shape, 9.9, True)
         self.assertIsNotNone(wire)
         self.assertEqual(1, len(wire.Edges))
@@ -781,3 +784,80 @@ class TestPathOpTools(PathTestUtils.PathTestBase):
         rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
         self.assertEqual(0, len(rEdges))
 
+    def test50(self):
+        '''Orient an already oriented wire'''
+        p0 = Vector()
+        p1 = Vector(1, 2, 3)
+        p2 = Vector(2, 3, 4)
+        pts = [p0, p1, p2]
+
+        e0 = Part.Edge(Part.LineSegment(p0, p1))
+        e1 = Part.Edge(Part.LineSegment(p1, p2))
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0, e1]))
+        wirePts = wireMarkers(wire)
+
+        self.assertPointsMatch(wirePts, pts)
+
+    def test51(self):
+        '''Orient a potentially misoriented wire'''
+        p0 = Vector()
+        p1 = Vector(1, 2, 3)
+        p2 = Vector(2, 3, 4)
+        pts = [p0, p1, p2]
+
+        e0p = Part.Edge(Part.LineSegment(p0, p1))
+        e0m = Part.Edge(Part.LineSegment(p1, p0))
+        e1p = Part.Edge(Part.LineSegment(p1, p2))
+        e1m = Part.Edge(Part.LineSegment(p2, p1))
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0p, e1p]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0p, e1m]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0m, e1p]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0m, e1m]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+    def test52(self):
+        '''Orient a potentially misoriented longer wire'''
+        p0 = Vector()
+        p1 = Vector(1, 2, 3)
+        p2 = Vector(4, 5, 6)
+        p3 = Vector(7, 8, 9)
+        pts = [p0, p1, p2, p3]
+
+        e0p = Part.Edge(Part.LineSegment(p0, p1))
+        e0m = Part.Edge(Part.LineSegment(p1, p0))
+        e1p = Part.Edge(Part.LineSegment(p1, p2))
+        e1m = Part.Edge(Part.LineSegment(p2, p1))
+        e2p = Part.Edge(Part.LineSegment(p2, p3))
+        e2m = Part.Edge(Part.LineSegment(p3, p2))
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0p, e1p, e2p]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0p, e1m, e2p]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0m, e1p, e2p]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0m, e1m, e2p]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0p, e1p, e2m]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0p, e1m, e2m]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0m, e1p, e2m]))
+        self.assertPointsMatch(wireMarkers(wire), pts)
+
+        wire    = PathOpTools.orientWire(Part.Wire([e0m, e1m, e2m]))
+        self.assertPointsMatch(wireMarkers(wire), pts)

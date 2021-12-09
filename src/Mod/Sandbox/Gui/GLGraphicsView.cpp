@@ -913,7 +913,7 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->navigationStyle()->setResetCursorPosition(on);
     }
     else if (strcmp(Reason,"InvertZoom") == 0) {
-        bool on = rGrp.GetBool("InvertZoom", false);
+        bool on = rGrp.GetBool("InvertZoom", true);
         _viewer->navigationStyle()->setZoomInverted(on);
     }
     else if (strcmp(Reason,"ZoomAtCursor") == 0) {
@@ -931,7 +931,7 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
     }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
-        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",true));
+        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
     }
     else if (strcmp(Reason,"Gradient") == 0) {
         _viewer->setGradientBackground((rGrp.GetBool("Gradient",true)));

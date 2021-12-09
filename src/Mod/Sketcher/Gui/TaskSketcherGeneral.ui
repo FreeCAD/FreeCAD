@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>275</width>
-    <height>256</height>
+    <width>312</width>
+    <height>254</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,12 +15,24 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QCheckBox" name="checkBoxShowGrid">
+    <widget class="Gui::PrefCheckBox" name="checkBoxShowGrid">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>A grid will be shown</string>
+     </property>
      <property name="text">
       <string>Show grid</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>ShowGrid</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher/General</cstring>
      </property>
     </widget>
    </item>
@@ -34,7 +46,10 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="gridSize" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="gridSize">
+       <property name="toolTip">
+        <string>Distance between two subsequent grid lines</string>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
@@ -51,26 +66,45 @@
         <double>1.000000000000000</double>
        </property>
        <property name="value" stdset="0">
-        <double>0.000000100000000</double>
+        <double>10.000000000000000</double>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>GridSize</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/General/GridSize</cstring>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxGridSnap">
+    <widget class="Gui::PrefCheckBox" name="checkBoxGridSnap">
      <property name="enabled">
       <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>New points will snap to the nearest grid line.
+Points must be set closer than a fifth of the grid size to a grid line to snap.</string>
      </property>
      <property name="text">
       <string>Grid snap</string>
      </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>GridSnap</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher/General</cstring>
+     </property>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBoxAutoconstraints">
+    <widget class="Gui::PrefCheckBox" name="checkBoxAutoconstraints">
      <property name="enabled">
       <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Sketcher proposes automatically sensible constraints.</string>
      </property>
      <property name="text">
       <string>Auto constraints</string>
@@ -78,10 +112,19 @@
      <property name="checked">
       <bool>true</bool>
      </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>AutoConstraints</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher/General</cstring>
+     </property>
     </widget>
    </item>
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBoxRedundantAutoconstraints">
+     <property name="toolTip">
+      <string>Sketcher tries not to propose redundant auto constraints</string>
+     </property>
      <property name="text">
       <string>Avoid redundant auto constraints</string>
      </property>
@@ -92,24 +135,42 @@
       <cstring>AvoidRedundantAutoconstraints</cstring>
      </property>
      <property name="prefPath" stdset="0">
-      <cstring>Mod/Sketcher</cstring>
+      <cstring>Mod/Sketcher/General</cstring>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Rendering order:</string>
+      <string>Rendering order (global):</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QListWidget" name="renderingOrder">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>12</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>To change, drag and drop a geometry type to top or bottom</string>
+     </property>
      <property name="dragEnabled">
       <bool>true</bool>
      </property>
      <property name="dragDropMode">
       <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+     <property name="resizeMode">
+      <enum>QListView::Fixed</enum>
      </property>
      <property name="sortingEnabled">
       <bool>false</bool>
@@ -120,13 +181,13 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefQuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

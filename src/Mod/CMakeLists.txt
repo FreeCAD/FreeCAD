@@ -102,13 +102,13 @@ if(BUILD_FEM)
     add_subdirectory(Fem)
 endif(BUILD_FEM)
 
+if(BUILD_CLOUD)
+    add_subdirectory(Cloud)
+endif(BUILD_CLOUD)
+
 if(BUILD_SANDBOX)
     add_subdirectory(Sandbox)
 endif(BUILD_SANDBOX)
-
-if(BUILD_SHIP)
-  add_subdirectory(Ship)
-endif(BUILD_SHIP)
 
 if(BUILD_OPENSCAD)
   add_subdirectory(OpenSCAD)

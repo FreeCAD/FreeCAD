@@ -76,7 +76,8 @@ void QGCustomSvg::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    //painter->drawRect(boundingRect());          //good for debugging
+//    painter->setPen(Qt::yellow);
+//    painter->drawRect(boundingRect());          //good for debugging
 
     QGraphicsSvgItem::paint (painter, &myOption, widget);
 }

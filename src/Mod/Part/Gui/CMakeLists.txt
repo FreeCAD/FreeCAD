@@ -38,35 +38,6 @@ if (BUILD_QT5)
     )
 endif()
 
-set(PartGui_MOC_HDRS
-    CrossSections.h
-    Mirroring.h
-    DlgBooleanOperation.h
-    DlgExtrusion.h
-    DlgFilletEdges.h
-    DlgPartBoxImp.h
-    DlgPartCylinderImp.h
-    DlgPartImportIgesImp.h
-    DlgPartImportStepImp.h
-    DlgPrimitives.h
-    DlgRevolution.h
-    DlgSettings3DViewPartImp.h
-    DlgSettingsGeneral.h
-    DlgSettingsObjectColor.h
-    PropertyEnumAttacherItem.h
-    TaskFaceColors.h
-    TaskShapeBuilder.h
-    TaskLoft.h
-    TaskOffset.h
-    TaskSweep.h
-    TaskThickness.h
-    TaskDimension.h
-    TaskCheckGeometry.h
-    TaskAttacher.h
-)
-fc_wrap_cpp(PartGui_MOC_SRCS ${PartGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${PartGui_MOC_SRCS})
-
 if (BUILD_QT5)
     qt5_add_resources(PartGui_QRC_SRCS Resources/Part.qrc)
 else()
@@ -91,6 +62,8 @@ set(PartGui_UIC_SRCS
     DlgSettings3DViewPart.ui
     DlgSettingsGeneral.ui
     DlgSettingsObjectColor.ui
+    DlgProjectionOnSurface.ui
+    ShapeFromMesh.ui
     TaskFaceColors.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
@@ -161,6 +134,9 @@ SET(PartGui_SRCS
     DlgSettingsObjectColor.cpp
     DlgSettingsObjectColor.h
     DlgSettingsObjectColor.ui
+    DlgProjectionOnSurface.cpp
+    DlgProjectionOnSurface.h
+    DlgProjectionOnSurface.ui
     Resources/Part.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -176,6 +152,8 @@ SET(PartGui_SRCS
     SoBrepPointSet.h
     ViewProvider.cpp
     ViewProvider.h
+    ViewProviderAttachExtension.h
+    ViewProviderAttachExtension.cpp
     ViewProviderExt.cpp
     ViewProviderExt.h
     ViewProviderReference.cpp
@@ -226,8 +204,12 @@ SET(PartGui_SRCS
     ViewProviderBoolean.h
     ViewProviderRuledSurface.cpp
     ViewProviderRuledSurface.h
+    ViewProviderPrimitive.cpp
+    ViewProviderPrimitive.h
     Workbench.cpp
     Workbench.h
+    ShapeFromMesh.cpp
+    ShapeFromMesh.h
     TaskFaceColors.cpp
     TaskFaceColors.h
     TaskFaceColors.ui
@@ -253,30 +235,24 @@ SET(PartGui_SRCS
     TaskAttacher.cpp 
 )
 
-SET(PartGui_Scripts
-    InitGui.py
-    TestPartGui.py
-)
-
-
-add_library(PartGui SHARED ${PartGui_SRCS})
-target_link_libraries(PartGui ${PartGui_LIBS})
-
-
-fc_target_copy_resource(PartGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Part
-    ${CMAKE_BINARY_DIR}/Mod/Part
-    ${PartGui_Scripts})
-
-SET_BIN_DIR(PartGui PartGui /Mod/Part)
-SET_PYTHON_PREFIX_SUFFIX(PartGui)
-
-INSTALL(TARGETS PartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PartGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(PartGuiIcon_SVG
     Resources/icons/PartWorkbench.svg
 )
 
+add_library(PartGui SHARED ${PartGui_SRCS} ${PartGuiIcon_SVG})
+target_link_libraries(PartGui ${PartGui_LIBS})
+
+
+SET_BIN_DIR(PartGui PartGui /Mod/Part)
+SET_PYTHON_PREFIX_SUFFIX(PartGui)
+
 fc_copy_sources(PartGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Part" ${PartGuiIcon_SVG})
 
+INSTALL(TARGETS PartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${PartGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Part/Resources/icons")

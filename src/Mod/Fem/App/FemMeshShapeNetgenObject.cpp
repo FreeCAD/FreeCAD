@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,8 +22,24 @@
 
 
 #include "PreCompiled.h"
+#include <SMESH_Version.h>
 
 #ifndef _PreComp_
+# include <Python.h>
+# include <SMESH_Gen.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMDS_VolumeTool.hxx>
+
+# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepTools.hxx>
+
+# ifdef FCWithNetgen
+#  include <NETGENPlugin_SimpleHypothesis_3D.hxx>
+#  include <NETGENPlugin_Hypothesis.hxx>
+#  include <NETGENPlugin_Mesher.hxx>
+# endif
+
 #endif
 
 #include "FemMeshShapeNetgenObject.h"
@@ -32,22 +48,6 @@
 #include <Base/Placement.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
-
-#include <SMESH_Gen.hxx>
-#include <SMESHDS_Mesh.hxx>
-
-#include <SMESH_Mesh.hxx>
-#include <SMDS_PolyhedralVolumeOfNodes.hxx>
-#include <SMDS_VolumeTool.hxx>
-
-#ifdef FCWithNetgen
-    #include <NETGENPlugin_SimpleHypothesis_3D.hxx>
-    #include <NETGENPlugin_Hypothesis.hxx>
-    #include <NETGENPlugin_Mesher.hxx>
-#endif
-
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepTools.hxx>
 
 using namespace Fem;
 using namespace App;
@@ -65,7 +65,7 @@ FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
     ADD_PROPERTY_TYPE(GrowthRate,(0.3),     "MeshParams",Prop_None," allows to define how much the linear dimensions of two adjacent cells can differ");
     ADD_PROPERTY_TYPE(NbSegsPerEdge,(1),    "MeshParams",Prop_None,"allows to define the minimum number of mesh segments in which edges will be split");
     ADD_PROPERTY_TYPE(NbSegsPerRadius,(2),  "MeshParams",Prop_None,"allows to define the minimum number of mesh segments in which radiuses will be split");
-    ADD_PROPERTY_TYPE(Optimize,(true),      "MeshParams",Prop_None,"Shape for the analysis");
+    ADD_PROPERTY_TYPE(Optimize,(true),      "MeshParams",Prop_None,"Optimize the resulting mesh");
 
 }
 
@@ -83,7 +83,11 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
     TopoDS_Shape shape = feat->Shape.getValue();
 
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
+#if SMESH_VERSION_MAJOR >= 9
+    NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(0,newMesh.getGenerator());
+#else
     NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(0,1,newMesh.getGenerator());
+#endif
     tet->SetMaxSize(MaxSize.getValue());
     tet->SetSecondOrder(SecondOrder.getValue());
     tet->SetOptimize(Optimize.getValue());
@@ -99,7 +103,7 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 
     myNetGenMesher.Compute();
 
-    // throw Base::Exception("Compute Done\n");
+    // throw Base::RuntimeError("Compute Done\n");
 
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
     const SMDS_MeshInfo& info = data->GetMeshInfo();

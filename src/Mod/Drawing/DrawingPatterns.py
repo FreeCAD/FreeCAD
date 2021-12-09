@@ -272,12 +272,12 @@ def decodeName(name,scale,thickness):
     if len(name) > 1:
         try:
             scale = float(name[1])
-        except:
+        except Exception:
             pass
     if len(name) > 2:
         try:
             thickness = float(name[2])
-        except:
+        except Exception:
             pass
     return name[0],scale,thickness
 

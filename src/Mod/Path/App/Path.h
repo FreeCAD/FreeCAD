@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,7 @@
 #include "Command.h"
 //#include "Mod/Robot/App/kdl_cp/path_composite.hpp"
 //#include "Mod/Robot/App/kdl_cp/frames_io.hpp"
+#include <Base/BoundBox.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -59,9 +60,11 @@ namespace Path
             void insertCommand(const Command &Cmd, int); // inserts a command
             void deleteCommand(int); // deletes a command
             double getLength(void); // return the Length (mm) of the Path
+            double getCycleTime(double, double, double, double); // return the Cycle Time (s) of the Path
             void recalculate(void); // recalculates the points
             void setFromGCode(const std::string); // sets the path from the contents of the given GCode string
             std::string toGCode(void) const; // gets a gcode string representation from the Path
+            Base::BoundBox3d getBoundBox(void) const;
             
             // shortcut functions
             unsigned int getSize(void) const { return vpcCommands.size(); }

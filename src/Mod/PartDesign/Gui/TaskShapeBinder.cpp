@@ -59,10 +59,11 @@ using namespace Gui;
 TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view, bool /*newObj*/, QWidget *parent)
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("PartDesign_ShapeBinder"),
                              tr("Datum shape parameters"), true, parent)
+    , SelectionObserver(view)
+    , ui(new Ui_TaskShapeBinder)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskShapeBinder();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -79,7 +80,7 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view, bool /*newObj*/,
     vp = view;
     
     //add initial values   
-    Part::Feature* obj = nullptr;
+    App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
             
     PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, subs);            
@@ -90,8 +91,8 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view, bool /*newObj*/,
     for (auto sub : subs)
         ui->listWidgetReferences->addItem(QString::fromStdString(sub));
  
-    //make sure th euser sees al important things: the base feature to select edges and the 
-    //spine/auxiliary spine he already selected
+    //make sure the user sees all important things: the base feature to select edges and the 
+    //spine/auxiliary spine they already selected
     if(obj) {
         auto* svp = doc->getViewProvider(obj);
         if(svp) {
@@ -147,8 +148,8 @@ TaskShapeBinder::~TaskShapeBinder()
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
     Gui::Document* doc = Gui::Application::Instance->activeDocument(); 
     
-    //make sure th euser sees al important things: the base feature to select edges and the 
-    //spine/auxiliary spine he already selected
+    //make sure the user sees all important things: the base feature to select edges and the 
+    //spine/auxiliary spine they already selected
     if(pipe->BaseFeature.getValue())
         doc->getViewProvider(pipe->BaseFeature.getValue())->hide();
     if(pipe->Spine.getValue()) {
@@ -158,7 +159,6 @@ TaskShapeBinder::~TaskShapeBinder()
     }
     static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, false);
     */
-    delete ui;
 }
 
 void TaskShapeBinder::changeEvent(QEvent *)
@@ -227,9 +227,9 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
         std::string subName(msg.pSubName);
 
         Part::Feature* selectedObj = nullptr;
-        Part::Feature* obj = nullptr;
+        App::GeoFeature* obj = nullptr;
         std::vector<std::string> refs;
-                
+
         PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, refs);
 
         // get selected object
@@ -323,7 +323,7 @@ bool TaskDlgShapeBinder::accept()
     try {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!vp->getObject()->isValid())
-            throw Base::Exception(vp->getObject()->getStatusString());
+            throw Base::RuntimeError(vp->getObject()->getStatusString());
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
     }

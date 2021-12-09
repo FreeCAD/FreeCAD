@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre          (yorik@uncreated.net) 2013     *
+ *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,6 +53,7 @@ public:
 
     /** @name methods override Feature */
     //@{
+    short mustExecute() const;
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);
 

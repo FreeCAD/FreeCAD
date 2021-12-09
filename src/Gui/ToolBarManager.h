@@ -65,7 +65,7 @@ private:
  * The ToolBarManager class is responsible for the creation of toolbars and appending them
  * to the main window.
  * @see ToolBoxManager
- * @see MenuManager 
+ * @see MenuManager
  * @author Werner Mayer
  */
 class GuiExport ToolBarManager
@@ -79,6 +79,8 @@ public:
     void saveState() const;
     void restoreState() const;
     void retranslate() const;
+
+    void setMovable(bool movable) const;
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
@@ -97,4 +99,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_TOOLBARMANAGER_H 
+#endif // GUI_TOOLBARMANAGER_H

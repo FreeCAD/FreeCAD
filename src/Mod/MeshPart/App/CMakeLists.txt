@@ -58,14 +58,25 @@ SET(MeshPart_SRCS
     PreCompiled.h
 )
 
-add_library(MeshPart SHARED ${MeshPart_SRCS})
+set(MeshPart_Scripts
+    ../Init.py
+)
+
+add_library(MeshPart SHARED ${MeshPart_SRCS} ${MeshPart_Scripts})
 target_link_libraries(MeshPart ${MeshPart_LIBS})
 
+# external SMESH doesn't support C++17 yet
+if(FREECAD_USE_EXTERNAL_SMESH)
+    set_target_properties(MeshPart PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(MeshPart PROPERTIES CXX_STANDARD 14)
+endif()
 
-fc_target_copy_resource(MeshPart 
-    ${CMAKE_SOURCE_DIR}/src/Mod/MeshPart
+
+fc_target_copy_resource_flat(MeshPart
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/MeshPart
-    Init.py)
+    ${MeshPart_Scripts}
+)
 
 SET_BIN_DIR(MeshPart MeshPart /Mod/MeshPart)
 SET_PYTHON_PREFIX_SUFFIX(MeshPart)
@@ -123,7 +134,12 @@ if (BUILD_FLAT_MESH)
 
                 add_library(flatmesh SHARED ${FLATMESH_SRCS})
                 SET_PYTHON_PREFIX_SUFFIX(flatmesh)
-                target_link_libraries(flatmesh ${PYTHON_LIBRARIES} ${MeshPart_LIBS} ${Boost_LIBRARIES})
+
+                if (BUILD_DYNAMIC_LINK_PYTHON)
+                    target_link_libraries(flatmesh ${PYTHON_LIBRARIES})
+                endif(BUILD_DYNAMIC_LINK_PYTHON)
+
+                target_link_libraries(flatmesh ${MeshPart_LIBS} ${Boost_LIBRARIES})
 
                 SET_BIN_DIR(flatmesh flatmesh /Mod/MeshPart)
                 install(TARGETS flatmesh DESTINATION ${CMAKE_INSTALL_LIBDIR})

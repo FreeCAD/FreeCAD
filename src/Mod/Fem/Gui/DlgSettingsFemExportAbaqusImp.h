@@ -1,4 +1,4 @@
-/******************b********************************************************
+/***************************************************************************
  *   Copyright (c) 2017 FreeCAD Developers                                 *
  *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
  *   Based on src/Mod/Fem/Gui/DlgSettingsFemCcx.h                          *

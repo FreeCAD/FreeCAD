@@ -21,11 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h" 
+#include "PreCompiled.h"
 
 #include <QCoreApplication>
 #include <QTcpSocket>
 #include <stdexcept>
+#include <memory>
 
 #include "Server.h"
 #include <Base/Exception.h>
@@ -109,21 +110,26 @@ const QByteArray& ServerEvent::request() const
 
 // ----------------------------------------------------------------------------
 
-AppServer::AppServer(QObject* parent)
+AppServer::AppServer( bool direct, QObject* parent)
   : QTcpServer(parent)
+  , direct(direct)
 {
+    PyObject* mod = PyImport_ImportModule("__main__");
+    if (mod) {
+        module = mod;
+    }
+    else {
+        throw Py::RuntimeError("Cannot load __main__ module");
+    }
 }
 
-#if QT_VERSION >=0x050000
 void AppServer::incomingConnection(qintptr socket)
-#else
-void AppServer::incomingConnection(int socket)
-#endif
 {
     QTcpSocket* s = new QTcpSocket(this);
     connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
     connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
     s->setSocketDescriptor(socket);
+    addPendingConnection(s);
 }
 
 void AppServer::readClient()
@@ -131,7 +137,13 @@ void AppServer::readClient()
     QTcpSocket* socket = (QTcpSocket*)sender();
     if (socket->bytesAvailable() > 0) {
         QByteArray request = socket->readAll();
-        QCoreApplication::postEvent(this, new ServerEvent(socket, request));
+        std::unique_ptr<ServerEvent> event(std::make_unique<ServerEvent>(socket, request));
+        if (direct) {
+            customEvent(event.get());
+        }
+        else {
+            QCoreApplication::postEvent(this, event.release());
+        }
     }
 //    if (socket->state() == QTcpSocket::UnconnectedState) {
 //        //mark the socket for deletion but do not destroy immediately
@@ -151,6 +163,45 @@ void AppServer::customEvent(QEvent* e)
     QByteArray msg = ev->request();
     QTcpSocket* socket = ev->socket();
 
+    std::string str = handleRequest(msg);
+    socket->write(str.c_str());
+    if (direct)
+        socket->waitForBytesWritten();
+    socket->close();
+}
+
+std::string AppServer::handleRequest(QByteArray msg)
+{
+    std::string str;
+    if (msg.startsWith("GET ")) {
+        msg = QByteArray("GET = ") + msg.mid(4);
+        str = runPython(msg);
+        if (str == "None") {
+            str = getRequest(str);
+        }
+    }
+    else {
+        str = runPython(msg);
+    }
+
+    return str;
+}
+
+std::string AppServer::getRequest(const std::string& str) const
+{
+    try {
+        Base::PyGILStateLocker lock;
+        Py::Object attr = module.getAttr(std::string("GET"));
+        return attr.as_string();
+    }
+    catch (Py::Exception &e) {
+        e.clear();
+        return str;
+    }
+}
+
+std::string AppServer::runPython(const QByteArray& msg)
+{
     std::string str;
 
     try {
@@ -165,6 +216,9 @@ void AppServer::customEvent(QEvent* e)
         str += "\n\n";
         str += e.getStackTrace();
     }
+    catch (Base::SystemExitException &) {
+        throw;
+    }
     catch (Base::Exception &e) {
         str = e.what();
     }
@@ -175,8 +229,7 @@ void AppServer::customEvent(QEvent* e)
         str = "Unknown exception thrown";
     }
 
-    socket->write(str.c_str());
-    socket->close();
+    return str;
 }
 
 #include "moc_Server.cpp"

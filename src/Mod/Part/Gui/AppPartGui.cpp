@@ -38,6 +38,7 @@
 #include "ViewProvider.h"
 #include "ViewProviderExt.h"
 #include "ViewProviderPython.h"
+#include "ViewProviderPrimitive.h"
 #include "ViewProviderBox.h"
 #include "ViewProviderCurveNet.h"
 #include "ViewProviderImport.h"
@@ -60,6 +61,7 @@
 #include "ViewProviderPrism.h"
 #include "ViewProviderSpline.h"
 #include "ViewProviderRegularPolygon.h"
+#include "ViewProviderAttachExtension.h"
 #include "TaskDimension.h"
 #include "DlgSettingsGeneral.h"
 #include "DlgSettingsObjectColor.h"
@@ -68,8 +70,8 @@
 
 #include <Gui/Language/Translator.h>
 
-#include "Resources/icons/PartFeature.xpm"
-#include "Resources/icons/PartFeatureImport.xpm"
+// #include "Resources/icons/Part_Feature.xpm"
+// #include "Resources/icons/Part_FeatureImport.xpm"
 
 // use a different name to CreateCommand()
 void CreatePartCommands(void);
@@ -124,7 +126,12 @@ PyMOD_INIT_FUNC(PartGui)
 
     Base::Console().Log("Loading GUI of Part module... done\n");
 
-#if PY_MAJOR_VERSION >= 3
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/booleans"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/create"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/measure"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/parametric"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
+
     static struct PyModuleDef pAttachEngineTextsModuleDef = {
         PyModuleDef_HEAD_INIT,
         "AttachEngineResources",
@@ -133,66 +140,70 @@ PyMOD_INIT_FUNC(PartGui)
         NULL, NULL, NULL, NULL
     };
     PyObject* pAttachEngineTextsModule = PyModule_Create(&pAttachEngineTextsModuleDef);
-#else
-    PyObject* pAttachEngineTextsModule = Py_InitModule3("AttachEngineResources", AttacherGui::AttacherGuiPy::Methods,
-        "AttachEngine Gui resources");
-#endif
 
     Py_INCREF(pAttachEngineTextsModule);
     PyModule_AddObject(partGuiModule, "AttachEngineResources", pAttachEngineTextsModule);
 
-    PartGui::PropertyEnumAttacherItem       ::init();
-    PartGui::SoBrepFaceSet                  ::initClass();
-    PartGui::SoBrepEdgeSet                  ::initClass();
-    PartGui::SoBrepPointSet                 ::initClass();
-    PartGui::SoFCControlPoints              ::initClass();
-    PartGui::ViewProviderPartExt            ::init();
-    PartGui::ViewProviderPart               ::init();
-    PartGui::ViewProviderEllipsoid          ::init();
-    PartGui::ViewProviderPython             ::init();
-    PartGui::ViewProviderBox                ::init();
-    PartGui::ViewProviderPrism              ::init();
-    PartGui::ViewProviderRegularPolygon     ::init();
-    PartGui::ViewProviderWedge              ::init();
-    PartGui::ViewProviderImport             ::init();
-    PartGui::ViewProviderCurveNet           ::init();
-    PartGui::ViewProviderExtrusion          ::init();
-    PartGui::ViewProvider2DObject           ::init();
-    PartGui::ViewProvider2DObjectPython     ::init();
-    PartGui::ViewProviderMirror             ::init();
-    PartGui::ViewProviderFillet             ::init();
-    PartGui::ViewProviderChamfer            ::init();
-    PartGui::ViewProviderRevolution         ::init();
-    PartGui::ViewProviderLoft               ::init();
-    PartGui::ViewProviderSweep              ::init();
-    PartGui::ViewProviderOffset             ::init();
-    PartGui::ViewProviderOffset2D           ::init();
-    PartGui::ViewProviderThickness          ::init();
-    PartGui::ViewProviderCustom             ::init();
-    PartGui::ViewProviderCustomPython       ::init();
-    PartGui::ViewProviderBoolean            ::init();
-    PartGui::ViewProviderMultiFuse          ::init();
-    PartGui::ViewProviderMultiCommon        ::init();
-    PartGui::ViewProviderCompound           ::init();
-    PartGui::ViewProviderSpline             ::init();
-    PartGui::ViewProviderCircleParametric   ::init();
-    PartGui::ViewProviderLineParametric     ::init();
-    PartGui::ViewProviderPointParametric    ::init();
-    PartGui::ViewProviderEllipseParametric  ::init();
-    PartGui::ViewProviderHelixParametric    ::init();
-    PartGui::ViewProviderSpiralParametric   ::init();
-    PartGui::ViewProviderPlaneParametric    ::init();
-    PartGui::ViewProviderSphereParametric   ::init();
-    PartGui::ViewProviderCylinderParametric ::init();
-    PartGui::ViewProviderConeParametric     ::init();
-    PartGui::ViewProviderTorusParametric    ::init();
-    PartGui::ViewProviderRuledSurface       ::init();
-    PartGui::ViewProviderFace               ::init();
-    PartGui::DimensionLinear                ::initClass();
-    PartGui::DimensionAngular               ::initClass();
-    PartGui::ArcEngine                      ::initClass();
+    PartGui::PropertyEnumAttacherItem               ::init();
+    PartGui::SoBrepFaceSet                          ::initClass();
+    PartGui::SoBrepEdgeSet                          ::initClass();
+    PartGui::SoBrepPointSet                         ::initClass();
+    PartGui::SoFCControlPoints                      ::initClass();
+    PartGui::ViewProviderAttachExtension            ::init();
+    PartGui::ViewProviderAttachExtensionPython      ::init();
+    PartGui::ViewProviderSplineExtension            ::init();
+    PartGui::ViewProviderSplineExtensionPython      ::init();
+    PartGui::ViewProviderPartExt                    ::init();
+    PartGui::ViewProviderPart                       ::init();
+    PartGui::ViewProviderPrimitive                  ::init();
+    PartGui::ViewProviderEllipsoid                  ::init();
+    PartGui::ViewProviderPython                     ::init();
+    PartGui::ViewProviderBox                        ::init();
+    PartGui::ViewProviderPrism                      ::init();
+    PartGui::ViewProviderRegularPolygon             ::init();
+    PartGui::ViewProviderWedge                      ::init();
+    PartGui::ViewProviderImport                     ::init();
+    PartGui::ViewProviderCurveNet                   ::init();
+    PartGui::ViewProviderExtrusion                  ::init();
+    PartGui::ViewProvider2DObject                   ::init();
+    PartGui::ViewProvider2DObjectPython             ::init();
+    PartGui::ViewProvider2DObjectGrid               ::init();
+    PartGui::ViewProviderMirror                     ::init();
+    PartGui::ViewProviderFillet                     ::init();
+    PartGui::ViewProviderChamfer                    ::init();
+    PartGui::ViewProviderRevolution                 ::init();
+    PartGui::ViewProviderLoft                       ::init();
+    PartGui::ViewProviderSweep                      ::init();
+    PartGui::ViewProviderOffset                     ::init();
+    PartGui::ViewProviderOffset2D                   ::init();
+    PartGui::ViewProviderThickness                  ::init();
+    PartGui::ViewProviderRefine                     ::init();
+    PartGui::ViewProviderReverse                    ::init();
+    PartGui::ViewProviderCustom                     ::init();
+    PartGui::ViewProviderCustomPython               ::init();
+    PartGui::ViewProviderBoolean                    ::init();
+    PartGui::ViewProviderMultiFuse                  ::init();
+    PartGui::ViewProviderMultiCommon                ::init();
+    PartGui::ViewProviderCompound                   ::init();
+    PartGui::ViewProviderSpline                     ::init();
+    PartGui::ViewProviderCircleParametric           ::init();
+    PartGui::ViewProviderLineParametric             ::init();
+    PartGui::ViewProviderPointParametric            ::init();
+    PartGui::ViewProviderEllipseParametric          ::init();
+    PartGui::ViewProviderHelixParametric            ::init();
+    PartGui::ViewProviderSpiralParametric           ::init();
+    PartGui::ViewProviderPlaneParametric            ::init();
+    PartGui::ViewProviderSphereParametric           ::init();
+    PartGui::ViewProviderCylinderParametric         ::init();
+    PartGui::ViewProviderConeParametric             ::init();
+    PartGui::ViewProviderTorusParametric            ::init();
+    PartGui::ViewProviderRuledSurface               ::init();
+    PartGui::ViewProviderFace                       ::init();
+    PartGui::DimensionLinear                        ::initClass();
+    PartGui::DimensionAngular                       ::initClass();
+    PartGui::ArcEngine                              ::initClass();
 
-    PartGui::Workbench                      ::init();
+    PartGui::Workbench                              ::init();
 
     // instantiating the commands
     CreatePartCommands();
@@ -209,9 +220,9 @@ PyMOD_INIT_FUNC(PartGui)
     // register preferences pages
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>      ( QT_TRANSLATE_NOOP("QObject","Part design") );
     (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>   ( QT_TRANSLATE_NOOP("QObject","Part design") );
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>  ( QT_TRANSLATE_NOOP("QObject","Part design") );
     (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
     (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>  ( QT_TRANSLATE_NOOP("QObject","Display") );
     Gui::ViewProviderBuilder::add(
         Part::PropertyPartShape::getClassTypeId(),
         PartGui::ViewProviderPart::getClassTypeId());
@@ -220,9 +231,9 @@ PyMOD_INIT_FUNC(PartGui)
     loadPartResource();
 
     // register bitmaps
-    Gui::BitmapFactoryInst& rclBmpFactory = Gui::BitmapFactory();
-    rclBmpFactory.addXPM("PartFeature",(const char**) PartFeature_xpm);
-    rclBmpFactory.addXPM("PartFeatureImport",(const char**) PartFeatureImport_xpm);
+    // Gui::BitmapFactoryInst& rclBmpFactory = Gui::BitmapFactory();
+    // rclBmpFactory.addXPM("Part_Feature",(const char**) PartFeature_xpm);
+    // rclBmpFactory.addXPM("Part_FeatureImport",(const char**) PartFeatureImport_xpm);
 
     PyMOD_Return(partGuiModule);
 }

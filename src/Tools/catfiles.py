@@ -3,7 +3,8 @@
 # (c) 2018 Werner Mayer LGPL
 #
 
-import os,sys,getopt
+import sys,getopt
+#import os # The code that needs this is commented out
 import shutil
 
 def main():

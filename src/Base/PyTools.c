@@ -16,10 +16,7 @@ is provided on an as is basis, without warranties of any kind.
 #include <assert.h>
 #include <compile.h>
 #include <eval.h>
-
-#if PY_VERSION_HEX <= 0x02050000
-#error "Use Python2.5.x or higher"
-#endif
+#include <frameobject.h>
 
 
 /*****************************************************************************
@@ -57,7 +54,11 @@ PP_Run_Method(PyObject *pobject,  const char *method,
     if (PP_DEBUG)                                    /* debug it too? */ 
         presult = PP_Debug_Function(pmeth, pargs); 
     else 
+#if PY_VERSION_HEX < 0x03090000
         presult = PyEval_CallObject(pmeth, pargs);   /* run interpreter */
+#else
+        presult = PyObject_CallObject(pmeth, pargs);   /* run interpreter */
+#endif
 
     Py_DECREF(pmeth);
     Py_DECREF(pargs);
@@ -132,7 +133,11 @@ PP_Run_Function(const char *modname, const char *funcname,          /* load from
     if (PP_DEBUG && strcmp(modname, "pdb") != 0)    /* debug this call? */
         presult = PP_Debug_Function(func, args);    /* run in pdb; incref'd */
     else
+#if PY_VERSION_HEX < 0x03090000
         presult = PyEval_CallObject(func, args);    /* run function; incref'd */
+#else
+        presult = PyObject_CallObject(func, args);    /* run function; incref'd */
+#endif
 
     Py_DECREF(func);
     Py_DECREF(args);                                    /* result may be None */
@@ -149,11 +154,7 @@ PP_Debug_Function(PyObject *func, PyObject *args)
     /* expand tuple at front */
     // it seems that some versions of python want just 2 arguments; in that
     // case, remove trailing 1
-#if (PY_MAJOR_VERSION>=2)&&(PY_MINOR_VERSION>=2)
     oops = _PyTuple_Resize(&args, (1 + PyTuple_Size(args))); 
-#else
-    oops = _PyTuple_Resize(&args, (1 + PyTuple_Size(args)),1); 
-#endif    
     oops |= PyTuple_SetItem(args, 0, func);   
     if (oops) 
         return NULL;                        /* "args = (funcobj,) + (arg,..)" */
@@ -184,7 +185,11 @@ PP_Run_Known_Callable(PyObject *object,               /* func|class|method */
     if (PP_DEBUG)                                   /* debug this call? */
         presult = PP_Debug_Function(object, args);  /* run in pdb; incref'd */
     else
+#if PY_VERSION_HEX < 0x03090000
         presult = PyEval_CallObject(object, args);  /* run function; incref'd */
+#else
+        presult = PyObject_CallObject(object, args);  /* run function; incref'd */
+#endif
 
     Py_DECREF(args);                                    /* result may be None */
     return PP_Convert_Result(presult, resfmt, cresult); /* convert result to C*/
@@ -200,7 +205,7 @@ PP_Run_Known_Callable(PyObject *object,               /* func|class|method */
  * so you should call one of these, one time, per exception:
  * caveats: not thread-specific since saves data in globals,
  * and only exports traceback object (the exception type and 
- * data are converted to text strings and disgarded);  the 
+ * data are converted to text strings and discarded);  the 
  * PyErr_Print() built-in also does a bit more on syntax errors,
  * and sends its text to sys.stderr: in principle, we could
  * assign stderr to a StringIO object and call PyErr_Print, but
@@ -219,6 +224,7 @@ char PP_last_error_trace[MAX];              /* exception traceback text */
 
 PyObject *PP_last_traceback = NULL;         /* saved exception traceback object */
 PyObject *PP_PyDict_Object = NULL;          /* saved exception dictionary object */
+PyObject *PP_last_exception_type = NULL;    /* saved exception python type */
 
 
 void PP_Fetch_Error_Text()
@@ -241,20 +247,15 @@ void PP_Fetch_Error_Text()
     pystring = NULL;
     if (errobj != NULL &&
        (pystring = PyObject_Str(errobj)) != NULL &&      /* str(errobj) */
-#if PY_MAJOR_VERSION >= 3
        (PyUnicode_Check(pystring)) )                      /* str() increfs */
     {
         strncpy(PP_last_error_type, PyUnicode_AsUTF8(pystring), MAX); /*Py->C*/
-#else
-       (PyString_Check(pystring)) )                      /* str() increfs */
-    {
-        strncpy(PP_last_error_type, PyString_AsString(pystring), MAX); /*Py->C*/
-#endif
         PP_last_error_type[MAX-1] = '\0';
     }
     else
     {
-        strcpy(PP_last_error_type, "<unknown exception type>");
+        /* strcpy(PP_last_error_type, "<unknown exception type>"); */
+        PP_last_error_type[0] = '\0';
     }
     
     Py_XDECREF(pystring);
@@ -270,11 +271,7 @@ void PP_Fetch_Error_Text()
         PyObject* value = PyDict_GetItemString(errdata,"swhat");
         
         if (value!=NULL) {
-#if PY_MAJOR_VERSION < 3
-            strncpy(PP_last_error_info, PyString_AsString(value), MAX);
-#else
             strncpy(PP_last_error_info, PyUnicode_AsUTF8(value), MAX);
-#endif
             PP_last_error_info[MAX-1] = '\0';
         }
 
@@ -283,15 +280,9 @@ void PP_Fetch_Error_Text()
     }
     else if (errdata != NULL &&
        (pystring = PyObject_Str(errdata)) != NULL &&     /* str(): increfs */
-#if PY_MAJOR_VERSION >= 3
        (PyUnicode_Check(pystring)) )
     {
         strncpy(PP_last_error_info, PyUnicode_AsUTF8(pystring), MAX); /*Py->C*/
-#else
-       (PyString_Check(pystring)) )
-    {
-        strncpy(PP_last_error_info, PyString_AsString(pystring), MAX); /*Py->C*/
-#endif
         PP_last_error_info[MAX-1] = '\0';
     }
     else 
@@ -305,11 +296,7 @@ void PP_Fetch_Error_Text()
 
     pystring = NULL;
     if (errtraceback != NULL &&
-#if PY_MAJOR_VERSION < 3
-       (PP_Run_Function("StringIO", "StringIO", "O", &pystring, "()") == 0) &&
-#else
        (PP_Run_Function("io", "StringIO", "O", &pystring, "()") == 0) &&
-#endif
 
        (PyTraceBack_Print(errtraceback, pystring) == 0) &&
        (PP_Run_Method(pystring, "getvalue", "s", &tempstr, "()") == 0) )
@@ -318,11 +305,28 @@ void PP_Fetch_Error_Text()
         PP_last_error_trace[MAX-1] = '\0';
         free(tempstr);  /* it's a strdup */
     }
-    else 
-        strcpy(PP_last_error_trace, "<unknown exception traceback>"); 
+    else {
+        PyFrameObject* frame = PyEval_GetFrame();
+        if(!frame) 
+            return;
+        int line = PyFrame_GetLineNumber(frame);
+        const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
+#ifdef FC_OS_WIN32
+        const char *_f = strstr(file, "\\src\\");
+#else
+        const char *_f = strstr(file, "/src/");
+#endif
+        /* strcpy(PP_last_error_trace, "<unknown exception traceback>");  */
+        snprintf(PP_last_error_trace,sizeof(PP_last_error_trace),"%s(%d)",(_f?_f+5:file),line);
+    }
     Py_XDECREF(pystring);
 
-
+    Py_XDECREF(PP_last_exception_type);
+    if(errobj) {
+        PP_last_exception_type = errobj;
+        Py_INCREF(errobj);
+    }else
+        PP_last_exception_type = 0;
     Py_XDECREF(errobj);
     Py_XDECREF(errdata);               /* this function owns all 3 objects */
     Py_XDECREF(PP_last_traceback);     /* they've been NULL'd out in Python */ 
@@ -602,11 +606,7 @@ PP_Run_Bytecode(PyObject *codeobj,           /* run compiled bytecode object */
     if (PP_DEBUG)
         presult = PP_Debug_Bytecode(codeobj, dict);        /* run in pdb */
     else
-#if PY_MAJOR_VERSION >= 3
         presult = PyEval_EvalCode((PyObject*)codeobj, dict, dict);
-#else
-        presult = PyEval_EvalCode((PyCodeObject *)codeobj, dict, dict);
-#endif
     return PP_Convert_Result(presult, resfmt, restarget);  /* expr val to C */
 }
 

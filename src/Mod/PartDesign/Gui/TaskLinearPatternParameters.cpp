@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -63,11 +63,11 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskLinearPatternParameters */
 
 TaskLinearPatternParameters::TaskLinearPatternParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
-        : TaskTransformedParameters(TransformedView, parent)
+    : TaskTransformedParameters(TransformedView, parent)
+    , ui(new Ui_TaskLinearPatternParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskLinearPatternParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -83,10 +83,9 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(ViewProviderTransformed
 }
 
 TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
-        : TaskTransformedParameters(parentTask)
+        : TaskTransformedParameters(parentTask), ui(new Ui_TaskLinearPatternParameters)
 {
     proxy = new QWidget(parentTask);
-    ui = new Ui_TaskLinearPatternParameters();
     ui->setupUi(proxy);
     connect(ui->buttonOK, SIGNAL(pressed()),
             parentTask, SLOT(onSubTaskButtonOK()));
@@ -106,22 +105,30 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
     setupUI();
 }
 
-void TaskLinearPatternParameters::setupUI()
+void TaskLinearPatternParameters::connectSignals()
 {
     connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
     connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    action->setShortcutVisibleInContextMenu(true);
+#endif
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->listWidgetFeatures->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
-
     connect(updateViewTimer, SIGNAL(timeout()),
             this, SLOT(onUpdateViewTimer()));
+
     connect(ui->comboDirection, SIGNAL(activated(int)),
             this, SLOT(onDirectionChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
@@ -132,7 +139,10 @@ void TaskLinearPatternParameters::setupUI()
             this, SLOT(onOccurrences(uint)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
+}
 
+void TaskLinearPatternParameters::setupUI()
+{
     // Get the feature data
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     std::vector<App::DocumentObject*> originals = pcLinearPattern->Originals.getValues();
@@ -150,8 +160,9 @@ void TaskLinearPatternParameters::setupUI()
     // ---------------------
 
     ui->spinLength->bind(pcLinearPattern->Length);
-    ui->spinOccurrences->setMaximum(INT_MAX);
     ui->spinOccurrences->bind(pcLinearPattern->Occurrences);
+    ui->spinOccurrences->setMaximum(pcLinearPattern->Occurrences.getMaximum());
+    ui->spinOccurrences->setMinimum(pcLinearPattern->Occurrences.getMinimum());
 
     ui->comboDirection->setEnabled(true);
     ui->checkReverse->setEnabled(true);
@@ -184,6 +195,7 @@ void TaskLinearPatternParameters::setupUI()
     }
 
     updateUI();
+    connectSignals();
 }
 
 void TaskLinearPatternParameters::updateUI()
@@ -216,6 +228,7 @@ void TaskLinearPatternParameters::updateUI()
 
 void TaskLinearPatternParameters::onUpdateViewTimer()
 {
+    setupTransaction();
     recomputeFeature();
 }
 
@@ -224,29 +237,30 @@ void TaskLinearPatternParameters::kickUpdateViewTimer() const
     updateViewTimer->start();
 }
 
+void TaskLinearPatternParameters::addObject(App::DocumentObject* obj)
+{
+    QString label = QString::fromUtf8(obj->Label.getValue());
+    QString objectName = QString::fromLatin1(obj->getNameInDocument());
+
+    QListWidgetItem* item = new QListWidgetItem();
+    item->setText(label);
+    item->setData(Qt::UserRole, objectName);
+    ui->listWidgetFeatures->addItem(item);
+}
+
+void TaskLinearPatternParameters::removeObject(App::DocumentObject* obj)
+{
+    QString label = QString::fromUtf8(obj->Label.getValue());
+    removeItemFromListWidget(ui->listWidgetFeatures, label);
+}
+
 void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (selectionMode != none && msg.Type == Gui::SelectionChanges::AddSelection) {
         if (originalSelected(msg)) {
-            Gui::SelectionObject selObj(msg);
-            App::DocumentObject* obj = selObj.getObject();
-            Q_ASSERT(obj);
-
-            QString label = QString::fromUtf8(obj->Label.getValue());
-            QString objectName = QString::fromLatin1(msg.pObjectName);
-
-            if (selectionMode == addFeature) {
-                QListWidgetItem* item = new QListWidgetItem();
-                item->setText(label);
-                item->setData(Qt::UserRole, objectName);
-                ui->listWidgetFeatures->addItem(item);
-            }
-            else {
-                removeItemFromListWidget(ui->listWidgetFeatures, label);
-            }
-
             exitSelectionMode();
-        } else {
+        }
+        else if (selectionMode == reference) {
             // TODO check if this works correctly (2015-09-01, Fat-Zer)
             exitSelectionMode();
             std::vector<std::string> directions;
@@ -257,9 +271,12 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
 
                 // Note: ReferenceSelection has already checked the selection for validity
                 if (selObj && (selectionMode == reference ||
-                               selObj->isDerivedFrom(App::Line::getClassTypeId()))) {
+                               selObj->isDerivedFrom(App::Line::getClassTypeId()) ||
+                               selObj->isDerivedFrom(Part::Feature::getClassTypeId()) ||
+                               selObj->isDerivedFrom(PartDesign::Line::getClassTypeId()) ||
+                               selObj->isDerivedFrom(PartDesign::Plane::getClassTypeId()))) {
+                    setupTransaction();
                     pcLinearPattern->Direction.setValue(selObj, directions);
-
                     recomputeFeature();
                     updateUI();
                 }
@@ -316,7 +333,7 @@ void TaskLinearPatternParameters::onDirectionChanged(int /*num*/)
             showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
-            addReferenceSelectionGate(true, true);
+            addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR);
         } else {
             exitSelectionMode();
             pcLinearPattern->Direction.Paste(dirLinks.getCurrentLink());
@@ -337,6 +354,7 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
         std::vector<std::string> directions;
         App::DocumentObject* obj;
 
+        setupTransaction();
         getDirection(obj, directions);
         pcLinearPattern->Direction.setValue(obj,directions);
         pcLinearPattern->Reversed.setValue(getReverse());
@@ -351,9 +369,15 @@ void TaskLinearPatternParameters::onFeatureDeleted(void)
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    int currentRow = ui->listWidgetFeatures->currentRow();
+    if (currentRow < 0) {
+        Base::Console().Error("PartDesign LinearPattern: No feature selected for removing.\n");
+        return; //no current row selected
+    }
+    originals.erase(originals.begin() + currentRow);
+    setupTransaction();
     pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    ui->listWidgetFeatures->model()->removeRow(currentRow);
     recomputeFeature();
 }
 
@@ -395,7 +419,6 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
         Base::Console().Error ("%s\n", ex.what () );
     }
 
-    delete ui;
     if (proxy)
         delete proxy;
 }
@@ -410,15 +433,14 @@ void TaskLinearPatternParameters::changeEvent(QEvent *e)
 
 void TaskLinearPatternParameters::apply()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
-
     std::vector<std::string> directions;
     App::DocumentObject* obj;
     getDirection(obj, directions);
     std::string direction = buildLinkSingleSubPythonStr(obj, directions);
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), direction.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),getReverse());
+    auto tobj = TransformedView->getObject();
+    FCMD_OBJ_CMD(tobj,"Direction = " << direction);
+    FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
 
     ui->spinLength->apply();
     ui->spinOccurrences->apply();

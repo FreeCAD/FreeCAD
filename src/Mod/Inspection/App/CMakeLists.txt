@@ -32,14 +32,19 @@ SET(Inspection_SRCS
     PreCompiled.h
 )
 
-add_library(Inspection SHARED ${Inspection_SRCS})
+set(Inspection_Scripts
+    ../Init.py
+)
+
+add_library(Inspection SHARED ${Inspection_SRCS} ${Inspection_Scripts})
 target_link_libraries(Inspection ${Inspection_LIBS})
 
 
-fc_target_copy_resource(Inspection 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Inspection
+fc_target_copy_resource_flat(Inspection
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Inspection
-    Init.py)
+    ${Inspection_Scripts}
+)
 
 SET_BIN_DIR(Inspection Inspection /Mod/Inspection)
 SET_PYTHON_PREFIX_SUFFIX(Inspection)

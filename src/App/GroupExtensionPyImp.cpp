@@ -129,8 +129,7 @@ PyObject* GroupExtensionPy::addObjects(PyObject *args) {
     std::string error = std::string("type must be list of 'DocumentObject', not ");
     error += object->ob_type->tp_name;
     throw Base::TypeError(error);
-};
-
+}
 
 PyObject* GroupExtensionPy::setObjects(PyObject *args) {
 

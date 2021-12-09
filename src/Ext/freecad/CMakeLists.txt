@@ -1,20 +1,31 @@
 EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c 
-"from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+"from distutils.sysconfig import get_python_lib; print(get_python_lib(prefix='', plat_specific=True))"
 OUTPUT_VARIABLE python_libs OUTPUT_STRIP_TRAILING_WHITESPACE )
 SET(PYTHON_MAIN_DIR ${python_libs})
 
-SET(EXT_SRCS
-    __init__.py
-)
+set(NAMESPACE_DIR "${CMAKE_BINARY_DIR}/Ext/freecad")
+set(NAMESPACE_INIT "${NAMESPACE_DIR}/__init__.py")
+if (WIN32)
+    get_filename_component(FREECAD_LIBRARY_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}"
+                       REALPATH BASE_DIR "${CMAKE_INSTALL_PREFIX}")
+    set( ${CMAKE_INSTALL_BINDIR})
+else()
+    set(FREECAD_LIBRARY_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR})
+endif()
 
-ADD_CUSTOM_TARGET(freecad_COPY_SOURCE ALL
-    SOURCES ${EXT_SRCS})
+configure_file(__init__.py.template ${NAMESPACE_INIT})
+configure_file(UiTools.py ${NAMESPACE_DIR}/UiTools.py)
 
-fc_copy_sources(freecad_COPY_SOURCE "${CMAKE_BINARY_DIR}/Ext/freecad" ${EXT_SRCS})
+if (INSTALL_TO_SITEPACKAGES)
+    SET(SITE_PACKAGE_DIR ${PYTHON_MAIN_DIR}/freecad)
+else ()
+    SET(SITE_PACKAGE_DIR Ext/freecad)
+endif()
 
 INSTALL(
     FILES
-        __init__.py
+        ${NAMESPACE_INIT}
+        UiTools.py
     DESTINATION
-        Ext/freecad
+        ${SITE_PACKAGE_DIR}
 )

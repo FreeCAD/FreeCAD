@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="eu" sourcelanguage="en">
+<TS version="2.1" language="eu" sourcelanguage="en">
   <context>
     <name>Angle</name>
     <message>
@@ -23,35 +23,35 @@
       <source>Angle Snap</source>
       <translation>Angelu-atxikitzea</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>1 °</source>
       <translation>1 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>2 °</source>
       <translation>2 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>5 °</source>
       <translation>5 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>10 °</source>
       <translation>10 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>20 °</source>
       <translation>20 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>45 °</source>
       <translation>45 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>90 °</source>
       <translation>90 °</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>180 °</source>
       <translation>180 °</translation>
     </message>
@@ -121,6 +121,81 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editatu</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Inportatu</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Ezabatu</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Itsatsi adierazpenak</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Sortu esteka taldea</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Sortu esteka</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Sortu azpiesteka</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Inportatu estekak</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Inportatu esteka guztiak</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Txertatu neurketa</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Txertatu testu-dokumentua</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Gehitu zati bat</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Gehitu talde bat</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Lerrokatu</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Kokapena</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformatu</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Estekaren transformazioa</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Neurtu distantzia</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -174,12 +249,16 @@
       <translation>Emaitza:</translation>
     </message>
     <message>
-      <source>&amp;Discard</source>
-      <translation>&amp;Baztertu</translation>
-    </message>
-    <message>
       <source>Ok</source>
       <translation>Ados</translation>
+    </message>
+    <message>
+      <source>&amp;Clear</source>
+      <translation>&amp;Garbitu</translation>
+    </message>
+    <message>
+      <source>Revert to last calculated value (as constant)</source>
+      <translation>Bueltatu kalkulatutako azken baliora (konstante gisa)</translation>
     </message>
   </context>
   <context>
@@ -195,6 +274,36 @@
     <message>
       <source>Filename</source>
       <translation>Fitxategi-izena</translation>
+    </message>
+  </context>
+  <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Lehenetsia</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformatu</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Moztea</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Kolorea</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation>Sartu adierazpen bat...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation>Adierazpena: </translation>
     </message>
   </context>
   <context>
@@ -294,13 +403,13 @@
       <translation>Sakatu saguaren erdiko botoia</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Sakatu saguaren erdiko eta ezkerreko edo eskuineko botoia</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Sakatu erdiko+ezkerreko edo erdiko+eskuineko botoiak</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Korritu saguaren erdiko botoia edo mantendu sakatuta erdiko botoia ezker edo eskuinekoko klik egiten duzun bitartean sagua gora edo behera mugituz</translation>
+      <translation>Korritu saguaren erdiko botoia edo eutsi sakatuta erdiko botoiari ezker edo eskuineko klik egiten duzun bitartean sagua gora edo behera mugituz</translation>
     </message>
   </context>
   <context>
@@ -386,14 +495,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Hitz-tamaina</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Kredituak</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD ez litzakete ezer izango haien ahaleginengatik ez balitz:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Lizentzia</translation>
     </message>
@@ -412,16 +513,78 @@ while doing a left or right click and move the mouse up or down</source>
       <source>License</source>
       <translation>Lizentzia</translation>
     </message>
+    <message>
+      <source>Collection</source>
+      <translation>Bilduma</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Kredituak</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation>FreeCADik ez litzateke egongo honakoen laguntzarik gabe:</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation>Banakoak</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation>Erakundeak</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
-      <translation>%1 Botoia</translation>
+      <translation>%1 botoia</translation>
     </message>
     <message>
       <source>Out Of Range</source>
       <translation>Barrutitik kanpo</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Kameraren ezarpenak</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Orientazioa</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Uneko bista</translation>
     </message>
   </context>
   <context>
@@ -460,7 +623,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Adjust to view direction</source>
-      <translation>Doitu ikuspegi norabidera</translation>
+      <translation>Egokitu ikuspegi norabidera</translation>
     </message>
     <message>
       <source>Direction</source>
@@ -508,11 +671,11 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Angle</source>
       <translation>Angelua</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>90°</source>
       <translation>90°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>-90°</source>
       <translation>-90°</translation>
     </message>
@@ -549,6 +712,49 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Windows</source>
       <translation>Leihoak</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgAddProperty</name>
+    <message>
+      <source>Add property</source>
+      <translation>Gehitu propietatea</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Mota</translation>
+    </message>
+    <message>
+      <source>Group</source>
+      <translation>Taldea</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Izena</translation>
+    </message>
+    <message>
+      <source>Verbose description of the new property.</source>
+      <translation>Propietate berriaren deskribapen xehea.</translation>
+    </message>
+    <message>
+      <source>Documentation</source>
+      <translation>Dokumentazioa</translation>
+    </message>
+    <message>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation>Jarri taldearen izena aurrizki modura propietatearen izenean, 'Taldea_Izena' forman, lehendik dauden propietateekin gatazkak saihesteko.
+Kasu horretan, aurrizkia automatikoki moztuko da propietateen editorean erakusten denean.
+Hala ere, propietatea izen osoarekin erabilia izango da scriptetan, adibidez 'obj.Taldea_Izena'.
+
+Hau markatuta ez badago, propietateak izen bakarra izan behar du eta 'obj.Izena' forman atzituko da.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation>Erabili talde-izena aurrizki gisa</translation>
     </message>
   </context>
   <context>
@@ -597,7 +803,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgChooseIcon</name>
     <message>
       <source>Choose Icon</source>
-      <translation>Ikonoa aukeratu</translation>
+      <translation>Aukeratu ikonoa</translation>
     </message>
     <message>
       <source>Icon folders...</source>
@@ -612,11 +818,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Setup Custom Macros</source>
-      <translation>Konfiguratu Makro Pertsonalizatuak</translation>
+      <translation>Konfiguratu makro pertsonalizatuak</translation>
     </message>
     <message>
       <source>Macro:</source>
-      <translation>Makro:</translation>
+      <translation>Makroa:</translation>
     </message>
     <message>
       <source>...</source>
@@ -818,18 +1024,20 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Definitutako lasterbide anitz</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>'%1' lasterbidea behin baino gehiagotan definitua. Honek ustekabeko portaera sor dezake.</translation>
-    </message>
-    <message>
       <source>Already defined shortcut</source>
       <translation>Dagoeneko definitutako lasterbidea</translation>
     </message>
     <message>
-      <source>The shortcut '%1' is already assigned to '%2'.
-
-Please define another shortcut.</source>
-      <translation>'%1' lasterbidea dagoeneko esleituta dago '%2'-ra.</translation>
+      <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
+      <translation>'%1' lasterbidea behin baino gehiagotan definitu da. Horrek ustekabeko portaera sor dezake.</translation>
+    </message>
+    <message>
+      <source>The shortcut '%1' is already assigned to '%2'.</source>
+      <translation>'%1' lasterbidea dagoeneko esleitu zaio '%2' ekintzari.</translation>
+    </message>
+    <message>
+      <source>Do you want to override it?</source>
+      <translation>Hura gainidatzi nahi duzu?</translation>
     </message>
   </context>
   <context>
@@ -933,6 +1141,10 @@ Please define another shortcut.</source>
       <source>Global</source>
       <translation>Globala</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation>%1 modulua ez dago kargatuta</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -971,16 +1183,16 @@ Please define another shortcut.</source>
       <translation>Botoiak</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Garbitu</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Inprimaketa-erreferentzia</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Spaceballen botoiak</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Berrezarri</translation>
     </message>
   </context>
   <context>
@@ -1176,10 +1388,6 @@ Please define another shortcut.</source>
       <translation>Mantendu tabulazioak</translation>
     </message>
     <message>
-      <source>Display Items</source>
-      <translation>Bistaratu elementuak</translation>
-    </message>
-    <message>
       <source>Family:</source>
       <translation>Familia:</translation>
     </message>
@@ -1194,6 +1402,46 @@ Please define another shortcut.</source>
     <message>
       <source/>
       <translation type="unfinished"/>
+    </message>
+    <message>
+      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
+      <translation>&lt;Tab&gt; sakatzen bada, definitutako tamaina duen koskatze bat txertatuko da</translation>
+    </message>
+    <message>
+      <source>Tabulator raster (how many spaces)</source>
+      <translation>Tabuladore rasterra (zenbat zuriune)</translation>
+    </message>
+    <message>
+      <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
+      <translation>Zenbat zuriune txertatuko diren &lt;Tab&gt; sakatzean</translation>
+    </message>
+    <message>
+      <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
+      <translation>&lt;Tab&gt; sakatzen bada, definitutako tamaina duen tabuladore bat txertatuko da</translation>
+    </message>
+    <message>
+      <source>Display items</source>
+      <translation>Bistaratu elementuak</translation>
+    </message>
+    <message>
+      <source>Font size to be used for selected code type</source>
+      <translation>Hautatutako kode motarako erabiliko den letra-tamaina</translation>
+    </message>
+    <message>
+      <source>Color and font settings will be applied to selected type</source>
+      <translation>Kolorea eta letra-ezarpenak hautatutako motari aplikatuko zaizkio</translation>
+    </message>
+    <message>
+      <source>Font family to be used for selected code type</source>
+      <translation>Hautatutako kode motarako erabiliko den letra-familia</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Kolorea:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation>Kode-lerroak zenbakituta egongo dira</translation>
     </message>
   </context>
   <context>
@@ -1211,12 +1459,8 @@ Please define another shortcut.</source>
       <translation>Gaitu abioko ongietorri-pantaila</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Txosten-leiho fitxara aldatu:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
-      <translation>Modulua automatikoki kargatu abiarazi ondoren:</translation>
+      <translation>Automatikoki kargatu modulua abiarazi ondoren:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1232,11 +1476,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Size of recent file list</source>
-      <translation>Azken fitxategien zerrendaren neurria</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Leiho-estiloa:</translation>
+      <translation>Azken fitxategien zerrendaren luzera</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1257,6 +1497,66 @@ Please define another shortcut.</source>
     <message>
       <source>Enable word wrap</source>
       <translation>Gaitu testuaren egokitzea</translation>
+    </message>
+    <message>
+      <source>Language of the application's user interface</source>
+      <translation>Aplikazioaren erabiltzaile-interfazearen hizkuntza</translation>
+    </message>
+    <message>
+      <source>How many files should be listed in recent files list</source>
+      <translation>Zenbat fitxategi zerrendatuko diren azken aldiko fitxategien zerrendan</translation>
+    </message>
+    <message>
+      <source>Background of the main window will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</source>
+      <translation>Leiho nagusiaren atzeko planoa irudi berezi baten lauzak izango dira.
+Ikusi FreeCADen wikia irudiari buruzko xehetasunak ezagutzeko.</translation>
+    </message>
+    <message>
+      <source>Style sheet how user interface will look like</source>
+      <translation>Erabiltzaile-interfazearen itxurarako erabiliko den estilo-orria</translation>
+    </message>
+    <message>
+      <source>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</source>
+      <translation>Aukeratu zure hobespena tresna-barraren ikonoen tamainarako.
+Zure pantaila-tamainaren edo gustu pertsonalen arabera doitu daiteke.</translation>
+    </message>
+    <message>
+      <source>Tree view mode:</source>
+      <translation>Zuhaitz-bistaren modua:</translation>
+    </message>
+    <message>
+      <source>Customize how tree view is shown in the panel (restart required).
+
+'ComboView': combine tree view and property view into one panel.
+'TreeView and PropertyView': split tree view and property view into separate panel.
+'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
+      <translation>Pertsonalizatu zuhaitz-bista panelean nola erakutsiko den (berrabiarazi behar da).
+
+'Bista konbinatua': konbinatu zuhaitz-bista eta propietate-bista panel bakarrean.
+'Zuhaitz-bista eta propietate-bista': zatitu zuhaitz-bista eta propietate-bista panel bereizietan.
+'Biak': mantendu hiru panelak, horrela zuhaitz-bistaren eta propietate-bistaren bi multzo eduki ditzakezu.</translation>
+    </message>
+    <message>
+      <source>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</source>
+      <translation>Abioko pantaila FreeCAD abiarazten denean erakusten den
+leiho txiki bat da. Aukera hau markatuta badago, FreeCADek
+abioko pantaila erakutsiko du.</translation>
+    </message>
+    <message>
+      <source>Choose which workbench will be activated and shown
+after FreeCAD launches</source>
+      <translation>Aukeratu zein lan-mahai aktibatu eta erakutsiko den
+FreeCAD abiarazi ondoren</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation>Hitzak egokitu egingo dira Python kontsolan dagoen
+espazioa baino gehiago behar dutenean</translation>
     </message>
   </context>
   <context>
@@ -1285,6 +1585,18 @@ Please define another shortcut.</source>
       <source>Custom (%1px)</source>
       <translation>Pertsonalizatua (%1px)</translation>
     </message>
+    <message>
+      <source>Combo View</source>
+      <translation>Bista konbinatua</translation>
+    </message>
+    <message>
+      <source>TreeView and PropertyView</source>
+      <translation>Zuhaitz-bista eta propietate-bista</translation>
+    </message>
+    <message>
+      <source>Both</source>
+      <translation>Biak</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgInputDialog</name>
@@ -1301,7 +1613,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgInspector</name>
     <message>
       <source>Scene Inspector</source>
-      <translation>Eszena ikuskatzailea</translation>
+      <translation>Eszena-ikuskatzailea</translation>
     </message>
   </context>
   <context>
@@ -1349,6 +1661,18 @@ Please define another shortcut.</source>
     <message>
       <source>Rename</source>
       <translation>Aldatu izena</translation>
+    </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Bikoiztu</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Gehigarriak...</translation>
+    </message>
+    <message>
+      <source>Toolbar</source>
+      <translation>Tresna-barra</translation>
     </message>
   </context>
   <context>
@@ -1419,12 +1743,68 @@ Perhaps a file permission error?</source>
       <translation>Ezin izan da '%1' izenez aldatu.
 Fitxategi-baimenen arazo bat ote da?</translation>
     </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Bikoiztu makroa</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Bikoizketak huts egin du</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Ezin izan da '%1' bikoiztu.
+Fitxategi-baimenen arazo bat ote da?</translation>
+    </message>
+    <message>
+      <source>Do not show again</source>
+      <translation>Ez erakutsi berriro</translation>
+    </message>
+    <message>
+      <source>Guided Walkthrough</source>
+      <translation>Bisita gidatua</translation>
+    </message>
+    <message>
+      <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+
+Note: your changes will be applied when you next switch workbenches
+</source>
+      <translation>Gida hau jarraituta, makroa tresna-barra global pertsonalizatu batean konfiguratu ahal izango duzu. Argibideak elkarrizketa-koadroaren barruko testu gorrian daude.
+
+Oharra: Zure aldaketak aplikatzeko, lan-mahaiz aldatu behar duzu
+</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 1 of 2</source>
+      <translation>Bisita gidatua, 2 esalditik 1. a</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
+      <translation>Bisita gidatuaren jarraibideak: bete falta diren eremuak (aukerakoa), egin klik 'Gehitu' aukeran eta gero 'Itxi' aukeran</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 1 of 1</source>
+      <translation>Bisita gidatua, 1 elkarrizketa-koadrotik 1. a</translation>
+    </message>
+    <message>
+      <source>Walkthrough, dialog 2 of 2</source>
+      <translation>Bisita gidatua, 2 elkarrizketa-koadrotik 2. a</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
+      <translation>Bisita gidatuaren jarraibideak: egin klik eskuin-gezian (-&gt;) eta Itxi.</translation>
+    </message>
+    <message>
+      <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
+      <translation>Bisita gidatuaren jarraibideak: Egin klik 'Berria' aukeran, sakatu eskuin-gezia (-&gt;) eta Itxi.</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroRecord</name>
     <message>
       <source>Macro recording</source>
-      <translation>Makro-grabaketa</translation>
+      <translation>Makroen grabazioa</translation>
     </message>
     <message>
       <source>Macro name:</source>
@@ -1518,7 +1898,7 @@ Fitxategi-baimenen arazo bat ote da?</translation>
     </message>
     <message>
       <source>Emissive color:</source>
-      <translation>Emisio kolorea:</translation>
+      <translation>Emisio-kolorea:</translation>
     </message>
   </context>
   <context>
@@ -1533,7 +1913,7 @@ Fitxategi-baimenen arazo bat ote da?</translation>
     </message>
     <message>
       <source>Location of start page</source>
-      <translation>Hasierako orrialearen kokapena</translation>
+      <translation>Hasierako orriaren kokapena</translation>
     </message>
   </context>
   <context>
@@ -1558,7 +1938,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
       <source>Parameter Editor</source>
-      <translation>Parametro editorea</translation>
+      <translation>Parametro-editorea</translation>
     </message>
     <message>
       <source>Save to disk</source>
@@ -1571,6 +1951,69 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Itxi</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Bilatu...</translation>
+    </message>
+    <message>
+      <source>Sorted</source>
+      <translation>Ordenatua</translation>
+    </message>
+    <message>
+      <source>Quick search</source>
+      <translation>Bilaketa azkarra</translation>
+    </message>
+    <message>
+      <source>Type in a group name to find it</source>
+      <translation>Idatzi talde-izen bat hura aurkitzeko</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Bilatu taldea</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Aurkitu</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Aurkitu:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Bilatu hemen:</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Taldeak</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Izenak</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Balioak</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Kate osoko bat etortzeak soilik</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Bilatu hurrengoa</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Ez da aurkitu</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>Ezin da testua aurkitu: %1</translation>
     </message>
   </context>
   <context>
@@ -1593,7 +2036,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>User parameter</source>
-      <translation>Erabiltzaile parametroa</translation>
+      <translation>Erabiltzaile-parametroa</translation>
     </message>
     <message>
       <source>Invalid input</source>
@@ -1606,6 +2049,10 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>System parameter</source>
       <translation>Sistemaren parametroa</translation>
+    </message>
+    <message>
+      <source>Search Group</source>
+      <translation>Bilatu taldea</translation>
     </message>
   </context>
   <context>
@@ -1631,11 +2078,11 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Do you want to clear all your user settings?</source>
-      <translation>Garbitu nahi duzu zure erabiltzailearen ezarpen guztiak?</translation>
+      <translation>Zure erabiltzailearen ezarpen guztiak garbitu nahi dituzu?</translation>
     </message>
     <message>
       <source>If you agree all your settings will be cleared.</source>
-      <translation>Onartzen baduzu zure ezarpen guztiak garbituko dira.</translation>
+      <translation>Onartzen baduzu, zure ezarpen guztiak garbituko dira.</translation>
     </message>
   </context>
   <context>
@@ -1700,6 +2147,10 @@ Zehaztu beste direktorio, mesedez.</translation>
       <source>Open in browser</source>
       <translation>Ireki nabigatzailean</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation>Programaren bertsioa:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -1763,18 +2214,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Esteka</translation>
     </message>
     <message>
-      <source>Show all object types</source>
-      <translation>Erakutsi objektu mota guztiak</translation>
-    </message>
-    <message>
-      <source>No selection</source>
-      <translation>Hautapenik ez</translation>
-    </message>
-    <message>
-      <source>Please select an object from the list</source>
-      <translation>Aukeratu objektu bat zerrendatik</translation>
-    </message>
-    <message>
       <source>Search</source>
       <translation>Bilatu</translation>
     </message>
@@ -1783,8 +2222,24 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Goiko emaitzak iragazteko erabiliko den bilaketa-eredu bat</translation>
     </message>
     <message>
-      <source>None (Remove link)</source>
-      <translation>Bat ere ez (kendu esteka)</translation>
+      <source>Filter by type</source>
+      <translation>Motaren arabera iragazita</translation>
+    </message>
+    <message>
+      <source>Sync sub-object selection</source>
+      <translation>Sinkronizatu azpiobjektuen hautapena</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Berrezarri</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Garbitu</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Gaituta badago, 3D bistaren hautapena objektuaren hierarkia osoarekin sinkronizatuko da.</translation>
     </message>
   </context>
   <context>
@@ -1845,6 +2300,102 @@ Zehaztu beste direktorio, mesedez.</translation>
       <source>Python interpreter</source>
       <translation>Python interpretatzailea</translation>
     </message>
+    <message>
+      <source>Log messages will be recorded</source>
+      <translation>Erregistroko mezuak grabatuko dira</translation>
+    </message>
+    <message>
+      <source>Warnings will be recorded</source>
+      <translation>Abisuak grabatuko dira</translation>
+    </message>
+    <message>
+      <source>Error messages will be recorded</source>
+      <translation>Errore-mezuak grabatuko dira</translation>
+    </message>
+    <message>
+      <source>When an error has occurred, the Report View dialog becomes visible
+on-screen while displaying the error</source>
+      <translation>Errore bat gertatzen denean, txosten-bistaren elkarrizketa-koadroa agertuko da
+pantailan errorea erakusten den bitartean</translation>
+    </message>
+    <message>
+      <source>Show report view on error</source>
+      <translation>Erakutsi txosten-bista errorean</translation>
+    </message>
+    <message>
+      <source>When a warning has occurred, the Report View dialog becomes visible
+on-screen while displaying the warning</source>
+      <translation>Abisu bat gertatzen denean, txosten-bistaren elkarrizketa-koadroa agertuko da
+pantailan abisua erakusten den bitartean</translation>
+    </message>
+    <message>
+      <source>Show report view on warning</source>
+      <translation>Erakutsi txosten-bista abisuan</translation>
+    </message>
+    <message>
+      <source>When a normal message has occurred, the Report View dialog becomes visible
+on-screen while displaying the message</source>
+      <translation>Mezu normal bat gertatzen denean, txosten-bistaren elkarrizketa-koadroa agertuko da
+pantailan mezua erakusten den bitartean</translation>
+    </message>
+    <message>
+      <source>Show report view on normal message</source>
+      <translation>Erakutsi txosten-bista mezu normalean</translation>
+    </message>
+    <message>
+      <source>When a log message has occurred, the Report View dialog becomes visible
+on-screen while displaying the log message</source>
+      <translation>Egunkari-mezu bat gertatzen denean, txosten-bistaren elkarrizketa-koadroa agertuko da
+pantailan egunkari-mezua erakusten den bitartean</translation>
+    </message>
+    <message>
+      <source>Show report view on log message</source>
+      <translation>Erakutsi txosten-bista egunkari-mezuan</translation>
+    </message>
+    <message>
+      <source>Font color for normal messages in Report view panel</source>
+      <translation>Txosten-bistaren paneleko mezu arrunten letraren kolorea</translation>
+    </message>
+    <message>
+      <source>Font color for log messages in Report view panel</source>
+      <translation>Txosten-bistaren paneleko erregistro-mezuen letraren kolorea</translation>
+    </message>
+    <message>
+      <source>Font color for warning messages in Report view panel</source>
+      <translation>Txosten-bistaren paneleko abisu-mezuen letraren kolorea</translation>
+    </message>
+    <message>
+      <source>Font color for error messages in Report view panel</source>
+      <translation>Txosten ikuspegiaren paneleko errore-mezuen letraren kolorea</translation>
+    </message>
+    <message>
+      <source>Internal Python output will be redirected
+from Python console to Report view panel</source>
+      <translation>Pythonen barneko irteera Python kontsolatik
+txosten-bistaren panelera birzuzenduko da</translation>
+    </message>
+    <message>
+      <source>Internal Python error messages will be redirected
+from Python console to Report view panel</source>
+      <translation>Pythonen barneko errore-mezuak Python kontsolatik
+txosten-bistaren panelera birzuzenduko da</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation>Sartu denbora-kode bat txosten bakoitzerako</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation>Sartu denbora-kode bat sarrera bakoitzerako</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation>Mezu normalak grabatuko dira</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation>Grabatu mezu normalak</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgRunExternal</name>
@@ -1892,10 +2443,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>3D bista</translation>
     </message>
     <message>
-      <source>3D View settings</source>
-      <translation>3D bistaren ezarpenak</translation>
-    </message>
-    <message>
       <source>Show coordinate system in the corner</source>
       <translation>Erakutsi koordenatu-sistema izkinan</translation>
     </message>
@@ -1904,60 +2451,12 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Erakutsi fotogramak segundoko kontagailua</translation>
     </message>
     <message>
-      <source>Enable animation</source>
-      <translation>Gaitu animazioa</translation>
-    </message>
-    <message>
-      <source>Eye to eye distance for stereo modes:</source>
-      <translation>Begien arteko distantzia modu estereotarako:</translation>
-    </message>
-    <message>
       <source>Camera type</source>
       <translation>Kamera mota</translation>
     </message>
     <message>
       <source/>
       <translation type="unfinished"/>
-    </message>
-    <message>
-      <source>3D Navigation</source>
-      <translation>3D nabigazioa</translation>
-    </message>
-    <message>
-      <source>Mouse...</source>
-      <translation>Sagua...</translation>
-    </message>
-    <message>
-      <source>Intensity of backlight</source>
-      <translation>Atzeko argiaren intentsitatea</translation>
-    </message>
-    <message>
-      <source>Enable backlight color</source>
-      <translation>Gaitu atzeko argiaren kolorea</translation>
-    </message>
-    <message>
-      <source>Orbit style</source>
-      <translation>Orbita-estiloa</translation>
-    </message>
-    <message>
-      <source>Turntable</source>
-      <translation>Tornua</translation>
-    </message>
-    <message>
-      <source>Trackball</source>
-      <translation>Trackball</translation>
-    </message>
-    <message>
-      <source>Invert zoom</source>
-      <translation>Alderantzikatu zooma</translation>
-    </message>
-    <message>
-      <source>Zoom at cursor</source>
-      <translation>Zooma kurtsorean</translation>
-    </message>
-    <message>
-      <source>Zoom step</source>
-      <translation>Zoom-urratsa</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
@@ -1992,8 +2491,189 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>&amp;Perspektiba errendatzea</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>Erabili OpenGL Vertex Buffer Object (esperimentala)</translation>
+      <source>Marker size:</source>
+      <translation>Markatzaile-tamaina:</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Orokorra</translation>
+    </message>
+    <message>
+      <source>Main coordinate system will always be shown in
+lower right corner within opened files</source>
+      <translation>Koordenatuen sistema nagusia fitxategi irekien barruko
+beheko eskuineko izkinan erakutsiko dira beti</translation>
+    </message>
+    <message>
+      <source>Time needed for last operation and resulting frame rate
+will be shown at the lower left corner in opened files</source>
+      <translation>Azken eragiketarako behar izan den denbora eta sortutako fotograma-abiadura
+irekitako fitxategien beheko ezkerreko izkinan erakutsiko dira</translation>
+    </message>
+    <message>
+      <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
+      <translation>Markatuta badago, aplikazioak gogoratuko du zein lan-mahai dagoen aktibo leihatilan</translation>
+    </message>
+    <message>
+      <source>Remember active workbench by tab</source>
+      <translation>Gogoratu lan-mahai aktiboa fitxaren arabera</translation>
+    </message>
+    <message>
+      <source>Rendering</source>
+      <translation>Errendatzea</translation>
+    </message>
+    <message>
+      <source>If selected, Vertex Buffer Objects (VBO) will be used.
+A VBO is an OpenGL feature that provides methods for uploading
+vertex data (position, normal vector, color, etc.) to the graphics card.
+VBOs offer substantial performance gains because the data resides
+in the graphics memory rather than the system memory and so it
+can be rendered directly by GPU. 
+
+Note: Sometimes this feature may lead to a host of different
+issues ranging from graphical anomalies to GPU crash bugs. Remember to
+report this setting as enabled when seeking support on the FreeCAD forums</source>
+      <translation>Hautatuta badago, Vertex Buffer Objects (VBO) erabiliko da.
+VBO bat erpinen datuak (posizioa, bektore normala, kolorea, etab.)
+txartel grafikoan kargatzeko hornitzen dituen OpenGL eginbide bat da.
+VBOek errendimendu-hobekuntza nabarmenak ematen dituzte datuak
+memoria grafikoan daudelako sistemaren memorian egon ordez, eta
+zuzenean GPUak errendatu ditzakeelako.
+
+Oharra: Zenbaitetan, eginbide horrek beste arazo batzuk eragin
+ditzake, adibidez anormaltasun grafikoak edo GPUa kraskatzen duten akatsak.
+Gogoan izan ezarpen hori gaituta daukazula FreeCAD foroetan laguntza eske
+ari bazara.</translation>
+    </message>
+    <message>
+      <source>Use OpenGL VBO (Vertex Buffer Object)</source>
+      <translation>Erabili OpenGL VBO (Vertex Buffer Object)</translation>
+    </message>
+    <message>
+      <source>Render cache</source>
+      <translation>Errendatze-cachea</translation>
+    </message>
+    <message>
+      <source>'Render Caching' is another way to say 'Rendering Acceleration'.
+There are 3 options available to achieve this: 
+1) 'Auto' (default), let Coin3D decide where to cache.
+2) 'Distributed', manually turn on cache for all view provider root node.
+3) 'Centralized', manually turn off cache in all nodes of all view provider, and
+only cache at the scene graph root node. This offers the fastest rendering speed
+but slower response to any scene changes.</source>
+      <translation>'Errendatze-cachea' da 'errendatze-azelerazioa' esateko beste modu bat.
+Hiru aukera daude hori lortzeko: 
+1) 'Auto' (lehenetsia), utzi Coin3D liburutegiari erabakitzen zer sartu cachean.
+2) 'Banatua', aktibatu eskuz cachea bista-hornitzaileen erro-nodo guztietan.
+3) 'Zentralizatua', desaktibatu eskuz cachea bista-hornitzaile guztien nodo guztietan
+eta sartu cachean eszena-grafoaren erro-nodoa soilik. Horrek errendatze-abiadura
+azkarrena eskaintzen du, baina erantzun motelagoa eszena-aldaketetan.</translation>
+    </message>
+    <message>
+      <source>Auto</source>
+      <translation>Automatikoa</translation>
+    </message>
+    <message>
+      <source>Distributed</source>
+      <translation>Banatua</translation>
+    </message>
+    <message>
+      <source>Centralized</source>
+      <translation>Zentralizatua</translation>
+    </message>
+    <message>
+      <source>Transparent objects:</source>
+      <translation>Objektu gardenak:</translation>
+    </message>
+    <message>
+      <source>Render types of transparent objects</source>
+      <translation>Objektu gardenen errendatze motak</translation>
+    </message>
+    <message>
+      <source>One pass</source>
+      <translation>Pasaldi bat</translation>
+    </message>
+    <message>
+      <source>Backface pass</source>
+      <translation>Atzeko aurpegiko pasaldia</translation>
+    </message>
+    <message>
+      <source>Size of vertices in the Sketcher workbench</source>
+      <translation>Erpinen tamaina krokisgilearen lan-mahaian</translation>
+    </message>
+    <message>
+      <source>Eye to eye distance for stereo modes</source>
+      <translation>Begien arteko distantzia modu estereoetarako</translation>
+    </message>
+    <message>
+      <source>Backlight is enabled with the defined color</source>
+      <translation>Atzeko argia definitutako kolorearekin gaituta dago</translation>
+    </message>
+    <message>
+      <source>Backlight color</source>
+      <translation>Atzeko argiaren kolorea</translation>
+    </message>
+    <message>
+      <source>Intensity</source>
+      <translation>Intentsitatea</translation>
+    </message>
+    <message>
+      <source>Intensity of the backlight</source>
+      <translation>Atzeko argiaren intentsitatea</translation>
+    </message>
+    <message>
+      <source>Objects will be projected in orthographic projection</source>
+      <translation>Objektuak proiekzio ortografikoarekin proiektatuko dira</translation>
+    </message>
+    <message>
+      <source>Objects will appear in a perspective projection</source>
+      <translation>Objektuak perspektibako proiekzio baten agertuko dira</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation>Ardatz-gurutzeak modu lehenetsian erakutsiko dira
+fitxategia irekitzean edo sortzean</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation>Erakutsi ardatz-gurutzea modu lehenetsian</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Aukeratu erradioa (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>3D bistako elementuak aukeratzeko area.
+Balio handiagoak elementuak aukeratzea errazten du, baina elementu txikiak hautatzea oztopatu dezake.
+               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Aukera hau erabilgarria da txartel grafikoen eta kontrolagailuen arazoak konpontzeko.
+
+Aukera hau aldatzeko, aplikazioa berrabiarazi behar da.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Erabili softwareko OpenGLa</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation>Zein motatako lagin anitzeko antialiasing-a ari den erabiltzen</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation>Begien arteko distantzia proiekzio estereoetarako.
+Zehaztutako balioa unean bistaratzen ari den 3D objektuaren
+muga-koadroaren tamainarekin biderkatuko den faktore bat da.</translation>
     </message>
   </context>
   <context>
@@ -2005,6 +2685,30 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Ireki ikustaile berri bat edo berrabiarazi %1 antialiasing-aldaketak aplikatzeko.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
     </message>
   </context>
   <context>
@@ -2039,7 +2743,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Out g&amp;rayed</source>
-      <translation>Irteera grisa</translation>
+      <translation>Irteera g&amp;risa</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -2047,7 +2751,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Out &amp;invisible</source>
-      <translation>Irteera ikustezina</translation>
+      <translation>Irteera &amp;ikustezina</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -2067,7 +2771,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>&amp;Flow</source>
-      <translation>&amp;Jarioa</translation>
+      <translation>&amp;Fluxua</translation>
     </message>
     <message>
       <source>Alt+F</source>
@@ -2099,7 +2803,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Color-gradient settings</source>
-      <translation>Kolore gradienteen ezarpenak</translation>
+      <translation>Kolore-gradienteen ezarpenak</translation>
     </message>
   </context>
   <context>
@@ -2110,7 +2814,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>The maximum value must be higher than the minimum value.</source>
-      <translation>Balio maximoa balio minimoa baino handiagoa izan behar du.</translation>
+      <translation>Balio maximoak balio minimoak baino handiagoa izan behar du.</translation>
     </message>
   </context>
   <context>
@@ -2178,14 +2882,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Egilearen izena</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dokumentuak sortzean erabiliko den izena.&lt;/p&gt;&lt;p&gt;Utzi hutsik anonimo gisa agertzeko.&lt;/p&gt;&lt;p&gt;Honako inprimakia ere erabil dezakezu:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>If this is checked, the "Last modified by" field will be set when saving the file</source>
-      <translation>Hau markatuta badago, "Azken aldaketa" eremua bete egingo da fitxategia gordetzean</translation>
-    </message>
-    <message>
       <source>Set on save</source>
       <translation>Ezarri gordetzean</translation>
     </message>
@@ -2198,36 +2894,8 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Lizentzia lehenetsia</translation>
     </message>
     <message>
-      <source>The default license for new documents</source>
-      <translation>Dokumentu berrietarako lizentzia lehenetsia</translation>
-    </message>
-    <message>
       <source>All rights reserved</source>
       <translation>Eskubide guztiak erreserbatuta</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution</source>
-      <translation>CreativeCommons Aitortu</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-ShareAlike</source>
-      <translation>CreativeCommons Aitortu-PartekatuBerdin</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NoDerivatives</source>
-      <translation>CreativeCommons Aitortu-LanEratorririkGabe</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial</source>
-      <translation>CreativeCommons Aitortu-EzKomertziala</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-      <translation>CreativeCommons Aitortu-EzKomertziala-PartekatuBerdin</translation>
-    </message>
-    <message>
-      <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-      <translation>CreativeCommons Aitortu-EzKomertziala-LanEratorririkGabe</translation>
     </message>
     <message>
       <source>Public Domain</source>
@@ -2246,10 +2914,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Lizentziaren URLa</translation>
     </message>
     <message>
-      <source>The default company to use for new files</source>
-      <translation>Fitxategi berrietarako erabiliko den enpresa lehenetsia</translation>
-    </message>
-    <message>
       <source>Run AutoRecovery at startup</source>
       <translation>Exekutatu berreskuratze automatikoa abioan</translation>
     </message>
@@ -2262,8 +2926,160 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Gehitu programaren logoa sortutako miniaturari</translation>
     </message>
     <message>
-      <source>A URL where the user can find more details about the license</source>
-      <translation>Erabiltzaileak lizentziari buruzko informazio gehiago aurki dezakeen URL bat</translation>
+      <source>The application will create a new document when started</source>
+      <translation>Aplikazioak dokumentu berria sortuko du abiarazten denean</translation>
+    </message>
+    <message>
+      <source>Compression level for FCStd files</source>
+      <translation>FCStd fitxategien konpresio-maila</translation>
+    </message>
+    <message>
+      <source>All changes in documents are stored so that they can be undone/redone</source>
+      <translation>Dokumentuetako aldaketa guztiak gorde egiten dira eta ezin dira desegin/berregin</translation>
+    </message>
+    <message>
+      <source>How many Undo/Redo steps should be recorded</source>
+      <translation>Zenbat desegin/berregin urrats grabatuko diren</translation>
+    </message>
+    <message>
+      <source>Allow user aborting document recomputation by pressing ESC.
+This feature may slightly increase recomputation time.</source>
+      <translation>Onartu erabiltzaileak dokumentuaren birkalkulua abortatzea ESC sakatuta.
+Egingide horrek birkalkuluaren denbora pixka bat handitu dezake.</translation>
+    </message>
+    <message>
+      <source>Allow aborting recomputation</source>
+      <translation>Onartu birkalkulua abortatzea</translation>
+    </message>
+    <message>
+      <source>If there is a recovery file available the application will
+automatically run a file recovery when it is started.</source>
+      <translation>Berreskuratze-fitxategi bat erabilgarri badago, aplikazioak
+automatikoki exekutatuko du berreskuratzea abioan.</translation>
+    </message>
+    <message>
+      <source>How often a recovery file is written</source>
+      <translation>Berreskurapen-fitxategia idazteko maiztasuna</translation>
+    </message>
+    <message>
+      <source>A thumbnail will be stored when document is saved</source>
+      <translation>Miniatura bat biltegiratuko da dokumentua gordetzen denean</translation>
+    </message>
+    <message>
+      <source>Size</source>
+      <translation>Tamaina</translation>
+    </message>
+    <message>
+      <source>Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</source>
+      <translation>Dokumentuan biltegiratzen den miniaturaren tamaina ezartzen du.
+Tamaina arruntenak 128, 256 eta 512 dira.</translation>
+    </message>
+    <message>
+      <source>The program logo will be added to the thumbnail</source>
+      <translation>Programaren logoa miniaturari erantsiko zaio</translation>
+    </message>
+    <message>
+      <source>How many backup files will be kept when saving document</source>
+      <translation>Zenbat babeskopia-fitxategi gordeko diren dokumentua gordetzean</translation>
+    </message>
+    <message>
+      <source>Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</source>
+      <translation>Babeskopiako fitxategiek '.FCbak' luzapena izango dute eta
+fitxategi-izenek dataren atzizkia izango dute, zehaztutako
+formatuaren arabera</translation>
+    </message>
+    <message>
+      <source>Use date and FCBak extension</source>
+      <translation>Erabili dataren eta FCBak hedapena</translation>
+    </message>
+    <message>
+      <source>Date format</source>
+      <translation>Data-formatua</translation>
+    </message>
+    <message>
+      <source>Allow objects to have same label/name</source>
+      <translation>Onartu objektuek etiketa/izen bera izan dezaten</translation>
+    </message>
+    <message>
+      <source>Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
+A partially loaded document cannot be edited. Double click the document
+icon in the tree view to fully reload it.</source>
+      <translation>Gaitu kanpoko dokumentu estekatuen kargatze partziala.
+Erreferentziatutako objektuak eta haien mendekotasunak soilik kargatuko dira
+dokumentu estekatu bat automatikoki irekitzen denean dokumentu nagusiarekin.
+Partzialki kargatutako dokumentu bat ezin da editatu. Egin klik bikoitza
+dokumentuaren ikonoan, zuhaitz-bistan, hura osorik kargatzeko.</translation>
+    </message>
+    <message>
+      <source>Disable partial loading of external linked objects</source>
+      <translation>Desgaitu kanpoko objektu estekatuen kargatzen partziala</translation>
+    </message>
+    <message>
+      <source>All documents that will be created will get the specified author name.
+Keep blank for anonymous.
+You can also use the form: John Doe &lt;john@doe.com&gt;</source>
+      <translation>Sortuko diren dokumentu guztiek zehaztutako egile-izena izango dute.
+Utzi hutsik anonimotasuna bermatzeko.
+Honako forma ere erabili dezakezu: Jon Inor &lt;jon@inor.com&gt;</translation>
+    </message>
+    <message>
+      <source>The field 'Last modified by' will be set to specified author when saving the file</source>
+      <translation>'Azken aldaketa' eremuan, zehaztutako egilea ezarriko da fitxategia gordetzean</translation>
+    </message>
+    <message>
+      <source>Default company name to use for new files</source>
+      <translation>Fitxategi berrietarako erabiliko den enpresa-izen lehenetsia</translation>
+    </message>
+    <message>
+      <source>Default license for new documents</source>
+      <translation>Dokumentu berrietarako lizentzia lehenetsia</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution</source>
+      <translation>Creative Commons Aitortu</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-ShareAlike</source>
+      <translation>Creative Commons Aitortu-PartekatuBerdin</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NoDerivatives</source>
+      <translation>Creative Commons Aitortu-LanEratorririkGabe</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial</source>
+      <translation>Creative Commons Aitortu-EzKomertziala</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
+      <translation>Creative Commons Aitortu-EzKomertziala-PartekatuBerdin</translation>
+    </message>
+    <message>
+      <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
+      <translation>Creative Commons Aitortu-EzKomertziala-LanEratorririkGabe</translation>
+    </message>
+    <message>
+      <source>URL describing more about the license</source>
+      <translation>Lizentziari buruzko deskribapen luzeagoa duen URLa</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsDocumentImp</name>
+    <message>
+      <source>The format of the date to use.</source>
+      <translation>Erabiliko den data-formatua.</translation>
+    </message>
+    <message>
+      <source>Default</source>
+      <translation>Lehenetsia</translation>
+    </message>
+    <message>
+      <source>Format</source>
+      <translation>Formatua</translation>
     </message>
   </context>
   <context>
@@ -2388,82 +3204,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Ikonoa    128 x 128</translation>
     </message>
     <message>
-      <source>CGA       320 x 200</source>
-      <translation>CGA       320 x 200</translation>
-    </message>
-    <message>
-      <source>QVGA     320 x 240</source>
-      <translation>QVGA     320 x 240</translation>
-    </message>
-    <message>
-      <source>VGA       640 x 480</source>
-      <translation>VGA       640 x 480</translation>
-    </message>
-    <message>
-      <source>NTSC     720 x 480</source>
-      <translation>NTSC     720 x 480</translation>
-    </message>
-    <message>
-      <source>PAL        768 x 578</source>
-      <translation>PAL        768 x 578</translation>
-    </message>
-    <message>
-      <source>SVGA     800 x 600</source>
-      <translation>SVGA     800 x 600</translation>
-    </message>
-    <message>
-      <source>XGA       1024 x 768</source>
-      <translation>XGA       1024 x 768</translation>
-    </message>
-    <message>
-      <source>HD720   1280 x 720</source>
-      <translation>HD720   1280 x 720</translation>
-    </message>
-    <message>
-      <source>SXGA     1280 x 1024</source>
-      <translation>SXGA     1280 x 1024</translation>
-    </message>
-    <message>
-      <source>SXGA+   1400 x 1050</source>
-      <translation>SXGA+   1400 x 1050</translation>
-    </message>
-    <message>
-      <source>UXGA     1600 x 1200</source>
-      <translation>UXGA     1600 x 1200</translation>
-    </message>
-    <message>
-      <source>HD1080 1920 x 1080</source>
-      <translation>HD1080 1920 x 1080</translation>
-    </message>
-    <message>
-      <source>WUXGA  1920 x 1200</source>
-      <translation>WUXGA  1920 x 1200</translation>
-    </message>
-    <message>
-      <source>QXGA     2048 x 1538</source>
-      <translation>QXGA     2048 x 1538</translation>
-    </message>
-    <message>
-      <source>WQXGA  2560 x 1600</source>
-      <translation>WQXGA  2560 x 1600</translation>
-    </message>
-    <message>
-      <source>QSXGA   2560 x 2048</source>
-      <translation>QSXGA   2560 x 2048</translation>
-    </message>
-    <message utf8="true">
-      <source>QUXGA   3200 × 2400</source>
-      <translation>QUXGA   3200 × 2400</translation>
-    </message>
-    <message utf8="true">
-      <source>HUXGA   6400 × 4800</source>
-      <translation>HUXGA   6400 × 4800</translation>
-    </message>
-    <message>
-      <source>!!!          10000 x 10000</source>
-      <translation>!!!          10000 x 10000</translation>
-    </message>
-    <message>
       <source>Standard sizes:</source>
       <translation>Tamaina estandarrak:</translation>
     </message>
@@ -2527,6 +3267,83 @@ Zehaztu beste direktorio, mesedez.</translation>
       <source>Add watermark</source>
       <translation>Gehitu ur-marka</translation>
     </message>
+    <message>
+      <source>Creation method:</source>
+      <translation>Sorrera-metodoa:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsImageImp</name>
+    <message>
+      <source>Offscreen (New)</source>
+      <translation>Pantailatik kanpo (berria)</translation>
+    </message>
+    <message>
+      <source>Offscreen (Old)</source>
+      <translation>Pantailatik kanpo (zaharra)</translation>
+    </message>
+    <message>
+      <source>Framebuffer (custom)</source>
+      <translation>Marko-bufferra (pertsonalizatua)</translation>
+    </message>
+    <message>
+      <source>Framebuffer (as is)</source>
+      <translation>Marko-bufferra (bere horretan)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Workbench Name</source>
+      <translation>Lan-mahaiaren izena</translation>
+    </message>
+    <message>
+      <source>Autoload?</source>
+      <translation>Automatikoki kargatu?</translation>
+    </message>
+    <message>
+      <source>Load Now</source>
+      <translation>Kargatu orain</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Baliabideak aurrezteko, FreeCADek ez ditu laneko mahaiak kargatzen haiek erabili nahi diren arte. Kargatzen direnean, haien funtzionaltasunari lotutako hobespen gehigarriak agertuko dira.&lt;/p&gt;&lt;p&gt;Honako laneko mahaiak daude erabilgarri zure instalazioan:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Available Workbenches</source>
+      <translation>Lan-mahai erabilgarriak</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Lan-mahaia</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Kargatu automatikoki</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Markatuta badago</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>automatikoki kargatuko da FreeCAD abiarazten denean</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Uneko abioko modulua da hau, eta automatikoki kargatu behar da. Ikusi 'Hobespenak - Orokorra - Automatikoki kargatu' hura aldatzeko.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Kargatuta</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Kargatu orain</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
@@ -2540,7 +3357,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>Logging Commands</source>
-      <translation>Saio hasierako komandoak</translation>
+      <translation>Egunkariko komandoak</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
@@ -2559,10 +3376,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>GUI komandoak</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>GUI komandoen grabazioa</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Grabatu iruzkin gisa</translation>
     </message>
@@ -2577,6 +3390,310 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Exekutatu makroak ingurune lokalean</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Grabatu EI komandoak</translation>
+    </message>
+    <message>
+      <source>Variables defined by macros are created as local variables</source>
+      <translation>Makroek definitutako aldagaiak aldagai lokal modura sortzen dira</translation>
+    </message>
+    <message>
+      <source>Commands executed by macro scripts are shown in Python console</source>
+      <translation>Makro-scriptek exekutatutako komandoak Python kontsolan erakusten dira</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands</source>
+      <translation>Grabatutako makroek erabiltzaile-interfazeko komandoak ere edukiko dituzte</translation>
+    </message>
+    <message>
+      <source>Recorded macros will also contain user interface commands as comments</source>
+      <translation>Grabatutako makroek erabiltzaile-interfazeko komandoak ere edukiko dituzte iruzkin gisa</translation>
+    </message>
+    <message>
+      <source>The directory in which the application will search for macros</source>
+      <translation>Aplikazioak makroak bilatuko dituen direktorioa</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>Azken makroen menua</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>Azken makroen zerrendaren luzera</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Zenbat makro zerrendatuko diren azken aldiko makroen zerrendan</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>Lasterbide kopurua</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>Azken aldeko zenbat makrok eduki behar dituzten lasterbideak</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>Teklatuko aldatzaileak</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>Teklatuko aldatzaileak, lehenetsia = Ctrl+Shift+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsNavigation</name>
+    <message>
+      <source>Navigation</source>
+      <translation>Nabigazioa</translation>
+    </message>
+    <message>
+      <source>Navigation cube</source>
+      <translation>Nabigazio-kuboa</translation>
+    </message>
+    <message>
+      <source>Steps by turn</source>
+      <translation>Urratsak txandako</translation>
+    </message>
+    <message>
+      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
+      <translation>Geziak erabiltzean txanda bakoitzeko izango den urrats kopurua (lehenetsia = 8 : urrats-angelua = 360/8 = 45 gradu)</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Izkina</translation>
+    </message>
+    <message>
+      <source>Corner where navigation cube is shown</source>
+      <translation>Nabigazio-kuboa erakutsiko den izkina</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Goian ezkerrean</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Goian eskuinean</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Behean ezkerrean</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Behean eskuinean</translation>
+    </message>
+    <message>
+      <source>3D Navigation</source>
+      <translation>3D nabigazioa</translation>
+    </message>
+    <message>
+      <source>List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</source>
+      <translation>Zerrendatu saguaren botoien konfigurazioak hautatutako nabigazio-ezarpen
+bakoitzerako. Hautatu multzo bat eta sakatu botoia konfigurazioak ikusteko.</translation>
+    </message>
+    <message>
+      <source>Mouse...</source>
+      <translation>Sagua...</translation>
+    </message>
+    <message>
+      <source>Navigation settings set</source>
+      <translation>Nabigazio-ezarpenen multzoa</translation>
+    </message>
+    <message>
+      <source>Orbit style</source>
+      <translation>Orbita-estiloa</translation>
+    </message>
+    <message>
+      <source>Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</source>
+      <translation>Biraketa-orbitaren estiloa.
+Kontrol-bola: sagua horizontalean mugitzean, pieza Y ardatzaren inguruan biratuko da.
+Tornua: pieza Z ardatzaren inguruan biratuko da.</translation>
+    </message>
+    <message>
+      <source>Turntable</source>
+      <translation>Tornua</translation>
+    </message>
+    <message>
+      <source>Trackball</source>
+      <translation>Trackball</translation>
+    </message>
+    <message>
+      <source>New document scale</source>
+      <translation>Dokumentu-eskala berria</translation>
+    </message>
+    <message>
+      <source>Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</source>
+      <translation>Kameraren zooma ezartzen du dokumentu berrietarako.
+Balioa da pantailari doituko zaion esferaren diametroa.</translation>
+    </message>
+    <message>
+      <source>mm</source>
+      <translation>mm</translation>
+    </message>
+    <message>
+      <source>Enable animated rotations</source>
+      <translation>Gaitu biraketa animatuak</translation>
+    </message>
+    <message>
+      <source>Enable animation</source>
+      <translation>Gaitu animazioa</translation>
+    </message>
+    <message>
+      <source>Zoom operations will be performed at position of mouse pointer</source>
+      <translation>Zoom-eragiketak saguaren erakuslearen posizioan gauzatuko dira</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>Zooma kurtsorean</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>Zoom-urratsa</translation>
+    </message>
+    <message>
+      <source>Direction of zoom operations will be inverted</source>
+      <translation>Zoom-eragiketen norabidea alderantzikatu egingo da.</translation>
+    </message>
+    <message>
+      <source>Invert zoom</source>
+      <translation>Alderantzikatu zooma</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</source>
+      <translation>Zoom egitean inklinatua ikustea galarazten du.
+Keinu-nabigazioaren estiloari soilik eragiten dio.
+Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>Desgaitu ukimen-pantailaren inklinazio keinua</translation>
+    </message>
+    <message>
+      <source>Rotations in 3D will use current cursor position as center for rotation</source>
+      <translation>3D moduko biraketek kurtsorearen uneko posizioa erabiliko dute biraketarako erdigune gisa</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrikoa</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrikoa</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrikoa</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Goikoa</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Aurrekoa</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Ezkerrekoa</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Eskuinekoa</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Atzekoa</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Azpikoa</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Pertsonalizatua</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation>Kameraren orientazio lehenetsia</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation>Kameraren orientazio lehenetsia dokumentu bat sortzean edo bista nagusia hautatzean</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Biraketa modua</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Leihoaren zentroa</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Arrastatu kurtsorera</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Objektuaren zentroa</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation>Egoera posible hurbilenera biratzen du kuboaren aurpegi batean klik egitean</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation>Biratu hurbilenera</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation>Kubo-tamaina</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation>Nabigazio-kuboaren tamaina</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation>Zenbateko zooma egingo den.
+'1' mailako zoomak 7,5eko faktorea da zoom-maila bakoitzerako.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Hautapena</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Automatikoki aldatu hautatutako elementua duen 3D bistara</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Automatikoki hedatu zuhaitz-elementua hari dagokion objektua 3D bistan hautatuta dagoenean</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Aurretik hautatu objektua 3D bistan sagua zuhaitz-elementuaren gainean dagoenean</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Grabatu zuhaitz-bistako hautapena aurrera/atzera egin ahal izateko nabigazio-botoia erabilita</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Gehitu hautapenerako kontrol-laukiak dokumentu-zuhaitzean</translation>
     </message>
   </context>
   <context>
@@ -2606,10 +3723,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Unitatea</translation>
     </message>
     <message>
-      <source>User system:</source>
-      <translation>Erabiltzaile-sistema:</translation>
-    </message>
-    <message>
       <source>US customary (in/lb)</source>
       <translation>AEBko pertsonalizatua (in/lb)</translation>
     </message>
@@ -2621,17 +3734,73 @@ Zehaztu beste direktorio, mesedez.</translation>
       <source>Imperial decimal (in/lb)</source>
       <translation>Dezimal inperiala (in/lb)</translation>
     </message>
-    <message utf8="true">
+    <message>
       <source>Building Euro (cm/m²/m³)</source>
       <translation>Europar neurriak (cm/m²/m³)</translation>
     </message>
     <message>
-      <source>Building US (ft-in/sqft/cuft)</source>
-      <translation>AEBetako neurriak (ft-in/sqft/cuft)</translation>
-    </message>
-    <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Zati txiki metrikoak &amp; CNC (mm, mm/min)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>Gutxienezko zatikizko hazbetea:</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Unitate-sistema:</translation>
+    </message>
+    <message>
+      <source>Number of decimals that should be shown for numbers and dimensions</source>
+      <translation>Zenbakietarako eta kotetarako erakutsiko den dezimal kopurua</translation>
+    </message>
+    <message>
+      <source>Unit system that should be used for all parts the application</source>
+      <translation>Aplikazioko pieza guztietarako erabiliko den unitate-sistema</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch to be displayed</source>
+      <translation>Bistaratuko den gutxieneko zatikizko hazbetea.</translation>
+    </message>
+    <message>
+      <source>Building US (ft-in/sqft/cft)</source>
+      <translation>AEBetako neurriak (ft-in/sqft/cft)</translation>
+    </message>
+    <message>
+      <source>Imperial for Civil Eng (ft, ft/sec)</source>
+      <translation>Inperiala ingeniaritza zibilerako (ft, ft/sec)</translation>
+    </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, seg)</translation>
     </message>
   </context>
   <context>
@@ -2669,12 +3838,56 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Kolore sinplea</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Aukeratu erradioa (px):</translation>
+      <source>Object being edited</source>
+      <translation>Edizioan dagoen objektua</translation>
     </message>
     <message>
-      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation>Area lausoa ezartzen du 3D bistan elementuak aukeratzeko. Balio handiagoarekin errazagoa da elementuak aukeratzea, baina zenbait elementu txiki hautatzea ezinezko bihurtuko du.</translation>
+      <source>Active container</source>
+      <translation>Edukiontzi aktiboa</translation>
+    </message>
+    <message>
+      <source>Enable preselection and highlight by specified color</source>
+      <translation>Gaitu aurretiko hautapena eta nabarmentzea zehaztutako kolorearen arabera</translation>
+    </message>
+    <message>
+      <source>Enable selection highlighting and use specified color</source>
+      <translation>Gaitu hautapenaren nabarmentzea eta erabili zehaztutako kolorea</translation>
+    </message>
+    <message>
+      <source>Background color for the model view</source>
+      <translation>Eredu-bistaren atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <source>Background will have selected color</source>
+      <translation>Atzeko planoak hautatutako kolorea izango du</translation>
+    </message>
+    <message>
+      <source>Color gradient will get selected color as middle color</source>
+      <translation>Kolore-gradienteak hautatutako kolorea erdiko kolore gisa izango du</translation>
+    </message>
+    <message>
+      <source>Bottom color</source>
+      <translation>Beheko kolorea</translation>
+    </message>
+    <message>
+      <source>Background will have selected color gradient</source>
+      <translation>Atzeko planoak hautatutako kolore-gradientea izango du</translation>
+    </message>
+    <message>
+      <source>Top color</source>
+      <translation>Goiko kolorea</translation>
+    </message>
+    <message>
+      <source>Tree view</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+    <message>
+      <source>Background color for objects in tree view that are currently edited</source>
+      <translation>Jadanik editatuta dauden zuhaitz-bistako objektuen atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <source>Background color for active containers in tree view</source>
+      <translation>Zuhaitz-bistako edukiontzi aktiboen atzeko planoaren kolorea</translation>
     </message>
   </context>
   <context>
@@ -2703,14 +3916,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Kantitatea:</translation>
     </message>
     <message>
-      <source>Units:</source>
-      <translation>Unitateak:</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>Laguntza</translation>
-    </message>
-    <message>
       <source>Copy</source>
       <translation>Kopiatu</translation>
     </message>
@@ -2718,12 +3923,68 @@ Zehaztu beste direktorio, mesedez.</translation>
       <source>Close</source>
       <translation>Itxi</translation>
     </message>
+    <message>
+      <source>Input the source value and unit</source>
+      <translation>Sartu iturburuko balioa eta unitatea</translation>
+    </message>
+    <message>
+      <source>Input here the unit for the result</source>
+      <translation>Sartu hemen emaitzaren unitatea</translation>
+    </message>
+    <message>
+      <source>Result</source>
+      <translation>Emaitza</translation>
+    </message>
+    <message>
+      <source>List of last used calculations 
+To add a calculation press Return in the value input field</source>
+      <translation>Erabilitako azken kalkuluen zerrenda.
+Kalkulu bat gehitzeko, sakatu ⏎ balioen sarrera-eremuan</translation>
+    </message>
+    <message>
+      <source>Quantity</source>
+      <translation>Kantitatea</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Unitate-sistema:</translation>
+    </message>
+    <message>
+      <source>Unit system to be used for the Quantity
+The preference system is the one set in the general preferences.</source>
+      <translation>Kantitatean erabiliko den unitate-sistema.
+Hobespen-sistema hobespen orokorretan ezarritakoa da.</translation>
+    </message>
+    <message>
+      <source>Decimals:</source>
+      <translation>Dezimalak:</translation>
+    </message>
+    <message>
+      <source>Decimals for the Quantity</source>
+      <translation>Kantitatearen dezimalak</translation>
+    </message>
+    <message>
+      <source>Unit category:</source>
+      <translation>Unitate-kategoria:</translation>
+    </message>
+    <message>
+      <source>Unit category for the Quantity</source>
+      <translation>Kantitatearen unitate-kategoria</translation>
+    </message>
+    <message>
+      <source>Copy the result into the clipboard</source>
+      <translation>Kopiatu emaitza arbelean</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>Unit mismatch</source>
-      <translation>Unitateak ez datoz bat</translation>
+      <source>unit mismatch</source>
+      <translation>unitateak ez datoz bat</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation>Unitate ezezaguna:</translation>
     </message>
   </context>
   <context>
@@ -2769,10 +4030,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Ordenatu gaitutako lan-mahaiak</translation>
     </message>
     <message>
-      <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Ordenatu gaitutako lan-mahaiak&lt;/p&gt;</translation>
-    </message>
-    <message>
       <source>Move up</source>
       <translation>Mugitu gora</translation>
     </message>
@@ -2781,12 +4038,16 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Mugitu gora hautatutako elementua.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Elementua gora mugituko da.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Oharra:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; FreeCAD abiarazten duzun hurrengoan aktibatuko dira aldaketak&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
       <source>Add all to enabled workbenches</source>
       <translation>Gehitu dena gaitutako lan-mahaiei</translation>
+    </message>
+    <message>
+      <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Ordenatu gaitutako lan-mahaiak&lt;/p&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Oharra:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; Aplikazioa abiarazten duzun hurrengoan aktibatuko dira aldaketak&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -2863,10 +4124,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Ziur zaude aldi baterako direktorio guztiak ezabatu nahi dituzula?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Aldi baterako direktorio guztiak ezabatzen badituzu, ezin izango dituzu fitxategiak berreskuratu geroago.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Amaitua</translation>
     </message>
@@ -2881,6 +4138,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Sakatu 'Hasi berreskuratzea' behean zerrendatu diren dokumentuaren berreskuratze-prozesuari ekiteko.
 
 'Egoera' zutabeak dokumentua berreskura daitekeen ala ez erakusten du.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation>Aldi baterako direktorio guztiak ezabatzen badituzu, ezin izango dituzu fitxategiak berreskuratu geroago.</translation>
     </message>
   </context>
   <context>
@@ -2977,11 +4238,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::IconDialog</name>
     <message>
       <source>Icon folders</source>
-      <translation>Ikonoen karpetak</translation>
+      <translation>Ikono-karpetak</translation>
     </message>
     <message>
       <source>Add icon folder</source>
-      <translation>Gehitu ikonoen karpeta</translation>
+      <translation>Gehitu ikono-karpeta</translation>
     </message>
   </context>
   <context>
@@ -3057,7 +4318,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Add sub-group</source>
-      <translation>Gehitu azpi-taldea</translation>
+      <translation>Gehitu azpitaldea</translation>
     </message>
     <message>
       <source>Remove group</source>
@@ -3069,23 +4330,19 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Export parameter</source>
-      <translation>Esportazio-parametroa</translation>
+      <translation>Esportatu parametroa</translation>
     </message>
     <message>
       <source>Import parameter</source>
-      <translation>Inportazio-parametroa</translation>
+      <translation>Inportatu parametroa</translation>
     </message>
     <message>
       <source>Collapse</source>
       <translation>Tolestu</translation>
     </message>
     <message>
-      <source>Do really want to remove this parameter group?</source>
-      <translation>Benetan parametro-talde hau kendu nahi duzu?</translation>
-    </message>
-    <message>
       <source>Existing sub-group</source>
-      <translation>Badago azpi-taldea</translation>
+      <translation>Lehendik dagoen azpitaldea</translation>
     </message>
     <message>
       <source>The sub-group '%1' already exists.</source>
@@ -3105,7 +4362,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Reading from '%1' failed.</source>
-      <translation>Huts egin du '%1' irakurtzen.</translation>
+      <translation>'%1' irakurtzeak huts egin du.</translation>
+    </message>
+    <message>
+      <source>Do you really want to remove this parameter group?</source>
+      <translation>Benetan parametro-talde hau kendu nahi duzu?</translation>
     </message>
   </context>
   <context>
@@ -3198,28 +4459,8 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Erdia:</translation>
     </message>
     <message>
-      <source>Pitch:</source>
-      <translation>Buruzkatzea:</translation>
-    </message>
-    <message>
-      <source>Roll:</source>
-      <translation>Kulunkatzea:</translation>
-    </message>
-    <message>
-      <source>Yaw:</source>
-      <translation>Keinadatzea:</translation>
-    </message>
-    <message>
       <source>Rotation axis with angle</source>
       <translation>Angelu bidezko ardatz biraketa</translation>
-    </message>
-    <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Aplikatu berehala kokapen-aldaketak</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Aplikatu aldaketa hazkorrak objektuen kokapenari</translation>
     </message>
     <message>
       <source>Apply</source>
@@ -3242,12 +4483,60 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Datu okerrak dituzten sarrera-eremuak daude, ziurtatu baliozko kokapen-balioak sartu dituzula!</translation>
     </message>
     <message>
-      <source>Euler angles (XY'Z'')</source>
-      <translation>Euler angeluak (XY'Z'')</translation>
-    </message>
-    <message>
       <source>Use center of mass</source>
       <translation>Erabili masa-zentroa</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Axiala:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Aplikatu axiala</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Shift+klik aurkako norabiderako</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Hautatutako puntuak</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Aplikatu aldaketa inkrementalak</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Hautatu 1, 2 edo 3 puntu botoi hau sakatu baino lehen. Puntuak erpin batean, aurpegi batean edo ertz batean egon daitezke. Aurpegi edo ertz batean badago, erabiliko den puntua saguak aurpegian edo ertzean duen kokapenaren puntua izango da. Puntu bat hautatzen bada, biraketa-zentro gisa erabiliko da. Bi puntu hautatzen badira, bien arteko erdiko puntua izango da biraketa-zentroa eta ardatz pertsonalizatu berria sortuko da, beharrezkoa bada. Hiru puntu hautatzen badira, lehen puntua biraketa-zentroa izango da eta hiru puntuek definitutako planoarekiko normala den bektorean egongo da. Txosten-bistak distantziari eta angeluari buruzko informazioa ematen du. Informazio hori erabilgarria izan daiteke objektuak lerrokatzean. Shift + klik erabiltzen denean, distantzia edo angelu egokia arbelera kopiatuko da.</translation>
+    </message>
+    <message>
+      <source>Pitch (around y-axis):</source>
+      <translation>Buruzkatzea (Y ardatzaren inguruan):</translation>
+    </message>
+    <message>
+      <source>Roll (around x-axis):</source>
+      <translation>Kulunkada (X ardatzaren inguruan):</translation>
+    </message>
+    <message>
+      <source>Yaw (around z-axis):</source>
+      <translation>Keinada (Z ardatzaren inguruan):</translation>
+    </message>
+    <message>
+      <source>Yaw (around z-axis)</source>
+      <translation>Keinada (Z ardatzaren inguruan)</translation>
+    </message>
+    <message>
+      <source>Pitch (around y-axis)</source>
+      <translation>Buruzkatzea (Y ardatzaren inguruan)</translation>
+    </message>
+    <message>
+      <source>Roll (around the x-axis)</source>
+      <translation>Kulunkada (X ardatzaren inguruan)</translation>
+    </message>
+    <message>
+      <source>Euler angles (zy'x'')</source>
+      <translation>Euler angeluak (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -3259,6 +4548,37 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Command</source>
       <translation>Komandoa</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::RemoteDebugger</name>
+    <message>
+      <source>Attach to remote debugger</source>
+      <translation>Erantsi urruneko araztaileari</translation>
+    </message>
+    <message>
+      <source>winpdb</source>
+      <translation>winpdb</translation>
+    </message>
+    <message>
+      <source>Password:</source>
+      <translation>Pasahitza:</translation>
+    </message>
+    <message>
+      <source>VS Code</source>
+      <translation>VS kodea</translation>
+    </message>
+    <message>
+      <source>Address:</source>
+      <translation>Helbidea:</translation>
+    </message>
+    <message>
+      <source>Port:</source>
+      <translation>Ataka:</translation>
+    </message>
+    <message>
+      <source>Redirect output</source>
+      <translation>Birzuzendu irteera</translation>
     </message>
   </context>
   <context>
@@ -3280,7 +4600,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::SceneModel</name>
     <message>
       <source>Inventor Tree</source>
-      <translation>Asmatzaile-zuhaitza</translation>
+      <translation>Inventor zuhaitza</translation>
     </message>
     <message>
       <source>Nodes</source>
@@ -3342,6 +4662,56 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
   </context>
   <context>
+    <name>Gui::DlgObjectSelection</name>
+    <message>
+      <source>Object selection</source>
+      <translation>Objektu-hautapena</translation>
+    </message>
+    <message>
+      <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
+      <translation>Hautatutako objektuek beste mendekotasun batzuk dituzte. Hautatu zein objektu esportatuko diren. Mendekotasun guztiak automatikoki hautatuko dira modu lehenetsian.</translation>
+    </message>
+    <message>
+      <source>Dependency</source>
+      <translation>Mendekotasuna</translation>
+    </message>
+    <message>
+      <source>Document</source>
+      <translation>Dokumentua</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Izena</translation>
+    </message>
+    <message>
+      <source>State</source>
+      <translation>Egoera</translation>
+    </message>
+    <message>
+      <source>Hierarchy</source>
+      <translation>Hierarkia</translation>
+    </message>
+    <message>
+      <source>Selected</source>
+      <translation>Hautatua</translation>
+    </message>
+    <message>
+      <source>Partial</source>
+      <translation>Partziala</translation>
+    </message>
+    <message>
+      <source>&amp;Use Original Selections</source>
+      <translation>Erabili &amp;jatorrizko hautapenak</translation>
+    </message>
+    <message>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Ez ikusiarena egin mendekotasunei eta jarraitu 
+elkarrizketa-koadro hau ireki baino lehen jatorriz
+hautatutako objektuekin</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::DlgTreeWidget</name>
     <message>
       <source>Dialog</source>
@@ -3357,18 +4727,18 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
-      <translation>Ikuspegi konbinatua</translation>
-    </message>
-    <message>
-      <source>Tasks</source>
-      <translation>Atazak</translation>
+      <source>Combo View</source>
+      <translation>Bista konbinatua</translation>
     </message>
     <message>
       <source>Model</source>
       <translation>Eredua</translation>
+    </message>
+    <message>
+      <source>Tasks</source>
+      <translation>Atazak</translation>
     </message>
   </context>
   <context>
@@ -3380,18 +4750,6 @@ The 'Status' column shows whether the document could be recovered.</source>
   </context>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
-    <message>
-      <source>Logging</source>
-      <translation>Egunkaria</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Abisua</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Errorea</translation>
-    </message>
     <message>
       <source>Options</source>
       <translation>Aukerak</translation>
@@ -3423,6 +4781,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>Testu lauko fitxategiak</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation>Bistaratze-mezuen motak</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation>Mezu normalak</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation>Egunkari-mezuak</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation>Abisuak</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation>Erroreak</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation>Erakutsi txosten-bista honakoan</translation>
     </message>
   </context>
   <context>
@@ -3468,7 +4850,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Zoom fit</source>
-      <translation>Zooma doitu</translation>
+      <translation>Doitu zooma</translation>
     </message>
     <message>
       <source>Selects and fits this object in the 3D window</source>
@@ -3480,7 +4862,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selects and locates this object in the tree view</source>
-      <translation>Objektu hau zuhaitz-bistan hautatzen eta aurkitzen du</translation>
+      <translation>Objektu hau hautatzen du eta zuhaitz-bistan aurkitzen du</translation>
     </message>
     <message>
       <source>To python console</source>
@@ -3514,6 +4896,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Azpiforma honen kopia autonomo bat sortzen du dokumentuan</translation>
     </message>
+    <message>
+      <source>Picked object list</source>
+      <translation>Aukeratutako objektuen zerrenda</translation>
+    </message>
   </context>
   <context>
     <name>Gui::DocumentModel</name>
@@ -3523,7 +4909,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Etiketak &amp; atributuak</translation>
+      <translation>Etiketak eta atributuak</translation>
     </message>
   </context>
   <context>
@@ -3564,11 +4950,11 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
       <source>%1 chars removed</source>
-      <translation>%1 karakterea ezabatuta</translation>
+      <translation>%1 karaktere ezabatu dira</translation>
     </message>
     <message>
       <source>%1 chars added</source>
-      <translation>%1 karaktere gehitu da</translation>
+      <translation>%1 karaktere gehitu dira</translation>
     </message>
     <message>
       <source>Formatted</source>
@@ -3581,6 +4967,20 @@ Aldaketak gorde nahi dituzu?</translation>
     <message>
       <source>PDF file</source>
       <translation>PDF fitxategia</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Bat etortze zehatza</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Bat etortze zehatza</translation>
     </message>
   </context>
   <context>
@@ -3598,7 +4998,7 @@ Aldaketak gorde nahi dituzu?</translation>
     <name>Gui::FileDialog</name>
     <message>
       <source>Save as</source>
-      <translation>Gorde honela:</translation>
+      <translation>Gorde honela</translation>
     </message>
     <message>
       <source>Open</source>
@@ -3642,20 +5042,20 @@ Aldaketak gorde nahi dituzu?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Kolpetxoa eman edo egin klik saguaren ezkerreko botoian.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Kolpetxoa eman EDO egin klik saguaren ezkerreko botoian.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Arrastatu pantaila bi hatzekin. Edo sakatu saguaren eskuineko botoia.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation>Arrastatu pantaila bi hatzekin EDO sakatu saguaren eskuineko botoia.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastatu pantaila hatz batekin. Edo sakatu saguaren ezkerreko botoia. Krokisgilean eta beste edizio modu batzuetan, mantendu Alt sakatuta.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation>Arrastatu pantaila hatz batekin EDO sakatu saguaren ezkerreko botoia. Krokisgilean eta beste edizio modu batzuetan, mantendu Alt sakatuta.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Atximurkatu (ipini bi hatzamar pantailan eta arrastatu kanporantz edo barrurantz). Edo korritu saguaren erdiko botoia. Edo RePág/AvPág teklatuan.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Atximurkatu (ipini bi hatz pantailan eta arrastatu kanporantz edo barrurantz) EDO korritu saguaren erdiko botoia EDO PgUp/PgDown teklatuan.</translation>
     </message>
   </context>
   <context>
@@ -3666,11 +5066,11 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
       <source>PNG format</source>
-      <translation>PNG formatu</translation>
+      <translation>PNG formatua</translation>
     </message>
     <message>
       <source>Bitmap format</source>
-      <translation>Bitmap formatua</translation>
+      <translation>Bit-mapa formatua</translation>
     </message>
     <message>
       <source>GIF format</source>
@@ -3714,7 +5114,7 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
       <source>Graphviz failed to create an image file</source>
-      <translation>Graphviz-ek ezin izan da irudi-fitxategi bat sortu</translation>
+      <translation>Graphviz-ek ezin izan du irudi-fitxategi bat sortu</translation>
     </message>
   </context>
   <context>
@@ -3732,7 +5132,7 @@ Aldaketak gorde nahi dituzu?</translation>
     <name>Gui::InventorNavigationStyle</name>
     <message>
       <source>Press CTRL and left mouse button</source>
-      <translation>Sakatu CTRL eta saguaren ezkerreko botoia</translation>
+      <translation>Sakatu Ctrl eta saguaren ezkerreko botoia</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
@@ -3762,7 +5162,7 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
       <source>Direction must not be the null vector</source>
-      <translation>Norabidea ezin da bektore nulua izan</translation>
+      <translation>Norabideak ezin du bektore nulua izan</translation>
     </message>
     <message>
       <source>X</source>
@@ -3838,14 +5238,18 @@ Aldaketak gorde nahi dituzu?</translation>
       <translation>Itxi dena</translation>
     </message>
     <message>
-      <source>Object dependencies</source>
-      <translation>Objektuaren dependentziak</translation>
+      <source>Unsaved document</source>
+      <translation>Gorde gabeko dokumentua</translation>
     </message>
     <message>
-      <source>The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</source>
-      <translation>Hautatutako objektuek mendekotasunen bat dute hautatu gabe dagoen
-objektu batekiko. Horiek ere kopiatu nahi dituzu?</translation>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation>Esportatutako objektuak kanpoko estekak ditu. Gorde dokumentua gutxienez behin hura esportatu baino lehen.</translation>
+    </message>
+    <message>
+      <source>To link to external objects, the document must be saved at least once.
+Do you want to save the document now?</source>
+      <translation>Kanpoko objektuekin estekatzeko, dokumentua gutxienez behin gorde behar da.
+Dokumentua gorde nahi al duzu?</translation>
     </message>
   </context>
   <context>
@@ -3940,29 +5344,27 @@ Nola jarraitu nahi duzu?</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Kolpetxoa eman edo egin klik saguaren ezkerreko botoian.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Kolpetxoa eman EDO egin klik saguaren ezkerreko botoian.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Arrastatu pantaila bi hatzekin. Edo sakatu Alt + saguaren erdiko botoia.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation>Arrastatu pantaila bi hatzekin EDO sakatu Alt + saguaren erdiko botoia.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastatu pantaila hatz batekin. Edo sakatu Alt + saguaren ezkerreko botoia. Krokisgilean eta beste edizio modu batzuetan, mantendu Alt sakatuta.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Arrastatu pantaila hatz batekin EDO sakatu Alt + saguaren ezkerreko botoia. Krokisgilean eta beste edizio modu batzuetan, mantendu Alt sakatuta.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Atximurkatu (ipini bi hatzamar pantailan eta arrastatu kanporantz edo barrurantz). Edo korritu saguaren erdiko botoia. Edo sakatu Alt + saguaren eskuineko botoia. Edo RePág/AvPág teklatuan.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Atximurkatu (ipini bi hatz pantailan eta arrastatu kanporantz edo barrurantz) EDO korritu saguaren erdiko botoia EDO sakatu Alt + saguaren eskuineko botoia EDO PgUp/PgDown teklatuan.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Deskarga hasi da...
-</translation>
+      <source>Download started...</source>
+      <translation>Deskarga hasi da...</translation>
     </message>
   </context>
   <context>
@@ -3981,7 +5383,7 @@ Nola jarraitu nahi duzu?</translation>
     </message>
     <message>
       <source>Press CTRL and left mouse button</source>
-      <translation>Sakatu CTRL eta saguaren ezkerreko botoia</translation>
+      <translation>Sakatu Ctrl eta saguaren ezkerreko botoia</translation>
     </message>
   </context>
   <context>
@@ -4037,10 +5439,45 @@ Nola jarraitu nahi duzu?</translation>
     </message>
   </context>
   <context>
-    <name>Gui::PropertyEditor::LinkListLabel</name>
+    <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <source>Change the linked objects</source>
-      <translation>Aldatu estekatutako objektuak</translation>
+      <source>Error</source>
+      <translation>Errorea</translation>
+    </message>
+    <message>
+      <source>Object not found</source>
+      <translation>Ez da objektua aurkitu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editatu</translation>
+    </message>
+    <message>
+      <source>property</source>
+      <translation>propietatea</translation>
+    </message>
+    <message>
+      <source>Show all</source>
+      <translation>Erakutsi dena</translation>
+    </message>
+    <message>
+      <source>Add property</source>
+      <translation>Gehitu propietatea</translation>
+    </message>
+    <message>
+      <source>Remove property</source>
+      <translation>Kendu propietatea</translation>
+    </message>
+    <message>
+      <source>Expression...</source>
+      <translation>Adierazpena...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Hedatu automatikoki</translation>
     </message>
   </context>
   <context>
@@ -4149,6 +5586,14 @@ Datuak gorde gabe irten nahi duzu?</translation>
       <source>All Files</source>
       <translation>Fitxategi guztiak</translation>
     </message>
+    <message>
+      <source>Save history</source>
+      <translation>Gorde historia</translation>
+    </message>
+    <message>
+      <source>Saves Python history across %1 sessions</source>
+      <translation>Python historia gordetzen du %1 saio artean</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
@@ -4166,6 +5611,21 @@ Datuak gorde gabe irten nahi duzu?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Ireki %1 fitxategia</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Fitxategia ez da aurkitu</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>'%1' fitxategia ezin da ireki.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Exekutatu %1 makroa (Shift+klik editatzeko), lasterbidea: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -4301,15 +5761,54 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <name>Gui::TaskCSysDragger</name>
     <message>
       <source>Increments</source>
-      <translation>Hazkundeak</translation>
+      <translation>Gehikuntzak</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Translazioaren gehikuntza: </translation>
+      <source>Translation Increment:</source>
+      <translation>Translazioaren gehikuntza:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Biraketaren gehikuntza: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Biraketaren gehikuntza:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TaskElementColors</name>
+    <message>
+      <source>Set element color</source>
+      <translation>Ezarri elementuaren kolorea</translation>
+    </message>
+    <message>
+      <source>TextLabel</source>
+      <translation>Testu-etiketa</translation>
+    </message>
+    <message>
+      <source>Recompute after commit</source>
+      <translation>Berriro kalkulatu commit-aren ondoren</translation>
+    </message>
+    <message>
+      <source>Remove</source>
+      <translation>Kendu</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>Editatu</translation>
+    </message>
+    <message>
+      <source>Remove all</source>
+      <translation>Kendu dena</translation>
+    </message>
+    <message>
+      <source>Hide</source>
+      <translation>Ezkutatu</translation>
+    </message>
+    <message>
+      <source>Box select</source>
+      <translation>Kutxa-hautapena</translation>
+    </message>
+    <message>
+      <source>On-top when selected</source>
+      <translation>Gainean hautatua denean</translation>
     </message>
   </context>
   <context>
@@ -4376,7 +5875,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation>Azpiko objektuaren testua aldatu egin da. Aldaketak baztertu eta testu objektutik birkargatu?</translation>
+      <translation>Azpiko objektuaren testua aldatu egin da. Aldaketak baztertu eta testua objektutik birkargatu?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
@@ -4393,6 +5892,10 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <message>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Gordetzen ez baduzu, zure aldaketak galdu egingo dira.</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Editatu testua</translation>
     </message>
   </context>
   <context>
@@ -4415,10 +5918,176 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Translator</name>
+    <message>
+      <source>English</source>
+      <translation>Ingelesa</translation>
+    </message>
+    <message>
+      <source>German</source>
+      <translation>Alemana</translation>
+    </message>
+    <message>
+      <source>Spanish</source>
+      <translation>Espainiera</translation>
+    </message>
+    <message>
+      <source>French</source>
+      <translation>Frantsesa</translation>
+    </message>
+    <message>
+      <source>Italian</source>
+      <translation>Italiera</translation>
+    </message>
+    <message>
+      <source>Japanese</source>
+      <translation>Japoniera</translation>
+    </message>
+    <message>
+      <source>Chinese Simplified</source>
+      <translation>Txinera sinplifikatua</translation>
+    </message>
+    <message>
+      <source>Chinese Traditional</source>
+      <translation>Txinera tradizionala</translation>
+    </message>
+    <message>
+      <source>Korean</source>
+      <translation>Koreera</translation>
+    </message>
+    <message>
+      <source>Russian</source>
+      <translation>Errusiera</translation>
+    </message>
+    <message>
+      <source>Swedish</source>
+      <translation>Suediera</translation>
+    </message>
+    <message>
+      <source>Afrikaans</source>
+      <translation>Afrikaansa</translation>
+    </message>
+    <message>
+      <source>Norwegian</source>
+      <translation>Norvegiera</translation>
+    </message>
+    <message>
+      <source>Portuguese, Brazilian</source>
+      <translation>Portugesa (Brasil)</translation>
+    </message>
+    <message>
+      <source>Portuguese</source>
+      <translation>Portugesa</translation>
+    </message>
+    <message>
+      <source>Dutch</source>
+      <translation>Nederlandera</translation>
+    </message>
+    <message>
+      <source>Ukrainian</source>
+      <translation>Ukrainiera</translation>
+    </message>
+    <message>
+      <source>Finnish</source>
+      <translation>Finlandiera</translation>
+    </message>
+    <message>
+      <source>Croatian</source>
+      <translation>Kroaziera</translation>
+    </message>
+    <message>
+      <source>Polish</source>
+      <translation>Poloniera</translation>
+    </message>
+    <message>
+      <source>Czech</source>
+      <translation>Txekiera</translation>
+    </message>
+    <message>
+      <source>Hungarian</source>
+      <translation>Hungariera</translation>
+    </message>
+    <message>
+      <source>Romanian</source>
+      <translation>Errumaniera</translation>
+    </message>
+    <message>
+      <source>Slovak</source>
+      <translation>Eslovakiera</translation>
+    </message>
+    <message>
+      <source>Turkish</source>
+      <translation>Turkiera</translation>
+    </message>
+    <message>
+      <source>Slovenian</source>
+      <translation>Esloveniera</translation>
+    </message>
+    <message>
+      <source>Basque</source>
+      <translation>Euskara</translation>
+    </message>
+    <message>
+      <source>Catalan</source>
+      <translation>Katalana</translation>
+    </message>
+    <message>
+      <source>Galician</source>
+      <translation>Galiziera</translation>
+    </message>
+    <message>
+      <source>Kabyle</source>
+      <translation>Kabiliera</translation>
+    </message>
+    <message>
+      <source>Filipino</source>
+      <translation>Filipinera</translation>
+    </message>
+    <message>
+      <source>Indonesian</source>
+      <translation>Indonesiera</translation>
+    </message>
+    <message>
+      <source>Lithuanian</source>
+      <translation>Lituaniera</translation>
+    </message>
+    <message>
+      <source>Valencian</source>
+      <translation>Valentziera</translation>
+    </message>
+    <message>
+      <source>Arabic</source>
+      <translation>Arabiera</translation>
+    </message>
+    <message>
+      <source>Vietnamese</source>
+      <translation>Vietnamiera</translation>
+    </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation>Bulgariera</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Greziera</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation>Espainiera, Argentina</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
       <translation>Zuhaitz-bista</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Bilatu</translation>
     </message>
   </context>
   <context>
@@ -4445,7 +6114,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Etiketak &amp; atributuak</translation>
+      <translation>Etiketak eta atributuak</translation>
     </message>
     <message>
       <source>Application</source>
@@ -4486,6 +6155,85 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <message>
       <source>%1, Internal name: %2</source>
       <translation>%1, barne-izena: %2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Bilatu...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Bilatu objektuak</translation>
+    </message>
+    <message>
+      <source>Description</source>
+      <translation>Deskribapena</translation>
+    </message>
+    <message>
+      <source>Show hidden items</source>
+      <translation>Erakutsi ezkutuko elementuak</translation>
+    </message>
+    <message>
+      <source>Show hidden tree view items</source>
+      <translation>Erakutsi zuhaitz-bistako elementu ezkutuak</translation>
+    </message>
+    <message>
+      <source>Hide item</source>
+      <translation>Ezkutatu elementuak</translation>
+    </message>
+    <message>
+      <source>Hide the item in tree</source>
+      <translation>Ezkutatu elementua zuhaitzean</translation>
+    </message>
+    <message>
+      <source>Close document</source>
+      <translation>Itxi dokumentua</translation>
+    </message>
+    <message>
+      <source>Close the document</source>
+      <translation>Itxi dokumentua</translation>
+    </message>
+    <message>
+      <source>Reload document</source>
+      <translation>Birkargatu dokumentua</translation>
+    </message>
+    <message>
+      <source>Reload a partially loaded document</source>
+      <translation>Birkargatu partzialki kargatutako dokumentu bat</translation>
+    </message>
+    <message>
+      <source>Allow partial recomputes</source>
+      <translation>Onartu birkalkulu partzialak</translation>
+    </message>
+    <message>
+      <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
+      <translation>Gaitu edo desgaitu objektuaren edizioa birkalkulatzea 'Saltatu birkalkulua' gaituta dagoenean</translation>
+    </message>
+    <message>
+      <source>Recompute object</source>
+      <translation>Birkalkulatu objektua</translation>
+    </message>
+    <message>
+      <source>Recompute the selected object</source>
+      <translation>Birkalkulatu hautatutako objektua</translation>
+    </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation> (baina exekutatu behar da)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation>Bektoreak</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation>Taula</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -4701,11 +6449,11 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     </message>
     <message>
       <source>Cannot open unknown filetype: %1</source>
-      <translation>Ezin da ireki formatu mota ezezaguna: %1</translation>
+      <translation>Ezin da ireki fitxategi mota ezezaguna: %1</translation>
     </message>
     <message>
       <source>Cannot save to unknown filetype: %1</source>
-      <translation>Ezin da gorde formatu mota ezezagunera: %1</translation>
+      <translation>Ezin da gorde fitxategi mota ezezagunera: %1</translation>
     </message>
     <message>
       <source>Workbench failure</source>
@@ -4839,7 +6587,7 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <source>The group '%1' cannot be renamed.</source>
-      <translation>'%1' fitxategia ezin da berrizendatu.</translation>
+      <translation>'%1' taldea ezin da berrizendatu.</translation>
     </message>
     <message>
       <source>Existing group</source>
@@ -4923,11 +6671,11 @@ Mesedez, ireki nabigatzaile-leiho bat eta idatzi: http://localhost:%1.</translat
     </message>
     <message>
       <source>Not enough memory available to display the data.</source>
-      <translation>Ez dago nahiko memoriarik datuak erakusteko.</translation>
+      <translation>Ez dago nahiko memoriarik datuak bistaratzeko.</translation>
     </message>
     <message>
       <source>Cannot find file %1</source>
-      <translation>Ez da %1 fitxategia aurkitu</translation>
+      <translation>Ezin da %1 fitxategia aurkitu</translation>
     </message>
     <message>
       <source>Cannot find file %1 neither in %2 nor in %3</source>
@@ -5009,7 +6757,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document '%1' before closing?</source>
-      <translation>Zure aldaketak '%1' dokumentuan gorde nahi dituzu aplikazioa itxi baino lehen?</translation>
+      <translation>'%1' dokumentuko aldaketak gorde nahi dituzu aplikazioa itxi baino lehen?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
@@ -5044,18 +6792,6 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
       <translation>Jatorria</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Translazioa: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Biraketa: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Ezabatu talde-edukia?</translation>
     </message>
@@ -5067,6 +6803,274 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
       <source>Export failed</source>
       <translation>Esportazioak huts egin du</translation>
     </message>
+    <message>
+      <source>Split</source>
+      <translation>Zatitu</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Translazioa:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Biraketa:</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Txandakatu pieza aktiboa</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Editatu testua</translation>
+    </message>
+    <message>
+      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+      <translation>Esportatutako objektuak kanpoko estekak ditu. Gorde dokumentua gutxienez behin hura esportatu baino lehen.</translation>
+    </message>
+    <message>
+      <source>Delete failed</source>
+      <translation>Ezabatzeak huts egin du</translation>
+    </message>
+    <message>
+      <source>Dependency error</source>
+      <translation>Mendekotasun-errorea</translation>
+    </message>
+    <message>
+      <source>Copy selected</source>
+      <translation>Kopiatu hautatua</translation>
+    </message>
+    <message>
+      <source>Copy active document</source>
+      <translation>Kopiatu dokumentu aktiboa</translation>
+    </message>
+    <message>
+      <source>Copy all documents</source>
+      <translation>Kopiatu dokumentu guztiak</translation>
+    </message>
+    <message>
+      <source>Paste</source>
+      <translation>Itsatsi</translation>
+    </message>
+    <message>
+      <source>Expression error</source>
+      <translation>Adierazpen-errorea</translation>
+    </message>
+    <message>
+      <source>Failed to parse some of the expressions.
+Please check the Report View for more details.</source>
+      <translation>Adierazpenetako batzuk ezin izan dira analizatu.
+Begiratu txosten-bista xehetasun gehiagorako.</translation>
+    </message>
+    <message>
+      <source>Failed to paste expressions</source>
+      <translation>Adierazpenak itsasteak huts egin du</translation>
+    </message>
+    <message>
+      <source>Simple group</source>
+      <translation>Talde sinplea</translation>
+    </message>
+    <message>
+      <source>Group with links</source>
+      <translation>Taldea estekekin</translation>
+    </message>
+    <message>
+      <source>Group with transform links</source>
+      <translation>Taldea transfomazio-estekekin</translation>
+    </message>
+    <message>
+      <source>Create link group failed</source>
+      <translation>Esteka-taldea sortzeak huts egin du</translation>
+    </message>
+    <message>
+      <source>Create link failed</source>
+      <translation>Esteka sortzeak huts egin du</translation>
+    </message>
+    <message>
+      <source>Failed to create relative link</source>
+      <translation>Esteka erlatiboa sortzeak huts egin du</translation>
+    </message>
+    <message>
+      <source>Unlink failed</source>
+      <translation>Esteka askatzeak huts egin du</translation>
+    </message>
+    <message>
+      <source>Replace link failed</source>
+      <translation>Esteka ordezteak huts egin du</translation>
+    </message>
+    <message>
+      <source>Failed to import links</source>
+      <translation>Estekak inportatzeak huts egin du</translation>
+    </message>
+    <message>
+      <source>Failed to import all links</source>
+      <translation>Esteka guztiak inportatzeak huts egin du</translation>
+    </message>
+    <message>
+      <source>Invalid name</source>
+      <translation>Izen baliogabea</translation>
+    </message>
+    <message>
+      <source>The property name or group name must only contain alpha numericals,
+underscore, and must not start with a digit.</source>
+      <translation>Propietatearen edo taldearen izenek ikur alfanumerikoak eta azpimarrak soilik
+eduki ditzakete eta ez dira digitu batekin hasi behar.</translation>
+    </message>
+    <message>
+      <source>The property '%1' already exists in '%2'</source>
+      <translation>'%1' propietatea badago '%2' objektuan</translation>
+    </message>
+    <message>
+      <source>Add property</source>
+      <translation>Gehitu propietatea</translation>
+    </message>
+    <message>
+      <source>Failed to add property to '%1': %2</source>
+      <translation>Huts egin du '%1' objektuari propietatea gehitzeak: %2</translation>
+    </message>
+    <message>
+      <source>Save dependent files</source>
+      <translation>Gorde mendeko fitxategiak</translation>
+    </message>
+    <message>
+      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
+      <translation>Fitxategiak kanpoko mendekotasunak ditu. Mendeko fitxategiak ere gorde nahi al dituzu?</translation>
+    </message>
+    <message>
+      <source>Failed to save document</source>
+      <translation>Dokumentua gordetzeak huts egin du</translation>
+    </message>
+    <message>
+      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
+      <translation>Dokumentuek mendekotasun ziklikoak dituzte. Gorde nahi dituzu ala ere?</translation>
+    </message>
+    <message>
+      <source>Undo</source>
+      <translation>Desegin</translation>
+    </message>
+    <message>
+      <source>Redo</source>
+      <translation>Berregin</translation>
+    </message>
+    <message>
+      <source>There are grouped transactions in the following documents with other preceding transactions</source>
+      <translation>Transakzio taldekatuak daude aurretiko beste transakzio batzuk dituzten hurrengo dokumentuetan</translation>
+    </message>
+    <message>
+      <source>Choose 'Yes' to roll back all preceding transactions.
+Choose 'No' to roll back in the active document only.
+Choose 'Abort' to abort</source>
+      <translation>Aukeratu 'Bai' aurreko transakzio guztiak desegiteko.
+Aukeratu 'Ez' dokumentu aktibokoak soilik desegiteko.
+Aukeratu 'Abortatu' abortatzeko.</translation>
+    </message>
+    <message>
+      <source>Do you want to save your changes to document before closing?</source>
+      <translation>Dokumentuko aldaketak gorde nahi dituzu aplikazioa itxi baino lehen?</translation>
+    </message>
+    <message>
+      <source>Apply answer to all</source>
+      <translation>Aplikatu erantzuna denei</translation>
+    </message>
+    <message>
+      <source>Drag &amp; drop failed</source>
+      <translation>Arrastatu eta jaregiteak huts egin du</translation>
+    </message>
+    <message>
+      <source>Override colors...</source>
+      <translation>Gainidatzi koloreak...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Bide-izen fisiko berdina detektatu da. Lehendik dagoen dokumentu bat nahi gabe gainidaztea eragin dezake!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Ziur zaude jarraitu nahi duzula?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Begiratu txosten-bista gehiagorako...</translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Dokumentua: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+Bide-izena: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Bide-izen fisiko berdina</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Errorea</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Erroreak izan dira fitxategia kargatzean. Beharbada zenbait datu aldatu egin dira edo ez dira erabat berreskuratu. Begiratu txostenean arazoak izan dituzten objektuei buruzko informazio gehiago jasotzeko.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Errore larriak gertatu dira fitxategia kargatzean. Zenbait datu aldatuta agertu daitezke edo ez dira berreskuratu. Proiektua gordetzen bada, ziur aski datuak galduko dira.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Lan-mahaiak</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation>
+
+Bide-izen fisikoa: </translation>
+    </message>
+    <message>
+      <source>Could not save document</source>
+      <translation>Ezin da dokumentua gorde</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</source>
+      <translation>Arazo bat dago fitxategia gordetzen saiatzean. Beharbada karpeta gurasoak ez dira existitzen edo ez duzu aski baimenik. Errorearen xehetasunak:
+
+"%1"
+
+Fitxategia beste izen batekin gorde nahi al duzu?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation>Dokumentua ez da gorde</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation>%1 dokumentua ezin izan da gorde. Hura ixtea bertan behera utzi nahi duzu?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation>%1 dokumentu ez dira gorde</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation>Zenbait dokumentu ezin izan dira gorde. Ixtea bertan behera utzi nahi duzu?</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -5076,7 +7080,18 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Selection not allowed by filter</source>
-      <translation>Iragazkiak ez du hautaketa onartzen</translation>
+      <translation>Iragazkiak ez du hautapena onartzen</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdBoxElementSelection</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Bista estandarra</translation>
+    </message>
+    <message>
+      <source>Box element selection</source>
+      <translation>Kutxa-elementuaren hautapena</translation>
     </message>
   </context>
   <context>
@@ -5173,11 +7188,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Arrange &amp;Icons</source>
-      <translation>Antolatze-&amp;ikonoak</translation>
+      <translation>Leihoen &amp;ikonoak</translation>
     </message>
     <message>
       <source>Arrange Icons</source>
-      <translation>Antolatze-ikonoak</translation>
+      <translation>Leihoen ikonoak</translation>
     </message>
   </context>
   <context>
@@ -5263,7 +7278,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Copy operation</source>
-      <translation>Kopia-eragiketa</translation>
+      <translation>Kopiatu eragiketa</translation>
     </message>
   </context>
   <context>
@@ -5309,6 +7324,21 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <message>
       <source>View turntable</source>
       <translation>Ikusi tornua</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Tresnak</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Mendekotasun-grafikoa...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Erakutsi dokumentu aktiboko objektuen mendekotasun-grafoa</translation>
     </message>
   </context>
   <context>
@@ -5426,6 +7456,10 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
       <source>Draw style</source>
       <translation>Marrazte-estiloa</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation>Aldatu objektuen marrazte-estiloa</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -5457,7 +7491,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
       <translation>Hautatutako objektuaren edizio modua txandakatzen du</translation>
     </message>
     <message>
-      <source>Enters or leaves the selected object's edit mode</source>
+      <source>Activates or Deactivates the selected object's edit mode</source>
       <translation>Hautatutako objektuaren edizio modua aktibatzen edo desaktibatzen du</translation>
     </message>
   </context>
@@ -5480,23 +7514,19 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
       <translation>Hautapenik ez</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Lehenengo, hautatu esportatu nahi dituzun objektuak.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Hautatu esportatuko diren objektuak 'Esportatu' aukeratu baino lehen.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdExportGraphviz</name>
+    <name>StdCmdExpression</name>
     <message>
-      <source>Tools</source>
-      <translation>Tresnak</translation>
+      <source>Edit</source>
+      <translation>Editatu</translation>
     </message>
     <message>
-      <source>Dependency graph...</source>
-      <translation>Mendekotasun-grafikoa...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Erakutsi dokumentu aktiboko objektuen mendekotasun-grafoa</translation>
+      <source>Expression actions</source>
+      <translation>Adierazpen-ekintzak</translation>
     </message>
   </context>
   <context>
@@ -5511,7 +7541,22 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Birkalkulatu elementua edo dokumentua</translation>
+      <translation>Birkalkulatu ezaugarria edo dokumentua</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Laguntza</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Lagundu diruarekin</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Lagundu diruz FreeCADen garapenean</translation>
     </message>
   </context>
   <context>
@@ -5560,11 +7605,11 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Python scripting documentation</source>
-      <translation>Python scripting dokumentazioa</translation>
+      <translation>Python scriptgintzarako dokumentazioa</translation>
     </message>
     <message>
       <source>Python scripting documentation on the FreeCAD website</source>
-      <translation>Python dokumentazioa FreeCADen webgunean</translation>
+      <translation>Python scriptgintzarako dokumentazioa FreeCADen webgunean</translation>
     </message>
     <message>
       <source>PowerUsers documentation</source>
@@ -5685,6 +7730,197 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdLinkActions</name>
+    <message>
+      <source>View</source>
+      <translation>Bista</translation>
+    </message>
+    <message>
+      <source>Link actions</source>
+      <translation>Esteka-ekintzak</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkImport</name>
+    <message>
+      <source>Link</source>
+      <translation>Esteka</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Inportatu estekak</translation>
+    </message>
+    <message>
+      <source>Import selected external link(s)</source>
+      <translation>Inportatu hautatutako kanpo-esteka(k)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkImportAll</name>
+    <message>
+      <source>Link</source>
+      <translation>Esteka</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Inportatu esteka guztiak</translation>
+    </message>
+    <message>
+      <source>Import all links of the active document</source>
+      <translation>Inportatu dokumentu aktiboaren esteka guztiak</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMake</name>
+    <message>
+      <source>Link</source>
+      <translation>Esteka</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Sortu esteka</translation>
+    </message>
+    <message>
+      <source>Create a link to the selected object(s)</source>
+      <translation>Sortu hautatutako objektu(ar)en esteka</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMakeGroup</name>
+    <message>
+      <source>Link</source>
+      <translation>Esteka</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Sortu esteka taldea</translation>
+    </message>
+    <message>
+      <source>Create a group of links</source>
+      <translation>Sortu esteken talde bat</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkMakeRelative</name>
+    <message>
+      <source>Link</source>
+      <translation>Esteka</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Sortu azpiesteka</translation>
+    </message>
+    <message>
+      <source>Create a sub-object or sub-element link</source>
+      <translation>Sortu azpiobjektu edo azpielementu baten esteka</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkReplace</name>
+    <message>
+      <source>Link</source>
+      <translation>Esteka</translation>
+    </message>
+    <message>
+      <source>Replace with link</source>
+      <translation>Ordeztu estekarekin</translation>
+    </message>
+    <message>
+      <source>Replace the selected object(s) with link</source>
+      <translation>Ordeztu hautatutako objektua(k) estekarekin</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectActions</name>
+    <message>
+      <source>View</source>
+      <translation>Bista</translation>
+    </message>
+    <message>
+      <source>Link navigation</source>
+      <translation>Esteka-nabigazioa</translation>
+    </message>
+    <message>
+      <source>Link navigation actions</source>
+      <translation>Esteka-nabigazioaren ekintzak</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectAllLinks</name>
+    <message>
+      <source>Link</source>
+      <translation>Esteka</translation>
+    </message>
+    <message>
+      <source>Select all links</source>
+      <translation>Hautatu esteka guztiak</translation>
+    </message>
+    <message>
+      <source>Select all links to the current selected object</source>
+      <translation>Hautatu unean hautatutako objektuaren esteka guztiak</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectLinked</name>
+    <message>
+      <source>Link</source>
+      <translation>Esteka</translation>
+    </message>
+    <message>
+      <source>Go to linked object</source>
+      <translation>Joan estekatutako objektura</translation>
+    </message>
+    <message>
+      <source>Select the linked object and switch to its owner document</source>
+      <translation>Hautatu estekatutako objektua eta joan bere dokumentu jabera</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkSelectLinkedFinal</name>
+    <message>
+      <source>Link</source>
+      <translation>Esteka</translation>
+    </message>
+    <message>
+      <source>Go to the deepest linked object</source>
+      <translation>Joan sakonen estekatutako objektura</translation>
+    </message>
+    <message>
+      <source>Select the deepest linked object and switch to its owner document</source>
+      <translation>Hautatu sakonen estekatutako objektua eta joan bere dokumentu jabera</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdLinkUnlink</name>
+    <message>
+      <source>Link</source>
+      <translation>Esteka</translation>
+    </message>
+    <message>
+      <source>Unlink</source>
+      <translation>Askatu</translation>
+    </message>
+    <message>
+      <source>Strip on level of link</source>
+      <translation>Biluztu estekaren maila</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMacroAttachDebugger</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makroa</translation>
+    </message>
+    <message>
+      <source>Attach to remote debugger...</source>
+      <translation>Erantsi urruneko araztaileari...</translation>
+    </message>
+    <message>
+      <source>Attach to a remotely running debugger</source>
+      <translation>Erantsi urrunean exekutatzen ari den araztaile bati</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdMacroStartDebug</name>
     <message>
       <source>Macro</source>
@@ -5792,12 +8028,12 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
       <translation>Fusionatu proiektua</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 dokumentua (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Ezin da proiektua bere buruarekin fusionatu.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 dokumentua (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -5812,7 +8048,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Create a new empty document</source>
-      <translation>Sortu dokumentu zuri berri bat</translation>
+      <translation>Sortu dokumentu huts berri bat</translation>
     </message>
     <message>
       <source>Unnamed</source>
@@ -5959,7 +8195,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>&amp;Print preview...</source>
-      <translation>&amp;Inprimatze-aurrebista...</translation>
+      <translation>Inprimatze-&amp;aurrebista...</translation>
     </message>
     <message>
       <source>Print the document</source>
@@ -5967,7 +8203,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Print preview</source>
-      <translation>Inprimatu aurrebista</translation>
+      <translation>Inprimatze-aurrebista</translation>
     </message>
   </context>
   <context>
@@ -5982,7 +8218,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Erakutsi une honetan aktibo dagoen proiektuaren xehetasunak</translation>
+      <translation>Erakutsi uneko proiektu aktiboaren xehetasunak</translation>
     </message>
   </context>
   <context>
@@ -6023,7 +8259,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>E&amp;xit</source>
-      <translation>&amp;Irten</translation>
+      <translation>Ir&amp;ten</translation>
     </message>
     <message>
       <source>Quits the application</source>
@@ -6054,6 +8290,21 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <message>
       <source>Recent file list</source>
       <translation>Azken fitxategien zerrenda</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makroa</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Azken makroak</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Azken makroen zerrenda</translation>
     </message>
   </context>
   <context>
@@ -6117,6 +8368,21 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdSaveAll</name>
+    <message>
+      <source>File</source>
+      <translation>Fitxategia</translation>
+    </message>
+    <message>
+      <source>Save All</source>
+      <translation>Gorde dena</translation>
+    </message>
+    <message>
+      <source>Save all opened document</source>
+      <translation>Gorde irekitako dokumentu guztiak</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdSaveAs</name>
     <message>
       <source>File</source>
@@ -6162,6 +8428,51 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdSelBack</name>
+    <message>
+      <source>View</source>
+      <translation>Bista</translation>
+    </message>
+    <message>
+      <source>&amp;Back</source>
+      <translation>A&amp;tzera</translation>
+    </message>
+    <message>
+      <source>Go back to previous selection</source>
+      <translation>Joan aurreko hautapenera</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelBoundingBox</name>
+    <message>
+      <source>View</source>
+      <translation>Bista</translation>
+    </message>
+    <message>
+      <source>&amp;Bounding box</source>
+      <translation>&amp;Muga-kutxa</translation>
+    </message>
+    <message>
+      <source>Show selection bounding box</source>
+      <translation>Erakutsi hautapenaren muga-kutxa</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSelForward</name>
+    <message>
+      <source>View</source>
+      <translation>Bista</translation>
+    </message>
+    <message>
+      <source>&amp;Forward</source>
+      <translation>A&amp;urrera</translation>
+    </message>
+    <message>
+      <source>Repeat the backed selection</source>
+      <translation>Errepikatu aurreko hautapena</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdSelectAll</name>
     <message>
       <source>Edit</source>
@@ -6189,6 +8500,21 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <message>
       <source>Select visible objects in the active document</source>
       <translation>Hautatu dokumentu aktiboko objektu ikusgaiak</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSendToPythonConsole</name>
+    <message>
+      <source>Edit</source>
+      <translation>Editatu</translation>
+    </message>
+    <message>
+      <source>&amp;Send to Python Console</source>
+      <translation>Bidali &amp;Python kontsolara</translation>
+    </message>
+    <message>
+      <source>Sends the selected object to the Python console</source>
+      <translation>Hautatutako objektua Python kontsolara bidaltzen du</translation>
     </message>
   </context>
   <context>
@@ -6248,7 +8574,22 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Toggles the status bar</source>
-      <translation>Egoera-barra aktibatzen/desaktibatzen du</translation>
+      <translation>Egoera-barra txandakatzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTextDocument</name>
+    <message>
+      <source>Tools</source>
+      <translation>Tresnak</translation>
+    </message>
+    <message>
+      <source>Add text document</source>
+      <translation>Gehitu testu-dokumentua</translation>
+    </message>
+    <message>
+      <source>Add text document to active document</source>
+      <translation>Gehitu testu-dokumentua dokumentu aktiboari</translation>
     </message>
   </context>
   <context>
@@ -6379,7 +8720,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Leiho hau aktibatzen/deskatibatzen du</translation>
+      <translation>Leiho hau aktibatzen/desaktibatzen du</translation>
     </message>
   </context>
   <context>
@@ -6413,18 +8754,63 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdTreeSelection</name>
+    <name>StdCmdTreeCollapse</name>
     <message>
       <source>View</source>
       <translation>Bista</translation>
     </message>
     <message>
-      <source>Go to selection</source>
-      <translation>Joan hautapenera</translation>
+      <source>Collapse selected item</source>
+      <translation>Tolestu hautatutako elementua</translation>
     </message>
     <message>
-      <source>Scroll to first selected item</source>
-      <translation>Joan hautatutako lehen elementura</translation>
+      <source>Collapse currently selected tree items</source>
+      <translation>Tolestu unean hautatutako zuhaitz-elementuak</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeExpand</name>
+    <message>
+      <source>View</source>
+      <translation>Bista</translation>
+    </message>
+    <message>
+      <source>Expand selected item</source>
+      <translation>Hedatu hautatutako elementua</translation>
+    </message>
+    <message>
+      <source>Expand currently selected tree items</source>
+      <translation>Hedatu unean hautatutako zuhaitz-elementuak</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeSelectAllInstances</name>
+    <message>
+      <source>View</source>
+      <translation>Bista</translation>
+    </message>
+    <message>
+      <source>Select all instances</source>
+      <translation>Hautatu instantzia guztiak</translation>
+    </message>
+    <message>
+      <source>Select all instances of the current selected object</source>
+      <translation>Hautatu unean hautatutako objektuaren instantzia guztiak</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdTreeViewActions</name>
+    <message>
+      <source>View</source>
+      <translation>Bista</translation>
+    </message>
+    <message>
+      <source>TreeView actions</source>
+      <translation>Zuhaitz-bistako ekintzak</translation>
+    </message>
+    <message>
+      <source>TreeView behavior options and actions</source>
+      <translation>Zuhaitz-bistaren portaeraren aukerak eta ekintzak</translation>
     </message>
   </context>
   <context>
@@ -6454,7 +8840,18 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Start the units calculator</source>
-      <translation>Abiarazi unitateen kalkulagailua</translation>
+      <translation>Abiarazi unitate-kalkulagailua</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserEditMode</name>
+    <message>
+      <source>Edit mode</source>
+      <translation>Edizio modua</translation>
+    </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation>Zuhaitzeko objektu bat editatzean izango den portaera definitzen du</translation>
     </message>
   </context>
   <context>
@@ -6473,21 +8870,6 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Bista estandarra</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometrikoa</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Ezarri bista axonometrikoa</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6495,7 +8877,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Azpia</translation>
+      <translation>Azpikoa</translation>
     </message>
     <message>
       <source>Set to bottom view</source>
@@ -6518,6 +8900,21 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Bista estandarra</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrikoa</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Ezarri bista dimetrikoa</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewExample1</name>
     <message>
       <source>Standard-View</source>
@@ -6525,7 +8922,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation>Asmatzaile adibidea #1</translation>
+      <translation>Inventor adibidea #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
@@ -6540,7 +8937,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Inventor example #2</source>
-      <translation>Asmatzaile adibidea #2</translation>
+      <translation>Inventor adibidea #2</translation>
     </message>
     <message>
       <source>Shows spheres and drag-lights</source>
@@ -6555,7 +8952,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Inventor example #3</source>
-      <translation>Asmatzaile adibidea #3</translation>
+      <translation>Inventor adibidea #3</translation>
     </message>
     <message>
       <source>Shows a animated texture</source>
@@ -6570,7 +8967,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Fit all</source>
-      <translation>Ikusi dena</translation>
+      <translation>Doitu dena</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
@@ -6585,7 +8982,7 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Fit selection</source>
-      <translation>Ikusi hautapena</translation>
+      <translation>Doitu hautapena</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
@@ -6605,6 +9002,36 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <message>
       <source>Set to front view</source>
       <translation>Ikusi aurretik</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Bista estandarra</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation>Hasiera</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation>Ezarri hasierako bista lehenetsira</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Bista estandarra</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrikoa</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Ezarri bista isometrikoa</translation>
     </message>
   </context>
   <context>
@@ -6720,11 +9147,26 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
     <message>
       <source>Rear</source>
-      <translation>Atzea</translation>
+      <translation>Atzekoa</translation>
     </message>
     <message>
       <source>Set to rear view</source>
       <translation>Ikusi atzetik</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Bista estandarra</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Leheneratu gordetako kamera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Leheneratu gordetako kamera-ezarpenak</translation>
     </message>
   </context>
   <context>
@@ -6753,8 +9195,8 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
       <translation>Biratu ezkerrera</translation>
     </message>
     <message>
-      <source>Rotate the view by 90Â° counter-clockwise</source>
-      <translation>Biratu bista 90 ° erlojuaren noranzkoaren aurka</translation>
+      <source>Rotate the view by 90° counter-clockwise</source>
+      <translation>Biratu bista 90° erlojuaren noranzkoaren aurka</translation>
     </message>
   </context>
   <context>
@@ -6768,8 +9210,23 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
       <translation>Biratu eskuinera</translation>
     </message>
     <message>
-      <source>Rotate the view by 90Â° clockwise</source>
-      <translation>Biratu bista 90 ° erlojuaren noranzkoan</translation>
+      <source>Rotate the view by 90° clockwise</source>
+      <translation>Biratu bista 90° erlojuaren noranzkoan</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Bista estandarra</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Gorde uneko kamera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Gorde uneko kamera-ezarpenak</translation>
     </message>
   </context>
   <context>
@@ -6785,6 +9242,21 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     <message>
       <source>Set to top view</source>
       <translation>Ikusi goitik</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Bista estandarra</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrikoa</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Ezarri bista trimetrikoa</translation>
     </message>
   </context>
   <context>
@@ -6904,6 +9376,156 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
     </message>
   </context>
   <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Tolestu/hedatu</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Hedatu dokumentu aktiboa eta tolestu beste guztiak</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeDrag</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+    <message>
+      <source>Initiate dragging</source>
+      <translation>Hasi arrastatzea</translation>
+    </message>
+    <message>
+      <source>Initiate dragging of current selected tree items</source>
+      <translation>Hasi unean hautatutako zuhaitz-elementuen arrastatzea</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Bistaratu dokumentu guztiak zuhaitz-bistan</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+    <message>
+      <source>Multi document</source>
+      <translation>Dokumentu anitza</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreePreSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+    <message>
+      <source>Pre-selection</source>
+      <translation>Aurretiko hautapena</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Aurretik hautatu objektua 3D bistan sagua zuhaitz-elementuaren gainean dagoenean</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeRecordSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+    <message>
+      <source>Record selection</source>
+      <translation>Grabatu hautapena</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Grabatu zuhaitz-bistako hautapena aurrera/atzera egin ahal izateko nabigazio-botoia erabilita</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+    <message>
+      <source>Go to selection</source>
+      <translation>Joan hautapenera</translation>
+    </message>
+    <message>
+      <source>Scroll to first selected item</source>
+      <translation>Joan hautatutako lehen elementura</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Bistaratu dokumentu aktiboa soilik zuhaitz-bistan</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+    <message>
+      <source>Single document</source>
+      <translation>Dokumentu bakarra</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncPlacement</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+    <message>
+      <source>Sync placement</source>
+      <translation>Sinkronizatu kokapena</translation>
+    </message>
+    <message>
+      <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
+      <translation>Automatikoki doitu kokapena objektuak koordenatu-sistema batetik bestera arrastatu eta jaregitean</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncSelection</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+    <message>
+      <source>Sync selection</source>
+      <translation>Sinkronizatu hautapena</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Automatikoki hedatu zuhaitz-elementua hari dagokion objektua 3D bistan hautatuta dagoenean</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSyncView</name>
+    <message>
+      <source>TreeView</source>
+      <translation>Zuhaitz-bista</translation>
+    </message>
+    <message>
+      <source>Sync view</source>
+      <translation>Sinkronizatu bista</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Automatikoki aldatu hautatutako elementua duen 3D bistara</translation>
+    </message>
+  </context>
+  <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
@@ -7014,20 +9636,29 @@ Kontuan izan garrantzitsua dela klik non egiten duzun.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Objektuaren dependentziak</translation>
-    </message>
-    <message>
-      <source>The following, referencing objects might break.
+      <source>The following referencing objects might break.
 
 Are you sure you want to continue?
-
 </source>
       <translation>Hurrengo erreferentzia-objektuak hautsi egin daitezke.
 
 Ziur zaude jarraitu nahi duzula?
-
 </translation>
+    </message>
+    <message>
+      <source>Object dependencies</source>
+      <translation>Objektuaren mendekotasunak</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Elementu hauek ezabatzeko hautatu dira, baina ez daude dokumentu aktiboan.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Mendekotasun-grafikoa</translation>
     </message>
   </context>
   <context>
@@ -7093,20 +9724,13 @@ Ziur zaude jarraitu nahi duzula?
     <name>Std_DuplicateSelection</name>
     <message>
       <source>Object dependencies</source>
-      <translation>Objektuaren dependentziak</translation>
+      <translation>Objektuaren mendekotasunak</translation>
     </message>
     <message>
-      <source>The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</source>
-      <translation>Hautatutako objektuek mendekotasunen bat dute hautatu gabe dagoen
-objektu batekiko. Horiek ere bikoiztu nahi dituzu?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Mendekotasun-grafikoa</translation>
+      <source>To link to external objects, the document must be saved at least once.
+Do you want to save the document now?</source>
+      <translation>Kanpoko objektuekin estekatzeko, dokumentua gutxienez behin gorde behar da.
+Dokumentua gorde nahi al duzu?</translation>
     </message>
   </context>
   <context>
@@ -7114,6 +9738,19 @@ objektu batekiko. Horiek ere bikoiztu nahi dituzu?</translation>
     <message>
       <source>Group</source>
       <translation>Taldea</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_Refresh</name>
+    <message>
+      <source>The document contains dependency cycles.
+Please check the Report View for more details.
+
+Do you still want to proceed?</source>
+      <translation>Dokumentuak mendekotasun-zikloak ditu.
+Begiratu txosten-bista xehetasun gehiagorako.
+
+Jarraitu nahi al duzu?</translation>
     </message>
   </context>
   <context>
@@ -7132,6 +9769,50 @@ objektu batekiko. Horiek ere bikoiztu nahi dituzu?</translation>
     </message>
   </context>
   <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrikoa</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Ezarri nabigazio-kuboa modu isometrikoan</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ortografikoa</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Ezarri bista modu ortografikora</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Perspektiba</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Ezarri bista perspektibako modura</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Zooma doitzeko</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Egin zooma ereduak bista bete dezan</translation>
+    </message>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
@@ -7147,11 +9828,11 @@ objektu batekiko. Horiek ere bikoiztu nahi dituzu?</translation>
     </message>
     <message>
       <source>&amp;Stereo</source>
-      <translation>&amp;Estereoa</translation>
+      <translation>E&amp;stereoa</translation>
     </message>
     <message>
       <source>&amp;Zoom</source>
-      <translation>&amp;Zoom-a</translation>
+      <translation>&amp;Zooma</translation>
     </message>
     <message>
       <source>Visibility</source>
@@ -7196,6 +9877,10 @@ objektu batekiko. Horiek ere bikoiztu nahi dituzu?</translation>
     <message>
       <source>Special Ops</source>
       <translation>Eragiketa bereziak</translation>
+    </message>
+    <message>
+      <source>Axonometric</source>
+      <translation>Axonometrikoa</translation>
     </message>
   </context>
   <context>

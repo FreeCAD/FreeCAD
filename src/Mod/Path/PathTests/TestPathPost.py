@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -33,6 +31,7 @@ import PathScripts.PathUtil
 import difflib
 import unittest
 
+WriteDebugOutput = False
 
 class PathPostTestCases(unittest.TestCase):
 
@@ -63,8 +62,8 @@ class PathPostTestCases(unittest.TestCase):
             refGCode = fp.read()
 
         # Use if this test fails in order to have a real good look at the changes
-        if False:
-            with open('tab.tmp', 'w') as fp:
+        if WriteDebugOutput:
+            with open('testLinuxCNC.tmp', 'w') as fp:
                 fp.write(gcode)
 
         if gcode != refGCode:
@@ -81,8 +80,8 @@ class PathPostTestCases(unittest.TestCase):
             refGCode = fp.read()
 
         # Use if this test fails in order to have a real good look at the changes
-        if False:
-            with open('tab.tmp', 'w') as fp:
+        if WriteDebugOutput:
+            with open('testLinuxCNCImplerial.tmp', 'w') as fp:
                 fp.write(gcode)
 
         if gcode != refGCode:
@@ -99,8 +98,8 @@ class PathPostTestCases(unittest.TestCase):
             refGCode = fp.read()
 
         # Use if this test fails in order to have a real good look at the changes
-        if False:
-            with open('tab.tmp', 'w') as fp:
+        if WriteDebugOutput:
+            with open('testCentroid.tmp', 'w') as fp:
                 fp.write(gcode)
 
         if gcode != refGCode:

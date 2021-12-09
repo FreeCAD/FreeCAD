@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Ian Rees         <ian.rees@gmail.com>              *
+ *   Copyright (c) 2016 Ian Rees <ian.rees@gmail.com>                      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,6 +24,9 @@
 #ifndef MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
 #define MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
 
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 #include <Gui/PropertyPage.h>
 
 namespace MeshGui {

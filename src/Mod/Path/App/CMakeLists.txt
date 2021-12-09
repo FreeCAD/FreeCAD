@@ -36,6 +36,10 @@ generate_from_xml(TooltablePy)
 generate_from_xml(FeaturePathCompoundPy)
 generate_from_xml(AreaPy)
 generate_from_xml(FeatureAreaPy)
+generate_from_xml(VoronoiPy)
+generate_from_xml(VoronoiCellPy)
+generate_from_xml(VoronoiEdgePy)
+generate_from_xml(VoronoiVertexPy)
 
 SET(Python_SRCS
     CommandPy.xml
@@ -43,6 +47,7 @@ SET(Python_SRCS
     PathPy.xml
     PathPyImp.cpp
     ToolPy.xml
+    ToolPyImp.cpp
     TooltablePy.xml
     TooltablePyImp.cpp
     FeaturePathCompoundPy.xml
@@ -51,6 +56,14 @@ SET(Python_SRCS
     AreaPyImp.cpp
     FeatureAreaPy.xml
     FeatureAreaPyImp.cpp
+    VoronoiPy.xml
+    VoronoiPyImp.cpp
+    VoronoiCellPy.xml
+    VoronoiCellPyImp.cpp
+    VoronoiEdgePy.xml
+    VoronoiEdgePyImp.cpp
+    VoronoiVertexPy.xml
+    VoronoiVertexPyImp.cpp
 )
 
 SET(Mod_SRCS
@@ -65,6 +78,8 @@ SET(Path_SRCS
     Command.h
     Path.cpp
     Path.h
+    Tool.cpp
+    Tool.h
     Tooltable.cpp
     Tooltable.h
     PropertyPath.cpp
@@ -85,6 +100,16 @@ SET(Path_SRCS
     ParamsHelper.h
     FeatureArea.cpp
     FeatureArea.h
+    PathSegmentWalker.h
+    PathSegmentWalker.cpp
+    Voronoi.cpp
+    Voronoi.h
+    VoronoiCell.cpp
+    VoronoiCell.h
+    VoronoiEdge.cpp
+    VoronoiEdge.h
+    VoronoiVertex.cpp
+    VoronoiVertex.h
     ${Mod_SRCS}
     ${Python_SRCS}
 )
@@ -113,22 +138,30 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 #    SOURCE_GROUP("KDL" FILES ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS} )
 #endif(WIN32)
 
-SET(Path_Scripts
-    Init.py
-)
-
 add_library(Path SHARED ${Path_SRCS})
 target_link_libraries(Path ${Path_LIBS})
 
-fc_target_copy_resource(Path 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Path
-    ${CMAKE_BINARY_DIR}/Mod/Path
-    ${Path_Scripts})
+# Boost >= 1.75.0
+if(NOT ${Boost_VERSION} LESS 107500)
+    set_target_properties(Path PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(Path PROPERTIES CXX_STANDARD 14)
 
-fc_target_copy_resource(Path 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Path
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Path
-    ${Path_Resources})
+    # Suppress -Wc++17-extensions when using  OCCT 7.5 or newer
+    if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
+        unset(_flag_found CACHE)
+        check_cxx_compiler_flag("-Wno-c++17-extensions" _flag_found)
+        if (_flag_found)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++17-extensions")
+        endif()
+    endif()
+endif()
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Path_CPP_SRCS ${Path_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Path PreCompiled.h PreCompiled.cpp Path_CPP_SRCS)
+endif(FREECAD_USE_PCH)
+
 
 SET_BIN_DIR(Path Path /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(Path)

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>384</width>
+    <width>495</width>
     <height>395</height>
    </rect>
   </property>
@@ -54,6 +54,13 @@
        <widget class="QTreeView" name="tree"/>
       </item>
       <item>
+       <widget class="QLabel" name="labelTotalThickness">
+        <property name="text">
+         <string>Total thickness</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QPushButton" name="addButton">
@@ -80,6 +87,13 @@
          <widget class="QPushButton" name="delButton">
           <property name="text">
            <string>Del</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="invertButton">
+          <property name="text">
+           <string>Invert</string>
           </property>
          </widget>
         </item>

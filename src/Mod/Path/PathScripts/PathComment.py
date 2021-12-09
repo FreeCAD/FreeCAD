@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,14 +19,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-''' Used for CNC machine comments for Path module. Create a comment and place it in the Document tree.'''
+
+'''Used for CNC machine comments for Path module. Create a comment and place it in the Document tree.'''
 
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -79,9 +78,10 @@ class _ViewProviderComment:
         return None
 
     def getIcon(self):  # optional
-        return ":/icons/Path-Comment.svg"
+        return ":/icons/Path_Comment.svg"
 
     def onChanged(self, vobj, prop):  # optional
+        # pylint: disable=unused-argument
         mode = 2
         vobj.setEditorMode('LineWidth', mode)
         vobj.setEditorMode('MarkerColor', mode)
@@ -97,7 +97,7 @@ class _ViewProviderComment:
 class CommandPathComment:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Comment',
+        return {'Pixmap': 'Path_Comment',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Comment", "Comment"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Comment", "Add a Comment to your CNC program")}
 
@@ -105,7 +105,7 @@ class CommandPathComment:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):

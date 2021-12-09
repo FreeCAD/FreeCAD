@@ -24,11 +24,13 @@
 #ifndef MOUSESELECTION_H
 #define MOUSESELECTION_H
 
+#include <bitset>
 #include <vector>
 #include <Inventor/SbLinear.h>
 #include <Inventor/SbVec2f.h>
 #include <QCursor>
-#include "GLPainter.h"
+#include <Gui/GLPainter.h>
+#include <Gui/Namespace.h>
 
 // forwards
 class QMouseEvent;
@@ -62,14 +64,14 @@ public:
     /// implement this in derived classes
     virtual void initialize() = 0;
     /// implement this in derived classes
-    virtual void terminate() = 0;
+    virtual void terminate(bool abort = false) = 0;
     void grabMouseModel(Gui::View3DInventorViewer*);
-    void releaseMouseModel(void);
+    void releaseMouseModel(bool abort = false);
     const std::vector<SbVec2s>& getPositions() const {
         return _clPoly;
     }
-    SbBool isInner() const {
-        return m_bInner;
+    SelectionRole selectedRole() const {
+        return m_selectedRole;
     }
 
     void redraw();
@@ -82,23 +84,23 @@ public:
 protected:
     virtual int mouseButtonEvent(const SoMouseButtonEvent* const, const QPoint&) {
         return 0;
-    };
-    virtual int locationEvent(const SoLocation2Event*    const, const QPoint&) {
+    }
+    virtual int locationEvent(const SoLocation2Event* const, const QPoint&) {
         return 0;
-    };
-    virtual int keyboardEvent(const SoKeyboardEvent*     const)                   {
+    }
+    virtual int keyboardEvent(const SoKeyboardEvent* const){
         return 0;
-    };
+    }
 
     /// drawing stuff
-    virtual void draw() {};
+    virtual void draw() {}
 
 protected:
     Gui::View3DInventorViewer* _pcView3D;
     QCursor m_cPrevCursor;
     int  m_iXold, m_iYold;
     int  m_iXnew, m_iYnew;
-    SbBool m_bInner;
+    SelectionRole m_selectedRole;
     std::vector<SbVec2s> _clPoly;
 };
 
@@ -132,7 +134,7 @@ public:
     void setColor(float r, float g, float b, float a = 1.0);
 
     virtual void initialize();
-    virtual void terminate();
+    virtual void terminate(bool abort = false);
 
 protected:
     virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
@@ -161,8 +163,18 @@ public:
     PolyClipSelection();
     virtual ~PolyClipSelection();
 
+    inline void setRole(SelectionRole pos, bool on) {
+        selectionBits.set(static_cast<size_t>(pos), on);
+    }
+    inline bool testRole(SelectionRole pos) const {
+        return selectionBits.test(static_cast<size_t>(pos));
+    }
+
 protected:
     virtual int popupMenu();
+
+private:
+    std::bitset<8> selectionBits;
 };
 
 // -----------------------------------------------------------------------------------
@@ -201,7 +213,7 @@ public:
     void setColor(float r, float g, float b, float a = 1.0);
 
     virtual void initialize();
-    virtual void terminate();
+    virtual void terminate(bool abort = false);
 
 protected:
     virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
@@ -241,9 +253,9 @@ class GuiExport BoxZoomSelection : public RubberbandSelection
 public:
     BoxZoomSelection();
     ~BoxZoomSelection();
-    void terminate();
+    void terminate(bool abort = false);
 };
 
 } // namespace Gui
 
-#endif // MOUSESELECTION_H 
+#endif // MOUSESELECTION_H

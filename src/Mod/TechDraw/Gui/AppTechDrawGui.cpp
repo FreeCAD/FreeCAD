@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,12 +37,19 @@
 #include <Gui/WidgetFactory.h>
 
 #include "Workbench.h"
+#include "MDIViewPage.h"
 
-#include "DlgPrefsTechDrawImp.h"
-#include "DlgPrefsTechDraw2Imp.h"
+#include "DlgPrefsTechDrawGeneralImp.h"
+#include "DlgPrefsTechDrawScaleImp.h"
+#include "DlgPrefsTechDrawAnnotationImp.h"
+#include "DlgPrefsTechDrawDimensionsImp.h"
+#include "DlgPrefsTechDrawColorsImp.h"
+#include "DlgPrefsTechDrawAdvancedImp.h"
+#include "DlgPrefsTechDrawHLRImp.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderDimension.h"
+#include "ViewProviderBalloon.h"
 #include "ViewProviderProjGroup.h"
 #include "ViewProviderProjGroupItem.h"
 #include "ViewProviderTemplate.h"
@@ -55,12 +62,20 @@
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderSpreadsheet.h"
 #include "ViewProviderImage.h"
+#include "ViewProviderRichAnno.h"
+#include "ViewProviderLeader.h"
+#include "ViewProviderTile.h"
+#include "ViewProviderWeld.h"
+
+#include "ViewProviderCosmeticExtension.h"
 
 
 // use a different name to CreateCommand()
 void CreateTechDrawCommands(void);
 void CreateTechDrawCommandsDims(void);
 void CreateTechDrawCommandsDecorate(void);
+void CreateTechDrawCommandsAnnotate(void);
+void CreateTechDrawCommandsExtensions(void);
 
 void loadTechDrawResource()
 {
@@ -105,14 +120,19 @@ PyMOD_INIT_FUNC(TechDrawGui)
     CreateTechDrawCommands();
     CreateTechDrawCommandsDims();
     CreateTechDrawCommandsDecorate();
+    CreateTechDrawCommandsAnnotate();
+    CreateTechDrawCommandsExtensions();
 
     TechDrawGui::Workbench::init();
+    TechDrawGui::MDIViewPage::init();
+    TechDrawGui::MDIViewPagePy::init_type();
 
     TechDrawGui::ViewProviderPage::init();
     TechDrawGui::ViewProviderDrawingView::init();
 
     TechDrawGui::ViewProviderTemplate::init();
     TechDrawGui::ViewProviderDimension::init();
+    TechDrawGui::ViewProviderBalloon::init();
     TechDrawGui::ViewProviderViewPart::init();
     TechDrawGui::ViewProviderProjGroupItem::init();
     TechDrawGui::ViewProviderProjGroup::init();
@@ -126,10 +146,21 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderGeomHatch::init();
     TechDrawGui::ViewProviderSpreadsheet::init();
     TechDrawGui::ViewProviderImage::init();
+    TechDrawGui::ViewProviderLeader::init();
+    TechDrawGui::ViewProviderRichAnno::init();
+    TechDrawGui::ViewProviderTile::init();
+    TechDrawGui::ViewProviderWeld::init();
+
+    TechDrawGui::ViewProviderCosmeticExtension::init();
 
     // register preferences pages
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawImp> ("TechDraw");
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw2Imp> ("TechDraw");
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawGeneralImp> ("TechDraw");    //General
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawScaleImp> ("TechDraw");      //Scale
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawDimensionsImp>("TechDraw");  //Dimensions
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAnnotationImp> ("TechDraw"); //Annotation
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawColorsImp>("TechDraw");      //Colors
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawHLRImp> ("TechDraw");        //HLR
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAdvancedImp> ("TechDraw");   //Advanced
 
     // add resources and reloads the translators
     loadTechDrawResource();

@@ -59,49 +59,8 @@ SOURCE_GROUP("Mod" FILES ${Drawing_SRCS})
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 SOURCE_GROUP("Algorithms" FILES ${DrawingAlgos_SRCS})
 
-SET(Drawing_Templates
-    Templates/A0_Landscape_ISO7200.svg
-    Templates/A0_Landscape_plain.svg
-    Templates/A0_Portrait_plain.svg
-    Templates/A1_Landscape_ISO7200.svg
-    Templates/A1_Landscape_plain.svg
-    Templates/A1_Portrait_plain.svg
-    Templates/A2_Landscape_ISO7200.svg
-    Templates/A2_Landscape_plain.svg
-    Templates/A2_Portrait_plain.svg
-    Templates/A3_Landscape.svg
-    Templates/A3_Landscape_ISO7200.svg
-    Templates/A3_Landscape_plain.svg
-    Templates/A3_Portrait_plain.svg
-    Templates/A4_Landscape.svg
-    Templates/A4_Landscape_ISO7200.svg
-    Templates/A4_Landscape_plain.svg
-    Templates/A4_Portrait_ISO7200.svg
-    Templates/A4_Portrait_plain.svg
-)
-
-if(BUILD_USE_PCH)
-    #add_definitions(-D_PreComp_)
-    #GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Drawing_CPP_SRCS ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})
-    #ADD_MSVC_PRECOMPILED_HEADER(Drawing PreCompiled.h PreCompiled.cpp Drawing_CPP_SRCS)
-endif(BUILD_USE_PCH)
-
 add_library(Drawing SHARED ${Drawing_SRCS} ${Features_SRCS} ${DrawingAlgos_SRCS})
 target_link_libraries(Drawing ${Drawing_LIBS})
-
-SET(Drawing_Scripts
-    Init.py
-)
-
-fc_target_copy_resource(Drawing 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Drawing
-    ${CMAKE_BINARY_DIR}/Mod/Drawing
-    ${Drawing_Scripts})
-
-fc_target_copy_resource(Drawing 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Drawing
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Drawing
-    ${Drawing_Templates})
 
 SET_BIN_DIR(Drawing Drawing /Mod/Drawing)
 SET_PYTHON_PREFIX_SUFFIX(Drawing)

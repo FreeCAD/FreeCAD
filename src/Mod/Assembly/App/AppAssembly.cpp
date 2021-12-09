@@ -57,16 +57,12 @@ void AssemblyExport initAssembly()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-#if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef AssemblyAPIDef = {
         PyModuleDef_HEAD_INIT,
         "Assembly", module_Assembly_doc, -1, Assembly_methods,
         NULL, NULL, NULL, NULL
     };
     PyModule_Create(&AssemblyAPIDef);
-#else
-    Py_InitModule3("Assembly", Assembly_methods, module_Assembly_doc);   /* mod name, table ptr */
-#endif
     Base::Console().Log("Loading Assembly module... done\n");
 
 
@@ -77,12 +73,12 @@ void AssemblyExport initAssembly()
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
  
-    // Item hirachy
+    // Item hierarchy
     Assembly::Item          ::init();
     Assembly::Product       ::init();
     Assembly::ProductRef    ::init();
 
-    // constraint hirachy
+    // constraint hierarchy
     Assembly::Constraint        ::init();
     Assembly::ConstraintGroup   ::init();
 }

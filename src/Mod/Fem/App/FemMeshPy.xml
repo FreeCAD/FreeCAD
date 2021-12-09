@@ -61,12 +61,17 @@
         </Methode>
         <Methode Name="read">
             <Documentation>
-                <UserDocu>Read in a DAT, UNV, MED or STL file.</UserDocu>
+                <UserDocu>Read in a various FEM mesh file formats.
+                    read(file.endingToExportTo)
+                    supported formats: DAT, INP, MED, STL, UNV, VTK, Z88</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="write" Const="true">
             <Documentation>
-                <UserDocu>Write out a DAT, UNV, MED or STL file.</UserDocu>
+                <UserDocu>Write out various FEM mesh file formats.
+                    write(file.endingToExportTo)
+                    supported formats: BDF, DAT, INP, MED, STL, UNV, VTK, Z88
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="writeABAQUS" Const="true">
@@ -91,6 +96,11 @@
         <Methode Name="getFacesByFace" Const="true">
             <Documentation>
                 <UserDocu>Return a list of face IDs which belong to a TopoFace</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getEdgesByEdge" Const="true">
+            <Documentation>
+                <UserDocu>Return a list of edge IDs which belong to a TopoEdge</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getVolumesByFace" Const="true">
@@ -146,6 +156,47 @@
         <Methode Name="getGroupElements" Const="true">
             <Documentation>
                 <UserDocu>Return a tuple of ElementIDs to a given group ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addGroup" Const="true">
+            <Documentation>
+                <UserDocu>Add a group to mesh with specific name and type
+                    addGroup(name, typestring, [id])
+                    name: string
+                    typestring: \"All\", \"Node\", \"Edge\", \"Face\", \"Volume\", \"0DElement\", \"Ball\"
+                    id: int
+                    Optional id is used to force specific id for group, but does
+                    not work, yet.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addGroupElements" Const="true">
+            <Documentation>
+                <UserDocu>Add a tuple of ElementIDs to a given group ID
+                    addGroupElements(groupid, list_of_elements)
+                    groupid: int
+                    list_of_elements: list of int
+                    Notice that the elements have to be in the mesh.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removeGroup" Const="true">
+            <Documentation>
+                <UserDocu>Remove a group with a given group ID
+                    removeGroup(groupid)
+                    groupid: int
+                    Returns boolean.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getElementType" Const="true">
+            <Documentation>
+                <UserDocu>Return the element type of a given ID</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getIdByElementType" Const="true">
+            <Documentation>
+                <UserDocu>Return a tuple of IDs to a given element type</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Nodes" ReadOnly="true">

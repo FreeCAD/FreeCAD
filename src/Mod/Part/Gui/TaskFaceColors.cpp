@@ -24,51 +24,52 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
+# include <boost_signals2.hpp>
+# include <boost_bind_bind.hpp>
 # include <BRep_Tool.hxx>
 # include <BRepGProp.hxx>
 # include <GProp_GProps.hxx>
 # include <gp_Pnt.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <QFontMetrics>
-# include <QMessageBox>
-# include <QSet>
-# include <Python.h>
-# include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Python.h>
+# include <QFontMetrics>
+# include <QMessageBox>
+# include <QPointer>
+# include <QSet>
+# include <sstream>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include <boost/signals.hpp>
-#include <boost/bind.hpp>
-
-#include "ui_TaskFaceColors.h"
 #include "TaskFaceColors.h"
-#include "ViewProviderExt.h"
-#include "SoBrepFaceSet.h"
+#include "ui_TaskFaceColors.h"
 
+#include "SoBrepFaceSet.h"
+#include "ViewProviderExt.h"
+
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Tools.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-
-#include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <Mod/Part/App/PartFeature.h>
 
-
 using namespace PartGui;
+namespace bp = boost::placeholders;
 
 namespace PartGui {
     class FaceSelection : public Gui::SelectionFilterGate
@@ -94,17 +95,18 @@ namespace PartGui {
 class FaceColors::Private
 {
 public:
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Ui_TaskFaceColors* ui;
-    Gui::View3DInventorViewer* view;
+    QPointer<Gui::View3DInventorViewer> view;
     ViewProviderPartExt* vp;
     App::DocumentObject* obj;
     Gui::Document* doc;
-    std::vector<App::Color> current,perface;
+    std::vector<App::Color> perface;
     QSet<int> index;
     bool boxSelection;
     Connection connectDelDoc;
     Connection connectDelObj;
+    Connection connectUndoDoc;
 
     Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(0), vp(vp)
     {
@@ -119,7 +121,7 @@ public:
             xp.Next();
         }
 
-        current = vp->DiffuseColor.getValues();
+        std::vector<App::Color> current = vp->DiffuseColor.getValues();
         if (current.empty())
             current.push_back(vp->ShapeColor.getValue());
         perface = current;
@@ -254,6 +256,7 @@ public:
             self->d->boxSelection = true;
             self->d->addFacesToSelection(view, proj, polygon, shape);
             self->d->boxSelection = false;
+            self->d->ui->boxSelection->setChecked(false);
             self->updatePanel();
             view->redraw();
         }
@@ -269,14 +272,17 @@ FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
     d->ui->setupUi(this);
     d->ui->groupBox->setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->colorButton->setDisabled(true);
+    d->ui->colorButton->setAllowTransparency(true);
 
     FaceSelection* gate = new FaceSelection(d->vp->getObject());
     Gui::Selection().addSelectionGate(gate);
 
     d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(boost::bind
-        (&FaceColors::slotDeleteDocument, this, _1));
+        (&FaceColors::slotDeleteDocument, this, bp::_1));
     d->connectDelObj = Gui::Application::Instance->signalDeletedObject.connect(boost::bind
-        (&FaceColors::slotDeleteObject, this, _1));
+        (&FaceColors::slotDeleteObject, this, bp::_1));
+    d->connectUndoDoc = d->doc->signalUndoDocument.connect(boost::bind
+        (&FaceColors::slotUndoDocument, this, bp::_1));
 }
 
 FaceColors::~FaceColors()
@@ -291,7 +297,16 @@ FaceColors::~FaceColors()
     Gui::Selection().rmvSelectionGate();
     d->connectDelDoc.disconnect();
     d->connectDelObj.disconnect();
+    d->connectUndoDoc.disconnect();
     delete d;
+}
+
+void FaceColors::slotUndoDocument(const Gui::Document& Doc)
+{
+    if (d->doc == &Doc) {
+        d->doc->resetEdit();
+        Gui::Control().closeDialog();
+    }
 }
 
 void FaceColors::slotDeleteDocument(const Gui::Document& Doc)
@@ -306,10 +321,18 @@ void FaceColors::slotDeleteObject(const Gui::ViewProvider& obj)
         Gui::Control().closeDialog();
 }
 
-void FaceColors::on_boxSelection_clicked()
+void FaceColors::on_boxSelection_toggled(bool checked)
 {
     Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
-    if (view) {
+    // toggle the button state and feature
+    d->boxSelection = checked;
+    if (!checked) {
+        // end box selection mode
+        if (view)
+            view->getViewer()->stopSelection();
+    }
+
+    if (view && checked) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
             viewer->startSelection(Gui::View3DInventorViewer::Rubberband);
@@ -334,7 +357,7 @@ void FaceColors::on_colorButton_changed()
     if (!d->index.isEmpty()) {
         QColor c = d->ui->colorButton->color();
         for (QSet<int>::iterator it = d->index.begin(); it != d->index.end(); ++it) {
-            d->perface[*it].set(c.redF(), c.greenF(), c.blueF());
+            d->perface[*it].set(c.redF(), c.greenF(), c.blueF(), c.alphaF());
         }
         d->vp->DiffuseColor.setValues(d->perface);
     }
@@ -357,7 +380,7 @@ void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
             d->index.insert(index);
             const App::Color& c = d->perface[index];
             QColor color;
-            color.setRgbF(c.r,c.g,c.b);
+            color.setRgbF(c.r,c.g,c.b,c.a);
             d->ui->colorButton->setColor(color);
             selection_changed = true;
         }
@@ -395,7 +418,7 @@ void FaceColors::updatePanel()
 
     int maxWidth = d->ui->labelElement->width();
     QFontMetrics fm(d->ui->labelElement->font());
-    if (fm.width(faces) > maxWidth) {
+    if (Gui::QtTools::horizontalAdvance(fm, faces) > maxWidth) {
         faces = fm.elidedText(faces, Qt::ElideMiddle, maxWidth);
     }
 
@@ -403,26 +426,26 @@ void FaceColors::updatePanel()
     d->ui->colorButton->setDisabled(d->index.isEmpty());
 }
 
+void FaceColors::open()
+{
+    Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
+    doc->openCommand(QT_TRANSLATE_NOOP("Command", "Change face colors"));
+}
+
 bool FaceColors::accept()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
+    doc->commitCommand();
     doc->resetEdit();
     return true;
 }
 
 bool FaceColors::reject()
 {
-    int ret = QMessageBox::question(this, tr("Face colors"), tr("Do you really want to cancel?"),
-        QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape);
-    if (ret == QMessageBox::Yes) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
-        doc->resetEdit();
-        d->vp->DiffuseColor.setValues(d->current);
-        return true;
-    }
-    else {
-        return false;
-    }
+    Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
+    doc->abortCommand();
+    doc->resetEdit();
+    return true;
 }
 
 void FaceColors::changeEvent(QEvent *e)
@@ -451,6 +474,7 @@ TaskFaceColors::~TaskFaceColors()
 
 void TaskFaceColors::open()
 {
+    widget->open();
 }
 
 void TaskFaceColors::clicked(int)

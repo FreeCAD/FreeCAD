@@ -38,7 +38,7 @@ struct obj_parser : public qi::grammar<IIterator, qi::unused_type(typename detai
 
     obj_parser();
 
-    static void setProperties(boost::shared_ptr<Object> ptr, typename details::pts<typename Object::PropertySequence>::type& seq);
+    static void setProperties(std::shared_ptr<Object> ptr, typename details::pts<typename Object::PropertySequence>::type& seq);
 };
 
 //when objects should not be generated we need to get a empy rule, as obj_rule_init

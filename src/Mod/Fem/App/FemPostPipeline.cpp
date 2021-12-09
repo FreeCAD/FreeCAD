@@ -24,6 +24,20 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Python.h>
+# include <SMESH_Mesh.hxx>
+# include <vtkDataSetReader.h>
+# include <vtkGeometryFilter.h>
+# include <vtkStructuredGrid.h>
+# include <vtkUnstructuredGrid.h>
+# include <vtkImageData.h>
+# include <vtkRectilinearGrid.h>
+# include <vtkAppendFilter.h>
+# include <vtkXMLUnstructuredGridReader.h>
+# include <vtkXMLPolyDataReader.h>
+# include <vtkXMLStructuredGridReader.h>
+# include <vtkXMLRectilinearGridReader.h>
+# include <vtkXMLImageDataReader.h>
 #endif
 
 #include "FemPostPipeline.h"
@@ -33,22 +47,10 @@
 
 #include <Base/Console.h>
 #include <App/Document.h>
-#include <SMESH_Mesh.hxx>
+
 #include <App/DocumentObjectPy.h>
 #include <Mod/Fem/App/FemPostPipelinePy.h>
 
-#include <vtkDataSetReader.h>
-#include <vtkGeometryFilter.h>
-#include <vtkStructuredGrid.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkImageData.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkAppendFilter.h>
-#include <vtkXMLUnstructuredGridReader.h>
-#include <vtkXMLPolyDataReader.h>
-#include <vtkXMLStructuredGridReader.h>
-#include <vtkXMLRectilinearGridReader.h>
-#include <vtkXMLImageDataReader.h>
 
 using namespace Fem;
 using namespace App;
@@ -58,11 +60,11 @@ const char* FemPostPipeline::ModeEnums[]= {"Serial","Parallel",NULL};
 
 FemPostPipeline::FemPostPipeline()
 {
-    ADD_PROPERTY_TYPE(Filter, (0), "Pipeline", App::Prop_None, "The filter used in in this pipeline");
+    ADD_PROPERTY_TYPE(Filter, (0), "Pipeline", App::Prop_None, "The filter used in this pipeline");
     ADD_PROPERTY_TYPE(Functions, (0), "Pipeline", App::Prop_Hidden, "The function provider which groups all pipeline functions");
-    ADD_PROPERTY_TYPE(Mode,(long(0)), "Pipeline", App::Prop_None, "Selects the pipeline data transition mode. In serial every filter"
-                                                              "gets the output of the previous one as input, in parallel every"
-                                                              "filter gets the pipelien source as input.");
+    ADD_PROPERTY_TYPE(Mode,(long(0)), "Pipeline", App::Prop_None, "Selects the pipeline data transition mode. In serial, every filter"
+                                                              "gets the output of the previous one as input. In parallel, every"
+                                                              "filter gets the pipeline source as input.");
     Mode.setEnums(ModeEnums);
 }
 
@@ -132,7 +134,7 @@ void FemPostPipeline::read(Base::FileInfo File) {
 
     // checking on the file
     if (!File.isReadable())
-        throw Base::Exception("File to load not existing or not readable");
+        throw Base::FileException("File to load not existing or not readable", File);
 
     if (File.hasExtension("vtu"))
         readXMLFile<vtkXMLUnstructuredGridReader>(File.filePath());
@@ -147,7 +149,7 @@ void FemPostPipeline::read(Base::FileInfo File) {
     else if (File.hasExtension("vtk"))
         readXMLFile<vtkDataSetReader>(File.filePath());
     else
-        throw Base::Exception("Unknown extension");
+        throw Base::FileException("Unknown extension");
 }
 
 
@@ -246,25 +248,24 @@ bool FemPostPipeline::holdsPostObject(FemPostObject* obj) {
 }
 
 void FemPostPipeline::load(FemResultObject* res) {
-    if(!res->Mesh.getValue() || !res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
-        Base::Console().Warning("Mesh of result object is empty or not derived from Fem::FemMeshObject\n");
+    if (!res->Mesh.getValue()) {
+        Base::Console().Log("Result mesh object is empty.\n");
+        return;
+    }
+    if(!res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
+        Base::Console().Log("Result mesh object is not derived from Fem::FemMeshObject.\n");
         return;
     }
 
     //first copy the mesh over
-    //########################
+    // ***************************
     const FemMesh& mesh = static_cast<FemMeshObject*>(res->Mesh.getValue())->FemMesh.getValue();
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     FemVTKTools::exportVTKMesh(&mesh, grid);
 
     //Now copy the point data over
-    //############################
-    if(res->getPropertyByName("Velocity")){  // TODO: consider better way to detect result type, res->Type == "CfdResult"
-        FemVTKTools::exportFluidicResult(res, grid);
-    }
-    else{
-        FemVTKTools::exportMechanicalResult(res, grid);
-    }
+    // ***************************
+    FemVTKTools::exportFreeCADResult(res, grid);
 
     Data.setValue(grid);
 }

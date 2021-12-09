@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<!-- https://tamirov.ru edited -->
+<title>Допуск симметричности. Symmetry – tech drawing symbol (FreeCAD) https://freecad-gost.ru</title>
+<g>
+ <path d="m5,50 h42" fill="none" stroke="#000" stroke-width="2"/>
+ <path d="m11,40 h30" fill="none" stroke="#000" stroke-width="2"/>
+ <path d="m11,60 h30" fill="none" stroke="#000" stroke-width="2"/>
+</g>
+</svg>

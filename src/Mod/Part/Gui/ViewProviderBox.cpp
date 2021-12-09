@@ -36,12 +36,12 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderBox, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderBox, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderBox::ViewProviderBox()
 {
-  sPixmap = "Tree_Part_Box_Parametric.svg";
+  sPixmap = "Part_Box_Parametric";
 }
 
 ViewProviderBox::~ViewProviderBox()

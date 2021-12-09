@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,8 +32,6 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <Adaptor3d_IsoCurve.hxx>
-#include <Adaptor3d_HSurface.hxx>
-#include <BRepAdaptor_HSurface.hxx>
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -49,7 +48,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintFixed, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintFixed, Fem::Constraint)
 
 ConstraintFixed::ConstraintFixed()
 {

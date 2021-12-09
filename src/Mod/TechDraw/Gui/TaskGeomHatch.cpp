@@ -68,7 +68,6 @@ TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewP
 
 TaskGeomHatch::~TaskGeomHatch()
 {
-    delete ui;
 }
 
 
@@ -77,16 +76,24 @@ void TaskGeomHatch::initUi()
     ui->fcFile->setFileName(QString::fromUtf8(m_file.data(), m_file.size()));
     std::vector<std::string> names = PATLineSpec::getPatternList(m_file);
     QStringList qsNames = listToQ(names);
+
     ui->cbName->addItems(qsNames);
     int nameIndex = ui->cbName->findText(QString::fromUtf8(m_name.data(),m_name.size()));
     if (nameIndex > -1) {
         ui->cbName->setCurrentIndex(nameIndex);
     } else {
-        Base::Console().Warning("Warning - Pattern name not found in current PAT File\n");
+        Base::Console().Warning("Warning - Pattern name *%s* not found in current PAT File\n", m_name.c_str());
     }
+    connect(ui->cbName, SIGNAL(currentIndexChanged(int)), this, SLOT(onNameChanged()));
+
     ui->sbScale->setValue(m_scale);
+    ui->sbScale->setSingleStep(0.1);
+    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
     ui->sbWeight->setValue(m_weight);
+    ui->sbWeight->setSingleStep(0.1);
+    connect(ui->sbWeight, SIGNAL(valueChanged(double)), this, SLOT(onLineWeightChanged()));
     ui->ccColor->setColor(m_color.asValue<QColor>());
+    connect(ui->ccColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
 }
 
 //move values from screen to DocObjs
@@ -97,11 +104,11 @@ void TaskGeomHatch::updateValues()
     QString cText = ui->cbName->currentText();
     m_name = cText.toUtf8().constData();
     m_hatch->NamePattern.setValue(m_name);
-    m_scale = ui->sbScale->value();
+    m_scale = ui->sbScale->value().getValue();
     m_hatch->ScalePattern.setValue(m_scale);
     m_color.setValue<QColor>(ui->ccColor->color());
     m_Vp->ColorPattern.setValue(m_color);
-    m_weight = ui->sbWeight->value();
+    m_weight = ui->sbWeight->value().getValue();
     m_Vp->WeightPattern.setValue(m_weight);
 }
 
@@ -132,6 +139,34 @@ bool TaskGeomHatch::accept()
     m_source->getDocument()->recompute();          //TODO: this is only here to get graphics to update.
                                                    //      sb "redraw graphics" since m_source geom has not changed.
     return true;
+}
+
+void TaskGeomHatch::onNameChanged()
+{
+    QString cText = ui->cbName->currentText();
+    m_name = cText.toUtf8().constData();
+    m_hatch->NamePattern.setValue(m_name);
+    m_source->getDocument()->recompute();
+}
+
+void TaskGeomHatch::onScaleChanged()
+{
+    m_hatch->ScalePattern.setValue(ui->sbScale->value().getValue());
+    m_source->getDocument()->recompute();
+}
+
+void TaskGeomHatch::onLineWeightChanged()
+{
+    m_Vp->WeightPattern.setValue(ui->sbWeight->value().getValue());
+    m_source->getDocument()->recompute();
+}
+
+void TaskGeomHatch::onColorChanged()
+{
+    App::Color ac;
+    ac.setValue<QColor>(ui->ccColor->color());
+    m_Vp->ColorPattern.setValue(ac);
+    m_source->getDocument()->recompute();
 }
 
 bool TaskGeomHatch::reject()
@@ -182,7 +217,7 @@ TaskDlgGeomHatch::TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui
     viewProvider(nullptr)
 {
     widget  = new TaskGeomHatch(inHatch,inVp, mode);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Tree_View"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_TreeView"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

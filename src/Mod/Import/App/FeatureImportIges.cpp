@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -85,7 +85,7 @@ Standard_Integer FeatureImportIges::Execute(void)
 
     // read iges-file
     if (aReader.ReadFile((const Standard_CString)FileName.c_str()) != IFSelect_RetDone)
-      throw Base::Exception("IGES read failed (load file)");
+      throw Base::FileException("IGES read failed (load file)");
   
     // check iges-file (memory)
     //if (!aReader.Check(Standard_True))

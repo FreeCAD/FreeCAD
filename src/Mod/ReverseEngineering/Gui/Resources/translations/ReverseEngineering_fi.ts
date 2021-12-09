@@ -1,221 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fi" sourcelanguage="en">
+<TS version="2.1" language="fi" sourcelanguage="en">
   <context>
-    <name>CmdApproxPlane</name>
+    <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Approximate plane...</source>
-      <translation>Lähennä tasoa...</translation>
+      <source>Cylinder</source>
+      <translation>Lieriö</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <source>Approximate a cylinder</source>
+      <translation>Arvioi sylinteri</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxPlane</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Käänteis suunnittelu</translation>
+    </message>
+    <message>
+      <source>Plane...</source>
+      <translation>Taso...</translation>
+    </message>
+    <message>
       <source>Approximate a plane</source>
       <translation>Lähentää tasoa</translation>
     </message>
   </context>
   <context>
-    <name>CmdApproxSurface</name>
+    <name>CmdApproxPolynomial</name>
     <message>
-      <location line="-37"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <source>Polynomial surface</source>
+      <translation>Polynomin pinta</translation>
+    </message>
+    <message>
+      <source>Approximate a polynomial surface</source>
+      <translation>Arvioi polynomin pinta</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxSphere</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Käänteis suunnittelu</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Pallo</translation>
+    </message>
+    <message>
+      <source>Approximate a sphere</source>
+      <translation>Arvioi pallo</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxSurface</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Käänteis suunnittelu</translation>
+    </message>
+    <message>
       <source>Approximate B-spline surface...</source>
-      <translation type="unfinished">Approximate B-spline surface...</translation>
+      <translation>Arvioi B-käyräpinta...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-spline surface</source>
-      <translation type="unfinished">Approximate a B-spline surface</translation>
+      <translation>Arvioi B-käyrän pallon pinta</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshBoundary</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <source>Approximate B-Spline surface...</source>
-      <translation type="unfinished">Approximate B-Spline surface...</translation>
+      <source>Wire from mesh boundary...</source>
+      <translation>Tee lankapiirros verkkorajasta...</translation>
     </message>
     <message>
-      <source>Approximate surface...</source>
-      <translation>Arvioi pinta...</translation>
-    </message>
-    <message>
-      <source>Approximate a B-Spline surface</source>
-      <translation>Arvioi B-Spline pinta</translation>
+      <source>Create wire from mesh boundaries</source>
+      <translation>Luo lankapiirros verkkorajoista</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location line="+134"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Poisson...</source>
-      <translation type="unfinished">Poisson...</translation>
+      <translation>Poisson-jakauma...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Poisson surface reconstruction</source>
-      <translation type="unfinished">Poisson surface reconstruction</translation>
+      <translation>Poisson pinnan rekonstruointi</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentation</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Käänteis suunnittelu</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation...</source>
+      <translation>Verkkopinnan segmentointi...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Luo verkkopinnan lohkoja</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentationFromComponents</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Käänteis suunnittelu</translation>
+    </message>
+    <message>
+      <source>From components</source>
+      <translation>Osista saatu</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from components</source>
+      <translation>Luo verkkopinnan segmenttejä komponenteista</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentationManual</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Käänteis suunnittelu</translation>
+    </message>
+    <message>
+      <source>Manual segmentation...</source>
+      <translation>Käsintehty segmentointi...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments manually</source>
+      <translation>Luo verkkopinnan segmentit manuaalisesti</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location line="+32"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Structured point clouds</source>
-      <translation type="unfinished">Structured point clouds</translation>
+      <translation>Strukturoidut pistepilvet</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation type="unfinished">Triangulation of structured point clouds</translation>
+      <translation>Rakenteellisten pistepilvien kolmiomittaus</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Fit plane</source>
+      <translation>Sovita taso</translation>
+    </message>
+    <message>
+      <source>Fit cylinder</source>
+      <translation>Sovita sylinteri</translation>
+    </message>
+    <message>
+      <source>Fit sphere</source>
+      <translation>Sovita pallo</translation>
+    </message>
+    <message>
+      <source>Fit polynomial surface</source>
+      <translation>Sovita polynomin pinta</translation>
     </message>
     <message>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Näytä kolmiomittaus</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Sijainti</translation>
+    </message>
+    <message>
+      <source>Fit B-Spline</source>
+      <translation>Sovita B-käyrä</translation>
+    </message>
+    <message>
+      <source>Poisson reconstruction</source>
+      <translation>Poisson pinnan rekonstruointi</translation>
+    </message>
+    <message>
+      <source>Segmentation</source>
+      <translation>Segmentaatio</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <source>Fit B-Spline surface</source>
-      <translation type="unfinished">Fit B-Spline surface</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>Sovita B-käyrän pinta</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>u-Direction</source>
-      <translation type="unfinished">u-Direction</translation>
+      <translation>u-suunta</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <location line="+67"/>
       <source>Degree</source>
-      <translation type="unfinished">Degree</translation>
+      <translation>Astetta</translation>
     </message>
     <message>
-      <location line="-38"/>
-      <location line="+67"/>
       <source>Control points</source>
-      <translation type="unfinished">Control points</translation>
+      <translation>Tarkastuspisteet</translation>
     </message>
     <message>
-      <location line="-35"/>
       <source>v-Direction</source>
-      <translation type="unfinished">v-Direction</translation>
+      <translation>v-suunta</translation>
     </message>
     <message>
-      <location line="+67"/>
       <source>Settings</source>
       <translation>Asetukset</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Iterations</source>
-      <translation type="unfinished">Iterations</translation>
+      <translation>Iteraatiot</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Size factor</source>
-      <translation type="unfinished">Size factor</translation>
+      <translation>Koon kerroin</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Smoothing</source>
       <translation>Tasoitus</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>Total Weight</source>
-      <translation type="unfinished">Total Weight</translation>
+      <translation>Kokonaispaino</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
+      <translation>Kaltevuuden pituus</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>Taivutusenergia</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>Kaarevuuden vaihtelu</translation>
     </message>
     <message>
-      <location line="+32"/>
       <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
+      <translation>Käyttäjän määrittelemät u/v suunnat</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Luo sijoittelu</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="+146"/>
-      <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
-    </message>
-    <message>
-      <location line="+1"/>
-      <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
-    </message>
-    <message>
-      <location line="+28"/>
       <source>Input error</source>
       <translation>Syötteen virhe</translation>
+    </message>
+    <message>
+      <source>Wrong selection</source>
+      <translation>Virheellinen valinta</translation>
+    </message>
+    <message>
+      <source>Please select a single placement object to get local orientation.</source>
+      <translation>Valitse yksi paikkaobjekti saadaksesi paikallisen suunnan.</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::PoissonWidget</name>
     <message>
-      <location filename="../../Poisson.ui" line="+14"/>
       <source>Poisson</source>
-      <translation type="unfinished">Poisson</translation>
+      <translation>Poisson-jakauma</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Muuttujat</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>Oktreen syvyys</translation>
     </message>
     <message>
-      <location line="+20"/>
       <source>Solver divide</source>
-      <translation type="unfinished">Solver divide</translation>
+      <translation>Ratkaisun jako</translation>
     </message>
     <message>
-      <location line="+20"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>Näytteet solmua kohti</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="+109"/>
       <source>Input error</source>
       <translation>Syötteen virhe</translation>
     </message>
@@ -223,30 +313,157 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="-159"/>
-      <location line="+135"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
-      <location line="-134"/>
-      <location line="+135"/>
+      <source>Please select a point cloud or mesh.</source>
+      <translation>Ole hyvä ja valitse pistepilvi tai verkkopinta.</translation>
+    </message>
+    <message>
       <source>Please select a single point cloud.</source>
-      <translation type="unfinished">Please select a single point cloud.</translation>
+      <translation>Valitse yksi pistepilvi.</translation>
     </message>
   </context>
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>Näkymän kolmiomittaus epäonnistui</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Verkkopinnan lohkominen</translation>
+    </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Luo yhdiste</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Siloita verkkopinta</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Taso</translation>
+    </message>
+    <message>
+      <source>Curvature tolerance</source>
+      <translation>Kaarteen toleranssi</translation>
+    </message>
+    <message>
+      <source>Distance to plane</source>
+      <translation>Etäisyys koneeseen</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Pintojen vähimmäismäärä</translation>
+    </message>
+    <message>
+      <source>Create mesh from unused triangles</source>
+      <translation>Luo verkkopinta käyttämättömistä kolmioista</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::SegmentationManual</name>
+    <message>
+      <source>Manual segmentation</source>
+      <translation>Käsintehty segmentointi</translation>
+    </message>
+    <message>
+      <source>Select</source>
+      <translation>Valitse</translation>
+    </message>
+    <message>
+      <source>Components</source>
+      <translation>Osat</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Alue</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Valitse koko osa</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Valitse kolmio</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; pintoja vähemmän kuin</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>Kaikki</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Tyhjennä</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Taso</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Toleranssi</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Pintojen vähimmäismäärä</translation>
+    </message>
+    <message>
+      <source>Detect</source>
+      <translation>Tunnista</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Lieriö</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Pallo</translation>
+    </message>
+    <message>
+      <source>Region options</source>
+      <translation>Alueen asetukset</translation>
+    </message>
+    <message>
+      <source>Respect only visible triangles</source>
+      <translation>Ota huomioon vain kolmiot jotka ovat näkyvissä</translation>
+    </message>
+    <message>
+      <source>Respect only triangles with normals facing screen</source>
+      <translation>Ota huomioon vain kolmiot joiden normaalit ovat näyttöön päin</translation>
+    </message>
+    <message>
+      <source>Segmentation</source>
+      <translation>Segmentaatio</translation>
+    </message>
+    <message>
+      <source>Cut segment from mesh</source>
+      <translation>Leikkaa segmentti verkkopinnasta</translation>
+    </message>
+    <message>
+      <source>Hide segment</source>
+      <translation>Piilota segmentti</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::TaskSegmentationManual</name>
+    <message>
+      <source>Create</source>
+      <translation>Luo</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
       <translation>Käänteis suunnittelu</translation>
     </message>

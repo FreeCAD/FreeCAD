@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +26,7 @@
 #endif
 
 #include "DlgPartBoxImp.h"
+#include "ui_DlgPartBox.h"
 
 using namespace PartGui;
 
@@ -37,7 +38,7 @@ using namespace PartGui;
  *  true to construct a modal dialog.
  */
 DlgPartBoxImp::DlgPartBoxImp(QWidget* parent, Qt::WindowFlags fl)
-  : Gui::LocationInterface<Ui_DlgPartBox>(parent, fl)
+    : Gui::LocationDialogUiImp(new Ui_DlgPartBox, parent, fl)
 {
 }
 

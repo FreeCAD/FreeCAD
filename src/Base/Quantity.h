@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Juergen Riegel                                     *
+ *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,8 +35,9 @@
 #endif
 
 namespace Base {
+class UnitsSchema;
 
-struct QuantityFormat {
+struct BaseExport QuantityFormat {
     enum NumberOption {
         None = 0x00,
         OmitGroupSeparator = 0x01,
@@ -48,11 +49,33 @@ struct QuantityFormat {
         Scientific = 2
     };
 
-    NumberOption option;
+    typedef int NumberOptions;
+    NumberOptions option;
     NumberFormat format;
     int precision;
+    int denominator;
 
+    // Default denominator of minimum fractional inch. Only used in certain
+    // schemas.
+    static int defaultDenominator; // i.e 8 for 1/8"
+
+    static inline int getDefaultDenominator() {
+        return defaultDenominator;
+    }
+
+    static inline void setDefaultDenominator(int denom) {
+        defaultDenominator = denom;
+    }
+
+    inline int getDenominator() const {
+        return denominator;
+    }
+
+    inline void setDenominator(int denom) {
+        denominator = denom;
+    }
     QuantityFormat();
+    QuantityFormat(NumberFormat format, int decimals=-1);
     inline char toFormat() const {
         switch (format) {
         case Fixed:
@@ -122,12 +145,13 @@ public:
         _Format = f;
     }
     /// transfer to user preferred unit/potence
-    QString getUserString(double &factor, QString &unitString)const;
+    QString getUserString(double &factor, QString &unitString) const;
     QString getUserString(void) const { // to satisfy GCC
         double  dummy1;
         QString dummy2;
         return getUserString(dummy1,dummy2);
     }
+    QString getUserString(UnitsSchema* schema, double &factor, QString &unitString) const;
 
     static Quantity parse(const QString &string);
 
@@ -166,6 +190,13 @@ public:
     static Quantity KiloMetre;
 
     static Quantity Liter;
+    static Quantity MilliLiter;
+
+    static Quantity Hertz;
+    static Quantity KiloHertz;
+    static Quantity MegaHertz;
+    static Quantity GigaHertz;
+    static Quantity TeraHertz;
 
     static Quantity MicroGram;
     static Quantity MilliGram;
@@ -186,6 +217,7 @@ public:
     static Quantity MilliKelvin;
     static Quantity MicroKelvin;
 
+    static Quantity MilliMole;
     static Quantity Mole;
 
     static Quantity Candela;
@@ -201,17 +233,29 @@ public:
     static Quantity Hundredweights;
     static Quantity Mile;
 
+    static Quantity MilePerHour;
+    static Quantity SquareFoot;
+    static Quantity CubicFoot;
+
     static Quantity PoundForce;
 
     static Quantity Newton;
+    static Quantity MilliNewton;
     static Quantity KiloNewton;
     static Quantity MegaNewton;
-    static Quantity MilliNewton;
 
+    static Quantity NewtonPerMeter;
+    static Quantity MilliNewtonPerMeter;
+    static Quantity KiloNewtonPerMeter;
+    static Quantity MegaNewtonPerMeter;
+    
     static Quantity Pascal;
     static Quantity KiloPascal;
     static Quantity MegaPascal;
     static Quantity GigaPascal;
+
+    static Quantity Bar;
+    static Quantity MilliBar;
 
     static Quantity Torr;
     static Quantity mTorr;
@@ -219,16 +263,59 @@ public:
 
     static Quantity PSI;
     static Quantity KSI;
+    static Quantity MPSI;
 
     static Quantity Watt;
+    static Quantity MilliWatt;
+    static Quantity KiloWatt;
     static Quantity VoltAmpere;
 
     static Quantity Volt;
+    static Quantity MilliVolt;
+    static Quantity KiloVolt;
+
+    static Quantity MegaSiemens;
+    static Quantity KiloSiemens;
+    static Quantity Siemens;
+    static Quantity MilliSiemens;
+    static Quantity MicroSiemens;
+
+    static Quantity Ohm;
+    static Quantity KiloOhm;
+    static Quantity MegaOhm;
+
+    static Quantity Coulomb;
+
+    static Quantity Tesla;
+    static Quantity Gauss;
+
+    static Quantity Weber;
+
+    static Quantity Oersted;
+
+    static Quantity Farad;
+    static Quantity MilliFarad;
+    static Quantity MicroFarad;
+    static Quantity NanoFarad;
+    static Quantity PicoFarad;
+
+    static Quantity Henry;
+    static Quantity MilliHenry;
+    static Quantity MicroHenry;
+    static Quantity NanoHenry;
 
     static Quantity Joule;
+    static Quantity MilliJoule;
+    static Quantity KiloJoule;
     static Quantity NewtonMeter;
     static Quantity VoltAmpereSecond;
     static Quantity WattSecond;
+    static Quantity KiloWattHour;
+    static Quantity ElectronVolt;
+    static Quantity KiloElectronVolt;
+    static Quantity MegaElectronVolt;
+    static Quantity Calorie;
+    static Quantity KiloCalorie;
 
     static Quantity KMH;
     static Quantity MPH;
@@ -236,6 +323,8 @@ public:
     static Quantity Degree;
     static Quantity Radian;
     static Quantity Gon;
+    static Quantity AngMinute;
+    static Quantity AngSecond;
     //@}
 
 

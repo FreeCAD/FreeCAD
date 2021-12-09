@@ -1,6 +1,7 @@
 # ***************************************************************************
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,13 +21,19 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "_Linear"
+__title__ = "FreeCAD FEM solver Elmer equation object _Linear"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 from . import equation
+
+
+# the linear equation object defines some attributes for some various elmer equations
+# these various elmer equations are based on the linear equation object
+# thus in ObjectsFem module is no method to add a linear equation object
 
 
 LINEAR_SOLVER = ["Direct", "Iterative"]
@@ -56,48 +63,80 @@ class Proxy(equation.Proxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyEnumeration", "LinearSolverType",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyEnumeration",
+            "LinearSolverType",
+            "Linear System",
+            ""
+        )
         obj.LinearSolverType = LINEAR_SOLVER
         obj.LinearSolverType = "Iterative"
         obj.addProperty(
-            "App::PropertyEnumeration", "LinearDirectMethod",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyEnumeration",
+            "LinearDirectMethod",
+            "Linear System",
+            ""
+        )
         obj.LinearDirectMethod = LINEAR_DIRECT
         obj.addProperty(
-            "App::PropertyEnumeration", "LinearIterativeMethod",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyEnumeration",
+            "LinearIterativeMethod",
+            "Linear System",
+            ""
+        )
         obj.LinearIterativeMethod = LINEAR_ITERATIVE
         obj.LinearIterativeMethod = "BiCGStab"
         obj.addProperty(
-            "App::PropertyInteger", "BiCGstablDegree",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyInteger",
+            "BiCGstablDegree",
+            "Linear System",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyEnumeration", "LinearPreconditioning",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyEnumeration",
+            "LinearPreconditioning",
+            "Linear System",
+            ""
+        )
         obj.LinearPreconditioning = LINEAR_PRECONDITIONING
         obj.LinearPreconditioning = "ILU0"
         obj.addProperty(
-            "App::PropertyFloat", "LinearTolerance",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyFloat",
+            "LinearTolerance",
+            "Linear System",
+            ""
+        )
         obj.LinearTolerance = 1e-8
         obj.addProperty(
-            "App::PropertyInteger", "LinearIterations",
-            "Linear System", "Select type of solver for linear system")
+            "App::PropertyInteger",
+            "LinearIterations",
+            "Linear System",
+            ""
+        )
         obj.LinearIterations = 500
         obj.addProperty(
-            "App::PropertyFloat", "SteadyStateTolerance",
-            "Steady State", "Select type of solver for linear system")
+            "App::PropertyFloat",
+            "SteadyStateTolerance",
+            "Steady State",
+            ""
+        )
         obj.SteadyStateTolerance = 1e-5
         obj.addProperty(
-            "App::PropertyBool", "Stabilize",
-            "Base", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "Stabilize",
+            "Base",
+            ""
+        )
         obj.Stabilize = True
         obj.addProperty(
-            "App::PropertyBool", "Bubbles",
-            "Base", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "Bubbles",
+            "Base",
+            ""
+        )
         obj.Bubbles = False
 
 
 class ViewProxy(equation.ViewProxy):
     pass
+
+##  @}

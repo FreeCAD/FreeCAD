@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,8 +22,6 @@
 
 #ifndef VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
 #define VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
-
-#include <boost/signals.hpp>
 
 #include "ViewProviderGeoFeatureGroup.h"
 #include "ViewProviderOriginGroupExtension.h"

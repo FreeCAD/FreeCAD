@@ -48,7 +48,16 @@
         <item row="0" column="1">
          <widget class="Gui::PrefComboBox" name="comboBoxVtkImportObject">
           <property name="toolTip">
-           <string>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</string>
+           <string>VTK result object: A FreeCAD FEM VTK result object will be imported
+(equals to the object which was exported).
+
+FEM mesh object: The results in the VTK file will be omitted, only the
+mesh data will be imported and a FreeCAD FEM mesh object will be created.
+
+FreeCAD result object: The imported data will be converted into a
+FreeCAD FEM Result object. Note: this setting needs the exact result
+component names and thus it only works properly with VTK files
+exported from FreeCAD.</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -60,10 +69,10 @@
            <number>0</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <string>ImportObject</string>
+           <cstring>ImportObject</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <string>Mod/Fem/InOutVtk</string>
+           <cstring>Mod/Fem/InOutVtk</cstring>
           </property>
           <item>
            <property name="text">

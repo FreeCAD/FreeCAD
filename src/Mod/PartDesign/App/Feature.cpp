@@ -46,6 +46,8 @@
 
 #include <Base/Console.h>
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
+
 
 namespace PartDesign {
 
@@ -55,6 +57,8 @@ PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 Feature::Feature()
 {
     ADD_PROPERTY(BaseFeature,(0));
+    ADD_PROPERTY_TYPE(_Body,(0),"Base",(App::PropertyType)(
+                App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
 }
@@ -106,7 +110,7 @@ const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
 
     // TODO: Other method, e.g. intersect X,Y,Z axis with the (unlimited?) face?
     // Or get a "corner" point if the face is limited?
-    throw Base::Exception("getPointFromFace(): Not implemented yet for this case");
+    throw Base::NotImplementedError("getPointFromFace(): Not implemented yet for this case");
 }
 
 Part::Feature* Feature::getBaseObject(bool silent) const {
@@ -127,7 +131,7 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
 
     // If the function not in silent mode throw the exception describing the error
     if (!silent && err) {
-        throw Base::Exception(err);
+        throw Base::RuntimeError(err);
     }
 
     return BaseObject;
@@ -136,31 +140,46 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
 const TopoDS_Shape& Feature::getBaseShape() const {
     const Part::Feature* BaseObject = getBaseObject();
 
-    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())) {
+    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())||
+        BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+    {
         throw Base::ValueError("Base shape of shape binder cannot be used");
     }
 
     const TopoDS_Shape& result = BaseObject->Shape.getValue();
     if (result.IsNull())
-        throw Base::Exception("Base feature's shape is invalid");
+        throw Base::ValueError("Base feature's shape is invalid");
     TopExp_Explorer xp (result, TopAbs_SOLID);
     if (!xp.More())
-        throw Base::Exception("Base feature's shape is not a solid");
+        throw Base::ValueError("Base feature's shape is not a solid");
 
     return result;
 }
 
-const Part::TopoShape Feature::getBaseTopoShape() const {
-    const Part::Feature* BaseObject = getBaseObject();
+Part::TopoShape Feature::getBaseTopoShape(bool silent) const {
+    Part::TopoShape result;
 
-    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())) {
-        throw Base::ValueError("Base shape of shape binder cannot be used");
+    const Part::Feature* BaseObject = getBaseObject(silent);
+    if (!BaseObject)
+        return result;
+
+    if(BaseObject != BaseFeature.getValue()) {
+        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
+            BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+        {
+            if(silent)
+                return result;
+            throw Base::ValueError("Base shape of shape binder cannot be used");
+        }
     }
 
-    const Part::TopoShape& result = BaseObject->Shape.getShape();
-    if (result.getShape().IsNull())
-        throw Base::Exception("Base feature's TopoShape is invalid");
-
+    result = BaseObject->Shape.getShape();
+    if(!silent) {
+        if (result.isNull())
+            throw Base::ValueError("Base feature's TopoShape is invalid");
+        if (!result.hasSubShape(TopAbs_SOLID))
+            throw Base::ValueError("Base feature's shape is not a solid");
+    }
     return result;
 }
 
@@ -183,7 +202,7 @@ gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
 {
     const App::GeoFeature* plane = static_cast<const App::GeoFeature*>(obj);
     if (plane == NULL)
-        throw Base::Exception("Feature: Null object");
+        throw Base::ValueError("Feature: Null object");
 
     Base::Vector3d pos = plane->Placement.getValue().getPosition();
     Base::Rotation rot = plane->Placement.getValue().getRotation();
@@ -196,12 +215,16 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 {
     BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
     if (!builder.IsDone())
-        throw Base::Exception("Feature: Could not create shape from base plane");
+        throw Base::CADKernelError("Feature: Could not create shape from base plane");
 
     return builder.Shape();
 }
 
-Body* Feature::getFeatureBody() {
+Body* Feature::getFeatureBody() const {
+
+    auto body = Base::freecad_dynamic_cast<Body>(_Body.getValue());
+    if(body)
+        return body;
 
     auto list = getInList();
     for (auto in : list) {
@@ -213,7 +236,7 @@ Body* Feature::getFeatureBody() {
     }
     
     return nullptr;
-};
+}
 
 }//namespace PartDesign
 

@@ -1,97 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="tr" sourcelanguage="en">
+<TS version="2.1" language="tr" sourcelanguage="en">
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="62"/>
+      <location filename="NavigationIndicatorGui.py" line="63"/>
       <source>Select</source>
       <translation>Seç</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="63"/>
+      <location filename="NavigationIndicatorGui.py" line="64"/>
       <source>Zoom</source>
       <translation>Yakınlaştır</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="64"/>
+      <location filename="NavigationIndicatorGui.py" line="65"/>
       <source>Rotate</source>
       <translation>Döndür</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="65"/>
+      <location filename="NavigationIndicatorGui.py" line="66"/>
       <source>Pan</source>
       <translation>Yassılaştır</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="66"/>
+      <location filename="NavigationIndicatorGui.py" line="67"/>
       <source>Tilt</source>
       <translation>Eğimi ayarla</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="67"/>
+      <location filename="NavigationIndicatorGui.py" line="68"/>
       <source>Navigation style</source>
-      <translation>Navigasyon stili</translation>
+      <translation>Gezinme stili</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="68"/>
+      <location filename="NavigationIndicatorGui.py" line="69"/>
       <source>Page Up or Page Down key.</source>
-      <translation>Sayfa Yukarı ve Sayfa Aşağı Tuşu.</translation>
+      <translation>Sayfa Yukarı veya Sayfa Aşağı Tuşu.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="69"/>
+      <location filename="NavigationIndicatorGui.py" line="70"/>
       <source>Rotation focus</source>
       <translation>Döndürme odaklaması</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
-      <source>Middle mouse button or key H.</source>
-      <translation>Orta fare tuşu ya da düğmesi.</translation>
+      <location filename="NavigationIndicatorGui.py" line="71"/>
+      <source>Middle mouse button or H key.</source>
+      <translation>Farenin orta butonu ya da H tuşu.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="71"/>
+      <location filename="NavigationIndicatorGui.py" line="73"/>
       <source>Middle mouse button.</source>
-      <translation>Orta fare tuşu.</translation>
+      <translation>Farenin orta tuşu.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="74"/>
+      <location filename="NavigationIndicatorGui.py" line="76"/>
       <source>Navigation style not recognized.</source>
-      <translation>Navigasyon stili tanınmıyor.</translation>
+      <translation>Gezinme stili tanınmıyor.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="291"/>
+      <location filename="NavigationIndicatorGui.py" line="291"/>
       <source>Settings</source>
       <translation>Ayarlar</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="292"/>
+      <location filename="NavigationIndicatorGui.py" line="292"/>
       <source>Orbit style</source>
       <translation>Yörünge stili</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="293"/>
+      <location filename="NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
-      <translation>Sıkılaştır</translation>
+      <translation>Kompakt</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="294"/>
+      <location filename="NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
       <translation>Ipucu</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="295"/>
+      <location filename="NavigationIndicatorGui.py" line="295"/>
       <source>Turntable</source>
       <translation>Döner tabla</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="296"/>
+      <location filename="NavigationIndicatorGui.py" line="296"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="297"/>
+      <location filename="NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation type="unfinished">Undefined</translation>
+      <translation>Tanımlanmamış</translation>
     </message>
   </context>
 </TS>

@@ -25,9 +25,7 @@
 #ifndef _PreComp_
 # include <BRepFill.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_HCurve.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
-# include <BRepAdaptor_HCompCurve.hxx>
 # include <BRepLib_MakeWire.hxx>
 # include <Geom_BSplineSurface.hxx>
 # include <TopoDS.hxx>
@@ -43,7 +41,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <Precision.hxx>
-# include <Adaptor3d_HCurve.hxx>
+# include <memory>
 #endif
 
 
@@ -170,32 +168,37 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
 
         if (Orientation.getValue() == 0) {
             // Automatic
-            Handle(Adaptor3d_HCurve) a1;
-            Handle(Adaptor3d_HCurve) a2;
+            std::unique_ptr<Adaptor3d_Curve> a1;
+            std::unique_ptr<Adaptor3d_Curve> a2;
             if (!isWire) {
-                BRepAdaptor_Curve adapt1(TopoDS::Edge(S1));
-                BRepAdaptor_Curve adapt2(TopoDS::Edge(S2));
-                a1 = new BRepAdaptor_HCurve(adapt1);
-                a2 = new BRepAdaptor_HCurve(adapt2);
+                a1 = std::make_unique<BRepAdaptor_Curve>(TopoDS::Edge(S1));
+                a2 = std::make_unique<BRepAdaptor_Curve>(TopoDS::Edge(S2));
             }
             else {
-                BRepAdaptor_CompCurve adapt1(TopoDS::Wire(S1));
-                BRepAdaptor_CompCurve adapt2(TopoDS::Wire(S2));
-                a1 = new BRepAdaptor_HCompCurve(adapt1);
-                a2 = new BRepAdaptor_HCompCurve(adapt2);
+                a1 = std::make_unique<BRepAdaptor_CompCurve>(TopoDS::Wire(S1));
+                a2 = std::make_unique<BRepAdaptor_CompCurve>(TopoDS::Wire(S2));
             }
 
-            if (!a1.IsNull() && !a2.IsNull()) {
+            if (a1 && a2) {
                 // get end points of 1st curve
-                gp_Pnt p1 = a1->Value(a1->FirstParameter());
-                gp_Pnt p2 = a1->Value(a1->LastParameter());
+                Standard_Real first, last;
+                first = a1->FirstParameter();
+                last = a1->LastParameter();
+                if (S1.Closed())
+                    last = (first + last)/2;
+                gp_Pnt p1 = a1->Value(first);
+                gp_Pnt p2 = a1->Value(last);
                 if (S1.Orientation() == TopAbs_REVERSED) {
                     std::swap(p1, p2);
                 }
 
                 // get end points of 2nd curve
-                gp_Pnt p3 = a2->Value(a2->FirstParameter());
-                gp_Pnt p4 = a2->Value(a2->LastParameter());
+                first = a2->FirstParameter();
+                last = a2->LastParameter();
+                if (S2.Closed())
+                    last = (first + last)/2;
+                gp_Pnt p3 = a2->Value(first);
+                gp_Pnt p4 = a2->Value(last);
                 if (S2.Orientation() == TopAbs_REVERSED) {
                     std::swap(p3, p4);
                 }
@@ -302,20 +305,38 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         const std::vector<App::DocumentObject*>& shapes = Sections.getValues();
         std::vector<App::DocumentObject*>::const_iterator it;
         for (it = shapes.begin(); it != shapes.end(); ++it) {
-            if (!(*it)->isDerivedFrom(Part::Feature::getClassTypeId()))
-                return new App::DocumentObjectExecReturn("Linked object is not a shape.");
-            TopoDS_Shape shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+            TopoDS_Shape shape = Feature::getShape(*it);
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Linked shape is invalid.");
 
-            // Extract first element of a compound
+            // Allow compounds with a single face, wire or vertex or
+            // if there are only edges building one wire
             if (shape.ShapeType() == TopAbs_COMPOUND) {
+                Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+                Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+
                 TopoDS_Iterator it(shape);
-                for (; it.More(); it.Next()) {
+                int numChilds=0;
+                TopoDS_Shape child;
+                for (; it.More(); it.Next(), numChilds++) {
                     if (!it.Value().IsNull()) {
-                        shape = it.Value();
-                        break;
+                        child = it.Value();
+                        if (child.ShapeType() == TopAbs_EDGE) {
+                            hEdges->Append(child);
+                        }
                     }
+                }
+
+                // a single child
+                if (numChilds == 1) {
+                    shape = child;
+                }
+                // or all children are edges
+                else if (hEdges->Length() == numChilds) {
+                    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges,
+                        Precision::Confusion(), Standard_False, hWires);
+                    if (hWires->Length() == 1)
+                        shape = hWires->Value(1);
                 }
             }
             if (shape.ShapeType() == TopAbs_FACE) {
@@ -395,12 +416,12 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
     if (Sections.getSize() == 0)
         return new App::DocumentObjectExecReturn("No sections linked.");
     App::DocumentObject* spine = Spine.getValue();
-    if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+    if (!spine)
         return new App::DocumentObjectExecReturn("No spine linked.");
     const std::vector<std::string>& subedge = Spine.getSubValues();
 
     TopoDS_Shape path;
-    const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
+    const Part::TopoShape& shape = Feature::getTopoShape(spine);
     if (!shape.getShape().IsNull()) {
         try {
             if (!subedge.empty()) {
@@ -454,20 +475,38 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
         const std::vector<App::DocumentObject*>& shapes = Sections.getValues();
         std::vector<App::DocumentObject*>::const_iterator it;
         for (it = shapes.begin(); it != shapes.end(); ++it) {
-            if (!(*it)->isDerivedFrom(Part::Feature::getClassTypeId()))
-                return new App::DocumentObjectExecReturn("Linked object is not a shape.");
-            TopoDS_Shape shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+            TopoDS_Shape shape = Feature::getShape(*it);
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Linked shape is invalid.");
 
-            // Extract first element of a compound
+            // Allow compounds with a single face, wire or vertex or
+            // if there are only edges building one wire
             if (shape.ShapeType() == TopAbs_COMPOUND) {
+                Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+                Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+
                 TopoDS_Iterator it(shape);
-                for (; it.More(); it.Next()) {
+                int numChilds=0;
+                TopoDS_Shape child;
+                for (; it.More(); it.Next(), numChilds++) {
                     if (!it.Value().IsNull()) {
-                        shape = it.Value();
-                        break;
+                        child = it.Value();
+                        if (child.ShapeType() == TopAbs_EDGE) {
+                            hEdges->Append(child);
+                        }
                     }
+                }
+
+                // a single child
+                if (numChilds == 1) {
+                    shape = child;
+                }
+                // or all children are edges
+                else if (hEdges->Length() == numChilds) {
+                    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges,
+                        Precision::Confusion(), Standard_False, hWires);
+                    if (hWires->Length() == 1)
+                        shape = hWires->Value(1);
                 }
             }
             // There is a weird behaviour of BRepOffsetAPI_MakePipeShell when trying to add the wire as is.
@@ -503,6 +542,10 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                 break;
             default: transMode = BRepBuilderAPI_Transformed;
                 break;
+        }
+
+        if(path.IsNull()) {
+            return new App::DocumentObjectExecReturn("Spine path missing, sweep operation stopped.");
         }
 
         if (path.ShapeType() == TopAbs_EDGE) {
@@ -584,14 +627,17 @@ void Thickness::handleChangedPropertyType(Base::XMLReader &reader, const char *T
 
         Value.setValue(v.getValue());
     }
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 App::DocumentObjectExecReturn *Thickness::execute(void)
 {
     App::DocumentObject* source = Faces.getValue();
-    if (!(source && source->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+    if (!source)
         return new App::DocumentObjectExecReturn("No source shape linked.");
-    const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
+    const TopoShape& shape = Feature::getTopoShape(source);
     if (shape.isNull())
         return new App::DocumentObjectExecReturn("Source shape is empty.");
 
@@ -623,4 +669,56 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     else
         this->Shape.setValue(shape);
     return App::DocumentObject::StdReturn;
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(Part::Refine, Part::Feature)
+
+Refine::Refine()
+{
+    ADD_PROPERTY_TYPE(Source,(0),"Refine",App::Prop_None,"Source shape");
+}
+
+App::DocumentObjectExecReturn *Refine::execute(void)
+{
+    Part::Feature* source = Source.getValue<Part::Feature*>();
+    if (!source)
+        return new App::DocumentObjectExecReturn("No part object linked.");
+
+    try {
+        TopoShape myShape = source->Shape.getShape();
+        this->Shape.setValue(myShape.removeSplitter());
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(Part::Reverse, Part::Feature)
+
+Reverse::Reverse()
+{
+    ADD_PROPERTY_TYPE(Source, (0), "Reverse", App::Prop_None, "Source shape");
+}
+
+App::DocumentObjectExecReturn* Reverse::execute(void)
+{
+    Part::Feature* source = Source.getValue<Part::Feature*>();
+    if (!source)
+        return new App::DocumentObjectExecReturn("No part object linked.");
+
+    try {
+        TopoDS_Shape myShape = source->Shape.getValue();
+        if (!myShape.IsNull())
+            this->Shape.setValue(myShape.Reversed());
+        this->Placement.setValue(source->Placement.getValue());
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure & e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
 }

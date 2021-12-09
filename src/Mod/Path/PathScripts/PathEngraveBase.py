@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,56 +20,28 @@
 # *                                                                         *
 # ***************************************************************************
 
-import DraftGeomUtils
-import FreeCAD
-import Part
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
-import PathScripts.PathUtils as PathUtils
+import PathScripts.PathOpTools as PathOpTools
 import copy
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
+Part = LazyLoader('Part', globals(), 'Part')
 
 from PySide import QtCore
 
 __doc__ = "Base class for all ops in the engrave family."
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
-
-def adjustPlacement(obj, shape, wires):
-    job = PathUtils.findParentJob(obj)
-    if hasattr(shape, 'MapMode') and 'Deactivated' != shape.MapMode:
-        if hasattr(shape, 'Support') and 1 == len(shape.Support) and 1 == len(shape.Support[0][1]):
-            pmntShape   = shape.Placement
-            pmntSupport = shape.Support[0][0].getGlobalPlacement()
-            #pmntSupport = shape.Support[0][0].Placement
-            pmntBase    = job.Base.Placement
-            pmnt = pmntBase.multiply(pmntSupport.inverse().multiply(pmntShape))
-            #PathLog.debug("pmnt = %s" % pmnt)
-            newWires = []
-            for w in wires:
-                edges = []
-                for e in w.Edges:
-                    e = e.copy()
-                    e.Placement = FreeCAD.Placement()
-                    edges.append(e)
-                w = Part.Wire(edges)
-                w.Placement = pmnt
-                newWires.append(w)
-            wires = newWires
-        else:
-            PathLog.warning(translate("PathEngrave", "Attachment not supported by engraver"))
-    else:
-        PathLog.debug("MapMode: %s" % (shape.MapMode if hasattr(shape, 'MapMode') else 'None')) 
-    return wires
 
 class ObjectOp(PathOp.ObjectOp):
     '''Proxy base class for engrave operations.'''
@@ -80,16 +50,19 @@ class ObjectOp(PathOp.ObjectOp):
         zValues = []
         if obj.StepDown.Value != 0:
             z = obj.StartDepth.Value - obj.StepDown.Value
+            stepdown = obj.StepDown.Value
+            if stepdown < 0:
+                stepdown = -stepdown
 
             while z > obj.FinalDepth.Value:
                 zValues.append(z)
-                z -= obj.StepDown.Value
+                z -= stepdown
+
         zValues.append(obj.FinalDepth.Value)
-        self.zValues = zValues
         return zValues
 
-    def buildpathocc(self, obj, wires, zValues, rel=False):
-        '''buildpathocc(obj, wires, zValues, rel=False) ... internal helper function to generate engraving commands.'''
+    def buildpathocc(self, obj, wires, zValues, relZ=False, forward=True, start_idx=0):
+        '''buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands.'''
         PathLog.track(obj.Label, len(wires), zValues)
 
         for wire in wires:
@@ -97,69 +70,62 @@ class ObjectOp(PathOp.ObjectOp):
 
             # reorder the wire
             if hasattr(obj, 'StartVertex'):
-                offset = DraftGeomUtils.rebaseWire(offset, obj.StartVertex)
+                start_idx = obj.StartVertex
 
-            edges = copy.copy(offset.Edges)
+            edges = copy.copy(PathOpTools.orientWire(offset, forward).Edges)
+            edges = Part.sortEdges(edges)[0];
+
             last = None
 
             for z in zValues:
+                PathLog.debug(z)
                 if last:
-                    if rel:
-                        self.commandlist.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z - z, 'F': self.vertFeed}))
-                    else:
-                        self.commandlist.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': z, 'F': self.vertFeed}))
+                    self.appendCommand(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z}), z, relZ, self.vertFeed)
 
+                first = True
+                if start_idx > len(edges)-1:
+                    start_idx = len(edges)-1
+
+                edges = edges[start_idx:] + edges[:start_idx]
                 for edge in edges:
-                    if not last:
+                    PathLog.debug("points: {} -> {}".format(edge.Vertexes[0].Point, edge.Vertexes[-1].Point))
+                    PathLog.debug("valueat {} -> {}".format(edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter)))
+                    if first and (not last or not wire.isClosed()):
+                        PathLog.debug('processing first edge entry')
                         # we set the first move to our first point
                         last = edge.Vertexes[0].Point
-                        if len(offset.Edges) > 1:
-                            ve = edge.Vertexes[-1]
-                            e2 = offset.Edges[1]
-                            if not PathGeom.pointsCoincide(ve.Point, e2.Vertexes[0].Point) and not PathGeom.pointsCoincide(ve.Point, e2.Vertexes[-1].Point):
-                                PathLog.debug("flip first edge")
-                                last = edge.Vertexes[-1].Point
-                            else:
-                                PathLog.debug("original first edge")
-                        else:
-                            PathLog.debug("not enough edges to flip")
 
-                        self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': obj.ClearanceHeight.Value, 'F': self.horizRapid}))
-                        self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                        if rel:
-                            self.commandlist.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z - z, 'F': self.vertFeed}))
-                        else:
-                            self.commandlist.append(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': z, 'F': self.vertFeed}))
+                        self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+                        self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'F': self.horizRapid}))
+                        self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+                        self.appendCommand(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z}), z, relZ, self.vertFeed)
+                    first = False
 
-                    if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
+                    if PathGeom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
+                    #if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
                         for cmd in PathGeom.cmdsForEdge(edge):
-                            self.appendCommand(cmd, z, rel)
+                            self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[-1].Point
                     else:
                         for cmd in PathGeom.cmdsForEdge(edge, True):
-                            self.appendCommand(cmd, z, rel)
+                            self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[0].Point
             self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-        if self.commandlist:
-            self.commandlist.pop()
 
-    def appendCommand(self, cmd, z, rel):
+    def appendCommand(self, cmd, z, relZ, feed):
         params = cmd.Parameters
-        if rel:
+        if relZ:
             z = params['Z'] - z
-        params.update({'Z': z, 'F': self.horizFeed})
+        params.update({'Z': z, 'F': feed})
         self.commandlist.append(Path.Command(cmd.Name, params))
 
-    def opSetDefaultValues(self, obj):
+    def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj) ... set depths for engraving'''
         if PathOp.FeatureDepths & self.opFeatures(obj):
-            job = PathUtils.findParentJob(obj)
-            if job and job.Base:
-                bb = job.Base.Shape.BoundBox
+            if job and len(job.Model.Group) > 0:
+                bb = job.Proxy.modelBoundBox(job)
                 obj.OpStartDepth = bb.ZMax
                 obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
             else:
                 obj.OpFinalDepth = -0.1
 
-    def adjustWirePlacement(self, obj, shape, wires):
-        return adjustPlacement(obj, shape, wires)

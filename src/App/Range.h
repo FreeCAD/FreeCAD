@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,20 +24,25 @@
 #define RANGE_H
 
 #include <string>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace App {
 
 struct CellAddress;
 
-AppExport CellAddress stringToAddress(const char *strAddress);
-AppExport int decodeColumn(const std::string &colstr);
-AppExport int decodeRow(const std::string &rowstr);
+AppExport CellAddress stringToAddress(const char *strAddress, bool silent=false);
+AppExport int decodeColumn(const std::string &colstr, bool silent=false);
+AppExport int decodeRow(const std::string &rowstr, bool silent=false);
 AppExport int validColumn(const std::string &colstr);
 AppExport int validRow(const std::string &rowstr);
 
 struct AppExport CellAddress {
 
-    CellAddress(int row = -1, int col = -1) : _row(row), _col(col) { }
+    CellAddress(int row = -1, int col = -1, bool absRow=false, bool absCol=false) 
+        : _row(row), _col(col), _absRow(absRow), _absCol(absCol) 
+    { }
 
     CellAddress(const char * address) {
         *this = stringToAddress(address);
@@ -47,9 +52,15 @@ struct AppExport CellAddress {
         *this = stringToAddress(address.c_str());
     }
 
+    bool parseAbsoluteAddress(const char *txt);
+
     inline int row() const { return _row; }
 
     inline int col() const { return _col; }
+
+    void setRow(int r) { _row = r; }
+
+    void setCol(int c) { _col = c; }
 
     inline bool operator<(const CellAddress & other) const { return asInt() < other.asInt(); }
 
@@ -59,7 +70,11 @@ struct AppExport CellAddress {
 
     inline bool isValid() { return (row() >=0 && row() < MAX_ROWS && col() >= 0 && col() < MAX_COLUMNS); }
 
-    std::string toString() const;
+    inline bool isAbsoluteRow() const { return _absRow; }
+
+    inline bool isAbsoluteCol() const { return _absCol; }
+
+    std::string toString(bool noAbsolute=false) const;
 
     // Static members
 
@@ -73,6 +88,8 @@ protected:
 
     short _row;
     short _col;
+    bool _absRow;
+    bool _absCol;
 };
 
 /**
@@ -102,6 +119,12 @@ public:
 
     /** Current column */
     inline int column() const { return col_curr; }
+
+    /** Row count */
+    inline int rowCount() const { return row_end - row_begin + 1; }
+
+    /** Column count */
+    inline int colCount() const { return col_end - col_begin + 1; }
 
     /** Position of start of range */
     inline CellAddress from() const { return CellAddress(row_begin, col_begin); }

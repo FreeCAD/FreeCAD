@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -63,6 +63,13 @@ PyObject *TopoShapeVertexPy::PyMake(struct _typeobject *, PyObject *, PyObject *
 // constructor method
 int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Vertex
+        getTopoShapePtr()->setShape(TopoDS_Vertex());
+        return 0;
+    }
+
+    PyErr_Clear();
     double x=0.0,y=0.0,z=0.0;
     PyObject *object;
     bool success = false;
@@ -133,17 +140,6 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* TopoShapeVertexPy::setTolerance(PyObject *args)
-{
-    double tol;
-    if (!PyArg_ParseTuple(args, "d", &tol))
-        return 0;
-    BRep_Builder aBuilder;
-    const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
-    aBuilder.UpdateVertex(v, tol);
-    Py_Return;
-}
-
 Py::Float TopoShapeVertexPy::getTolerance(void) const
 {
     const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
@@ -198,7 +194,9 @@ Py::Object TopoShapeVertexPy::getPoint(void) const
     try {
         const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
         gp_Pnt p = BRep_Tool::Pnt(v);
-        return Py::asObject(new Base::VectorPy(new Base::Vector3d(p.X(),p.Y(),p.Z())));
+        Base::PyObjectBase* pnt = new Base::VectorPy(new Base::Vector3d(p.X(),p.Y(),p.Z()));
+        pnt->setNotTracking();
+        return Py::asObject(pnt);
     }
     catch (Standard_Failure& e) {
 

@@ -1,4 +1,4 @@
-# exampel how to use the scripting API of the drawing module
+# example how to use the scripting API of the drawing module
 # 
 # first of all you need the Part and the Drawing module:
 import FreeCAD, Part, Drawing
@@ -96,4 +96,3 @@ App.activeDocument().Page.addObject(App.activeDocument().ViewSelf)
 App.activeDocument().recompute()
 
 del Shape,ViewSVG, resultSVG
-

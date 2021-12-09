@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,7 +41,15 @@ namespace Part
  */
 PartExport int ImportStepParts(App::Document *pcDoc, const char* Name);
 
-
+inline std::list<std::string> supportedSTEPSchemes() {
+    std::list<std::string> schemes;
+    schemes.emplace_back("AP203");
+    schemes.emplace_back("AP214CD");
+    schemes.emplace_back("AP214DIS");
+    schemes.emplace_back("AP214IS");
+    schemes.emplace_back("AP242DIS");
+    return schemes;
+}
 
 } //namespace Part
 

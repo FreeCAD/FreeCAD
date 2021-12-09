@@ -30,6 +30,10 @@
 QT_BEGIN_NAMESPACE
 class QPlainTextEdit;
 class QPrinter;
+class QHBoxLayout;
+class QToolButton;
+class QCheckBox;
+class QSpacerItem;
 QT_END_NAMESPACE
 
 namespace Gui {
@@ -44,6 +48,8 @@ class EditorViewP;
 class GuiExport EditorView : public MDIView, public WindowParameter
 {
     Q_OBJECT
+
+    TYPESYSTEM_HEADER();
 
 public:
     enum DisplayName {
@@ -60,7 +66,7 @@ public:
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
 
     const char *getName(void) const {return "EditorView";}
-    void onUpdate(void){};
+    void onUpdate(void){}
 
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
@@ -88,6 +94,9 @@ public:
 
 protected:
     void focusInEvent(QFocusEvent* e);
+    void showEvent(QShowEvent*);
+    void hideEvent(QHideEvent*);
+    void closeEvent(QCloseEvent*);
 
 private Q_SLOTS:
     void checkTimestamp();
@@ -111,6 +120,8 @@ class GuiExport PythonEditorView : public EditorView
 {
     Q_OBJECT
 
+    TYPESYSTEM_HEADER();
+
 public:
     PythonEditorView(PythonEditor* editor, QWidget* parent);
     ~PythonEditorView();
@@ -127,6 +138,43 @@ public Q_SLOTS:
 
 private:
     PythonEditor* _pye;
+};
+
+class SearchBar : public QWidget
+{
+    Q_OBJECT
+
+public:
+    SearchBar(QWidget* parent = nullptr);
+
+    void setEditor(QPlainTextEdit *textEdit);
+
+protected:
+    void keyPressEvent(QKeyEvent*);
+    void changeEvent(QEvent*);
+
+public Q_SLOTS:
+    void activate();
+    void deactivate();
+    void findPrevious();
+    void findNext();
+    void findCurrent();
+
+private:
+    void retranslateUi();
+    void findText(bool skip, bool next, const QString& str);
+    void updateButtons();
+
+private:
+    QPlainTextEdit* textEditor;
+    QHBoxLayout* horizontalLayout;
+    QSpacerItem* horizontalSpacer;
+    QToolButton* closeButton;
+    QLineEdit* searchText;
+    QToolButton* prevButton;
+    QToolButton* nextButton;
+    QCheckBox* matchCase;
+    QCheckBox* matchWord;
 };
 
 } // namespace Gui

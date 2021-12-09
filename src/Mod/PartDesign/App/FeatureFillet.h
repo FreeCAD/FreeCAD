@@ -54,7 +54,7 @@ public:
 
 protected:
     void Restore(Base::XMLReader &reader);
-
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
 };
 
 } //namespace Part

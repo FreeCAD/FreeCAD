@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2015     *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,6 +45,17 @@
 namespace Part
 {
 
+class PartExport AttachEngineException : public Base::Exception
+{
+public:
+   /// Construction
+   AttachEngineException();
+   AttachEngineException(const char * sMessage);
+   AttachEngineException(const std::string& sMessage);
+   /// Destruction
+   virtual ~AttachEngineException() throw() {}
+};
+
 /**
  * @brief The AttachableObject class is the thing to extend an object with
  * that should be attachable. It includes the required properties, and
@@ -75,7 +85,7 @@ public:
      */
     bool changeAttacherType(const char* typeName);
 
-    Attacher::AttachEngine &attacher(void) const {if(!_attacher) throw Base::Exception("AttachableObject: no attacher is set."); return *_attacher;}
+    Attacher::AttachEngine &attacher(void) const {if(!_attacher) throw AttachEngineException("AttachableObject: no attacher is set."); return *_attacher;}
 
 
     App::PropertyString         AttacherType;
@@ -97,8 +107,12 @@ public:
       */
     virtual bool positionBySupport(void);
 
+    /** Return whether this attacher is active
+     */
+    bool isAttacherActive() const;
+
     virtual bool isTouched_Mapping()
-    {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/};
+    {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/}
 
     virtual short int extensionMustExecute(void);
     virtual App::DocumentObjectExecReturn *extensionExecute(void);
@@ -109,13 +123,14 @@ protected:
     virtual void extensionOnChanged(const App::Property* /*prop*/);
     virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
     
-    App::PropertyPlacement& getPlacement();
+    App::PropertyPlacement& getPlacement() const;
 
 public:
     void updateAttacherVals();
 
 private:
     Attacher::AttachEngine* _attacher;
+    mutable int _active = -1;
 };
 
 

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -25,11 +23,10 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import math
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())
@@ -150,12 +147,17 @@ class ToolEditorImage(object):
 class ToolEditorEndmill(ToolEditorImage):
     '''Tool parameter editor for endmills.'''
     def __init__(self, editor):
-        super(self.__class__, self).__init__(editor, 'endmill.svg', 'da', 'S')
+        super(ToolEditorEndmill, self).__init__(editor, 'endmill.svg', 'da', 'S')
+
+class ToolEditorReamer(ToolEditorImage):
+    '''Tool parameter editor for reamers.'''
+    def __init__(self, editor):
+        super(ToolEditorReamer, self).__init__(editor, 'reamer.svg', 'da', 'S')
 
 class ToolEditorDrill(ToolEditorImage):
     '''Tool parameter editor for drills.'''
     def __init__(self, editor):
-        super(self.__class__, self).__init__(editor, 'drill.svg', 'dS', '')
+        super(ToolEditorDrill, self).__init__(editor, 'drill.svg', 'dS', '')
 
     def quantityCuttingEdgeAngle(self, propertyToDisplay):
         if propertyToDisplay:
@@ -165,7 +167,7 @@ class ToolEditorDrill(ToolEditorImage):
 class ToolEditorEngrave(ToolEditorImage):
     '''Tool parameter editor for v-bits.'''
     def __init__(self, editor):
-        super(self.__class__, self).__init__(editor, 'v-bit.svg', '', 'HS')
+        super(ToolEditorEngrave, self).__init__(editor, 'v-bit.svg', '', 'dS')
 
     def quantityCuttingEdgeHeight(self, propertyToDisplay):
         PathLog.track()
@@ -189,7 +191,8 @@ class ToolEditor:
     ToolTypeImage = {
             'EndMill':  ToolEditorEndmill,
             'Drill':    ToolEditorDrill,
-            'Engraver': ToolEditorEngrave }
+            'Engraver': ToolEditorEngrave,
+            'Reamer':   ToolEditorReamer, }
 
     def __init__(self, tool, parentWidget, parent=None):
         self.Parent = parent
@@ -208,13 +211,14 @@ class ToolEditor:
         self.setupToolType(self.tool.ToolType)
 
     def accept(self):
+        self.refresh()
         self.Tool = self.tool
 
     def reject(self):
         self.tool = self.Tool
 
     def getType(self, tooltype):
-        "gets a combobox index number for a given type or viceversa"
+        "gets a combobox index number for a given type or vice versa"
         toolslist = Path.Tool.getToolTypes(Path.Tool())
         if isinstance(tooltype, str):
             if tooltype in toolslist:
@@ -224,7 +228,7 @@ class ToolEditor:
         return toolslist[tooltype]
 
     def getMaterial(self, material):
-        "gets a combobox index number for a given material or viceversa"
+        "gets a combobox index number for a given material or vice versa"
         matslist = Path.Tool.getToolMaterials(Path.Tool())
         if isinstance(material, str):
             if material in matslist:
@@ -242,9 +246,6 @@ class ToolEditor:
 
         self.editor.updateUI()
 
-    def updateToolName(self):
-        self.tool.Name = str(self.form.toolName.text())
-
     def updateToolType(self):
         PathLog.track()
         self.form.blockSignals(True)
@@ -255,6 +256,7 @@ class ToolEditor:
 
     def setupToolType(self, tt):
         PathLog.track()
+        print("Tool type: %s" % (tt))
         if 'Undefined' == tt:
             tt = Path.Tool.getToolTypes(Path.Tool())[0]
         if tt in self.ToolTypeImage:
@@ -266,6 +268,7 @@ class ToolEditor:
 
     def updateTool(self):
         PathLog.track()
+        self.tool.Name = str(self.form.toolName.text())
         self.tool.Material = self.getMaterial(self.form.toolMaterial.currentIndex())
         self.tool.LengthOffset = FreeCAD.Units.parseQuantity(self.form.toolLengthOffset.text())
         self.editor.updateTool()
@@ -281,8 +284,5 @@ class ToolEditor:
         PathLog.track()
         self.updateUI()
 
-        self.form.toolName.editingFinished.connect(self.updateToolName)
+        self.form.toolName.editingFinished.connect(self.refresh)
         self.form.toolType.currentIndexChanged.connect(self.updateToolType)
-        self.form.toolMaterial.currentIndexChanged.connect(self.refresh)
-        self.form.toolLengthOffset.valueChanged.connect(self.refresh)
-

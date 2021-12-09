@@ -27,19 +27,22 @@
 # include <QRectF>
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyLinks.h>
+
 
 #include <Base/BoundBox.h>
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 
-//#include "Cube.h"
 #include "DrawViewCollection.h"
+
+class gp_Dir;
+class gp_Pnt;
 
 namespace TechDraw
 {
 
 class DrawProjGroupItem;
-class Cube;
 
 /**
  * Class super-container for managing a collection of DrawProjGroupItem
@@ -54,23 +57,23 @@ public:
     DrawProjGroup();
     ~DrawProjGroup();
 
-    App::PropertyLinkList  Source;
+    App::PropertyLinkList   Source;
+    App::PropertyXLinkList  XSource;
+
     App::PropertyEnumeration ProjectionType;
 
+    /// Whether projcetion group view are automatically distributed or not
     App::PropertyBool AutoDistribute;
     /// Default horizontal spacing between adjacent views on Drawing, in mm
-    App::PropertyFloat spacingX;
+    App::PropertyLength spacingX;
     /// Default vertical spacing between adjacent views on Drawing, in mm
-    App::PropertyFloat spacingY;
+    App::PropertyLength spacingY;
 
     App::PropertyLink Anchor; /// Anchor Element to align views to
-    App::PropertyVectorList  CubeDirs;
-    App::PropertyVectorList  CubeRotations;
 
     Base::BoundBox3d getBoundingBox() const;
     double calculateAutomaticScale() const;
     virtual QRectF getRect(void) const override;
-    virtual bool checkFit(TechDraw::DrawPage* p) const override;
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
 
@@ -116,9 +119,10 @@ public:
     void setAnchorDirection(Base::Vector3d dir);
     Base::Vector3d getAnchorDirection(void);
     TechDraw::DrawProjGroupItem* getAnchor(void);
+    std::pair<Base::Vector3d,Base::Vector3d> getDirsFromFront(DrawProjGroupItem* view);
+    std::pair<Base::Vector3d,Base::Vector3d> getDirsFromFront(std::string viewType);
 
     void updateSecondaryDirs();
-    void resetCube(void);
 
     void rotateRight(void);
     void rotateLeft(void);
@@ -127,14 +131,19 @@ public:
     void spinCW(void);
     void spinCCW(void);
     
-    void dumpISO(char * title);
+    void dumpISO(const char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();
+
+    void recomputeChildren(void);
+    void updateChildrenScale(void);
+    void autoPositionChildren(void);
+    void updateChildrenEnforce(void);
+
+    std::vector<App::DocumentObject*> getAllSources(void) const;
+
 
 protected:
     void onChanged(const App::Property* prop) override;
-
-    //! Moves anchor view to keep our bounding box centre on the origin
-    void moveToCentre();
 
     /// Annoying helper - keep in sync with DrawProjGroupItem::TypeEnums
     /*!
@@ -164,12 +173,18 @@ protected:
 
     /// Returns pointer to our page, or NULL if it couldn't be located
     TechDraw::DrawPage * getPage(void) const;
-    void updateChildren(void);
-    void setPropsFromCube(void);
-    void setCubeFromProps(void);
+
+    void updateChildrenSource(void);
+    void updateChildrenLock(void);
+    void updateViews(void);
     int getViewIndex(const char *viewTypeCStr) const;
+    int getDefProjConv(void) const;
+    Base::Vector3d dir2vec(gp_Dir d);
+    gp_Dir vec2dir(Base::Vector3d v);
+
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
     
-    TechDraw::Cube* m_cube;
+    bool m_lockScale;
 };
 
 } //namespace TechDraw

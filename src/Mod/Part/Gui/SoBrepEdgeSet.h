@@ -32,6 +32,8 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
+#include <memory>
+#include <Gui/SoFCSelectionContext.h>
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
@@ -48,9 +50,6 @@ public:
     static void initClass();
     SoBrepEdgeSet();
 
-    SoSFInt32 highlightIndex;
-    SoMFInt32 selectionIndex;
-
 protected:
     virtual ~SoBrepEdgeSet() {};
     virtual void GLRender(SoGLRenderAction *action);
@@ -61,22 +60,24 @@ protected:
         const SoPrimitiveVertex *v1,
         const SoPrimitiveVertex *v2,
         SoPickedPoint *pp);
+
+    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+
 private:
+    struct SelContext;
+    typedef std::shared_ptr<SelContext> SelContextPtr;
+
     void renderShape(const SoGLCoordinateElement * const vertexlist,
-                     const int32_t *vertexindices,
-                     int num_vertexindices);
-    void renderHighlight(SoGLRenderAction *action);
-    void renderSelection(SoGLRenderAction *action);
+                     const int32_t *vertexindices, int num_vertexindices);
+    void renderHighlight(SoGLRenderAction *action, SelContextPtr);
+    void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
     bool validIndexes(const SoCoordinateElement*, const std::vector<int32_t>&) const;
 
 private:
-    std::vector<int32_t> hl, sl;
-    SbColor selectionColor;
-    SbColor highlightColor;
-    //#0000834: Minor preselection color bug
-    //To solve this we need a separate color packer for highlighting and selection
-    SoColorPacker colorpacker1;
-    SoColorPacker colorpacker2;
+    SelContextPtr selContext;
+    SelContextPtr selContext2;
+    Gui::SoFCSelectionCounter selCounter;
+    uint32_t packedColor;
 };
 
 } // namespace PartGui

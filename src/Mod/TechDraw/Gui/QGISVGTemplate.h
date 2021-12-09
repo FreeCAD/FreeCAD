@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2012-2014 Luke Parry <l.parry@warwick.ac.uk>            *
  *                                                                         *
- *   This file is part of the FreeCAD CAx development system.           *
+ *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU Library General Public           *
@@ -10,7 +10,7 @@
  *                                                                         *
  *   This library  is distributed in the hope that it will be useful,      *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
@@ -27,6 +27,8 @@ QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSvgItem;
 class QSvgRenderer;
+class QFile;
+class QString;
 QT_END_NAMESPACE
 
 namespace TechDraw {
@@ -52,6 +54,8 @@ public:
     void draw();
     virtual void updateView(bool update = false);
 
+    TechDraw::DrawSVGTemplate *getSVGTemplate();
+
 protected:
     void openFile(const QFile &file);
     void load (const QString & fileName);
@@ -59,7 +63,6 @@ protected:
 
 protected:
     bool firstTime;
-    TechDraw::DrawSVGTemplate * getSVGTemplate();
     QGraphicsSvgItem *m_svgItem;
     QSvgRenderer *m_svgRender;
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);

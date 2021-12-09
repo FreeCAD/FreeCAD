@@ -31,7 +31,7 @@
 
 namespace Gui {
 
-class GuiExport ViewProviderDocumentObjectGroup : public ViewProviderDocumentObject, 
+class GuiExport ViewProviderDocumentObjectGroup : public ViewProviderDocumentObject,
                                                   public ViewProviderGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup);
@@ -43,9 +43,11 @@ public:
     virtual ~ViewProviderDocumentObjectGroup();
 
     /// returns a list of all possible modes
-    std::vector<std::string> getDisplayModes(void) const;
-    bool isShow(void) const;
+    std::vector<std::string> getDisplayModes(void) const override;
+    bool isShow(void) const override;
 
+    /// deliver the icon shown in the tree view
+    virtual QIcon getIcon(void) const override;
 
 protected:
     void getViewProviders(std::vector<ViewProviderDocumentObject*>&) const;

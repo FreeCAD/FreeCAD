@@ -1,221 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="tr" sourcelanguage="en">
+<TS version="2.1" language="tr" sourcelanguage="en">
+  <context>
+    <name>CmdApproxCylinder</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Tersine Mühendislik</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Silindir</translation>
+    </message>
+    <message>
+      <source>Approximate a cylinder</source>
+      <translation>Bir silindir yaklaştırın</translation>
+    </message>
+  </context>
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
       <source>Reverse Engineering</source>
-      <translation>Ters Mühendislik</translation>
+      <translation>Tersine Mühendislik</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Approximate plane...</source>
-      <translation>Yaklaşık düzlem ...</translation>
+      <source>Plane...</source>
+      <translation>Düzlem...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a plane</source>
-      <translation>Bir düzleme yaklaşık</translation>
+      <translation>Bir düzlem yaklaştırın</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxPolynomial</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Tersine Mühendislik</translation>
+    </message>
+    <message>
+      <source>Polynomial surface</source>
+      <translation>Çokgensel yüzey</translation>
+    </message>
+    <message>
+      <source>Approximate a polynomial surface</source>
+      <translation>Bir çokgen yüzeyinin yaklaşık değeri</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdApproxSphere</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Tersine Mühendislik</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Küre</translation>
+    </message>
+    <message>
+      <source>Approximate a sphere</source>
+      <translation>Bir kürenin yaklaşık değeri</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSurface</name>
     <message>
-      <location line="-37"/>
       <source>Reverse Engineering</source>
-      <translation>Ters Mühendislik</translation>
+      <translation>Tersine Mühendislik</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate B-spline surface...</source>
       <translation>Yaklaşık B-Spline yüzeyi...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Approximate a B-spline surface</source>
-      <translation>B-spline yüzeyinin yaklaşık değeri</translation>
+      <translation>Bir B-spline yüzeyinin yaklaşık değeri</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshBoundary</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Tersine Mühendislik</translation>
     </message>
     <message>
-      <source>Approximate B-Spline surface...</source>
-      <translation>Yaklaşık B-Spline yüzeyi...</translation>
+      <source>Wire from mesh boundary...</source>
+      <translation>Elek sınırından telle bağlayın...</translation>
     </message>
     <message>
-      <source>Approximate surface...</source>
-      <translation>Yaklaşık yüzey ...</translation>
-    </message>
-    <message>
-      <source>Approximate a B-Spline surface</source>
-      <translation>Yaklaşık olarak bir B-Spline yüzeyi hesaplamak</translation>
+      <source>Create wire from mesh boundaries</source>
+      <translation>Elek sınırlarından tel oluşturun</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location line="+134"/>
       <source>Reverse Engineering</source>
-      <translation>Ters Mühendislik</translation>
+      <translation>Tersine Mühendislik</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Poisson...</source>
-      <translation>Poisson...</translation>
+      <translation>Poisson Dağılımına isim veren Poisson...</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Poisson surface reconstruction</source>
-      <translation>Poisson yüzey yeniden oluşumu</translation>
+      <translation>Poisson yüzeyi yeniden inşası</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentation</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Tersine Mühendislik</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation...</source>
+      <translation>Örgü bölütleme...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments</source>
+      <translation>Kafes bölümleri oluştur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentationFromComponents</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Tersine Mühendislik</translation>
+    </message>
+    <message>
+      <source>From components</source>
+      <translation>Bileşenlerden</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from components</source>
+      <translation>Bileşenlerden elek bölümleri oluşturun</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSegmentationManual</name>
+    <message>
+      <source>Reverse Engineering</source>
+      <translation>Tersine Mühendislik</translation>
+    </message>
+    <message>
+      <source>Manual segmentation...</source>
+      <translation>Elle bölümleme...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments manually</source>
+      <translation>El yoluyla elek bölümleri oluşturun</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location line="+32"/>
       <source>Reverse Engineering</source>
-      <translation>Ters Mühendislik</translation>
+      <translation>Tersine Mühendislik</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Structured point clouds</source>
       <translation>Yapılandırılmış nokta bulutları</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Yapısal nokta bulutlarının üçgenlemesi</translation>
+      <translation>Yapılandırılmış nokta bulutlarının üçgenliği</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Fit plane</source>
+      <translation>Düzleme sığdır</translation>
+    </message>
+    <message>
+      <source>Fit cylinder</source>
+      <translation>Silindire sığdır</translation>
+    </message>
+    <message>
+      <source>Fit sphere</source>
+      <translation>Küreye sığdır</translation>
+    </message>
+    <message>
+      <source>Fit polynomial surface</source>
+      <translation>Çokgensel yüzeye sığdır</translation>
     </message>
     <message>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Üçgenlemeyi göster</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Yerleşim</translation>
+    </message>
+    <message>
+      <source>Fit B-Spline</source>
+      <translation>B-Spline'e sığdır</translation>
+    </message>
+    <message>
+      <source>Poisson reconstruction</source>
+      <translation>Poisson yüzey yeniden oluşumu</translation>
+    </message>
+    <message>
+      <source>Segmentation</source>
+      <translation>Bölümlenme</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <source>Fit B-Spline surface</source>
-      <translation>B-Spline yüzeyi sabitleme</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
       <translation>B-spline yüzeyini sığdır</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>u-Direction</source>
       <translation>u-Yönü</translation>
     </message>
     <message>
-      <location line="+6"/>
-      <location line="+67"/>
       <source>Degree</source>
       <translation>Derece</translation>
     </message>
     <message>
-      <location line="-38"/>
-      <location line="+67"/>
       <source>Control points</source>
       <translation>Kontrol Noktaları</translation>
     </message>
     <message>
-      <location line="-35"/>
       <source>v-Direction</source>
       <translation>v-Yönü</translation>
     </message>
     <message>
-      <location line="+67"/>
       <source>Settings</source>
       <translation>Ayarlar</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Iterations</source>
       <translation>Yinelemeler</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Size factor</source>
-      <translation>Boyutu faktörü</translation>
+      <translation>Boyut etkeni</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Smoothing</source>
       <translation>Düzgünleştirme</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>Total Weight</source>
-      <translation>Toplam ağırlık</translation>
+      <translation>Toplam Ağırlık</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Length of gradient</source>
-      <translation>Eğim uzunluğu</translation>
+      <translation>Gradyan uzunluğu</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Bending energy</source>
       <translation>Bükme enerjisi</translation>
     </message>
     <message>
-      <location line="+29"/>
       <source>Curvature variation</source>
       <translation>Eğrilik değişimi</translation>
     </message>
     <message>
-      <location line="+32"/>
       <source>User-defined u/v directions</source>
       <translation>Kullanıcı tanımlı u / v yönleri</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Yerleşim oluşturun</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="+146"/>
+      <source>Input error</source>
+      <translation>Girdi hatası</translation>
+    </message>
+    <message>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Yerel yönlendirme almak için lütfen tek bir yerleşim nesnesi seçin.</translation>
-    </message>
-    <message>
-      <location line="+28"/>
-      <source>Input error</source>
-      <translation>Girdi hatası</translation>
+      <translation>Yerel yönlendirme almak için lütfen yalnızca bir tane yerleşim nesnesi seçin.</translation>
     </message>
   </context>
   <context>
     <name>ReenGui::PoissonWidget</name>
     <message>
-      <location filename="../../Poisson.ui" line="+14"/>
       <source>Poisson</source>
-      <translation>Poisson</translation>
+      <translation>Poisson Dağılımına isim veren Poisson</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Parameters</source>
       <translation>Parametreler</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Octree depth</source>
       <translation>Octree derinliği</translation>
     </message>
     <message>
-      <location line="+20"/>
       <source>Solver divide</source>
       <translation>Çözücü bölmek</translation>
     </message>
     <message>
-      <location line="+20"/>
       <source>Samples per node</source>
       <translation>Düğüm başına örnekler</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="+109"/>
       <source>Input error</source>
       <translation>Girdi hatası</translation>
     </message>
@@ -223,14 +313,14 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="-159"/>
-      <location line="+135"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location line="-134"/>
-      <location line="+135"/>
+      <source>Please select a point cloud or mesh.</source>
+      <translation>Lütfen bir nokta bulutu veya kafes seçin.</translation>
+    </message>
+    <message>
       <source>Please select a single point cloud.</source>
       <translation>Bir tek nokta bulutu seçiniz.</translation>
     </message>
@@ -238,17 +328,144 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location line="+55"/>
       <source>View triangulation failed</source>
       <translation>Üçgenleme başarısız oldu</translation>
     </message>
   </context>
   <context>
+    <name>ReverseEngineeringGui::Segmentation</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Örgü bölütleme</translation>
+    </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Bileşik oluştur</translation>
+    </message>
+    <message>
+      <source>Smooth mesh</source>
+      <translation>Düz örgü</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Düzlem</translation>
+    </message>
+    <message>
+      <source>Curvature tolerance</source>
+      <translation>Eğrilik toleransı</translation>
+    </message>
+    <message>
+      <source>Distance to plane</source>
+      <translation>Düzleme mesafesi</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum yüz sayısı</translation>
+    </message>
+    <message>
+      <source>Create mesh from unused triangles</source>
+      <translation>Kullanılmayan üçgenlerden kafes oluşturma</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::SegmentationManual</name>
+    <message>
+      <source>Manual segmentation</source>
+      <translation>Manuel segmentasyon</translation>
+    </message>
+    <message>
+      <source>Select</source>
+      <translation>Seç</translation>
+    </message>
+    <message>
+      <source>Components</source>
+      <translation>Bileşenler</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Bölge</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Bütün bileşeni seç</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Üçgeni seç</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>'den az yüzler</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>Hepsi</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Temizle</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Düzlem</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerans</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum yüz sayısı</translation>
+    </message>
+    <message>
+      <source>Detect</source>
+      <translation>Algıla</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Silindir</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Küre</translation>
+    </message>
+    <message>
+      <source>Region options</source>
+      <translation>Bölge seçenekleri</translation>
+    </message>
+    <message>
+      <source>Respect only visible triangles</source>
+      <translation>Yalnızca görünür üçgenlere saygı gösterin</translation>
+    </message>
+    <message>
+      <source>Respect only triangles with normals facing screen</source>
+      <translation>Ekrana bakan normallere sahip yalnızca üçgenlere saygı gösterin</translation>
+    </message>
+    <message>
+      <source>Segmentation</source>
+      <translation>Bölümlenme</translation>
+    </message>
+    <message>
+      <source>Cut segment from mesh</source>
+      <translation>Elekten bölümleri kesin</translation>
+    </message>
+    <message>
+      <source>Hide segment</source>
+      <translation>Bölüm gizleme</translation>
+    </message>
+  </context>
+  <context>
+    <name>ReverseEngineeringGui::TaskSegmentationManual</name>
+    <message>
+      <source>Create</source>
+      <translation>Oluştur</translation>
+    </message>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
-      <translation>Ters Mühendislik</translation>
+      <translation>Tersine Mühendislik</translation>
     </message>
   </context>
 </TS>

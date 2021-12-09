@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com	     *
+ *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,8 +26,9 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
+#include <boost_signals2.hpp>
 #include <QListWidget>
+#include <QIcon>
 
 namespace App {
 class Property;
@@ -46,51 +47,66 @@ public:
     explicit ElementView(QWidget *parent = 0);
     ~ElementView();
 
-        
+
 Q_SIGNALS:
     void onFilterShortcutPressed();
     void signalCloseShape();
-    
+
 protected:
     void contextMenuEvent (QContextMenuEvent* event);
     void keyPressEvent(QKeyEvent * event);
 
 protected Q_SLOTS:
-    void deleteSelectedItems();
     // Constraints
-    void doHorizontalDistance();
-    void doVerticalDistance();
-    void doHorizontalConstraint();
-    void doVerticalConstraint();
-    void doLockConstraint();
     void doPointCoincidence();
+    void doPointOnObjectConstraint();
+    void doVerticalDistance();
+    void doHorizontalDistance();
     void doParallelConstraint();
     void doPerpendicularConstraint();
+    void doTangentConstraint();
+    void doEqualConstraint();
+    void doSymmetricConstraint();
+    void doBlockConstraint();
+
+    void doLockConstraint();
+    void doHorizontalConstraint();
+    void doVerticalConstraint();
     void doLengthConstraint();
     void doRadiusConstraint();
     void doDiameterConstraint();
+    void doRadiamConstraint();
     void doAngleConstraint();
-    void doEqualConstraint();
-    void doPointOnObjectConstraint();
-    void doSymmetricConstraint();
-    void doTangentConstraint();
+
     // Other Commands
-    void doToggleConstruction();    
+    void doToggleConstruction();
+
     // Acelerators
     void doCloseShape();
     void doConnect();
+    void doSelectConstraints();
     void doSelectOrigin();
     void doSelectHAxis();
     void doSelectVAxis();
-
-    void doSelectConstraints();
-
+    void deleteSelectedItems();
 };
 
 class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
+    class MultIcon {
+        
+    public:
+        MultIcon(const char*);
+        
+        QIcon Normal;
+        QIcon Construction;
+        QIcon External;
+        
+        QIcon getIcon(bool construction, bool external) const;
+    };
+    
 public:
     TaskSketcherElements(ViewProviderSketch *sketchView);
     ~TaskSketcherElements();
@@ -102,13 +118,16 @@ private:
     void slotElementsChanged(void);
     void updateIcons(int element);
     void updatePreselection();
+    void updateVisibility(int filterindex);
+    void setItemVisibility(int elementindex,int filterindex);
     void clearWidget();
 
 public Q_SLOTS:
-    void on_listWidgetElements_itemSelectionChanged(void); 
+    void on_listWidgetElements_itemSelectionChanged(void);
     void on_listWidgetElements_itemEntered(QListWidgetItem *item);
     void on_listWidgetElements_filterShortcutPressed();
     void on_listWidgetElements_currentFilterChanged ( int index );
+    void on_listWidgetElements_currentModeFilterChanged ( int index );
     void on_namingBox_stateChanged(int state);
     void on_autoSwitchBox_stateChanged(int state);
 
@@ -116,18 +135,18 @@ protected:
     void changeEvent(QEvent *e);
     void leaveEvent ( QEvent * event );
     ViewProviderSketch *sketchView;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectionElementsChanged;
 
 private:
     QWidget* proxy;
-    Ui_TaskSketcherElements* ui;
+    std::unique_ptr<Ui_TaskSketcherElements> ui;
     int focusItemIndex;
     int previouslySelectedItemIndex;
-    
+
     bool isNamingBoxChecked;
     bool isautoSwitchBoxChecked;
-    
+
     bool inhibitSelectionUpdate;
 };
 

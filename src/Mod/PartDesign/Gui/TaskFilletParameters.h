@@ -48,11 +48,12 @@ private Q_SLOTS:
 protected:
     double getLength(void) const;
     virtual void clearButtons(const selectionModes notThis);
+    bool event(QEvent *e);
     void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    Ui_TaskFilletParameters* ui;
+    std::unique_ptr<Ui_TaskFilletParameters> ui;
 };
 
 /// simulation dialog for the TaskView

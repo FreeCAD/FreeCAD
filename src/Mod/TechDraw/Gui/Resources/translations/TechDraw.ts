@@ -1,1365 +1,3643 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.1">
 <context>
-    <name>CmdTechDrawAnnotation</name>
+    <name>Cmd2LineCenterLine</name>
     <message>
-        <location filename="../Command.cpp" line="600"/>
+        <source>Add Centerline between 2 Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Cmd2PointCenterLine</name>
+    <message>
+        <source>Add Centerline between 2 Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdMidpoints</name>
+    <message>
+        <source>Add Midpoint Vertices</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdQuadrants</name>
+    <message>
+        <source>Add Quadrant Vertices</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDraw2LineCenterLine</name>
+    <message>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="601"/>
-        <source>&amp;Annotation</source>
+        <source>Add Centerline between 2 Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDraw2PointCenterLine</name>
+    <message>
+        <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="602"/>
-        <location filename="../Command.cpp" line="604"/>
-        <source>Inserts an Annotation in the active drawing</source>
+        <source>Add Centerline between 2 Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDraw2PointCosmeticLine</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Cosmetic Line Through 2 Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDraw3PtAngleDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert 3-Point Angle Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawActiveView</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Active View (3D View)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawAngleDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Angle Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawAnnotation</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Annotation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdTechDrawArchView</name>
     <message>
-        <location filename="../Command.cpp" line="946"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="947"/>
-        <source>Insert an ArchView</source>
+        <source>Insert Arch Workbench Object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="948"/>
-        <location filename="../Command.cpp" line="950"/>
-        <source>Inserts a view of an Arch Section Plane into the active drawing</source>
+        <source>Insert a View of a Section Plane from Arch Workbench</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CmdTechDrawClip</name>
+    <name>CmdTechDrawBalloon</name>
     <message>
-        <location filename="../Command.cpp" line="641"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="642"/>
-        <source>&amp;Clip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="643"/>
-        <location filename="../Command.cpp" line="645"/>
-        <source>Inserts a clip group in the active drawing</source>
+        <source>Insert Balloon Annotation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CmdTechDrawClipMinus</name>
+    <name>CmdTechDrawCenterLineGroup</name>
     <message>
-        <location filename="../Command.cpp" line="768"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="769"/>
-        <source>&amp;ClipMinus</source>
+        <source>Insert Center Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="770"/>
-        <location filename="../Command.cpp" line="772"/>
-        <source>Remove a View from a clip group in the active drawing</source>
+        <source>Add Centerline to Faces</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CmdTechDrawClipPlus</name>
+    <name>CmdTechDrawClipGroup</name>
     <message>
-        <location filename="../Command.cpp" line="680"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="681"/>
-        <source>&amp;ClipPlus</source>
+        <source>Insert Clip Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawClipGroupAdd</name>
+    <message>
+        <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="682"/>
-        <source>Add a View to a clip group in the active drawing</source>
+        <source>Add View to Clip Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawClipGroupRemove</name>
+    <message>
+        <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="684"/>
-        <source>Adds a View into a clip group in the active drawing</source>
+        <source>Remove View from Clip Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawCosmeticEraser</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove Cosmetic Object</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawCosmeticVertex</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Cosmetic Vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawCosmeticVertexGroup</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Cosmetic Vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Cosmetic Vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawDecorateLine</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change Appearance of Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change Appearance of selected Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawDetailView</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Detail View</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawDiameterDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Diameter Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Dimension</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-        <location filename="../Command.cpp" line="893"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="894"/>
-        <source>Insert a DraftView</source>
+        <source>Insert Draft Workbench Object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="895"/>
-        <location filename="../Command.cpp" line="897"/>
-        <source>Inserts a Draft WB object into the active drawing</source>
+        <source>Insert a View of a Draft Workbench object</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CmdTechDrawExportPage</name>
+    <name>CmdTechDrawExportPageDXF</name>
     <message>
-        <location filename="../Command.cpp" line="1062"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="1063"/>
-        <source>&amp;Export page...</source>
+        <source>Export Page as DXF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="1064"/>
-        <location filename="../Command.cpp" line="1066"/>
-        <source>Export a page to an SVG file</source>
+        <source>Save Dxf File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dxf (*.dxf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawExportPageSVG</name>
+    <message>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Page as SVG</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawExtensionCircleCenterLines</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw circle centerlines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw circle centerline cross at circles
+    - select many circles or arcs
+    - click this button</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawExtensionThreadBoltBottom</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cosmetic thread bolt bottom view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw cosmetic screw thread ground view
+    - select many circles
+    - click this button</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawExtensionThreadBoltSide</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cosmetic thread bolt side view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw cosmetic screw thread side view
+    - select two parallel lines
+    - click this button</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawExtensionThreadHoleBottom</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cosmetic thread hole bottom view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw cosmetic hole thread ground view
+    - select many circles
+    - click this button</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawExtensionThreadHoleSide</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cosmetic thread hole side view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw cosmetic thread hole side view
+    - select two parallel lines
+    - click this button</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawExtentGroup</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Extent Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Horizontal Extent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical Extent</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawFaceCenterLine</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Centerline to Faces</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawGeometricHatch</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Geometric Hatch to Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawHatch</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hatch a Face using Image File</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawHorizontalDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Horizontal Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawHorizontalExtentDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Horizontal Extent Dimension</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdTechDrawImage</name>
     <message>
-        <location filename="../CommandDecorate.cpp" line="212"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="213"/>
-        <source>Insert bitmap image</source>
+        <source>Insert Bitmap Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="214"/>
-        <location filename="../CommandDecorate.cpp" line="216"/>
-        <source>Inserts a bitmap from a file in the active drawing</source>
+        <source>Insert Bitmap from a file into a page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="233"/>
         <source>Select an Image File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="235"/>
         <source>Image (*.png *.jpg *.jpeg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawLandmarkDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Landmark Dimension - EXPERIMENTAL</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawLeaderLine</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Leaderline to View</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawLengthDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Length Dimension</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="822"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="823"/>
-        <location filename="../CommandCreateDims.cpp" line="824"/>
-        <source>Link a dimension to 3D geometry</source>
+        <source>Link Dimension to 3D Geometry</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CmdTechDrawNewAngleDimension</name>
+    <name>CmdTechDrawMidpoints</name>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="733"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="734"/>
-        <source>Insert a new angle dimension into the drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="735"/>
-        <source>Insert a new angle dimension</source>
+        <source>Add Midpoint Vertices</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CmdTechDrawNewDiameterDimension</name>
+    <name>CmdTechDrawPageDefault</name>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="323"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="324"/>
-        <source>Insert a new diameter dimension into the drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="325"/>
-        <source>Insert a new diameter dimension feature for the selected view</source>
+        <source>Insert Default Page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CmdTechDrawNewDimension</name>
+    <name>CmdTechDrawPageTemplate</name>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="110"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="111"/>
-        <source>Insert a dimension into the drawing</source>
+        <source>Insert Page using Template</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="112"/>
-        <source>Insert a new dimension</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewDistanceXDimension</name>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="518"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="519"/>
-        <source>Insert a new horizontal dimension into the drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="520"/>
-        <source>Insert a new horizontal-distance dimension</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewDistanceYDimension</name>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="626"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="627"/>
-        <source>Insert a new vertical dimension into the drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="628"/>
-        <source>Insert a new vertical distance dimension</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewGeomHatch</name>
-    <message>
-        <location filename="../CommandDecorate.cpp" line="142"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandDecorate.cpp" line="143"/>
-        <location filename="../CommandDecorate.cpp" line="144"/>
-        <source>Apply geometric hatch to a Face</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewHatch</name>
-    <message>
-        <location filename="../CommandDecorate.cpp" line="80"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandDecorate.cpp" line="81"/>
-        <location filename="../CommandDecorate.cpp" line="82"/>
-        <source>Hatch a Face using image file</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewLengthDimension</name>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="410"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="411"/>
-        <source>Insert a new length dimension into the drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="412"/>
-        <source>Insert a new length dimension</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewMulti</name>
-    <message>
-        <location filename="../Command.cpp" line="536"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="537"/>
-        <source>Insert multi-part view in drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="538"/>
-        <source>Insert a new View of a multiple Parts in the active drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewPage</name>
-    <message>
-        <location filename="../Command.cpp" line="161"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="162"/>
-        <location filename="../Command.cpp" line="163"/>
-        <source>Insert new drawing page from template</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="178"/>
         <source>Select a Template File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="180"/>
         <source>Template (*.svg *.dxf)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CmdTechDrawNewPageDef</name>
+    <name>CmdTechDrawProjectionGroup</name>
     <message>
-        <location filename="../Command.cpp" line="91"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="92"/>
-        <location filename="../Command.cpp" line="93"/>
-        <source>Insert new default drawing page</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewRadiusDimension</name>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="236"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="237"/>
-        <source>Insert a new radius dimension into the drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="238"/>
-        <source>Insert a new radius dimension feature for the selected view</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewView</name>
-    <message>
-        <location filename="../Command.cpp" line="241"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="242"/>
-        <source>Insert view in drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="243"/>
-        <source>Insert a new View of a Part in the active drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewViewDetail</name>
-    <message>
-        <location filename="../Command.cpp" line="394"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="395"/>
-        <source>Insert detail view in drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="396"/>
-        <source>Insert a new Detail View of a Part in the active drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawNewViewSection</name>
-    <message>
-        <location filename="../Command.cpp" line="322"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="323"/>
-        <source>Insert section view in drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="324"/>
-        <source>Insert a new Section View of a Part in the active drawing</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdTechDrawProjGroup</name>
-    <message>
-        <location filename="../Command.cpp" line="459"/>
-        <source>TechDraw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="460"/>
         <source>Insert Projection Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="461"/>
-        <source>Insert multiple views of a single part into the active drawing</source>
+        <source>Insert multiple linked views of drawable object(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawQuadrants</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Quadrant Vertices</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawRadiusDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Radius Dimension</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-        <location filename="../CommandDecorate.cpp" line="311"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="312"/>
-        <location filename="../CommandDecorate.cpp" line="313"/>
-        <source>Redraw a page</source>
+        <source>Redraw Page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CmdTechDrawSpreadsheet</name>
+    <name>CmdTechDrawRichTextAnnotation</name>
     <message>
-        <location filename="../Command.cpp" line="1003"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="1004"/>
-        <source>Spreadsheet</source>
+        <source>Insert Rich Text Annotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawSectionView</name>
+    <message>
+        <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="1005"/>
-        <location filename="../Command.cpp" line="1007"/>
-        <source>Inserts a view of a selected spreadsheet into a drawing</source>
+        <source>Insert Section View</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawShowAll</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show/Hide Invisible Edges</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawSpreadsheetView</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Spreadsheet View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert View to a spreadsheet</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-        <location filename="../Command.cpp" line="843"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="844"/>
-        <source>Insert SVG &amp;Symbol</source>
+        <source>Insert SVG Symbol</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="845"/>
-        <location filename="../Command.cpp" line="847"/>
-        <source>Inserts a symbol from a svg file in the active drawing</source>
+        <source>Insert symbol from an SVG file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-        <location filename="../CommandDecorate.cpp" line="264"/>
         <source>TechDraw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="265"/>
-        <location filename="../CommandDecorate.cpp" line="266"/>
-        <source>Turn View Frames on or off</source>
+        <source>Turn View Frames On/Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawVerticalDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Vertical Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawVerticalExtentDimension</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert Vertical Extent Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawView</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert a View</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdTechDrawWeldSymbol</name>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Welding Information to Leaderline</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Command</name>
+    <message>
+        <source>Drawing create page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Projection Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Clip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ClipGroupAdd</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ClipGroupRemove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create DraftView</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create ArchView</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create spreadsheet view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save page to dxf</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Midpont Vertices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Quadrant Vertices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Annotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Hatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create GeomHatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag Balloon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Balloon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create ActiveView</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create CenterLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Cosmetic Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update CosmeticLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Detail View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update Detail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Leader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Leader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Anno</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Anno</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Quick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Aligned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create SectionView</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create WeldSymbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit WeldSymbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Cosmetic Vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MRichTextEdit</name>
+    <message>
+        <source>Save changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paragraph formatting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo (CTRL+Z)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Redo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut (CTRL+X)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy (CTRL+C)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste (CTRL+V)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link (CTRL+L)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italic (CTRL+I)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Underline (CTRL+U)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Strikethrough</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Strike Out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bullet list (CTRL+-)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ordered list (CTRL+=)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Decrease indentation (CTRL+,)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Decrease indentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Increase indentation (CTRL+.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Increase indentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text foreground color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>More functions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heading 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heading 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heading 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heading 4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monospace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove character formatting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove all formatting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit document source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link URL:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select an image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../Command.cpp" line="261"/>
-        <location filename="../Command.cpp" line="341"/>
-        <location filename="../Command.cpp" line="412"/>
-        <location filename="../Command.cpp" line="485"/>
-        <location filename="../Command.cpp" line="561"/>
-        <location filename="../Command.cpp" line="693"/>
-        <location filename="../Command.cpp" line="709"/>
-        <location filename="../Command.cpp" line="714"/>
-        <location filename="../Command.cpp" line="723"/>
-        <location filename="../Command.cpp" line="782"/>
-        <location filename="../Command.cpp" line="802"/>
-        <location filename="../Command.cpp" line="912"/>
-        <location filename="../Command.cpp" line="964"/>
-        <location filename="../Command.cpp" line="971"/>
-        <location filename="../Command.cpp" line="1016"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="262"/>
-        <location filename="../Command.cpp" line="486"/>
-        <location filename="../Command.cpp" line="562"/>
-        <source>Select at least 1 object with a Shape.</source>
+        <source>No Shapes, Groups or Links in this selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="342"/>
-        <location filename="../Command.cpp" line="413"/>
-        <source>Select at least 1 DrawingView object.</source>
+        <source>Select at least 1 DrawViewPart object as Base.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Command.cpp" line="694"/>
-        <source>Select 1 DrawViewClip and 1 DrawView.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="710"/>
-        <location filename="../Command.cpp" line="783"/>
-        <source>Select exactly one Drawing View object.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="715"/>
-        <source>Select exactly one Clip object.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="724"/>
-        <source>Clip and View must be from same Page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="803"/>
-        <source>View does not belong to a Clip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="861"/>
-        <source>Choose an SVG file to open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="862"/>
-        <source>Scalable Vector Graphic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="913"/>
-        <source>Select at least one object.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="965"/>
-        <source>Select exactly one Arch Section Plane object.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="972"/>
-        <source>The selected object is not an Arch Section Plane.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="1017"/>
-        <source>Select exactly one Spreadsheet object.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="1086"/>
-        <source>No Drawing View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Command.cpp" line="1087"/>
-        <source>Open Drawing View before attempting export to SVG.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="195"/>
-        <location filename="../CommandCreateDims.cpp" line="281"/>
-        <location filename="../CommandCreateDims.cpp" line="368"/>
-        <location filename="../CommandCreateDims.cpp" line="477"/>
-        <location filename="../CommandCreateDims.cpp" line="584"/>
-        <location filename="../CommandCreateDims.cpp" line="692"/>
-        <location filename="../CommandCreateDims.cpp" line="778"/>
-        <location filename="../CommandCreateDims.cpp" line="862"/>
-        <location filename="../CommandCreateDims.cpp" line="868"/>
-        <location filename="../CommandDecorate.cpp" line="381"/>
-        <location filename="../CommandDecorate.cpp" line="387"/>
-        <source>Incorrect Selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="196"/>
-        <source>Can&apos;t make a Dimension from this selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="779"/>
-        <source>Can&apos;t make an angle Dimension from this selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="863"/>
-        <source>There is no 3D object in your selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="869"/>
-        <source>There are no 3D Edges or Vertices in your selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandCreateDims.cpp" line="914"/>
-        <location filename="../CommandCreateDims.cpp" line="921"/>
-        <location filename="../CommandCreateDims.cpp" line="928"/>
-        <location filename="../CommandCreateDims.cpp" line="940"/>
-        <location filename="../CommandCreateDims.cpp" line="957"/>
-        <location filename="../CommandDecorate.cpp" line="360"/>
-        <location filename="../CommandDecorate.cpp" line="367"/>
-        <location filename="../CommandDecorate.cpp" line="374"/>
         <source>Incorrect selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="915"/>
         <source>Select an object first</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="922"/>
         <source>Too many objects selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="929"/>
-        <location filename="../DrawGuiUtil.cpp" line="91"/>
         <source>Create a page first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandCreateDims.cpp" line="941"/>
-        <location filename="../CommandCreateDims.cpp" line="958"/>
-        <source>No DrawViewPart in selection.</source>
+        <source>No View of a Part in selection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="288"/>
+        <source>Select one Clip group and one View.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select exactly one View to add to group.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select exactly one Clip group.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clip and View must be from same Page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select exactly one View to remove from Group.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View does not belong to a Clip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose an SVG file to open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scalable Vector Graphic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select at least one object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were no DraftWB objects in the selection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please select only 1 Arch Section.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Arch Sections in selection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select exactly one Spreadsheet object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Drawing View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Drawing View before attempting export to SVG.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can not export selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page contains DrawViewArch which will not be exported. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ellipse Curve Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected edge is an Ellipse.  Radius will be approximate. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BSpline Curve Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected edge is a BSpline.  Radius will be approximate. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incorrect Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected edge is an Ellipse.  Diameter will be approximate. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected edge is a BSpline.  Diameter will be approximate. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Need two straight edges to make an Angle Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Need three points to make a 3 point Angle Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is no 3D object in your selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are no 3D Edges or Vertices in your selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please select a View [and Edges].</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select 2 point objects and 1 View. (1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select 2 point objects and 1 View. (2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Feature with Shape in selection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Task In Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close active task dialog and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wrong Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can not attach leader.  No base View selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select a base View for the line.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No DrawViewPart objects in this selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No base View in Selection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select Faces or an existing CenterLine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No CenterLine in selection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection is not a CenterLine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection not understood.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select 2 Vertexes or an existing CenterLine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Need 2 Vertices or 1 CenterLine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not enough points in selection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection is not a Cosmetic Line.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select 2 Vertexes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nothing selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At least 1 object in selection is not a part view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown object type in selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No View in Selection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select a View and/or lines.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Part Views in this selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select exactly one Leader line or one Weld symbol.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replace Hatch?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some Faces in selection are already hatched.  Replace?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>No TechDraw Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="289"/>
         <source>Need a TechDraw Page for this command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="361"/>
         <source>Select a Face first</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="368"/>
         <source>No TechDraw object in selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="375"/>
         <source>Create a page to insert.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="382"/>
-        <source>Can&apos;t make a Hatched area from this selection</source>
+        <source>No Faces to hatch in this selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDecorate.cpp" line="388"/>
-        <source>No Face in this selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DrawGuiUtil.cpp" line="90"/>
         <source>No page found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DrawGuiUtil.cpp" line="94"/>
-        <location filename="../DrawGuiUtil.cpp" line="101"/>
-        <source>Too many pages</source>
+        <source>No Drawing Pages in document.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DrawGuiUtil.cpp" line="95"/>
+        <source>Which page?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Can not determine correct page.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DrawGuiUtil.cpp" line="102"/>
-        <source>Select exactly 1 page.</source>
+        <source>Too many pages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="572"/>
+        <source>Select only 1 page.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>PDF (*.pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="573"/>
-        <location filename="../MDIViewPage.cpp" line="817"/>
         <source>All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="574"/>
         <source>Export Page As PDF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="816"/>
         <source>SVG (*.svg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="818"/>
         <source>Export page as SVG</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="1095"/>
-        <source> %1.%2.%3 </source>
+        <source>Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../QGVPage.cpp" line="579"/>
-        <source>FreeCAD SVG Export</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ViewProviderPage.cpp" line="181"/>
         <source>Show drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ViewProviderPage.cpp" line="215"/>
-        <source>Drawing viewer</source>
+        <source>Toggle KeepUpdated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to update text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Leader Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Leader Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rich text creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rich text editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Cosmetic Vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ActiveView to TD View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Center Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Center Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Section View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select at first an orientation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Section View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Operation Failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Welding Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Welding Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Cosmetic Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Cosmetic Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Detail View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Detail View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Circle Centerlines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No object selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Thread Hole Side</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Thread Bolt Side</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Thread Hole Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Tread Bolt Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please select two straight lines</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>TechDrawGui::DlgPrefsTechDraw2Imp</name>
+    <name>Std_Delete</name>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="14"/>
-        <source>TechDraw 2</source>
+        <source>You cannot delete this leader line because
+it has a weld symbol that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="20"/>
-        <source>Dimensions</source>
+        <source>Object dependencies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="28"/>
-        <source>Arrow Style</source>
+        <source>You cannot delete the anchor view of a projection group.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="51"/>
-        <source>Show Units</source>
+        <source>You cannot delete this view because it has a section view that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="64"/>
-        <source>Color</source>
+        <source>You cannot delete this view because it has a detail view that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="71"/>
-        <source>Font Size</source>
+        <source>You cannot delete this view because it has a leader line that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="127"/>
-        <source>Diameter Symbol</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../DlgPrefsTechDraw2.ui" line="139"/>
-        <source>⌀</source>
+        <source>The page is not empty, therefore the
+following referencing objects might be lost:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="155"/>
-        <source>Alternate Decimals</source>
+        <source>The group cannot be deleted because its items have the following
+section or detail views, or leader lines that would get broken:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="162"/>
-        <source>Use Global Decimals</source>
+        <source>The projection group is not empty, therefore
+the following referencing objects might be lost:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="178"/>
-        <source>Preferred arrowhead style</source>
+        <source>The following referencing object might break:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="194"/>
-        <source>0 - Filled Triangle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="204"/>
-        <source>1 - Open Arrowhead</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="214"/>
-        <source>2 - Tick</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="224"/>
-        <source>3 - Dot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="234"/>
-        <source>4 - Open Circle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="247"/>
-        <source>Arrow Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="288"/>
-        <source>Decorations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="303"/>
-        <source>Round</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="308"/>
-        <source>Square</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="316"/>
-        <source>Section Line Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="323"/>
-        <source>Center Line Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="330"/>
-        <source>Matting Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="364"/>
-        <location filename="../DlgPrefsTechDraw2.ui" line="407"/>
-        <source>NeverShow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="369"/>
-        <source>Sollid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="374"/>
-        <location filename="../DlgPrefsTechDraw2.ui" line="417"/>
-        <source>Dash</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="379"/>
-        <location filename="../DlgPrefsTechDraw2.ui" line="422"/>
-        <source>Dot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="384"/>
-        <location filename="../DlgPrefsTechDraw2.ui" line="427"/>
-        <source>DashDot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="389"/>
-        <location filename="../DlgPrefsTechDraw2.ui" line="432"/>
-        <source>DashDotDot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="412"/>
-        <source>Solid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="440"/>
-        <source>Center Line Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="447"/>
-        <source>Section Line Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="484"/>
-        <source>Default weight for GeomHatch lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw2.ui" line="487"/>
-        <source>Hatch Weight</source>
+        <source>You cannot delete this weld symbol because
+it has a tile weld that would become broken.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>TechDrawGui::DlgPrefsTechDrawImp</name>
+    <name>TaskActiveView</name>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="14"/>
-        <source>TechDraw 1</source>
+        <source>ActiveView to TD View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="20"/>
-        <source>General</source>
+        <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="31"/>
-        <source>Projection Angle</source>
+        <source>Width of generated view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="45"/>
-        <source>First</source>
+        <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="50"/>
-        <source>Third</source>
+        <source>Height of generated view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="58"/>
-        <location filename="../DlgPrefsTechDraw.ui" line="344"/>
-        <source>Hidden Line</source>
+        <source>Border</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="75"/>
-        <source>NeverShow</source>
+        <source>Minimal distance of the object from
+the top and left view border</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="80"/>
-        <source>Solid</source>
+        <source>Paint background yes/no</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="85"/>
-        <source>Dash</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="90"/>
-        <source>Dot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="95"/>
-        <source>DashDot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="100"/>
-        <source>DashDotDot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="108"/>
-        <source>Detect Faces</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="124"/>
-        <source>Show Section Edges</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="137"/>
-        <source>Keep Pages Up to Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="153"/>
-        <source>Template Dot Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="191"/>
-        <source>Colors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="199"/>
-        <source>Section Hatch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="206"/>
-        <source>Section Face</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="247"/>
-        <source>Normal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="337"/>
-        <source>PreSelected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="368"/>
-        <source>Selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="392"/>
         <source>Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="399"/>
-        <source>Geom Hatch</source>
+        <source>Background color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="441"/>
-        <source>Files</source>
+        <source>Line Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="449"/>
-        <source>Template Directory</source>
+        <source>Width of lines in generated view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="456"/>
-        <source>Default Template</source>
+        <source>Render Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="476"/>
-        <source>Hatch Image</source>
+        <source>Drawing style - see SoRenderManager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="493"/>
-        <source>Location of default svg/png fill file</source>
+        <source>As is</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="506"/>
-        <source>PAT File</source>
+        <source>Wireframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="513"/>
-        <source>Default location for PAT file</source>
+        <source>Points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="530"/>
-        <source>Default PAT pattern</source>
+        <source>Wireframe overlay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="543"/>
-        <source>Pattern Name</source>
+        <source>Hidden Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="587"/>
+        <source>Bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TaskWeldingSymbol</name>
+    <message>
+        <source>Welding Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text before arrow side symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text after arrow side symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pick arrow side symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text above arrow side symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pick other side symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text below other side symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text after other side symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flips the sides</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flip Sides</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text before other side symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove other side symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Adds the &apos;Field Weld&apos; symbol (flag)
+at the kink in the leader line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Field Weld</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Adds the &apos;All Around&apos; symbol (circle)
+at the kink in the leader line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Around</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offsets the lower symbol to indicate alternating welds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alternating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Directory to welding symbols.
+This directory will be used for the symbol selection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>*.svg</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text at end of symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Symbol Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tail Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::DlgPrefsTechDrawAdvancedImp</name>
+    <message>
+        <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Include 2D Objects in projection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Loose 2D Geom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Include edges with unexpected geometry (zero length etc.) in results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow Crazy Edges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge Fuzz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Override automatic dimension format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shape of line end caps.
+Only change unless you know what you are doing!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Round</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Square</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perform a fuse operation on input shape(s) before Section view processing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fuse Before Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dimension Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line End Cap Shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dump intermediate results during Detail view processing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Debug Detail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Highlights border of section cut in section views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Section Edges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
+For large scalings you might get an error about to many SVG tiles.
+Then you need to increase the tile limit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max SVG Hatch Tiles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max PAT Hatch Segments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum hatch line segments to use
+when hatching a face with a PAT pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dump intermediate results during Section view processing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Debug Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If checked, TechDraw will attempt to build faces using the
+line segments returned by the hidden line removal algorithm.
+Faces must be detected in order to use hatching, but there
+can be a performance penalty in complex models.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detect Faces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark Fuzz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size of selection area around edges
+Each unit is approx. 0.1 mm wide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection area around center marks
+Each unit is approx. 0.1 mm wide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::DlgPrefsTechDrawAnnotationImp</name>
+    <message>
+        <source>Annotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Center Line Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style for section lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NeverShow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continuous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DashDot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DashDotDot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section Line Standard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section Cut Surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default appearance of cut surface in section view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Solid Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG Hatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PAT Hatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forces last leader line segment to be horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leader Line Auto Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length of balloon leader line kink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type for centerlines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shape of balloon annotations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Circular</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Triangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hexagon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Square</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Balloon Leader End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard to be used to draw section lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ANSI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outline shape for detail views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section Line Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show arc center marks in views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Center Marks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detail View Outline Shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style for balloon leader line ends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length of horizontal portion of Balloon leader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ballon Leader Kink Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Balloon Orthogonal Triangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line group used to set line widths</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line Width Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Balloon Shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show arc centers in printed output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Print Center Marks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line style of detail highlight on base view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detail Highlight Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::DlgPrefsTechDrawColorsImp</name>
+    <message>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normal line color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hidden Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hidden line color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preselected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preselection color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section face color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected item color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Section line color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background color around pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hatch image color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color of dimension lines and text.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geometric Hatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geometric hatch pattern color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Centerline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Centerline color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color of vertices in views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Object faces will be transparent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparent Faces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Face color (if not transparent)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detail Highlight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leaderline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default color for leader lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::DlgPrefsTechDrawDimensionsImp</name>
+    <message>
+        <source>Dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard to be used for dimensional values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISO Oriented</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISO Referencing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ASME Inlined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ASME Referencing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arrow Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard and Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arrowhead style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arrow Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Character used to indicate diameter dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>⌀</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Append unit to dimension values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Diameter Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system setting for number of decimals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Global Decimals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of decimals if &apos;Use Global Decimals&apos; is not used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dimension text font size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arrowhead size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alternate Decimals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tolerance Text Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tolerance text scale
+Multiplier of &apos;Font Size&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::DlgPrefsTechDrawGeneralImp</name>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drawing Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whether or not pages are updated every time the 3D model is changed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update With 3D (global policy)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
+can override the global &apos;Update With 3D&apos; parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow Page Override (global policy)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep drawing pages in sync with changes of 3D model in real time.
+This can slow down the response time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep Page Up To Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically distribute secondary views
+for ProjectionGroups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto-distribute Secondary Views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="624"/>
-        <source>Label Font</source>
+        <source>* this font is also used for dimensions
+   Changes have no effect on existing dimensions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="631"/>
-        <source>osifont</source>
+        <source>Label Font*</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPrefsTechDraw.ui" line="644"/>
         <source>Label Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font for labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conventions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Projection Group Angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use first- or third-angle multiview projection convention</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Third</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hidden Line Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style for hidden lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continuous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default template file for new pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Template Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hatch Pattern File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default SVG or bitmap file for hatching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line Group File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alternate file for personal LineGroup definition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Welding Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default directory for welding symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PAT File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default PAT pattern definition file for geometric hatching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pattern Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name of the default PAT pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Diamond</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::DlgPrefsTechDrawHLRImp</name>
+    <message>
+        <source>HLR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hidden Line Removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of ISO lines per face edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show seam lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Seam Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show smooth lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Smooth Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use an approximation to find hidden lines.
+Fast, but result is a collection of short straight lines.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Polygon Approximation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show hidden smooth edges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show hidden hard and outline edges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Hard Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show hard and outline edges (always shown)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show hidden seam lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show hidden equal parameterization lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show UV ISO Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hidden</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISO Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make lines of equal parameterization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::DlgPrefsTechDrawScaleImp</name>
+    <message>
+        <source>Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default scale for new pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Scale Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default scale for new views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Custom Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size Adjustments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertex Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size of template field click handles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Center Mark Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size of center marks. Multiplier of vertex size.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Template Edit Mark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multiplier for size of welding symbols</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Welding Symbol Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale of vertex dots. Multiplier of line width.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-        <location filename="../MDIViewPage.cpp" line="111"/>
+        <source>Toggle &amp;Keep Updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle &amp;Frames</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Export SVG</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="114"/>
-        <source>&amp;Native</source>
+        <source>Export DXF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="118"/>
-        <source>&amp;OpenGL</source>
+        <source>Export PDF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="121"/>
-        <source>&amp;Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MDIViewPage.cpp" line="125"/>
-        <source>&amp;High Quality Antialiasing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MDIViewPage.cpp" line="144"/>
-        <source>dummy[*]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MDIViewPage.cpp" line="251"/>
-        <source>&amp;Renderer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MDIViewPage.cpp" line="652"/>
         <source>Different orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="653"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="660"/>
-        <location filename="../MDIViewPage.cpp" line="668"/>
         <source>Different paper size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="661"/>
-        <location filename="../MDIViewPage.cpp" line="669"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="680"/>
         <source>Opening file failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MDIViewPage.cpp" line="681"/>
-        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
+        <source>Can not open file %1 for writing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Dxf File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dxf (*.dxf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>TechDrawGui::QGVPage</name>
+    <name>TechDrawGui::QGIViewAnnotation</name>
     <message>
-        <location filename="../QGVPage.cpp" line="564"/>
-        <source>Drawing page: </source>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::SymbolChooser</name>
+    <message>
+        <source>Symbol Chooser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../QGVPage.cpp" line="566"/>
-        <source> exported from FreeCAD document: </source>
+        <source>Select a symbol that should be used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Symbol Dir</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Directory to welding symbols.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskBalloon</name>
+    <message>
+        <source>Balloon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text to be displayed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text Color:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color for &apos;Text&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font Size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fontsize for &apos;Text&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bubble Shape:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shape of the balloon bubble</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Circular</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Triangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hexagon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Square</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rectangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shape Scale:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bubble shape scale factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Symbol:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End symbol for the balloon line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Symbol Scale:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End symbol scale factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line Visible:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whether the leader line is visible or not</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>False</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>True</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line Width:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leader line width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leader Kink Length:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length of balloon leader line kink</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskCenterLine</name>
+    <message>
+        <source>Center Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Elements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orientation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top to Bottom line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left to Right line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>centerline between
+- lines: in equal distance to the lines and with
+  half of the angle the lines have to each other
+- points: in equal distance to the points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aligned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move line -Left or +Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shift Vertical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move line +Up or -Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate line +CCW or -CW</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extend By</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make the line a little longer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continuous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DashDot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DashDotDot</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskCosVertex</name>
+    <message>
+        <source>Cosmetic Vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Point Picker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Position from the view center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pick a point for cosmetic vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left click to set a point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In progress edit abandoned. Start over.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskCosmeticLine</name>
+    <message>
+        <source>Cosmetic Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2d Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3d Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Z:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskDetail</name>
+    <message>
+        <source>Detail Anchor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detail View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to drag detail highlight to new position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag Highlight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>x position of detail highlight within view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>scale factor for detail view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>size of detail view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale Factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>reference label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>y position of detail highlight within view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page: scale factor of page is used
+Automatic: if the detail view is larger than the page,
+                   it will be scaled down to fit into the page
+Custom: custom scale factor is used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskDimension</name>
+    <message>
+        <source>Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tolerancing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If theoretical exact (basic) dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Theoretically Exact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reverses usual direction of dimension line terminators</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equal Tolerance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Overtolerance:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Overtolerance value
+If &apos;Equal Tolerance&apos; is checked this is also
+the negated value for &apos;Under Tolerance&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undertolerance:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undertolerance value
+If &apos;Equal Tolerance&apos; is checked it will be replaced
+by negative value of &apos;Over Tolerance&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Formatting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format Specifier:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text to be displayed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If checked the content of &apos;Format Spec&apos; will
+be used instead if the dimension value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arbitrary Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OverTolerance Format Specifier:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Specifies the overtolerance format in printf() style, or arbitrary text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UnderTolerance Format Specifier:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Specifies the undertolerance format in printf() style, or arbitrary text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Arbitrary Tolerance Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flip Arrowheads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color of the dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font Size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fontsize for &apos;Text&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drawing Style:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Standard and style according to which dimension is drawn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISO Oriented</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISO Referencing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ASME Inlined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ASME Referencing</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+        <source>Restore Invisible Lines</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TechDrawGui::TaskGeomHatch</name>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="26"/>
         <source>Apply Geometric Hatch to Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="38"/>
         <source>Define your pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="52"/>
         <source>The PAT file containing your pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="59"/>
         <source>Pattern File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="70"/>
         <source>Pattern Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="77"/>
         <source>Line Weight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="84"/>
         <source>Pattern Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="104"/>
         <source>Line Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="111"/>
         <source>Name of pattern within file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="118"/>
         <source>Color of pattern lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="125"/>
         <source>Enlarges/shrinks the pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskGeomHatch.ui" line="135"/>
         <source>Thickness of lines within the pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskHatch</name>
+    <message>
+        <source>Apply Hatch to Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define your pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The PAT file containing your pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pattern File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color of pattern lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enlarges/shrinks the pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pattern Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskLeaderLine</name>
+    <message>
+        <source>Leader Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discard Changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First pick the start point of the line,
+then at least a second point.
+You can pick further points to get line segments.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pick Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NoLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continuous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DashDot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DashDotDot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pick a starting point for leader line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click and drag markers to adjust leader line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left click to set a point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press OK or Cancel to continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In progress edit abandoned. Start over.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskLineDecor</name>
+    <message>
+        <source>Line Decoration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continuous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DashDot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DashDotDot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thickness of pattern lines.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>False</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>True</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TechDrawGui::TaskLinkDim</name>
     <message>
-        <location filename="../TaskLinkDim.ui" line="26"/>
         <source>Link Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskLinkDim.ui" line="54"/>
         <source>Link This 3D Geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskLinkDim.ui" line="80"/>
         <source>Feature2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskLinkDim.ui" line="113"/>
         <source>Feature1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskLinkDim.ui" line="133"/>
         <source>Geometry1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskLinkDim.ui" line="140"/>
         <source>Geometry2: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskLinkDim.ui" line="153"/>
         <source>To These Dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskLinkDim.cpp" line="64"/>
         <source>Available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskLinkDim.cpp" line="65"/>
         <source>Selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1367,302 +3645,490 @@ Do you want to continue?</source>
 <context>
     <name>TechDrawGui::TaskProjGroup</name>
     <message>
-        <location filename="../TaskProjGroup.ui" line="26"/>
         <source>Projection Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="54"/>
         <source>Projection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="61"/>
         <source>First or Third Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="68"/>
-        <location filename="../TaskProjGroup.ui" line="101"/>
-        <source>Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TaskProjGroup.ui" line="73"/>
         <source>First Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="78"/>
         <source>Third Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="90"/>
+        <source>Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="97"/>
         <source>Scale Page/Auto/Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="106"/>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="111"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="123"/>
         <source>Custom Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="143"/>
         <source>Scale Numerator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="156"/>
         <source>:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="163"/>
         <source>Scale Denominator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="196"/>
         <source>Adjust Primary Direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="230"/>
-        <source>Primary View Direction</source>
+        <source>Current primary view direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="243"/>
         <source>Rotate right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="270"/>
         <source>Rotate up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="291"/>
         <source>Rotate left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="315"/>
-        <source>This function is temporarily unavailable.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TaskProjGroup.ui" line="318"/>
-        <source>Match 3D</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TaskProjGroup.ui" line="325"/>
         <source>Rotate down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="346"/>
-        <source>Return Primary Direction to Initial Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TaskProjGroup.ui" line="349"/>
-        <source>Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TaskProjGroup.ui" line="367"/>
         <source>Secondary Projections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="384"/>
         <source>Bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="417"/>
         <source>Primary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="437"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="467"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="484"/>
         <source>LeftFrontBottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="501"/>
         <source>Top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="518"/>
         <source>RightFrontBottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="535"/>
         <source>RightFrontTop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="552"/>
         <source>Rear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="569"/>
         <source>LeftFrontTop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="609"/>
         <source>Spin CW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskProjGroup.ui" line="637"/>
         <source>Spin CCW</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Distributes projections automatically
+using the given X/Y Spacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Distribute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Horizontal space between border of projections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X Spacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y Spacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical space between border of projections</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskRestoreLines</name>
+    <message>
+        <source>Restore Invisible Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CenterLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cosmetic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskRichAnno</name>
+    <message>
+        <source>Rich Text Annotation Block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base Feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max Width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximal width, if -1 then automatic width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Rich Text Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NoLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continuous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DashDot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DashDotDot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input the annotation text directly or start the rich text editor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TechDrawGui::TaskSectionView</name>
     <message>
-        <location filename="../TaskSectionView.ui" line="26"/>
-        <source>Quick Section Parameters</source>
+        <source>Section Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="38"/>
-        <source>Define Your Section</source>
+        <source>BaseView</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="46"/>
-        <source>Symbol</source>
+        <source>Identifier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="53"/>
         <source>Identifier for this section</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="77"/>
-        <source>Origin Y</source>
+        <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="84"/>
-        <location filename="../TaskSectionView.ui" line="108"/>
-        <location filename="../TaskSectionView.ui" line="118"/>
-        <source>Location of section plane</source>
+        <source>Scale factor for the section view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="94"/>
-        <source>Origin X</source>
+        <source>Section Orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="101"/>
-        <source>Origin Z</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TaskSectionView.ui" line="132"/>
-        <source>Looking down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TaskSectionView.ui" line="169"/>
-        <source>Looking right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TaskSectionView.ui" line="193"/>
-        <source>Looking left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TaskSectionView.ui" line="217"/>
         <source>Looking up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="285"/>
-        <source>Calculated Values</source>
+        <source>Looking down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="296"/>
-        <source>Projection Direction</source>
+        <source>Looking left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="310"/>
-        <source>Section Normal</source>
+        <source>Looking right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="337"/>
-        <source>Start over</source>
+        <source>Position from the 3D origin of the object in the view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskSectionView.ui" line="340"/>
-        <source>Reset</source>
+        <source>Section Plane Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TaskSectionView - bad parameters.  Can not proceed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nothing to apply. No section direction picked yet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can not continue. Object * %1 * not found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDrawGui::TaskWeldingSymbol</name>
+    <message>
+        <source>Symbol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>other</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TechDrawGui::dlgTemplateField</name>
     <message>
-        <location filename="../DlgTemplateField.ui" line="17"/>
         <source>Change Editable Field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgTemplateField.ui" line="45"/>
         <source>Text Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgTemplateField.ui" line="52"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgTemplateField.ui" line="59"/>
         <source>Value:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_2LineCenterLine</name>
+    <message>
+        <source>Adds a Centerline between 2 Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_2PointCenterLine</name>
+    <message>
+        <source>Adds a Centerline between 2 Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_CosmeticVertex</name>
+    <message>
+        <source>Inserts a Cosmetic Vertex into a View</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_FaceCenterLine</name>
+    <message>
+        <source>Adds a Centerline to Faces</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_HorizontalExtent</name>
+    <message>
+        <source>Insert Horizontal Extent Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_Midpoints</name>
+    <message>
+        <source>Inserts Cosmetic Vertices at Midpoint of selected Edges</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_Quadrants</name>
+    <message>
+        <source>Inserts Cosmetic Vertices at Quadrant Points of selected Circles</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_VerticalExtentDimension</name>
+    <message>
+        <source>Insert Vertical Extent Dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Workbench</name>
+    <message>
+        <source>Dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Annotations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Vertices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Clips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw File Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Decoration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TechDraw Annotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Views</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

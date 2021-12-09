@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="eu" sourcelanguage="en">
+<TS version="2.1" language="eu" sourcelanguage="en">
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkulu-orria</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Gelaxka</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Aplikatu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Aplikatu aldaketak uneko gelaxkari</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Ezabatu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Uneko gelaxkako edukiak ezabatzen ditu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Kalkulatu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Kontrolagailuek maneiatutako balioak eguneratzen ditu</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Sortu kalkulu-orria</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Gehitu kontrolagailua</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Gehitu propietate-kontrolagailua</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Gehitu kontrolagailua</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Gelaxka-kontrolagailu bat gehitzen dio hautatutako kalkulu-orriari</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkulu-orria</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Kalkulu-orri bat gehitzen dio dokumentu aktiboari</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Gehitu propietate-kontrolagailua</translation>
+    </message>
+    <message>
+      <location filename="Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Propietate-kontrolagailu bat gehitzen dio hautatutako kalkulu-orriari</translation>
+    </message>
+  </context>
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -102,8 +199,8 @@
       <translation>Lerrokatu erdian bertikalean</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Lerrokatu erdian bertikalean hautatutako gelaxken edukiak</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Lerrokatu erdian eta bertikalean hautatutako gelaxken edukiak</translation>
     </message>
   </context>
   <context>
@@ -147,8 +244,8 @@
       <translation>Fusionatu gelaxkak</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Fusionatu kalkulu-orrian hautatutako gelaxkak</translation>
+      <source>Merge selected cells</source>
+      <translation>Fusionatu hautatutako gelaxkak</translation>
     </message>
   </context>
   <context>
@@ -177,8 +274,8 @@
       <translation>Zatitu gelaxka</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Zatitu lehenago fusionatu diren kalkulu-orriko gelaxkak</translation>
+      <source>Split previously merged cells</source>
+      <translation>Zatitu lehenago fusionatutako gelaxkak</translation>
     </message>
   </context>
   <context>
@@ -192,8 +289,8 @@
       <translation>Testu lodia</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Ezarri testu lodia hautatutako gelaxketan</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Ezarri letra lodia hautatutako gelaxken testuan</translation>
     </message>
   </context>
   <context>
@@ -207,8 +304,8 @@
       <translation>Testu etzana</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Ezarri testu etzana hautatutako gelaxketan</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Ezarri letra etzana hautatutako gelaxken testuan</translation>
     </message>
   </context>
   <context>
@@ -222,15 +319,98 @@
       <translation>Testu azpimarratua</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Ezarri testu azpimarratua hautatutako gelaxketan</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Azpimarratu testua hautatutako gelaxketan</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Pertsonalizatua</translation>
+      <source>Custom Color</source>
+      <translation>Kolore pertsonalizatua</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Fusionatu gelaxkak</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Zatitu gelaxka</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Lerrokatu gelaxka ezkerrean</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Zentratu gelaxka</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Lerrokatu gelaxka eskuinean</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Lerrokatu gelaxka goian</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Lerrokatu gelaxka behean</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Zentratu gelaxkak bertikalean</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Ezarri testu lodia</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Ezarri testu etzana</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Ezarri testu azpimarratua</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Sortu kalkulu-orria</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Ezarri gelaxka-propietateak</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Editatu gelaxka</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Txertatu errenkadak</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Kendu errenkadak</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Txertatu zutabeak</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Garbitu gelaxka(k)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Ezarri aurreko planoaren kolorea</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Ezarri atzeko planoaren kolorea</translation>
     </message>
   </context>
   <context>
@@ -265,7 +445,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation>Erdia</translation>
+      <translation>Zentroa</translation>
     </message>
     <message>
       <source>Right</source>
@@ -281,7 +461,7 @@
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Azpia</translation>
+      <translation>Azpikoa</translation>
     </message>
     <message>
       <source>&amp;Style</source>
@@ -331,10 +511,6 @@
       <translation>Esportatu fitxategia</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Gelaxka-edukiak</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Erakutsi kalkulu-orria</translation>
     </message>
@@ -353,6 +529,30 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Kalkulu-orriko gelaxk(ar)en atzeko planoaren kolorea ezartzen du</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Kalkulu-orria</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation>Kalkulu-orriak ez du onartzen barrutien hautapena itsastean.
+Aukeratu gelaxka bakar bat.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation>Kopiatu eta itsasteak huts egin du</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Aliasak karaktere baliogabeak ditu!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
+'KalkuluOrria.nire_aliasa' erabili 'KalkuluOrria.B1' erabili ordez</translation>
     </message>
   </context>
   <context>
@@ -426,8 +626,8 @@
       <translation>Gris argia</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Pertsonalizatua</translation>
+      <source>Custom Color</source>
+      <translation>Kolore pertsonalizatua</translation>
     </message>
   </context>
   <context>
@@ -437,8 +637,73 @@
       <translation>Inprimakia</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>Ed&amp;ukiak</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Edukia:</translation>
+    </message>
+    <message>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Aliasa:</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
+'KalkuluOrria.nire_aliasa' erabili 'KalkuluOrria.B1' erabili ordez</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSettings</name>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Kalkulu-orria</translation>
+    </message>
+    <message>
+      <source>Import/Export Settings</source>
+      <translation>Inportaziorako/esportaziorako ezarpenak</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kateak mugatzeko erabiltzen den karakterea, gehienetan komatxo bakunak (') edo komatxo bikoitzak (&amp;quot;). Karaktere bakarra izan behar du.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
+    </message>
+    <message>
+      <source>Delimiter Character: </source>
+      <translation>Karaktere mugatzailea: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Inprimatu ezin diren karaktere bereziak adierazteko erabiltzen den ihes-karakterea, normalean alderantzizko barra da (\). Adibidez, \t = tabulazioa da. Karaktere bakarra izan behar du.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>\</source>
+      <translation>\</translation>
+    </message>
+    <message>
+      <source>Escape Character: </source>
+      <translation>Ihes karakterea: </translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eremu-bereizle gisa erabilitako karakterea. Balio lehenetsia tabulazioa da, baina komak (,) eta puntu eta komak (;) ere erabili ohi dira. Hautatu bat zerrendatik edo sartu nahi duzun beste edozein karaktere eremuan. Karaktere bakarra edo &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt; hitza izan behar du.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>tab</source>
+      <translation>tab</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>Quote Character: </source>
+      <translation>Aipu ikurra: </translation>
     </message>
   </context>
   <context>
@@ -451,24 +716,64 @@
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Txertatu errenkadak</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Kendu errenkadak</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Txertatu zutabeak</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Kendu zutabeak</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Propietateak...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation>
+        <numerusform>Txertatu errenkada %n goian</numerusform>
+        <numerusform>Txertatu %n errenkada goian</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation>
+        <numerusform>Txertatu errenkada %n behean</numerusform>
+        <numerusform>Txertatu %n errenkada behean</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation>
+        <numerusform>Txertatu elkarren ondoan ez dagoen errenkada %n</numerusform>
+        <numerusform>Txertatu elkarren ondoan ez dauden %n errenkada</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation>
+        <numerusform>Kendu errenkada</numerusform>
+        <numerusform>Kendu errenkadak</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation>
+        <numerusform>Txertatu zutabe %n ezkerrean</numerusform>
+        <numerusform>Txertatu %n zutabe ezkerrean</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation>
+        <numerusform>Txertatu zutabe %n eskuinean</numerusform>
+        <numerusform>Txertatu %n zutabe eskuinean</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation>
+        <numerusform>Txertatu elkarren ondoan ez dauden %n zutabe</numerusform>
+        <numerusform>Txertatu elkarren ondoan ez dauden %n zutabe</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation>
+        <numerusform>Kendu zutabea(k)</numerusform>
+        <numerusform>Kendu zutabeak</numerusform>
+      </translation>
     </message>
   </context>
   <context>

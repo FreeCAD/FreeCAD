@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERELLIPSEPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERELLIPSEPARAMETRIC_H
 
-#include "ViewProvider.h"
+#include "ViewProviderPrimitive.h"
 
 
 class TopoDS_Shape;
@@ -36,7 +36,7 @@ class SoTransform;
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderEllipseParametric:public ViewProviderPart
+class PartGuiExport ViewProviderEllipseParametric : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderEllipseParametric);
 

@@ -1,9 +1,6 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2014                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -23,16 +20,14 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Equipment"
+__title__  = "FreeCAD Equipment"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
-from FreeCAD import Units
-from FreeCAD import Vector
+import FreeCAD,ArchComponent,DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -187,18 +182,18 @@ class _CommandEquipment:
             base = ""
             mesh = ""
             if len(s) == 2:
-                if s[0].isDerivedFrom("Part::Feature"):
+                if hasattr(s[0],'Shape'):
                     base = s[0].Name
                 elif s[0].isDerivedFrom("Mesh::Feature"):
                     mesh = s[0].Name
-                if s[1].isDerivedFrom("Part::Feature"):
+                if hasattr(s[1],'Shape'):
                     if mesh:
                         base = s[1].Name
                 elif s[1].isDerivedFrom("Mesh::Feature"):
                     if base:
                         mesh = s[1].Name
             else:
-                if s[0].isDerivedFrom("Part::Feature"):
+                if hasattr(s[0],'Shape'):
                     base = s[0].Name
                 elif s[0].isDerivedFrom("Mesh::Feature"):
                     mesh = s[0].Name
@@ -277,7 +272,15 @@ class _Equipment(ArchComponent.Component):
         ArchComponent.Component.__init__(self,obj)
         obj.Proxy = self
         self.setProperties(obj)
-        obj.IfcRole = "Furniture"
+        from ArchIFC import IfcTypes
+        if "Furniture" in IfcTypes:
+            # IfcFurniture is new in IFC4
+            obj.IfcType = "Furniture"
+        elif "Furnishing Element" in IfcTypes:
+            # IFC2x3 does know a IfcFurnishingElement
+            obj.IfcType = "Furnishing Element"
+        else:
+            obj.IfcType = "Undefined"
 
     def setProperties(self,obj):
 
@@ -315,7 +318,7 @@ class _Equipment(ArchComponent.Component):
         pl = obj.Placement
         if obj.Base:
             base = None
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 base = obj.Base.Shape.copy()
                 base = self.processSubShapes(obj,base,pl)
                 self.applyShape(obj,base,pl,allowinvalid=False,allownosolid=True)

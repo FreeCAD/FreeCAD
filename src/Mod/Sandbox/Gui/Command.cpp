@@ -45,6 +45,7 @@
 # include <QImage>
 # include <QImageReader>
 # include <QPainter>
+# include <QPainterPath>
 # include <QThread>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoImage.h>
@@ -53,11 +54,9 @@
 # include <boost/thread/thread.hpp>
 # include <boost/thread/mutex.hpp>
 # include <boost/thread/condition_variable.hpp>
-# if BOOST_VERSION >= 104100
 # include <boost/thread/future.hpp>
-# endif
-# include <boost/bind.hpp>
-# include <boost/shared_ptr.hpp>
+# include <boost/bind/bind.hpp>
+# include <memory>
 #endif
 
 #include <Base/Console.h>
@@ -80,6 +79,8 @@
 #include "Workbench.h"
 #include "GLGraphicsView.h"
 #include "TaskPanelView.h"
+
+namespace bp = boost::placeholders;
 
 DEF_STD_CMD(CmdSandboxDocumentThread);
 
@@ -626,7 +627,6 @@ CmdSandboxMeshLoaderBoost::CmdSandboxMeshLoaderBoost()
 
 void CmdSandboxMeshLoaderBoost::activated(int)
 {
-# if BOOST_VERSION >= 104100
     // use current path as default
     QStringList filter;
     filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj)");
@@ -652,16 +652,11 @@ void CmdSandboxMeshLoaderBoost::activated(int)
     Mesh::Feature* mesh = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","Mesh"));
     mesh->Mesh.setValuePtr((Mesh::MeshObject*)fi.get());
     mesh->purgeTouched();
-#endif
 }
 
 bool CmdSandboxMeshLoaderBoost::isActive(void)
 {
-# if BOOST_VERSION >= 104100
     return hasActiveDocument();
-#else
-    return false;
-#endif
 }
 
 DEF_STD_CMD_A(CmdSandboxMeshLoaderFuture)
@@ -725,7 +720,7 @@ typedef std::list<MeshObjectConstRef> MeshObjectConstRefList;
 typedef std::vector<MeshObjectConstRef> MeshObjectConstRefArray;
 }
 
-struct MeshObject_greater  : public std::binary_function<const Mesh::MeshObjectConstRef&, 
+struct MeshObject_greater  : public std::binary_function<const Mesh::MeshObjectConstRef&,
                                                          const Mesh::MeshObjectConstRef&, bool>
 {
     bool operator()(const Mesh::MeshObjectConstRef& x,
@@ -829,7 +824,7 @@ void CmdSandboxMeshTestJob::activated(int)
         Base::Console().Message("Mesh test (step %d)...\n",iteration++);
         MeshTestJob meshJob;
         QFuture<Mesh::MeshObject*> mesh_future = QtConcurrent::mapped
-            (mesh_groups, boost::bind(&MeshTestJob::run, &meshJob, _1));
+            (mesh_groups, boost::bind(&MeshTestJob::run, &meshJob, bp::_1));
 
         // keep it responsive during computation
         QFutureWatcher<Mesh::MeshObject*> mesh_watcher;
@@ -890,12 +885,12 @@ CmdSandboxMeshTestRef::CmdSandboxMeshTestRef()
 void CmdSandboxMeshTestRef::activated(int)
 {
     Gui::WaitCursor wc;
-    std::vector< boost::shared_ptr<QThread> > threads;
+    std::vector< std::shared_ptr<QThread> > threads;
     Base::Reference<Mesh::MeshObject> mesh(new Mesh::MeshObject);
     int num = mesh.getRefCount();
 
     for (int i=0; i<10; i++) {
-        boost::shared_ptr<QThread> trd(new MeshThread(mesh));
+        std::shared_ptr<QThread> trd(new MeshThread(mesh));
         trd->start();
         threads.push_back(trd);
     }
@@ -1033,7 +1028,7 @@ public:
         setAttribute(Qt::WA_NativeWindow);
 #endif
     }
-    QPaintEngine *paintEngine() const { 
+    QPaintEngine *paintEngine() const {
         return 0;
     }
 protected:
@@ -1047,7 +1042,7 @@ protected:
         SelectObject(hdc, GetSysColorBrush(COLOR_WINDOW));
         Rectangle(hdc, 0, 0, width(), height());
         RECT rect = {0, 0, width(), height() };
-        DrawText(hdc, "Hello World!", 12, &rect,
+        DrawTextA(hdc, "Hello World!", 12, &rect,
         DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 #if QT_VERSION < 0x050000
         releaseDC(hdc);
@@ -1427,8 +1422,8 @@ CmdTestGraphicsView::CmdTestGraphicsView()
 {
     sGroup      = QT_TR_NOOP("Standard-Test");
     sMenuText   = QT_TR_NOOP("Create new graphics view");
-    sToolTipText= QT_TR_NOOP("Creates a new  view window for the active document");
-    sStatusTip  = QT_TR_NOOP("Creates a new  view window for the active document");
+    sToolTipText= QT_TR_NOOP("Creates a new view window for the active document");
+    sStatusTip  = QT_TR_NOOP("Creates a new view window for the active document");
 }
 
 void CmdTestGraphicsView::activated(int)

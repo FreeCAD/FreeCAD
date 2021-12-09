@@ -37,13 +37,13 @@ def pythonToolbars():
         if hasattr(Gui, "draftToolBar"):
             try:
                 Gui.draftToolBar.Activated()
-            except:
+            except Exception:
                 m = "Persistent toolbars: draftToolBar toolbar not managed.\n"
                 App.Console.PrintMessage(m)
         if hasattr(Gui, "Snapper"):
             try:
                 Gui.Snapper.show()
-            except:
+            except Exception:
                 m = "Persistent toolbars: Snapper toolbar not managed.\n"
                 App.Console.PrintMessage(m)
     else:

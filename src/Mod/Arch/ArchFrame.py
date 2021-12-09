@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,11 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
-from FreeCAD import Vector
+import FreeCAD,Draft,ArchComponent,DraftVecUtils
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -44,9 +40,9 @@ else:
 #  Frames are objects made of a profile and an object with
 #  edges along which the profile gets extruded
 
-__title__="FreeCAD Arch Frame"
+__title__  = "FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
@@ -106,7 +102,7 @@ class _Frame(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Railing"
+        obj.IfcType = "Railing"
 
     def setProperties(self,obj):
 
@@ -223,11 +219,19 @@ class _Frame(ArchComponent.Component):
                     basepoint = profile.CenterOfMass
                 profile.translate(bpoint.sub(basepoint))
                 if obj.Align:
+                    # Align profile's Z axis with the direction of the layout edge.
                     axis = profile.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
                     angle = bvec.getAngle(axis)
                     if round(angle,Draft.precision()) != 0:
                         if round(angle,Draft.precision()) != round(math.pi,Draft.precision()):
                             rotaxis = axis.cross(bvec)
+                            profile.rotate(DraftVecUtils.tup(bpoint), DraftVecUtils.tup(rotaxis), math.degrees(angle))
+                    # Align profile's Y axis with layouts normal vecror.
+                    axis = profile.Placement.Rotation.multVec(FreeCAD.Vector(0,1,0))
+                    angle = normal.getAngle(axis)
+                    if round(angle,Draft.precision()) != 0:
+                        if round(angle,Draft.precision()) != round(math.pi,Draft.precision()):
+                            rotaxis = axis.cross(normal)
                             profile.rotate(DraftVecUtils.tup(bpoint), DraftVecUtils.tup(rotaxis), math.degrees(angle))
                 if obj.Rotation:
                     profile.rotate(DraftVecUtils.tup(bpoint), DraftVecUtils.tup(FreeCAD.Vector(bvec).normalize()), obj.Rotation)

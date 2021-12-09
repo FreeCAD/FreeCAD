@@ -25,7 +25,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <QVariant>
 #include <QAction>
 #include <QApplication>
@@ -55,6 +55,7 @@
 
 
 using namespace SandboxGui;
+namespace bp = boost::placeholders;
 
 
 #if defined(QSINT_ACTIONPANEL)
@@ -557,27 +558,27 @@ TaskPanelView::TaskPanelView(QWidget *parent)
 
     QAction* defaultAction = new QAction(this);
     connect(ui->rbDefaultScheme, SIGNAL(toggled(bool)), defaultAction, SIGNAL(toggled(bool)));
-    func->toggle(defaultAction, boost::bind(&TaskPanelView::on_rbDefaultScheme_toggled, this, _1));
+    func->toggle(defaultAction, boost::bind(&TaskPanelView::on_rbDefaultScheme_toggled, this, bp::_1));
 
     QAction* xpBlueAction = new QAction(this);
     connect(ui->rbXPBlueScheme, SIGNAL(toggled(bool)), xpBlueAction, SIGNAL(toggled(bool)));
-    func->toggle(xpBlueAction, boost::bind(&TaskPanelView::on_rbXPBlueScheme_toggled, this, _1));
+    func->toggle(xpBlueAction, boost::bind(&TaskPanelView::on_rbXPBlueScheme_toggled, this, bp::_1));
 
     QAction* xpBlue2Action = new QAction(this);
     connect(ui->rbXPBlue2Scheme, SIGNAL(toggled(bool)), xpBlue2Action, SIGNAL(toggled(bool)));
-    func->toggle(xpBlue2Action, boost::bind(&TaskPanelView::on_rbXPBlue2Scheme_toggled, this, _1));
+    func->toggle(xpBlue2Action, boost::bind(&TaskPanelView::on_rbXPBlue2Scheme_toggled, this, bp::_1));
 
     QAction* vistaAction = new QAction(this);
     connect(ui->rbVistaScheme, SIGNAL(toggled(bool)), vistaAction, SIGNAL(toggled(bool)));
-    func->toggle(vistaAction, boost::bind(&TaskPanelView::on_rbVistaScheme_toggled, this, _1));
+    func->toggle(vistaAction, boost::bind(&TaskPanelView::on_rbVistaScheme_toggled, this, bp::_1));
 
     QAction* macAction = new QAction(this);
     connect(ui->rbMacScheme, SIGNAL(toggled(bool)), macAction, SIGNAL(toggled(bool)));
-    func->toggle(macAction, boost::bind(&TaskPanelView::on_rbMacScheme_toggled, this, _1));
+    func->toggle(macAction, boost::bind(&TaskPanelView::on_rbMacScheme_toggled, this, bp::_1));
 
     QAction* androidAction = new QAction(this);
     connect(ui->rbAndroidScheme, SIGNAL(toggled(bool)), androidAction, SIGNAL(toggled(bool)));
-    func->toggle(androidAction, boost::bind(&TaskPanelView::on_rbAndroidScheme_toggled, this, _1));
+    func->toggle(androidAction, boost::bind(&TaskPanelView::on_rbAndroidScheme_toggled, this, bp::_1));
     }
 #else
     setWindowTitle(QLatin1String("Task View"));

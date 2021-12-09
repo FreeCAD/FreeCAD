@@ -33,7 +33,7 @@ using namespace App;
 
 PyObject *MaterialPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of MaterialPy and the Twin object 
+    // create a new instance of MaterialPy and the Twin object
     return new MaterialPy(new Material);
 }
 
@@ -45,11 +45,11 @@ int MaterialPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject* specular = 0;
     PyObject* emissive = 0;
     PyObject* shininess = 0;
-    PyObject* transpareny = 0;
+    PyObject* transparency = 0;
     static char* kwds_colors[] = { "DiffuseColor", "AmbientColor", "SpecularColor", "EmissiveColor", "Shininess", "Transparency", NULL };
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OOOOOO", kwds_colors,
-        &diffuse, &ambient, &specular, &emissive, &shininess, &transpareny))
+        &diffuse, &ambient, &specular, &emissive, &shininess, &transparency))
         return -1;
 
     if (diffuse) {
@@ -72,8 +72,8 @@ int MaterialPy::PyInit(PyObject* args, PyObject* kwds)
         setShininess(Py::Float(shininess));
     }
 
-    if (transpareny) {
-        setTransparency(Py::Float(transpareny));
+    if (transparency) {
+        setTransparency(Py::Float(transparency));
     }
 
     return 0;
@@ -88,8 +88,8 @@ std::string MaterialPy::representation(void) const
 PyObject* MaterialPy::set(PyObject * args)
 {
     char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
-        return NULL;                             // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
 
     getMaterialPtr()->set(pstr);
 
@@ -207,5 +207,5 @@ PyObject *MaterialPy::getCustomAttributes(const char* /*attr*/) const
 
 int MaterialPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

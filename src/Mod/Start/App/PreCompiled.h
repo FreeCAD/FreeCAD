@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,8 +33,8 @@
 # define MeshExport     __declspec(dllimport)
 #else // for Linux
 # define AppStartExport
-# define PartExport 
-# define MeshExport   
+# define PartExport
+# define MeshExport
 #endif
 
 #ifdef _PreComp_

@@ -48,6 +48,7 @@
 #include <pcl/surface/marching_cubes_hoppe.h>
 #include <pcl/surface/ear_clipping.h>
 #include <pcl/common/common.h>
+#include <pcl/common/io.h>
 #include <boost/random.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
 
@@ -347,9 +348,9 @@ void GridReconstruction::perform(int ksearch)
     GridProjection<PointNormal> grid;
 
     // Set parameters
-    grid.setResolution(0.005); 
-    grid.setPaddingSize(3); 
-    grid.setNearestNeighborNum(100); 
+    grid.setResolution(0.005);
+    grid.setPaddingSize(3);
+    grid.setNearestNeighborNum(100);
     grid.setMaxBinarySearchLevel(10);
     grid.setInputCloud (cloud_with_normals);
     grid.setSearchMethod (tree2);
@@ -395,9 +396,9 @@ void GridReconstruction::perform(const std::vector<Base::Vector3f>& normals)
     GridProjection<PointNormal> grid;
 
     // Set parameters
-    grid.setResolution(0.005); 
-    grid.setPaddingSize(3); 
-    grid.setNearestNeighborNum(100); 
+    grid.setResolution(0.005);
+    grid.setPaddingSize(3);
+    grid.setNearestNeighborNum(100);
     grid.setMaxBinarySearchLevel(10);
     grid.setInputCloud (cloud_with_normals);
     grid.setSearchMethod (tree);
@@ -465,7 +466,7 @@ void ImageTriangulation::perform()
     const MeshCore::MeshFacetArray& face = kernel.GetFacets();
     MeshCore::MeshAlgorithm meshAlg(kernel);
     meshAlg.SetPointFlag(MeshCore::MeshPoint::INVALID);
-    std::vector<unsigned long> validPoints;
+    std::vector<MeshCore::PointIndex> validPoints;
     validPoints.reserve(face.size()*3);
     for (MeshCore::MeshFacetArray::_TConstIterator it = face.begin(); it != face.end(); ++it) {
         validPoints.push_back(it->_aulPoints[0]);
@@ -480,7 +481,7 @@ void ImageTriangulation::perform()
 
     unsigned long countInvalid = meshAlg.CountPointFlag(MeshCore::MeshPoint::INVALID);
     if (countInvalid > 0) {
-        std::vector<unsigned long> invalidPoints;
+        std::vector<MeshCore::PointIndex> invalidPoints;
         invalidPoints.reserve(countInvalid);
         meshAlg.GetPointsFlag(invalidPoints, MeshCore::MeshPoint::INVALID);
 

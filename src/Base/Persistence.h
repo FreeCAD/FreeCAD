@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Riegel         <juergen.riegel@web.de>                  *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -43,7 +43,7 @@ class BaseExport Persistence : public BaseClass
 
   TYPESYSTEM_HEADER();
 
-public: 
+public:
     /** This method is used to get the size of objects
      * It is not meant to have the exact size, it is more or less an estimation
      * which runs fast! Is it two bytes or a GB?
@@ -62,12 +62,12 @@ public:
      * The writer.ind() expression writes the indentation, just for pretty printing of the XML.
      * As you see, the writing of the XML document is not done with a DOM implementation because
      * of performance reasons. Therefore the programmer has to take care that a valid XML document
-     * is written. This means closing tags and writing UTF-8. 
+     * is written. This means closing tags and writing UTF-8.
      * @see Base::Writer
      */
     virtual void Save (Writer &/*writer*/) const = 0;
     /** This method is used to restore properties from an XML document.
-     * It uses the XMLReader class, which bases on SAX, to read the in Save() 
+     * It uses the XMLReader class, which bases on SAX, to read the in Save()
      * written information. Again the Vector as an example:
      * \code
      * void PropertyVector::Restore(Base::XMLReader &reader)
@@ -83,13 +83,13 @@ public:
      */
     virtual void Restore(XMLReader &/*reader*/) = 0;
     /** This method is used to save large amounts of data to a binary file.
-     * Sometimes it makes no sense to write property data as XML. In case the 
-     * amount of data is too big or the data type has a more effective way to 
+     * Sometimes it makes no sense to write property data as XML. In case the
+     * amount of data is too big or the data type has a more effective way to
      * save itself. In this cases it is possible to write the data in a separate file
-     * inside the document archive. In case you want do so you have to re-implement 
+     * inside the document archive. In case you want do so you have to re-implement
      * SaveDocFile(). First, you have to inform the framework in Save() that you want do so.
      * Here an example from the Mesh module which can save a (pontetionaly big) triangle mesh:
-     * \code 
+     * \code
      * void PropertyMeshKernel::Save (Base::Writer &writer) const
      * {
      *   if (writer.isForceXML())
@@ -101,7 +101,7 @@ public:
      *    writer << writer.ind() << "<Mesh file=\"" << writer.addFile("MeshKernel.bms", this) << "\"/>" << std::endl;
      * }
      * \endcode
-     * The writer.isForceXML() is an indication to force you to write XML. Regardless of size and effectivness.
+     * The writer.isForceXML() is an indication to force you to write XML. Regardless of size and effectiveness.
      * The second part informs the Base::writer through writer.addFile("MeshKernel.bms", this) that this object
      * wants to write a file with the given name. The method addFile() returns a unique name that then is written
      * in the XML stream.
@@ -117,21 +117,21 @@ public:
      */
     virtual void SaveDocFile (Writer &/*writer*/) const;
     /** This method is used to restore large amounts of data from a file
-     * In this method you simply stream in your with SaveDocFile() saved data.
+     * In this method you simply stream in your SaveDocFile() saved data.
      * Again you have to apply for the call of this method in the Restore() call:
      * \code
      * void PropertyMeshKernel::Restore(Base::XMLReader &reader)
      * {
      *   reader.readElement("Mesh");
      *   std::string file (reader.getAttribute("file") );
-     * 
+     *
      *   if(file == "")
      *   {
      *     // read XML
      *     MeshCore::MeshDocXML restorer(*_pcMesh);
      *     restorer.Restore(reader);
      *   }else{
-     *     // initate a file read
+     *     // initiate a file read
      *     reader.addFile(file.c_str(),this);
      *  }
      * }
@@ -148,6 +148,20 @@ public:
     virtual void RestoreDocFile(Reader &/*reader*/);
     /// Encodes an attribute upon saving.
     static std::string encodeAttribute(const std::string&);
+
+    //dump the binary persistence data into into the stream
+    void dumpToStream(std::ostream& stream, int compression);
+
+    //restore the binary persistence data from a stream. Must have the format used by dumpToStream
+    void restoreFromStream(std::istream& stream);
+
+private:
+    /** This method is used at the end of restoreFromStream()
+     * after all data files have been read in.
+     * A subclass can set up some internals. The default
+     * implementation does nothing.
+     */
+    virtual void restoreFinished() {}
 };
 
 } //namespace Base
