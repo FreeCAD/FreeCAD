@@ -68,6 +68,7 @@ class Polygon(gui_base_original.Creator):
             self.tanpoints = []
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Polygon")
             self.ui.extUi()
+            self.ui.isRelative.hide()
             self.ui.numFaces.show()
             self.ui.numFacesLabel.show()
             self.altdown = False

@@ -116,7 +116,6 @@ class Edit(gui_base_original.Modifier):
     3 - when in editing, lineUi support clicking destination point
         by self.startEditing
         self.ui.lineUi()
-        self.ui.isRelative.show()
 
     Tracker selection
     -----------------
@@ -505,7 +504,6 @@ class Edit(gui_base_original.Modifier):
                                  + str(node_idx) + "\n")
 
         self.ui.lineUi()
-        self.ui.isRelative.show()
         self.editing = node_idx
         self.trackers[obj.Name][node_idx].off()
 
