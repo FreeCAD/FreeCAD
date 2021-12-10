@@ -184,107 +184,6 @@ PartExport std::vector<TopoShape> getPyShapes(PyObject *obj) {
     return ret;
 }
 
-struct EdgePoints {
-    gp_Pnt v1, v2;
-    std::list<TopoDS_Edge>::iterator it;
-    TopoDS_Edge edge;
-};
-
-PartExport std::list<TopoDS_Edge> sort_Edges2(
-        double tol3d, std::list<TopoDS_Edge>& edges, std::deque<int> *hashes)
-{
-    tol3d = tol3d * tol3d;
-    std::list<EdgePoints>  edge_points;
-    TopExp_Explorer xp;
-    for (std::list<TopoDS_Edge>::iterator it = edges.begin(); it != edges.end(); ++it) {
-        EdgePoints ep;
-        xp.Init(*it,TopAbs_VERTEX);
-        ep.v1 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
-        xp.Next();
-        ep.v2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
-        ep.it = it;
-        ep.edge = *it;
-        edge_points.push_back(ep);
-    }
-
-    if (edge_points.empty())
-        return std::list<TopoDS_Edge>();
-
-    std::list<TopoDS_Edge> sorted;
-    gp_Pnt first, last;
-    first = edge_points.front().v1;
-    last  = edge_points.front().v2;
-
-    sorted.push_back(edge_points.front().edge);
-    if(hashes) hashes->push_back(sorted.back().HashCode(INT_MAX));
-    edges.erase(edge_points.front().it);
-    edge_points.erase(edge_points.begin());
-
-    while (!edge_points.empty()) {
-        // search for adjacent edge
-        std::list<EdgePoints>::iterator pEI;
-        for (pEI = edge_points.begin(); pEI != edge_points.end(); ++pEI) {
-            int hash = pEI->edge.HashCode(INT_MAX);
-            if (pEI->v1.SquareDistance(last) <= tol3d) {
-                last = pEI->v2;
-                sorted.push_back(pEI->edge);
-                if(hashes) hashes->push_back(hash);
-                edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
-                break;
-            }
-            else if (pEI->v2.SquareDistance(first) <= tol3d) {
-                first = pEI->v1;
-                sorted.push_front(pEI->edge);
-                if(hashes) hashes->push_front(hash);
-                edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
-                break;
-            }
-            else if (pEI->v2.SquareDistance(last) <= tol3d) {
-                last = pEI->v1;
-                Standard_Real first, last;
-                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
-                first = curve->ReversedParameter(first);
-                last = curve->ReversedParameter(last);
-                TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
-                sorted.push_back(edgeReversed);
-                if(hashes) hashes->push_back(hash);
-                edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
-                break;
-            }
-            else if (pEI->v1.SquareDistance(first) <= tol3d) {
-                first = pEI->v2;
-                Standard_Real first, last;
-                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
-                first = curve->ReversedParameter(first);
-                last = curve->ReversedParameter(last);
-                TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
-                sorted.push_front(edgeReversed);
-                if(hashes) hashes->push_front(hash);
-                edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
-                break;
-            }
-        }
-
-        if ((pEI == edge_points.end()) || (last.SquareDistance(first) <= tol3d)) {
-            // no adjacent edge found or polyline is closed
-            return sorted;
-        }
-    }
-
-    return sorted;
-}
-
-PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges) {
-    return sort_Edges2(tol3d,edges,0);
-}
 }
 
 namespace Part {
@@ -959,11 +858,11 @@ private:
     {
         PyObject *obj;
         const char *op = 0;
-        PyObject *fix = Py_False;
+        PyObject *keepOrder = Py_False;
         double tol = 0.0;
-        if(!PyArg_ParseTuple(args.ptr(), "O|sdO!", &obj, &op, &tol, &PyBool_Type,&fix))
+        if(!PyArg_ParseTuple(args.ptr(), "O|sdO!", &obj, &op, &tol, &PyBool_Type,&keepOrder))
             throw Py::Exception();
-        return shape2pyshape(TopoShape().makEWires(getPyShapes(obj),op,PyObject_IsTrue(fix),tol));
+        return shape2pyshape(TopoShape().makEWires(getPyShapes(obj),op,PyObject_IsTrue(keepOrder),tol));
     }
     Py::Object makeFace(const Py::Tuple& args)
     {
@@ -2238,18 +2137,19 @@ private:
     Py::Object sortEdges(const Py::Tuple& args)
     {
         PyObject *obj;
-        if (!PyArg_ParseTuple(args.ptr(), "O", &obj)) {
-            throw Py::TypeError("list of edges expected");
-        }
+        PyObject *keepOrder = Py_False;
+        double tol = 0;
+        if (!PyArg_ParseTuple(args.ptr(), "O|dO", &obj, &tol, &keepOrder))
+            Base::PyException::ThrowException();
 
         Py::Sequence list(obj);
-        std::list<TopoDS_Edge> edges;
+        std::list<TopoShape> edges;
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
-                if (sh.ShapeType() == TopAbs_EDGE)
-                    edges.push_back(TopoDS::Edge(sh));
+                const TopoShape& sh = *static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr();
+                if (sh.shapeType(true) == TopAbs_EDGE)
+                    edges.push_back(sh);
                 else {
                     throw Py::TypeError("shape is not an edge");
                 }
@@ -2259,30 +2159,28 @@ private:
             }
         }
 
-        std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
         Py::List sorted_list;
-        for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
-            sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
-        }
+        for (auto &edge : TopoShape::sortEdges(edges, PyObject_IsTrue(keepOrder), tol))
+            sorted_list.append(Py::asObject(new TopoShapeEdgePy(new TopoShape(edge))));
 
         return sorted_list;
     }
     Py::Object sortEdges2(const Py::Tuple& args)
     {
         PyObject *obj;
-        double tol = Precision::Confusion();
-        if (!PyArg_ParseTuple(args.ptr(), "O|d", &obj,&tol)) {
-            throw Py::Exception(PartExceptionOCCError, "list of edges expected");
-        }
+        PyObject *keepOrder = Py_False;
+        double tol = 0;
+        if (!PyArg_ParseTuple(args.ptr(), "O|dO", &obj, &tol, &keepOrder))
+            Base::PyException::ThrowException();
 
         Py::Sequence list(obj);
-        std::list<TopoDS_Edge> edges;
+        std::list<TopoShape> edges;
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
-                if (sh.ShapeType() == TopAbs_EDGE)
-                    edges.push_back(TopoDS::Edge(sh));
+                const TopoShape& sh = *static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr();
+                if (sh.shapeType(true) == TopAbs_EDGE)
+                    edges.push_back(sh);
                 else {
                     throw Py::TypeError("shape is not an edge");
                 }
@@ -2294,11 +2192,9 @@ private:
 
         Py::List root_list;
         while(edges.size()) {
-            std::list<TopoDS_Edge> sorted = sort_Edges(tol, edges);
             Py::List sorted_list;
-            for (std::list<TopoDS_Edge>::iterator it = sorted.begin(); it != sorted.end(); ++it) {
-                sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it)),true));
-            }
+            for (auto &edge : TopoShape::sortEdges(edges, PyObject_IsTrue(keepOrder), tol))
+                sorted_list.append(Py::asObject(new TopoShapeEdgePy(new TopoShape(edge))));
             root_list.append(sorted_list);
         }
         return root_list;

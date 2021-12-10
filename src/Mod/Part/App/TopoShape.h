@@ -27,6 +27,8 @@
 #include <memory>
 #include <iostream>
 #include <climits>
+#include <list>
+#include <deque>
 #include <unordered_map>
 #include <unordered_set>
 #include <iosfwd>
@@ -370,10 +372,12 @@ public:
     
     TopoShape &makECompound(const std::vector<TopoShape> &shapes, const char *op=0, bool force=true);
 
-    TopoShape &makEWires(const std::vector<TopoShape> &shapes, const char *op=0, bool fix=false, double tol=0.0);
-    TopoShape &makEWires(const TopoShape &shape, const char *op=0, bool fix=false, double tol=0.0);
-    TopoShape makEWires(const char *op=0, bool fix=false, double tol=0.0) const {
-        return TopoShape(0,Hasher).makEWires(*this,op,fix,tol);
+    static std::deque<TopoShape> sortEdges(std::list<TopoShape> &edges, bool keepOrder=false, double tol=0.0);
+
+    TopoShape &makEWires(const std::vector<TopoShape> &shapes, const char *op=0, bool keepOrder=false, double tol=0.0);
+    TopoShape &makEWires(const TopoShape &shape, const char *op=0, bool keepOrder=false, double tol=0.0);
+    TopoShape makEWires(const char *op=0, bool keepOrder=false, double tol=0.0) const {
+        return TopoShape(0,Hasher).makEWires(*this,op,keepOrder,tol);
     }
 
     TopoShape &makEFace(const std::vector<TopoShape> &shapes,
