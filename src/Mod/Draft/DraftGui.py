@@ -1016,11 +1016,11 @@ class DraftToolBar:
         w.setWindowTitle(translate("draft","Label type", utf8_decode=True))
         l = QtGui.QVBoxLayout(w)
         combo = QtGui.QComboBox()
-        for s in ["Custom","Name","Label","Position","Length","Area","Volume","Tag","Material"]:
+        from draftobjects.label import get_label_types
+        types = get_label_types()
+        for s in types:
             combo.addItem(s)
-        combo.setCurrentIndex(
-            ["Custom","Name","Label","Position","Length","Area","Volume","Tag","Material"]\
-            .index(Draft.getParam("labeltype","Custom")))
+        combo.setCurrentIndex(types.index(Draft.getParam("labeltype","Custom")))
         l.addWidget(combo)
         QtCore.QObject.connect(combo,QtCore.SIGNAL("currentIndexChanged(int)"),callback)
         self.pointUi(title=title, extra=w, icon="Draft_Label")

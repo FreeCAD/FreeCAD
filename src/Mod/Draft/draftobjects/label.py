@@ -217,12 +217,7 @@ class Label(DraftAnnotation):
                             "LabelType",
                             "Label",
                             _tip)
-            obj.LabelType = ["Custom", "Name", "Label", "Position",
-                             "Length", "Area", "Volume",
-                             "Tag", "Material",
-                             "Label + Position", "Label + Length",
-                             "Label + Area", "Label + Volume",
-                             "Label + Material"]
+            obj.LabelType = get_label_types()
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored.
@@ -296,6 +291,23 @@ class Label(DraftAnnotation):
 
 # Alias for compatibility with v0.18 and earlier
 DraftLabel = Label
+
+
+def get_label_types():
+    return ["Custom",
+            "Name",
+            "Label",
+            "Position",
+            "Length",
+            "Area",
+            "Volume",
+            "Tag",
+            "Material",
+            "Label + Position",
+            "Label + Length",
+            "Label + Area",
+            "Label + Volume",
+            "Label + Material"]
 
 
 def return_info(target, typ, subelement=None):
