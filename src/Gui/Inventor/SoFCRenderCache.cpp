@@ -1890,7 +1890,8 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
           } else if (indices.size() > 1) {
             newentry.cache = new SoFCVertexCache(*newentry.cache);
             newentry.cache->addPoints(indices);
-          }
+          } else
+            continue;
         }
         else if (checkindices) {
           if (checkHighlightIndices(true))
@@ -1937,7 +1938,8 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
           if (indices.size() && *indices.begin()>=0) {
             newentry.cache = new SoFCVertexCache(*newentry.cache);
             newentry.cache->addLines(indices);
-          }
+          } else
+            continue;
         }
         else if (checkindices) {
           if (checkHighlightIndices(true))
@@ -1992,7 +1994,8 @@ SoFCRenderCache::buildHighlightCache(SbFCMap<int, VertexCachePtr> &sharedcache,
           else if (indices.size() > 1) {
             newentry.cache = new SoFCVertexCache(*newentry.cache);
             newentry.cache->addTriangles(indices);
-          }
+          } else
+            continue;
         }
         else if (checkindices) {
           if (checkHighlightIndices(true))
