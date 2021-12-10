@@ -227,16 +227,18 @@ public:
                  << QLatin1String("def") << QLatin1String("del")
                  << QLatin1String("elif") << QLatin1String("else")
                  << QLatin1String("except") << QLatin1String("exec")
-                 << QLatin1String("finally") << QLatin1String("for")
-                 << QLatin1String("from") << QLatin1String("global")
-                 << QLatin1String("if") << QLatin1String("import")
-                 << QLatin1String("in") << QLatin1String("is")
-                 << QLatin1String("lambda") << QLatin1String("None")
+                 << QLatin1String("False") << QLatin1String("finally")
+                 << QLatin1String("for") << QLatin1String("from")
+                 << QLatin1String("global") << QLatin1String("if")
+                 << QLatin1String("import") << QLatin1String("in")
+                 << QLatin1String("is") << QLatin1String("lambda")
+                 << QLatin1String("None") << QLatin1String("nonlocal")
                  << QLatin1String("not") << QLatin1String("or")
                  << QLatin1String("pass") << QLatin1String("print")
                  << QLatin1String("raise") << QLatin1String("return")
-                 << QLatin1String("try") << QLatin1String("while")
-                 << QLatin1String("with") << QLatin1String("yield");
+                 << QLatin1String("True") << QLatin1String("try")
+                 << QLatin1String("while") << QLatin1String("with")
+                 << QLatin1String("yield");
     }
 
     QStringList keywords;
