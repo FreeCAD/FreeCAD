@@ -628,7 +628,8 @@ App::SubObjectT SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) 
     clear();
 
     std::ostringstream ss;
-    std::map<std::string, SubMenuInfo> menus;
+    typedef std::map<std::string, SubMenuInfo> MenuMap;
+    MenuMap menus;
     std::map<App::DocumentObject*, QIcon> icons;
 
     int i=-1;
@@ -665,7 +666,19 @@ App::SubObjectT SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) 
         }
     }
 
-    for(auto &v : menus) {
+    auto itOther = menus.end();
+    std::vector<MenuMap::iterator> menuArray;
+    menuArray.reserve(menus.size());
+    for (auto it = menus.begin(); it != menus.end(); ++it) {
+        if (it->first == "Other")
+            itOther = it;
+        else
+            menuArray.push_back(it);
+    }
+    if (itOther != menus.end())
+        menuArray.push_back(itOther);
+    for(auto it : menuArray) {
+        auto &v = *it;
         auto &info = v.second;
         if (info.items.empty()) {
             QAction *action = addAction(QLatin1String(v.first.c_str()));
@@ -702,7 +715,10 @@ App::SubObjectT SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) 
                 if(!groupMenu) {
                     for(int idx : elementInfo.indices) {
                         ss.str("");
-                        ss << label << " (" << sels[idx].getOldElementName() << ")";
+                        ss << label;
+                        auto element = sels[idx].getOldElementName();
+                        if (element.size())
+                            ss << " (" << element << ")";
                         QAction *action = info.menu->addAction(elementInfo.icon, QString::fromUtf8(ss.str().c_str()));
                         action->setData(QVariant::fromValue(sels[idx]));
                         connect(info.menu, SIGNAL(hovered(QAction*)), this, SLOT(onHover(QAction*)));
@@ -771,10 +787,11 @@ App::SubObjectT SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels,
             action = lastMenu->addAction(QString::fromLatin1(sel.getOldElementName().c_str()));
         } else {
             lastObj = sobj;
-            action = addAction(vp ? vp->getIcon() : QIcon(),
-                        QString::fromLatin1("%1 (%2)").arg(
-                            QString::fromUtf8(sobj->Label.getValue()),
-                            QString::fromLatin1(sel.getOldElementName().c_str())));
+            QString label = QString::fromUtf8(sobj->Label.getValue());
+            auto element = sel.getOldElementName();
+            if (element.size())
+                label += QStringLiteral(" (%2)").arg(QString::fromLatin1(element.c_str()));
+            action = addAction(vp ? vp->getIcon() : QIcon(), label);
             lastAction = action;
             lastMenu = nullptr;
         }
