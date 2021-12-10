@@ -363,6 +363,36 @@ class TaskPanelPage(object):
             combo.setCurrentIndex(index)
             combo.blockSignals(False)
 
+    def selectInComboBoxNew(self, name, combo):
+        '''selectInComboBox(name, combo) ...
+        helper function to select a specific value in a combo box.'''
+        combo.blockSignals(True)
+        cnt = combo.count()
+        index = combo.currentIndex()  # Save initial index
+        while cnt > 0:
+            cnt -= 1
+            combo.setCurrentIndex(cnt)
+            if name == combo.currentData():
+                combo.blockSignals(False)
+                return
+        combo.setCurrentIndex(index)
+        combo.blockSignals(False)
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
+
     def resetToolController(self, job, tc):
         if self.obj is not None:
             self.obj.ToolController = tc
