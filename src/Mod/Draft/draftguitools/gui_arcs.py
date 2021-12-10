@@ -510,8 +510,10 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             App.DraftWorkingPlane.setup()
 
         Gui.Snapper.getPoint(callback=self.getPoint,
-                             movecallback=self.drawArc,
-                             title=translate("draft","Arc by 3 points"))
+                             movecallback=self.drawArc)
+        Gui.Snapper.ui.setTitle(title=translate("draft", "Arc by 3 points"),
+                                icon="Draft_Arc_3Points")
+        Gui.Snapper.ui.continueCmd.show()
 
     def getPoint(self, point, info):
         """Get the point by clicking on the 3D view.
@@ -551,6 +553,10 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             Gui.Snapper.getPoint(last=self.points[-1],
                                  callback=self.getPoint,
                                  movecallback=self.drawArc)
+            Gui.Snapper.ui.setTitle(title=translate("draft", "Arc by 3 points"),
+                                    icon="Draft_Arc_3Points")
+            Gui.Snapper.ui.continueCmd.show()
+                                 
         else:
             # If three points were already picked in the 3D view
             # proceed with creating the final object.
@@ -565,6 +571,8 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
                                         self.points[2]], primitive=False)
             self.tracker.off()
             self.doc.recompute()
+            if Gui.Snapper.ui.continueMode:
+                self.Activated()
 
     def drawArc(self, point, info):
         """Draw preview arc when we move the pointer in the 3D view.
