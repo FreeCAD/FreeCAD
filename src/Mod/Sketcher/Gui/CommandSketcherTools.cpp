@@ -2450,15 +2450,19 @@ void CmdSketcherSwapGeometryID::activated(int iMsg) {
         indices.push_back(index);
     }
     Gui::Selection().clearSelection();
-    App::GetApplication().setActiveTransaction("Swap geometry ID"); 
-    doCommand(Doc,"__geo = %s.Geometry\n"
-            "__geo[%d].ID,__geo[%d].ID = __geo[%d].ID,__geo[%d].ID\n"
-            "%s.Geometry = __geo\n"
-            "del(__geo)",
-            getObjectCmd(sketch).c_str(),
-            indices[0],indices[1],indices[1],indices[0],
-            getObjectCmd(sketch).c_str());
-    App::GetApplication().closeActiveTransaction(); 
+
+    App::AutoTransaction guard(QT_TRANSLATE_NOOP("Command", "Swap geometry ID"));
+
+    auto geos = sketch->Geometry.getValues();
+    auto &geo1 = geos[indices[0]];
+    auto &geo2 = geos[indices[1]];
+    long id1 = GeometryFacade::getId(geo1);
+    long id2 = GeometryFacade::getId(geo2);
+    geo1 = geo1->clone();
+    geo2 = geo2->clone();
+    GeometryFacade::setId(geo1, id2);
+    GeometryFacade::setId(geo2, id1);
+    sketch->Geometry.setValues(std::move(geos));
 }
 
 bool CmdSketcherSwapGeometryID::isActive(void)
