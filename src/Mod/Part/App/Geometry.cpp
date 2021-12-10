@@ -30,7 +30,6 @@
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <BRepAdaptor_HSurface.hxx>
 # include <Geom_CartesianPoint.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_Curve.hxx>
@@ -107,7 +106,8 @@
 # include <LProp_NotDefined.hxx>
 # include <TopoDS.hxx>
 # if OCC_VERSION_HEX < 0x070600
-# include <GeomAdaptor_HCurve.hxx>
+#  include <GeomAdaptor_HCurve.hxx>
+#  include <BRepAdaptor_HSurface.hxx>
 # endif
 
 # include <memory>
@@ -4530,12 +4530,20 @@ static Standard_Boolean IsPlanar(const Adaptor3d_Surface& theS)
     const GeomAbs_SurfaceType aST = theS.GetType();
     if(aST == GeomAbs_OffsetSurface)
     {
+# if OCC_VERSION_HEX < 0x070600
         return IsPlanar(theS.BasisSurface()->Surface());
+#else
+        return IsPlanar(*theS.BasisSurface());
+#endif
     }
 
     if(aST == GeomAbs_SurfaceOfExtrusion)
     {
+# if OCC_VERSION_HEX < 0x070600
         return IsLinear(theS.BasisCurve()->Curve());
+#else
+        return IsLinear(*theS.BasisCurve());
+#endif
     }
 
     if((aST == GeomAbs_BSplineSurface) || (aST == GeomAbs_BezierSurface))

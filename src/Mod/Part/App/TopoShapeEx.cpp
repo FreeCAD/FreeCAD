@@ -34,13 +34,14 @@
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
+# if OCC_VERSION_HEX < 0x070600
 # include <BRepAdaptor_HCurve.hxx>
 # include <BRepAdaptor_HCompCurve.hxx>
+# endif
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgo_Fuse.hxx>
 # include <BRepAlgoAPI_Section.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_FindPlane.hxx>
@@ -207,6 +208,12 @@
 #define TOPOP_VERSION 15
 
 FC_LOG_LEVEL_INIT("TopoShape",true,2);
+
+#if OCC_VERSION_HEX >= 0x070600
+using Adaptor3d_HCurve = Adaptor3d_Curve;
+using BRepAdaptor_HCurve = BRepAdaptor_Curve;
+using BRepAdaptor_HCompCurve = BRepAdaptor_CompCurve;
+#endif
 
 using namespace Part;
 using namespace Data;
