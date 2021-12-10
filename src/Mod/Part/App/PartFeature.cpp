@@ -396,6 +396,14 @@ Feature::getElementFromSource(App::DocumentObject *obj,
             element.name = Data::MappedName(mapped);
     }
 
+    // Translate the element name for datum
+    if (objElement.second == "Plane")
+        objElement.second = "Face1";
+    else if (objElement.second == "Line")
+        objElement.second = "Edge1";
+    else if (objElement.second == "Point")
+        objElement.second = "Vertex1";
+
     // Use the old style name to obtain the shape type
     auto type = TopoShape::shapeType(
             Data::ComplexGeoData::findElementName(objElement.second.c_str()));
