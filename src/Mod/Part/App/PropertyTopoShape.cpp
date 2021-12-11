@@ -231,16 +231,9 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     }
 }
 
-// The following two functions are copied from OCCT BRepTools.cxx and modified
+// The following function is copied from OCCT BRepTools.cxx and modified
 // to disable saving of triangulation
 //
-static void BRepTools_Write(const TopoDS_Shape& Sh, Standard_OStream& S) {
-  BRepTools_ShapeSet SS(Standard_False);
-  // SS.SetProgress(PR);
-  SS.Add(Sh);
-  SS.Write(S);
-  SS.Write(Sh,S);
-}
 
 static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh, const Standard_CString File)
 {
@@ -256,7 +249,15 @@ static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh, const Standard_
   if(!isGood)
     return isGood;
 
+  // See TopTools_FormatVersion of OCCT 7.6
+  enum {
+      VERSION_1 = 1,
+      VERSION_2 = 2,
+      VERSION_3 = 3
+  };
+
   BRepTools_ShapeSet SS(Standard_False);
+  SS.SetFormatNb(VERSION_1);
   // SS.SetProgress(PR);
   SS.Add(Sh);
 
@@ -318,19 +319,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 
             Base::ifstream file(fi, std::ios::in | std::ios::binary);
             if (file) {
-                //unsigned long ulSize = 0;
                 std::streambuf* buf = file.rdbuf();
-                //if (buf) {
-                //    unsigned long ulCurr;
-                //    ulCurr = buf->pubseekoff(0, std::ios::cur, std::ios::in);
-                //    ulSize = buf->pubseekoff(0, std::ios::end, std::ios::in);
-                //    buf->pubseekoff(ulCurr, std::ios::beg, std::ios::in);
-                //}
-
-                // read in the ASCII file and write back to the stream
-                //std::strstreambuf sbuf(ulSize);
-                //file >> &sbuf;
-                //writer.Stream() << &sbuf;
                 writer.Stream() << buf;
             }
 
@@ -339,7 +328,9 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
             fi.deleteFile();
         }
         else {
-            BRepTools_Write(myShape, writer.Stream());
+            TopoShape shape;
+            shape.setShape(myShape);
+            shape.exportBrep(writer.Stream());
         }
     }
 }
