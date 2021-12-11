@@ -118,9 +118,12 @@ private:
 class E57Reader : public Reader
 {
 public:
-    E57Reader();
+    E57Reader(const bool& Color, const bool& State, const float& Distance);
     ~E57Reader();
     void read(const std::string& filename);
+protected:
+    bool useColor, checkState;
+    float minDistance;
 };
 
 class Writer

@@ -47,7 +47,6 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 
 #include <E57Format.h>
-#include <App/Application.h>
 
 using namespace Points;
 
@@ -1306,8 +1305,11 @@ void PcdReader::readBinary(bool transpose,
 
 // ----------------------------------------------------------------------------
 
-E57Reader::E57Reader()
+E57Reader::E57Reader(const bool& Color, const bool& State, const float& Distance)
 {
+    useColor   = Color;
+    checkState = State; 
+    minDistance = Distance; 
 }
 
 E57Reader::~E57Reader()
@@ -1317,13 +1319,6 @@ E57Reader::~E57Reader()
 void E57Reader::read(const std::string& filename)
 {
     try {
-        // get settings
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Points/E57");
-        bool useColor   = hGrp->GetBool("UseColor", true);
-        bool checkState = hGrp->GetBool("CheckInvalidState", true); 
-        float minDistance = hGrp->GetFloat("MinDistance", -1.); 
-            
         // read file
         e57::ImageFile imfi(filename, "r");
         e57::StructureNode root = imfi.root();

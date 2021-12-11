@@ -88,7 +88,12 @@ private:
                 reader.reset(new AscReader);
             }
             else if (file.hasExtension("e57")) {
-                reader.reset(new E57Reader);
+                Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Points/E57");
+                bool useColor   = hGrp->GetBool("UseColor", true);
+                bool checkState = hGrp->GetBool("CheckInvalidState", true); 
+                float minDistance = hGrp->GetFloat("MinDistance", -1.);
+                reader.reset(new E57Reader(useColor, checkState, minDistance));
             }
             else if (file.hasExtension("ply")) {
                 reader.reset(new PlyReader);
@@ -203,7 +208,12 @@ private:
                 reader.reset(new AscReader);
             }
             else if (file.hasExtension("e57")) {
-                reader.reset(new E57Reader);
+                Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Points/E57");
+                bool useColor   = hGrp->GetBool("UseColor", true);
+                bool checkState = hGrp->GetBool("CheckInvalidState", true); 
+                float minDistance = hGrp->GetFloat("MinDistance", -1.);
+                reader.reset(new E57Reader(useColor, checkState, minDistance));
             }
             else if (file.hasExtension("ply")) {
                 reader.reset(new PlyReader);
