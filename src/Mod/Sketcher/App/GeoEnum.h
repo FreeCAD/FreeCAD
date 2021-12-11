@@ -28,8 +28,9 @@
 namespace Sketcher
 {
 
-/** Sketcher Geometry is identified with an index called GeoId.
+/** @brief Sketcher Geometry is identified with an index called GeoId.
  *
+ * @details
  * GeoId >= 0 are normal geometry elements
  * GeoId = -1 and -2 are the Horizontal and Vertical axes and the root point
  * GeoId <= -2 are external geometry elements
@@ -69,11 +70,12 @@ struct SketcherExport GeoEnum
     static const int GeoUndef;  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
 };
 
-/*! PointPos lets us refer to different aspects of a piece of geometry.  sketcher::none refers
- * to an edge itself (eg., for a Perpendicular constraint on two lines). sketcher::start and
- * sketcher::end denote the endpoints of lines or bounded curves.  sketcher::mid denotes
- * geometries with geometrical centers (eg., circle, ellipse). Bare points use 'start'.  More
- * complex geometries like parabola focus or b-spline knots use InternalAlignment constraints
+/*!
+ * @brief PointPos lets us refer to different aspects of a piece of geometry.
+ * @details sketcher::none refers to an edge itself (eg., for a Perpendicular constraint
+ * on two lines). sketcher::start and sketcher::end denote the endpoints of lines or bounded curves.
+ * Sketcher::mid denotes geometries with geometrical centers (eg., circle, ellipse). Bare points use 'start'.
+ * More complex geometries like parabola focus or b-spline knots use InternalAlignment constraints
  * in addition to PointPos.
  */
 enum class PointPos : int {
@@ -86,30 +88,48 @@ enum class PointPos : int {
 /** @brief      Struct for storing a {GeoId, PointPos} pair.
  *
  * @details
- *
  * {GeoId, PointPos} is pervasive in the sketcher as means to identify geometry (edges) and geometry elements (vertices).
  *
  * GeoElementId intends to substitute this pair whenever appropriate. For example in containers and ordered containers.
  *
- * It has overloader equality operator and specialised std::less so that it can safely be used in containers, including
+ * It has overloaded equality operator and specialised std::less so that it can safely be used in containers, including
  * ordered containers.
  *
  */
 class SketcherExport GeoElementId
 {
 public:
+    /** @brief default constructor initialises object to an undefined (invalid) element.
+     */
     explicit constexpr GeoElementId(int geoId = GeoEnum::GeoUndef, PointPos pos = PointPos::none);
 
+    /** @brief equality operator
+     */
     bool operator==(const GeoElementId& obj) const;
 
+    /** @brief inequality operator
+    */
+    bool operator!=(const GeoElementId& obj) const;
+
+    /** @brief Underlying GeoId (see GeoEnum for definition)
+     */
     int GeoId;
+    /** @brief Indication of vertex or curve (see PointPos)
+     */
     PointPos Pos;
 
-    static const GeoElementId RtPnt;     // GeoElementId of the Root Point
-    static const GeoElementId HAxis;     // GeoElementId of the Horizontal Axis
-    static const GeoElementId VAxis;     // GeoElementId of the Vertical Axis
+    /** @brief GeoElementId of the Root Point
+     */
+    static const GeoElementId RtPnt;
+    /** @brief GeoElementId of the Horizontal Axis
+     */
+    static const GeoElementId HAxis;
+    /** @brief GeoElementId of the Vertical Axis
+     */
+    static const GeoElementId VAxis;
 };
 
+// inline constexpr constructor
 constexpr GeoElementId::GeoElementId(int geoId, PointPos pos): GeoId(geoId), Pos(pos)
 {
 }
