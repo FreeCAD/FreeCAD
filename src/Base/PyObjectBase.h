@@ -220,6 +220,11 @@ public:
     /// decref method wrapper (see python extending manual)
     PyObjectBase* DecRef() {Py_DECREF(this);return this;}
 
+    /// Get the pointer of the twin object
+    void* getTwinPointer() const {
+        return _pcTwinPointer;
+    }
+
     /** GetAttribute implementation
      *  This method implements the retrieval of object attributes.
      *  If you want to implement attributes in your class, reimplement
