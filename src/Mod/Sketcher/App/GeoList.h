@@ -24,10 +24,6 @@
 #ifndef SKETCHER_GeoList_H
 #define SKETCHER_GeoList_H
 
-#ifndef _PreComp_
-
-#endif  // #ifndef _PreComp_
-
 #include <vector>
 #include <memory>
 
