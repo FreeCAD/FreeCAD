@@ -154,11 +154,11 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             const Part::GeomLineSegment *segm = static_cast<const Part::GeomLineSegment*>(gf->getGeometry());
             VertexIds id;
             id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
+            id.PosId = Sketcher::PointPos::start;
             id.v = segm->getStartPoint();
             vertexIds.push_back(id);
             id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
+            id.PosId = Sketcher::PointPos::end;
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
@@ -166,11 +166,11 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(gf->getGeometry());
             VertexIds id;
             id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
+            id.PosId = Sketcher::PointPos::start;
             id.v = segm->getStartPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
             id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
+            id.PosId = Sketcher::PointPos::end;
             id.v = segm->getEndPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
         }
@@ -178,11 +178,11 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             const Part::GeomArcOfEllipse *segm = static_cast<const Part::GeomArcOfEllipse*>(gf->getGeometry());
             VertexIds id;
             id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
+            id.PosId = Sketcher::PointPos::start;
             id.v = segm->getStartPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
             id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
+            id.PosId = Sketcher::PointPos::end;
             id.v = segm->getEndPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
         }
@@ -190,11 +190,11 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             const Part::GeomArcOfHyperbola *segm = static_cast<const Part::GeomArcOfHyperbola*>(gf->getGeometry());
             VertexIds id;
             id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
+            id.PosId = Sketcher::PointPos::start;
             id.v = segm->getStartPoint();
             vertexIds.push_back(id);
             id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
+            id.PosId = Sketcher::PointPos::end;
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
@@ -202,11 +202,11 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             const Part::GeomArcOfParabola *segm = static_cast<const Part::GeomArcOfParabola*>(gf->getGeometry());
             VertexIds id;
             id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
+            id.PosId = Sketcher::PointPos::start;
             id.v = segm->getStartPoint();
             vertexIds.push_back(id);
             id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
+            id.PosId = Sketcher::PointPos::end;
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
@@ -214,11 +214,11 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             const Part::GeomBSplineCurve *segm = static_cast<const Part::GeomBSplineCurve*>(gf->getGeometry());
             VertexIds id;
             id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
+            id.PosId = Sketcher::PointPos::start;
             id.v = segm->getStartPoint();
             vertexIds.push_back(id);
             id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
+            id.PosId = Sketcher::PointPos::end;
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
@@ -406,9 +406,9 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
 
             id.v = dir;
             id.First = (int)i;
-            id.FirstPos = Sketcher::none;
+            id.FirstPos = Sketcher::PointPos::none;
             id.Second = GeoEnum::GeoUndef;
-            id.SecondPos = Sketcher::none;
+            id.SecondPos = Sketcher::PointPos::none;
 
             if( checkVertical(dir, angleprecision) ) {
                 id.Type = Sketcher::Vertical;
@@ -528,9 +528,9 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
                     id.Type = Equal;
                     id.v.x = vt->l;
                     id.First = vt->GeoId;
-                    id.FirstPos = Sketcher::none;
+                    id.FirstPos = Sketcher::PointPos::none;
                     id.Second = vn->GeoId;
-                    id.SecondPos = Sketcher::none;
+                    id.SecondPos = Sketcher::PointPos::none;
                     equallines.push_back(id);
                 }
                 else {
@@ -558,9 +558,9 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
                     id.Type = Equal;
                     id.v.x = vt->l;
                     id.First = vt->GeoId;
-                    id.FirstPos = Sketcher::none;
+                    id.FirstPos = Sketcher::PointPos::none;
                     id.Second = vn->GeoId;
-                    id.SecondPos = Sketcher::none;
+                    id.SecondPos = Sketcher::PointPos::none;
                     equalradius.push_back(id);
                 }
                 else {

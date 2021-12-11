@@ -76,7 +76,7 @@ struct SketcherExport GeoEnum
  * complex geometries like parabola focus or b-spline knots use InternalAlignment constraints
  * in addition to PointPos.
  */
-enum PointPos : int {
+enum class PointPos : int {
     none    = 0,    // Edge of a geometry
     start   = 1,    // Starting point of a geometry
     end     = 2,    // End point of a geometry

@@ -281,12 +281,12 @@ public:
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
     /// extend a curve
-    int extend(int geoId, double increment, int endPoint);
+    int extend(int geoId, double increment, PointPos endPoint);
     /// split a curve
     int split(int geoId, const Base::Vector3d &point);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
-    int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::none);
+    int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::PointPos::none);
     /// with default parameters adds a copy of the geometric elements displaced by the displacement vector.
     /// It creates an array of csize elements in the direction of the displacement vector by rsize elements in the
     /// direction perpendicular to the displacement vector, wherein the modulus of this perpendicular vector is scaled by perpscale.
@@ -595,18 +595,18 @@ protected:
                         int firstGeoId,
                         Sketcher::PointPos firstPos,
                         int secondGeoId = GeoEnum::GeoUndef,
-                        Sketcher::PointPos secondPos = Sketcher::none,
+                        Sketcher::PointPos secondPos = Sketcher::PointPos::none,
                         int thirdGeoId = GeoEnum::GeoUndef,
-                        Sketcher::PointPos thirdPos = Sketcher::none);
+                        Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
 
     // creates a new constraint
     std::unique_ptr<Constraint> createConstraint(   Sketcher::ConstraintType constrType,
                                                     int firstGeoId,
                                                     Sketcher::PointPos firstPos,
                                                     int secondGeoId = GeoEnum::GeoUndef,
-                                                    Sketcher::PointPos secondPos = Sketcher::none,
+                                                    Sketcher::PointPos secondPos = Sketcher::PointPos::none,
                                                     int thirdGeoId = GeoEnum::GeoUndef,
-                                                    Sketcher::PointPos thirdPos = Sketcher::none);
+                                                    Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to

@@ -184,14 +184,14 @@ void CmdSketcherCloseShape::activated(int iMsg)
 
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                                   "addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d)) ",
-                                  GeoId1, Sketcher::end, GeoId2, Sketcher::start);
+                                  GeoId1, static_cast<int>(Sketcher::PointPos::end), GeoId2, static_cast<int>(Sketcher::PointPos::start));
         }
     }
 
     // Close Last Edge with First Edge
     Gui::cmdAppObjectArgs(selection[0].getObject(),
                           "addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d)) ",
-                          GeoIdLast, Sketcher::end, GeoIdFirst, Sketcher::start);
+                          GeoIdLast, static_cast<int>(Sketcher::PointPos::end), GeoIdFirst, static_cast<int>(Sketcher::PointPos::start));
 
     // finish the transaction and update, and clear the selection (convenience)
     commitCommand();
@@ -276,7 +276,7 @@ void CmdSketcherConnect::activated(int iMsg)
             }
 
             Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                GeoId1,Sketcher::end,GeoId2,Sketcher::start);
+                GeoId1,static_cast<int>(Sketcher::PointPos::end),GeoId2,static_cast<int>(Sketcher::PointPos::start));
         }
     }
 
@@ -775,12 +775,12 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
                     switch(vals[ConstrId]->FirstPos)
                     {
-                        case Sketcher::none:
+                        case Sketcher::PointPos::none:
                             ss << "Edge" << vals[ConstrId]->First + 1;
                             break;
-                        case Sketcher::start:
-                        case Sketcher::end:
-                        case Sketcher::mid:
+                        case Sketcher::PointPos::start:
+                        case Sketcher::PointPos::end:
+                        case Sketcher::PointPos::mid:
                             int vertex = Obj->getVertexIndexGeoPos(vals[ConstrId]->First,vals[ConstrId]->FirstPos);
                             if(vertex>-1)
                                 ss << "Vertex" <<  vertex + 1;
@@ -794,12 +794,12 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
                     switch(vals[ConstrId]->SecondPos)
                     {
-                        case Sketcher::none:
+                        case Sketcher::PointPos::none:
                             ss << "Edge" << vals[ConstrId]->Second + 1;
                             break;
-                        case Sketcher::start:
-                        case Sketcher::end:
-                        case Sketcher::mid:
+                        case Sketcher::PointPos::start:
+                        case Sketcher::PointPos::end:
+                        case Sketcher::PointPos::mid:
                             int vertex = Obj->getVertexIndexGeoPos(vals[ConstrId]->Second,vals[ConstrId]->SecondPos);
                             if(vertex>-1)
                                 ss << "Vertex" << vertex + 1;
@@ -814,12 +814,12 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
                     switch(vals[ConstrId]->ThirdPos)
                     {
-                        case Sketcher::none:
+                        case Sketcher::PointPos::none:
                             ss << "Edge" << vals[ConstrId]->Third + 1;
                             break;
-                        case Sketcher::start:
-                        case Sketcher::end:
-                        case Sketcher::mid:
+                        case Sketcher::PointPos::start:
+                        case Sketcher::PointPos::end:
+                        case Sketcher::PointPos::mid:
                             int vertex = Obj->getVertexIndexGeoPos(vals[ConstrId]->Third,vals[ConstrId]->ThirdPos);
                             if(vertex>-1)
                                 ss << "Vertex" <<  vertex + 1;
@@ -915,11 +915,11 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
                     if (solvext->getEdge() == SolverGeometryExtension::Dependent)
                         testselectedge(geoid);
                     if (solvext->getStart() == SolverGeometryExtension::Dependent)
-                        testselectvertex(geoid, Sketcher::start);
+                        testselectvertex(geoid, Sketcher::PointPos::start);
                     if (solvext->getEnd() == SolverGeometryExtension::Dependent)
-                        testselectvertex(geoid, Sketcher::end);
+                        testselectvertex(geoid, Sketcher::PointPos::end);
                     if (solvext->getMid() == SolverGeometryExtension::Dependent)
-                        testselectvertex(geoid, Sketcher::mid);
+                        testselectvertex(geoid, Sketcher::PointPos::mid);
                 }
             }
         }
@@ -1083,7 +1083,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     getSelection().clearSelection();
 
     int LastGeoId = 0;
-    Sketcher::PointPos LastPointPos = Sketcher::none;
+    Sketcher::PointPos LastPointPos = Sketcher::PointPos::none;
     const Part::Geometry *LastGeo;
     typedef enum { invalid = -1, line = 0, point = 1 } GeoType;
 
@@ -1100,11 +1100,11 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
             if (it->substr(0,4) == "Edge") {
                 LastGeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-                LastPointPos = Sketcher::none;
+                LastPointPos = Sketcher::PointPos::none;
             }
             else {
                 LastGeoId = -std::atoi(it->substr(12,4000).c_str()) - 2;
-                LastPointPos = Sketcher::none;
+                LastPointPos = Sketcher::PointPos::none;
             }
 
             // reference can be external or non-external
@@ -1130,7 +1130,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
             if (Obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
                 LastGeoId = GeoId;
-                LastPointPos = Sketcher::start;
+                LastPointPos = Sketcher::PointPos::start;
                 lastgeotype = point;
 
                 // points to make symmetric
@@ -1159,21 +1159,21 @@ void CmdSketcherSymmetry::activated(int iMsg)
     // check if last selected element is horizontal axis
     else if (SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0,6) == "H_Axis") {
         LastGeoId = Sketcher::GeoEnum::HAxis;
-        LastPointPos = Sketcher::none;
+        LastPointPos = Sketcher::PointPos::none;
         lastgeotype = line;
         lastvertexoraxis = true;
     }
     // check if last selected element is vertical axis
     else if (SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0,6) == "V_Axis") {
         LastGeoId = Sketcher::GeoEnum::VAxis;
-        LastPointPos = Sketcher::none;
+        LastPointPos = Sketcher::PointPos::none;
         lastgeotype = line;
         lastvertexoraxis = true;
     }
     // check if last selected element is the root point
     else if (SubNames.rbegin()->size() == 9 && SubNames.rbegin()->substr(0,9) == "RootPoint") {
         LastGeoId = Sketcher::GeoEnum::RtPnt;
-        LastPointPos = Sketcher::start;
+        LastPointPos = Sketcher::PointPos::start;
         lastgeotype = point;
         lastvertexoraxis = true;
     }
@@ -1221,7 +1221,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     try{
         Gui::cmdAppObjectArgs(Obj,
                               "addSymmetric(%s, %d, %d)",
-                              geoIdList.c_str(), LastGeoId, LastPointPos);
+                              geoIdList.c_str(), LastGeoId, static_cast<int>(LastPointPos));
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
@@ -1465,7 +1465,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     getSelection().clearSelection();
 
     int LastGeoId = 0;
-    Sketcher::PointPos LastPointPos = Sketcher::none;
+    Sketcher::PointPos LastPointPos = Sketcher::PointPos::none;
     const Part::Geometry *LastGeo = 0;
 
     // create python command with list of elements
@@ -1475,7 +1475,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
         // only handle non-external edges
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
             LastGeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-            LastPointPos = Sketcher::none;
+            LastPointPos = Sketcher::PointPos::none;
             LastGeo = Obj->getGeometry(LastGeoId);
             // lines to copy
             if (LastGeoId >= 0) {
@@ -1491,7 +1491,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
             if (Obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
                 LastGeoId = GeoId;
-                LastPointPos = Sketcher::start;
+                LastPointPos = Sketcher::PointPos::start;
                 // points to copy
                 if (LastGeoId >= 0) {
                     geoids++;
@@ -1530,13 +1530,13 @@ void SketcherCopy::activate(SketcherCopy::Op op)
 
     // if the last element is not a point serving as a reference for the copy process
     // then make the start point of the last element the copy reference (if it exists, if not the center point)
-    if (LastPointPos == Sketcher::none) {
+    if (LastPointPos == Sketcher::PointPos::none) {
         if (LastGeo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
             LastGeo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
-            LastPointPos = Sketcher::mid;
+            LastPointPos = Sketcher::PointPos::mid;
         }
         else {
-            LastPointPos = Sketcher::start;
+            LastPointPos = Sketcher::PointPos::start;
         }
     }
 
@@ -2021,7 +2021,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     getSelection().clearSelection();
 
     int LastGeoId = 0;
-    Sketcher::PointPos LastPointPos = Sketcher::none;
+    Sketcher::PointPos LastPointPos = Sketcher::PointPos::none;
     const Part::Geometry *LastGeo = 0;
 
     // create python command with list of elements
@@ -2032,7 +2032,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
         // only handle non-external edges
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
             LastGeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-            LastPointPos = Sketcher::none;
+            LastPointPos = Sketcher::PointPos::none;
             LastGeo = Obj->getGeometry(LastGeoId);
 
             // lines to copy
@@ -2049,7 +2049,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
             if (Obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
                 LastGeoId = GeoId;
-                LastPointPos = Sketcher::start;
+                LastPointPos = Sketcher::PointPos::start;
                 // points to copy
                 if (LastGeoId >= 0) {
                     geoids++;
@@ -2088,13 +2088,13 @@ void CmdSketcherRectangularArray::activated(int iMsg)
 
     // if the last element is not a point serving as a reference for the copy process
     // then make the start point of the last element the copy reference (if it exists, if not the center point)
-    if (LastPointPos == Sketcher::none) {
+    if (LastPointPos == Sketcher::PointPos::none) {
         if (LastGeo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
             LastGeo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
-            LastPointPos = Sketcher::mid;
+            LastPointPos = Sketcher::PointPos::mid;
         }
         else {
-            LastPointPos = Sketcher::start;
+            LastPointPos = Sketcher::PointPos::start;
         }
     }
 

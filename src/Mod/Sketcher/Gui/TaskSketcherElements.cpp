@@ -400,13 +400,13 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                                 if (item->ElementNbr == GeoId) {
                                     switch(PosId)
                                     {
-                                    case Sketcher::start:
+                                    case Sketcher::PointPos::start:
                                         item->isStartingPointSelected=select;
                                         break;
-                                    case Sketcher::end:
+                                    case Sketcher::PointPos::end:
                                         item->isEndPointSelected=select;
                                         break;
-                                    case Sketcher::mid:
+                                    case Sketcher::PointPos::mid:
                                         item->isMidPointSelected=select;
                                         break;
                                     default:
@@ -791,9 +791,9 @@ void TaskSketcherElements::slotElementsChanged(void)
           (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
           (QString::fromLatin1("%1-").arg(i)+tr("Other"))),
         i-1,
-        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::start),
-        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::mid),
-        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::end),
+        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::PointPos::start),
+        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::PointPos::mid),
+        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::PointPos::end),
         type,
         construction,
         false));
@@ -888,9 +888,9 @@ void TaskSketcherElements::slotElementsChanged(void)
             (tr("Other") + linkname):
             (QString::fromLatin1("%1-").arg(i-2)+tr("Other"))),
             -j,
-            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::start),
-            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::mid),
-            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::end),
+            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::PointPos::start),
+            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::PointPos::mid),
+            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::PointPos::end),
             type,
             false, // externals are not construction geometry in the sense of the sketcher ui
             true // yes, external geometry

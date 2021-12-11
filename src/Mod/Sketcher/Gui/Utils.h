@@ -25,7 +25,7 @@
 #define SKETCHERGUI_Recompute_H
 
 namespace Sketcher {
-    enum PointPos : int;
+    enum class PointPos : int;
     class SketchObject;
 }
 
@@ -79,12 +79,12 @@ bool checkConstraint(const std::vector< Sketcher::Constraint * > &vals, Sketcher
 
 inline bool isVertex(int GeoId, Sketcher::PointPos PosId)
 {
-    return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId != Sketcher::none);
+    return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId != Sketcher::PointPos::none);
 }
 
 inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 {
-    return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId == Sketcher::none);
+    return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId == Sketcher::PointPos::none);
 }
 
 }

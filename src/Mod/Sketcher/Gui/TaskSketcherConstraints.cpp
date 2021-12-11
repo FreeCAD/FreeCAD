@@ -172,13 +172,13 @@ public:
 
             if(extended) {
                 if(constraint->Second == Sketcher::GeoEnum::GeoUndef) {
-                    name = QString::fromLatin1("%1 [(%2,%3)]").arg(name).arg(constraint->First).arg(constraint->FirstPos);
+                    name = QString::fromLatin1("%1 [(%2,%3)]").arg(name).arg(constraint->First).arg(static_cast<int>(constraint->FirstPos));
                 }
                 else if(constraint->Third == Sketcher::GeoEnum::GeoUndef) {
-                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5)]").arg(name).arg(constraint->First).arg(constraint->FirstPos).arg(constraint->Second).arg(constraint->SecondPos);
+                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5)]").arg(name).arg(constraint->First).arg(static_cast<int>(constraint->FirstPos)).arg(constraint->Second).arg(static_cast<int>(constraint->SecondPos));
                 }
                 else {
-                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5),(%6,%7)]").arg(name).arg(constraint->First).arg(constraint->FirstPos).arg(constraint->Second).arg(constraint->SecondPos).arg(constraint->Third).arg(constraint->ThirdPos);
+                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5),(%6,%7)]").arg(name).arg(constraint->First).arg(static_cast<int>(constraint->FirstPos)).arg(constraint->Second).arg(static_cast<int>(constraint->SecondPos)).arg(constraint->Third).arg(static_cast<int>(constraint->ThirdPos));
                 }
             }
 
@@ -998,10 +998,10 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                 }
                 else if(isFilter(ConstraintFilter::SpecialFilterValue::AssociatedConstraints)) { // is NOT a constraint
                     int geoid = Sketcher::GeoEnum::GeoUndef;
-                    Sketcher::PointPos pointpos = Sketcher::none;
+                    Sketcher::PointPos pointpos = Sketcher::PointPos::none;
                     getSelectionGeoId(expr, geoid, pointpos);
 
-                    if(geoid != Sketcher::GeoEnum::GeoUndef && pointpos == Sketcher::none){
+                    if(geoid != Sketcher::GeoEnum::GeoUndef && pointpos == Sketcher::PointPos::none){
                         // It is not possible to update on single addition/removal of a geometric element,
                         // as one removal may imply removing a constraint that should be added by a different element
                         // that is still selected. The necessary checks outweigh a full rebuild of the filter.
@@ -1021,7 +1021,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int & geoid, Sketc
     QRegExp rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
     int pos = expr.indexOf(rxEdge);
     geoid = Sketcher::GeoEnum::GeoUndef;
-    pointpos = Sketcher::none;
+    pointpos = Sketcher::PointPos::none;
 
     if (pos > -1) {
         bool ok;

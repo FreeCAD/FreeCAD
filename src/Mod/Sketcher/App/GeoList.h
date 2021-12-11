@@ -43,7 +43,7 @@ namespace Part {
 }
 
 namespace Sketcher {
-    enum PointPos : int;
+    enum class PointPos : int;
 
     class GeometryFacade;
 }

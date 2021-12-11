@@ -777,7 +777,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
     }
 
     int refgeoid = -1;
-    Sketcher::PointPos refposid = Sketcher::none;
+    Sketcher::PointPos refposid = Sketcher::PointPos::none;
     // Ask the user the type of mirroring
     SketchMirrorDialog smd;
     if (smd.exec() != QDialog::Accepted)
