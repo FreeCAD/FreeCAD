@@ -770,7 +770,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
             int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
 
             if(ConstrId < static_cast<int>(vals.size())){
-                if(vals[ConstrId]->First!=Constraint::GeoUndef){
+                if(vals[ConstrId]->First!=GeoEnum::GeoUndef){
                     ss.str(std::string());
 
                     switch(vals[ConstrId]->FirstPos)
@@ -789,7 +789,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     elementSubNames.push_back(ss.str());
                 }
 
-                if(vals[ConstrId]->Second!=Constraint::GeoUndef){
+                if(vals[ConstrId]->Second!=GeoEnum::GeoUndef){
                     ss.str(std::string());
 
                     switch(vals[ConstrId]->SecondPos)
@@ -809,7 +809,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     elementSubNames.push_back(ss.str());
                 }
 
-                if(vals[ConstrId]->Third!=Constraint::GeoUndef){
+                if(vals[ConstrId]->Third!=GeoEnum::GeoUndef){
                     ss.str(std::string());
 
                     switch(vals[ConstrId]->ThirdPos)

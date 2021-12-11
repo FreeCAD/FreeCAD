@@ -30,6 +30,8 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 
+#include "GeoEnum.h"
+
 namespace Sketcher
 {
 /*!
@@ -75,20 +77,6 @@ enum InternalAlignmentType {
     BSplineKnotPoint        = 10,
 };
 
-/*! PointPos lets us refer to different aspects of a piece of geometry.  sketcher::none refers
- * to an edge itself (eg., for a Perpendicular constraint on two lines). sketcher::start and
- * sketcher::end denote the endpoints of lines or bounded curves.  sketcher::mid denotes
- * geometries with geometrical centers (eg., circle, ellipse). Bare points use 'start'.  More
- * complex geometries like parabola focus or b-spline knots use InternalAlignment constraints
- * in addition to PointPos.
- */
-enum PointPos : int {
-    none    = 0,
-    start   = 1,
-    end     = 2,
-    mid     = 3
-};
-
 class SketcherExport Constraint : public Base::Persistence
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -109,8 +97,6 @@ public:
 
     Constraint *clone(void) const; // does copy the tag, it will be treated as a rename by the expression engine.
     Constraint *copy(void) const; // does not copy the tag, but generates a new one
-
-    static const int GeoUndef;
 
     // from base class
     virtual unsigned int getMemSize(void) const override;

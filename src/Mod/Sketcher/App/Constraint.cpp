@@ -43,18 +43,16 @@ using namespace Base;
 
 TYPESYSTEM_SOURCE(Sketcher::Constraint, Base::Persistence)
 
-const int Constraint::GeoUndef = -2000;
-
 Constraint::Constraint()
 : Value(0.0),
   Type(None),
   AlignmentType(Undef),
   Name(""),
-  First(GeoUndef),
+  First(GeoEnum::GeoUndef),
   FirstPos(none),
-  Second(GeoUndef),
+  Second(GeoEnum::GeoUndef),
   SecondPos(none),
-  Third(GeoUndef),
+  Third(GeoEnum::GeoUndef),
   ThirdPos(none),
   LabelDistance(10.f),
   LabelPosition(0.f),

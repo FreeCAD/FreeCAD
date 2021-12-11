@@ -79,12 +79,12 @@ bool checkConstraint(const std::vector< Sketcher::Constraint * > &vals, Sketcher
 
 inline bool isVertex(int GeoId, Sketcher::PointPos PosId)
 {
-    return (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none);
+    return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId != Sketcher::none);
 }
 
 inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 {
-    return (GeoId != Sketcher::Constraint::GeoUndef && PosId == Sketcher::none);
+    return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId == Sketcher::none);
 }
 
 }

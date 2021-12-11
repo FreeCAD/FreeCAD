@@ -49,11 +49,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
 
     char *ConstraintType;
-    int  FirstIndex = Constraint::GeoUndef;
+    int  FirstIndex = GeoEnum::GeoUndef;
     int  FirstPos   = none;
-    int  SecondIndex= Constraint::GeoUndef;
+    int  SecondIndex= GeoEnum::GeoUndef;
     int  SecondPos  = none;
-    int  ThirdIndex = Constraint::GeoUndef;
+    int  ThirdIndex = GeoEnum::GeoUndef;
     int  ThirdPos   = none;
     double Value    = 0;
     int intArg1, intArg2, intArg3, intArg4, intArg5;
@@ -487,20 +487,20 @@ std::string ConstraintPy::representation(void) const
         case Weight             : result << "'Weight'>";break;
         case Parallel           : result << "'Parallel'>";break;
         case Tangent            :
-            if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
+            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef)
                 result << "'Tangent'>";
             else
                 result << "'TangentViaPoint'>";
         break;
         case Perpendicular            :
-            if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
+            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef)
                 result << "'Perpendicular'>";
             else
                 result << "'PerpendicularViaPoint'>";
         break;
         case Distance           : result << "'Distance'>";break;
         case Angle              :
-            if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
+            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef)
                 result << "'Angle'>";
             else
                 result << "'AngleViaPoint'>";

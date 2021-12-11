@@ -424,13 +424,13 @@ int SketchObject::toggleDriving(int ConstrId)
     const auto geof2 = getGeometryFacade(vals[ConstrId]->Second);
     const auto geof3 = getGeometryFacade(vals[ConstrId]->Third);
 
-    bool extorconstructionpoint1 =  (vals[ConstrId]->First == Constraint::GeoUndef) ||
+    bool extorconstructionpoint1 =  (vals[ConstrId]->First == GeoEnum::GeoUndef) ||
                                     (vals[ConstrId]->First < 0)                     ||
                                     (geof1 && geof1->isGeoType(Part::GeomPoint::getClassTypeId()) && geof1->getConstruction() == true);
-    bool extorconstructionpoint2 =  (vals[ConstrId]->Second == Constraint::GeoUndef)||
+    bool extorconstructionpoint2 =  (vals[ConstrId]->Second == GeoEnum::GeoUndef)||
                                     (vals[ConstrId]->Second < 0)                    ||
                                     (geof2 && geof2->isGeoType(Part::GeomPoint::getClassTypeId()) && geof2->getConstruction() == true);
-    bool extorconstructionpoint3 =  (vals[ConstrId]->Third == Constraint::GeoUndef) ||
+    bool extorconstructionpoint3 =  (vals[ConstrId]->Third == GeoEnum::GeoUndef) ||
                                     (vals[ConstrId]->Third < 0)                     ||
                                     (geof3 && geof3->isGeoType(Part::GeomPoint::getClassTypeId()) && geof3->getConstruction() == true);
 
@@ -1397,7 +1397,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
     // check if constraints can be redirected to some other point
-    int replaceGeoId=Constraint::GeoUndef;
+    int replaceGeoId=GeoEnum::GeoUndef;
     PointPos replacePosId=Sketcher::none;
     if (!onlyCoincident) {
         for (std::vector<Constraint *>::const_iterator it = vals.begin(); it != vals.end(); ++it) {
@@ -1421,7 +1421,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     for (std::vector<Constraint *>::const_iterator it = vals.begin(); it != vals.end(); ++it) {
         if ((*it)->Type == Sketcher::Coincident) {
             if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                if (replaceGeoId != Constraint::GeoUndef &&
+                if (replaceGeoId != GeoEnum::GeoUndef &&
                     (replaceGeoId != (*it)->Second || replacePosId != (*it)->SecondPos)) { // redirect this constraint
                     (*it)->First = replaceGeoId;
                     (*it)->FirstPos = replacePosId;
@@ -1430,7 +1430,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
                     continue; // skip this constraint
             }
             else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                if (replaceGeoId != Constraint::GeoUndef &&
+                if (replaceGeoId != GeoEnum::GeoUndef &&
                     (replaceGeoId != (*it)->First || replacePosId != (*it)->FirstPos)) { // redirect this constraint
                     (*it)->Second = replaceGeoId;
                     (*it)->SecondPos = replacePosId;
@@ -1449,7 +1449,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
                     continue; // skip this constraint
                 }
                 else if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    if (replaceGeoId != Constraint::GeoUndef) { // redirect this constraint
+                    if (replaceGeoId != GeoEnum::GeoUndef) { // redirect this constraint
                         (*it)->First = replaceGeoId;
                         (*it)->FirstPos = replacePosId;
                     }
@@ -1457,7 +1457,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
                         continue; // skip this constraint
                 }
                 else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                    if (replaceGeoId != Constraint::GeoUndef) { // redirect this constraint
+                    if (replaceGeoId != GeoEnum::GeoUndef) { // redirect this constraint
                         (*it)->Second = replaceGeoId;
                         (*it)->SecondPos = replacePosId;
                     }
@@ -1467,7 +1467,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
             }
             else if ((*it)->Type == Sketcher::PointOnObject) {
                 if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                    if (replaceGeoId != Constraint::GeoUndef) { // redirect this constraint
+                    if (replaceGeoId != GeoEnum::GeoUndef) { // redirect this constraint
                         (*it)->First = replaceGeoId;
                         (*it)->FirstPos = replacePosId;
                     }
@@ -2594,7 +2594,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     };
 
     //******************* Step A => Detection of intersection - Common to all Geometries ****************************************//
-    int GeoId1=Constraint::GeoUndef, GeoId2=Constraint::GeoUndef;
+    int GeoId1=GeoEnum::GeoUndef, GeoId2=GeoEnum::GeoUndef;
     Base::Vector3d point1, point2;
     // Using SketchObject wrapper, as Part2DObject version returns GeoId = -1 when intersection not found, which is wrong for a GeoId (axis).
     // seekTrimPoints returns:
@@ -2627,7 +2627,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         // it is a non-periodic bspline and one intersection is enough.
         auto bspline = static_cast<const Part::GeomBSplineCurve *>(geo);
 
-        if(bspline->isPeriodic() && (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef))
+        if(bspline->isPeriodic() && (GeoId1 == GeoEnum::GeoUndef || GeoId2 == GeoEnum::GeoUndef))
             return -1;
 
         ifBSplineRemoveInternalAlignmentGeometry(GeoId); // GeoId gets updated here
@@ -2647,8 +2647,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         geo = getGeometry(GeoId);
     }
 
-    if( GeoId1 != Constraint::GeoUndef &&
-        GeoId2 != Constraint::GeoUndef &&
+    if( GeoId1 != GeoEnum::GeoUndef &&
+        GeoId2 != GeoEnum::GeoUndef &&
         arePointsWithinPrecision(point1, point2) ) { // If both points are detected and are coincident, deletion is the only option.
         delGeometry(GeoId);
 
@@ -2701,16 +2701,16 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         //****** Step B.1 (2) => Determine trimmable sections and trim operation ******//
 
         // Determine if there is something trimmable
-        double startDistance = GeoId1 != Constraint::GeoUndef?paramDistance(firstParam, point1Param):paramDistance(firstParam, point2Param);
-        double endDistance = GeoId2 != Constraint::GeoUndef?paramDistance(lastParam, point2Param):paramDistance(lastParam, point1Param);
-        double middleDistance = (GeoId1 != Constraint::GeoUndef && GeoId2 != Constraint::GeoUndef)?paramDistance(point1Param, point2Param):0.0;
+        double startDistance = GeoId1 != GeoEnum::GeoUndef?paramDistance(firstParam, point1Param):paramDistance(firstParam, point2Param);
+        double endDistance = GeoId2 != GeoEnum::GeoUndef?paramDistance(lastParam, point2Param):paramDistance(lastParam, point1Param);
+        double middleDistance = (GeoId1 != GeoEnum::GeoUndef && GeoId2 != GeoEnum::GeoUndef)?paramDistance(point1Param, point2Param):0.0;
 
         bool trimmableStart = startDistance > 0.;
         bool trimmableMiddle = middleDistance > 0.;
         bool trimmableEnd = endDistance > 0.;
 
         struct Operation {
-            Operation():Type(trim_none), actingParam(0.), intersectingGeoId(Constraint::GeoUndef){}
+            Operation():Type(trim_none), actingParam(0.), intersectingGeoId(GeoEnum::GeoUndef){}
             enum {
                 trim_none,
                 trim_start,
@@ -2726,8 +2726,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
         Operation op;
 
-        if ( GeoId1!=Constraint::GeoUndef &&
-             GeoId2!=Constraint::GeoUndef &&
+        if ( GeoId1!=GeoEnum::GeoUndef &&
+             GeoId2!=GeoEnum::GeoUndef &&
              pointParam > point1Param && pointParam < point2Param ) { // Trim Point between intersection points
 
             if( (!trimmableStart && !trimmableEnd) || !trimmableMiddle) { // if after trimming nothing would be left or if there is nothing to trim
@@ -2749,7 +2749,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 op.intersectingGeoId = GeoId2;
             }
         }
-        else if (GeoId2!=Constraint::GeoUndef && pointParam < point2Param) {
+        else if (GeoId2!=GeoEnum::GeoUndef && pointParam < point2Param) {
             if(trimmableEnd) {
                 op.Type = Operation::trim_start;
                 op.actingParam = point2Param; // trim from firstParam until point2Param
@@ -2760,7 +2760,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 op.Type = Operation::trim_delete;
             }
         }
-        else if (GeoId1!=Constraint::GeoUndef && pointParam > point1Param) {
+        else if (GeoId1!=GeoEnum::GeoUndef && pointParam > point1Param) {
             if(trimmableStart) {
                 op.Type = Operation::trim_end;
                 op.actingParam = point1Param; // trim from point1Param until lastParam
@@ -2904,7 +2904,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     //******************* Step B.2 => Trimming for unbounded periodic geometries ****************************************//
     else if ( isCircle || isEllipse || isPeriodicBSpline) {
         //****** STEP A(2) => Common tests *****//
-        if( GeoId1==Constraint::GeoUndef || GeoId2==Constraint::GeoUndef)
+        if( GeoId1==GeoEnum::GeoUndef || GeoId2==GeoEnum::GeoUndef)
             return -1;
 
         //****** Step B.2 (1) => Determine intersection parameters ******//
@@ -3511,7 +3511,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
             if(gf->isInternalAligned()) {
                 // only add this geometry if the corresponding geometry it defines is also in the list.
-                int definedGeo = Constraint::GeoUndef;
+                int definedGeo = GeoEnum::GeoUndef;
 
                 for( auto c : Constraints.getValues()) {
                     if(c->Type == Sketcher::InternalAlignment && c->First == *it) {
@@ -3796,7 +3796,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
             if(gf->isInternalAligned()) {
                 // only add this geometry if the corresponding geometry it defines is also in the list.
-                int definedGeo = Constraint::GeoUndef;
+                int definedGeo = GeoEnum::GeoUndef;
 
                 for( auto c : Constraints.getValues()) {
                     if(c->Type == Sketcher::InternalAlignment && c->First == *it) {
@@ -3963,7 +3963,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
             if(fit != geoIdMap.end()) { // if First of constraint is in geoIdList
 
-                if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {
+                if( (*it)->Second == GeoEnum::GeoUndef /*&& (*it)->Third == GeoEnum::GeoUndef*/) {
                     if (refIsAxisAligned) {
                         // in this case we want to keep the Vertical, Horizontal constraints
                         // DistanceX ,and DistanceY constraints should also be possible to keep in this case,
@@ -3992,7 +3992,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                     if(sit != geoIdMap.end()) { // Second is also in the list
 
-                        if( (*it)->Third == Constraint::GeoUndef ) {
+                        if( (*it)->Third == GeoEnum::GeoUndef ) {
                             if((*it)->Type ==  Sketcher::Coincident     ||
                             (*it)->Type ==  Sketcher::Perpendicular     ||
                             (*it)->Type ==  Sketcher::Parallel          ||
@@ -4128,7 +4128,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                 if(gf->isInternalAligned() && !moveonly) {
                     // only add this geometry if the corresponding geometry it defines is also in the list.
-                    int definedGeo = Constraint::GeoUndef;
+                    int definedGeo = GeoEnum::GeoUndef;
 
                     for( auto c : Constraints.getValues()) {
                         if(c->Type == Sketcher::InternalAlignment && c->First == *(newgeoIdList.begin())) {
@@ -4177,7 +4177,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                 if(gf->isInternalAligned() && !moveonly) {
                     // only add this geometry if the corresponding geometry it defines is also in the list.
-                    int definedGeo = Constraint::GeoUndef;
+                    int definedGeo = GeoEnum::GeoUndef;
 
                     for( auto c : Constraints.getValues()) {
                         if(c->Type == Sketcher::InternalAlignment && c->First == *it) {
@@ -4313,7 +4313,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                     if(fit != geoIdMap.end()) { // if First of constraint is in geoIdList
 
-                        if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {
+                        if( (*it)->Second == GeoEnum::GeoUndef /*&& (*it)->Third == GeoEnum::GeoUndef*/) {
                             if( ((*it)->Type != Sketcher::DistanceX && (*it)->Type != Sketcher::DistanceY ) ||
                                 (*it)->FirstPos == Sketcher::none ) { // if it is not a point locking DistanceX/Y
                                     if (((*it)->Type == Sketcher::DistanceX ||
@@ -4349,7 +4349,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                             auto sit = geoIdMap.find((*it)->Second);
 
                             if(sit != geoIdMap.end()) { // Second is also in the list
-                                if( (*it)->Third == Constraint::GeoUndef ) {
+                                if( (*it)->Third == GeoEnum::GeoUndef ) {
                                     if (((*it)->Type == Sketcher::DistanceX ||
                                         (*it)->Type == Sketcher::DistanceY ||
                                         (*it)->Type == Sketcher::Distance) && ((*it)->First == (*it)->Second) && clone ) {
@@ -4615,15 +4615,15 @@ int SketchObject::removeAxesAlignment(const std::vector<int> &geoIdList)
     std::vector< Constraint * > newconstrVals;
     newconstrVals.reserve(constrvals.size());
 
-    int referenceHorizontal = Constraint::GeoUndef;
-    int referenceVertical = Constraint::GeoUndef;
+    int referenceHorizontal = GeoEnum::GeoUndef;
+    int referenceVertical = GeoEnum::GeoUndef;
 
     int cindex = 0;
     for (size_t i = 0; i < constrvals.size(); i++) {
         if ( i == changeConstraintIndices[cindex].first ) {
             if(changeConstraintIndices[cindex].second == Sketcher::Horizontal && nhoriz > 0) {
                 changed = true;
-                if(referenceHorizontal == Constraint::GeoUndef) {
+                if(referenceHorizontal == GeoEnum::GeoUndef) {
                     referenceHorizontal = constrvals[i]->First;
                 }
                 else {
@@ -4639,7 +4639,7 @@ int SketchObject::removeAxesAlignment(const std::vector<int> &geoIdList)
             }
             else if(changeConstraintIndices[cindex].second == Sketcher::Vertical && nvert > 0) {
                 changed = true;
-                if(referenceVertical == Constraint::GeoUndef) {
+                if(referenceVertical == GeoEnum::GeoUndef) {
                     referenceVertical = constrvals[i]->First;;
                 }
                 else {
@@ -6022,11 +6022,11 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         if( (*it)->Third>=0 )
             newConstr->Third += nextgeoid;
 
-        if( (*it)->First<-2 && (*it)->First != Constraint::GeoUndef )
+        if( (*it)->First<-2 && (*it)->First != GeoEnum::GeoUndef )
             newConstr->First -= (nextextgeoid-2);
-        if( (*it)->Second<-2 && (*it)->Second != Constraint::GeoUndef)
+        if( (*it)->Second<-2 && (*it)->Second != GeoEnum::GeoUndef)
             newConstr->Second -= (nextextgeoid-2);
-        if( (*it)->Third<-2 && (*it)->Third != Constraint::GeoUndef)
+        if( (*it)->Third<-2 && (*it)->Third != GeoEnum::GeoUndef)
             newConstr->Third -= (nextextgeoid-2);
 
         newcVals.push_back(newConstr);
@@ -6147,19 +6147,19 @@ int SketchObject::delExternal(int ExtGeoId)
         if (cstr->First != GeoId && cstr->Second != GeoId && cstr->Third != GeoId) {
             auto copiedConstr = cstr;
             if (copiedConstr->First < GeoId &&
-                copiedConstr->First != Constraint::GeoUndef) {
+                copiedConstr->First != GeoEnum::GeoUndef) {
                 if (cstr == copiedConstr)
                     copiedConstr = cstr->clone();
                 copiedConstr->First += 1;
             }
             if (copiedConstr->Second < GeoId &&
-                copiedConstr->Second != Constraint::GeoUndef) {
+                copiedConstr->Second != GeoEnum::GeoUndef) {
                 if (cstr == copiedConstr)
                     copiedConstr = cstr->clone();
                 copiedConstr->Second += 1;
             }
             if (copiedConstr->Third < GeoId &&
-                copiedConstr->Third != Constraint::GeoUndef) {
+                copiedConstr->Third != GeoEnum::GeoUndef) {
                 if (cstr == copiedConstr)
                     copiedConstr = cstr->clone();
                 copiedConstr->Third += 1;
@@ -6210,8 +6210,8 @@ int SketchObject::delAllExternal()
 
     for (std::vector<Constraint *>::const_iterator it = constraints.begin(); it != constraints.end(); ++it) {
         if ((*it)->First > GeoEnum::RefExt &&
-            ((*it)->Second > GeoEnum::RefExt || (*it)->Second == Constraint::GeoUndef ) &&
-            ((*it)->Third > GeoEnum::RefExt || (*it)->Third == Constraint::GeoUndef) ) {
+            ((*it)->Second > GeoEnum::RefExt || (*it)->Second == GeoEnum::GeoUndef ) &&
+            ((*it)->Third > GeoEnum::RefExt || (*it)->Third == GeoEnum::GeoUndef) ) {
             Constraint *copiedConstr = (*it)->clone();
 
             newConstraints.push_back(copiedConstr);
@@ -6243,7 +6243,7 @@ int SketchObject::delConstraintsToExternal()
 
     const std::vector< Constraint * > &constraints = Constraints.getValuesForce();
     std::vector< Constraint * > newConstraints(0);
-    int GeoId = GeoEnum::RefExt, NullId = Constraint::GeoUndef;
+    int GeoId = GeoEnum::RefExt, NullId = GeoEnum::GeoUndef;
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
         if (    (*it)->First > GeoId
@@ -6273,7 +6273,7 @@ int SketchObject::getCompleteGeometryIndex(int GeoId) const
     else if (-GeoId <= int(ExternalGeo.size()))
         return -GeoId-1;
 
-    return Constraint::GeoUndef;
+    return GeoEnum::GeoUndef;
 }
 
 int SketchObject::getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) const
@@ -6282,7 +6282,7 @@ int SketchObject::getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) c
 
     if(completeGeometryIndex < 0 ||
         completeGeometryIndex >= completeGeometryCount)
-        return Constraint::GeoUndef;
+        return GeoEnum::GeoUndef;
 
     if(completeGeometryIndex < Geometry.getSize())
         return completeGeometryIndex;
@@ -6430,13 +6430,13 @@ void SketchObject::validateExternalLinks(void)
                 if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
                     Constraint *copiedConstr = (*it)->clone();
                     if (copiedConstr->First < GeoId &&
-                        copiedConstr->First != Constraint::GeoUndef)
+                        copiedConstr->First != GeoEnum::GeoUndef)
                         copiedConstr->First += 1;
                     if (copiedConstr->Second < GeoId &&
-                        copiedConstr->Second != Constraint::GeoUndef)
+                        copiedConstr->Second != GeoEnum::GeoUndef)
                         copiedConstr->Second += 1;
                     if (copiedConstr->Third < GeoId &&
-                        copiedConstr->Third != Constraint::GeoUndef)
+                        copiedConstr->Third != GeoEnum::GeoUndef)
                         copiedConstr->Third += 1;
 
                     newConstraints.push_back(copiedConstr);
@@ -7455,12 +7455,12 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
     ret = ret && (geoId >= -extGeoCount && geoId < intGeoCount);
 
     geoId = constraint->Second;
-    ret = ret && ((geoId == Constraint::GeoUndef && !requireSecond)
+    ret = ret && ((geoId == GeoEnum::GeoUndef && !requireSecond)
                   ||
                   (geoId >= -extGeoCount && geoId < intGeoCount) );
 
     geoId = constraint->Third;
-    ret = ret && ((geoId == Constraint::GeoUndef && !requireThird)
+    ret = ret && ((geoId == GeoEnum::GeoUndef && !requireThird)
                   ||
                   (geoId >= -extGeoCount && geoId < intGeoCount) );
 
@@ -7653,7 +7653,7 @@ double SketchObject::calculateConstraintError(int ConstrId)
         //add only necessary geometry to the sketch
         for(std::size_t i=0; i<GeoIdList.size(); i++){
             g = GeoIdList[i];
-            if (g != Constraint::GeoUndef){
+            if (g != GeoEnum::GeoUndef){
                 GeoIdList[i] = sk.addGeometry(this->getGeometry(g));
             }
         }
@@ -7982,7 +7982,7 @@ void SketchObject::migrateSketch(void)
 void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const
 {
     if (VertexId < 0 || VertexId >= int(VertexId2GeoId.size())) {
-        GeoId = Constraint::GeoUndef;
+        GeoId = GeoEnum::GeoUndef;
         PosId = none;
         return;
     }
@@ -8160,7 +8160,7 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
             geoId2 = cstr->Second;
             geoIdPt = cstr->Third;
             posPt = cstr->ThirdPos;
-            if (geoIdPt == Constraint::GeoUndef){//not tangent-via-point, try endpoint-to-endpoint...
+            if (geoIdPt == GeoEnum::GeoUndef){//not tangent-via-point, try endpoint-to-endpoint...
                 geoIdPt = cstr->First;
                 posPt = cstr->FirstPos;
             }

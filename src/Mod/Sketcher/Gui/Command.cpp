@@ -825,17 +825,17 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
 
         for (std::vector<Sketcher::Constraint *>::const_iterator itc=mirrorconstr.begin(); itc != mirrorconstr.end(); ++itc) {
 
-            if ((*itc)->First != Sketcher::Constraint::GeoUndef
+            if ((*itc)->First != Sketcher::GeoEnum::GeoUndef
                     || (*itc)->First == Sketcher::GeoEnum::HAxis
                     || (*itc)->First == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 (*itc)->First -= (addedGeometries + 1);
-            if ((*itc)->Second != Sketcher::Constraint::GeoUndef
+            if ((*itc)->Second != Sketcher::GeoEnum::GeoUndef
                     || (*itc)->Second == Sketcher::GeoEnum::HAxis
                     || (*itc)->Second == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 (*itc)->Second -= (addedGeometries + 1);
-            if ((*itc)->Third != Sketcher::Constraint::GeoUndef
+            if ((*itc)->Third != Sketcher::GeoEnum::GeoUndef
                     || (*itc)->Third == Sketcher::GeoEnum::HAxis
                     || (*itc)->Third == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
@@ -903,17 +903,17 @@ void CmdSketcherMergeSketches::activated(int iMsg)
         for (int i=0; i<=(addedConstraints-baseConstraints); i++){
             Sketcher::Constraint * constraint= mergesketch->Constraints.getValues()[i+baseConstraints];
 
-            if (constraint->First != Sketcher::Constraint::GeoUndef &&
+            if (constraint->First != Sketcher::GeoEnum::GeoUndef &&
                     constraint->First != Sketcher::GeoEnum::HAxis &&
                     constraint->First != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 constraint->First += baseGeometry;
-            if (constraint->Second != Sketcher::Constraint::GeoUndef &&
+            if (constraint->Second != Sketcher::GeoEnum::GeoUndef &&
                     constraint->Second != Sketcher::GeoEnum::HAxis &&
                     constraint->Second != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 constraint->Second += baseGeometry;
-            if (constraint->Third != Sketcher::Constraint::GeoUndef &&
+            if (constraint->Third != Sketcher::GeoEnum::GeoUndef &&
                     constraint->Third != Sketcher::GeoEnum::HAxis &&
                     constraint->Third != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin

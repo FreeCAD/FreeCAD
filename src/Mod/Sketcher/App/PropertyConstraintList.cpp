@@ -404,10 +404,10 @@ bool PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &
 bool PropertyConstraintList::checkConstraintIndices(int geomax, int geomin)
 {
     int mininternalgeoid = std::numeric_limits<int>::max();
-    int maxinternalgeoid = Constraint::GeoUndef;
+    int maxinternalgeoid = GeoEnum::GeoUndef;
 
     auto cmin = [] (int previousmin, int cindex) {
-        if( cindex == Constraint::GeoUndef )
+        if( cindex == GeoEnum::GeoUndef )
             return previousmin;
 
         return ( cindex < previousmin )? cindex : previousmin;

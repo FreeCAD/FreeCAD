@@ -734,7 +734,7 @@ public:
     virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         SelIdPair selIdPair;
-        selIdPair.GeoId = Constraint::GeoUndef;
+        selIdPair.GeoId = GeoEnum::GeoUndef;
         selIdPair.PosId = Sketcher::none;
         std::stringstream ss;
         SelType newSelType = SelUnknown;
@@ -778,7 +778,7 @@ public:
             ss << "ExternalEdge" << Sketcher::GeoEnum::RefExt + 1 - CrvId;
         }
 
-        if (selIdPair.GeoId == Constraint::GeoUndef) {
+        if (selIdPair.GeoId == GeoEnum::GeoUndef) {
             // If mouse is released on "blank" space, start over
             selSeq.clear();
             resetOngoingSequences();
@@ -1780,7 +1780,7 @@ class DrawSketchHandlerCoincident: public DrawSketchHandler
 public:
     DrawSketchHandlerCoincident()
     {
-        GeoId1 = GeoId2 = Constraint::GeoUndef;
+        GeoId1 = GeoId2 = GeoEnum::GeoUndef;
         PosId1 = PosId2 = Sketcher::none;
     }
     virtual ~DrawSketchHandlerCoincident()
@@ -1825,7 +1825,7 @@ public:
             ss << "RootPoint";
         }
         else {
-            GeoId1 = GeoId2 = Constraint::GeoUndef;
+            GeoId1 = GeoId2 = GeoEnum::GeoUndef;
             PosId1 = PosId2 = Sketcher::none;
             Gui::Selection().clearSelection();
 
@@ -1833,7 +1833,7 @@ public:
         }
 
 
-        if (GeoId1 == Constraint::GeoUndef) {
+        if (GeoId1 == GeoEnum::GeoUndef) {
             GeoId1 = GeoId_temp;
             PosId1 = PosId_temp;
             Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
@@ -1917,7 +1917,7 @@ bool CmdSketcherConstrainCoincident::substituteConstraintCombinations(SketchObje
     for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it,++j) {
         if( (*it)->Type == Sketcher::Tangent &&
             (*it)->FirstPos == Sketcher::none && (*it)->SecondPos == Sketcher::none &&
-            (*it)->Third == Constraint::GeoUndef &&
+            (*it)->Third == GeoEnum::GeoUndef &&
             (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
             ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
 
@@ -2147,7 +2147,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         return;
     }
 
-    int GeoId1, GeoId2=Constraint::GeoUndef;
+    int GeoId1, GeoId2=GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1, PosId2=Sketcher::none;
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
     if (SubNames.size() == 2)
@@ -2283,7 +2283,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
     SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
-    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef;
+    int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none;
 
     bool arebothpointsorsegmentsfixed=areBothPointsOrSegmentsFixed(Obj,GeoId1, GeoId2);
@@ -2472,7 +2472,7 @@ bool CmdSketcherConstrainPointOnObject::substituteConstraintCombinations(   Sket
     for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it, ++cid) {
         if( (*it)->Type == Sketcher::Tangent &&
             (*it)->FirstPos == Sketcher::none && (*it)->SecondPos == Sketcher::none &&
-            (*it)->Third == Constraint::GeoUndef &&
+            (*it)->Third == GeoEnum::GeoUndef &&
             (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
             ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
 
@@ -2744,7 +2744,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         return;
     }
 
-    int GeoId1, GeoId2=Constraint::GeoUndef;
+    int GeoId1, GeoId2=GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1, PosId2=Sketcher::none;
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
     if (SubNames.size() == 2)
@@ -2759,13 +2759,13 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
     if (GeoId1 == Sketcher::GeoEnum::HAxis && PosId1 == Sketcher::none)
         // reject horizontal axis from selection
-        GeoId1 = Constraint::GeoUndef;
+        GeoId1 = GeoEnum::GeoUndef;
     else if (GeoId1 == Sketcher::GeoEnum::VAxis && PosId1 == Sketcher::none) {
         GeoId1 = Sketcher::GeoEnum::HAxis;
         PosId1 = Sketcher::start;
     }
 
-    if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  {
+    if (isEdge(GeoId1,PosId1) && GeoId2 == GeoEnum::GeoUndef)  {
         // horizontal length of a line
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -2814,7 +2814,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
         return;
     }
-    else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) {
+    else if (isVertex(GeoId1,PosId1) && GeoId2 == GeoEnum::GeoUndef) {
         // point on fixed x-coordinate
 
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
@@ -2857,7 +2857,7 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair> &selS
     SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
-    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef;
+    int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none;
 
     switch (seqIndex) {
@@ -2996,7 +2996,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         return;
     }
 
-    int GeoId1, GeoId2=Constraint::GeoUndef;
+    int GeoId1, GeoId2=GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1, PosId2=Sketcher::none;
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
     if (SubNames.size() == 2)
@@ -3010,11 +3010,11 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     }
 
     if (GeoId1 == Sketcher::GeoEnum::VAxis && PosId1 == Sketcher::none) // reject vertical axis from selection
-        GeoId1 = Constraint::GeoUndef;
+        GeoId1 = GeoEnum::GeoUndef;
     else if (GeoId1 == Sketcher::GeoEnum::HAxis && PosId1 == Sketcher::none)
         PosId1 = Sketcher::start;
 
-    if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // vertical length of a line
+    if (isEdge(GeoId1,PosId1) && GeoId2 == GeoEnum::GeoUndef)  { // vertical length of a line
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                         QObject::tr("Cannot add a vertical length constraint on an axis!"));
@@ -3063,7 +3063,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
         return;
     }
-    else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) {
+    else if (isVertex(GeoId1,PosId1) && GeoId2 == GeoEnum::GeoUndef) {
         // point on fixed y-coordinate
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -3106,7 +3106,7 @@ void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair> &selS
     SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
-    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef;
+    int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none;
 
     switch (seqIndex) {
@@ -3722,7 +3722,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
     SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
-    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
+    int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef, GeoId3 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
 
     // check if the edge already has a Block constraint
@@ -4414,7 +4414,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
     QString strError;
 
-    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
+    int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef, GeoId3 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
 
     // check if the edge already has a Block constraint
@@ -5777,7 +5777,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     }
 
 
-    int GeoId1, GeoId2=Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
+    int GeoId1, GeoId2=GeoEnum::GeoUndef, GeoId3 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1, PosId2=Sketcher::none, PosId3 = Sketcher::none;
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
     if (SubNames.size() > 1)
@@ -5863,7 +5863,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             std::swap(PosId1,PosId2);
         }
 
-        if(isBsplinePole(Obj, GeoId1) || (GeoId2 != Constraint::GeoUndef && isBsplinePole(Obj, GeoId2))) {
+        if(isBsplinePole(Obj, GeoId1) || (GeoId2 != GeoEnum::GeoUndef && isBsplinePole(Obj, GeoId2))) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                             QObject::tr("Select an edge that is not a B-spline weight"));
             return;
@@ -6026,7 +6026,7 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
     SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
-    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
+    int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef, GeoId3 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
 
     switch (seqIndex) {
@@ -6396,7 +6396,7 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
     QString strError;
 
-    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef;
+    int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef;
 
     switch (seqIndex) {
     case 0: // {SelEdge, SelEdge}
@@ -6644,7 +6644,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
     QString strError;
 
-    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
+    int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef, GeoId3 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
 
     switch (seqIndex) {

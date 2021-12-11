@@ -487,7 +487,7 @@ public:
 
     /** retrieves intersection points of this curve with the closest two curves around a point of this curve.
      * - it includes internal and external intersecting geometry.
-     * - it returns Constraint::GeoUndef if no intersection is found.
+     * - it returns GeoEnum::GeoUndef if no intersection is found.
      */
     bool seekTrimPoints(int GeoId, const Base::Vector3d &point,
                                   int &GeoId1, Base::Vector3d &intersect1,
@@ -594,18 +594,18 @@ protected:
     void addConstraint( Sketcher::ConstraintType constrType,
                         int firstGeoId,
                         Sketcher::PointPos firstPos,
-                        int secondGeoId = Constraint::GeoUndef,
+                        int secondGeoId = GeoEnum::GeoUndef,
                         Sketcher::PointPos secondPos = Sketcher::none,
-                        int thirdGeoId = Constraint::GeoUndef,
+                        int thirdGeoId = GeoEnum::GeoUndef,
                         Sketcher::PointPos thirdPos = Sketcher::none);
 
     // creates a new constraint
     std::unique_ptr<Constraint> createConstraint(   Sketcher::ConstraintType constrType,
                                                     int firstGeoId,
                                                     Sketcher::PointPos firstPos,
-                                                    int secondGeoId = Constraint::GeoUndef,
+                                                    int secondGeoId = GeoEnum::GeoUndef,
                                                     Sketcher::PointPos secondPos = Sketcher::none,
-                                                    int thirdGeoId = Constraint::GeoUndef,
+                                                    int thirdGeoId = GeoEnum::GeoUndef,
                                                     Sketcher::PointPos thirdPos = Sketcher::none);
 
 private:

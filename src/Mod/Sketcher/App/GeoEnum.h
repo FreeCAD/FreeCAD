@@ -23,19 +23,109 @@
 #ifndef SKETCHER_GeoEnum_H
 #define SKETCHER_GeoEnum_H
 
+#include <functional>
+
 namespace Sketcher
 {
 
+/** Sketcher Geometry is identified with an index called GeoId.
+ *
+ * GeoId >= 0 are normal geometry elements
+ * GeoId = -1 and -2 are the Horizontal and Vertical axes and the root point
+ * GeoId <= -2 are external geometry elements
+ * GeoId = -2000 is an undefined or unused geometry id
+ *
+ * GeoEnum struct provides convenience labels for these GeoIds.
+ *
+ * However, GeoEnum is not enough to define an element of a Geometry. The most
+ * straighforward example is the RootPoint and the Horizontal Axis. Both have
+ * the same GeoId (= -1).
+ *
+ * The same happens for elements of a given geometry. For example, a line has
+ * a starting point, an endpoint and an edge. All these share the same GeoId, as the
+ * GeoId identifies a geometry and not an element of a geometry.
+ *
+ * The elements of a given geometry are identified by the PointPos enum. In the case
+ * of the root point, it is considered to be the start point of the Horizontal Axis, this
+ * is a convention.
+ *
+ * Therefore, a geometry element (GeoElementId) is univocally defined by the combination of a
+ * GeoId and a PointPos.
+ *
+ * Geometry shapes having more or different elements than those supported by the PointPos
+ * struct, such as conics, in particular an arc of ellipse, are called complex geometries. The extra
+ * elements of complex geometries are actual separate geometries (focus of an ellipse, line defining the
+ * major axis of an ellipse, circle representing the weight of a BSpline), and they are call InternalAlignment
+ * geometries.
+ *
+ * For Geometry lists, refer to GeoListModel template.
+ */
 struct SketcherExport GeoEnum
 {
-    static const int RtPnt;
-    static const int HAxis;
-    static const int VAxis;
-    static const int RefExt;
+    static const int RtPnt;     // GeoId of the Root Point
+    static const int HAxis;     // GeoId of the Horizontal Axis
+    static const int VAxis;     // GeoId of the Vertical Axis
+    static const int RefExt;    // Starting GeoID of external geometry ( negative geoIds starting at this index)
+    static const int GeoUndef;  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
 };
+
+/*! PointPos lets us refer to different aspects of a piece of geometry.  sketcher::none refers
+ * to an edge itself (eg., for a Perpendicular constraint on two lines). sketcher::start and
+ * sketcher::end denote the endpoints of lines or bounded curves.  sketcher::mid denotes
+ * geometries with geometrical centers (eg., circle, ellipse). Bare points use 'start'.  More
+ * complex geometries like parabola focus or b-spline knots use InternalAlignment constraints
+ * in addition to PointPos.
+ */
+enum PointPos : int {
+    none    = 0,    // Edge of a geometry
+    start   = 1,    // Starting point of a geometry
+    end     = 2,    // End point of a geometry
+    mid     = 3     // Mid point of a geometry
+};
+
+/** @brief      Struct for storing a {GeoId, PointPos} pair.
+ *
+ * @details
+ *
+ * {GeoId, PointPos} is pervasive in the sketcher as means to identify geometry (edges) and geometry elements (vertices).
+ *
+ * GeoElementId intends to substitute this pair whenever appropriate. For example in containers and ordered containers.
+ *
+ * It has overloader equality operator and specialised std::less so that it can safely be used in containers, including
+ * ordered containers.
+ *
+ */
+class SketcherExport GeoElementId
+{
+public:
+    explicit constexpr GeoElementId(int geoId = GeoEnum::GeoUndef, PointPos pos = PointPos::none);
+
+    bool operator==(const GeoElementId& obj) const;
+
+    int GeoId;
+    PointPos Pos;
+
+    static const GeoElementId RtPnt;     // GeoElementId of the Root Point
+    static const GeoElementId HAxis;     // GeoElementId of the Horizontal Axis
+    static const GeoElementId VAxis;     // GeoElementId of the Vertical Axis
+};
+
+constexpr GeoElementId::GeoElementId(int geoId, PointPos pos): GeoId(geoId), Pos(pos)
+{
+}
 
 } // namespace Sketcher
 
+namespace std
+{
+    template<> struct less<Sketcher::GeoElementId>
+    {
+       bool operator() (const Sketcher::GeoElementId& lhs, const Sketcher::GeoElementId& rhs) const
+       {
+           return (lhs.GeoId != rhs.GeoId)?(lhs.GeoId < rhs.GeoId):(static_cast<int>(lhs.Pos) < static_cast<int>(rhs.Pos));
+       }
+    };
+} // namespace std
 
 #endif // SKETCHER_GeoEnum_H
 

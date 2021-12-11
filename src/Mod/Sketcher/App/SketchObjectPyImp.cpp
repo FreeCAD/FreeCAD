@@ -1372,7 +1372,7 @@ PyObject* SketchObjectPy::calculateAngleViaPoint(PyObject *args)
 
 PyObject* SketchObjectPy::isPointOnCurve(PyObject *args)
 {
-    int GeoId=Constraint::GeoUndef;
+    int GeoId=GeoEnum::GeoUndef;
     double px=0, py=0;
     if (!PyArg_ParseTuple(args, "idd", &GeoId, &px, &py))
         return 0;

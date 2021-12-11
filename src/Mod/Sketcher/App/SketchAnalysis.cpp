@@ -407,7 +407,7 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
             id.v = dir;
             id.First = (int)i;
             id.FirstPos = Sketcher::none;
-            id.Second = Constraint::GeoUndef;
+            id.Second = GeoEnum::GeoUndef;
             id.SecondPos = Sketcher::none;
 
             if( checkVertical(dir, angleprecision) ) {

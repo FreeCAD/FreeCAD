@@ -1263,7 +1263,7 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     bs.knotpointGeoids.resize(knots.size());
 
     for(std::vector<int>::iterator it = bs.knotpointGeoids.begin(); it != bs.knotpointGeoids.end(); ++it) {
-        (*it) = Constraint::GeoUndef;
+        (*it) = GeoEnum::GeoUndef;
     }
 
     BSplines.push_back(bs);
@@ -1546,7 +1546,7 @@ int Sketch::addConstraint(const Constraint *constraint)
 
             rtn = addDistanceXConstraint(constraint->First,c.value,c.driving);
         }
-        else if (constraint->Second == Constraint::GeoUndef) {// point on fixed x-coordinate
+        else if (constraint->Second == GeoEnum::GeoUndef) {// point on fixed x-coordinate
             c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
@@ -1582,7 +1582,7 @@ int Sketch::addConstraint(const Constraint *constraint)
 
             rtn = addDistanceYConstraint(constraint->First,c.value,c.driving);
         }
-        else if (constraint->Second == Constraint::GeoUndef){ // point on fixed y-coordinate
+        else if (constraint->Second == GeoEnum::GeoUndef){ // point on fixed y-coordinate
             c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
@@ -1607,14 +1607,14 @@ int Sketch::addConstraint(const Constraint *constraint)
         }
         break;
     case Horizontal:
-        if (constraint->Second == Constraint::GeoUndef) // horizontal line
+        if (constraint->Second == GeoEnum::GeoUndef) // horizontal line
             rtn = addHorizontalConstraint(constraint->First);
         else // two points on the same horizontal line
             rtn = addHorizontalConstraint(constraint->First,constraint->FirstPos,
                                           constraint->Second,constraint->SecondPos);
         break;
     case Vertical:
-        if (constraint->Second == Constraint::GeoUndef) // vertical line
+        if (constraint->Second == GeoEnum::GeoUndef) // vertical line
             rtn = addVerticalConstraint(constraint->First);
         else // two points on the same vertical line
             rtn = addVerticalConstraint(constraint->First,constraint->FirstPos,
@@ -1632,7 +1632,7 @@ int Sketch::addConstraint(const Constraint *constraint)
     case Perpendicular:
         if (constraint->FirstPos == none &&
                 constraint->SecondPos == none &&
-                constraint->Third == Constraint::GeoUndef){
+                constraint->Third == GeoEnum::GeoUndef){
             //simple perpendicularity
             rtn = addPerpendicularConstraint(constraint->First,constraint->Second);
         } else {
@@ -1655,7 +1655,7 @@ int Sketch::addConstraint(const Constraint *constraint)
     case Tangent:
         if (constraint->FirstPos == none &&
                 constraint->SecondPos == none &&
-                constraint->Third == Constraint::GeoUndef){
+                constraint->Third == GeoEnum::GeoUndef){
             //simple tangency
             rtn = addTangentConstraint(constraint->First,constraint->Second);
         } else {
@@ -1688,7 +1688,7 @@ int Sketch::addConstraint(const Constraint *constraint)
                                         constraint->Second,constraint->SecondPos,
                                         c.value,c.driving);
         }
-        else if (constraint->Second != Constraint::GeoUndef) {
+        else if (constraint->Second != GeoEnum::GeoUndef) {
             if (constraint->FirstPos != none) { // point to line distance
                 c.value = new double(constraint->getValue());
                 if(c.driving)
@@ -1714,7 +1714,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         }
         break;
     case Angle:
-        if (constraint->Third != Constraint::GeoUndef){
+        if (constraint->Third != GeoEnum::GeoUndef){
             c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
@@ -1740,7 +1740,7 @@ int Sketch::addConstraint(const Constraint *constraint)
             rtn = addAngleConstraint(constraint->First,constraint->FirstPos,
                                      constraint->Second,constraint->SecondPos,c.value,c.driving);
         }
-        else if (constraint->Second != Constraint::GeoUndef){ // angle between two lines
+        else if (constraint->Second != GeoEnum::GeoUndef){ // angle between two lines
             c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
@@ -1751,7 +1751,7 @@ int Sketch::addConstraint(const Constraint *constraint)
 
             rtn = addAngleConstraint(constraint->First,constraint->Second,c.value,c.driving);
         }
-        else if (constraint->First != Constraint::GeoUndef) {// orientation angle of a line
+        else if (constraint->First != GeoEnum::GeoUndef) {// orientation angle of a line
             c.value = new double(constraint->getValue());
             if(c.driving)
                 FixParameters.push_back(c.value);
@@ -1983,14 +1983,14 @@ void Sketch::getBlockedGeometry(std::vector<bool> & blockedGeometry,
             // solver behaviour
 
             // further, any constraint taking only one element, which is blocked is also unenforceable
-            if((*it)->Second==Constraint::GeoUndef && (*it)->Third==Constraint::GeoUndef && (*it)->First>=0 ) {
+            if((*it)->Second==GeoEnum::GeoUndef && (*it)->Third==GeoEnum::GeoUndef && (*it)->First>=0 ) {
                 if (blockedGeometry[(*it)->First] && i < geo2blockingconstraintindex[(*it)->First]) {
                     unenforceableConstraints[i]= true;
                 }
             }
             // further any constraint on only two elements where both elements are blocked or one is blocked and the other is an axis or external
             // provided that the constraints precede the last block constraint.
-            else if((*it)->Third==Constraint::GeoUndef) {
+            else if((*it)->Third==GeoEnum::GeoUndef) {
                 if ( ((*it)->First>=0 && (*it)->Second>=0 && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second] &&
                     (i < geo2blockingconstraintindex[(*it)->First] || i < geo2blockingconstraintindex[(*it)->Second])) ||
                     ((*it)->First<0 && (*it)->Second>=0 && blockedGeometry[(*it)->Second] && i < geo2blockingconstraintindex[(*it)->Second]) ||
@@ -2375,7 +2375,7 @@ int Sketch::addAngleAtPointConstraint(
         return -1;
     }
 
-    bool avp = geoId3!=Constraint::GeoUndef; //is angle-via-point?
+    bool avp = geoId3!=GeoEnum::GeoUndef; //is angle-via-point?
     bool e2c = pos2 == none  &&  pos1 != none;//is endpoint-to-curve?
     bool e2e = pos2 != none  &&  pos1 != none;//is endpoint-to-endpoint?
 
@@ -3450,7 +3450,7 @@ bool Sketch::updateGeometry()
                 #if OCC_VERSION_HEX >= 0x060900
                 int index = 0;
                 for(std::vector<int>::const_iterator it5 = mybsp.knotpointGeoids.begin(); it5 != mybsp.knotpointGeoids.end(); ++it5, index++) {
-                    if( *it5 != Constraint::GeoUndef) {
+                    if( *it5 != GeoEnum::GeoUndef) {
                         if (Geoms[*it5].type == Point) {
                             GeomPoint *point = static_cast<GeomPoint*>(Geoms[*it5].geo);
 

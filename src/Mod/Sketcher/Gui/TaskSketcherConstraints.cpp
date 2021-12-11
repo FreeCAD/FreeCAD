@@ -171,10 +171,10 @@ public:
             bool extended = hGrp->GetBool("ExtendedConstraintInformation",false);
 
             if(extended) {
-                if(constraint->Second == Sketcher::Constraint::GeoUndef) {
+                if(constraint->Second == Sketcher::GeoEnum::GeoUndef) {
                     name = QString::fromLatin1("%1 [(%2,%3)]").arg(name).arg(constraint->First).arg(constraint->FirstPos);
                 }
-                else if(constraint->Third == Sketcher::Constraint::GeoUndef) {
+                else if(constraint->Third == Sketcher::GeoEnum::GeoUndef) {
                     name = QString::fromLatin1("%1 [(%2,%3),(%4,%5)]").arg(name).arg(constraint->First).arg(constraint->FirstPos).arg(constraint->Second).arg(constraint->SecondPos);
                 }
                 else {
@@ -997,11 +997,11 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                     }
                 }
                 else if(isFilter(ConstraintFilter::SpecialFilterValue::AssociatedConstraints)) { // is NOT a constraint
-                    int geoid = Sketcher::Constraint::GeoUndef;
+                    int geoid = Sketcher::GeoEnum::GeoUndef;
                     Sketcher::PointPos pointpos = Sketcher::none;
                     getSelectionGeoId(expr, geoid, pointpos);
 
-                    if(geoid != Sketcher::Constraint::GeoUndef && pointpos == Sketcher::none){
+                    if(geoid != Sketcher::GeoEnum::GeoUndef && pointpos == Sketcher::none){
                         // It is not possible to update on single addition/removal of a geometric element,
                         // as one removal may imply removing a constraint that should be added by a different element
                         // that is still selected. The necessary checks outweigh a full rebuild of the filter.
@@ -1020,7 +1020,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int & geoid, Sketc
 {
     QRegExp rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
     int pos = expr.indexOf(rxEdge);
-    geoid = Sketcher::Constraint::GeoUndef;
+    geoid = Sketcher::GeoEnum::GeoUndef;
     pointpos = Sketcher::none;
 
     if (pos > -1) {
