@@ -218,6 +218,7 @@ SET(FreeCADBase_CPP_SRCS
     Base64.cpp
     BaseClass.cpp
     BaseClassPyImp.cpp
+    BindingManager.cpp
     BoundBoxPyImp.cpp
     Builder3D.cpp
     Console.cpp
@@ -278,6 +279,7 @@ SET(FreeCADBase_HPP_SRCS
     Axis.h
     Base64.h
     BaseClass.h
+    BindingManager.h
     BoundBox.h
     Builder3D.h
     Console.h

@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #include "Type.h"
+#include "BaseClassPy.h"
+#include "BindingManager.h"
 #include "TypePy.h"
 #include "TypePy.cpp"
 
@@ -167,6 +169,48 @@ PyObject*  TypePy::getAllDerived(PyObject *args)
     return Py::new_reference_to(res);
 }
 
+namespace {
+static void deallocPyObject(PyObject* py)
+{
+    Base::PyObjectBase* pybase = static_cast<Base::PyObjectBase*>(py);
+    Base::BaseClass* base = static_cast<Base::BaseClass*>(pybase->getTwinPointer());
+    if (Base::BindingManager::instance().retrieveWrapper(base) == py) {
+        Base::BindingManager::instance().releaseWrapper(base, py);
+        delete base;
+    }
+
+    Base::PyObjectBase::PyDestructor(py);
+}
+
+static PyObject* createPyObject(Base::BaseClass* base)
+{
+    PyObject* py = base->getPyObject();
+
+    if (PyObject_TypeCheck(py, &Base::PyObjectBase::Type)) {
+        // if the Python wrapper is a sub-class of PyObjectBase then
+        // check if the C++ object must be added to the list of tracked objects
+        Base::PyObjectBase* pybase = static_cast<Base::PyObjectBase*>(py);
+        if (base == pybase->getTwinPointer()) {
+            // steal a reference because at this point the counter is at 2
+            Py_DECREF(py);
+            Py_TYPE(py)->tp_dealloc = deallocPyObject;
+            Base::BindingManager::instance().registerWrapper(base, py);
+        }
+        else {
+            // The Python wrapper creates its own copy of the C++ object
+            delete base;
+        }
+    }
+    else {
+        // if the Python wrapper is not a sub-class of PyObjectBase then
+        // immediately destroy the C++ object
+        delete base;
+    }
+    return py;
+}
+
+}
+
 PyObject* TypePy::createInstance (PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -177,8 +221,7 @@ PyObject* TypePy::createInstance (PyObject *args)
         Py_Return;
     }
 
-    //TODO: At the moment "base" will never be destroyed and causes a memory leak
-    return base->getPyObject();
+    return createPyObject(base);
 }
 
 PyObject* TypePy::createInstanceByName (PyObject *args)
@@ -194,8 +237,7 @@ PyObject* TypePy::createInstanceByName (PyObject *args)
         Py_Return;
     }
 
-    //TODO: At the moment "base" will never be destroyed and causes a memory leak
-    return base->getPyObject();
+    return createPyObject(base);
 }
 
 Py::String TypePy::getName(void) const
@@ -223,7 +265,7 @@ Py::String TypePy::getModule(void) const
 
 PyObject *TypePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TypePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
