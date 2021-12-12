@@ -329,8 +329,8 @@ double Grabber3d::getViewerScale(Gui::View3DInventorViewer* viewer)
 
     SbVec2s p1s(0,0);
     SbVec2s p2s(winSizePx[0] - 1, winSizePx[1] - 1);
-    SbVec3f p1w = viewer->getPointOnScreen(p1s);
-    SbVec3f p2w = viewer->getPointOnScreen(p2s);
+    SbVec3f p1w = viewer->getPointOnFocalPlane(p1s);
+    SbVec3f p2w = viewer->getPointOnFocalPlane(p2s);
     double  worldLengthmm = (p2w - p1w).length();         //mm
 
     result =  worldLengthmm / screenLengthmm;

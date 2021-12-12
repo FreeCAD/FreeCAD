@@ -71,7 +71,8 @@ void View3DInventorViewerPy::init_type()
     );
     add_varargs_method("setFocalDistance",&View3DInventorViewerPy::setFocalDistance,"setFocalDistance(float) -> None\n");
     add_varargs_method("getFocalDistance",&View3DInventorViewerPy::getFocalDistance,"getFocalDistance() -> float\n");
-    add_varargs_method("getPoint", &View3DInventorViewerPy::getPoint, "getPoint(x, y) -> Base::Vector(x,y,z)");
+    add_varargs_method("getPoint", &View3DInventorViewerPy::getPointOnFocalPlane, "Same as getPointOnFocalPlane");
+    add_varargs_method("getPointOnFocalPlane", &View3DInventorViewerPy::getPointOnFocalPlane, "getPointOnFocalPlane(x, y) -> Base::Vector(x,y,z)");
     add_varargs_method("getPickRadius", &View3DInventorViewerPy::getPickRadius,
         "getPickRadius(): returns radius of confusion in pixels for picking objects on screen (selection).");
     add_varargs_method("setPickRadius", &View3DInventorViewerPy::setPickRadius,
@@ -319,7 +320,7 @@ Py::Object View3DInventorViewerPy::getFocalDistance(const Py::Tuple& args)
     }
 }
 
-Py::Object View3DInventorViewerPy::getPoint(const Py::Tuple& args)
+Py::Object View3DInventorViewerPy::getPointOnFocalPlane(const Py::Tuple& args)
 {
     short x,y;
     if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
@@ -329,7 +330,7 @@ Py::Object View3DInventorViewerPy::getPoint(const Py::Tuple& args)
         y = (int)Py::Int(t[1]);
     }
     try {
-        SbVec3f pt = _viewer->getPointOnScreen(SbVec2s(x,y));
+        SbVec3f pt = _viewer->getPointOnFocalPlane(SbVec2s(x,y));
         return Py::Vector(Base::Vector3f(pt[0], pt[1], pt[2]));
     }
     catch (const Base::Exception& e) {

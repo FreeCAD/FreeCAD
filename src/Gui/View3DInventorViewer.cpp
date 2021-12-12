@@ -2597,7 +2597,7 @@ SbRotation View3DInventorViewer::getCameraOrientation() const
     return cam->orientation.getValue();
 }
 
-SbVec3f View3DInventorViewer::getPointOnScreen(const SbVec2s& pnt) const
+SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
 {
     const SbViewportRegion& vp = this->getSoRenderManager()->getViewportRegion();
 
@@ -2640,6 +2640,22 @@ SbVec3f View3DInventorViewer::getPointOnScreen(const SbVec2s& pnt) const
     focalPlane.intersect(line, pt);
 
     return pt;
+}
+
+SbVec2s View3DInventorViewer::getPointOnScreen(const SbVec3f& pnt) const
+{
+    const SbViewportRegion& vp = this->getSoRenderManager()->getViewportRegion();
+    float fRatio = vp.getViewportAspectRatio();
+    const SbVec2s& sp = vp.getViewportSizePixels();
+    SbViewVolume vv = this->getSoRenderManager()->getCamera()->getViewVolume(fRatio);
+
+    SbVec3f pt(pnt);
+    vv.projectToScreen(pt, pt);
+
+    short x = short(std::roundf(pt[0] * sp[0]));
+    short y = short(std::roundf(pt[1] * sp[1]));
+
+    return SbVec2s(x, y);
 }
 
 void View3DInventorViewer::getNearPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const

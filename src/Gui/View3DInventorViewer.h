@@ -295,7 +295,9 @@ public:
     /** Returns the orientation of the camera. */
     SbRotation getCameraOrientation() const;
     /** Returns the 3d point on the focal plane to the given 2d point. */
-    SbVec3f getPointOnScreen(const SbVec2s&) const;
+    SbVec3f getPointOnFocalPlane(const SbVec2s&) const;
+    /** Returns the 2d coordinates on the screen to the given 3d point. */
+    SbVec2s getPointOnScreen(const SbVec3f&) const;
     /** Returns the near plane represented by its normal and base point. */
     void getNearPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
     /** Returns the far plane represented by its normal and base point. */
