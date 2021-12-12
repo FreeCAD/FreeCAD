@@ -1050,8 +1050,17 @@ void TopoShape::exportBrep(std::ostream& out) const
 
 void TopoShape::exportBinary(std::ostream& out)
 {
+    // See BinTools_FormatVersion of OCCT 7.6
+    enum {
+        VERSION_1 = 1,
+        VERSION_2 = 2,
+        VERSION_3 = 3,
+        VERSION_4 = 4
+    };
+
     // An example how to use BinTools_ShapeSet can be found in BinMNaming_NamedShapeDriver.cxx
     BinTools_ShapeSet theShapeSet;
+    theShapeSet.SetFormatNb(VERSION_3);
     if (this->_Shape.IsNull()) {
         theShapeSet.Add(this->_Shape);
         theShapeSet.Write(out);
