@@ -2597,7 +2597,7 @@ SbRotation View3DInventorViewer::getCameraOrientation() const
     return cam->orientation.getValue();
 }
 
-SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
+SbVec2f View3DInventorViewer::getNormalizedPosition(const SbVec2s& pnt) const
 {
     const SbViewportRegion& vp = this->getSoRenderManager()->getViewportRegion();
 
@@ -2620,6 +2620,12 @@ SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
         pY = (pY - 0.5f*dY) / fRatio + 0.5f*dY;
     }
 
+    return SbVec2f(pX, pY);
+}
+
+SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
+{
+    SbVec2f pnt2d = getNormalizedPosition(pnt);
     SoCamera* pCam = this->getSoRenderManager()->getCamera();
 
     if (!pCam) return SbVec3f();  // return invalid point
@@ -2636,7 +2642,7 @@ SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
     SbLine line;
     SbVec3f pt;
     SbPlane focalPlane = vol.getPlane(focalDist);
-    vol.projectPointToLine(SbVec2f(pX,pY), line);
+    vol.projectPointToLine(pnt2d, line);
     focalPlane.intersect(line, pt);
 
     return pt;
@@ -2716,6 +2722,17 @@ SbVec3f View3DInventorViewer::projectOnFarPlane(const SbVec2f& pt) const
     SbViewVolume vol = cam->getViewVolume();
     vol.projectPointToLine(pt, pt1, pt2);
     return pt2;
+}
+
+void View3DInventorViewer::projectPointToLine(const SbVec2s& pt, SbVec3f& pt1, SbVec3f& pt2) const
+{
+    SbVec2f pnt2d = getNormalizedPosition(pt);
+    SoCamera* pCam = this->getSoRenderManager()->getCamera();
+
+    if (!pCam) return;
+
+    SbViewVolume vol = pCam->getViewVolume();
+    vol.projectPointToLine(pnt2d, pt1, pt2);
 }
 
 void View3DInventorViewer::toggleClippingPlane(int toggle, bool beforeEditing,

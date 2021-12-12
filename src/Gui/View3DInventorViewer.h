@@ -311,6 +311,10 @@ public:
     SbVec3f projectOnNearPlane(const SbVec2f&) const;
     /** Project the given normalized 2d point onto the far plane */
     SbVec3f projectOnFarPlane(const SbVec2f&) const;
+    /** Project the given 2d point to a line */
+    void projectPointToLine(const SbVec2s&, SbVec3f& pt1, SbVec3f& pt2) const;
+    /** Get the normalized position of the 2d point. */
+    SbVec2f getNormalizedPosition(const SbVec2s&) const;
     //@}
 
     /** @name Dimension controls

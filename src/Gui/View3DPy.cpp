@@ -166,6 +166,10 @@ void View3DInventorPy::init_type()
         "getPointOnScreen(3D vector) -> pixel coords (as integer)\n"
         "\n"
         "Return the projected 3D point (in pixel coordinates).\n");
+    add_varargs_method("projectPointToLine",&View3DInventorPy::projectPointToLine,
+        "projectPointToLine(pixel coords (as integer)) -> line defined by two points\n"
+        "\n"
+        "Return the projecting 3D line to the given 2D point");
     add_varargs_method("addEventCallback",&View3DInventorPy::addEventCallback,"addEventCallback()");
     add_varargs_method("removeEventCallback",&View3DInventorPy::removeEventCallback,"removeEventCallback()");
     add_varargs_method("setAnnotation",&View3DInventorPy::setAnnotation,"setAnnotation()");
@@ -1700,6 +1704,31 @@ Py::Object View3DInventorPy::getPointOnScreen(const Py::Tuple& args)
         tuple.setItem(0, Py::Int(pt[0]));
         tuple.setItem(1, Py::Int(pt[1]));
 
+        return tuple;
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const Py::Exception&) {
+        throw;
+    }
+}
+
+Py::Object View3DInventorPy::projectPointToLine(const Py::Tuple& args)
+{
+    short x,y;
+    if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
+        PyErr_Clear();
+        Py::Tuple t(args[0]);
+        x = (int)Py::Int(t[0]);
+        y = (int)Py::Int(t[1]);
+    }
+    try {
+        SbVec3f pt1, pt2;
+        getView3DIventorPtr()->getViewer()->projectPointToLine(SbVec2s(x,y), pt1, pt2);
+        Py::Tuple tuple(2);
+        tuple.setItem(0, Py::Vector(Base::Vector3f(pt1[0], pt1[1], pt1[2])));
+        tuple.setItem(1, Py::Vector(Base::Vector3f(pt2[0], pt2[1], pt2[2])));
         return tuple;
     }
     catch (const Base::Exception& e) {

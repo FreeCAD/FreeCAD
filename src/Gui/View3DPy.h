@@ -115,6 +115,7 @@ public:
     Py::Object getObjectsInfo(const Py::Tuple&);
     Py::Object getSize(const Py::Tuple&);
     Py::Object getPointOnFocalPlane(const Py::Tuple&);
+    Py::Object projectPointToLine(const Py::Tuple&);
     Py::Object getPointOnScreen(const Py::Tuple&);
     Py::Object addEventCallback(const Py::Tuple&);
     Py::Object removeEventCallback(const Py::Tuple&);
