@@ -475,6 +475,8 @@ void TaskHelixParameters::onModeChanged(int index)
     ui->pitch->setValue(propPitch->getValue());
     ui->height->setValue(propHeight->getValue());
     ui->turns->setValue(propTurns->getValue());
+    ui->coneAngle->setValue(propAngle->getValue());
+    ui->growth->setValue(propGrowth->getValue());
 
     recomputeFeature();
     updateUI();

@@ -136,6 +136,7 @@ App::DocumentObjectExecReturn* Helix::execute(void)
         if (Height.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: height too small!");
         Turns.setValue(Height.getValue() / Pitch.getValue());
+        Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
     }
     else if (mode == HelixMode::pitch_turns_angle) {
         if (Pitch.getValue() < Precision::Confusion())
@@ -143,6 +144,7 @@ App::DocumentObjectExecReturn* Helix::execute(void)
         if (Turns.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: turns too small!");
         Height.setValue(Turns.getValue() * Pitch.getValue());
+        Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
     }
     else if (mode == HelixMode::height_turns_angle) {
         if (Height.getValue() < Precision::Confusion())
@@ -150,6 +152,7 @@ App::DocumentObjectExecReturn* Helix::execute(void)
         if (Turns.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: turns too small!");
         Pitch.setValue(Height.getValue() / Turns.getValue());
+        Growth.setValue(Pitch.getValue() * tan(Base::toRadians(Angle.getValue())));
     }
     else if (mode == HelixMode::height_turns_growth) {
         if (Turns.getValue() < Precision::Confusion())
@@ -158,6 +161,16 @@ App::DocumentObjectExecReturn* Helix::execute(void)
             && (abs(Growth.getValue()) < Precision::Confusion()))
             return new App::DocumentObjectExecReturn("Error: either height or growth must not be zero!");
         Pitch.setValue(Height.getValue() / Turns.getValue());
+        if (Height.getValue() > 0) {
+            Angle.setValue(Base::toDegrees(atan(
+                Turns.getValue() * Growth.getValue() / Height.getValue())));
+        }
+        else {
+            // On purpose, we're doing nothing here; the else-branch is just for this comment.
+            // - we don't print a warning, as for a flat spiral a zero-height is perfectly fine
+            // - we don't void the angle (somehow) so that it keeps its value. This allows in
+            //   interactive usage to just go back to another mode and everything keeps working
+        }
     }
     else {
         return new App::DocumentObjectExecReturn("Error: unsupported mode");
