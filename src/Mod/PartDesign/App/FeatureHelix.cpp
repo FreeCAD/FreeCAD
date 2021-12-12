@@ -110,7 +110,7 @@ Helix::Helix()
     Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(Outside, (long(0)), group, App::Prop_None,
         "If set, the result will be the intersection of the profile and the preexisting body.");
-    ADD_PROPERTY_TYPE(HasBeenEdited, (long(0)), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(HasBeenEdited, (long(0)), group, App::Prop_Hidden,
         "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
         "so that self intersection is avoided.");
 }
@@ -609,9 +609,11 @@ void Helix::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeN
 PROPERTY_SOURCE(PartDesign::AdditiveHelix, PartDesign::Helix)
 AdditiveHelix::AdditiveHelix() {
     addSubType = Additive;
+    Outside.setStatus(App::Property::Hidden, true);
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractiveHelix, PartDesign::Helix)
 SubtractiveHelix::SubtractiveHelix() {
     addSubType = Subtractive;
+    Outside.setStatus(App::Property::Hidden, false);
 }
