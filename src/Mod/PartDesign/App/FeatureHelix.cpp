@@ -76,6 +76,7 @@ const App::PropertyAngle::Constraints Helix::floatAngle = { -89.0, 89.0, 1.0 };
 Helix::Helix()
 {
     addSubType = FeatureAddSub::Additive;
+    auto initialMode = HelixMode::pitch_height_angle;
 
     const char* group = "Helix";
     ADD_PROPERTY_TYPE(Base, (Base::Vector3d(0.0, 0.0, 0.0)), group, App::Prop_ReadOnly,
@@ -104,7 +105,7 @@ Helix::Helix()
         "Non-zero values turn the helix into a conical spiral.");
     ADD_PROPERTY_TYPE(ReferenceAxis, (0), group, App::Prop_None,
         "The reference axis of the helix.");
-    ADD_PROPERTY_TYPE(Mode, (long(0)), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(Mode, (long(initialMode)), group, App::Prop_None,
         "The helix input mode specifies which properties are set by the user.\n"
         "Dependent properties are then calculated.");
     Mode.setEnums(ModeEnums);
@@ -113,6 +114,8 @@ Helix::Helix()
     ADD_PROPERTY_TYPE(HasBeenEdited, (long(0)), group, App::Prop_Hidden,
         "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
         "so that self intersection is avoided.");
+
+    setReadWriteStatusForMode(initialMode);
 }
 
 short Helix::mustExecute() const
@@ -603,6 +606,71 @@ void Helix::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeN
     }
     else {
         ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
+void Helix::onChanged(const App::Property* prop)
+{
+    if (prop == &Mode) {
+        // Depending on the mode, the derived properties are set read-only
+        auto inputMode = static_cast<HelixMode>(Mode.getValue());
+        setReadWriteStatusForMode(inputMode);
+    }
+
+    ProfileBased::onChanged(prop);
+}
+
+void Helix::setReadWriteStatusForMode(HelixMode inputMode)
+{
+    switch (inputMode)
+    {
+    case HelixMode::pitch_height_angle:
+        // primary input:
+        Pitch.setStatus(App::Property::ReadOnly, false);
+        Height.setStatus(App::Property::ReadOnly, false);
+        Angle.setStatus(App::Property::ReadOnly, false);
+        // derived props:
+        Turns.setStatus(App::Property::ReadOnly, true);
+        Growth.setStatus(App::Property::ReadOnly, true);
+        break;
+
+    case HelixMode::pitch_turns_angle:
+        // primary input:
+        Pitch.setStatus(App::Property::ReadOnly, false);
+        Turns.setStatus(App::Property::ReadOnly, false);
+        Angle.setStatus(App::Property::ReadOnly, false);
+        // derived props:
+        Height.setStatus(App::Property::ReadOnly, true);
+        Growth.setStatus(App::Property::ReadOnly, true);
+        break;
+
+    case HelixMode::height_turns_angle:
+        // primary input:
+        Height.setStatus(App::Property::ReadOnly, false);
+        Turns.setStatus(App::Property::ReadOnly, false);
+        Angle.setStatus(App::Property::ReadOnly, false);
+        // derived props:
+        Pitch.setStatus(App::Property::ReadOnly, true);
+        Growth.setStatus(App::Property::ReadOnly, true);
+        break;
+
+    case HelixMode::height_turns_growth:
+        // primary input:
+        Height.setStatus(App::Property::ReadOnly, false);
+        Turns.setStatus(App::Property::ReadOnly, false);
+        Growth.setStatus(App::Property::ReadOnly, false);
+        // derived props:
+        Pitch.setStatus(App::Property::ReadOnly, true);
+        Angle.setStatus(App::Property::ReadOnly, true);
+        break;
+
+    default:
+        Pitch.setStatus(App::Property::ReadOnly, false);
+        Height.setStatus(App::Property::ReadOnly, false);
+        Turns.setStatus(App::Property::ReadOnly, false);
+        Angle.setStatus(App::Property::ReadOnly, false);
+        Growth.setStatus(App::Property::ReadOnly, false);
+        break;
     }
 }
 

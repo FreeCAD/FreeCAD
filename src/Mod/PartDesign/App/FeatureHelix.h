@@ -88,13 +88,19 @@ protected:
     // center of profile bounding box
     Base::Vector3d getProfileCenterPoint();
 
-    // handle changed property
+    // handle changed property types for backward compatibility
     virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+
+    void onChanged(const App::Property* prop);
+
     static const App::PropertyFloatConstraint::Constraints floatTurns;
     static const App::PropertyAngle::Constraints floatAngle;
 
 private:
     static const char* ModeEnums[];
+
+    // Sets the read-only status bit for properties depending on the input mode.
+    void setReadWriteStatusForMode(HelixMode inputMode);
 };
 
 
