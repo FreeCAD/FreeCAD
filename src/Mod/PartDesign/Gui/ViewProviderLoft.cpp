@@ -166,8 +166,8 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
         highlighter.getEdgeColors(elements, colors);
         svp->LineColorArray.setValues(colors);
     }
-    else if (!edgeColors.empty()) {
-        svp->LineColorArray.setValues(edgeColors);
+    else {
+        svp->LineColorArray.setValues({svp->LineColor.getValue()});
         edgeColors.clear();
     }
 }
