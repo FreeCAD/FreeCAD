@@ -1042,9 +1042,16 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
                 for (std::vector<Gui::SelectionObject>::size_type ii = 1; ii < selection.size(); ii++) {
                     // Add subvalues even for sketches in case we just want points
                     auto objCmdSection = Gui::Command::getObjectCmd(selection[ii].getObject());
+                    const auto& subnames = selection[ii].getSubNames();
                     std::ostringstream ss;
-                    for (auto &s : selection[ii].getSubNames())
-                        ss << "'" << s << "',";
+                    if (!subnames.empty()) {
+                        for (auto &s : subnames)
+                            ss << "'" << s << "',";
+                    }
+                    else {
+                        // an empty string indicates the whole object
+                        ss << "''";
+                    }
                     FCMD_OBJ_CMD(Feat, "Sections += [(" << objCmdSection << ", [" << ss.str() << "])]");
                 }
             }
