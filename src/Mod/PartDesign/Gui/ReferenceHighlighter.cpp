@@ -35,9 +35,9 @@
 using namespace PartDesignGui;
 
 ReferenceHighlighter::ReferenceHighlighter(const TopoDS_Shape& shape, const App::Color& color)
-    : lineColor(color)
-    , singleEdges(1.0f,0.0f,1.0f) // magenta
-    , allEdges(0.6f,0.0f,1.0f) // purple
+    : defaultColor(color)
+    , elementColor(1.0f,0.0f,1.0f) // magenta
+    , objectColor(0.6f,0.0f,1.0f) // purple
 {
     TopExp::MapShapes(shape, TopAbs_EDGE, eMap);
     TopExp::MapShapes(shape, TopAbs_FACE, fMap);
@@ -49,7 +49,7 @@ void ReferenceHighlighter::getEdgeColor(const std::string& element, std::vector<
     assert ( idx >= 0 );
     std::size_t pos = std::size_t(idx);
     if (pos < colors.size())
-        colors[pos] = singleEdges;
+        colors[pos] = elementColor;
 }
 
 void ReferenceHighlighter::getEdgeColorsOfFace(const std::string& element, std::vector<App::Color>& colors) const
@@ -65,7 +65,7 @@ void ReferenceHighlighter::getEdgeColorsOfFace(const std::string& element, std::
         if (edgeIndex > 0) {
             std::size_t pos = std::size_t(edgeIndex - 1);
             if (pos < colors.size())
-                colors[pos] = singleEdges;
+                colors[pos] = elementColor;
         }
     }
 }
@@ -73,7 +73,7 @@ void ReferenceHighlighter::getEdgeColorsOfFace(const std::string& element, std::
 void ReferenceHighlighter::getEdgeColors(const std::vector<std::string>& elements,
                                          std::vector<App::Color>& colors) const
 {
-    colors.resize(eMap.Extent(), lineColor);
+    colors.resize(eMap.Extent(), defaultColor);
 
     if (!elements.empty()) {
         for (std::string e : elements) {
@@ -86,6 +86,32 @@ void ReferenceHighlighter::getEdgeColors(const std::vector<std::string>& element
         }
     }
     else {
-        std::fill(colors.begin(), colors.end(), allEdges);
+        std::fill(colors.begin(), colors.end(), objectColor);
+    }
+}
+
+void ReferenceHighlighter::getFaceColor(const std::string& element, std::vector<App::Color>& colors) const
+{
+    int idx = std::stoi(element.substr(4)) - 1;
+    assert ( idx >= 0 );
+    std::size_t pos = std::size_t(idx);
+    if (pos < colors.size())
+        colors[pos] = elementColor;
+}
+
+void ReferenceHighlighter::getFaceColors(const std::vector<std::string>& elements,
+                                         std::vector<App::Color>& colors) const
+{
+    colors.resize(fMap.Extent(), defaultColor);
+
+    if (!elements.empty()) {
+        for (std::string e : elements) {
+            if (boost::starts_with(e, "Face")) {
+                getFaceColor(e, colors);
+            }
+        }
+    }
+    else {
+        std::fill(colors.begin(), colors.end(), objectColor);
     }
 }

@@ -36,7 +36,7 @@
 #include <Gui/Application.h>
 
 #include "ViewProviderDressUp.h"
-
+#include "ReferenceHighlighter.h"
 #include "TaskDressUpParameters.h"
 
 using namespace PartDesignGui;
@@ -96,35 +96,19 @@ void ViewProviderDressUp::highlightReferences(const bool on)
 
     if (on) {
         if (!faces.empty() && originalFaceColors.empty()) {
-            TopTools_IndexedMapOfShape fMap;
-            TopExp::MapShapes(base->Shape.getValue(), TopAbs_FACE, fMap);
-
             originalFaceColors = vp->DiffuseColor.getValues();
             std::vector<App::Color> colors = originalFaceColors;
-            colors.resize(fMap.Extent(), ShapeColor.getValue());
 
-            for (std::vector<std::string>::const_iterator f = faces.begin(); f != faces.end(); ++f) {
-                // Note: std::stoi may throw in case of bad or very long face name, but screw the try {} catch
-                int idx = std::stoi(f->substr(4)) - 1;
-                assert ( idx>=0 );
-                if ( idx < (ssize_t) colors.size() )
-                    colors[idx] = App::Color(1.0,0.0,1.0); // magenta
-            }
+            ReferenceHighlighter highlighter(base->Shape.getValue(), ShapeColor.getValue());
+            highlighter.getFaceColors(faces, colors);
             vp->DiffuseColor.setValues(colors);
         }
         if (!edges.empty() && originalLineColors.empty()) {
-            TopTools_IndexedMapOfShape eMap;
-            TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
             originalLineColors = vp->LineColorArray.getValues();
             std::vector<App::Color> colors = originalLineColors;
-            colors.resize(eMap.Extent(), LineColor.getValue());
 
-            for (std::vector<std::string>::const_iterator e = edges.begin(); e != edges.end(); ++e) {
-                int idx = std::stoi(e->substr(4)) - 1;
-                assert ( idx>=0 );
-                if ( idx < (ssize_t) colors.size() )
-                    colors[idx] = App::Color(1.0,0.0,1.0); // magenta
-            }
+            ReferenceHighlighter highlighter(base->Shape.getValue(), LineColor.getValue());
+            highlighter.getEdgeColors(edges, colors);
             vp->LineColorArray.setValues(colors);
         }
     } else {
