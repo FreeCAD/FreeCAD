@@ -228,6 +228,8 @@ SET(PartDesignGuiModule_SRCS
     CommandBody.cpp
     EnumFlags.h
     Resources/PartDesign.qrc
+    ReferenceHighlighter.cpp
+    ReferenceHighlighter.h
     PreCompiled.cpp
     PreCompiled.h
     Utils.cpp

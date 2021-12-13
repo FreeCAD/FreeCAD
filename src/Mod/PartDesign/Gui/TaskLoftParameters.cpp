@@ -172,7 +172,6 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
 
             clearButtons();
-            //static_cast<ViewProviderLoft*>(vp)->highlightReferences(false, true);
             recomputeFeature();
         }
 
@@ -202,6 +201,7 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
         App::DocumentObject* obj = loft->getDocument()->getObject(msg.pObjectName);
 
         if (selectionMode == refProfile) {
+            static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Profile, false);
             loft->Profile.setValue(obj, {msg.pSubName});
             return true;
         }
@@ -262,7 +262,6 @@ void TaskLoftParameters::onDeleteSection()
             // `setValues(ref)` cleanly ensures subnames are preserved.
             loft->Sections.removeValue(obj);
 
-            //static_cast<ViewProviderLoft*>(vp)->highlightReferences(false, true);
             recomputeFeature();
             updateUI();
         }
@@ -328,7 +327,12 @@ void TaskLoftParameters::onProfileButton(bool checked)
         Gui::Selection().clearSelection();
         selectionMode = refProfile;
         this->blockSelection(false);
-        //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
+        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, true);
+    }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, false);
     }
 }
 
@@ -339,7 +343,12 @@ void TaskLoftParameters::onRefButtonAdd(bool checked)
         Gui::Selection().clearSelection();
         selectionMode = refAdd;
         this->blockSelection(false);
-        //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
+        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, true);
+    }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, false);
     }
 }
 
@@ -350,7 +359,12 @@ void TaskLoftParameters::onRefButtonRemove(bool checked)
         Gui::Selection().clearSelection();
         selectionMode = refRemove;
         this->blockSelection(false);
-        //static_cast<ViewProviderLoft*>(vp)->highlightReferences(true, true);
+        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, true);
+    }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, false);
     }
 }
 
@@ -379,6 +393,7 @@ bool TaskDlgLoftParameters::accept()
 {
     // TODO Fill this with commands (2015-09-11, Fat-Zer)
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(vp->getObject());
+    static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, false);
 
     for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
         FCMD_OBJ_HIDE(obj);
