@@ -32,8 +32,8 @@
 
 #include "Utils.h"
 #include "ViewProviderPipe.h"
-//#include "TaskPipeParameters.h"
 #include "TaskPipeParameters.h"
+#include "ReferenceHighlighter.h"
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePipe.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -163,24 +163,12 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
     std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
 
     if (on) {
-         if (edgeColors.empty()) {
-            TopTools_IndexedMapOfShape eMap;
-            TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
+        if (edgeColors.empty()) {
             edgeColors = svp->LineColorArray.getValues();
             std::vector<App::Color> colors = edgeColors;
-            colors.resize(eMap.Extent(), svp->LineColor.getValue());
 
-            if (!edges.empty()) {
-                for (std::string e : edges) {
-                    int idx = std::stoi(e.substr(4)) - 1;
-                    assert ( idx >= 0 );
-                    if ( idx < (ssize_t) colors.size() )
-                        colors[idx] = App::Color(1.0f,0.0f,1.0f); // magenta
-                }
-            }
-            else {
-                std::fill(colors.begin(), colors.end(), App::Color(0.6f,0.0f,1.0f)); // purple
-            }
+            ReferenceHighlighter highlighter(base->Shape.getValue(), svp->LineColor.getValue());
+            highlighter.getEdgeColors(edges, colors);
             svp->LineColorArray.setValues(colors);
         }
     } else {
