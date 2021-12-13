@@ -31,6 +31,7 @@
 #include <QDockWidget>
 #include "DockWindow.h"
 #include "Window.h"
+#include <FCGlobal.h>
 
 class QTabWidget;
 
@@ -159,6 +160,8 @@ protected:
     void changeEvent(QEvent *) override;
     /** Pops up the context menu with some extensions */
     void contextMenuEvent ( QContextMenuEvent* e ) override;
+    /** Handle shortcut override events */
+    bool event(QEvent* event) override;
 
 public Q_SLOTS:
     /** Save the report messages into a file. */

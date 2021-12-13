@@ -457,6 +457,17 @@ void ReportOutput::customEvent ( QEvent* ev )
     }
 }
 
+
+bool ReportOutput::event(QEvent* event)
+{
+    if (event && event->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+        if (kevent == QKeySequence::Copy)
+            kevent->accept();
+    }
+    return QTextEdit::event(event);
+}
+
 void ReportOutput::changeEvent(QEvent *ev)
 {
     if (ev->type() == QEvent::StyleChange) {
@@ -479,12 +490,11 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     bool bShowOnWarn = hGrp->GetBool("checkShowReportViewOnWarning",true);
     bool bShowOnError = hGrp->GetBool("checkShowReportViewOnError",true);
 
-    QMenu* menu = createStandardContextMenu();
-    QAction* first = menu->actions().front();
+    QMenu* menu = new QMenu(this);
     QMenu* optionMenu = new QMenu( menu );
     optionMenu->setTitle(tr("Options"));
-    menu->insertMenu(first, optionMenu);
-    menu->insertSeparator(first);
+    menu->addMenu(optionMenu);
+    menu->addSeparator();
 
     QMenu* displayMenu = new QMenu(optionMenu);
     displayMenu->setTitle(tr("Display message types"));
@@ -540,6 +550,19 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     QAction* botAct = optionMenu->addAction(tr("Go to end"), this, SLOT(onToggleGoToEnd()));
     botAct->setCheckable(true);
     botAct->setChecked(gotoEnd);
+
+    // Use Qt's internal translation of the Copy & Select All commands
+    const char* context = "QWidgetTextControl";
+    QString copyStr = QCoreApplication::translate(context, "&Copy");
+    QAction* copy = menu->addAction(copyStr, this, SLOT(copy()), QKeySequence(QKeySequence::Copy));
+    copy->setEnabled(textCursor().hasSelection());
+    QIcon icon = QIcon::fromTheme(QString::fromLatin1("edit-copy"));
+    if (!icon.isNull())
+        copy->setIcon(icon);
+
+    menu->addSeparator();
+    QString selectStr = QCoreApplication::translate(context, "Select All");
+    menu->addAction(selectStr, this, SLOT(selectAll()), QKeySequence(QKeySequence::SelectAll));
 
     menu->addAction(tr("Clear"), this, SLOT(clear()));
     menu->addSeparator();
