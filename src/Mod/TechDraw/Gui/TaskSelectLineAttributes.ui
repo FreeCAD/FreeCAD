@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>331</height>
+    <height>406</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,36 +27,33 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-   #+++++++++++++++++++++++++++++++++++++++++++++
     <layout class="QGridLayout" name="lineStyles">
-    <item row="0" column="0">
+     <item row="0" column="0">
       <widget class="QLabel" name="label_styles">
        <property name="text">
         <string>Linestyles:</string>
        </property>
       </widget>
      </item>
-    #-------------------------
      <item row="1" column="0">
       <widget class="QRadioButton" name="rbSolid">
+       <property name="toolTip">
+        <string>Set Line style to solid</string>
+       </property>
        <property name="text">
         <string>solid</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
        </property>
-       <property name="toolTip">
-        <string>Set Line style to solid</string>
-       </property>
        <attribute name="buttonGroup">
         <string notr="true">bgLineStyles</string>
        </attribute>
       </widget>
      </item>
-     #------------------------------------
      <item row="2" column="0">
-      <widget class="QRadioButton" name="rbDashed"> 
-      <property name="text">
+      <widget class="QRadioButton" name="rbDashed">
+       <property name="text">
         <string>dashed</string>
        </property>
        <property name="autoExclusive">
@@ -67,7 +64,6 @@
        </attribute>
       </widget>
      </item>
-     #------------------------------------
      <item row="3" column="0">
       <widget class="QRadioButton" name="rbDotted">
        <property name="text">
@@ -81,11 +77,10 @@
        </attribute>
       </widget>
      </item>
-     #-------------------------------------
      <item row="4" column="0">
       <widget class="QRadioButton" name="rbDashDotted">
        <property name="text">
-        <string>dash dotted</string>
+        <string>dashdot</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -98,25 +93,21 @@
        </attribute>
       </widget>
      </item>
-     #--------------------------------------
-    </layout> # lineStyles
+    </layout>
    </item>
-   ############################################
    <item>
-   #----------------------------------------------
     <layout class="QGridLayout" name="lineWidth">
-    <item row="0" column="0">
+     <item row="0" column="0">
       <widget class="QLabel" name="label_width">
        <property name="text">
         <string>Lineswidth:</string>
        </property>
       </widget>
      </item>
-    #-------------------------
      <item row="1" column="0">
       <widget class="QRadioButton" name="rbThin">
        <property name="text">
-        <string>small</string>
+        <string>thin 0,18</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -126,11 +117,10 @@
        </attribute>
       </widget>
      </item>
-     #------------------------------------
      <item row="2" column="0">
-      <widget class="QRadioButton" name="rbMiddle"> 
-      <property name="text">
-        <string>middle</string>
+      <widget class="QRadioButton" name="rbMiddle">
+       <property name="text">
+        <string>middle 0,35</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -143,11 +133,10 @@
        </attribute>
       </widget>
      </item>
-     #------------------------------------
      <item row="3" column="0">
       <widget class="QRadioButton" name="rbThick">
        <property name="text">
-        <string>thick</string>
+        <string>thick 0,70</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -157,20 +146,17 @@
        </attribute>
       </widget>
      </item>
-    </layout> # lineWidth
+    </layout>
    </item>
-   ############################################
    <item>
-   #----------------------------------------------
     <layout class="QGridLayout" name="lineColors">
-    <item row="0" column="0">
+     <item row="0" column="0">
       <widget class="QLabel" name="label_colors">
        <property name="text">
         <string>Linecolors:</string>
        </property>
       </widget>
      </item>
-    #-------------------------
      <item row="1" column="0">
       <widget class="QRadioButton" name="rbBlack">
        <property name="text">
@@ -187,7 +173,6 @@
        </attribute>
       </widget>
      </item>
-     #-------------------------
      <item row="1" column="1">
       <widget class="QRadioButton" name="rbBlue">
        <property name="text">
@@ -201,10 +186,9 @@
        </attribute>
       </widget>
      </item>
-     #------------------------------------
      <item row="2" column="0">
-      <widget class="QRadioButton" name="rbGrey"> 
-      <property name="text">
+      <widget class="QRadioButton" name="rbGrey">
+       <property name="text">
         <string>grey</string>
        </property>
        <property name="autoExclusive">
@@ -215,10 +199,9 @@
        </attribute>
       </widget>
      </item>
-     #------------------------------------
      <item row="2" column="1">
-      <widget class="QRadioButton" name="rbMagenta"> 
-      <property name="text">
+      <widget class="QRadioButton" name="rbMagenta">
+       <property name="text">
         <string>magenta</string>
        </property>
        <property name="autoExclusive">
@@ -229,7 +212,6 @@
        </attribute>
       </widget>
      </item>
-     #------------------------------------
      <item row="3" column="0">
       <widget class="QRadioButton" name="rbRed">
        <property name="text">
@@ -243,7 +225,6 @@
        </attribute>
       </widget>
      </item>
-     #------------------------------------
      <item row="3" column="1">
       <widget class="QRadioButton" name="rbCyan">
        <property name="text">
@@ -257,7 +238,6 @@
        </attribute>
       </widget>
      </item>
-     #------------------------------------
      <item row="4" column="0">
       <widget class="QRadioButton" name="rbGreen">
        <property name="text">
@@ -271,7 +251,6 @@
        </attribute>
       </widget>
      </item>
-     #------------------------------------
      <item row="4" column="1">
       <widget class="QRadioButton" name="rbYellow">
        <property name="text">
@@ -285,18 +264,44 @@
        </attribute>
       </widget>
      </item>
-    </layout> # lineWidth
+    </layout>
    </item>
-   ############################################
-  </layout> # QVBoxLayout
+   <item>
+    <widget class="QGroupBox" name="horizontalGroupBox">
+     <layout class="QHBoxLayout" name="Spin001">
+      <item>
+       <widget class="QLabel" name="label_spacing">
+        <property name="text">
+         <string>Cascade spacing</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="sbSpacing">
+        <property name="singleStep">
+         <double>0.500000000000000</double>
+        </property>
+        <property name="value">
+         <double>7.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
  </widget>
+ <resources>
+  <include location="Resources/TechDraw.qrc"/>
+ </resources>
+ <connections/>
  <buttongroups>
-  <buttongroup name="bgLineStyles">
+  <buttongroup name="bgLineWidth">
    <property name="exclusive">
     <bool>true</bool>
    </property>
   </buttongroup>
-  <buttongroup name="bgLineWidth">
+  <buttongroup name="bgLineStyles">
    <property name="exclusive">
     <bool>true</bool>
    </property>
@@ -307,15 +312,4 @@
    </property>
   </buttongroup>
  </buttongroups>
- <customwidgets>
-  <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
-  </customwidget>
- </customwidgets>
- <resources>
-  <include location="Resources/TechDraw.qrc"/>
- </resources>
- <connections/>
 </ui>
