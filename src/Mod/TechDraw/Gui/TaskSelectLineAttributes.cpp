@@ -111,19 +111,9 @@ void lineAttributes::setStyle(int newStyle)
     style = newStyle;
 }
 
-int lineAttributes::getStyle(void)
-{
-    return style;
-}
-
 void lineAttributes::setWidth(float newWidth)
 {
     width = newWidth;
-}
-
-int lineAttributes::getWidth(void)
-{
-    return width;
 }
 
 float lineAttributes::getWidthValue(void)
@@ -146,11 +136,6 @@ float lineAttributes::getWidthValue(void)
 void lineAttributes::setColor(int newColor)
 {
     color = newColor;
-}
-
-int lineAttributes::getColor(void)
-{
-    return color;
 }
 
 App::Color lineAttributes::getColorValue(void)
@@ -184,6 +169,22 @@ App::Color lineAttributes::getColorValue(void)
             return App::Color(0.0,0.0,0.0);
     }
 }
+
+//===========================================================================
+// managing global dimension attributes
+//===========================================================================
+
+dimAttributes::dimAttributes(void)
+{
+    cascadeSpacing = 7.0;
+}
+
+void dimAttributes::setCascadeSpacing(double spacing)
+{
+    cascadeSpacing = spacing;
+}
+
+dimAttributes activeDimAttributes; // container holding dimension attributes
 
 //===========================================================================
 // TaskSelectLineAttributes
@@ -285,6 +286,10 @@ void TaskSelectLineAttributes::setUiEdit()
         default:
             ui->rbBlack->setChecked(true);
     }
+
+    double cascadeSpacing = activeDimAttributes.getCascadeSpacing();
+    ui->sbSpacing->setValue(cascadeSpacing);
+
 }
 
 bool TaskSelectLineAttributes::accept()
@@ -345,6 +350,9 @@ bool TaskSelectLineAttributes::accept()
     else {
         activeAttributes->setColor(black);
     }
+
+    double cascadeSpacing = ui->sbSpacing->value();
+    activeDimAttributes.setCascadeSpacing(cascadeSpacing);
 
     return true;
 }

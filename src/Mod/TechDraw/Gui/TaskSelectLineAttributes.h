@@ -34,6 +34,19 @@
 
 class Ui_TaskSelectLineAttributes;
 
+class dimAttributes {
+    double cascadeSpacing;
+
+    public:
+
+    dimAttributes(void);
+    void setCascadeSpacing(double);
+    double getCascadeSpacing(void) {return cascadeSpacing;}
+
+}; // class dimAttributes
+
+extern dimAttributes activeDimAttributes; // container holding dimension attributes
+
 namespace App {
 class DocumentObject;
 }
@@ -69,12 +82,12 @@ class lineAttributes {
 
     lineAttributes(void);
     void setStyle(int);
-    int getStyle(void);
+    int getStyle(void) {return style;}
     void setWidth(float);
-    int getWidth(void);
+    int getWidth(void) {return width;}
     float getWidthValue(void);
     void setColor(int);
-    int getColor(void);
+    int getColor(void) {return color;}
     App::Color getColorValue(void);
 
 }; // class lineAttributes
