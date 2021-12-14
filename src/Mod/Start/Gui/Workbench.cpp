@@ -94,12 +94,15 @@ void StartGui::Workbench::loadStartPage()
             << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')\n"
 #endif
             << "    def onChange(self, par, reason):\n"
-            << "        if reason == 'RecentFiles':\n"
+            << "        try:\n"
+            << "            if reason == 'RecentFiles':\n"
 #if defined(FC_OS_WIN32)
-            << "            self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
+            << "                self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
 #else
-            << "            self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
+            << "                self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
 #endif
+            << "        except RuntimeError as e:\n"
+            << "            pass\n"
             << "class WebView(object):\n"
             << "    def __init__(self):\n"
             << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')\n"
