@@ -835,6 +835,7 @@ void E57XmlParser::endElement( const XMLCh *const uri, const XMLCh *const localN
 
 void E57XmlParser::characters( const XMLCh *const chars, const XMLSize_t length )
 {
+   (void)length;
 //??? use length to make ustring
 #ifdef E57_MAX_VERBOSE
    std::cout << "characters, chars=\"" << toUString( chars ) << "\" length=" << length << std::endl;

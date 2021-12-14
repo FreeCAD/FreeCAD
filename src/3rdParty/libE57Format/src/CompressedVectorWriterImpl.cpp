@@ -601,6 +601,7 @@ namespace e57
                                                         const char *srcFunctionName ) const
    {
       // unimplemented...
+      (void)srcFileName; (void)srcLineNumber; (void)srcFunctionName;
    }
 
    void CompressedVectorWriterImpl::checkWriterOpen( const char *srcFileName, int srcLineNumber,

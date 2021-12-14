@@ -163,6 +163,7 @@ std::unique_ptr<PacketLock> PacketReadCache::lock( uint64_t packetLogicalOffset,
 
 void PacketReadCache::unlock( unsigned cacheIndex )
 {
+   (void)cacheIndex;
    //??? why lockedEntry not used?
 #ifdef E57_MAX_VERBOSE
    std::cout << "PacketReadCache::unlock() called, cacheIndex=" << cacheIndex << std::endl;
@@ -543,6 +544,7 @@ void DataPacket::dump( int indent, std::ostream &os ) const
 
 void IndexPacket::verify( unsigned bufferLength, uint64_t totalRecordCount, uint64_t fileSize ) const
 {
+   (void)totalRecordCount; (void)fileSize;
    //??? do all packets need versions?  how extend without breaking older
    // checking?  need to check
    // file version#?

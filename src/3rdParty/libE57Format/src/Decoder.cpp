@@ -837,6 +837,7 @@ void ConstantIntegerDecoder::destBufferSetNew( std::vector<SourceDestBuffer> &db
 
 size_t ConstantIntegerDecoder::inputProcess( const char *source, const size_t availableByteCount )
 {
+   (void)source; (void)availableByteCount;
 #ifdef E57_MAX_VERBOSE
    std::cout << "ConstantIntegerDecoder::inputprocess() called, source=" << (void *)( source )
              << " availableByteCount=" << availableByteCount << std::endl;
