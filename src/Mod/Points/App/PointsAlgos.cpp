@@ -1490,10 +1490,9 @@ void E57Reader::read(const std::string& filename)
                     e57::CompressedVectorReader cvr(cvn.reader(sdb));
                     bool hasColor = (cnt_rgb==3) && useColor;
                     bool hasState = inv_state && checkState;
-                    float r,g,b;
                     bool filter = false;
                     
-                    while(count = cvr.read()) {
+                    while((count = cvr.read())) {
                         for (size_t i=0; i<count; ++i) {
                             filter = false;
                             if (hasState) {
@@ -1510,7 +1509,7 @@ void E57Reader::read(const std::string& filename)
                             if (!filter) {
                                 cnt_pts++;
                                 points.push_back(pt);
-                                last.x, last.y, last.z = pt.x, pt.y, pt.z;
+                                last = pt;
                                 if (hasColor) {
                                     App::Color c;
                                     c.r = static_cast<float>(rgb[ptr_rgb[0]*buf_size+i])/255.0f;
