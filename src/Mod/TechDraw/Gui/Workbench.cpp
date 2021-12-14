@@ -90,11 +90,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
     toolattrib->setCommand("Extensions: Attributes/Modifications");
     *toolattrib << "TechDraw_ExtensionSelectLineAttributes";
+    *toolattrib << "TechDraw_ExtensionChangeLineAttributes";
+    *toolattrib << "Separator";
     *toolattrib << "TechDraw_ExtensionExtendLine";
     *toolattrib << "TechDraw_ExtensionShortenLine";
+    *toolattrib << "Separator";
     *toolattrib << "TechDraw_ExtensionLockUnlockView";
     *toolattrib << "TechDraw_ExtensionPositionSectionView";
-    *toolattrib << "TechDraw_ExtensionChangeLineAttributes";
+    *toolattrib << "Separator";
     *toolattrib << "TechDraw_ExtensionPosHorizChainDimension";
     *toolattrib << "TechDraw_ExtensionPosVertChainDimension";
     *toolattrib << "TechDraw_ExtensionPosObliqueChainDimension";
@@ -107,21 +110,21 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     toolcenter->setCommand("Extensions: Centerlines/Threading");
     *toolcenter << "TechDraw_ExtensionCircleCenterLines";
     *toolcenter << "TechDraw_ExtensionHoleCircle";
+    *toolcenter << "Separator";
+    *toolcenter << "TechDraw_ExtensionThreadHoleSide";
+    *toolcenter << "TechDraw_ExtensionThreadBoltSide";
+    *toolcenter << "TechDraw_ExtensionThreadHoleBottom";
+    *toolcenter << "TechDraw_ExtensionThreadBoltBottom";
+    *toolcenter << "Separator";
     *toolcenter << "TechDraw_ExtensionVertexAtIntersection";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
     *toolcenter << "TechDraw_ExtensionArc";
     *toolcenter << "TechDraw_ExtensionLineParallel";
     *toolcenter << "TechDraw_ExtensionLinePerpendicular";
-    *toolcenter << "TechDraw_ExtensionThreadHoleSide";
-    *toolcenter << "TechDraw_ExtensionThreadBoltSide";
-    *toolcenter << "TechDraw_ExtensionThreadHoleBottom";
-    *toolcenter << "TechDraw_ExtensionThreadBoltBottom";
 
     // extension: dimensions
     Gui::MenuItem* tooldimensions = new Gui::MenuItem;
     tooldimensions->setCommand("Extensions: Dimensions");
-    *tooldimensions << "TechDraw_ExtensionInsertDiameter";
-    *tooldimensions << "TechDraw_ExtensionInsertSquare";
     *tooldimensions << "TechDraw_ExtensionCreateHorizChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateVertChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateObliqueChainDimension";
@@ -131,6 +134,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *tooldimensions << "TechDraw_ExtensionCreateHorizChamferDimension";
     *tooldimensions << "TechDraw_ExtensionCreateVertChamferDimension";
     *tooldimensions << "TechDraw_ExtensionCreateLengthArc";
+    *tooldimensions << "Separator";
+    *tooldimensions << "TechDraw_ExtensionInsertDiameter";
+    *tooldimensions << "TechDraw_ExtensionInsertSquare";
+    *tooldimensions << "Separator";
     *tooldimensions << "TechDraw_ExtensionIncreaseDecimal";
     *tooldimensions << "TechDraw_ExtensionDecreaseDecimal";
 
