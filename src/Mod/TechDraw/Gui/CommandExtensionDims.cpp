@@ -798,7 +798,7 @@ void execCascadeHorizDimension(Gui::Command* cmd){
             return;
         }
         float yMaster = validDimension[0]->Y.getValue();
-        float dimDistance = 7;
+        float dimDistance = activeDimAttributes.getCascadeSpacing();
         if (signbit(yMaster))
             dimDistance = -dimDistance;
         for (auto dim : validDimension){
@@ -860,7 +860,7 @@ void execCascadeVertDimension(Gui::Command* cmd){
             return;
         }
         float xMaster = validDimension[0]->X.getValue();
-        float dimDistance = 7;
+        float dimDistance = activeDimAttributes.getCascadeSpacing();
         if (signbit(xMaster))
             dimDistance = -dimDistance;
         for (auto dim : validDimension){
@@ -929,7 +929,8 @@ void execCascadeObliqueDimension(Gui::Command* cmd){
         dirMaster.y = -dirMaster.y;
         Base::Vector3d origin(0.0,0.0,0.0);
         Base::Vector3d ipDelta = _getTrianglePoint(pMaster,dirMaster,origin);
-        Base::Vector3d delta = ipDelta.Normalize()*7.0;
+        float dimDistance = activeDimAttributes.getCascadeSpacing();
+        Base::Vector3d delta = ipDelta.Normalize()*dimDistance;
         int i = 0;
         for (auto dim : validDimension){
             float xDim = dim->X.getValue();
@@ -1444,8 +1445,8 @@ void execCreateHorizCoordDimension(Gui::Command* cmd){
     if (!allVertexes.empty()){
         if (allVertexes.size() > 1){
             std::sort(allVertexes.begin(),allVertexes.end(),sortX);
-            float yMaster = allVertexes[0].point.y-7.0;
-            float dimDistance = 7.0;
+            float dimDistance = activeDimAttributes.getCascadeSpacing();
+            float yMaster = allVertexes[0].point.y-dimDistance;
             if (signbit(yMaster))
                 dimDistance = -dimDistance;
             for(long unsigned int n=0;n<allVertexes.size()-1;n++){
@@ -1511,8 +1512,8 @@ void execCreateVertCoordDimension(Gui::Command* cmd){
         if (allVertexes.size() > 1){
             std::sort(allVertexes.begin(),allVertexes.end(),sortY);
             std::reverse(allVertexes.begin(),allVertexes.end());
-            float xMaster = allVertexes[0].point.x+7.0;
-            float dimDistance = 7.0;
+            float dimDistance = activeDimAttributes.getCascadeSpacing();
+            float xMaster = allVertexes[0].point.x+dimDistance;
             if (signbit(xMaster))
                 dimDistance = -dimDistance;
             for(long unsigned int n=0;n<allVertexes.size()-1;n++){
@@ -1580,7 +1581,8 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd){
             Base::Vector3d dirMaster = pMaster-allVertexes[1].point;
             Base::Vector3d origin(0.0,0.0,0.0);
             Base::Vector3d delta = _getTrianglePoint(pMaster,dirMaster,origin);
-            delta = delta.Normalize()*7.0;
+            float dimDistance = activeDimAttributes.getCascadeSpacing();
+            delta = delta.Normalize()*dimDistance;
             double scale = objFeat->getScale();
             for (dimVertex oldVertex : allVertexes){
                 Base::Vector3d nextPoint = _getTrianglePoint(pMaster,dirMaster,oldVertex.point);
