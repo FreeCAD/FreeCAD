@@ -67,6 +67,16 @@ public:
     virtual ~Module() {}
 
 private:
+    std::tuple<bool, bool, float> readE57Settings() const
+    {
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Points/E57");
+        bool useColor   = hGrp->GetBool("UseColor", true);
+        bool checkState = hGrp->GetBool("CheckInvalidState", true);
+        float minDistance = hGrp->GetFloat("MinDistance", -1.);
+
+        return std::make_tuple(useColor, checkState, minDistance);
+    }
     Py::Object open(const Py::Tuple& args)
     {
         char* Name;
@@ -88,12 +98,8 @@ private:
                 reader.reset(new AscReader);
             }
             else if (file.hasExtension("e57")) {
-                Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Points/E57");
-                bool useColor   = hGrp->GetBool("UseColor", true);
-                bool checkState = hGrp->GetBool("CheckInvalidState", true); 
-                float minDistance = hGrp->GetFloat("MinDistance", -1.);
-                reader.reset(new E57Reader(useColor, checkState, minDistance));
+                auto setting = readE57Settings();
+                reader.reset(new E57Reader(std::get<0>(setting), std::get<1>(setting), std::get<2>(setting)));
             }
             else if (file.hasExtension("ply")) {
                 reader.reset(new PlyReader);
@@ -208,12 +214,8 @@ private:
                 reader.reset(new AscReader);
             }
             else if (file.hasExtension("e57")) {
-                Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Points/E57");
-                bool useColor   = hGrp->GetBool("UseColor", true);
-                bool checkState = hGrp->GetBool("CheckInvalidState", true); 
-                float minDistance = hGrp->GetFloat("MinDistance", -1.);
-                reader.reset(new E57Reader(useColor, checkState, minDistance));
+                auto setting = readE57Settings();
+                reader.reset(new E57Reader(std::get<0>(setting), std::get<1>(setting), std::get<2>(setting)));
             }
             else if (file.hasExtension("ply")) {
                 reader.reset(new PlyReader);
