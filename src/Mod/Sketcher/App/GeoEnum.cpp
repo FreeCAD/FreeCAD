@@ -26,15 +26,11 @@
 
 using namespace Sketcher;
 
-const int GeoEnum::RtPnt  = -1;
-const int GeoEnum::HAxis  = -1;
-const int GeoEnum::VAxis  = -2;
-const int GeoEnum::RefExt = -3;
-const int GeoEnum::GeoUndef = -2000;
-
-constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
-constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);
-constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::end);
+const int GeoEnum::RtPnt;
+const int GeoEnum::HAxis;
+const int GeoEnum::VAxis;
+const int GeoEnum::RefExt;
+const int GeoEnum::GeoUndef;
 
 bool GeoElementId::operator==(const GeoElementId& obj) const
 {
