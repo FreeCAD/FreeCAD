@@ -63,11 +63,11 @@ namespace Sketcher
  */
 struct SketcherExport GeoEnum
 {
-    static const int RtPnt;     // GeoId of the Root Point
-    static const int HAxis;     // GeoId of the Horizontal Axis
-    static const int VAxis;     // GeoId of the Vertical Axis
-    static const int RefExt;    // Starting GeoID of external geometry (negative geoIds starting at this index)
-    static const int GeoUndef;  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
+    static const int RtPnt = -1;     // GeoId of the Root Point
+    static const int HAxis = -1;     // GeoId of the Horizontal Axis
+    static const int VAxis = -2;     // GeoId of the Vertical Axis
+    static const int RefExt = -3;    // Starting GeoID of external geometry ( negative geoIds starting at this index)
+    static const int GeoUndef = -2000;  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
 };
 
 /*!
@@ -133,6 +133,10 @@ public:
 constexpr GeoElementId::GeoElementId(int geoId, PointPos pos): GeoId(geoId), Pos(pos)
 {
 }
+
+constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
+constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);
+constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::end);
 
 } // namespace Sketcher
 
