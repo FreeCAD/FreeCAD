@@ -39,7 +39,7 @@ namespace Sketcher
  * GeoEnum struct provides convenience labels for these GeoIds.
  *
  * However, GeoEnum is not enough to define an element of a Geometry. The most
- * straighforward example is the RootPoint and the Horizontal Axis. Both have
+ * straightforward example is the RootPoint and the Horizontal Axis. Both have
  * the same GeoId (= -1).
  *
  * The same happens for elements of a given geometry. For example, a line has
@@ -66,7 +66,7 @@ struct SketcherExport GeoEnum
     static const int RtPnt;     // GeoId of the Root Point
     static const int HAxis;     // GeoId of the Horizontal Axis
     static const int VAxis;     // GeoId of the Vertical Axis
-    static const int RefExt;    // Starting GeoID of external geometry ( negative geoIds starting at this index)
+    static const int RefExt;    // Starting GeoID of external geometry (negative geoIds starting at this index)
     static const int GeoUndef;  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
 };
 
