@@ -2156,7 +2156,8 @@ std::vector<dimVertex> _getVertexInfo(TechDraw::DrawViewPart* objFeat,
         std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(name);
         if (geoType == "Vertex"){
             int geoId = TechDraw::DrawUtil::getIndexFromName(name);
-            TechDraw::Vertex* vert = objFeat->getProjVertexByIndex(geoId);
+            //TechDraw::Vertex* vert = objFeat->getProjVertexByIndex(geoId);
+            TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(geoId);
             nextVertex.name = name;
             nextVertex.point.x = vert->point().x;
             nextVertex.point.y = vert->point().y;
