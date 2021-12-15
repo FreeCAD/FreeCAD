@@ -64,7 +64,6 @@ Q_SIGNALS:
 protected:
     /** Trigger for reparent event. */
     bool event(QEvent* e);
-    void showEvent(QShowEvent* e);
     void changeEvent(QEvent *e);
 
 protected Q_SLOTS:
@@ -90,7 +89,6 @@ private:
 
 private:
     std::unique_ptr<Ui_DlgCustomActions> ui;
-    bool bShown; /**< For internal use only*/
     QString m_sPixmap; /**< Name of the specified pixmap */
 };
 
