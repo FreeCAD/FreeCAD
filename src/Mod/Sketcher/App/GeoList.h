@@ -64,7 +64,7 @@ namespace Sketcher {
  * using GeometryFacadeUniquePtr = std::unique_ptr<const Sketcher::GeometryFacade>;
  *
  * N.B.: Note that the index of the geomlist (all layers) and the GeoId can be converted
- * from each other as needed using the member fuctions (and sometimes the static functions).
+ * from each other as needed using the member functions (and sometimes the static functions).
  */
 template <typename T>
 class GeoListModel {
