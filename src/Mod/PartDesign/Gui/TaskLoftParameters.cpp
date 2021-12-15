@@ -44,6 +44,7 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Mod/PartDesign/App/FeatureLoft.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -388,19 +389,22 @@ TaskDlgLoftParameters::~TaskDlgLoftParameters()
 {
 }
 
-
 bool TaskDlgLoftParameters::accept()
 {
-    // TODO Fill this with commands (2015-09-11, Fat-Zer)
     PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(vp->getObject());
     static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, false);
 
-    for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-        FCMD_OBJ_HIDE(obj);
+    // First verify that the loft can be built and then hide the sections as otherwise
+    // they will remain hidden if the loft's recompute fails
+    if (TaskDlgSketchBasedParameters::accept()) {
+        for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
+            Gui::cmdAppObjectHide(obj);
+        }
+
+        return true;
     }
 
-
-    return TaskDlgSketchBasedParameters::accept ();
+    return false;
 }
 
 //==== calls from the TaskView ===============================================================
