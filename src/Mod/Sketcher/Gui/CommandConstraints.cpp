@@ -142,6 +142,7 @@ void finishDatumConstraint (Gui::Command* cmd, Sketcher::SketchObject* sketch, b
         editDatumDialog.exec();
     }
     else {
+        sketch->solve();
         // no dialog was shown so commit the command
         cmd->commitCommand();
     }
