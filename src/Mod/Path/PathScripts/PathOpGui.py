@@ -35,6 +35,7 @@ import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import importlib
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from PySide import QtCore, QtGui
 
@@ -43,16 +44,18 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Base classes and framework for Path operation's UI"
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+translate = FreeCAD.Qt.translate
 
-
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class ViewProvider(object):
-    """Generic view provider for path objects.
+    """
+    Generic view provider for path objects.
     Deducts the icon name from operation name, brings up the TaskPanel
     with pages corresponding to the operation's opFeatures() and forwards
     property change notifications to the page controllers.
@@ -79,10 +82,12 @@ class ViewProvider(object):
         return
 
     def deleteObjectsOnReject(self):
-        """deleteObjectsOnReject() ... return true if all objects should
+        """
+        deleteObjectsOnReject() ... return true if all objects should
         be created if the user hits cancel. This is used during the initial
         edit session, if the user does not press OK, it is assumed they've
-        changed their mind about creating the operation."""
+        changed their mind about creating the operation.
+        """
         PathLog.track()
         return hasattr(self, "deleteOnReject") and self.deleteOnReject
 
@@ -186,7 +191,7 @@ class ViewProvider(object):
         PathLog.track()
         for action in menu.actions():
             menu.removeAction(action)
-        action = QtGui.QAction(translate("Path", "Edit"), menu)
+        action = QtGui.QAction(translate("PathOp", "Edit"), menu)
         action.triggered.connect(self.setEdit)
         menu.addAction(action)
 
@@ -353,30 +358,27 @@ class TaskPanelPage(object):
         # pylint: disable=unused-argument
         pass  # pylint: disable=unnecessary-pass
 
-    # helpers
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
         helper function to select a specific value in a combo box."""
-        index = combo.findText(name, QtCore.Qt.MatchFixedString)
-        if index >= 0:
-            combo.blockSignals(True)
-            combo.setCurrentIndex(index)
-            combo.blockSignals(False)
-
-    def selectInComboBoxNew(self, name, combo):
-        '''selectInComboBox(name, combo) ...
-        helper function to select a specific value in a combo box.'''
-        combo.blockSignals(True)
-        cnt = combo.count()
+        blocker = QtCore.QSignalBlocker(combo)
         index = combo.currentIndex()  # Save initial index
-        while cnt > 0:
-            cnt -= 1
-            combo.setCurrentIndex(cnt)
-            if name == combo.currentData():
-                combo.blockSignals(False)
-                return
+
+        # Search using currentData and return if found
+        newindex = combo.findData(name)
+        if newindex >= 0:
+            combo.setCurrentIndex(newindex)
+            return
+
+        # if not found, search using current text
+        newindex = combo.findText(name, QtCore.Qt.MatchFixedString)
+        if newindex >= 0:
+            combo.setCurrentIndex(newindex)
+            return
+
+        # not found, return unchanged
         combo.setCurrentIndex(index)
-        combo.blockSignals(False)
+        return
 
     def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
         """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
@@ -558,7 +560,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         if len(selection) != 1:
             if not ignoreErrors:
                 msg = translate(
-                    "PathProject",
+                    "PathOp",
                     "Please select %s from a single solid" % self.featureName(),
                 )
                 FreeCAD.Console.PrintError(msg + "\n")
@@ -571,30 +573,28 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                 and selection[0].SubObjects[0].ShapeType == "Vertex"
             ):
                 if not ignoreErrors:
-                    PathLog.error(
-                        translate("PathProject", "Vertexes are not supported")
-                    )
+                    PathLog.error(translate("PathOp", "Vertexes are not supported"))
                 return False
             if (
                 not self.supportsEdges()
                 and selection[0].SubObjects[0].ShapeType == "Edge"
             ):
                 if not ignoreErrors:
-                    PathLog.error(translate("PathProject", "Edges are not supported"))
+                    PathLog.error(translate("PathOp", "Edges are not supported"))
                 return False
             if (
                 not self.supportsFaces()
                 and selection[0].SubObjects[0].ShapeType == "Face"
             ):
                 if not ignoreErrors:
-                    PathLog.error(translate("PathProject", "Faces are not supported"))
+                    PathLog.error(translate("PathOp", "Faces are not supported"))
                 return False
         else:
             if not self.supportsPanels() or "Panel" not in sel.Object.Name:
                 if not ignoreErrors:
                     PathLog.error(
                         translate(
-                            "PathProject",
+                            "PathOp",
                             "Please select %s of a solid" % self.featureName(),
                         )
                     )
@@ -653,7 +653,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         opLabel = str(self.form.geometryImportList.currentText())
         ops = FreeCAD.ActiveDocument.getObjectsByLabel(opLabel)
         if len(ops) > 1:
-            msg = translate("PathOpGui", "Mulitiple operations are labeled as")
+            msg = translate("PathOp", "Mulitiple operations are labeled as")
             msg += " {}\n".format(opLabel)
             FreeCAD.Console.PrintWarning(msg)
         (base, subList) = ops[0].Base[0]
@@ -850,7 +850,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         )
 
     def getTitle(self, obj):
-        return translate("Path", "Heights")
+        return translate("PathOp", "Heights")
 
     def getFields(self, obj):
         self.safeHeight.updateProperty()
@@ -1056,7 +1056,7 @@ class TaskPanelDiametersPage(TaskPanelPage):
         )
 
     def getTitle(self, obj):
-        return translate("Path", "Diameters")
+        return translate("PathOp", "Diameters")
 
     def getFields(self, obj):
         self.minDiameter.updateProperty()
@@ -1090,7 +1090,7 @@ class TaskPanel(object):
 
     def __init__(self, obj, deleteOnReject, opPage, selectionFactory):
         PathLog.track(obj.Label, deleteOnReject, opPage, selectionFactory)
-        FreeCAD.ActiveDocument.openTransaction(translate("Path", "AreaOp Operation"))
+        FreeCAD.ActiveDocument.openTransaction(translate("PathOp", "AreaOp Operation"))
         self.obj = obj
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
@@ -1220,7 +1220,7 @@ class TaskPanel(object):
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction(
-                translate("Path", "Uncreate AreaOp Operation")
+                translate("PathOp", "Uncreate AreaOp Operation")
             )
             try:
                 PathUtil.clearExpressionEngine(self.obj)
@@ -1367,8 +1367,8 @@ class CommandSetStartPoint:
     def GetResources(self):
         return {
             "Pixmap": "Path_StartPoint",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path", "Pick Start Point"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP("Path", "Pick Start Point"),
+            "MenuText": QT_TRANSLATE_NOOP("PathOp", "Pick Start Point"),
+            "ToolTip": QT_TRANSLATE_NOOP("PathOp", "Pick Start Point"),
         }
 
     def IsActive(self):
