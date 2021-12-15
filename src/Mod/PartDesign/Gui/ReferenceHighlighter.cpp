@@ -40,6 +40,7 @@ ReferenceHighlighter::ReferenceHighlighter(const TopoDS_Shape& shape, const App:
     , objectColor(0.6f,0.0f,1.0f) // purple
 {
     TopExp::MapShapes(shape, TopAbs_EDGE, eMap);
+    TopExp::MapShapes(shape, TopAbs_WIRE, wMap);
     TopExp::MapShapes(shape, TopAbs_FACE, fMap);
 }
 
@@ -50,6 +51,24 @@ void ReferenceHighlighter::getEdgeColor(const std::string& element, std::vector<
     std::size_t pos = std::size_t(idx);
     if (pos < colors.size())
         colors[pos] = elementColor;
+}
+
+void ReferenceHighlighter::getEdgeColorsOfWire(const std::string& element, std::vector<App::Color>& colors) const
+{
+    int idx = std::stoi(element.substr(4));
+    assert ( idx > 0 );
+    // get the edges of the wire
+    TopoDS_Shape wire = wMap.FindKey(idx);
+    for (TopExp_Explorer xp(wire, TopAbs_EDGE); xp.More(); xp.Next()) {
+        int edgeIndex = eMap.FindIndex(xp.Current());
+
+        // Edge found?
+        if (edgeIndex > 0) {
+            std::size_t pos = std::size_t(edgeIndex - 1);
+            if (pos < colors.size())
+                colors[pos] = elementColor;
+        }
+    }
 }
 
 void ReferenceHighlighter::getEdgeColorsOfFace(const std::string& element, std::vector<App::Color>& colors) const
@@ -79,6 +98,9 @@ void ReferenceHighlighter::getEdgeColors(const std::vector<std::string>& element
         for (std::string e : elements) {
             if (boost::starts_with(e, "Edge")) {
                 getEdgeColor(e, colors);
+            }
+            else if (boost::starts_with(e, "Wire")) {
+                getEdgeColorsOfWire(e, colors);
             }
             else if (boost::starts_with(e, "Face")) {
                 getEdgeColorsOfFace(e, colors);

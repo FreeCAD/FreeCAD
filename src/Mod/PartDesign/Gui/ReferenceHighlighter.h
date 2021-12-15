@@ -72,6 +72,7 @@ public:
 
 private:
     void getEdgeColor(const std::string& element, std::vector<App::Color>& colors) const;
+    void getEdgeColorsOfWire(const std::string& element, std::vector<App::Color>& colors) const;
     void getEdgeColorsOfFace(const std::string& element, std::vector<App::Color>& colors) const;
     void getFaceColor(const std::string& element, std::vector<App::Color>& colors) const;
 
@@ -80,6 +81,7 @@ private:
     App::Color elementColor;
     App::Color objectColor;
     TopTools_IndexedMapOfShape eMap;
+    TopTools_IndexedMapOfShape wMap;
     TopTools_IndexedMapOfShape fMap;
 };
 
