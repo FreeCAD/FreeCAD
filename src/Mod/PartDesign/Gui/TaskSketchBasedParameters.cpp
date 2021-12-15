@@ -43,6 +43,7 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
@@ -266,15 +267,19 @@ bool TaskDlgSketchBasedParameters::accept() {
 
     // Make sure the feature is what we are expecting
     // Should be fine but you never know...
-    if ( !feature->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId()) ) {
+    if (!feature->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
         throw Base::TypeError("Bad object processed in the sketch based dialog.");
     }
 
-    App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(feature)->Profile.getValue();
+    // First verify that the feature can be built and then hide the profile as otherwise
+    // it will remain hidden if the feature's recompute fails
+    if (TaskDlgFeatureParameters::accept()) {
+        App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(feature)->Profile.getValue();
+        Gui::cmdAppObjectHide(sketch);
+        return true;
+    }
 
-    FCMD_OBJ_HIDE(sketch);
-
-    return TaskDlgFeatureParameters::accept();
+    return false;
 }
 
 bool TaskDlgSketchBasedParameters::reject()
