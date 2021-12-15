@@ -1103,7 +1103,7 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel){
             TechDraw::Generic* lineGen = static_cast<TechDraw::Generic *>(geom1);
             Base::Vector3d lineStart = lineGen->points.at(0);
             Base::Vector3d lineEnd = lineGen->points.at(1);
-            TechDraw::Vertex* vert = objFeat->getProjVertexByIndex(GeoId2);
+            TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(GeoId2);
             Base::Vector3d vertexPoint(vert->point().x,vert->point().y,0.0);
             Base::Vector3d halfVector = (lineEnd-lineStart)/2.0;
             if (!isParallel){
@@ -1679,7 +1679,7 @@ std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames,T
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         if (GeoType == "Vertex"){
             int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
-            TechDraw::Vertex* vert = objFeat->getProjVertexByIndex(GeoId);
+            TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(GeoId);
             Base::Vector3d onePoint(vert->point().x,vert->point().y,0);
             vertexPoints.push_back(onePoint);
         }
