@@ -298,8 +298,10 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn("Loft: A fatal error occurred when making the loft");
