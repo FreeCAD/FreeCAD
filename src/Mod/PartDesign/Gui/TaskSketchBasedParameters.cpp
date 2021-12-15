@@ -227,14 +227,15 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
 QString TaskSketchBasedParameters::make2DLabel(const App::DocumentObject* section,
                                                const std::vector<std::string>& subValues)
 {
-    if(section->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (section->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         return QString::fromUtf8(section->Label.getValue());
+    }
+    else if (subValues.empty()) {
+        Base::Console().Error("No valid subelement linked in %s\n", section->Label.getValue());
+        return QString();
+    }
     else {
-        if(subValues.empty())
-            throw Base::ValueError("No valid subelement linked in Part::Feature");
-
-        return QString::fromUtf8((std::string(section->getNameInDocument())
-                                  + ":" + subValues[0]).c_str());
+        return QString::fromStdString((std::string(section->getNameInDocument()) + ":" + subValues[0]));
     }
 }
 
