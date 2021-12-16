@@ -3668,6 +3668,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
             # add global variables
             if hasattr(dxf,"header"):
                 dxf.header.append("  9\n$DIMTXT\n 40\n"+str(Draft.getParam("textheight", 20))+"\n")
+                dxf.header.append("  9\n$INSUNITS\n 70\n4\n")
             for ob in exportLayers:
                 if ob.Label != "0":  # dxflibrary already creates it
                     ltype = 'continuous'
