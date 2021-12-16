@@ -37,7 +37,8 @@
 
 
 #define SMALL_NUM  1e-6
-#define ERR_TOL    0.001       // Abbruchkriterium für Least-Square-Matching (Fehleränderung zweier aufeinanderfolgenden Iterationsschritten)
+#define ERR_TOL    0.001        // Abort criterion for least square matching
+                                // (error change in two successive iteration steps)
 
 
 /*! \brief The main class for the best_fit routine
@@ -104,7 +105,7 @@ public:
                average-error-value
     */
     double CompTotalError(MeshCore::MeshKernel &mesh);
-	
+
     /*! \brief Computes a triangulation on shape.
 
         \param shape      specifies the shape to be tessellated
@@ -113,7 +114,7 @@ public:
                           triangulation
     */
     static bool Tesselate_Shape(const TopoDS_Shape &shape, MeshCore::MeshKernel &mesh, float deflection);
-	
+
     /*! \brief Computes a triangulation on aface.
 
         \param aface      specifies the face to be tessellated
@@ -129,7 +130,7 @@ public:
         \param Mesh Input-Mesh
     */
     static std::vector<Base::Vector3f> Comp_Normals(MeshCore::MeshKernel &Mesh);
-	
+
     /*! \brief Check and corrects mesh-position by rotating around all
                coordinate-axes with 180 degree
     */
@@ -167,19 +168,19 @@ public:
     std::vector<double>         m_error;
 
     /*! \brief Stores the point-sets computed with the function ANN() */
-    std::vector<std::vector<Base::Vector3f> > m_LSPnts;  // zu fittende Punktesätze für den Least-Square
+    std::vector<std::vector<Base::Vector3f> > m_LSPnts;  // Points sets to be fitted for Least-Square
 
     /*! \brief Stores the weights computed with the function Comp_Weights() */
-    std::vector<double> m_weights;                       // gewichtungen für den Least-Square bzgl. allen Netzpunkte
+    std::vector<double> m_weights;                       // weighting for the Least-Square with respect to all network points
 
     /*! \brief A working-copy of m_weights */
-    std::vector<double> m_weights_loc;                   // gewichtungen für den Least-Square bzgl. den projezierten Netzpunkten
+    std::vector<double> m_weights_loc;                   // weighting for the Least-Square with respect to the projected network points
 
     /*! \brief Translation-vector from the function ShapeFit_Coarse() */
-    gp_Vec m_cad2orig;                     // Translationsvektor welche die CAD-Geometrie um den Ursprung zentriert
-    
+    gp_Vec m_cad2orig;                     // Translation vector that centers the CAD geometry about the origin
+
     /*! \brief Vector of the preselected-faces for the weighting */
-    std::vector<TopoDS_Face> m_LowFaces;   // Vektor der in der GUI selektierten Faces mit geringer Gewichtung
+    std::vector<TopoDS_Face> m_LowFaces;   // Vector of the faces selected in the GUI with little weighting
 
 private:
     /*! \brief Computes the rotation-matrix with reference to the given
@@ -190,7 +191,7 @@ private:
         \param rotationAxis rotation-axis (1: x-axis, 2: y-axis, 3: z-axis)
     */
     inline bool RotMat(Base::Matrix4D &matrix, double degree, int rotationAxis);
-	
+
     /*! \brief Computes the translation-matrix with reference to the given
                parameters
 
@@ -199,7 +200,7 @@ private:
         \param translationAxis translation-axis (1: x-axis, 2: y-axis, 3: z-axis)
     */
     inline bool TransMat(Base::Matrix4D &matrix, double translation, int translationAxis);
-	
+
     /*! \brief Transforms the point-set \p pnts and the corresponding
                surface-normals normals with reference to the input-matrix
 
@@ -210,14 +211,14 @@ private:
     inline bool PointNormalTransform(std::vector<Base::Vector3f> &pnts,
                                      std::vector<Base::Vector3f> &normals,
                                      Base::Matrix4D              &M);
-	
+
     /*! \brief Transforms the point-set pnts with reference to the input-matrix
 
         \param pnts point-vector to transform
         \param M    is the 4x4-input-matrix
     */
     bool PointTransform(std::vector<Base::Vector3f> &pnts, const Base::Matrix4D &M);
-	
+
     /*! \brief Sets the weights for the ICP-Algorithm */
     bool Comp_Weights();
 
@@ -246,8 +247,8 @@ private:
     SMESH_Gen *m_aMeshGen1;
     SMESH_Gen *m_aMeshGen2;
 
-	
-    
+
+
 	//int intersect_RayTriangle(const Base::Vector3f &normal,const MeshCore::MeshGeomFacet &T, Base::Vector3f &P, Base::Vector3f &I);
 	// bool Intersect(const Base::Vector3f &normal,const MeshCore::MeshKernel &mesh, Base::Vector3f &P, Base::Vector3f &I);
 };

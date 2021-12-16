@@ -69,7 +69,7 @@ typedef struct
 class CamExport Routines
 {
 public:
-    // mehrdimensionales Newton-Verfahren mit festem Startwert 0
+    // Multi-dimensional Newton method with a fixed starting value of 0
     static std::vector<double> NewtonStep(std::vector<double> &F,std::vector<std::vector<double> > &DF);
 protected:
     double TrapezoidIntergration(const std::vector<double> &WithRespectTo, const std::vector<double> &Intergral);
