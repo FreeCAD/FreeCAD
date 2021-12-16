@@ -1678,12 +1678,16 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result,
             }
         }
         auto &propset = (*deps)[obj];
-        // inserting a null name in the propset indicates the dependency is
+        // inserting a blank name in the propset indicates the dependency is
         // on all properties of the corresponding object.
-        if(propset.size()!=1 || propset.begin()->size()) {
-            if(!propName)
+        if (propset.size() != 1 || propset.begin()->size()) {
+            if (!propName) {
                 propset.clear();
-            propset.insert(propName);
+                propset.insert("");
+            }
+            else {
+                propset.insert(propName);
+            }
         }
         return;
     };
