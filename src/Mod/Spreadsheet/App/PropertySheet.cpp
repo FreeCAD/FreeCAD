@@ -120,17 +120,6 @@ const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
         return 0;
 }
 
-Cell * PropertySheet::getValueFromAlias(const std::string &alias)
-{
-    std::map<std::string, CellAddress>::const_iterator it = revAliasProp.find(alias);
-
-    if (it != revAliasProp.end())
-        return getValue(it->second);
-    else
-        return 0;
-
-}
-
 bool PropertySheet::isValidAlias(const std::string &candidate)
 {
     static const boost::regex gen("^[A-Za-z][_A-Za-z0-9]*$");
