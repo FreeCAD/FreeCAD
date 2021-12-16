@@ -48,8 +48,6 @@ public:
 
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
-    App::CellAddress getCellAddress(const char *addr, bool silent) const;
-    App::Range getRange(const char *range, bool silent) const;
     virtual void onRelabeledDocument(const App::Document &doc) override;
 
     virtual void updateElementReference(
@@ -111,8 +109,6 @@ public:
     Cell * getValueFromAlias(const std::string &alias);
 
     const Cell * getValueFromAlias(const std::string &alias) const;
-
-    Cell * getValueFromAlias(const std::string &alias);
 
     bool isValidAlias(const std::string &candidate);
 
