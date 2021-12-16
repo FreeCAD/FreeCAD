@@ -361,6 +361,7 @@ class _ViewProviderAxis:
 
         self.bubbles = None
         self.bubbletexts = []
+        self.bubbledata = []
         sep = coin.SoSeparator()
         self.mat = coin.SoMaterial()
         self.linestyle = coin.SoDrawStyle()
@@ -445,6 +446,7 @@ class _ViewProviderAxis:
                         self.bubbles.addChild(self.bubblestyle)
                         import Part,Draft
                         self.bubbletexts = []
+                        self.bubbledata = []
                         pos = ["Start"]
                         if hasattr(vobj,"BubblePosition"):
                             if vobj.BubblePosition in ["Both","Arrow left","Arrow right","Bar left","Bar right"]:
@@ -501,6 +503,9 @@ class _ViewProviderAxis:
                                     coords.point.setValues(0,len(pts),pts)
                                     line = coin.SoFaceSet()
                                     line.numVertices.setValue(-1)
+                                    cir = Part.makePolygon(pts)
+                                    cir.Placement = vobj.Object.Placement
+                                    self.bubbledata.append(cir)
                                 elif arrow == False:
                                     p3 = p2.add(Vector(chord).multiply(rad/2))
                                     if vobj.BubblePosition.startswith("Arrow"):
@@ -518,8 +523,12 @@ class _ViewProviderAxis:
                                     coords.point.setValues(0,len(pts),pts)
                                     line = coin.SoFaceSet()
                                     line.numVertices.setValue(-1)
+                                    cir = Part.makePolygon(pts)
+                                    cir.Placement = vobj.Object.Placement
+                                    self.bubbledata.append(cir)
                                 else:
-                                    buf = Part.makeCircle(rad,center).writeInventor()
+                                    cir = Part.makeCircle(rad,center)
+                                    buf = cir.writeInventor()
                                     try:
                                         cin = coin.SoInput()
                                         cin.setBuffer(buf)
@@ -541,6 +550,8 @@ class _ViewProviderAxis:
                                     else:
                                         coords = cob.getChild(1).getChild(0).getChild(2)
                                         line = cob.getChild(1).getChild(0).getChild(3)
+                                    cir.Placement = vobj.Object.Placement
+                                    self.bubbledata.append(cir)
                                 self.bubbles.addChild(coords)
                                 self.bubbles.addChild(line)
                                 st = coin.SoSeparator()
@@ -548,7 +559,8 @@ class _ViewProviderAxis:
                                 fs = rad*1.5
                                 if hasattr(vobj,"FontSize"):
                                     fs = vobj.FontSize.Value
-                                tr.translation.setValue((center.x,center.y-fs/2.5,center.z))
+                                txpos = FreeCAD.Vector(center.x,center.y-fs/2.5,center.z)
+                                tr.translation.setValue(tuple(txpos))
                                 fo = coin.SoFont()
                                 fn = Draft.getParam("textfont","Arial,Sans")
                                 if hasattr(vobj,"FontName"):
@@ -561,7 +573,7 @@ class _ViewProviderAxis:
                                 fo.size = fs
                                 tx = coin.SoAsciiText()
                                 tx.justification = coin.SoText2.CENTER
-                                self.bubbletexts.append(tx)
+                                self.bubbletexts.append((tx,vobj.Object.Placement.multVec(center)))
                                 st.addChild(tr)
                                 st.addChild(fo)
                                 st.addChild(tx)
@@ -578,7 +590,7 @@ class _ViewProviderAxis:
                         num = vobj.StartNumber-1
                 alt = False
                 for t in self.bubbletexts:
-                    t.string = self.getNumber(vobj,num)
+                    t[0].string = self.getNumber(vobj,num)
                     num += 1
                     if hasattr(vobj,"BubblePosition"):
                         if vobj.BubblePosition in ["Both","Arrow left","Arrow right","Bar left","Bar right"]:
@@ -685,6 +697,14 @@ class _ViewProviderAxis:
         else:
             return str(num+1)
 
+    def getTextData(self):
+
+        return [(t[0].string.getValues()[0],t[1]) for t in self.bubbletexts]
+
+    def getShapeData(self):
+
+        return self.bubbledata
+
     def setEdit(self,vobj,mode=0):
 
         taskd = _AxisTaskPanel()
@@ -709,6 +729,8 @@ class _ViewProviderAxis:
     def __setstate__(self,state):
 
         return None
+
+
 
 
 class _AxisTaskPanel:

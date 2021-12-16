@@ -684,55 +684,32 @@ def get_svg(obj,
 
         if App.GuiUp:
             vobj = obj.ViewObject
-            lorig = lstyle
+            fn = obj.ViewObject.FontName
             fill = 'none'
             rad = vobj.BubbleSize.Value/2
             n = 0
             for e in obj.Shape.Edges:
-                lstyle = lorig
                 svg += get_path(obj, plane,
                                 fill, pathdata, stroke, linewidth, lstyle,
                                 fill_opacity=None,
                                 edges=[e])
-                lstyle = "none"
-                pos = ["Start"]
-                if hasattr(vobj, "BubblePosition"):
-                    if vobj.BubblePosition == "Both":
-                        pos = ["Start", "End"]
-                    else:
-                        pos = [vobj.BubblePosition]
-                for p in pos:
-                    if p == "Start":
-                        p1 = e.Vertexes[0].Point
-                        p2 = e.Vertexes[1].Point
-                    else:
-                        p1 = e.Vertexes[1].Point
-                        p2 = e.Vertexes[0].Point
-                    dv = p2.sub(p1)
-                    dv.normalize()
-                    center = p2.add(dv.scale(rad, rad, rad))
+            for t in obj.ViewObject.Proxy.getTextData():
+                pos = t[1].add(App.Vector(0,-fontsize/2,0))
+                svg += svgtext.get_text(plane, techdraw,
+                                        tstroke, fontsize, fn,
+                                        0.0, pos, t[0],
+                                        1.0, "center")
+            for b in obj.ViewObject.Proxy.getShapeData():
+                if hasattr(b,"Curve") and isinstance(b.Curve,Part.Circle):
                     svg += get_circle(plane,
-                                      fill, stroke, linewidth, lstyle,
-                                      Part.makeCircle(rad, center))
-                    if (hasattr(vobj.Proxy, "bubbletexts")
-                            and len(vobj.Proxy.bubbletexts) >= n):
-                        bubb = vobj.Proxy.bubbletexts
-                        svg += '<text '
-                        svg += 'fill="{}" '.format(stroke)
-                        svg += 'font-size="{}" '.format(rad)
-                        svg += 'style="text-anchor:middle;'
-                        svg += 'text-align:center;'
-                        svg += 'font-family: sans;" '
-                        svg += 'transform="'
-                        svg += 'translate({},{}) '.format(center.x + rad/4.0,
-                                                          center.y - rad/3.0)
-                        svg += 'scale(1,-1)"> '
-                        svg += '<tspan>'
-                        svg += bubb[n].string.getValues()[0]
-                        svg += '</tspan>\n'
-                        svg += '</text>\n'
-                        n += 1
-            lstyle = lorig
+                                      fill, stroke, linewidth, "none",
+                                      b)
+                else:
+                    sfill = stroke
+                    svg += get_path(obj, plane,
+                                    sfill, pathdata, stroke, linewidth, "none",
+                                    fill_opacity=None,
+                                    edges=b.Edges)
 
     elif utils.get_type(obj) == "Pipe":
         fill = stroke

@@ -806,7 +806,7 @@ def placementFromDXFOCS(ent):
     # http://docs.autodesk.com/ACD/2011/ENU/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-7941.htm
     # Arbitrary Axis Algorithm
     # http://docs.autodesk.com/ACD/2011/ENU/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-793d.htm#WSc30cd3d5faa8f6d81cb25f1ffb755717d-7ff5
-    # Riferimenti dell'algoritmo dell'asse arbitrario in italiano 
+    # Riferimenti dell'algoritmo dell'asse arbitrario in italiano
     # http://docs.autodesk.com/ACD/2011/ITA/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-7941.htm
     # http://docs.autodesk.com/ACD/2011/ITA/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-793d.htm#WSc30cd3d5faa8f6d81cb25f1ffb755717d-7ff5
     if (draftWPlane.axis == FreeCAD.Vector(1.0, 0.0, 0.0)):
@@ -825,7 +825,7 @@ def placementFromDXFOCS(ent):
         draftWPlane.v.normalize()
         draftWPlane.position = Vector(0.0, 0.0, 0.0)
         draftWPlane.weak = False
-    
+
     pl = FreeCAD.Placement()
     pl = draftWPlane.getPlacement()
     if ((ent.type == "lwpolyline") or (ent.type == "polyline")):
@@ -3666,7 +3666,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
             # other cases, treat objects one by one
             dxf = dxfLibrary.Drawing()
             # add global variables
-            if hasattr(dxf,"header"): 
+            if hasattr(dxf,"header"):
                 dxf.header.append("  9\n$DIMTXT\n 40\n"+str(Draft.getParam("textheight", 20))+"\n")
             for ob in exportLayers:
                 if ob.Label != "0":  # dxflibrary already creates it
@@ -3732,7 +3732,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                         p2 = obj.Placement.multVec(App.Vector(_v))
                     _h = vobj.Proxy.header.translation.getValue().getValue()
                     lspc = FreeCAD.Vector(_h)
-                    p1 = p2 + lspc                    
+                    p1 = p2 + lspc
                     dxf.append(dxfLibrary.Text(t1, p1, height=f1,
                                                color=getACI(ob, text=True),
                                                style='STANDARD',
@@ -3752,56 +3752,43 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     if not axes:
                         continue
                     for ax in axes:
-                        dxf.append(dxfLibrary.Line([tuple(ax[0]),
-                                                    tuple(ax[1])],
-                                                   color=getACI(ob),
-                                                   layer=getStrGroup(ob)))
-                        p = ax[1]
-                        h = 1
-                        if FreeCAD.GuiUp:
-                            vobj = ob.ViewObject
-                            rad = vobj.BubbleSize.Value/2
-                            n = 0
-                            pos = ["Start"]
-                            if hasattr(vobj, "BubblePosition"):
-                                if vobj.BubblePosition == "Both":
-                                    pos = ["Start", "End"]
-                                else:
-                                    pos = [vobj.BubblePosition]
-                            for p in pos:
-                                if p == "Start":
-                                    p1 = ax[0]
-                                    p2 = ax[1]
-                                else:
-                                    p1 = ax[1]
-                                    p2 = ax[0]
-                                dv = p2.sub(p1)
-                                dv.normalize()
-                                center = p2.add(dv.scale(rad, rad, rad))
-                                h = float(ob.ViewObject.FontSize)
-                                dxf.append(dxfLibrary.Circle(center,
-                                                             rad,
-                                                             color=getACI(ob),
-                                                             layer=getStrGroup(ob)))
-                                dxf.append(dxfLibrary.Text(ax[2],
-                                                           center,
-                                                           alignment=center,
-                                                           height=h,
-                                                           justifyhor=1,
-                                                           justifyver=2,
-                                                           color=getACI(ob),
-                                                           style='STANDARD',
-                                                           layer=getStrGroup(ob)))
-                        else:
-                            dxf.append(dxfLibrary.Text(ax[2],
-                                                       p,
-                                                       alignment=p,
+                        dxf.append(dxfLibrary.Line([ax[0],
+                                                    ax[1]],
+                                                    color=getACI(ob),
+                                                    layer=getStrGroup(ob)))
+                    h = 1
+                    if FreeCAD.GuiUp:
+                        vobj = ob.ViewObject
+                        h = float(ob.ViewObject.FontSize)
+                        for text in vobj.Proxy.getTextData():
+                            pos = text[1].add(FreeCAD.Vector(-h/2,-h/2,0))
+                            dxf.append(dxfLibrary.Text(text[0],
+                                                       pos,
                                                        height=h,
-                                                       justifyhor=1,
-                                                       justifyver=2,
                                                        color=getACI(ob),
                                                        style='STANDARD',
                                                        layer=getStrGroup(ob)))
+                        for shape in vobj.Proxy.getShapeData():
+                            if hasattr(shape,"Curve") and isinstance(shape.Curve,Part.Circle):
+                                dxf.append(dxfLibrary.Circle(shape.Curve.Center,
+                                                             shape.Curve.Radius,
+                                                             color=getACI(ob),
+                                                             layer=getStrGroup(ob)))
+                            else:
+                                if lwPoly:
+                                    points = [(v.Point.x, v.Point.y, v.Point.z, None, None, 0.0) for v in shape.Vertexes]
+                                    dxf.append(dxfLibrary.LwPolyLine(points,
+                                                                     [0.0, 0.0],
+                                                                     1,
+                                                                     color=getACI(ob),
+                                                                     layer=getGroup(ob)))
+                                else:
+                                    points = [((v.Point.x, v.Point.y, v.Point.z), None, [None, None], 0.0) for v in shape.Vertexes]
+                                    dxf.append(dxfLibrary.PolyLine(points,
+                                                                   [0.0, 0.0, 0.0],
+                                                                   1,
+                                                                   color=getACI(ob),
+                                                                   layer=getGroup(ob)))
 
                 elif ob.isDerivedFrom("Part::Feature"):
                     tess = None
