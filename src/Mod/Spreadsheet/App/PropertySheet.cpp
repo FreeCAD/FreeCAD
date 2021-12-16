@@ -100,6 +100,15 @@ const Cell *PropertySheet::getValue(CellAddress key) const
         return i->second;
 }
 
+Cell * PropertySheet::getValueFromAlias(const std::string &alias)
+{
+    std::map<std::string, CellAddress>::const_iterator it = revAliasProp.find(alias);
+
+    if (it != revAliasProp.end())
+        return getValue(it->second);
+    else
+        return 0;
+}
 
 const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
 {
@@ -109,7 +118,6 @@ const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
         return getValue(it->second);
     else
         return 0;
-
 }
 
 bool PropertySheet::isValidAlias(const std::string &candidate)
@@ -1448,7 +1456,7 @@ PyObject *PropertySheet::getPyValue(PyObject *key) {
             Py_Return;
         }
 
-        Range range = getRange(Py::Object(key).as_string().c_str());
+        Range range = getRange(Py::Object(key).as_string().c_str(), false);
         if(!range.from().isValid() || !range.to().isValid())
             return Py::new_reference_to(Py::Tuple());
 
@@ -1796,10 +1804,10 @@ void PropertySheet::setPathValue(const ObjectIdentifier &path, const boost::any 
                         << " in " << getFullName());
 
             App::CellAddress targetFrom = other->getCellAddress(
-                Py::Object(seq[1].ptr()).as_string().c_str());
+                Py::Object(seq[1].ptr()).as_string().c_str(), false);
 
             App::CellAddress targetTo = other->getCellAddress(
-                Py::Object(seq[2].ptr()).as_string().c_str());
+                Py::Object(seq[2].ptr()).as_string().c_str(), false);
 
             App::Range range(from,to);
             App::Range rangeTarget(targetFrom,targetTo);
