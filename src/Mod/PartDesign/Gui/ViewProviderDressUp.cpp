@@ -60,6 +60,7 @@ const std::string & ViewProviderDressUp::featureName() const {
 
 
 bool ViewProviderDressUp::setEdit(int ModNum) {
+    manageEditMode(ModNum);
     if (ModNum == ViewProvider::Default ) {
         // Here we should prevent edit of a Feature with missing base
         // Otherwise it could call unhandled exception.

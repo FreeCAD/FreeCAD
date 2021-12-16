@@ -78,6 +78,7 @@ void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, con
 
 bool ViewProviderPrimitive::setEdit(int ModNum)
 {
+    manageEditMode(ModNum);
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this fillet the
         // object unsets and sets its edit mode without closing

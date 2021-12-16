@@ -66,6 +66,7 @@ void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 bool ViewProviderHole::setEdit(int ModNum)
 {
+    manageEditMode(ModNum);
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this hole the
         // object unsets and sets its edit mode without closing

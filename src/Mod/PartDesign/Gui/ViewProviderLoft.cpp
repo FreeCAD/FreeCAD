@@ -79,6 +79,7 @@ void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 bool ViewProviderLoft::setEdit(int ModNum)
 {
+    manageEditMode(ModNum);
     if (ModNum == ViewProvider::Default)
         setPreviewDisplayMode(true);
 

@@ -83,6 +83,7 @@ void ViewProviderBase::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 bool ViewProviderBase::setEdit(int ModNum)
 {
+    manageEditMode(ModNum);
     PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(getObject());
     if (!base->Placement.testStatus(App::Property::Immutable) &&
         !base->Placement.testStatus(App::Property::ReadOnly) &&

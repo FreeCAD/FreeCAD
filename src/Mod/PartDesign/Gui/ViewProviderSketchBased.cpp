@@ -57,6 +57,10 @@ std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren(void) c
     return temp;
 }
 
+bool ViewProviderSketchBased::setEdit(int ModNum) {
+    manageEditMode(ModNum);
+    return ViewProvider::setEdit(ModNum);
+}
 
 bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
     PartDesign::ProfileBased* feature = static_cast<PartDesign::ProfileBased*>(getObject());

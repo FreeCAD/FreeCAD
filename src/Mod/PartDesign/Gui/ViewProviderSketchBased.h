@@ -43,6 +43,8 @@ public:
     /// grouping handling
     std::vector<App::DocumentObject*> claimChildren(void)const;
 
+    virtual bool setEdit(int ModNum);
+
     virtual bool onDelete(const std::vector<std::string> &);
 
 };

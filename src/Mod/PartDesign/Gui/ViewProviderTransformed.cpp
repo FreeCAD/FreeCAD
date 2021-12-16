@@ -89,6 +89,7 @@ Gui::ViewProvider *ViewProviderTransformed::startEditing(int ModNum) {
 
 bool ViewProviderTransformed::setEdit(int ModNum)
 {
+    manageEditMode(ModNum);
     pcRejectedRoot = new SoSeparator();
     pcRejectedRoot->ref();
 

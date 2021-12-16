@@ -88,6 +88,7 @@ void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 }
 
 bool ViewProviderPipe::setEdit(int ModNum) {
+    manageEditMode(ModNum);
     if (ModNum == ViewProvider::Default )
         setPreviewDisplayMode(true);
 

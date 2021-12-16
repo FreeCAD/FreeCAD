@@ -78,6 +78,9 @@ protected:
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;
 
+    static inline void manageEditMode(int &ModNum) {
+        if (ModNum == ViewProvider::Transform || ModNum == ViewProvider::Cutting) ModNum = ViewProvider::Default; }
+
     virtual bool onDelete(const std::vector<std::string> &) override;
 
     /**
