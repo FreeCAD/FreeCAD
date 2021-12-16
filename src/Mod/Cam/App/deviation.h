@@ -41,7 +41,7 @@ public:
 	void WriteOutput(const QString &dateiname);
 	bool Compute();
 	
-	TopoDS_Shape         m_Cad;              // CAD-Geometrie
+	TopoDS_Shape         m_Cad;              // CAD-Geometry
 	MeshCore::MeshKernel m_MeshCad;
 	MeshCore::MeshKernel m_Mesh;
 

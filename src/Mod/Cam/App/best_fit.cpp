@@ -96,12 +96,12 @@ double best_fit::ANN()
     double error = 0.0;
 
     int a_dim = 3;
-    int a_nbPnts =(int) m_pntCloud_2.size();        // Size vom eingescanntem Netz
-    int a_nbNear = 1;                               // anzahl der rückgabewerte
+    int a_nbPnts =(int) m_pntCloud_2.size();        // Size of the scanned network
+    int a_nbNear = 1;                               // number of return values
     queryPt = annAllocPt(a_dim);                    // allocate query point storage
     dataPts = annAllocPts(a_nbPnts, a_dim);         // allocate data points storage
-    nnIdx = new ANNidx[a_nbNear];                   // allocate near neigh indices
-    dists = new ANNdist[a_nbNear];                  // allocatenear neighbor dists
+    nnIdx = new ANNidx[a_nbNear];                   // allocate near neighbor indices
+    dists = new ANNdist[a_nbNear];                  // allocate near neighbor dists
 
     m_LSPnts[0].clear();
     m_LSPnts[1].clear();
@@ -115,7 +115,7 @@ double best_fit::ANN()
 
     kdTree = new ANNkd_tree(        // build search structure
         dataPts,                    // the data points
-        a_nbPnts,            // number of points
+        a_nbPnts,                   // number of points
         a_dim);                     // dimension of space
 
 
@@ -126,8 +126,8 @@ double best_fit::ANN()
         queryPt[2] = m_pntCloud_1[i].z;
 
         kdTree->annkSearch(                        // search
-            queryPt,							   // query point
-            a_nbNear,						       // number of near neighbors
+            queryPt,                               // query point
+            a_nbNear,                              // number of near neighbors
             nnIdx,                                 // nearest neighbors (returned)
             dists                                  // distance (returned)
         );                                         // error bound
@@ -219,7 +219,7 @@ bool best_fit::Perform()
     M[1][3] = m_cad2orig.Y();
     M[2][3] = m_cad2orig.Z();
 
-    m_CadMesh.Transform(M); // besser: tesselierung nach der trafo !!!
+    m_CadMesh.Transform(M); // better: tessellation after the transformer!
     m_MeshWork.Transform(M);
     PointTransform(m_pntCloud_1,M);
 
@@ -404,9 +404,9 @@ bool best_fit::Coarse_correction()
 
     T.setToUnity();
     best_fit befi; 
-    
-	//error = CompError_GetPnts(m_pnts, m_normals)[0];  // startfehler    int n=360/rstep_corr;
-    
+
+	//error = CompError_GetPnts(m_pnts, m_normals)[0];  // start error    int n=360/rstep_corr;
+
 	error = ANN();
 
     for (int i=1; i<4; ++i)
@@ -443,33 +443,33 @@ bool best_fit::Coarse_correction()
 
 bool best_fit::LSM()
 {
-    double TOL  = 0.05;          // Abbruchkriterium des Newton-Verfahren
-    int maxIter = 100;            // maximale Anzahl von Iterationen für den Fall,
-							     // dass das Abbruchkriterium nicht erfüllt wird
+    double TOL  = 0.05;          // Termination criterion of the Newton method
+    int maxIter = 100;            // maximum number of iterations for the case,
+                                 // that the termination criterion is not met
 
-   int mult = 2;                 // zur Halbierung der Schrittweite bei Misserfolg des Newton Verfahrens
+   int mult = 2;                 // to halve the step size in the event of failure of the Newton method
 
     double val, tmp = 1e+10, delta, delta_tmp = 0.0;
-    Base::Matrix4D Tx,Ty,Tz,Rx,Ry,Rz,M;   // Transformaitonsmatrizen
+    Base::Matrix4D Tx,Ty,Tz,Rx,Ry,Rz,M;   // Transformation matrices
 
 	ofstream anOutputFile;
 	anOutputFile.open("c:/outputBestFit.txt");
     anOutputFile.precision(7);
 
-      int c=0; // Laufvariable
-    
+      int c=0; // Run variable
+
 
 
     std::vector<double> del_x(3,0.0);
-    std::vector<double>     x(3,0.0); // Startparameter entspricht Nullvektor
+    std::vector<double>     x(3,0.0); // Start parameter corresponds to zero vector
 
-    Base::Vector3f centr_l,centr_r, cent;  // Schwerpunkte der Punktesätze
+    Base::Vector3f centr_l,centr_r, cent;  // Focal points of the point sets
 
-    // Newton Verfahren: 1. Löse  H*del_x = -J
-    //                   2. Setze x = x + del_x
+    // Newton's method: 1. Solve  H*del_x = -J
+    //                  2. Set    x = x + del_x
 
-    std::vector<double> Jac(3);           // 1.Ableitung der Fehlerfunktion (Jacobi-Matrix)
-    std::vector< std::vector<double> > H; // 2.Ableitung der Fehlerfunktion (Hesse-Matrix)
+    std::vector<double> Jac(3);           // 1. Deriving the error function (Jacobi-Matrix)
+    std::vector< std::vector<double> > H; // 2. Deriving the error function (Hesse-Matrix)
 
     time_t seconds1, seconds2, sec1, sec2;
     seconds1 = time(NULL);
@@ -480,26 +480,26 @@ bool best_fit::LSM()
         seconds1 = time(NULL);
         //m_Mesh = m_MeshWork;
         
-		// Fehlerberechnung vom CAD -> Mesh
-        //tmp = CompError_GetPnts(m_pnts, m_normals);      // hier: - Berechnung der LS-Punktesätze
-        //      CompTotalError()                           //       - Berechnung der zugehörigen Gewichtungen
+		// Error calculation from CAD -> Mesh
+        //tmp = CompError_GetPnts(m_pnts, m_normals);      // here: - Calculation of the LS point sets
+        //      CompTotalError()                           //       - Calculation of the corresponding weightings
 
 		delta = delta_tmp;
-        delta_tmp = ANN();          // gibt durchschnittlichen absoluten Fehler aus
-		delta = delta - delta_tmp ; // hier wird die Fehlerverbesserung zum vorigen Iterationsschritt gespeichert
+        delta_tmp = ANN();          // returns average absolute errors
+		delta = delta - delta_tmp ; // the error correction for the previous iteration step is stored here
 
-		if (c==maxIter || delta < ERR_TOL && c>1) break; // Abbruchkriterium (falls maximale Iterationsschrite erreicht
-										                 //                   oder falls Fehleränderung unsignifikant gering)
+		if (c==maxIter || delta < ERR_TOL && c>1) break; // Abort criterion (if maximum iteration steps are reached or if
+										                 //                  the change in error is insignificantly small)
 
         seconds2 = time(NULL);
 		anOutputFile << c << ", " << delta_tmp << ", " << delta << "    -    Time: " << seconds2 - seconds1 << " sec" << endl;
 		seconds1 = time(NULL);
 
 		sec1 = time(NULL);
-        for (unsigned int i=0; i<x.size(); ++i) x[i] = 0.0; // setzt startwerte für newton auf null
+        for (unsigned int i=0; i<x.size(); ++i) x[i] = 0.0; // sets the starting values for newton to zero
 
 
-        // Berechne gewichtete Schwerpunkte und verschiebe die Punktesätze entsprechend:
+        // Calculate weighted centroids and shift the point sets accordingly:
         centr_l.Scale(0.0,0.0,0.0);
         centr_r.Scale(0.0,0.0,0.0);
 
@@ -529,7 +529,7 @@ bool best_fit::LSM()
 
 
 
-        // Verschiebung der Schwerpunkte zum Ursprung
+        // Shifting the focus to the origin
         TransMat(Tx,centr_l.x,1);
         TransMat(Ty,centr_l.y,2);
         TransMat(Tz,centr_l.z,3);
@@ -540,26 +540,26 @@ bool best_fit::LSM()
 		PointTransform(m_pntCloud_2,M);
         m_MeshWork.Transform(M);
 
-        TransMat(Tx,centr_r.x,1); // Berechnung der Translationsmatrix in x-Richtung
-        TransMat(Ty,centr_r.y,2); // Berechnung der Translationsmatrix in y-Richtung
-        TransMat(Tz,centr_r.z,3); // Berechnung der Translationsmatrix in z-Richtung
+        TransMat(Tx,centr_r.x,1); // Calculation of the translation matrix in x-direction
+        TransMat(Ty,centr_r.y,2); // Calculation of the translation matrix in y-direction
+        TransMat(Tz,centr_r.z,3); // Calculation of the translation matrix in z-direction
 
-        M = Tx*Ty*Tz;                  // Zusammenfügen zu einer Gesamttranslationsmatrix
-        PointTransform(m_LSPnts[1],M); // Anwendung der Translation auf m_LSPnts
+        M = Tx*Ty*Tz;                  // Merge into an overall translation matrix
+        PointTransform(m_LSPnts[1],M); // Applying the translation to m_LSPnts
         PointTransform(m_pntCloud_1,M);
-		//PointNormalTransform(m_pnts, m_normals, M); // Anwendung der Translation auf m_pnts
-        m_CadMesh.Transform(M);                       // Anwendung der Translation auf das CadMesh
+		//PointNormalTransform(m_pnts, m_normals, M); // Application of translation to m_pnts
+        m_CadMesh.Transform(M);                       // Application of translation to the CadMesh
 
         sec2 = time(NULL);
-		anOutputFile << c+1 << " - Initialisierung und Transformation um gewichtete Schwerpunkte: " << sec2 - sec1 << " sec" << endl;
+		anOutputFile << c+1 << " - Initialization and transformation around weighted focal points: " << sec2 - sec1 << " sec" << endl;
 
 		sec1 = time(NULL);
-        // Newton-Verfahren zur Berechnung der Rotationsmatrix:
+        // Newton's method for calculating the rotation matrix:
         while (true)
         {
 
-            Jac = Comp_Jacobi(x);  // berechne 1.Ableitung
-            H   = Comp_Hess(x);    // berechne 2.Ableitung
+            Jac = Comp_Jacobi(x);  // compute 1st derivative
+            H   = Comp_Hess(x);    // compute 2nd derivative
 
             val = 0.0;
             for (unsigned int i=0; i<Jac.size(); ++i)
@@ -568,13 +568,13 @@ bool best_fit::LSM()
             }
             val = sqrt(val);
 
-            if (val < TOL) break; // Abbruchkriterium des Newton-Verfahren
+            if (val < TOL) break; // Termination criterion of the Newton method
 
             if (val>tmp && mult < 1e+4)
             {
                 for (unsigned int i=0; i<del_x.size(); ++i)
                 {
-                    x[i] -= del_x[i]/double(mult);  // Halbiere Schrittweite falls keine Verbesserung
+                    x[i] -= del_x[i]/double(mult);  // Halve the increment if no improvement
                 }
                 mult *= 2;
                 continue;
@@ -586,8 +586,8 @@ bool best_fit::LSM()
 
             tmp = val;
 
-            del_x = Routines::NewtonStep(Jac,H);      // löst Gl.system:          H*del_x = -J
-            for (unsigned int i=0; i<x.size(); ++i)   // nächster Iterationswert: x = x + del_x
+            del_x = Routines::NewtonStep(Jac,H);      // solves equation system:  H*del_x = -J
+            for (unsigned int i=0; i<x.size(); ++i)   // next iteration value:    x = x + del_x
             {
                 x[i] += del_x[i];
             }
@@ -596,7 +596,7 @@ bool best_fit::LSM()
 		sec2 = time(NULL);
 		anOutputFile << c+1 << " - Newton: " << seconds2 - seconds1 << " sec" << endl;
         sec1 = time(NULL);
-        // Rotiere und verschiebe zurück zum Ursprung der !!! CAD-Geometrie !!!
+        // Rotate and shift back to the origin of the !!! CAD geometry !!!
         RotMat  (Rx,(x[0]*180.0/PI),1);
         RotMat  (Ry,(x[1]*180.0/PI),2);
         RotMat  (Rz,(x[2]*180.0/PI),3);
@@ -612,7 +612,7 @@ bool best_fit::LSM()
         TransMat(Ty, -centr_r.y - cent.y + centr_l.y, 2);
 		TransMat(Tz, -centr_r.z - cent.z + centr_l.z, 3);
 
-        M = Tx*Ty*Tz*Rx*Ry*Rz; // Rotiere zuerst !!! (Rotationen stets um den Nullpunkt...)
+        M = Tx*Ty*Tz*Rx*Ry*Rz; // Rotate first !!! (Rotations always around the zero point ...)
         
 		PointTransform(m_pntCloud_2,M);
 		m_MeshWork.Transform(M);
@@ -629,7 +629,7 @@ bool best_fit::LSM()
    		sec2 = time(NULL);
 		
 		anOutputFile << c+1 << " - Trafo: " << seconds2 - seconds1 << " sec" << endl;
-        ++c;  //Erhöhe Laufvariable 
+        ++c;  //Increase run variable 
     }
 
 	anOutputFile.close();
@@ -763,7 +763,7 @@ bool best_fit::Comp_Weights()
 
     bool bf;
 
-    // explores all faces  ------------  Hauptschleife
+    // explores all faces  ------------  Main loop
     for (aExpFace.Init(m_Cad,TopAbs_FACE);aExpFace.More();aExpFace.Next())
     {
         TopoDS_Face aFace = TopoDS::Face(aExpFace.Current());
@@ -851,7 +851,7 @@ bool best_fit::Comp_Weights()
 bool best_fit::RotMat(Base::Matrix4D &M, double degree, int axis)
 {
     M.setToUnity();
-    degree = 2*PI*degree/360;  // trafo bogenmaß
+    degree = 2*PI*degree/360;  // transformer bend
 
     switch (axis)
     {
@@ -1060,7 +1060,7 @@ bool best_fit::PointCloud_Coarse()
 	Base::Builder3D log3d_mesh, log3d_cad;
 	gp_Pnt orig;
 
-	gp_Vec v1,v2,v3,v,vec; // Hauptachsenrichtungen
+	gp_Vec v1,v2,v3,v,vec; // Major axis directions
 	gp_Trsf trafo;
 
 	FitFunc_1.Clear();
@@ -1088,7 +1088,7 @@ bool best_fit::PointCloud_Coarse()
 
 	Base::Matrix4D T5, T1;
 
-	// Füllt Matrix T5 
+	// Fills matrix T5 
 	T5[0][0] = DirA_1.x;
 	T5[1][0] = DirA_1.y;
 	T5[2][0] = DirA_1.z;
@@ -1122,7 +1122,7 @@ bool best_fit::PointCloud_Coarse()
 	T5[2][3] = Grav_1.z;*/
 
 
-	// Füllt Matrix T1
+	// Fills matrix T1
 	T1[0][0] = DirA_2.x;
 	T1[1][0] = DirA_2.y;
 	T1[2][0] = DirA_2.z;
@@ -1197,7 +1197,7 @@ bool best_fit::PointCloud_Coarse()
 	pnt.z = (float) orig.Z();
 
 	log3d_mesh.addSingleArrow(pnt,x,3,1,0,0);log3d_mesh.addSingleArrow(pnt,y,3,0,1,0);log3d_mesh.addSingleArrow(pnt,z,3,0,0,1);
-	log3d_mesh.addSinglePoint(0,0,0,20,1,1,1); // plotte Ursprung
+	log3d_mesh.addSinglePoint(0,0,0,20,1,1,1); // plot origins
 	//log3d_mesh.addSinglePoint(pnt,6,0,0,0);
 	log3d_mesh.saveToFile("c:/Mesh_CoordSys.iv");
 
@@ -1221,7 +1221,7 @@ bool best_fit::MeshFit_Coarse()
     Base::Builder3D log3d_mesh, log3d_cad;
     gp_Pnt orig;
 
-    gp_Vec v1,v2,v3,v,vec; // Hauptachsenrichtungen
+    gp_Vec v1,v2,v3,v,vec; // Major axis directions
     gp_Trsf trafo;
 
    /* BRepGProp::SurfaceProperties(m_Cad, prop);
@@ -1300,7 +1300,7 @@ bool best_fit::MeshFit_Coarse()
 	pnt.z = (float) orig.Z();
 
 	log3d_mesh.addSingleArrow(pnt,x,3,1,0,0);log3d_mesh.addSingleArrow(pnt,y,3,0,1,0);log3d_mesh.addSingleArrow(pnt,z,3,0,0,1);
-	log3d_mesh.addSinglePoint(0,0,0,20,1,1,1); // plotte Ursprung
+	log3d_mesh.addSinglePoint(0,0,0,20,1,1,1); // plot origins
     //log3d_mesh.addSinglePoint(pnt,6,0,0,0);
 	log3d_mesh.saveToFile("c:/Mesh_CoordSys.iv");
 
@@ -1317,7 +1317,7 @@ bool best_fit::ShapeFit_Coarse()
     SurfProp.SurfaceProperties(m_Cad, prop);
     orig  = prop.CentreOfMass();
 
-    // CAD-Mesh -> zurück zum Ursprung
+    // CAD-Mesh -> back to the origin
     m_cad2orig.SetX(-orig.X());
     m_cad2orig.SetY(-orig.Y());
     m_cad2orig.SetZ(-orig.Z());
@@ -1339,7 +1339,7 @@ bool best_fit::Tesselate_Face(const TopoDS_Face &aface, MeshCore::MeshKernel &me
     Base::Vector3f Points[3];
     if (!BRepTools::Triangulation(aface,0.1))
     {
-        // removes all the triangulations of the faces ,
+        // removes all the triangulations of the faces,
         // and all the polygons on the triangulations of the edges:
         BRepTools::Clean(aface);
 
@@ -1349,8 +1349,8 @@ bool best_fit::Tesselate_Face(const TopoDS_Face &aface, MeshCore::MeshKernel &me
 /*The next two lines have been from the occ6.2 adapt mesh library. They do not work within OCC6.3
       TriangleAdapt_Parameters MeshingParams;
        BRepMeshAdapt::Mesh(aface,deflection,MeshingParams);
-																*/
-	   BRepMesh_IncrementalMesh Mesh(aface,deflection);
+*/
+       BRepMesh_IncrementalMesh Mesh(aface,deflection);
     }
     TopLoc_Location aLocation;
     // takes the triangulation of the face aFace:
@@ -1511,7 +1511,7 @@ std::vector<Base::Vector3f> best_fit::Comp_Normals(MeshCore::MeshKernel &M)
 
     for (int i=0; i<NumOfPoints; ++i)
     {
-        // Satz von Dreiecken zu jedem Punkt
+        // Set of triangles at each point
         mPnt = M.GetPoint(i);
         origPoint.x = mPnt.x;
         origPoint.y = mPnt.y;
@@ -1521,12 +1521,13 @@ std::vector<Base::Vector3f> best_fit::Comp_Normals(MeshCore::MeshKernel &M)
         fArea = 0.0;
         normal.Set(0.0,0.0,0.0);
 
-        // Iteriere über die Dreiecke zu jedem Punkt
+        // Iterate over the triangles to each point
         for (std::set<unsigned long>::const_iterator it = faceSet.begin(); it != faceSet.end(); ++it)
         {
-            // Zweimal derefernzieren, um an das MeshFacet zu kommen und dem Kernel uebergeben, dass er ein MeshGeomFacet liefert
+            // Dereference twice to get to the MeshFacet and hand over
+            // to the kernel that it delivers a MeshGeomFacet
             t_face = M.GetFacet(*it);
-            // Flaecheninhalt aufsummieren
+            // Sum up the area content
             local_Area = t_face.Area();
             local_normal = t_face.GetNormal();
             if (local_normal.z < 0)
@@ -1741,7 +1742,7 @@ double best_fit::CompTotalError()
     m_LSPnts[1].clear();
     for (p_it.Begin(); p_it.More(); p_it.Next())
     {
-        if (malg.NearestFacetOnRay(*p_it, m_normals[i], aFacetGrid, projPoint, facetIndex))   // gridoptimiert
+        if (malg.NearestFacetOnRay(*p_it, m_normals[i], aFacetGrid, projPoint, facetIndex))   // grid-optimized
         {
             log3d.addSingleArrow(*p_it, projPoint, 3, 0,0,0);
             distVec  = projPoint - *p_it;
@@ -1760,7 +1761,7 @@ double best_fit::CompTotalError()
         else
         {
 
-            if (!malg2.NearestFacetOnRay(*p_it, m_normals[i], projPoint, facetIndex))   // nicht gridoptimiert
+            if (!malg2.NearestFacetOnRay(*p_it, m_normals[i], projPoint, facetIndex))   // not grid-optimized
             {
                 c++;
                 //m_normals[i].Scale(-10,-10,-10);
@@ -1792,7 +1793,7 @@ double best_fit::CompTotalError()
 
     //for (p_it.Begin(); p_it.More(); p_it.Next())
 //   {
-    //    if (!malg.NearestFacetOnRay(*p_it, m_normals[i], aFacetGrid, projPoint, facetIndex))   // gridoptimiert
+    //    if (!malg.NearestFacetOnRay(*p_it, m_normals[i], aFacetGrid, projPoint, facetIndex))   // grid-optimized
 //       {
 //           if (malg2.NearestFacetOnRay(*p_it, m_normals[i], projPoint, facetIndex))
 //           {
@@ -1898,7 +1899,7 @@ double best_fit::CompTotalError(MeshCore::MeshKernel &mesh)
 
     for (p_it.Begin(); p_it.More(); p_it.Next())
     {
-        if (malg.NearestFacetOnRay(*p_it, m_normals[i], aFacetGrid, projPoint, facetIndex))   // gridoptimiert
+        if (malg.NearestFacetOnRay(*p_it, m_normals[i], aFacetGrid, projPoint, facetIndex))   // grid-optimized
         {
             distVec  = projPoint - *p_it;
             sqrdis   = distVec*distVec;
@@ -1913,13 +1914,13 @@ double best_fit::CompTotalError(MeshCore::MeshKernel &mesh)
         else
         {
 
-            if (!malg2.NearestFacetOnRay(*p_it, m_normals[i], projPoint, facetIndex))   // nicht gridoptimiert
+            if (!malg2.NearestFacetOnRay(*p_it, m_normals[i], projPoint, facetIndex))   // not grid-optimized
             {
                 c++;
-				FailProj.push_back(i);
+                FailProj.push_back(i);
             }
             else
-			{
+            {
 				distVec  = projPoint - *p_it;
 				sqrdis   = distVec*distVec;
 
