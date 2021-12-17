@@ -28,6 +28,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+import datetime
 from typing import Dict, Union
 from enum import IntEnum
 import threading
@@ -291,17 +292,67 @@ class PackageListItemDelegate(QStyledItemDelegate):
                 self.widget.ui.labelMaintainer.setText("")
 
         # Update status
-        if repo.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
-            self.widget.ui.labelStatus.setText("")
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
-            self.widget.ui.labelStatus.setText(translate("AddonsInstaller","Installed"))
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
-            self.widget.ui.labelStatus.setText(translate("AddonsInstaller","Up-to-date"))
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
-            self.widget.ui.labelStatus.setText(translate("AddonsInstaller","Update available"))
-        elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
-            self.widget.ui.labelStatus.setText(translate("AddonsInstaller","Pending restart"))
+        if self.displayStyle == ListDisplayStyle.EXPANDED:
+            self.widget.ui.labelStatus.setText(self.get_expanded_update_string(repo))
+        else:
+            self.widget.ui.labelStatus.setText(self.get_compact_update_string(repo))
+        
         self.widget.adjustSize()
+
+    def get_compact_update_string(self, repo:AddonManagerRepo) -> str:
+        """ Get a single-line string listing details about the installed version and date """
+
+        result = ""
+        if repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
+            result = translate("AddonsInstaller","Installed")
+        elif repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
+            result = translate("AddonsInstaller","Up-to-date")
+        elif repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+            result = translate("AddonsInstaller","Update available")
+        elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+            result = translate("AddonsInstaller","Pending restart")
+        return result
+
+    def get_expanded_update_string(self, repo:AddonManagerRepo) -> str:
+        """ Get a multi-line string listing details about the installed version and date """
+
+        result = ""
+        
+        installed_version_string = ""
+        if repo.update_status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+            if repo.installed_version:
+                installed_version_string = "\n" + translate("AddonsInstaller", "Installed version") + ": " 
+                installed_version_string += repo.installed_version
+            else:
+                installed_version_string = "\n" + translate("AddonsInstaller", "Unknown version")
+        
+        installed_date_string = ""
+        if repo.updated_timestamp:
+            installed_date_string = "\n" + translate("AddonsInstaller", "Installed on") + ": " 
+            installed_date_string += QDateTime.fromTime_t(repo.updated_timestamp).date().toString(Qt.SystemLocaleShortDate)
+
+        available_version_string = ""
+        if repo.metadata:
+            available_version_string = "\n" + translate("AddonsInstaller", "Available version") + ": " 
+            available_version_string += repo.metadata.Version
+
+        if repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
+            result = translate("AddonsInstaller","Installed")
+            result += installed_version_string
+            result += installed_date_string
+        elif repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
+            result = translate("AddonsInstaller","Up-to-date")
+            result += installed_version_string
+            result += installed_date_string
+        elif repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+            result = translate("AddonsInstaller","Update available")
+            result += installed_version_string
+            result += installed_date_string
+            result += available_version_string
+        elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+            result = translate("AddonsInstaller","Pending restart")
+
+        return result
 
     def paint(self, painter:QPainter, option:QStyleOptionViewItem, index:QModelIndex):
         painter.save()

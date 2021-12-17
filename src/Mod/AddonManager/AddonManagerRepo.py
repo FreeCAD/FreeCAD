@@ -82,6 +82,8 @@ class AddonManagerRepo:
         self.icon = None
         self.cached_icon_filename = ""
         self.macro = None # Bridge to Gaël Écorchard's macro management class
+        self.updated_timestamp = None
+        self.installed_version = None
 
     def __str__ (self) -> str:
         result  = f"FreeCAD {self.repo_type}\n"

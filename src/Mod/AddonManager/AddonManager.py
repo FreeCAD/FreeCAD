@@ -78,6 +78,7 @@ class CommandAddonManager:
                "update_metadata_cache_worker", "update_all_worker"]
 
     lock = threading.Lock()
+    restart_required = False
 
     def __init__(self):
         FreeCADGui.addPreferencePage(os.path.join(os.path.dirname(__file__),
@@ -201,6 +202,7 @@ class CommandAddonManager:
         self.packageDetails.uninstall.connect(self.remove)
         self.packageDetails.update.connect(self.update)
         self.packageDetails.back.connect(self.on_buttonBack_clicked)
+        self.packageDetails.update_status.connect(self.status_updated)
 
         # center the dialog over the FreeCAD window
         mw = FreeCADGui.getMainWindow()
@@ -276,8 +278,7 @@ class CommandAddonManager:
 
         # all threads have finished
         if oktoclose:
-            if ((hasattr(self, "install_worker") and self.install_worker) or
-                    (hasattr(self, "addon_removed") and self.addon_removed)):
+            if self.restart_required:
                 # display restart dialog
                 m = QtWidgets.QMessageBox()
                 m.setWindowTitle(translate("AddonsInstaller", "Addon manager"))
@@ -478,9 +479,9 @@ class CommandAddonManager:
             self.check_worker.start()
             self.enable_updates(len(self.packages_with_updates))
 
-    def status_updated(self, repo:str, status:AddonManagerRepo.UpdateStatus) -> None:
-        self.item_model.update_item_status(repo.name, status)
-        if status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+    def status_updated(self, repo:AddonManagerRepo) -> None:
+        self.item_model.reload_item(repo)
+        if repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
             self.packages_with_updates.append(repo)
             self.enable_updates(len(self.packages_with_updates))
 
@@ -578,6 +579,7 @@ class CommandAddonManager:
             return
 
         if repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH or repo.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+            self.show_progress_widgets()
             self.install_worker = InstallWorkbenchWorker(repo)
             self.install_worker.status_message.connect(self.show_information)
             self.current_progress_region = 1
@@ -610,7 +612,7 @@ class CommandAddonManager:
                                     "now available from the Macros dialog.")
                 self.on_package_installed (repo, message)
             else:
-                message = translate("AddonsInstaller", "Installation of macro failed" + ":")
+                message = translate("AddonsInstaller", "Installation of macro failed") + ":"
                 for error in errors:
                     message += "\n  * "
                     message += error
@@ -629,6 +631,7 @@ class CommandAddonManager:
         self.subupdates_succeeded = []
         self.subupdates_failed = []
         
+        self.show_progress_widgets()
         self.current_progress_region = 1
         self.number_of_progress_regions = 1
         self.update_all_worker = UpdateAllWorker(self.packages_with_updates)
@@ -640,7 +643,7 @@ class CommandAddonManager:
         self.update_all_worker.start()
 
     def on_update_all_completed(self) -> None:
-        #self.show_progress_bar(False)
+        self.hide_progress_widgets()
         if not self.subupdates_failed:
             message = translate ("AddonsInstaller", "All packages were successfully updated. Packages:") + "\n"
             message += ''.join([repo.name + "\n" for repo in self.subupdates_succeeded])
@@ -654,6 +657,9 @@ class CommandAddonManager:
             message += ''.join([repo.name + "\n" for repo in self.subupdates_failed])
 
         for installed_repo in self.subupdates_succeeded:
+            self.restart_required = True
+            installed_repo.update_status = AddonManagerRepo.UpdateStatus.PENDING_RESTART
+            self.item_model.reload_item(installed_repo)
             for requested_repo in self.packages_with_updates:
                 if installed_repo.name == requested_repo.name:
                     self.packages_with_updates.remove(installed_repo)
@@ -704,22 +710,22 @@ class CommandAddonManager:
         self.hide_progress_widgets()
 
     def on_package_installed(self, repo:AddonManagerRepo, message:str) -> None:
+        self.hide_progress_widgets()
         QtWidgets.QMessageBox.information(None,
                                       translate("AddonsInstaller", "Installation succeeded"),
                                       message,
                                       QtWidgets.QMessageBox.Close)
-        if repo.contains_workbench():
-            self.item_model.update_item_status(repo.name, AddonManagerRepo.UpdateStatus.PENDING_RESTART)
-        else:
-            self.item_model.update_item_status(repo.name, AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
-        self.packageDetails.show_repo(repo, reload=True)
+        repo.update_status = AddonManagerRepo.UpdateStatus.PENDING_RESTART
+        self.item_model.reload_item(repo)
+        self.packageDetails.show_repo(repo)
+        self.restart_required = True
 
     def on_installation_failed(self, _:AddonManagerRepo, message:str) -> None:
+        self.hide_progress_widgets()
         QtWidgets.QMessageBox.warning(None,
                                       translate("AddonsInstaller", "Installation failed"),
                                       message,
                                       QtWidgets.QMessageBox.Close) 
-        self.dialog.progressBar.hide()
 
     def executemacro(self, repo:AddonManagerRepo) -> None:
         """executes a selected macro"""
@@ -732,7 +738,7 @@ class CommandAddonManager:
             macro_path = os.path.join(self.macro_repo_dir,macro.filename)
             FreeCADGui.open(str(macro_path))
             self.dialog.hide()
-            FreeCADGui.SendMsgToActiveView("Run")        
+            FreeCADGui.SendMsgToActiveView("Run")
         else:
             with tempfile.TemporaryDirectory() as dir:
                 temp_install_succeeded = macro.install(dir)
@@ -764,7 +770,8 @@ class CommandAddonManager:
                 shutil.rmtree(clonedir, onerror=self.remove_readonly)
                 self.item_model.update_item_status(repo.name, AddonManagerRepo.UpdateStatus.NOT_INSTALLED)
                 self.addon_removed = True  # A value to trigger the restart message on dialog close
-                self.packageDetails.show_repo(repo, reload=True)
+                self.packageDetails.show_repo(repo)
+                self.restart_required = True
             else:
                 self.dialog.textBrowserReadMe.setText(translate("AddonsInstaller", "Unable to remove this addon with the Addon Manager."))
 
@@ -772,7 +779,7 @@ class CommandAddonManager:
             macro = repo.macro
             if macro.remove():
                 self.item_model.update_item_status(repo.name, AddonManagerRepo.UpdateStatus.NOT_INSTALLED)
-                self.packageDetails.show_repo(repo, reload=True)
+                self.packageDetails.show_repo(repo)
             else:
                 self.dialog.textBrowserReadMe.setText(translate("AddonsInstaller", "Macro could not be removed."))
 

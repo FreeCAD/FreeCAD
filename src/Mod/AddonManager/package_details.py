@@ -44,6 +44,7 @@ class PackageDetails(QWidget):
     uninstall = Signal(AddonManagerRepo)
     update = Signal(AddonManagerRepo)
     execute = Signal(AddonManagerRepo)
+    update_status = Signal(AddonManagerRepo)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -85,6 +86,45 @@ class PackageDetails(QWidget):
         elif repo.repo_type == AddonManagerRepo.RepoType.PACKAGE:
             self.show_package(repo)
             self.ui.buttonExecute.hide()
+
+        if repo.update_status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+            installed_version_string = ""
+            if repo.installed_version:
+                installed_version_string = translate("AddonsInstaller", "Version") + " " 
+                installed_version_string += repo.installed_version
+            else:
+                installed_version_string = translate("AddonsInstaller", "Unknown version (no package.xml file found)") + " " 
+
+        
+            if repo.updated_timestamp:
+                installed_version_string += " " + translate("AddonsInstaller", "installed on") + " " 
+                installed_version_string += QDateTime.fromTime_t(repo.updated_timestamp).date().toString(Qt.SystemLocaleShortDate)
+                installed_version_string += ". "
+            else:
+                installed_version_string += translate("AddonsInstaller", "installed") + ". "
+
+            if repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+                if repo.metadata:
+                    installed_version_string += "<b>" + translate("AddonsInstaller", "Update available to version") + " " 
+                    installed_version_string += repo.metadata.Version
+                    installed_version_string += ".</b>"
+                else:
+                    installed_version_string += "<b>" + translate("AddonsInstaller", "Update available to unknown version (no package.xml file found)") + ".</b>"
+            elif repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
+                installed_version_string += translate("AddonsInstaller", "This is the latest version available") + "."
+            elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
+                installed_version_string += translate("AddonsInstaller", "Updated, please restart FreeCAD to use") + "."
+            elif repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
+                installed_version_string += translate("AddonsInstaller", "Update check in progress") + "."
+
+            basedir = FreeCAD.getUserAppDataDir()
+            moddir = os.path.join(basedir , "Mod", repo.name)
+            installed_version_string += "<br/>" + translate("AddonsInstaller", "Installation location") + ": " + moddir
+
+            self.ui.labelPackageDetails.setText(installed_version_string)
+            self.ui.labelPackageDetails.show()
+        else:
+            self.ui.labelPackageDetails.hide()
 
         if repo.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
             self.ui.buttonInstall.show()
@@ -160,6 +200,8 @@ class PackageDetails(QWidget):
             self.worker = ShowWorker(repo, PackageDetails.cache_path(repo))
             self.worker.readme_updated.connect(lambda desc: self.cache_readme(repo, desc))
             self.worker.readme_updated.connect(lambda desc: self.ui.textBrowserReadMe.setText(desc))
+            self.worker.update_status.connect(self.update_status.emit)
+            self.worker.update_status.connect(self.show)
             self.worker.start()
 
     def show_package(self, repo:AddonManagerRepo) -> None:
@@ -170,6 +212,8 @@ class PackageDetails(QWidget):
             self.worker = ShowWorker(repo,PackageDetails.cache_path(repo))
             self.worker.readme_updated.connect(lambda desc: self.cache_readme(repo, desc))
             self.worker.readme_updated.connect(lambda desc: self.ui.textBrowserReadMe.setText(desc))
+            self.worker.update_status.connect(self.update_status.emit)
+            self.worker.update_status.connect(self.show)
             self.worker.start()
 
     def show_macro(self, repo:AddonManagerRepo) -> None:
@@ -232,8 +276,12 @@ class Ui_PackageDetails(object):
 
         self.layoutDetailsBackButton.addWidget(self.buttonExecute)
 
-
         self.verticalLayout_2.addLayout(self.layoutDetailsBackButton)
+
+        self.labelPackageDetails = QLabel(PackageDetails)
+        self.labelPackageDetails.hide()
+
+        self.verticalLayout_2.addWidget(self.labelPackageDetails)
 
         self.textBrowserReadMe = QTextBrowser(PackageDetails)
         self.textBrowserReadMe.setObjectName(u"textBrowserReadMe")

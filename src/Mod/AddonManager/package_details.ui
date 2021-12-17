@@ -77,6 +77,19 @@
     </layout>
    </item>
    <item>
+    <widget class="QLabel" name="labelInstallationDetails">
+     <property name="text">
+      <string notr="true">Installation details go here</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="openExternalLinks">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTextBrowser" name="textBrowserReadMe"/>
    </item>
   </layout>
