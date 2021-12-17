@@ -46,25 +46,25 @@ def translate(context, text, disambig=None):
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Page controller class for the Custom operation.'''
+    """Page controller class for the Custom operation."""
 
     def getForm(self):
-        '''getForm() ... returns UI'''
+        """getForm() ... returns UI"""
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpCustomEdit.ui")
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's properties'''
+        """getFields(obj) ... transfers values from UI to obj's properties"""
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         self.setupToolController(obj, self.form.toolController)
         self.form.txtGCode.setText("\n".join(obj.Gcode))
         self.setupCoolant(obj, self.form.coolantController)
 
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
@@ -75,10 +75,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.obj.Gcode = self.form.txtGCode.toPlainText().splitlines()
 
 
-Command = PathOpGui.SetupOperation('Custom', PathCustom.Create, TaskPanelOpPage,
-                'Path_Custom',
-                QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
-                QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Create custom gcode snippet"),
-                PathCustom.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "Custom",
+    PathCustom.Create,
+    TaskPanelOpPage,
+    "Path_Custom",
+    QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
+    QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Create custom gcode snippet"),
+    PathCustom.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathCustomGui... done\n")

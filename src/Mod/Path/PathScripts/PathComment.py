@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-'''Used for CNC machine comments for Path module. Create a comment and place it in the Document tree.'''
+"""Used for CNC machine comments for Path module. Create a comment and place it in the Document tree."""
 
 import FreeCAD
 import FreeCADGui
@@ -31,14 +31,15 @@ from PySide import QtCore
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-class Comment:
 
+class Comment:
     def __init__(self, obj):
-        obj.addProperty("App::PropertyString", "Comment",
-                        "Path", "Comment or note for CNC program")
+        obj.addProperty(
+            "App::PropertyString", "Comment", "Path", "Comment or note for CNC program"
+        )
         obj.Proxy = self
         mode = 2
-        obj.setEditorMode('Placement', mode)
+        obj.setEditorMode("Placement", mode)
 
     def __getstate__(self):
         return None
@@ -51,25 +52,24 @@ class Comment:
 
     def execute(self, obj):
         output = ""
-        output += '(' + str(obj.Comment) + ')\n'
+        output += "(" + str(obj.Comment) + ")\n"
         path = Path.Path(output)
         obj.Path = path
 
 
 class _ViewProviderComment:
-
     def __init__(self, vobj):  # mandatory
         vobj.Proxy = self
         mode = 2
-        vobj.setEditorMode('LineWidth', mode)
-        vobj.setEditorMode('MarkerColor', mode)
-        vobj.setEditorMode('NormalColor', mode)
-        vobj.setEditorMode('DisplayMode', mode)
-        vobj.setEditorMode('BoundingBox', mode)
-        vobj.setEditorMode('Selectable', mode)
-        vobj.setEditorMode('ShapeColor', mode)
-        vobj.setEditorMode('Transparency', mode)
-        vobj.setEditorMode('Visibility', mode)
+        vobj.setEditorMode("LineWidth", mode)
+        vobj.setEditorMode("MarkerColor", mode)
+        vobj.setEditorMode("NormalColor", mode)
+        vobj.setEditorMode("DisplayMode", mode)
+        vobj.setEditorMode("BoundingBox", mode)
+        vobj.setEditorMode("Selectable", mode)
+        vobj.setEditorMode("ShapeColor", mode)
+        vobj.setEditorMode("Transparency", mode)
+        vobj.setEditorMode("Visibility", mode)
 
     def __getstate__(self):  # mandatory
         return None
@@ -83,23 +83,26 @@ class _ViewProviderComment:
     def onChanged(self, vobj, prop):  # optional
         # pylint: disable=unused-argument
         mode = 2
-        vobj.setEditorMode('LineWidth', mode)
-        vobj.setEditorMode('MarkerColor', mode)
-        vobj.setEditorMode('NormalColor', mode)
-        vobj.setEditorMode('DisplayMode', mode)
-        vobj.setEditorMode('BoundingBox', mode)
-        vobj.setEditorMode('Selectable', mode)
-        vobj.setEditorMode('ShapeColor', mode)
-        vobj.setEditorMode('Transparency', mode)
-        vobj.setEditorMode('Visibility', mode)
+        vobj.setEditorMode("LineWidth", mode)
+        vobj.setEditorMode("MarkerColor", mode)
+        vobj.setEditorMode("NormalColor", mode)
+        vobj.setEditorMode("DisplayMode", mode)
+        vobj.setEditorMode("BoundingBox", mode)
+        vobj.setEditorMode("Selectable", mode)
+        vobj.setEditorMode("ShapeColor", mode)
+        vobj.setEditorMode("Transparency", mode)
+        vobj.setEditorMode("Visibility", mode)
 
 
 class CommandPathComment:
-
     def GetResources(self):
-        return {'Pixmap': 'Path_Comment',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Comment", "Comment"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Comment", "Add a Comment to your CNC program")}
+        return {
+            "Pixmap": "Path_Comment",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Comment", "Comment"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Path_Comment", "Add a Comment to your CNC program"
+            ),
+        }
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -110,9 +113,10 @@ class CommandPathComment:
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Comment", "Create a Comment in your CNC program"))
+            translate("Path_Comment", "Create a Comment in your CNC program")
+        )
         FreeCADGui.addModule("PathScripts.PathComment")
-        snippet = '''
+        snippet = """
 import Path
 import PathScripts
 from PathScripts import PathUtils
@@ -121,14 +125,15 @@ PathScripts.PathComment.Comment(obj)
 PathScripts.PathComment._ViewProviderComment(obj.ViewObject)
 
 PathUtils.addToJob(obj)
-'''
+"""
         FreeCADGui.doCommand(snippet)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Comment', CommandPathComment())
+    FreeCADGui.addCommand("Path_Comment", CommandPathComment())
 
 
 FreeCAD.Console.PrintLog("Loading PathComment... done\n")

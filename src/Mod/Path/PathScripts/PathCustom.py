@@ -48,8 +48,12 @@ class ObjectCustom(PathOp.ObjectOp):
         return PathOp.FeatureTool | PathOp.FeatureCoolant
 
     def initOperation(self, obj):
-        obj.addProperty("App::PropertyStringList", "Gcode", "Path",
-                QtCore.QT_TRANSLATE_NOOP("PathCustom", "The gcode to be inserted"))
+        obj.addProperty(
+            "App::PropertyStringList",
+            "Gcode",
+            "Path",
+            QtCore.QT_TRANSLATE_NOOP("PathCustom", "The gcode to be inserted"),
+        )
 
         obj.Proxy = self
 
@@ -69,7 +73,7 @@ def SetupProperties():
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a Custom operation.'''
+    """Create(name) ... Creates and returns a Custom operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectCustom(obj, name, parentJob)
