@@ -67,16 +67,11 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="cutSide">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <item>
          <property name="text">
-          <string>Outside</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Inside</string>
+          <string>PLACEHOLDER</string>
          </property>
         </item>
        </widget>
@@ -97,16 +92,11 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="direction">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <item>
          <property name="text">
-          <string>CW</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CCW</string>
+          <string>PLACEHOLDER</string>
          </property>
         </item>
        </widget>
