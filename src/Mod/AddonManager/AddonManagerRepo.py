@@ -1,24 +1,24 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 import FreeCAD
 
@@ -26,6 +26,7 @@ import os
 from typing import Dict
 
 from addonmanager_macro import Macro
+
 
 class AddonManagerRepo:
     "Encapsulate information about a FreeCAD addon"
@@ -37,7 +38,7 @@ class AddonManagerRepo:
         MACRO = 2
         PACKAGE = 3
 
-        def __str__(self) ->str :
+        def __str__(self) -> str:
             if self.value == 1:
                 return "Workbench"
             elif self.value == 2:
@@ -54,10 +55,10 @@ class AddonManagerRepo:
 
         def __lt__(self, other):
             if self.__class__ is other.__class__:
-              return self.value < other.value
+                return self.value < other.value
             return NotImplemented
 
-        def __str__(self) ->str :
+        def __str__(self) -> str:
             if self.value == 0:
                 return "Not installed"
             elif self.value == 1:
@@ -69,7 +70,7 @@ class AddonManagerRepo:
             elif self.value == 4:
                 return "Restart required"
 
-    def __init__ (self, name:str, url:str, status:UpdateStatus, branch:str):
+    def __init__(self, name: str, url: str, status: UpdateStatus, branch: str):
         self.name = name.strip()
         self.url = url.strip()
         self.branch = branch.strip()
@@ -77,28 +78,33 @@ class AddonManagerRepo:
         self.repo_type = AddonManagerRepo.RepoType.WORKBENCH
         self.description = None
         from addonmanager_utilities import construct_git_url
-        self.metadata_url = "" if not self.url else construct_git_url(self, "package.xml")
+
+        self.metadata_url = (
+            "" if not self.url else construct_git_url(self, "package.xml")
+        )
         self.metadata = None
         self.icon = None
         self.cached_icon_filename = ""
-        self.macro = None # Bridge to Gaël Écorchard's macro management class
+        self.macro = None  # Bridge to Gaël Écorchard's macro management class
         self.updated_timestamp = None
         self.installed_version = None
 
-    def __str__ (self) -> str:
-        result  = f"FreeCAD {self.repo_type}\n"
+    def __str__(self) -> str:
+        result = f"FreeCAD {self.repo_type}\n"
         result += f"Name: {self.name}\n"
         result += f"URL: {self.url}\n"
-        result += "Has metadata\n" if self.metadata is not None else "No metadata found\n"
+        result += (
+            "Has metadata\n" if self.metadata is not None else "No metadata found\n"
+        )
         if self.macro is not None:
             result += "Has linked Macro object\n"
         return result
 
     @classmethod
-    def from_macro (self, macro:Macro):
+    def from_macro(self, macro: Macro):
         if macro.is_installed():
             status = AddonManagerRepo.UpdateStatus.UNCHECKED
-        else: 
+        else:
             status = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
         instance = AddonManagerRepo(macro.name, macro.url, status, "master")
         instance.macro = macro
@@ -107,10 +113,10 @@ class AddonManagerRepo:
         return instance
 
     @classmethod
-    def from_cache (self, data:Dict):
-        """ Load basic data from cached dict data. Does not include Macro or Metadata information, which must be populated separately. """
+    def from_cache(self, data: Dict):
+        """Load basic data from cached dict data. Does not include Macro or Metadata information, which must be populated separately."""
 
-        mod_dir = os.path.join(FreeCAD.getUserAppDataDir(),"Mod",data["name"])
+        mod_dir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", data["name"])
         if os.path.isdir(mod_dir):
             status = AddonManagerRepo.UpdateStatus.UNCHECKED
         else:
@@ -121,18 +127,20 @@ class AddonManagerRepo:
         instance.cached_icon_filename = data["cached_icon_filename"]
         return instance
 
-    def to_cache (self) -> Dict:
-        """ Returns a dictionary with cache information that can be used later with from_cache to recreate this object. """
+    def to_cache(self) -> Dict:
+        """Returns a dictionary with cache information that can be used later with from_cache to recreate this object."""
 
-        return {"name":self.name,
-                "url":self.url,
-                "branch":self.branch,
-                "repo_type":int(self.repo_type),
-                "description":self.description,
-                "cached_icon_filename":self.get_cached_icon_filename()}
-        
+        return {
+            "name": self.name,
+            "url": self.url,
+            "branch": self.branch,
+            "repo_type": int(self.repo_type),
+            "description": self.description,
+            "cached_icon_filename": self.get_cached_icon_filename(),
+        }
+
     def contains_workbench(self) -> bool:
-        """ Determine if this package contains (or is) a workbench """
+        """Determine if this package contains (or is) a workbench"""
 
         if self.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
             return True
@@ -143,7 +151,7 @@ class AddonManagerRepo:
             return False
 
     def contains_macro(self) -> bool:
-        """ Determine if this package contains (or is) a macro """
+        """Determine if this package contains (or is) a macro"""
 
         if self.repo_type == AddonManagerRepo.RepoType.MACRO:
             return True
@@ -154,7 +162,7 @@ class AddonManagerRepo:
             return False
 
     def contains_preference_pack(self) -> bool:
-        """ Determine if this package contains a preference pack """
+        """Determine if this package contains a preference pack"""
 
         if self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
             content = self.metadata.Content
@@ -162,8 +170,8 @@ class AddonManagerRepo:
         else:
             return False
 
-    def get_cached_icon_filename(self) ->str:
-        """ Get the filename for the locally-cached copy of the icon """
+    def get_cached_icon_filename(self) -> str:
+        """Get the filename for the locally-cached copy of the icon"""
 
         if self.cached_icon_filename:
             return self.cached_icon_filename
@@ -185,10 +193,16 @@ class AddonManagerRepo:
                         subdir = wb.Name
                     real_icon = subdir + wb.Icon
 
-        real_icon = real_icon.replace("/", os.path.sep) # Required path separator in the metadata.xml file to local separator
+        real_icon = real_icon.replace(
+            "/", os.path.sep
+        )  # Required path separator in the metadata.xml file to local separator
 
         _, file_extension = os.path.splitext(real_icon)
-        store = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata")
-        self.cached_icon_filename = os.path.join(store, self.name, "cached_icon"+file_extension)
+        store = os.path.join(
+            FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
+        )
+        self.cached_icon_filename = os.path.join(
+            store, self.name, "cached_icon" + file_extension
+        )
 
         return self.cached_icon_filename

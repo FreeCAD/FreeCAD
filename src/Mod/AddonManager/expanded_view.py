@@ -39,7 +39,9 @@ class Ui_ExpandedView(object):
 
         self.horizontalLayout_2.addWidget(self.labelIcon)
 
-        self.horizontalSpacer = QSpacerItem(8, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(
+            8, 20, QSizePolicy.Fixed, QSizePolicy.Minimum
+        )
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
@@ -59,60 +61,81 @@ class Ui_ExpandedView(object):
         sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.labelVersion.sizePolicy().hasHeightForWidth())
+        sizePolicy2.setHeightForWidth(
+            self.labelVersion.sizePolicy().hasHeightForWidth()
+        )
         self.labelVersion.setSizePolicy(sizePolicy2)
 
         self.horizontalLayout.addWidget(self.labelVersion)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_2 = QSpacerItem(
+            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum
+        )
 
         self.horizontalLayout.addItem(self.horizontalSpacer_2)
-
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.labelDescription = QLabel(ExpandedView)
         self.labelDescription.setObjectName(u"labelDescription")
-        sizePolicy.setHeightForWidth(self.labelDescription.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.labelDescription.sizePolicy().hasHeightForWidth()
+        )
         self.labelDescription.setSizePolicy(sizePolicy)
         self.labelDescription.setTextFormat(Qt.PlainText)
-        self.labelDescription.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.labelDescription.setAlignment(Qt.AlignLeading | Qt.AlignLeft | Qt.AlignTop)
         self.labelDescription.setWordWrap(True)
 
         self.verticalLayout.addWidget(self.labelDescription)
 
         self.labelMaintainer = QLabel(ExpandedView)
         self.labelMaintainer.setObjectName(u"labelMaintainer")
-        sizePolicy2.setHeightForWidth(self.labelMaintainer.sizePolicy().hasHeightForWidth())
+        sizePolicy2.setHeightForWidth(
+            self.labelMaintainer.sizePolicy().hasHeightForWidth()
+        )
         self.labelMaintainer.setSizePolicy(sizePolicy2)
-        self.labelMaintainer.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
+        self.labelMaintainer.setAlignment(Qt.AlignLeading | Qt.AlignLeft | Qt.AlignTop)
         self.labelMaintainer.setWordWrap(False)
 
         self.verticalLayout.addWidget(self.labelMaintainer)
 
-
         self.horizontalLayout_2.addLayout(self.verticalLayout)
-
 
         self.labelStatus = QLabel(ExpandedView)
         self.labelStatus.setObjectName(u"labelStatus")
-        self.labelStatus.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.labelStatus.setAlignment(
+            Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter
+        )
 
         self.horizontalLayout_2.addWidget(self.labelStatus)
-
 
         self.retranslateUi(ExpandedView)
 
         QMetaObject.connectSlotsByName(ExpandedView)
+
     # setupUi
 
     def retranslateUi(self, ExpandedView):
-        ExpandedView.setWindowTitle(QCoreApplication.translate("ExpandedView", u"Form", None))
-        self.labelIcon.setText(QCoreApplication.translate("ExpandedView", u"Icon", None))
-        self.labelPackageName.setText(QCoreApplication.translate("ExpandedView", u"<h1>Package Name</h1>", None))
-        self.labelVersion.setText(QCoreApplication.translate("ExpandedView", u"Version", None))
-        self.labelDescription.setText(QCoreApplication.translate("ExpandedView", u"Description", None))
-        self.labelMaintainer.setText(QCoreApplication.translate("ExpandedView", u"Maintainer", None))
-        self.labelStatus.setText(QCoreApplication.translate("ExpandedView", u"UpdateAvailable", None))
-    # retranslateUi
+        ExpandedView.setWindowTitle(
+            QCoreApplication.translate("ExpandedView", u"Form", None)
+        )
+        self.labelIcon.setText(
+            QCoreApplication.translate("ExpandedView", u"Icon", None)
+        )
+        self.labelPackageName.setText(
+            QCoreApplication.translate("ExpandedView", u"<h1>Package Name</h1>", None)
+        )
+        self.labelVersion.setText(
+            QCoreApplication.translate("ExpandedView", u"Version", None)
+        )
+        self.labelDescription.setText(
+            QCoreApplication.translate("ExpandedView", u"Description", None)
+        )
+        self.labelMaintainer.setText(
+            QCoreApplication.translate("ExpandedView", u"Maintainer", None)
+        )
+        self.labelStatus.setText(
+            QCoreApplication.translate("ExpandedView", u"UpdateAvailable", None)
+        )
 
+    # retranslateUi

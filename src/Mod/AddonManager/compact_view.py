@@ -54,7 +54,9 @@ class Ui_CompactView(object):
         sizePolicy2 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.labelDescription.sizePolicy().hasHeightForWidth())
+        sizePolicy2.setHeightForWidth(
+            self.labelDescription.sizePolicy().hasHeightForWidth()
+        )
         self.labelDescription.setSizePolicy(sizePolicy2)
         self.labelDescription.setTextFormat(Qt.PlainText)
         self.labelDescription.setWordWrap(False)
@@ -67,18 +69,28 @@ class Ui_CompactView(object):
 
         self.horizontalLayout_2.addWidget(self.labelStatus)
 
-
         self.retranslateUi(CompactView)
 
         QMetaObject.connectSlotsByName(CompactView)
+
     # setupUi
 
     def retranslateUi(self, CompactView):
-        CompactView.setWindowTitle(QCoreApplication.translate("CompactView", u"Form", None))
+        CompactView.setWindowTitle(
+            QCoreApplication.translate("CompactView", u"Form", None)
+        )
         self.labelIcon.setText(QCoreApplication.translate("CompactView", u"Icon", None))
-        self.labelPackageName.setText(QCoreApplication.translate("CompactView", u"<b>Package Name</b>", None))
-        self.labelVersion.setText(QCoreApplication.translate("CompactView", u"Version", None))
-        self.labelDescription.setText(QCoreApplication.translate("CompactView", u"Description", None))
-        self.labelStatus.setText(QCoreApplication.translate("CompactView", u"UpdateAvailable", None))
-    # retranslateUi
+        self.labelPackageName.setText(
+            QCoreApplication.translate("CompactView", u"<b>Package Name</b>", None)
+        )
+        self.labelVersion.setText(
+            QCoreApplication.translate("CompactView", u"Version", None)
+        )
+        self.labelDescription.setText(
+            QCoreApplication.translate("CompactView", u"Description", None)
+        )
+        self.labelStatus.setText(
+            QCoreApplication.translate("CompactView", u"UpdateAvailable", None)
+        )
 
+    # retranslateUi
