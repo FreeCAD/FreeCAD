@@ -83,6 +83,8 @@ class PathWorkbench(Workbench):
         from PathScripts import PathToolBitCmd
         from PathScripts import PathToolBitLibraryCmd
 
+        from PySide.QtCore import QT_TRANSLATE_NOOP
+
         import PathCommands
 
         PathGuiInit.Startup()
@@ -139,7 +141,7 @@ class PathWorkbench(Workbench):
         FreeCADGui.addCommand(
             "Path_EngraveTools",
             PathCommandGroup(
-                engravecmdlist, QtCore.QT_TRANSLATE_NOOP("Path", "Engraving Operations")
+                engravecmdlist, QT_TRANSLATE_NOOP("Path", "Engraving Operations")
             ),
         )
 
@@ -163,7 +165,7 @@ class PathWorkbench(Workbench):
                     "Path_3dTools",
                     PathCommandGroup(
                         threedopcmdlist,
-                        QtCore.QT_TRANSLATE_NOOP("Path", "3D Operations"),
+                        QT_TRANSLATE_NOOP("Path", "3D Operations"),
                     ),
                 )
             except ImportError:
@@ -171,25 +173,25 @@ class PathWorkbench(Workbench):
                     FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
         self.appendToolbar(
-            QtCore.QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist
+            QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist
         )
         self.appendToolbar(
-            QtCore.QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist
+            QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist
         )
         self.appendToolbar(
-            QtCore.QT_TRANSLATE_NOOP("Path", "New Operations"),
+            QT_TRANSLATE_NOOP("Path", "New Operations"),
             twodopcmdlist + engravecmdgroup + threedcmdgroup,
         )
         self.appendToolbar(
-            QtCore.QT_TRANSLATE_NOOP("Path", "Path Modification"), modcmdlist
+            QT_TRANSLATE_NOOP("Path", "Path Modification"), modcmdlist
         )
         if extracmdlist:
             self.appendToolbar(
-                QtCore.QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist
+                QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist
             )
 
         self.appendMenu(
-            [QtCore.QT_TRANSLATE_NOOP("Path", "&Path")],
+            [QT_TRANSLATE_NOOP("Path", "&Path")],
             projcmdlist
             + ["Path_ExportTemplate", "Separator"]
             + toolcmdlist
@@ -203,41 +205,41 @@ class PathWorkbench(Workbench):
         )
         self.appendMenu(
             [
-                QtCore.QT_TRANSLATE_NOOP("Path", "&Path"),
-                QtCore.QT_TRANSLATE_NOOP("Path", "Path Dressup"),
+                QT_TRANSLATE_NOOP("Path", "&Path"),
+                QT_TRANSLATE_NOOP("Path", "Path Dressup"),
             ],
             dressupcmdlist,
         )
         self.appendMenu(
             [
-                QtCore.QT_TRANSLATE_NOOP("Path", "&Path"),
-                QtCore.QT_TRANSLATE_NOOP("Path", "Supplemental Commands"),
+                QT_TRANSLATE_NOOP("Path", "&Path"),
+                QT_TRANSLATE_NOOP("Path", "Supplemental Commands"),
             ],
             prepcmdlist,
         )
         self.appendMenu(
             [
-                QtCore.QT_TRANSLATE_NOOP("Path", "&Path"),
-                QtCore.QT_TRANSLATE_NOOP("Path", "Path Modification"),
+                QT_TRANSLATE_NOOP("Path", "&Path"),
+                QT_TRANSLATE_NOOP("Path", "Path Modification"),
             ],
             modcmdlist,
         )
         if specialcmdlist:
             self.appendMenu(
                 [
-                    QtCore.QT_TRANSLATE_NOOP("Path", "&Path"),
-                    QtCore.QT_TRANSLATE_NOOP("Path", "Specialty Operations"),
+                    QT_TRANSLATE_NOOP("Path", "&Path"),
+                    QT_TRANSLATE_NOOP("Path", "Specialty Operations"),
                 ],
                 specialcmdlist,
             )
         if extracmdlist:
-            self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
+            self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
 
-        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], ["Separator"])
+        self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], ["Separator"])
         self.appendMenu(
             [
-                QtCore.QT_TRANSLATE_NOOP("Path", "&Path"),
-                QtCore.QT_TRANSLATE_NOOP("Path", "Utils"),
+                QT_TRANSLATE_NOOP("Path", "&Path"),
+                QT_TRANSLATE_NOOP("Path", "Utils"),
             ],
             ["Path_PropertyBag"],
         )
@@ -312,5 +314,3 @@ class PathWorkbench(Workbench):
 Gui.addWorkbench(PathWorkbench())
 
 FreeCAD.addImportType("GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)", "PathGui")
-# FreeCAD.addExportType(
-#     "GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)", "PathGui")
