@@ -205,10 +205,10 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
                                         toolbarName.c_str())); // i18n
             toolbar->setObjectName(name);
             if (nameAsToolTip){
-                std::ostringstream tooltip;
-
-                tooltip << "[" << toolbarName << "]";
-                toolbar->setToolTip(QApplication::translate("Workbench", tooltip.str().c_str()));
+                auto tooltip = QChar::fromLatin1('[')
+                    + QApplication::translate("Workbench", toolbarName.c_str())
+                    + QChar::fromLatin1(']');
+                toolbar->setToolTip(tooltip);
             }
             toolbar->setVisible(visible);
             toolbar_added = true;
