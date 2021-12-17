@@ -186,6 +186,8 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
     ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                ->GetGroup("MainWindow")->GetGroup("Toolbars");
+    bool nameAsToolTip = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+            ->GetGroup("Preferences")->GetGroup("MainWindow")->GetBool("ToolBarNameAsToolTip",true);
     QList<ToolBarItem*> items = toolBarItems->getItems();
     QList<QToolBar*> toolbars = toolBars();
     for (QList<ToolBarItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
@@ -202,6 +204,12 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
                 QApplication::translate("Workbench",
                                         toolbarName.c_str())); // i18n
             toolbar->setObjectName(name);
+            if (nameAsToolTip){
+                auto tooltip = QChar::fromLatin1('[')
+                    + QApplication::translate("Workbench", toolbarName.c_str())
+                    + QChar::fromLatin1(']');
+                toolbar->setToolTip(tooltip);
+            }
             toolbar->setVisible(visible);
             toolbar_added = true;
         }
