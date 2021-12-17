@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 import FreeCAD
 
@@ -39,31 +39,37 @@ from AddonManagerRepo import AddonManagerRepo
 from compact_view import Ui_CompactView
 from expanded_view import Ui_ExpandedView
 
+
 class ListDisplayStyle(IntEnum):
     COMPACT = 0
     EXPANDED = 1
 
+
 class PackageList(QWidget):
-    """ A widget that shows a list of packages and various widgets to control the display of the list """
+    """A widget that shows a list of packages and various widgets to control the display of the list"""
 
     itemSelected = Signal(AddonManagerRepo)
-    
-    def __init__(self,parent=None):
+
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_PackageList()
         self.ui.setupUi(self)
-        
+
         self.item_filter = PackageListFilter()
-        self.ui.listPackages.setModel (self.item_filter)
+        self.ui.listPackages.setModel(self.item_filter)
         self.item_delegate = PackageListItemDelegate(self.ui.listPackages)
         self.ui.listPackages.setItemDelegate(self.item_delegate)
 
         self.ui.listPackages.clicked.connect(self.on_listPackages_clicked)
         self.ui.comboPackageType.currentIndexChanged.connect(self.update_type_filter)
         self.ui.lineEditFilter.textChanged.connect(self.update_text_filter)
-        self.ui.buttonCompactLayout.clicked.connect(lambda: self.set_view_style(ListDisplayStyle.COMPACT))
-        self.ui.buttonExpandedLayout.clicked.connect(lambda: self.set_view_style(ListDisplayStyle.EXPANDED))
-        
+        self.ui.buttonCompactLayout.clicked.connect(
+            lambda: self.set_view_style(ListDisplayStyle.COMPACT)
+        )
+        self.ui.buttonExpandedLayout.clicked.connect(
+            lambda: self.set_view_style(ListDisplayStyle.EXPANDED)
+        )
+
         # Only shows when the user types in a filter
         self.ui.labelFilterValidity.hide()
 
@@ -85,50 +91,55 @@ class PackageList(QWidget):
         else:
             self.ui.buttonCompactLayout.setChecked(True)
 
-    def on_listPackages_clicked(self, index:QModelIndex):
-        source_selection = self.item_filter.mapToSource (index)
+    def on_listPackages_clicked(self, index: QModelIndex):
+        source_selection = self.item_filter.mapToSource(index)
         selected_repo = self.item_model.repos[source_selection.row()]
         self.itemSelected.emit(selected_repo)
 
-    def update_type_filter(self, type_filter:int) -> None:
+    def update_type_filter(self, type_filter: int) -> None:
         """hide/show rows corresponding to the type filter
-       
+
         type_filter is an integer: 0 for all, 1 for workbenches, 2 for macros, and 3 for preference packs
-        
+
         """
 
         self.item_filter.setPackageFilter(type_filter)
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         pref.SetInt("PackageTypeSelection", type_filter)
 
-    def update_text_filter(self, text_filter:str) -> None:
+    def update_text_filter(self, text_filter: str) -> None:
         """filter name and description by the regex specified by text_filter"""
 
         if text_filter:
             test_regex = QRegularExpression(text_filter)
             if test_regex.isValid():
-                self.ui.labelFilterValidity.setToolTip(translate("AddonsInstaller","Filter is valid"))
+                self.ui.labelFilterValidity.setToolTip(
+                    translate("AddonsInstaller", "Filter is valid")
+                )
                 icon = QIcon.fromTheme("ok", QIcon(":/icons/edit_OK.svg"))
-                self.ui.labelFilterValidity.setPixmap(icon.pixmap(16,16))
+                self.ui.labelFilterValidity.setPixmap(icon.pixmap(16, 16))
             else:
-                self.ui.labelFilterValidity.setToolTip(translate("AddonsInstaller","Filter regular expression is invalid"))
+                self.ui.labelFilterValidity.setToolTip(
+                    translate("AddonsInstaller", "Filter regular expression is invalid")
+                )
                 icon = QIcon.fromTheme("cancel", QIcon(":/icons/edit_Cancel.svg"))
-                self.ui.labelFilterValidity.setPixmap(icon.pixmap(16,16))
+                self.ui.labelFilterValidity.setPixmap(icon.pixmap(16, 16))
             self.ui.labelFilterValidity.show()
         else:
             self.ui.labelFilterValidity.hide()
         self.item_filter.setFilterRegularExpression(text_filter)
 
-    def set_view_style(self, style:ListDisplayStyle) -> None:
+    def set_view_style(self, style: ListDisplayStyle) -> None:
         self.item_delegate.set_view(style)
         if style == ListDisplayStyle.COMPACT:
             self.ui.listPackages.setSpacing(2)
         else:
             self.ui.listPackages.setSpacing(5)
         self.item_model.layoutChanged.emit()
-        
+
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         pref.SetInt("ViewStyle", style)
+
 
 class PackageListItemModel(QAbstractListModel):
 
@@ -142,28 +153,37 @@ class PackageListItemModel(QAbstractListModel):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
-    def rowCount(self, parent:QModelIndex=QModelIndex()) -> int:
+    def rowCount(self, parent: QModelIndex = QModelIndex()) -> int:
         if parent.isValid():
             return 0
         return len(self.repos)
 
-    def columnCount(self, parent:QModelIndex=QModelIndex()) -> int:
+    def columnCount(self, parent: QModelIndex = QModelIndex()) -> int:
         if parent.isValid():
             return 0
         return 1
 
-    def data(self, index:QModelIndex, role:int=Qt.DisplayRole):
+    def data(self, index: QModelIndex, role: int = Qt.DisplayRole):
         if not index.isValid():
             return None
         row = index.row()
         if role == Qt.ToolTipRole:
             tooltip = ""
             if self.repos[row].repo_type == AddonManagerRepo.RepoType.PACKAGE:
-                tooltip = translate("AddonsInstaller","Click for details about package") + f" '{self.repos[row].name}'"
+                tooltip = (
+                    translate("AddonsInstaller", "Click for details about package")
+                    + f" '{self.repos[row].name}'"
+                )
             elif self.repos[row].repo_type == AddonManagerRepo.RepoType.WORKBENCH:
-                tooltip = translate("AddonsInstaller","Click for details about workbench") + f" '{self.repos[row].name}'"
+                tooltip = (
+                    translate("AddonsInstaller", "Click for details about workbench")
+                    + f" '{self.repos[row].name}'"
+                )
             elif self.repos[row].repo_type == AddonManagerRepo.RepoType.MACRO:
-                tooltip = translate("AddonsInstaller","Click for details about macro") + f" '{self.repos[row].name}'"
+                tooltip = (
+                    translate("AddonsInstaller", "Click for details about macro")
+                    + f" '{self.repos[row].name}'"
+                )
             return tooltip
         elif role == PackageListItemModel.DataAccessRole:
             return self.repos[row]
@@ -171,20 +191,28 @@ class PackageListItemModel(QAbstractListModel):
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         return None
 
-    def setData(self, index:QModelIndex, value, role=Qt.EditRole) -> None:
-        """ Set the data for this row. The column of the index is ignored. """
+    def setData(self, index: QModelIndex, value, role=Qt.EditRole) -> None:
+        """Set the data for this row. The column of the index is ignored."""
 
         row = index.row()
         self.write_lock.acquire()
         if role == PackageListItemModel.StatusUpdateRole:
             self.repos[row].update_status = value
-            self.dataChanged.emit(self.index(row,2), self.index(row,2), [PackageListItemModel.StatusUpdateRole])
+            self.dataChanged.emit(
+                self.index(row, 2),
+                self.index(row, 2),
+                [PackageListItemModel.StatusUpdateRole],
+            )
         elif role == PackageListItemModel.IconUpdateRole:
             self.repos[row].icon = value
-            self.dataChanged.emit(self.index(row,0), self.index(row,0), [PackageListItemModel.IconUpdateRole]) 
+            self.dataChanged.emit(
+                self.index(row, 0),
+                self.index(row, 0),
+                [PackageListItemModel.IconUpdateRole],
+            )
         self.write_lock.release()
 
-    def append_item(self, repo:AddonManagerRepo) -> None:
+    def append_item(self, repo: AddonManagerRepo) -> None:
         if repo in self.repos:
             # Cowardly refuse to insert the same repo a second time
             return
@@ -197,53 +225,62 @@ class PackageListItemModel(QAbstractListModel):
     def clear(self) -> None:
         if self.rowCount() > 0:
             self.write_lock.acquire()
-            self.beginRemoveRows(QModelIndex(), 0, self.rowCount()-1)
+            self.beginRemoveRows(QModelIndex(), 0, self.rowCount() - 1)
             self.repos = []
             self.endRemoveRows()
             self.write_lock.release()
 
-    def update_item_status(self, name:str, status:AddonManagerRepo.UpdateStatus) -> None:
-        for row,item in enumerate(self.repos):
+    def update_item_status(
+        self, name: str, status: AddonManagerRepo.UpdateStatus
+    ) -> None:
+        for row, item in enumerate(self.repos):
             if item.name == name:
-                self.setData(self.index(row,0), status, PackageListItemModel.StatusUpdateRole)
+                self.setData(
+                    self.index(row, 0), status, PackageListItemModel.StatusUpdateRole
+                )
                 return
 
-    def update_item_icon(self, name:str, icon:QIcon) -> None:
-        for row,item in enumerate(self.repos):
+    def update_item_icon(self, name: str, icon: QIcon) -> None:
+        for row, item in enumerate(self.repos):
             if item.name == name:
-                self.setData(self.index(row,0), icon, PackageListItemModel.IconUpdateRole)
+                self.setData(
+                    self.index(row, 0), icon, PackageListItemModel.IconUpdateRole
+                )
                 return
 
-    def reload_item(self,repo:AddonManagerRepo) -> None:
-        for index,item in enumerate(self.repos):
+    def reload_item(self, repo: AddonManagerRepo) -> None:
+        for index, item in enumerate(self.repos):
             if item.name == repo.name:
                 self.write_lock.acquire()
                 self.repos[index] = repo
                 self.write_lock.release()
                 return
 
+
 class CompactView(QWidget):
-    """ A single-line view of the package information """
+    """A single-line view of the package information"""
 
     from compact_view import Ui_CompactView
 
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_CompactView()
         self.ui.setupUi(self)
 
+
 class ExpandedView(QWidget):
-    """ A multi-line view of the package information """
+    """A multi-line view of the package information"""
 
     from expanded_view import Ui_ExpandedView
 
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_ExpandedView()
         self.ui.setupUi(self)
 
+
 class PackageListItemDelegate(QStyledItemDelegate):
-    """ Render the repo data as a formatted region """
+    """Render the repo data as a formatted region"""
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -251,8 +288,8 @@ class PackageListItemDelegate(QStyledItemDelegate):
         self.expanded = ExpandedView()
         self.compact = CompactView()
         self.widget = self.expanded
-        
-    def set_view (self, style:ListDisplayStyle) -> None:
+
+    def set_view(self, style: ListDisplayStyle) -> None:
         if not self.displayStyle == style:
             self.displayStyle = style
 
@@ -265,11 +302,11 @@ class PackageListItemDelegate(QStyledItemDelegate):
         if self.displayStyle == ListDisplayStyle.EXPANDED:
             self.widget = self.expanded
             self.widget.ui.labelPackageName.setText(f"<h1>{repo.name}</h1>")
-            self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QSize(48,48)))
+            self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QSize(48, 48)))
         else:
             self.widget = self.compact
             self.widget.ui.labelPackageName.setText(f"<b>{repo.name}</b>")
-            self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QSize(16,16)))
+            self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QSize(16, 16)))
 
         self.widget.ui.labelIcon.setText("")
         if repo.metadata:
@@ -279,11 +316,16 @@ class PackageListItemDelegate(QStyledItemDelegate):
                 maintainers = repo.metadata.Maintainer
                 maintainers_string = ""
                 if len(maintainers) == 1:
-                    maintainers_string = translate("AddonsInstaller","Maintainer") + f": {maintainers[0]['name']} <{maintainers[0]['email']}>"
+                    maintainers_string = (
+                        translate("AddonsInstaller", "Maintainer")
+                        + f": {maintainers[0]['name']} <{maintainers[0]['email']}>"
+                    )
                 elif len(maintainers) > 1:
-                    maintainers_string = translate("AddonsInstaller","Maintainers:")
+                    maintainers_string = translate("AddonsInstaller", "Maintainers:")
                     for maintainer in maintainers:
-                        maintainers_string += f"\n{maintainer['name']} <{maintainer['email']}>"
+                        maintainers_string += (
+                            f"\n{maintainer['name']} <{maintainer['email']}>"
+                        )
                 self.widget.ui.labelMaintainer.setText(maintainers_string)
         else:
             self.widget.ui.labelDescription.setText("")
@@ -296,86 +338,103 @@ class PackageListItemDelegate(QStyledItemDelegate):
             self.widget.ui.labelStatus.setText(self.get_expanded_update_string(repo))
         else:
             self.widget.ui.labelStatus.setText(self.get_compact_update_string(repo))
-        
+
         self.widget.adjustSize()
 
-    def get_compact_update_string(self, repo:AddonManagerRepo) -> str:
-        """ Get a single-line string listing details about the installed version and date """
+    def get_compact_update_string(self, repo: AddonManagerRepo) -> str:
+        """Get a single-line string listing details about the installed version and date"""
 
         result = ""
         if repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
-            result = translate("AddonsInstaller","Installed")
+            result = translate("AddonsInstaller", "Installed")
         elif repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
-            result = translate("AddonsInstaller","Up-to-date")
+            result = translate("AddonsInstaller", "Up-to-date")
         elif repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
-            result = translate("AddonsInstaller","Update available")
+            result = translate("AddonsInstaller", "Update available")
         elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
-            result = translate("AddonsInstaller","Pending restart")
+            result = translate("AddonsInstaller", "Pending restart")
         return result
 
-    def get_expanded_update_string(self, repo:AddonManagerRepo) -> str:
-        """ Get a multi-line string listing details about the installed version and date """
+    def get_expanded_update_string(self, repo: AddonManagerRepo) -> str:
+        """Get a multi-line string listing details about the installed version and date"""
 
         result = ""
-        
+
         installed_version_string = ""
         if repo.update_status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
             if repo.installed_version:
-                installed_version_string = "\n" + translate("AddonsInstaller", "Installed version") + ": " 
+                installed_version_string = (
+                    "\n" + translate("AddonsInstaller", "Installed version") + ": "
+                )
                 installed_version_string += repo.installed_version
             else:
-                installed_version_string = "\n" + translate("AddonsInstaller", "Unknown version")
-        
+                installed_version_string = "\n" + translate(
+                    "AddonsInstaller", "Unknown version"
+                )
+
         installed_date_string = ""
         if repo.updated_timestamp:
-            installed_date_string = "\n" + translate("AddonsInstaller", "Installed on") + ": " 
-            installed_date_string += QDateTime.fromTime_t(repo.updated_timestamp).date().toString(Qt.SystemLocaleShortDate)
+            installed_date_string = (
+                "\n" + translate("AddonsInstaller", "Installed on") + ": "
+            )
+            installed_date_string += (
+                QDateTime.fromTime_t(repo.updated_timestamp)
+                .date()
+                .toString(Qt.SystemLocaleShortDate)
+            )
 
         available_version_string = ""
         if repo.metadata:
-            available_version_string = "\n" + translate("AddonsInstaller", "Available version") + ": " 
+            available_version_string = (
+                "\n" + translate("AddonsInstaller", "Available version") + ": "
+            )
             available_version_string += repo.metadata.Version
 
         if repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
-            result = translate("AddonsInstaller","Installed")
+            result = translate("AddonsInstaller", "Installed")
             result += installed_version_string
             result += installed_date_string
         elif repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
-            result = translate("AddonsInstaller","Up-to-date")
+            result = translate("AddonsInstaller", "Up-to-date")
             result += installed_version_string
             result += installed_date_string
         elif repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
-            result = translate("AddonsInstaller","Update available")
+            result = translate("AddonsInstaller", "Update available")
             result += installed_version_string
             result += installed_date_string
             result += available_version_string
         elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
-            result = translate("AddonsInstaller","Pending restart")
+            result = translate("AddonsInstaller", "Pending restart")
 
         return result
 
-    def paint(self, painter:QPainter, option:QStyleOptionViewItem, index:QModelIndex):
+    def paint(
+        self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex
+    ):
         painter.save()
         self.widget.resize(option.rect.size())
         painter.translate(option.rect.topLeft())
         self.widget.render(painter, QPoint(), QRegion(), QWidget.DrawChildren)
         painter.restore()
 
+
 class PackageListFilter(QSortFilterProxyModel):
-    """ Handle filtering the item list on various criteria """
+    """Handle filtering the item list on various criteria"""
 
     def __init__(self):
         super().__init__()
-        self.package_type = 0 # Default to showing everything
+        self.package_type = 0  # Default to showing everything
         self.setSortCaseSensitivity(Qt.CaseInsensitive)
 
-    def setPackageFilter(self, type:int) -> None: # 0=All, 1=Workbenches, 2=Macros, 3=Preference Packs
+    def setPackageFilter(
+        self, type: int
+    ) -> None:  # 0=All, 1=Workbenches, 2=Macros, 3=Preference Packs
         self.package_type = type
         self.invalidateFilter()
-        
+
     def lessThan(self, left, right) -> bool:
-        l = self.sourceModel().data(left,PackageListItemModel.DataAccessRole)
-        r = self.sourceModel().data(right,PackageListItemModel.DataAccessRole)
+        l = self.sourceModel().data(left, PackageListItemModel.DataAccessRole)
+        r = self.sourceModel().data(right, PackageListItemModel.DataAccessRole)
 
         lname = l.name if l.metadata is None else l.metadata.Name
         rname = r.name if r.metadata is None else r.metadata.Name
@@ -383,17 +442,17 @@ class PackageListFilter(QSortFilterProxyModel):
 
     def filterAcceptsRow(self, row, parent=QModelIndex()):
         index = self.sourceModel().createIndex(row, 0)
-        data = self.sourceModel().data(index,PackageListItemModel.DataAccessRole)
+        data = self.sourceModel().data(index, PackageListItemModel.DataAccessRole)
         if self.package_type == 1:
             if not data.contains_workbench():
                 return False
         elif self.package_type == 2:
-           if  not data.contains_macro():
-               return False
+            if not data.contains_macro():
+                return False
         elif self.package_type == 3:
-           if not data.contains_preference_pack():
-               return False
-        
+            if not data.contains_preference_pack():
+                return False
+
         name = data.name if data.metadata is None else data.metadata.Name
         desc = data.description if not data.metadata else data.metadata.Description
         re = self.filterRegularExpression()
@@ -407,35 +466,40 @@ class PackageListFilter(QSortFilterProxyModel):
         else:
             return False
 
+
 class Ui_PackageList(object):
-    """ The contents of the PackageList widget """
+    """The contents of the PackageList widget"""
 
     def setupUi(self, Form):
         if not Form.objectName():
-            Form.setObjectName(u"PackageList")
+            Form.setObjectName("PackageList")
         self.verticalLayout = QVBoxLayout(Form)
-        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_6 = QHBoxLayout()
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.buttonCompactLayout = QToolButton(Form)
-        self.buttonCompactLayout.setObjectName(u"buttonCompactLayout")
+        self.buttonCompactLayout.setObjectName("buttonCompactLayout")
         self.buttonCompactLayout.setCheckable(True)
         self.buttonCompactLayout.setAutoExclusive(True)
-        self.buttonCompactLayout.setIcon(QIcon.fromTheme("expanded_view", QIcon(":/icons/compact_view.svg")))
+        self.buttonCompactLayout.setIcon(
+            QIcon.fromTheme("expanded_view", QIcon(":/icons/compact_view.svg"))
+        )
 
         self.horizontalLayout_6.addWidget(self.buttonCompactLayout)
 
         self.buttonExpandedLayout = QToolButton(Form)
-        self.buttonExpandedLayout.setObjectName(u"buttonExpandedLayout")
+        self.buttonExpandedLayout.setObjectName("buttonExpandedLayout")
         self.buttonExpandedLayout.setCheckable(True)
         self.buttonExpandedLayout.setChecked(True)
         self.buttonExpandedLayout.setAutoExclusive(True)
-        self.buttonExpandedLayout.setIcon(QIcon.fromTheme("expanded_view", QIcon(":/icons/expanded_view.svg")))
+        self.buttonExpandedLayout.setIcon(
+            QIcon.fromTheme("expanded_view", QIcon(":/icons/expanded_view.svg"))
+        )
 
         self.horizontalLayout_6.addWidget(self.buttonExpandedLayout)
 
         self.labelPackagesContaining = QLabel(Form)
-        self.labelPackagesContaining.setObjectName(u"labelPackagesContaining")
+        self.labelPackagesContaining.setObjectName("labelPackagesContaining")
 
         self.horizontalLayout_6.addWidget(self.labelPackagesContaining)
 
@@ -444,25 +508,25 @@ class Ui_PackageList(object):
         self.comboPackageType.addItem("")
         self.comboPackageType.addItem("")
         self.comboPackageType.addItem("")
-        self.comboPackageType.setObjectName(u"comboPackageType")
+        self.comboPackageType.setObjectName("comboPackageType")
 
         self.horizontalLayout_6.addWidget(self.comboPackageType)
 
         self.lineEditFilter = QLineEdit(Form)
-        self.lineEditFilter.setObjectName(u"lineEditFilter")
+        self.lineEditFilter.setObjectName("lineEditFilter")
         self.lineEditFilter.setClearButtonEnabled(True)
 
         self.horizontalLayout_6.addWidget(self.lineEditFilter)
 
         self.labelFilterValidity = QLabel(Form)
-        self.labelFilterValidity.setObjectName(u"labelFilterValidity")
+        self.labelFilterValidity.setObjectName("labelFilterValidity")
 
         self.horizontalLayout_6.addWidget(self.labelFilterValidity)
 
         self.verticalLayout.addLayout(self.horizontalLayout_6)
 
         self.listPackages = QListView(Form)
-        self.listPackages.setObjectName(u"listPackages")
+        self.listPackages.setObjectName("listPackages")
         self.listPackages.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.listPackages.setProperty("showDropIndicator", False)
         self.listPackages.setSelectionMode(QAbstractItemView.NoSelection)
@@ -480,12 +544,27 @@ class Ui_PackageList(object):
         QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        self.labelPackagesContaining.setText(QCoreApplication.translate("AddonsInstaller", u"Show packages containing:", None))
-        self.comboPackageType.setItemText(0, QCoreApplication.translate("AddonsInstaller", u"All", None))
-        self.comboPackageType.setItemText(1, QCoreApplication.translate("AddonsInstaller", u"Workbenches", None))
-        self.comboPackageType.setItemText(2, QCoreApplication.translate("AddonsInstaller", u"Macros", None))
-        self.comboPackageType.setItemText(3, QCoreApplication.translate("AddonsInstaller", u"Preference Packs", None))
+        self.labelPackagesContaining.setText(
+            QCoreApplication.translate(
+                "AddonsInstaller", "Show packages containing:", None
+            )
+        )
+        self.comboPackageType.setItemText(
+            0, QCoreApplication.translate("AddonsInstaller", "All", None)
+        )
+        self.comboPackageType.setItemText(
+            1, QCoreApplication.translate("AddonsInstaller", "Workbenches", None)
+        )
+        self.comboPackageType.setItemText(
+            2, QCoreApplication.translate("AddonsInstaller", "Macros", None)
+        )
+        self.comboPackageType.setItemText(
+            3, QCoreApplication.translate("AddonsInstaller", "Preference Packs", None)
+        )
 
-        self.lineEditFilter.setPlaceholderText(QCoreApplication.translate("AddonsInstaller", u"Filter", None))
-        self.labelFilterValidity.setText(QCoreApplication.translate("AddonsInstaller", u"OK", None))
-
+        self.lineEditFilter.setPlaceholderText(
+            QCoreApplication.translate("AddonsInstaller", "Filter", None)
+        )
+        self.labelFilterValidity.setText(
+            QCoreApplication.translate("AddonsInstaller", "OK", None)
+        )

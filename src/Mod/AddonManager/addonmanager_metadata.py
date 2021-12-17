@@ -1,24 +1,24 @@
-#***************************************************************************
-#*                                                                         *
-#* Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>      *
-#*                                                                         *
-#* This program is free software; you can redistribute it and/or modify    *
-#* it under the terms of the GNU Lesser General Public License (LGPL)      *
-#* as published by the Free Software Foundation; either version 2 of       *
-#* the License, or (at your option) any later version.                     *
-#* for detail see the LICENCE text file.                                   *
-#*                                                                         *
-#* This program is distributed in the hope that it will be useful,         *
-#* but WITHOUT ANY WARRANTY; without even the implied warranty of          *
-#* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
-#* GNU Library General Public License for more details.                    *
-#*                                                                         *
-#* You should have received a copy of the GNU Library General Public       *
-#* License along with this program; if not, write to the Free Software     *
-#* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307     *
-#* USA                                                                     *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# * Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>      *
+# *                                                                         *
+# * This program is free software; you can redistribute it and/or modify    *
+# * it under the terms of the GNU Lesser General Public License (LGPL)      *
+# * as published by the Free Software Foundation; either version 2 of       *
+# * the License, or (at your option) any later version.                     *
+# * for detail see the LICENCE text file.                                   *
+# *                                                                         *
+# * This program is distributed in the hope that it will be useful,         *
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
+# * GNU Library General Public License for more details.                    *
+# *                                                                         *
+# * You should have received a copy of the GNU Library General Public       *
+# * License along with this program; if not, write to the Free Software     *
+# * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307     *
+# * USA                                                                     *
+# *                                                                         *
+# ***************************************************************************
 
 import FreeCAD
 
@@ -32,19 +32,20 @@ from PySide2.QtCore import QObject
 import addonmanager_utilities as utils
 from AddonManagerRepo import AddonManagerRepo
 
+
 class MetadataDownloadWorker(QObject):
     """A worker for downloading package.xml and associated icon(s)
-    
+
     To use, instantiate an object of this class and call the start_fetch() function
     with a QNetworkAccessManager. It is expected that many of these objects will all
     be created and associated with the same QNAM, which will then handle the actual
     asynchronous downloads in some Qt-defined number of threads. To monitor progress
     you should connect to the QNAM's "finished" signal, and ensure it is called the
     number of times you expect based on how many workers you have enqueued.
-    
+
     """
 
-    updated = QtCore.Signal(AddonManagerRepo) 
+    updated = QtCore.Signal(AddonManagerRepo)
 
     def __init__(self, parent, repo, index):
         "repo is an AddonManagerRepo object, and index is a dictionary of SHA1 hashes of the package.xml files in the cache"
@@ -52,15 +53,19 @@ class MetadataDownloadWorker(QObject):
         super().__init__(parent)
         self.repo = repo
         self.index = index
-        self.store = os.path.join(FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata")
+        self.store = os.path.join(
+            FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
+        )
         self.last_sha1 = ""
         self.url = self.repo.metadata_url
 
     def start_fetch(self, network_manager):
-        "Asynchronously begin the network access. Intended as a set-and-forget black box for downloading metadata."        
+        "Asynchronously begin the network access. Intended as a set-and-forget black box for downloading metadata."
         self.request = QtNetwork.QNetworkRequest(QtCore.QUrl(self.url))
-        self.request.setAttribute(QtNetwork.QNetworkRequest.RedirectPolicyAttribute,
-                                  QtNetwork.QNetworkRequest.UserVerifiedRedirectPolicy)
+        self.request.setAttribute(
+            QtNetwork.QNetworkRequest.RedirectPolicyAttribute,
+            QtNetwork.QNetworkRequest.UserVerifiedRedirectPolicy,
+        )
 
         self.fetch_task = network_manager.get(self.request)
         self.fetch_task.finished.connect(self.resolve_fetch)
@@ -84,7 +89,9 @@ class MetadataDownloadWorker(QObject):
     def resolve_fetch(self):
         "Called when the data fetch completed, either with an error, or if it found the metadata file"
         if self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
-            FreeCAD.Console.PrintMessage(f"Found a metadata file for {self.repo.name}\n")
+            FreeCAD.Console.PrintMessage(
+                f"Found a metadata file for {self.repo.name}\n"
+            )
             self.repo.repo_type = AddonManagerRepo.RepoType.PACKAGE
             new_xml = self.fetch_task.readAll()
             hasher = hashlib.sha1()
@@ -110,17 +117,25 @@ class MetadataDownloadWorker(QObject):
                 # There is no local copy yet, so we definitely have to update
                 # the cache
                 self.update_local_copy(new_xml)
-        elif self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError:
+        elif (
+            self.fetch_task.error()
+            == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError
+        ):
             pass
-        elif self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:
+        elif (
+            self.fetch_task.error()
+            == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError
+        ):
             pass
         else:
-            FreeCAD.Console.PrintWarning(f"Failed to connect to {self.url}:\n {self.fetch_task.error()}\n")
+            FreeCAD.Console.PrintWarning(
+                f"Failed to connect to {self.url}:\n {self.fetch_task.error()}\n"
+            )
 
     def update_local_copy(self, new_xml):
         # We have to update the local copy of the metadata file and re-download
         # the icon file
-        
+
         name = self.repo.name
         repo_url = self.repo.url
         package_cache_directory = os.path.join(self.store, name)
