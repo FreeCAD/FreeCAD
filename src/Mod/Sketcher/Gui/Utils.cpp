@@ -61,23 +61,23 @@ using namespace Sketcher;
 bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool &autoremoveredundants)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoUtils = hGrp->GetBool("AutoUtils",false);
+    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
     bool autoRemoveRedundants = hGrp->GetBool("AutoRemoveRedundants",false);
 
     // We need to make sure the solver has right redundancy information before trying to remove the redundants.
     // for example if a non-driving constraint has been added.
-    if(autoRemoveRedundants && autoUtils)
+    if(autoRemoveRedundants && autoRecompute)
         obj->solve();
 
     if(autoRemoveRedundants)
         obj->autoRemoveRedundants();
 
-    if (autoUtils)
+    if (autoRecompute)
         Gui::Command::updateActive();
 
     autoremoveredundants = autoRemoveRedundants;
 
-    return autoUtils;
+    return autoRecompute;
 }
 
 bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj)
