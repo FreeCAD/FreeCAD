@@ -30,6 +30,7 @@ import tempfile
 import hashlib
 import threading
 import queue
+from datetime import datetime
 from typing import Union, List
 
 from PySide2 import QtCore, QtGui, QtNetwork
@@ -39,11 +40,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
 
 import addonmanager_utilities as utils
-from addonmanager_utilities import translate  # this needs to be as is for pylupdate
 from addonmanager_macro import Macro
 from addonmanager_metadata import MetadataDownloadWorker
 from AddonManagerRepo import AddonManagerRepo
 
+translate = FreeCAD.Qt.translate
 
 have_git = False
 try:
@@ -240,9 +241,7 @@ class LoadMacrosFromCacheWorker(QtCore.QThread):
 class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
     """This worker checks for available updates for all workbenches"""
 
-    # Emitting an Enum fails on Ubuntu 20.04, so use an int instead
-    #update_status = QtCore.Signal(AddonManagerRepo, AddonManagerRepo.UpdateStatus)
-    update_status = QtCore.Signal(AddonManagerRepo, int)
+    update_status = QtCore.Signal(AddonManagerRepo)
     progress_made = QtCore.Signal(int, int)
     done = QtCore.Signal()
 
@@ -307,31 +306,47 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
             try:
                 gitrepo.fetch()
             except Exception:
-                FreeCAD.Console.PrintWarning("AddonManager: Unable to fetch git updates for workbench " + wb.name)
+                FreeCAD.Console.PrintWarning("AddonManager: " + translate("AddonsInstaller","Unable to fetch git updates for workbench") + " " + wb.name)
             else:
                 try:
                     if "git pull" in gitrepo.status():
-                        self.update_status.emit(wb, AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE)
+                        wb.update_status = AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE
                     else:
-                        self.update_status.emit(wb, AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
-                except stderr:
+                        wb.update_status = AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
+                    self.update_status.emit(wb)
+                except Exception:
                     FreeCAD.Console.PrintWarning("AddonManager - " + wb.name + " git status"
                                                     " fatal: this operation must be run in a work tree \n")
 
-    def check_package(self, package):
+    def check_package(self, package:AddonManagerRepo) -> None:
         clonedir = self.moddir + os.sep + package.name
         if os.path.exists(clonedir):
             installed_metadata_file = os.path.join(clonedir, "package.xml")
-            installed_metadata = FreeCAD.Metadata(installed_metadata_file)
-            # Packages are considered up-to-date if the metadata version matches. Authors should update
-            # their version string when they want the addon manager to alert users of a new version.
-            if package.metadata.Version > installed_metadata.Version:
-                self.update_status.emit(package, AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE)
+            if not os.path.isfile(installed_metadata_file):
+                # If there is no package.xml file, then it's because the package author added it after the last time
+                # the local installation was updated. By definition, then, there is an update available, if only to
+                # download the new XML file.
+                package.update_status = AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE
+                package.installed_version = None
+                self.update_status.emit(package)
+                return
             else:
-                self.update_status.emit(package, AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
+                package.updated_timestamp = os.path.getmtime(installed_metadata_file) 
+            try:
+                installed_metadata = FreeCAD.Metadata(installed_metadata_file)
+                package.installed_version = installed_metadata.Version
+                # Packages are considered up-to-date if the metadata version matches. Authors should update
+                # their version string when they want the addon manager to alert users of a new version.
+                if package.metadata.Version != installed_metadata.Version:
+                    package.update_status = AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE
+                else:
+                    package.update_status = AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
+                self.update_status.emit(package)
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Failed to read metadata from") + f" {installed_metadata_file}")
 
 
-    def check_macro(self, macro_wrapper):
+    def check_macro(self, macro_wrapper:AddonManagerRepo) -> None:
         # Make sure this macro has its code downloaded:
         try:
             if not macro_wrapper.macro.parsed and macro_wrapper.macro.on_git:
@@ -365,9 +380,10 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
         else:
             return
         if new_sha1 == old_sha1:
-            self.update_status.emit(macro_wrapper, AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE)
+            macro_wrapper.update_status = AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
         else:
-            self.update_status.emit(macro_wrapper, AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE)
+            macro_wrapper.update_status = AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE
+        self.update_status.emit(macro_wrapper)
             
 
 class FillMacroListWorker(QtCore.QThread):
@@ -489,7 +505,7 @@ class ShowWorker(QtCore.QThread):
 
     status_message = QtCore.Signal(str)
     readme_updated = QtCore.Signal(str)
-    addon_repos = QtCore.Signal(object)
+    update_status = QtCore.Signal(AddonManagerRepo)
     done = QtCore.Signal()
 
     def __init__(self, repo, cache_path):
@@ -570,9 +586,9 @@ class ShowWorker(QtCore.QThread):
             self.repo.description = desc
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
-            self.addon_repos.emit(self.repo)
-        # Addon is installed so lets check if it has an update
-        if self.repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+        message = desc
+        if self.repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
+            # Addon is installed but we haven't checked it yet, so lets check if it has an update
             upd = False
             # checking for updates
             if not NOGIT and have_git:
@@ -598,72 +614,14 @@ class ShowWorker(QtCore.QThread):
                     gitrepo.fetch()
                     if "git pull" in gitrepo.status():
                         upd = True
-            # If there is an update pending, lets user know via the UI
             if upd:
-                message = """
-<div style="width: 100%;text-align: center;background: #75AFFD;">
-    <br/>
-    <strong style="background: #397FF7;color: #FFFFFF;">
-"""
-                message += translate("AddonsInstaller", "An update is available for this addon.")
-                message += "</strong><br/></div><hr/>" + desc + '<br/><br/>Addon repository: <a href="'
-                message += self.repo.url + '">' + self.repo.url + "</a>"
                 self.repo.update_status = AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE
-            # If there isn't, indicate that this addon is already installed
             else:
-                message = """
-<div style="width: 100%;text-align: center;background: #C1FEB2;">
-    <br/>
-    <strong style="background: #00B629;color: #FFFFFF;">
-"""
-                message += translate("AddonsInstaller", "This addon is already installed.")
-                message += "</strong><br/></div><hr/>" + desc
-                message += '<br/><br/>Addon repository: <a href="'
-                message += self.repo.url + '">' + self.repo.url + "</a>"
                 self.repo.update_status = AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
-            # Let the user know the install path for this addon
-            message += "<br/>" + translate("AddonsInstaller", "Installed location") + ": "
-            message += FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repo.name
+            self.update_status.emit(self.repo)
+           
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
-            self.addon_repos.emit(self.repo)
-        elif self.repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
-            message = """
-<div style="width: 100%;text-align: center;background: #C1FEB2;">
-    <br/>
-    <strong style="background: #00B629;color: #FFFFFF;">
-"""
-            message += translate("AddonsInstaller", "This addon has been updated, a restart is now required before it can be used.") 
-            message += "</strong><br/></div><hr/>" + desc + '<br/><br/>Addon repository: <a href="'
-            message += self.repo.url + '">' + self.repo.url + "</a>"
-            message += "<br/>" + translate("AddonsInstaller", "Installed location") + ": "
-            message += FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repo.name
-        elif self.repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
-            message = """
-<div style="width: 100%;text-align: center;background: #C1FEB2;">
-    <br/>
-    <strong style="background: #00B629;color: #FFFFFF;">
-"""
-            message += translate("AddonsInstaller", "This addon is already installed.")
-            message += "</strong><br></div><hr/>" + desc
-            message += '<br/><br/>Addon repository: <a href="'
-            message += self.repo.url + '">' + self.repo.url + "</a>"
-            message += "<br/>" + translate("AddonsInstaller", "Installed location") + ": "
-            message += FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repo.name
-        elif self.repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
-            message = """
-<div style="width: 100%;text-align: center;background: #75AFFD;">
-    <br/>
-    <strong style="background: #397FF7;color: #FFFFFF;">
-"""
-            message += translate("AddonsInstaller", "An update is available for this addon.")
-            message += "</strong><br/></div><hr/>" + desc + '<br/><br/>Addon repository: <a href="'
-            message += self.repo.url + '">' + self.repo.url + "</a>"
-            message += "<br/>" + translate("AddonsInstaller", "Installed location") + ": "
-            message += FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repo.name
-        else:
-            message = desc + '<br/><br/>Addon repository: <a href="'
-            message += self.repo.url + '">' + self.repo.url + '</a>'
 
         # If the Addon is obsolete, let the user know through the Addon UI
         if self.repo.name in obsolete:
@@ -905,6 +863,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             self.status_message.emit("Updating submodules...")
             for submodule in repo_sms.submodules:
                 submodule.update(init=True, recursive=True)
+            self.update_metadata()
             self.success.emit(self.repo, answer)
            
     def run_git_clone(self, clonedir:str) -> None:
@@ -946,6 +905,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                                                         "A macro has been installed and is available "
                                                         "under Macro -> Macros menu")
                         answer += ":\n<b>" + f + "</b>"
+        self.update_metadata()
         self.success.emit(self.repo, answer)
 
     def check_python_dependencies(self, baseurl:str) -> Union[bool,str]:
@@ -960,7 +920,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         try:
             mu = utils.urlopen(depsurl)
         except Exception:
-            return True,"No metadata.txt found"
+            return True, translate("AddonsInstaller", "No metadata.txt found, cannot evaluate Python dependencies")
         if mu:
             # metadata.txt found
             depsfile = mu.read()
@@ -1003,7 +963,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                                                      "Missing optional python module (doesn't prevent installing)")
                                 message += ": " + pl + ", "
         if message and (not ok):
-            message = translate("AddonsInstaller", "Some errors were found that prevent to install this workbench")
+            message = translate("AddonsInstaller", "Some errors were found that prevent installation of this workbench")
             message += ": <b>" + message + "</b>. "
             message += translate("AddonsInstaller", "Please install the missing components first.")
         return ok, message
@@ -1067,7 +1027,16 @@ class InstallWorkbenchWorker(QtCore.QThread):
         os.rmdir(zipdir + os.sep + master)
         if bakdir:
             shutil.rmtree(bakdir)
+        self.update_metadata()
         self.success.emit(self.repo, translate("AddonsInstaller", "Successfully installed") + " " + zipurl)
+
+    def update_metadata(self):
+        basedir = FreeCAD.getUserAppDataDir()
+        package_xml = os.path.join(basedir,"Mod",self.repo.name,"package.xml")
+        if os.path.isfile(package_xml):
+            self.repo.metadata = FreeCAD.Metadata(package_xml)
+            self.repo.installed_version = self.repo.metadata.Version
+            self.repo.updated_timestamp = datetime.now().timestamp()
 
 class CheckSingleWorker(QtCore.QThread):
     """Worker to check for updates for a single addon"""
