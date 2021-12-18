@@ -501,7 +501,7 @@ template<> PyObject* Fem::ConstraintPython::getPyObject(void) {
 }
 
 // explicit template instantiation
-template class AppFemExport FeaturePythonT<Fem::Constraint>;
+template class FemExport FeaturePythonT<Fem::Constraint>;
 
 /// @endcond
 

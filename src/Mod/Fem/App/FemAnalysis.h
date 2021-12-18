@@ -26,6 +26,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/PropertyLinks.h>
 #include <App/FeaturePython.h>
+#include <Mod/Fem/FemGlobal.h>
 
 
 namespace Fem {
@@ -48,7 +49,7 @@ namespace Fem {
  *  Analysis object. Every document object of FreeCAD can be part of a
  *  Analysis.
  */
-class AppFemExport FemAnalysis : public App::DocumentObjectGroup {
+class FemExport FemAnalysis : public App::DocumentObjectGroup {
     PROPERTY_HEADER(Fem::FemAnalysis);
 
 public:
@@ -85,7 +86,7 @@ protected:
         Base::XMLReader &reader, const char * TypeName, const char *PropName);
 };
 
-class AppFemExport DocumentObject : public App::DocumentObject
+class FemExport DocumentObject : public App::DocumentObject
 {
     PROPERTY_HEADER(Fem::DocumentObject);
 };

@@ -36,7 +36,7 @@
 namespace Fem
 {
 
-class AppFemExport FemPostFunction : public App::DocumentObject
+class FemExport FemPostFunction : public App::DocumentObject
 {
     PROPERTY_HEADER(Fem::FemPostFunction);
 
@@ -62,7 +62,7 @@ protected:
     vtkBoundingBox                        m_boundingBox;
 };
 
-class AppFemExport FemPostFunctionProvider : public App::DocumentObject {
+class FemExport FemPostFunctionProvider : public App::DocumentObject {
 
     PROPERTY_HEADER(Fem::FemPostFunctionProvider);
 
@@ -83,7 +83,7 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class AppFemExport FemPostPlaneFunction : public FemPostFunction
+class FemExport FemPostPlaneFunction : public FemPostFunction
 {
     PROPERTY_HEADER(Fem::FemPostPlaneFunction);
 
@@ -107,7 +107,7 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class AppFemExport FemPostSphereFunction : public FemPostFunction
+class FemExport FemPostSphereFunction : public FemPostFunction
 {
     PROPERTY_HEADER(Fem::FemPostSphereFunction);
 

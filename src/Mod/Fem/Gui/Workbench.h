@@ -25,6 +25,7 @@
 #define FEM_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+#include <Mod/Fem/FemGlobal.h>
 
 namespace FemGui {
 

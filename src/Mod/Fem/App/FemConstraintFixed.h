@@ -34,7 +34,7 @@
 namespace Fem
 {
 
-class AppFemExport ConstraintFixed : public Fem::Constraint
+class FemExport ConstraintFixed : public Fem::Constraint
 {
     PROPERTY_HEADER(Fem::ConstraintFixed);
 

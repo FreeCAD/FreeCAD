@@ -26,12 +26,12 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include "FemSetObject.h"
+#include <Mod/Fem/FemGlobal.h>
 
 namespace Fem
 {
 
-class AppFemExport FemSetObject : public App::DocumentObject
+class FemExport FemSetObject : public App::DocumentObject
 {
     PROPERTY_HEADER(Fem::FemSetObject);
 

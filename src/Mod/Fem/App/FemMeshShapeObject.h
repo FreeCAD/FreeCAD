@@ -30,7 +30,7 @@
 namespace Fem
 {
 
-class AppFemExport FemMeshShapeObject : public FemMeshObject
+class FemExport FemMeshShapeObject : public FemMeshObject
 {
     PROPERTY_HEADER(Fem::FemMeshShapeObject);
 

@@ -35,7 +35,7 @@
 namespace Fem
 {
 
-class AppFemExport FemPostPipeline : public Fem::FemPostFilter
+class FemExport FemPostPipeline : public Fem::FemPostFilter
 {
     PROPERTY_HEADER(Fem::FemPostPipeline);
 

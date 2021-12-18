@@ -32,7 +32,7 @@
 namespace Fem
 {
 
-class AppFemExport FemMeshShapeNetgenObject : public FemMeshShapeObject
+class FemExport FemMeshShapeNetgenObject : public FemMeshShapeObject
 {
     PROPERTY_HEADER(Fem::FemMeshShapeNetgenObject);
 

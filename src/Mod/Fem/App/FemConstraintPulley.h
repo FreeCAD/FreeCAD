@@ -34,7 +34,7 @@
 namespace Fem
 {
 
-class AppFemExport ConstraintPulley : public Fem::ConstraintGear
+class FemExport ConstraintPulley : public Fem::ConstraintGear
 {
     PROPERTY_HEADER(Fem::ConstraintPulley);
 

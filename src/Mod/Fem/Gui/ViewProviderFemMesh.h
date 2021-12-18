@@ -27,6 +27,7 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderPythonFeature.h>
+#include <Mod/Fem/FemGlobal.h>
 
 #include <CXX/Objects.hxx>
 

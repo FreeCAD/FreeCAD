@@ -35,7 +35,7 @@
 namespace Fem
 {
 
-class AppFemExport ConstraintFluidBoundary: public Fem::Constraint
+class FemExport ConstraintFluidBoundary: public Fem::Constraint
 {
     PROPERTY_HEADER(Fem::ConstraintFluidBoundary);
 

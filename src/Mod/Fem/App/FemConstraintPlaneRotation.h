@@ -30,7 +30,7 @@
 namespace Fem
 {
 
-class AppFemExport ConstraintPlaneRotation : public Fem::Constraint
+class FemExport ConstraintPlaneRotation : public Fem::Constraint
 {
     PROPERTY_HEADER(Fem::ConstraintPlaneRotation);
 

@@ -28,6 +28,7 @@
 
 #include <CXX/Objects.hxx>
 #include <Base/Observer.h>
+#include <Mod/Fem/FemGlobal.h>
 #include <vtkSmartPointer.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkOutlineFilter.h>

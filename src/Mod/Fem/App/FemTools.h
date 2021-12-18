@@ -26,6 +26,7 @@
 
 #include <Base/Vector3D.h>
 #include <gp_XYZ.hxx>
+#include <Mod/Fem/FemGlobal.h>
 
 class TopoDS_Shape;
 class TopoDS_Edge;
@@ -34,7 +35,7 @@ class TopoDS_Face;
 namespace Fem
 {
 
-class AppFemExport Tools
+class FemExport Tools
 {
 public:
     /*!

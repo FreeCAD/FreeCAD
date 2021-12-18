@@ -39,7 +39,7 @@ namespace Fem
 {
 
     // utility class to import/export read/write vtk mesh and result
-    class AppFemExport FemVTKTools
+    class FemExport FemVTKTools
     {
     public:
         // extract data from vtkUnstructuredGrid instance and fill a FreeCAD FEM mesh object with that data

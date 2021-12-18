@@ -26,6 +26,7 @@
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
+#include <Mod/Fem/FemGlobal.h>
 
 namespace FemGui
 {

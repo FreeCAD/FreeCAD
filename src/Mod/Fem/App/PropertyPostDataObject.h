@@ -28,6 +28,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkDataObject.h>
 #include <vtkDataSet.h>
+#include <Mod/Fem/FemGlobal.h>
 
 namespace Fem
 {

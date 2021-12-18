@@ -31,7 +31,7 @@
 namespace Fem
 {
 
-class AppFemExport FemSetFacesObject : public FemSetObject
+class FemExport FemSetFacesObject : public FemSetObject
 {
     PROPERTY_HEADER(Fem::FemSetFacesObject);
 

@@ -87,7 +87,7 @@ template<> const char* Fem::FemAnalysisPython::getViewProviderName(void) const {
 /// @endcond
 
 // explicit template instantiation
-template class AppFemExport FeaturePythonT<Fem::FemAnalysis>;
+template class FemExport FeaturePythonT<Fem::FemAnalysis>;
 }
 
 // ---------------------------------------------------------
@@ -106,6 +106,6 @@ template<> PyObject* Fem::FeaturePython::getPyObject(void) {
     return Py::new_reference_to(PythonObject);
 }
 // explicit template instantiation
-template class AppFemExport FeaturePythonT<Fem::DocumentObject>;
+template class FemExport FeaturePythonT<Fem::DocumentObject>;
 /// @endcond
 }

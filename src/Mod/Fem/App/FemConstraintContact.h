@@ -30,7 +30,7 @@
 namespace Fem
 {
 
-class AppFemExport ConstraintContact : public Fem::Constraint
+class FemExport ConstraintContact : public Fem::Constraint
 {
     PROPERTY_HEADER(Fem::ConstraintContact);
 

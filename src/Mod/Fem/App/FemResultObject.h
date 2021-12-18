@@ -28,12 +28,12 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
-#include "FemResultObject.h"
+#include <Mod/Fem/FemGlobal.h>
 
 namespace Fem
 {
 /// Father of all result data in a Fem Analysis
-class AppFemExport FemResultObject : public App::DocumentObject
+class FemExport FemResultObject : public App::DocumentObject
 {
     PROPERTY_HEADER(Fem::FemResultObject);
 
