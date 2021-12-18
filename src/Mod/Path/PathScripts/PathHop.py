@@ -23,13 +23,11 @@
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """Path Hop object and FreeCAD command"""
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ObjectHop:
@@ -38,15 +36,13 @@ class ObjectHop:
             "App::PropertyLink",
             "NextObject",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "The object to be reached by this hop"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The object to be reached by this hop"),
         )
         obj.addProperty(
             "App::PropertyDistance",
             "HopHeight",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "The Z height of the hop"),
+            QT_TRANSLATE_NOOP("App::Property", "The Z height of the hop"),
         )
         obj.Proxy = self
 
@@ -102,10 +98,8 @@ class CommandPathHop:
     def GetResources(self):
         return {
             "Pixmap": "Path_Hop",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Hop", "Hop"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "Path_Hop", "Creates a Path Hop object"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("Path_Hop", "Hop"),
+            "ToolTip": QT_TRANSLATE_NOOP("Path_Hop", "Creates a Path Hop object"),
         }
 
     def IsActive(self):
@@ -130,7 +124,7 @@ class CommandPathHop:
             )
             return
 
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Hop", "Create Hop"))
+        FreeCAD.ActiveDocument.openTransaction("Create Hop")
         FreeCADGui.addModule("PathScripts.PathHop")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
