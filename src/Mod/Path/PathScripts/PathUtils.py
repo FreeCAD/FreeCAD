@@ -41,12 +41,14 @@ DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Part = LazyLoader("Part", globals(), "Part")
 TechDraw = LazyLoader("TechDraw", globals(), "TechDraw")
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+translate = FreeCAD.Qt.translate
 
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 UserInput = None
@@ -179,7 +181,7 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
         PathLog.debug("candidate is drillable: {}".format(drillable))
     except Exception as ex:  # pylint: disable=broad-except
         PathLog.warning(
-            translate("PathUtils", "Issue determine drillability: {}").format(ex)
+            translate("Path", "Issue determine drillability: {}").format(ex)
         )
     return drillable
 

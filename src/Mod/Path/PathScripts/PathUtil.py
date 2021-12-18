@@ -30,15 +30,17 @@ So if you add to this file and think about importing anything from PathScripts
 other than PathLog, then it probably doesn't belong here.
 """
 
+import FreeCAD
 import six
 import PathScripts.PathLog as PathLog
-import PySide
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+translate = FreeCAD.Qt.translate
 
-
-def translate(context, text, disambig=None):
-    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 def _getProperty(obj, prop):
