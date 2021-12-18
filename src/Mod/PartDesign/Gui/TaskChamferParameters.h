@@ -51,6 +51,7 @@ private Q_SLOTS:
     void onAngleChanged(double);
     void onFlipDirection(bool);
     void onRefDeleted(void);
+    void onAddAllEdges(void);
 
 protected:
     virtual void clearButtons(const selectionModes notThis);
