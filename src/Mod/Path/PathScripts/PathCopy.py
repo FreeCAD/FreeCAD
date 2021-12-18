@@ -24,11 +24,12 @@ import FreeCAD
 import FreeCADGui
 from PySide import QtCore
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 __doc__ = """Path Copy object and FreeCAD command"""
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+
+translate = FreeCAD.Qt.translate
 
 
 class ObjectPathCopy:
@@ -37,13 +38,13 @@ class ObjectPathCopy:
             "App::PropertyLink",
             "Base",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "The path to be copied"),
+            QT_TRANSLATE_NOOP("App::Property", "The path to be copied"),
         )
         obj.addProperty(
             "App::PropertyLink",
             "ToolController",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "The tool controller that will be used to calculate the path",
             ),
@@ -87,8 +88,8 @@ class CommandPathCopy:
     def GetResources(self):
         return {
             "Pixmap": "Path_Copy",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Copy", "Copy"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP("Path_Copy", "Copy"),
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_Copy", "Creates a linked copy of another path"
             ),
         }
@@ -102,7 +103,7 @@ class CommandPathCopy:
 
     def Activated(self):
 
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Copy", "Create Copy"))
+        FreeCAD.ActiveDocument.openTransaction("Create Copy")
         FreeCADGui.addModule("PathScripts.PathCopy")
 
         consolecode = """
