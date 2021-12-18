@@ -120,8 +120,8 @@ class UpdateWorker(QtCore.QThread):
             if "obsolete" in j and "Mod" in j["obsolete"]:
                 obsolete = j["obsolete"]["Mod"]
 
-            if "reject_listed" in j and "Macro" in j["reject_listed"]:
-                macros_reject_list = j["reject_listed"]["Macro"]
+            if "blacklisted" in j and "Macro" in j["blacklisted"]:
+                macros_reject_list = j["blacklisted"]["Macro"]
 
             if "py2only" in j and "Mod" in j["py2only"]:
                 py2only = j["py2only"]["Mod"]
@@ -157,16 +157,21 @@ class UpdateWorker(QtCore.QThread):
                 if name.lower().endswith(".git"):
                     name = name[:-4]
                 if name in package_names:
-                    # We already have this one cached since it's a package
+                    # We already have something with this name, skip this one
                     continue
+                package_names.append(name)
                 addondir = moddir + os.sep + name
                 if os.path.exists(addondir) and os.listdir(addondir):
                     state = AddonManagerRepo.UpdateStatus.UNCHECKED
                 else:
                     state = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-                self.addon_repo.emit(
-                    AddonManagerRepo(name, addon["url"], state, addon["branch"])
-                )
+                repo = AddonManagerRepo(name, addon["url"], state, addon["branch"])
+                md_file = os.path.join(addondir,"package.xml")
+                if os.path.isfile(md_file):
+                    repo.load_metadata_file(md_file)
+                    repo.installed_version = repo.metadata.Version
+                    repo.updated_timestamp = os.path.getmtime(md_file)
+                self.addon_repo.emit(repo)
 
         # querying official addons
         u = utils.urlopen(
@@ -193,8 +198,9 @@ class UpdateWorker(QtCore.QThread):
             if self.current_thread.isInterruptionRequested():
                 return
             if name in package_names:
-                # We've already got this info since it's a package or a custom repo
+                # We already have something with this name, skip this one
                 continue
+            package_names.append(name)
             if branch is None or len(branch) == 0:
                 branch = "master"
             url = url.split(".git")[0]
@@ -204,7 +210,13 @@ class UpdateWorker(QtCore.QThread):
                 state = AddonManagerRepo.UpdateStatus.UNCHECKED
             else:
                 state = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-            self.addon_repo.emit(AddonManagerRepo(name, url, state, branch))
+            repo = AddonManagerRepo(name, url, state, branch)
+            md_file = os.path.join(addondir,"package.xml")
+            if os.path.isfile(md_file):
+                repo.load_metadata_file(md_file)
+                repo.installed_version = repo.metadata.Version
+                repo.updated_timestamp = os.path.getmtime(md_file)
+            self.addon_repo.emit(repo)
 
             self.status_message.emit(
                 translate("AddonsInstaller", "Workbenches list was updated.")
@@ -231,7 +243,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
             data = f.read()
             if data:
                 dict_data = json.loads(data)
-                for item in dict_data:
+                for item in dict_data.values():
                     if QtCore.QThread.currentThread().isInterruptionRequested():
                         return
                     repo = AddonManagerRepo.from_cache(item)
@@ -240,8 +252,13 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                     )
                     if os.path.isfile(repo_metadata_cache_path):
                         try:
-                            repo.metadata = FreeCAD.Metadata(repo_metadata_cache_path)
+                            repo.load_metadata_file(repo_metadata_cache_path)
+                            repo.installed_version = repo.metadata.Version
+                            repo.updated_timestamp = os.path.getmtime(repo_metadata_cache_path)
                         except Exception:
+                            FreeCAD.Console.PrintWarning(
+                                translate("AddonsInstaller","Failed loading") + f"{repo_metadata_cache_path}\n"
+                            )
                             pass
                     self.addon_repo.emit(repo)
         self.done.emit()
@@ -382,6 +399,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                 package.updated_timestamp = os.path.getmtime(installed_metadata_file)
             try:
                 installed_metadata = FreeCAD.Metadata(installed_metadata_file)
+                package.set_metadata(installed_metadata)
                 package.installed_version = installed_metadata.Version
                 # Packages are considered up-to-date if the metadata version matches. Authors should update
                 # their version string when they want the addon manager to alert users of a new version.
@@ -1096,7 +1114,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 "FreeCAD to apply the changes.",
             )
         else:
-            self.emit.failure(self.repo, answer)
+            self.failure.emit(self.repo, answer)
             return
 
         if self.repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
@@ -1199,14 +1217,15 @@ class InstallWorkbenchWorker(QtCore.QThread):
                                 )
                                 message += ": " + pl + ", "
         if message and (not ok):
-            message = translate(
+            final_message = translate(
                 "AddonsInstaller",
                 "Some errors were found that prevent installation of this workbench",
             )
-            message += ": <b>" + message + "</b>. "
-            message += translate(
+            final_message += ": <b>" + message + "</b>. "
+            final_message += translate(
                 "AddonsInstaller", "Please install the missing components first."
             )
+            message = final_message
         return ok, message
 
     def check_package_dependencies(self):
@@ -1295,7 +1314,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         basedir = FreeCAD.getUserAppDataDir()
         package_xml = os.path.join(basedir, "Mod", self.repo.name, "package.xml")
         if os.path.isfile(package_xml):
-            self.repo.metadata = FreeCAD.Metadata(package_xml)
+            self.repo.load_metadata_file(package_xml)
             self.repo.installed_version = self.repo.metadata.Version
             self.repo.updated_timestamp = datetime.now().timestamp()
 
