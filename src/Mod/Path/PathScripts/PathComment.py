@@ -27,15 +27,18 @@ import FreeCADGui
 import Path
 from PySide import QtCore
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+translate = FreeCAD.Qt.translate
 
 
 class Comment:
     def __init__(self, obj):
         obj.addProperty(
-            "App::PropertyString", "Comment", "Path", "Comment or note for CNC program"
+            "App::PropertyString",
+            "Comment",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Comment or note for CNC program"),
         )
         obj.Proxy = self
         mode = 2
@@ -98,8 +101,8 @@ class CommandPathComment:
     def GetResources(self):
         return {
             "Pixmap": "Path_Comment",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Comment", "Comment"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP("Path_Comment", "Comment"),
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_Comment", "Add a Comment to your CNC program"
             ),
         }
@@ -112,9 +115,7 @@ class CommandPathComment:
         return False
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Comment", "Create a Comment in your CNC program")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Create a Comment in your CNC program")
         FreeCADGui.addModule("PathScripts.PathComment")
         snippet = """
 import Path
