@@ -128,7 +128,19 @@ class TestImportCSG(unittest.TestCase):
             self.assertTrue (text is not None)
             FreeCAD.closeDocument(doc.Name)
         except Exception:
-            pass # We may not have the DXF importer available
+            return # We may not have the DXF importer available
+
+        # Try a number with a set script:
+        doc = self.utility_create_scad("text(\"2\",script=\"latin\");","two_text")
+        text = doc.getObject("text")
+        self.assertTrue (text is not None)
+        FreeCAD.closeDocument(doc.Name)
+
+        # Leave off the script (which is supposed to default to "latin")
+        doc = self.utility_create_scad("text(\"1\");","one_text")
+        text = doc.getObject("text")
+        self.assertTrue (text is not None)
+        FreeCAD.closeDocument(doc.Name)
 
     def test_import_polygon_nopath(self):
         doc = self.utility_create_scad("polygon(points=[[0,0],[100,0],[130,50],[30,50]]);","polygon_nopath")

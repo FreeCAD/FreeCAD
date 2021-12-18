@@ -1204,7 +1204,10 @@ def p_text_action(p) :
     t = addString(t,'font',p)
     t = addString(t,'direction',p)
     t = addString(t,'language',p)
-    t = addString(t,'script',p)
+    if "script" in p[3]:
+        t = addString(t,'script',p)
+    else:
+        t += ', script="latin"'
     t = addString(t,'halign',p)
     t = addString(t,'valign',p)
     t = addValue(t,'$fn',p)
