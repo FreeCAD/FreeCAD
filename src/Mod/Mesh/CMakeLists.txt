@@ -45,5 +45,5 @@ INSTALL(
 )
 
 
-INSTALL(FILES ${MeshTestDataFiles} DESTINATION Mod/Mesh/Data)
+INSTALL(FILES ${MeshTestDataFiles} DESTINATION Mod/Mesh/App/TestData)
 
