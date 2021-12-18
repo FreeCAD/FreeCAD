@@ -25,6 +25,7 @@ import FreeCAD
 import tempfile
 import os
 import hashlib
+from typing import Dict, List
 
 from PySide2 import QtCore, QtNetwork
 from PySide2.QtCore import QObject
@@ -47,8 +48,8 @@ class MetadataDownloadWorker(QObject):
 
     updated = QtCore.Signal(AddonManagerRepo)
 
-    def __init__(self, parent, repo, index):
-        "repo is an AddonManagerRepo object, and index is a dictionary of SHA1 hashes of the package.xml files in the cache"
+    def __init__(self, parent, repo:AddonManagerRepo, index:Dict[str,str]):
+        """ repo is an AddonManagerRepo object, and index is a dictionary of SHA1 hashes of the package.xml files in the cache """
 
         super().__init__(parent)
         self.repo = repo
@@ -59,8 +60,9 @@ class MetadataDownloadWorker(QObject):
         self.last_sha1 = ""
         self.url = self.repo.metadata_url
 
-    def start_fetch(self, network_manager):
-        "Asynchronously begin the network access. Intended as a set-and-forget black box for downloading metadata."
+    def start_fetch(self, network_manager:QtNetwork.QNetworkAccessManager):
+        """Asynchronously begin the network access. Intended as a set-and-forget black box for downloading metadata."""
+
         self.request = QtNetwork.QNetworkRequest(QtCore.QUrl(self.url))
         self.request.setAttribute(
             QtNetwork.QNetworkRequest.RedirectPolicyAttribute,
@@ -76,20 +78,21 @@ class MetadataDownloadWorker(QObject):
         if not self.fetch_task.isFinished():
             self.fetch_task.abort()
 
-    def on_redirect(self, url):
+    def on_redirect(self, _):
         # For now just blindly follow all redirects
         self.fetch_task.redirectAllowed.emit()
 
-    def on_ssl_error(self, reply, errors):
+    def on_ssl_error(self, reply:str, errors:List[str]):
         FreeCAD.Console.PrintWarning(f"Error with encrypted connection:\n")
         FreeCAD.Console.PrintWarning(reply)
         for error in errors:
             FreeCAD.Console.PrintWarning(error)
 
     def resolve_fetch(self):
-        "Called when the data fetch completed, either with an error, or if it found the metadata file"
+        """ Called when the data fetch completed, either with an error, or if it found the metadata file """
+
         if self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
-            FreeCAD.Console.PrintMessage(
+            FreeCAD.Console.PrintLog(
                 f"Found a metadata file for {self.repo.name}\n"
             )
             self.repo.repo_type = AddonManagerRepo.RepoType.PACKAGE
@@ -128,8 +131,8 @@ class MetadataDownloadWorker(QObject):
         ):
             pass
         else:
-            FreeCAD.Console.PrintWarning(
-                f"Failed to connect to {self.url}:\n {self.fetch_task.error()}\n"
+            FreeCAD.Console.PrintWarning( 
+                translate("AddonsInstaller", "Failed to connect to") + f" {self.url}:\n {self.fetch_task.error()}\n"
             )
 
     def update_local_copy(self, new_xml):
@@ -151,8 +154,8 @@ class MetadataDownloadWorker(QObject):
 
         if not icon:
             # If there is no icon set for the entire package, see if there are
-            # any workbenches, which
-            # are required to have icons, and grab the first one we find:
+            # any workbenches, which are required to have icons, and grab the first 
+            # one we find:
             content = self.repo.metadata.Content
             if "workbench" in content:
                 wb = content["workbench"][0]

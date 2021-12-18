@@ -28,8 +28,6 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-import datetime
-from typing import Dict, Union
 from enum import IntEnum
 import threading
 
@@ -130,6 +128,7 @@ class PackageList(QWidget):
         self.item_filter.setFilterRegularExpression(text_filter)
 
     def set_view_style(self, style: ListDisplayStyle) -> None:
+        self.item_model.layoutAboutToBeChanged.emit()
         self.item_delegate.set_view(style)
         if style == ListDisplayStyle.COMPACT:
             self.ui.listPackages.setSpacing(2)
@@ -172,17 +171,17 @@ class PackageListItemModel(QAbstractListModel):
             if self.repos[row].repo_type == AddonManagerRepo.RepoType.PACKAGE:
                 tooltip = (
                     translate("AddonsInstaller", "Click for details about package")
-                    + f" '{self.repos[row].name}'"
+                    + f" '{self.repos[row].display_name}'"
                 )
             elif self.repos[row].repo_type == AddonManagerRepo.RepoType.WORKBENCH:
                 tooltip = (
                     translate("AddonsInstaller", "Click for details about workbench")
-                    + f" '{self.repos[row].name}'"
+                    + f" '{self.repos[row].display_name}'"
                 )
             elif self.repos[row].repo_type == AddonManagerRepo.RepoType.MACRO:
                 tooltip = (
                     translate("AddonsInstaller", "Click for details about macro")
-                    + f" '{self.repos[row].name}'"
+                    + f" '{self.repos[row].display_name}'"
                 )
             return tooltip
         elif role == PackageListItemModel.DataAccessRole:
@@ -301,11 +300,11 @@ class PackageListItemDelegate(QStyledItemDelegate):
         repo = index.data(PackageListItemModel.DataAccessRole)
         if self.displayStyle == ListDisplayStyle.EXPANDED:
             self.widget = self.expanded
-            self.widget.ui.labelPackageName.setText(f"<h1>{repo.name}</h1>")
+            self.widget.ui.labelPackageName.setText(f"<h1>{repo.display_name}</h1>")
             self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QSize(48, 48)))
         else:
             self.widget = self.compact
-            self.widget.ui.labelPackageName.setText(f"<b>{repo.name}</b>")
+            self.widget.ui.labelPackageName.setText(f"<b>{repo.display_name}</b>")
             self.widget.ui.labelIcon.setPixmap(repo.icon.pixmap(QSize(16, 16)))
 
         self.widget.ui.labelIcon.setText("")
@@ -409,7 +408,7 @@ class PackageListItemDelegate(QStyledItemDelegate):
         return result
 
     def paint(
-        self, painter: QPainter, option: QStyleOptionViewItem, index: QModelIndex
+        self, painter: QPainter, option: QStyleOptionViewItem, _: QModelIndex
     ):
         painter.save()
         self.widget.resize(option.rect.size())
@@ -436,9 +435,7 @@ class PackageListFilter(QSortFilterProxyModel):
         l = self.sourceModel().data(left, PackageListItemModel.DataAccessRole)
         r = self.sourceModel().data(right, PackageListItemModel.DataAccessRole)
 
-        lname = l.name if l.metadata is None else l.metadata.Name
-        rname = r.name if r.metadata is None else r.metadata.Name
-        return lname.lower() < rname.lower()
+        return l.display_name.lower() < r.display_name.lower()
 
     def filterAcceptsRow(self, row, parent=QModelIndex()):
         index = self.sourceModel().createIndex(row, 0)
@@ -453,8 +450,8 @@ class PackageListFilter(QSortFilterProxyModel):
             if not data.contains_preference_pack():
                 return False
 
-        name = data.name if data.metadata is None else data.metadata.Name
-        desc = data.description if not data.metadata else data.metadata.Description
+        name = data.display_name
+        desc = data.description
         re = self.filterRegularExpression()
         if re.isValid():
             re.setPatternOptions(QRegularExpression.CaseInsensitiveOption)

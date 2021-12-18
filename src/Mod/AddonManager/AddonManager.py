@@ -83,6 +83,7 @@ class CommandAddonManager:
         "install_worker",
         "update_metadata_cache_worker",
         "update_all_worker",
+        "update_check_single_worker"
     ]
 
     lock = threading.Lock()
@@ -236,6 +237,7 @@ class CommandAddonManager:
         self.packageDetails.update.connect(self.update)
         self.packageDetails.back.connect(self.on_buttonBack_clicked)
         self.packageDetails.update_status.connect(self.status_updated)
+        self.packageDetails.check_for_update.connect(self.check_for_update)
 
         # center the dialog over the FreeCAD window
         mw = FreeCADGui.getMainWindow()
@@ -440,14 +442,14 @@ class CommandAddonManager:
 
     def cache_package(self, repo: AddonManagerRepo):
         if not hasattr(self, "package_cache"):
-            self.package_cache = []
-        self.package_cache.append(repo.to_cache())
+            self.package_cache = {}
+        self.package_cache[repo.name] = repo.to_cache()
 
     def write_package_cache(self):
-        package_cache_path = self.get_cache_file_name("package_cache.json")
-        with open(package_cache_path, "w") as f:
-            f.write(json.dumps(self.package_cache))
-            self.package_cache = []
+        if hasattr(self, "package_cache"):
+            package_cache_path = self.get_cache_file_name("package_cache.json")
+            with open(package_cache_path, "w") as f:
+                f.write(json.dumps(self.package_cache))
 
     def activate_table_widgets(self) -> None:
         self.packageList.setEnabled(True)
@@ -514,9 +516,7 @@ class CommandAddonManager:
         """Called when the named package has either new metadata or a new icon (or both)"""
 
         with self.lock:
-            cache_path = os.path.join(
-                FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata", repo.name
-            )
+            self.cache_package(repo)
             repo.icon = self.get_icon(repo, update=True)
             self.item_model.reload_item(repo)
 
@@ -527,6 +527,10 @@ class CommandAddonManager:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         autocheck = pref.GetBool("AutoCheck", False)
         if not autocheck:
+            FreeCAD.Console.PrintMessage(translate(
+                "AddonsInstaller",
+                "Addon Manager: Skipping update check because AutoCheck user preference is False"
+            ) + "\n")
             self.do_next_startup_phase()
             return
         if not self.packages_with_updates:
@@ -702,6 +706,28 @@ class CommandAddonManager:
 
     def update(self, repo: AddonManagerRepo) -> None:
         self.install(repo)
+
+    def check_for_update(self, repo: AddonManagerRepo) -> None:
+        """ Check a single repo for available updates asynchronously """
+
+        if hasattr(self, "update_check_single_worker") and self.update_check_single_worker:
+            if self.update_check_single_worker.isRunning():
+                self.update_check_single_worker.requestInterrupt()
+                self.update_check_single_worker.wait()
+
+        self.update_check_single_worker = CheckSingleWorker(repo.name)
+        self.update_check_single_worker.updateAvailable.connect(
+            lambda update_available : self.mark_repo_update_available(repo, update_available)
+        )
+        self.update_check_single_worker.start()
+
+    def mark_repo_update_available(self, repo:AddonManagerRepo, available:bool) -> None:
+        if available:
+            repo.update_status = AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE
+        else:
+            repo.update_status = AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
+        self.item_model.reload_item(repo)
+        self.packageDetails.show_repo(repo)
 
     def update_all(self) -> None:
         """Asynchronously apply all available updates: individual failures are noted, but do not stop other updates"""

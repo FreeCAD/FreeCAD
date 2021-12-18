@@ -72,6 +72,7 @@ class AddonManagerRepo:
 
     def __init__(self, name: str, url: str, status: UpdateStatus, branch: str):
         self.name = name.strip()
+        self.display_name = self.name
         self.url = url.strip()
         self.branch = branch.strip()
         self.update_status = status
@@ -122,9 +123,17 @@ class AddonManagerRepo:
         else:
             status = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
         instance = AddonManagerRepo(data["name"], data["url"], status, data["branch"])
+        instance.display_name = data["display_name"]
         instance.repo_type = AddonManagerRepo.RepoType(data["repo_type"])
         instance.description = data["description"]
         instance.cached_icon_filename = data["cached_icon_filename"]
+        if instance.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+            # There must be a cached metadata file, too
+            cached_package_xml_file = os.path.join(
+                FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata", instance.name
+            )
+            if os.path.isfile(cached_package_xml_file):
+                instance.load_metadata_file(cached_package_xml_file)
         return instance
 
     def to_cache(self) -> Dict:
@@ -132,12 +141,31 @@ class AddonManagerRepo:
 
         return {
             "name": self.name,
+            "display_name": self.display_name,
             "url": self.url,
             "branch": self.branch,
             "repo_type": int(self.repo_type),
             "description": self.description,
             "cached_icon_filename": self.get_cached_icon_filename(),
         }
+
+    def load_metadata_file (self, file:str) -> None:
+        if os.path.isfile(file):
+            metadata = FreeCAD.Metadata(file)
+            self.set_metadata(metadata)
+
+    def set_metadata (self, metadata:FreeCAD.Metadata) -> None:
+        self.metadata = metadata
+        self.display_name = metadata.Name
+        self.repo_type = AddonManagerRepo.RepoType.PACKAGE
+        self.description = metadata.Description
+        for url in metadata.Urls:
+            if "type" in url and url["type"] == "repository":
+                self.url = url["location"]
+                if "branch" in url:
+                    self.branch = url["branch"]
+                else:
+                    self.branch = "master"
 
     def contains_workbench(self) -> bool:
         """Determine if this package contains (or is) a workbench"""

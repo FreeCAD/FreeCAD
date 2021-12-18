@@ -46,6 +46,7 @@ class PackageDetails(QWidget):
     update = Signal(AddonManagerRepo)
     execute = Signal(AddonManagerRepo)
     update_status = Signal(AddonManagerRepo)
+    check_for_update = Signal(AddonManagerRepo)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -61,6 +62,7 @@ class PackageDetails(QWidget):
         self.ui.buttonInstall.clicked.connect(lambda: self.install.emit(self.repo))
         self.ui.buttonUninstall.clicked.connect(lambda: self.uninstall.emit(self.repo))
         self.ui.buttonUpdate.clicked.connect(lambda: self.update.emit(self.repo))
+        self.ui.buttonCheckForUpdate.clicked.connect(lambda: self.check_for_update.emit(self.repo))
 
     def show_repo(self, repo: AddonManagerRepo, reload: bool = False) -> None:
 
@@ -149,9 +151,18 @@ class PackageDetails(QWidget):
                     + "."
                 )
             elif repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
-                installed_version_string += (
-                    translate("AddonsInstaller", "Update check in progress") + "."
-                )
+                
+                pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+                autocheck = pref.GetBool("AutoCheck", False)
+                if autocheck:
+                    installed_version_string += (
+                        translate("AddonsInstaller", "Update check in progress") + "."
+                    )
+                else:
+                    installed_version_string += (
+                        translate("AddonsInstaller", "Automatic update checks disabled") + "."
+                    )
+
 
             basedir = FreeCAD.getUserAppDataDir()
             moddir = os.path.join(basedir, "Mod", repo.name)
@@ -171,22 +182,27 @@ class PackageDetails(QWidget):
             self.ui.buttonInstall.show()
             self.ui.buttonUninstall.hide()
             self.ui.buttonUpdate.hide()
+            self.ui.buttonCheckForUpdate.hide()
         elif repo.update_status == AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE:
             self.ui.buttonInstall.hide()
             self.ui.buttonUninstall.show()
             self.ui.buttonUpdate.hide()
+            self.ui.buttonCheckForUpdate.hide()
         elif repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
             self.ui.buttonInstall.hide()
             self.ui.buttonUninstall.show()
             self.ui.buttonUpdate.show()
+            self.ui.buttonCheckForUpdate.hide()
         elif repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
             self.ui.buttonInstall.hide()
             self.ui.buttonUninstall.show()
             self.ui.buttonUpdate.hide()
+            self.ui.buttonCheckForUpdate.show()
         elif repo.update_status == AddonManagerRepo.UpdateStatus.PENDING_RESTART:
             self.ui.buttonInstall.hide()
             self.ui.buttonUninstall.show()
             self.ui.buttonUpdate.hide()
+            self.ui.buttonCheckForUpdate.hide()
 
     @classmethod
     def cache_path(self, repo: AddonManagerRepo) -> str:
@@ -354,6 +370,11 @@ class Ui_PackageDetails(object):
 
         self.layoutDetailsBackButton.addWidget(self.buttonUpdate)
 
+        self.buttonCheckForUpdate = QPushButton(PackageDetails)
+        self.buttonCheckForUpdate.setObjectName("buttonCheckForUpdate")
+
+        self.layoutDetailsBackButton.addWidget(self.buttonCheckForUpdate)
+
         self.buttonExecute = QPushButton(PackageDetails)
         self.buttonExecute.setObjectName("buttonExecute")
 
@@ -389,6 +410,9 @@ class Ui_PackageDetails(object):
         )
         self.buttonUpdate.setText(
             QCoreApplication.translate("AddonsInstaller", "Update", None)
+        )
+        self.buttonCheckForUpdate.setText(
+            QCoreApplication.translate("AddonsInstaller", "Check for Update", None)
         )
         self.buttonExecute.setText(
             QCoreApplication.translate("AddonsInstaller", "Run Macro", None)
