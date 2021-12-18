@@ -31,15 +31,14 @@ from PathScripts.PathUtils import horizontalFaceLoop
 from PathScripts.PathUtils import addToJob
 from PathScripts.PathUtils import findParentJob
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
     from PySide import QtGui
-else:
 
-    def translate(ctxt, txt):
-        return txt
-
+# translate = FreeCAD.Qt.translate
 
 __title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
@@ -57,11 +56,9 @@ class _CommandSelectLoop:
     def GetResources(self):
         return {
             "Pixmap": "Path_SelectLoop",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
-                "Path_SelectLoop", "Finish Selecting Loop"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("Path_SelectLoop", "Finish Selecting Loop"),
             "Accel": "P, L",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_SelectLoop", "Complete loop selection from two edges"
             ),
             "CmdType": "ForEdit",
@@ -120,10 +117,8 @@ class _CommandSelectLoop:
         elif FreeCAD.GuiUp:
             QtGui.QMessageBox.information(
                 None,
-                QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Feature Completion"),
-                QtCore.QT_TRANSLATE_NOOP(
-                    "Path_SelectLoop", "Closed loop detection failed."
-                ),
+                QT_TRANSLATE_NOOP("Path_SelectLoop", "Feature Completion"),
+                QT_TRANSLATE_NOOP("Path_SelectLoop", "Closed loop detection failed."),
             )
 
     def formsPartOfALoop(self, obj, sub, names):
@@ -151,11 +146,11 @@ class _ToggleOperation:
     def GetResources(self):
         return {
             "Pixmap": "Path_OpActive",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP(
                 "Path_OpActiveToggle", "Toggle the Active State of the Operation"
             ),
             "Accel": "P, X",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_OpActiveToggle", "Toggle the Active State of the Operation"
             ),
             "CmdType": "ForEdit",
@@ -194,10 +189,10 @@ class _CopyOperation:
     def GetResources(self):
         return {
             "Pixmap": "Path_OpCopy",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP(
                 "Path_OperationCopy", "Copy the operation in the job"
             ),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_OperationCopy", "Copy the operation in the job"
             ),
             "CmdType": "ForEdit",
