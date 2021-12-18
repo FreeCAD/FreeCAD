@@ -25,24 +25,13 @@ import FreeCADGui
 import PathScripts.PathCustom as PathCustom
 import PathScripts.PathOpGui as PathOpGui
 
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 
 __title__ = "Path Custom Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Custom operation page controller and command implementation."
-
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
-# class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
-#     '''Page controller for the base geometry.'''
-
-#     def getForm(self):
-#         return None
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -80,8 +69,8 @@ Command = PathOpGui.SetupOperation(
     PathCustom.Create,
     TaskPanelOpPage,
     "Path_Custom",
-    QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
-    QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Create custom gcode snippet"),
+    QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
+    QT_TRANSLATE_NOOP("Path_Custom", "Create custom gcode snippet"),
     PathCustom.SetupProperties,
 )
 
