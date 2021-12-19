@@ -2281,18 +2281,31 @@ void Application::runApplication(void)
         // open a lock file with the PID
         Base::FileInfo fi(s.str());
         Base::ofstream lock(fi);
-        boost::interprocess::file_lock flock(s.str().c_str());
-        flock.lock();
+
+        // HINT:
+        // On Windows the creation of the file_lock may fail because of non-ASCII
+        // path names. The limiting factor is that boost doesn't provide a version
+        // with std::wstring.
+        // So, in this case handle the exception and start FreeCAD without IPC.
+        std::unique_ptr<boost::interprocess::file_lock> flock;
+        try {
+            flock = std::make_unique<boost::interprocess::file_lock>(s.str().c_str());
+            flock->lock();
+        }
+        catch (const boost::interprocess::interprocess_exception& e) {
+            Base::Console().Warning("Failed to create a file lock for the IPC: %s\n", e.what());
+        }
 
         mainApp.exec();
         // Qt can't handle exceptions thrown from event handlers, so we need
         // to manually rethrow SystemExitExceptions.
-        if(mainApp.caughtException.get())
+        if (mainApp.caughtException.get())
             throw Base::SystemExitException(*mainApp.caughtException.get());
 
         // close the lock file, in case of a crash we can see the existing lock file
         // on the next restart and try to repair the documents, if needed.
-        flock.unlock();
+        if (flock.get())
+            flock->unlock();
         lock.close();
         fi.deleteFile();
     }
@@ -2426,16 +2439,21 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
 void Application::checkForPreviousCrashes()
 {
-    Gui::Dialog::DocumentRecoveryFinder finder;
-    if (!finder.checkForPreviousCrashes()) {
+    try {
+        Gui::Dialog::DocumentRecoveryFinder finder;
+        if (!finder.checkForPreviousCrashes()) {
 
-        // If the recovery dialog wasn't shown check the cache size periodically
-        Gui::Dialog::ApplicationCache cache;
-        cache.applyUserSettings();
-        if (cache.periodicCheckOfSize()) {
-            qint64 total = cache.size();
-            cache.performAction(total);
+            // If the recovery dialog wasn't shown check the cache size periodically
+            Gui::Dialog::ApplicationCache cache;
+            cache.applyUserSettings();
+            if (cache.periodicCheckOfSize()) {
+                qint64 total = cache.size();
+                cache.performAction(total);
+            }
         }
+    }
+    catch (const boost::interprocess::interprocess_exception& e) {
+        Base::Console().Warning("Failed check for previous crashes because of IPC error: %s\n", e.what());
     }
 }
 
