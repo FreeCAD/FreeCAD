@@ -519,7 +519,7 @@ double Helix::safePitch()
     if (startVec.Length() < Precision::Confusion()) {
         // when not in growth mode any pitch > 0 is safe
         if (mode != HelixMode::height_turns_growth) {
-                return Precision::Confusion();
+            return Precision::Confusion();
         }
         // if growth is not zero, there will in many cases be intersections
         // when the turn is >= 1, thus return an 'infinite' pitch
