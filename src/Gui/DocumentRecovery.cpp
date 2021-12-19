@@ -658,7 +658,12 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
         QString pid = QString::number(QCoreApplication::applicationPid());
         if (bn.startsWith(exeName) && bn.indexOf(pid) < 0) {
             QString fn = it->absoluteFilePath();
-            boost::interprocess::file_lock flock((const char*)fn.toLocal8Bit());
+
+#if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
+            boost::interprocess::file_lock flock(fn.toUtf8());
+#else
+            boost::interprocess::file_lock flock(fn.toStdWString().c_str());
+#endif
             if (flock.try_lock()) {
                 // OK, this file is a leftover from a previous crash
                 QString crashed_pid = bn.mid(exeName.length()+1);

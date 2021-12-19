@@ -2282,14 +2282,15 @@ void Application::runApplication(void)
         Base::FileInfo fi(s.str());
         Base::ofstream lock(fi);
 
-        // HINT:
-        // On Windows the creation of the file_lock may fail because of non-ASCII
-        // path names. The limiting factor is that boost doesn't provide a version
-        // with std::wstring.
-        // So, in this case handle the exception and start FreeCAD without IPC.
+        // In case the file_lock cannot be created start FreeCAD without IPC support.
+#if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
+        std::string filename = s.str();
+#else
+        std::wstring filename = fi.toStdWString();
+#endif
         std::unique_ptr<boost::interprocess::file_lock> flock;
         try {
-            flock = std::make_unique<boost::interprocess::file_lock>(s.str().c_str());
+            flock = std::make_unique<boost::interprocess::file_lock>(filename.c_str());
             flock->lock();
         }
         catch (const boost::interprocess::interprocess_exception& e) {
