@@ -22,12 +22,11 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathProfile as PathProfile
-
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
 __title__ = "Path Profile Operation UI"
@@ -36,47 +35,48 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Profile operation page controller and command implementation."
 
 
-FeatureSide       = 0x01
+FeatureSide = 0x01
 FeatureProcessing = 0x02
 
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Base class for profile operation page controllers. Two sub features are supported:
-        FeatureSide       ... Is the Side property exposed in the UI
-        FeatureProcessing ... Are the processing check boxes supported by the operation
-    '''
+    """Base class for profile operation page controllers. Two sub features are supported:
+    FeatureSide       ... Is the Side property exposed in the UI
+    FeatureProcessing ... Are the processing check boxes supported by the operation
+    """
 
     def initPage(self, obj):
         self.setTitle("Profile - " + obj.Label)
         self.updateVisibility()
 
     def profileFeatures(self):
-        '''profileFeatures() ... return which of the optional profile features are supported.
+        """profileFeatures() ... return which of the optional profile features are supported.
         Currently two features are supported and returned:
             FeatureSide       ... Is the Side property exposed in the UI
             FeatureProcessing ... Are the processing check boxes supported by the operation
-        .'''
+        ."""
         return FeatureSide | FeatureProcessing
 
     def getForm(self):
-        '''getForm() ... returns UI customized according to profileFeatures()'''
+        """getForm() ... returns UI customized according to profileFeatures()"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileFullEdit.ui")
+
+        comboToPropertyMap = [("cutSide", "Side"), ("direction", "Direction")]
+        enumTups = PathProfile.ObjectProfile.areaOpPropertyEnumerations(dataType="raw")
+
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
         return form
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        """getFields(obj) ... transfers values from UI to obj's proprties"""
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
-        if obj.Side != str(self.form.cutSide.currentText()):
-            obj.Side = str(self.form.cutSide.currentText())
-        if obj.Direction != str(self.form.direction.currentText()):
-            obj.Direction = str(self.form.direction.currentText())
-        PathGui.updateInputField(obj, 'OffsetExtra', self.form.extraOffset)
+        if obj.Side != str(self.form.cutSide.currentData()):
+            obj.Side = str(self.form.cutSide.currentData())
+        if obj.Direction != str(self.form.direction.currentData()):
+            obj.Direction = str(self.form.direction.currentData())
+        PathGui.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
 
         if obj.UseComp != self.form.useCompensation.isChecked():
             obj.UseComp = self.form.useCompensation.isChecked()
@@ -91,13 +91,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.processCircles = self.form.processCircles.isChecked()
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
         self.selectInComboBox(obj.Side, self.form.cutSide)
         self.selectInComboBox(obj.Direction, self.form.direction)
-        self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
+        self.form.extraOffset.setText(
+            FreeCAD.Units.Quantity(
+                obj.OffsetExtra.Value, FreeCAD.Units.Length
+            ).UserString
+        )
 
         self.form.useCompensation.setChecked(obj.UseComp)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
@@ -108,7 +112,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
@@ -127,13 +131,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         hasFace = False
         objBase = list()
 
-        if hasattr(self.obj, 'Base'):
+        if hasattr(self.obj, "Base"):
             objBase = self.obj.Base
 
         if objBase.__len__() > 0:
             for (base, subsList) in objBase:
                 for sub in subsList:
-                    if sub[:4] == 'Face':
+                    if sub[:4] == "Face":
                         hasFace = True
                         break
 
@@ -148,15 +152,21 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def registerSignalHandlers(self, obj):
         self.form.useCompensation.stateChanged.connect(self.updateVisibility)
+
+
 # Eclass
 
 
-Command = PathOpGui.SetupOperation('Profile',
-        PathProfile.Create,
-        TaskPanelOpPage,
-        'Path_Contour',
-        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"),
-        PathProfile.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "Profile",
+    PathProfile.Create,
+    TaskPanelOpPage,
+    "Path_Contour",
+    QT_TRANSLATE_NOOP("Path", "Profile"),
+    QT_TRANSLATE_NOOP(
+        "Path", "Profile entire model, selected face(s) or selected edge(s)"
+    ),
+    PathProfile.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")

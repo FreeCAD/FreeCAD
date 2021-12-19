@@ -30,8 +30,7 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 import math
 import numpy
-
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -39,6 +38,7 @@ from lazy_loader.lazy_loader import LazyLoader
 Part = LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
+translate = FreeCAD.Qt.translate
 
 __title__ = "Path Profile Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -53,11 +53,6 @@ if False:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ObjectProfile(PathAreaOp.ObjectOp):
@@ -79,23 +74,21 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         """initAreaOpProperties(obj) ... create operation specific properties"""
         self.addNewProps = []
 
-        for (prtyp, nm, grp, tt) in self.areaOpProperties():
-            if not hasattr(obj, nm):
-                obj.addProperty(prtyp, nm, grp, tt)
-                self.addNewProps.append(nm)
+        for (propertytype, propertyname, grp, tt) in self.areaOpProperties():
+            if not hasattr(obj, propertyname):
+                obj.addProperty(propertytype, propertyname, grp, tt)
+                self.addNewProps.append(propertyname)
 
         if len(self.addNewProps) > 0:
             # Set enumeration lists for enumeration properties
             ENUMS = self.areaOpPropertyEnumerations()
             for n in ENUMS:
-                if n in self.addNewProps:
-                    setattr(obj, n, ENUMS[n])
+                if n[0] in self.addNewProps:
+                    setattr(obj, n[0], n[1])
             if warn:
-                newPropMsg = translate("PathProfile", "New property added to")
+                newPropMsg = "New property added to"
                 newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
-                newPropMsg += (
-                    translate("PathProfile", "Check its default value.") + "\n"
-                )
+                newPropMsg += "Check its default value." + "\n"
                 FreeCAD.Console.PrintWarning(newPropMsg)
 
         self.propertiesReady = True
@@ -109,7 +102,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "Direction",
                 "Profile",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)",
                 ),
@@ -118,8 +111,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "HandleMultipleFeatures",
                 "Profile",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathPocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
                     "Choose how to process multiple Base Geometry features.",
                 ),
             ),
@@ -127,7 +120,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "JoinType",
                 "Profile",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Controls how tool moves around corners. Default=Round",
                 ),
@@ -136,7 +129,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "App::PropertyFloat",
                 "MiterLimit",
                 "Profile",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Maximum distance before a miter join is truncated"
                 ),
             ),
@@ -144,7 +137,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "App::PropertyDistance",
                 "OffsetExtra",
                 "Profile",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Extra value to stay away from final profile- good for roughing toolpath",
                 ),
@@ -153,7 +146,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "App::PropertyBool",
                 "processHoles",
                 "Profile",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Profile holes as well as the outline"
                 ),
             ),
@@ -161,49 +154,77 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "App::PropertyBool",
                 "processPerimeter",
                 "Profile",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"),
+                QT_TRANSLATE_NOOP("App::Property", "Profile the outline"),
             ),
             (
                 "App::PropertyBool",
                 "processCircles",
                 "Profile",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"),
+                QT_TRANSLATE_NOOP("App::Property", "Profile round holes"),
             ),
             (
                 "App::PropertyEnumeration",
                 "Side",
                 "Profile",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property", "Side of edge that tool should cut"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"),
             ),
             (
                 "App::PropertyBool",
                 "UseComp",
                 "Profile",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Make True, if using Cutter Radius Compensation"
                 ),
             ),
         ]
 
-    def areaOpPropertyEnumerations(self):
-        """areaOpPropertyEnumerations() ... returns a dictionary of enumeration lists
-        for the operation's enumeration type properties."""
+    @classmethod
+    def areaOpPropertyEnumerations(self, dataType="data"):
+
+        """opPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
         # Enumeration lists for App::PropertyEnumeration properties
-        return {
-            "Direction": ["CW", "CCW"],  # this is the direction that the profile runs
-            "HandleMultipleFeatures": ["Collectively", "Individually"],
+        enums = {
+            "Direction": [
+                (translate("PathProfile", "CW"), "CW"),
+                (translate("PathProfile", "CCW"), "CCW"),
+            ],  # this is the direction that the profile runs
+            "HandleMultipleFeatures": [
+                (translate("PathProfile", "Collectively"), "Collectively"),
+                (translate("PathProfile", "Individually"), "Individually"),
+            ],
             "JoinType": [
-                "Round",
-                "Square",
-                "Miter",
+                (translate("PathProfile", "Round"), "Round"),
+                (translate("PathProfile", "Square"), "Square"),
+                (translate("PathProfile", "Miter"), "Miter"),
             ],  # this is the direction that the Profile runs
             "Side": [
-                "Outside",
-                "Inside",
+                (translate("PathProfile", "Outside"), "Outside"),
+                (translate("PathProfile", "Inside"), "Inside"),
             ],  # side of profile that cutter is on in relation to direction of profile
         }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            # data[k] = [tup[idx] for tup in v]
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
 
     def areaOpPropertyDefaults(self, obj, job):
         """areaOpPropertyDefaults(obj, job) ... returns a dictionary of default values
@@ -350,8 +371,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         shapes = []
         remainingObjBaseFeatures = []
         self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
-        self.inaccessibleMsg = translate(
-            "PathProfile",
+        self.inaccessibleMsg = translate("PathProfile",
             "The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.",
         )
         self.offsetExtra = obj.OffsetExtra.Value
@@ -418,10 +438,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     else:
                         PathLog.track()
                         ignoreSub = base.Name + "." + sub
-                        msg = translate(
-                            "PathProfile",
-                            "Found a selected object which is not a face. Ignoring:",
-                        )
+                        msg = "Found a selected object which is not a face. Ignoring:"
                         PathLog.warning(msg + " {}".format(ignoreSub))
 
                 for baseShape, wire in holes:
@@ -458,9 +475,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             )
                         except Exception as ee:  # pylint: disable=broad-except
                             # PathUtils.getEnvelope() failed to return an object.
-                            msg = translate(
-                                "Path", "Unable to create path for face(s)."
-                            )
+                            msg = translate("PathProfile", "Unable to create path for face(s).")
                             PathLog.error(msg + "\n{}".format(ee))
                             cont = False
 
@@ -569,10 +584,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     # Attempt open-edges profile
                     if self.JOB.GeometryTolerance.Value == 0.0:
                         msg = self.JOB.Label + ".GeometryTolerance = 0.0. "
-                        msg += translate(
-                            "PathProfile",
-                            "Please set to an acceptable value greater than zero.",
-                        )
+                        msg += "Please set to an acceptable value greater than zero."
                         PathLog.error(msg)
                     else:
                         flattened = self._flattenWire(obj, wire, obj.FinalDepth.Value)
@@ -606,10 +618,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 shapes.append(tup)
                         else:
                             if zDiff < self.JOB.GeometryTolerance.Value:
-                                msg = translate(
-                                    "PathProfile",
-                                    "Check edge selection and Final Depth requirements for profiling open edge(s).",
-                                )
+                                msg = translate("PathProfile", "Check edge selection and Final Depth requirements for profiling open edge(s).")
                                 PathLog.error(msg)
                             else:
                                 PathLog.error(self.inaccessibleMsg)
@@ -667,9 +676,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         fdv = obj.FinalDepth.Value
         extLenFwd = sdv - fdv
         if extLenFwd <= 0.0:
-            msg = translate(
-                "PathProfile", "For open edges, verify Final Depth for this operation."
-            )
+            msg = "For open edges, verify Final Depth for this operation."
             FreeCAD.Console.PrintError(msg + "\n")
             # return False
             extLenFwd = 0.1
