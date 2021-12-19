@@ -277,9 +277,7 @@ int TaskHelixParameters::addCurrentLink()
     return indexOfCurrent;
 }
 
-void TaskHelixParameters::addAxisToCombo(App::DocumentObject* linkObj,
-    std::string linkSubname,
-    QString itemText)
+void TaskHelixParameters::addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText)
 {
     this->ui->axis->addItem(itemText);
     this->axesInList.emplace_back(new App::PropertyLinkSub);
@@ -425,7 +423,8 @@ void TaskHelixParameters::onAxisChanged(int num)
     App::PropertyLinkSub& lnk = *(axesInList[num]);
     if (lnk.getValue() == 0) {
         // enter reference selection mode
-        TaskSketchBasedParameters::onSelectReference(AllowSelection::EDGE |
+        TaskSketchBasedParameters::onSelectReference(
+            AllowSelection::EDGE |
             AllowSelection::PLANAR |
             AllowSelection::CIRCLE);
         return;
