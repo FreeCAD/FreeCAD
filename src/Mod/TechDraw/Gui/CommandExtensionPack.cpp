@@ -78,7 +78,7 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 using namespace std;
 
-lineAttributes activeAttributes; // container holding global line attributes
+LineAttributes activeAttributes; // container holding global line attributes
 
 //internal helper functions
 bool _circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
@@ -1929,14 +1929,14 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge) {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = activeAttributes.getStyle();
+    cosEdge->m_format.m_style = int(activeAttributes.getStyle()+1);
     cosEdge->m_format.m_weight = activeAttributes.getWidthValue();
     cosEdge->m_format.m_color = activeAttributes.getColorValue();
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge) {
-    // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = activeAttributes.getStyle();
+    // set line attributes of a centerline
+    cosEdge->m_format.m_style = int(activeAttributes.getStyle()+1);
     cosEdge->m_format.m_weight = activeAttributes.getWidthValue();
     cosEdge->m_format.m_color = activeAttributes.getColorValue();
 }

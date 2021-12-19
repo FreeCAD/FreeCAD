@@ -73,31 +73,36 @@ class QGIPrimPath;
 class MDIViewPage;
 class ViewProviderViewPart;
 
-class lineAttributes {
-        int style;
-        int width;
-        int color;
+class LineAttributes {
+    public:
+        enum edgeStyle{solid, dashed, dotted, dashdotted};
+        enum edgeWidth{small, middle, thick };
+        enum edgeColor{black, grey, red, green, blue, magenta, cyan, yellow};
+    private:
+        edgeStyle style;
+        edgeWidth width;
+        edgeColor color;
 
     public:
 
-    lineAttributes(void);
-    void setStyle(int);
-    int getStyle(void) {return style;}
-    void setWidth(float);
-    int getWidth(void) {return width;}
+    LineAttributes(void);
+    void setStyle(edgeStyle);
+    edgeStyle getStyle(void) {return style;}
+    void setWidth(edgeWidth);
+    edgeWidth getWidth(void) {return width;}
     float getWidthValue(void);
-    void setColor(int);
-    int getColor(void) {return color;}
+    void setColor(edgeColor);
+    edgeColor getColor(void) {return color;}
     App::Color getColorValue(void);
 
-}; // class lineAttributes
+}; // class LineAttributes
 
 class TaskSelectLineAttributes : public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
+    TaskSelectLineAttributes(LineAttributes * ptActiveAttributes);
     ~TaskSelectLineAttributes();
 
 public Q_SLOTS:
@@ -106,7 +111,7 @@ public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
-    lineAttributes* activeAttributes;
+    LineAttributes* activeAttributes;
 
 protected Q_SLOTS:
 
@@ -125,7 +130,7 @@ class TaskDlgSelectLineAttributes : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes);
+    TaskDlgSelectLineAttributes(LineAttributes * ptActiveAttributes);
     ~TaskDlgSelectLineAttributes();
 
 public:

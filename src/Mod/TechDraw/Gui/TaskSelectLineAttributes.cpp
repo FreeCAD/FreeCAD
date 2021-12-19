@@ -74,49 +74,28 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-#define solid 1
-#define dashed 2
-#define dotted 3
-#define dashdotted 4
-
-//enum EdgeType{solid, dashed, dotted, dashdotted};
-//enum EdgeWidth{small, middle, thick };
-#define small 1
-#define middle 2
-#define thick 3
-//enum EdgeColor{black, grey, red, green, blue, magenta, cyan, yellow};
-
-#define black 1
-#define grey 2
-#define red 3
-#define green 4
-#define blue 5
-#define magenta 6
-#define cyan 7
-#define yellow 8
-
 //===========================================================================
 // managing global line attributes
 //===========================================================================
 
-lineAttributes::lineAttributes(void)
+LineAttributes::LineAttributes(void)
 {
     style = dotted;
     width = middle;
     color = black;
 }
 
-void lineAttributes::setStyle(int newStyle)
+void LineAttributes::setStyle(edgeStyle newStyle)
 {
     style = newStyle;
 }
 
-void lineAttributes::setWidth(float newWidth)
+void LineAttributes::setWidth(edgeWidth newWidth)
 {
     width = newWidth;
 }
 
-float lineAttributes::getWidthValue(void)
+float LineAttributes::getWidthValue(void)
 {
     switch(width){
         case small:
@@ -133,12 +112,12 @@ float lineAttributes::getWidthValue(void)
     }
 }
 
-void lineAttributes::setColor(int newColor)
+void LineAttributes::setColor(edgeColor newColor)
 {
     color = newColor;
 }
 
-App::Color lineAttributes::getColorValue(void)
+App::Color LineAttributes::getColorValue(void)
 {
     switch(color){
         case black:
@@ -190,7 +169,7 @@ dimAttributes activeDimAttributes; // container holding dimension attributes
 // TaskSelectLineAttributes
 //===========================================================================
 
-TaskSelectLineAttributes::TaskSelectLineAttributes(lineAttributes * ptActiveAttributes) :
+TaskSelectLineAttributes::TaskSelectLineAttributes(LineAttributes * ptActiveAttributes) :
     ui(new Ui_TaskSelectLineAttributes),
     activeAttributes(ptActiveAttributes)
 
@@ -224,64 +203,64 @@ void TaskSelectLineAttributes::changeEvent(QEvent *e)
 void TaskSelectLineAttributes::setUiEdit()
 {
     setWindowTitle(QObject::tr("Select Line Attributes"));
-    int lineStyle = activeAttributes->getStyle();
+    LineAttributes::edgeStyle lineStyle = activeAttributes->getStyle();
     switch(lineStyle){
-        case solid:
+        case LineAttributes::solid:
             ui->rbSolid->setChecked(true);
             break;
-        case dashed:
+        case LineAttributes::dashed:
             ui->rbDashed->setChecked(true);
             break;
-        case dotted:
+        case LineAttributes::dotted:
             ui->rbDotted->setChecked(true);
             break;
-        case dashdotted:
+        case LineAttributes::dashdotted:
             ui->rbDashDotted->setChecked(true);
             break;
         default:
             ui->rbDashDotted->setChecked(true);
     }
 
-    int lineWidth = activeAttributes->getWidth();
+    LineAttributes::edgeWidth lineWidth = activeAttributes->getWidth();
     switch(lineWidth){
-        case small:
+        case LineAttributes::small:
             ui->rbThin->setChecked(true);
             break;
-        case middle:
+        case LineAttributes::middle:
             ui->rbMiddle->setChecked(true);
             break;
-        case thick:
+        case LineAttributes::thick:
             ui->rbThick->setChecked(true);
             break;
         default:
             ui->rbMiddle->setChecked(true);
     }
 
-    int lineColor = activeAttributes->getColor();
+    LineAttributes::edgeColor lineColor = activeAttributes->getColor();
     switch(lineColor){
-        case black:
+        case LineAttributes::black:
             ui->rbBlack->setChecked(true);
             break;
-        case grey:
+        case LineAttributes::grey:
             ui->rbGrey->setChecked(true);
             break;
-        case red:
+        case LineAttributes::red:
             ui->rbRed->setChecked(true);
             break;
-        case green:
+        case LineAttributes::green:
             ui->rbGreen->setChecked(true);
             break;
-        case blue:
+        case LineAttributes::blue:
             ui->rbBlue->setChecked(true);
             break;
-        case magenta:
+        case LineAttributes::magenta:
             ui->rbMagenta->setChecked(true);
             break;
-        case cyan:
+        case LineAttributes::cyan:
             ui->rbCyan->setChecked(true);
             break;
-        case yellow:
-            ui->rbGreen->setChecked(true);
+        case LineAttributes::yellow:
+            ui->rbYellow->setChecked(true);
             break;
         default:
             ui->rbBlack->setChecked(true);
@@ -295,60 +274,60 @@ void TaskSelectLineAttributes::setUiEdit()
 bool TaskSelectLineAttributes::accept()
 {
     if (ui->rbSolid->isChecked()){
-        activeAttributes->setStyle(solid); 
+        activeAttributes->setStyle(LineAttributes::solid); 
     }
     else if (ui->rbDashed->isChecked()){
-        activeAttributes->setStyle(dashed);
+        activeAttributes->setStyle(LineAttributes::dashed);
     }
     else if (ui->rbDotted->isChecked()){
-        activeAttributes->setStyle(dotted);
+        activeAttributes->setStyle(LineAttributes::dotted);
     }
     else if (ui->rbDashDotted->isChecked()){
-        activeAttributes->setStyle(dashdotted);
+        activeAttributes->setStyle(LineAttributes::dashdotted);
     }
     else {
-        activeAttributes->setStyle(dashdotted);
+        activeAttributes->setStyle(LineAttributes::dashdotted);
     }
 
     if (ui->rbThin->isChecked()){
-        activeAttributes->setWidth(small); 
+        activeAttributes->setWidth(LineAttributes::small); 
     }
     else if (ui->rbMiddle->isChecked()){
-        activeAttributes->setWidth(middle);
+        activeAttributes->setWidth(LineAttributes::middle);
     }
     else if (ui->rbThick->isChecked()){
-        activeAttributes->setWidth(thick);
+        activeAttributes->setWidth(LineAttributes::thick);
     }
     else {
-        activeAttributes->setWidth(middle);
+        activeAttributes->setWidth(LineAttributes::middle);
     }
 
     if (ui->rbBlack->isChecked()){
-        activeAttributes->setColor(black); 
+        activeAttributes->setColor(LineAttributes::black); 
     }
     else if (ui->rbGrey->isChecked()){
-        activeAttributes->setColor(grey);
+        activeAttributes->setColor(LineAttributes::grey);
     }
     else if (ui->rbRed->isChecked()){
-        activeAttributes->setColor(red);
+        activeAttributes->setColor(LineAttributes::red);
     }
     else if (ui->rbGreen->isChecked()){
-        activeAttributes->setColor(green);
+        activeAttributes->setColor(LineAttributes::green);
     }
     else if (ui->rbBlue->isChecked()){
-        activeAttributes->setColor(blue);
+        activeAttributes->setColor(LineAttributes::blue);
     }
     else if (ui->rbMagenta->isChecked()){
-        activeAttributes->setColor(magenta);
+        activeAttributes->setColor(LineAttributes::magenta);
     }
     else if (ui->rbCyan->isChecked()){
-        activeAttributes->setColor(cyan);
+        activeAttributes->setColor(LineAttributes::cyan);
     }
     else if (ui->rbYellow->isChecked()){
-        activeAttributes->setColor(yellow);
+        activeAttributes->setColor(LineAttributes::yellow);
     }
     else {
-        activeAttributes->setColor(black);
+        activeAttributes->setColor(LineAttributes::black);
     }
 
     double cascadeSpacing = ui->sbSpacing->value();
@@ -368,7 +347,7 @@ bool TaskSelectLineAttributes::reject()
 // TaskDlgSelectLineAttributes
 //===========================================================================
 
-TaskDlgSelectLineAttributes::TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes)
+TaskDlgSelectLineAttributes::TaskDlgSelectLineAttributes(LineAttributes * ptActiveAttributes)
     : TaskDialog()
 {
     widget  = new TaskSelectLineAttributes(ptActiveAttributes);
