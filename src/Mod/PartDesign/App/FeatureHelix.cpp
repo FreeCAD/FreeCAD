@@ -85,7 +85,7 @@ Helix::Helix()
         "The helix' direction; derived from the reference axis.");
     ADD_PROPERTY_TYPE(ReferenceAxis, (0), group, App::Prop_None,
         "The reference axis of the helix.");
-    ADD_PROPERTY_TYPE(Mode, (unsigned int(initialMode)), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(Mode, (long(initialMode)), group, App::Prop_None,
         "The helix input mode specifies which properties are set by the user.\n"
         "Dependent properties are then calculated.");
     Mode.setEnums(ModeEnums);
