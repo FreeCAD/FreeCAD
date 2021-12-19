@@ -33,19 +33,20 @@ import PathScripts.PathUtils as PathUtils
 import math
 import copy
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
 
 __doc__ = """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
-# Qt translation handling
-def translate(text, context="Path_DressupLeadInOut", disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 movecommands = ["G1", "G01", "G2", "G02", "G3", "G03"]
 rapidcommands = ["G0", "G00"]
@@ -55,36 +56,41 @@ currLocation = {}
 
 class ObjectDressup:
     def __init__(self, obj):
+        lead_styles = [
+            QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Arc"),
+            QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Tangent"),
+            QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Perpendicular"),
+        ]
         self.obj = obj
         obj.addProperty(
             "App::PropertyLink",
             "Base",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
+            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "LeadIn",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to path"),
+            QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to path"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "LeadOut",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from path"),
+            QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from path"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "KeepToolDown",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in Path"),
+            QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in Path"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "UseMachineCRC",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Use Machine Cutter Radius Compensation /Tool Path Offset G41/G42",
             ),
@@ -93,61 +99,60 @@ class ObjectDressup:
             "App::PropertyDistance",
             "Length",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "Length or Radius of the approach"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the approach"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "StyleOn",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupLeadInOut", "The Style of LeadIn the Path"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The Style of motion into the Path"
             ),
         )
-        obj.StyleOn = ["Arc", "Tangent", "Perpendicular"]
+        obj.StyleOn = lead_styles
         obj.addProperty(
             "App::PropertyEnumeration",
             "StyleOff",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupLeadInOut", "The Style of LeadOut the Path"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The Style of motion out of the Path"),
         )
-        obj.StyleOff = ["Arc", "Tangent", "Perpendicular"]
+        obj.StyleOff = lead_styles
         obj.addProperty(
             "App::PropertyEnumeration",
             "RadiusCenter",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupLeadInOut", "The Mode of Point Radiusoffset or Center"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The Mode of Point Radiusoffset or Center"
             ),
         )
-        obj.RadiusCenter = ["Radius", "Center"]
+        obj.RadiusCenter = [
+            QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Radius"),
+            QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Center"),
+        ]
         obj.Proxy = self
         obj.addProperty(
             "App::PropertyDistance",
             "ExtendLeadIn",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Extends LeadIn distance"),
+            QT_TRANSLATE_NOOP("App::Property", "Extends LeadIn distance"),
         )
         obj.addProperty(
             "App::PropertyDistance",
             "ExtendLeadOut",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Extends LeadOut distance"),
+            QT_TRANSLATE_NOOP("App::Property", "Extends LeadOut distance"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "RapidPlunge",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Perform plunges with G0"),
+            QT_TRANSLATE_NOOP("App::Property", "Perform plunges with G0"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "IncludeLayers",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Apply LeadInOut to layers within an operation"
             ),
         )
@@ -184,7 +189,10 @@ class ObjectDressup:
         if not obj.Base.Path:
             return
         if obj.Length < 0:
-            PathLog.error(translate("Length/Radius positive not Null") + "\n")
+            PathLog.error(
+                translate("Path_DressupLeadInOut", "Length/Radius positive not Null")
+                + "\n"
+            )
             obj.Length = 0.1
         self.wire, self.rapids = PathGeom.wireForPath(obj.Base.Path)
         obj.Path = self.generateLeadInOutCurve(obj)
@@ -592,9 +600,7 @@ class TaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DressUpLeadInOutEdit.ui")
         self.setupUi()
 
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_DressupLeadInOut", "Edit LeadInOut Dress-up")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Edit LeadInOut Dress-up")
 
     def getStandardButtons(self):
         return int(
@@ -651,9 +657,15 @@ class TaskPanel:
         self.obj.Length = self.form.dsbLen.value()
         self.obj.ExtendLeadIn = self.form.dsbExtendIn.value()
         self.obj.ExtendLeadOut = self.form.dsbExtendOut.value()
-        self.obj.StyleOn = str(self.form.cboStyleIn.currentText())
-        self.obj.StyleOff = str(self.form.cboStyleOut.currentText())
-        self.obj.RadiusCenter = str(self.form.cboRadius.currentText())
+        self.obj.StyleOn = self.obj.getEnumerationsOfProperty("StyleOn")[
+            self.form.cboStyleIn.currentIndex()
+        ]
+        self.obj.StyleOff = self.obj.getEnumerationsOfProperty("StyleOff")[
+            self.form.cboStyleOut.currentIndex()
+        ]
+        self.obj.RadiusCenter = self.obj.getEnumerationsOfProperty("RadiusCenter")[
+            self.form.cboRadius.currentIndex()
+        ]
         self.obj.RapidPlunge = self.form.chkRapidPlunge.isChecked()
         self.obj.IncludeLayers = self.form.chkLayers.isChecked()
         self.obj.KeepToolDown = self.form.chkKeepToolDown.isChecked()
@@ -679,17 +691,19 @@ class TaskPanel:
         # self.form.dsbExtendOut.setEnabled(self.obj.LeadOut)
 
         self.form.cboStyleIn.setCurrentIndex(
-            self.form.cboStyleIn.findText(self.obj.StyleOn)
+            self.obj.getEnumerationsOfProperty("StyleOn").index(self.obj.StyleOn)
         )
         # self.form.cboStyleIn.setEnabled(self.obj.LeadIn)
 
         self.form.cboStyleOut.setCurrentIndex(
-            self.form.cboStyleIn.findText(self.obj.StyleOff)
+            self.obj.getEnumerationsOfProperty("StyleOff").index(self.obj.StyleOff)
         )
         # self.form.cboStyleOut.setEnabled(self.obj.LeadOut)
 
         self.form.cboRadius.setCurrentIndex(
-            self.form.cboRadius.findText(self.obj.RadiusCenter)
+            self.obj.getEnumerationsOfProperty("RadiusCenter").index(
+                self.obj.RadiusCenter
+            )
         )
 
     def updateModel(self):
@@ -703,6 +717,27 @@ class TaskPanel:
         pass
 
     def setupUi(self):
+        self.form.cboStyleIn.clear()
+        self.form.cboStyleIn.addItems(
+            [
+                translate("Path_DressupLeadInOut", itm)
+                for itm in self.obj.getEnumerationsOfProperty("StyleOn")
+            ]
+        )
+        self.form.cboStyleOut.clear()
+        self.form.cboStyleOut.addItems(
+            [
+                translate("Path_DressupLeadInOut", itm)
+                for itm in self.obj.getEnumerationsOfProperty("StyleOff")
+            ]
+        )
+        self.form.cboRadius.clear()
+        self.form.cboRadius.addItems(
+            [
+                translate("Path_DressupLeadInOut", itm)
+                for itm in self.obj.getEnumerationsOfProperty("RadiusCenter")
+            ]
+        )
         self.setFields()
 
 
@@ -769,10 +804,8 @@ class CommandPathDressupLeadInOut:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupLeadInOut", "LeadInOut Dressup"
-            ),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "LeadInOut Dressup"),
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupLeadInOut",
                 "Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path",
             ),
@@ -788,18 +821,26 @@ class CommandPathDressupLeadInOut:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate("Please select one path object") + "\n")
+            PathLog.error(
+                translate("Path_DressupLeadInOut", "Please select one path object")
+                + "\n"
+            )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            PathLog.error(translate("The selected object is not a path") + "\n")
+            PathLog.error(
+                translate("Path_DressupLeadInOut", "The selected object is not a path")
+                + "\n"
+            )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            PathLog.error(translate("Please select a Profile object"))
+            PathLog.error(
+                translate("Path_DressupLeadInOut", "Please select a Profile object")
+            )
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Create LeadInOut Dressup"))
+        FreeCAD.ActiveDocument.openTransaction("Create LeadInOut Dressup")
         FreeCADGui.addModule("PathScripts.PathDressupLeadInOut")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
@@ -827,4 +868,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("Path_DressupLeadInOut", CommandPathDressupLeadInOut())
 
-PathLog.notice("Loading PathDressupLeadInOut... done\n")
+PathLog.notice("Loading Path_DressupLeadInOut... done\n")
