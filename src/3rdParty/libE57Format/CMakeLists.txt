@@ -180,21 +180,21 @@ install(
         E57Format
     EXPORT
         E57Format-export
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION bin
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 # CMake package files
-install(
-    EXPORT
-        E57Format-export
-    DESTINATION lib/cmake/E57Format
-)
+#install(
+#    EXPORT
+#        E57Format-export
+#    DESTINATION lib/cmake/E57Format
+#)
 
-install(
-    FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/e57format-config.cmake
-    DESTINATION
-        lib/cmake/E57Format
-)
+#install(
+#    FILES
+#        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/e57format-config.cmake
+#    DESTINATION
+#        lib/cmake/E57Format
+#)

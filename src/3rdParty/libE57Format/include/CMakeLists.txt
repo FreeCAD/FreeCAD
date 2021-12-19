@@ -10,16 +10,16 @@ target_sources( ${PROJECT_NAME}
 		${CMAKE_CURRENT_LIST_DIR}/E57SimpleWriter.h
 )
 
-install(
-	FILES
-		E57Format.h
-		E57Exception.h
-		E57SimpleData.h
-		E57SimpleReader.h
-		E57SimpleWriter.h
-	DESTINATION
-		include/E57Format
-)
+#install(
+#	FILES
+#		E57Format.h
+#		E57Exception.h
+#		E57SimpleData.h
+#		E57SimpleReader.h
+#		E57SimpleWriter.h
+#	DESTINATION
+#		include/E57Format
+#)
 
 target_include_directories( ${PROJECT_NAME}
 	PUBLIC
