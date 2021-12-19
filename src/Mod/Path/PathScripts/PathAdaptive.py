@@ -104,7 +104,7 @@ def sceneClean():
 
 
 def discretize(edge, flipDirection=False):
-    pts = edge.discretize(Deflection=0.0001)
+    pts = edge.discretize(Deflection=0.002)
     if flipDirection:
         pts.reverse()
 
