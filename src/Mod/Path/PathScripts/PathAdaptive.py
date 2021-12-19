@@ -33,7 +33,6 @@ import json
 import math
 import area
 
-from FreeCAD import Units
 from PySide import QtCore
 
 # lazily loaded modules
@@ -105,13 +104,7 @@ def sceneClean():
 
 
 def discretize(edge, flipDirection=False):
-    val=Units.Quantity("1mm").getUserPreferred()
-    if len(val)==3 and val[2]=='mm':
-        deflection=0.002
-    else:
-        deflection=0.0001
-
-    pts = edge.discretize(Deflection=deflection)
+    pts = edge.discretize(Deflection=0.002)
     if flipDirection:
         pts.reverse()
 
