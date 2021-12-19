@@ -495,7 +495,7 @@ BrowserView::BrowserView(QWidget* parent)
     // QWebEngine doesn't support direct access to network
     // nor rendering access
     QWebEngineProfile *profile = view->page()->profile();
-    QString basePath = QLatin1String(App::Application::getUserAppDataDir().c_str()) + QLatin1String("webdata");
+    QString basePath = QString::fromStdString(App::Application::getUserAppDataDir()) + QLatin1String("webdata/");
     profile->setPersistentStoragePath(basePath + QLatin1String("persistent"));
     profile->setCachePath(basePath + QLatin1String("cache"));
 
