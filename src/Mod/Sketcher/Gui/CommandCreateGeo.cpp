@@ -51,6 +51,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/BodyBase.h>
+#include <Mod/Part/App/Geometry2d.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
 #include "ViewProviderSketch.h"
@@ -82,51 +83,6 @@ double GetPointAngle (const Base::Vector2d &p1, const Base::Vector2d &p2)
   double dX = p2.x - p1.x;
   double dY = p2.y - p1.y;
   return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2*M_PI;
-}
-
-/*
-Find the centerpoint of a circle drawn through any 3 points:
-
-Given points p1-3, draw 2 lines: S12 and S23 which each connect two points.  From the
-midpoint of each line, draw a perpendicular line (S12p/S23p) across the circle.  These
-lines will cross at the centerpoint.
-
-Mathematically, line S12 will have a slope of m12 which can be determined.  Therefore,
-the slope m12p is -1/m12. Line S12p will have an equation of y = m12p*x + b12p.  b12p can
-be solved for using the midpoint of the line.  This can be done for both lines.  Since
-both S12p and S23p cross at the centerpoint, solving the two equations together will give
-the location of the centerpoint.
-*/
-Base::Vector2d GetCircleCenter (const Base::Vector2d &p1, const Base::Vector2d &p2, const Base::Vector2d &p3)
-{
-    Base::Vector2d u = p2-p1;
-    Base::Vector2d v = p3-p2;
-    Base::Vector2d w = p1-p3;
-
-    double uu =  u*u;
-    double vv =  v*v;
-    double ww =  w*w;
-
-    if (uu * vv * ww == 0)
-        THROWM(Base::ValueError,"Two points are coincident");
-
-    double uv = -(u*v);
-    double vw = -(v*w);
-    double uw = -(u*w);
-
-    double w0 = (2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
-    double w1 = (2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
-    double w2 = (2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
-
-    double wx = w0 + w1 + w2;
-
-    if( wx == 0)
-        THROWM(Base::ValueError,"Points are collinear");
-
-    double x = (w0*p1.x + w1*p2.x + w2*p3.x)/wx;
-    double y = (w0*p1.y + w1*p2.y + w2*p3.y)/wx;
-
-    return Base::Vector2d(x, y);
 }
 
 void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler)
@@ -2192,7 +2148,7 @@ public:
             reverses.
             */
             try {
-                CenterPoint = EditCurve[30] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+                CenterPoint = EditCurve[30] = Part::Geom2dCircle::getCircleCenter(FirstPoint, SecondPoint, onSketchPos);
 
                 radius = (SecondPoint - CenterPoint).Length();
 
@@ -5180,7 +5136,7 @@ public:
                 if (Mode == STATUS_SEEK_Second)
                     CenterPoint  = EditCurve[N+1] = (onSketchPos - FirstPoint)/2 + FirstPoint;
                 else
-                    CenterPoint = EditCurve[N+1] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+                    CenterPoint = EditCurve[N+1] = Part::Geom2dCircle::getCircleCenter(FirstPoint, SecondPoint, onSketchPos);
                 radius = (onSketchPos - CenterPoint).Length();
                 double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
 
