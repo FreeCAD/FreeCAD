@@ -2255,9 +2255,10 @@ void Application::runApplication(void)
     std::vector<std::string> backgroundAutoloadedModules;
     std::stringstream stream(autoloadCSV);
     std::string workbench;
-    while (std::getline(stream, workbench, ','))
+    while (std::getline(stream, workbench, ',')) {
         if (wb.contains(QString::fromLatin1(workbench.c_str())))
             app.activateWorkbench(workbench.c_str());
+    }
 
     // Reactivate the startup workbench
     app.activateWorkbench(start.c_str());
@@ -2297,7 +2298,9 @@ void Application::runApplication(void)
             Base::Console().Warning("Failed to create a file lock for the IPC: %s\n", e.what());
         }
 
+        Base::Console().Log("Init: Executing event loop...\n");
         mainApp.exec();
+
         // Qt can't handle exceptions thrown from event handlers, so we need
         // to manually rethrow SystemExitExceptions.
         if (mainApp.caughtException.get())
@@ -2316,14 +2319,14 @@ void Application::runApplication(void)
     }
     catch (const std::exception& e) {
         // catching nasty stuff coming out of the event loop
-        App::Application::destructObserver();
         Base::Console().Error("Event loop left through unhandled exception: %s\n", e.what());
+        App::Application::destructObserver();
         throw;
     }
     catch (...) {
         // catching nasty stuff coming out of the event loop
+        Base::Console().Error("Event loop left through unknwown unhandled exception\n");
         App::Application::destructObserver();
-        Base::Console().Error("Event loop left through unhandled exception\n");
         throw;
     }
 
