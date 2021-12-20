@@ -1111,8 +1111,7 @@ ObjectIdentifier::getDep(bool needProps, std::vector<std::string> *labels) const
     return deps;
 }
 
-void ObjectIdentifier::getDep(
-        Dependencies &deps, bool needProps, std::vector<std::string> *labels) const 
+void ObjectIdentifier::getDep(Dependencies &deps, bool needProps, std::vector<std::string> *labels) const
 {
     ResolveResults result(*this);
     if(labels) 
@@ -1134,10 +1133,10 @@ void ObjectIdentifier::getDep(
 
     Base::PyGILStateLocker lock;
     try {
-        access(result,0,&deps);
-    }catch(Py::Exception &) {
-        Base::PyException e;
-    }catch(...){
+        access(result, nullptr, &deps);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
     }
 }
 
