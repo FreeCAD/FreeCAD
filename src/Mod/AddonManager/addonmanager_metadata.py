@@ -98,7 +98,7 @@ class MetadataDownloadWorker(QObject):
             self.repo.repo_type = AddonManagerRepo.RepoType.PACKAGE
             new_xml = self.fetch_task.readAll()
             hasher = hashlib.sha1()
-            hasher.update(new_xml)
+            hasher.update(new_xml.data())
             new_sha1 = hasher.hexdigest()
             self.last_sha1 = new_sha1
             # Determine if we need to download the icon: only do that if the
