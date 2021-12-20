@@ -109,7 +109,10 @@ class PackageList(QWidget):
         """filter name and description by the regex specified by text_filter"""
 
         if text_filter:
-            test_regex = QRegularExpression(text_filter)
+            if hasattr(self.item_filter, "setFilterRegularExpression"): # Added in Qt 5.12
+                test_regex = QRegularExpression(text_filter)
+            else:
+                test_regex = QRegExp(text_filter)
             if test_regex.isValid():
                 self.ui.labelFilterValidity.setToolTip(
                     translate("AddonsInstaller", "Filter is valid")
@@ -125,7 +128,10 @@ class PackageList(QWidget):
             self.ui.labelFilterValidity.show()
         else:
             self.ui.labelFilterValidity.hide()
-        self.item_filter.setFilterRegularExpression(text_filter)
+        if hasattr(self.item_filter, "setFilterRegularExpression"): # Added in Qt 5.12
+            self.item_filter.setFilterRegularExpression(text_filter)
+        else:
+            self.item_filter.setFilterRegExp(text_filter)
 
     def set_view_style(self, style: ListDisplayStyle) -> None:
         self.item_model.layoutAboutToBeChanged.emit()
@@ -452,16 +458,28 @@ class PackageListFilter(QSortFilterProxyModel):
 
         name = data.display_name
         desc = data.description
-        re = self.filterRegularExpression()
-        if re.isValid():
-            re.setPatternOptions(QRegularExpression.CaseInsensitiveOption)
-            if re.match(name).hasMatch():
-                return True
-            if re.match(desc).hasMatch():
-                return True
-            return False
+        if hasattr(self, "filterRegularExpression"): # Added in Qt 5.12
+            re = self.filterRegularExpression()
+            if re.isValid():
+                re.setPatternOptions(QRegularExpression.CaseInsensitiveOption)
+                if re.match(name).hasMatch():
+                    return True
+                if re.match(desc).hasMatch():
+                    return True
+                return False
+            else:
+                return False
         else:
-            return False
+            re = self.filterRegExp()
+            if re.isValid():
+                re.setCaseSensitivity(Qt.CaseInsensitive)
+                if re.indexIn(name) != -1:
+                    return True
+                if re.indexIn(desc) != -1:
+                    return True
+                return False
+            else:
+                return False
 
 
 class Ui_PackageList(object):
