@@ -174,6 +174,9 @@ class AddonManagerRepo:
             return True
         elif self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
             content = self.metadata.Content
+            if not content:
+                FreeCAD.Console.PrintWarning(f"Package {self.display_name} does not list any content items in its package.xml metadata file. Try refreshing the cache.\n")
+                return False
             return "workbench" in content
         else:
             return False
