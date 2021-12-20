@@ -1575,14 +1575,12 @@ class UpdateSingleWorker(QtCore.QThread):
             FreeCAD.getUserCachePath(), "AddonManager", "MacroCache"
         )
         os.makedirs(cache_path, exist_ok=True)
-        temp_install_succeeded = macro.install(cache_path)
-        if not temp_install_succeeded:
-            failed = True
+        install_succeeded, errors = repo.macro.install(cache_path)
 
-        if not failed:
-            failed = macro.install(self.macro_repo_dir)
+        if install_succeeded:
+            install_succeeded, errors = repo.macro.install(FreeCAD.getUserMacroDir())
 
-        if not failed:
+        if install_succeeded:
             self.success.emit(repo)
         else:
             self.failure.emit(repo)
