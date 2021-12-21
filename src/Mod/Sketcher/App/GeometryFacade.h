@@ -100,13 +100,13 @@ class SketcherExport GeometryFacade : public Base::BaseClass, private ISketchGeo
 TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 protected:
-    GeometryFacade(const Part::Geometry * geometry);
+    GeometryFacade(const Part::Geometry * geometry, bool owner = false);
     GeometryFacade(); // As TYPESYSTEM requirement
 
     friend class GeometryFacadePy;
 
 public: // Factory methods
-    static std::unique_ptr<GeometryFacade> getFacade(Part::Geometry * geometry);
+    static std::unique_ptr<GeometryFacade> getFacade(Part::Geometry * geometry, bool owner = false);
     static std::unique_ptr<const GeometryFacade> getFacade(const Part::Geometry * geometry);
 
 public: // Utility methods
