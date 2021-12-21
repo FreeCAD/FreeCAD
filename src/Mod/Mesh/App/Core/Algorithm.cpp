@@ -73,16 +73,16 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
     bool bSol = false;
     FacetIndex ulInd = 0;
 
-    // langsame Ausfuehrung ohne Grid
+    // slow execution with no grid
     MeshFacetIterator  clFIter(_rclMesh);
     for (clFIter.Init(); clFIter.More(); clFIter.Next()) {
         if (clFIter->Foraminate( rclPt, rclDir, clRes ) == true) {
-            if (bSol == false) { // erste Loesung
+            if (bSol == false) { // first solution
                 bSol   = true;
                 clProj = clRes;
                 ulInd  = clFIter.Position();
             }
-            else {  // liegt Punkt naeher
+            else {  // is closer to the point
                 if ((clRes - rclPt).Length() < (clProj - rclPt).Length()) {
                     clProj = clRes;
                     ulInd  = clFIter.Position();
@@ -151,12 +151,12 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
     for (std::vector<FacetIndex>::const_iterator pI = raulFacets.begin(); pI != raulFacets.end(); ++pI) {
         MeshGeomFacet rclSFacet = _rclMesh.GetFacet(*pI);
         if (rclSFacet.Foraminate(rclPt, rclDir, clRes) == true) {
-            if (bSol == false) {// erste Loesung
+            if (bSol == false) {// first solution
                 bSol   = true;
                 clProj = clRes;
                 ulInd  = *pI;
             }
-            else {  // liegt Punkt naeher
+            else {  // is closer to the point
                 if ((clRes - rclPt).Length() < (clProj - rclPt).Length()) {
                     clProj = clRes;
                     ulInd  = *pI;
@@ -182,12 +182,12 @@ bool MeshAlgorithm::RayNearestField (const Base::Vector3f &rclPt, const Base::Ve
 
     for (std::vector<FacetIndex>::const_iterator pF = raulFacets.begin(); pF != raulFacets.end(); ++pF) {
         if (_rclMesh.GetFacet(*pF).Foraminate(rclPt, rclDir, clRes/*, fMaxAngle*/) == true) {
-            if (bSol == false) { // erste Loesung
+            if (bSol == false) { // first solution
                 bSol   = true;
                 clProj = clRes;
                 ulInd  = *pF;
             }
-            else {  // liegt Punkt naeher
+            else {  // is closer to the point
                 if ((clRes - rclPt).Length() < (clProj - rclPt).Length()) {
                     clProj = clRes;
                     ulInd  = *pF;
@@ -437,7 +437,7 @@ void MeshAlgorithm::GetFacetBorder(FacetIndex uFacet, std::list<PointIndex>& rBo
 
     if (openEdges.empty())
         return; // facet is not a border facet
-    
+
     for (MeshFacetArray::_TConstIterator it = rFAry.begin(); it != rFAry.end(); ++it)
     {
         if (it == face)
@@ -604,7 +604,7 @@ void MeshAlgorithm::SplitBoundaryLoops(const std::vector<PointIndex>& rBound,
 }
 
 bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
-                               AbstractPolygonTriangulator& cTria, 
+                               AbstractPolygonTriangulator& cTria,
                                MeshFacetArray& rFaces, MeshPointArray& rPoints,
                                int level, const MeshRefPointToFacets* pP2FStructure) const
 {
@@ -697,8 +697,8 @@ bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
         // criterion to decide whether it's a hole or not.
         //
         std::vector<MeshFacet> faces = cTria.GetFacets();
-        
-        // Special case handling for a hole with three edges: the resulting facet might be coincident with the 
+
+        // Special case handling for a hole with three edges: the resulting facet might be coincident with the
         // reference facet
         if (faces.size()==1){
             MeshFacet first = faces.front();
@@ -734,9 +734,9 @@ bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
             }
         }
 
-        // in case the reference facet has not an open edge print a log message 
+        // in case the reference facet has not an open edge print a log message
         if (ref_side == USHRT_MAX || tri_side == USHRT_MAX) {
-            Base::Console().Log("MeshAlgorithm::FillupHole: Expected open edge for facet <%d, %d, %d>\n", 
+            Base::Console().Log("MeshAlgorithm::FillupHole: Expected open edge for facet <%d, %d, %d>\n",
                 rFace._aulPoints[0], rFace._aulPoints[1], rFace._aulPoints[2]);
             rFaces.clear();
             rPoints.clear();
@@ -937,7 +937,7 @@ void MeshAlgorithm::GetFacetsFromToolMesh(const MeshKernel& rToolMesh, const Bas
         if (ret == 1) {
             // these facets can be removed without more checks
             clGridIter.GetElements(raclCutted);
-        } 
+        }
         // the box intersects with toolmesh
         else if (ret == 0) {
             // these facets must be tested for intersections with the toolmesh
@@ -1006,9 +1006,9 @@ int MeshAlgorithm::Surround(const Base::BoundBox3f& rBox, const Base::Vector3f& 
     if (cBB && rBox) {
         // check for intersections with the actual mesh
         Base::Vector3f cCorner[8] = {
-        Base::Vector3f(rBox.MinX,rBox.MinY,rBox.MinZ), Base::Vector3f(rBox.MaxX,rBox.MinY,rBox.MinZ), 
+        Base::Vector3f(rBox.MinX,rBox.MinY,rBox.MinZ), Base::Vector3f(rBox.MaxX,rBox.MinY,rBox.MinZ),
         Base::Vector3f(rBox.MaxX,rBox.MaxY,rBox.MinZ), Base::Vector3f(rBox.MinX,rBox.MaxY,rBox.MinZ),
-        Base::Vector3f(rBox.MinX,rBox.MinY,rBox.MaxZ), Base::Vector3f(rBox.MaxX,rBox.MinY,rBox.MaxZ), 
+        Base::Vector3f(rBox.MinX,rBox.MinY,rBox.MaxZ), Base::Vector3f(rBox.MaxX,rBox.MinY,rBox.MaxZ),
         Base::Vector3f(rBox.MaxX,rBox.MaxY,rBox.MaxZ), Base::Vector3f(rBox.MinX,rBox.MaxY,rBox.MaxZ)};
 
         MeshFacetIterator cTIt(_rclMesh);
@@ -1026,8 +1026,8 @@ int MeshAlgorithm::Surround(const Base::BoundBox3f& rBox, const Base::Vector3f& 
         std::vector<MeshGeomFacet> cFacet(12);
         int id=0;
         for (size_t ii=0; ii<12; ii++) {
-            cFacet[ii]._aclPoints[0]=cCorner[triangles[id++]]; 
-            cFacet[ii]._aclPoints[1]=cCorner[triangles[id++]]; 
+            cFacet[ii]._aclPoints[0]=cCorner[triangles[id++]];
+            cFacet[ii]._aclPoints[1]=cCorner[triangles[id++]];
             cFacet[ii]._aclPoints[2]=cCorner[triangles[id++]];
         }
 
@@ -1223,7 +1223,7 @@ void MeshAlgorithm::SearchFacetsFromPolyline (const std::vector<Base::Vector3f> 
   for (std::vector<Base::Vector3f>::const_iterator pV = rclPolyline.begin(); pV < (rclPolyline.end() - 1); ++pV)
   {
     const Base::Vector3f &rclP0 = *pV, &rclP1 = *(pV + 1);
-   
+
     // BB eines Polyline-Segments
     BoundBox3f clSegmBB(rclP0.x, rclP0.y, rclP0.z, rclP0.x, rclP0.y, rclP0.z);
     clSegmBB.Add(rclP1);
@@ -1397,28 +1397,28 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
 {
   std::vector<FacetIndex>  aulFacets;
 
-  // Grid durschsuchen
+  // Search grid
   MeshGridIterator clGridIter(rclGrid);
   for (clGridIter.Init(); clGridIter.More(); clGridIter.Next())
-  {  
-    // wenn Gridvoxel Ebene schneidet: alle Facets aufnehmen zum Schneiden
+  {
+    // if Gridvoxel intersects the plane: pick up all facets for cutting
     if (clGridIter.GetBoundBox().IsCutPlane(clBase, clNormal) == true)
       clGridIter.GetElements(aulFacets);
   }
 
-  // mehrfach vorhanden Dreiecke entfernen
+  // remove multiple triangles
   std::sort(aulFacets.begin(), aulFacets.end());
-  aulFacets.erase(std::unique(aulFacets.begin(), aulFacets.end()), aulFacets.end());  
+  aulFacets.erase(std::unique(aulFacets.begin(), aulFacets.end()), aulFacets.end());
 
-  // alle Facets mit Ebene schneiden
-  std::list<std::pair<Base::Vector3f, Base::Vector3f> > clTempPoly;  // Feld mit Schnittlinien (unsortiert, nicht verkettet)
+  // intersect all facets with plane
+  std::list<std::pair<Base::Vector3f, Base::Vector3f> > clTempPoly;  // Field with intersection lines (unsorted, not chained)
 
   for (std::vector<FacetIndex>::iterator pF = aulFacets.begin(); pF != aulFacets.end(); ++pF)
   {
     Base::Vector3f  clE1, clE2;
     const MeshGeomFacet clF(_rclMesh.GetFacet(*pF));
 
-    // Facet schneiden und Schnittstrecke ablegen
+    // Cut the facet and store the cutting path
     if (clF.IntersectWithPlane(clBase, clNormal, clE1, clE2) == true)
       clTempPoly.emplace_back(clE1, clE2);
   }
@@ -1448,7 +1448,7 @@ bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vect
     typedef std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator  TCIter;
 
     // square search radius
-    // const float fMinEps = 1.0e-2f; // := 10 mirometer distance
+    // const float fMinEps = 1.0e-2f; // := 10 micrometer distance
     fMinEps = fMinEps * fMinEps;
 
     // remove all lines whose distance is smaller than epsilon
@@ -1602,7 +1602,7 @@ void MeshAlgorithm::GetFacetsFromPlane (const MeshFacetGrid &rclGrid, const Base
     Base::Vector3f clPtNormal(rclLeft - rclRight);
     clPtNormal.Normalize();
 
-    // search grid 
+    // search grid
     MeshGridIterator clGridIter(rclGrid);
     for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
         // add facets from grid if the plane if cut the grid-voxel

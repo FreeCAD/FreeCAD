@@ -63,7 +63,7 @@ void MeshGrid::Attach (const MeshKernel &rclM)
 void MeshGrid::Clear ()
 {
   _aulGrid.clear();
-  _pclMesh = nullptr;  
+  _pclMesh = nullptr;
 }
 
 void MeshGrid::Rebuild (unsigned long ulX, unsigned long ulY, unsigned long ulZ)
@@ -95,17 +95,17 @@ void MeshGrid::InitGrid ()
 
   unsigned long i, j;
 
-  // Grid Laengen berechnen wenn nicht initialisiert
+  // Calculate grid length if not initialised
   //
   if ((_ulCtGridsX == 0) || (_ulCtGridsY == 0) || (_ulCtGridsZ == 0))
     CalculateGridLength(MESH_CT_GRID, MESH_MAX_GRIDS);
 
-  // Grid Laengen und Offset bestimmen
+  // Determine grid length and offset
   //
   {
   Base::BoundBox3f clBBMesh = _pclMesh->GetBoundBox();
 
-  float fLengthX = clBBMesh.LengthX(); 
+  float fLengthX = clBBMesh.LengthX();
   float fLengthY = clBBMesh.LengthY();
   float fLengthZ = clBBMesh.LengthZ();
 
@@ -127,7 +127,7 @@ void MeshGrid::InitGrid ()
   }
   }
 
-  // Daten-Struktur anlegen
+  // Create data structure
   _aulGrid.clear();
   _aulGrid.resize(_ulCtGridsX);
   for (i = 0; i < _ulCtGridsX; i++)
@@ -142,10 +142,10 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<Eleme
                                 bool bDelDoubles) const
 {
   unsigned long i, j, k, ulMinX, ulMinY, ulMinZ,  ulMaxX, ulMaxY, ulMaxZ;
-  
+
   raulElements.clear();
 
-  // Grid-Boxen zur naehreren Auswahl
+  // Grid boxes for a more detailed selection
   Position(Base::Vector3f(rclBB.MinX, rclBB.MinY, rclBB.MinZ), ulMinX, ulMinY, ulMinZ);
   Position(Base::Vector3f(rclBB.MaxX, rclBB.MaxY, rclBB.MaxZ), ulMaxX, ulMaxY, ulMaxZ);
 
@@ -158,13 +158,13 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<Eleme
         raulElements.insert(raulElements.end(), _aulGrid[i][j][k].begin(), _aulGrid[i][j][k].end());
       }
     }
-  }  
+  }
 
   if (bDelDoubles == true)
   {
-    // doppelte Nennungen entfernen
+    // remove duplicate mentions
     std::sort(raulElements.begin(), raulElements.end());
-    raulElements.erase(std::unique(raulElements.begin(), raulElements.end()), raulElements.end());  
+    raulElements.erase(std::unique(raulElements.begin(), raulElements.end()), raulElements.end());
   }
 
   return raulElements.size();
@@ -179,7 +179,7 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<Eleme
 
   raulElements.clear();
 
-  // Grid-Boxen zur naehreren Auswahl
+  // Grid boxes for a more detailed selection
   Position(Base::Vector3f(rclBB.MinX, rclBB.MinY, rclBB.MinZ), ulMinX, ulMinY, ulMinZ);
   Position(Base::Vector3f(rclBB.MaxX, rclBB.MaxY, rclBB.MaxZ), ulMaxX, ulMaxY, ulMaxZ);
 
@@ -193,13 +193,13 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<Eleme
           raulElements.insert(raulElements.end(), _aulGrid[i][j][k].begin(), _aulGrid[i][j][k].end());
       }
     }
-  }  
+  }
 
   if (bDelDoubles == true)
   {
-    // doppelte Nennungen entfernen
+    // remove duplicate mentions
     std::sort(raulElements.begin(), raulElements.end());
-    raulElements.erase(std::unique(raulElements.begin(), raulElements.end()), raulElements.end());  
+    raulElements.erase(std::unique(raulElements.begin(), raulElements.end()), raulElements.end());
   }
 
   return raulElements.size();
@@ -208,10 +208,10 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::vector<Eleme
 unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::set<ElementIndex> &raulElements) const
 {
   unsigned long i, j, k, ulMinX, ulMinY, ulMinZ,  ulMaxX, ulMaxY, ulMaxZ;
-  
+
   raulElements.clear();
 
-  // Grid-Boxen zur naehreren Auswahl
+  // Grid boxes for a more detailed selection
   Position(Base::Vector3f(rclBB.MinX, rclBB.MinY, rclBB.MinZ), ulMinX, ulMinY, ulMinZ);
   Position(Base::Vector3f(rclBB.MaxX, rclBB.MaxY, rclBB.MaxZ), ulMaxX, ulMaxY, ulMaxZ);
 
@@ -224,7 +224,7 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::set<ElementI
         raulElements.insert(_aulGrid[i][j][k].begin(), _aulGrid[i][j][k].end());
       }
     }
-  }  
+  }
 
   return raulElements.size();
 }
@@ -261,9 +261,9 @@ void MeshGrid::Position (const Base::Vector3f &rclPoint, unsigned long &rulX, un
 
 void MeshGrid::CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMaxGrids)
 {
-    // Grid Laengen bzw. Anzahl der Grids pro Dimension berechnen
-    // pro Grid sollen ca. 10 (?!?!) Facets liegen
-    // bzw. max Grids sollten 10000 nicht ueberschreiten
+    // Calculate grid lengths or number of grids per dimension
+    // There should be about 10 (?!?!) facets per grid
+    // respectively max grids should not exceed 10000
     Base::BoundBox3f clBBMeshEnlarged = _pclMesh->GetBoundBox();
     float fGridLen = 0;
 
@@ -283,7 +283,7 @@ void MeshGrid::CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMaxG
         fGridLen = float(pow(fVol, 1.0f / 3.0f));
     }
     else {
-        // Planare Bounding box
+        // Planar bounding box
         float fArea = fLenX * fLenY + fLenX * fLenZ + fLenY * fLenZ;
         float fAreaElem;
         if (_ulCtElements > (ulMaxGrids * ulCtGrid))
@@ -316,9 +316,9 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
     return;
   }
 
-  // Grid Laengen bzw. Anzahl der Grids pro Dimension berechnen
-  // pro Grid sollen ca. 10 (?!?!) Facets liegen
-  // bzw. max Grids sollten 10000 nicht ueberschreiten
+  // Calculate grid lengths or number of grids per dimension
+  // There should be about 10 (?!?!) facets per grid
+  // respectively max grids should not exceed 10000
   Base::BoundBox3f clBBMesh = _pclMesh->GetBoundBox();
 
   float fLenghtX = clBBMesh.LengthX();
@@ -337,21 +337,21 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
 
   int iMaxGrids = 1;
 
-  if (bLenghtXisZero)  
-    iFlag += 1; 
+  if (bLenghtXisZero)
+    iFlag += 1;
   else
     iMaxGrids *= iCtGridPerAxis;
 
-  if (bLenghtYisZero) 
+  if (bLenghtYisZero)
     iFlag += 2;
   else
     iMaxGrids *= iCtGridPerAxis;
 
   if (bLenghtZisZero)
-    iFlag += 4; 
+    iFlag += 4;
   else
     iMaxGrids *= iCtGridPerAxis;
-  
+
   unsigned long ulGridsFacets =   10;
 
   float fFactorVolumen = 40.0;
@@ -373,12 +373,12 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
       _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1);
       _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1);
       _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLenghtZ / fLengthGrid), 1);
-      
+
     } break;
   case 1:
     {
       _ulCtGridsX = 1; // bLenghtXisZero
-      
+
       float fArea = fLenghtY * fLenghtZ;
 
       float fAreaGrid = (fArea * ulGridsFacets) / (fFactorArea * _ulCtElements);
@@ -394,7 +394,7 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
   case 2:
     {
       _ulCtGridsY = 1; // bLenghtYisZero
-  
+
       float fArea = fLenghtX * fLenghtZ;
 
       float fAreaGrid = (fArea * ulGridsFacets) / (fFactorArea * _ulCtElements);
@@ -416,7 +416,7 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
   case 4:
     {
       _ulCtGridsZ = 1; // bLenghtZisZero
-      
+
       float fArea = fLenghtX * fLenghtY;
 
       float fAreaGrid = (fArea * ulGridsFacets) / (fFactorArea * _ulCtElements);
@@ -456,7 +456,7 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<Ele
   Base::BoundBox3f  clBB = GetBoundBox();
 
   if (clBB.IsInBox(rclPt) == true)
-  { // Punkt liegt innerhalb
+  { // Point lies within
     unsigned long ulX, ulY, ulZ;
     Position(rclPt, ulX, ulY, ulZ);
     //int nX = ulX, nY = ulY, nZ = ulZ;
@@ -467,7 +467,7 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<Ele
     GetHull(ulX, ulY, ulZ, ulLevel, raclInd);
   }
   else
-  { // Punkt ausserhalb
+  { // Point outside
     Base::BoundBox3f::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.GetCenter() - rclPt);
     switch (tSide)
     {
@@ -562,7 +562,7 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<Ele
   }
 }
 
-void MeshGrid::GetHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, 
+void MeshGrid::GetHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ,
                         unsigned long ulDistance, std::set<ElementIndex> &raclInd) const
 {
   int nX1 = std::max<int>(0, int(ulX) - int(ulDistance));
@@ -642,7 +642,7 @@ void MeshGrid::GetHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ,
   }
 }
 
-unsigned long MeshGrid::GetElements (unsigned long ulX, unsigned long ulY, unsigned long ulZ,  
+unsigned long MeshGrid::GetElements (unsigned long ulX, unsigned long ulY, unsigned long ulZ,
                                      std::set<ElementIndex> &raclInd) const
 {
   const std::set<ElementIndex> &rclSet = _aulGrid[ulX][ulY][ulZ];
@@ -739,7 +739,7 @@ void MeshFacetGrid::Validate ()
 
 bool MeshFacetGrid::Verify() const
 {
-  if ( !_pclMesh ) 
+  if ( !_pclMesh )
     return false; // no mesh attached
   if (_pclMesh->CountFacets() != _ulCtElements)
     return false; // not up-to-date
@@ -766,8 +766,8 @@ void MeshFacetGrid::RebuildGrid ()
   _ulCtElements = _pclMesh->CountFacets();
 
   InitGrid();
- 
-  // Daten-Struktur fuellen
+
+  // Fill data structure
   MeshFacetIterator clFIter(*_pclMesh);
 
   unsigned long i = 0;
@@ -786,7 +786,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
   Base::BoundBox3f  clBB = GetBoundBox();
 
   if (clBB.IsInBox(rclPt) == true)
-  { // Punkt liegt innerhalb
+  { // Point lies within
     unsigned long ulX, ulY, ulZ;
     Position(rclPt, ulX, ulY, ulZ);
     float fMinGridDist = std::min<float>(std::min<float>(_fGridLenX, _fGridLenY), _fGridLenZ);
@@ -799,7 +799,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
     SearchNearestFacetInHull(ulX, ulY, ulZ, ulDistance, rclPt, ulFacetInd, fMinDist);
   }
   else
-  { // Punkt ausserhalb
+  { // Point outside
     Base::BoundBox3f::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.GetCenter() - rclPt);
     switch (tSide)
     {
@@ -909,7 +909,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
   Inside(clBB, aulFacets, rclPt, fMaxSearchArea, true);
 
   for (std::vector<ElementIndex>::const_iterator pI = aulFacets.begin(); pI != aulFacets.end(); ++pI)
-  {    
+  {
     float fDist;
 
     if (clFTool.Distance(rclPt, *pI, fMinDist, fDist) == true)
@@ -922,7 +922,7 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
   return ulFacetInd;
 }
 
-void MeshFacetGrid::SearchNearestFacetInHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, 
+void MeshFacetGrid::SearchNearestFacetInHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ,
                                               unsigned long ulDistance, const Base::Vector3f &rclPt,
                                               ElementIndex &rulFacetInd, float &rfMinDist) const
 {
@@ -1003,7 +1003,7 @@ void MeshFacetGrid::SearchNearestFacetInHull (unsigned long ulX, unsigned long u
   }
 }
 
-void MeshFacetGrid::SearchNearestFacetInGrid(unsigned long ulX, unsigned long ulY, unsigned long ulZ, 
+void MeshFacetGrid::SearchNearestFacetInGrid(unsigned long ulX, unsigned long ulY, unsigned long ulZ,
                                              const Base::Vector3f &rclPt, float &rfMinDist,
                                              ElementIndex &rulFacetInd) const
 {
@@ -1021,25 +1021,25 @@ void MeshFacetGrid::SearchNearestFacetInGrid(unsigned long ulX, unsigned long ul
 
 //----------------------------------------------------------------------------
 
-MeshPointGrid::MeshPointGrid (const MeshKernel &rclM) 
- : MeshGrid(rclM) 
+MeshPointGrid::MeshPointGrid (const MeshKernel &rclM)
+ : MeshGrid(rclM)
 {
   RebuildGrid();
 }
 
 MeshPointGrid::MeshPointGrid ()
- : MeshGrid() 
+ : MeshGrid()
 {
 }
 
 MeshPointGrid::MeshPointGrid (const MeshKernel &rclM, unsigned long ulX, unsigned long ulY, unsigned long ulZ)
- : MeshGrid(rclM) 
+ : MeshGrid(rclM)
 {
   Rebuild(ulX, ulY, ulZ);
 }
 
 MeshPointGrid::MeshPointGrid (const MeshKernel &rclM, int   iCtGridPerAxis)
-  : MeshGrid(rclM) 
+  : MeshGrid(rclM)
 {
   Rebuild(iCtGridPerAxis);
 }
@@ -1081,7 +1081,7 @@ void MeshPointGrid::Validate ()
 
 bool MeshPointGrid::Verify() const
 {
-  if ( !_pclMesh ) 
+  if ( !_pclMesh )
     return false; // no mesh attached
   if (_pclMesh->CountFacets() != _ulCtElements)
     return false; // not up-to-date
@@ -1108,8 +1108,8 @@ void MeshPointGrid::RebuildGrid ()
   _ulCtElements = _pclMesh->CountPoints();
 
   InitGrid();
- 
-  // Daten-Struktur fuellen
+
+  // Fill data structure
 
   MeshPointIterator cPIter(*_pclMesh);
 
@@ -1169,24 +1169,24 @@ bool MeshGridIterator::InitOnRay (const Base::Vector3f &rclPt, const Base::Vecto
 
   _fMaxSearchArea = FLOAT_MAX;
 
-  raulElements.clear();        
+  raulElements.clear();
 
   _clPt      = rclPt;
   _clDir     = rclDir;
   _bValidRay = false;
 
-  // liegt Punkt innerhalb globalen BB
+  // point lies within global BB
   if ((_rclGrid.GetBoundBox().IsInBox(rclPt)) == true)
-  {  // Voxel bestimmen, indem der Startpunkt liegt
+  {  // Determine the voxel by the starting point
     _rclGrid.Position(rclPt, _ulX, _ulY, _ulZ);
     raulElements.insert(raulElements.end(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());
     _bValidRay = true;
   }
   else
-  { // Startpunkt ausserhalb
+  { // Start point outside
     Base::Vector3f cP0, cP1;
     if (_rclGrid.GetBoundBox().IntersectWithLine(rclPt, rclDir, cP0, cP1) == true)
-    {  // naechsten Punkt bestimmen
+    {  // determine the next point
       if ((cP0 - rclPt).Length() < (cP1 - rclPt).Length())
         _rclGrid.Position(cP0, _ulX, _ulY, _ulZ);
       else
@@ -1203,16 +1203,16 @@ bool MeshGridIterator::InitOnRay (const Base::Vector3f &rclPt, const Base::Vecto
 bool MeshGridIterator::NextOnRay (std::vector<ElementIndex> &raulElements)
 {
   if (_bValidRay == false)
-    return false;  // nicht initialisiert oder Strahl ausgetreten
-  
+    return false;  // not initialized or beam exited
+
   raulElements.clear();
 
   Base::Vector3f clIntersectPoint;
 
-  // naechstes anliegende BB auf dem Suchstrahl suchen
+  // Look for the next adjacent BB on the search beam
   Base::BoundBox3f::SIDE tSide = _rclGrid.GetBoundBox(_ulX, _ulY, _ulZ).GetSideFromRay(_clPt, _clDir, clIntersectPoint);
 
-  // Suchbereich
+  // Search area
   //
   if ((_clPt-clIntersectPoint).Length() > _fMaxSearchArea)
   {
@@ -1243,10 +1243,10 @@ bool MeshGridIterator::NextOnRay (std::vector<ElementIndex> &raulElements)
   if ((_bValidRay == true) && (_rclGrid.CheckPos(_ulX, _ulY, _ulZ) == true))
   {
     GridElement pos(_ulX, _ulY, _ulZ); _cSearchPositions.insert(pos);
-    raulElements.insert(raulElements.end(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end()); 
+    raulElements.insert(raulElements.end(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());
   }
   else
-    _bValidRay = false;  // Strahl ausgetreten
+    _bValidRay = false;  // Beam leaked
 
   return _bValidRay;
 }
