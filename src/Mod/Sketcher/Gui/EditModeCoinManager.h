@@ -214,7 +214,7 @@ public:
     void drawConstraintIcons();
 
     // This specific overload is to use a specific geometry list, which may be a temporal one
-    void drawConstraintIcons(const GeoList & geolist);
+    void drawConstraintIcons(const GeoListFacade & geolistfacade);
     //@}
 
     /** @name coin node access*/

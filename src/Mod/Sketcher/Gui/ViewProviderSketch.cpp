@@ -2398,9 +2398,8 @@ float ViewProviderSketch::getScaleFactor() const
 //
 // This function takes a reference to a vector of deep copies to delete. These deep copies are necessary to transparently perform (1) while doing (2).
 void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
-        GeoList & geolist,
-        bool geometrywithmemoryallocation,
-        std::vector<std::unique_ptr<Part::Geometry>> &deepCopiesToDelete )
+        GeoListFacade & geolistfacade,
+        bool geometrywithmemoryallocation)
 {
     // In order to allow to tweak geometry and insert scaling factors, this function needs to
     // change the geometry vector. This is highly exceptional for a drawing function and special
@@ -2408,16 +2407,16 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
     // 1. The treatment is exceptional and no other appropriate place is available to perform this tweak
     // 2. The original object needs to remain const for the benefit of all other class hierarchy of drawing functions
     // 3. When referring to actual geometry, the modified pointers are short lived, as they are destroyed after drawing
-    auto tempGeo = const_cast< std::vector< Part::Geometry *> &>(geolist.geomlist);
+    auto & tempGeo = geolistfacade.geomlist;
 
     int GeoId = 0;
-    for (std::vector<Part::Geometry *>::const_iterator it = tempGeo.begin(); it != tempGeo.end()-2; ++it, GeoId++) {
-        if (GeoId >= geolist.getInternalCount())
-            GeoId = -geolist.getExternalCount();
+    for (auto it = tempGeo.begin(); it != tempGeo.end()-2; ++it, GeoId++) {
+        if (GeoId >= geolistfacade.getInternalCount())
+            GeoId = -geolistfacade.getExternalCount();
 
-        if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle
-            const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(*it);
-            auto gf = GeometryFacade::getFacade(circle);
+        if ((*it)->getGeometry()->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle
+            const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>((*it)->getGeometry());
+            auto & gf = (*it);
 
             // BSpline weights have a radius corresponding to the weight value
             // However, in order for them proportional to the B-Spline size,
@@ -2427,7 +2426,7 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
             if(gf->getInternalType() == InternalType::BSplineControlPoint) {
                 for( auto c : getSketchObject()->Constraints.getValues()) {
                     if( c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint && c->First == GeoId) {
-                        auto bspline = dynamic_cast<const Part::GeomBSplineCurve *>(tempGeo[c->Second]);
+                        auto bspline = dynamic_cast<const Part::GeomBSplineCurve *>(tempGeo[c->Second]->getGeometry());
 
                         if(bspline){
                             auto weights = bspline->getWeights();
@@ -2470,14 +2469,13 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
                             Part::GeomCircle * tmpcircle;
 
                             if(geometrywithmemoryallocation) { // with memory allocation
-                                tmpcircle = static_cast<Part::GeomCircle *>(*it);
+                                tmpcircle = const_cast<Part::GeomCircle *>(circle);
                                 tmpcircle->setRadius(vradius);
                             }
                             else { // without memory allocation
-                                tmpcircle = static_cast<Part::GeomCircle *>((*it)->clone());
+                                tmpcircle = static_cast<Part::GeomCircle *>(circle->clone());
                                 tmpcircle->setRadius(vradius);
-                                deepCopiesToDelete.push_back(std::unique_ptr<Part::GeomCircle>(tmpcircle));
-                                tempGeo[GeoId] = tmpcircle; // this is the circle that will be drawn, with the updated vradius.
+                                tempGeo[GeoId] = GeometryFacade::getFacade(tmpcircle, true); // this is the circle that will be drawn, with the updated vradius, the facade takes ownership and will deallocate.
                             }
 
                             // save scale factor for any prospective dragging operation
@@ -2519,26 +2517,15 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationoverl
 
     // ============== Retrieve geometry to be represented =================================
 
-    std::vector<Part::Geometry *> tempGeo;
+    auto geolistfacade =    temp ?
+                            getSolvedSketch().extractGeoListFacade(): // with memory allocation
+                            getSketchObject()->getGeoListFacade(); // without memory allocation
 
-    if (temp)
-        tempGeo = getSolvedSketch().extractGeometry(true, true); // with memory allocation
-    else
-        tempGeo = getSketchObject()->getCompleteGeometry(); // without memory allocation
-
-    int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
-
-    auto geolist = GeoList::getGeoListModel(tempGeo, intGeoCount);
-
-    assert(int(tempGeo.size()) == geolist.getExternalCount() + intGeoCount);
-    assert(int(tempGeo.size()) >= 2);
+    assert(int( geolistfacade.geomlist.size()) >= 2);
 
     // ============== Prepare geometry for representation ==================================
 
     // ************ Manage BSpline pole circle scaling  ****************************
-
-    // memory management of deep copies necessary for drawing which are destroyed when the vector gets out of scope (i.e. at the end of this function).
-    std::vector<std::unique_ptr<Part::Geometry>> deepCopiesToDelete;
 
     // This function ensures that the geometry used for drawing takes into account:
     // 1. the OCC mandated weight, which is normalised for non-rational BSplines, but not normalised for rational BSplines.
@@ -2549,20 +2536,15 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationoverl
     //
     // This function takes a reference to a vector of deep copies to delete. These deep copies are necessary to transparently perform (1) while doing (2).
 
-    scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
-        geolist,
-        temp,
-        deepCopiesToDelete);
+    scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(geolistfacade, temp);
 
     // ============== Render geometry, constraints and geometry information overlays ==================================
-
-    auto geolistfacade = Sketcher::getGeoListFacade(geolist);
 
     editCoinManager->processGeometryConstraintsInformationOverlay(geolistfacade, rebuildinformationoverlay);
 
     // Avoids unneeded calls to pixmapFromSvg
     if(Mode==STATUS_NONE || Mode==STATUS_SKETCH_UseHandler) {
-       editCoinManager->drawConstraintIcons(geolist);
+       editCoinManager->drawConstraintIcons(geolistfacade);
        editCoinManager->updateColor(geolistfacade);
     }
 
@@ -3517,13 +3499,7 @@ double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
 
 GeoListFacade ViewProviderSketch::getGeoListFacade() const
 {
-    auto tempGeoFacade = getSketchObject()->getCompleteGeometryFacade();
-
-    int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
-
-    auto geolistfacade = GeoListFacade::getGeoListModel(std::move(tempGeoFacade), intGeoCount);
-
-    return geolistfacade;
+    return getSketchObject()->getGeoListFacade();
 }
 
 bool ViewProviderSketch::isSketchInvalid() const

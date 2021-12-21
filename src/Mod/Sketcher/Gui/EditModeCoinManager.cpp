@@ -783,9 +783,9 @@ void EditModeCoinManager::drawConstraintIcons()
     pEditModeConstraintCoinManager->drawConstraintIcons();
 }
 
-void EditModeCoinManager::drawConstraintIcons(const GeoList & geolist)
+void EditModeCoinManager::drawConstraintIcons(const GeoListFacade & geolistfacade)
 {
-    pEditModeConstraintCoinManager->drawConstraintIcons(geolist);
+    pEditModeConstraintCoinManager->drawConstraintIcons(geolistfacade);
 }
 
 void EditModeCoinManager::updateVirtualSpace()

@@ -1825,12 +1825,12 @@ SbVec3s EditModeConstraintCoinManager::getDisplayedSize(const SoImage *iconPtr) 
 // public function that triggers drawing of most constraint icons
 void EditModeConstraintCoinManager::drawConstraintIcons()
 {
-    auto geolist = ViewProviderSketchCoinAttorney::getGeoList(viewProvider);
+    auto geolistfacade = ViewProviderSketchCoinAttorney::getGeoListFacade(viewProvider);
 
-    drawConstraintIcons(geolist);
+    drawConstraintIcons(geolistfacade);
 }
 
-void EditModeConstraintCoinManager::drawConstraintIcons(const GeoList & geolist)
+void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade & geolistfacade)
 {
     const std::vector<Sketcher::Constraint *> &constraints = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
 
@@ -1852,8 +1852,8 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoList & geolist)
 
         case Tangent:
             {   // second icon is available only for colinear line segments
-                const Part::Geometry *geo1 = geolist.getGeometryFromGeoId((*it)->First);
-                const Part::Geometry *geo2 = geolist.getGeometryFromGeoId((*it)->Second);
+                const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId((*it)->First);
+                const Part::Geometry *geo2 = geolistfacade.getGeometryFromGeoId((*it)->Second);
                 if (geo1 && geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                     geo2 && geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     multipleIcons = true;
@@ -1917,8 +1917,8 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoList & geolist)
         thisIcon.visible = (*it)->isInVirtualSpace == ViewProviderSketchCoinAttorney::isShownVirtualSpace(viewProvider);
 
         if ((*it)->Type==Symmetric) {
-            Base::Vector3d startingpoint = geolist.getPoint((*it)->First, (*it)->FirstPos);
-            Base::Vector3d endpoint = geolist.getPoint((*it)->Second,(*it)->SecondPos);
+            Base::Vector3d startingpoint = geolistfacade.getPoint((*it)->First, (*it)->FirstPos);
+            Base::Vector3d endpoint = geolistfacade.getPoint((*it)->Second,(*it)->SecondPos);
 
             SbVec3f pos0(startingpoint.x,startingpoint.y,startingpoint.z);
             SbVec3f pos1(endpoint.x,endpoint.y,endpoint.z);
