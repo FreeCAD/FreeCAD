@@ -627,39 +627,39 @@ inline bool BoundBox3<_Precision>::IsCutLine (const Vector3<_Precision>& rcBase,
 {
     _Precision fDist;
 
-    // zuerst nur grobe und schnelle Pruefung, indem der
-    // Abstand der Linie zum Mittelpunkt der BB berechnet wird
-    // und mit der maximalen Diagonalenlaenge + fTolerance
-    // verglichen wird.
+    // at first only a rough and quick test by the
+    // Distance of the line to the center of the BB is calculated
+    // and with the maximum diagonal length + fTolerance
+    // will be compared.
 
-    // Distanz zwischen Mittelpunkt und Linie
+    // Distance between center point and line
     fDist = (rcDir % (GetCenter() - rcBase)).Length() / rcDir.Length();
 
     if (fDist > (CalcDiagonalLength() + fTolerance)) {
         return false;
     }
-    else { // hier genauerer Test
+    else { // more detailed test here
         unsigned char i;
         Vector3<_Precision>  clVectRes;
 
-        // schneide jede Seitenflaeche mit der Linie
+        // intersect each face with the line
         for (i = 0; i < 6; i++) {
             if (IntersectPlaneWithLine(i, rcBase, rcDir, clVectRes)) {
-                // pruefe, ob Schnittpunkt innerhalb BB-Grenzen + Toleranz
+                // Check whether the intersection point is within BB limits + Tolerance
                 switch (i) {
-                    case LEFT :  // linke und rechte Ebene
+                    case LEFT :  // left and right plane
                     case RIGHT :
                         if ((isOnRayW (MinY - fTolerance, MaxY + fTolerance, clVectRes.y) &&
                              isOnRayW (MinZ - fTolerance, MaxZ + fTolerance, clVectRes.z)))
                             return true;
                         break;
-                    case TOP :  // obere und untere Ebene
+                    case TOP :  // top and bottom plane
                     case BOTTOM :
                         if ((isOnRayW (MinX - fTolerance, MaxX + fTolerance, clVectRes.x) &&
                              isOnRayW (MinZ - fTolerance, MaxZ + fTolerance, clVectRes.z)))
                             return true;
                         break;
-                    case FRONT :  // vordere und hintere Ebene
+                    case FRONT :  // front and back plane
                     case BACK :
                         if ((isOnRayW (MinX - fTolerance, MaxX + fTolerance, clVectRes.x) &&
                              isOnRayW (MinY - fTolerance, MaxY + fTolerance, clVectRes.y)))
