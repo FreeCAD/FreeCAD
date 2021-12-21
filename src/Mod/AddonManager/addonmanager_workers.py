@@ -30,6 +30,7 @@ import tempfile
 import hashlib
 import threading
 import queue
+import io
 from datetime import datetime
 from typing import Union, List
 
@@ -1270,7 +1271,12 @@ class InstallWorkbenchWorker(QtCore.QThread):
             )
             return
 
-        data_size = u.headers["content-length"]
+        data_size = 0
+        if "content-length" in u.headers:
+            try:
+                data_size = int(u.headers["content-length"])
+            except Exception:
+                pass
 
         current_thread = QtCore.QThread.currentThread()
         if data_size and data_size > 5 * 1024 * 1024:
