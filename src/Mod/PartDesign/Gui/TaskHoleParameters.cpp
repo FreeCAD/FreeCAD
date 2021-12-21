@@ -180,8 +180,10 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->UpdateView->setChecked(false);
     ui->UpdateView->setEnabled(ui->ModelThread->isChecked());
 
+    ui->Depth->setEnabled(std::string(pcHole->DepthType.getValueAsString()) == "Dimension");
     ui->ThreadDepthType->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
-    ui->ThreadDepth->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked() && std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension");
+    ui->ThreadDepth->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
+        && std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension");
 
     connect(ui->Threaded, SIGNAL(clicked(bool)), this, SLOT(threadedChanged()));
     connect(ui->ThreadType, SIGNAL(currentIndexChanged(int)), this, SLOT(threadTypeChanged(int)));
@@ -457,13 +459,15 @@ void TaskHoleParameters::depthChanged(int index)
         ui->DrillPointAngle->setEnabled(true);
         ui->DrillForDepth->setEnabled(true);
     }
-    else {
+    else { // through all
         ui->drillPointFlat->setEnabled(false);
         ui->drillPointAngled->setEnabled(false);
         ui->DrillPointAngle->setEnabled(false);
         ui->DrillForDepth->setEnabled(false);
     }
     recomputeFeature();
+    // enabling must be handled after recompute
+    ui->ThreadDepth->setEnabled(std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension");
 }
 
 void TaskHoleParameters::depthValueChanged(double value)
