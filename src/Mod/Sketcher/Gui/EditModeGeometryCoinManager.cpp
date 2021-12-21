@@ -218,7 +218,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
             for (int  i=0; i < PtNum; i++)
                 pcolor[i] = drawingParameters.InvalidSketchColor;
         }
-        else if (ViewProviderSketchCoinAttorney::isSketchFullyConstrained(viewProvider)) {
+        else if (PtNum > 1 && ViewProviderSketchCoinAttorney::isSketchFullyConstrained(viewProvider)) {
             for (int  i=0; i < PtNum; i++)
                 pcolor[i] = drawingParameters.FullyConstrainedColor;
         }
