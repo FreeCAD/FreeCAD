@@ -586,9 +586,8 @@ protected:
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
-                        GeoList & geolist,
-                        bool geometrywithmemoryallocation,
-                        std::vector<std::unique_ptr<Part::Geometry>> &deepCopiesToDelete);
+                        GeoListFacade & geolist,
+                        bool geometrywithmemoryallocation);
 
     /** @name geometry and coordinates auxiliary functions */
     //@{

@@ -7040,9 +7040,9 @@ std::vector<Part::Geometry*> SketchObject::getCompleteGeometry(void) const
     return vals;
 }
 
-std::vector<std::unique_ptr<const GeometryFacade>> SketchObject::getCompleteGeometryFacade(void) const
+GeoListFacade SketchObject::getGeoListFacade(void) const
 {
-    std::vector<std::unique_ptr<const GeometryFacade>> facade;
+    std::vector<GeometryFacadeUniquePtr> facade;
     facade.reserve( Geometry.getSize() + ExternalGeo.size() );
 
     for(auto geo : Geometry.getValues())
@@ -7051,7 +7051,7 @@ std::vector<std::unique_ptr<const GeometryFacade>> SketchObject::getCompleteGeom
     for(auto rit = ExternalGeo.rbegin(); rit != ExternalGeo.rend(); rit++)
         facade.push_back(GeometryFacade::getFacade(*rit));
 
-    return facade;
+    return GeoListFacade::getGeoListModel(std::move(facade), Geometry.getSize());
 }
 
 void SketchObject::rebuildVertexIndex(void)
