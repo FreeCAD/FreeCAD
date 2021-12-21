@@ -74,15 +74,15 @@ protected Q_SLOTS:
     void on_Approximate_button_clicked();
     void on_best_fit_cad_button_clicked();
     void on_best_fit_mesh_button_clicked();
-	void on_best_fit_mesh2_button_clicked();
+    void on_best_fit_mesh2_button_clicked();
     void on_SelectFace_button_clicked();
     void on_best_fit_go_button_clicked();
-	void on_Deviation_button_clicked();
-	void on_deviation_geometry1_button_clicked();
-	void on_deviation_geometry2_button_clicked();
-	void on_deviation_go_button_clicked();
-	void on_error_accumulation_go_button_clicked();
-	void on_error_accumulation_select_files_button_clicked();
+    void on_Deviation_button_clicked();
+    void on_deviation_geometry1_button_clicked();
+    void on_deviation_geometry2_button_clicked();
+    void on_deviation_go_button_clicked();
+    void on_error_accumulation_go_button_clicked();
+    void on_error_accumulation_select_files_button_clicked();
 
 
     void selectShape();
@@ -101,13 +101,13 @@ private:
 private:
 
     SpringbackCorrection *m_Spring;
-    cutting_tools        *m_CuttingAlgo;  //Instanz von der cutting-klasse auf dem Heap erzeugen
+    cutting_tools        *m_CuttingAlgo;  //Generate an instance of the cutting class on the heap
     path_simulate        *m_PathSimulate;
     best_fit             *m_BestFit;
     UniGridApprox        *m_Approx;
-	Approximate          *m_App;
-	Deviation	         *m_Deviation;
-	MergeData			 *m_MergeData;
+    Approximate          *m_App;
+    Deviation            *m_Deviation;
+    MergeData            *m_MergeData;
 
     CuttingToolsSettings m_Settings;
 

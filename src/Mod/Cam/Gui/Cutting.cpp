@@ -108,7 +108,7 @@ bool Cutting::getProcessOutput()
     {
         m_Process->kill();
         QMessageBox::critical(this, tr("FreeCAD CamWorkbench"),
-                              tr("Fehler bei der Erzeugung\n"),
+                              tr("Error in generation\n"),
                               QMessageBox::Ok, QMessageBox::NoButton);
     }
     else if (result.contains("N o r m a l    t e r m i n a t i o n"))
@@ -146,14 +146,14 @@ void Cutting::on_adaptdynainput_clicked()
     //    if (aFileInfo.size() == 0) //the file does not exist
     //    {
     //        QMessageBox::critical(this, tr("FreeCAD CamWorkbench"),
-    //                          tr("Fehler bei der Erzeugung vom Struct File\n"),
+    //                          tr("Error when creating the Struct file\n"),
     //                          QMessageBox::Ok, QMessageBox::NoButton);
     //        return;
     //    }
     //    else
     //    {
     //        QMessageBox::information(this, tr("FreeCAD CamWorkbench"),
-    //                             tr("Structured-Dyna gut erzeugt\n"),
+    //                             tr("Structured Dyna generated well\n"),
     //                             QMessageBox::Ok, QMessageBox::NoButton);
     //    }
     //}
@@ -205,10 +205,10 @@ void Cutting::on_deviation_go_button_clicked()
 	QString current_filename = QFileDialog::getSaveFileName(this,"Select Deviation Files","","*.txt");
 	m_Deviation->ImportGeometry(m_Shape, m_Mesh);
 	m_Deviation->Compute();
-	
-	
+
+
 	m_Deviation->WriteOutput(current_filename);
-	
+
 }
 
 void Cutting::on_error_accumulation_select_files_button_clicked()
@@ -220,20 +220,20 @@ void Cutting::on_error_accumulation_select_files_button_clicked()
 		"Select one or more files to open",
 		"c:",
 		"Deviation Files (*.txt)");
-	
+
 	if (!m_dateinamen.isEmpty())
 	{
 		if (!m_MergeData->Einlesen(m_dateinamen))
 		{
 			QMessageBox::information(this, tr("FreeCAD CamWorkbench"),
-				tr("Alles i.O. Output kann erzeugt werden\n"),
+				tr("Everything OK. Output can be generated\n"),
 				QMessageBox::Ok, QMessageBox::NoButton);
 		}
-	
-		
+
+
 	}
 	error_accumulation_go_button->setEnabled(true);
-	
+
 }
 
 void Cutting::on_error_accumulation_go_button_clicked()
@@ -379,7 +379,7 @@ void Cutting::setFace(const TopoDS_Shape& aShape, const float x, const float y, 
 
 void Cutting::on_CalculateZLevel_clicked()
 {
-    //Cutting-Klasse instanzieren
+    // Instantiating Cutting class
     if (m_CuttingAlgo == NULL)
         m_CuttingAlgo = new cutting_tools(m_Shape);
     else
@@ -495,7 +495,7 @@ void Cutting::on_toolpath_calculation_go_button_clicked()
 
     if (!m_CuttingAlgo->arrangecuts_ZLEVEL())
     {
-        std::cout << "Konnte nicht sauber schneiden" << std::endl;
+        std::cout << "Couldn't cut properly" << std::endl;
     }
 
     bool ok = true;
@@ -516,12 +516,12 @@ void Cutting::on_toolpath_calculation_go_button_clicked()
     }
     catch (...)
     {
-        std::cout<<"Fehler"<<std::endl;
+        std::cout<<"Error"<<std::endl;
     }
     if (!ok)
     {
         QMessageBox::critical(this, tr("FreeCAD CamWorkbench"),
-                              tr("Irgendwas stimmt nicht. Nochmal alles neu versuchen\n"),
+                              tr("Something is wrong. Try everything again\n"),
                               QMessageBox::Ok, QMessageBox::NoButton);
         delete m_CuttingAlgo;
         m_CuttingAlgo = new cutting_tools(m_Shape);
@@ -682,16 +682,16 @@ void Cutting::on_SelectFace_button_clicked()
 
 void Cutting::on_best_fit_go_button_clicked()
 {
-	bool out = 1;  //gibt an ob beim springback NUR die Fehlervektoren ausgegeben werden solle
+	bool out = 1;  //specifies whether ONLY the error vectors should be output in the case of springback
     getSettings(); //First transfer the settings to the Cutting_tools class (-> m_Settings)
-        
+
 
     switch (m_selection)
     {
 
     case BestFit:
 
-		
+
         m_BestFit->Load(m_Mesh,m_Shape);
         m_BestFit->Perform();
 
@@ -704,7 +704,7 @@ void Cutting::on_best_fit_go_button_clicked()
         DisplayMeshOutput(m_MeshOut);
         //DisplayMeshOutput(m_MeshCad);
 
-		
+
 
 
         break;
@@ -733,7 +733,8 @@ best_fit_mesh2_button->setEnabled(true);
         break;
 
     case Approx:
-        /*MeshCore::MeshPointArray pnts   = m_Mesh.GetPoints();  // file "kleines.stl" hat spitze über der ebene ... nicht kompatibel mit diesem Algo
+        // The file "Kleines.stl" has a point above the level ... not compatible with this Algo
+        /*MeshCore::MeshPointArray pnts   = m_Mesh.GetPoints();
         MeshCore::MeshFacetArray facets = m_Mesh.GetFacets();
 
         for(int i=0; i<pnts.size(); ++i)
@@ -745,7 +746,7 @@ best_fit_mesh2_button->setEnabled(true);
         m_Mesh.Assign(pnts,facets);*/
 
 		std::vector<double> CtrlPnts, U_knot, V_knot;
-		int degU,degV;	
+		int degU,degV;
 		m_App = new Approximate(m_Mesh,CtrlPnts,U_knot,V_knot,degU,degV,m_Settings.error_tolerance);
 
         //m_Approx = new UniGridApprox(m_Mesh, 1);
@@ -753,11 +754,11 @@ best_fit_mesh2_button->setEnabled(true);
 
         BRepBuilderAPI_MakeFace  Face(m_App->aAdaptorSurface.Surface());
         m_Shape = Face.Face();
-		
+
 		ofstream anOutputFile;
 	    anOutputFile.open("c:/approx_log.txt");
-		anOutputFile << "face zugewiesen" << endl;
-		
+		anOutputFile << "face assigned" << endl;
+
 		DisplayMeshOutput(m_App->MeshParam);
         DisplayShapeOutput();
         break;
@@ -837,7 +838,7 @@ void Cutting::DisplayCAMOutput()
     //std::vector<Handle_Geom_BSplineCurve>::iterator an_it;
     //topCurves = *(anewCuttingEnv.getOutputhigh());
     //botCurves = *(anewCuttingEnv.getOutputlow());
-  
+
 	ofstream anoutput;
 	ofstream anoutput2;
 	anoutput.open("c:/topCurves.txt");

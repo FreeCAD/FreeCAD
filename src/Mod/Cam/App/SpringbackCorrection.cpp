@@ -198,7 +198,8 @@ bool SpringbackCorrection::CalcCurv()
     m_MeshStruct.resize(m_CadMesh.CountPoints());
     MeanVec.resize(m_CadMesh.CountPoints(), 0);
 
-    // Fülle Map mit Punkten (Key) und deren, zur Basistriangulierung korrespondierenden, Indizes
+    // Fill the map with points (key) and their indices, which correspond
+    // to the basic triangulation
     MeshPnts = m_CadMesh.GetPoints();
 	MeshPntsCop = MeshPnts;
 	MeshFacets2 = m_CadMesh.GetFacets();
@@ -214,7 +215,7 @@ bool SpringbackCorrection::CalcCurv()
         MeshMap.insert(inp);
     }
 
-    // explores all faces  ------------  Hauptschleife
+    // explores all faces  ------------  Main loop
     for (aExpFace.Init(m_Shape,TopAbs_FACE);aExpFace.More();aExpFace.Next())
     {
         TopoDS_Face aFace = TopoDS::Face(aExpFace.Current());
@@ -224,7 +225,7 @@ bool SpringbackCorrection::CalcCurv()
         MeshPntsCopy = MeshPnts;
         n = MeshPnts.size();
         TopLoc_Location aLocation;
-        // berechne normalen -> m_MeshStruct
+        // calculate normal -> m_MeshStruct
         Handle_Poly_Triangulation aTr = BRep_Tool::Triangulation(aFace,aLocation);
         const TColgp_Array1OfPnt& aNodes = aTr->Nodes();
         // create array of node points in absolute coordinate system
@@ -322,7 +323,7 @@ bool SpringbackCorrection::CalcCurv()
 
             }
 
-            // Knoten auf der EDGE die EdgeOffset-Werte zuweisen
+            // Assign the EdgeOffset values to the node on the EDGE
 
             // Edge -> Polygon -> Nodes
             Handle(Poly_PolygonOnTriangulation) polyg;
@@ -355,7 +356,7 @@ bool SpringbackCorrection::CalcCurv()
 
                 ++MeanVec[meshIt->second.index];
 
-                // nehme stets den minimalen wert
+                // always use the minimum value
                 if (((*edge_it).second[0])>((*meshIt).second).minCurv)
                     ((*meshIt).second).minCurv = (*edge_it).second[0];
 
@@ -364,7 +365,7 @@ bool SpringbackCorrection::CalcCurv()
             }
         }
 
-        // Knoten INNERHALB eines Faces die Offset-Werte zuweisen
+        // Assign the offset values to the node INSIDE a face
         for (unsigned int k=0; k<FacePntVector.size(); ++k)
         {
             meshIt = MeshMap.find(FacePntVector[k].pnt);
@@ -409,7 +410,7 @@ bool SpringbackCorrection::CalcCurv()
     char text[10];
     int w;
 
-    // übergebe krümmungswerte an m_MeshStruct
+    // Pass curvature values to m_MeshStruct
     for (meshIt = MeshMap.begin(); meshIt != MeshMap.end(); ++meshIt)
     {
         w = meshIt->second.index;
@@ -418,7 +419,7 @@ bool SpringbackCorrection::CalcCurv()
         m_MeshStruct[w].minCurv = (((*meshIt).second).minCurv);
         m_MeshStruct[w].maxCurv = (((*meshIt).second).maxCurv);
 
-        // Ausgabe
+        // output
         if (m_MeshStruct[w].maxCurv<10000000000)
         {
             snprintf(text,10,"%f",m_MeshStruct[w].minCurv);
@@ -427,11 +428,11 @@ bool SpringbackCorrection::CalcCurv()
         }
 
         if (MeanVec[w] == 1)
-            log3d.addSinglePoint(m_MeshStruct[w].pnt,4,0,0,0); // innere punkte - > schwarz
+            log3d.addSinglePoint(m_MeshStruct[w].pnt,4,0,0,0); // inner points  -> black
         else if (MeanVec[w] == 2)
-            log3d.addSinglePoint(m_MeshStruct[w].pnt,4,1,1,1); // edge-punkte   - > weiß
+            log3d.addSinglePoint(m_MeshStruct[w].pnt,4,1,1,1); // edge points   -> white
         else
-            log3d.addSinglePoint(m_MeshStruct[w].pnt,4,1,0,0); // eck-punkte    - > rot
+            log3d.addSinglePoint(m_MeshStruct[w].pnt,4,1,0,0); // corner points -> red
 
         //m_MeshStruct[w].minCurv = (((*meshIt).second).minCurv)/MeanVec[w];
         //m_MeshStruct[w].maxCurv = (((*meshIt).second).maxCurv)/MeanVec[w];
@@ -492,7 +493,7 @@ bool SpringbackCorrection::CalcCurv()
         MeshPntsCopy = MeshPnts;
         n = MeshPnts.size();
         TopLoc_Location aLocation;
-        // berechne normalen -> m_MeshStruct
+        // calculate normal -> m_MeshStruct
         Handle_Poly_Triangulation aTr = BRep_Tool::Triangulation(aFace,aLocation);
         const TColgp_Array1OfPnt& aNodes = aTr->Nodes();
         // create array of node points in absolute coordinate system
@@ -562,7 +563,7 @@ bool SpringbackCorrection::Init()
     MeshMap.clear();
     //Remove any existing Triangulation on the Shape
     BRepTools::Clean(m_Shape);
-    best_fit::Tesselate_Shape(m_Shape,m_CadMesh,(float) 0.1); // Basistriangulierung des ganzen Shapes
+    best_fit::Tesselate_Shape(m_Shape,m_CadMesh,(float) 0.1); // Base triangulation of the entire shape
 
     MeshCore::MeshTopoAlgorithm algo(m_CadMesh);
     algo.HarmonizeNormals();
@@ -774,7 +775,7 @@ MeshCore::MeshKernel SpringbackCorrection::BuildMesh(Handle_Poly_Triangulation a
 int SpringbackCorrection::GetBoundary(const MeshCore::MeshKernel &mesh, MeshCore::MeshPointArray &meshPnts)
 {
     // get mesh-boundary
-    // zweck: nur für die inneren punkte wird der curvature wert über die edge abstände berechnet
+    // purpose: the curvature value is only calculated for the inner points using the edge distances
     std::list< std::vector <unsigned long> >  BoundariesIndex;
     std::list< std::vector <unsigned long> >::iterator bInd;
 
@@ -1120,7 +1121,7 @@ std::vector<int> SpringbackCorrection::InitFaceCheck(MeshCore::MeshKernel &mesh,
 
         if (alpha > tol)
         {
-            // markiere kritisches face
+            // highlight critical face
             mFacets[i].SetProperty(0);
 
             for (int j=0; j<3; ++j)
@@ -1210,8 +1211,8 @@ std::vector<int> SpringbackCorrection::FaceCheck(MeshCore::MeshKernel &mesh, int
 /*
 bool SpringbackCorrection::CorrectScale(double zLim)
 {
-    // VERSCHIEBUNGSVEKTOREN ...
-    // berechnung der skalierungsfaktoren bzgl. der Cad-Normalen
+    // DISPLACEMENT VECTORS...
+    // Calculation of the scaling factors in relation to the Cad norms
     int n = m_CadMesh.CountPoints();
     double zLev;
     for (int i=0; i<n; ++i)
@@ -1234,11 +1235,11 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
     //GetFaceAng(m_CadMesh, deg_Tol+1);
     //cout << "Init" << endl;
-    //Init();      // tesseliere shape -> Basistriangulierung CAD-Mesh
-    // EdgeMap wird hier gefüllt
+    //Init();      // tessellate shape -> basic triangulation CAD mesh
+    // EdgeMap will be filled here
 
 	Base::Vector3f nullvec(0.0,0.0,0.0);
-	m_dist_vec.resize(m_CadMesh.CountPoints(), nullvec); // fülle mit Nullvektoren
+	m_dist_vec.resize(m_CadMesh.CountPoints(), nullvec); // fill with null vectors
 
     cout << "SetFixEdges" << endl;
     
@@ -1251,10 +1252,10 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
     if (!CalcCurv())	
 	   return false;
 	
-	// berechne Krümmungswerte über Edgekrümmungen
-    // MeshMap wird hier gefüllt
+	// calculate curvature values using edge curvatures
+    // MeshMap is filled here
 
-    const MeshCore::MeshKernel RefMesh = m_CadMesh;  // übegebe CAD-Mesh vor der Verformung
+    const MeshCore::MeshKernel RefMesh = m_CadMesh;  // apply CAD mesh before deforming
 
     /*Base::Builder3D log;
     Base::Vector3f gpnt, normal;
@@ -1276,7 +1277,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
     log.saveToFile("c:/Facenormals.iv");*/
 
-    // speichere normalen seperat
+    // save normal separately
     m_normals.clear();
     m_normals.resize(m_MeshStruct.size());
 
@@ -1284,13 +1285,13 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
     for (unsigned int i=0; i<m_normals.size(); ++i)
     {
-        m_normals[i] = m_MeshStruct[i].normal;  // Normale am Punkt i der Basistriangulierung
+        m_normals[i] = m_MeshStruct[i].normal;  // Normal at point i of the base triangulation
         //logo.addSingleArrow(m_MeshStruct[i].pnt, m_MeshStruct[i].pnt + m_normals[i]);
     }
 
     //logo.saveToFile("c:/normals.iv");
 
-    // übergebe Normalen und CAD-Mesh für Fehlerberechnng
+    // Pass normals and CAD mesh for error calculation
     best_fit befi;
     befi.m_normals = m_normals;
     befi.m_CadMesh = m_CadMesh;
@@ -1299,11 +1300,11 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
 	for(unsigned int i=0; i<m_MeshVec.size(); ++i)
 	{
-		befi.CompTotalError(m_MeshVec[i]);  // Fehlerberechnung
+		befi.CompTotalError(m_MeshVec[i]);  // Error calculation
 	}
 
-    // VERSCHIEBUNGSVEKTOREN ...
-    // berechnung der skalierungsfaktoren bzgl. der Cad-Normalen
+    // DISPLACEMENT VECTORS...
+    // Calculation of the scaling factors with regard to the Cad norms
     int n = m_CadMesh.CountPoints();
     for (int i=0; i<n; ++i)
     {
@@ -1329,11 +1330,11 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
         }
     }
 
-    //Base::BoundBox3f bbox = m_CadMesh.GetBoundBox();  // hole bounding-box
-    //CorrectScale(bbox.MaxZ);                          // korrigiere verschiebungsvektoren...
+    //Base::BoundBox3f bbox = m_CadMesh.GetBoundBox();  // hole bounding box
+    //CorrectScale(bbox.MaxZ);                          // correct displacement vectors...
 
 	//m_set.correction_factor = -0.1;
-    // skalierung der Cad-Normalen
+    // scaling of the Cad normals
     for (int i=0; i<n; ++i)
     {
         m_normals[i].Scale((float) (m_set.correction_factor*m_Offset[i]),
@@ -1346,7 +1347,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 		 m_dist_vec[i] = m_normals[i];
 	}
 
-	if(out==true) //hier werden die Outputvektoren für Catia geschrieben
+	if(out==true) //the output vectors for Catia are written here
 	{
 		MeshCore::MeshPointArray mpts = RefMesh23.GetPoints();
 
@@ -1363,7 +1364,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
 		loo.saveToFile("c:/prpopo.iv");
 	    anOutputFile.close();
-		return true; //mehr braucne wir auch nicht....
+		return true; //we don't need any more...
 	}
 
 
@@ -1376,7 +1377,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
     MeshCore::MeshPointArray pntAr = m_CadMesh.GetPoints();
     MeshCore::MeshFacetArray facAr = m_CadMesh.GetFacets();
 
-    // Spiegelung
+    // Mirroring
     Base::Builder3D log3d;
     for (int i=0; i<n; ++i)
     {
@@ -1396,7 +1397,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
     // ********************************** GLOBAL CORRECTION ****************************************
     int cm = 49;
-    InitFaceCheck(m_CadMesh, deg_Tol+1);  // kritische dreiecke -> _ulProp = 0
+    InitFaceCheck(m_CadMesh, deg_Tol+1);  // critical triangles -> _ulProp = 0
     MeshCore::MeshFacetArray facAr2 = m_CadMesh.GetFacets();
 
     while (true)
@@ -1435,7 +1436,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
     MeshCore::MeshPointArray mPoints = m_CadMesh.GetPoints();
     int num = mFacets.size();
 
-    for (int i=0; i<num; ++i) mFacets[i].ResetFlag(MeshCore::MeshFacet::VISIT);   // lösche alle VISIT-Flags
+    for (int i=0; i<num; ++i) mFacets[i].ResetFlag(MeshCore::MeshFacet::VISIT);   // remove all VISIT flags
 
     m_RingCurrent = 0;
     std::vector<unsigned long> aRegion;
@@ -1450,12 +1451,12 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
     for (int i=0; i<num; ++i)
     {
 
-        cout << i << " von " << num << endl;
+        cout << i << " of " << num << endl;
         for (int m=0; m<num; ++m)
         {
             if (mFacets[m]._ulProp == 0)
 			{
-                mFacets[m].SetFlag(MeshCore::MeshFacet::VISIT);  // kritische faces kriegen ein visit-flag gesetzt
+                mFacets[m].SetFlag(MeshCore::MeshFacet::VISIT);  // critical faces are given a visit flag
 			}
         }
 
@@ -1480,8 +1481,8 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
         m_CadMesh.Assign(mPoints, mFacets);
 
         cout << "a" << endl;
-        if (mFacets[i]._ulProp == 1 && !mFacets[i].IsFlag(MeshCore::MeshFacet::VISIT)) // falls unkritisches facet
-            // welches noch nicht einer region zugewiesen wurde
+        if (mFacets[i]._ulProp == 1 && !mFacets[i].IsFlag(MeshCore::MeshFacet::VISIT)) // if uncritical facet
+            // which has not been assigned to a region yet
         {
 
             cout << "b" << endl;
@@ -1570,7 +1571,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
 
     /*
-       // hole rand der regionen
+       // get the edge of the regions
        MeshCore::MeshRefPointToFacets p2fIt(tmpMesh);
 
        for(int i=0; i<m_Regions[0].size(); ++i)
@@ -1702,7 +1703,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
 
 	//anOutputFile << 
-	
+
 
 
 
@@ -1723,13 +1724,13 @@ std::vector< std::pair<unsigned long, double> > SpringbackCorrection::RegionEval
     std::vector< std::pair<double, unsigned long> >  dists;
     std::vector< std::pair< unsigned long, double> > skals;
 
-    MeshCore::MeshAlgorithm algo(mesh);  // übergebe mesh
-    algo.GetFacetBorders(RegionFacets, Borders); // speichert ränder der region in Borders
+    MeshCore::MeshAlgorithm algo(mesh);  // pass mesh
+    algo.GetFacetBorders(RegionFacets, Borders); // saves edges of the region in Borders
 
     MeshCore::MeshFacetArray facets = mesh.GetFacets();
     MeshCore::MeshPointArray points = mesh.GetPoints();
 
-    // um doppelte indizes zu vermeiden push die punkte der region in eine map
+    // in order to avoid duplicate indices push the points of the region into a map
     for (unsigned int i=0; i<RegionFacets.size(); ++i)
     {
         for (int j=0; j<3; ++j)
@@ -1742,10 +1743,10 @@ std::vector< std::pair<unsigned long, double> > SpringbackCorrection::RegionEval
 		
     }
 
-    // berechne distanzen der regionenpunkte zu den rändern
+    // calculate the distances between the region points and the edges
 
-    Base::Vector3f distVec;   // speichert abstandsvektor
-    double distVal;     // speichert maximalen abstandswert zum rand
+    Base::Vector3f distVec;   // stores distance vector
+    double distVal;     // stores maximum distance to the edge
 
     for (rIt = RegionMap.begin(); rIt != RegionMap.end(); ++rIt)
     {
@@ -1807,7 +1808,7 @@ bool SpringbackCorrection::FacetRegionGrowing(MeshCore::MeshKernel &mesh,
         if (f_beg[*f_it]._ucFlag == MeshCore::MeshFacet::VISIT)
         {
             FacetRegion.push_back(f_beg[*f_it]);
-            mFacets[f_beg[*f_it]._ulProp].SetFlag(MeshCore::MeshFacet::INVALID); // markiere als schon zugewiesen
+            mFacets[f_beg[*f_it]._ulProp].SetFlag(MeshCore::MeshFacet::INVALID); // mark as already assigned
             FacetRegionGrowing(mesh, FacetRegion, mFacets);
         }
     }
@@ -1877,10 +1878,10 @@ bool SpringbackCorrection::GetCurvature(TopoDS_Face aFace)
         GeomAPI_ProjectPointOnSurf aProjection(proPnt,geom_surface);
         aProjection.LowerDistanceParameters(u_par,v_par);
 
-        // Berechne Krümmung
+        // Calculate curvature
         geom_surface->D2(u_par,v_par,proPnt,D1U,D1V,D2U,D2V,D2UV);
 
-        // erste & zweite Hauptkrümmung
+        // first & second main curve
         k1 = D1U.CrossMagnitude(D2U) / D1U.Magnitude();
         k2 = D1V.CrossMagnitude(D2V) / D1V.Magnitude();
 
@@ -1987,7 +1988,7 @@ std::vector<double> SpringbackCorrection::MeshCurvature(const TopoDS_Face& aFace
     gp_Pnt2d par;
     gp_Pnt P;
     gp_Vec D1U, D1V, D2U, D2V, D2UV, nor, xvv, xuv, xuu;
-	double H,K;   // Gaußsche- und mittlere Krümmung
+	double H,K;   // Gaussian and average curvature
 
 	std::vector<double> aMaxCurve, aMinCurve;
 	std::vector<double> curv(2);
@@ -1997,7 +1998,7 @@ std::vector<double> SpringbackCorrection::MeshCurvature(const TopoDS_Face& aFace
         par = aUVNodes.Value(i+1);
 		aSurface.D2(par.X(),par.Y(),P,D1U,D1V,D2U,D2V,D2UV);
 
-		//berechne Hilfsnormale
+        //compute auxiliary standards
 		nor = D1U;
 		nor.Cross(D1V);
 		nor.Normalize();
@@ -2019,9 +2020,9 @@ std::vector<double> SpringbackCorrection::MeshCurvature(const TopoDS_Face& aFace
 		aMinCurve.push_back(-(H + sqrt(H*H - K)));
 
 	}
-		
-		
-		
+
+
+
 	double maxCurv = 0.0;
 	double avgCurv = 0.0;
 	double tmp1 =  1e+10;
@@ -2080,7 +2081,7 @@ std::vector<double> SpringbackCorrection::MeshCurvature(const TopoDS_Face& aFace
 
 	
 	
-	//Krümmung auf Netzbasis
+	//Mesh-based curvature
 	
 	for(int i=0; i<n; ++i)
 	{
@@ -2184,7 +2185,7 @@ std::vector<double> SpringbackCorrection::MeshCurvature(const TopoDS_Face& aFace
 bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
 {
     // Flags: 0 - not yet checked
-    //       1 - no correction applied, but necessary
+    //        1 - no correction applied, but necessary
     //        2 - first correction applied and still necessary
     //        3 - done successfully
     //        4 - done without success
@@ -2329,7 +2330,7 @@ bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
                 continue;
             }
 
-            //---------------------------- 1. Korrektur -------------------------
+            //---------------------------- 1. Correction --------------------
             tmp = 0;
             std::vector<Base::Vector3f> ConvComb = FillConvex(NeiLoc,NorLoc,20);
 
@@ -2375,7 +2376,7 @@ bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
 
             MeshRef.Assign(PointArray, FacetArray);
 
-            //---------------------------- 2. Korrektur -------------------------
+            //---------------------------- 2. Correction ----------------------
             tmp = GlobalCorrection(NeiLoc,NorLoc,sign,ind[j]);
 
             //MeshRef.Assign(PointArray, FacetArray);
@@ -2423,7 +2424,7 @@ bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
             mx = ver;
     }
 
-    //cout << "skalierung: " << mx << endl;
+    //cout << "scaling: " << mx << endl;
     //for(int i=0; i<error.size(); ++i)
     //error[i] *= mx;
 
@@ -2435,7 +2436,7 @@ bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
     std::vector<int> IndexVec,NumVec, NumVecCopy;
     int c, lastNum, lastInd;
 
-    // kritische punkte plus anzahl seiner kritischen nachbarn speichern
+    // Save critical points plus number of your critical neighbors
     //ind.clear();
     for (unsigned int j=0; j<ind.size(); ++j)
     {
@@ -2459,7 +2460,7 @@ bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
         }
     }
 
-    // normalenskalierung
+    // normal scaling
     for (unsigned int j=0; j<ind.size(); ++j)
     {
         if ( ( abs(0.8*m_CurvMax[ind[j]]) - abs(error[ind[j]]) ) < 0)
@@ -2487,13 +2488,13 @@ bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
     log.saveToFile("c:/deformation.iv");
 
 
-    // kritische punkte nach der anzahl seiner kritischen nachbarn sortieren
+    // Sort critical points according to the number of their critical neighbors
     NumVecCopy = NumVec;
     std::vector<int> SortNumVec(NumVec.size(), -1);
     std::vector<int> SortIndVec(NumVec.size(), -1);
     cout << NumVec.size() << endl;
 
-    //cout << "vor dem sortieren: ";
+    //cout << "before sorting: ";
     //for(int j=0; j<NumVec.size(); ++j)
     //{
     //cout << NumVec[j] << ", ";
@@ -2582,7 +2583,7 @@ bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
         MeshCore::MeshGeomFacet face;
         mesh.AddFacet(face);
 
-        // berechne hauptachsen
+        // calculate major axes
         MeshCore::MeshEigensystem pca(mesh);
         pca.Evaluate();
         Base::Matrix4D T1 = pca.Transform();
@@ -2621,7 +2622,7 @@ bool SpringbackCorrection::MirrorMesh(std::vector<double> error)
         for (unsigned int i=0; i<NeiLoc.size(); ++i)
             NorLoc.push_back(v[s]);
 
-        // gewichtung (im verhältnis 1:2)
+        //weighting (ratio 1:2)
         w = float(1.0) /(float(NeiLoc.size()) + float(PntNei.size()) - float(1.0));
         bvec.Scale(w,w,w);
 
