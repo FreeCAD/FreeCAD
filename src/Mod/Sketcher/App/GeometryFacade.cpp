@@ -43,8 +43,8 @@ GeometryFacade::GeometryFacade(): Geo(nullptr), OwnerGeo(false), SketchGeoExtens
 
 }
 
-GeometryFacade::GeometryFacade(const Part::Geometry * geometry)
-: Geo(geometry), OwnerGeo(false)
+GeometryFacade::GeometryFacade(const Part::Geometry * geometry, bool owner)
+: Geo(geometry), OwnerGeo(owner)
 {
     assert(geometry != nullptr); // This should never be nullptr, as this constructor is protected
 
@@ -53,14 +53,14 @@ GeometryFacade::GeometryFacade(const Part::Geometry * geometry)
 
 GeometryFacade::~GeometryFacade()
 {
-    if (OwnerGeo)
+    if (OwnerGeo && Geo != nullptr)
         delete Geo;
 }
 
-std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry * geometry)
+std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry * geometry, bool owner)
 {
     if(geometry != nullptr)
-        return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry));
+        return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry, owner));
     else
         return std::unique_ptr<GeometryFacade>(nullptr);
     //return std::make_unique<GeometryFacade>(geometry); // make_unique has no access to private constructor
