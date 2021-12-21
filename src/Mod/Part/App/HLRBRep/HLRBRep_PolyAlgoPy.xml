@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+      Father="PyObjectBase"
+      Name="HLRBRep_PolyAlgoPy"
+      PythonName="Part.HLRBRep_PolyAlgo"
+      Twin="HLRBRep_PolyAlgo"
+      TwinPointer="HLRBRep_PolyAlgo"
+      Include="HLRBRep_PolyAlgo.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="false">
+    <Documentation>
+          <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+          <UserDocu>Describes functions to use HLR algorithm.</UserDocu>
+    </Documentation>
+    <Methode Name="load">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="remove">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="nbShapes">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="shape">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="index">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setProjector" Keyword="true">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="update">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="initHide">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="moreHide">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="nextHide">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="initShow">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="moreShow">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="nextShow">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="outLinedShape">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Attribute Name="Angle">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+        <Parameter Name="Angle" Type="Float"/>
+    </Attribute>
+    <Attribute Name="TolAngular">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+        <Parameter Name="TolAngular" Type="Float"/>
+    </Attribute>
+    <Attribute Name="TolCoef">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+        <Parameter Name="TolCoef" Type="Float"/>
+    </Attribute>
+    <ClassDeclarations>
+private:
+    Handle(HLRBRep_PolyAlgo) hAlgo;
+
+public:
+    Handle(HLRBRep_PolyAlgo) handle() {
+        return hAlgo;
+    }
+    </ClassDeclarations>
+    </PythonExport>
+</GenerateModel>
