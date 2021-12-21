@@ -144,11 +144,11 @@ public:
     bool OffsetWires_Standard();
     bool OffsetWires_FeatureBased();
     bool OffsetWires_Spiral();
-    //Die Abfolge der flachen Bereiche wird hier festgelegt(der Input kommt von der GUI)
+    //The sequence of the flat areas is determined here (the input comes from the GUI)
     bool SetMachiningOrder(const TopoDS_Face &aFace, float x,float y,float z);
     /*
-    Dient zum checken wieviele Faces wir haben und hier wird auch gleich ein vector gefüllt
-    wo alle flachen bereiche drin sind
+    It is used to check how many faces we have and a vector is also filled here where all
+    the flat areas are inside
     */
 
 	/*! \brief Hier finden wir eine tolle Funktion */ 
@@ -207,7 +207,7 @@ private:
     std::map<TopoDS_Face,std::map<Base::BoundBox3f,TopoDS_Wire,BoundBox3f_Less>,Face_Less > m_FaceWireMap;
     std::vector<std::pair<float,TopoDS_Shape> >::iterator m_ordered_cuts_it;
 
-    //Member zum checken ob CAD oder nicht
+    //Member to check whether CAD or not
     bool m_cad;
     TopoDS_Shape m_Shape;
     MeshCore::MeshKernel m_CAD_Mesh;
@@ -216,28 +216,18 @@ private:
     bool m_mirrortobothsides;
 
 
-    //Zustellungswert
+    //Delivery amount
     float m_pitch;
-    //Der höchste und niedrigste Z-Wert vom Shape
+    //The highest and lowest z-value of the shape
     float m_minlevel,m_maxlevel;
-    //Der Radius der Werkzeuge
+    //The radius of the tools
     float m_radius,m_radius_slave;
-    //Blechdicke
+    //Sheet metal thickness
     float m_sheet_thickness;
     bool m_direction; ////If we cut from top to bottom (true) or from bottom to top (false)
     std::vector<std::pair<Base::Vector3f,TopoDS_Face> > m_MachiningOrder;
-
-
-
-
-
-
-
-
 };
 
 #endif
-
-
 
 

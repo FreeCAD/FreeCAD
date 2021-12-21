@@ -31,10 +31,10 @@
 #include <GCPnts_AbscissaPoint.hxx>
 #include <Geom_BSplineCurve.hxx>
 
-#define curvTOL  30.0  // gibt maximalen Krümmungsradius an ab welchem eine Unterteilung der Kurve erfolgt
-#define TolDist  1.0   // entspricht der Samplingschrittweite der Kurvenpunkte für den Roboter-Output 
+#define curvTOL  30.0  // indicates the maximum radius of curvature from which the curve is subdivided
+#define TolDist  1.0   // corresponds to the sampling increment of the curve points for the robot output
 
-/* Konstruktor mit zwei Bahnfolgen (master tool & supporting die) als Input */
+/* Constructor with two path sequences (master tool & supporting die) as input */
 path_simulate::path_simulate(const std::vector<Handle_Geom_BSplineCurve> &BSplineTop,
                              const std::vector<Handle_Geom_BSplineCurve> &BSplineBottom,
                              struct CuttingToolsSettings& set)
@@ -49,7 +49,7 @@ path_simulate::path_simulate(const std::vector<Handle_Geom_BSplineCurve> &BSplin
     
 	m_single = false;
    
-	if(m_pretension > 0) beam = true;  // flag für "write_output_***" generierung
+	if(m_pretension > 0) beam = true;  // flag for "write_output_***" generation
 	else           		 beam = false;
 
     //Initialize the Iterators
@@ -86,7 +86,8 @@ path_simulate::path_simulate(const std::vector<Handle_Geom_BSplineCurve> &BSplin
     /* Fill p with the starting point of the first Slave curve*/
     (*m_it2)->D0((*m_it2)->FirstParameter(),p);
 
-    /* Set q to the initial-Z-level in the Simulation: -5mm - Slave-Radius-Spring-Pretensionbelow the sheet upper level which is located at Z=0 */
+    // Set q to the initial-Z-level in the Simulation:
+    // -5mm - Slave-Radius-Spring-Pretensionbelow the sheet upper level which is located at Z=0
     q.SetZ(-5.0 - set.slave_radius - m_pretension);
 
     /*Now we insert the start points for the Slave movement*/
@@ -129,8 +130,8 @@ double path_simulate::GetLength(GeomAdaptor_Curve& curve, const Standard_Real st
         return l1 + l2;
     }
 
-
-    return GCPnts_AbscissaPoint::Length(curve,sParam,eParam);   // genauigkeitssteuerung über parameter TOL nach eParam 
+    // Accuracy control via parameter TOL according to eParam
+    return GCPnts_AbscissaPoint::Length(curve,sParam,eParam);
 }
 */
 
@@ -151,11 +152,11 @@ double path_simulate::FindParamAt(GeomAdaptor_Curve& curve, double dist, double 
 }
 */
 
-/* Hier wird die absolute Geschwindigkeitsfunktion definiert und liefert die Geschwindigkeit zur Zeiteingabe <t>. 
-Die Funktion gliedert sich in drei Abschnitte mit den Parametergrenzen <m_t0>, <m_t1>, <m_t2>, <m_T> welche z.B.
-mittels path_simulate::ParameterCalculation() ermittelt werden kann. 
-Die Start- und Endgeschwindigkeit müssen vorher in <m_v[0]> und <m_v[2]> bestimmt werden.
-Die maximale Geschwindigkeit welche zwischen <m_t1> und <m_t2> erreicht werden soll, entspricht hier <m_v[1]> */
+/* The absolute speed function is defined here and provides the speed for time input <t>.
+The function is divided into three sections with the parameter limits <m_t0>, <m_t1>, <m_t2>, <m_T>
+which e.g. can be determined using path_simulate::ParameterCalculation()
+The start and end speed must be determined beforehand in <mv[0]> and <m_v[2]>
+The maximum speed that is to be achieved between <m_t1> and <m_t2> corresponds here to <m_v[1]> */
 double path_simulate::GetVelocity(double t)
 {
     double vel;
@@ -197,8 +198,8 @@ double path_simulate::GetVelocity(double t)
     return vel;
 }
 
-/* Diese Funktion liefert den zurückgelegten Weg zur Zeiteingabe <t> und entspricht 
-dem Integral der Funktion GetVelocity(t)*/
+/* This function supplies the distance covered to enter the time <t> and
+   corresponds to the integral of the GetVelocity(t) function */
 double path_simulate::GetDistance(double t)
 {
     double d;
@@ -258,10 +259,10 @@ double path_simulate::GetWireLength(TopoDS_Wire &aWire)
 }
 */
 
-/*Parameterberechnung der Geschwindigkeitsfunktion für eine gerade Strecke der Länge <S1>*/
+/*Parameter calculation of the speed function for a straight line of length <S1> */
 bool path_simulate::ParameterCalculation_Line(double S1)
 {
-    if (S1 == 0.0)  // hier gibts nichts zu tun
+    if (S1 == 0.0)  // there's nothing to be done here
     {
         m_T = m_t0;
         return true;
@@ -269,17 +270,17 @@ bool path_simulate::ParameterCalculation_Line(double S1)
 
 	m_a = m_amax;
 
-	m_v[0] = 0.0;                  // Startgeschwindigkeit wird auf Null gesetzt
-	m_v[1] = sqrt(m_a*S1/2.0);     // Geschwindigkeit die notwendig ist damit der Weg <S1> zur Zeit <m_T> erreicht wird
-	m_v[2] = 0.0;                  // Endgeschwindigkeit wird auf Null gesetzt
+	m_v[0] = 0.0;                  // Start speed is set to zero
+	m_v[1] = sqrt(m_a*S1/2.0);     // Speed that is necessary so that the path <S1> at the time <m_T> is reached
+	m_v[2] = 0.0;                  // Final speed is set to zero
 
-	while(m_v[1] > m_vmax)         // maximale Geschwindigkeit darf nicht überschritten werden
+	while(m_v[1] > m_vmax)         // maximum speed must not be exceeded
 	{
-		m_a /= 2;                  // Versuchs erneut mit halber Beschleunigung
-		m_v[1] = sqrt(m_a*S1/2.0); // Geschwindigkeit die notwendig ist damit der Weg <S1> zur Zeit <m_T> erreicht wird
+		m_a /= 2;                  // Retry at half acceleration
+		m_v[1] = sqrt(m_a*S1/2.0); // Speed that is necessary so that the path <S1> at the time <m_T> is reached
 	}
 
-	// Jetzt lassen sich die Zeitgrenzen berechnen
+    // Now the time limits can be calculated
     m_t1 = 2*m_v[1]/m_a + m_t0;
     m_t2 = m_t1;
     m_T = 2*m_t1 - m_t0;
@@ -287,37 +288,37 @@ bool path_simulate::ParameterCalculation_Line(double S1)
     return true;
 }
 
-/*Parameterberechnung der Geschwindigkeitsfunktion (definiert in path_simulate::GetVelocity())
-für einen Kurvenabschnitt der Länge <S1>. Aufruf muss stets vor der Funktion path_simulate::GetVelocity() erfolgen*/
+/* Parameter calculation of the speed function (defined in path_simulate::GetVelocity())
+for a curve section of length <S1>. The call must always be made before the path_simulate::GetVelocity() function */
 bool path_simulate::ParameterCalculation_Curve(double S1)
 {
-	// Berechnung der Zeitgrenzen
+	// Calculating the time limits
     m_t1 = m_t0 + 2*(abs(m_v[1]-m_v[0]))/m_a;
     m_t2 = m_t1;
     m_T  = m_t1 + 2*(abs(m_v[1]-m_v[2]))/m_a;
 
     double tmp, v_tmp;
-    tmp = GetDistance(m_T);  // liefert den Weg zurück, der unter den gegebenen Parametereinstellungen,
-	                         // zum hoch- und runterbeschleunigen, midestens notwendig ist 
+    tmp = GetDistance(m_T);  // returns the path that, under the given parameter settings,
+                             // to accelerate up and down, at least is necessary
 
-    if (tmp <= S1) // d.h. der Weg reicht aus
+    if (tmp <= S1) // i.e. the path is sufficient
     {
-        m_t2 = m_t1 + (S1 - tmp)/m_v[1];  // zwischen <m_t1> und <m_t2> wird die Kurve mit der konstanten 
-		                                  // Geschwindigkeit <m_v[1]> durchlaufen
+        m_t2 = m_t1 + (S1 - tmp)/m_v[1];  // between <m_t1> and <m_t2> the curve is traversed
+                                          // at the constant speed <m_v[1]>
     }
-    else // Weg reicht nicht aus -> Parameterkorrektur                            
+    else // Path is not sufficient -> parameter correction
     {
-		// Berechne Geschwindigkeit die mindestenns notwendig ist damit der Weg <S1> zur Zeit <m_T> erreicht wird 
+        // Calculate the speed that is at least necessary so that the path <S1> at time <m_T> is reached
         m_v[1] = sqrt((m_a*S1 + m_v[0]*m_v[0] + m_v[2]*m_v[2])/2.0);  
 		m_t1 = m_t0 + 2*(abs(m_v[1]-m_v[0]))/m_a;
         m_t2 = m_t1;
-		
-		// hier wird evtl. eine Korrektur notwendig
+
+        // a correction may be required here
 		if(m_v[1] > m_vmax)
 		{
 			m_v[1] = m_vmax;
-			
-			// ab hier wieder analog zu oben
+
+            // from here on again as above
 			m_t1 = m_t0 + 2*(abs(m_v[1]-m_v[0]))/m_a;
 			m_t2 = m_t1;
 			m_T  = m_t1 + 2*(abs(m_v[1]-m_v[2]))/m_a;
@@ -331,12 +332,11 @@ bool path_simulate::ParameterCalculation_Curve(double S1)
 			else
 			{
 				v_tmp = (m_vmax - std::min(m_v[1],m_v[2]))/2.0;
-				
-				while(tmp > S1) // hier wird die Geschwindigkeit <m_v[1]> solange in Richtung <m_v[2]> vekleinert bis
-					            // der Weg schließlich ausreicht
-				{
+
+                while(tmp > S1) // here the speed <mv[1]> is reduced in the direction <mv[2]>
+                {               // until the path is sufficient
 					m_v[1] = std::min(m_v[1],m_v[2]) + v_tmp;
-			
+
 					m_t1 = m_t0 + 2*(abs(m_v[1]-m_v[0]))/m_a;
 				    m_t2 = m_t1;
 				    m_T  = m_t1 + 2*(abs(m_v[1]-m_v[2]))/m_a;
@@ -349,12 +349,12 @@ bool path_simulate::ParameterCalculation_Curve(double S1)
 		}
     }
 
-    m_T = m_t2 + 2*(abs(m_v[1]-m_v[2]))/m_a;  // Endzeit lässt sich jetzt berechnen
+    m_T = m_t2 + 2*(abs(m_v[1]-m_v[2]))/m_a;  // End time can now be calculated
 
     return true;
 }
 
-/* setzt die Outputvektoren und den Beschleunigungsparameter <m_a> zurück. Die Startzeit <m_t0> wird aktualisiert*/
+// resets the output vectors and the acceleration parameter <m_a>. The start time <m_t0> is updated
 bool path_simulate::UpdateParam()
 {
     m_Output.clear();
@@ -362,66 +362,66 @@ bool path_simulate::UpdateParam()
     m_Output_time.clear();
     m_Output_time2.clear();
 
-    m_t0 = m_T;     // Endzeit des letzten Durchlaufs wird zur neuen Startzeit
+    m_t0 = m_T;     // The end time of the last run will become the new start time
 	m_a  = m_amax;
    
     return true;
 }
 
-/* Hilfsfunktion für die Zustellung. Rückgabewert legt fest ob zuerst in z- oder in xy-Richtung zugestellt wird*/
+/* Auxiliary function for the delivery. Return value defines whether delivery is first made in the z or xy direction*/
 bool path_simulate::CheckConnect()
 {
     gp_Pnt tmp;
 
-    // ab dem 2. lauf
+    // from the 2nd run
     if (m_it1 != m_BSplineTop.begin() || m_it2 != m_BSplineBottom.begin())
     {
         m_StartPnts1.clear(); 
         m_StartPnts2.clear(); 
 
-        // Berechne neue Verbindungspunkte für die Zustellung - MASTER -
+        // Calculate new connecting points for the delivery - MASTER -
 		m_it1--;
 
-		(*m_it1)->D0((*m_it1)->LastParameter(),tmp);  // Speichert Endpunkt der vorigen Master-Kurve in <tmp>      		
-		m_StartPnts1.push_back(tmp);                  // Pushe Endpunkt der vorigen Master-Kurve
+		(*m_it1)->D0((*m_it1)->LastParameter(),tmp);  // Saves the end point of the previous Master curve in <tmp>
+		m_StartPnts1.push_back(tmp);                  // Push end point of previous Master curve
 		
 		m_it1++; 
 		
-		(*m_it1)->D0((*m_it1)->FirstParameter(),tmp); // Speichert Startpunkt der vorigen Master-Kurve in <tmp>        
-		m_StartPnts1.push_back(tmp);                  // Pushe Startpunkt der aktuellen Master-Kurve
+		(*m_it1)->D0((*m_it1)->FirstParameter(),tmp); // Saves the starting point of the previous Mlave curve in <tmp>
+		m_StartPnts1.push_back(tmp);                  // Push start point of the current Master curve
 		               
-        if (m_single == false) // Falls beidseitig gefahren wird, mache dasselbe, wie für den Slave (s.o.)
+        if (m_single == false) // If both sides are driven, do the same as for the slave (see above)
         {
-            // Berechne neue Verbindungspunkte für die Zustellung - SLAVE -
+            // Calculate new connecting points for the delivery - SLAVE -
             m_it2--; 
 			
-			(*m_it2)->D0((*m_it2)->LastParameter(),tmp); // Speichert Startpunkt der vorigen Slave-Kurve in <tmp> 
-			m_StartPnts2.push_back(tmp);				 // Pushe Endpunkt der vorigen Slave-Kurve
+			(*m_it2)->D0((*m_it2)->LastParameter(),tmp); // Saves the starting point of the previous Slave curve in <tmp>
+			m_StartPnts2.push_back(tmp);                 // Push end point of previous Slave curve
             
 			m_it2++;            
 			  
             (*m_it2)->D0((*m_it2)->FirstParameter(),tmp); // Speichert Startpunkt der aktuellen Slave-Kurve in <tmp>             
-			m_StartPnts2.push_back(tmp);                  // Pushe Startpunkt der aktuellen Slave-Kurve
+			m_StartPnts2.push_back(tmp);                  // Push start point of the current Slave curve
         }
     }
     else
     {
-        return true;  // Erste zustellung immer gleich (in negativer z-Richtung)
+        return true;  // The first delivery is always the same (in the negative z-direction)
     }
 
-    if (m_StartPnts1[0].Z() - m_StartPnts1[1].Z() >= 0.0) return true;  // Zustellung in negativer z-Richtung
-    else                                                  return false; // Zustellung in positiver z-Richtung
+    if (m_StartPnts1[0].Z() - m_StartPnts1[1].Z() >= 0.0) return true;  // Infeed in the negative z-direction
+    else                                                  return false; // Infeed in the positive z-direction
 }
 
-/* Hilfsfunktion für die Zustellung. Rückgabewert legt fest ob zuerst in z- oder in xy-Richtung zugestellt wird*/
+/* Auxiliary function for the delivery. Return value defines whether delivery is first made in the z or xy direction*/
 bool path_simulate::CheckConnect(bool tool)
 {
     gp_Pnt tmp;
 
-    // ab dem 2. lauf
+    // from the 2nd run
     if (m_it1 != m_BSplineTop.begin() || m_it2 != m_BSplineBottom.begin())
     {
-        if (m_Feat == true)  // Für den Feature-Basierten Fall werden die Zustellungen von Master und Slave seperat behandelt	
+        if (m_Feat == true)  // For the feature-based case, the deliveries from Master and Slave are treated separately
 		{
 			 if (!tool)
 			 {
@@ -430,12 +430,12 @@ bool path_simulate::CheckConnect(bool tool)
 				 m_it1--;
 				 
 				 (*m_it1)->D0((*m_it1)->LastParameter(),tmp);
-				 m_StartPnts1.push_back(tmp);  // Startpunkt
+				 m_StartPnts1.push_back(tmp);  // Start point
 				 
 				 m_it1++;
 				 
 				 (*m_it1)->D0((*m_it1)->FirstParameter(),tmp);
-				 m_StartPnts1.push_back(tmp);  // Zielpunkt
+				 m_StartPnts1.push_back(tmp);  // Target point
 
 				 if(m_StartPnts1[0].Z() - m_StartPnts1[1].Z() >= 0.0) return true;
 				 else                                                 return false;
@@ -447,55 +447,55 @@ bool path_simulate::CheckConnect(bool tool)
 				 m_it2--;
 				 (*m_it2)->D0((*m_it2)->LastParameter(),tmp);
 				 m_it2++;
-				 m_StartPnts2.push_back(tmp);  // Startpunkt
+				 m_StartPnts2.push_back(tmp);  // Start point
 
 				 (*m_it2)->D0((*m_it2)->FirstParameter(),tmp);
-				 m_StartPnts2.push_back(tmp);  // Zielpunkt
+				 m_StartPnts2.push_back(tmp);  // Target point
 
 				 if(m_StartPnts2[0].Z() - m_StartPnts2[1].Z() >= 0.0) return true;
 				 else                                                 return false;
 			}
 		}
 
-		// Ab hier: Berechnung der Zustellungsvektoren für die synchrone Zustellung von Master und Slave
+        // From here: Calculation of the infeed vectors for the synchronous infeed of Master and Slave
 		m_StartPnts1.clear();
 		m_StartPnts2.clear();
 
-		// Berechne neue Verbindungspunkte für die Zustellung - MASTER
+		// Calculate new connecting points for the delivery - MASTER
 		m_it1--;
 		
 		(*m_it1)->D0((*m_it1)->LastParameter(),tmp);
-		m_StartPnts1.push_back(tmp);  // Startpunkt
-		
+        m_StartPnts1.push_back(tmp);  // Start point
+
 		m_it1++;
-		
+
 		(*m_it1)->D0((*m_it1)->FirstParameter(),tmp);
-		m_StartPnts1.push_back(tmp);  // Zielpunkt
+        m_StartPnts1.push_back(tmp);  // Target point
 
 		if (m_single == false)
 		{
-			// Berechne neue Verbindungspunkte für die Zustellung - SLAVE
+			// Calculate new connecting points for the delivery - SLAVE
 			m_it2--;
 			
 			(*m_it2)->D0((*m_it2)->LastParameter(),tmp);
-			m_StartPnts2.push_back(tmp);  // Startpunkt
+			m_StartPnts2.push_back(tmp);  // Start point
 			
 			m_it2++;
 			
 			(*m_it2)->D0((*m_it2)->FirstParameter(),tmp);
-			m_StartPnts2.push_back(tmp);  // Zielpunkt
+			m_StartPnts2.push_back(tmp);  // Target point
 		}
     }
     else
     {
-        return true;  // erste Zustellung immer gleich
+        return true;  // The first delivery is always the same
     }
 
     if (m_StartPnts1[0].Z() - m_StartPnts1[1].Z() >= 0.0) return true;
     else                                                  return false;
 }
 
-/* Füllt die Outputvektoren für die erste Zustellung. Der Eingabeparameter <brob> legt den Ausgabetyp fest*/
+/* Fills the output vectors for the first delivery. The input parameter <brob> defines the type of output*/
 bool path_simulate::ConnectPaths_xy(bool brob)
 {
     int N;
@@ -508,7 +508,7 @@ bool path_simulate::ConnectPaths_xy(bool brob)
 	gp_Pnt tmpPnt, pnt1, pnt2, p;
 	gp_Vec vec_t(m_StartPnts1[0], m_StartPnts1[1]);
 	
-	if( 1e-3 > vec_t.Magnitude())  // keine Zustellung erforderlich
+	if( 1e-3 > vec_t.Magnitude())  // no delivery necessary
 		return true;
 
     if (m_single == false)
@@ -516,13 +516,13 @@ bool path_simulate::ConnectPaths_xy(bool brob)
         gp_Vec vec_1(m_StartPnts1[0], m_StartPnts1[1]); 
         gp_Vec vec_2(m_StartPnts2[0], m_StartPnts2[1]);
 
-        gp_Vec2d vec_11, // Speichert Master-Zustellung in XY-Richtung
-			     vec_21; // Speichert Master-Zustellung in  Z-Richtung
+        gp_Vec2d vec_11, // Saves Master infeed in the XY-direction
+			     vec_21; // Saves Master infeed in the  Z-direction
 
         vec_11.SetX(vec_1.X());  
         vec_11.SetY(vec_1.Y());
 
-        if (m_it1 == m_BSplineTop.begin() && m_it2 == m_BSplineBottom.begin())  // erster lauf -> xy zustellung (Slave)
+        if (m_it1 == m_BSplineTop.begin() && m_it2 == m_BSplineBottom.begin())  // first run -> xy delivery (Slave)
         {
             vec_21.SetX(vec_2.X());
             vec_21.SetY(vec_2.Y());
@@ -530,25 +530,25 @@ bool path_simulate::ConnectPaths_xy(bool brob)
         else
         {
             vec_21.SetX(0.0);
-            vec_21.SetY(vec_2.Z());  // slave zustellung in z-Richtung (ab 2.Lauf)
+            vec_21.SetY(vec_2.Z());  // slave delivery in the z-direction (from 2nd run)
         }
 
-        // Simulationsoutput
+        // Simulation output
         if (brob == false)
         {
-			// ***** MASTER ******
+            // ***** MASTER ******
             
 			ParameterCalculation_Line(vec_11.Magnitude());
 
             if (vec_11.Magnitude() != 0)
                 vec_11.Normalize();
 
-            N = std::max(2, int(ceil((m_T - m_t0)/m_step))); // Anzahl der zu erzeugenden Outputwerte
-            m_del_t = (m_T - m_t0)/N;                   // Zeitschrittweite
+            N = std::max(2, int(ceil((m_T - m_t0)/m_step))); // Number of output values to be generated
+            m_del_t = (m_T - m_t0)/N;                   // Time increment
 
             for (int i=0; i<N; ++i)
             {
-				// Erzeuge XY-Outputvektor
+                // Generate XY output vector
                 tmp.x = vec_11.X()*GetVelocity(t);
                 tmp.y = vec_11.Y()*GetVelocity(t);
                 tmp.z = 0.0;
@@ -571,21 +571,21 @@ bool path_simulate::ConnectPaths_xy(bool brob)
             if (vec_21.Magnitude() != 0)
                   vec_21.Normalize();
 
-            N = std::max(2, int(ceil((m_T - m_t0)/m_step)));  // Anzahl der zu erzeugenden Outputwerte
-            m_del_t = (m_T - m_t0)/N;                    // Zeitschrittweite
+            N = std::max(2, int(ceil((m_T - m_t0)/m_step)));  // Number of output values to be generated
+            m_del_t = (m_T - m_t0)/N;                    // Time increment
 
             for (int i=0; i<N; ++i)
             {
                 if (m_it1 == m_BSplineTop.begin() && m_it2 == m_BSplineBottom.begin())
                 {
-					// Erzeuge XY-Outputvektor
+                    // Generate XY output vector
                     tmp.x = vec_21.X()*GetVelocity(t);
                     tmp.y = vec_21.Y()*GetVelocity(t);
                     tmp.z = 0.0;
                 }
                 else
                 {
-					// Erzeuge Z-Outputvektor
+                    // Generate Z output vector
                     tmp.x = 0.0;
                     tmp.y = 0.0;
                     tmp.z = vec_21.Y()*GetVelocity(t);
@@ -602,7 +602,7 @@ bool path_simulate::ConnectPaths_xy(bool brob)
                
             m_Output_time2.push_back(m_T);
 
-			// Nullvektor
+            // Null vector
             tmp.x = 0.0;
             tmp.y = 0.0;
             tmp.z = 0.0;
@@ -612,21 +612,21 @@ bool path_simulate::ConnectPaths_xy(bool brob)
             m_Output.push_back(tmp2);
             m_Output2.push_back(tmp2);
         }
-        else  // Roboter Output für den beidseitigen Fall
+        else  // Robot output for the case on both sides
         {
             bool con = false;
 
-            // hier wird die Anzahl <N> der Punkte für die Diskretisierung der Zustellungslinie berechnet
+            // calculate the number <N> of the points for the discretization of the infeed line
             if (vec_11.Magnitude() > vec_21.Magnitude()) N = std::max(2, int(ceil(vec_21.Magnitude()/TolDist)));
-            else     				                     N = std::max(2, int(ceil(vec_11.Magnitude()/TolDist)));
+            else                                         N = std::max(2, int(ceil(vec_11.Magnitude()/TolDist)));
 
             if (vec_11.Magnitude() == 0.0 && vec_21.Magnitude() == 0.0) N=0;
 			if (!m_conn) con = true;
 
-            // Erster Punkt wird stets weggelassen
+            // The first point is always omitted
             if (m_it1 == m_BSplineTop.begin() && m_it2 == m_BSplineBottom.begin())
             {
-				// Startpunkt Master
+                // Start point Master
                 tmp.x = m_StartPnts1[0].X();
                 tmp.y = m_StartPnts1[0].Y();
                 tmp.z = m_StartPnts1[0].Z();
@@ -634,16 +634,16 @@ bool path_simulate::ConnectPaths_xy(bool brob)
 				m_Output_robo1.push_back(tmp);
                 RoboFlag_Master.push_back(0);
 
-				// Startpunkt Slave
+                // Start point Slave
                 tmp.x = m_StartPnts2[0].X();
                 tmp.y = m_StartPnts2[0].Y();
                 tmp.z = m_StartPnts2[0].Z();
-                
+
 				m_Output_robo2.push_back(tmp);
                 RoboFlag_Slave.push_back(0);
             }
 
-            // Erzeuge Output - MASTER
+            // Generate Output - MASTER
             for (int i=1; i<N; ++i)
             {
                 tmp.x = m_StartPnts1[0].X() + (double(i)*vec_11.X())/(double(N)-1.0);
@@ -654,7 +654,7 @@ bool path_simulate::ConnectPaths_xy(bool brob)
                 RoboFlag_Master.push_back(0);
             }
 
-            // // Erzeuge Output - SLAVE
+            // // Generate Output - SLAVE
             for (int i=1; i<N; ++i)
             {
                 if (m_it1 == m_BSplineTop.begin() && m_it2 == m_BSplineBottom.begin())
@@ -694,8 +694,8 @@ bool path_simulate::ConnectPaths_xy(bool brob)
             m_del_t = (m_T-m_t0)/double(N);
 
             for(int i=0; i<N; ++i)
-            {    
-				// Erzeuge XY-Outputvektor
+            {
+                // Generate XY output vector
                 tmp.x = vec_11.X()*GetVelocity(t);
                 tmp.y = vec_11.Y()*GetVelocity(t);
                 tmp.z = 0.0;
@@ -711,7 +711,7 @@ bool path_simulate::ConnectPaths_xy(bool brob)
 
             m_Output_time.push_back(m_T);
 
-			// Nullvektor 
+            // Null vector 
             tmp.x = 0.0;
             tmp.y = 0.0;
             tmp.z = 0.0;
@@ -722,7 +722,7 @@ bool path_simulate::ConnectPaths_xy(bool brob)
         }
         else
         {
-            N = (int) vec_11.Magnitude();  // Anzahl der zu erzeugenden Outputwerte
+            N = (int) vec_11.Magnitude();  // Number of output values to be generated
 
             for (int i=0; i<N; ++i)
             {
@@ -738,7 +738,7 @@ bool path_simulate::ConnectPaths_xy(bool brob)
 	return true;
 }
 
-/* Füllt die Outputvektoren für die zweite Zustellung. Der Eingabeparameter <brob> legt den Ausgabetyp fest*/
+/* Fills out the output vectors for the second delivery. The input parameter <brob> defines the output type*/
 bool path_simulate::ConnectPaths_z(bool brob)
 {
     int N;
@@ -781,12 +781,12 @@ bool path_simulate::ConnectPaths_z(bool brob)
             if (vec_11.Magnitude() != 0)
                 vec_11.Normalize();
 
-            N = std::max(2, int(ceil((m_T - m_t0)/m_step)));  // Anzahl der zu erzeugenden Outputwerte
-            m_del_t = (m_T - m_t0)/N;                    // Zeitschrittweite
+            N = std::max(2, int(ceil((m_T - m_t0)/m_step)));  // Number of output values to be generated
+            m_del_t = (m_T - m_t0)/N;                    // Time increment
 
             for (int i=0; i<N; ++i)
             {
-				// Erzeuge Z-Outputvektor
+                // Generate Z output vector
                 tmp.x = 0.0;
                 tmp.y = 0.0;
                 tmp.z = vec_11.Y()*GetVelocity(t); 
@@ -802,29 +802,29 @@ bool path_simulate::ConnectPaths_z(bool brob)
 			 
 			m_Output_time.push_back(m_T);
 
-			// ***** SLAVE ******
+            // ***** SLAVE ******
 			t = m_t0;
 			ParameterCalculation_Line(vec_12.Magnitude());
 
             if (vec_12.Magnitude() != 0)
                   vec_12.Normalize();
 
-            N = std::max(2, int(ceil((m_T - m_t0)/m_step)));  // Anzahl der zu erzeugenden Outputwerte
-            m_del_t = (m_T - m_t0)/N;                    // Zeitschrittweite
+            N = std::max(2, int(ceil((m_T - m_t0)/m_step)));  // Number of output values to be generated
+            m_del_t = (m_T - m_t0)/N;                    // Time increment
 
             for (int i=0; i<N; ++i)
             {
                 if (m_it1 == m_BSplineTop.begin() && m_it2 == m_BSplineBottom.begin())
                 {
-					// Erzeuge Z-Outputvektor im allerersten Schritt
+                    // Generate Z output vector in the very first step
                     tmp.x = 0.0;
                     tmp.y = 0.0;
                     tmp.z = vec_12.Y()*GetVelocity(t);
                 }
-                else // Slave Zustellung in XY-Richtung
+                else // Slave infeed in XY direction
                 {
-					// Erzeuge XY-Outputvektor
-                    tmp.x = vec_12.X()*GetVelocity(t);   
+                    // Generate XY output vector
+                    tmp.x = vec_12.X()*GetVelocity(t);
                     tmp.y = vec_12.Y()*GetVelocity(t);
                     tmp.z = 0.0;
                 }
@@ -849,18 +849,18 @@ bool path_simulate::ConnectPaths_z(bool brob)
             m_Output.push_back(tmp2);
             m_Output2.push_back(tmp2);
         }
-        else  // Roboteroutput
+        else  // Robot output
         {
-            if (vec_11.Magnitude() > vec_12.Magnitude()) std::max(2, N = int(ceil(vec_12.Magnitude()/TolDist)));  // Anzahl der zu erzeugenden Outputwerte
-            else                                         std::max(2, N = int(ceil(vec_11.Magnitude()/TolDist)));  // Anzahl der zu erzeugenden Outputwerte
+            if (vec_11.Magnitude() > vec_12.Magnitude()) std::max(2, N = int(ceil(vec_12.Magnitude()/TolDist)));  // Number of output values to be generated
+            else                                         std::max(2, N = int(ceil(vec_11.Magnitude()/TolDist)));  // Number of output values to be generated
     
             if (vec_11.Magnitude() == 0.0 && vec_12.Magnitude() == 0.0) N=1;
 
             for (int i=1; i<N; ++i)
             {
-				/*MASTER*/
+                /*MASTER*/
 
-				// Erzeuge Outputvektor für die Zustellung in Z-Richtung
+                // Generate output vector for delivery in the Z-direction
                 tmp.x = m_StartPnts1[m_conn].X();
                 tmp.y = m_StartPnts1[m_conn].Y();
                 tmp.z = m_StartPnts1[0].Z() + (double(i)*vec_11.Y())/double(N-1);
@@ -869,19 +869,18 @@ bool path_simulate::ConnectPaths_z(bool brob)
                 RoboFlag_Master.push_back(0);
 
 
-
-				/*SLAVE*/
+                /*SLAVE*/
 
                 if (m_it1 == m_BSplineTop.begin() && m_it2 == m_BSplineBottom.begin())
                 {   
-					// Erzeuge Outputvektor für die Zustellung in Z-Richtung (nur im allerersten Schritt)
+                    // Generate output vector for delivery in the Z-direction (only in the very first step)
                     tmp.x = m_StartPnts2[1].X();
                     tmp.y = m_StartPnts2[1].Y();
                     tmp.z = m_StartPnts2[0].Z() + (double(i)*vec_12.Y())/double(N-1);
                 }
                 else
                 {
-					// Erzeuge Outputvektor für die Zustellung in XY-Richtung
+                    // Generate output vector for delivery in the XY-direction
                     tmp.x = m_StartPnts2[0].X() + (double(i)*vec_12.X())/double(N-1);
                     tmp.y = m_StartPnts2[0].Y() + (double(i)*vec_12.Y())/double(N-1);
                     tmp.z = m_StartPnts2[m_conn].Z();
@@ -907,14 +906,14 @@ bool path_simulate::ConnectPaths_z(bool brob)
 			if (vec_12.Magnitude() != 0)
                   vec_12.Normalize();
 
-            N = std::max(2, int(ceil((m_T - m_t0)/m_step)));  // Anzahl der zu erzeugenden Outputwerte
-            m_del_t = (m_T - m_t0)/N;                    // Zeitschrittweite
+            N = std::max(2, int(ceil((m_T - m_t0)/m_step)));  // Number of output values to be generated
+            m_del_t = (m_T - m_t0)/N;                    // Time increment
 
             for (int i=0; i<N; ++i)
             {
                 m_Output_time.push_back(t);
 
-				// Erzeuge Z-Outputvektor
+                // Generate Z output vector
                 tmp.x = 0.0;
                 tmp.y = 0.0;
                 tmp.z = vec_12.Y()*GetVelocity(t);
@@ -930,7 +929,7 @@ bool path_simulate::ConnectPaths_z(bool brob)
 
             m_Output_time.push_back(t);
 
-			// Nullvektor
+			// Null vector
             tmp.x = 0.0;
             tmp.y = 0.0;
             tmp.z = 0.0;
@@ -939,13 +938,13 @@ bool path_simulate::ConnectPaths_z(bool brob)
             m_Output.push_back(tmp2);
             tmp2.clear();
         }
-        else // Roboteroutput
+        else // Robot output
         {
-            N =(int) vec_12.Magnitude();  // Anzahl der zu erzeugenden Outputwerte
+            N =(int) vec_12.Magnitude();  // Number of output values to be generated
 
             for (int i=0; i<N; ++i)
             {
-				// Erzeuge Outputvektor für die Zustellung in XY-Richtung
+                // Generate output vector for delivery in the XY-direction
                 tmp.x = m_StartPnts1[0].X() + (i*vec_12.X())/N;
                 tmp.y = m_StartPnts1[0].Y() + (i*vec_12.Y())/N;
                 tmp.z = m_StartPnts1[0].Z();
@@ -958,11 +957,11 @@ bool path_simulate::ConnectPaths_z(bool brob)
     return true;
 }
 
-/* Füllt die Outputvektoren für die Zustellung für den Feature-Basierten Fall. 
-Der Eingabeparameter <brob> legt den Ausgabetyp fest*/
+/* Fills in the output vectors for the delivery for the feature-based case. 
+The input parameter <brob> defines the type of output*/
 bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Slave)
-                                      bool brob,  // Ausgabetyp     (Roboter, Simulation)
-                                      bool c_typ) // Zustellungsart (in zwei bzw. drei Schritten)
+                                      bool brob,  // Output type    (Robot, Simulation)
+                                      bool c_typ) // Delivery type  (in two or three steps)
 {
     int N, ind;
     double rad, t;
@@ -978,7 +977,7 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
     std::vector<Base::Vector3d> tmp2;
     double vel;
 
-    dir = CheckConnect(tool);  // setze Starpunkte neu
+    dir = CheckConnect(tool);  // set new starting points
 
     if (!tool)
     {
@@ -991,13 +990,13 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
         rad = m_set.slave_radius;
     }
 
-    if (c_typ)  // Zustellung in 2 Schritten
+    if (c_typ)  // Delivery in 2 steps
     {
         ind = 2;
         vec_tmp[0].SetCoord(0.0, 0.0, abs(ConnPnts[1].Z()-ConnPnts[0].Z()));
         vec_tmp[1].SetCoord(ConnPnts[1].X()-ConnPnts[0].X(), ConnPnts[1].Y()-ConnPnts[0].Y(), 0.0);
 
-        if (dir) // tool  (Master/Slave) muss runter fahren
+        if (dir) // tool  (Master/Slave) must go down
         {
             if (!tool)
             {
@@ -1010,7 +1009,7 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
                 vec[1] =  vec_tmp[1];
             }
         }
-        else   // tool  (Master/Slave) muss hoch fahren
+        else   // tool  (Master/Slave) must go up
         {
             if (!tool)
             {
@@ -1024,7 +1023,7 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
             }
         }
     }
-    else // Zustellung in 3 Schritten
+    else // Delivery in 3 steps
     {
         ind = 3;
 
@@ -1032,7 +1031,7 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
         vec_tmp[1].SetCoord(ConnPnts[1].X()-ConnPnts[0].X(), ConnPnts[1].Y()-ConnPnts[0].Y(), 0.0);
         vec_tmp[2].SetCoord(0.0, 0.0, abs(ConnPnts[1].Z()-ConnPnts[0].Z()) + rad);
 
-        if (dir) // tool  (Master/Slave) muss runter fahren
+        if (dir) // tool  (Master/Slave) must go down
         {
             if (!tool)
             {
@@ -1047,7 +1046,7 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
                 vec[2] =  vec_tmp[0];
             }
         }
-        else   // tool  (Master/Slave) muss hoch fahren
+        else   // tool  (Master/Slave) must go up
         {
             if (!tool)
             {
@@ -1064,11 +1063,11 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
         }
     }
 
-    if (brob) // Roboteroutput
+    if (brob) // Robot output
 	{   
 		for (int i=0; i<ind; ++i)
 		{
-			N = std::max(2, int(ceil(vec[i].Magnitude()/TolDist)));  // Anzahl der zu erzeugenden Outputwerte
+			N = std::max(2, int(ceil(vec[i].Magnitude()/TolDist)));  // Number of output values to be generated
 
 			for(int j=1; j<N; ++j)
 			{
@@ -1080,13 +1079,13 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
 				else      m_Output_robo2.push_back(tmp);  // Slave
 			}
 
-			ConnPnts[0].SetCoord(tmp.x , tmp.y, tmp.z); // Setze Startpunkt = Endpunkt für die nächste Iteration
+			ConnPnts[0].SetCoord(tmp.x , tmp.y, tmp.z); // Set start point = end point for the next iteration
 		}
 
 		return true;
 	}
 	
-	if(ConnPnts[0].Distance(ConnPnts[1]) < 1e-3) return true;  // keine Zustellung bei Spiralbahnen !!!
+	if(ConnPnts[0].Distance(ConnPnts[1]) < 1e-3) return true;  // no delivery on spiral tracks!!!
 
     for (int i=0; i<ind; ++i)
     {
@@ -1095,8 +1094,8 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
         if (vec[i].Magnitude() != 0.0) vec[i].Normalize();
         else continue;
 
-        N = std::max(2,(int) ceil((m_T - m_t0)/m_step)); // Anzahl der zu erzeugenden Outputwerte
-        m_del_t = (m_T - m_t0)/N;                   // Zeitschrittweite
+        N = std::max(2,(int) ceil((m_T - m_t0)/m_step)); // Number of output values to be generated
+        m_del_t = (m_T - m_t0)/N;                   // Time increment
 
         for (int j=0; j<N; ++j)
         {
@@ -1108,13 +1107,13 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
             tmp.z = vec[i].Z()*vel;
 
             tmp2.push_back(tmp);
-            Out.push_back(tmp2);  // Fülle temporären Output-Vektor (wird weiter unten zugewiesen)
+            Out.push_back(tmp2);  // Fill Temporary Output Vector (will be assigned below)
 
             t += m_del_t;
 			tmp2.clear();
         }
 
-        m_t0 = m_T; // Endzeit des letzten Durchlaufs wird zur neuen Startzeit
+        m_t0 = m_T; // The end time of the last run will become the new start time
     }
 
     Times.push_back(m_T);
@@ -1138,15 +1137,15 @@ bool path_simulate::ConnectPaths_Feat(bool tool,  // Tool           (Master, Sla
         m_Output_time2 = Times;
     }
 
-    return true;  
+    return true;
 }
 
-/* Hier wird unter Berücksichtigung der Krümmungstoleranz <curvTOL> eine Unterteilung der Kurve vorgenommen.
-Die Bereichsgrenzen werden im Rückgabevektor zurückgeliefert. Der Ausgabevektor ist leer wenn die maximale Krümmung
-den Toleranzwert nicht überschreitet und somit auch keine Unterteilung notwendig ist */ 
+/* The curve is subdivided here, taking into account the <curvTOL> curvature tolerance.
+The range limits are returned in the return vector. The output vector is empty when the maximum curvature
+does not exceed the tolerance value and therefore no subdivision is necessary */ 
 std::vector<std::vector<double> > path_simulate::CompBounds(bool tool,std::vector<double> knots)
 {
-	m_curMax = 0.0; // setze maximale Krümmung initial auf Null	
+    m_curMax = 0.0; // set maximum curvature initially to zero
 	double cr_bound = 1/curvTOL;
 	double cr_last;
 	gp_Vec dtmp1, dtmp2;
@@ -1156,25 +1155,25 @@ std::vector<std::vector<double> > path_simulate::CompBounds(bool tool,std::vecto
     std::vector<double> bounds;
     std::vector<std::vector<double> > CriticalBounds;
 
-    // lade aktuelle Kurve
+    // load current curve
     if (!tool)  curve.Load(*m_it1);
     else        curve.Load(*m_it2);
 
-    double fParam = curve.FirstParameter(), // Erster Kurvenparameter
-           lParam = curve.LastParameter(),  // Letzter Kurvenparameter
-     	   period = lParam - fParam;        // Länge des Parameterbereichs
- 
+    double fParam = curve.FirstParameter(), // First curve parameter
+           lParam = curve.LastParameter(),  // Last curve parameter
+           period = lParam - fParam;        // Length of the parameter range
 
-	int n  = knots.size();  // Länge des Knotenvektors
+
+	int n  = knots.size();  // Length of the knot vector
 	bool b = false;
 
-	// Hier erfolgt die Berechnung der maximalen Krümmung <m_curMax>
-	// Die Parameter der Bereichsgrenzen an denen die Kurvenkrümmung dem Toleranzwert <cr_bound> 
-	// entspricht werden in den Vektor <bounds> für die weitere Nachbearbeitung gefüllt
+    // The maximum curvature <m_curMax> is calculated here
+    // The parameters of the range limits at which the curvature of the curve corresponds to the tolerance
+    // value <cr_bound> corresponds to are filled into the vector <bounds> for further post-processing
     for (int i=0; i<n; ++i)
     {
-		curve.D2(knots[i], dtmp0, dtmp1, dtmp2); // Da es sich um eine kubische B-Spline Kurve handelt,
-		                                         // kann die maximale Krümmung nur an den Knotenpunkten angenomen werden
+        curve.D2(knots[i], dtmp0, dtmp1, dtmp2); // Since it is a cubic B-spline curve,
+                                                 // the maximum curvature can only be assumed at the knot points
 		if(dtmp2.Magnitude() >= cr_bound && !b)
 		{
 			if(knots[i] >= m_boundTol && knots[i] < lParam - m_boundTol)
@@ -1209,19 +1208,19 @@ std::vector<std::vector<double> > path_simulate::CompBounds(bool tool,std::vecto
 			b = false;
 		}
 		
-		cr_last = dtmp2.Magnitude(); // Krümmung entspricht hier dem Betrag der zweiten Ableitung
-			
-		if(m_curMax < cr_last)  // Speichert maximale Krümmung
+		cr_last = dtmp2.Magnitude(); // The curvature here corresponds to the amount of the second derivative
+
+		if(m_curMax < cr_last)  // Stores maximum curvature
 			m_curMax = cr_last;
 	}
 
 	if(period < 2*m_boundTol || bounds.size() == 0)
 		return CriticalBounds;
 
-	if(b) bounds.push_back(lParam - m_boundTol);  // Hier muss evtl. noch die letzte Grenze eingefügt werden
+	if(b) bounds.push_back(lParam - m_boundTol);  // The last limit may have to be added here
 
-	n = (int) bounds.size()/2;  // <bounds> hat stets gerade Länge
-	for(int i=0; i<n; i++)      // Fasse Bereiche welche einen geringeren Abstand als <m_boundTol> haben zusammen
+	n = (int) bounds.size()/2;  // <bounds> is always of even length
+	for(int i=0; i<n; i++)      // Combine areas with a smaller distance than <m_boundTol>
 	{
 		single_bound.push_back(bounds[2*i]);
 		
@@ -1236,14 +1235,14 @@ std::vector<std::vector<double> > path_simulate::CompBounds(bool tool,std::vecto
     return CriticalBounds;
 }
 
-/* Hier wird die Vorarbeit für die Funktion Gen_Path() geleistet.
-Die Vektoren <m_length>, <m_velocity>, <m_accel> werden für die aktuelle Kurve gefüllt.*/ 
+/* This is where the preparatory work for the Gen_Path () function is done.
+The vectors <m_length>, <m_velocity>, <m_accel> are filled for the current curve. */
 bool path_simulate::CompPath(bool tool) // tool = 0  -> Master
                                         // tool = 1  -> Slave
 {
-	m_boundTol = pow(m_vmax, 2.0)/m_amax; // Toleranzbereich vor kritischen Bereichen (notwendig zum Hochbeschleunigen)
+	m_boundTol = pow(m_vmax, 2.0)/m_amax; // Tolerance range in front of critical areas (necessary for high acceleration)
 	
-	double cur     = 1.0/curvTOL,         // Krümmungstoleranz für die Kurvenunterteilung
+	double cur     = 1.0/curvTOL,         // Curvature tolerance for curve division
 	       pos     = 0.0, 
 	       cur_tmp = 0.0;
 
@@ -1267,27 +1266,27 @@ bool path_simulate::CompPath(bool tool) // tool = 0  -> Master
 
 	double d2, velo, tetha, 
 		   len, len_1;
-   
-	double t0 = m_t0; // Übergibt aktuelle Startzeit
 
-	int num = Detect_FeatCurve(tool);  // Liefert Anzahl der zu fahrenden Kurven (i.d.R. num = 1) 
-	
-	for(int a=0; a<num; a++)  // Schleife über die zusammenhängenden Kurven
+    double t0 = m_t0; // Returns the current start time
+
+    int num = Detect_FeatCurve(tool);  // Returns the number of curves to be driven (usually num = 1)
+
+    for(int a=0; a<num; a++)  // Loop over the connected curves
 	{
-		// lade aktuelle kurven
-	    if (!tool)  curve.Load(*m_it1);
+        // load current curves
+        if (!tool)  curve.Load(*m_it1);
 		else        curve.Load(*m_it2);
 
-		// setze Parameter neu
+        // reset parameters
 		fParam = curve.FirstParameter();
 		lParam = curve.LastParameter();
 		period = lParam - fParam;
 
-		// übergibt Starparameter der aktuellen Kurve
+        // transfers the start parameters of the current curve
 		m_StartParam[tool] = fParam;
 		start = m_StartParam[tool];
-		
-		// *** Berechnung des Knotenvektors ***
+
+        // *** Calculating the Knot vectors ***
 		if (!tool)
 		{
 			nb_knots = (*m_it1)->NbKnots();
@@ -1305,23 +1304,22 @@ bool path_simulate::CompPath(bool tool) // tool = 0  -> Master
 		for(int i=0; i<m_Knots->Length(); i++)
 			knot_vec[i] = m_Knots->Value(i);
 
-		// *** Ende der Berechnung des Knotenvektors ***
+        // *** End of the calculation of the Knot vectors ***
 
 
-		std::vector<std::vector<double> > CriticalBounds = 
-			                                CompBounds(tool, knot_vec); // Berechnet auf Basis der aktuellen Kurve, 
-																	    // die kritischen Bereiche im Parameterraum und 
-																	    // berechnet gleichzeitig die maximale Kurvenkrümmung <m_curMax>
-		
-		m_vmid = std::min(m_vmax,sqrt(m_amax/m_curMax)); // Legt Geschwindigkeit fest mit der allen kritischen Bereiche     
-		                                            // abgefahren werden
+        std::vector<std::vector<double> > CriticalBounds = 
+                                            CompBounds(tool, knot_vec); // Calculated on the basis of the current curve,
+                                                                        // the critical areas in the parameter space and
+                                                                        // simultaneously calculates the maximum curvature <m_curMax>
 
-Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer Versuch mit halbem <m_vmid> gestartet
-		
-		v[0] = 0.0;  // starte jede Kurve mit v = 0
+        m_vmid = std::min(m_vmax,sqrt(m_amax/m_curMax)); // Defines the speed with which all critical areas are traveled
+
+Newtry: // If the generated path lengths are insufficient, a new attempt is started with half the <m_vmid>
+
+        v[0] = 0.0;  // start every curve with v = 0
 		int m = 0;
 
-		for (unsigned int i=0; i<CriticalBounds.size(); ++i)  // Schleife über einzelne Unterteilungsbereiche
+        for (unsigned int i=0; i<CriticalBounds.size(); ++i)  // Loop over individual subdivision areas
 		{
 			d2 = 0.0;
 			pos = m_Knots->Value(m);
@@ -1332,25 +1330,25 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 				pos = m_Knots->Value(m);
 			}
 			
-			/*------------------- Gerader Bereich ---------------------*/
+			/*------------------- Straight section ---------------------*/
 			
-			while(pos < CriticalBounds[i][0]) // Berechnung der maximalen Krümmung dieses geraden Bereichs
+			while(pos < CriticalBounds[i][0]) // Calculate the maximum curvature of this straight section
 			{
 				curve.D2(pos, pnt0, pnt1, pnt2);
-				cur_tmp = pnt2.Magnitude();   // Krümmung am aktuellen Punkt
+				cur_tmp = pnt2.Magnitude();   // Curvature at the current point
 				
 				if(d2 < cur_tmp) 
-					d2 = cur_tmp;             // Speichert maximale Krümmung dieses geraden Bereichs
+					d2 = cur_tmp;             // Stores maximum curvature dieses geraden Bereichs
 
 				m++;
 				pos = m_Knots->Value(m);
 			}
 
-			tetha = 0.6 + 0.25*sqrt(d2/m_curMax);         // Setzt tetha-parameter -> (0.6 < tetha < 0.85)
-			velo = std::min(m_vmax, tetha*(sqrt(m_amax/d2)));  // Setzt maximale Geschwindigkeit <velo>
-			m_a = m_amax - d2*velo*velo;                  // wenn <velo> zu groß gewählt wurde, kann <m_a> evtl. negativ werden
+            tetha = 0.6 + 0.25*sqrt(d2/m_curMax);         // Set tetha parameter -> (0.6 < tetha < 0.85)
+            velo = std::min(m_vmax, tetha*(sqrt(m_amax/d2)));  // Sets maximum speed <velo>
+            m_a = m_amax - d2*velo*velo;                  // if <velo> was chosen too large, <m_a> can possibly become negative
 
-			// Korrektur
+			// Correction
 			while(m_a <= 0.0)
 			{
 				velo = velo/2.0;
@@ -1362,19 +1360,19 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 
 			v[1] = velo;
 
-			/*-------------- Korrektur der Geschwindigkeiten (falls der Weg zu lang) -------------*/
+            /*-------------- Correction of the speeds (if the path is too long) -------------*/
 
-			len = CriticalBounds[i][0] - m_StartParam[tool];              // Länge des i. geraden Abschnitts
-			len_1 = (pow(v[1] - v[0],2.0) + pow(v[1] - m_vmid,2.0))/m_a;  // notwendige Länge
+            len = CriticalBounds[i][0] - m_StartParam[tool];              // Length of the i. straight section
+            len_1 = (pow(v[1] - v[0],2.0) + pow(v[1] - m_vmid,2.0))/m_a;  // necessary length
 
-			if(len < pow(v[0] - m_vmid,2.0)/m_a)  // für diesen Fall ist keine Korrektur möglich
+            if(len < pow(v[0] - m_vmid,2.0)/m_a)  // no correction is possible in this case
 			{
 				l_vec.clear();
 				v_vec.clear();
 				a_vec.clear();
 
-				m_StartParam[tool] = start; // setze Startparameter zurück
-			    m_vmid = m_vmid/2;          // halbiere kritische Durchlaufgeschwindigkeit
+                m_StartParam[tool] = start; // reset start parameters
+                m_vmid = m_vmid/2;          // halve critical throughput speed
 				goto Newtry;
 			}
 
@@ -1386,27 +1384,27 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 
 			v[2] = m_vmid;
 
-			/*---Korrekturende---*/	
+            /*---Correction end---*/
 
-			// Fülle Vektoren
-			l_vec.push_back(len);  // Länge
-			v_vec.push_back(v);    // Geschwindigkeiten
-			a_vec.push_back(m_a);  // Beschleunigung
-	        
-			m_StartParam[tool] += len;   // setzt Startparameter neu
+            // Fülle Vektoren
+            l_vec.push_back(len);  // Length
+            v_vec.push_back(v);    // Speeds
+            a_vec.push_back(m_a);  // Acceleration
 
-			/*------------------------ gekrümmter Bereich ------------------------*/
+            m_StartParam[tool] += len;   // Sets new start parameters
 
-			len = CriticalBounds[i][1] - CriticalBounds[i][0];  // Bogenlänge des gekrümmten Bereichs
-			m_StartParam[tool] += len;                          // setzt Startparameter neu
-			v[0] = v[2];                                        // Endgeschwindigkeit wird zur Startgeschwindigkeit
-			
+            /*------------------------ curved area ------------------------*/
+
+            len = CriticalBounds[i][1] - CriticalBounds[i][0];  // Arc length of the curved area
+            m_StartParam[tool] += len;                          // Sets new start parameters
+            v[0] = v[2];                                        // End speed becomes the start speed
+
 			l_vec.push_back(len);
 		}
 
 		d2 = 0;	
-		
-		// Korrigiere aktuellen Knotenparameter
+
+        // Correct the current knot parameter
 		while(pos < m_StartParam[tool])
 		{
 			m++;
@@ -1414,30 +1412,30 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 		}
 
 		pos = m_Knots->Value(m);
-	    
-		// Berechnung der maximalen Krümmung für den letzten Abschnitt
+
+        // Calculation of the maximum curvature for the last section
 		while(pos < lParam)
-		{		
+		{
 			curve.D2(pos, pnt0, pnt1, pnt2);
-	            
+
 			Pnt1.x = pnt2.X();
 			Pnt1.y = pnt2.Y();
 			Pnt1.z = pnt2.Z();
-	 
+
 			if(d2 < Pnt1.Length()) d2 = Pnt1.Length();
 
 			m++;
 			pos = m_Knots->Value(m);
 		}
 
-		tetha = 0.6 + 0.25*sqrt(d2/m_curMax);        // 0.6 < tetha < 0.85
-		velo = std::min(m_vmax, tetha*(sqrt(m_amax/d2))); // vgl. oben
-			
+        tetha = 0.6 + 0.25*sqrt(d2/m_curMax);        // 0.6 < tetha < 0.85
+        velo = std::min(m_vmax, tetha*(sqrt(m_amax/d2))); // see above
+
 		v[1] = velo;
 		v[2] = 0.0;
-		m_a = m_amax - d2*velo*velo; // wenn velo zu groß gewählt wurde, kann m_a negativ werden
+        m_a = m_amax - d2*velo*velo; // if velo is too large, m_a can become negative
 
-		// Korrektur
+        // Correction
 		while(m_a <= 0.0)
 		{
 			velo = velo/2.0;
@@ -1447,17 +1445,17 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 
 		d2 = 0;
 
-		len = lParam - m_StartParam[tool] + start;          // Länge des letzten geraden Abschnitts
-		len_1 = (pow(v[1] - v[0],2.0) + pow(v[1],2.0))/m_a; // notwendige Länge
+        len = lParam - m_StartParam[tool] + start;          // Length of the last straight section
+        len_1 = (pow(v[1] - v[0],2.0) + pow(v[1],2.0))/m_a; // required length
 
-		if(len < pow(v[0],2.0)/m_a) // hier keine Korrektur möglich
+        if(len < pow(v[0],2.0)/m_a) // no correction possible here
 		{
 			l_vec.clear();
 			v_vec.clear();
 			a_vec.clear();
 
-			m_StartParam[tool] = start; // setze Startparameter zurück
-			m_vmid = m_vmid/2;          // halbiere kritische Durchlaufgeschwindigkeit und versuchs erneut
+            m_StartParam[tool] = start; // reset start parameters
+            m_vmid = m_vmid/2;          // halve critical speed and try again
 			goto Newtry;
 		}
 
@@ -1468,11 +1466,11 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 		}
 
 		// Fülle Vektoren
-		l_vec.push_back(len);  // Länge
-		v_vec.push_back(v);    // Geschwindigkeiten
+		l_vec.push_back(len);  // Length
+		v_vec.push_back(v);    // Speeds
 		a_vec.push_back(m_a);  // Beschleunignung
-		
-		// Fülle hier erst die Ausgabevektoren (einmal pro Kurve)
+
+        // First fill the output vectors here (once per curve)
 		if(tool)
 		{	
 			m_length_sl.push_back(l_vec);
@@ -1486,7 +1484,7 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 			m_accel_ma.push_back(a_vec);
 		}
 
-		// lade aktuelle kurven
+        // load current curves
 	    if (!tool)  m_it1++;
 		else        m_it2++;
 
@@ -1498,9 +1496,9 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 		
 		curve.Delete();
 		CriticalBounds.clear();
-	}
+    }
 
-	// Setze Iterator und Startparameter wieder zurück
+    // Reset iterator and start parameters
 	if (!tool)
 	{ 
 		for(int i=0; i<num; i++){m_it1--;}
@@ -1516,8 +1514,8 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
     return true;
 }
 
-/* Integriert erst nach der Trapezregel die Outputwerte nach der Zeit und liefert den Fehlervektor als Verbindung von Start- und Endpunkt.
-Abschließend erfolgt die Korrektur der Outputvektoren um eben diesen Fehlervektor */
+/* Only integrates the output values according to the time according to the trapezoid rule and delivers the error vector as a connection between the start and end point.
+Finally, the output vectors are corrected by precisely this error vector */
 bool path_simulate::Correction(bool tool)
 {
     int N;
@@ -1532,8 +1530,8 @@ bool path_simulate::Correction(bool tool)
     Sum[1] = 0.0;
     Sum[2] = 0.0;
 
-	// Hier erfolgt die numerische Integration des Outputvektors nach der Trapezregel und der
-	// entstehende Fehlervektor wird in <vec> abgelegt
+	// Here the numerical integration of the output vector takes place according to the
+    // trapezoidal rule and the resulting error vector is stored in <vec>
     if (tool==false) // Master
     {
 		N = m_Output.size();
@@ -1544,7 +1542,7 @@ bool path_simulate::Correction(bool tool)
             Sum[2] += (m_Output[i][0].z + m_Output[i-1][0].z)*(m_Output_time[i] - m_Output_time[i-1]) / 2.0;
         }
 
-		if(m_StartPnts1[0].Distance(m_StartPnts1[1]) > 1e-3)  // falls Kurve NICHT geschlossen
+        if(m_StartPnts1[0].Distance(m_StartPnts1[1]) > 1e-3)  // if curve is NOT closed
 		{
 			vec.SetCoord(Sum[0],Sum[1],Sum[2]);
 			vec.SetCoord(m_StartPnts1[1].X() - m_StartPnts1[0].X() - vec.X(),
@@ -1564,7 +1562,7 @@ bool path_simulate::Correction(bool tool)
             Sum[2] += (m_Output2[i][0].z + m_Output2[i-1][0].z)*(m_Output_time2[i] - m_Output_time2[i-1]) / 2.0;
         }
 
-		if(m_StartPnts2[0].Distance(m_StartPnts2[1]) > 1e-3)  // falls Kurve NICHT geschlossen
+		if(m_StartPnts2[0].Distance(m_StartPnts2[1]) > 1e-3)  // if curve is NOT closed
 		{
 			vec.SetCoord(Sum[0],Sum[1],Sum[2]);
 			vec.SetCoord(m_StartPnts2[1].X() - m_StartPnts2[0].X() - vec.X(),
@@ -1575,12 +1573,12 @@ bool path_simulate::Correction(bool tool)
 			vec.SetCoord(-Sum[0],-Sum[1],-Sum[2]);
     }
 
-    ParameterCalculation_Line(vec.Magnitude());  // Berechnung der Zeitgrenzen
+    ParameterCalculation_Line(vec.Magnitude());  // Calculating the time limits
 
-    N = (int) ceil((m_T - m_t0)/m_step);  // Anzahl der zu erzeugenden Outputwerte
-    m_del_t = (m_T - m_t0)/N;             // Zeitschrittweite
+    N = (int) ceil((m_T - m_t0)/m_step);  // Number of output values to be generated
+    m_del_t = (m_T - m_t0)/N;             // Time increment
 
-    if (N==1)  // Nur ein Outputvektor
+    if (N==1)  // One output vector only
     {
         m_T = m_t0 + 2e-3;
 
@@ -1601,8 +1599,8 @@ bool path_simulate::Correction(bool tool)
 
         tmp2.push_back(tmp);
 
-        if(tool==false)  m_Output.push_back(tmp2);  // füllt Master-Output
-        else             m_Output2.push_back(tmp2); // füllt Slave-Output
+        if(tool==false)  m_Output.push_back(tmp2);  // fills Master-Output
+        else             m_Output2.push_back(tmp2); // fills Slave-Output
 
         tmp2.clear();
 
@@ -1630,7 +1628,7 @@ bool path_simulate::Correction(bool tool)
             // MASTER
 			vel = GetVelocity(t);
 
-			// Ausgabevektor zum Zeitpunkt <t>
+			// Output vector at the point in time <t>
 			tmp.x = vec.X()*vel;
             tmp.y = vec.Y()*vel;
             tmp.z = vec.Z()*vel;
@@ -1645,14 +1643,14 @@ bool path_simulate::Correction(bool tool)
         }
     }
 
-	// Nullvektor
+	// Null vector
 	tmp.x = 0.0;
     tmp.y = 0.0;
     tmp.z = 0.0;
     
 	tmp2.push_back(tmp);
 	
-	// Übergebe Nullvektor zur Endzeit <m_T>
+	// Pass null vector at end time <m_T>
 	if (tool==false) 
 	{
 		m_Output.push_back(tmp2);
@@ -1666,173 +1664,173 @@ bool path_simulate::Correction(bool tool)
 
     return true;
 }
-// Hier wird der eigentliche Output für den Simulationsprozess generiert unter der Berücksichtigung 
-// der in CompPath() berechneten Vektoren m_velocity, m_accel, m_length
+// This is where the actual output for the simulation process is generated, taking into account
+// the vectors calculated in CompPath() m_velocity, m_accel, m_length
 bool path_simulate::Gen_Path()
 {
-	int n,m;	
-	double length, lam, t_start, t_ma, t_sl, t_tmp; 
+	int n,m;
+	double length, lam, t_start, t_ma, t_sl, t_tmp;
 
-	t_start = m_t0;                           // setze Startzeit
-	m_StartPnts1[0] = (*m_it1)->StartPoint(); // setze Startparameter
+	t_start = m_t0;                           // Set start time
+	m_StartPnts1[0] = (*m_it1)->StartPoint(); // Set Start parameters
 
 	if(m_single == false)
 	{
 		m_StartPnts2[0] = (*m_it2)->StartPoint();
 
-/*------------------------------ Berechne Durchlaufzeit für das Master-Tool --------------------------------*/
+/*------------------------------ Calculate lead time for the Master tool --------------------------------*/
 
 		n = m_velocity_ma.size();
-		for(int i=0; i<n; i++)                    // Schleife über die (zusammenhängenden) Kurven 
+		for(int i=0; i<n; i++)                    // Loop over the (connected) curves
 		{
-			m = m_velocity_ma[i].size();       
-			for(int j=0; j<m; j++)                // Schleife über die einzelnen Unterteilungsgebiete 
+			m = m_velocity_ma[i].size();
+			for(int j=0; j<m; j++)                // Loop over each subdivision area
 			{
-				m_v[0] = m_velocity_ma[i][j][0];  // Startgeschwindigkeit des i-ten Abschnitts
-				m_v[1] = m_velocity_ma[i][j][1];  // maximale Geschwindigkeit des i-ten Abschnitts
-				m_v[2] = m_velocity_ma[i][j][2];  // Endgeschwindigkeit des i-ten Abschnitts
+				m_v[0] = m_velocity_ma[i][j][0];  // Starting speed of the i-th section
+				m_v[1] = m_velocity_ma[i][j][1];  // Maximum speed of the i-th segment
+				m_v[2] = m_velocity_ma[i][j][2];  // Final speed of the ith section
 
 				m_a = m_accel_ma[i][j];
 
-				length = m_length_ma[i][2*j];      // Länge des unkritischen Abschnitts 
-												   // Bem: Jede Kurve beginnt und endet in einem unkritischen Abschnitt
-				ParameterCalculation_Curve(length);   // Hier wird die Endzeit m_T berechnet
+				length = m_length_ma[i][2*j];      // Length of the non-critical section
+                                                   // Note: Every curve starts and ends in a non-critical section
+				ParameterCalculation_Curve(length);   // This is where the end time m_T is calculated
 
 				if(j != m-1)
 				{
-					length = m_length_ma[i][2*j+1];// Länge des kritischen Abschnitts 
-					m_T = m_T + length/m_v[2];     // Berechnet neue Endzeit (kritische Abschnitte werden mit konstanter
-												   // Geschwindigkeit m_v[2] durchlaufen)
+					length = m_length_ma[i][2*j+1];// Length of the critical section
+					m_T = m_T + length/m_v[2];     // Calculates new end time (critical sections are run through at
+                                                   // constant speed m_v[2])
 				}
 
-				m_t0 = m_T;                        // Endzeit wird zur Startzeit
+				m_t0 = m_T;                        // The end time becomes the start time
 			}
 		}
 
-		t_ma = m_T - t_start;                  // Entspricht Durchlaufzeit für den Master
-		m_t0 = t_start;                        // Setzt Startzeit zurück
+		t_ma = m_T - t_start;                  // Corresponds to the lead time for the Master
+		m_t0 = t_start;                        // Resets the start time
 
-/*-------------------------- Berechnung der Durchlaufzeit für das Slave-Tool -------------------------------*/
+/*-------------------------- Calculate lead time for the Slave tool -------------------------------*/
 
 		n = m_velocity_sl.size();
-		for(int i=0; i<n; i++)                    // Schleife über die (zusammenhängenden) Kurven 
+		for(int i=0; i<n; i++)                    // Loop over the (connected) curves
 		{
-			m = m_velocity_sl[i].size();       
-			for(int j=0; j<m; j++)                // Schleife über die einzelnen Unterteilungsgebiete 
+			m = m_velocity_sl[i].size();
+			for(int j=0; j<m; j++)                // Loop over each subdivision area
 			{
-				m_v[0] = m_velocity_sl[i][j][0];  // Startgeschwindigkeit des i-ten Abschnitts
-				m_v[1] = m_velocity_sl[i][j][1];  // maximale Geschwindigkeit des i-ten Abschnitts
-				m_v[2] = m_velocity_sl[i][j][2];  // Endgeschwindigkeit des i-ten Abschnitts
+				m_v[0] = m_velocity_sl[i][j][0];  // Starting speed of the i-th section
+				m_v[1] = m_velocity_sl[i][j][1];  // Maximum speed of the i-th segment
+				m_v[2] = m_velocity_sl[i][j][2];  // Final speed of the ith section
 
 				m_a = m_accel_sl[i][j];
 
-				length = m_length_sl[i][2*j];      // Länge des unkritischen Abschnitts 
-												   // Bem: Jede Kurve beginnt und endet in einem unkritischen Abschnitt
-				ParameterCalculation_Curve(length);// Hier wird u.a. die Endzeit <m_T> berechnet
+				length = m_length_sl[i][2*j];      // Length of the non-critical section
+                                                   // Note: Every curve starts and ends in a non-critical section
+				ParameterCalculation_Curve(length);// Among other things, the end time <m_T> is calculated here
 
 				if(j != m-1)
 				{
-					length = m_length_sl[i][2*j+1];// Länge des kritischen Abschnitts 
-					m_T = m_T + length/m_v[2];     // Berechnet neue Endzeit (kritische Abschnitte werden mit der konstanten
-												   // Geschwindigkeit <m_v[2]> durchlaufen)
-				}
+					length = m_length_sl[i][2*j+1];// Length of the critical section
+					m_T = m_T + length/m_v[2];     // Calculates new end time (critical sections are run through at
+                }                                  // the constant speed <m_v[2]>)
 
-				m_t0 = m_T;                        // Endzeit wird zur Startzeit
+				m_t0 = m_T;                        // End time becomes start time
 			}
 		}
-									   										   
-		t_sl = m_T - t_start;				   // Entspricht Durchlaufzeit für den Slave
-		m_t0 = t_start;						   // Setzt Startzeit zurück
-						
-/*----------------------- Synchronisierung von Master und Slave -----------------------------*/
 
-// Idee: Skaliere die Geschwindigkeiten und Beschleunigungen derjenigen Bahn mit der kürzeren Durchlaufzeit,
-// so dass die Durchlaufzeiten für Master und Slave übereinstimmen
+		t_sl = m_T - t_start;                      // Corresponds to the processing time for the Slave
+		m_t0 = t_start;                            // Resets the start time
 
-		
-		if(t_ma <= t_sl)					   
+/*----------------------- Synchronization of Master and Slave -----------------------------*/
+
+// Idea: scale the speeds and accelerations of the path with the shorter processing time,
+// so that the processing times for master and slave match
+
+
+		if(t_ma <= t_sl)
 		{
-			// Ab hier: Korrektur für den Master
+            // From here on: Correction for the master
 
-			lam = t_ma/t_sl;  // Skalierungsfaktor 0 < lam <= 1
-			
-			// Zunächst werden alle Geschwindigkeiten runterskaliert
+			lam = t_ma/t_sl;  // Scaling factor 0 < lam <= 1
+
+            // First of all, all speeds are scaled down
 			n = m_velocity_ma.size();
 			for(int i=0; i<n; i++)
 			{
 				m = m_velocity_ma[i].size();
 				for(int j=0; j<m; j++)
 				{
-					// linearen Beziehung zwischen den Geschwindigkeiten und der Durchlaufzeit
+                    // linear relationship between the speeds and the processing time
 					m_velocity_ma[i][j][0] = lam*m_velocity_ma[i][j][0];
 					m_velocity_ma[i][j][1] = lam*m_velocity_ma[i][j][1];
 					m_velocity_ma[i][j][2] = lam*m_velocity_ma[i][j][2];
 				}
 			}
 
-			// Skalierung der Beschleunigungen
+            // Scaling the accelerations
 			n = m_accel_ma.size();
 			for(int i=0; i<n; i++)
 			{
 				m = m_accel_ma[i].size();
 				for(int j=0; j<m; j++)
-					m_accel_ma[i][j] = lam*lam*m_accel_ma[i][j];  // Die Beschleunigungen müssen mit dem Quadrat des Skalierungsfaktors
-			}                                                     // multipliziert werden (quadratische Abhängigkeit zur Durchlaufzeit)
+					m_accel_ma[i][j] = lam*lam*m_accel_ma[i][j];  // The accelerations must be squared with the scaling factor
+            }                                                     // be multiplied (quadratic dependency on processing time)
 		}
 		else
 		{
-			// Ab hier: Korrektur für den Slave
+            // From here on: correction for the slave
 
-			lam = t_sl/t_ma;  // Skalierungsfaktor 0 < lam <= 1
-			
-			// Zunächst werden alle Geschwindigkeiten runterskaliert
+			lam = t_sl/t_ma;  // Scaling factor 0 < lam <= 1
+
+            // First of all, all speeds are scaled down
 			n = m_velocity_sl.size();
 			for(int i=0; i<n; i++)
 			{
 				m = m_velocity_sl[i].size();
 				for(int j=0; j<m; j++)
 				{
-					// vgl. Master
+                    // see Master
 					m_velocity_sl[i][j][0] = lam*m_velocity_sl[i][j][0];
 					m_velocity_sl[i][j][1] = lam*m_velocity_sl[i][j][1];
 					m_velocity_sl[i][j][2] = lam*m_velocity_sl[i][j][2];
 				}
 			}
 
-			// Skalierung der Beschleunigungen
+			// Scaling the accelerations
 			n = m_accel_sl.size();
 			for(int i=0; i<n; i++)
 			{
 				m = m_accel_sl[i].size();
 				for(int j=0; j<m; j++)
-					m_accel_sl[i][j] = lam*lam*m_accel_sl[i][j];  // Die Beschleunigungen müssen mit dem Quadrat des Skalierungsfaktors
-			}                                                     // multipliziert werden
+					m_accel_sl[i][j] = lam*lam*m_accel_sl[i][j];  // The accelerations have to be multiplied by the
+			}                                                     // square of the scaling factor
 		}
 	}
 
-/*------------------------------- Generierung der Outputvektoren ------------------------------------*/
-	
-/*MASTER*/	
-	
+/*------------------------------- Generate the output vectors ------------------------------------*/
+
+/*MASTER*/
+
 	bool l;
 	int  q,p;
 
-	n = m_length_ma.size();
-	for(int i=0; i<n; i++)  // Schleife geht über die Anzahl der zu fahrenden Kurven, vgl. path_simulate::CompPath()
-	{
+    n = m_length_ma.size();
+    for(int i=0; i<n; i++)  // The loop goes over the number of curves to be driven
+                            // see path_simulate::CompPath()
+    {
 		if(i!=0)
 			m_it1++;
 
-		l = false;  // Legt fest ob wir uns gerade in einem kritischen Abschnitt befinden
-		q = 0;      // Zu Beginn jeder Kurve auf Null
-	    p = 0;      // Zu Beginn jeder Kurve auf Null
+        l = false;  // Determines whether we are currently in a critical section
+        q = 0;      // At the beginning of every curve to zero
+        p = 0;      // At the beginning of every curve to zero
 
-		m_StartParam[0] = (*m_it1)->FirstParameter(); // Setzt Startparameter der aktuellen Kurve
+		m_StartParam[0] = (*m_it1)->FirstParameter(); // Sets the start parameters of the current curve
 		
 		m = m_length_ma[i].size();
 		for(int j=0; j<m; j++)
 		{
-			if(l==false)  // wird in jedem zweiten Schritt aufgerufen
+			if(l==false)  // is called in every second step
 			{
 				m_a = m_accel_ma[i][p];
 				
@@ -1844,9 +1842,9 @@ bool path_simulate::Gen_Path()
 				q++;
 			}
 
-			MakePathSingle(0,m_length_ma[i][j],l,0);  // Hier werden die Outputvektoren erzeugt
+			MakePathSingle(0,m_length_ma[i][j],l,0);  // The output vectors are created here
 			
-			// Update der Variablen 
+			// Update of variables 
 			m_StartParam[0] += m_length_ma[i][j];
 			m_t0 = m_T;
 			l = !l;
@@ -1855,12 +1853,12 @@ bool path_simulate::Gen_Path()
 
 	m_t0 = t_start;
 
-/*ENDE MASTER*/
+/*END MASTER*/
 
-	
+
 /*SLAVE*/
-	
-	// Analog zum Master (s.o.)
+
+    // Similar to the master (see above)
 	if(m_single == false)
 	{
 		n = m_length_sl.size();
@@ -1875,7 +1873,7 @@ bool path_simulate::Gen_Path()
 			m_StartParam[1] = (*m_it2)->FirstParameter();
 			m = m_length_sl[i].size();
 
-			// vgl. Master
+            // see Master
 			for(int j=0; j<m; j++)
 			{
 				if(l==false)
@@ -1890,7 +1888,7 @@ bool path_simulate::Gen_Path()
 					q++;
 				}
 
-				MakePathSingle(0,m_length_sl[i][j],l,1);  // hier wird der output für den slave generiert
+				MakePathSingle(0,m_length_sl[i][j],l,1);  // the output for the slave is generated here
 				m_StartParam[1] += m_length_sl[i][j];
 				m_t0 = m_T;
 				l = !l;
@@ -1898,26 +1896,26 @@ bool path_simulate::Gen_Path()
 		}
 	}
 
-/*ENDE SLAVE*/
+/*END SLAVE*/
 
 
-/*WEG-KORREKTUR*/
-	
+/*PATH CORRECTION*/
+
 	t_tmp = m_t0;
 
-	m_StartPnts1[1] = (*m_it1)->EndPoint(); // Setzt Endpunkt, notwendig für die folgende Wegkorrektur
-	Correction(0);                          // Wegkorrektur für den Master
+	m_StartPnts1[1] = (*m_it1)->EndPoint(); // Sets the end point, necessary for the following path correction
+	Correction(0);                          // Path correction for the Master
 
 	if(m_single == false)
 	{
 		m_t0 = t_tmp;
-		m_StartPnts2[1] = (*m_it2)->EndPoint(); // Setzt Endpunkt, notwendig für die folgende Wegkorrektur
-		Correction(1);                          // Wegkorrektur für den Slave
+		m_StartPnts2[1] = (*m_it2)->EndPoint(); // Sets the end point, necessary for the following path correction
+		Correction(1);                          // Path correction for the Slave
 	}
 
 	m_t0 = t_start;
 
-/*ENDE WEG-KORREKTUR*/
+/*END PATH CORRECTION*/
 
 
 	m_velocity_ma.clear();
@@ -1930,11 +1928,11 @@ bool path_simulate::Gen_Path()
 	return true;
 }
 
-/* Hier werden die Simulations-Outputvektoren für die jeweiligen Kurvenabschnitte erzeugt */
-bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Roboter, Simulation) 
-								   double length, // Bogenlänge des betrachteten Abschnitts
-								   bool   part,   // Gibt an ob wir einen kritischen Abschnitt betrachten
-								   bool   tool)   // Tool (Master, Slave)
+/* The simulation output vectors for the respective curve sections are generated here */
+bool path_simulate::MakePathSingle(bool   brob,   // Describes output type (Robot, Simulation)
+                                   double length, // Arc length of the considered section
+                                   bool   part,   // Specifies whether we are looking at a critical section
+                                   bool   tool)   // Tool (Master, Slave)
 {
     GeomAdaptor_Curve anAdaptorCurve;
     double firstParam, lastParam, param, period, d, velo;
@@ -1946,8 +1944,8 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
     firstParam = anAdaptorCurve.FirstParameter();
     lastParam  = anAdaptorCurve.LastParameter();
     period     = lastParam - firstParam;
-   
-	gp_Vec                      dtmp1, dtmp2;   
+
+	gp_Vec                      dtmp1, dtmp2;
 	gp_Pnt                      tmp;
     Base::Vector3d              tmp2;
     std::vector<Base::Vector3d> tmp3;
@@ -1958,7 +1956,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 	{
 		N = std::max(2, (int) ceil(period / double(TolDist)));
 
-		for (int i=1; i<N; ++i)  // niemals den ersten punkt mitnehmen
+		for (int i=1; i<N; ++i)  // never take the first point with you
 		{
 			if (m_StartParam[tool] + double(i)*period/(double(N)-1.0) > lastParam)
 			{
@@ -2006,13 +2004,13 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 		return true;
 	}
 
-    if (part==true) m_T = m_t0 + length/m_v[2]; // kritische Bereiche werden mit konstanter Geschwindigkeit durchlaufen
+    if (part==true) m_T = m_t0 + length/m_v[2]; // critical areas are traversed at a constant speed
     else            ParameterCalculation_Curve(length);
     
 	N = std::max(2, (int)((m_T-m_t0)/m_step));
 
     if (N>=100000) 
-        N = 99999;  // maximale Anzahl möglicher Outputwerte
+        N = 99999;  // maximum number of possible output values
 
 	m_del_t = (m_T-m_t0)/double(N);
 
@@ -2024,20 +2022,20 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 	//anAdaptorCurve.D0(m_StartParam[tool],tmp);
 	//pnt2.Set(tmp.X(),tmp.Y(),tmp.Z());
 
-	if (part == true)  // kritischer Abschnitt
+	if (part == true)  // critical section
     {
-        for (int i=0; i<N; ++i)  // Hauptschleife
+        for (int i=0; i<N; ++i)  // Main loop
         {
             if (!tool) m_Output_time.push_back(t);
             else       m_Output_time2.push_back(t);
 
             d = m_v[2]*(t-m_t0);
-			param = m_StartParam[tool] + d; // Kurvenparameter entspricht zurückgelegtem Weg 
-			                                // für den Fall einer Bogenlängenparametrisierung.			
-			                                // Bei beliebiger Parametrisierung: 
-			                                // param = FindParamAt(anAdaptorCurve, d, m_StartParam[tool]);
+            param = m_StartParam[tool] + d; // Curve parameter corresponds to the distance covered
+                                            // in the case of arc length parameterization.
+                                            // With any parameterization:
+                                            // param = FindParamAt(anAdaptorCurve, d, m_StartParam[tool]);
 
-			// Berechnet alles bis zur zweiten Ableitung
+            // Calculates everything up to the second derivative
 			if      ( param > lastParam  ){ anAdaptorCurve.D2(param - period, tmp, dtmp1, dtmp2);}
             else if ( param < firstParam ){ anAdaptorCurve.D2(param + period, tmp, dtmp1, dtmp2);}
 			else                          { anAdaptorCurve.D2(param,          tmp, dtmp1, dtmp2);}
@@ -2045,7 +2043,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 			//m_times_tmp.push_back(t);
 		    //m_velo_tmp.push_back(m_v[2]);
 
-			// Ausgabevektor zum Zeitpunkt <t>
+            // Output vector at the point in time <t>
 			tmp2.x = dtmp1.X()*m_v[2];
             tmp2.y = dtmp1.Y()*m_v[2];
             tmp2.z = dtmp1.Z()*m_v[2];
@@ -2058,7 +2056,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 			tmp3.clear();
 			
 			/*
-			if (tool == false)  // zeichnet den tatsächlichen Weg nach
+            if (tool == false)  // traces the actual path
 			{
 				pnt1 = pnt2;
 				
@@ -2078,27 +2076,27 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
         return true;
     }
 
-    // unkritischer Abschnitt
+    // uncritical section
     for (int i=0; i<N; ++i)
     {
         if (!tool) m_Output_time.push_back(t);
         else       m_Output_time2.push_back(t);
-        
-		d = GetDistance(t);
-		param = m_StartParam[tool] + d;     // Kurvenparameter entspricht zurückgelegtem Weg 
-			                                // für den Fall einer Bogenlängenparametrisierung.			
-			                                // Bei beliebiger Parametrisierung: 
-			                                // param = FindParamAt(anAdaptorCurve, d, m_StartParam[tool]);
 
-		// Berechnet alles bis zur zweiten Ableitung
+		d = GetDistance(t);
+        param = m_StartParam[tool] + d;     // Curve parameter corresponds to the distance covered
+                                            // in the case of arc length parameterization.
+                                            // With any parameterization:
+                                            // param = FindParamAt(anAdaptorCurve, d, m_StartParam[tool]);
+
+        // Calculates everything up to the second derivative
         if      ( param > lastParam  ){ anAdaptorCurve.D2(param - period, tmp, dtmp1, dtmp2);}
         else if ( param < firstParam ){ anAdaptorCurve.D2(param + period, tmp, dtmp1, dtmp2);}
 		else                          { anAdaptorCurve.D2(param,          tmp, dtmp1, dtmp2);}
 
-		velo = GetVelocity(t);  // Berechnet die Geschwindigkeit <velo> des Tools zum Zeitpunkt <t>
-		                        // bzgl. den Parametern m_t0, m_t1, m_t2, m_T, m_a, m_v[i], i =1,2,3 
+        velo = GetVelocity(t);  // Calculates the speed <velo> of the tool at the point in time <t>
+                                // with respect to the parameters m_t0, m_t1, m_t2, m_T, m_a, m_v[i], i =1,2,3
 
-		// Ausgabevektor zum Zeitpunkt <t>
+        // Output vector at the point in time <t>
         tmp2.x = dtmp1.X()*velo;
         tmp2.y = dtmp1.Y()*velo;
         tmp2.z = dtmp1.Z()*velo;
@@ -2110,8 +2108,8 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 
 		tmp3.clear();
 		
-		/*
-		if (tool == false)  // zeichnet den tatsächlichen Weg nach
+		/
+        if (tool == false)  // traces the actual path
 		{
 			pnt1 = pnt2;
 			
@@ -2135,7 +2133,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 	return true;
 }
 
-/* Hauptroutine zur Generierung des Roboteroutputs für den normalen beidseitigen Fall */
+/* Main routine for generating the robot output for the normal two-sided case */
 bool path_simulate::MakePathRobot()
 {
     ofstream anOutputFile;
@@ -2154,33 +2152,33 @@ bool path_simulate::MakePathRobot()
 		anOutputFile2 << "none" << std::endl;
     }
 
-	// Outputgenerierung über alle Kurven
+	// Output generation across all curves
     for (m_it1 = m_BSplineTop.begin(); m_it1 != m_BSplineTop.end(); ++m_it1)
     {
         m_StartParam[0] = ((*m_it1)->FirstParameter());
         if (m_single == false) m_StartParam[1] = ((*m_it2)->FirstParameter());
 
-        /*------ 1.ZUSTELLUNG ------*/
-        
+        /*------ 1.DELIVERY ------*/
+
 		m_conn = CheckConnect();
-        
+
 		if (m_conn)   ConnectPaths_xy(1);
         else          ConnectPaths_z(1);
 
         UpdateParam();
-        
 
-		/*------ 2.ZUSTELLUNG ------*/
-        
+
+        /*------ 2.DELIVERY ------*/
+
 		if (m_conn)   ConnectPaths_z(1);
         else          ConnectPaths_xy(1);
 
         UpdateParam();
 
-       
-		/*------ KURVE ------*/
 
-		MakePathSingle(1,0,0,0);  // Master
+        /*------ CURVE ------*/
+
+        MakePathSingle(1,0,0,0);  // Master
         MakePathSingle(1,0,0,1);  // Slave
         UpdateParam();
 
@@ -2191,7 +2189,7 @@ bool path_simulate::MakePathRobot()
 
 	int c = 1;
 
-	/*--- Schreibe Roboter-Output ---*/
+    /*--- Write robot output ---*/
 
 	if (m_single==false)
 	{
@@ -2210,8 +2208,8 @@ bool path_simulate::MakePathRobot()
     return true;
 }
 
-/* Wird nur zu Beginn der Ausschreibung in path_simulate::WriteOurputDouble() aufgerufen und passt die Ausgabevektoren
-<m_Output_time>, <m_Output_time2> so aneinander an, dass die Endzeiten übereinstimmen*/ 
+// Is only called at the beginning of the writing in path_simulate::WriteOurputDouble()
+// and fits the output vectors <m_Output_time>, <m_Output_time2> in such a way that the end times coincide
 bool path_simulate::TimeCorrection()
 {
 	int N;
@@ -2220,9 +2218,9 @@ bool path_simulate::TimeCorrection()
 	
 	vecc.push_back(vec);
     
-    if (m_single == false)  // Eine Zeitkorrektur macht nur für diesen Fall auch Sinn
+    if (m_single == false)  // A time correction makes sense only in this case
     {
-        if(m_Output_time.size() == 0 || m_Output_time2.size() == 0)  // Sonderbehandlung für diesen Fall
+        if(m_Output_time.size() == 0 || m_Output_time2.size() == 0)  // Special treatment for this case
 		{
 			if(m_Output_time.size() > m_Output_time2.size())
 			{
@@ -2230,7 +2228,7 @@ bool path_simulate::TimeCorrection()
 				N = m_Output_time2.size();
 				m_Output2.resize(N);
 				
-				for (int i=0; i<N; ++i) // Füllt leeren Output mit Nullvektoren (Werkzeug hat zu warten)
+				for (int i=0; i<N; ++i) // Fills empty output with null vectors (tool has to wait)
 				{
 					m_Output2[i] = vecc; 
 				}
@@ -2243,7 +2241,7 @@ bool path_simulate::TimeCorrection()
 				N = m_Output_time.size();
 				m_Output.resize(N);
 				
-				for (int i=0; i<N; ++i) // Füllt leeren Output mit Nullvektoren (-> Werkzeug hat zu warten)
+				for (int i=0; i<N; ++i) // Fills empty output with null vectors (-> tool has to wait)
 				{
 					m_Output[i] = vecc;
 				}
@@ -2251,7 +2249,7 @@ bool path_simulate::TimeCorrection()
 				return true;
 			}
 
-			return true;  //gibt true zurück wenn beide Outputvektoren <m_Output_time> und <m_Output_time2> leer sein sollten
+			return true;  //returns true if both output vectors <m_Output_time> and <m_Output_time2> should be empty
 		}
 
         if (m_Output_time[m_Output_time.size()-1] < m_Output_time2[m_Output_time2.size()-1])
@@ -2295,7 +2293,7 @@ bool path_simulate::TimeCorrection()
             m_Output2.push_back(vecc);
         }
     }
-    else // falls <m_single> = true (d.h nur Master -> keine Zeitkorrektur erforderlich!!!)
+    else // if <m_single> = true (i.e. only master -> no time correction required!!!)
     {
         return false;
     }
@@ -2303,7 +2301,7 @@ bool path_simulate::TimeCorrection()
     return true;
 }
 
-/* Hauptroutine zur Generierung des Simulationsoutputs für den feature-basierten und spiral-basierten beidseitigen Fall */
+/* Main routine for generating the simulation output for the feature-based and spiral-based two-sided case */
 bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, bool spiral)
 {
     m_Feat = true;
@@ -2330,16 +2328,16 @@ bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, b
     rad[0] =  m_set.master_radius;
     rad[1] = - m_set.slave_radius - m_set.sheet_thickness;
 
-    c[0] = 1;    // Start Index der Master Kurven
-    c[1] = 2001; // Start Index der Slave  Kurven
+    c[0] = 1;    // Start index of the Master curves
+    c[1] = 2001; // Start index of the Slave curves
 
     int i = 0;
 
     while (m_it1 != m_BSplineTop.end() && m_it2 != m_BSplineBottom.end())
     {
-        tool = StartingTool();  // bestimmt welches tool warten muss:
-								// tool == true  : Roboter = Slave  & NC = Master
-								// tool == fasle : Roboter = Master & NC = Slave
+        tool = StartingTool();  // determines which tool must wait:
+                                // tool == true  : Robot = Slave  & NC = Master
+                                // tool == false : Robot = Master & NC = Slave
 		if (!tool)
 		{
 			it_1 = &m_it1;
@@ -2354,21 +2352,21 @@ bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, b
 			curves_1 = &m_BSplineBottom;
 			curves_2 = &m_BSplineTop;
 		}
-       
-        m_StartParam[0] = ((*m_it1)->FirstParameter()); // setze neue Startparameter (in unserem Fall immer 0)
-        
+
+        m_StartParam[0] = ((*m_it1)->FirstParameter()); // set new start parameters (in our case always 0)
+
 		if (m_single == false) 
 			m_StartParam[1] = ((*m_it2)->FirstParameter());
- 
-		// die erste Zustellung vor dem Kontakt mit dem Blech wird hier seperat gehandelt
+
+        // the first delivery before contact with the sheet metal is handled separately here
         if (i==0)
         {
-            /*------ ZUSTELLUNG 1 ------*/
+            /*------ DELIVERY 1 ------*/
             ConnectPaths_xy(0);
             WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam);
             UpdateParam();
 
-            /*------ ZUSTELLUNG 2 ------*/
+            /*------ DELIVERY 2 ------*/
             ConnectPaths_z(0);
             WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam);
             UpdateParam();
@@ -2378,58 +2376,58 @@ bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, b
         {
             if (*it_1 != (*curves_1).end()-1)
             {
-				/* ------ Kurve ------*/
-                CompPath(0); 														 // Berechne Parameter für den Master
-				CompPath(1); 														 // Berechne Parameter für den Slave
-				Gen_Path();  														 // Erzeuge Output für aktuelle Kurve
-				WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
+                /* ------ Curve ------*/
+                CompPath(0);                                                         // Calculate parameters for the Master
+                CompPath(1);                                                         // Calculate parameters for the Slave
+                Gen_Path();                                                          // Generate output for current Curve
+                WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Write output
                 UpdateParam();
 
-				/*------ Zustellung ------*/
-                (*it_1)++;                     										 // Gehe zur nächsten Kurve
-                ConnectPaths_Feat(tool, 0, 1); 										 // Erzeuge Output für Zustellung
-				WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
+                /*------ Delivery ------*/
+                (*it_1)++;                                                           // Go to the next curve
+                ConnectPaths_Feat(tool, 0, 1);                                       // Generate output for delivery
+                WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Write output
                 UpdateParam();
 
-                if (*it_1 == (*curves_1).end()-1 && *it_2 == (*curves_2).end()-1)    // Letzter Schritt
+                if (*it_1 == (*curves_1).end()-1 && *it_2 == (*curves_2).end()-1)    // last step
                 {
-					/* ------ Kurve ------*/
-					CompPath(0);  // Berechne Parameter für den Master
-					CompPath(1);  // Berechne Parameter für den Slave
-					Gen_Path();	  // Erzeuge Output für aktuelle Kurve
-					WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
-					UpdateParam();
+                    /* ------ Curve ------*/
+                    CompPath(0);  // Calculate parameters for the Master
+                    CompPath(1);  // Calculate parameters for the Slave
+                    Gen_Path();	  // Generate output for current Curve
+                    WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Write output
+                    UpdateParam();
                     break;
                 }
 
-                (**it_1)->D0((**it_1)->FirstParameter(),pnt0); // übergebe aktuellen Startpunkt
+                (**it_1)->D0((**it_1)->FirstParameter(),pnt0); // pass current starting point
 
-                
-                if ((pnt0.Z() > (flatAreas[i+1] + rad[tool] - 1e-1)) &&  // Erreicht der MASTER den nächsten ebenen 
-                    (pnt0.Z() < (flatAreas[i+1] + rad[tool] + 1e-1)))    // Bereich, muss auf den SLAVE gewartet werden
+
+                if ((pnt0.Z() > (flatAreas[i+1] + rad[tool] - 1e-1)) &&  // When the MASTER reaches the next level
+                    (pnt0.Z() < (flatAreas[i+1] + rad[tool] + 1e-1)))    // Area, the SLAVE must be waited for
                 {
-					if(!spiral)  // Bei Spiralbahnen erfolgt die Zustellung sofort
-					{
-						/* ------ Kurve ------*/
-						CompPath(0);  // Berechne Parameter für den Master
-						CompPath(1);  // Berechne Parameter für den Slave
-						Gen_Path();	  // Erzeuge Output für aktuelle Kurve
-						WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
-						UpdateParam();
-					}
-					break;
+                    if(!spiral)  // In the case of spiral tracks, delivery takes place immediately
+                    {
+                        /* ------ Curve ------*/
+                        CompPath(0);  // Calculate parameters for the Master
+                        CompPath(1);  // Calculate parameters for the Slave
+                        Gen_Path();	  // Generate output for current Curve
+                        WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Write output
+                        UpdateParam();
+                    }
+                    break;
                 }
             }
             else
             {
-                if (*it_2 == (*curves_2).end()-1)  // letzter Schritt
+                if (*it_2 == (*curves_2).end()-1)  // last step
                 {
-					/* ------ Kurve ------*/
-                    CompPath(0);  // Berechne Parameter für den Master
-					CompPath(1);  // Berechne Parameter für den Slave
-					Gen_Path();	  // Erzeuge Output für aktuelle Kurve
-					WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
-					UpdateParam();
+                    /* ------ Curve ------*/
+                    CompPath(0);  // Calculate parameters for the Master
+                    CompPath(1);  // Calculate parameters for the Slave
+                    Gen_Path();	  // Generate output for current Curve
+                    WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Write output
+                    UpdateParam();
                     break;
                 }
                 else break;
@@ -2439,24 +2437,24 @@ bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, b
         if (m_it1 == m_BSplineTop.end()-1 && m_it2 == m_BSplineBottom.end()-1) // Fertig !!!
             break;
 
-		/* ------ Zustellung ------*/
+        /* ------ Delivery ------*/
 		if(!spiral) 
 		{
-			(*it_1)++;						// gehe zur nächsten Kurve
-			ConnectPaths_Feat(tool, 0, 1);	// Erzeuge Output für die Master-Zustellung
+            (*it_1)++;                      // Go to the next curve
+            ConnectPaths_Feat(tool, 0, 1);  // Generate output for the Master-delivery
 		}
-		
-		(*it_2)++;															 // gehe zur nächsten Kurve										 
-		ConnectPaths_Feat(!tool, 0, 0);								         // Erzeuge Output für die Slave-Zustellung
-		WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Schreibe Output
-		UpdateParam();
-        
-		++i;
+
+        (*it_2)++;                                                           // Go to the next curve
+        ConnectPaths_Feat(!tool, 0, 0);                                      // Generate output for the Slave-devlivery
+        WriteOutputDouble(anOutputFile[0],anOutputFile[1],c[0],c[1],0,beam); // Write output
+        UpdateParam();
+
+        ++i;
     }
 
     anOutputFile[0] << "*END" << endl;
     anOutputFile[1] << "*END" << endl;
-	anOutputFile[0].close();
+    anOutputFile[0].close();
     anOutputFile[1].close();
 
 	//WriteTimes();
@@ -2464,7 +2462,7 @@ bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, b
     return true;
 }
 
-/* Hauptroutine zur Generierung des Roboteroutputs für den feature-basierten und spiral-basierten beidseitigen Fall */
+/* Main routine for generating the robot output for the feature-based and spiral-based two-sided case */
 bool path_simulate::MakePathRobot_Feat(const std::vector<float> &flatAreas)
 {
     m_Feat = true;
@@ -2490,17 +2488,17 @@ bool path_simulate::MakePathRobot_Feat(const std::vector<float> &flatAreas)
 
     while (m_it1 != m_BSplineTop.end() && m_it2 != m_BSplineBottom.end())
     {
-        tool = StartingTool();  // Bestimmt welches tool warten muss
+        tool = StartingTool();  // Determines which tool must wait
 
-        // Setze Startparameter (in unserem Fall unnötig da immer 0)
+        // Set start parameter (in our case unnecessary because always 0)
         m_StartParam[0] = ((*m_it1)->FirstParameter());
         if (m_single == false) m_StartParam[1] = ((*m_it2)->FirstParameter());
 
-        // Erste Zustellung wird seperat gehandelt
+        // The first delivery is handled separately
         if (i==0)
         {
-            ConnectPaths_xy(1); /* 1. ZUSTELLUNG */
-            ConnectPaths_z(1);  /* 2. ZUSTELLUNG */
+            ConnectPaths_xy(1); /* 1. Delivery */
+            ConnectPaths_z(1);  /* 2. Delivery */
         }
 
         if (!tool)
@@ -2518,10 +2516,10 @@ bool path_simulate::MakePathRobot_Feat(const std::vector<float> &flatAreas)
             curves_2 = &m_BSplineTop;
         }
 
-        // Hauptschleife
+        // Main loop
         while (true)
         {
-            MakePathSingle(1,0,0,tool);  // Bahngenerierung des kontinuierlich fahrenden tools für aktuelle kurve
+            MakePathSingle(1,0,0,tool);  // Path generation of the continuously moving tool for the current curve
 
             // MASTER
             if (*it_1 != (*curves_1).end()-1)
@@ -2627,8 +2625,8 @@ bool path_simulate::MakePathRobot_Feat(const std::vector<float> &flatAreas)
     return true;
 }
 
-// Hilfsfunktion für den Featurebasierten Teil:
-// Bestimmt welches Tool wartet, während das andere läuft
+// Help function for the feature-based part:
+// Determines which tool waits while the other is running
 bool path_simulate::StartingTool()
 {
     double z0,z1;
@@ -2636,7 +2634,7 @@ bool path_simulate::StartingTool()
 
     if(m_it1 != m_BSplineTop.end()-1)
     {
-        // z-Abstand zur nächsten Bahn - MASTER
+        // z-distance to the next path - MASTER
         (*m_it1)->D0((*m_it1)->FirstParameter(),pnt0); m_it1++;
         (*m_it1)->D0((*m_it1)->FirstParameter(),pnt1); m_it1--;
        
@@ -2648,7 +2646,7 @@ bool path_simulate::StartingTool()
 
     if(m_it2 != m_BSplineBottom.end()-1)
     {
-        // z-Abstand zur nächsten Bahn - SLAVE
+        // z-distance to the next path - SLAVE
         (*m_it2)->D0((*m_it2)->FirstParameter(),pnt0); m_it2++;
         (*m_it2)->D0((*m_it2)->FirstParameter(),pnt1); m_it2--;
         
@@ -2656,12 +2654,12 @@ bool path_simulate::StartingTool()
     }
     else z1 = 1e+3;
 
-    if(z0<z1)  return false;  // Slave muss warten
-    else       return true;   // Master muss warten
+    if(z0<z1)  return false;  // Slave has to wait
+    else       return true;   // Master has to wait
 }
 
-/* Hier wird geschaut, ob es sich um eine geschlossene Kurve handelt bzw. wieviele Kurven abgefahren werden müssen
-um wieder am Anfangspunkt der Kurve anzukommen. Die Anzahl der zu fahrenden Kurven wird als integer zurückgegeben */
+/* Here a check is made to see whether it is a closed curve or how many curves have to be traversed in order
+to arrive at the starting point of the curve again. The number of curves to be traversed is returned as an integer */
 int path_simulate::Detect_FeatCurve(bool tool)
 {
     gp_Pnt pt0,pt1;
@@ -2669,18 +2667,18 @@ int path_simulate::Detect_FeatCurve(bool tool)
 
     if(!tool)
 	{
-		pt0 = (*m_it1)->StartPoint(); // Startpunkt der aktuellen Master-Kurve
-		pt1 = (*m_it1)->EndPoint();   // Endpunkt der aktuellen Master-Kurve
+		pt0 = (*m_it1)->StartPoint(); // The starting point of the current master curve
+		pt1 = (*m_it1)->EndPoint();   // The end point of the current master curve
 		
-		while(pt0.Distance(pt1) > 1e-3)  // Mache weiter solange Start und Endpunkt nicht passen
+		while(pt0.Distance(pt1) > 1e-3)  // Keep going as long as the start and end point don't match
 		{
-			if(m_it1 == m_BSplineTop.end()-1)  // Stoppe wenn bei der letzten Kurve angekommen
+			if(m_it1 == m_BSplineTop.end()-1)  // Stop when you reach the last corner
 			{
 				for(int i=1; i<num; i++)
 					m_it1--;
 
 				num = 1;
-				pt1 = pt0; // Damit die äußere while-Schleife verlassen wird
+				pt1 = pt0; // So that the outer while loop is exited
 			}
 			else
 			{
@@ -2690,34 +2688,34 @@ int path_simulate::Detect_FeatCurve(bool tool)
 			}
 		}
 
-		// Zurück zum Status quo
+		// Return to the status quo
 		for(int i=1; i<num; i++)
 			m_it1--;
 	}
 	else
 	{	
-		pt0 = (*m_it2)->StartPoint(); // Startpunkt der aktuellen Slave-Kurve
-		pt1 = (*m_it2)->EndPoint();   // Endpunkt der aktuellen Slave-Kurve
+		pt0 = (*m_it2)->StartPoint(); // The starting point of the current slave curve
+		pt1 = (*m_it2)->EndPoint();   // The end point of the current slave curve
 		
-		while(pt0.Distance(pt1) > 1e-3) // Mache weiter solange Start und Endpunkt nicht passen
+		while(pt0.Distance(pt1) > 1e-3) // Keep going as long as the start and end point don't match
 		{
-			if(m_it2 == m_BSplineBottom.end()-1) // Stoppe wenn bei der letzten Kurve angekommen
+			if(m_it2 == m_BSplineBottom.end()-1) // Stop when you reach the last corner
 			{
 				for(int i=1; i<num; i++)
 					m_it2--;
 
 				num = 1;
-				pt1 = pt0;  // Damit die while-Schleife verlassen wird
+				pt1 = pt0;  // So that the while loop is exited
 			}
 			else
-			{			
+			{
 				num++;
 				m_it2++;
 				pt1 = (*m_it2)->EndPoint();
 			}
 		}
 
-		// Zurück zum Status quo
+		// Return to the status quo
 		for(int i=1; i<num; i++)
 			m_it2--;
 	}
@@ -2725,11 +2723,11 @@ int path_simulate::Detect_FeatCurve(bool tool)
 	return num;
 }
 
-/* Hauptroutine zur Generierung des Simulationsoutputs für den normalen beidseitigen Fall */
+/* Main routine for generating the simulation output for the normal two-sided case */
 bool path_simulate::MakePathSimulate()
 {
-    int c1 = 1, 
-		c2 = 2001; 
+    int c1 = 1,
+		c2 = 2001;
 
     ofstream anOutputFile, anOutputFile2;
 
@@ -2742,22 +2740,22 @@ bool path_simulate::MakePathSimulate()
         anOutputFile2.precision(7);
     }
 
-    for (m_it1 = m_BSplineTop.begin(); m_it1 < m_BSplineTop.end(); ++m_it1)  // Schleife über alle Kurven 
+    for (m_it1 = m_BSplineTop.begin(); m_it1 < m_BSplineTop.end(); ++m_it1)  // Loop over all curves
     {
-        m_StartParam[0] = ((*m_it1)->FirstParameter());     // speichert Startparameterwert der aktuellen Master-Kurve
-       
+        m_StartParam[0] = ((*m_it1)->FirstParameter());     // saves start parameter values of the current master curve
+
 		if (m_single == false)
-			m_StartParam[1] = ((*m_it2)->FirstParameter()); // speichert Startparameterwert der aktuellen Slave-Kurve
-      
+            m_StartParam[1] = ((*m_it2)->FirstParameter()); // saves start parameter values of the current slave curve
 
-		/*Zustellung Start*/
 
-        m_conn = CheckConnect(); // Rückgabewert = 1 bei negativer z-Richtungszustellung
-                         		 // Rückgabewert = 0 bei positiver z-Richtungszustellung 
-       
-		//  negative z-Richtung: 1. XY --> 2. Z              
-		//  positive z-Richtung: 1. Z  --> 2. XY    
- 
+        /*Delivery start*/
+
+        m_conn = CheckConnect(); // Return value = 1 in the case of a negative z-direction infeed
+                                 // Return value = 0 in the case of a positive z-direction feed
+
+        //  negative z-direction: 1. XY --> 2. Z
+        //  positive z-direction: 1. Z  --> 2. XY
+
 		// *** 1. ***
 		if (m_conn)   ConnectPaths_xy(0);
         else          ConnectPaths_z(0);
@@ -2771,25 +2769,25 @@ bool path_simulate::MakePathSimulate()
         if (m_conn)   ConnectPaths_z(0);
         else          ConnectPaths_xy(0);
 
-		// Schreibe Output
+		// Write output
         if (m_single == false) WriteOutputDouble(anOutputFile,anOutputFile2,c1,c2,0,beam);
         else                   WriteOutputSingle(anOutputFile,c1,0,0,beam);
 
         UpdateParam();
 
-        /*Zustellung Ende*
-		
-		
-		/*Kurve Start*/
+        /*Delivery end*
 
-        CompPath(0); // Berechnung der Parameter für den Master
+
+		/*Curve start*/
+
+        CompPath(0); // Calculate the parameters for the Master
         
 		if (m_single == false)
-			CompPath(1); // Berechnung der Parameter für den Slave
+			CompPath(1); // Calculate the parameters for the Slave
 
-		Gen_Path();  // Erzeugung der Outputvektoren
+		Gen_Path();  // Generation of the output vectors
 
-		// Schreibe Outputvektoren
+		// Write output vectors
         if (m_single == false) WriteOutputDouble(anOutputFile,anOutputFile2,c1,c2,0,beam);
         else                   WriteOutputSingle(anOutputFile,c1,0,0,beam);
 
@@ -2798,7 +2796,7 @@ bool path_simulate::MakePathSimulate()
 		if (m_single==false && (m_it1 != (m_BSplineTop.end()-1)))
             ++m_it2;
 
-		/*Kurve Ende*/
+        /*Curve Ende*/
     }
 
 	//m_log.saveToFile("c:/Master-Path.iv");
@@ -2808,7 +2806,7 @@ bool path_simulate::MakePathSimulate()
     anOutputvelocity.open("output_velocity.k");
     anOutputvelocity.precision(7);
 
-	for(int i=0; i<(int)m_times_tmp.size(); ++i) // Schreibe absolute Geschwindigkeitswerte aus
+	for(int i=0; i<(int)m_times_tmp.size(); ++i) // Write out absolute speed values
 		anOutputvelocity << m_times_tmp[i] << ", " << m_velo_tmp[i] << endl;
 	
 	anOutputvelocity.close();
@@ -2828,7 +2826,7 @@ bool path_simulate::MakePathSimulate()
     return true;
 }
 
-/* Schreibt den Output für den feature- und spiral-basierten beidseitigen Fall */
+/* Writes the output for the feature-based and spiral-based bilateral case */
 bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputFile2, int &c, bool brob)
 {
     if (m_single == false)
@@ -2989,7 +2987,7 @@ bool path_simulate::WriteOutput_Feat(ofstream &anOutputFile, ofstream &anOutputF
 }
 
 /*
-// Schreibt alle Zeitwerte der Ausgabevektoren aus
+// Writes out all time values of the output vectors
 bool path_simulate::WriteTimes()
 {
     ofstream anOutputFile;
@@ -3013,7 +3011,7 @@ bool path_simulate::WriteTimes()
 }
 */
 
-/* Schreibt Output für den normalen einseitigen Fall */
+/* Writes output for normal one-sided case */
 bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob, bool tool, bool beamfl)
 {
     std::vector< std::vector<Base::Vector3d> > Out_val;
@@ -3024,7 +3022,7 @@ bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob,
 
     int pid;
 
-    if (brob == true)  // Schreibe Roboter-Output
+    if (brob == true)  // Write robot output
 	{
 		std::vector<Base::Vector3d> Out_rob;
 
@@ -3055,12 +3053,12 @@ bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob,
 
     if (beamfl && tool) pid = ind+1;    // pid: 2 - Master
     else                pid = ind;      //      3 - Slave
-                                        //      4 - Plate (x-,y-movement) 
+                                        //      4 - Plate (x-,y-movement)
 
     n = Out_val.size();
 
     if (n != Out_time.size())
-        throw Base::RuntimeError("Outputlängen passen nicht zusammen");
+        throw Base::RuntimeError("Output lengths do not match");
 
     if (n>1)
     {
@@ -3153,15 +3151,15 @@ bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob,
     return true;
 }
 
-/* Schreibt Output für den normalen beidseitigen Fall */
+/* Writes output for the normal two-sided case */
 bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutputFile2, int &c1, int &c2, bool brob, bool beamfl)
 {
     std::pair<float,float> times;
     int pid1 = 2; // Master
 	int pid2 = 3; // Slave
-	int pid3 = 4; // Platte
+	int pid3 = 4; // Plate
 
-    if (brob == false) // Simulations-Output (brob == true -> roboter-output)
+    if (brob == false) // Simulations-Output (brob == true -> robot output)
     {
 		TimeCorrection();
 
@@ -3187,18 +3185,18 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
 
             times.first  = (float) m_Output_time[0];
             times.second = (float) m_Output_time[n-1];
-            m_PathTimes_Master.push_back(times);       // fülle vektor für curve-times
+            m_PathTimes_Master.push_back(times);       // fill in vector for curve times
 
-            
-			
-			
+
+
+
 			// SLAVE-X
 
             anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
             anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile2 << pid2 << ",1,0," << c2 <<  ",1.000000, ," << m_Output_time2[n2-1] << ","  << m_Output_time2[0] << std::endl;
-			
-			if (beamfl) // wenn auf true, dann füge neuen part mit ein
+
+			if (beamfl) // if true, then insert a new part
             {
                 anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
                 anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
@@ -3218,10 +3216,10 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
             times.second = (float) m_Output_time2[n2-1];
             m_PathTimes_Slave.push_back(times);
 
-            
-			
-			
-			
+
+
+
+
 			// MASTER-Y
 
             anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
@@ -3240,16 +3238,16 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
             times.second = (float) m_Output_time[n-1];
             m_PathTimes_Master.push_back(times);
 
-            
-			
-			
+
+
+
 			// SLAVE-Y
 
             anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
             anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
             anOutputFile2 << pid2 << ",2,0," << c2+1 <<  ",1.000000, ," << m_Output_time2[n2-1] << ","  << m_Output_time2[0] << std::endl;
             
-			if (beamfl) // wenn auf true, dann füge neuen part mit ein
+			if (beamfl) // if true, then insert a new part
             {
                 anOutputFile2 << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
                 anOutputFile2 << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
@@ -3269,10 +3267,10 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
             times.second = (float) m_Output_time2[n2-1];
             m_PathTimes_Slave.push_back(times);
 
-            
-			
-			
-			
+
+
+
+
 			// MASTER-Z
 			anOutputFile << "*BOUNDARY_PRESCRIBED_MOTION_RIGID" << std::endl;
 			anOutputFile << "$#     pid       dof       vad      lcid        sf       vid     death     birth" << std::endl;
@@ -3292,7 +3290,7 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
             m_PathTimes_Master.push_back(times);
 
 
-			
+
 			// SLAVE-Z
 
 			if (beamfl)
@@ -3326,7 +3324,7 @@ bool path_simulate::WriteOutputDouble(ofstream &anOutputFile, ofstream &anOutput
             c2 += 3;
         }
     }
-    else  // Schreibe Roboter-Output
+    else  // Write robot output
     {
             int n1 = m_Output_robo1.size();
             for (int i=0; i<n1; ++i)

@@ -114,13 +114,13 @@ bool UniGridApprox::MeshOffset()
 
     MeshCore::MeshPointIterator p_it(m_Mesh);
 
-    //vorläufige Lösung bis CAD-Normalen verwendet werden können
+    //temporary solution until CAD standards can be used
     std::vector<Base::Vector3f> normals = best_fit::Comp_Normals(m_Mesh);
 
     double x_max=-(1e+10),y_max=-(1e+10),z_max=-(1e+10),x_min=1e+10,y_min=1e+10,st_x,st_y;
     int n = normals.size();
 
-    // führe verschiebung durch
+    // perform shift
 
     //for(int i=0; i<n; ++i)
     //{
@@ -129,7 +129,7 @@ bool UniGridApprox::MeshOffset()
     // m_Mesh.MovePoint(i,normals[i]);
     //}
 
-    // erzeuge nun ein uniformes Rechtecksgitter auf dem CAD-Netz
+    // now create a uniform rectangular grid on the CAD mesh
     m_Mesh.RecalcBoundBox();
 
     for (p_it.Begin(); p_it.More(); p_it.Next())
@@ -141,7 +141,7 @@ bool UniGridApprox::MeshOffset()
         if (p_it->y<y_min) y_min = p_it->y;
     }
 
-    // gittergrößen bestimmung über die bounding-box
+    // grid size can be determined using the bounding box
     n_x = int((x_max - x_min)/(y_max - y_min)*sqrt((x_max - x_min)*(y_max - y_min)));
     n_y = int((y_max - y_min)/(x_max - x_min)*sqrt((x_max - x_min)*(y_max - y_min)));
 
@@ -177,7 +177,7 @@ bool UniGridApprox::MeshOffset()
             aNormal.z = 1.0;
             if (!malg.NearestFacetOnRay(pnt, aNormal, aFacetGrid, projPoint, facetIndex))
             {
-                aNormal.Scale(1,1,-1);// gridoptimiert
+                aNormal.Scale(1,1,-1);// grid optimized
                 if (!malg.NearestFacetOnRay(pnt, aNormal, aFacetGrid, projPoint, facetIndex))
                 {
                     aNormal.Scale(1,1,-1);
@@ -288,11 +288,11 @@ bool UniGridApprox::MeshOffset()
 
 bool UniGridApprox::SurfMeshParam()
 {
-    // hier wird das in MeshOffset erzeugte gitter parametrisiert
-    // parametrisierung: (x,y) -> (u,v)  ,  ( R x R ) -> ( [0,1] x [0,1] )
+    // here the grid generated in MeshOffset is parameterized
+    // parameterization: (x,y) -> (u,v)  ,  ( R x R ) -> ( [0,1] x [0,1] )
 
-    int n = m_Grid.size()-1;      // anzahl der zu approximierenden punkte in x-richtung
-    int m = m_Grid[0].size()-1;   // anzahl der zu approximierenden punkte in y-richtung
+    int n = m_Grid.size()-1;      // number of points to be approximated in x-direction
+    int m = m_Grid[0].size()-1;   // number of points to be approximated in y-direction
 
     std::vector<double> dist_x, dist_y;
     double sum,d;
@@ -305,7 +305,7 @@ bool UniGridApprox::SurfMeshParam()
     m_uParam[n] = 1.0;
     m_vParam[m] = 1.0;
 
-    // berechne knotenvektor in u-richtung (entspricht x-richtung)
+    // calculate node vector in u-direction (corresponds to x-direction)
     for (int j=0; j<m+1; ++j)
     {
         sum = 0.0;
@@ -327,7 +327,7 @@ bool UniGridApprox::SurfMeshParam()
     for (int i=0; i<n; ++i)
         m_uParam[i] /= m+1;
 
-    // berechne knotenvektor in v-richtung (entspricht y-richtung)
+    // calculate node vector in v-direction (corresponds to y-direction)
     for (int i=0; i<n+1; ++i)
     {
         sum = 0.0;
@@ -365,8 +365,8 @@ bool UniGridApprox::SurfMeshParam()
 bool UniGridApprox::CompKnots(int u_CP, int v_CP)
 {
 
-    // berechnung der knotenvektoren
-    // siehe NURBS-BOOK Seite 412
+    // calculation of the node vectors
+    // see NURBS-BOOK page 412
 
     int r = n_x;
     int s = n_y;
@@ -395,7 +395,7 @@ bool UniGridApprox::CompKnots(int u_CP, int v_CP)
     for (int i=1; i<(n - p + 1); ++i)
     {
 
-        ind = int(i*d);          // abgerundete ganze zahl
+        ind = int(i*d);          // rounded whole number
         alp = i*d - ind;    // rest
         m_uknots[p+i] = ((1 - alp) * m_uParam[ind-1]) + (alp * m_uParam[ind]);
     }
@@ -416,7 +416,7 @@ bool UniGridApprox::CompKnots(int u_CP, int v_CP)
     for (int i=1; i<(m - q + 1); ++i)
     {
 
-        ind = int(i*d);          // abgerundete ganze zahl
+        ind = int(i*d);          // rounded whole number
         alp = i*d - ind;    // rest
         m_vknots[q+i] = ((1 - alp) * m_vParam[ind-1]) + (alp * m_vParam[ind]);
     }
@@ -430,7 +430,7 @@ bool UniGridApprox::CompKnots(int u_CP, int v_CP)
 
 bool UniGridApprox::MatComp(int u_CP, int v_CP)
 {
-    // hier wird schließlich approximiert
+    // here it is finally approximated
 
     int r = n_x;
     int s = n_y;
@@ -452,7 +452,7 @@ bool UniGridApprox::MatComp(int u_CP, int v_CP)
     ublas::matrix<double> by (1, n - 1);
     ublas::matrix<double> bz (1, n - 1);
 
-    // mit null vorinitialisieren
+    // pre-initialize with zero
     for (int i=0; i<r-1; ++i)
         for (int j=0; j<n+1; ++j)
             Nu_full(i,j) = 0.0;
@@ -512,10 +512,10 @@ bool UniGridApprox::MatComp(int u_CP, int v_CP)
     //WriteMatrix(Nv_left);
 
     atlas::gemm(CblasTrans,CblasNoTrans, 1.0, Nu_left,Nu_left, 0.0,Nu);  // Nu_left'*Nu_left = Nu
-    atlas::gemm(CblasTrans,CblasNoTrans, 1.0, Nv_left,Nv_left, 0.0,Nv);  // Nv_left'*Nv_left = Nv  !!! Achtung !!!
+    atlas::gemm(CblasTrans,CblasNoTrans, 1.0, Nv_left,Nv_left, 0.0,Nv);  // Nv_left'*Nv_left = Nv  !!! Attention !!!
 
-    std::vector<int> upiv(n - 1);   // pivotelement
-    atlas::lu_factor(Nu,upiv);      // führt LU-Zerlegung durch
+    std::vector<int> upiv(n - 1);   // pivot element
+    atlas::lu_factor(Nu,upiv);      // performs LU decomposition
     std::vector<int> vpiv(m - 1);
     atlas::lu_factor(Nv,vpiv);
 
@@ -527,7 +527,7 @@ bool UniGridApprox::MatComp(int u_CP, int v_CP)
     CPy.resize(n + 1, m + 1);
     CPz.resize(n + 1, m + 1);
 
-    // mit null vorinitialisieren
+    // pre-initialize with zero
     for (int i=0; i<n+1; ++i)
         for (int j=0; j<s+1; ++j)
         {
@@ -625,7 +625,7 @@ bool UniGridApprox::MatComp(int u_CP, int v_CP)
 
     //SurfMeshParam();
 
-    // mit null vorinitialisieren
+    // pre-initialize with zero
     for (int i=0; i<n + 1; ++i)
     {
         for (int j=0; j<m + 1; ++j)
@@ -709,7 +709,7 @@ bool UniGridApprox::MatComp(int u_CP, int v_CP)
 
     ublas::matrix<double> Tmp = CPz;
 
-    //glättung des kontrollpunktnetzes
+    //Smoothing the control point network
     for (int i=1; i<n; ++i)
     {
         for (int j=1; j<m; ++j)

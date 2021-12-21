@@ -161,13 +161,13 @@ bool cutting_tools::fillFaceWireMap()
         aTempPair.second.clear();
         std::pair<Base::BoundBox3f,TopoDS_Wire> aTempBBoxPair;
         aTempPair.first = MOrderIt->second;
-        //Jetzt durch das Face gehen und die Wires rausfiltern
+        //Now go through the face and filter out the wires
         TopExp_Explorer Explore_Face;
         Explore_Face.Init(MOrderIt->second,TopAbs_WIRE);
         //If there is no Wire -> return
         if (!Explore_Face.More()) return false;
 
-        //Jetzt alle Wires in die map schieben
+        //Now push all wires into the map
         for (Explore_Face.ReInit();Explore_Face.More();Explore_Face.Next())
         {
             aTempBBoxPair.first = getWireBBox(TopoDS::Wire(Explore_Face.Current()));
@@ -184,19 +184,19 @@ bool cutting_tools::fillFaceWireMap()
 
 bool cutting_tools::getShapeBB()
 {
-    //Die Cascade-Bounding Box funktioniert nicht richtig
-    //Es wird dort wohl ne BoundingBox um dasKontrollnetz gelegt
-    //Deshalb wird jetzt kurz das Shape tesseliert und dann die Bounding Box direkt ausgelesen
+    // The Cascade bounding box is not working properly
+    // There will probably be a bounding box around the control network
+    // Therefore, the shape is now briefly tessellated and the bounding box is then read out directly
     best_fit::Tesselate_Shape(m_Shape,m_CAD_Mesh,float(0.1));
     Base::BoundBox3f aBoundBox = m_CAD_Mesh.GetBoundBox();
     m_maxlevel = aBoundBox.MaxZ;
     m_minlevel = aBoundBox.MinZ;
 
- //   //Hier testen wir noch ein paar OpenMesh Funktionen
+ //   //Here we are testing a few more OpenMesh functions
  //   typedef OpenMesh::DefaultTraits MyTraits;
  //   typedef OpenMesh::TriMesh_ArrayKernelT<MyTraits>  MyMesh;
 
-	//////// Mesh::Interface erbt von MyMesh , so dass das Objekt 'mesh' direkt in den OpenMesh-Funktionen genutzt werden kann
+	//////// Mesh::Interface inherits from MyMesh so that the 'mesh' object can be used directly in the OpenMesh functions
  //  Mesh::Interface<MyMesh> mesh(m_CAD_Mesh);
 	////// proceed with mesh, e.g. refining
  //  MyMesh::EdgeIter e_it,e_end(mesh.edges_end());
@@ -222,7 +222,7 @@ bool cutting_tools::getShapeBB()
 
 
    
-    /* Hier ist die alte OCC BoundingBox Funktion
+    /* Here is the old OCC BoundingBox function
     Bnd_Box currentBBox;
     Standard_Real XMin, YMin, ZMin, XMax, YMax, ZMax;
     BRepBndLib::Add(m_shape, currentBBox );
@@ -263,7 +263,7 @@ bool cutting_tools::fillFaceBBoxes()
     }
     return true;
 }
-//Hier ist die alte Version um die Bounding Box zu bestimmen
+//Here is the old version to determine the bounding box
 //      aAdaptor_Surface.Initialize(atopo_surface);
 //      Standard_Real FirstUParameter, LastUParameter,FirstVParameter,LastVParameter;
 //      gp_Pnt aSurfacePoint;
@@ -273,8 +273,8 @@ bool cutting_tools::fillFaceBBoxes()
 //      LastVParameter = aAdaptor_Surface.LastVParameter();
 //float urange = LastUParameter - FirstUParameter;
 //float vrange = LastVParameter - FirstVParameter;
-////Jetzt ein 10x10 Grid pro Face machen und so die BBox bestimmen
-////Zunächst mal die BoundingBox auf Null setzen
+////Now make a 10x10 grid per face and determine the BBox in this way
+////First of all, set the bounding box to zero
 //Bnd_Box currentBBox;
 //
 //for(int i=0;i<10;++i)
@@ -285,9 +285,9 @@ bool cutting_tools::fillFaceBBoxes()
 //  currentBBox.Update(aSurfacePoint.X(),aSurfacePoint.Y(),aSurfacePoint.Z());
 // }
 //}
-////Jetzt noch nen Rand drumherum bauen
+////Now build a border around it
 //currentBBox.SetGap(0.5);
-////Jetzt die aktuelle BoundingBox mit dem aktuellen Face in einen vector pushen
+////Now push the current bounding box with the current face into a vector
 //std::pair<TopoDS_Face,Bnd_Box> tempPair;
 //tempPair.first = atopo_surface;
 //tempPair.second = currentBBox;
@@ -316,26 +316,26 @@ bool cutting_tools::initializeMeshStuff()
 
 bool cutting_tools::arrangecuts_ZLEVEL()
 {
-    //We have to fill the required maps first
+    // We have to fill the required maps first
     fillFaceWireMap();
-    //Zunächst wieder checken ob CAD oder nicht
+    // First check again whether CAD or not
     if (m_cad==false)
     {
-        //Cast um die Nachkommastellen wegzuschneiden
+        // Cut away cast by the decimal places
         int cutnumber = (int)fabs((m_maxlevel-m_minlevel)/m_pitch);
-        //m_pitch leicht korrigieren um wirklich auf die letzte Ebene zu kommen
+        // Correct m_pitch slightly to really get to the last level
         m_pitch = fabs(m_maxlevel-m_minlevel)/cutnumber;
-        //Jetzt die Schnitte machen. Die höchste Ebene fällt weg, da hier noch kein Blech gedrückt wird
+        // Make the cuts now. The highest level is omitted, as no sheet has yet been pressed here
         float z_level,z_level_corrected;
         TopoDS_Shape aCutShape;
         for (int i=1;i<=cutnumber;++i)
         {
-            //Jetzt schneiden (die oberste Ebene auslassen)
+            //Cut now (skip the top layer)
             z_level = m_maxlevel-(i*m_pitch);
             z_level_corrected = z_level;
             cut(z_level,m_minlevel,aCutShape,z_level_corrected);
             //cut_Mesh(z_level,m_minlevel,result,z_level_corrected);
-            //Jetzt die resultierende Wire in einen Vector pushen
+            //Now push the resulting wire into a vector
             std::pair<float,TopoDS_Shape> tempPair;
             tempPair.first = z_level_corrected;
             tempPair.second = aCutShape;
@@ -343,10 +343,10 @@ bool cutting_tools::arrangecuts_ZLEVEL()
         }
         return true;
     }
-    //Wenn wir mehrere Faces haben oder eine CAD-Geometrie vorhanden ist
+    //If we have several faces or a CAD geometry is available
     else
     {
-        //Über die MachiningOrder wird jetzt die Cutting-Folge festgelegt
+        //The machining order is now used to determine the cutting sequence
         std::vector<std::pair<Base::Vector3f,TopoDS_Face> >::iterator MOrderIt;
         if (m_MachiningOrder.size()<2) return false; //Did not select at least two Levels
         //Now take two levels and perform the Cutting Stuff
@@ -386,7 +386,7 @@ bool cutting_tools::arrangecuts_ZLEVEL()
                 cut(z_level,temp_min, aCutShape,z_level_corrected);
                 if (z_level_corrected != z_level)
                     std::cout << "Somehow we couldn't cut" << std::endl;
-                //Jetzt nur das gewünschte Resultat in den vector schieben (von oben nach unten große usw.)
+                //Now just move the result you want into the vector (large ones from top to bottom, etc...)
                 Edgesort aCuttingShapeSorter(aCutShape);
                 tempPair.first = z_level_corrected;
                 if (m_direction)
@@ -425,40 +425,40 @@ bool cutting_tools::arrangecuts_ZLEVEL()
 
 //}
 //      std::map<float,std::map<Base::BoundBox3f,TopoDS_Wire,BoundBox3f_Less> >::iterator zl_wire_it;
-//      //Wir holen uns jetzt den nächsten Z-Level raus. Wir müssen was kleineres
-//      //wie den höchsten Wert nehmen sonst gibt er immer den höchsten Wert aus
+//      //We are now getting the next Z-Level out. We have to take something smaller like the highest value,
+//      //otherwise it will always output the highest value
 //      zl_wire_it = m_zl_wire_combination.upper_bound(temp_max-0.1);
 //      if (zl_wire_it->first == temp_max)
 //      {
-//          cout << "Tja, es gibt wohl nur eine flache Area";
+//          cout << "Well, there is probably only one flat area";
 //          temp_min = m_minlevel;
 //      }
-//      //Wenn es mehrere flache Bereiche gibt muss ich nochmal weitermachen
+//      //If there are multiple flat areas, I have to go over again
 //      else
 //      {
 //          temp_min = zl_wire_it->first;
-//          cout << "Mehrere Areas erkannt";
+//          cout << "Detected multiple areas";
 //      }
-//      //Jetzt schnippeln von temp_max bis temp_min
+//      //Now cut from temp_max to temp_min
 //      int cutnumber = (int)fabs((temp_max-temp_min)/m_pitch);
-//      //m_pitch leicht korrigieren um wirklich auf die letzte Ebene zu kommen
+//      //Correct m_pitch slightly to really get to the last level
 //      m_pitch = fabs(temp_max-temp_min)/cutnumber;
-//      //Jetzt die Schnitte machen. Die höchste Ebene fällt weg, da hier noch kein Blech gedrückt wird
+//      //Now make the cuts. The highest level is omitted because no sheet is pressed here yet
 //      float z_level,z_level_corrected;
 //      TopoDS_Shape aCutShape;
-//      //Jetzt schneiden (die oberste Ebene auslassen)
+//      //Cut now (omit the top layer)
 //      for (int i=1;i<=20;++i)
 //      {
 //          z_level = temp_max-(i*m_pitch);
 //          z_level_corrected = z_level;
 //          //cut_Mesh(z_level,m_minlevel,result,z_level_corrected);
-//          //Jetzt die resultierenden Points in den vector schieben
+//          //Now move the resulting points into the vector
 //          //std::pair<float,std::list<std::vector<Base::Vector3f> > > tempPair;
 //          //tempPair.first = z_level_corrected;
 //          //tempPair.second = result;
 //          //m_ordered_cuts.push_back(tempPair);
 //          cut(z_level,temp_min, aCutShape,z_level_corrected);
-//          //Jetzt die gefüllte Wire in den vector schieben
+//          //Now insert the filled wire into the vector
 //          std::pair<float,TopoDS_Shape> tempPair;
 //          tempPair.first = z_level_corrected;
 //          tempPair.second = aCutShape;
@@ -473,7 +473,7 @@ bool cutting_tools::arrangecuts_ZLEVEL()
 
 //bool cutting_tools::checkFlatLevel()
 //{
-//    //Falls keine CAD-Geometrie da ist, gleich wieder rausspringen
+//    //If there is no CAD geometry, jump straight out again
 //
 //    if (m_cad==false) return false;
 //
@@ -519,26 +519,26 @@ bool cutting_tools::arrangecuts_ZLEVEL()
 //        gp_Vec z_normal_opposite(0,0,-1);
 //        if (Norm_average.IsEqual(z_normal,0.01,0.01) || Norm_average.IsEqual(z_normal_opposite,0.01,0.01))
 //        {
-//            cout << "Einen flachen Bereich gefunden";
+//            cout << "Found a flat area";
 //            std::pair<float,std::map<Base::BoundBox3f,TopoDS_Wire,BoundBox3f_Less> >aTempPair;
 //            aTempPair.second.clear();
 //            std::pair<Base::BoundBox3f,TopoDS_Wire> aTempBBoxPair;
 //
-//            //Z-Wert vom flachen Bereich in ein temporäres pair pushen
+//            //Push the Z-value from the flat area into a temporary pair
 //            aTempPair.first = ((first.Z()+second.Z()+third.Z())/3);
-//            //Jetzt durch das Face gehen und die Wires rausfiltern
+//            //Now go through the face and filter the wires out
 //            TopExp_Explorer Explore_Face;
 //            Explore_Face.Init(atopo_surface,TopAbs_WIRE);
 //            //If there is no Wire -> return
 //            if (!Explore_Face.More()) return false;
 //
-//            //Jetzt alle Wires in die map schieben
+//            //Now push all wires into the map
 //            for (Explore_Face.ReInit();Explore_Face.More();Explore_Face.Next())
 //            {
 //                aTempBBoxPair.first = getWireBBox(TopoDS::Wire(Explore_Face.Current()));
 //                aTempBBoxPair.second = TopoDS::Wire(Explore_Face.Current());
 //                aTempPair.second.insert(aTempBBoxPair);
-//                //aTempPair.first ist ja noch auf dem gleichen Z-Wert wie vorher, deswegen muss da nichts abgepasst werden
+//                //aTempPair.first is still at the same Z value as before, so nothing needs to be adjusted
 //            }
 //            m_zl_wire_combination.insert(aTempPair);
 //        }
@@ -562,21 +562,21 @@ bool cutting_tools::arrangecuts_ZLEVEL()
 // for (int i=1;i<=numberofpoints;++i)
 // {
 //  lowestdistance=200;
-//  //Aktuellen Punkt holen
+//  //Get the current point
 //  gp_Pnt currentPoint = aProp.Value(i);
 //  projectPointContainer aTempContainer;
-//  //checken auf welches Face wir projezieren könnnen
+//  //check which face we can project onto
 //  for(m_face_bb_it = m_face_bboxes.begin();m_face_bb_it!=m_face_bboxes.end();++m_face_bb_it)
 //  {
-//   //Wenn der aktuelle Punkt in der BBox enthalten ist, dann machen wir mit der Projection weiter
+//   //If the current point is contained in the BBox, then we continue with the projection
 //   if(checkPointinFaceBB(aProp.Value(i),m_face_bb_it->second))
 //   {
 //    atopo_surface = m_face_bb_it->first;
 //    geom_surface = BRep_Tool::Surface(atopo_surface);
 //    GeomAPI_ProjectPointOnSurf aPPS(currentPoint,geom_surface,0.001);
-//    //Wenn nichts projeziert werden kann, gehts gleich weiter zum nächsten Face bzw. der nächsten BBox
+//    //If nothing can be projected, it goes straight to the next face or the next BBox
 //    if (aPPS.NbPoints() == 0) continue;
-//    //Jetzt muss das aktuelle Face gespeichert werden, da es eventuell das face ist, welches am nächsten ist
+//    //Now the current face has to be saved, as it may be the face that is closest
 //    double length = aPPS.LowerDistance();
 //    if(lowestdistance>length)
 //    {
@@ -588,18 +588,18 @@ bool cutting_tools::arrangecuts_ZLEVEL()
 //  }
 //  gp_Vec Uvec,Vvec,normalVec;
 //  geom_surface = BRep_Tool::Surface(atopo_surface_shortest);
-//  //Das Face welches am nächsten ist in der temp-struct speichern
+//  //Save the face which is closest in the temp-struct
 //  aTempContainer.face = atopo_surface_shortest;
 //  geom_surface->D1(Umin,Vmin,aTempContainer.point,Uvec,Vvec);
-//  //Jetzt den Normalenvector auf die Fläche ausrechnen
+//  //Now calculate the normal vector on the surface
 //  normalVec = Uvec;
 //  normalVec.Cross(Vvec);
 //  normalVec.Normalize();
-//  //Jetzt ist die Normale berechnet und auch normalisiert
-//  //Jetzt noch checken ob die Normale auch wirklich wie alle anderen auf die gleiche Seite zeigt.
-//  //dazu nur checken ob der Z-Wert der Normale größer Null ist (dann im 1.und 2. Quadranten)
+//  //Now the normal is calculated and normalized
+//  //Now check if the normal is really pointing to the same side like everyone else.
+//  //To do this, just check whether the Z-value of the normal is greater than zero (then in the 1st and 2nd quadrant)
 //  if(normalVec.Z()<0) normalVec.Multiply(-1.0);
-//  //Mal kurz den Winkel zur Grund-Ebene ausrechnen
+//  //Briefly calculate the angle to the ground plane
 //  aTempContainer.normalvector = normalVec;
 //  aContainer.push_back(aTempContainer);
 //
@@ -610,16 +610,16 @@ bool cutting_tools::arrangecuts_ZLEVEL()
 
 TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 {
-    //Bisher funktioniert das Ganze nur für Schnitte welche nur einmal rundherum laufen und noch nicht für Inseln
+    //So far, the whole thing only works for cuts that only run around once and not yet for islands
     TopExp_Explorer exploreShape;
     exploreShape.Init(aShape,TopAbs_EDGE);
     int k=0;
-    for (; exploreShape.More(); exploreShape.Next()) //erstmal schauen wieviele Edges wir haben
+    for (; exploreShape.More(); exploreShape.Next()) //first see how many edges we have
     {
         k++;
     }
-    //Jetzt die Edges alle in eine Wire packen (mit Add) und schauen ob ein Fehler kommt.
-    //Wenn ja, dann die nächste Edge. Solange bis alle Edges drin sind.
+    //Now pack the edges all into one wire (with Add) and see if there is an error.
+    //If so, then the next Edge. Until all the edges are in.
 
     if (k<1)
     {
@@ -627,16 +627,16 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
         BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(exploreShape.Current()));
         return mkWire.Wire();
     }
-    else //Nur wenn mehr als eine Edge vorhanden ist
+    else //Only when there is more than one Edge
     {
-        BRepBuilderAPI_MakeWire mkWire; //WireContainer aufbauen
+        BRepBuilderAPI_MakeWire mkWire; //Build the WireContainer
         std::vector<edge_container> listofedge_tmp,listofedge;
         std::vector<edge_container>::iterator it_edge;
-        edge_container a_edge_container; //Definiert in der stuff.h
+        edge_container a_edge_container; //Defined in stuff.h
         listofedge.clear();
         listofedge_tmp.clear();
         exploreShape.ReInit();
-        //Edge-Liste füllen
+        //Fill Edge List
         for (; exploreShape.More(); exploreShape.Next())
         {
             a_edge_container.edge = TopoDS::Edge(exploreShape.Current());
@@ -661,14 +661,14 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
                 }
                 else
                 {
-                    //Abstände ausrechnen
+                    //Calculate distances
                     double abstand1=sqrt((*it_edge).firstPoint.SquareDistance(lastpointoflastedge));
                     double abstand2=sqrt((*it_edge).lastPoint.SquareDistance(lastpointoflastedge));
                     double abstand3=sqrt((*it_edge).firstPoint.SquareDistance(firstpointoflastedge));
                     double abstand4=sqrt((*it_edge).lastPoint.SquareDistance(firstpointoflastedge));
                     if (abstand1<0.5)
                     {
-                        //Neue Edge erzeugen welche vom letzten Endpunkt zum aktuellen Startpunkt geht
+                        //Create new edge which goes from the last end point to the current starting point
                         BRepBuilderAPI_MakeEdge newedge(lastpointoflastedge,(*it_edge).firstPoint);
                         mkWire.Add(newedge);
                         mkWire.Add((*it_edge).edge);
@@ -677,7 +677,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
                     }
                     else if (abstand2<0.5)
                     {
-                        //Neue Edge erzeugen welche vom letzten Endpunkt zum aktuellen Startpunkt geht
+                        //Create new edge which goes from the last end point to the current starting point
                         BRepBuilderAPI_MakeEdge newedge(lastpointoflastedge,(*it_edge).lastPoint);
                         mkWire.Add(newedge);
                         mkWire.Add((*it_edge).edge);
@@ -688,7 +688,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 
                     else if (abstand3<0.5)
                     {
-                        //Neue Edge erzeugen welche vom letzten Endpunkt zum aktuellen Startpunkt geht
+                        //Create new edge which goes from the last end point to the current starting point
                         BRepBuilderAPI_MakeEdge newedge(firstpointoflastedge,(*it_edge).firstPoint);
                         mkWire.Add(newedge);
                         mkWire.Add((*it_edge).edge);
@@ -697,7 +697,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
                     }
                     else if (abstand4<0.5)
                     {
-                        //Neue Edge erzeugen welche vom letzten Endpunkt zum aktuellen Startpunkt geht
+                        //Create new edge which goes from the last end point to the current starting point
                         BRepBuilderAPI_MakeEdge newedge(firstpointoflastedge,(*it_edge).lastPoint);
                         mkWire.Add(newedge);
                         mkWire.Add((*it_edge).edge);
@@ -718,14 +718,14 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 }
 
 
-//bool cutting_tools::OffsetWires_Standard(float radius) //Version wo nur in X,Y-Ebene verschoben wird
+//bool cutting_tools::OffsetWires_Standard(float radius) //Version where it is only shifted in the X,Y plane
 //{
 // Base::Builder3D build;
 // std::ofstream outfile;
 // outfile.open("c:/atest.out");
 //
 //
-// //Die ordered_cuts sind ein Vector wo für jede Ebene ein Pair existiert
+// //The ordered_cuts are a vector where there is a pair for every level
 // for(m_ordered_cuts_it = m_ordered_cuts.begin();m_ordered_cuts_it!=m_ordered_cuts.end();++m_ordered_cuts_it)
 // {
 //  float current_z_level = m_ordered_cuts_it->first;
@@ -739,21 +739,21 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //  {
 //   i++;
 //   lowestdistance=200;
-//   //Aktuellen Punkt holen
+//   //Get the current point
 //   gp_Pnt currentPoint(avector_it->x,avector_it->y,avector_it->z);
 //   gp_Pnt nearest_Point;
-//   //checken auf welches Face wir projezieren könnnen
+//   //check which face we can project onto
 //   for(m_face_bb_it = m_face_bboxes.begin();m_face_bb_it!=m_face_bboxes.end();++m_face_bb_it)
 //   {
-//    //Wenn der aktuelle Punkt in der BBox enthalten ist, dann machen wir mit der Projection weiter
+//    //If the current point is in the BBox, then we continue with the projection
 //    if(checkPointinFaceBB(currentPoint,m_face_bb_it->second))
 //    {
 //     atopo_surface = m_face_bb_it->first;
 //     geom_surface = BRep_Tool::Surface(atopo_surface);
 //     GeomAPI_ProjectPointOnSurf aPPS(currentPoint,geom_surface,0.001);
-//     //Wenn nichts projeziert werden kann, gehts gleich weiter zum nächsten Face bzw. der nächsten BBox
+//     //If nothing can be projected, it goes straight to the next face or the next BBox
 //     if (aPPS.NbPoints() == 0) continue;
-//     //Jetzt muss das aktuelle Face gespeichert werden, da es eventuell das face ist, welches am nächsten ist
+//     //Now the current face has to be saved, as it may be the face that is closest
 //     double length = aPPS.LowerDistance();
 //     if(lowestdistance>length)
 //     {
@@ -764,9 +764,9 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //     }
 //    }
 //   }
-//   //Für eine saubere Projection auf der aktuellen Ebene wird jetzt der Richtungsvector
-//   //aus dem projezierten Punkt und dem Ursprungspunkt gebildet
-//   //und dieser dann hergenommen um damit nochmal in dessen Richtung zu projezieren
+//   //For a clean projection on the current plane, the direction vector is now
+//   //formed from the projected point and the point of origin
+//   //and then used to project again in that direction
 //   gp_Vec aVec(currentPoint,nearest_Point);
 //   aVec.Normalize();
 //   aVec.SetZ(0.0);
@@ -775,7 +775,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //   IntCurvesFace_ShapeIntersector aFaceIntSect;
 //   aFaceIntSect.Load(m_Shape, 0.001);
 //   aFaceIntSect.PerformNearest(aLine,-RealLast(), +RealLast());
-//   //Jetzt holen wir uns auf der Fläche den U und V Wert um dann D1 und D2 bestimmen zu können
+//   //Now we get the U and V value on the area so that we can then determine D1 and D2
 //   gp_Pnt projectedPoint,OffsetPoint;
 //   gp_Pnt testpoint,testpoint2;
 //   float abstand,abstand_old;
@@ -799,21 +799,21 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //   normalVec = Uvec;
 //   normalVec.Cross(Vvec);
 //   normalVec.Normalize();
-//   //Jetzt ist die Surface-Normale berechnet und auch normalisiert
-//   //Jetzt noch checken ob die Normale auch wirklich wie alle anderen auf die gleiche Seite zeigt.
-//   //dazu nur checken ob der Z-Wert der Normale größer Null ist (dann im 1.und 2. Quadranten)
+//   //Now the surface normal is calculated and normalized
+//   //Now check if the normal is really pointing to the same side like everyone else.
+//   //To do this, just check whether the Z-value of the normal is greater than zero (then in the 1st and 2nd quadrant)
 //   if(normalVec.Z()<0) normalVec.Multiply(-1.0);
 //   //Jetzt die Normale auf die Radiuslänge verlängern
 //   normalVec.Multiply(radius);
-//   //Jetzt die Z-Komponente auf 0 setzen
+//   //Now set the Z component to 0
 //   normalVec.SetZ(0.0);
 //   //float abstand = currentPoint.Distance(projectedPoint);
 //   //if(abstand>0.2)
 //   //{cout<<"error"<<endl;}
 //   projPointVec.SetXYZ(projectedPoint.XYZ());
 //   OffsetPoint.SetXYZ((projPointVec + normalVec).XYZ());
-//   OffsetPoint.SetZ(projectedPoint.Z()+radius);//Den Radius noch dazu addieren
-//   //Aktuellen OffsetPoint setzen
+//   OffsetPoint.SetZ(projectedPoint.Z()+radius);//Add the radius to it
+//   //Set the current offset point
 //   finalPoints.push_back(OffsetPoint);
 //
 //   //Base::Vector3f offsetPoint,projectPoint;
@@ -826,7 +826,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //
 //
 // //  outfile << projectedPoint.X() <<","<<projectedPoint.Y()<<","<<projectedPoint.Z()<<std::endl;
-//   //Jetzt die aktuelle Kurve als BSpline interpolieren
+//   //Now interpolate the current curve as a BSpline
 //  //check for intersections due to wrong offset points
 //  checkPointIntersection(finalPoints);
 //  std::vector<gp_Pnt> finalPointscorrected;
@@ -887,7 +887,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 
 //bool cutting_tools::checkPointIntersection(std::vector<projectPointContainer> &finalPoints)
 //{
-// //Hier wird gecheckt ob die Punkte wirklich alle in der richtigen Reihenfolge vorliegen
+// //This is where a check is made to see whether the points are really all in the correct order
 // std::vector<projectPointContainer>::iterator aPntIt;
 // double distance,distance_old;
 // projectPointContainer nearestPointStruct;
@@ -897,25 +897,25 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //  distance_old = 100;
 //  for(int i=1;i<30;++i)
 //  {
-//   //Wenn wir schon fast am Ende sind oder schon bald, dann rausspringen
+//   //When we're almost at the end, or soon, then jump out
 //   if((j+i)>=finalPoints.size()) break;
 //
 //   distance = (finalPoints[j+i].point).SquareDistance(finalPoints[j].point);
 //   if(distance<distance_old)
 //   {
-//    //Speichern wo wir den nächsten Punkt gefunden haben
+//    //Save where we found the next point
 //    k=i;
 //    distance_old = distance;
 //   }
 //  }
-//  //Jetzt checken ob der nächste Punkt bereits der gesuchte ist
+//  //Now check whether the next point is already the one you are looking for
 //  if(k==1)
 //  {
 //   continue;
 //  }
 //  else
 //  {
-//   //Jetzt den Punkteaustausch vornehmen
+//   //Now do the exchange of points
 //   nearestPointStruct = finalPoints[j+k];
 //   finalPoints[j+k] = finalPoints[j+1];
 //   finalPoints[j+1] = nearestPointStruct;
@@ -1058,7 +1058,7 @@ bool cutting_tools::CheckforLastPoint(  const gp_Pnt& lastPoint,
     }
     return true;
 }
-bool cutting_tools::OffsetWires_Standard() //Version wo nur in X,Y-Ebene verschoben wird
+bool cutting_tools::OffsetWires_Standard() //Version where it is only shifted in the X, Y plane
 {
     //for debugging issues
     std::ofstream anoutput1,anoutput2;
@@ -1068,7 +1068,7 @@ bool cutting_tools::OffsetWires_Standard() //Version wo nur in X,Y-Ebene verscho
     gp_Pnt lastPoint(0.0,0.0,0.0); //Initialize the first Point to the Origin
     current_flat_level = m_ordered_cuts.begin();
     bool slave_is_wire= false; //Necessary if the slave is a wire while the master is not...
-    //Nicht beim höchsten Anfangen, da wir den nicht mit dem Master fahren wollen
+    //Not at the very beginning, because we don't want to drive that with the master
     for (m_ordered_cuts_it = m_ordered_cuts.begin()+1;m_ordered_cuts_it!=m_ordered_cuts.end();++m_ordered_cuts_it)
     {
         std::vector<std::pair<gp_Pnt,double> > MasterPointContainer;
@@ -1102,9 +1102,9 @@ bool cutting_tools::OffsetWires_Standard() //Version wo nur in X,Y-Ebene verscho
                             curveAdaptor.D0(aProp.Parameter(i),aTempPair.first);
                         else curveAdaptor.D0(aProp.Parameter(aProp.NbPoints()-i+1),aTempPair.first);
                         //aTempPair.first.SetZ(aTempPair.first.Z() + m_UserSettings.master_radius);
-						aTempPair.first.SetZ(aTempPair.first.Z() );
+                        aTempPair.first.SetZ(aTempPair.first.Z() );
                         aTempPair.second = 0.0; //Initialize of Angle
-                        //checken ob der neue Punkt zu nahe am alten ist. Wenn ja, dann kein push_back
+                        //check if the new point is too close to the old one. If so, then no push_back
                         if (MasterPointContainer.size()>0 && (MasterPointContainer.rbegin()->first.SquareDistance(aTempPair.first)>(Precision::Confusion()*Precision::Confusion())))
                         {
                             MasterPointContainer.push_back(aTempPair);
@@ -1255,8 +1255,8 @@ bool cutting_tools::OffsetWires_Standard() //Version wo nur in X,Y-Ebene verscho
                     double first2,last2;
                     bool reversed = false;
                     BRep_Tool::CurveOnSurface(aCutShapeSorter.Current(),a2DCurve,aSurface,aLoc,first2,last2);
-                    //Jetzt noch die resultierende Surface und die Curve sauber drehen
-                    //(vielleicht wurde ja das TopoDS_Face irgendwie gedreht oder die TopoDS_Edge)
+                    //Now rotate the resulting surface and the curve cleanly
+                    //(maybe the TopoDS_Face was rotated somehow or the TopoDS_Edge)
                     if (aCutShapeSorter.Current().Orientation() == TopAbs_REVERSED)
                         reversed = true;
 
@@ -1277,41 +1277,41 @@ bool cutting_tools::OffsetWires_Standard() //Version wo nur in X,Y-Ebene verscho
                         GeomAdaptor_Surface aGeom_Adaptor(aSurface);
                         int t = aGeom_Adaptor.GetType();
                         aGeom_Adaptor.D1(a2dParaPoint.X(),a2dParaPoint.Y(),aSurfacePoint,Uvec,Vvec);
-                        //Jetzt den Normalenvector auf die Fläche ausrechnen
+                        //Now calculate the normal vector on the surface
                         normalVec = Uvec;
                         normalVec.Cross(Vvec);
                         normalVec.Normalize();
-                        //Jetzt ist die Normale berechnet und auch normalisiert
-                        //Jetzt noch checken ob die Normale auch wirklich auf die saubere Seite zeigt
-                        //dazu nur checken ob der Z-Wert der Normale größer Null ist (dann im 1.und 2. Quadranten)
+                        //Now the normal is calculated and normalized
+                        //Now check whether the normal is really pointing to the clean side;
+                        //just check whether the Z-value of the normal is greater than zero (then in the 1st and 2nd quadrant)
                         if (normalVec.Z()<0) normalVec.Multiply(-1.0);
 
-                        //Mal kurz den Winkel zur Grund-Ebene ausrechnen
+                        //Briefly calculate the angle to the ground plane
                         gp_Vec planeVec(normalVec.X(),normalVec.Y(),0.0);
-                        //Den Winkel
+                        //The angle
                         PointContactPair.second = normalVec.Angle(planeVec);
                         gp_Vec NormalVecSlave = normalVec;
                         gp_Pnt SlavePoint;
-                        //Jetzt die Z-Komponente auf 0 setzen
+                        //Now set the Z component to 0
                         //normalVec.SetZ(0.0);
                         normalVec.Normalize();
-                        //Jetzt die Normale mit folgender Formel multiplizieren für den Master
+                        //Now multiply the normal using the following formula for the master
                         //double multiply = m_UserSettings.master_radius*(1-sin(PointContactPair.second))/cos(PointContactPair.second);
                         double multiply = m_UserSettings.master_radius;
                         normalVec.Multiply(multiply);
-                        //und hier für den Slave
+                        //and here for the slave
                         NormalVecSlave.Normalize();
                         multiply = m_UserSettings.sheet_thickness+m_UserSettings.slave_radius;
                         NormalVecSlave.Multiply(multiply);
-                        //Jetzt die Richtung umdrehen
+                        //Now reverse the direction
                         NormalVecSlave.Multiply(-1.0);
-                        //Jetzt den OffsetPunkt berechnen
+                        //Now calculate the offset point
                         PointContactPair.first.SetXYZ(aSurfacePoint.XYZ());
-						//PointContactPair.first.SetXYZ(aSurfacePoint.XYZ() + normalVec.XYZ());
+                        //PointContactPair.first.SetXYZ(aSurfacePoint.XYZ() + normalVec.XYZ());
                         SlavePoint.SetXYZ(aSurfacePoint.XYZ() + NormalVecSlave.XYZ());
                         //PointContactPair.first.SetZ(PointContactPair.first.Z() + m_UserSettings.master_radius);
-                        //Damit wir keine Punkte bekommen die zu nahe beieinander liegen
-                        //Den letzten hinzugefügten Punkt suchen
+                        //So that we don't get any points that are too close together
+                        //Find the last added point
                         if (MasterPointContainer.size()>0 && (MasterPointContainer.rbegin()->first.SquareDistance(PointContactPair.first)>0.001))
                         {
                             MasterPointContainer.push_back(PointContactPair);
@@ -1343,7 +1343,7 @@ bool cutting_tools::OffsetWires_Standard() //Version wo nur in X,Y-Ebene verscho
                             gp_Pnt SlaveOffsetPoint;
                             wireAdaptor.D0(aProp.Parameter(i),SlaveOffsetPoint);
                             SlaveOffsetPoint.SetZ(SlaveOffsetPoint.Z() - m_UserSettings.slave_radius - m_UserSettings.sheet_thickness);
-                            //checken ob der neue Punkt zu nahe am alten ist. Wenn ja, dann kein push_back
+                            //check if the new point is too close to the old one. If so, then no push_back
                             if (SlavePointContainer.size()>0 && (SlavePointContainer.rbegin()->SquareDistance(SlaveOffsetPoint)>(0.001)))
                             {
                                 SlavePointContainer.push_back(SlaveOffsetPoint);
@@ -1474,7 +1474,7 @@ bool cutting_tools::OffsetWires_Standard() //Version wo nur in X,Y-Ebene verscho
                         else curveAdaptor.D0(aProp.Parameter(aProp.NbPoints()-i+1),aTempPair.first);
                         aTempPair.first.SetZ(aTempPair.first.Z() -m_UserSettings.slave_radius -m_UserSettings.sheet_thickness);
                         aTempPair.second = 0.0; //Initialize of Angle
-                        //checken ob der neue Punkt zu nahe am alten ist. Wenn ja, dann kein push_back
+                        //check if the new point is too close to the old one. If so, then no push_back
                         if (MasterPointContainer.size()>0 && (MasterPointContainer.rbegin()->first.SquareDistance(aTempPair.first)>(Precision::Confusion()*Precision::Confusion())))
                         {
                             MasterPointContainer.push_back(aTempPair);
@@ -1623,8 +1623,8 @@ bool cutting_tools::OffsetWires_Standard() //Version wo nur in X,Y-Ebene verscho
                     double first2,last2;
                     bool reversed = false;
                     BRep_Tool::CurveOnSurface(aCutShapeSorter.Current(),a2DCurve,aSurface,aLoc,first2,last2);
-                    //Jetzt noch die resultierende Surface und die Curve sauber drehen
-                    //(vielleicht wurde ja das TopoDS_Face irgendwie gedreht oder die TopoDS_Edge)
+                    //Now rotate the resulting surface and the curve cleanly
+                    //(maybe the TopoDS_Face was somehow rotated or the TopoDS_Edge)
                     if (aCutShapeSorter.Current().Orientation() == TopAbs_REVERSED)
                         reversed = true;
 
@@ -1645,39 +1645,39 @@ bool cutting_tools::OffsetWires_Standard() //Version wo nur in X,Y-Ebene verscho
                         GeomAdaptor_Surface aGeom_Adaptor(aSurface);
                         int t = aGeom_Adaptor.GetType();
                         aGeom_Adaptor.D1(a2dParaPoint.X(),a2dParaPoint.Y(),aSurfacePoint,Uvec,Vvec);
-                        //Jetzt den Normalenvector auf die Fläche ausrechnen
+                        //Now calculate the normal vector on the surface
                         normalVec = Uvec;
                         normalVec.Cross(Vvec);
                         normalVec.Normalize();
-                        //Jetzt ist die Normale berechnet und auch normalisiert
-                        //Jetzt noch checken ob die Normale auch wirklich auf die saubere Seite zeigt
-                        //dazu nur checken ob der Z-Wert der Normale größer Null ist (dann im 1.und 2. Quadranten)
+                        //Now the normal is calculated and normalized
+                        //Now check whether the normal is really pointing to the clean side
+                        //To do this, just check whether the Z-value of the normal is greater than zero (then in the 1st and 2nd quadrant)
                         if (normalVec.Z()<0) normalVec.Multiply(-1.0);
 
-                        //Mal kurz den Winkel zur Grund-Ebene ausrechnen
+                        //Briefly calculate the angle to the ground plane
                         gp_Vec planeVec(normalVec.X(),normalVec.Y(),0.0);
-                        //Den Winkel
+                        //The angle
                         PointContactPair.second = normalVec.Angle(planeVec);
                         gp_Vec NormalVecSlave = normalVec;
                         gp_Pnt SlavePoint;
-                        //Jetzt die Z-Komponente auf 0 setzen
+                        //Now set the Z component to 0
                         //normalVec.SetZ(0.0);
                         normalVec.Normalize();
-                        //Jetzt die Normale mit folgender Formel multiplizieren für den Master
+                        //Now multiply the normal using the following formula for the master
                         //double multiply = (m_UserSettings.slave_radius*(1-sin(PointContactPair.second))/cos(PointContactPair.second))+m_UserSettings.sheet_thickness;
                         double multiply = m_UserSettings.slave_radius + m_UserSettings.sheet_thickness;
                         //As the Master is now the Slave we have to multiply it also by -1.0
                         normalVec.Multiply(-multiply);
-                        //und hier für den Slave
+                        //and here for the slave
                         NormalVecSlave.Normalize();
                         multiply = m_UserSettings.master_radius;
                         NormalVecSlave.Multiply(multiply);
-                        //Jetzt den OffsetPunkt berechnen
+                        //Now calculate the offset point
                         PointContactPair.first.SetXYZ(aSurfacePoint.XYZ() + normalVec.XYZ());
                         SlavePoint.SetXYZ(aSurfacePoint.XYZ() + NormalVecSlave.XYZ());
                         //PointContactPair.first.SetZ(PointContactPair.first.Z() - m_UserSettings.slave_radius);
-                        //Damit wir keine Punkte bekommen die zu nahe beieinander liegen
-                        //Den letzten hinzugefügten Punkt suchen
+                        //So that we don't get any points that are too close together
+                        //Find the last point added
                         if (MasterPointContainer.size()>0 && (MasterPointContainer.rbegin()->first.SquareDistance(PointContactPair.first)>(Precision::Confusion()*Precision::Confusion())))
                         {
                             MasterPointContainer.push_back(PointContactPair);
@@ -1709,7 +1709,7 @@ bool cutting_tools::OffsetWires_Standard() //Version wo nur in X,Y-Ebene verscho
                             gp_Pnt SlaveOffsetPoint;
                             wireAdaptor.D0(aProp.Parameter(i),SlaveOffsetPoint);
                             SlaveOffsetPoint.SetZ(SlaveOffsetPoint.Z() + m_UserSettings.master_radius);
-                            //checken ob der neue Punkt zu nahe am alten ist. Wenn ja, dann kein push_back
+                            //check if the new point is too close to the old one. If so, then no push_back
                             if (SlavePointContainer.size()>0 && (SlavePointContainer.rbegin()->SquareDistance(SlaveOffsetPoint)>(0.001)))
                             {
                                 SlavePointContainer.push_back(SlaveOffsetPoint);
@@ -1864,32 +1864,32 @@ TopoDS_Shape cutting_tools::getProperCut(TopoDS_Shape& aShape)
 
 bool cutting_tools::calculateAccurateSlaveZLevel(std::vector<std::pair<gp_Pnt,double> >& OffsetPoints, double current_z_level, double &slave_z_level, double &average_sheet_thickness, double &average_angle, bool &cutpos)
 {
-    //Mittelwert von allen Normalenwinkeln und damit dann den Mittelwert der Blechdicke bilden
+    //Calculate the mean value of all normal angles and thus the mean value of the sheet metal thickness
 
     bool direction,area;
-    //Zunächst checken in welchem Bereich vom Teil wir uns aufhalten
+    //First of all, check in which area of the part we are
     if (current_z_level < m_MachiningOrder[0].first.z && current_z_level > m_MachiningOrder[1].first.z)
     {
-        //Wir sind von oben nach unten im ersten Teil
+        //We're in the first part from top to bottom
         direction = true;
         area = true;
     }
     else if (m_MachiningOrder.size() > 2 && current_z_level < m_MachiningOrder[1].first.z)
     {
-        //Wir sind von oben nach unten im zweiten Teil
+        //We're in the second part from top to bottom
         direction = true;
         area = false;
     }
     else if (m_MachiningOrder.size() > 2 && current_z_level < m_MachiningOrder[2].first.z && current_z_level > m_MachiningOrder[1].first.z)
     {
-        //Wir sind von unten nach oben im 2. Teil
+        //We are from the bottom up in the 2nd part
         direction = false;
         area = false;
 
     }
     else
     {
-        cout << "Konnte keine Zuordnung finden" << endl;
+        cout << "Couldn't find an assignment" << endl;
     }
 
     average_angle = 0.0;
@@ -1936,7 +1936,7 @@ bool cutting_tools::calculateAccurateSlaveZLevel(std::vector<std::pair<gp_Pnt,do
             return true;
         }
     }
-    //Die oberste Ebene ist hier abgehakt
+    //The top level is checked off here
     if (direction && !area && slave_z_leveltop < (m_MachiningOrder[1].first.z - m_UserSettings.sheet_thickness))
     {
         slave_z_level = slave_z_leveltop;
@@ -1957,7 +1957,7 @@ bool cutting_tools::calculateAccurateSlaveZLevel(std::vector<std::pair<gp_Pnt,do
             return true;
         }
     }
-    //Jetzt noch die Geschichte wo wir wieder nach oben fahren
+    //Now the story where we go up again
     if (!direction && !area && slave_z_leveltop < (m_MachiningOrder[1].first.z - m_UserSettings.sheet_thickness))
     {
         slave_z_level = slave_z_leveltop;
@@ -1982,7 +1982,7 @@ bool cutting_tools::calculateAccurateSlaveZLevel(std::vector<std::pair<gp_Pnt,do
     return  true;
 }
 
-//bool cutting_tools::OffsetWires() //Hier ist die alte Version
+//bool cutting_tools::OffsetWires() //This is the old version
 //{
 // for(m_it = m_all_cuts.begin();m_it<m_all_cuts.end();++m_it)
 // {
@@ -2023,11 +2023,11 @@ bool cutting_tools::calculateAccurateSlaveZLevel(std::vector<std::pair<gp_Pnt,do
 //   nearest_surface->D1(Umin,Vmin,projectedPoint,Uvec,Vvec);
 //   normalVec = Uvec;
 //   normalVec.Cross(Vvec);
-//   normalVec.Normalize(); //Jetzt ist die Normale berechnet und auch normalisiert
+//   normalVec.Normalize(); //Now the normal is calculated and normalized
 //   //zeroPoint.SetCoord(0.0,0.0,0.0); //
 //   projPointVec.SetXYZ(projectedPoint.XYZ());
 //   OffsetPoint.SetXYZ((projPointVec + (normalVec*(-21))).XYZ());
-//   finalOffsetPoints->SetValue(i,OffsetPoint); //Aktuellen OffsetPoint setzen
+//   finalOffsetPoints->SetValue(i,OffsetPoint); //Set the current offset point
 //  }
 //  Standard_Boolean isPeriodic = Standard_False;
 //  GeomAPI_Interpolate aNoPeriodInterpolate(finalOffsetPoints, isPeriodic, Precision::Confusion());
@@ -2076,11 +2076,11 @@ bool cutting_tools::OffsetWires_Spiral()
     current_flat_level = m_ordered_cuts.begin();
     SpiralHelper lastPoint;
     lastPoint.SurfacePoint.SetCoord(0.0,0.0,0.0);
-    bool slave_done= false; //Necessary if the slave is already output
+    boJetzt noch die Geschichte wo wir wieder nach oben fahrenol slave_done= false; //Necessary if the slave is already output
     bool just_started = true; //
     gp_Vec direction_vector(0.0,0.0,1.0),last_direction_vector(0.0,0.0,1.0);//Just to initialize them
     bool direction = true; //for the Robot, this tells the algo that we have to switch the direction
-    //Nicht beim höchsten Anfangen, da wir den nicht mit dem Master fahren wollen
+    //Not at the very beginning, as we don't want to drive it with the master
     for (m_ordered_cuts_it = m_ordered_cuts.begin()+1;m_ordered_cuts_it!=m_ordered_cuts.end();++m_ordered_cuts_it)
     {
         std::vector<SpiralHelper> OffsetSpiralPoints,TempSpiralPoints;
@@ -2132,8 +2132,8 @@ bool cutting_tools::OffsetWires_Spiral()
                     double first2,last2;
                     bool reversed = false;
                     BRep_Tool::CurveOnSurface(aCutShapeSorter.Current(),a2DCurve,aSurface,aLoc,first2,last2);
-                    //Jetzt noch die resultierende Surface und die Curve sauber drehen
-                    //(vielleicht wurde ja das TopoDS_Face irgendwie gedreht oder die TopoDS_Edge)
+                    //Now rotate the resulting surface and the curve cleanly
+                    //(maybe the TopoDS_Face was somehow rotated or the TopoDS_Edge)
                     if (aCutShapeSorter.Current().Orientation() == TopAbs_REVERSED)
                         reversed = true;
 
@@ -2160,19 +2160,19 @@ bool cutting_tools::OffsetWires_Spiral()
                         }
                         GeomAdaptor_Surface aGeom_Adaptor(aSurface);
                         aGeom_Adaptor.D1(a2dParaPoint.X(),a2dParaPoint.Y(),aSurfacePoint,Uvec,Vvec);
-                        //Jetzt den Normalenvector auf die Fläche ausrechnen
+                        //Now calculate the normal vector on the surface
                         normalVec = Uvec;
                         normalVec.Cross(Vvec);
                         normalVec.Normalize();
-                        //Jetzt ist die Normale berechnet und auch normalisiert
-                        //Jetzt noch checken ob die Normale auch wirklich auf die saubere Seite zeigt
-                        //dazu nur checken ob der Z-Wert der Normale größer Null ist (dann im 1.und 2. Quadranten)
+                        //Now the normal is calculated and normalized
+                        //Now check whether the normal is really pointing to the clean side
+                        //To do this, just check whether the Z-value of the normal is greater than zero (then in the 1st and 2nd quadrant)
                         if (normalVec.Z()<0)
                             normalVec.Multiply(-1.0);
 
-                        //Mal kurz den Winkel zur Grund-Ebene ausrechnen
+                        //Briefly calculate the angle to the ground plane
                         gp_Vec planeVec(normalVec.X(),normalVec.Y(),0.0);
-                        //Den Winkel speichern
+                        //Save the angle
                         float angle = float(normalVec.Angle(planeVec));
                         aSpiralStruct.SurfaceNormal = normalVec;
                         aSpiralStruct.SurfacePoint = aSurfacePoint;
@@ -2211,7 +2211,7 @@ bool cutting_tools::OffsetWires_Spiral()
                 {
                     wireAdaptor.D0(aProp.Parameter(i),SlaveOffsetPoint);
                     SlaveOffsetPoint.SetZ(SlaveOffsetPoint.Z() - m_UserSettings.sheet_thickness - m_UserSettings.slave_radius);
-                    //checken ob der neue Punkt zu nahe am alten ist. Wenn ja, dann kein push_back
+                    //check if the new point is too close to the old one. If so, then no push_back
                     if (SlavePointContainer.size()>0 && (SlavePointContainer.rbegin()->SquareDistance(SlaveOffsetPoint)>(Precision::Confusion()*Precision::Confusion())))
                         SlavePointContainer.push_back(SlaveOffsetPoint);
                     else if (SlavePointContainer.empty())
@@ -2448,8 +2448,8 @@ bool cutting_tools::OffsetWires_Spiral()
                     double first2,last2;
                     bool reversed = false;
                     BRep_Tool::CurveOnSurface(aCutShapeSorter.Current(),a2DCurve,aSurface,aLoc,first2,last2);
-                    //Jetzt noch die resultierende Surface und die Curve sauber drehen
-                    //(vielleicht wurde ja das TopoDS_Face irgendwie gedreht oder die TopoDS_Edge)
+                    //Now rotate the resulting surface and the curve cleanly
+                    //(maybe the TopoDS_Face was somehow rotated or the TopoDS_Edge)
                     if (aCutShapeSorter.Current().Orientation() == TopAbs_REVERSED)
                         reversed = true;
 
@@ -2476,19 +2476,19 @@ bool cutting_tools::OffsetWires_Spiral()
                         }
                         GeomAdaptor_Surface aGeom_Adaptor(aSurface);
                         aGeom_Adaptor.D1(a2dParaPoint.X(),a2dParaPoint.Y(),aSurfacePoint,Uvec,Vvec);
-                        //Jetzt den Normalenvector auf die Fläche ausrechnen
+                        //Now calculate the normal vector on the surface
                         normalVec = Uvec;
                         normalVec.Cross(Vvec);
                         normalVec.Normalize();
-                        //Jetzt ist die Normale berechnet und auch normalisiert
-                        //Jetzt noch checken ob die Normale auch wirklich auf die saubere Seite zeigt
-                        //dazu nur checken ob der Z-Wert der Normale größer Null ist (dann im 1.und 2. Quadranten)
+                        //Now the normal is calculated and normalized
+                        //Now check whether the normal is really pointing to the clean side
+                        //To do this, just check whether the Z-value of the normal is greater than zero (then in the 1st and 2nd quadrant)
                         if (normalVec.Z()<0)
                             normalVec.Multiply(-1.0);
 
-                        //Mal kurz den Winkel zur Grund-Ebene ausrechnen
+                        //Briefly calculate the angle to the ground plane
                         gp_Vec planeVec(normalVec.X(),normalVec.Y(),0.0);
-                        //Den Winkel speichern
+                        //Save the angle
                         float angle = float(normalVec.Angle(planeVec));
                         aSpiralStruct.SurfaceNormal = normalVec;
                         aSpiralStruct.SurfacePoint = aSurfacePoint;
@@ -2527,7 +2527,7 @@ bool cutting_tools::OffsetWires_Spiral()
                 {
                     wireAdaptor.D0(aProp.Parameter(i),SlaveOffsetPoint);
                     SlaveOffsetPoint.SetZ(SlaveOffsetPoint.Z() + m_UserSettings.master_radius);
-                    //checken ob der neue Punkt zu nahe am alten ist. Wenn ja, dann kein push_back
+                    //check if the new point is too close to the old one. If so, then no push_back
                     if (SlavePointContainer.size()>0 && (SlavePointContainer.rbegin()->SquareDistance(SlaveOffsetPoint)>(Precision::Confusion()*Precision::Confusion())))
                         SlavePointContainer.push_back(SlaveOffsetPoint);
                     else if (SlavePointContainer.empty())
@@ -2761,7 +2761,7 @@ bool cutting_tools::OffsetWires_FeatureBased()
     gp_Pnt lastPoint(0.0,0.0,0.0); //Initialize the first Point to the Origin
     current_flat_level = m_ordered_cuts.begin();
     bool slave_done= false; //Necessary if the slave is already put out
-    //Nicht beim höchsten Anfangen, da wir den nicht mit dem Master fahren wollen
+    //Not at the very beginning, because we don't want to drive that with the master
     for (m_ordered_cuts_it = m_ordered_cuts.begin()+1;m_ordered_cuts_it!=m_ordered_cuts.end();++m_ordered_cuts_it)
     {
         std::vector<std::pair<gp_Pnt,double> > MasterPointContainer;
@@ -2796,7 +2796,7 @@ bool cutting_tools::OffsetWires_FeatureBased()
                         else curveAdaptor.D0(aProp.Parameter(aProp.NbPoints()-i+1),aTempPair.first);
                         aTempPair.first.SetZ(aTempPair.first.Z() + m_UserSettings.master_radius);
                         aTempPair.second = 0.0; //Initialize of Angle
-                        //checken ob der neue Punkt zu nahe am alten ist. Wenn ja, dann kein push_back
+                        //check if the new point is too close to the old one. If so, then no push_back
                         if (MasterPointContainer.size()>0 && (MasterPointContainer.rbegin()->first.SquareDistance(aTempPair.first)>(Precision::Confusion()*Precision::Confusion())))
                         {
                             MasterPointContainer.push_back(aTempPair);
@@ -2915,8 +2915,8 @@ bool cutting_tools::OffsetWires_FeatureBased()
                     double first2,last2;
                     bool reversed = false;
                     BRep_Tool::CurveOnSurface(aCutShapeSorter.Current(),a2DCurve,aSurface,aLoc,first2,last2);
-                    //Jetzt noch die resultierende Surface und die Curve sauber drehen
-                    //(vielleicht wurde ja das TopoDS_Face irgendwie gedreht oder die TopoDS_Edge)
+                    //Now rotate the resulting surface and the curve cleanly
+                    //(maybe the TopoDS_Face was somehow rotated or the TopoDS_Edge)
                     if (aCutShapeSorter.Current().Orientation() == TopAbs_REVERSED)
                         reversed = true;
 
@@ -2937,31 +2937,31 @@ bool cutting_tools::OffsetWires_FeatureBased()
                         GeomAdaptor_Surface aGeom_Adaptor(aSurface);
                         int t = aGeom_Adaptor.GetType();
                         aGeom_Adaptor.D1(a2dParaPoint.X(),a2dParaPoint.Y(),aSurfacePoint,Uvec,Vvec);
-                        //Jetzt den Normalenvector auf die Fläche ausrechnen
+                        //Now calculate the normal vector on the surface
                         normalVec = Uvec;
                         normalVec.Cross(Vvec);
                         normalVec.Normalize();
-                        //Jetzt ist die Normale berechnet und auch normalisiert
-                        //Jetzt noch checken ob die Normale auch wirklich auf die saubere Seite zeigt
-                        //dazu nur checken ob der Z-Wert der Normale größer Null ist (dann im 1.und 2. Quadranten)
+                        //Now the normal is calculated and normalized
+                        //Now check whether the normal is really pointing to the clean side
+                        //To do this, just check whether the Z-value of the normal is greater than zero (then in the 1st and 2nd quadrant)
                         if (normalVec.Z()<0) normalVec.Multiply(-1.0);
 
-                        //Mal kurz den Winkel zur Grund-Ebene ausrechnen
+                        //Briefly calculate the angle to the ground plane
                         gp_Vec planeVec(normalVec.X(),normalVec.Y(),0.0);
-                        //Den Winkel
+                        //The angle
                         PointContactPair.second = normalVec.Angle(planeVec);
                         gp_Vec NormalVecSlave = normalVec;
-                        //Jetzt die Z-Komponente auf 0 setzen
+                        //Now set the Z component to 0
                         //normalVec.SetZ(0.0);
                         normalVec.Normalize();
-                        //Jetzt die Normale mit folgender Formel multiplizieren für den Master
+                        //Now multiply the normal using the following formula for the master
                         //double multiply = m_UserSettings.master_radius*(1-sin(PointContactPair.second))/cos(PointContactPair.second);
                         double multiply = m_UserSettings.master_radius;
                         normalVec.Multiply(multiply);
-                        //Jetzt den OffsetPunkt berechnen
+                        //Now calculate the offset point
                         PointContactPair.first.SetXYZ(aSurfacePoint.XYZ() + normalVec.XYZ());
-                        //Damit wir keine Punkte bekommen die zu nahe beieinander liegen
-                        //Den letzten hinzugefügten Punkt suchen
+                        //So that we don't get any points that are too close together
+                        //Find the last point added
                         if (MasterPointContainer.size()>0 && (MasterPointContainer.rbegin()->first.SquareDistance(PointContactPair.first)>0.001))
                         {
                             MasterPointContainer.push_back(PointContactPair);
@@ -3014,7 +3014,7 @@ bool cutting_tools::OffsetWires_FeatureBased()
                     gp_Pnt SlaveOffsetPoint;
                     wireAdaptor.D0(aProp.Parameter(i),SlaveOffsetPoint);
                     SlaveOffsetPoint.SetZ(SlaveOffsetPoint.Z() - m_UserSettings.sheet_thickness - m_UserSettings.slave_radius);
-                    //checken ob der neue Punkt zu nahe am alten ist. Wenn ja, dann kein push_back
+                    //check if the new point is too close to the old one. If so, then no push_back
                     if (SlavePointContainer.size()>0 && (SlavePointContainer.rbegin()->SquareDistance(SlaveOffsetPoint)>(Precision::Confusion()*Precision::Confusion())))
                         SlavePointContainer.push_back(SlaveOffsetPoint);
                     else if (SlavePointContainer.empty())
@@ -3074,7 +3074,7 @@ bool cutting_tools::OffsetWires_FeatureBased()
                         else curveAdaptor.D0(aProp.Parameter(aProp.NbPoints()-i+1),aTempPair.first);
                         aTempPair.first.SetZ(aTempPair.first.Z() - m_UserSettings.slave_radius - m_UserSettings.sheet_thickness);
                         aTempPair.second = 0.0; //Initialize of Angle
-                        //checken ob der neue Punkt zu nahe am alten ist. Wenn ja, dann kein push_back
+                        //check if the new point is too close to the old one. If so, then no push_back
                         if (MasterPointContainer.size()>0 && (MasterPointContainer.rbegin()->first.SquareDistance(aTempPair.first)>(Precision::Confusion()*Precision::Confusion())))
                         {
                             MasterPointContainer.push_back(aTempPair);
@@ -3193,8 +3193,8 @@ bool cutting_tools::OffsetWires_FeatureBased()
                     double first2,last2;
                     bool reversed = false;
                     BRep_Tool::CurveOnSurface(aCutShapeSorter.Current(),a2DCurve,aSurface,aLoc,first2,last2);
-                    //Jetzt noch die resultierende Surface und die Curve sauber drehen
-                    //(vielleicht wurde ja das TopoDS_Face irgendwie gedreht oder die TopoDS_Edge)
+                    //Now rotate the resulting surface and the curve cleanly
+                    //(maybe the TopoDS_Face was somehow rotated or the TopoDS_Edge)
                     if (aCutShapeSorter.Current().Orientation() == TopAbs_REVERSED)
                         reversed = true;
 
@@ -3215,32 +3215,32 @@ bool cutting_tools::OffsetWires_FeatureBased()
                         GeomAdaptor_Surface aGeom_Adaptor(aSurface);
                         int t = aGeom_Adaptor.GetType();
                         aGeom_Adaptor.D1(a2dParaPoint.X(),a2dParaPoint.Y(),aSurfacePoint,Uvec,Vvec);
-                        //Jetzt den Normalenvector auf die Fläche ausrechnen
+                        //Now calculate the normal vector on the surface
                         normalVec = Uvec;
                         normalVec.Cross(Vvec);
                         normalVec.Normalize();
-                        //Jetzt ist die Normale berechnet und auch normalisiert
-                        //Jetzt noch checken ob die Normale auch wirklich auf die saubere Seite zeigt
-                        //dazu nur checken ob der Z-Wert der Normale größer Null ist (dann im 1.und 2. Quadranten)
+                        //Now the normal is calculated and normalized
+                        //Now check whether the normal is really pointing to the clean side
+                        //To do this, just check whether the Z-value of the normal is greater than zero (then in the 1st and 2nd quadrant)
                         if (normalVec.Z()<0) normalVec.Multiply(-1.0);
 
-                        //Mal kurz den Winkel zur Grund-Ebene ausrechnen
+                        //Briefly calculate the angle to the ground plane
                         gp_Vec planeVec(normalVec.X(),normalVec.Y(),0.0);
-                        //Den Winkel
+                        //The angle
                         PointContactPair.second = normalVec.Angle(planeVec);
                         gp_Vec NormalVecSlave = normalVec;
-                        //Jetzt die Z-Komponente auf 0 setzen
+                        //Now set the Z component to 0
                         //normalVec.SetZ(0.0);
                         normalVec.Normalize();
-                        //Jetzt die Normale mit folgender Formel multiplizieren für den Master
+                        //Now multiply the normal using the following formula for the master
                         //double multiply = m_UserSettings.master_radius*(1-sin(PointContactPair.second))/cos(PointContactPair.second);
                         double multiply = m_UserSettings.slave_radius + m_UserSettings.sheet_thickness;
                         normalVec.Multiply(multiply);
                         normalVec.Multiply(-1.0); //As the master is the slave
-                        //Jetzt den OffsetPunkt berechnen
+                        //Now calculate the offset point
                         PointContactPair.first.SetXYZ(aSurfacePoint.XYZ() + normalVec.XYZ());
-                        //Damit wir keine Punkte bekommen die zu nahe beieinander liegen
-                        //Den letzten hinzugefügten Punkt suchen
+                        //So that we don't get any points that are too close together
+                        //Find the last point added
                         if (MasterPointContainer.size()>0 && (MasterPointContainer.rbegin()->first.SquareDistance(PointContactPair.first)>0.001))
                         {
                             MasterPointContainer.push_back(PointContactPair);
@@ -3293,7 +3293,7 @@ bool cutting_tools::OffsetWires_FeatureBased()
                     gp_Pnt SlaveOffsetPoint;
                     wireAdaptor.D0(aProp.Parameter(i),SlaveOffsetPoint);
                     SlaveOffsetPoint.SetZ(SlaveOffsetPoint.Z() + m_UserSettings.master_radius);
-                    //checken ob der neue Punkt zu nahe am alten ist. Wenn ja, dann kein push_back
+                    //check if the new point is too close to the old one. If so, then no push_back
                     if (SlavePointContainer.size()>0 && (SlavePointContainer.rbegin()->SquareDistance(SlaveOffsetPoint)>(Precision::Confusion()*Precision::Confusion())))
                     {
                         SlavePointContainer.push_back(SlaveOffsetPoint);
@@ -3346,7 +3346,7 @@ bool cutting_tools::cut_Mesh(float z_level, float min_level, std::list<std::vect
     normal.y=0;
     normal.z=1.0;
     bool cutok;
-    //Die Richtung für die Korrektur wird hier festgelegt
+    //The direction for the correction is determined here
     bool direction=true;
     float factor = 0.0;
     do
@@ -3355,14 +3355,14 @@ bool cutting_tools::cut_Mesh(float z_level, float min_level, std::list<std::vect
         m_aMeshAlgo->CutWithPlane(z_level_plane,normal,*m_CAD_Mesh_Grid,result);
         //std::list<std::vector<Base::Vector3f> >::iterator it;
         //std::vector<Base::Vector3f>::iterator vector_it;
-        //checken ob wirklich ein Schnitt zustande gekommen ist
+        //check whether a cut has really been made
         if (result.size()==0)
         {
             cutok = false;
-            //Jedes Mal ein wenig mehr Abstand für die Korrektur einfügen
+            //Insert a little more space each time for the correction
             factor = factor+float(0.05);
             if (factor>=1) factor = float(0.95);
-            //Wenn wir das erste Mal eine Korrektur machen müssen gehts zunächst mal mit Minus rein
+            //If we have to make a correction for the first time, we start with a minus
             if (direction)
             {
                 z_level_plane.z = (z_level-(m_pitch*factor));
@@ -3396,7 +3396,7 @@ bool cutting_tools::cut(float z_level, float min_level, TopoDS_Shape &aCutShape,
     gp_Pnt aPlanePnt(0,0,z_level);
     gp_Dir aPlaneDir(0,0,1);
     bool cutok;
-    //Die Richtung für die Korrektur wird hier festgelegt
+    //The direction for the correction is determined here
     bool correction=true;
     float factor = 0.0;
     do
@@ -3408,21 +3408,21 @@ bool cutting_tools::cut(float z_level, float min_level, TopoDS_Shape &aCutShape,
         mkCut.Approximation (Standard_True);
         mkCut.ComputePCurveOn1(Standard_True);
         mkCut.Build();
-        //Den neuen Algorithmus checken
+        //Check the new algorithm
         //Edgesort aSorter(mkCut.Shape());
         //aSorter.Init();
 
-        //Jetzt checken ob auch wirlich edges vorhanden sind
+        //Now check whether there really are edges
         TopExp_Explorer exploreShape;
         exploreShape.Init(mkCut.Shape(),TopAbs_EDGE);
-        //Wenn keine Edge vorhanden ist
+        //If there is no edge
         if (!exploreShape.More())
         {
             cutok = false;
-            //Jedes Mal ein wenig mehr Abstand für die Korrektur einfügen
+            //Insert a little more space each time for the correction
             factor = factor+float(0.05);
             if (factor>=1) factor = float(0.95);
-            //Wenn wir das erste Mal eine Korrektur machen müssen gehts zunächst mal mit Minus rein
+            //If we have to make a correction for the first time, we start with a minus
             if (correction)
             {
                 aPlanePnt.SetZ(z_level-(m_pitch*factor));
@@ -3438,7 +3438,7 @@ bool cutting_tools::cut(float z_level, float min_level, TopoDS_Shape &aCutShape,
                 continue;
             }
         }
-        //Das Shape, welches per Referenz übergeben wird jetzt mit dem geordneten Schnitt füllen
+        //The shape, which is passed by reference, is now filled with the ordered section
         aCutShape = mkCut.Shape();
 
     }
@@ -3456,27 +3456,27 @@ bool cutting_tools::classifyShape()
     TopExp_Explorer Explorer;
     Explorer.Init(m_Shape,TopAbs_FACE);
     if (!Explorer.More()) return false;
-    //checken wieviele verschiedene Faces wir haben
+    //check how many different faces we have
     int k=0;
     for (; Explorer.More(); Explorer.Next())
     {
         k++;
     }
     std::cout <<"We have " << k << "Faces" << std::endl;
-    //Wenn mehr als ein Face vorhanden, dann eine Membervariable setzen
+    //If more than one face is available, then set a member variable
     if (k>1) m_cad = true;
     return true;
 }
 
 
 
-/* Hier ging das alte cut los
+/* The old cut started here
 
 
 
 
  bool cutok=true;
-    //Falls wir nur ein Face haben und keine flachen Bereiche
+    //If we have only one face and no flat areas
     if (m_all_cuts.empty())
     {
         //Schnitte über die Bounding Box bestimmen
@@ -3488,14 +3488,15 @@ bool cutting_tools::classifyShape()
         currentBBox.Get(XMin, YMin, ZMin, XMax, YMax, ZMax);
         double maxlevel=Max(ZMax,ZMin);
         double minlevel=Min(ZMax,ZMin);
-        int cutnumber = fabs((maxlevel-minlevel)/m_pitch);//Cast um die Nachkommastellen wegzuschneiden
-        m_pitch = fabs(maxlevel-minlevel)/cutnumber;//m_pitch leicht korrigieren um wirklich auf die letzte Ebene zu kommen
+        int cutnumber = fabs((maxlevel-minlevel)/m_pitch); //Cut away the cast by the decimal places
+        m_pitch = fabs(maxlevel-minlevel)/cutnumber; //Correct m_pitch slightly to really get to the last level
 
-  //Aktuell wird die letzte Ebene bei selbst approxmierten Flächen nicht als Bahnkurve betrachtet
-  //Auch die erste Ebene fällt komplett weg, da unwichtig. Lediglich für die untere Maschine ist die Bahn sinnvoll falls überhaupt noch flache Bereiche vorhanden sind
+  //Currently, the last level of self-approximated surfaces is not considered as a path curve
+  //The first level is also completely omitted, since it is unimportant. 
+  //The track is only useful for the lower machine if there are still flat areas at all
         for (int i=0;i<cutnumber;++i)
   {
-            //Jetzt schneiden (die oberste Ebene auslassen)
+            //Cut now (omit the top layer)
             double z_level = maxlevel-(i*m_pitch);
             gp_Pnt aPlanePnt(0,0,z_level);
             gp_Dir aPlaneDir(0,0,1);
@@ -3508,10 +3509,10 @@ bool cutting_tools::classifyShape()
     BRepAlgo_Section mkCut(m_Shape, Face.Face(),Standard_False);
     mkCut.Approximation (Standard_True);
     mkCut.Build();
-    //Jetzt checken ob auch wirlich edges vorhanden sind
+    //Now check whether there really are edges
     TopExp_Explorer exploreShape;
     exploreShape.Init(mkCut.Shape(),TopAbs_EDGE);
-    //Wenn keine Edge vorhanden ist
+    //If there is no edge
     if(!exploreShape.More())
     {
      cutok = false;
@@ -3519,16 +3520,16 @@ bool cutting_tools::classifyShape()
      if(aPlanePnt.Z()<minlevel) aPlanePnt.SetZ(minlevel+m_pitch/5);
      continue;
     }
-    //Weil der Punkt sich ja geändert haben könnte
+    //Because the point might have changed
     m_zl_wire_combination.first = aPlanePnt.Z();
     m_zl_wire_combination.second = ordercutShape(mkCut.Shape());
-    //Geordnete Edges in den All_Cuts-Vector stecken
+    //Insert the ordered edges into the All_Cuts-Vector
     m_all_cuts.push_back(m_zl_wire_combination);
    }while (cutok==false);
   }
         return true;
     }
-    //Bei mehreren flachen Bereichen
+    //When there are several flat areas
     else
     {
         std::vector<float> InitialPlaneLevels;
@@ -3537,54 +3538,55 @@ bool cutting_tools::classifyShape()
         std::vector<float>::iterator temp_it;
         for (m_it= m_all_cuts.begin();m_it<m_all_cuts.end();++m_it)
         {
-            //Die Wires filtern und z.B. bei zwei Wires auf der obersten Ebene nur die innere nehmen
+            //Filter the wires and e.g. if there are two wires on the top level, only take the inner one
    Bnd_Box currentBBox,BBox2;
    Standard_Real X1Min, Y1Min, Z1Min, X1Max, Y1Max, Z1Max,X2Min, Y2Min, Z2Min, X2Max, Y2Max, Z2Max;
    BRepBndLib::Add((*m_it).second, currentBBox );
    currentBBox.SetGap(0.0);
    currentBBox.Get(X1Min, Y1Min, Z1Min, X1Max, Y1Max, Z1Max);
-   if((*(m_it+1)).first == (*m_it).first) //Wenn die beiden Wires auf der gleichen Ebene liegen.....
+   if((*(m_it+1)).first == (*m_it).first) //When the two wires are on the same plane...
    {
     BRepBndLib::Add((*(m_it+1)).second,BBox2);
     BBox2.SetGap(0.0);
     BBox2.Get(X2Min,Y2Min,Z2Min,X2Max,Y2Max,Z2Max);
    }
-   //Jetzt checken welche kleiner ist
-   if(X1Min<X2Min && X1Max>X2Max && Y1Min < Y2Min && Y1Max>Y2Max) //1 ist größer
+   //Now check which one is smaller
+   if(X1Min<X2Min && X1Max>X2Max && Y1Min < Y2Min && Y1Max>Y2Max) //1 is greater
    {
-    if(m_it == m_all_cuts.begin())//Wenn wir auf der obersten Ebene sind....
+    if(m_it == m_all_cuts.begin())//When we're at the top level...
     {
      atemp_storage.push_back(*(m_it+1));
-     m_it++;//Wir überspringen damit das nächste //Damit haben wir nur noch ein Problem falls wir mehr als zwei Wires auf einer ebene haben.
+     m_it++;// We skip the next one
+            // We only have one problem if we have more than two wires on one level.
     }
     else
     {
      atemp_storage.push_back(*(m_it));
     }
    }
-   //Mal schauen ob der Wert schon in der Liste vorhanden ist
+   //Let's see if the value is already available in the list
             temp_it = std::find(InitialPlaneLevels.begin(),InitialPlaneLevels.end(),(*m_it).first);
             if (temp_it == InitialPlaneLevels.end())
             {
                 InitialPlaneLevels.push_back((*m_it).first);
             }
         }
-  //Jetzt die flachen Bereiche der Höhe nach sortieren
+  //Now sort the flat areas according to their height
   std::sort(InitialPlaneLevels.begin(),InitialPlaneLevels.end(),FloatHuge);
 
-  //Die Schnitte müssen jetzt zwischen die flachen Stücke einsortiert werden
+  //Now the cuts have to be sorted between the flat pieces
   for (temp_it=InitialPlaneLevels.begin();temp_it<InitialPlaneLevels.end();++temp_it)
         {
-            //Debug cout << "Bereich" <<endl;
-   double maxlevel=*temp_it;//Maximaler aktueller Wert
+            //Debug cout << "Area" <<endl;
+   double maxlevel=*temp_it;//Maximum current value
    if(temp_it+1==InitialPlaneLevels.end()) continue;
    double minlevel=*(temp_it+1);
-   int cutnumber = fabs((maxlevel-minlevel)/m_pitch);//Cast um die Nachkommastellen wegzuschneiden
+   int cutnumber = fabs((maxlevel-minlevel)/m_pitch);//Cut away the cast by the decimal places
    m_pitch = fabs(maxlevel-minlevel)/cutnumber;
 
    for (int i=1;i<cutnumber;++i)
    {
-    //Jetzt schneiden (die oberste Ebene auslassen und die unterste, da dort wieder wires kommen)
+    //Now cut (omit the top layer and the bottom one, because that's where we come again)
     double z_level = maxlevel-(i*m_pitch);
     gp_Pnt aPlanePnt(0,0,z_level);
     gp_Dir aPlaneDir(0,0,1);
@@ -3606,10 +3608,10 @@ bool cutting_tools::classifyShape()
       continue;
      }
 
-     //Weil der Punkt sich ja geändert haben könnte
+     //Because the point might have changed
      m_zl_wire_combination.first = aPlanePnt.Z();
      m_zl_wire_combination.second = ordercutShape(mkCut.Shape());
-     //Geordnete Edges in den All_Cuts-Vector stecken
+     //Insert the ordered edges into the All_Cuts-Vector
      m_all_cuts.push_back(m_zl_wire_combination);
     }while (cutok=false);
 
