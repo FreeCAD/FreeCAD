@@ -105,9 +105,7 @@ class ObjectDressup:
             "App::PropertyEnumeration",
             "StyleOn",
             "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The Style of motion into the Path"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The Style of motion into the Path"),
         )
         obj.StyleOn = lead_styles
         obj.addProperty(
@@ -593,14 +591,66 @@ class ObjectDressup:
         return Path.Path(commands)
 
 
-class TaskPanel:
+PROP_TYPE_QTYES = ["App::PropertyDistance", "App::PropertyAngle"]
+PROP_TYPE_NUMERIC = PROP_TYPE_QTYES + ["App::PropertyPercent", "App:PropertyFloat"]
+
+
+class SimpleEditPanel:
+    _fc = {}
+    obj = None
+    form = None
+
+    def getFields(self):
+        for prop_name, (get_field, set_field) in self._fc.items():
+            setattr(self.obj, prop_name, get_field())
+
+    def setFields(self):
+        for prop_name, (get_field, set_field) in self._fc.items():
+            set_field(getattr(self.obj, prop_name))
+
+    def connectWidget(self, prop_name, widget, custom_lbls={}):
+        prop_type = self.obj.getTypeIdOfProperty(prop_name)
+        widget_type = type(widget).__name__
+        if prop_type == "App::PropertyEnumeration" and widget_type == "QComboBox":
+            enum = self.obj.getEnumerationsOfProperty(prop_name)
+            # Populate the combo box with the enumeration elements, use the form context for translation
+            elements = [
+                translate(self.form.objectName(), custom_lbls.get(itm, itm))
+                for itm in enum
+            ]
+            widget.clear()
+            widget.addItems(elements)
+
+            def _getter():
+                return enum[widget.currentIndex()]
+
+            def _setter(val):
+                widget.setCurrentIndex(enum.index(val))
+
+            self._fc[prop_name] = _getter, _setter
+        elif prop_type == "App::PropertyBool" and widget_type == "QCheckBox":
+            self._fc[prop_name] = widget.isChecked, widget.setChecked
+        elif prop_type in PROP_TYPE_NUMERIC and widget_type == "QDoubleSpinBox":
+            self._fc[prop_name] = widget.value, widget.setValue
+        elif prop_type in PROP_TYPE_QTYES and widget_type == "QLineEdit":
+            self._fc[prop_name] = widget.text, lambda v: widget.setText(str(v))
+        else:
+            raise ValueError(
+                f"Unsupported connection between '{prop_type}' property and '{widget_type}' widget"
+            )
+        # Set the tooltip to the one corresponding to the property.
+        widget.setToolTip(
+            translate("App::Property", self.obj.getDocumentationOfProperty(prop_name))
+        )
+
+
+class TaskDressupLeadInOut(SimpleEditPanel):
     def __init__(self, obj, view):
         self.obj = obj
         self.viewProvider = view
+        FreeCAD.ActiveDocument.openTransaction("Edit LeadInOut Dress-up")
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DressUpLeadInOutEdit.ui")
         self.setupUi()
-
-        FreeCAD.ActiveDocument.openTransaction("Edit LeadInOut Dress-up")
 
     def getStandardButtons(self):
         return int(
@@ -608,17 +658,6 @@ class TaskPanel:
             | QtGui.QDialogButtonBox.Apply
             | QtGui.QDialogButtonBox.Cancel
         )
-
-    def modifyStandardButtons(self, buttonBox):
-        self.buttonBox = buttonBox
-
-    def setDirty(self):
-        self.isDirty = True
-        self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(True)
-
-    def setClean(self):
-        self.isDirty = False
-        self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(False)
 
     def clicked(self, button):
         # callback for standard buttons
@@ -647,97 +686,30 @@ class TaskPanel:
     def cleanup(self, gui):
         self.viewProvider.clearTaskPanel()
         if gui:
-            # FreeCADGui.ActiveDocument.resetEdit()
             FreeCADGui.Control.closeDialog()
             FreeCAD.ActiveDocument.recompute()
 
-    def getFields(self):
-        self.obj.LeadIn = self.form.chkLeadIn.isChecked()
-        self.obj.LeadOut = self.form.chkLeadOut.isChecked()
-        self.obj.Length = self.form.dsbLen.value()
-        self.obj.ExtendLeadIn = self.form.dsbExtendIn.value()
-        self.obj.ExtendLeadOut = self.form.dsbExtendOut.value()
-        self.obj.StyleOn = self.obj.getEnumerationsOfProperty("StyleOn")[
-            self.form.cboStyleIn.currentIndex()
-        ]
-        self.obj.StyleOff = self.obj.getEnumerationsOfProperty("StyleOff")[
-            self.form.cboStyleOut.currentIndex()
-        ]
-        self.obj.RadiusCenter = self.obj.getEnumerationsOfProperty("RadiusCenter")[
-            self.form.cboRadius.currentIndex()
-        ]
-        self.obj.RapidPlunge = self.form.chkRapidPlunge.isChecked()
-        self.obj.IncludeLayers = self.form.chkLayers.isChecked()
-        self.obj.KeepToolDown = self.form.chkKeepToolDown.isChecked()
-        self.obj.UseMachineCRC = self.form.chkUseCRC.isChecked()
-
-        self.updateUI()
-        self.obj.Proxy.execute(self.obj)
-
-    def updateUI(self):
-        self.form.chkLeadIn.setChecked(self.obj.LeadIn)
-        self.form.chkLeadOut.setChecked(self.obj.LeadOut)
-        self.form.chkRapidPlunge.setChecked(self.obj.RapidPlunge)
-        self.form.chkLayers.setChecked(self.obj.IncludeLayers)
-        self.form.chkKeepToolDown.setChecked(self.obj.KeepToolDown)
-        self.form.chkUseCRC.setChecked(self.obj.UseMachineCRC)
-
-        self.form.dsbLen.setValue(self.obj.Length)
-
-        self.form.dsbExtendIn.setValue(self.obj.ExtendLeadIn)
-        # self.form.dsbExtendIn.setEnabled(self.obj.LeadIn)
-
-        self.form.dsbExtendOut.setValue(self.obj.ExtendLeadOut)
-        # self.form.dsbExtendOut.setEnabled(self.obj.LeadOut)
-
-        self.form.cboStyleIn.setCurrentIndex(
-            self.obj.getEnumerationsOfProperty("StyleOn").index(self.obj.StyleOn)
-        )
-        # self.form.cboStyleIn.setEnabled(self.obj.LeadIn)
-
-        self.form.cboStyleOut.setCurrentIndex(
-            self.obj.getEnumerationsOfProperty("StyleOff").index(self.obj.StyleOff)
-        )
-        # self.form.cboStyleOut.setEnabled(self.obj.LeadOut)
-
-        self.form.cboRadius.setCurrentIndex(
-            self.obj.getEnumerationsOfProperty("RadiusCenter").index(
-                self.obj.RadiusCenter
-            )
-        )
-
     def updateModel(self):
         self.getFields()
+        self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
-
-    def setFields(self):
-        self.updateUI()
 
     def open(self):
         pass
 
     def setupUi(self):
-        self.form.cboStyleIn.clear()
-        self.form.cboStyleIn.addItems(
-            [
-                translate("Path_DressupLeadInOut", itm)
-                for itm in self.obj.getEnumerationsOfProperty("StyleOn")
-            ]
-        )
-        self.form.cboStyleOut.clear()
-        self.form.cboStyleOut.addItems(
-            [
-                translate("Path_DressupLeadInOut", itm)
-                for itm in self.obj.getEnumerationsOfProperty("StyleOff")
-            ]
-        )
-        self.form.cboRadius.clear()
-        self.form.cboRadius.addItems(
-            [
-                translate("Path_DressupLeadInOut", itm)
-                for itm in self.obj.getEnumerationsOfProperty("RadiusCenter")
-            ]
-        )
+        self.connectWidget("LeadIn", self.form.chkLeadIn)
+        self.connectWidget("LeadOut", self.form.chkLeadOut)
+        self.connectWidget("Length", self.form.dsbLen)
+        self.connectWidget("ExtendLeadIn", self.form.dsbExtendIn)
+        self.connectWidget("ExtendLeadOut", self.form.dsbExtendOut)
+        self.connectWidget("StyleOn", self.form.cboStyleIn)
+        self.connectWidget("StyleOff", self.form.cboStyleOut)
+        self.connectWidget("RadiusCenter", self.form.cboRadius)
+        self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
+        self.connectWidget("IncludeLayers", self.form.chkLayers)
+        self.connectWidget("KeepToolDown", self.form.chkKeepToolDown)
+        self.connectWidget("UseMachineCRC", self.form.chkUseCRC)
         self.setFields()
 
 
@@ -766,9 +738,8 @@ class ViewProviderDressup:
     def setEdit(self, vobj, mode=0):
         # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
-        panel = TaskPanel(vobj.Object, self)
+        panel = TaskDressupLeadInOut(vobj.Object, self)
         FreeCADGui.Control.showDialog(panel)
-        panel.setupUi()
         return True
 
     def unsetEdit(self, vobj, mode=0):
