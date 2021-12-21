@@ -63,3 +63,11 @@ class ShapeEnum(IntEnum):
     VERTEX = 7
     SHAPE = 8
 
+class HLRBRep_TypeOfResultingEdge(IntEnum):
+    Undefined = 0
+    IsoLine = 1
+    OutLine = 2
+    Rg1Line = 3
+    RgNLine = 4
+    Sharp = 5
+

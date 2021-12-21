@@ -142,6 +142,8 @@
 #include <Mod/Part/App/GeomPlate/BuildPlateSurfacePy.h>
 #include <Mod/Part/App/GeomPlate/CurveConstraintPy.h>
 #include <Mod/Part/App/GeomPlate/PointConstraintPy.h>
+#include <Mod/Part/App/HLRBRep/HLRBRep_AlgoPy.h>
+#include <Mod/Part/App/HLRBRep/HLRToShapePy.h>
 #include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
 #include "PropertyGeometryList.h"
 #include "DatumFeature.h"
@@ -294,6 +296,11 @@ PyMOD_INIT_FUNC(Part)
     PyObject* brepOffsetApiModule(module.getAttr("BRepOffsetAPI").ptr());
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepOffsetApiModule,"MakePipeShell");
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakeFillingPy::Type,brepOffsetApiModule,"MakeFilling");
+
+    // HLRBRep package
+    PyObject* hlrfeatModule(module.getAttr("HLRBRep").ptr());
+    Base::Interpreter().addType(&Part::HLRBRep_AlgoPy::Type,hlrfeatModule,"Algo");
+    Base::Interpreter().addType(&Part::HLRToShapePy::Type,hlrfeatModule,"HLRToShape");
 
     // Geom2d package
     PyObject* geom2dModule(module.getAttr("Geom2d").ptr());

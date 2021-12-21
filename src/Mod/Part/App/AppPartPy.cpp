@@ -317,6 +317,17 @@ public:
     virtual ~GeomPlateModule() {}
 };
 
+class HLRBRepModule : public Py::ExtensionModule<HLRBRepModule>
+{
+public:
+    HLRBRepModule() : Py::ExtensionModule<HLRBRepModule>("HLRBRep")
+    {
+        initialize("This is a module working with the HLRBRep framework."); // register with Python
+    }
+
+    virtual ~HLRBRepModule() {}
+};
+
 class ShapeUpgradeModule : public Py::ExtensionModule<ShapeUpgradeModule>
 {
 public:
@@ -334,6 +345,7 @@ class Module : public Py::ExtensionModule<Module>
     BRepOffsetAPIModule brepOffsetApi;
     Geom2dModule geom2d;
     GeomPlateModule geomPlate;
+    HLRBRepModule HLRBRep;
     ShapeUpgradeModule shapeUpgrade;
 public:
     Module() : Py::ExtensionModule<Module>("Part")
@@ -559,6 +571,7 @@ public:
         PyModule_AddObject(m_module, "BRepOffsetAPI", brepOffsetApi.module().ptr());
         PyModule_AddObject(m_module, "Geom2d", geom2d.module().ptr());
         PyModule_AddObject(m_module, "GeomPlate", geomPlate.module().ptr());
+        PyModule_AddObject(m_module, "HLRBRep", HLRBRep.module().ptr());
         PyModule_AddObject(m_module, "ShapeUpgrade", shapeUpgrade.module().ptr());
     }
 

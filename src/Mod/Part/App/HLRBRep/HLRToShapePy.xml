@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+      Father="PyObjectBase"
+      Name="HLRToShapePy"
+      PythonName="Part.HLRToShapePy"
+      Twin="HLRBRep_HLRToShape"
+      TwinPointer="HLRBRep_HLRToShape"
+      Include="HLRBRep_HLRToShape.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+          <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+          <UserDocu>Describes functions to use HLR algorithm.</UserDocu>
+    </Documentation>
+    <Methode Name="vCompound">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="Rg1LineVCompound">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="RgNLineVCompound">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="outLineVCompound">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="outLineVCompound3d">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="isoLineVCompound">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="hCompound">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="Rg1LineHCompound">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="RgNLineHCompound">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="outLineHCompound">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="isoLineHCompound">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="compoundOfEdges" Keyword="true">
+        <Documentation>
+            <UserDocu>
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    </PythonExport>
+</GenerateModel>

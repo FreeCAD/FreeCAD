@@ -97,6 +97,7 @@ generate_from_xml(BRepOffsetAPI_MakeFillingPy)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/BRepFeat)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Geom2d)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/GeomPlate)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/HLRBRep)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeUpgrade)
 
 generate_from_xml(BRepFeat/MakePrismPy)
@@ -122,6 +123,9 @@ generate_from_xml(Geom2d/Parabola2dPy)
 generate_from_xml(GeomPlate/BuildPlateSurfacePy)
 generate_from_xml(GeomPlate/CurveConstraintPy)
 generate_from_xml(GeomPlate/PointConstraintPy)
+
+generate_from_xml(HLRBRep/HLRBRep_AlgoPy)
+generate_from_xml(HLRBRep/HLRToShapePy)
 
 generate_from_xml(ShapeUpgrade/UnifySameDomainPy)
 
@@ -322,8 +326,7 @@ SET(BRepFeatPy_SRCS
     BRepFeat/MakePrismPy.xml
     BRepFeat/MakePrismPyImp.cpp
 )
-
-SOURCE_GROUP("ShapeUpgrade" FILES ${ShapeUpgradePy_SRCS})
+SOURCE_GROUP("BRepFeat" FILES ${BRepFeatPy_SRCS})
 
 # Geom2d wrappers
 SET(Geom2dPy_SRCS
@@ -377,6 +380,15 @@ SET(GeomPlatePy_SRCS
 
 SOURCE_GROUP("GeomPlate" FILES ${GeomPlatePy_SRCS})
 
+# HLRBRep wrappers
+SET(HLRBRepPy_SRCS
+    HLRBRep/HLRBRep_AlgoPy.xml
+    HLRBRep/HLRBRep_AlgoPyImp.cpp
+    HLRBRep/HLRToShapePy.xml
+    HLRBRep/HLRToShapePyImp.cpp
+)
+SOURCE_GROUP("HLRBRep" FILES ${HLRBRepPy_SRCS})
+
 # ShapeUpgrade wrappers
 SET(ShapeUpgradePy_SRCS
     ShapeUpgrade/UnifySameDomainPy.xml
@@ -392,6 +404,7 @@ SET(Part_SRCS
     ${BRepFeatPy_SRCS}
     ${Geom2dPy_SRCS}
     ${GeomPlatePy_SRCS}
+    ${HLRBRepPy_SRCS}
     ${ShapeUpgradePy_SRCS}
     Attacher.cpp
     Attacher.h
