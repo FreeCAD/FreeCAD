@@ -1584,7 +1584,7 @@ class UpdateSingleWorker(QtCore.QThread):
         install_succeeded, errors = repo.macro.install(cache_path)
 
         if install_succeeded:
-            install_succeeded, errors = repo.macro.install(FreeCAD.getUserMacroDir())
+            install_succeeded, errors = repo.macro.install(FreeCAD.getUserMacroDir(True))
 
         if install_succeeded:
             self.success.emit(repo)

@@ -149,7 +149,7 @@ class CommandAddonManager:
         self.dialog.setWindowFlag(QtCore.Qt.Tool)
 
         # cleanup the leftovers from previous runs
-        self.macro_repo_dir = FreeCAD.getUserMacroDir()
+        self.macro_repo_dir = FreeCAD.getUserMacroDir(True)
         self.packages_with_updates = []
         self.startup_sequence = []
         self.addon_removed = False
