@@ -426,7 +426,7 @@ class CommandAddonManager:
             self.update_worker.status_message.connect(self.show_information)
             self.update_worker.addon_repo.connect(self.add_addon_repo)
             self.update_progress_bar(10, 100)
-            self.update_worker.done.connect(
+            self.update_worker.finished.connect(
                 self.do_next_startup_phase
             )  # Link to step 2
             self.update_worker.start()
@@ -436,7 +436,7 @@ class CommandAddonManager:
             )
             self.update_worker.addon_repo.connect(self.add_addon_repo)
             self.update_progress_bar(10, 100)
-            self.update_worker.done.connect(
+            self.update_worker.finished.connect(
                 self.do_next_startup_phase
             )  # Link to step 2
             self.update_worker.start()
@@ -466,14 +466,14 @@ class CommandAddonManager:
             self.macro_worker.status_message_signal.connect(self.show_information)
             self.macro_worker.progress_made.connect(self.update_progress_bar)
             self.macro_worker.add_macro_signal.connect(self.add_addon_repo)
-            self.macro_worker.done.connect(self.do_next_startup_phase)  # Link to step 3
+            self.macro_worker.finished.connect(self.do_next_startup_phase)  # Link to step 3
             self.macro_worker.start()
         else:
             self.macro_worker = LoadMacrosFromCacheWorker(
                 self.get_cache_file_name("macro_cache.json")
             )
             self.macro_worker.add_macro_signal.connect(self.add_addon_repo)
-            self.macro_worker.done.connect(self.do_next_startup_phase)  # Link to step 3
+            self.macro_worker.finished.connect(self.do_next_startup_phase)  # Link to step 3
             self.macro_worker.start()
 
     def cache_macro(self, macro: AddonManagerRepo):
@@ -496,7 +496,7 @@ class CommandAddonManager:
             self.update_metadata_cache_worker.status_message.connect(
                 self.show_information
             )
-            self.update_metadata_cache_worker.done.connect(
+            self.update_metadata_cache_worker.finished.connect(
                 self.do_next_startup_phase
             )  # Link to step 4
             self.update_metadata_cache_worker.progress_made.connect(
@@ -545,11 +545,13 @@ class CommandAddonManager:
                 translate("AddonsInstaller", "Checking for updates...")
             )
             self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)
-            self.check_worker.done.connect(self.do_next_startup_phase)
+            self.check_worker.finished.connect(self.do_next_startup_phase)
             self.check_worker.progress_made.connect(self.update_progress_bar)
             self.check_worker.update_status.connect(self.status_updated)
             self.check_worker.start()
             self.enable_updates(len(self.packages_with_updates))
+        else:
+            self.do_next_startup_phase()
 
     def status_updated(self, repo: AddonManagerRepo) -> None:
         self.item_model.reload_item(repo)
@@ -752,7 +754,7 @@ class CommandAddonManager:
         self.update_all_worker.failure.connect(
             lambda repo: self.subupdates_failed.append(repo)
         )
-        self.update_all_worker.done.connect(self.on_update_all_completed)
+        self.update_all_worker.finished.connect(self.on_update_all_completed)
         self.update_all_worker.start()
 
     def on_update_all_completed(self) -> None:
@@ -849,10 +851,13 @@ class CommandAddonManager:
             message,
             QtWidgets.QMessageBox.Close,
         )
-        repo.update_status = AddonManagerRepo.UpdateStatus.PENDING_RESTART
+        if repo.repo_type != AddonManagerRepo.RepoType.MACRO:
+            repo.update_status = AddonManagerRepo.UpdateStatus.PENDING_RESTART
+            self.restart_required = True
+        else:
+            repo.update_status = AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
         self.item_model.reload_item(repo)
         self.packageDetails.show_repo(repo)
-        self.restart_required = True
 
     def on_installation_failed(self, _: AddonManagerRepo, message: str) -> None:
         self.hide_progress_widgets()

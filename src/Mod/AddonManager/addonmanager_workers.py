@@ -536,17 +536,19 @@ class FillMacroListWorker(QtCore.QThread):
             return
 
         try:
-            # TODO: someday see if the directory exists, and do a pull instead
-            # of a clone
-            git.Repo.clone_from(
-                "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
-            )
-        except Exception:
+            if os.path.exists(self.repo_dir):
+                gitrepo = git.Git(self.repo_dir)
+                gitrepo.pull()
+            else:
+                git.Repo.clone_from(
+                    "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
+                )
+        except Exception as e:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "Something went wrong with the Git Macro Retrieval, "
-                    "possibly the Git executable is not in the path",
+                    "An error occurred fetching macros from GitHub:\n"
+                    f"{e}"
                 )
                 + "\n"
             )
