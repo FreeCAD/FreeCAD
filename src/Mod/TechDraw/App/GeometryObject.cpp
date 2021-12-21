@@ -316,7 +316,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
 
     auto start = chrono::high_resolution_clock::now();
 
-    Handle(HLRBRep_PolyAlgo) brep_hlrPoly = NULL;
+    Handle(HLRBRep_PolyAlgo) brep_hlrPoly;
 
     try {
         TopExp_Explorer faces(inCopy, TopAbs_FACE);
