@@ -128,6 +128,9 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
         <property name="text">
          <string>No proxy</string>
         </property>
+		<property name="checked">
+			<bool>true</bool>
+		</property>
         <property name="prefEntry" stdset="0">
          <cstring>NoProxyCheck</cstring>
         </property>
@@ -155,7 +158,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
          <string>User-defined proxy:</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>UserProxyCheck</cstring>
