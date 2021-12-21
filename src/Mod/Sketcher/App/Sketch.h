@@ -27,6 +27,7 @@
 #include <App/PropertyFile.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/TopoShape.h>
+#include "GeoList.h"
 #include "Constraint.h"
 
 #include "planegcs/GCS.h"
@@ -35,6 +36,7 @@
 
 namespace Sketcher
 {
+
 
 class SketcherExport Sketch :public Base::Persistence
 {
@@ -88,6 +90,8 @@ public:
     /// returns the actual geometry
     std::vector<Part::Geometry *> extractGeometry(bool withConstructionElements=true,
                                                   bool withExternalElements=false) const;
+
+    GeoListFacade extractGeoListFacade() const;
 
     void updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext);
     /// get the geometry as python objects
