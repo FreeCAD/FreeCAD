@@ -94,7 +94,7 @@ int GeoListModel<T>::getGeoIdFromGeomListIndex(int index) const
     if(index < intGeoCount)
         return index;
     else
-        return -( index - intGeoCount);
+        return ( index - geomlist.size());
 }
 
 template <typename T>
