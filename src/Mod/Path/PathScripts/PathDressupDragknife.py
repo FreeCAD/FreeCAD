@@ -27,6 +27,7 @@ from PySide import QtCore
 import math
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGui as PathGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -39,9 +40,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 movecommands = ["G1", "G01", "G2", "G02", "G3", "G03"]
@@ -57,13 +56,13 @@ class ObjectDressup:
             "App::PropertyLink",
             "Base",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
+            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "filterAngle",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Angles less than filter angle will not receive corner actions",
             ),
@@ -72,7 +71,7 @@ class ObjectDressup:
             "App::PropertyFloat",
             "offset",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Distance the point trails behind the spindle"
             ),
         )
@@ -80,9 +79,7 @@ class ObjectDressup:
             "App::PropertyFloat",
             "pivotheight",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "Height to raise during corner action"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Height to raise during corner action"),
         )
 
         obj.Proxy = self
@@ -511,9 +508,7 @@ class TaskPanel:
             self.form.pivotHeight, obj, "pivotheight"
         )
 
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_DressupDragKnife", "Edit Dragknife Dress-up")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Edit Dragknife Dress-up")
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -610,10 +605,10 @@ class CommandDressupDragknife:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP(
                 "Path_DressupDragKnife", "DragKnife Dress-up"
             ),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupDragKnife",
                 "Modifies a path to add dragknife corner actions",
             ),
@@ -649,9 +644,7 @@ class CommandDressupDragknife:
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_DressupDragKnife", "Create Dress-up")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Create Dress-up")
         FreeCADGui.addModule("PathScripts.PathDressupDragknife")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
