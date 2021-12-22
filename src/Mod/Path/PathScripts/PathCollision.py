@@ -24,17 +24,12 @@ import FreeCAD
 import PathScripts.PathLog as PathLog
 from PySide import QtCore
 from PathScripts.PathUtils import waiting_effects
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 LOG_MODULE = "PathCollision"
 PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 PathLog.trackModule("PathCollision")
 FreeCAD.setLogLevel("Path.Area", 0)
-
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
 
 __title__ = "Path Collision Utility"
 __author__ = "sliptonic (Brad Collette)"
@@ -45,7 +40,6 @@ __url__ = "https://www.freecadweb.org"
 
 class _CollisionSim:
     def __init__(self, obj):
-        # obj.addProperty("App::PropertyLink", "Original", "reference", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base object this collision refers to"))
         obj.Proxy = self
 
     def execute(self, fp):
@@ -61,7 +55,7 @@ class _ViewProviderCollisionSim:
             "App::PropertyLink",
             "Original",
             "reference",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "The base object this collision refers to"
             ),
         )
