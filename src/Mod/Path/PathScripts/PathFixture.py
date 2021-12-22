@@ -26,11 +26,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathUtils as PathUtils
-from PySide import QtCore  # , QtGui
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
 class Fixture:
@@ -39,7 +35,7 @@ class Fixture:
             "App::PropertyEnumeration",
             "Fixture",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Fixture Offset Number"),
+            QT_TRANSLATE_NOOP("App::Property", "Fixture Offset Number"),
         )
         obj.Fixture = [
             "G53",
@@ -63,7 +59,7 @@ class Fixture:
             "App::PropertyBool",
             "Active",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Make False, to prevent operation from generating code"
             ),
         )
@@ -157,9 +153,9 @@ class CommandPathFixture:
     def GetResources(self):
         return {
             "Pixmap": "Path_Datums",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Fixture", "Fixture"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "Path_Fixture", "Creates a Fixture Offset object"
+            "MenuText": QT_TRANSLATE_NOOP("PathFixture", "Fixture"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "PathFixture", "Creates a Fixture Offset object"
             ),
         }
 
@@ -171,9 +167,7 @@ class CommandPathFixture:
         return False
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Fixture", "Create a Fixture Offset")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Create a Fixture Offset")
         FreeCADGui.addModule("PathScripts.PathFixture")
         snippet = """
 import Path
@@ -195,7 +189,7 @@ PathUtils.addToJob(obj)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("Path_Fixture", CommandPathFixture())
+    FreeCADGui.addCommand("PathFixture", CommandPathFixture())
 
 
 FreeCAD.Console.PrintLog("Loading PathFixture... done\n")
