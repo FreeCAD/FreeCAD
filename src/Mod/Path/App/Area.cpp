@@ -2830,10 +2830,7 @@ struct WireOrienter {
 
         TopoDS_Shape &wire = wires.back();
 
-        if(BRep_Tool::IsClosed(wire)) {
-            if(orientation==Area::OrientationReversed)
-                wire.Reverse();
-        }else if(direction!=Area::DirectionNone) {
+        if(direction!=Area::DirectionNone) {
             gp_Pnt p1,p2;
             getEndPoints(TopoDS::Wire(wire),p1,p2);
             bool reverse = false;
@@ -2858,6 +2855,9 @@ struct WireOrienter {
                 break;
             }
             if(reverse)
+                wire.Reverse();
+        } else {
+            if(orientation==Area::OrientationReversed)
                 wire.Reverse();
         }
     }
