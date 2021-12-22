@@ -26,10 +26,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 from PySide import QtCore
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
 class Plane:
@@ -38,14 +35,14 @@ class Plane:
             "App::PropertyEnumeration",
             "SelectionPlane",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Orientation plane of CNC path"),
+            QT_TRANSLATE_NOOP("App::Property", "Orientation plane of CNC path"),
         )
         obj.SelectionPlane = ["XY", "XZ", "YZ"]
         obj.addProperty(
             "App::PropertyBool",
             "Active",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Make False, to prevent operation from generating code"
             ),
         )
@@ -117,10 +114,10 @@ class _ViewProviderPlane:
 class CommandPathPlane:
     def GetResources(self):
         return {
-            "Pixmap": "Path_Plane",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Plane", "Selection Plane"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "Path_Plane", "Create a Selection Plane object"
+            "Pixmap": "PathPlane",
+            "MenuText": QT_TRANSLATE_NOOP("PathPlane", "Selection Plane"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "PathPlane", "Create a Selection Plane object"
             ),
         }
 
@@ -132,9 +129,7 @@ class CommandPathPlane:
         return False
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Plane", "Create a Selection Plane object")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Create a Selection Plane object")
         FreeCADGui.addModule("PathScripts.PathPlane")
         snippet = """
 import Path
