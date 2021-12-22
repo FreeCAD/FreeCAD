@@ -26,10 +26,9 @@ import FreeCAD
 import FreeCADGui
 import Path
 from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class Stop:
@@ -38,7 +37,7 @@ class Stop:
             "App::PropertyEnumeration",
             "Stop",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Add Optional or Mandatory Stop to the program"
             ),
         )
@@ -109,8 +108,8 @@ class CommandPathStop:
     def GetResources(self):
         return {
             "Pixmap": "Path_Stop",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Stop", "Stop"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP("Path_Stop", "Stop"),
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_Stop", "Add Optional or Mandatory Stop to the program"
             ),
         }
@@ -124,7 +123,7 @@ class CommandPathStop:
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Stop", "Add Optional or Mandatory Stop to the program")
+            "Add Optional or Mandatory Stop to the program"
         )
         FreeCADGui.addModule("PathScripts.PathStop")
         snippet = """
