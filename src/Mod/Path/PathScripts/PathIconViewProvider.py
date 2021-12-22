@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCAD
 import PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
@@ -30,8 +31,13 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "ViewProvider who's main and only task is to assign an icon."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+translate = FreeCAD.Qt.translate
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class ViewProvider(object):
@@ -89,9 +95,9 @@ class ViewProvider(object):
     def setupContextMenu(self, vobj, menu):
         # pylint: disable=unused-argument
         PathLog.track()
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
-        edit = QtCore.QCoreApplication.translate("Path", "Edit", None)
+        edit = translate("Path", "Edit")
         action = QtGui.QAction(edit, menu)
         action.triggered.connect(self.setEdit)
         menu.addAction(action)
