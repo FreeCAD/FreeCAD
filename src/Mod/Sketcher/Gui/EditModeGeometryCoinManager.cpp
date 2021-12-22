@@ -218,35 +218,36 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
             for (int  i=0; i < PtNum; i++)
                 pcolor[i] = drawingParameters.InvalidSketchColor;
         }
-        else if (PtNum > 1 && ViewProviderSketchCoinAttorney::isSketchFullyConstrained(viewProvider)) {
-            for (int  i=0; i < PtNum; i++)
-                pcolor[i] = drawingParameters.FullyConstrainedColor;
-        }
         else {
+
             for (int  i=0; i < PtNum; i++) {
-                int GeoId = coinMapping.getPointGeoId(i, l);
-
-                bool constrainedElement = isFullyConstraintElement(GeoId);
-
-                if(isInternalAlignedGeom(GeoId)) {
-                    if(constrainedElement)
-                        pcolor[i] = drawingParameters.FullyConstraintInternalAlignmentColor;
-                    else
-                        pcolor[i] = drawingParameters.InternalAlignedGeoColor;
+                if ( !(i == 0 && l == 0) && ViewProviderSketchCoinAttorney::isSketchFullyConstrained(viewProvider)) {// root point is not coloured
+                    pcolor[i] = drawingParameters.FullyConstrainedColor;
                 }
                 else {
-                    if(!isDefinedGeomPoint(GeoId)) {
+                    int GeoId = coinMapping.getPointGeoId(i, l);
 
+                    bool constrainedElement = isFullyConstraintElement(GeoId);
+
+                    if(isInternalAlignedGeom(GeoId)) {
                         if(constrainedElement)
-                            pcolor[i] = drawingParameters.FullyConstraintConstructionPointColor;
+                            pcolor[i] = drawingParameters.FullyConstraintInternalAlignmentColor;
                         else
-                            pcolor[i] = drawingParameters.VertexColor;
+                            pcolor[i] = drawingParameters.InternalAlignedGeoColor;
                     }
-                    else { // this is a defined GeomPoint
-                        if(constrainedElement)
-                            pcolor[i] = drawingParameters.FullyConstraintElementColor;
-                        else
-                            pcolor[i] = drawingParameters.CurveColor;
+                    else {
+                        if(!isDefinedGeomPoint(GeoId)) {
+                            if(constrainedElement)
+                                pcolor[i] = drawingParameters.FullyConstraintConstructionPointColor;
+                            else
+                                pcolor[i] = drawingParameters.VertexColor;
+                        }
+                        else { // this is a defined GeomPoint
+                            if(constrainedElement)
+                                pcolor[i] = drawingParameters.FullyConstraintElementColor;
+                            else
+                                pcolor[i] = drawingParameters.CurveColor;
+                        }
                     }
                 }
             }
@@ -273,15 +274,20 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
                                         drawingParameters.zLowPoints,
                                         drawingParameters.zLowPoints);
 
-
         for (int  i=0; i < PtNum; i++) { // 0 is the origin
-            pverts[i].getValue(x,y,z);
-            auto geom = geolistfacade.getGeometryFacadeFromGeoId(coinMapping.getPointGeoId(i, l));
-            if(geom && z < drawingParameters.zHighlight) {
-                if(geom->getConstruction())
-                    pverts[i].setValue(x,y,zConstrPoint);
-                else
-                    pverts[i].setValue(x,y,zNormPoint);
+            if( i == 0 && l == 0 ) { // reset root point to lowest
+                pverts[i].setValue(0, 0, drawingParameters.zRootPoint);
+            }
+            else {
+                pverts[i].getValue(x,y,z);
+                auto geom = geolistfacade.getGeometryFacadeFromGeoId(coinMapping.getPointGeoId(i, l));
+
+                if(geom) {
+                    if(geom->getConstruction())
+                        pverts[i].setValue(x,y,zConstrPoint);
+                    else
+                        pverts[i].setValue(x,y,zNormPoint);
+                }
             }
         }
 
