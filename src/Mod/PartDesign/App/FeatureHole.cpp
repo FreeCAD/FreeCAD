@@ -1901,24 +1901,33 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
             //create the helix path
             double threadDepth = ThreadDepth.getValue();
-            double helixLength = threadDepth + P/2;
+            double helixLength = threadDepth + P / 2;
+            double holeDepth = Depth.getValue();
             std::string threadDepthMethod(ThreadDepthType.getValueAsString());
+            std::string depthMethod(DepthType.getValueAsString());
             if (threadDepthMethod != "Dimension") {
-                std::string depthMethod(DepthType.getValueAsString());
                 if (depthMethod == "ThroughAll") {
                     threadDepth = length;
                     ThreadDepth.setValue(threadDepth);
                     helixLength = threadDepth + 2 * P;
                 }
                 else if (threadDepthMethod == "Tapped (DIN76)") {
-                    threadDepth = Depth.getValue() - getThreadRunout();
+                    threadDepth = holeDepth - getThreadRunout();
                     ThreadDepth.setValue(threadDepth);
                     helixLength = threadDepth + P / 2;
                 }
                 else { // Hole depth
-                    threadDepth = Depth.getValue();
+                    threadDepth = holeDepth;
                     ThreadDepth.setValue(threadDepth);
                     helixLength = threadDepth + P / 8;
+                }
+            }
+            else {
+                if (depthMethod == "Dimension") {
+                    // the thread must not be deeper than the hole
+                    // thus the max helixLength is holeDepth + P / 8;
+                    if (threadDepth > (holeDepth - P / 2))
+                        helixLength = holeDepth + P / 8;
                 }
             }
             TopoDS_Shape helix = TopoShape().makeLongHelix(P, helixLength, D / 2, 0.0, leftHanded);
@@ -1934,9 +1943,9 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             helix.Move(loc1);
 
             // rotate the helix so that it is pointing in the zdir.
-            double angle = acos(dir_axis1*zDir);
+            double angle = acos(dir_axis1 * zDir);
             if (abs(angle) > Precision::Confusion()) {
-                gp_Dir rotAxis = dir_axis1^zDir;
+                gp_Dir rotAxis = dir_axis1 ^ zDir;
                 mov.SetRotation(gp_Ax1(origo, rotAxis), angle);
                 TopLoc_Location loc2(mov);
                 helix.Move(loc2);
@@ -1960,7 +1969,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             backwires.push_back(TopoDS::Wire(sim.Last()));
             // build the end faces
             TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-            TopoDS_Shape back  = Part::FaceMakerCheese::makeFace(backwires);
+            TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
 
             // sew the shell and end faces
             BRepBuilderAPI_Sewing sewer;
@@ -1973,7 +1982,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             // make the closed off shell into a solid
             BRepBuilderAPI_MakeSolid mkSolid;
             mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-            if(!mkSolid.IsDone())
+            if (!mkSolid.IsDone())
                 return new App::DocumentObjectExecReturn("Error: Result is not a solid");
             TopoDS_Shape result = mkSolid.Shape();
 
@@ -2001,7 +2010,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         TopTools_IndexedMapOfShape edgeMap;
         TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
         Base::Placement SketchPos = profile->Placement.getValue();
-        for ( int i=1 ; i<=edgeMap.Extent() ; i++ ) {
+        for (int i = 1; i <= edgeMap.Extent(); i++) {
             Standard_Real c_start;
             Standard_Real c_end;
             TopoDS_Edge edge = TopoDS::Edge(edgeMap(i));
@@ -2016,8 +2025,8 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
 
             gp_Trsf localSketchTransformation;
-            localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
-                                                      gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
+            localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0),
+                gp_Pnt(loc.X(), loc.Y(), loc.Z()));
 
             TopoDS_Shape copy = protoHole;
             copy.Move(localSketchTransformation);
