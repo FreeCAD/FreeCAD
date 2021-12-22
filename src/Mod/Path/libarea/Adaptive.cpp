@@ -146,6 +146,38 @@ inline DoublePoint GetPathDirectionV(const Path &pth, size_t pointIndex)
 	const IntPoint &p2 = pth.at(pointIndex);
 	return DirectionV(p1, p2);
 }
+	
+bool doFilter(Path &ppg) {
+        size_t i;
+        size_t b;
+        size_t start;
+        size_t end;
+        for(i=0;i<ppg.size();i++) {
+            if (i==ppg.size()-1) {
+                start=0;
+                end=ppg.size()-2;
+            } else {
+                start=i+1;
+                end=ppg.size();
+            }
+            for(b=start;b<end;b++) {
+                if (abs(ppg[i].X-ppg[b].X)<2 && abs(ppg[i].Y-ppg[b].Y)<2) {
+                    ppg.erase(ppg.begin()+b);
+                    return true;
+                }
+            }
+        }
+        return false;
+}
+
+void filterCloseValues(Paths &ppg) {
+        size_t i;
+        for(i=0;i<ppg.size();i++) {
+            while(doFilter(ppg[i]));
+        }
+}
+
+	
 
 //*****************************************
 // Utils
@@ -1654,9 +1686,11 @@ void Adaptive2d::ApplyStockToLeave(Paths &inputPaths)
 		clipof.Clear();
 		clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
 		clipof.Execute(inputPaths, -1);
+		filterCloseValues(inputPaths);
 		clipof.Clear();
 		clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
 		clipof.Execute(inputPaths, 1);
+		filterCloseValues(inputPaths);
 	}
 }
 
