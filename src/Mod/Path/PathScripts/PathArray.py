@@ -28,12 +28,11 @@ from PathScripts import PathLog
 from PySide import QtCore
 import math
 import random
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """Path Array object and FreeCAD command"""
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ObjectArray:
@@ -42,19 +41,19 @@ class ObjectArray:
             "App::PropertyLinkList",
             "Base",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "The path(s) to array"),
+            QT_TRANSLATE_NOOP("App::Property", "The path(s) to array"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "Type",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
+            QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
         )
         obj.addProperty(
             "App::PropertyVectorDistance",
             "Offset",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "The spacing between the array copies in Linear pattern",
             ),
@@ -63,7 +62,7 @@ class ObjectArray:
             "App::PropertyInteger",
             "CopiesX",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "The number of copies in X direction in Linear pattern"
             ),
         )
@@ -71,7 +70,7 @@ class ObjectArray:
             "App::PropertyInteger",
             "CopiesY",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "The number of copies in Y direction in Linear pattern"
             ),
         )
@@ -79,13 +78,13 @@ class ObjectArray:
             "App::PropertyAngle",
             "Angle",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Total angle in Polar pattern"),
+            QT_TRANSLATE_NOOP("App::Property", "Total angle in Polar pattern"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "Copies",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "The number of copies in Linear 1D and Polar pattern"
             ),
         )
@@ -93,7 +92,7 @@ class ObjectArray:
             "App::PropertyVector",
             "Centre",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "The centre of rotation in Polar pattern"
             ),
         )
@@ -101,7 +100,7 @@ class ObjectArray:
             "App::PropertyBool",
             "SwapDirection",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Make copies in X direction before Y in Linear 2D pattern",
             ),
@@ -110,23 +109,19 @@ class ObjectArray:
             "App::PropertyInteger",
             "JitterPercent",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "Percent of copies to randomly offset"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
         )
         obj.addProperty(
             "App::PropertyVectorDistance",
             "JitterMagnitude",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "Maximum random offset of copies"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
         )
         obj.addProperty(
             "App::PropertyLink",
             "ToolController",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "The tool controller that will be used to calculate the path",
             ),
@@ -135,7 +130,7 @@ class ObjectArray:
             "App::PropertyBool",
             "Active",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "PathOp", "Make False, to prevent operation from generating code"
             ),
         )
@@ -186,7 +181,7 @@ class ObjectArray:
                 "App::PropertyBool",
                 "Active",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "PathOp", "Make False, to prevent operation from generating code"
                 ),
             )
@@ -488,8 +483,8 @@ class CommandPathArray:
     def GetResources(self):
         return {
             "Pixmap": "Path_Array",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Array", "Array"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP("Path_Array", "Array"),
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_Array", "Creates an array from selected path(s)"
             ),
         }
