@@ -25,7 +25,7 @@
 import FreeCAD
 import PathScripts.PathLog as PathLog
 import math
-
+from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtCore
 
 # lazily loaded modules
@@ -33,12 +33,13 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+translate = FreeCAD.Qt.translate
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class StockType:
@@ -105,16 +106,16 @@ class StockFromBase(Stock):
             "App::PropertyLink",
             "Base",
             "Base",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathStock", "The base object this stock is derived from"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The base object this stock is derived from"
             ),
         )
         obj.addProperty(
             "App::PropertyDistance",
             "ExtXneg",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathStock",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Extra allowance from part bound box in negative X direction",
             ),
         )
@@ -122,8 +123,8 @@ class StockFromBase(Stock):
             "App::PropertyDistance",
             "ExtXpos",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathStock",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Extra allowance from part bound box in positive X direction",
             ),
         )
@@ -131,8 +132,8 @@ class StockFromBase(Stock):
             "App::PropertyDistance",
             "ExtYneg",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathStock",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Extra allowance from part bound box in negative Y direction",
             ),
         )
@@ -140,8 +141,8 @@ class StockFromBase(Stock):
             "App::PropertyDistance",
             "ExtYpos",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathStock",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Extra allowance from part bound box in positive Y direction",
             ),
         )
@@ -149,8 +150,8 @@ class StockFromBase(Stock):
             "App::PropertyDistance",
             "ExtZneg",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathStock",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Extra allowance from part bound box in negative Z direction",
             ),
         )
@@ -158,8 +159,8 @@ class StockFromBase(Stock):
             "App::PropertyDistance",
             "ExtZpos",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathStock",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Extra allowance from part bound box in positive Z direction",
             ),
         )
@@ -167,7 +168,7 @@ class StockFromBase(Stock):
             "App::PropertyLink",
             "Material",
             "Component",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
+            QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
         )
 
         obj.Base = base
@@ -239,19 +240,19 @@ class StockCreateBox(Stock):
             "App::PropertyLength",
             "Length",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP("PathStock", "Length of this stock box"),
+            QT_TRANSLATE_NOOP("App::Property", "Length of this stock box"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "Width",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP("PathStock", "Width of this stock box"),
+            QT_TRANSLATE_NOOP("App::Property", "Width of this stock box"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "Height",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP("PathStock", "Height of this stock box"),
+            QT_TRANSLATE_NOOP("App::Property", "Height of this stock box"),
         )
 
         obj.Length = 10
@@ -291,13 +292,13 @@ class StockCreateCylinder(Stock):
             "App::PropertyLength",
             "Radius",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP("PathStock", "Radius of this stock cylinder"),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of this stock cylinder"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "Height",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP("PathStock", "Height of this stock cylinder"),
+            QT_TRANSLATE_NOOP("App::Property", "Height of this stock cylinder"),
         )
 
         obj.Radius = 2
@@ -333,9 +334,7 @@ def SetupStockObject(obj, stockType):
             "App::PropertyString",
             "StockType",
             "Stock",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathStock", "Internal representation of stock type"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Internal representation of stock type"),
         )
         obj.StockType = stockType
         obj.setEditorMode("StockType", 2)  # hide
@@ -515,10 +514,7 @@ def CreateFromTemplate(job, template):
                 or rotW is not None
             ):
                 PathLog.warning(
-                    translate(
-                        "PathStock",
-                        "Corrupted or incomplete placement information in template - ignoring",
-                    )
+                    "Corrupted or incomplete placement information in template - ignoring"
                 )
 
             if stockType == StockType.FromBase:
@@ -557,10 +553,7 @@ def CreateFromTemplate(job, template):
                     or zpos is not None
                 ):
                     PathLog.error(
-                        translate(
-                            "PathStock",
-                            "Corrupted or incomplete specification for creating stock from base - ignoring extent",
-                        )
+                        "Corrupted or incomplete specification for creating stock from base - ignoring extent"
                     )
                 return CreateFromBase(job, neg, pos, placement)
 
@@ -579,10 +572,7 @@ def CreateFromTemplate(job, template):
                     )
                 elif length is not None or width is not None or height is not None:
                     PathLog.error(
-                        translate(
-                            "PathStock",
-                            "Corrupted or incomplete size for creating a stock box - ignoring size",
-                        )
+                        "Corrupted or incomplete size for creating a stock box - ignoring size"
                     )
                 else:
                     PathLog.track(
@@ -600,10 +590,7 @@ def CreateFromTemplate(job, template):
                     radius = None
                     height = None
                     PathLog.error(
-                        translate(
-                            "PathStock",
-                            "Corrupted or incomplete size for creating a stock cylinder - ignoring size",
-                        )
+                        "Corrupted or incomplete size for creating a stock cylinder - ignoring size"
                     )
                 return CreateCylinder(job, radius, height, placement)
 
