@@ -43,7 +43,7 @@ macro(SetGlobalCompilerAndLinkerSettings)
             endif()
         endif(FREECAD_RELEASE_SEH)
 
-        option(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" OFF)
+	option(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" ON)
         if(FREECAD_USE_MP_COMPILE_FLAG)
             # set "Build with Multiple Processes"
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
