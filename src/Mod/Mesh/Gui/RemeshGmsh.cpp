@@ -284,7 +284,7 @@ RemeshGmsh::RemeshGmsh(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
   : GmshWidget(parent, fl)
   , d(new Private(mesh))
 {
-    // Copy mesh that is used each time when applying gmsh's remeshing function
+    // Copy mesh that is used each time when applying Gmsh's remeshing function
     d->copy = mesh->Mesh.getValue().getKernel();
     d->stlFile = App::Application::getTempFileName() + "mesh.stl";
     d->geoFile = App::Application::getTempFileName() + "mesh.geo";
@@ -313,15 +313,15 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
         int maxAngle = 120;
         int minAngle = 20;
 
-        // gmsh geo file
+        // Gmsh geo file
         Base::FileInfo geo(d->geoFile);
         Base::ofstream geoOut(geo, std::ios::out);
-        // Examples on how to use gmsh: https://sfepy.org/doc-devel/preprocessing.html
-        // http://gmsh.info//doc/texinfo/gmsh.html
+        // Examples on how to use Gmsh: https://sfepy.org/doc-devel/preprocessing.html
+        // https://gmsh.info//doc/texinfo/gmsh.html
         // https://docs.salome-platform.org/latest/gui/GMSHPLUGIN/gmsh_2d_3d_hypo_page.html
         geoOut << "// geo file for meshing with Gmsh meshing software created by FreeCAD\n"
             << "If(GMSH_MAJOR_VERSION < 4)\n"
-            << "   Error(\"Too old gmsh version %g.%g. At least 4.x is required\", GMSH_MAJOR_VERSION, GMSH_MINOR_VERSION);\n"
+            << "   Error(\"Too old Gmsh version %g.%g. At least 4.x is required\", GMSH_MAJOR_VERSION, GMSH_MINOR_VERSION);\n"
             << "   Exit;\n"
             << "EndIf\n"
             << "Merge \"" << stl.filePath() << "\";\n\n"

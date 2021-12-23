@@ -59,7 +59,7 @@ Tessellation::Tessellation(QWidget* parent)
     gmsh = new Mesh2ShapeGmsh(this);
     connect(gmsh, SIGNAL(processed()), this, SLOT(gmshProcessed()));
 
-    ui->stackedWidget->addTab(gmsh, tr("gmsh"));
+    ui->stackedWidget->addTab(gmsh, tr("Gmsh"));
 
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard");
@@ -260,7 +260,7 @@ bool Tessellation::accept()
     bool doClose = !ui->checkBoxDontQuit->isChecked();
     int method = ui->stackedWidget->currentIndex();
 
-    // For gmsh the workflow is very different because it uses an executable
+    // For Gmsh the workflow is very different because it uses an executable
     // and therefore things are asynchronous
     if (method == Gmsh) {
         gmsh->process(activeDoc, shapeObjects);
@@ -522,7 +522,7 @@ bool Mesh2ShapeGmsh::writeProject(QString& inpFile, QString& outFile)
                 maxSize = 1.0e22;
             double minSize = getMinSize();
 
-            // gmsh geo file
+            // Gmsh geo file
             Base::FileInfo geo(d->geoFile);
             Base::ofstream geoOut(geo, std::ios::out);
             geoOut << "// geo file for meshing with Gmsh meshing software created by FreeCAD\n"
