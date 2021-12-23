@@ -197,6 +197,7 @@ class Move(gui_base_original.Modifier):
 
     def move_subelements(self):
         """Move the subelements."""
+        Gui.addModule("Draft")
         try:
             if self.ui.isCopy.isChecked():
                 self.commit(translate("draft", "Copy"),
