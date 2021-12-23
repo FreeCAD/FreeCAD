@@ -1138,6 +1138,8 @@ void ObjectIdentifier::getDep(Dependencies &deps, bool needProps, std::vector<st
     catch (Py::Exception& e) {
         e.clear();
     }
+    catch (Base::Exception &) {
+    }
 }
 
 /**
