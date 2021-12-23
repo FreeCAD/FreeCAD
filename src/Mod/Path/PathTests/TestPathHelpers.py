@@ -53,6 +53,7 @@ class TestPathHelpers(PathTestBase):
         tc.HorizFeed = 20
 
         resultlist = PathFeedRate.setFeedRate(self.commandlist, tc)
+        print(resultlist)
 
         self.assertTrue(resultlist[0].Parameters["F"] == 5)
         self.assertTrue(resultlist[1].Parameters["F"] == 10)
@@ -100,4 +101,11 @@ class TestPathHelpers(PathTestBase):
 
         result = machine.addCommand(Path.Command("G0 X30"))
         self.assertTrue(result)
+
+        # Test that Drilling moves are handled correctly
+        result = machine.addCommand(Path.Command("G81 X50 Y50 Z0"))
+        state = machine.getState()
+        self.assertTrue(state['X'] == 50 )
+        self.assertTrue(state['Y'] == 50 )
+        self.assertTrue(state['Z'] == 5 )
 

@@ -25,6 +25,7 @@ import PathScripts.PathLog as PathLog
 import PathMachineState
 import PathScripts.PathGeom as PathGeom
 import Part
+from PathScripts.PathGeom import CmdMoveRapid, CmdMoveAll
 
 __title__ = "Feed Rate Helper Utility"
 __author__ = "sliptonic (Brad Collette)"
@@ -43,6 +44,12 @@ else:
 
 
 def setFeedRate(commandlist, ToolController):
+    """Set the appropriate feed rate for a list of Path commands using the information from a Tool Controler
+
+    Every motion command in the list will have a feed rate parameter added or overwritten based
+    on the information stored in the tool controller. If a motion is a plunge (vertical) motion, the
+    VertFeed value will be used, otherwise the HorizFeed value will be used instead."""
+
     def _isVertical(currentposition, command):
         x = (
             command.Parameters["X"]
@@ -64,25 +71,22 @@ def setFeedRate(commandlist, ToolController):
             return True
         return PathGeom.isVertical(Part.makeLine(currentposition, endpoint))
 
-    feedcommands = ["G01", "G1", "G2", "G3", "G02", "G03", "G81", "G82", "G83"]
-    rapidcommands = ["G0", "G00"]
-
     machine = PathMachineState.MachineState()
 
     for command in commandlist:
-        if command.Name not in feedcommands + rapidcommands:
+        if command.Name not in CmdMoveAll:
             continue
 
-        if _isVertical(FreeCAD.Vector(machine.X, machine.Y, machine.Z), command):
+        if _isVertical(machine.getPosition(), command):
             rate = (
                 ToolController.VertRapid.Value
-                if command.Name in rapidcommands
+                if command.Name in CmdMoveRapid
                 else ToolController.VertFeed.Value
             )
         else:
             rate = (
                 ToolController.HorizRapid.Value
-                if command.Name in rapidcommands
+                if command.Name in CmdMoveRapid
                 else ToolController.HorizFeed.Value
             )
 

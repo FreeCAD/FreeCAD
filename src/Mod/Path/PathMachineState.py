@@ -29,6 +29,7 @@ __contributors__ = ""
 import PathScripts.PathLog as PathLog
 import FreeCAD
 from dataclasses import dataclass, field
+from PathScripts.PathGeom import CmdMoveRapid, CmdMoveAll, CmdMoveDrill
 
 if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -92,6 +93,13 @@ class MachineState:
             self.WCS = command.Name
             return not oldstate == self.getState()
 
+        if command.Name in CmdMoveDrill:
+            oldZ = self.Z
+            for p in command.Parameters:
+                self.__setattr__(p, command.Parameters[p])
+            self.__setattr__("Z", oldZ)
+            return not oldstate == self.getState()
+
         for p in command.Parameters:
             self.__setattr__(p, command.Parameters[p])
 
@@ -116,3 +124,12 @@ class MachineState:
         state['T'] = self.T
 
         return state
+
+    def getPosition(self):
+        """
+        Returns a vector of the current machine position
+        """
+
+        # This is technical debt.  The actual position may include a rotation
+        # component as well.  We should probably be returning a placement
+        return FreeCAD.Vector(self.X, self.Y, self.Z)
