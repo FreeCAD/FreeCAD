@@ -134,9 +134,6 @@ on-screen while displaying the warning</string>
         <property name="text">
          <string>Show report view on warning</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>checkShowReportViewOnWarning</cstring>
         </property>
@@ -304,7 +301,7 @@ on-screen while displaying the log message</string>
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>0</green>
@@ -362,7 +359,7 @@ on-screen while displaying the log message</string>
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>0</green>
@@ -420,7 +417,7 @@ on-screen while displaying the log message</string>
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>170</green>
@@ -478,7 +475,7 @@ on-screen while displaying the log message</string>
           <property name="text">
            <string/>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>0</green>
