@@ -261,7 +261,7 @@ bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
                     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
             ReportHighlighter::Paragraph msgType = cr->messageType();
             if (msgType == ReportHighlighter::Warning){
-                if (group->GetBool("checkShowReportViewOnWarning", true)) {
+                if (group->GetBool("checkShowReportViewOnWarning", false)) {
                     showReportView();
                 }
             } else if (msgType == ReportHighlighter::Error){
@@ -485,10 +485,10 @@ void ReportOutput::changeEvent(QEvent *ev)
 void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 {
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("OutputWindow");
-    bool bShowOnLog = hGrp->GetBool("checkShowReportViewOnLogMessage",false);
-    bool bShowOnNormal = hGrp->GetBool("checkShowReportViewOnNormalMessage",false);
-    bool bShowOnWarn = hGrp->GetBool("checkShowReportViewOnWarning",true);
-    bool bShowOnError = hGrp->GetBool("checkShowReportViewOnError",true);
+    bool bShowOnLog = hGrp->GetBool("checkShowReportViewOnLogMessage", false);
+    bool bShowOnNormal = hGrp->GetBool("checkShowReportViewOnNormalMessage", false);
+    bool bShowOnWarn = hGrp->GetBool("checkShowReportViewOnWarning", false);
+    bool bShowOnError = hGrp->GetBool("checkShowReportViewOnError", true);
 
     QMenu* menu = new QMenu(this);
     QMenu* optionMenu = new QMenu( menu );
@@ -635,7 +635,7 @@ void ReportOutput::onToggleNormalMessage()
 
 void ReportOutput::onToggleShowReportViewOnWarning()
 {
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarning", true);
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarning", false);
     getWindowParameter()->SetBool("checkShowReportViewOnWarning", !show);
 }
 
