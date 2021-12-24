@@ -558,10 +558,19 @@ double Helix::safePitch()
         // if the distance perpendicular to axisVec
         // between two turns is larger than the bounding box size in this direction
         // the minimal necessary pitch is zero
-        if (abs(growthValue) > abs(boundingBoxVec * directionStart))
+        if (abs(growthValue) > abs(boundingBoxVec * directionStart)) {
             return 0.0;
-        else
-            return pitch0;
+        }
+        else {
+            // if less than one turn, every pitch is safe
+            // Note: at the moment helices with a growth end with a plane
+            // whose normal is the final direction of the helix path.
+            // In case this might be changed in future, also 1.0 turn would be safe.
+            if (turnsValue < 1.0)
+                return 0.0;
+            else
+                return pitch0;
+        }
     }
     else {
         // if the angle is so large that the distance perpendicular to axisVec
