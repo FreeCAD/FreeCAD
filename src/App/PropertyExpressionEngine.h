@@ -178,7 +178,7 @@ private:
     typedef std::pair<int, int> Edge;
     // Note: use std::map instead of unordered_map to keep the binding order stable
     #ifdef FC_OS_MACOSX
-    typedef boost::unordered_map<const App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
+    typedef std::map<App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
     #else
     typedef std::map<const App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
     #endif
