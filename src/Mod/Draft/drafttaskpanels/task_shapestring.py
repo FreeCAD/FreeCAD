@@ -50,8 +50,6 @@ True if Draft_rc.__name__ else False
 class ShapeStringTaskPanel:
     """TaskPanel for Draft_ShapeString."""
 
-    oldValueBuffer = False
-
     def __init__(self):
         self.form = QtGui.QWidget()
         self.form.setObjectName("ShapeStringTaskPanel")
@@ -79,6 +77,8 @@ class ShapeStringTaskPanel:
         self.fileSpec = Draft.getParam("FontFile", "")
         self.point = App.Vector(0.0, 0.0, 0.0)
         self.pointPicked = False
+        self.oldValueBuffer = False
+
 
         QtCore.QObject.connect(self.task.fcFontFile, QtCore.SIGNAL("fileNameSelected(const QString&)"), self.fileSelect)
         QtCore.QObject.connect(self.task.pbReset, QtCore.SIGNAL("clicked()"), self.resetPoint)
