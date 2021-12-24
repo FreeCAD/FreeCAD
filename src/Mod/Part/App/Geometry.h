@@ -308,6 +308,7 @@ public:
     bool approximate(double tol3d, int maxSegments, int maxDegree, int continuity);
 
     void increaseMultiplicity(int index, int multiplicity);
+    void insertKnot(double param, int multiplicity);
     bool removeKnot(int index, int multiplicity, double tolerance = Precision::PConfusion());
 
     void Trim(double u, double v);
