@@ -698,7 +698,7 @@ class ghostTracker(Tracker):
         """Recreate the ghost from a new object."""
         obj.ViewObject.show()
         self.finalize()
-        sep = self.getNode(obj)
+        self.sep = self.getNode(obj)
         Tracker.__init__(self, children=[self.sep])
         self.on()
         obj.ViewObject.hide()
