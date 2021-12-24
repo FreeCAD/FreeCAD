@@ -1532,6 +1532,18 @@ void GeomBSplineCurve::increaseMultiplicity(int index, int multiplicity)
     }
     catch (Standard_Failure& e) {
         THROWM(Base::CADKernelError,e.GetMessageString())
+            }
+}
+
+void GeomBSplineCurve::insertKnot(double param, int multiplicity)
+{
+    try {
+        Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(this->handle());
+        curve->InsertKnot(param, multiplicity);
+        return;
+    }
+    catch (Standard_Failure& e) {
+        THROWM(Base::CADKernelError,e.GetMessageString())
     }
 }
 
