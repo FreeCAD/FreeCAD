@@ -5160,6 +5160,7 @@ int SketchObject::exposeInternalGeometry(int GeoId)
         std::vector<Constraint *> icon;
 
         std::vector<Base::Vector3d> poles = bsp->getPoles();
+        std::vector<double> weights = bsp->getWeights();
         std::vector<double> knots = bsp->getKnots();
 
         double distance_p0_p1 = (poles[1]-poles[0]).Length(); // for visual purposes only
@@ -5187,10 +5188,9 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 icon.push_back(newConstr);
 
                 if(it != controlpointgeoids.begin()) {
-                    // if pole-weight newly created AND first weight is radius-constrained,
-                    // make it equal to first weight by default
-
-                    if(isfirstweightconstrained) {
+                    if(isfirstweightconstrained && weights[0] == weights[index]) {
+                        // if pole-weight newly created AND first weight is radius-constrained,
+                        // AND these weights are equal, constrain them to be equal
                         Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
                         newConstr2->Type = Sketcher::Equal;
                         newConstr2->First = currentgeoid+incrgeo+1;
