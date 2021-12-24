@@ -140,7 +140,7 @@ PointKernel::size_type PointKernel::countValid(void) const
 {
     size_type num = 0;
     for (const_point_iterator it = begin(); it != end(); ++it) {
-        if (!(boost::math::isnan(it->x) || 
+        if (!(boost::math::isnan(it->x) ||
               boost::math::isnan(it->y) ||
               boost::math::isnan(it->z)))
             num++;
@@ -153,7 +153,7 @@ std::vector<PointKernel::value_type> PointKernel::getValidPoints() const
     std::vector<PointKernel::value_type> valid;
     valid.reserve(countValid());
     for (const_point_iterator it = begin(); it != end(); ++it) {
-        if (!(boost::math::isnan(it->x) || 
+        if (!(boost::math::isnan(it->x) ||
               boost::math::isnan(it->y) ||
               boost::math::isnan(it->z)))
             valid.emplace_back(
@@ -168,7 +168,7 @@ void PointKernel::Save (Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
         writer.Stream() << writer.ind()
-            << "<Points file=\"" << writer.addFile(writer.ObjectName.c_str(), this) << "\" " 
+            << "<Points file=\"" << writer.addFile(writer.ObjectName.c_str(), this) << "\" "
             << "mtrx=\"" << _Mtrx.toString() << "\"/>" << std::endl;
     }
 }
@@ -220,7 +220,7 @@ void PointKernel::save(const char* file) const
     save(out);
 }
 
-void PointKernel::load(const char* file) 
+void PointKernel::load(const char* file)
 {
     PointsAlgos::Load(*this,file);
 }
@@ -267,7 +267,7 @@ PointKernel::const_point_iterator::const_point_iterator
 //{
 //}
 
-PointKernel::const_point_iterator& 
+PointKernel::const_point_iterator&
 PointKernel::const_point_iterator::operator=(const PointKernel::const_point_iterator& pi)
 {
     this->_kernel  = pi._kernel;
