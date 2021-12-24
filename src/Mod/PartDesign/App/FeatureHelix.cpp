@@ -161,7 +161,8 @@ App::DocumentObjectExecReturn* Helix::execute(void)
         if (Turns.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: turns too small!");
         if ((Height.getValue() < Precision::Confusion())
-            && (abs(Growth.getValue()) < Precision::Confusion()))
+            && (abs(Growth.getValue()) < Precision::Confusion())
+            && Turns.getValue() > 1.0)
             return new App::DocumentObjectExecReturn("Error: either height or growth must not be zero!");
         Pitch.setValue(Height.getValue() / Turns.getValue());
         if (Height.getValue() > 0) {
