@@ -6860,134 +6860,134 @@ namespace SketcherGui {
 }
 
 
-    class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
+class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerCarbonCopy() {}
+    virtual ~DrawSketchHandlerCarbonCopy()
     {
-    public:
-        DrawSketchHandlerCarbonCopy() {}
-        virtual ~DrawSketchHandlerCarbonCopy()
-        {
-            Gui::Selection().rmvSelectionGate();
-        }
-
-        virtual void activated(ViewProviderSketch *sketchgui)
-        {
-            sketchgui->setAxisPickStyle(false);
-            Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-            Gui::View3DInventorViewer *viewer;
-            viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
-
-            Gui::Selection().clearSelection();
-            Gui::Selection().rmvSelectionGate();
-            Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
-            setCrosshairCursor("Sketcher_Pointer_CarbonCopy");
-        }
-
-        virtual void deactivated(ViewProviderSketch *sketchgui)
-        {
-            sketchgui->setAxisPickStyle(true);
-        }
-
-        virtual void mouseMove(Base::Vector2d onSketchPos)
-        {
-            Q_UNUSED(onSketchPos);
-            if (Gui::Selection().getPreselection().pObjectName)
-                applyCursor();
-        }
-
-        virtual bool pressButton(Base::Vector2d onSketchPos)
-        {
-            Q_UNUSED(onSketchPos);
-            return true;
-        }
-
-        virtual bool releaseButton(Base::Vector2d onSketchPos)
-        {
-            Q_UNUSED(onSketchPos);
-            /* this is ok not to call to purgeHandler
-             * in continuous creation mode because the
-             * handler is destroyed by the quit() method on pressing the
-             * right button of the mouse */
-            return true;
-        }
-
-        virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
-        {
-            if (msg.Type == Gui::SelectionChanges::AddSelection) {
-                App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
-                if (obj == NULL)
-                    throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
-
-                if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
-
-                    try {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add carbon copy"));
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "carbonCopy(\"%s\",%s)",
-                                              msg.pObjectName, geometryCreationMode==Construction?"True":"False");
-
-                        Gui::Command::commitCommand();
-
-                        tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-
-                        Gui::Selection().clearSelection();
-                        /* this is ok not to call to purgeHandler
-                         * in continuous creation mode because the
-                         * handler is destroyed by the quit() method on pressing the
-                         * right button of the mouse */
-                    }
-                    catch (const Base::Exception& e) {
-                        Base::Console().Error("Failed to add carbon copy: %s\n", e.what());
-                        Gui::Command::abortCommand();
-                    }
-                    return true;
-                    }
-            }
-            return false;
-        }
-    };
-
-    DEF_STD_CMD_AU(CmdSketcherCarbonCopy)
-
-    CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
-    : Command("Sketcher_CarbonCopy")
-    {
-        sAppModule      = "Sketcher";
-        sGroup          = "Sketcher";
-        sMenuText       = QT_TR_NOOP("Carbon copy");
-        sToolTipText    = QT_TR_NOOP("Copies the geometry of another sketch");
-        sWhatsThis      = "Sketcher_CarbonCopy";
-        sStatusTip      = sToolTipText;
-        sPixmap         = "Sketcher_CarbonCopy";
-        sAccel          = "G, W";
-        eType           = ForEdit;
+        Gui::Selection().rmvSelectionGate();
     }
 
-    void CmdSketcherCarbonCopy::activated(int iMsg)
+    virtual void activated(ViewProviderSketch *sketchgui)
     {
-        Q_UNUSED(iMsg);
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCarbonCopy());
+        sketchgui->setAxisPickStyle(false);
+        Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        Gui::View3DInventorViewer *viewer;
+        viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+
+        SoNode* root = viewer->getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_CarbonCopy");
     }
 
-    bool CmdSketcherCarbonCopy::isActive(void)
+    virtual void deactivated(ViewProviderSketch *sketchgui)
     {
-        return isCreateGeoActive(getActiveGuiDocument());
+        sketchgui->setAxisPickStyle(true);
     }
 
-    void CmdSketcherCarbonCopy::updateAction(int mode)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
-        switch (mode) {
-            case Normal:
-                if (getAction())
-                    getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy"));
-                break;
-            case Construction:
-                if (getAction())
-                    getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy_Constr"));
-                break;
+        Q_UNUSED(onSketchPos);
+        if (Gui::Selection().getPreselection().pObjectName)
+            applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        /* this is ok not to call to purgeHandler
+            * in continuous creation mode because the
+            * handler is destroyed by the quit() method on pressing the
+            * right button of the mouse */
+        return true;
+    }
+
+    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
+    {
+        if (msg.Type == Gui::SelectionChanges::AddSelection) {
+            App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
+            if (obj == NULL)
+                throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
+
+            if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
+
+                try {
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add carbon copy"));
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "carbonCopy(\"%s\",%s)",
+                                            msg.pObjectName, geometryCreationMode==Construction?"True":"False");
+
+                    Gui::Command::commitCommand();
+
+                    tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+
+                    Gui::Selection().clearSelection();
+                    /* this is ok not to call to purgeHandler
+                        * in continuous creation mode because the
+                        * handler is destroyed by the quit() method on pressing the
+                        * right button of the mouse */
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("Failed to add carbon copy: %s\n", e.what());
+                    Gui::Command::abortCommand();
+                }
+                return true;
+                }
         }
+        return false;
     }
+};
+
+DEF_STD_CMD_AU(CmdSketcherCarbonCopy)
+
+CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
+: Command("Sketcher_CarbonCopy")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = "Sketcher";
+    sMenuText       = QT_TR_NOOP("Carbon copy");
+    sToolTipText    = QT_TR_NOOP("Copies the geometry of another sketch");
+    sWhatsThis      = "Sketcher_CarbonCopy";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CarbonCopy";
+    sAccel          = "G, W";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCarbonCopy::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCarbonCopy());
+}
+
+bool CmdSketcherCarbonCopy::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+void CmdSketcherCarbonCopy::updateAction(int mode)
+{
+    switch (mode) {
+        case Normal:
+            if (getAction())
+                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy"));
+            break;
+        case Construction:
+            if (getAction())
+                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy_Constr"));
+            break;
+    }
+}
 
 
 /**
