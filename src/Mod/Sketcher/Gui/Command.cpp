@@ -556,7 +556,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
                 assert(0);
                 throw Base::ValueError("Unexpected null pointer in CmdSketcherMapSketch::activated");
             }
-            std::vector<App::DocumentObject*> input = part->getOutList();
+            std::vector<App::DocumentObject*> input = part->getOutListRecursive();
             if (std::find(input.begin(), input.end(), sketch) != input.end()) {
                 throw ExceptionWrongInput(QT_TR_NOOP("Some of the selected objects depend on the sketch to be mapped. "
                                                      "Circular dependencies are not allowed."));
@@ -645,11 +645,13 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "Support = %s",supportString.c_str());
             commitCommand();
+            doCommand(Gui,"App.activeDocument().recompute()");
         } else {
             openCommand(QT_TRANSLATE_NOOP("Command", "Detach sketch"));
             Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "Support = None");
             commitCommand();
+            doCommand(Gui,"App.activeDocument().recompute()");
         }
     } catch (ExceptionWrongInput &e) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -664,7 +666,8 @@ bool CmdSketcherMapSketch::isActive(void)
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     Base::Type sketch_type = Base::Type::fromName("Sketcher::SketchObject");
-    if (doc && doc->countObjectsOfType(sketch_type) > 0)
+    std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
+    if (doc && doc->countObjectsOfType(sketch_type) > 0 && !selobjs.empty())
         return true;
 
     return false;
