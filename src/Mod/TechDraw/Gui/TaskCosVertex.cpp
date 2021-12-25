@@ -178,9 +178,10 @@ void TaskCosVertex::onTrackerClicked(bool b)
     Q_UNUSED(b);
 //    Base::Console().Message("TCV::onTrackerClicked() m_pbTrackerState: %d\n",
 //                            m_pbTrackerState);
-    if (m_pbTrackerState == TRACKERCANCEL) {
-        removeTracker();
 
+    removeTracker();
+
+    if (m_pbTrackerState == TRACKERCANCEL) {
         m_pbTrackerState = TRACKERPICK;
         ui->pbTracker->setText(QString::fromUtf8("Pick Points"));
         enableTaskButtons(true);
@@ -266,7 +267,9 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
 
     m_tracker->sleep(true);
     m_inProgressLock = false;
-    ui->pbTracker->setEnabled(false);
+    m_pbTrackerState = TRACKERPICK;
+    ui->pbTracker->setText(QString::fromUtf8("Pick Points"));
+    ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);
     m_mdi->setContextMenuPolicy(m_saveContextPolicy);
