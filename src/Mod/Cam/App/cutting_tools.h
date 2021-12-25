@@ -50,12 +50,12 @@ It provides members for all fields of the GUI settings window.
 struct CuttingToolsSettings
 {
     /**This represents the maximum allowed angle for the springback functions*/
-    float limit_angle; 
+    float limit_angle;
     /**This represents the minimum CAD-Radius of the forming shape. This is necessary for the springback
     to avoid the generation of radii which are below that value*/
-    float cad_radius; 
+    float cad_radius;
     /**This represents the radius of the Master Tool*/
-    float master_radius; 
+    float master_radius;
     /**This represents the radius of the Slave Tool*/
     float slave_radius;
     /**This represents the cutting distance between two levels (the pitch)*/
@@ -74,9 +74,9 @@ struct CuttingToolsSettings
     float y_offset_robot;
     /**This represents the X-Offset value for the robot output*/
     float x_offset_robot;
-    /**This represents the error of the approximated NURB surface*/ 
+    /**This represents the error of the approximated NURB surface*/
     float error_tolerance;
-    
+
     /**This value is necessary to tell some special functions if we move zig/zag or clockwise/counterclockwise
     without changing direction after each step*/
     bool clockwise;
@@ -114,26 +114,26 @@ struct Face_Less
 
 
 
-/**\brief This class is the main class for the cutting Algorithms. 
+/**\brief This class is the main class for the cutting Algorithms.
 
-Its idea is to provide the basic functionality for cutting CAD surfaces. In this class you can also find 
+Its idea is to provide the basic functionality for cutting CAD surfaces. In this class you can also find
 functions useful for generating spiral and feature based toolpaths
 */
 class CamExport cutting_tools
 {
 public:
-	/**\brief The standard constructor 
-	
-	\param aShape A TopoDS_Shape 
-	*/ 
+	/**\brief The standard constructor
+
+	\param aShape A TopoDS_Shape
+	*/
     cutting_tools(TopoDS_Shape aShape);
 
     /**\brief The second standard constructor
 
     This one gets a vertical step down value as well
-	\param aShape A TopoDS_Shape 
+	\param aShape A TopoDS_Shape
     \param pitch A vertical step down in[mm]
-	*/ 
+	*/
     cutting_tools(TopoDS_Shape aShape, float pitch);
 
     /**\brief The standard destructor*/
@@ -151,7 +151,7 @@ public:
     the flat areas are inside
     */
 
-	/*! \brief Hier finden wir eine tolle Funktion */ 
+	/*! \brief Here we find a great function */
     bool arrangecuts_ZLEVEL();
     //bool checkPointIntersection(std::vector<projectPointContainer> &finalPoints);
     bool calculateAccurateSlaveZLevel(std::vector<std::pair<gp_Pnt,double> >&OffsetPoints, double current_z_level, double &slave_z_level, double &average_sheet_thickness,double &average_angle, bool &cutpos);
