@@ -1402,43 +1402,48 @@ class ObjectSurface(PathOp.ObjectOp):
         maxXYDistanceSqrd = (self.cutter.getDiameter() * 2)**2
 
         if obj.OptimizeStepOverTransitions:
-            # Short distance within step over
-            xyDistanceSqrd = ((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
-            # Try to keep cutting for short distances.
-            if xyDistanceSqrd <= maxXYDistanceSqrd:
-                # Try to keep cutting, following the model shape
-                (transLine, minZ, maxZ) = self._getTransitionLine(
-                    safePDC, p1, p2, obj)
-                # For now, only optimize moderate deviations in Z direction, and
-                # no dropping below the min of p1 and p2, primarily for multi
-                # layer path safety.
-                zFloor = min(p1.z, p2.z)
-                if abs(minZ - maxZ) < self.cutter.getDiameter():
-                    for pt in transLine[1:-1]:
+            if p1 and p2:
+                # Short distance within step over
+                xyDistanceSqrd = ((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
+                # Try to keep cutting for short distances.
+                if xyDistanceSqrd <= maxXYDistanceSqrd:
+                    # Try to keep cutting, following the model shape
+                    (transLine, minZ, maxZ) = self._getTransitionLine(
+                        safePDC, p1, p2, obj)
+                    # For now, only optimize moderate deviations in Z direction, and
+                    # no dropping below the min of p1 and p2, primarily for multi
+                    # layer path safety.
+                    zFloor = min(p1.z, p2.z)
+                    if abs(minZ - maxZ) < self.cutter.getDiameter():
+                        for pt in transLine[1:-1]:
+                            cmds.append(
+                                Path.Command('G1', {
+                                    'X': pt.x,
+                                    'Y': pt.y,
+                                    # Enforce zFloor
+                                    'Z': max(pt.z, zFloor),
+                                    'F': self.horizFeed
+                                }))
+                        # Use p2 (start of next step) verbatim
                         cmds.append(
                             Path.Command('G1', {
-                                'X': pt.x,
-                                'Y': pt.y,
-                                # Enforce zFloor
-                                'Z': max(pt.z, zFloor),
+                                'X': p2.x,
+                                'Y': p2.y,
+                                'Z': p2.z,
                                 'F': self.horizFeed
                             }))
-                    # Use p2 (start of next step) verbatim
-                    cmds.append(
-                        Path.Command('G1', {
-                            'X': p2.x,
-                            'Y': p2.y,
-                            'Z': p2.z,
-                            'F': self.horizFeed
-                        }))
-                    return cmds
-            # For longer distances or large z deltas, we conservatively lift
-            # to SafeHeight for lack of an accurate stock model, but then
-            # speed up the drop back down when using multi pass, dropping
-            # quickly to *previous* layer depth.
-            stepDown = obj.StepDown.Value if hasattr(obj,
-                                                     "StepDown") else 0
-            rtpd = min(height, p2.z + stepDown + 2)
+                        return cmds
+                # For longer distances or large z deltas, we conservatively lift
+                # to SafeHeight for lack of an accurate stock model, but then
+                # speed up the drop back down when using multi pass, dropping
+                # quickly to *previous* layer depth.
+                stepDown = obj.StepDown.Value if hasattr(obj,
+                                                         "StepDown") else 0
+                rtpd = min(height, p2.z + stepDown + 2)
+            elif not p1:
+                PathLog.debug("_stepTransitionCmds() p1 is None")
+            elif not p2:
+                PathLog.debug("_stepTransitionCmds() p2 is None")
 
         # Create raise, shift, and optional lower commands
         if height is not False:
