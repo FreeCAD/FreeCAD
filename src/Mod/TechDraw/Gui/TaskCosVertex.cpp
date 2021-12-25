@@ -86,8 +86,7 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     m_btnOK(nullptr),
     m_btnCancel(nullptr),
     m_pbTrackerState(TRACKERPICK),
-    m_savePoint(QPointF(0.0,0.0)),
-    pointFromTracker(false)
+    m_savePoint(QPointF(0.0,0.0))
 {
     if ( (m_basePage == nullptr) ||
          (m_baseFeat == nullptr) )  {
@@ -263,7 +262,6 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     QPointF scenePosCV = displace / scale;
 
     m_savePoint = Rez::appX(scenePosCV);
-    pointFromTracker = true;
     updateUi();
 
     m_tracker->sleep(true);
@@ -325,14 +323,11 @@ bool TaskCosVertex::accept()
     if (!doc) return false;
 
     removeTracker();
-    if (pointFromTracker) {
-        addCosVertex(m_savePoint);
-    } else {
-        double x = ui->dsbX->value().getValue();
-        double y = ui->dsbY->value().getValue();
-        QPointF uiPoint(x,-y);
-        addCosVertex(uiPoint);
-    }
+    double x = ui->dsbX->value().getValue();
+    double y = ui->dsbY->value().getValue();
+    QPointF uiPoint(x,-y);
+    addCosVertex(uiPoint);
+    
     m_baseFeat->recomputeFeature();
     m_baseFeat->requestPaint();
     m_mdi->setContextMenuPolicy(m_saveContextPolicy);
