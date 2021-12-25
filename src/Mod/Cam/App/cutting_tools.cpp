@@ -210,9 +210,9 @@ bool cutting_tools::getShapeBB()
  //       dist = mesh.calc_edge_length(eh);  //get the length of the current edge
  //       if(dist>2.6) //Split the Edge now
  //       {
- //        
+ //
  //           //Get the Start and EndPoints of the Edge
- //          
+ //
  //       }
 
  //   }
@@ -221,7 +221,7 @@ bool cutting_tools::getShapeBB()
  //mesh.release(m_CAD_Mesh);    //Function from MeshInterface to convert the Input Kernel back
 
 
-   
+
     /* Here is the old OCC BoundingBox function
     Bnd_Box currentBBox;
     Standard_Real XMin, YMin, ZMin, XMax, YMax, ZMax;
@@ -2337,7 +2337,7 @@ bool cutting_tools::OffsetWires_Spiral()
                 }
                 else //We have to try a mesh intersection as the Nurb Intersection does not seem to work
                 {
-                    cout << "Big Probleme";
+                    cout << "Big Problem";
                     continue;
                 }
                 //Now get the Proper Normal at this point
@@ -2640,7 +2640,7 @@ bool cutting_tools::OffsetWires_Spiral()
                 }
                 else //We have to try a mesh intersection as the Nurb Intersection does not seem to work
                 {
-                    cout << "Big Probleme";
+                    cout << "Big Problem";
                     continue;
                 }
                 //Now get the Proper Normal at this point
@@ -3492,7 +3492,7 @@ bool cutting_tools::classifyShape()
         m_pitch = fabs(maxlevel-minlevel)/cutnumber; //Correct m_pitch slightly to really get to the last level
 
   //Currently, the last level of self-approximated surfaces is not considered as a path curve
-  //The first level is also completely omitted, since it is unimportant. 
+  //The first level is also completely omitted, since it is unimportant.
   //The track is only useful for the lower machine if there are still flat areas at all
         for (int i=0;i<cutnumber;++i)
   {

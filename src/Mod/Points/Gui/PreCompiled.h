@@ -79,4 +79,4 @@
 
 #endif  //_PreComp_
 
-#endif // POINTSGUI_PRECOMPILED_H 
+#endif // POINTSGUI_PRECOMPILED_H

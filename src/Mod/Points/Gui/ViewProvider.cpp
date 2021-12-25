@@ -183,7 +183,7 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
                                               "The number of points (%d) doesn't match with the number of colors (%d).", numPoints, colors->getSize());
 #endif
-                    // fallback 
+                    // fallback
                     setDisplayMaskMode("Point");
                 }
                 else {
@@ -229,7 +229,7 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
                                               "The number of points (%d) doesn't match with the number of normals (%d).", numPoints, normals->getSize());
 #endif
-                    // fallback 
+                    // fallback
                     setDisplayMaskMode("Point");
                 }
                 else {
@@ -498,7 +498,7 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
                     remainValue.push_back( *jt );
                 else if (index != *pos)
                     remainValue.push_back( *jt );
-                else 
+                else
                     ++pos;
             }
 

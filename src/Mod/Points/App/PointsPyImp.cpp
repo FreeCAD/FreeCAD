@@ -43,7 +43,7 @@ std::string PointsPy::representation(void) const
 
 PyObject *PointsPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PointsPy and the Twin object 
+    // create a new instance of PointsPy and the Twin object
     return new PointsPy(new PointKernel);
 }
 
@@ -51,7 +51,7 @@ PyObject *PointsPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pyt
 int PointsPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject *pcObj=0;
-    if (!PyArg_ParseTuple(args, "|O", &pcObj))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|O", &pcObj))     // convert args: Python->C
         return -1;                             // NULL triggers exception
 
     // if no mesh is given
@@ -93,26 +93,26 @@ PyObject* PointsPy::read(PyObject * args)
 {
     const char* Name;
     if (!PyArg_ParseTuple(args, "s",&Name))
-        return NULL;                         
+        return NULL;
 
     PY_TRY {
         getPointKernelPtr()->load(Name);
     } PY_CATCH;
-    
-    Py_Return; 
+
+    Py_Return;
 }
 
 PyObject* PointsPy::write(PyObject * args)
 {
     const char* Name;
     if (!PyArg_ParseTuple(args, "s",&Name))
-        return NULL;                         
+        return NULL;
 
     PY_TRY {
         getPointKernelPtr()->save(Name);
     } PY_CATCH;
-    
-    Py_Return; 
+
+    Py_Return;
 }
 
 PyObject* PointsPy::writeInventor(PyObject * args)
@@ -239,7 +239,7 @@ PyObject *PointsPy::getCustomAttributes(const char* /*attr*/) const
 
 int PointsPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

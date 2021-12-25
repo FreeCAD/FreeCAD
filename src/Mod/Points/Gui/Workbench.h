@@ -49,4 +49,4 @@ protected:
 } // namespace PointsGui
 
 
-#endif // POINTS_WORKBENCH_H 
+#endif // POINTS_WORKBENCH_H

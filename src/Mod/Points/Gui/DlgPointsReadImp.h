@@ -34,7 +34,7 @@ class Ui_DlgPointsRead;
 /** The points read dialog
  */
 class DlgPointsReadImp : public QDialog
-{ 
+{
   Q_OBJECT
 
 public:

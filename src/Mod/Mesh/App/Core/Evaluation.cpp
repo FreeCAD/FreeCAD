@@ -1078,39 +1078,39 @@ bool MeshEigensystem::Evaluate()
 
     const MeshPointArray& aclPoints = _rclMesh.GetPoints ();
     for (MeshPointArray::_TConstIterator it = aclPoints.begin(); it!=aclPoints.end(); ++it) {
-        // u-Richtung
+        // u-direction
         clVect = *it - _cC;
         clProj.ProjectToLine(clVect, _cU);
         clVect = clVect + clProj;
         fH = clVect.Length();
       
-        // zeigen Vektoren in die gleiche Richtung ?
+        // point vectors in the same direction ?
         if ((clVect * _cU) < 0.0f)
             fH = -fH;
 
         xmax = std::max<float>(xmax, fH);
         xmin = std::min<float>(xmin, fH);
 
-        // v-Richtung
+        // v-direction
         clVect = *it - _cC;
         clProj.ProjectToLine(clVect, _cV);
         clVect = clVect + clProj;
         fH = clVect.Length();
   
-        // zeigen Vektoren in die gleiche Richtung ?
+        // point vectors in the same direction ?
         if ((clVect * _cV) < 0.0f)
           fH = -fH;
 
         ymax = std::max<float>(ymax, fH);
         ymin = std::min<float>(ymin, fH);
 
-        // w-Richtung
+        // w-direction
         clVect = *it - _cC;
         clProj.ProjectToLine(clVect, _cW);
         clVect = clVect + clProj;
         fH = clVect.Length();
   
-        // zeigen Vektoren in die gleiche Richtung ?
+        // point vectors in the same direction ?
         if ((clVect * _cW) < 0.0f)
             fH = -fH;
 
