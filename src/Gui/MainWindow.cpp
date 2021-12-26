@@ -1279,6 +1279,8 @@ void MainWindow::delayedStartup()
     if (hGrp->GetBool("CreateNewDoc", false)) {
         if (App::GetApplication().getDocuments().size()==0){
             App::GetApplication().newDocument();
+            Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.activeDocument().activeView().viewDefaultOrientation()");
         }
     }
 
