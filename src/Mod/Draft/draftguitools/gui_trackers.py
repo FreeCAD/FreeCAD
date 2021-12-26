@@ -152,7 +152,7 @@ class snapTracker(Tracker):
         node.addChild(self.coords)
         node.addChild(color)
         node.addChild(self.marker)
-        Tracker.__init__(self, children=[node], name="snapTracker")
+        super().__init__(children=[node], name="snapTracker")
 
     def setMarker(self, style):
         """Set the marker index."""
@@ -181,7 +181,7 @@ class lineTracker(Tracker):
         line.numVertices.setValue(2)
         self.coords = coin.SoCoordinate3()  # this is the coordinate
         self.coords.point.setValues(0, 2, [[0, 0, 0], [1, 0, 0]])
-        Tracker.__init__(self, dotted, scolor, swidth,
+        super().__init__(dotted, scolor, swidth,
                          [self.coords, line],
                          ontop, name="lineTracker")
 
@@ -227,11 +227,11 @@ class rectangleTracker(Tracker):
             m1.diffuseColor.setValue([0.5, 0.5, 1.0])
             f = coin.SoIndexedFaceSet()
             f.coordIndex.setValues([0, 1, 2, 3])
-            Tracker.__init__(self, dotted, scolor, swidth,
+            super().__init__(dotted, scolor, swidth,
                              [self.coords, line, m1, f],
                              name="rectangleTracker")
         else:
-            Tracker.__init__(self, dotted, scolor, swidth,
+            super().__init__(dotted, scolor, swidth,
                              [self.coords, line],
                              name="rectangleTracker")
         self.u = FreeCAD.DraftWorkingPlane.u
@@ -326,7 +326,7 @@ class dimTracker(Tracker):
                                      [0, 0, 0],
                                      [0, 0, 0],
                                      [0, 0, 0]])
-        Tracker.__init__(self, dotted, scolor, swidth,
+        super().__init__(dotted, scolor, swidth,
                          [self.coords, line], name="dimTracker")
         self.p1 = self.p2 = self.p3 = None
 
@@ -381,7 +381,7 @@ class bsplineTracker(Tracker):
         self.trans = coin.SoTransform()
         self.sep = coin.SoSeparator()
         self.recompute()
-        Tracker.__init__(self, dotted, scolor, swidth,
+        super().__init__(dotted, scolor, swidth,
                          [self.trans, self.sep], name="bsplineTracker")
 
     def update(self, points):
@@ -454,7 +454,7 @@ class bezcurveTracker(Tracker):
         self.trans = coin.SoTransform()
         self.sep = coin.SoSeparator()
         self.recompute()
-        Tracker.__init__(self, dotted, scolor, swidth,
+        super().__init__(dotted, scolor, swidth,
                          [self.trans, self.sep], name="bezcurveTracker")
 
     def update(self, points, degree=None):
@@ -541,7 +541,7 @@ class arcTracker(Tracker):
             self.normal = FreeCAD.DraftWorkingPlane.axis
         self.basevector = self.getDeviation()
         self.recompute()
-        Tracker.__init__(self, dotted, scolor, swidth,
+        super().__init__(dotted, scolor, swidth,
                          [self.trans, self.sep], name="arcTracker")
 
     def getDeviation(self):
@@ -691,7 +691,7 @@ class ghostTracker(Tracker):
                 node.addChild(selnode)
                 rootsep.addChild(node)
         self.children.append(rootsep)
-        Tracker.__init__(self, dotted, scolor, swidth,
+        super().__init__(dotted, scolor, swidth,
                          children=self.children, name="ghostTracker")
 
     def update(self, obj):
@@ -699,7 +699,7 @@ class ghostTracker(Tracker):
         obj.ViewObject.show()
         self.finalize()
         sep = self.getNode(obj)
-        Tracker.__init__(self, children=[sep])
+        super().__init__(children=[sep])
         self.on()
         obj.ViewObject.hide()
 
@@ -817,7 +817,7 @@ class editTracker(Tracker):
         self.selnode.addChild(self.marker)
         node.addChild(self.selnode)
         ontop = not inactive
-        Tracker.__init__(self, children=[node],
+        super().__init__(children=[node],
                          ontop=ontop, name="editTracker")
         self.on()
 
@@ -902,7 +902,7 @@ class PlaneTracker(Tracker):
         s.addChild(m2)
         s.addChild(c2)
         s.addChild(l)
-        Tracker.__init__(self, children=[s], name="planeTracker")
+        super().__init__(children=[s], name="planeTracker")
 
     def set(self, pos=None):
         """Set the translation to the position."""
@@ -929,7 +929,7 @@ class wireTracker(Tracker):
             self.line.numVertices.setValue(len(wire.Vertexes))
         self.coords = coin.SoCoordinate3()
         self.update(wire)
-        Tracker.__init__(self, children=[self.coords, self.line],
+        super().__init__(children=[self.coords, self.line],
                          name="wireTracker")
 
     def update(self, wire, forceclosed=False):
@@ -1045,7 +1045,7 @@ class gridTracker(Tracker):
         s.addChild(self.coords3)
         s.addChild(self.lines3)
         s.addChild(texts)
-        Tracker.__init__(self, children=[s], name="gridTracker")
+        super().__init__(children=[s], name="gridTracker")
         self.reset()
 
     def getGridColor(self):
@@ -1240,10 +1240,10 @@ class boxTracker(Tracker):
             self.baseline = line
             self.update()
         if shaded:
-            Tracker.__init__(self, children=[self.trans, m, self.cube],
+            super().__init__(children=[self.trans, m, self.cube],
                              name="boxTracker")
         else:
-            Tracker.__init__(self, children=[self.trans, w, self.cube],
+            super().__init__(children=[self.trans, w, self.cube],
                              name="boxTracker")
 
     def update(self, line=None, normal=None):
@@ -1317,7 +1317,7 @@ class radiusTracker(Tracker):
         self.sphere = coin.SoSphere()
         self.sphere.radius.setValue(radius)
         self.baseline = None
-        Tracker.__init__(self, children=[self.trans, m, self.sphere],
+        super().__init__(children=[self.trans, m, self.sphere],
                          name="radiusTracker")
 
     def update(self, arg1, arg2=None):
@@ -1361,7 +1361,7 @@ class archDimTracker(Tracker):
         self.plane = FreeCAD.DraftWorkingPlane
         self.setMode(mode)
         self.setString()
-        Tracker.__init__(self, children=[self.transform, self.dimnode], name="archDimTracker")
+        super().__init__(children=[self.transform, self.dimnode], name="archDimTracker")
 
     def setString(self, text=None):
         """Set the dim string to the given value or auto value."""

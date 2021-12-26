@@ -173,31 +173,31 @@ from draftutils.units import (getDefaultUnit,
 
 class DraftBaseWidget(QtGui.QWidget):
     def __init__(self,parent = None):
-        QtGui.QWidget.__init__(self,parent)
+        super().__init__(parent)
     def eventFilter(self, widget, event):
         if (event.type() == QtCore.QEvent.KeyPress
             and event.text().upper() == inCommandShortcuts["CycleSnap"][0]):
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.cycleSnapObject()
             return True
-        return QtGui.QWidget.eventFilter(self, widget, event)
+        return super().eventFilter(widget, event)
 
 class DraftDockWidget(DraftBaseWidget):
     """custom Widget that emits a resized() signal when resized"""
     def __init__(self,parent = None):
-        QtGui.QWidget.__init__(self,parent)
+        super().__init__(parent)
     def resizeEvent(self,event):
         self.emit(QtCore.SIGNAL("resized()"))
     def changeEvent(self, event):
         if event.type() == QtCore.QEvent.LanguageChange:
             self.emit(QtCore.SIGNAL("retranslate()"))
         else:
-            QtGui.QWidget.changeEvent(self,event)
+            super().changeEvent(event)
 
 class DraftLineEdit(QtGui.QLineEdit):
     """custom QLineEdit widget that has the power to catch Escape keypress"""
     def __init__(self, parent=None):
-        QtGui.QLineEdit.__init__(self, parent)
+        super().__init__(parent)
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Escape:
             self.emit(QtCore.SIGNAL("escaped()"))
@@ -206,7 +206,7 @@ class DraftLineEdit(QtGui.QLineEdit):
         elif event.key() == QtCore.Qt.Key_Down:
             self.emit(QtCore.SIGNAL("down()"))
         else:
-            QtGui.QLineEdit.keyPressEvent(self, event)
+            super().keyPressEvent(event)
 
 class DraftTaskPanel:
     def __init__(self,widget,extra=None):
