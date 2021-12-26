@@ -1386,7 +1386,7 @@ Newtry: // If the generated path lengths are insufficient, a new attempt is star
 
             /*---Correction end---*/
 
-            // Full Vectors
+            // fill Vectors
             l_vec.push_back(len);  // Length
             v_vec.push_back(v);    // Speeds
             a_vec.push_back(m_a);  // Acceleration
@@ -1465,7 +1465,7 @@ Newtry: // If the generated path lengths are insufficient, a new attempt is star
 			len_1 = (pow(v[1] - v[0],2.0) + pow(v[1],2.0))/m_a; 
 		}
 
-        // Full Vectors
+        // fill Vectors
         l_vec.push_back(len);  // Length
         v_vec.push_back(v);    // Speeds
         a_vec.push_back(m_a);  // Acceleration
