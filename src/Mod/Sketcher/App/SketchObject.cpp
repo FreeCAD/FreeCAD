@@ -123,6 +123,8 @@ SketchObject::SketchObject()
     VLine->setConstruction(true);
     ExternalGeo.push_back(HLine->getGeometry());
     ExternalGeo.push_back(VLine->getGeometry());
+    HLine->setOwner(false); // we have transferred the ownership to ExternalGeo
+    VLine->setOwner(false); // we have transferred the ownership to ExternalGeo
     rebuildVertexIndex();
 
     lastDoF=0;
