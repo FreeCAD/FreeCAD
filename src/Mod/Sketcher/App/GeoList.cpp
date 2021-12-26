@@ -55,10 +55,9 @@ GeoListModel<T>::GeoListModel(  std::vector<T> && geometrylist,
 // Vector is shallow copied (copy constructed)
 template <typename T>
 GeoListModel<T>::GeoListModel(  const std::vector<T> & geometrylist,
-                                int intgeocount,
-                                bool ownerT): geomlist(geometrylist), // copy constructed here
+                                int intgeocount): geomlist(geometrylist), // copy constructed here
                                               intGeoCount(intgeocount),
-                                              OwnerT(ownerT),
+                                              OwnerT(false),
                                               indexInit(false)
 {
 
@@ -80,9 +79,9 @@ GeoListModel<T> GeoListModel<T>::getGeoListModel(std::vector<T> && geometrylist,
 }
 
 template <typename T>
-const GeoListModel<T> GeoListModel<T>::getGeoListModel(const std::vector<T> &geometrylist, int intgeocount, bool ownerT)
+const GeoListModel<T> GeoListModel<T>::getGeoListModel(const std::vector<T> &geometrylist, int intgeocount)
 {
-    return GeoListModel(geometrylist, intgeocount, ownerT);
+    return GeoListModel(geometrylist, intgeocount);
 }
 
 
@@ -305,8 +304,8 @@ namespace Sketcher {
 
 // Template specialisations
 template <>
-GeoListModel<std::unique_ptr< const Sketcher::GeometryFacade>>::GeoListModel(
-                                std::vector<std::unique_ptr<const Sketcher::GeometryFacade>> && geometrylist,
+GeoListModel<GeometryFacadeUniquePtr>::GeoListModel(
+                                std::vector<GeometryFacadeUniquePtr> && geometrylist,
                                 int intgeocount,
                                 bool ownerT) :  geomlist(std::move(geometrylist)),
                                                 intGeoCount(intgeocount),
@@ -326,17 +325,15 @@ GeoListModel<std::unique_ptr< const Sketcher::GeometryFacade>>::GeoListModel(
 }
 
 template <>
-GeoListModel<std::unique_ptr< const Sketcher::GeometryFacade>>::GeoListModel(
-                                const std::vector<std::unique_ptr< const Sketcher::GeometryFacade>> & geometrylist,
-                                int intgeocount,
-                                bool ownerT):   intGeoCount(intgeocount),
-                                                OwnerT(false),
-                                                indexInit(false)
+GeoListModel<GeometryFacadeUniquePtr>::GeoListModel(
+                                const std::vector<GeometryFacadeUniquePtr> & geometrylist,
+                                int intgeocount): intGeoCount(intgeocount),
+                                                  OwnerT(false),
+                                                  indexInit(false)
 {
     // GeometryFacades are movable, but not copiable, so they need to be reconstructed (shallow copy of vector)
     // Under the Single Responsibility Principle, these will not take over a responsibility that shall be enforced
     // on the original GeometryFacade. Use the move version of getGeoListModel if moving the responsibility is intended.
-    assert(ownerT == false);
 
     geomlist.reserve(geometrylist.size());
 
