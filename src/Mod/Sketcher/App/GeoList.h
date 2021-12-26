@@ -84,7 +84,7 @@ protected:
      */
     explicit GeoListModel(std::vector<T> && geometrylist, int intgeocount, bool ownerT = false);
 
-    explicit GeoListModel(const std::vector<T> & geometrylist, int intgeocount, bool ownerT = false);
+    explicit GeoListModel(const std::vector<T> & geometrylist, int intgeocount);
 
 public:
     /** @brief Destructor having type dependent behaviour
@@ -120,7 +120,7 @@ public:
      * if this happens. The ownership needs to be specified on the GeoListFacade objects themselves (setOwner method).
      */
     static GeoListModel<T> getGeoListModel(std::vector<T> && geometrylist, int intgeocount, bool ownerT = false);
-    static const GeoListModel<T> getGeoListModel(const std::vector<T> & geometrylist, int intgeocount, bool ownerT = false);
+    static const GeoListModel<T> getGeoListModel(const std::vector<T> & geometrylist, int intgeocount);
 
 
     /** @brief
