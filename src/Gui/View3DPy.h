@@ -146,6 +146,7 @@ public:
     Py::Object getCornerCrossSize(const Py::Tuple& args);
 
 private:
+    void setDefaultCameraHeight(float);
     static void eventCallback(void * ud, SoEventCallback * n);
     static void eventCallbackPivy(void * ud, SoEventCallback * n);
     static void eventCallbackPivyEx(void * ud, SoEventCallback * n);
