@@ -1045,19 +1045,12 @@ class svgHandler(xml.sax.ContentHandler):
                             #                angle1 - 0 * swapaxis * d90,
                             #                angle1 + angledelta
                             #                       - 0 * swapaxis * d90)
-                            _precision = 10**(-1*Draft.precision())
-                            if swapaxis or xrotation > _precision:
-                                m3 = FreeCAD.Matrix()
-                                m3.move(vcenter)
-                                # 90
-                                rot90 = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
-                                # swapaxism = FreeCAD.Matrix(0, 1, 0, 0, 1, 0)
-                                if swapaxis:
-                                    m3 = m3.multiply(rot90)
-                                m3.rotateZ(math.radians(-xrotation))
-                                m3.move(vcenter.multiply(-1))
-                                e1a.transform(m3)
                             seg = e1a.toShape()
+                            if swapaxis:
+                                seg.rotate(vcenter, Vector(0, 0, 1), 90)
+                            _precision = 10**(-1*Draft.precision())
+                            if abs(xrotation) > _precision:
+                                seg.rotate(vcenter, Vector(0, 0, 1), -xrotation)
                             if sweepflag:
                                 seg.reverse()
                                 # DEBUG
@@ -1381,14 +1374,7 @@ class svgHandler(xml.sax.ContentHandler):
                 sh = Part.Ellipse(c, rx, ry).toShape()
             else:
                 sh = Part.Ellipse(c, ry, rx).toShape()
-                m3 = FreeCAD.Matrix()
-                m3.move(c)
-                # 90
-                rot90 = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
-                m3 = m3.multiply(rot90)
-                m3.move(c.multiply(-1))
-                sh.transformShape(m3)
-                # sh = sh.transformGeometry(m3)
+                sh.rotate(c, Vector(0, 0, 1), 90)
             if self.fill:
                 sh = Part.Wire([sh])
                 sh = Part.Face(sh)
