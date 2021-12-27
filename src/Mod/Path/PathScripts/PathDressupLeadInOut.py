@@ -596,7 +596,7 @@ PROP_TYPE_NUMERIC = PROP_TYPE_QTYES + ["App::PropertyPercent", "App:PropertyFloa
 
 
 class SimpleEditPanel:
-    _fc = {}
+    _fc = None
     obj = None
     form = None
 
@@ -608,7 +608,11 @@ class SimpleEditPanel:
         for prop_name, (get_field, set_field) in self._fc.items():
             set_field(getattr(self.obj, prop_name))
 
-    def connectWidget(self, prop_name, widget, custom_lbls={}):
+    def connectWidget(self, prop_name, widget, custom_lbls=None):
+        if custom_lbls is None:
+            custom_lbls = {}
+        if self._fc is None:
+            self._fc = {}
         prop_type = self.obj.getTypeIdOfProperty(prop_name)
         widget_type = type(widget).__name__
         if prop_type == "App::PropertyEnumeration" and widget_type == "QComboBox":
