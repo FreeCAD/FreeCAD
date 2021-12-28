@@ -130,7 +130,7 @@
         <string>Download and apply all available updates</string>
        </property>
        <property name="text">
-        <string>Update all packages</string>
+        <string>Update all Addons</string>
        </property>
       </widget>
      </item>

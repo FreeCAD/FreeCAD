@@ -561,7 +561,7 @@ class Ui_PackageList(object):
     def retranslateUi(self, Form):
         self.labelPackagesContaining.setText(
             QCoreApplication.translate(
-                "AddonsInstaller", "Show packages containing:", None
+                "AddonsInstaller", "Show Addons containing:", None
             )
         )
         self.comboPackageType.setItemText(
