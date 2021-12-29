@@ -102,7 +102,7 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
         self.assertFalse(info)
 
     def test10(self):
-        '''Verify missing cutting endge angle info prints only once.'''
+        '''Verify missing cutting edge angle info prints only once.'''
 
         class FakeEndmill(object):
             def __init__(self, dia):
