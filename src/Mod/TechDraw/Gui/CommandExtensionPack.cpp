@@ -48,6 +48,7 @@
 # include <Gui/ViewProvider.h>
 
 # include <Mod/Part/App/PartFeature.h>
+# include <Mod/Part/App/Geometry2d.h>
 
 # include <Mod/TechDraw/App/DrawViewPart.h>
 # include <Mod/TechDraw/App/DrawProjGroupItem.h>
@@ -1827,32 +1828,11 @@ void _intersectionCC(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::
 
 Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3){
     // Circle through 3 points, calculate center point
-    // copied from ...Sketcher/Gui/CommandCreatGeo.cpp
-    Base::Vector3d u = p2-p1;
-    Base::Vector3d v = p3-p2;
-    Base::Vector3d w = p1-p3;
-
-    double uu =  u*u;
-    double vv =  v*v;
-    double ww =  w*w;
-
-    double uv = -(u*v);
-    double vw = -(v*w);
-    double uw = -(u*w);
-
-    double w0 = (2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
-    double w1 = (2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
-    double w2 = (2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
-
-    double wx = w0 + w1 + w2;
-
-    if( wx == 0)
-        THROWM(Base::ValueError,"Points are collinear");
-
-    double x = (w0*p1.x + w1*p2.x + w2*p3.x)/wx;
-    double y = (w0*p1.y + w1*p2.y + w2*p3.y)/wx;
-
-    return Base::Vector3d(x, y, 0.0);
+    Base::Vector2d p12d(p1.x,p1.y);
+    Base::Vector2d p22d(p2.x,p2.y);
+    Base::Vector2d p32d(p3.x,p3.y);
+    Base::Vector2d centerPoint = Part::Geom2dCircle::getCircleCenter(p12d, p22d, p32d);
+    return Base::Vector3d(centerPoint.x, centerPoint.y, 0.0);
 }
 
 bool _circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C){
