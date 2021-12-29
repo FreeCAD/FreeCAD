@@ -287,6 +287,11 @@ If there is no such constraint an exception is raised.
             <UserDocu>Increases or reduces the given BSpline knot multiplicity</UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="insertBSplineKnot">
+        <Documentation>
+            <UserDocu>Inserts a knot into the BSpline at the given param with given multiplicity. If the knot already exists, this increases the knot multiplicity by the given multiplicity.</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="calculateAngleViaPoint">
       <Documentation>
         <UserDocu>

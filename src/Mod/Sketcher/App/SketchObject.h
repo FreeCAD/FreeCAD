@@ -340,6 +340,15 @@ public:
      */
     bool modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr = 1);
 
+    /*!
+      \brief Inserts a knot in the BSpline at `param` with given `multiplicity`. If the knot already exists, its multiplicity is increased by `multiplicity`.
+      \param GeoId - the geometry of type bspline to increase the degree
+      \param param - the parameter value where the knot is to be placed
+      \param multiplicity - multiplicity of the inserted knot
+      \retval bool - returns true if the operation succeeded, or false if it did not succeed.
+    */
+    bool insertBSplineKnot(int GeoId, double param, int multiplicity = 1);
+
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
     int getHighestVertexIndex(void) const { return VertexId2GeoId.size() - 1; } // Most recently created
