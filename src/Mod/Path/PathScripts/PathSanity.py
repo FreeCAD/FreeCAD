@@ -40,6 +40,7 @@ from collections import Counter
 from datetime import datetime
 import os
 import webbrowser
+import subprocess
 
 # Qt translation handling
 
@@ -464,7 +465,9 @@ class CommandPathSanity:
             )
 
         try:
-            result = os.system("asciidoctor {} -o {}".format(reportraw, reporthtml))
+            result = subprocess.Popen(
+                "asciidoctor {} -o {}".format(reportraw, reporthtml)
+            )
             if str(result) == "32512":
                 msg = "asciidoctor not found. html cannot be generated."
                 QtGui.QMessageBox.information(None, "Path Sanity", msg)
