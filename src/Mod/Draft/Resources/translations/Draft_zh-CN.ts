@@ -128,7 +128,7 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</sourc
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>确定圆形阵列将具有多少对称平面的参数。</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
@@ -205,7 +205,7 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="patharray.py" line="177"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation type="unfinished">The object along which the copies will be distributed. It must contain 'Edges'.</translation>
+      <translation>分发副本的对象。 它必须包含“边缘”。</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
@@ -215,7 +215,7 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>扭曲阵列的旋转系数。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="137"/>
@@ -236,13 +236,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>对象和它的特定子元素，
+此尺寸对象正在测量。
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+有各种可能性：
+- 对象和其边缘之一。
+- 对象及其两个顶点。
+- 弧对象及其边缘。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -363,10 +363,9 @@ intersect, resulting in the measured 'Angle' between them.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>测量值。
 
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+此属性是只读的，因为该值是从“第一个角度”和“最后一个角度”属性。</translation>
     </message>
     <message>
       <location filename="text.py" line="54"/>
@@ -489,11 +488,11 @@ assigning a custom list to the 'Points' attribute.</translation>
 This is an oriented distance; if it is negative, the line will be drawn
 to the left or below the 'Text', otherwise to the right or above it,
 depending on the value of 'Straight Direction'.</source>
-      <translation type="unfinished">The length of the straight segment of the leader line.
+      <translation>引出线直线段的长度。
 
-This is an oriented distance; if it is negative, the line will be drawn
-to the left or below the 'Text', otherwise to the right or above it,
-depending on the value of 'Straight Direction'.</translation>
+这是一个定向距离； 如果它是负数，将绘制线
+在“文本”的左侧或下方，否则在其右侧或上方，
+取决于“直线方向”的值。</translation>
     </message>
     <message>
       <location filename="label.py" line="156"/>
@@ -561,6 +560,11 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
       <location filename="shapestring.py" line="59"/>
       <source>Fill letters with faces</source>
       <translation type="unfinished">Fill letters with faces</translation>
+    </message>
+    <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
@@ -725,11 +729,6 @@ This property is read-only, as the number depends on the points contained within
       <translation type="unfinished">The PAT file used by this object</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>此对象的形状</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation type="unfinished">The pattern name used by this object</translation>
@@ -738,6 +737,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>此对象的形状</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -950,7 +954,7 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="wire.py" line="49"/>
       <source>The vertices of the wire</source>
-      <translation type="unfinished">The vertices of the wire</translation>
+      <translation>线的顶点</translation>
     </message>
     <message>
       <location filename="wire.py" line="53"/>
@@ -1615,10 +1619,9 @@ CTRL to snap, SHIFT to constrain.</translation>
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
 to polar or circular, and its properties can be modified.</source>
-      <translation type="unfinished">Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</translation>
+      <translation>从选定的对象创建一个数组。
+默认情况下，它是一个 2x2 正交阵列。
+创建数组后，可以更改其类型为极坐标或圆形，其属性可以修改。</translation>
     </message>
   </context>
   <context>
@@ -1756,18 +1759,16 @@ You may select a single line or single circular arc before launching this comman
 to create the corresponding linked dimension.
 You may also select an 'App::MeasureDistance' object before launching this command
 to turn it into a 'Draft Dimension' object.</source>
-      <translation type="unfinished">Creates a dimension.
+      <translation>创建维度。
 
-- Pick three points to create a simple linear dimension.
-- Select a straight line to create a linear dimension linked to that line.
-- Select an arc or circle to create a radius or diameter dimension linked to that arc.
-- Select two straight lines to create an angular dimension between them.
-CTRL to snap, SHIFT to constrain, ALT to select an edge or arc.
+- 选择三个点来创建一个简单的线性尺寸。
+- 选择一条直线以创建链接到该直线的线性尺寸。
+- 选择一个圆弧或圆以创建链接到该圆弧的半径或直径尺寸。
+- 选择两条直线以在它们之间创建角度尺寸。
+CTRL 捕捉，SHIFT 约束，ALT 选择边或圆弧。
 
-You may select a single line or single circular arc before launching this command
-to create the corresponding linked dimension.
-You may also select an 'App::MeasureDistance' object before launching this command
-to turn it into a 'Draft Dimension' object.</translation>
+您可以在启动此命令之前选择单条线或单条圆弧以创建相应的链接维度。
+您也可以在启动此命令之前选择一个“App::MeasureDistance”对象将其转换为“Draft Dimension”对象。</translation>
     </message>
   </context>
   <context>
@@ -1991,7 +1992,7 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="gui_array_simple.py" line="119"/>
       <source>LinkArray</source>
-      <translation type="unfinished">LinkArray</translation>
+      <translation>链接数组</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="122"/>
@@ -2609,7 +2610,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
-      <translation type="unfinished">Creates a multi-line annotation. CTRL to snap.</translation>
+      <translation>创建一个多行注解。按CTRL进行捕捉。</translation>
     </message>
   </context>
   <context>
@@ -2649,7 +2650,7 @@ This can be used to draw several objects one after the other in succession.</tra
     <message>
       <location filename="gui_togglemodes.py" line="166"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>切换正常/线框显示</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="168"/>
@@ -3892,7 +3893,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_orthoarray.py" line="424"/>
       <source>Rectangular array</source>
-      <translation type="unfinished">Rectangular array</translation>
+      <translation>矩形阵列</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="501"/>
@@ -3903,6 +3904,16 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation type="unfinished">Wrong input: subelement not in object.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
     </message>
     <message>
       <location filename="make_label.py" line="278"/>
@@ -3983,6 +3994,36 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation type="unfinished">migrated 'DraftText' type to 'Text'</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation type="unfinished">Activate this layer</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation type="unfinished">Select layer contents</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation type="unfinished">Merge layer duplicates</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation type="unfinished">Add new layer</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4819,7 +4860,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_splines.py" line="183"/>
       <source>Create B-spline</source>
-      <translation>创建 B-样条</translation>
+      <translation>创建B样条曲线</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="147"/>
@@ -5057,16 +5098,6 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation>选择旋转角度</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation type="unfinished">Select layer contents</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>

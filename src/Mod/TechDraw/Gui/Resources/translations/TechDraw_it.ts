@@ -318,15 +318,15 @@
     </message>
     <message>
       <source>Draw circle centerlines</source>
-      <translation type="unfinished">Draw circle centerlines</translation>
+      <translation>Disegna le linee centrali del cerchio</translation>
     </message>
     <message>
       <source>Draw circle centerline cross at circles
     - select many circles or arcs
     - click this button</source>
-      <translation type="unfinished">Draw circle centerline cross at circles
-    - select many circles or arcs
-    - click this button</translation>
+      <translation>Disegna la croce centrale del cerchio ai cerchi
+    - seleziona molti cerchi o archi
+    - fai clic su questo pulsante</translation>
     </message>
   </context>
   <context>

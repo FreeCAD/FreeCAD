@@ -2987,7 +2987,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Vertical</source>
-      <translation>Vertikale</translation>
+      <translation>Vertikal</translation>
     </message>
     <message>
       <source>Left to Right line</source>
@@ -2995,7 +2995,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Horizontale</translation>
+      <translation>Horizontal</translation>
     </message>
     <message>
       <source>centerline between

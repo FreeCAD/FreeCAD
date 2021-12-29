@@ -494,7 +494,7 @@
     <message>
       <location filename="../../Command.cpp" line="1231"/>
       <source>Pad a selected sketch</source>
-      <translation>Extruir croquis seleccionado</translation>
+      <translation>Extruir un croquis seleccionado</translation>
     </message>
   </context>
   <context>
@@ -964,7 +964,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="64"/>
       <source>Sketch tools</source>
-      <translation>Herramientas de croquizado</translation>
+      <translation>Herramientas de croquis</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>
@@ -1828,7 +1828,7 @@ haga clic de nuevo para finalizar la selección</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
       <translation>- seleccione un elemento para resaltarlo
-- haga doble clic en un elemento para ver los chaflanes</translation>
+- haga doble clic en un elemento para ver los redondeos</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="65"/>

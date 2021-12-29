@@ -91,7 +91,7 @@
     <name>CmdTestConsoleOutput</name>
     <message>
       <source>Standard-Test</source>
-      <translation>Tekst standardowy</translation>
+      <translation>Test standardowy</translation>
     </message>
     <message>
       <source>Test console output</source>
@@ -477,7 +477,7 @@ podczas kliknięcia lewym lub prawym przyciskiem myszki i przesuwaj kursor w gó
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>Release date</source>
@@ -705,7 +705,7 @@ podczas kliknięcia lewym lub prawym przyciskiem myszki i przesuwaj kursor w gó
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -770,7 +770,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>Username:</source>
@@ -925,7 +925,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -999,7 +999,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -1136,7 +1136,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>Global</source>
@@ -1236,7 +1236,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>Line transparency:</source>
@@ -1267,7 +1267,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     </message>
     <message>
       <source>Aluminium</source>
-      <translation>Aluminium </translation>
+      <translation>Aluminium</translation>
     </message>
     <message>
       <source>Brass</source>
@@ -1402,7 +1402,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
@@ -1607,7 +1607,7 @@ rozmiar wiersza w konsoli Pythona</translation>
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -1894,7 +1894,7 @@ Uwaga: Twoje zmiany zostaną zastosowane przy następnym przełączeniu środowi
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>Emissive color:</source>
@@ -2064,7 +2064,7 @@ Proszę podać inny katalog.</translation>
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -2114,7 +2114,7 @@ Proszę podać inny katalog.</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>Utworzony przez:</translation>
+      <translation>&amp;Utworzony przez:</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
@@ -2130,7 +2130,7 @@ Proszę podać inny katalog.</translation>
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>UUID:</source>
@@ -2193,7 +2193,7 @@ Proszę podać inny katalog.</translation>
     </message>
     <message>
       <source>No source is defined.</source>
-      <translation>Nie zdefiniowano żadnego źródła</translation>
+      <translation>Nie zdefiniowano żadnego źródła.</translation>
     </message>
     <message>
       <source>Empty destination</source>
@@ -2287,7 +2287,7 @@ Proszę podać inny katalog.</translation>
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
@@ -2457,7 +2457,7 @@ z konsoli Python do panelu Widoku Raportu</translation>
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
@@ -2489,7 +2489,7 @@ z konsoli Python do panelu Widoku Raportu</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
-      <translation>Renderowanie perspektywiczne</translation>
+      <translation>Renderowanie &amp;perspektywiczne</translation>
     </message>
     <message>
       <source>Marker size:</source>
@@ -2647,7 +2647,8 @@ opening or creation</source>
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
       <translation>Obszar do wskazywania / wyboru elementów w oknie widoku 3D.
-Większa wartość ułatwia wybieranie, ale może uniemożliwić wybór małych obiektów.               </translation>
+Większa wartość ułatwia wybieranie, ale może uniemożliwić wybór małych obiektów.
+               </translation>
     </message>
     <message>
       <source>This option is useful for troubleshooting graphics card and driver problems.
@@ -2741,7 +2742,7 @@ rozmiar ramki otaczającej obiekt 3D, który jest aktualnie wyświetlany.</trans
     </message>
     <message>
       <source>Out g&amp;rayed</source>
-      <translation>Deaktywuj</translation>
+      <translation>&amp;Deaktywuj</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -2769,7 +2770,7 @@ rozmiar ramki otaczającej obiekt 3D, który jest aktualnie wyświetlany.</trans
     </message>
     <message>
       <source>&amp;Flow</source>
-      <translation>Uwolnij</translation>
+      <translation>&amp;Przepływ</translation>
     </message>
     <message>
       <source>Alt+F</source>
@@ -2797,7 +2798,7 @@ rozmiar ramki otaczającej obiekt 3D, który jest aktualnie wyświetlany.</trans
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
     <message>
       <source>Color-gradient settings</source>
@@ -3889,7 +3890,7 @@ Stopień powiększenia "1" oznacza współczynnik 7,5 dla każdego kolejnego kro
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -4295,7 +4296,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     </message>
     <message>
       <source>Panning</source>
-      <translation>Przesuwanie:</translation>
+      <translation>Przesuwanie</translation>
     </message>
     <message>
       <source>Rotation:</source>
@@ -4718,7 +4719,7 @@ wstępnie wybranymi przed otwarciem tego okna</translation>
     </message>
     <message>
       <source/>
-      <translation> </translation>
+      <translation>[empty string]</translation>
     </message>
   </context>
   <context>
@@ -5274,7 +5275,7 @@ Czy chcesz zapisać dokument teraz?</translation>
     </message>
     <message>
       <source>The alignment has finished</source>
-      <translation>Wyrównanie zakończone.</translation>
+      <translation>Wyrównanie zakończone</translation>
     </message>
     <message>
       <source>The alignment has been canceled</source>
@@ -5954,7 +5955,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Afrikaans</source>
-      <translation>afrykański</translation>
+      <translation>afrykanerski</translation>
     </message>
     <message>
       <source>Norwegian</source>
@@ -6034,7 +6035,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Indonesian</source>
-      <translation>Indonezyjski</translation>
+      <translation>indonezyjski</translation>
     </message>
     <message>
       <source>Lithuanian</source>
@@ -6042,7 +6043,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Valencian</source>
-      <translation>walenciański</translation>
+      <translation>walencki</translation>
     </message>
     <message>
       <source>Arabic</source>
@@ -6633,7 +6634,9 @@ Do you want to continue?</source>
       <source>Unable to open your browser.
 
 Please open a browser window and type in: http://localhost:%1.</source>
-      <translation>Nie można otworzyć przeglądarki. Proszę otworzyć okno przeglądarki i wpisać: http://localhost:% 1.</translation>
+      <translation>Nie można otworzyć przeglądarki.
+
+Proszę otworzyć okno przeglądarki i wpisać: http://localhost:%1.</translation>
     </message>
     <message>
       <source>No Server</source>
@@ -7395,7 +7398,7 @@ Czy chcesz zapisać plik pod inną nazwą?</translation>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation>E&amp;dycja parametrów</translation>
+      <translation>E&amp;dycja parametrów ...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
@@ -7410,7 +7413,7 @@ Czy chcesz zapisać plik pod inną nazwą?</translation>
     </message>
     <message>
       <source>&amp;Preferences ...</source>
-      <translation>&amp;Preferencje</translation>
+      <translation>&amp;Preferencje ...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
@@ -8075,7 +8078,7 @@ Czy chcesz zapisać plik pod inną nazwą?</translation>
     </message>
     <message>
       <source>&amp;Open...</source>
-      <translation>&amp;Otwórz</translation>
+      <translation>&amp;Otwórz ...</translation>
     </message>
     <message>
       <source>Open a document or import files</source>
@@ -8151,7 +8154,7 @@ Czy chcesz zapisać plik pod inną nazwą?</translation>
     </message>
     <message>
       <source>&amp;Print...</source>
-      <translation>&amp;Drukuj</translation>
+      <translation>&amp;Drukuj ...</translation>
     </message>
     <message>
       <source>Print the document</source>
@@ -8166,7 +8169,7 @@ Czy chcesz zapisać plik pod inną nazwą?</translation>
     </message>
     <message>
       <source>&amp;Export PDF...</source>
-      <translation>Eksportuj do &amp;PDF...</translation>
+      <translation>Eksportuj do PD&amp;F ...</translation>
     </message>
     <message>
       <source>Export the document as PDF</source>
@@ -9830,7 +9833,7 @@ Czy nadal chcesz kontynuować?</translation>
     </message>
     <message>
       <source>&amp;Tools</source>
-      <translation>&amp;Przybory</translation>
+      <translation>P&amp;rzybory</translation>
     </message>
     <message>
       <source>&amp;Macro</source>

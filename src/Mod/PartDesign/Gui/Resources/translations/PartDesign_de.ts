@@ -417,7 +417,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="825"/>
       <source>Move object after other object</source>
-      <translation>Objekt nach einem anderen Objekt verschieben</translation>
+      <translation>Objekt hinter ein anderes Objekt verschieben</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="826"/>
@@ -435,12 +435,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
       <source>Set tip</source>
-      <translation>Spitze festlegen</translation>
+      <translation>Arbeitsposition festlegen</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="529"/>
       <source>Move the tip of the body</source>
-      <translation>Spitze des Körpers verschieben</translation>
+      <translation>Arbeitsposition im Strukturbaum verschieben</translation>
     </message>
   </context>
   <context>
@@ -4227,7 +4227,7 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="546"/>
       <source>Countersink angle</source>
-      <translation>Winkel einer konischen Senkung</translation>
+      <translation>Winkel einer kegelförmigen Senkung</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="564"/>
@@ -4313,12 +4313,12 @@ Achtung, die Berechnung kann einige Zeit dauern!</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="190"/>
       <source>Right hand</source>
-      <translation>Rechtshändig</translation>
+      <translation>Rechtsgewinde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="206"/>
       <source>Left hand</source>
-      <translation>Linkshändig</translation>
+      <translation>Linksgewinde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="222"/>
@@ -4433,7 +4433,7 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="615"/>
       <source>Countersink angle</source>
-      <translation>Winkel einer konischen Senkung</translation>
+      <translation>Winkel einer kegelförmigen Senkung</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="650"/>

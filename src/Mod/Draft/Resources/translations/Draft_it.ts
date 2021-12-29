@@ -128,7 +128,7 @@ Lascia vuota questa proprietà per poter impostare manualmente 'Asse' e 'Centro'
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>Un parametro che determina quanti piani di simmetria avrà la serie circolare.</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
@@ -236,13 +236,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>L'oggetto, ed i sottoelementi specifici di esso,
+che questa quota sta misurando.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Vi sono varie possibilità:
+-Un oggetto ed uno dei suoi bordi.
+-Un oggetto e due dei suoi vertici.
+-Un oggetto arco ed il suo bordo.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -558,6 +558,11 @@ o dal sottoelemento 'VertexN', 'EdgeN', o 'FaceN', rispettivamente, se è specif
       <translation>Riempi le lettere con le facce</translation>
     </message>
     <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Mostra i singoli elementi della serie</translation>
@@ -657,7 +662,7 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
     <message>
       <location filename="shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Se questo è Vero, questo oggetto includerà solo oggetti visibili</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="117"/>
@@ -677,7 +682,7 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
     <message>
       <location filename="shape2dview.py" line="132"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Questo oggetto sarà ricalcolato solo se questo è Vero.</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -719,11 +724,6 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
       <translation>Il file PAT usato da questo oggetto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma di questo oggetto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Il nome del motivo usato da questo oggetto</translation>
@@ -732,6 +732,11 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>La scala del motivo usata da questo oggetto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma di questo oggetto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1887,7 +1892,7 @@ Se sono selezionati altri oggetti, verranno ignorati.</translation>
     <message>
       <location filename="gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Crea dei tratteggi sulle facce di un oggetto selezionato</translation>
     </message>
   </context>
   <context>
@@ -3361,7 +3366,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="importDWG.py" line="286"/>
       <source>LibreDWG error</source>
-      <translation type="unfinished">LibreDWG error</translation>
+      <translation>Errore di LibreDWG</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="295"/>
@@ -3376,22 +3381,22 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="importDWG.py" line="231"/>
       <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</translation>
+      <translation>Errore durante la conversione del DWG. Provare a spostare il file DWG in una cartella senza spazi e caratteri non-inglesi, o provare a salvare in una versione DWG inferiore.</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="300"/>
       <source>ODA File Converter not found</source>
-      <translation type="unfinished">ODA File Converter not found</translation>
+      <translation>Convertitore di file ODA non trovato</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="310"/>
       <source>QCAD error</source>
-      <translation type="unfinished">QCAD error</translation>
+      <translation>Errore di QCAD</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Tutte le Forme devono essere complanari</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="696"/>
@@ -3403,7 +3408,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="WorkingPlane.py" line="704"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Le Forme Selezionate devono definire un piano</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -3423,7 +3428,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="upgrade.py" line="276"/>
       <source>Faces must be coplanar to be refined</source>
-      <translation>Le facce devono essere cooplanari per essere affinate</translation>
+      <translation>Le facce devono essere complanari per essere affinate</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="230"/>
@@ -3453,7 +3458,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="upgrade.py" line="480"/>
       <source>Found object with several coplanar faces: refine them</source>
-      <translation>Trovato oggetto con diverse facce coplanari: affinamento</translation>
+      <translation>Trovato oggetto con diverse facce complanari: affinamento</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="486"/>
@@ -3830,7 +3835,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="make_sketch.py" line="104"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>Forma non trovata</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="109"/>
@@ -3842,13 +3847,13 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="make_sketch.py" line="111"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Tutte le Forme devono essere planari</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
       <source>All Shapes must be coplanar
 </source>
-      <translation>Tutte le Forme devono essere cooplanari
+      <translation>Tutte le Forme devono essere complanari
 </translation>
     </message>
     <message>
@@ -3895,6 +3900,16 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Input errato: sottoelemento non nell'oggetto.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
     </message>
     <message>
       <location filename="make_label.py" line="278"/>
@@ -3975,6 +3990,36 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>tipo 'DraftText' migrato a 'Text'</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>Attiva questo layer</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>Seleziona il contenuto del layer</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Unisci i livelli duplicati</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Aggiungi un nuovo livello</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4305,7 +4350,7 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
     <message>
       <location filename="gui_dimensions.py" line="508"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>Bordo troppo corto!</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
@@ -5048,16 +5093,6 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation>Scegliere l'angolo di rotazione</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>Attiva questo layer</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>Seleziona il contenuto del layer</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>

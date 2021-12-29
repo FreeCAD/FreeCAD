@@ -702,29 +702,14 @@
       <translation>Base-%s.% avvisas av operation</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="785"/>
-      <source>Heights</source>
-      <translation>Höjder</translation>
+      <location filename="PathProfileGui.py" line="165"/>
+      <source>Profile</source>
+      <translation>Profil</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="966"/>
-      <source>Diameters</source>
-      <translation>Diametrar</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="997"/>
-      <source>AreaOp Operation</source>
-      <translation>AreaOp-drift</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1122"/>
-      <source>Uncreate AreaOp Operation</source>
-      <translation type="unfinished">Uncreate AreaOp Operation</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1262"/>
-      <source>Pick Start Point</source>
-      <translation>Välj startpunkt</translation>
+      <location filename="PathProfileGui.py" line="168"/>
+      <source>Profile entire model, selected face(s) or selected edge(s)</source>
+      <translation>Profilera hela modellen, valda ytor eller valda kanter</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="206"/>
@@ -745,11 +730,6 @@
       <location filename="PathCircularHoleBase.py" line="80"/>
       <source>List of disabled features</source>
       <translation>Lista över inaktiverade funktioner</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="456"/>
-      <source>Unable to create path for face(s).</source>
-      <translation>Det går inte att skapa verktygsväg för ytan(-or).</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
@@ -810,6 +790,36 @@
       <location filename="InitGui.py" line="159"/>
       <source>Utils</source>
       <translation type="unfinished">Utils</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="785"/>
+      <source>Heights</source>
+      <translation>Höjder</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="966"/>
+      <source>Diameters</source>
+      <translation>Diametrar</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="997"/>
+      <source>AreaOp Operation</source>
+      <translation>AreaOp-drift</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1122"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation type="unfinished">Uncreate AreaOp Operation</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1262"/>
+      <source>Pick Start Point</source>
+      <translation>Välj startpunkt</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="456"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Det går inte att skapa verktygsväg för ytan(-or).</translation>
     </message>
   </context>
   <context>
@@ -1283,9 +1293,34 @@
       <translation>Kylvätskealternativ för denna operation</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="194"/>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="475"/>
       <source>Base Geometry</source>
       <translation>Basgeometri</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="576"/>
+      <source>Vertexes are not supported</source>
+      <translation type="unfinished">Vertexes are not supported</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="583"/>
+      <source>Edges are not supported</source>
+      <translation type="unfinished">Edges are not supported</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="590"/>
+      <source>Faces are not supported</source>
+      <translation type="unfinished">Faces are not supported</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="657"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation type="unfinished">Mulitiple operations are labeled as</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="672"/>
@@ -1300,9 +1335,24 @@ If it is necessary to set the FinalDepth manually please select a different oper
 If it is necessary to set the FinalDepth manually please select a different operation.</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Höjder</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="869"/>
       <source>Depths</source>
       <translation>Djup</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1061"/>
+      <source>Diameters</source>
+      <translation>Diametrar</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1093"/>
+      <source>AreaOp Operation</source>
+      <translation>AreaOp-drift</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1058"/>
@@ -1310,17 +1360,19 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Operation</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="1224"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation type="unfinished">Uncreate AreaOp Operation</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1371"/>
+      <source>Pick Start Point</source>
+      <translation>Välj startpunkt</translation>
+    </message>
+    <message>
       <location filename="PathJob.py" line="153"/>
       <source>Job Cycle Time Estimation</source>
       <translation>Uppskattning av jobbcykeltid</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathOpGui</name>
-    <message>
-      <location filename="PathOpGui.py" line="603"/>
-      <source>Mulitiple operations are labeled as</source>
-      <translation type="unfinished">Mulitiple operations are labeled as</translation>
     </message>
   </context>
   <context>
@@ -1407,27 +1459,64 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Kontrollera dess standardvärde.</translation>
     </message>
     <message>
+      <location filename="PathProfile.py" line="196"/>
+      <source>CW</source>
+      <translation type="unfinished">CW</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="197"/>
+      <source>CCW</source>
+      <translation type="unfinished">CCW</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="200"/>
+      <source>Collectively</source>
+      <translation type="unfinished">Collectively</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="201"/>
+      <source>Individually</source>
+      <translation type="unfinished">Individually</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="204"/>
+      <source>Round</source>
+      <translation>Runda</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="205"/>
+      <source>Square</source>
+      <translation>Kvadrat</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="206"/>
+      <source>Miter</source>
+      <translation type="unfinished">Miter</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="209"/>
+      <source>Outside</source>
+      <translation type="unfinished">Outside</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="210"/>
+      <source>Inside</source>
+      <translation type="unfinished">Inside</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="479"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Det går inte att skapa verktygsväg för ytan(-or).</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="622"/>
+      <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
+      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+    </message>
+    <message>
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
       <translation type="unfinished">For open edges, verify Final Depth for this operation.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathProject</name>
-    <message>
-      <location filename="PathOpGui.py" line="533"/>
-      <source>Vertexes are not supported</source>
-      <translation type="unfinished">Vertexes are not supported</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="537"/>
-      <source>Edges are not supported</source>
-      <translation type="unfinished">Edges are not supported</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="541"/>
-      <source>Faces are not supported</source>
-      <translation type="unfinished">Faces are not supported</translation>
     </message>
   </context>
   <context>
@@ -3516,6 +3605,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
   </context>
   <context>
+    <name>PathOpGui</name>
+    <message>
+      <location filename="PathOpGui.py" line="603"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation type="unfinished">Mulitiple operations are labeled as</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathProject</name>
+    <message>
+      <location filename="PathOpGui.py" line="533"/>
+      <source>Vertexes are not supported</source>
+      <translation type="unfinished">Vertexes are not supported</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="537"/>
+      <source>Edges are not supported</source>
+      <translation type="unfinished">Edges are not supported</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="541"/>
+      <source>Faces are not supported</source>
+      <translation type="unfinished">Faces are not supported</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPathArea</name>
     <message>
       <location filename="../../Command.cpp" line="55"/>
@@ -3925,7 +4040,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PropertyCreate.ui" line="120"/>
       <source>Create another</source>
-      <translation type="unfinished">Create another</translation>
+      <translation>Skapa en till</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="14"/>
@@ -3945,7 +4060,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="55"/>
       <source>Add Existing</source>
-      <translation type="unfinished">Add Existing</translation>
+      <translation>Lägg till befintlig</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="72"/>
@@ -4022,7 +4137,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="14"/>
       <source>Choose a processor</source>
-      <translation type="unfinished">Choose a processor</translation>
+      <translation>Välj en processor</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="20"/>
@@ -4083,7 +4198,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Skapa cylinder</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
@@ -4265,7 +4380,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="29"/>
       <source>Feature</source>
-      <translation type="unfinished">Feature</translation>
+      <translation>Funktion</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="34"/>
@@ -4700,7 +4815,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="50"/>
       <source>---</source>
-      <translation type="unfinished">---</translation>
+      <translation>---</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="75"/>
@@ -5203,7 +5318,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="259"/>
       <source>Cut Pattern</source>
-      <translation type="unfinished">Cut Pattern</translation>
+      <translation>Klipp ut mönster</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
@@ -5519,7 +5634,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="125"/>
       <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <translation>Experimentell</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
@@ -5529,7 +5644,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="273"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>Algoritm</translation>
     </message>
     <message>
       <location filename="../panels/PointEdit.ui" line="14"/>
@@ -5564,7 +5679,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PropertyBag.ui" line="62"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Lägg till...</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="14"/>
@@ -5692,7 +5807,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../panels/ToolEditor.ui" line="237"/>
       <location filename="../panels/ToolEditor.ui" line="277"/>
       <source>0.00</source>
-      <translation type="unfinished">0.00</translation>
+      <translation>0.00</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
@@ -5724,7 +5839,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../panels/ToolEditor.ui" line="161"/>
       <location filename="../panels/ToolEditor.ui" line="254"/>
       <source>180°</source>
-      <translation type="unfinished">180°</translation>
+      <translation>180°</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="164"/>
@@ -5735,12 +5850,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/ToolEditor.ui" line="196"/>
       <source>D = </source>
-      <translation type="unfinished">D = </translation>
+      <translation>D = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="213"/>
       <source>d =</source>
-      <translation type="unfinished">d =</translation>
+      <translation>d =</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="230"/>
@@ -5750,12 +5865,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/ToolEditor.ui" line="247"/>
       <source>α = </source>
-      <translation type="unfinished">α = </translation>
+      <translation>α = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="267"/>
       <source>S = </source>
-      <translation type="unfinished">S = </translation>
+      <translation>S = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="308"/>
@@ -5996,7 +6111,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../preferences/PathJob.ui" line="386"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Skapa cylinder</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="391"/>
@@ -6099,7 +6214,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>GUI</source>
-      <translation type="unfinished">GUI</translation>
+      <translation>GUI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="23"/>
@@ -6360,22 +6475,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="64"/>
       <source>X-&gt;A</source>
-      <translation type="unfinished">X-&gt;A</translation>
+      <translation>X-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="69"/>
       <source>Y-&gt;A</source>
-      <translation type="unfinished">Y-&gt;A</translation>
+      <translation>Y-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="74"/>
       <source>X-&gt;B</source>
-      <translation type="unfinished">X-&gt;B</translation>
+      <translation>X-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="79"/>
       <source>Y-&gt;B</source>
-      <translation type="unfinished">Y-&gt;B</translation>
+      <translation>Y-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="84"/>
@@ -6640,7 +6755,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="29"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Lägg till...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="39"/>
@@ -6650,7 +6765,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="49"/>
       <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <translation>Redigera...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="59"/>
@@ -6670,7 +6785,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="86"/>
       <source>Angle            </source>
-      <translation type="unfinished">Angle            </translation>
+      <translation>Vinkel            </translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="93"/>
@@ -6821,7 +6936,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="299"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>Algoritm</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="307"/>
@@ -7017,7 +7132,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="138"/>
       <source>0 °</source>
-      <translation type="unfinished">0 °</translation>
+      <translation>0 °</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="141"/>
@@ -7032,7 +7147,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="155"/>
       <source>0 mm</source>
-      <translation type="unfinished">0 mm</translation>
+      <translation>0 mm</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="158"/>
@@ -7250,7 +7365,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="228"/>
       <source>Systems</source>
-      <translation type="unfinished">Systems</translation>
+      <translation>System</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="235"/>
@@ -7300,47 +7415,47 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="329"/>
       <source>G59.1</source>
-      <translation type="unfinished">G59.1</translation>
+      <translation>G59.1</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="337"/>
       <source>G59.2</source>
-      <translation type="unfinished">G59.2</translation>
+      <translation>G59.2</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="345"/>
       <source>G59.3</source>
-      <translation type="unfinished">G59.3</translation>
+      <translation>G59.3</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="353"/>
       <source>G59.4</source>
-      <translation type="unfinished">G59.4</translation>
+      <translation>G59.4</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="361"/>
       <source>G59.5</source>
-      <translation type="unfinished">G59.5</translation>
+      <translation>G59.5</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="369"/>
       <source>G59.6</source>
-      <translation type="unfinished">G59.6</translation>
+      <translation>G59.6</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="377"/>
       <source>G59.7</source>
-      <translation type="unfinished">G59.7</translation>
+      <translation>G59.7</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="385"/>
       <source>G59.8</source>
-      <translation type="unfinished">G59.8</translation>
+      <translation>G59.8</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="393"/>
       <source>G59.9</source>
-      <translation type="unfinished">G59.9</translation>
+      <translation>G59.9</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="404"/>
@@ -7365,7 +7480,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="439"/>
       <source>Layout</source>
-      <translation type="unfinished">Layout</translation>
+      <translation>Layout</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="445"/>
@@ -7380,7 +7495,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="472"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Skapa cylinder</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="477"/>
@@ -7481,7 +7596,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="703"/>
       <source>Y=0</source>
-      <translation type="unfinished">Y=0</translation>
+      <translation>Y=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="710"/>

@@ -2348,7 +2348,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>⌀</source>
-      <translation type="unfinished">⌀</translation>
+      <translation>⌀</translation>
     </message>
     <message>
       <source>Append unit to dimension values</source>
@@ -3741,7 +3741,7 @@ You can pick further points to get line segments.</translation>
     </message>
     <message>
       <source>:</source>
-      <translation type="unfinished">:</translation>
+      <translation>:</translation>
     </message>
     <message>
       <source>Scale Denominator</source>
@@ -3874,7 +3874,7 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
   </context>
   <context>

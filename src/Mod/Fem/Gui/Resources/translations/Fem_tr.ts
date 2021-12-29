@@ -127,7 +127,7 @@
     <message>
       <location filename="commands.py" line="202"/>
       <source>Constraint centrif</source>
-      <translation type="unfinished">Constraint centrif</translation>
+      <translation>Kısıtlama-merkezkaç</translation>
     </message>
     <message>
       <location filename="commands.py" line="206"/>
@@ -335,7 +335,7 @@
     <message>
       <location filename="commands.py" line="474"/>
       <source>Heat equation</source>
-      <translation type="unfinished">Heat equation</translation>
+      <translation>Isı denklemi</translation>
     </message>
     <message>
       <location filename="commands.py" line="478"/>
@@ -701,7 +701,7 @@
     <message>
       <location filename="../../Command.cpp" line="296"/>
       <source>Constraint bearing</source>
-      <translation type="unfinished">Constraint bearing</translation>
+      <translation>Kısıtlama-rulman</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="297"/>
@@ -719,7 +719,7 @@
     <message>
       <location filename="../../Command.cpp" line="337"/>
       <source>Constraint contact</source>
-      <translation type="unfinished">Constraint contact</translation>
+      <translation>Kısıtlama-temas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="338"/>
@@ -737,7 +737,7 @@
     <message>
       <location filename="../../Command.cpp" line="382"/>
       <source>Constraint displacement</source>
-      <translation type="unfinished">Constraint displacement</translation>
+      <translation>Kısıtlama-yer değiştirme</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="383"/>
@@ -755,7 +755,7 @@
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>Constraint fixed</source>
-      <translation type="unfinished">Constraint fixed</translation>
+      <translation>Kısıtlama-sabit</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="426"/>
@@ -773,12 +773,12 @@
     <message>
       <location filename="../../Command.cpp" line="467"/>
       <source>Fluid boundary condition</source>
-      <translation type="unfinished">Fluid boundary condition</translation>
+      <translation>Akışkan sınır koşulu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="468"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation type="unfinished">Create fluid boundary condition on face entity for Computional Fluid Dynamics</translation>
+      <translation>Hesaplamalı Akışkanlar Dinamiği için yüz ögesi üzerinde akışkan sınır koşulu oluştur</translation>
     </message>
   </context>
   <context>
@@ -809,7 +809,7 @@
     <message>
       <location filename="../../Command.cpp" line="554"/>
       <source>Constraint gear</source>
-      <translation type="unfinished">Constraint gear</translation>
+      <translation>Kısıtlama-dişli</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="555"/>
@@ -827,7 +827,7 @@
     <message>
       <location filename="../../Command.cpp" line="595"/>
       <source>Constraint heatflux</source>
-      <translation type="unfinished">Constraint heatflux</translation>
+      <translation>Kısıtlama-ısı akısı</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="596"/>
@@ -845,7 +845,7 @@
     <message>
       <location filename="../../Command.cpp" line="640"/>
       <source>Constraint initial temperature</source>
-      <translation type="unfinished">Constraint initial temperature</translation>
+      <translation>Kısıtlama-giriş sıcaklığı</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="641"/>
@@ -881,7 +881,7 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Constraint pressure</source>
-      <translation type="unfinished">Constraint pressure</translation>
+      <translation>Kısıtlama-basınç</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
@@ -917,7 +917,7 @@
     <message>
       <location filename="../../Command.cpp" line="770"/>
       <source>Constraint spring</source>
-      <translation type="unfinished">Constraint spring</translation>
+      <translation>Kısıtlama-yay</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="771"/>
@@ -3781,12 +3781,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="585"/>
       <source>Constraint displacement</source>
-      <translation type="unfinished">Constraint displacement</translation>
+      <translation>Kısıtlama-yer değiştirme</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="266"/>
       <source>Constraint fixed</source>
-      <translation type="unfinished">Constraint fixed</translation>
+      <translation>Kısıtlama-sabit</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="886"/>
@@ -3801,7 +3801,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="119"/>
       <source>Constraint initial temperature</source>
-      <translation type="unfinished">Constraint initial temperature</translation>
+      <translation>Kısıtlama-giriş sıcaklığı</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="287"/>
@@ -3811,7 +3811,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="283"/>
       <source>Constraint pressure</source>
-      <translation type="unfinished">Constraint pressure</translation>
+      <translation>Kısıtlama-basınç</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="196"/>
@@ -3821,7 +3821,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="283"/>
       <source>Constraint spring</source>
-      <translation type="unfinished">Constraint spring</translation>
+      <translation>Kısıtlama-yay</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>

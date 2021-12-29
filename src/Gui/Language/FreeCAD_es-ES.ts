@@ -2482,11 +2482,11 @@ desde la consola de Python al panel de la vista de informe</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation>Renderizado ortogonal</translation>
+      <translation>Representación or&amp;togonal</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
-      <translation>Renderizado en perspectiva</translation>
+      <translation>Representación en perspectiva</translation>
     </message>
     <message>
       <source>Marker size:</source>
@@ -2620,7 +2620,7 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation>Los objetos se proyectarán en proyección ortográfica</translation>
+      <translation>Los objetos se proyectarán en proyección ortogonal</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
@@ -9336,11 +9336,11 @@ Would you like to save the file with a different name?</source>
     </message>
     <message>
       <source>Orthographic view</source>
-      <translation>Vista ortográfica</translation>
+      <translation>Vista ortogonal</translation>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
-      <translation>Cambia al modo de vista ortográfico</translation>
+      <translation>Cambia al modo de vista ortogonal</translation>
     </message>
   </context>
   <context>
@@ -9766,11 +9766,11 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation>Ortográfico</translation>
+      <translation>Ortogonal</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Configurar Vista a modo Ortográfico</translation>
+      <translation>Establecer Vista a modo Ortogonal</translation>
     </message>
   </context>
   <context>

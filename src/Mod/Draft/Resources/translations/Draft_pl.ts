@@ -128,7 +128,7 @@ Pozostaw tę właściwość pustą, aby móc ustawić " Oś" i "Środek" ręczni
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>Parametr określający ilość płaszczyzn symetrii dla szyku kołowego.</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
@@ -236,13 +236,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>Obiekt i określone jego części,
+są mierzone przez ten wymiar.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Istnieją różne możliwości:
+- Obiekt i jedna z jego krawędzi.
+- Obiekt i dwa jego wierzchołki.
+- Obiekt łukowy i jego krawędź.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -565,6 +565,11 @@ lub z subelement 'VertexN', 'EdgeN' lub 'FaceN', jeśli jest określony.</transl
       <translation>Wypełnij litery powierzchniami</translation>
     </message>
     <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Pokaż poszczególne elementy szyku</translation>
@@ -727,11 +732,6 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <translation>Plik wzoru używany przez ten obiekt</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Kształt tego obiektu</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Nazwa wzoru używana przez ten obiekt</translation>
@@ -740,6 +740,11 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Skala wzoru używana przez ten obiekt</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Kształt tego obiektu</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1249,7 +1254,7 @@ beyond the dimension line</source>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>&amp;Utilities</source>
-      <translation>P&amp;rzybory</translation>
+      <translation>&amp;Narzędzia</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="122"/>
@@ -1896,7 +1901,7 @@ Jeśli wybrane są inne obiekty, to zostaną one ignorowane.</translation>
     <message>
       <location filename="gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Tworzy kreskowania na ścianach wybranego obiektu</translation>
     </message>
   </context>
   <context>
@@ -3374,7 +3379,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="importDWG.py" line="286"/>
       <source>LibreDWG error</source>
-      <translation type="unfinished">LibreDWG error</translation>
+      <translation>Błąd biblioteki LibreDWG</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="295"/>
@@ -3389,22 +3394,22 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="importDWG.py" line="231"/>
       <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</translation>
+      <translation>Błąd podczas konwersji DWG. Spróbuj przenieść plik DWG do ścieżki katalogu bez spacji i znaków nieangielskich lub spróbuj zapisać do niższej wersji DWG.</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="300"/>
       <source>ODA File Converter not found</source>
-      <translation type="unfinished">ODA File Converter not found</translation>
+      <translation>Nie znaleziono konwertera plików ODA</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="310"/>
       <source>QCAD error</source>
-      <translation type="unfinished">QCAD error</translation>
+      <translation>Błąd QCAD</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Wszystkie kształty muszą być współpłaszczyznowe</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="696"/>
@@ -3416,7 +3421,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="WorkingPlane.py" line="704"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Wybrane kształty muszą definiować płaszczyznę</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -3656,7 +3661,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="make_arc_3points.py" line="198"/>
       <source>Map mode:</source>
-      <translation>Tryb mapy:</translation>
+      <translation>Tryb dołaczenia:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
@@ -3843,7 +3848,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="make_sketch.py" line="104"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>Nie znaleziono kształtu</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="109"/>
@@ -3855,7 +3860,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="make_sketch.py" line="111"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Wszystkie kształty muszą być płaskie</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
@@ -3908,6 +3913,16 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
       <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Nieprawidłowe dane wejściowe: element podrzędny nie należy do obiektu.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
     </message>
     <message>
       <location filename="make_label.py" line="278"/>
@@ -3988,6 +4003,36 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>zmigrowano typ 'Tekst rysunkowy' na 'Tekst'</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>Uaktywnij tę warstwę</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>Wybierz zawartość warstwy</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Scal zduplikowane warstwy</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Dodaj nową warstwę</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4320,7 +4365,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_dimensions.py" line="508"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>Krawędź jest za krótka!</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
@@ -5063,16 +5108,6 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation>Wybierz kąt obrotu</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>Uaktywnij tę warstwę</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>Wybierz zawartość warstwy</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>
@@ -6819,12 +6854,12 @@ Domyślnie ustawiona jest na lewo, co jest standardem ISO.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="405"/>
       <source>Left (ISO standard)</source>
-      <translation>Lewo (standard ISO)</translation>
+      <translation>Z lewej (standard ISO)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="410"/>
       <source>Right</source>
-      <translation>Prawo</translation>
+      <translation>Z prawej</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="422"/>
@@ -6834,7 +6869,7 @@ Domyślnie ustawiona jest na lewo, co jest standardem ISO.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="429"/>
       <source>The space between the dimension line and the dimension text</source>
-      <translation>Przestrzeń między linią wymiarową i tekstem wymiarowym</translation>
+      <translation>Odstęp pomiędzy tekstem a linią wymiarową</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="455"/>
@@ -7062,7 +7097,7 @@ z Menedżera dodatków.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
       <source>points</source>
-      <translation>Punkty</translation>
+      <translation>punkty</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="188"/>
@@ -7107,7 +7142,7 @@ z Menedżera dodatków.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="253"/>
       <source>Draft objects</source>
-      <translation>Szkicuj obiekty</translation>
+      <translation>Obiekty Rysunku Roboczego</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="266"/>
@@ -7169,7 +7204,7 @@ umożliwi to szybsze obracanie obrazu na wyświetlaczu, ale czyni je mniej łatw
     <message>
       <location filename="../ui/preferences-dxf.ui" line="384"/>
       <source>Group layers into blocks</source>
-      <translation>Zgrupuj warstwy w Bloki</translation>
+      <translation>Zgrupuj warstwy w bloki</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="401"/>

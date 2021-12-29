@@ -2489,7 +2489,7 @@ dalla console di Python al pannello vista Report</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
-      <translation>Vista in &amp;prospettiva</translation>
+      <translation>Vista in prospettiva</translation>
     </message>
     <message>
       <source>Marker size:</source>

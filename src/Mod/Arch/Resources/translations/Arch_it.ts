@@ -981,7 +981,7 @@
     <message>
       <location filename="ArchStairs.py" line="330"/>
       <source>The 'left outline' of stairs</source>
-      <translation type="unfinished">The 'left outline' of stairs</translation>
+      <translation>Il "contorno sinistro" delle scale</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="367"/>
@@ -1031,22 +1031,22 @@
     <message>
       <location filename="ArchStairs.py" line="413"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>Lo spessore della soletta del piano inferiore</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="415"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>Lo spessore della soletta del piano superiore</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="417"/>
       <source>The type of connection between the lower slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower slab and the start of the stairs</translation>
+      <translation>Il tipo di collegamento tra la soletta inferiore e l'inizio delle scale</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="420"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation type="unfinished">The type of connection between the end of the stairs and the upper floor slab</translation>
+      <translation>Tipo di collegamento tra la fine delle scale e la soletta del piano superiore</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="289"/>
@@ -1626,7 +1626,7 @@
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Distanza di spostamento iniziale lungo il percorso di estrusione (positiva: estende, negativa: taglia)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
@@ -1636,7 +1636,7 @@
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Distanza di spostamento finale lungo il percorso di estrusione (positiva: estensione, negativa: trim)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
@@ -3582,7 +3582,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Seleziona uno strumento...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>
@@ -4605,7 +4605,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Crea più oggetti Arch Structure da una base selezionata, usando ogni bordo selezionato come tracciato di estrusione</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="233"/>
@@ -6345,7 +6345,7 @@ are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
       <translation>Le forme curve che non possono essere rappresentate come curve in IFC
 sono decomposte in sfaccettature piatte.
-Se selezionato, viene eseguito un calcolo aggiuntivo per unire le sfaccettature coplanari.</translation>
+Se selezionato, viene eseguito un calcolo aggiuntivo per unire le sfaccettature complanari.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="149"/>
