@@ -28,7 +28,7 @@
 # include <Precision.hxx>
 # include <QApplication>
 # include <Standard_Version.hxx>
-# include <QMessageBox>
+# include <QInputDialog>
 #endif
 
 #include <Base/Console.h>
@@ -971,6 +971,145 @@ bool CmdSketcherCompModifyKnotMultiplicity::isActive(void)
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
 
+DEF_STD_CMD_A(CmdSketcherInsertKnot)
+
+CmdSketcherInsertKnot::CmdSketcherInsertKnot()
+    : Command("Sketcher_BSplineInsertKnot")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = "Sketcher";
+    sMenuText       = QT_TR_NOOP("Insert knot");
+    sToolTipText    = QT_TR_NOOP("Inserts knot at given parameter with the given multiplicity. If a knot already exists at that parameter, it's multiplicity is increased by the value.");
+    sWhatsThis      = "Sketcher_BSplineInsertKnot";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_BSplineInsertKnot";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherInsertKnot::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+#if OCC_VERSION_HEX < 0x060900
+    QMessageBox::warning(Gui::getMainWindow(),
+                         QObject::tr("Wrong OCE/OCC version"),
+                         QObject::tr("This version of OCE/OCC "
+                                     "does not support knot operation. "
+                                     "You need 6.9.0 or higher"));
+    return;
+#endif
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // TODO: let user click on a curve after pressing command.
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.size() == 0) {
+      // Check that only one object is selected,
+      // as we need only one object to get the new GeoId after multiplicity change
+      QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is empty"),
+                           QObject::tr("Nothing is selected. Please select a b-spline."));
+      return;
+    }
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot (incomplete)"));
+
+    bool applied = false;
+
+    // TODO: Ensure GeoId is for the BSpline and not for it's internal geometry
+    int GeoId = std::atoi(SubNames[0].substr(4,4000).c_str()) - 1;
+
+    boost::uuids::uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
+
+    try {
+        // TODO: Get param from user input by clicking on desired spot
+        // Get param from user input into a box
+        bool paramPicked;
+        // TODO: get min/max values from the BSpline
+        double param = QInputDialog::getDouble(
+            Gui::getMainWindow(), QObject::tr("Knot parameter"),
+            QObject::tr("Please provide the parameter where the knot is to be inserted."),
+            0.5, -DBL_MAX, DBL_MAX, 8, &paramPicked);
+        if (paramPicked) {
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                  "insertBSplineKnot(%d, %lf, %d) ",
+                                  GeoId, param, 1);
+            applied = true;
+
+            // Warning: GeoId list might have changed
+            // as the consequence of deleting pole circles and
+            // particularly B-spline GeoID might have changed.
+        }
+    }
+    catch (const Base::CADKernelError& e) {
+      e.ReportException();
+      if (e.getTranslatable()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("CAD Kernel Error"),
+                             QObject::tr(e.getMessage().c_str()));
+      }
+      getSelection().clearSelection();
+    }
+    catch (const Base::Exception& e) {
+      e.ReportException();
+      if (e.getTranslatable()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Input Error"),
+                             QObject::tr(e.getMessage().c_str()));
+      }
+      getSelection().clearSelection();
+    }
+
+    if (applied)
+    {
+        // find new geoid for B-spline as GeoId might have changed
+        const std::vector< Part::Geometry * > &gvals = Obj->getInternalGeometry();
+
+        int ngeoid = 0;
+        bool ngfound = false;
+
+        for (std::vector<Part::Geometry *>::const_iterator geo = gvals.begin(); geo != gvals.end(); geo++, ngeoid++) {
+            if ((*geo) && (*geo)->getTag() == bsplinetag) {
+                ngfound = true;
+                break;
+            }
+        }
+
+        if (ngfound) {
+            try {
+                // add internalalignment for new pole
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                getSelection().clearSelection();
+            }
+        }
+    }
+
+    if (applied)
+      commitCommand();
+    else
+      abortCommand();
+
+    tryAutoRecomputeIfNotSolve(Obj);
+    getSelection().clearSelection();
+}
+
+bool CmdSketcherInsertKnot::isActive(void)
+{
+    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+}
+
 void CreateSketcherCommandsBSpline(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -987,4 +1126,5 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherIncreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherDecreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherCompModifyKnotMultiplicity());
+    rcCmdMgr.addCommand(new CmdSketcherInsertKnot());
 }
