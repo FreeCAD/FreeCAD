@@ -44,7 +44,7 @@ import Draft_rc
 import draftutils.utils as utils
 import draftutils.groups as groups
 import draftguitools.gui_base as gui_base
-from draftutils.translate import _tr, translate
+from draftutils.translate import translate
 
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -65,16 +65,13 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
         super(AddToGroup, self).__init__(name=translate("draft","Add to group"))
         self.ungroup = QT_TRANSLATE_NOOP("Draft_AddToGroup","Ungroup")
         #add new group string option
-        self.addNewGroupStr=_tr("+ Add new group")
-    
+        self.addNewGroupStr = "+ " + translate("draft", "Add new group")
+
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tooltip = ()
-
-        d = {'Pixmap': 'Draft_AddToGroup',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_AddToGroup","Move to group")+"...",
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddToGroup","Moves the selected objects to an existing group, or removes them from any group.\nCreate a group first to use this tool.")}        
-        return d
+        return {'Pixmap': 'Draft_AddToGroup',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_AddToGroup","Move to group")+"...",
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_AddToGroup","Moves the selected objects to an existing group, or removes them from any group.\nCreate a group first to use this tool.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -137,6 +134,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
 
 Gui.addCommand('Draft_AddToGroup', AddToGroup())
 
+
 def moveToGroup(group):
     """
     Place the selected objects in the chosen group.
@@ -154,97 +152,45 @@ def moveToGroup(group):
     App.activeDocument().recompute(None, True, True)
 
 
-
-
 class SelectGroup(gui_base.GuiCommandNeedsSelection):
-    """GuiCommand for the Draft_SelectGroup tool.
-
-    If the selection is a group, it selects all objects
-    with the same "parents" as this object. This means all objects
-    that are inside this group, including those in nested sub-groups.
-
-    If the selection is a simple object inside a group,
-    it will select the "brother" objects, that is, those objects that are
-    at the same level as this object, including the upper group
-    that contains them all.
-
-    NOTE: the second functionality is a bit strange, as it produces results
-    that are not very intuitive. Maybe we should change it and restrict
-    this command to only groups (`App::DocumentObjectGroup`) because
-    in this case it works in an intuitive manner, selecting
-    only the objects under the group.
-
-    It inherits `GuiCommandNeedsSelection` to only be available
-    when there is a document and a selection.
-    See this class for more information.
-    """
+    """GuiCommand for the Draft_SelectGroup tool."""
 
     def __init__(self):
         super(SelectGroup, self).__init__(name=translate("draft","Select group"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-
-        d = {'Pixmap': 'Draft_SelectGroup',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_SelectGroup","Select group"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectGroup","If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.\n\nIf the selection is a simple object inside a group, it will select the \"brother\" objects, that is,\nthose that are at the same level as this object, including the upper group that contains them all.")}
-
-        return d
+        return {'Pixmap': 'Draft_SelectGroup',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_SelectGroup", "Select group"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectGroup", "Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.")}
 
     def Activated(self):
-        """Execute when the command is called.
-
-        If the selection is a single group, it selects all objects
-        inside this group.
-
-        In other cases it selects all objects (children)
-        in the OutList of this object, and also all objects (parents)
-        in the InList of this object.
-        For all parents, it also selects the children of these.
-        """
+        """Execute when the command is called."""
         super(SelectGroup, self).Activated()
 
         sel = Gui.Selection.getSelection()
-        if len(sel) == 1:
-            if sel[0].isDerivedFrom("App::DocumentObjectGroup"):
-                cts = groups.get_group_contents(Gui.Selection.getSelection())
-                for o in cts:
-                    Gui.Selection.addSelection(o)
-                return
+        subs = []
         for obj in sel:
-            # This selects the objects in the `OutList`
-            # which are actually `parents` but appear below in the tree.
-            # Regular objects usually have an empty `OutList`
-            # so this is skipped.
-            # But for groups, it selects the objects
-            # that it contains under it.
-            for child in obj.OutList:
-                Gui.Selection.addSelection(child)
+            if groups.is_group(obj):
+                for sub in obj.Group:
+                    subs.append(sub)
+            else:
+                for parent in obj.InList:
+                    if groups.is_group(parent):
+                        for sub in parent.Group:
+                            subs.append(sub)
 
-            # This selects the upper group that contains `obj`.
-            # Then for this group, it selects the objects in its `OutList`,
-            # which are at the same level as `obj` (brothers).
-            for parent in obj.InList:
-                Gui.Selection.addSelection(parent)
-                for child in parent.OutList:
-                    Gui.Selection.addSelection(child)
-        # -------------------------------------------------------------------
-        # NOTE: the terminology here may be confusing.
-        # Those in the `InList` are actually `children` (dependents)
-        # but appear above in the tree view,
-        # and this is the reason they are called `parents`.
-        #
-        # Those in the `OutList` are actually `parents` (suppliers)
-        # but appear below in the tree, and this is the reason
-        # they are called `children`.
-        #
-        # InList
-        #  |
-        #  - object
-        #     |
-        #     - OutList
-        #
-        # -------------------------------------------------------------------
+        # Always clear the selection:
+        Gui.Selection.clearSelection()
+
+        # Create a new selection from the sub objects:
+        for sub in subs:
+            Gui.Selection.addSelection(sub)
+
+        # Inform the user if there is no new selection:
+        if not Gui.Selection.hasSelection():
+            msg = translate("draft", "No new selection. You must select non-empty groups or objects inside groups.")
+            App.Console.PrintMessage(msg + "\n")
 
 
 Gui.addCommand('Draft_SelectGroup', SelectGroup())
@@ -258,7 +204,6 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-
         return {'Pixmap': 'Draft_AutoGroup',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Autogroup"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Select a group to add all Draft and Arch objects to.")}
@@ -360,11 +305,9 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-
-        d = {'Pixmap': 'Draft_AddConstruction',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to Construction group"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Adds the selected objects to the construction group,\nand changes their appearance to the construction style.\nIt creates a construction group if it doesn't exist.")}
-        return d
+        return {'Pixmap': 'Draft_AddConstruction',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to Construction group"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Adds the selected objects to the construction group,\nand changes their appearance to the construction style.\nIt creates a construction group if it doesn't exist.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -409,18 +352,15 @@ class AddNamedGroup(gui_base.GuiCommandSimplest):
         It adds a new named group
     """
     def __init__(self):
-        super().__init__(name=_tr("Add a new group with a given name"))
+        super().__init__(name=translate("draft", "Add a new group with a given name"))
 
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Add a new named group"
-        _tip = ("Add a new group with a given name.")
+        return {'Pixmap': 'Draft_AddNamedGroup',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_AddNamedGroup", "Add a new named group"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_AddNamedGroup", "Add a new group with a given name.")}
 
-        d = {'Pixmap': 'Draft_AddNamedGroup',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_AddNamedGroup", _menu),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddNamedGroup", _tip)}
-        return d
 
     def Activated(self):
         super().Activated()
@@ -440,9 +380,9 @@ class Ui_AddNamedGroup():
     """
     def __init__(self):
         self.form = QtGui.QWidget()
-        self.form.setWindowTitle(_tr("Add group"))
+        self.form.setWindowTitle(translate("draft", "Add group"))
         row = QtGui.QHBoxLayout(self.form)
-        lbl = QtGui.QLabel(_tr("Group name")+":")
+        lbl = QtGui.QLabel(translate("draft", "Group name") + ":")
         self.name = QtGui.QLineEdit()
         row.addWidget(lbl)
         row.addWidget(self.name)
@@ -457,4 +397,3 @@ class Ui_AddNamedGroup():
 
 
 ## @}
-
