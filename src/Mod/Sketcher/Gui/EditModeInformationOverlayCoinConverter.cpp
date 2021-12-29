@@ -125,7 +125,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         if (spline->isPeriodic())
             controlPolygon.coordinates.emplace_back(poles[0]);
 
-        controlPolygon.indices.push_back(poles.size()); // single continuous poligon starting at index 0
+        controlPolygon.indices.push_back(poles.size()); // single continuous polygon starting at index 0
     }
     else if constexpr (calculation == CalculationType::BSplineCurvatureComb ) {
 

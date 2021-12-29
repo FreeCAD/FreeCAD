@@ -304,12 +304,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5989"/>
       <source>Sketch fillet</source>
-      <translation>Empalme de boceto</translation>
+      <translation>Redondeo de croquis</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5993"/>
       <source>Constraint-preserving sketch fillet</source>
-      <translation>Restricción conservando el empalme de croquis</translation>
+      <translation>Redondeo de croquis que conserva las restricciones</translation>
     </message>
   </context>
   <context>
@@ -980,12 +980,12 @@ con respecto a una línea o un tercer punto</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5882"/>
       <source>Create corner-preserving fillet</source>
-      <translation>Crear empalme que conserva las esquinas</translation>
+      <translation>Crear redondeo que conserva las esquinas</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5883"/>
       <source>Fillet that preserves intersection point and most constraints</source>
-      <translation>Empalme que conserva el punto de intersección y la mayoría de las restricciones</translation>
+      <translation>Redondeo que conserva el punto de intersección y la mayoría de las restricciones</translation>
     </message>
   </context>
   <context>
@@ -3876,7 +3876,7 @@ Requiere volver a entrar en modo de edición para tener efecto.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="416"/>
       <source>Color of fully constrained vertex color in edit mode</source>
-      <translation>Color del color de vértices completamente restringido en modo edición</translation>
+      <translation>Color de vértices totalmente restringidos en modo de edición</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="442"/>
@@ -4155,13 +4155,13 @@ Por defecto en: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>Al entrar en modo edición, fuerza la vista ortográfica de la cámara.
+      <translation>Al entrar en modo edición, fuerza la vista ortogonal de la cámara.
 Solo funciona cuando "Restaurar la posición de la cámara después de la edición" está activada.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation>Forzar cámara ortográfica al entrar en modo edición</translation>
+      <translation>Forzar cámara ortogonal al entrar en modo edición</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
@@ -4506,7 +4506,7 @@ Sin embargo, no se encontraron restricciones a los extremos.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="265"/>
       <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
-      <translation>Restringir visualización de selección de filtros de pistas para que las restricciones filtradas estén ocultas</translation>
+      <translation>La visualización de las restricciones sigue la selección de filtros de forma que las restricciones excluidas por el filtro sean ocultadas</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="268"/>
@@ -5027,7 +5027,7 @@ Los puntos deben estar más cerca de una quinta parte del tamaño de la cuadríc
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6651"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation>Croquis bajo-restringido con &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 grados&lt;/span&gt;&lt;/a&gt; de libertad</translation>
+      <translation>Croquis sub-restringido con &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 grado&lt;/span&gt;&lt;/a&gt; de libertad. %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6654"/>

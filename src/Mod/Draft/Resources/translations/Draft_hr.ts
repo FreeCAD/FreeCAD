@@ -570,6 +570,11 @@ ili iz pod-elementa 'VrhN', 'RubN', odnosno 'LiceN', ako je navedeno.
       <translation>Ispunite slova sa površinama</translation>
     </message>
     <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Prikaži pojedinačne elemente matrice</translation>
@@ -733,11 +738,6 @@ Ovo svojstvo je samo za čitanje, budući da broj ovisi o točkama sadržanim un
       <translation>PAT datoteka korištena kod ovog objekta</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Oblik ovog objekta</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Ime uzorka korištenog kod ovog objekta</translation>
@@ -746,6 +746,11 @@ Ovo svojstvo je samo za čitanje, budući da broj ovisi o točkama sadržanim un
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Skaliranje uzorka korištenog kod ovog objekta</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Oblik ovog objekta</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -3930,6 +3935,16 @@ Nije dostupno ako je omogućena opcija 'Koristi se primitivni dio' postavki Nacr
       <translation>Pogrešan unos: pod-element nije u objektu.</translation>
     </message>
     <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
+    </message>
+    <message>
       <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation>Pogrešan unos: mora biti slova, 'Prilagođeno', 'Naziv', 'Oznaka', 'Položaj', 'Dužina', 'Površina', 'Obujam', 'Traka' ili 'Materijal'.
@@ -4011,6 +4026,36 @@ Nije dostupno ako je omogućena opcija 'Koristi se primitivni dio' postavki Nacr
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>premještena vrsta 'Tekst Nacrta' u 'Tekst'</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>Aktiviraj ovaj sloj</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>Odaberite sadržaj sloja</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Spoji duplikate sloja</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Dodaj novi sloj</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4334,7 +4379,7 @@ Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</tran
     <message>
       <location filename="gui_dimensions.py" line="294"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>Stvori Dimenziju</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="309"/>
@@ -5087,16 +5132,6 @@ Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation>Odaberite kut rotacije</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>Aktiviraj ovaj sloj</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>Odaberite sadržaj sloja</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>

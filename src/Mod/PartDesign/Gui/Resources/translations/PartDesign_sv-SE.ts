@@ -853,7 +853,7 @@
     <message>
       <location filename="../../Command.cpp" line="690"/>
       <source>Create a new Sketch</source>
-      <translation type="unfinished">Create a new Sketch</translation>
+      <translation>Skapa en ny skiss</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2484"/>
@@ -3905,7 +3905,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="57"/>
       <source>Edit helix</source>
-      <translation type="unfinished">Edit helix</translation>
+      <translation>Redigera helix</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="55"/>

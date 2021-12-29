@@ -122,7 +122,7 @@
     </message>
     <message>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>Klipp ut punkter</translation>
     </message>
   </context>
   <context>

@@ -149,6 +149,10 @@ public:
     {
         return (*this = *rhs);
     }
+    Vector& operator= (const Vector& rhs)
+    {
+        return (*this = *rhs);
+    }
 
     Vector& operator= (PyObject* rhsp);
     Vector& operator= (const Base::Vector3d&);

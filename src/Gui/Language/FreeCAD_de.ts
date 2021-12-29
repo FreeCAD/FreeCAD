@@ -8829,7 +8829,7 @@ Möchten Sie die Datei mit einem anderen Namen speichern?</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Definiert das Verhalten beim Bearbeiten eines Objekts aus dem Baum</translation>
     </message>
   </context>
   <context>
@@ -9761,11 +9761,11 @@ Möchten Sie trotzdem fortfahren?</translation>
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation>Orthographisch</translation>
+      <translation>Orthogonal</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Setze die Ansicht auf den orthographischen Modus</translation>
+      <translation>Setze die Ansicht auf den orthogonalen Modus</translation>
     </message>
   </context>
   <context>

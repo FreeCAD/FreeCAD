@@ -3304,7 +3304,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Dostupné sady nástrojů</translation>
     </message>
   </context>
   <context>

@@ -1959,7 +1959,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="277"/>
       <source>Left handed</source>
-      <translation>Gaucher</translation>
+      <translation>Pas à gauche</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="288"/>

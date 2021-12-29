@@ -6,12 +6,12 @@
     <message>
       <location filename="Profiles.py" line="56"/>
       <source>Creates a hexagonal profile</source>
-      <translation type="unfinished">Creates a hexagonal profile</translation>
+      <translation>新建默认配置方案</translation>
     </message>
     <message>
       <location filename="Profiles.py" line="61"/>
       <source>Creates a hexagonal profile in the sketch</source>
-      <translation type="unfinished">Creates a hexagonal profile in the sketch</translation>
+      <translation>在草图中创建六边形轮廓</translation>
     </message>
   </context>
   <context>
@@ -58,12 +58,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="225"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation type="unfinished">Show/hide B-spline control point weight</translation>
+      <translation>显示/隐藏B样条曲线控制多边形</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="226"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control point weight for all B-splines</translation>
+      <translation>切换所有B样条曲线曲线控制多边形的显示和隐藏</translation>
     </message>
   </context>
   <context>
@@ -71,12 +71,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="132"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>显示/隐藏 B-样条控制多边形</translation>
+      <translation>显示/隐藏B样条曲线控制多边形</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="133"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>切换所有 B-样条曲线控制多边形的显示和隐藏</translation>
+      <translation>切换所有B样条曲线控制多边形的显示和隐藏</translation>
     </message>
   </context>
   <context>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="103"/>
       <source>Close shape</source>
-      <translation type="unfinished">Close shape</translation>
+      <translation>闭合形状</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="104"/>
@@ -133,7 +133,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="338"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation>显示/隐藏 B-样条控制多边形</translation>
+      <translation>显示/隐藏B样条曲线控制多边形</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="345"/>
@@ -148,7 +148,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="360"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation type="unfinished">Show/hide B-spline control point weight</translation>
+      <translation>显示/隐藏B样条曲线控制多边形</translation>
     </message>
   </context>
   <context>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5993"/>
       <source>Constraint-preserving sketch fillet</source>
-      <translation type="unfinished">Constraint-preserving sketch fillet</translation>
+      <translation>保留约束的草图圆角</translation>
     </message>
   </context>
   <context>
@@ -337,7 +337,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1188"/>
       <source>Rounded rectangle</source>
-      <translation type="unfinished">Rounded rectangle</translation>
+      <translation>圆角矩形</translation>
     </message>
   </context>
   <context>
@@ -393,12 +393,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="899"/>
       <source>Modify knot multiplicity</source>
-      <translation>修改结多重性</translation>
+      <translation>修改重复性节点</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="900"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
-      <translation>修改B样条曲线选定节点的多重性</translation>
+      <translation>修改B样条曲线选定的重复性节点</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="961"/>
@@ -416,7 +416,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="215"/>
       <source>Connect edges</source>
-      <translation type="unfinished">Connect edges</translation>
+      <translation>连接边</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="216"/>
@@ -507,7 +507,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3166"/>
       <source>Constrain vertical distance</source>
-      <translation type="unfinished">Constrain vertical distance</translation>
+      <translation>限制垂直距离</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3167"/>
@@ -546,7 +546,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="7142"/>
       <source>Constrain internal alignment</source>
-      <translation type="unfinished">Constrain internal alignment</translation>
+      <translation>内部对齐约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7143"/>
@@ -631,7 +631,7 @@ on the selected vertex</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4909"/>
       <source>Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</source>
-      <translation type="unfinished">Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</translation>
+      <translation>修复圆或弧的半径或修复B样条曲线的极限。</translation>
     </message>
   </context>
   <context>
@@ -695,12 +695,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
       <source>Convert geometry to B-spline</source>
-      <translation type="unfinished">Convert geometry to B-spline</translation>
+      <translation>将几何体转换为B样条曲线</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="386"/>
       <source>Converts the selected geometry to a B-spline</source>
-      <translation type="unfinished">Converts the selected geometry to a B-spline</translation>
+      <translation>将选中的几何形状转换为B样条曲线</translation>
     </message>
   </context>
   <context>
@@ -778,7 +778,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4120"/>
       <source>Create an arc of hyperbola in the sketch</source>
-      <translation>在草图创建双曲线弧</translation>
+      <translation>在草图中创建椭圆弧</translation>
     </message>
   </context>
   <context>
@@ -799,12 +799,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4951"/>
       <source>Create B-spline</source>
-      <translation>创建 B-样条</translation>
+      <translation>创建B样条曲线</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4952"/>
       <source>Create a B-spline via control points in the sketch.</source>
-      <translation>通过草图控制点创建B样条。</translation>
+      <translation>通过草图控制点创建B样条曲线。</translation>
     </message>
   </context>
   <context>
@@ -916,7 +916,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1053"/>
       <source>Create rounded rectangle</source>
-      <translation type="unfinished">Create rounded rectangle</translation>
+      <translation>创建圆角矩形</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1054"/>
@@ -955,12 +955,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4995"/>
       <source>Create periodic B-spline</source>
-      <translation>创建周期 B 样条</translation>
+      <translation>创建周期B样条曲线</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4996"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
-      <translation>通过草图控制点创建周期性B样条。</translation>
+      <translation>通过草图控制点创建周期性B样条曲线。</translation>
     </message>
   </context>
   <context>
@@ -981,12 +981,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5882"/>
       <source>Create corner-preserving fillet</source>
-      <translation type="unfinished">Create corner-preserving fillet</translation>
+      <translation>创建保角圆角</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5883"/>
       <source>Fillet that preserves intersection point and most constraints</source>
-      <translation type="unfinished">Fillet that preserves intersection point and most constraints</translation>
+      <translation>保留交点和大多数约束的圆角</translation>
     </message>
   </context>
   <context>
@@ -994,7 +994,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1851"/>
       <source>Create polyline</source>
-      <translation>创建多段线</translation>
+      <translation>创建折线</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1852"/>
@@ -1020,12 +1020,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="729"/>
       <source>Create centered rectangle</source>
-      <translation type="unfinished">Create centered rectangle</translation>
+      <translation>创建中心矩形</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="730"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation type="unfinished">Create a centered rectangle in the sketch</translation>
+      <translation>在草图中创建一个中心矩形</translation>
     </message>
   </context>
   <context>
@@ -1046,7 +1046,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7192"/>
       <source>Create slot</source>
-      <translation>创造长圆形</translation>
+      <translation>创建圆槽</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7193"/>
@@ -1098,7 +1098,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="526"/>
       <source>Decrease B-spline degree</source>
-      <translation>减少 B 样条次数</translation>
+      <translation>减少B样条曲线次数</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="527"/>
@@ -1116,7 +1116,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="758"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>减少贝塞尔曲线选定节点的多重性</translation>
+      <translation>减少贝B样条曲线选定节点的多重性</translation>
     </message>
   </context>
   <context>
@@ -1155,7 +1155,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../Command.cpp" line="267"/>
       <source>Edit the selected sketch.</source>
-      <translation type="unfinished">Edit the selected sketch.</translation>
+      <translation>编辑选定的草图</translation>
     </message>
   </context>
   <context>
@@ -1168,7 +1168,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6458"/>
       <source>Extend an edge with respect to the picked position</source>
-      <translation>延长与选择位置对应的边缘</translation>
+      <translation>延长与选择位置对应的边</translation>
     </message>
   </context>
   <context>
@@ -1176,12 +1176,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6760"/>
       <source>External geometry</source>
-      <translation>外部几何体</translation>
+      <translation>外部参考几何体</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6761"/>
       <source>Create an edge linked to an external geometry</source>
-      <translation>创建一条与外部几何体关联的边</translation>
+      <translation>创建一条与外部参考几何体关联的边</translation>
     </message>
   </context>
   <context>
@@ -1189,7 +1189,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="453"/>
       <source>Increase B-spline degree</source>
-      <translation>增加B 样条次数</translation>
+      <translation>增加B样条曲线次数</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="454"/>
@@ -1220,7 +1220,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../Command.cpp" line="297"/>
       <source>Finish editing the active sketch.</source>
-      <translation type="unfinished">Finish editing the active sketch.</translation>
+      <translation>结束正在编辑的活动草图</translation>
     </message>
   </context>
   <context>
@@ -1255,7 +1255,7 @@ then call this command, then choose the desired sketch.</translation>
     <message>
       <location filename="../../Command.cpp" line="865"/>
       <source>Create a new sketch from merging two or more selected sketches.</source>
-      <translation type="unfinished">Create a new sketch from merging two or more selected sketches.</translation>
+      <translation>通过合并两个或多个选定的草图创建一个新的草图。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="878"/>
@@ -1280,9 +1280,7 @@ then call this command, then choose the desired sketch.</translation>
       <source>Create a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference.</source>
-      <translation type="unfinished">Create a new mirrored sketch for each selected sketch
-by using the X or Y axes, or the origin point,
-as mirroring reference.</translation>
+      <translation>使用 X 或 Y 轴或原点作为镜像参考，为每个选定的草图创建一个新的镜像草图</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
@@ -1292,7 +1290,7 @@ as mirroring reference.</translation>
     <message>
       <location filename="../../Command.cpp" line="774"/>
       <source>Select one or more sketches.</source>
-      <translation type="unfinished">Select one or more sketches.</translation>
+      <translation>选择一个或多个灯具。</translation>
     </message>
   </context>
   <context>
@@ -1318,7 +1316,7 @@ as mirroring reference.</translation>
     <message>
       <location filename="../../Command.cpp" line="144"/>
       <source>Create a new sketch.</source>
-      <translation type="unfinished">Create a new sketch.</translation>
+      <translation>创建一个新的草图</translation>
     </message>
   </context>
   <context>
@@ -1326,7 +1324,7 @@ as mirroring reference.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1945"/>
       <source>Rectangular array</source>
-      <translation type="unfinished">Rectangular array</translation>
+      <translation>矩形阵列</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1946"/>
@@ -1450,7 +1448,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="376"/>
       <source>Select origin</source>
-      <translation type="unfinished">Select origin</translation>
+      <translation>选择原点</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="377"/>
@@ -1481,7 +1479,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="422"/>
       <source>Select vertical axis</source>
-      <translation type="unfinished">Select vertical axis</translation>
+      <translation>选择垂直轴</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="423"/>
@@ -1494,7 +1492,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6576"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>分割边</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6577"/>
@@ -1512,7 +1510,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
-      <translation type="unfinished">When in edit mode, stop the active operation (drawing, constraining, etc.).</translation>
+      <translation>在编辑模式下，停止激活的操作（绘图、约束等）。</translation>
     </message>
   </context>
   <context>
@@ -1551,7 +1549,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7731"/>
       <source>Activates or deactivates the selected constraints</source>
-      <translation type="unfinished">Activates or deactivates the selected constraints</translation>
+      <translation>激活或停用选定的约束</translation>
     </message>
   </context>
   <context>
@@ -1572,14 +1570,14 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7603"/>
       <source>Toggle driving/reference constraint</source>
-      <translation type="unfinished">Toggle driving/reference constraint</translation>
+      <translation>切换驱动/参考约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7604"/>
       <source>Set the toolbar, or the selected constraints,
 into driving or reference mode</source>
-      <translation type="unfinished">Set the toolbar, or the selected constraints,
-into driving or reference mode</translation>
+      <translation>设置工具栏或选定的约束，
+进入作用或参考模式</translation>
     </message>
   </context>
   <context>
@@ -1606,8 +1604,7 @@ into driving or reference mode</translation>
       <location filename="../../Command.cpp" line="720"/>
       <source>Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
-      <translation type="unfinished">Validate a sketch by looking at missing coincidences,
-invalid constraints, degenerated geometry, etc.</translation>
+      <translation>通过查看缺失、巧合、无效的约束、无效的几何等来验证草图。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="734"/>
@@ -1617,7 +1614,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="735"/>
       <source>Select only one sketch.</source>
-      <translation type="unfinished">Select only one sketch.</translation>
+      <translation>只选择一个草图。</translation>
     </message>
   </context>
   <context>
@@ -1630,7 +1627,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="949"/>
       <source>When in edit mode, switch between section view and full view.</source>
-      <translation type="unfinished">When in edit mode, switch between section view and full view.</translation>
+      <translation>在编辑模式下，在截面视图和完整视图之间切换。</translation>
     </message>
   </context>
   <context>
@@ -1643,7 +1640,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="681"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
-      <translation type="unfinished">When in edit mode, set the camera orientation perpendicular to the sketch plane.</translation>
+      <translation>在编辑模式下，设置相机方向垂直于草图平面。</translation>
     </message>
   </context>
   <context>
@@ -1652,50 +1649,50 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="1199"/>
       <location filename="../../CommandConstraints.cpp" line="1274"/>
       <source>Add horizontal constraint</source>
-      <translation type="unfinished">Add horizontal constraint</translation>
+      <translation>添加水平约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1208"/>
       <location filename="../../CommandConstraints.cpp" line="1300"/>
       <location filename="../../CommandConstraints.cpp" line="1535"/>
       <source>Add horizontal alignment</source>
-      <translation type="unfinished">Add horizontal alignment</translation>
+      <translation>添加水平对齐</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1436"/>
       <location filename="../../CommandConstraints.cpp" line="1510"/>
       <source>Add vertical constraint</source>
-      <translation type="unfinished">Add vertical constraint</translation>
+      <translation>添加垂直约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1444"/>
       <source>Add vertical alignment</source>
-      <translation type="unfinished">Add vertical alignment</translation>
+      <translation>添加垂直对齐</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1649"/>
       <source>Add 'Lock' constraint</source>
-      <translation type="unfinished">Add 'Lock' constraint</translation>
+      <translation>添加“锁定”约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1690"/>
       <source>Add relative 'Lock' constraint</source>
-      <translation type="unfinished">Add relative 'Lock' constraint</translation>
+      <translation>添加相对的“锁定”约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1735"/>
       <source>Add fixed constraint</source>
-      <translation type="unfinished">Add fixed constraint</translation>
+      <translation>添加固定约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1877"/>
       <source>Add 'Block' constraint</source>
-      <translation type="unfinished">Add 'Block' constraint</translation>
+      <translation>添加“块”约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1921"/>
       <source>Add block constraint</source>
-      <translation type="unfinished">Add block constraint</translation>
+      <translation>添加块约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2067"/>
@@ -1704,12 +1701,12 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="146"/>
       <location filename="../../CommandSketcherTools.cpp" line="253"/>
       <source>Add coincident constraint</source>
-      <translation type="unfinished">Add coincident constraint</translation>
+      <translation>添加并发约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2137"/>
       <source>Swap edge tangency with ptp tangency</source>
-      <translation type="unfinished">Swap edge tangency with ptp tangency</translation>
+      <translation>切换边相切与ptp相切</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2384"/>
@@ -1756,7 +1753,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3044"/>
       <source>Add fixed x-coordinate constraint</source>
-      <translation type="unfinished">Add fixed x-coordinate constraint</translation>
+      <translation>添加固定x坐标约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3262"/>
@@ -1767,13 +1764,13 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3292"/>
       <source>Add fixed y-coordinate constraint</source>
-      <translation type="unfinished">Add fixed y-coordinate constraint</translation>
+      <translation>添加固定Y坐标约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3493"/>
       <location filename="../../CommandConstraints.cpp" line="3534"/>
       <source>Add parallel constraint</source>
-      <translation type="unfinished">Add parallel constraint</translation>
+      <translation>添加平行约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3658"/>
@@ -1784,22 +1781,22 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="4095"/>
       <location filename="../../CommandConstraints.cpp" line="4137"/>
       <source>Add perpendicular constraint</source>
-      <translation type="unfinished">Add perpendicular constraint</translation>
+      <translation>添加垂直约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3763"/>
       <source>Add perpendicularity constraint</source>
-      <translation type="unfinished">Add perpendicularity constraint</translation>
+      <translation>添加垂直约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4236"/>
       <source>Swap coincident+tangency with ptp tangency</source>
-      <translation type="unfinished">Swap coincident+tangency with ptp tangency</translation>
+      <translation>切换边相切与ptp相切</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4255"/>
       <source>Swap PointOnObject+tangency with point to curve tangency</source>
-      <translation type="unfinished">Swap PointOnObject+tangency with point to curve tangency</translation>
+      <translation>将点与对象相切与点到曲线相切交换</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4350"/>
@@ -1810,7 +1807,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="4826"/>
       <location filename="../../CommandConstraints.cpp" line="4847"/>
       <source>Add tangent constraint</source>
-      <translation type="unfinished">Add tangent constraint</translation>
+      <translation>添加切线约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4491"/>
@@ -1828,7 +1825,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="4734"/>
       <location filename="../../CommandConstraints.cpp" line="4760"/>
       <source>Add tangent constraint point</source>
-      <translation type="unfinished">Add tangent constraint point</translation>
+      <translation>添加正切约束点</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5025"/>
@@ -1836,7 +1833,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="5079"/>
       <location filename="../../CommandConstraints.cpp" line="5140"/>
       <source>Add radius constraint</source>
-      <translation type="unfinished">Add radius constraint</translation>
+      <translation>添加半径约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5317"/>
@@ -1844,7 +1841,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="5358"/>
       <location filename="../../CommandConstraints.cpp" line="5425"/>
       <source>Add diameter constraint</source>
-      <translation type="unfinished">Add diameter constraint</translation>
+      <translation>添加直径约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5597"/>
@@ -1862,13 +1859,13 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="6325"/>
       <location filename="../../CommandConstraints.cpp" line="6379"/>
       <source>Add angle constraint</source>
-      <translation type="unfinished">Add angle constraint</translation>
+      <translation>添加角度约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6593"/>
       <location filename="../../CommandConstraints.cpp" line="6645"/>
       <source>Add equality constraint</source>
-      <translation type="unfinished">Add equality constraint</translation>
+      <translation>添加相等约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6766"/>
@@ -1877,33 +1874,33 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="6920"/>
       <location filename="../../CommandConstraints.cpp" line="6955"/>
       <source>Add symmetric constraint</source>
-      <translation type="unfinished">Add symmetric constraint</translation>
+      <translation>添加对称约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7094"/>
       <source>Add Snell's law constraint</source>
-      <translation type="unfinished">Add Snell's law constraint</translation>
+      <translation>添加斯内尔定律约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7303"/>
       <location filename="../../CommandConstraints.cpp" line="7481"/>
       <source>Add internal alignment constraint</source>
-      <translation type="unfinished">Add internal alignment constraint</translation>
+      <translation>添加内部对齐约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7688"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation type="unfinished">Toggle constraint to driving/reference</translation>
+      <translation>将约束切换到作用/参考</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7772"/>
       <source>Activate/Deactivate constraint</source>
-      <translation type="unfinished">Activate/Deactivate constraint</translation>
+      <translation>激活/停用约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Create a new sketch on a face</source>
-      <translation type="unfinished">Create a new sketch on a face</translation>
+      <translation>在平面上创建一个新的草图</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="239"/>
@@ -1913,7 +1910,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="489"/>
       <source>Reorient sketch</source>
-      <translation type="unfinished">Reorient sketch</translation>
+      <translation>调整草图方向</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="644"/>
@@ -1923,12 +1920,12 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="649"/>
       <source>Detach sketch</source>
-      <translation type="unfinished">Detach sketch</translation>
+      <translation>拆分草图</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="789"/>
       <source>Create a mirrored sketch for each selected sketch</source>
-      <translation type="unfinished">Create a mirrored sketch for each selected sketch</translation>
+      <translation>为选定草图创建镜像草图</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="888"/>
@@ -1958,7 +1955,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>
       <source>Add rounded rectangle</source>
-      <translation type="unfinished">Add rounded rectangle</translation>
+      <translation>圆角矩形</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1561"/>
@@ -2031,7 +2028,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6548"/>
       <source>Split edge</source>
-      <translation type="unfinished">Split edge</translation>
+      <translation>分割边</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6723"/>
@@ -2046,7 +2043,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7102"/>
       <source>Add slot</source>
-      <translation type="unfinished">Add slot</translation>
+      <translation>创建跑道圆</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7312"/>
@@ -2232,7 +2229,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5786"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation>多重性无法增加到超过B样条的自由度。</translation>
+      <translation>无法重复增加到超过贝塞尔曲线的自由度。</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5789"/>
@@ -2500,7 +2497,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="160"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries. Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</translation>
+      <translation>无法在两个固定几何图形之间添加约束! 固定几何图形涉及外部几何、被阻挡的几何或作为贝塞尔曲线结点的特殊点。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="700"/>
@@ -2721,7 +2718,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="2767"/>
       <location filename="../../CommandConstraints.cpp" line="2854"/>
       <source>Point on B-spline edge currently unsupported.</source>
-      <translation>当前不支持 B 样条边上的点。</translation>
+      <translation>目前不支持的贝塞尔曲线边缘上的点。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2773"/>
@@ -2743,7 +2740,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="6373"/>
       <location filename="../../CommandConstraints.cpp" line="7063"/>
       <source>Select an edge that is not a B-spline weight</source>
-      <translation type="unfinished">Select an edge that is not a B-spline weight</translation>
+      <translation>选择的边不是贝塞尔曲线</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2795"/>
@@ -2856,7 +2853,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="3792"/>
       <location filename="../../CommandConstraints.cpp" line="3973"/>
       <source>Perpendicular to B-spline edge currently unsupported.</source>
-      <translation>目前不支持垂直于的 B-样条边缘。</translation>
+      <translation>目前不支持垂直于的贝塞尔曲线边缘。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3783"/>
@@ -2908,7 +2905,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="4458"/>
       <location filename="../../CommandConstraints.cpp" line="4656"/>
       <source>Tangency to B-spline edge currently unsupported.</source>
-      <translation>目前不支持与B-样条边缘相切。</translation>
+      <translation>目前不支持与贝塞尔曲线边缘相切。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4948"/>
@@ -2975,7 +2972,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="6543"/>
       <source>Equality for B-spline edge currently unsupported.</source>
-      <translation>目前不支持 B-样条边缘的等值约束。</translation>
+      <translation>目前不支持贝塞尔曲线条边缘的等值约束。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6573"/>
@@ -3142,7 +3139,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="503"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="581"/>
       <source>At least one of the selected objects was not a B-Spline and was ignored.</source>
-      <translation>至少有一个所选对象不是 B 样条, 被忽略。</translation>
+      <translation>至少有一个所选对象不是 B 样条曲线, 被忽略。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="618"/>
@@ -3190,7 +3187,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="178"/>
       <source>Closing a shape formed by exactly two lines makes no sense.</source>
-      <translation>仅由两条线要产生封闭造型是不可能的。</translation>
+      <translation>仅由两条线要产生闭合形状是不可能的。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="326"/>
@@ -3737,7 +3734,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="134"/>
       <source>Allow to leave sketch edit mode when pressing Esc button</source>
-      <translation>按下Esc按钮时允许离开草图编辑模式</translation>
+      <translation>按下ESC键时允许离开草图编辑模式</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="137"/>
@@ -3874,7 +3871,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="403"/>
       <source>External geometry</source>
-      <translation>外部几何体</translation>
+      <translation>外部参考几何体</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="416"/>
@@ -4158,8 +4155,8 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation type="unfinished">When entering edit mode, force orthographic view of camera.
-Works only when "Restore camera position after editing" is enabled.</translation>
+      <translation>在编辑模式下，强制使用相机的正交投影视图。
+只有当"在编辑后恢复相机位置"启用时才能正常工作。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
@@ -4170,13 +4167,13 @@ Works only when "Restore camera position after editing" is enabled.</translation
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a sketch in Section View mode by default.
-Then objects are only visible behind the sketch plane.</translation>
+      <translation>默认在截面视图模式打开草图。
+只有在草图平面后面的对象可见。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
       <source>Open sketch in Section View mode</source>
-      <translation type="unfinished">Open sketch in Section View mode</translation>
+      <translation>在截面视图模式打开草图</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="434"/>
@@ -5030,12 +5027,14 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6651"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation>约束不足草图有 &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 个&lt;/span&gt;&lt;/a&gt; 自由度. %1</translation>
+      <translation>约束不足草图有 &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 个&lt;/span&gt;&lt;/a&gt; 自由度。
+%1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6654"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
-      <translation>约束不足草图有 &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 个&lt;/span&gt;&lt;/a&gt; 自由度. %2</translation>
+      <translation>约束不足草图有 &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 个&lt;/span&gt;&lt;/a&gt; 自由度。
+%2</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6659"/>
@@ -5063,7 +5062,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="970"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="972"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>减少贝塞尔曲线选定节点的多重性</translation>
+      <translation>减少贝B样条曲线选定节点的多重性</translation>
     </message>
   </context>
   <context>
@@ -5099,7 +5098,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="362"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="364"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control point weight for all B-splines</translation>
+      <translation>切换所有B样条曲线曲线控制多边形的显示和隐藏</translation>
     </message>
   </context>
   <context>
@@ -5108,7 +5107,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="340"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="342"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
-      <translation>切换所有 B-样条曲线控制多边形的显示和隐藏</translation>
+      <translation>切换所有B样条曲线控制多边形的显示和隐藏</translation>
     </message>
   </context>
   <context>
@@ -5282,7 +5281,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="5990"/>
       <location filename="../../CommandCreateGeo.cpp" line="5991"/>
       <source>Creates a radius between two lines</source>
-      <translation type="unfinished">Creates a radius between two lines</translation>
+      <translation>在两条线之间创建半径</translation>
     </message>
   </context>
   <context>
@@ -5341,7 +5340,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="5994"/>
       <location filename="../../CommandCreateGeo.cpp" line="5995"/>
       <source>Fillet that preserves constraints and intersection point</source>
-      <translation type="unfinished">Fillet that preserves constraints and intersection point</translation>
+      <translation>保留约束个交点的圆角</translation>
     </message>
   </context>
   <context>
@@ -5383,13 +5382,13 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5115"/>
       <source>Periodic B-spline by control points</source>
-      <translation>周期 B 样条的控制点</translation>
+      <translation>周期贝塞尔曲线的控制点</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5116"/>
       <location filename="../../CommandCreateGeo.cpp" line="5117"/>
       <source>Create a periodic B-spline by control points</source>
-      <translation>由控制点创建周期 B 样条</translation>
+      <translation>由控制点创建周期贝塞尔曲线</translation>
     </message>
   </context>
   <context>

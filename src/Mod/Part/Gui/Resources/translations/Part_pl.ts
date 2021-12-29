@@ -954,7 +954,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="214"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Kierownica1</translation>
+      <translation>Linia kontrolna 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="215"/>
@@ -966,7 +966,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="217"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Kierownica2</translation>
+      <translation>Linia kontrolna 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="218"/>
@@ -4737,7 +4737,7 @@ rozmiar pliku STEP.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="69"/>
       <source>Deviation</source>
-      <translation type="unfinished">Deviation</translation>
+      <translation>Odchylenie</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="70"/>
@@ -5452,7 +5452,7 @@ dołączanego obiektu.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="833"/>
       <source>%1 (add %2)</source>
-      <translation>%1(dodaj%2)</translation>
+      <translation>%1 (dodaj %2)</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="838"/>

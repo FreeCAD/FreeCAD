@@ -2,15 +2,216 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ro" sourcelanguage="en">
   <context>
-    <name>AddonInstaller</name>
-    <message>
-      <location filename="addonmanager_workers.py" line="535"/>
-      <source>Installed location</source>
-      <translation>Locația unde s-a efectuat instalarea</translation>
-    </message>
-  </context>
-  <context>
     <name>AddonsInstaller</name>
+    <message>
+      <location filename="package_details.py" line="96"/>
+      <source>Version</source>
+      <translation>Versiunea</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="103"/>
+      <source>Unknown version (no package.xml file found)</source>
+      <translation type="unfinished">Unknown version (no package.xml file found)</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="108"/>
+      <source>installed on</source>
+      <translation type="unfinished">installed on</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="118"/>
+      <source>installed</source>
+      <translation type="unfinished">installed</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="126"/>
+      <source>Update available to version</source>
+      <translation type="unfinished">Update available to version</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="144"/>
+      <source>This is the latest version available</source>
+      <translation type="unfinished">This is the latest version available</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="151"/>
+      <source>Updated, please restart FreeCAD to use</source>
+      <translation type="unfinished">Updated, please restart FreeCAD to use</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="159"/>
+      <source>Update check in progress</source>
+      <translation type="unfinished">Update check in progress</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="163"/>
+      <source>Automatic update checks disabled</source>
+      <translation type="unfinished">Automatic update checks disabled</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="172"/>
+      <source>Installation location</source>
+      <translation type="unfinished">Installation location</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="312"/>
+      <source>Fetching README.md from package repository</source>
+      <translation type="unfinished">Fetching README.md from package repository</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="407"/>
+      <source>Install</source>
+      <translation type="unfinished">Install</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="410"/>
+      <source>Uninstall</source>
+      <translation type="unfinished">Uninstall</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="413"/>
+      <source>Update</source>
+      <translation>Actualizare</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="416"/>
+      <source>Check for Update</source>
+      <translation type="unfinished">Check for Update</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="419"/>
+      <source>Run Macro</source>
+      <translation type="unfinished">Run Macro</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="424"/>
+      <source>Return to package list</source>
+      <translation type="unfinished">Return to package list</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="package_details.py" line="431"/>
+      <source>Delete cached version of this README and re-download</source>
+      <translation type="unfinished">
+        <numerusform>Delete cached version of this README and re-download</numerusform>
+        <numerusform>Delete cached version of this README and re-download</numerusform>
+        <numerusform>Delete cached version of this README and re-download</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="119"/>
+      <source>Filter is valid</source>
+      <translation type="unfinished">Filter is valid</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="125"/>
+      <source>Filter regular expression is invalid</source>
+      <translation type="unfinished">Filter regular expression is invalid</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="180"/>
+      <source>Click for details about package</source>
+      <translation type="unfinished">Click for details about package</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="185"/>
+      <source>Click for details about workbench</source>
+      <translation type="unfinished">Click for details about workbench</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="190"/>
+      <source>Click for details about macro</source>
+      <translation type="unfinished">Click for details about macro</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="326"/>
+      <source>Maintainer</source>
+      <translation type="unfinished">Maintainer</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="330"/>
+      <source>Maintainers:</source>
+      <translation type="unfinished">Maintainers:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="567"/>
+      <source>Installed</source>
+      <translation>Instalat</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="404"/>
+      <source>Up-to-date</source>
+      <translation type="unfinished">Up-to-date</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="586"/>
+      <source>Update available</source>
+      <translation>Actualizare disponibila</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="414"/>
+      <source>Pending restart</source>
+      <translation type="unfinished">Pending restart</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="372"/>
+      <source>Installed version</source>
+      <translation type="unfinished">Installed version</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="380"/>
+      <source>Unknown version</source>
+      <translation type="unfinished">Unknown version</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="383"/>
+      <source>Installed on</source>
+      <translation type="unfinished">Installed on</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="394"/>
+      <source>Available version</source>
+      <translation type="unfinished">Available version</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="566"/>
+      <source>Show Addons containing:</source>
+      <translation type="unfinished">Show Addons containing:</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="569"/>
+      <source>All</source>
+      <translation>Toate</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="572"/>
+      <source>Workbenches</source>
+      <translation>Banc de lucru</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="575"/>
+      <source>Macros</source>
+      <translation>Macro-uri</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="578"/>
+      <source>Preference Packs</source>
+      <translation type="unfinished">Preference Packs</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="582"/>
+      <source>Filter</source>
+      <translation>Filtru</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="585"/>
+      <source>OK</source>
+      <translation>OK</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="135"/>
+      <source>Failed to connect to</source>
+      <translation type="unfinished">Failed to connect to</translation>
+    </message>
     <message>
       <location filename="addonmanager_workers.py" line="167"/>
       <source>Unable to download addon list.</source>
@@ -22,9 +223,9 @@
       <translation>Lista atelierelor a fost actualizată.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="738"/>
-      <source>Outdated GitPython detected, consider upgrading with pip.</source>
-      <translation>GitPython vechi detectat, luați în considerare actualizarea cu pip.</translation>
+      <location filename="addonmanager_workers.py" line="261"/>
+      <source>Failed loading</source>
+      <translation type="unfinished">Failed loading</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="296"/>
@@ -47,6 +248,21 @@
       <translation>Pare că există o problemă in conectarea la Wiki, prin urmare momentan nu se poate prelua lista de macro Wiki</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="367"/>
+      <source>Unable to fetch git updates for workbench</source>
+      <translation type="unfinished">Unable to fetch git updates for workbench</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="419"/>
+      <source>Failed to read metadata from</source>
+      <translation type="unfinished">Failed to read metadata from</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="514"/>
+      <source>Done locating macros.</source>
+      <translation type="unfinished">Done locating macros.</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Recuperez descrierea...</translation>
@@ -67,14 +283,19 @@
       <translation>Lipsește biblioteca Python Markdown.</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="521"/>
+      <source>This addon is already installed.</source>
+      <translation>Acest addon este deja instalat.</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="533"/>
       <source>An update is available for this addon.</source>
       <translation>O actualizare este disponibilă pentru acest addon.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="521"/>
-      <source>This addon is already installed.</source>
-      <translation>Acest addon este deja instalat.</translation>
+      <location filename="addonmanager_workers.py" line="738"/>
+      <source>Outdated GitPython detected, consider upgrading with pip.</source>
+      <translation>GitPython vechi detectat, luați în considerare actualizarea cu pip.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="547"/>
@@ -95,6 +316,11 @@
       <location filename="addonmanager_workers.py" line="564"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
       <translation>Acest ambient de lucru nu mai poate fi întreținut și instalarea sa pe un sistem Python 3 va cauza mai mult decât probabil erori la pornire sau în timpul utilizării.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation type="unfinished">Retrieving macro description...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="653"/>
@@ -147,16 +373,6 @@
       <translation>Un macro a fost instalat și este disponibil sub meniul Macro -&gt; Macros</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="835"/>
-      <source>Missing workbench</source>
-      <translation>Lipsește ambientul de lucru</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="844"/>
-      <source>Missing python module</source>
-      <translation>Lipsește modulul Python</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="854"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
       <translation>Modulul opțional Python lipsește (nu împiedică instalarea)</translation>
@@ -165,6 +381,26 @@
       <location filename="addonmanager_workers.py" line="857"/>
       <source>Some errors were found that prevent to install this workbench</source>
       <translation>Au fost găsite unele erori care împiedică instalarea ambientului de lucru</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation type="unfinished">Error updating module </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation type="unfinished">Please fix manually</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="835"/>
+      <source>Missing workbench</source>
+      <translation>Lipsește ambientul de lucru</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="844"/>
+      <source>Missing python module</source>
+      <translation>Lipsește modulul Python</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="859"/>
@@ -187,9 +423,19 @@
       <translation>Instalat cu succes</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="1403"/>
+      <source>Retrieving package metadata...</source>
+      <translation type="unfinished">Retrieving package metadata...</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Programele de tip addon ce pot fi instalate aici nu fac parte oficial din FreeCAD, și nu sunt revizionate de echipa FreeCAD. Asigurați-vă că programele instalate sunt sigure!</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="258"/>
+      <source>Loading addon information</source>
+      <translation type="unfinished">Loading addon information</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="199"/>
@@ -217,6 +463,11 @@
       <translation type="unfinished">Restart later</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="534"/>
+      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
+      <translation type="unfinished">Addon Manager: Skipping update check because AutoCheck user preference is False</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Verifica actualizări...</translation>
@@ -235,11 +486,6 @@
       <location filename="AddonManager.py" line="266"/>
       <source>No update available</source>
       <translation>Nu există actualizări disponibile</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="567"/>
-      <source>Installed</source>
-      <translation>Instalat</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="433"/>
@@ -267,19 +513,49 @@
       <translation>Macro șters cu succes.</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="504"/>
-      <source>Macro could not be removed.</source>
-      <translation>Macro nu a putut fi eliminat.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="586"/>
-      <source>Update available</source>
-      <translation>Actualizare disponibila</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Repornire necesară</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation type="unfinished">No updates available</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="703"/>
+      <source>Installation of macro failed</source>
+      <translation type="unfinished">Installation of macro failed</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="774"/>
+      <source>All packages updates failed. Packages:</source>
+      <translation type="unfinished">All packages updates failed. Packages:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="786"/>
+      <source>Failed packages:</source>
+      <translation type="unfinished">Failed packages:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="800"/>
+      <source>Update report</source>
+      <translation type="unfinished">Update report</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="850"/>
+      <source>Installation succeeded</source>
+      <translation type="unfinished">Installation succeeded</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="866"/>
+      <source>Installation failed</source>
+      <translation type="unfinished">Installation failed</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="504"/>
+      <source>Macro could not be removed.</source>
+      <translation>Macro nu a putut fi eliminat.</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>
@@ -303,6 +579,14 @@
       <location filename="AddonManager.py" line="69"/>
       <source>Manage external workbenches and macros</source>
       <translation>Gestionează ambientele de lucru și macro-urile externe</translation>
+    </message>
+  </context>
+  <context>
+    <name>AddonInstaller</name>
+    <message>
+      <location filename="addonmanager_workers.py" line="535"/>
+      <source>Installed location</source>
+      <translation>Locația unde s-a efectuat instalarea</translation>
     </message>
   </context>
   <context>

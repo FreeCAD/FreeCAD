@@ -196,7 +196,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Boyutu, içeriğe bakarak otomatik ayarla</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
@@ -3085,7 +3085,7 @@ Yapı oluşturma iptal edildi.</translation>
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Yapı araçları</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -3582,7 +3582,7 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Bir araç seçin...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>
@@ -4610,12 +4610,12 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     <message>
       <location filename="ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Yapısal Sistem</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>Seçilen bir yapı ve eksenden yapısal sistem nesnesi oluştur</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="270"/>
@@ -4630,7 +4630,7 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Yapı araçları</translation>
     </message>
   </context>
   <context>

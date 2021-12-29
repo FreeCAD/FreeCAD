@@ -51,12 +51,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+      <translation>Indien waar, dan worden alleen solids verzameld door dit object wanneer er verwezen wordt vanuit andere bestanden</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>Een MateriaalNaam:SolidIndexesList map die betrekking heeft op de materiaalnamen met een solid index om te gebruiken, als er verwijzen vanuit dit object naar andere bestanden zijn</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1015"/>
@@ -96,12 +96,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="537"/>
       <source>The font to be used for texts</source>
-      <translation>Het lettertype dat wordt gebruikt voor teksten</translation>
+      <translation>Het lettertype dat wordt gebruikt voor de teksten</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="540"/>
       <source>The font size of texts</source>
-      <translation>De tekengrootte van teksten</translation>
+      <translation>De lettergrootte van de teksten</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="543"/>
@@ -186,22 +186,22 @@
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>De selectie box voor nieuw gemaakte objecten uitgedrukt als [XMin,YMin,ZMin,XMax,YMax,ZMax,ZMax]</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Schakelt auto-groep box aan/uit</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Automatische grootte instellen van de inhoud</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Een marge te gebruiken als autosize is ingeschakeld</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="192"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="ArchComponent.py" line="227"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
-      <translation>Een optionele hogere resolutie gaas of vorm voor dit object</translation>
+      <translation>Een optionele hogere resolutie raster, of vorm voor dit object</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="229"/>
@@ -296,12 +296,12 @@
     <message>
       <location filename="ArchFence.py" line="62"/>
       <source>A single section of the fence</source>
-      <translation>Een enkele sectie van de hek</translation>
+      <translation>Een enkele sectie van het hek</translation>
     </message>
     <message>
       <location filename="ArchFence.py" line="66"/>
       <source>A single fence post</source>
-      <translation>Een enkele hek post</translation>
+      <translation>Een enkele hekpaal</translation>
     </message>
     <message>
       <location filename="ArchFence.py" line="70"/>
@@ -321,7 +321,7 @@
     <message>
       <location filename="ArchFence.py" line="269"/>
       <source>When true, the fence will be colored like the original post and section.</source>
-      <translation>Wanneer waar, zal het hek gekleurd worden zoals de originele paal en sectie.</translation>
+      <translation>Het hek wordt gekleurd zoals de originele paal en de sectie, waneer het waar is.</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="718"/>
@@ -976,22 +976,22 @@
     <message>
       <location filename="ArchStairs.py" line="324"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
+      <translation>Het 'absolute' hoogste niveau van de trap leidt tot</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="330"/>
       <source>The 'left outline' of stairs</source>
-      <translation type="unfinished">The 'left outline' of stairs</translation>
+      <translation>De 'linker contour' van de trap</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="367"/>
       <source>The 'left outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'left outline' of all segments of stairs</translation>
+      <translation>De 'linker contour' van alle segmenten van de trap</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="370"/>
       <source>The 'right outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs</translation>
+      <translation>De 'rechter contour' van alle segmenten van de trap</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="396"/>
@@ -1031,22 +1031,22 @@
     <message>
       <location filename="ArchStairs.py" line="413"/>
       <source>The thickness of the lower floor slab</source>
-      <translation type="unfinished">The thickness of the lower floor slab</translation>
+      <translation>De dikte van de afwerkvloer</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="415"/>
       <source>The thickness of the upper floor slab</source>
-      <translation type="unfinished">The thickness of the upper floor slab</translation>
+      <translation>De dikte van de afwerkvloer</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="417"/>
       <source>The type of connection between the lower slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower slab and the start of the stairs</translation>
+      <translation>Het type verbinding tussen de ondervloer en het begin van de trap</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="420"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation type="unfinished">The type of connection between the end of the stairs and the upper floor slab</translation>
+      <translation>Het type verbinding tussen het einde van de trap en de bovenste vloerplaat</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="289"/>
@@ -1276,7 +1276,7 @@
     <message>
       <location filename="ArchReference.py" line="106"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Voeg objecten van dezelfde materialen samen</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="385"/>
@@ -1621,52 +1621,52 @@
     <message>
       <location filename="ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>De berekende lengte van het extrusie pad</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Start van de offset afstand langs het extrusie pad (positief: verlengd, negatief: ingekort)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>Start van de offset afstand langs het extrusie pad (positief: verlengd, negatief: ingekort</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Einde van de offset afstand langs het extrusie pad (positief: verlengd, negatief: ingekort)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>Einde van de offset afstand langs het extrusie pad (positief: verlengd, negatief: ingekort</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="684"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+      <translation>Automatisch loodrecht uitlijnen van de Basis van het object op de Werkas</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>X offset tussen de basis oorsprong en de werkas (alleen gebruiken als BasePerpendicularToTool waar is)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Y offset tussen de basis oorsprong en de werkas (alleen gebruiken als BasePerpendicularToTool waar is)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="690"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Spiegel de Basis langs de Y-as (alleen gebruiken als BasePerpendicularToTool waar is)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="692"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Roteer de basis om de werkas (alleen gebruiken als BasePerpendicularToTool waar is)</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="404"/>
@@ -1771,7 +1771,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>De assen worden niet weergegeven als één lijn, maar als twee lijnen van de gegeven lengte, als de waarde niet nul is</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="314"/>
@@ -2455,7 +2455,7 @@ Gebouw creatie afgebroken.</translation>
     <message>
       <location filename="ArchCommands.py" line="715"/>
       <source>doesn't contain any solid</source>
-      <translation>bevat geen volumemodel</translation>
+      <translation>bevat geen solid</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="721"/>
@@ -3085,7 +3085,7 @@ Gebouw creatie afgebroken.</translation>
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Structuuropties</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -3467,12 +3467,12 @@ Als uitvoering = 0 dan is de uitvoering zo berekend dat de hoogte hetzelfde is a
     <message>
       <location filename="ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Maak Structuren van de selectie</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="222"/>
       <source>Please select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Selecteer eerst het basisobject en daarna de randen om deze te gebruiken als extrusie paden</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="245"/>
@@ -3482,7 +3482,7 @@ Als uitvoering = 0 dan is de uitvoering zo berekend dat de hoogte hetzelfde is a
     <message>
       <location filename="ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Selecteer alstublieft minimaal een as object</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="345"/>
@@ -3577,7 +3577,7 @@ Als uitvoering = 0 dan is de uitvoering zo berekend dat de hoogte hetzelfde is a
     <message>
       <location filename="ArchStructure.py" line="1186"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Extrusie gereedschap</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1325"/>
@@ -3587,7 +3587,7 @@ Als uitvoering = 0 dan is de uitvoering zo berekend dat de hoogte hetzelfde is a
     <message>
       <location filename="ArchStructure.py" line="1192"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
-      <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
+      <translation>Selecteer een object of randen om mee te werken(extrusie pad)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1247"/>
@@ -4599,22 +4599,22 @@ Als uitvoering = 0 dan is de uitvoering zo berekend dat de hoogte hetzelfde is a
     <message>
       <location filename="ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Meerdere structuren</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Maak meerdere boog objecten vanuit een geselecteerde basis, gebruik elke geselecteerde rand als een extrusie pad</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Structureel systeem</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>Maak een structureel systeemobject van een geselecteerde object en as</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="270"/>
@@ -4629,7 +4629,7 @@ Als uitvoering = 0 dan is de uitvoering zo berekend dat de hoogte hetzelfde is a
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Structuuropties</translation>
     </message>
   </context>
   <context>

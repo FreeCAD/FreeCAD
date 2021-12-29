@@ -128,7 +128,7 @@ Pri krožnih in obročnih razpostavitvah bo vzeta njegova postavitev, položaj i
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>Določilka, ki narekuje število somernostnih ravnin obročne razpostavitve.</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
@@ -236,13 +236,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>Predmet in določene njegove podprvine,
+ki jih meri ta kotirni predmet.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Obstajajo različne možnosti:
+- Predmet in eden izmed njegovih robov.
+- Predmet in dve njegovi ogljišči.
+- Ločni predmet in njegov rob.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -562,6 +562,11 @@ ali s podprvine "NOglišč", "NRobov" ali "NPloskev", če je določeno.</transla
       <translation>Zapolni črke s ploskvami</translation>
     </message>
     <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Prikaži posamezne predmete razpostavitve</translation>
@@ -723,11 +728,6 @@ Ta lastnost je le za branje, saj je število odvisno od točk znotraj "Točkovne
       <translation>Datoteka PAT, ki jo uporablja ta predmet</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Oblika tega objekta</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Ime vzorca, ki ga uporablja ta predmet</translation>
@@ -736,6 +736,11 @@ Ta lastnost je le za branje, saj je število odvisno od točk znotraj "Točkovne
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Merilo vzorca, ki ga uporablja ta predmet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Oblika tega objekta</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1891,7 +1896,7 @@ If other objects are selected they are ignored.</source>
     <message>
       <location filename="gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Ustvari črtkanja na ploskvah izbranega predmeta</translation>
     </message>
   </context>
   <context>
@@ -3365,7 +3370,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="importDWG.py" line="286"/>
       <source>LibreDWG error</source>
-      <translation type="unfinished">LibreDWG error</translation>
+      <translation>LibreDWG napaka</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="295"/>
@@ -3380,22 +3385,22 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="importDWG.py" line="231"/>
       <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</translation>
+      <translation>Napaka med pretvarjanjem DWGja. Poskusite prestaviti datoteko DWG v mapo, katere pot ne vsebuje presledkov in neangleških znakov ali poskusite shraniti v starejšo različico DWGja.</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="300"/>
       <source>ODA File Converter not found</source>
-      <translation type="unfinished">ODA File Converter not found</translation>
+      <translation>Pretvornika datoteke ODA ni mogoče najti</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="310"/>
       <source>QCAD error</source>
-      <translation type="unfinished">QCAD error</translation>
+      <translation>QCAD napaka</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Vse oblike morajo biti soravninske (koplanarne)</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="696"/>
@@ -3407,7 +3412,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="WorkingPlane.py" line="704"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Izbrane oblike morajo tvoriti ravnino</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -3834,7 +3839,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="make_sketch.py" line="104"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>Ni najdenih oblik</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="109"/>
@@ -3846,7 +3851,7 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
     <message>
       <location filename="make_sketch.py" line="111"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Vse oblike morajo biti ravninske</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
@@ -3899,6 +3904,16 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
       <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Napačen vnos: podprvine ni v predmetu.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
     </message>
     <message>
       <location filename="make_label.py" line="278"/>
@@ -3979,6 +3994,36 @@ Ta možnost ni na voljo, če je v lastnostih očrta možnost "Uporabi osnovnike 
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>preseljen slog "Besedila osnutka" v "Besedilo"</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>Aktiviraj to plast</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>Izberite vsebino plasti</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Združi podvojene plasti</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Dodaj novo plast</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4312,7 +4357,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_dimensions.py" line="508"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>Prekratek rob!</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
@@ -5055,16 +5100,6 @@ Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation>Izberite kót sukanja</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>Aktiviraj to plast</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>Izberite vsebino plasti</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>

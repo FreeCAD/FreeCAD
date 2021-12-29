@@ -305,7 +305,7 @@ ViewProviderSketch::ViewProviderSketch()
     ADD_PROPERTY_TYPE(SectionView,(false),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, only objects (or part of) located behind the sketch plane are visible.");
     ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",(App::PropertyType)(App::Prop_None),"Name of the workbench to activate when editing this sketch.");
 
-    // Default values that will be overriden by preferences (if existing)
+    // Default values that will be overridden by preferences (if existing)
     PointSize.setValue(4);
 
     // visibility automation and other parameters: update parameter and property defaults to follow preferences

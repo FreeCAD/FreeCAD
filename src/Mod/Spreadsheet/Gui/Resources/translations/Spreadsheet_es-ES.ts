@@ -51,7 +51,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="933"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>Añadir controlador</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="973"/>
@@ -64,7 +64,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="919"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>Añadir controlador</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="922"/>
@@ -386,15 +386,15 @@
     </message>
     <message>
       <source>Edit cell</source>
-      <translation>Modificar</translation>
+      <translation>Editar celda</translation>
     </message>
     <message>
       <source>Insert rows</source>
-      <translation>Insertar fila</translation>
+      <translation>Insertar filas</translation>
     </message>
     <message>
       <source>Remove rows</source>
-      <translation>Eliminar fila</translation>
+      <translation>Eliminar filas</translation>
     </message>
     <message>
       <source>Insert columns</source>
@@ -402,7 +402,7 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation>Borrar</translation>
+      <translation>Limpiar celda(s)</translation>
     </message>
     <message>
       <source>Set foreground color</source>
@@ -433,7 +433,7 @@
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation>&amp;Alinear</translation>
+      <translation>&amp;Alineacion</translation>
     </message>
     <message>
       <source>Horizontal</source>
@@ -683,7 +683,7 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Escape Character: </source>
-      <translation type="unfinished">Escape Character: </translation>
+      <translation>Carácter de Escape: </translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>

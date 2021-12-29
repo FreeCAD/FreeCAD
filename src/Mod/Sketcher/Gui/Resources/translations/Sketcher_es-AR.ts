@@ -3878,7 +3878,7 @@ Requiere volver a ingresar al modo de edición para tener efecto.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="416"/>
       <source>Color of fully constrained vertex color in edit mode</source>
-      <translation>Color del color de vértices completamente restringido en modo edición</translation>
+      <translation>Color de vértices totalmente restringidos en modo de edición</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="442"/>
@@ -4156,13 +4156,13 @@ Por defecto en: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>Al entrar en modo edición, fuerza la vista ortográfica de la cámara.
+      <translation>Al entrar en modo edición, fuerza la vista ortogonal de la cámara.
 Solo funciona cuando "Restaurar la posición de la cámara después de la edición" está activada.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="392"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation>Forzar cámara ortográfica al entrar en modo edición</translation>
+      <translation>Forzar cámara ortogonal al entrar en modo edición</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
@@ -4507,7 +4507,7 @@ Sin embargo, no se encontraron restricciones que vinculen a los puntos finales.<
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="265"/>
       <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
-      <translation>Restringir visualización de selección de filtros de pistas para que las restricciones filtradas estén ocultas</translation>
+      <translation>La visualización de las restricciones sigue la selección de filtros de forma que las restricciones excluidas por el filtro sean ocultadas</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="268"/>
@@ -4959,7 +4959,7 @@ Los puntos deben establecerse más cerca de una quinta parte del tamaño de la c
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6545"/>
       <source>Please remove the following redundant constraints:</source>
-      <translation>Elimine las siguientes restricciones redundantes:</translation>
+      <translation>Por favor, elimine las siguientes restricciones redundantes:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6551"/>
@@ -5028,7 +5028,7 @@ Los puntos deben establecerse más cerca de una quinta parte del tamaño de la c
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6651"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation>Croquis bajo-restringido con &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 grados&lt;/span&gt;&lt;/a&gt; de libertad</translation>
+      <translation>Croquis sub-restringido con &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 grado&lt;/span&gt;&lt;/a&gt; de libertad. %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6654"/>
@@ -5298,7 +5298,7 @@ Los puntos deben establecerse más cerca de una quinta parte del tamaño de la c
       <location filename="../../CommandCreateGeo.cpp" line="7708"/>
       <location filename="../../CommandCreateGeo.cpp" line="7709"/>
       <source>Create a hexagon by its center and by one corner</source>
-      <translation>Crer un hexágono por su centro y por una esquina</translation>
+      <translation>Crea un hexágono por su centro y por una esquina</translation>
     </message>
   </context>
   <context>

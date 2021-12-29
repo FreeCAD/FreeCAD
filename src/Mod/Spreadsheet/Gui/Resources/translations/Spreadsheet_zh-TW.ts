@@ -679,7 +679,7 @@ Spreadsheet.my_alias_name取代Spreadsheet.B1</translation>
     </message>
     <message>
       <source>\</source>
-      <translation type="unfinished">\</translation>
+      <translation>\</translation>
     </message>
     <message>
       <source>Escape Character: </source>
