@@ -342,7 +342,7 @@ GeoListModel<GeometryFacadeUniquePtr>::GeoListModel(
     }
 }
 
-template <>
+template <> SketcherExport
 GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>::~GeoListModel()
 {
     // GeometryFacade is responsible for taken ownership of its pointers and deleting them.
@@ -351,8 +351,8 @@ GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>::~GeoListModel()
 
 
 // instantiate the types so that other translation units can access template constructors
-template class GeoListModel<Part::Geometry *>;
-template class GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>;
+template class SketcherExport GeoListModel<Part::Geometry *>;
+template class SketcherExport GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>;
 
 
 } // namespace Sketcher
