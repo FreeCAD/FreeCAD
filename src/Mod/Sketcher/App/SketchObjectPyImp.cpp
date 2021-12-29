@@ -1551,6 +1551,25 @@ PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::insertBSplineKnot(PyObject *args)
+{
+    int GeoId;
+    double knotParam;
+    int multiplicity = 1;
+
+    if (!PyArg_ParseTuple(args, "id|i", &GeoId, &knotParam, &multiplicity))
+        return 0;
+
+    if (this->getSketchObjectPtr()->insertBSplineKnot(GeoId, knotParam, multiplicity)==false) {
+        std::stringstream str;
+        str << "Knot insertion failed for: " << GeoId;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::autoconstraint(PyObject *args)
 {
     double precision = Precision::Confusion() * 1000;
