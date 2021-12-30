@@ -128,7 +128,7 @@ Utzi propietate hau hutsik 'Ardatza' eta 'Zentroa' eskuz ezarri ahal izateko.</t
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>Matrize zirkularrak zenbat simetria-plano izango dituen zehazten duen parametroa.</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
@@ -236,13 +236,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>Kota-objektu hau neurtzen ari den objektua
+eta haren azpielementu zehatzak.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Aukera bat baino gehiago dago:
+- Objektu bat eta bere ertz bat.
+- Objektu bat eta bere bi erpin.
+- Arku-objektu bat eta bere ertza.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -564,6 +564,11 @@ nagusitik erauziko dira, edo 'ErpinaN', 'ErtzaN' edo 'AurpegiaN' azpielementutik
       <translation>Bete letrak aurpegiekin</translation>
     </message>
     <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Erakutsi matrizeko banakako elementuak</translation>
@@ -725,11 +730,6 @@ Propietate hau irakurtzeko soilik da, kopuru hori 'Puntu-objektua' elementuak di
       <translation>Objektu honek darabilen PAT fitxategia</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Objektu honen forma</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Objektu honek darabilen eredu-izena</translation>
@@ -738,6 +738,11 @@ Propietate hau irakurtzeko soilik da, kopuru hori 'Puntu-objektua' elementuak di
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Objektu honek darabilen eredu-eskala</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Objektu honen forma</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1896,7 +1901,7 @@ Beste objektu batzuk hautatuta badude, ez ikusiarena egiten zaie.</translation>
     <message>
       <location filename="gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Itzaleztadurak sortzen ditu hautatutako objektu baten aurpegietan</translation>
     </message>
   </context>
   <context>
@@ -3373,7 +3378,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="importDWG.py" line="286"/>
       <source>LibreDWG error</source>
-      <translation type="unfinished">LibreDWG error</translation>
+      <translation>LibreDWG errorea</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="295"/>
@@ -3388,22 +3393,22 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="importDWG.py" line="231"/>
       <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</translation>
+      <translation>Errorea DWGa bihurtzean. Saiatu DWG fitxategia zuriunerik gabeko eta ingelesezkoak ez diren karaktererik gabeko direktorio-bide batera, edo saiatu DGW bertsio zaharrago batean gordetzen.</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="300"/>
       <source>ODA File Converter not found</source>
-      <translation type="unfinished">ODA File Converter not found</translation>
+      <translation>Ez da aurkitu ODA fitxategi-bihurtzailea</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="310"/>
       <source>QCAD error</source>
-      <translation type="unfinished">QCAD error</translation>
+      <translation>QCAD errorea</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Forma guztiek planokide izan behar dute</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="696"/>
@@ -3415,7 +3420,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="WorkingPlane.py" line="704"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Hautatutako formek plano bat definitu behar dute</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -3842,7 +3847,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="make_sketch.py" line="104"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>Ez da formarik aurkitu</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="109"/>
@@ -3854,7 +3859,7 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
     <message>
       <location filename="make_sketch.py" line="111"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Forma guztiek planar izan behar dute</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
@@ -3907,6 +3912,16 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Okerreko sarrera: azpielementua ez dago objektuan.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
     </message>
     <message>
       <location filename="make_label.py" line="278"/>
@@ -3987,6 +4002,36 @@ Ez dago erabilgarri zirriborroen 'Erabili piezen jatorrizkoak' aukera gaituta ba
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>'DraftText' mota 'Text' motara aldatu da</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>Aktibatu geruza hau</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>Hautatu geruza-edukiak</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Fusionatu geruza bikoiztuak</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Gehitu geruza berria</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4320,7 +4365,7 @@ FreeCADek liburutegi horiek deskarga ditzan gaitzeko, erantzun 'Bai'.</translati
     <message>
       <location filename="gui_dimensions.py" line="508"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>Ertz laburregia.</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
@@ -5063,16 +5108,6 @@ Amaierako angelua izango da oinarriko angelua gehi kantitate hau.</translation>
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation>Aukeratu biraketa-angelua</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>Aktibatu geruza hau</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>Hautatu geruza-edukiak</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>

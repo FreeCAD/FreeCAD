@@ -1284,7 +1284,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
     </message>
     <message>
       <source>Adaptive</source>
-      <translation>Adaptativo</translation>
+      <translation>Adaptivo</translation>
     </message>
     <message>
       <source>Frontal</source>

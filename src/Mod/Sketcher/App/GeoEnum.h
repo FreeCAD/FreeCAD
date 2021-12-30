@@ -61,13 +61,13 @@ namespace Sketcher
  *
  * For Geometry lists, refer to GeoListModel template.
  */
-struct SketcherExport GeoEnum
+enum GeoEnum
 {
-    static const int RtPnt;     // GeoId of the Root Point
-    static const int HAxis;     // GeoId of the Horizontal Axis
-    static const int VAxis;     // GeoId of the Vertical Axis
-    static const int RefExt;    // Starting GeoID of external geometry (negative geoIds starting at this index)
-    static const int GeoUndef;  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
+    RtPnt = -1,     // GeoId of the Root Point
+    HAxis = -1,     // GeoId of the Horizontal Axis
+    VAxis = -2,     // GeoId of the Vertical Axis
+    RefExt = -3,    // Starting GeoID of external geometry ( negative geoIds starting at this index)
+    GeoUndef = -2000,  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
 };
 
 /*!
@@ -96,7 +96,7 @@ enum class PointPos : int {
  * ordered containers.
  *
  */
-class SketcherExport GeoElementId
+class GeoElementId
 {
 public:
     /** @brief default constructor initialises object to an undefined (invalid) element.
@@ -130,9 +130,13 @@ public:
 };
 
 // inline constexpr constructor
-constexpr GeoElementId::GeoElementId(int geoId, PointPos pos): GeoId(geoId), Pos(pos)
+inline constexpr GeoElementId::GeoElementId(int geoId, PointPos pos): GeoId(geoId), Pos(pos)
 {
 }
+
+inline constexpr const GeoElementId GeoElementId::RtPnt = GeoElementId(GeoEnum::RtPnt, PointPos::start);
+inline constexpr const GeoElementId GeoElementId::HAxis = GeoElementId(GeoEnum::HAxis, PointPos::none);
+inline constexpr const GeoElementId GeoElementId::VAxis = GeoElementId(GeoEnum::VAxis, PointPos::end);
 
 } // namespace Sketcher
 

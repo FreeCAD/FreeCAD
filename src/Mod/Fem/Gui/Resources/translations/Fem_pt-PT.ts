@@ -101,12 +101,12 @@
     <message>
       <location filename="commands.py" line="166"/>
       <source>Constant vacuum permittivity</source>
-      <translation type="unfinished">Constant vacuum permittivity</translation>
+      <translation>Permissividade de vácuo constante</translation>
     </message>
     <message>
       <location filename="commands.py" line="170"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>Gera uma permissividade de vácuo constante FEM para substituir o valor padrão</translation>
     </message>
   </context>
   <context>
@@ -223,7 +223,7 @@
     <message>
       <location filename="commands.py" line="325"/>
       <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
+      <translation>Cria uma seção de fluido FEM para fluxo 1D</translation>
     </message>
   </context>
   <context>
@@ -283,12 +283,12 @@
     <message>
       <location filename="commands.py" line="457"/>
       <source>Electricforce equation</source>
-      <translation type="unfinished">Electricforce equation</translation>
+      <translation>Equação de força elétrica</translation>
     </message>
     <message>
       <location filename="commands.py" line="461"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>Cria uma equação FEM para forças elétricas</translation>
     </message>
   </context>
   <context>
@@ -413,7 +413,7 @@
     <message>
       <location filename="commands.py" line="624"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Cria um material para materiais de matriz reforçada como o concreto</translation>
     </message>
   </context>
   <context>

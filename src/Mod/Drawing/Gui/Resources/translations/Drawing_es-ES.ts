@@ -572,7 +572,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Make orthographic</source>
-      <translation>Hacer ortográfica</translation>
+      <translation>Hacer ortogonal</translation>
     </message>
     <message>
       <source>Show drawing</source>

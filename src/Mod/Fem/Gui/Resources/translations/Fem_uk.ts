@@ -101,12 +101,12 @@
     <message>
       <location filename="commands.py" line="166"/>
       <source>Constant vacuum permittivity</source>
-      <translation type="unfinished">Constant vacuum permittivity</translation>
+      <translation>Постійна проникність вакууму</translation>
     </message>
     <message>
       <location filename="commands.py" line="170"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>Створює постійну електропроникність вакууму для заміни стандартного значення</translation>
     </message>
   </context>
   <context>
@@ -127,12 +127,12 @@
     <message>
       <location filename="commands.py" line="202"/>
       <source>Constraint centrif</source>
-      <translation type="unfinished">Constraint centrif</translation>
+      <translation>Констрайнт-центр</translation>
     </message>
     <message>
       <location filename="commands.py" line="206"/>
       <source>Creates a FEM constraint centrif</source>
-      <translation type="unfinished">Creates a FEM constraint centrif</translation>
+      <translation>Створює МСЕ-центр обмеження МСЕ</translation>
     </message>
   </context>
   <context>
@@ -179,12 +179,12 @@
     <message>
       <location filename="commands.py" line="270"/>
       <source>Constraint sectionprint</source>
-      <translation type="unfinished">Constraint sectionprint</translation>
+      <translation>Символ обмеження</translation>
     </message>
     <message>
       <location filename="commands.py" line="274"/>
       <source>Creates a FEM constraint sectionprint</source>
-      <translation type="unfinished">Creates a FEM constraint sectionprint</translation>
+      <translation>Створює секцію обмеження МСЕ</translation>
     </message>
   </context>
   <context>
@@ -1399,19 +1399,19 @@
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="43"/>
       <source>Temperature:</source>
-      <translation type="unfinished">Temperature:</translation>
+      <translation>Температура:</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="52"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="56"/>
       <source>25</source>
-      <translation type="unfinished">25</translation>
+      <translation>25</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="72"/>
       <source>ºC</source>
-      <translation type="unfinished">ºC</translation>
+      <translation>ºC</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="81"/>
@@ -1427,8 +1427,7 @@
       <location filename="../../TaskPanelInitialTemperature.ui" line="26"/>
       <source>Insert component's
  initial temperature:</source>
-      <translation type="unfinished">Insert component's
- initial temperature:</translation>
+      <translation>Вставити початкову температуру компонента:</translation>
     </message>
   </context>
   <context>
@@ -1436,12 +1435,12 @@
     <message>
       <location filename="../../Command.cpp" line="1580"/>
       <source>Create a plane function, defined by its origin and normal</source>
-      <translation type="unfinished">Create a plane function, defined by its origin and normal</translation>
+      <translation>Створити функцію площини, яка визначається її початком координат та нормаллю</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1585"/>
       <source>Create a sphere function, defined by its center and radius</source>
-      <translation type="unfinished">Create a sphere function, defined by its center and radius</translation>
+      <translation>Створити функцію сфери, яка визначається її центром та радіусом</translation>
     </message>
   </context>
   <context>
@@ -1465,7 +1464,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="89"/>
       <source>Use internal editor for *.inp files</source>
-      <translation type="unfinished">Use internal editor for *.inp files</translation>
+      <translation>Використовувати вбудований редактор для *.inp-файлів</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="114"/>
@@ -1485,7 +1484,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="166"/>
       <source>Input file splitting</source>
-      <translation type="unfinished">Input file splitting</translation>
+      <translation>Розділення вхідного файлу на фрагменти</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="176"/>

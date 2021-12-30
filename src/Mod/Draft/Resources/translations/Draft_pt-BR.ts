@@ -565,6 +565,11 @@ ou do subelemento 'VertexN', 'EdgeN', ou 'FaceN', respectivamente, se for especi
       <translation>Preencha as letras com faces</translation>
     </message>
     <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Mostrar os elementos individuais do array</translation>
@@ -724,11 +729,6 @@ Esta propriedade é somente leitura, já que o número depende dos outros parâm
       <translation>O arquivo PAT usado por este objeto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>A forma deste objeto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>O nome do padrão usado por este objeto</translation>
@@ -737,6 +737,11 @@ Esta propriedade é somente leitura, já que o número depende dos outros parâm
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>A escala de padrão usada por este objeto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>A forma deste objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -3900,6 +3905,16 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Entrada errada: o subelemento não está no objeto.</translation>
     </message>
     <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
+    </message>
+    <message>
       <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation>Entrada errada: deve ser um texto: 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', ou 'Material'.</translation>
@@ -3978,6 +3993,36 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>tipo 'DraftText' mudado para 'Text'</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>Ativar esta camada</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>Selecionar conteúdo da camada</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Mesclar camadas duplicadas</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Adicionar nova camada</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -5052,16 +5097,6 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation>Escolha o ângulo de rotação</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>Ativar esta camada</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>Selecionar conteúdo da camada</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>

@@ -554,6 +554,11 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
       <translation type="unfinished">Fill letters with faces</translation>
     </message>
     <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>個々の整列要素を表示</translation>
@@ -714,11 +719,6 @@ This property is read-only, as the number depends on the points contained within
       <translation>このオブジェクトで使用されるPATファイル</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>このオブジェクトの形</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>このオブジェクトで使用されているパターン名</translation>
@@ -727,6 +727,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>このオブジェクトで使用されるパターンスケール</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>このオブジェクトの形</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -3878,6 +3883,16 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>誤った入力: オブジェクトにサブ要素がありません。</translation>
     </message>
     <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
+    </message>
+    <message>
       <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation>誤った入力: 「Custom」「Name」「Label」「Position」「Length」「Area」「Volume」「Tag」「Material」のいずれかの文字列でなければなりません。</translation>
@@ -3956,6 +3971,36 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>「DraftText」タイプを「Text」へ変更</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>このレイヤーをアクティブにする</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>レイヤーの内容を選択</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>レイヤーの重複を結合</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>新しいレイヤーの追加</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -5032,16 +5077,6 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation>回転角度を選択</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>このレイヤーをアクティブにする</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>レイヤーの内容を選択</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>

@@ -612,7 +612,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="383"/>
       <source>Edit chamfer edges</source>
-      <translation>Editar bordes del chaflán</translation>
+      <translation>Editar aristas del chaflán</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="528"/>
@@ -2355,7 +2355,7 @@ en sus componentes X, Y y Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1431"/>
       <source>Fillet the selected edges of a shape</source>
-      <translation>Redondea los bordes seleccionados de una forma</translation>
+      <translation>Redondea las aristas seleccionadas de una forma</translation>
     </message>
   </context>
   <context>
@@ -3278,7 +3278,7 @@ Nota: La ubicación se expresa en el espacio local del objeto que se adjunta.</t
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1041"/>
       <source>Chamfer Edges</source>
-      <translation>Aristas del chaflán</translation>
+      <translation>Chaflán en Aristas</translation>
     </message>
   </context>
   <context>
@@ -3497,7 +3497,7 @@ Nota: La ubicación se expresa en el espacio local del objeto que se adjunta.</t
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
       <source>Selected shape:</source>
-      <translation>Figura seleccionada:</translation>
+      <translation>Forma seleccionada:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="40"/>
@@ -3578,7 +3578,7 @@ Nota: La ubicación se expresa en el espacio local del objeto que se adjunta.</t
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <location filename="../../DlgFilletEdges.cpp" line="838"/>
       <source>Start length</source>
-      <translation>Longitud de inicio</translation>
+      <translation>Longitud inicial</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="272"/>

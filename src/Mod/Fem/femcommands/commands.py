@@ -933,12 +933,12 @@ class _SolverCxxtools(CommandManager):
         super(_SolverCxxtools, self).__init__()
         self.pixmap = "FEM_SolverStandard"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCxxtools",
+            "FEM_SolverCalculixCxxtools",
             "Solver CalculiX Standard"
         )
         self.accel = "S, X"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_SolverCxxtools",
+            "FEM_SolverCalculixCxxtools",
             "Creates a standard FEM solver CalculiX with ccx tools"
         )
         self.is_active = "with_analysis"

@@ -128,7 +128,7 @@ Laat deze eigenschap leeg om 'Axis' en 'Center' handmatig in te stellen.</transl
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>Een parameter die bepaalt hoeveel symmetrie vlakken de ronde array zal hebben.</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
@@ -563,6 +563,11 @@ of vanaf de subelement 'VertexN', 'EdgeN', respectievelijk 'FaceN', als deze is 
       <translation type="unfinished">Fill letters with faces</translation>
     </message>
     <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Toon de afzonderlijke array elementen</translation>
@@ -725,11 +730,6 @@ Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de punten in
       <translation type="unfinished">The PAT file used by this object</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>De vorm van dit object</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation type="unfinished">The pattern name used by this object</translation>
@@ -738,6 +738,11 @@ Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de punten in
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>De vorm van dit object</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -3370,7 +3375,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="286"/>
       <source>LibreDWG error</source>
-      <translation type="unfinished">LibreDWG error</translation>
+      <translation>LibreDWG fout</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="295"/>
@@ -3385,22 +3390,22 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="231"/>
       <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</translation>
+      <translation>Fout tijdens DWG conversie. Probeer het DWG bestand te verplaatsen naar een map zonder spaties en niet-dubieuze tekens, of probeer op te slaan naar een lagere DWG versie.</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="300"/>
       <source>ODA File Converter not found</source>
-      <translation type="unfinished">ODA File Converter not found</translation>
+      <translation>Converteerder ODA-bestand niet gevonden</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="310"/>
       <source>QCAD error</source>
-      <translation type="unfinished">QCAD error</translation>
+      <translation>QCAD fout</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Alle vormen moeten in het zelfde vlak liggen</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="696"/>
@@ -3412,7 +3417,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="WorkingPlane.py" line="704"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Geselecteerde Vormen moeten een vlak definiëren</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -3839,7 +3844,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_sketch.py" line="104"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>Vorm niet gevonden</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="109"/>
@@ -3851,7 +3856,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_sketch.py" line="111"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Alle vormen moeten plat zijn</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
@@ -3904,6 +3909,16 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
       <translation>Verkeerde invoer: subelement niet in object.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
     </message>
     <message>
       <location filename="make_label.py" line="278"/>
@@ -3984,6 +3999,36 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>'DraftText' type gemigreerd naar 'Tekst'</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>Activeer deze laag</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>Selecteer inhoud laag</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Dubbele laag samenvoegen</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Nieuwe laag toevoegen</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4317,7 +4362,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_dimensions.py" line="508"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>Rand te kort!</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
@@ -5060,16 +5105,6 @@ De eindhoek zal de basishoek plus dit getal zijn.</translation>
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation>Kies rotatiehoek</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>Activeer deze laag</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>Selecteer inhoud laag</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>

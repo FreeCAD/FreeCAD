@@ -38,7 +38,7 @@ for collision or distance filtering.</source>
     <message>
       <location filename="_CommandExplodeCompound.py" line="56"/>
       <source>Explode compound</source>
-      <translation type="unfinished">Explode compound</translation>
+      <translation>Відкрити об'єднане</translation>
     </message>
     <message>
       <location filename="_CommandExplodeCompound.py" line="62"/>

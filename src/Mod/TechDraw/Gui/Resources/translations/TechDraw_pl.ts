@@ -1255,11 +1255,11 @@
     </message>
     <message>
       <source>Select 2 point objects and 1 View. (1)</source>
-      <translation>Wybierz 2 obiekty punktów i 1 widok. (1)</translation>
+      <translation>Wybierz dwa obiekty punktów i jeden widok. (1)</translation>
     </message>
     <message>
       <source>Select 2 point objects and 1 View. (2)</source>
-      <translation>Wybierz 2 obiekty punktów i 1 widok. (2)</translation>
+      <translation>Wybierz dwa obiekty punktów i jeden widok. (2)</translation>
     </message>
     <message>
       <source>No Feature with Shape in selection.</source>
@@ -1609,7 +1609,7 @@ widoki przekroju lub szczegółów, lub linie prowadzące, które mogłyby zosta
     <message>
       <source>The projection group is not empty, therefore
 the following referencing objects might be lost:</source>
-      <translation>Grupa projekcji nie jest pusta, dlatego
+      <translation>Grupa rzutów nie jest pusta, dlatego
 następujące obiekty odniesienia mogą zostać utracone:</translation>
     </message>
     <message>
@@ -3695,7 +3695,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     <name>TechDrawGui::TaskProjGroup</name>
     <message>
       <source>Projection Group</source>
-      <translation>Grupa projekcji</translation>
+      <translation>Grupa rzutów</translation>
     </message>
     <message>
       <source>Projection</source>

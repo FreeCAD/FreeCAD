@@ -55,10 +55,9 @@ GeoListModel<T>::GeoListModel(  std::vector<T> && geometrylist,
 // Vector is shallow copied (copy constructed)
 template <typename T>
 GeoListModel<T>::GeoListModel(  const std::vector<T> & geometrylist,
-                                int intgeocount,
-                                bool ownerT): geomlist(geometrylist), // copy constructed here
+                                int intgeocount): geomlist(geometrylist), // copy constructed here
                                               intGeoCount(intgeocount),
-                                              OwnerT(ownerT),
+                                              OwnerT(false),
                                               indexInit(false)
 {
 
@@ -80,9 +79,9 @@ GeoListModel<T> GeoListModel<T>::getGeoListModel(std::vector<T> && geometrylist,
 }
 
 template <typename T>
-const GeoListModel<T> GeoListModel<T>::getGeoListModel(const std::vector<T> &geometrylist, int intgeocount, bool ownerT)
+const GeoListModel<T> GeoListModel<T>::getGeoListModel(const std::vector<T> &geometrylist, int intgeocount)
 {
-    return GeoListModel(geometrylist, intgeocount, ownerT);
+    return GeoListModel(geometrylist, intgeocount);
 }
 
 
@@ -94,7 +93,7 @@ int GeoListModel<T>::getGeoIdFromGeomListIndex(int index) const
     if(index < intGeoCount)
         return index;
     else
-        return -( index - intGeoCount);
+        return ( index - geomlist.size());
 }
 
 template <typename T>
@@ -305,8 +304,8 @@ namespace Sketcher {
 
 // Template specialisations
 template <>
-GeoListModel<std::unique_ptr< const Sketcher::GeometryFacade>>::GeoListModel(
-                                std::vector<std::unique_ptr<const Sketcher::GeometryFacade>> && geometrylist,
+GeoListModel<GeometryFacadeUniquePtr>::GeoListModel(
+                                std::vector<GeometryFacadeUniquePtr> && geometrylist,
                                 int intgeocount,
                                 bool ownerT) :  geomlist(std::move(geometrylist)),
                                                 intGeoCount(intgeocount),
@@ -326,17 +325,15 @@ GeoListModel<std::unique_ptr< const Sketcher::GeometryFacade>>::GeoListModel(
 }
 
 template <>
-GeoListModel<std::unique_ptr< const Sketcher::GeometryFacade>>::GeoListModel(
-                                const std::vector<std::unique_ptr< const Sketcher::GeometryFacade>> & geometrylist,
-                                int intgeocount,
-                                bool ownerT):   intGeoCount(intgeocount),
-                                                OwnerT(false),
-                                                indexInit(false)
+GeoListModel<GeometryFacadeUniquePtr>::GeoListModel(
+                                const std::vector<GeometryFacadeUniquePtr> & geometrylist,
+                                int intgeocount): intGeoCount(intgeocount),
+                                                  OwnerT(false),
+                                                  indexInit(false)
 {
     // GeometryFacades are movable, but not copiable, so they need to be reconstructed (shallow copy of vector)
     // Under the Single Responsibility Principle, these will not take over a responsibility that shall be enforced
     // on the original GeometryFacade. Use the move version of getGeoListModel if moving the responsibility is intended.
-    assert(ownerT == false);
 
     geomlist.reserve(geometrylist.size());
 
@@ -345,7 +342,7 @@ GeoListModel<std::unique_ptr< const Sketcher::GeometryFacade>>::GeoListModel(
     }
 }
 
-template <>
+template <> SketcherExport
 GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>::~GeoListModel()
 {
     // GeometryFacade is responsible for taken ownership of its pointers and deleting them.
@@ -354,8 +351,20 @@ GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>::~GeoListModel()
 
 
 // instantiate the types so that other translation units can access template constructors
-template class GeoListModel<Part::Geometry *>;
-template class GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>;
+template class SketcherExport GeoListModel<Part::Geometry *>;
+#if !defined(__MINGW32__)
+template class SketcherExport GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>;
+#else
+// Remark: It looks like when implementing a method of GeoListModel for GeometryFacadeUniquePtr then under MinGW
+// the explicit template instantiation doesn't do anything. As workaround all other methods must be declared separately
+template SketcherExport const Part::Geometry* GeoListModel<GeometryFacadeUniquePtr>::getGeometryFromGeoId(int geoId) const;
+template SketcherExport const Sketcher::GeometryFacade* GeoListModel<GeometryFacadeUniquePtr>::getGeometryFacadeFromGeoId(int geoId) const;
+template SketcherExport int GeoListModel<GeometryFacadeUniquePtr>::getGeoIdFromGeomListIndex(int index) const;
+template SketcherExport int GeoListModel<GeometryFacadeUniquePtr>::getVertexIdFromGeoElementId(const Sketcher::GeoElementId &) const;
+template SketcherExport GeoElementId GeoListModel<GeometryFacadeUniquePtr>::getGeoElementIdFromVertexId(int);
+template SketcherExport Base::Vector3d GeoListModel<GeometryFacadeUniquePtr>::getPoint(int geoId, Sketcher::PointPos pos) const;
+template SketcherExport Base::Vector3d GeoListModel<GeometryFacadeUniquePtr>::getPoint(const GeoElementId &) const;
+#endif
 
 
 } // namespace Sketcher

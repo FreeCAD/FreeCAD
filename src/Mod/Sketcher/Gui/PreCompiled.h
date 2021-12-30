@@ -105,6 +105,7 @@
 # include <Gui/InventorAll.h>
 #endif
 
+#include <Inventor/SbImage.h>
 #include <Inventor/sensors/SoSensor.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoFontNameElement.h>

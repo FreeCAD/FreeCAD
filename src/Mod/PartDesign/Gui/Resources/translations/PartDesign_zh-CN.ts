@@ -6,12 +6,12 @@
     <message>
       <location filename="InvoluteGearFeature.py" line="57"/>
       <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
+      <translation>渐开线齿轮...</translation>
     </message>
     <message>
       <location filename="InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
+      <translation>创建或编辑渐开线齿轮定义。</translation>
     </message>
   </context>
   <context>
@@ -19,12 +19,12 @@
     <message>
       <location filename="SprocketFeature.py" line="62"/>
       <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
+      <translation>链轮...</translation>
     </message>
     <message>
       <location filename="SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
+      <translation>创建或编辑链轮定义。</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>轴设计向导...</translation>
     </message>
     <message>
       <location filename="WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>启动轴设计向导</translation>
     </message>
   </context>
   <context>
@@ -45,42 +45,42 @@
     <message>
       <location filename="WizardShaftTable.py" line="43"/>
       <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
+      <translation>长度 [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="44"/>
       <source>Diameter [mm]</source>
-      <translation type="unfinished">Diameter [mm]</translation>
+      <translation>直径 [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="45"/>
       <source>Inner diameter [mm]</source>
-      <translation type="unfinished">Inner diameter [mm]</translation>
+      <translation>内直径 [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="46"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>约束类型</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="47"/>
       <source>Start edge type</source>
-      <translation type="unfinished">Start edge type</translation>
+      <translation>起始边缘类型</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="48"/>
       <source>Start edge size</source>
-      <translation type="unfinished">Start edge size</translation>
+      <translation>起始边缘尺寸</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="49"/>
       <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
+      <translation>结束边缘类型</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
+      <translation>结束边缘大小</translation>
     </message>
   </context>
   <context>
@@ -822,17 +822,17 @@
     <message>
       <location filename="../../Command.cpp" line="303"/>
       <source>Edit ShapeBinder</source>
-      <translation type="unfinished">Edit ShapeBinder</translation>
+      <translation>编辑图形面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Create ShapeBinder</source>
-      <translation type="unfinished">Create ShapeBinder</translation>
+      <translation>创建图形面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="394"/>
       <source>Create SubShapeBinder</source>
-      <translation type="unfinished">Create SubShapeBinder</translation>
+      <translation>创建子图形面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="448"/>
@@ -858,12 +858,12 @@
     <message>
       <location filename="../../Command.cpp" line="2484"/>
       <source>Convert to MultiTransform feature</source>
-      <translation type="unfinished">Convert to MultiTransform feature</translation>
+      <translation>转换为多重变换功能</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2575"/>
       <source>Create Boolean</source>
-      <translation type="unfinished">Create Boolean</translation>
+      <translation>创建布尔变量</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="193"/>
@@ -873,12 +873,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="430"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation type="unfinished">Migrate legacy part design features to Bodies</translation>
+      <translation>将旧部件设计功能迁移到机构</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="575"/>
       <source>Move tip to selected feature</source>
-      <translation type="unfinished">Move tip to selected feature</translation>
+      <translation>将提示移至所选特征</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="620"/>
@@ -1025,10 +1025,10 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>无法创建请求的功能。 原因可能是：
+  - 活动实体不包含基础形状， 因此没有
+  材料可被删除；
+  - 选中的草图不属于活动实体。</translation>
     </message>
   </context>
   <context>
@@ -1039,10 +1039,10 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>无法创建请求的功能。 原因可能是：
+  - 活动实体不包含基础形状， 因此没有
+  材料可被删除；
+  - 选中的草图不属于活动实体。</translation>
     </message>
   </context>
   <context>
@@ -1053,10 +1053,10 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>无法创建请求的功能。 原因可能是：
+  - 活动实体不包含基础形状， 因此没有
+  材料可被删除；
+  - 选中的草图不属于活动实体。</translation>
     </message>
   </context>
   <context>
@@ -1071,14 +1071,14 @@
       <source>To create a new PartDesign object, there must be an active Body object in the document.
 
 Please select a body from below, or create a new body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document.
+      <translation>要创建新的零件设计对象，文档中必须有一个活动的主体对象。
 
-Please select a body from below, or create a new body.</translation>
+请从下方选择一个主体，或创建一个新主体。</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
       <source>Create new body</source>
-      <translation type="unfinished">Create new body</translation>
+      <translation>创建新实体</translation>
     </message>
   </context>
   <context>
@@ -1181,12 +1181,12 @@ Please select a body from below, or create a new body.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
       <source>Radius in local z-direction</source>
-      <translation type="unfinished">Radius in local z-direction</translation>
+      <translation>本地z方向的半径</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="827"/>
       <source>Radius in local x-direction</source>
-      <translation type="unfinished">Radius in local x-direction</translation>
+      <translation>本地X方向的半径</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="843"/>
@@ -1197,8 +1197,8 @@ Please select a body from below, or create a new body.</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local y-direction
 If zero, it is equal to Radius2</source>
-      <translation type="unfinished">Radius in local y-direction
-If zero, it is equal to Radius2</translation>
+      <translation>本地方向的半径
+如果零，则等于半径2</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
@@ -1209,12 +1209,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
       <source>Radius in local xy-plane</source>
-      <translation type="unfinished">Radius in local xy-plane</translation>
+      <translation>本地Xy-平面半径</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
       <source>Radius in local xz-plane</source>
-      <translation type="unfinished">Radius in local xz-plane</translation>
+      <translation>本地xz-平面半径</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
@@ -1357,7 +1357,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</translation>
+      <translation>选择的几何体不是激活状态实体的一部分。请定义如何处理这些选择。如果放弃编辑请取消指令。</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1393,12 +1393,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
-      <translation>求和</translation>
+      <translation>添加实体</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="32"/>
       <source>Remove body</source>
-      <translation>求差</translation>
+      <translation>删除实体</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
@@ -1436,34 +1436,34 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="725"/>
       <source>Cone radii are equal</source>
-      <translation type="unfinished">Cone radii are equal</translation>
+      <translation>圆锥形半径相等</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="726"/>
       <source>The radii for cones must not be equal!</source>
-      <translation type="unfinished">The radii for cones must not be equal!</translation>
+      <translation>圆锥的半径不相等！</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="801"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="806"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="811"/>
       <source>Invalid wedge parameters</source>
-      <translation type="unfinished">Invalid wedge parameters</translation>
+      <translation>无效的请求参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="802"/>
       <source>X min must not be equal to X max!</source>
-      <translation type="unfinished">X min must not be equal to X max!</translation>
+      <translation>X最小值不能等于X最大值！</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="807"/>
       <source>Y min must not be equal to Y max!</source>
-      <translation type="unfinished">Y min must not be equal to Y max!</translation>
+      <translation>Y 最小值不能等于Y 最大值！</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="812"/>
       <source>Z min must not be equal to Z max!</source>
-      <translation type="unfinished">Z min must not be equal to Z max!</translation>
+      <translation>Z最小值不能等于Z最大值！</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="850"/>
@@ -1484,8 +1484,8 @@ If zero, it is equal to Radius2</translation>
       <location filename="../../TaskChamferParameters.cpp" line="166"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>点击按钮进入选择模式，
+再次点击结束选择</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="26"/>
@@ -1501,8 +1501,8 @@ click again to end selection</translation>
       <location filename="../../TaskChamferParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the chamfers</translation>
+      <translation>- 选择一个项目以高亮显示
+- 双击一个项目以查看其倒角</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="67"/>
@@ -1512,22 +1512,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="75"/>
       <source>Equal distance</source>
-      <translation type="unfinished">Equal distance</translation>
+      <translation>等距：</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="80"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>两倍距离</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="85"/>
       <source>Distance and angle</source>
-      <translation type="unfinished">Distance and angle</translation>
+      <translation>距离和角度</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="98"/>
       <source>Flip direction</source>
-      <translation type="unfinished">Flip direction</translation>
+      <translation>翻转方向</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="119"/>
@@ -1537,7 +1537,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="158"/>
       <source>Size 2</source>
-      <translation type="unfinished">Size 2</translation>
+      <translation>尺寸 2</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="191"/>
@@ -1550,7 +1550,7 @@ click again to end selection</translation>
       <location filename="../../TaskChamferParameters.cpp" line="243"/>
       <location filename="../../TaskChamferParameters.cpp" line="245"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>必须至少有一项</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="211"/>
@@ -1560,7 +1560,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="211"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>必须至少选定一项。</translation>
     </message>
   </context>
   <context>
@@ -1631,8 +1631,8 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="143"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>点击按钮进入选择模式，
+再次点击结束选择</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="26"/>
@@ -1648,8 +1648,8 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the drafts</translation>
+      <translation>- 选择一个项目来突出显示
+- 双击一个项目来查看草稿</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="65"/>
@@ -1677,7 +1677,7 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="276"/>
       <location filename="../../TaskDraftParameters.cpp" line="278"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>必须至少有一项</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="244"/>
@@ -1687,7 +1687,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="244"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>必须至少选定一项。</translation>
     </message>
   </context>
   <context>
@@ -1701,7 +1701,7 @@ click again to end selection</translation>
       <location filename="../../TaskDressUpParameters.cpp" line="243"/>
       <location filename="../../TaskDressUpParameters.cpp" line="245"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>必须至少有一项</translation>
     </message>
   </context>
   <context>
@@ -1810,8 +1810,8 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.cpp" line="121"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>点击按钮进入选择模式，
+再次点击结束选择</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="26"/>
@@ -1827,8 +1827,8 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the fillets</translation>
+      <translation>- 选择一个项目来突出显示
+- 双击一个项目来查看这些文件</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="65"/>
@@ -1841,7 +1841,7 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.cpp" line="198"/>
       <location filename="../../TaskFilletParameters.cpp" line="200"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>必须至少有一项</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="166"/>
@@ -1851,7 +1851,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="166"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>必须至少选定一项。</translation>
     </message>
   </context>
   <context>
@@ -1928,12 +1928,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="106"/>
       <source>Height-Turns-Angle</source>
-      <translation type="unfinished">Height-Turns-Angle</translation>
+      <translation>高转弯角角度</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="111"/>
       <source>Height-Turns-Growth</source>
-      <translation type="unfinished">Height-Turns-Growth</translation>
+      <translation>高转弯角增长</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="124"/>
@@ -1973,7 +1973,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="296"/>
       <source>Remove outside of profile</source>
-      <translation type="unfinished">Remove outside of profile</translation>
+      <translation>删除配置之外的文件</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="315"/>
@@ -3030,8 +3030,8 @@ measured along the specified direction</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="143"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>点击按钮进入选择模式，
+再次点击结束选择</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="26"/>
@@ -3102,7 +3102,7 @@ click again to end selection</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="220"/>
       <location filename="../../TaskThicknessParameters.cpp" line="222"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>必须至少有一项</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="188"/>
@@ -3112,7 +3112,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="188"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>必须至少选定一项。</translation>
     </message>
   </context>
   <context>
@@ -4281,8 +4281,8 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <location filename="../../TaskHoleParameters.ui" line="97"/>
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
-      <translation type="unfinished">Live update of changes to the thread
-Note that the calculation can take some time</translation>
+      <translation>实时更新对线程的更改
+注意计算可能需要一些时间</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="101"/>
@@ -4292,23 +4292,23 @@ Note that the calculation can take some time</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="114"/>
       <source>Customize thread clearance</source>
-      <translation type="unfinished">Customize thread clearance</translation>
+      <translation>自定义螺纹间隙</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="117"/>
       <source>Custom Thread Clearance</source>
-      <translation type="unfinished">Custom Thread Clearance</translation>
+      <translation>自定义螺纹间隙</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="130"/>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>间隙</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="149"/>
       <source>Custom Thread clearance value</source>
-      <translation type="unfinished">Custom Thread clearance value</translation>
+      <translation>自定义螺纹间隙大小</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="171"/>
@@ -4334,8 +4334,8 @@ Note that the calculation can take some time</translation>
       <location filename="../../TaskHoleParameters.ui" line="270"/>
       <source>Hole clearance
 Only available for holes without thread</source>
-      <translation type="unfinished">Hole clearance
-Only available for holes without thread</translation>
+      <translation>孔位
+仅适用于无螺纹孔</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="275"/>
@@ -4354,7 +4354,7 @@ Only available for holes without thread</translation>
       <location filename="../../TaskHoleParameters.ui" line="285"/>
       <location filename="../../TaskHoleParameters.cpp" line="582"/>
       <source>Wide</source>
-      <translation type="unfinished">Wide</translation>
+      <translation>宽度</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="299"/>
@@ -4407,7 +4407,7 @@ Only available for holes without thread</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="451"/>
       <source>Tapped (DIN76)</source>
-      <translation type="unfinished">Tapped (DIN76)</translation>
+      <translation>螺纹 (DIN76)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="475"/>
@@ -4423,12 +4423,12 @@ Only available for holes without thread</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="507"/>
       <source>Cut type for screw heads</source>
-      <translation type="unfinished">Cut type for screw heads</translation>
+      <translation>螺丝头的切割类型</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="520"/>
       <source>Check to override the values predefined by the 'Type'</source>
-      <translation type="unfinished">Check to override the values predefined by the 'Type'</translation>
+      <translation>检查以覆盖“类型”预定义的值</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="523"/>
@@ -4459,13 +4459,13 @@ Only available for holes without thread</translation>
       <location filename="../../TaskHoleParameters.ui" line="730"/>
       <source>The size of the drill point will be taken into
 account for the depth of blind holes</source>
-      <translation type="unfinished">The size of the drill point will be taken into
-account for the depth of blind holes</translation>
+      <translation>钻孔点的大小将被计入
+盲孔的深度</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="734"/>
       <source>Take into account for depth</source>
-      <translation type="unfinished">Take into account for depth</translation>
+      <translation>考虑深度</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="741"/>
@@ -4506,7 +4506,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Loose</source>
-      <translation type="unfinished">Loose</translation>
+      <translation>宽松</translation>
     </message>
   </context>
   <context>
@@ -4527,7 +4527,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Sketch</source>
-      <translation type="unfinished">&amp;Sketch</translation>
+      <translation>&amp;草图</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
@@ -4562,17 +4562,17 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Sprocket...</source>
-      <translation type="unfinished">Sprocket...</translation>
+      <translation>链轮...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Involute gear...</source>
-      <translation type="unfinished">Involute gear...</translation>
+      <translation>渐开线齿轮...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Shaft design wizard</source>
-      <translation type="unfinished">Shaft design wizard</translation>
+      <translation>轴设计向导</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
@@ -4582,12 +4582,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
       <source>Part Design Helper</source>
-      <translation type="unfinished">Part Design Helper</translation>
+      <translation>零件设计助手</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Part Design Modeling</source>
-      <translation type="unfinished">Part Design Modeling</translation>
+      <translation>零件设计建模</translation>
     </message>
   </context>
 </TS>

@@ -16,7 +16,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="336"/>
       <source>If true, the height value propagates to contained objects</source>
-      <translation>Jeśli prawda, wartość wysokości rozszerza się na zamknięte obiekty</translation>
+      <translation>Jeśli parametr na wartość prawda, wartość wysokości zastosowana zostanie również do zawartych obiektów</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="339"/>
@@ -46,22 +46,22 @@
     <message>
       <location filename="ArchBuildingPart.py" line="349"/>
       <source>This property stores an inventor representation for this object</source>
-      <translation>Ta właściwość przechowuje reprezentację twórcy tego obiektu</translation>
+      <translation>Ta właściwość przechowuje reprezentację typu inventor tego obiektu</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation>Jeśli parametr ma wartość Prawda, tylko bryły będą gromadzone przez ten obiekt, gdy istnieją odniesienia z innych plików</translation>
+      <translation>Jeśli prawda, w odniesieniach do tego obiektu w zewnętrznych plikach zawarte zostaną wyłącznie jego bryły</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation>Nazwa materiału: Lista indeksów brył, łączących nazwy materiałów z indeksami brył, które mają być używane podczas tworzenia odniesień do tego obiektu z innych plików</translation>
+      <translation>Mapowanie MaterialName:SolidIndexesList wiążące nazwy materiałów z indeksami brył, które zostanie zastosowane przy tworzeniu odniesień do tego obiektu w innych plikach</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1015"/>
       <source>The line width of this object</source>
-      <translation>Szerokość linii tego obiektu</translation>
+      <translation>Grubość linii tego obiektu</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="522"/>
@@ -71,22 +71,22 @@
     <message>
       <location filename="ArchBuildingPart.py" line="524"/>
       <source>A transformation to apply to the level mark</source>
-      <translation>Transformacja, która ma być zastosowana do zaznaczenia kondygnacji</translation>
+      <translation>Transformacja, która ma być zastosowana do znacznika kondygnacji</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="527"/>
       <source>If true, show the level</source>
-      <translation>Jeśli parametr ma wartość prawda, pokaż kondygnację</translation>
+      <translation>Jeśli prawda, pokaż poziom</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="530"/>
       <source>If true, show the unit on the level tag</source>
-      <translation>Jeżeli prawda, pokazuje znaczniki jednostki kondygnacji</translation>
+      <translation>Jeśli parametr ma wartość prawda, pokaż jednostkę na znaczniku poziomu</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="532"/>
       <source>If true, display offset will affect the origin mark too</source>
-      <translation>Jeśli wartość ta wynosi true, przesunięcie wyświetlania będzie miało również wpływ na symbol odniesienia położenia</translation>
+      <translation>Jeśli parametr ma wartość prawda, przesunięcie wyświetlania zostanie zastosowane również do znacznika odniesienia</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="534"/>
@@ -106,12 +106,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="543"/>
       <source>The individual face colors</source>
-      <translation>Indywidualny kolor czcionki</translation>
+      <translation>Kolory poszczególnych ścian</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="547"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
-      <translation>Jeśli parametr ma wartość Prawda, po włączeniu tej opcji płaszczyzna robocza zostanie automatycznie dostosowana do tej kondygnacji</translation>
+      <translation>Jeśli parametr ma wartość prawda, po włączeniu tej opcji płaszczyzna robocza dopasuje się do tego poziomu</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="550"/>
@@ -186,22 +186,22 @@
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>Pole przechwytywania nowo utworzonych obiektów wyrażone jako [XMin, YMin, ZMin, XMax, YMax, ZMax]</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Włącza/wyłącza pole automatycznego grupowania</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Ustaw rozmiar automatycznie, na podstawie zawartości</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Margines do użycia, gdy automatyczny rozmiar jest włączony</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="192"/>
@@ -836,7 +836,7 @@
     <message>
       <location filename="ArchWindow.py" line="568"/>
       <source>The number of the wire that defines the hole. If 0, the value will be calculated automatically</source>
-      <translation>Numer drutu definiującego otwór. Jeśli 0, wartość zostanie obliczona automatycznie</translation>
+      <translation>Numer polilinii definiującej otwór. Jeśli wynosi 0, wartość zostanie obliczona automatycznie</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="570"/>
@@ -1626,7 +1626,7 @@
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Rozpocznij odległość odsunięcia wzdłuż ścieżki wyciągnięcia (dodatnie: wydłuż, ujemne: przytnij)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
@@ -1636,7 +1636,7 @@
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Zakończ odległość odsunięcia wzdłuż ścieżki wyciągnięcia (dodatnie: wydłuż, ujemne: przytnij)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
@@ -2076,7 +2076,7 @@
     <message>
       <location filename="ArchPanel.py" line="1394"/>
       <source>Turns the display of the margin on/off</source>
-      <translation>Przełącza wyświetlanie marginesu wł./wył.</translation>
+      <translation>Przełącza wyświetlanie marginesu włącz / wyłącz</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1217"/>
@@ -2747,12 +2747,12 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="ArchPipe.py" line="291"/>
       <source>Too many wires in the base shape</source>
-      <translation>Zbyt wiele drutów w kształcie podstawy</translation>
+      <translation>Zbyt wiele polilinii w kształcie bazowym</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="294"/>
       <source>The base wire is closed</source>
-      <translation>Drut podstawowy jest zamknięty</translation>
+      <translation>Polilinia podstawy jest zamknięta</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="308"/>
@@ -2907,7 +2907,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="ArchWindow.py" line="1638"/>
       <source>Hole wire</source>
-      <translation>Szkielet otworu</translation>
+      <translation>Polilinia otworu</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1639"/>
@@ -3117,7 +3117,7 @@ Tworzenie budynku zostało przerwane.</translation>
     <message>
       <location filename="InitGui.py" line="193"/>
       <source>Utilities</source>
-      <translation>Przybory</translation>
+      <translation>Narzędzia</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="192"/>
@@ -3273,7 +3273,7 @@ Tworzenie terenu zostało przerwane.</translation>
     <message>
       <location filename="ArchStructure.py" line="493"/>
       <source>Con&amp;tinue</source>
-      <translation>Kontynuuj</translation>
+      <translation>&amp;Kontynuuj</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="528"/>
@@ -4550,7 +4550,7 @@ Jeśli Bieg = 0, wówczas Bieg jest obliczany tak, aby wysokość była taka sam
     <message>
       <location filename="ArchSite.py" line="508"/>
       <source>Creates a site object including selected objects.</source>
-      <translation>Tworzy obiekt Teren wraz z wybranymi obiektami</translation>
+      <translation>Tworzy obiekt Teren wraz z wybranymi obiektami.</translation>
     </message>
   </context>
   <context>
@@ -4779,7 +4779,7 @@ Jeśli Bieg = 0, wówczas Bieg jest obliczany tak, aby wysokość była taka sam
     <message>
       <location filename="InitGui.py" line="133"/>
       <source>Utilities</source>
-      <translation>Przybory</translation>
+      <translation>Narzędzia</translation>
     </message>
   </context>
   <context>
@@ -6510,7 +6510,7 @@ które pozwalają na wybór systemu miar przy otwieraniu pliku.</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="361"/>
       <source>IFC file units</source>
-      <translation>Jednostki pliku IFC</translation>
+      <translation>Jednostki w pliku IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="383"/>
@@ -6520,7 +6520,7 @@ które pozwalają na wybór systemu miar przy otwieraniu pliku.</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="388"/>
       <source>Imperial</source>
-      <translation>Brytyjskie</translation>
+      <translation>Calowe</translation>
     </message>
   </context>
 </TS>

@@ -702,29 +702,14 @@
       <translation>Osnovni predmet %s. %s je dejanje zavrnilo</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="785"/>
-      <source>Heights</source>
-      <translation>Višine</translation>
+      <location filename="PathProfileGui.py" line="165"/>
+      <source>Profile</source>
+      <translation>Profil</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="966"/>
-      <source>Diameters</source>
-      <translation>Premeri</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="997"/>
-      <source>AreaOp Operation</source>
-      <translation>AreaOp Opravilo</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1122"/>
-      <source>Uncreate AreaOp Operation</source>
-      <translation>Izniči AreaOp Opravilo</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1262"/>
-      <source>Pick Start Point</source>
-      <translation>Izberite začetno točko</translation>
+      <location filename="PathProfileGui.py" line="168"/>
+      <source>Profile entire model, selected face(s) or selected edge(s)</source>
+      <translation>Oriši celoten model, izbrane ploskve ali izbrane robove</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="206"/>
@@ -745,11 +730,6 @@
       <location filename="PathCircularHoleBase.py" line="80"/>
       <source>List of disabled features</source>
       <translation>Seznam onemogočenih značilnosti</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="456"/>
-      <source>Unable to create path for face(s).</source>
-      <translation>Ni mogoče ustvariti poti za ploskev(ploskve).</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
@@ -810,6 +790,36 @@
       <location filename="InitGui.py" line="159"/>
       <source>Utils</source>
       <translation>Pripomočki</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="785"/>
+      <source>Heights</source>
+      <translation>Višine</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="966"/>
+      <source>Diameters</source>
+      <translation>Premeri</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="997"/>
+      <source>AreaOp Operation</source>
+      <translation>AreaOp Opravilo</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1122"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Izniči AreaOp Opravilo</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1262"/>
+      <source>Pick Start Point</source>
+      <translation>Izberite začetno točko</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="456"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Ni mogoče ustvariti poti za ploskev(ploskve).</translation>
     </message>
   </context>
   <context>
@@ -1283,9 +1293,34 @@
       <translation>Možnosti hlajenja za to opravilo</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="194"/>
+      <source>Edit</source>
+      <translation>Uredi</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="475"/>
       <source>Base Geometry</source>
       <translation>Osnovna Geometrija</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="576"/>
+      <source>Vertexes are not supported</source>
+      <translation>Ogljišča niso podprta</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="583"/>
+      <source>Edges are not supported</source>
+      <translation>Robovi niso podprti</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="590"/>
+      <source>Faces are not supported</source>
+      <translation>Ploskve niso podprte</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="657"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation>Več dejanj je označenih kot</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="672"/>
@@ -1300,9 +1335,24 @@ If it is necessary to set the FinalDepth manually please select a different oper
 Če je potrebno nastaviti KončnoDolžino ročno, prosim izberi drugo opravilo.</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Višine</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="869"/>
       <source>Depths</source>
       <translation>Globine</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1061"/>
+      <source>Diameters</source>
+      <translation>Premeri</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1093"/>
+      <source>AreaOp Operation</source>
+      <translation>AreaOp Opravilo</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1058"/>
@@ -1310,17 +1360,19 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Dejanje</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="1224"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Izniči AreaOp Opravilo</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1371"/>
+      <source>Pick Start Point</source>
+      <translation>Izberite začetno točko</translation>
+    </message>
+    <message>
       <location filename="PathJob.py" line="153"/>
       <source>Job Cycle Time Estimation</source>
       <translation>Ocena časa cikla opravila</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathOpGui</name>
-    <message>
-      <location filename="PathOpGui.py" line="603"/>
-      <source>Mulitiple operations are labeled as</source>
-      <translation>Več dejanj je označenih kot</translation>
     </message>
   </context>
   <context>
@@ -1407,27 +1459,64 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Preverite privzeto vrednost.</translation>
     </message>
     <message>
+      <location filename="PathProfile.py" line="196"/>
+      <source>CW</source>
+      <translation>SUK, v smeri urinega kazalca</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="197"/>
+      <source>CCW</source>
+      <translation>NSUK, v nasprotni smeri urinega kazalca</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="200"/>
+      <source>Collectively</source>
+      <translation type="unfinished">Collectively</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="201"/>
+      <source>Individually</source>
+      <translation type="unfinished">Individually</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="204"/>
+      <source>Round</source>
+      <translation>Zaokroženo</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="205"/>
+      <source>Square</source>
+      <translation>Kvadrat</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="206"/>
+      <source>Miter</source>
+      <translation type="unfinished">Miter</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="209"/>
+      <source>Outside</source>
+      <translation>Zunaj</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="210"/>
+      <source>Inside</source>
+      <translation>Znotraj</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="479"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Ni mogoče ustvariti poti za ploskev(ploskve).</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="622"/>
+      <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
+      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+    </message>
+    <message>
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
       <translation>Pri odprtih robovih preveri končno glibino tega dejanja.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathProject</name>
-    <message>
-      <location filename="PathOpGui.py" line="533"/>
-      <source>Vertexes are not supported</source>
-      <translation>Ogljišča niso podprta</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="537"/>
-      <source>Edges are not supported</source>
-      <translation>Robovi niso podprti</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="541"/>
-      <source>Faces are not supported</source>
-      <translation>Ploskve niso podprte</translation>
     </message>
   </context>
   <context>
@@ -3512,6 +3601,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathToolLibraryEditor.py" line="387"/>
       <source>Rename Selected Tool Table</source>
       <translation>Preimenuj izbrano orodno preglednico</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathOpGui</name>
+    <message>
+      <location filename="PathOpGui.py" line="603"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation>Več dejanj je označenih kot</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathProject</name>
+    <message>
+      <location filename="PathOpGui.py" line="533"/>
+      <source>Vertexes are not supported</source>
+      <translation>Ogljišča niso podprta</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="537"/>
+      <source>Edges are not supported</source>
+      <translation>Robovi niso podprti</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="541"/>
+      <source>Faces are not supported</source>
+      <translation>Ploskve niso podprte</translation>
     </message>
   </context>
   <context>

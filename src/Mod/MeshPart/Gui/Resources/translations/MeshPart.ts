@@ -2,6 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>MeshPart_FlatteningCommand</name>
+    <message>
+        <location filename="MeshFlatteningCommand.py" line="47"/>
+        <source>Unwrap Mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MeshFlatteningCommand.py" line="82"/>
+        <source>Find a flat representation of a mesh.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MeshFlatteningCommand.py" line="79"/>
+        <source>Unwrap Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdMeshPartCrossSections</name>
     <message>
         <source>MeshPart</source>

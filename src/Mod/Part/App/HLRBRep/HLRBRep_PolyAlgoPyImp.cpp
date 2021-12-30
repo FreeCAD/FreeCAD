@@ -190,8 +190,8 @@ PyObject* HLRBRep_PolyAlgoPy::moreHide(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    getHLRBRep_PolyAlgoPtr()->MoreHide();
-    Py_Return;
+    Standard_Boolean more = getHLRBRep_PolyAlgoPtr()->MoreHide();
+    return Py_BuildValue("O", (more ? Py_True : Py_False));
 }
 
 PyObject* HLRBRep_PolyAlgoPy::nextHide(PyObject *args)
@@ -217,8 +217,8 @@ PyObject* HLRBRep_PolyAlgoPy::moreShow(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    getHLRBRep_PolyAlgoPtr()->MoreShow();
-    Py_Return;
+    Standard_Boolean more = getHLRBRep_PolyAlgoPtr()->MoreShow();
+    return Py_BuildValue("O", (more ? Py_True : Py_False));
 }
 
 PyObject* HLRBRep_PolyAlgoPy::nextShow(PyObject *args)

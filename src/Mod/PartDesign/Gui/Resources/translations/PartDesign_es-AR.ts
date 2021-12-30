@@ -670,7 +670,7 @@
     <message>
       <location filename="../../Command.cpp" line="1652"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Puentea un perfil seleccionado a través de otras secciones de perfil y lo retira del cuerpo</translation>
+      <translation>Puentea un perfil seleccionado a través de otras secciones de perfil y lo elimina del cuerpo</translation>
     </message>
   </context>
   <context>
@@ -1828,7 +1828,7 @@ haga clic de nuevo para finalizar la selección</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
       <translation>- seleccione un elemento para resaltarlo
-- haga doble clic en un elemento para ver los chaflanes</translation>
+- haga doble clic en un elemento para ver los redondeos</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="65"/>
@@ -2551,7 +2551,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="144"/>
       <source>Remove Edge</source>
-      <translation>Quitar arista</translation>
+      <translation>Eliminar arista</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="166"/>
@@ -2635,7 +2635,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove Edge</source>
-      <translation>Quitar arista</translation>
+      <translation>Eliminar arista</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="75"/>

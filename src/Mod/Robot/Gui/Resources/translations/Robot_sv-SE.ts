@@ -43,7 +43,7 @@
     </message>
     <message>
       <source>Create a new empty trajectory</source>
-      <translation type="unfinished">Create a new empty trajectory</translation>
+      <translation>Skapa en ny tom bana</translation>
     </message>
   </context>
   <context>

@@ -59,6 +59,56 @@ using namespace SketcherGui;
 using namespace Sketcher;
 
 
+/************************************ Attorney *******************************************/
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos, const SbString &txt)
+{
+    vp.setPositionText(Pos,txt);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos)
+{
+    vp.setPositionText(Pos);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::resetPositionText(ViewProviderSketch &vp)
+{
+    vp.resetPositionText();
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(ViewProviderSketch &vp, const std::vector<Base::Vector2d> &EditCurve)
+{
+    vp.drawEdit(EditCurve);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(ViewProviderSketch &vp, const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)
+{
+    vp.drawEditMarkers(EditMarkers, augmentationlevel);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setAxisPickStyle(ViewProviderSketch &vp, bool on)
+{
+    vp.setAxisPickStyle(on);
+}
+
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectPoint(const ViewProviderSketch &vp)
+{
+   return vp.getPreselectPoint();
+}
+
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCurve(const ViewProviderSketch &vp)
+{
+    return vp.getPreselectCurve();
+}
+
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const ViewProviderSketch &vp)
+{
+    return vp.getPreselectCross();
+}
+
+/**************************** DrawSketchHandler *******************************************/
+
+
 //**************************************************************************
 // Construction/Destruction
 
@@ -69,8 +119,8 @@ DrawSketchHandler::~DrawSketchHandler() {}
 void DrawSketchHandler::quit(void)
 {
     assert(sketchgui);
-    sketchgui->drawEdit(std::vector<Base::Vector2d>());
-    sketchgui->drawEditMarkers(std::vector<Base::Vector2d>());
+    drawEdit(std::vector<Base::Vector2d>());
+    drawEditMarkers(std::vector<Base::Vector2d>());
     resetPositionText();
 
     Gui::Selection().rmvSelectionGate();
@@ -314,9 +364,9 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     Base::Vector3d hitShapeDir = Base::Vector3d(0,0,0); // direction of hit shape (if it is a line, the direction of the line)
 
     // Get Preselection
-    int preSelPnt = sketchgui->getPreselectPoint();
-    int preSelCrv = sketchgui->getPreselectCurve();
-    int preSelCrs = sketchgui->getPreselectCross();
+    int preSelPnt = getPreselectPoint();
+    int preSelCrv = getPreselectCurve();
+    int preSelCrs = getPreselectCross();
     int GeoId = GeoEnum::GeoUndef;
 
     Sketcher::PointPos PosId = Sketcher::PointPos::none;
@@ -691,16 +741,46 @@ void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstrain
 
 void DrawSketchHandler::setPositionText(const Base::Vector2d &Pos, const SbString &text)
 {
-    sketchgui->setPositionText(Pos, text);
+    ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(*sketchgui, Pos, text);
 }
 
 
 void DrawSketchHandler::setPositionText(const Base::Vector2d &Pos)
 {
-    sketchgui->setPositionText(Pos);
+    ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(*sketchgui,Pos);
 }
 
 void DrawSketchHandler::resetPositionText(void)
 {
-    sketchgui->resetPositionText();
+    ViewProviderSketchDrawSketchHandlerAttorney::resetPositionText(*sketchgui);
+}
+
+void DrawSketchHandler::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(*sketchgui, EditCurve);
+}
+
+void DrawSketchHandler::drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(*sketchgui, EditMarkers, augmentationlevel);
+}
+
+void DrawSketchHandler::setAxisPickStyle(bool on)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::setAxisPickStyle(*sketchgui, on);
+}
+
+int DrawSketchHandler::getPreselectPoint(void) const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectPoint(*sketchgui);
+}
+
+int DrawSketchHandler::getPreselectCurve(void) const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCurve(*sketchgui);
+}
+
+int DrawSketchHandler::getPreselectCross(void) const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(*sketchgui);
 }

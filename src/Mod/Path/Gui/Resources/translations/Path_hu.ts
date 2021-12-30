@@ -702,29 +702,14 @@
       <translation>Alap tárgy: %s.%s művelet elutasította</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="785"/>
-      <source>Heights</source>
-      <translation>Magasságok</translation>
+      <location filename="PathProfileGui.py" line="165"/>
+      <source>Profile</source>
+      <translation>Profil</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="966"/>
-      <source>Diameters</source>
-      <translation>Átmérők</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="997"/>
-      <source>AreaOp Operation</source>
-      <translation>AreaOp művelet</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1122"/>
-      <source>Uncreate AreaOp Operation</source>
-      <translation>Megsemmisített AreaOp művelet</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1262"/>
-      <source>Pick Start Point</source>
-      <translation>Válasszon indulási pontot</translation>
+      <location filename="PathProfileGui.py" line="168"/>
+      <source>Profile entire model, selected face(s) or selected edge(s)</source>
+      <translation>Használja ki a teljes modellt, jelölje ki a felülete(ke)t vagy a kijelölt él(ek)et</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="206"/>
@@ -745,11 +730,6 @@
       <location filename="PathCircularHoleBase.py" line="80"/>
       <source>List of disabled features</source>
       <translation>Kikapcsolt funkciók listája</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="456"/>
-      <source>Unable to create path for face(s).</source>
-      <translation>Nem hozható létre a felület(ek) útvonala.</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
@@ -810,6 +790,36 @@
       <location filename="InitGui.py" line="159"/>
       <source>Utils</source>
       <translation>Munkaeszközök</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="785"/>
+      <source>Heights</source>
+      <translation>Magasságok</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="966"/>
+      <source>Diameters</source>
+      <translation>Átmérők</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="997"/>
+      <source>AreaOp Operation</source>
+      <translation>AreaOp művelet</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1122"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Megsemmisített AreaOp művelet</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1262"/>
+      <source>Pick Start Point</source>
+      <translation>Válasszon indulási pontot</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="456"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Nem hozható létre a felület(ek) útvonala.</translation>
     </message>
   </context>
   <context>
@@ -1283,9 +1293,34 @@
       <translation>Hűtőközeg beállítás ehhez a művelethez</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="194"/>
+      <source>Edit</source>
+      <translation>Szerkesztés</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="475"/>
       <source>Base Geometry</source>
       <translation>Alap geometria</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="576"/>
+      <source>Vertexes are not supported</source>
+      <translation>Csomópontok nem támogatottak</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="583"/>
+      <source>Edges are not supported</source>
+      <translation>Élek nem támogatottak</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="590"/>
+      <source>Faces are not supported</source>
+      <translation>Felületek nem támogatottak</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="657"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation>Számos művelet van így megjelölve</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="672"/>
@@ -1300,9 +1335,24 @@ If it is necessary to set the FinalDepth manually please select a different oper
 Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy másik műveletet.</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Magasságok</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="869"/>
       <source>Depths</source>
       <translation>Mélység</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1061"/>
+      <source>Diameters</source>
+      <translation>Átmérők</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1093"/>
+      <source>AreaOp Operation</source>
+      <translation>AreaOp művelet</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1058"/>
@@ -1310,17 +1360,19 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Művelet</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="1224"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Megsemmisített AreaOp művelet</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1371"/>
+      <source>Pick Start Point</source>
+      <translation>Válasszon indulási pontot</translation>
+    </message>
+    <message>
       <location filename="PathJob.py" line="153"/>
       <source>Job Cycle Time Estimation</source>
       <translation>Feladatciklus időbecslése</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathOpGui</name>
-    <message>
-      <location filename="PathOpGui.py" line="603"/>
-      <source>Mulitiple operations are labeled as</source>
-      <translation>Számos művelet van így megjelölve</translation>
     </message>
   </context>
   <context>
@@ -1407,27 +1459,64 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Ellenőrizze az alapértelmezett értéket.</translation>
     </message>
     <message>
+      <location filename="PathProfile.py" line="196"/>
+      <source>CW</source>
+      <translation>Órajárás iránya</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="197"/>
+      <source>CCW</source>
+      <translation>Órajárással ellentétes irány</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="200"/>
+      <source>Collectively</source>
+      <translation type="unfinished">Collectively</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="201"/>
+      <source>Individually</source>
+      <translation type="unfinished">Individually</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="204"/>
+      <source>Round</source>
+      <translation>Kerekített</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="205"/>
+      <source>Square</source>
+      <translation>Négyzet</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="206"/>
+      <source>Miter</source>
+      <translation type="unfinished">Miter</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="209"/>
+      <source>Outside</source>
+      <translation>Külső</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="210"/>
+      <source>Inside</source>
+      <translation>Belső</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="479"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Nem hozható létre a felület(ek) útvonala.</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="622"/>
+      <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
+      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+    </message>
+    <message>
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
       <translation>A nyitott élekre ellenőrizze a művelet végső mélységét.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathProject</name>
-    <message>
-      <location filename="PathOpGui.py" line="533"/>
-      <source>Vertexes are not supported</source>
-      <translation>Csomópontok nem támogatottak</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="537"/>
-      <source>Edges are not supported</source>
-      <translation>Élek nem támogatottak</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="541"/>
-      <source>Faces are not supported</source>
-      <translation>Felületek nem támogatottak</translation>
     </message>
   </context>
   <context>
@@ -3518,6 +3607,32 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
   </context>
   <context>
+    <name>PathOpGui</name>
+    <message>
+      <location filename="PathOpGui.py" line="603"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation>Számos művelet van így megjelölve</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathProject</name>
+    <message>
+      <location filename="PathOpGui.py" line="533"/>
+      <source>Vertexes are not supported</source>
+      <translation>Csomópontok nem támogatottak</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="537"/>
+      <source>Edges are not supported</source>
+      <translation>Élek nem támogatottak</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="541"/>
+      <source>Faces are not supported</source>
+      <translation>Felületek nem támogatottak</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPathArea</name>
     <message>
       <location filename="../../Command.cpp" line="55"/>
@@ -4262,12 +4377,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="22"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of hole features and the determined radius of the associated hole.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of hole features and the determined radius of the associated hole.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A furat jellemzőinek és a kapcsolódó furat meghatározott sugarának meghatározása.&lt;/p&gt; &lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A feldolgozáshoz használható funkciót úgy adhat hozzá, hogy kiválasztja őket, majd megnyomja a Hozzáadás gombot. Ha egy funkció véletlenül hozzáadódik a listához, az eltávolítható az Eltávolítás segítségével, és a továbbiakban nem lesz feldolgozva.&lt;/p&gt; &lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A Visszaállítás törli az összes aktuális elemet a listából, és kitölti a listát a modellből a műveletre jogosult összes kör alakú furattal. Ezt követően ismét finomíthatja a listát a funkciók engedélyezésével/letiltásával, eltávolításával és hozzáadásával.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="29"/>
       <source>Feature</source>
-      <translation type="unfinished">Feature</translation>
+      <translation>Tulajdonság</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="34"/>
@@ -4278,7 +4393,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="42"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all list items and fill list with all eligible features from the job's base object.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all list items and fill list with all eligible features from the job's base object.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A listaelemeket és a kitöltési listát a feladat alapértelmezett tárgyának összes jogosult funkciójával töltse ki.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="45"/>
@@ -4288,22 +4403,22 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="52"/>
       <source>All objects will be processed using the same operation properties.</source>
-      <translation type="unfinished">All objects will be processed using the same operation properties.</translation>
+      <translation>Az összes tárgy feldolgozása ugyanazzal a művelettulajdonságokkal történik.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="65"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected list items from the list of base geometries. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected list items from the list of base geometries. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A kiválasztott listaelemeket az alapgeometriák listájából kell kiválasztani. A művelet már nem vonatkozik rájuk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="75"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected items from 3d view to the list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected items from 3d view to the list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A kiválasztott elemek 3d nézetből az alap geometriák listájára &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of locations to be processed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of locations to be processed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Feldolgozandó helyek listája.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
@@ -4320,12 +4435,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="40"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected location from the list. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected location from the list. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A kiválasztott hely eltávolítása a listából. A művelet már nem vonatkozik rájuk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit selected location.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit selected location.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kijelölt hely szerkesztése.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
@@ -4335,12 +4450,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="60"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Párbeszédpanel megnyitása tetszőleges helyek hozzáadásához.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="70"/>
       <source>All locations will be processed using the same operation properties.</source>
-      <translation type="unfinished">All locations will be processed using the same operation properties.</translation>
+      <translation>Az összes hely feldolgozása ugyanazokkal a műveleti tulajdonságokkal történik.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
@@ -4727,7 +4842,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ha be van jelölve, az összes lehetséges bővítmény látható. Engedélyezett bővítmények lila színben és nem engedélyezett bővítmények sárga színben.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="111"/>
@@ -4737,12 +4852,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="121"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tree of existing edges and their potential extensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tree of existing edges and their potential extensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A meglévő élek fája és potenciális kiterjesztéseik.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="146"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az aktuálisan kijelölt zsebbővítmény engedélyezése.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
@@ -4752,7 +4867,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="156"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Disable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Disable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az aktuálisan kijelölt zsebbővítmény letiltása.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="159"/>
@@ -4762,27 +4877,27 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="166"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all currently enabled extensions - leaving the plain pocket operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all currently enabled extensions - leaving the plain pocket operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Távolítsa el az összes jelenleg engedélyezett bővítményt - hagyja el a sima zseb működését.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.&lt;/p&gt;&lt;p&gt;The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.&lt;/p&gt;&lt;p&gt;The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adja meg, hogy a felületet korlátozza-e a kijelölt felület tényleges alakját (vagy az alkatrészt, ha nincs kijelölve felület), vagy ha a határolókeret arccal lefelé legyen.&lt;/p&gt; &lt;p&gt;Az utóbbi a teljes állományterületre használható, hogy egységes magasságot biztosítson a következő műveletekhez.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="67"/>
       <source>Boundbox</source>
-      <translation type="unfinished">Boundbox</translation>
+      <translation>Környező keret</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="72"/>
       <source>Face Region</source>
-      <translation type="unfinished">Face Region</translation>
+      <translation>Felületi terület</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="77"/>
       <source>Perimeter</source>
-      <translation type="unfinished">Perimeter</translation>
+      <translation>Kerület</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="82"/>
@@ -4794,17 +4909,17 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="90"/>
       <source>Boundary Shape</source>
-      <translation type="unfinished">Boundary Shape</translation>
+      <translation>Szegély alakzata</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
       <source>Cut Mode</source>
-      <translation type="unfinished">Cut Mode</translation>
+      <translation>Vágási mód</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="113"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on.&lt;/p&gt;&lt;p&gt;Keeping that in mind climb mode is called when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bits rotation and the tools lateral movement are in the same direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on.&lt;/p&gt;&lt;p&gt;Keeping that in mind climb mode is called when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bits rotation and the tools lateral movement are in the same direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A vágási mód feltételezi, hogy a szerszámbit egyik oldalán lévő vágás a kapott részt jelöli, a másik oldal pedig vagy már el van marva, vagy később eltávolítják.&lt;/p&gt; &lt;p&gt;A mászás mód figyelembevételekor a szerszámbitet minden forgáskor a vágásba helyezik, míg hagyományos módban a szerszámbitek forgása és az eszközök oldalirányú mozgása ugyanabba az irányba mutat.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="117"/>
@@ -4821,19 +4936,19 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="130"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>Minta</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minta, amelyben a szerszám hegyét mozgatják az anyag tisztításához.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="144"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="224"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="195"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>Cikcakk</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="154"/>
@@ -4845,7 +4960,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="159"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>Cikcakk-eltolás</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="164"/>
@@ -4872,66 +4987,66 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="189"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle in which the pattern is applied.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle in which the pattern is applied.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az a szög, amelyben a mintát alkalmazzák..&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="196"/>
       <source>Step Over Percent</source>
-      <translation type="unfinished">Step Over Percent</translation>
+      <translation>Egy lépéssel tovább százalékban</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="203"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="359"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="209"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az az érték, amellyel a szerszámot oldalirányban mozgatják az egyes mintaciklusokban, a szerszámátmérő százalékában megadva.&lt;/p&gt;&lt;p&gt;A 100%-os eltolás megakadályozza, hogy két különböző ciklus átfedje egymást.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="222"/>
       <source>Material Allowance</source>
-      <translation type="unfinished">Material Allowance</translation>
+      <translation>Anyag hozzáadása</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="229"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of material that should be left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of material that should be left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az anyag mennyisége, amely a művelet után a célalakzathoz viszonyítva marad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="242"/>
       <source>Min Travel</source>
-      <translation type="unfinished">Min Travel</translation>
+      <translation>Minimális útvonal</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="249"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected the operation uses the outline of the selected base geometry and ignores all holes and islands.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected the operation uses the outline of the selected base geometry and ignores all holes and islands.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ha ezt a beállítást választja, a művelet a kijelölt alapgeometria körvonalát használja, és figyelmen kívül hagyja az összes furatot és szigetet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="252"/>
       <source>Use Outline</source>
-      <translation type="unfinished">Use Outline</translation>
+      <translation>Kontúr használata</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="259"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if this operation uses a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if this operation uses a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adja meg, hogy ez a művelet kiindulási pontot használ-e.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="262"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="331"/>
       <source>Use Start Point</source>
-      <translation type="unfinished">Use Start Point</translation>
+      <translation>Kezdőpont használata</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="269"/>
       <source>Clear Edges</source>
-      <translation type="unfinished">Clear Edges</translation>
+      <translation>Élek törlése</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="52"/>
       <source>Probe Grid Points</source>
-      <translation type="unfinished">Probe Grid Points</translation>
+      <translation>Rácspontok ellenőrzése</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="78"/>
@@ -4951,12 +5066,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="101"/>
       <source>Y Offset</source>
-      <translation type="unfinished">Y Offset</translation>
+      <translation>Y eltolás</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="115"/>
       <source>X Offset</source>
-      <translation type="unfinished">X Offset</translation>
+      <translation>X eltolás</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="132"/>
@@ -4971,22 +5086,22 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="145"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename where the probe points should be written.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename where the probe points should be written.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adja meg annak a fájlnak a nevét, amelybe az ellenőrizendő pontokat menteni kell.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="148"/>
       <source>ProbePoints.txt</source>
-      <translation type="unfinished">ProbePoints.txt</translation>
+      <translation>ProbePoints.txt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adja meg, hogy a profilt az alapgeometriai jellemzőkön belül vagy kívül kell-e végrehajtani. Ez csak akkor számít, ha a kompenzáció használata be van jelölve (alapértelmezett)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="93"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A művelet által hátrahagyott többletanyag mennyisége a cél alakzathoz viszonyítva.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="117"/>
@@ -5001,7 +5116,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this operation should use a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this operation should use a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ellenőrizze, hogy ennek a műveletnek kell-e kiindulási pontot használnia.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
@@ -5052,7 +5167,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../panels/PageOpSlotEdit.ui" line="87"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="169"/>
       <source>Center of Mass</source>
-      <translation type="unfinished">Center of Mass</translation>
+      <translation>Tömegközéppont</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="92"/>
@@ -5064,13 +5179,13 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="179"/>
       <source>Lowest Point</source>
-      <translation type="unfinished">Lowest Point</translation>
+      <translation>Legalacsonyabb pont</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="184"/>
       <source>Highest Point</source>
-      <translation type="unfinished">Highest Point</translation>
+      <translation>Legmagasabb pont</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="107"/>
@@ -5091,12 +5206,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="125"/>
       <source>Start Feature Reference</source>
-      <translation type="unfinished">Start Feature Reference</translation>
+      <translation>Indítsa el a Jellemzők hivatkozását</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="141"/>
       <source>End Feature Reference</source>
-      <translation type="unfinished">End Feature Reference</translation>
+      <translation>Jellemzők hivatkozás vége</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="162"/>
@@ -5126,7 +5241,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="269"/>
       <source>Extend Path End</source>
-      <translation type="unfinished">Extend Path End</translation>
+      <translation>Útvonal kiterjesztés vége</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="285"/>
@@ -5141,14 +5256,14 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="317"/>
       <source>Extend Path Start</source>
-      <translation type="unfinished">Extend Path Start</translation>
+      <translation>Útvonal kiterjesztés indítása</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="280"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="222"/>
       <source>Layer Mode</source>
-      <translation type="unfinished">Layer Mode</translation>
+      <translation>Réteg mód</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="352"/>
@@ -5168,7 +5283,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="369"/>
       <source>Path Orientation</source>
-      <translation type="unfinished">Path Orientation</translation>
+      <translation>Út-orientáció</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
@@ -5199,19 +5314,19 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="401"/>
       <source>Reverse cut direction</source>
-      <translation type="unfinished">Reverse cut direction</translation>
+      <translation>Fordított vágási irány</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="259"/>
       <source>Cut Pattern</source>
-      <translation type="unfinished">Cut Pattern</translation>
+      <translation>Vágott minta</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="266"/>
       <source>Sample interval</source>
-      <translation type="unfinished">Sample interval</translation>
+      <translation>Mintavételezés</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="85"/>
@@ -5239,13 +5354,13 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../panels/PageOpSurfaceEdit.ui" line="120"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="136"/>
       <source>Optimize Linear Paths</source>
-      <translation type="unfinished">Optimize Linear Paths</translation>
+      <translation>Egyenes útvonalak optimalizálása</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="127"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="235"/>
       <source>BoundBox</source>
-      <translation type="unfinished">BoundBox</translation>
+      <translation>Határoló Doboz</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="134"/>
@@ -5257,7 +5372,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../panels/PageOpSurfaceEdit.ui" line="143"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="73"/>
       <source>BaseBoundBox</source>
-      <translation type="unfinished">BaseBoundBox</translation>
+      <translation>Alaphatároló doboz</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="151"/>

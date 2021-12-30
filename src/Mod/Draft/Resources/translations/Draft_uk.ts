@@ -127,7 +127,7 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</sourc
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>Параметр, який визначає, скільки  симетричних площин матиме круговий масив.</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
@@ -235,13 +235,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>Об'єкт і конкретні його субелементи,
+що цей розмірний об’єкт вимірює.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Є різні можливості:
+- Предмет і одне з його ребер.
+- Об'єкт і дві його вершини.
+- Криволінійний об'єкт та його ребро.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -564,6 +564,11 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
       <translation>Заповніть літери поверхнями</translation>
     </message>
     <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Показати окремі елементи масиву</translation>
@@ -724,11 +729,6 @@ This property is read-only, as the number depends on the points contained within
       <translation>Файл PAT, який використовується цим об’єктом</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма цього об'єкта</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Назва шаблону, що використовується цим об'єктом</translation>
@@ -737,6 +737,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма цього об'єкта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1895,7 +1900,7 @@ If other objects are selected they are ignored.</source>
     <message>
       <location filename="gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Створює штрихи на поверхні обраного об'єкту</translation>
     </message>
   </context>
   <context>
@@ -2515,7 +2520,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="193"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>Перпендикулярний</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="196"/>
@@ -2637,9 +2642,9 @@ When this is active, the following objects created will be included in the const
       <source>Toggles the Continue mode.
 When this is active, any drawing tool that is terminated will automatically start again.
 This can be used to draw several objects one after the other in succession.</source>
-      <translation type="unfinished">Toggles the Continue mode.
-When this is active, any drawing tool that is terminated will automatically start again.
-This can be used to draw several objects one after the other in succession.</translation>
+      <translation>Перемикання режиму "Продовжити".
+Коли це активно, будь-який інструмент малювання, який припиняється автоматично запуститься.
+Це може бути використане для малювання декількох об'єктів один за іншим у наступності.</translation>
     </message>
   </context>
   <context>
@@ -2647,16 +2652,16 @@ This can be used to draw several objects one after the other in succession.</tra
     <message>
       <location filename="gui_togglemodes.py" line="166"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>Увімкнути/вимкнути  нормальних/каркасне вигляд</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="168"/>
       <source>Switches the display mode of selected objects from flatlines to wireframe and back.
 This is helpful to quickly visualize objects that are hidden by other objects.
 This is intended to be used with closed shapes and solids, and doesn't affect open wires.</source>
-      <translation type="unfinished">Switches the display mode of selected objects from flatlines to wireframe and back.
-This is helpful to quickly visualize objects that are hidden by other objects.
-This is intended to be used with closed shapes and solids, and doesn't affect open wires.</translation>
+      <translation>Перемикає режим відображення обраних об'єктів від пласкої поверхні на каркас та назад.
+Це корисно для швидкої візуалізації об'єктів, які приховуються іншими об'єктами.
+Він призначений для використання з закритими формами та суцільними тілами і не впливає на відкриті сітки.</translation>
     </message>
   </context>
   <context>
@@ -2664,12 +2669,12 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="gui_grid.py" line="58"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>Показати або приховати сітку</translation>
     </message>
     <message>
       <location filename="gui_grid.py" line="59"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation type="unfinished">Toggles the Draft grid on and off.</translation>
+      <translation>Вмикає та вимикає сітку креслення.</translation>
     </message>
   </context>
   <context>
@@ -2683,8 +2688,7 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
       <location filename="gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
-      <translation type="unfinished">Trims or extends the selected object, or extrudes single faces.
-CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</translation>
+      <translation>Обрізати або подовжити обраний об'єкт чи видавити окрему поверхню. CTRL - прив'язка, SHIFT - обмежити поточним сегментом або нормаллю, ALT - інвертувати.</translation>
     </message>
   </context>
   <context>
@@ -2692,7 +2696,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="gui_upgrade.py" line="58"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Оновити</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="61"/>
@@ -2700,10 +2704,10 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation type="unfinished">Upgrades the selected objects into more complex shapes.
-The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
-For example, it can join the selected objects into one, convert simple edges into parametric polylines,
-convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</translation>
+      <translation>Оновлює вибрані об’єкти до більш складних форм.
+Результат операції залежить від типів об’єктів, які можна оновлювати кілька разів поспіль.
+Наприклад, він може об’єднати вибрані об’єкти в один, перетворити прості ребра в параметричні полілінії,
+перетворювати закриті ребра в заповнені грані та параметричні багатокутники та об’єднувати грані в одну грань.</translation>
     </message>
   </context>
   <context>
@@ -2716,7 +2720,7 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
     <message>
       <location filename="gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Створює криву Безьє. CTRL для притягування, SHIFT для обмеження.</translation>
     </message>
   </context>
   <context>
@@ -2724,12 +2728,12 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
     <message>
       <location filename="gui_wire2spline.py" line="64"/>
       <source>Wire to B-spline</source>
-      <translation type="unfinished">Wire to B-spline</translation>
+      <translation>Сітка до B-сплайна</translation>
     </message>
     <message>
       <location filename="gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
-      <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
+      <translation>Перетворення вибраної полілінії на B-сплайн, або B-сплайна на полілінію.</translation>
     </message>
   </context>
   <context>
@@ -2744,9 +2748,9 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
       <source>Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</translation>
+      <translation>Створює проксі-об'єкт з поточного робочої площини.
+Після створення об'єкта клацніть його двічі на екрані дерева щоб відновити положення камери та об'єктів.
+Потім ви можете використовувати його, щоб зберегти іншу позицію камери і об'єкти в будь-який час, коли вам це потрібно.</translation>
     </message>
   </context>
   <context>
@@ -2762,7 +2766,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>Не знайдено достатньо координат</translation>
     </message>
   </context>
   <context>
@@ -2770,12 +2774,12 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="importSVG.py" line="1809"/>
       <source>Unknown SVG export style, switching to Translated</source>
-      <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
+      <translation>Невідомий стиль експорту SVG, переключіться на Переклад</translation>
     </message>
     <message>
       <location filename="importSVG.py" line="1829"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+      <translation>Список експорту не містить жодного об’єкта з дійсною обмежувальною рамкою</translation>
     </message>
   </context>
   <context>
@@ -2783,7 +2787,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft Snap</translation>
+      <translation>Прив'язка креслення</translation>
     </message>
   </context>
   <context>
@@ -2791,7 +2795,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="DraftGui.py" line="745"/>
       <source>Relative</source>
-      <translation type="unfinished">Relative</translation>
+      <translation>Відносний</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="750"/>
@@ -2816,7 +2820,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="DraftGui.py" line="81"/>
       <source>Subelement mode</source>
-      <translation type="unfinished">Subelement mode</translation>
+      <translation>Режим піделементу</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="86"/>
@@ -2831,32 +2835,32 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="DraftGui.py" line="96"/>
       <source>Snap On/Off</source>
-      <translation type="unfinished">Snap On/Off</translation>
+      <translation>Прив'язка вкл/викл</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="101"/>
       <source>Increase snap radius</source>
-      <translation type="unfinished">Increase snap radius</translation>
+      <translation>Збільшити радіус прив'язки</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="106"/>
       <source>Decrease snap radius</source>
-      <translation type="unfinished">Decrease snap radius</translation>
+      <translation>Зменшити радіус прив'язки</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="111"/>
       <source>Restrict X</source>
-      <translation type="unfinished">Restrict X</translation>
+      <translation>Обмежити X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="116"/>
       <source>Restrict Y</source>
-      <translation type="unfinished">Restrict Y</translation>
+      <translation>Обмежити Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="121"/>
       <source>Restrict Z</source>
-      <translation type="unfinished">Restrict Z</translation>
+      <translation>Обмежити Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="790"/>
@@ -2866,12 +2870,12 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="DraftGui.py" line="131"/>
       <source>Add custom snap point</source>
-      <translation type="unfinished">Add custom snap point</translation>
+      <translation>Додати користувацьку точку прив'язки</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="136"/>
       <source>Length mode</source>
-      <translation type="unfinished">Length mode</translation>
+      <translation>Режим довжини</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="786"/>
@@ -2886,12 +2890,12 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="DraftGui.py" line="151"/>
       <source>Cycle snap object</source>
-      <translation type="unfinished">Cycle snap object</translation>
+      <translation>Циклічний об’єкт прив'язки</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="156"/>
       <source>Toggle near snap on/off</source>
-      <translation type="unfinished">Toggle near snap on/off</translation>
+      <translation>Вкл./викл поряд з приєднанням</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="330"/>
@@ -2996,7 +3000,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="DraftGui.py" line="741"/>
       <source>Check this to lock the current angle</source>
-      <translation type="unfinished">Check this to lock the current angle</translation>
+      <translation>Поставте прапорець, щоб зафіксувати поточний кут</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1105"/>
@@ -3012,15 +3016,15 @@ Then you can use it to save a different camera position and objects' states any 
       <location filename="DraftGui.py" line="748"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
-      <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
-if is the first point to set</translation>
+      <translation>Координати відносно останньої точки або початку  системи координат
+якщо це перша точка для встановлення</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="753"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
-      <translation type="unfinished">Coordinates relative to global coordinate system.
-Uncheck to use working plane coordinate system</translation>
+      <translation>Координати відносно глобальної системи координат.
+Зніміть прапорець, щоб використовувати систему координат робочої площини</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="755"/>
@@ -3031,8 +3035,8 @@ Uncheck to use working plane coordinate system</translation>
       <location filename="DraftGui.py" line="759"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
-      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
-Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
+      <translation>Поставте прапорець, якщо об’єкт має виглядати заповненим, інакше він відображатиметься як каркас.
+Недоступно, якщо увімкнено параметр «Використовувати примітивні елементи чернетки» в налаштуваннях Чернетки.</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="761"/>
@@ -3042,17 +3046,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="763"/>
       <source>Finishes the current drawing or editing operation</source>
-      <translation type="unfinished">Finishes the current drawing or editing operation</translation>
+      <translation>Завершити дію поточного креслення або операцію редагування</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="766"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation type="unfinished">If checked, command will not finish until you press the command button again</translation>
+      <translation>Якщо обрано, команда не завершиться, доки ви не натиснете командну кнопку знову</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="771"/>
       <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
+      <translation>Якщо вибрано, то зміщення стилю CC-типу буде виконано замість класичного зсуву</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="772"/>
@@ -3062,37 +3066,37 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="782"/>
       <source>&amp;Undo (CTRL+Z)</source>
-      <translation type="unfinished">&amp;Undo (CTRL+Z)</translation>
+      <translation>&amp;Скасувати (CTRL+Z)</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="783"/>
       <source>Undo the last segment</source>
-      <translation type="unfinished">Undo the last segment</translation>
+      <translation>Скасувати останній відрізок</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="785"/>
       <source>Finishes and closes the current line</source>
-      <translation type="unfinished">Finishes and closes the current line</translation>
+      <translation>Завершення та закриття поточної лінії</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="787"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
-      <translation type="unfinished">Wipes the existing segments of this line and starts again from the last point</translation>
+      <translation>Стирає наявні сегменти цієї лінії та починає знову з останньої точки</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="788"/>
       <source>Set WP</source>
-      <translation type="unfinished">Set WP</translation>
+      <translation>Встановити WP</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="789"/>
       <source>Reorients the working plane on the last segment</source>
-      <translation type="unfinished">Reorients the working plane on the last segment</translation>
+      <translation>Переорієнтує робочу площину на останній сегмент</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="791"/>
       <source>Selects an existing edge to be measured by this dimension</source>
-      <translation type="unfinished">Selects an existing edge to be measured by this dimension</translation>
+      <translation>Вибирає існуюче ребро для вимірювання цього розміру</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="792"/>
@@ -3107,7 +3111,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="796"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation type="unfinished">If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</translation>
+      <translation>Якщо прапорець встановлено, об'єкти будуть скопійовані замість переміщення. Налаштування -&gt; Чернетка -&gt; Глобальна копія зробить цей режим в наступних командах</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="797"/>
@@ -3117,12 +3121,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="798"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
-      <translation type="unfinished">If checked, subelements will be modified instead of entire objects</translation>
+      <translation>Якщо прапорець встановлено, субелементи будуть змінені замість усіх об'єктів</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="799"/>
       <source>Text string to draw</source>
-      <translation type="unfinished">Text string to draw</translation>
+      <translation>Текстовий рядок для малювання</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="800"/>
@@ -3157,7 +3161,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="806"/>
       <source>Open a FileChooser for font file</source>
-      <translation type="unfinished">Open a FileChooser for font file</translation>
+      <translation>Відкрити FileChooser для файла шрифту</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="807"/>
@@ -3167,17 +3171,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="808"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
-      <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
+      <translation>Натисніть цю кнопку, щоб створити текстовий об’єкт, або закінчити текст двома пустими рядками</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="536"/>
       <source>Current working plane</source>
-      <translation type="unfinished">Current working plane</translation>
+      <translation>Поточна робоча площина</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="831"/>
       <source>Change default style for new objects</source>
-      <translation type="unfinished">Change default style for new objects</translation>
+      <translation>Змінити стиль за замовчуванням для нових об'єктів</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="832"/>
@@ -3237,7 +3241,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="gui_trimex.py" line="217"/>
       <source>Offset distance</source>
-      <translation type="unfinished">Offset distance</translation>
+      <translation>Відстань зміщення</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1094"/>
@@ -3257,17 +3261,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="1249"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Локальний u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1250"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Локальний u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1251"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Локальний u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1253"/>
@@ -3287,17 +3291,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="1257"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Глобальний u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1258"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Глобальний u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1259"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Глобальний u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1261"/>
@@ -3322,7 +3326,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="1504"/>
       <source>Invalid Tracking value. Using 0.</source>
-      <translation type="unfinished">Invalid Tracking value. Using 0.</translation>
+      <translation>Неприпустиме значення для відслідковування. Використовуючи 0.</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1518"/>
@@ -3342,7 +3346,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="2047"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Автогрупа:</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2374"/>
@@ -3362,12 +3366,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="2377"/>
       <source>Facebinder elements</source>
-      <translation type="unfinished">Facebinder elements</translation>
+      <translation>Елементи поверхонь</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="286"/>
       <source>LibreDWG error</source>
-      <translation type="unfinished">LibreDWG error</translation>
+      <translation>Помилка LibreDWG</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="295"/>
@@ -3377,27 +3381,27 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="228"/>
       <source>Conversion successful</source>
-      <translation type="unfinished">Conversion successful</translation>
+      <translation>Перетворення виконано успішно</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="231"/>
       <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</translation>
+      <translation>Помилка при перетворенні DWG. Спробуйте перемістити DWG файл в шлях до каталогу без пробілів і неанглійських символів, або спробуйте зберегти до більш низької версії DWG.</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="300"/>
       <source>ODA File Converter not found</source>
-      <translation type="unfinished">ODA File Converter not found</translation>
+      <translation>Конвертер файлу ODA не знайдено</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="310"/>
       <source>QCAD error</source>
-      <translation type="unfinished">QCAD error</translation>
+      <translation>Помилка QCAD</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Усі Фігури мають бути компланарними</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="696"/>
@@ -3409,102 +3413,102 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="WorkingPlane.py" line="704"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Обрані форми повинні визначити площину</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
       <source>No active document. Aborting.</source>
-      <translation type="unfinished">No active document. Aborting.</translation>
+      <translation>Немає активного документа. Відмінити.</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="151"/>
       <source>Object must be a closed shape</source>
-      <translation type="unfinished">Object must be a closed shape</translation>
+      <translation>Об'єкт повинен бути закритою формою</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="153"/>
       <source>No solid object created</source>
-      <translation type="unfinished">No solid object created</translation>
+      <translation>Не створено суцільний об’єкт</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="276"/>
       <source>Faces must be coplanar to be refined</source>
-      <translation type="unfinished">Faces must be coplanar to be refined</translation>
+      <translation>Сторони повинні бути копланарними для переробки</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="230"/>
       <source>Upgrade: Unknown force method:</source>
-      <translation type="unfinished">Upgrade: Unknown force method:</translation>
+      <translation>Оновлення: невідомий метод сили:</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="450"/>
       <source>Found groups: closing each open object inside</source>
-      <translation type="unfinished">Found groups: closing each open object inside</translation>
+      <translation>Знайдені групи: закриття кожного відкритого об'єкта всередині</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="456"/>
       <source>Found meshes: turning into Part shapes</source>
-      <translation type="unfinished">Found meshes: turning into Part shapes</translation>
+      <translation>Знайдені сітки: перетворення по частини форм</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="464"/>
       <source>Found 1 solidifiable object: solidifying it</source>
-      <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
+      <translation>Знайдено 1 цільовий об'єкт: зміцнити його</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="469"/>
       <source>Found 2 objects: fusing them</source>
-      <translation type="unfinished">Found 2 objects: fusing them</translation>
+      <translation>Знайдені 2 об’єкти: об'єднуючи їх</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="480"/>
       <source>Found object with several coplanar faces: refine them</source>
-      <translation type="unfinished">Found object with several coplanar faces: refine them</translation>
+      <translation>Знайдений об'єкт з кількома лінійними обличчями: уточнити їх</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="486"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
-      <translation type="unfinished">Found 1 non-parametric objects: draftifying it</translation>
+      <translation>Знайдений 1 непараметричний об'єкт: конвертація його</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="497"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation type="unfinished">Found 1 closed sketch object: creating a face from it</translation>
+      <translation>Знайдено 1 закритий ескізний об'єкт: створити поверхню з нього</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="502"/>
       <source>Found closed wires: creating faces</source>
-      <translation type="unfinished">Found closed wires: creating faces</translation>
+      <translation>Знайдені закриті каркаси: створюються поверхні</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="507"/>
       <source>Found several wires or edges: wiring them</source>
-      <translation type="unfinished">Found several wires or edges: wiring them</translation>
+      <translation>Знайдено декілька каркасів або ребер: під’єднайте їх</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
-      <translation type="unfinished">trying: closing it</translation>
+      <translation>намагається: закрити</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="514"/>
       <source>Found 1 open wire: closing it</source>
-      <translation type="unfinished">Found 1 open wire: closing it</translation>
+      <translation>Знайдений 1 відкритий каркас: закривається</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="531"/>
       <source>Found 1 object: draftifying it</source>
-      <translation type="unfinished">Found 1 object: draftifying it</translation>
+      <translation>Знайдено 1 об'єкт: конвертувати у креслення</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
-      <translation type="unfinished">Found points: creating compound</translation>
+      <translation>Знайдені точки: створення сполучення</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="541"/>
       <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+      <translation>Знайти кілька непридатних об’єктів: створення сполучення</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -3809,73 +3813,73 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_layer.py" line="212"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
-      <translation type="unfinished">Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</translation>
+      <translation>Неправильне введення: повинно бути 'Solid', 'Dashed', 'Dotted' або 'Dashdot'.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="220"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
+      <translation>Невірне введення: має бути число від 0 до 100.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="252"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list or tuple of strings, or a single string.</translation>
+      <translation>Неправильне введення: має бути списком або кортежем рядків, або єдиним рядком.</translation>
     </message>
     <message>
       <location filename="make_patharray.py" line="246"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation type="unfinished">Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</translation>
+      <translation>Неправильне введення: має бути 'Original', 'Frenet' або 'Tangent'.</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="103"/>
       <source>No shape found
 </source>
-      <translation type="unfinished">No shape found
+      <translation>Форму не знайдено
 </translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="104"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>Форму не знайдено</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="109"/>
       <source>All Shapes must be planar
 </source>
-      <translation type="unfinished">All Shapes must be planar
+      <translation>Всі Фігури мають бути пласкими
 </translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="111"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Усі Фігури мають бути пласкими</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
       <source>All Shapes must be coplanar
 </source>
-      <translation type="unfinished">All Shapes must be coplanar
+      <translation>Всі фігури мають бути копланарними
 </translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="60"/>
       <source>Internal orthogonal array</source>
-      <translation type="unfinished">Internal orthogonal array</translation>
+      <translation>Внутрішній ортогональний масив</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="87"/>
       <source>Wrong input: must be a number or vector.</source>
-      <translation type="unfinished">Wrong input: must be a number or vector.</translation>
+      <translation>Введено неправильні дані: має бути число або вектор.</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="98"/>
       <source>Input: single value expanded to vector.</source>
-      <translation type="unfinished">Input: single value expanded to vector.</translation>
+      <translation>Введення: одне значення розширене до вектора.</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="129"/>
       <source>Input: number of elements must be at least 1. It is set to 1.</source>
-      <translation type="unfinished">Input: number of elements must be at least 1. It is set to 1.</translation>
+      <translation>Введення: кількість елементів має бути принаймні 1.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
@@ -3885,7 +3889,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_orthoarray.py" line="350"/>
       <source>Orthogonal array 2D</source>
-      <translation type="unfinished">Orthogonal array 2D</translation>
+      <translation>Ортогональний масив 2D</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="424"/>
@@ -3895,62 +3899,72 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_orthoarray.py" line="501"/>
       <source>Rectangular array 2D</source>
-      <translation type="unfinished">Rectangular array 2D</translation>
+      <translation>Прямокутний масив 2D</translation>
     </message>
     <message>
       <location filename="make_label.py" line="264"/>
       <source>Wrong input: subelement not in object.</source>
-      <translation type="unfinished">Wrong input: subelement not in object.</translation>
+      <translation>Невірне введення: піделемент  не в об’єкті.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
     </message>
     <message>
       <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</translation>
+      <translation>Невірне введення: повинно бути рядок, 'Налаштування', 'Назва', 'Мітка', 'Позиція', 'Довжина ", 'Область Volume', 'Tag' або 'Material'.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="305"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</translation>
+      <translation>Неправильний вхідний параметр: має бути рядком, «Горизонталь», «Вертикальний» або «Замовлення».</translation>
     </message>
     <message>
       <location filename="make_label.py" line="321"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
-      <translation type="unfinished">Wrong input: must be a list of at least two vectors.</translation>
+      <translation>Неправильний вхідний параметр: має бути списком щонайменше двох векторів.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="354"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation type="unfinished">Direction is not 'Custom'; points won't be used.</translation>
+      <translation>Напрямок не є 'Замовне' ; точки не використовуються.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="381"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
-      <translation type="unfinished">Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</translation>
+      <translation>Неправильне введення: має бути списком двох елементів. Наприклад, [object, 'Edge1'].</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="76"/>
       <source>ShapeString: string has no wires</source>
-      <translation type="unfinished">ShapeString: string has no wires</translation>
+      <translation>ShapeString: рядок не має каркасів</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="160"/>
       <source>added property 'ExtraPlacement'</source>
-      <translation type="unfinished">added property 'ExtraPlacement'</translation>
+      <translation>додана властивість 'ExtraPlacement'</translation>
     </message>
     <message>
       <location filename="patharray.py" line="284"/>
       <source>, path object doesn't have 'Edges'.</source>
-      <translation type="unfinished">, path object doesn't have 'Edges'.</translation>
+      <translation>, траєкторія об'єкту не має 'Edges'.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="407"/>
       <source>'PathObj' property will be migrated to 'PathObject'</source>
-      <translation type="unfinished">'PathObj' property will be migrated to 'PathObject'</translation>
+      <translation>Властивість 'PathObj' буде перенесено до 'PathObject'</translation>
     </message>
     <message>
       <location filename="patharray.py" line="525"/>
       <source>Cannot calculate path tangent. Copy not aligned.</source>
-      <translation type="unfinished">Cannot calculate path tangent. Copy not aligned.</translation>
+      <translation>Не вдалося обчислити дотичний контур. Копія не вирівнюється.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="541"/>
@@ -3981,6 +3995,36 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation type="unfinished">migrated 'DraftText' type to 'Text'</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation type="unfinished">Activate this layer</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation type="unfinished">Select layer contents</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Об'єднати дублікати шарів</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Додати новий шар</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4314,7 +4358,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_dimensions.py" line="508"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>Ребро занадто коротке!</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
@@ -4354,7 +4398,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_upgrade.py" line="85"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Оновити</translation>
     </message>
     <message>
       <location filename="gui_move.py" line="81"/>
@@ -4669,7 +4713,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_grid.py" line="51"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>Показати або приховати сітку</translation>
     </message>
     <message>
       <location filename="gui_rectangles.py" line="125"/>
@@ -5059,16 +5103,6 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Pick rotation angle</translation>
     </message>
     <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation type="unfinished">Select layer contents</translation>
-    </message>
-    <message>
       <location filename="gui_lineops.py" line="73"/>
       <source>No active command.</source>
       <translation type="unfinished">No active command.</translation>
@@ -5151,7 +5185,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
-      <translation type="unfinished">Conversion successful</translation>
+      <translation>Перетворення виконано успішно</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="277"/>
@@ -7549,7 +7583,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="118"/>
       <source>Relative</source>
-      <translation type="unfinished">Relative</translation>
+      <translation>Відносний</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="140"/>
@@ -7684,7 +7718,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="697"/>
       <source>Set WP</source>
-      <translation type="unfinished">Set WP</translation>
+      <translation>Встановити WP</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="719"/>
@@ -7694,7 +7728,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="741"/>
       <source>Restrict X</source>
-      <translation type="unfinished">Restrict X</translation>
+      <translation>Обмежити X</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="763"/>
@@ -7704,7 +7738,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="785"/>
       <source>Restrict Y</source>
-      <translation type="unfinished">Restrict Y</translation>
+      <translation>Обмежити Y</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="807"/>
@@ -7714,7 +7748,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="829"/>
       <source>Restrict Z</source>
-      <translation type="unfinished">Restrict Z</translation>
+      <translation>Обмежити Z</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="851"/>

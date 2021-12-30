@@ -191,6 +191,13 @@ class CommandAddonManager:
         elif not os.path.isdir(am_path):
             self.update_cache = True
 
+        # If we are checking for updates automatically, hide the Check for updates button:
+        autocheck = pref.GetBool("AutoCheck", False)
+        if autocheck:
+            self.dialog.buttonCheckForUpdates.hide()
+        else:
+            self.dialog.buttonUpdateAll.hide()
+
         # Set up the listing of packages using the model-view-controller architecture
         self.packageList = PackageList(self.dialog)
         self.item_model = PackageListItemModel()
@@ -210,6 +217,7 @@ class CommandAddonManager:
         # set nice icons to everything, by theme with fallback to FreeCAD icons
         self.dialog.setWindowIcon(QtGui.QIcon(":/icons/AddonManager.svg"))
         self.dialog.buttonUpdateAll.setIcon(QtGui.QIcon(":/icons/button_valid.svg"))
+        self.dialog.buttonCheckForUpdates.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
         self.dialog.buttonClose.setIcon(
             QtGui.QIcon.fromTheme("close", QtGui.QIcon(":/icons/process-stop.svg"))
         )
@@ -226,6 +234,7 @@ class CommandAddonManager:
         # connect slots
         self.dialog.rejected.connect(self.reject)
         self.dialog.buttonUpdateAll.clicked.connect(self.update_all)
+        self.dialog.buttonCheckForUpdates.clicked.connect(self.manually_check_for_updates)
         self.dialog.buttonClose.clicked.connect(self.dialog.reject)
         self.dialog.buttonUpdateCache.clicked.connect(self.on_buttonUpdateCache_clicked)
         self.dialog.buttonShowDetails.clicked.connect(self.toggle_details)
@@ -528,10 +537,9 @@ class CommandAddonManager:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         autocheck = pref.GetBool("AutoCheck", False)
         if not autocheck:
-            FreeCAD.Console.PrintMessage(translate(
-                "AddonsInstaller",
-                "Addon Manager: Skipping update check because AutoCheck user preference is False"
-            ) + "\n")
+            FreeCAD.Console.PrintLog(
+                "Addon Manager: Skipping update check because AutoCheck user preference is False\n"
+            )
             self.do_next_startup_phase()
             return
         if not self.packages_with_updates:
@@ -731,6 +739,32 @@ class CommandAddonManager:
             repo.update_status = AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
         self.item_model.reload_item(repo)
         self.packageDetails.show_repo(repo)
+
+    def manually_check_for_updates(self) -> None:
+        if hasattr(self, "check_worker"):
+            thread = self.check_worker
+            if thread:
+                if not thread.isFinished():
+                    self.do_next_startup_phase()
+                    return
+        self.dialog.buttonCheckForUpdates.setText(
+            translate("AddonsInstaller", "Checking for updates...")
+        )
+        self.dialog.buttonCheckForUpdates.setEnabled(False)
+        self.show_progress_widgets()
+        self.current_progress_region = 1
+        self.number_of_progress_regions = 1
+        self.check_worker = CheckWorkbenchesForUpdatesWorker(self.item_model.repos)
+        self.check_worker.finished.connect(self.manual_update_check_complete)
+        self.check_worker.progress_made.connect(self.update_progress_bar)
+        self.check_worker.update_status.connect(self.status_updated)
+        self.check_worker.start()
+
+    def manual_update_check_complete(self) -> None:
+        self.dialog.buttonUpdateAll.show()
+        self.dialog.buttonCheckForUpdates.hide()
+        self.enable_updates(len(self.packages_with_updates))
+        self.hide_progress_widgets()
 
     def update_all(self) -> None:
         """Asynchronously apply all available updates: individual failures are noted, but do not stop other updates"""

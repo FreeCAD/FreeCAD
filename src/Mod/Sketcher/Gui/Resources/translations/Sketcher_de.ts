@@ -156,7 +156,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5790"/>
       <source>Constrain arc or circle</source>
-      <translation>Bogen oder Kreis festlegen</translation>
+      <translation>Bogen oder Kreis einschränken</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5791"/>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4449"/>
       <source>Create a conic</source>
-      <translation>Erstellen eines Kegelschnitts</translation>
+      <translation>Kegelschnitt erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4450"/>
@@ -4007,7 +4007,7 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="83"/>
       <source>The 3D view is scaled based on this factor.</source>
-      <translation type="unfinished">The 3D view is scaled based on this factor.</translation>
+      <translation>Die 3D-Ansicht wird um diesen Faktor skaliert.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="114"/>
@@ -4032,7 +4032,7 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
       <source>A dialog will pop up to input a value for new dimensional constraints.</source>
-      <translation type="unfinished">A dialog will pop up to input a value for new dimensional constraints.</translation>
+      <translation>Es wird ein Dialogfenster geöffnet, um einen Wert für neue maßliche Beschränkungen einzugeben.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
@@ -4042,7 +4042,7 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
       <source>The current sketcher creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current sketcher creation tool will remain active after creation.</translation>
+      <translation>Das aktuelle Skizzierwerkzeug bleibt nach Erstellung aktiv.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
@@ -4052,7 +4052,7 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
       <source>The current constraint creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
+      <translation>Das aktuelle Beschränkungswerkzeug bleibt nach Erstellung aktiv.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="204"/>
@@ -4074,17 +4074,17 @@ Unterstützt alle Einheitensysteme außer 'US customary' und 'Gebäude US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
       <source>If checked, displays the name on dimensional constraints (if exists).</source>
-      <translation type="unfinished">If checked, displays the name on dimensional constraints (if exists).</translation>
+      <translation>Wenn aktiviert, wird der Name auf maßlichen Beschränkungen angezeigt (falls vorhanden).</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Show dimensional constraint name with format</source>
-      <translation type="unfinished">Show dimensional constraint name with format</translation>
+      <translation>Zeige Namen der maßlichen Beschränkung formatiert</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
       <source>%N = %V</source>
-      <translation type="unfinished">%N = %V</translation>
+      <translation>%N = %V</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
@@ -4093,11 +4093,11 @@ Defaults to: %N = %V
 
 %N - name parameter
 %V - dimension value</source>
-      <translation type="unfinished">The format of the dimensional constraint string presentation.
-Defaults to: %N = %V
+      <translation>Das Format der String-Darstellung der maßlichen Beschränkung.
+Standardmäßig: %N = %V
 
-%N - name parameter
-%V - dimension value</translation>
+%N - benannter Parameter
+%V - Wert der Bemaßung</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
@@ -4132,7 +4132,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
       <source>When opening a sketch, show objects the sketch is attached to.</source>
-      <translation type="unfinished">When opening a sketch, show objects the sketch is attached to.</translation>
+      <translation>Beim Öffnen einer Skizze jene Objekte zeigen, an die die Skizze angehängt ist.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="353"/>
@@ -4373,12 +4373,12 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="70"/>
       <source>Horizontal</source>
-      <translation>Horizontale</translation>
+      <translation>Horizontal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="75"/>
       <source>Vertical</source>
-      <translation>Vertikale</translation>
+      <translation>Vertikal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="80"/>
@@ -4473,7 +4473,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="213"/>
       <source>Shows all the constraints in the list</source>
-      <translation type="unfinished">Shows all the constraints in the list</translation>
+      <translation>Zeigt alle Beschränkungen in der Liste an</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="216"/>
@@ -4483,7 +4483,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="235"/>
       <source>Hides all the constraints in the list</source>
-      <translation type="unfinished">Hides all the constraints in the list</translation>
+      <translation>Versteckt alle Beschränkungen in der Liste</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="238"/>
@@ -4503,17 +4503,17 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="265"/>
       <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
-      <translation type="unfinished">Constraint visualisation tracks filter selection so that filtered out constraints are hidden</translation>
+      <translation>Darstellung der Beschränkungen befolgt Filter-Auswahl und herausgefilterte Beschränkungen werden versteckt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="268"/>
       <source>Track filter selection</source>
-      <translation type="unfinished">Track filter selection</translation>
+      <translation>Filter-Auswahl befolgen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="295"/>
       <source>Controls widget list behaviour</source>
-      <translation type="unfinished">Controls widget list behaviour</translation>
+      <translation>Steuert Verhalten der Widget Liste</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="298"/>

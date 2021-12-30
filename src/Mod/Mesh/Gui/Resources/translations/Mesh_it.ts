@@ -589,7 +589,7 @@
     <name>Command</name>
     <message>
       <source>Mesh Create</source>
-      <translation type="unfinished">Mesh Create</translation>
+      <translation>Crea Mesh</translation>
     </message>
     <message>
       <source>Segment by tool mesh</source>

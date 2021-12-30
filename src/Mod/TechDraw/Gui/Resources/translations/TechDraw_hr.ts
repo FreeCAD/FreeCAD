@@ -229,7 +229,7 @@
     </message>
     <message>
       <source>Change Appearance of selected Lines</source>
-      <translation type="unfinished">Change Appearance of selected Lines</translation>
+      <translation>Promjena izgleda odabranih linija</translation>
     </message>
   </context>
   <context>
@@ -292,7 +292,7 @@
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Spremi Dxf Datoteku</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>
@@ -318,15 +318,15 @@
     </message>
     <message>
       <source>Draw circle centerlines</source>
-      <translation type="unfinished">Draw circle centerlines</translation>
+      <translation>Nacrtaj središnje linije kruga</translation>
     </message>
     <message>
       <source>Draw circle centerline cross at circles
     - select many circles or arcs
     - click this button</source>
-      <translation type="unfinished">Draw circle centerline cross at circles
-    - select many circles or arcs
-    - click this button</translation>
+      <translation>Nacrtajte križ središnje crte kruga u krugovima
+    - odaberite više krugova ili lukova
+    - kliknite na ovu tipku</translation>
     </message>
   </context>
   <context>
@@ -779,11 +779,11 @@
     </message>
     <message>
       <source>ClipGroupAdd</source>
-      <translation type="unfinished">ClipGroupAdd</translation>
+      <translation>IsječakGrupaDodaj</translation>
     </message>
     <message>
       <source>ClipGroupRemove</source>
-      <translation type="unfinished">ClipGroupRemove</translation>
+      <translation>IsječakGrupaObriši</translation>
     </message>
     <message>
       <source>Create Symbol</source>
@@ -807,7 +807,7 @@
     </message>
     <message>
       <source>Add Midpont Vertices</source>
-      <translation type="unfinished">Add Midpont Vertices</translation>
+      <translation>Dodajte središnju točku na vrhove</translation>
     </message>
     <message>
       <source>Add Quadrant Vertices</source>
@@ -815,43 +815,43 @@
     </message>
     <message>
       <source>Create Annotation</source>
-      <translation type="unfinished">Create Annotation</translation>
+      <translation>Stvori Napomenu</translation>
     </message>
     <message>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>Stvori Dimenziju</translation>
     </message>
     <message>
       <source>Create Hatch</source>
-      <translation type="unfinished">Create Hatch</translation>
+      <translation>Stvori Šrafuru</translation>
     </message>
     <message>
       <source>Create GeomHatch</source>
-      <translation type="unfinished">Create GeomHatch</translation>
+      <translation>Stvori geometrijsku Šrafuru</translation>
     </message>
     <message>
       <source>Create Image</source>
-      <translation type="unfinished">Create Image</translation>
+      <translation>izradi sliku</translation>
     </message>
     <message>
       <source>Drag Balloon</source>
-      <translation type="unfinished">Drag Balloon</translation>
+      <translation>Povuci balončić</translation>
     </message>
     <message>
       <source>Drag Dimension</source>
-      <translation type="unfinished">Drag Dimension</translation>
+      <translation>Povuci Dimenziju</translation>
     </message>
     <message>
       <source>Create Balloon</source>
-      <translation type="unfinished">Create Balloon</translation>
+      <translation>Stvori Balončić</translation>
     </message>
     <message>
       <source>Create ActiveView</source>
-      <translation type="unfinished">Create ActiveView</translation>
+      <translation>Stvori aktivni Pogled</translation>
     </message>
     <message>
       <source>Create CenterLine</source>
-      <translation type="unfinished">Create CenterLine</translation>
+      <translation>Stvori središnju Liniju</translation>
     </message>
     <message>
       <source>Create Cosmetic Line</source>
@@ -859,51 +859,51 @@
     </message>
     <message>
       <source>Update CosmeticLine</source>
-      <translation type="unfinished">Update CosmeticLine</translation>
+      <translation>Ažuriraj Ukrasnu liniju</translation>
     </message>
     <message>
       <source>Create Detail View</source>
-      <translation type="unfinished">Create Detail View</translation>
+      <translation>Stvori detaljni Pogled</translation>
     </message>
     <message>
       <source>Update Detail</source>
-      <translation type="unfinished">Update Detail</translation>
+      <translation>Ažuriraj detalj</translation>
     </message>
     <message>
       <source>Create Leader</source>
-      <translation type="unfinished">Create Leader</translation>
+      <translation>Stvori opisnu liniju</translation>
     </message>
     <message>
       <source>Edit Leader</source>
-      <translation type="unfinished">Edit Leader</translation>
+      <translation>Uredi opisnu liniju</translation>
     </message>
     <message>
       <source>Create Anno</source>
-      <translation type="unfinished">Create Anno</translation>
+      <translation>Stvori Napomenu</translation>
     </message>
     <message>
       <source>Edit Anno</source>
-      <translation type="unfinished">Edit Anno</translation>
+      <translation>Uredi Napomenu</translation>
     </message>
     <message>
       <source>Apply Quick</source>
-      <translation type="unfinished">Apply Quick</translation>
+      <translation>Primjeni Brzo</translation>
     </message>
     <message>
       <source>Apply Aligned</source>
-      <translation type="unfinished">Apply Aligned</translation>
+      <translation>Primjeni Poravnano</translation>
     </message>
     <message>
       <source>Create SectionView</source>
-      <translation type="unfinished">Create SectionView</translation>
+      <translation>Stvori OdjeljakPogled</translation>
     </message>
     <message>
       <source>Create WeldSymbol</source>
-      <translation type="unfinished">Create WeldSymbol</translation>
+      <translation>Stvori Simbol za Zavarivanje</translation>
     </message>
     <message>
       <source>Edit WeldSymbol</source>
-      <translation type="unfinished">Edit WeldSymbol</translation>
+      <translation>Uredi Simbol za Zavarivanje</translation>
     </message>
     <message>
       <source>Add Cosmetic Vertex</source>
@@ -1543,7 +1543,7 @@
     </message>
     <message>
       <source>Selection is empty</source>
-      <translation type="unfinished">Selection is empty</translation>
+      <translation>Odabir je prazan</translation>
     </message>
     <message>
       <source>No object selected</source>
@@ -1567,7 +1567,7 @@
     </message>
     <message>
       <source>Please select two straight lines</source>
-      <translation type="unfinished">Please select two straight lines</translation>
+      <translation>Molimo odaberite dvije ravne linije</translation>
     </message>
   </context>
   <context>
@@ -2168,7 +2168,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Line group used to set line widths</source>
-      <translation type="unfinished">Line group used to set line widths</translation>
+      <translation>Grupa linija koja se koristi za postavljanje širine linija</translation>
     </message>
     <message>
       <source>Line Width Group</source>
@@ -2877,7 +2877,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Spremi Dxf Datoteku</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>
@@ -3439,11 +3439,11 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Drawing Style:</source>
-      <translation type="unfinished">Drawing Style:</translation>
+      <translation>Stil crtanja:</translation>
     </message>
     <message>
       <source>Standard and style according to which dimension is drawn</source>
-      <translation type="unfinished">Standard and style according to which dimension is drawn</translation>
+      <translation>Standard i stil prema kojem se crta dimenzija</translation>
     </message>
     <message>
       <source>ISO Oriented</source>

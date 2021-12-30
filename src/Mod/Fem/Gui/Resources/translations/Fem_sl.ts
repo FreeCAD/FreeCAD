@@ -101,12 +101,12 @@
     <message>
       <location filename="commands.py" line="166"/>
       <source>Constant vacuum permittivity</source>
-      <translation type="unfinished">Constant vacuum permittivity</translation>
+      <translation>Konstanta vakuumske dielektričnosti</translation>
     </message>
     <message>
       <location filename="commands.py" line="170"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>Ustvari MKE-jevo konstanto vakuumske dielektričnosti, ki nadomesti standardno vrednost</translation>
     </message>
   </context>
   <context>
@@ -119,7 +119,7 @@
     <message>
       <location filename="commands.py" line="189"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation>Ustvari MKE pogoj volumskega izvora toplote</translation>
+      <translation>Ustvari omejilo MKE izvora toplote telesa</translation>
     </message>
   </context>
   <context>
@@ -127,12 +127,12 @@
     <message>
       <location filename="commands.py" line="202"/>
       <source>Constraint centrif</source>
-      <translation type="unfinished">Constraint centrif</translation>
+      <translation>Omejitev sredobežnosti</translation>
     </message>
     <message>
       <location filename="commands.py" line="206"/>
       <source>Creates a FEM constraint centrif</source>
-      <translation type="unfinished">Creates a FEM constraint centrif</translation>
+      <translation>Ustvari omejilo MKE sredobežnosti</translation>
     </message>
   </context>
   <context>
@@ -145,7 +145,7 @@
     <message>
       <location filename="commands.py" line="223"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation>Ustvari MKE robni pogoj elektrostatičnega potenciala</translation>
+      <translation>Ustvari omejilo MKE elektrostatičnega potenciala</translation>
     </message>
   </context>
   <context>
@@ -158,7 +158,7 @@
     <message>
       <location filename="commands.py" line="240"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation>Ustvari MKE pogoj hitrosti toka</translation>
+      <translation>Ustvari omejilo MKE hitrosti toka</translation>
     </message>
   </context>
   <context>
@@ -171,7 +171,7 @@
     <message>
       <location filename="commands.py" line="257"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation>Ustvari MKE pogoj začetne hitrosti toka</translation>
+      <translation>Ustvari omejilo MKE za začetne hitrosti toka</translation>
     </message>
   </context>
   <context>
@@ -179,12 +179,12 @@
     <message>
       <location filename="commands.py" line="270"/>
       <source>Constraint sectionprint</source>
-      <translation type="unfinished">Constraint sectionprint</translation>
+      <translation>Omejitev prereznega izpisa</translation>
     </message>
     <message>
       <location filename="commands.py" line="274"/>
       <source>Creates a FEM constraint sectionprint</source>
-      <translation type="unfinished">Creates a FEM constraint sectionprint</translation>
+      <translation>Ustvari omejilo MKE prereznega izpisa</translation>
     </message>
   </context>
   <context>
@@ -197,7 +197,7 @@
     <message>
       <location filename="commands.py" line="291"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation>Ustvari MKE pogoj lastne teže</translation>
+      <translation>Ustvari omejilo MKE lastne teže</translation>
     </message>
   </context>
   <context>
@@ -205,12 +205,12 @@
     <message>
       <location filename="commands.py" line="304"/>
       <source>Constraint tie</source>
-      <translation type="unfinished">Constraint tie</translation>
+      <translation>Omejitev vezi</translation>
     </message>
     <message>
       <location filename="commands.py" line="308"/>
       <source>Creates a FEM constraint tie</source>
-      <translation type="unfinished">Creates a FEM constraint tie</translation>
+      <translation>Ustvari MKE omejilo vezi</translation>
     </message>
   </context>
   <context>
@@ -218,12 +218,12 @@
     <message>
       <location filename="commands.py" line="321"/>
       <source>Fluid section for 1D flow</source>
-      <translation>Razdelek tekočine 1D toka</translation>
+      <translation>Presek tekočine 1D toka</translation>
     </message>
     <message>
       <location filename="commands.py" line="325"/>
       <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
+      <translation>Ustvari MKE presek tekočine 1D toka</translation>
     </message>
   </context>
   <context>
@@ -283,12 +283,12 @@
     <message>
       <location filename="commands.py" line="457"/>
       <source>Electricforce equation</source>
-      <translation type="unfinished">Electricforce equation</translation>
+      <translation>Enačba električnih sil</translation>
     </message>
     <message>
       <location filename="commands.py" line="461"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>Ustvari MKE enačbo električnih sil</translation>
     </message>
   </context>
   <context>
@@ -322,12 +322,12 @@
     <message>
       <location filename="commands.py" line="440"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>Enačba pretoka</translation>
     </message>
     <message>
       <location filename="commands.py" line="444"/>
       <source>Creates a FEM equation for flux</source>
-      <translation type="unfinished">Creates a FEM equation for flux</translation>
+      <translation>Ustvari MKE enačbo pretoka</translation>
     </message>
   </context>
   <context>
@@ -335,12 +335,12 @@
     <message>
       <location filename="commands.py" line="474"/>
       <source>Heat equation</source>
-      <translation type="unfinished">Heat equation</translation>
+      <translation>Toplotna enačba</translation>
     </message>
     <message>
       <location filename="commands.py" line="478"/>
       <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
+      <translation>Ustvari MKE enačbo toplote</translation>
     </message>
   </context>
   <context>
@@ -348,7 +348,7 @@
     <message>
       <location filename="commands.py" line="496"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>Odpri zglede MKE</translation>
     </message>
   </context>
   <context>
@@ -374,7 +374,7 @@
     <message>
       <location filename="commands.py" line="517"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation>Odpre FreeCAD urejevalnik materialov</translation>
+      <translation>Odpre FreeCADov urejevalnik snovi</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@
     <message>
       <location filename="commands.py" line="537"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>Ustvari MKE snov za tekočino</translation>
     </message>
   </context>
   <context>
@@ -413,7 +413,7 @@
     <message>
       <location filename="commands.py" line="624"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Ustvari snov za vezivo pri ojačanem sestavljenem materialu, kot je železobeton</translation>
     </message>
   </context>
   <context>
@@ -426,7 +426,7 @@
     <message>
       <location filename="commands.py" line="642"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Ustvari MKE snov za telo</translation>
     </message>
   </context>
   <context>
@@ -499,7 +499,7 @@
     <message>
       <location filename="commands.py" line="839"/>
       <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Ustvari MKE ploskovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
     </message>
   </context>
   <context>
@@ -546,12 +546,12 @@
     <message>
       <location filename="commands.py" line="980"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation type="unfinished">Solver CalculiX (new framework)</translation>
+      <translation>Reševalnik CalculiX (novo ogrodje)</translation>
     </message>
     <message>
       <location filename="commands.py" line="985"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
+      <translation>Ustvari MKE reševalnik CalculiX z novim ogrodjem (manj ukvarjanja z napakami rešitev)</translation>
     </message>
   </context>
   <context>
@@ -590,7 +590,7 @@
     <message>
       <location filename="commands.py" line="1021"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>Ustvari MKE reševalnik Elmer</translation>
     </message>
   </context>
   <context>
@@ -598,12 +598,12 @@
     <message>
       <location filename="commands.py" line="1032"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>Reševalnik Mystran</translation>
     </message>
     <message>
       <location filename="commands.py" line="1034"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation type="unfinished">Creates a FEM solver Mystran</translation>
+      <translation>Ustvari MKE reševalnik Mystran</translation>
     </message>
   </context>
   <context>
@@ -701,12 +701,12 @@
     <message>
       <location filename="../../Command.cpp" line="296"/>
       <source>Constraint bearing</source>
-      <translation type="unfinished">Constraint bearing</translation>
+      <translation>Omejitev ležaja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="297"/>
       <source>Creates a FEM constraint for a bearing</source>
-      <translation type="unfinished">Creates a FEM constraint for a bearing</translation>
+      <translation>Ustvari omejilo MKE ležaja</translation>
     </message>
   </context>
   <context>
@@ -719,12 +719,12 @@
     <message>
       <location filename="../../Command.cpp" line="337"/>
       <source>Constraint contact</source>
-      <translation type="unfinished">Constraint contact</translation>
+      <translation>Omejitev stika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="338"/>
       <source>Creates a FEM constraint for contact between faces</source>
-      <translation type="unfinished">Creates a FEM constraint for contact between faces</translation>
+      <translation>Ustvari MKE omejilo stikanja ploskev</translation>
     </message>
   </context>
   <context>
@@ -737,12 +737,12 @@
     <message>
       <location filename="../../Command.cpp" line="382"/>
       <source>Constraint displacement</source>
-      <translation type="unfinished">Constraint displacement</translation>
+      <translation>Omejitev pomika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="383"/>
       <source>Creates a FEM constraint for a displacement acting on a geometric entity</source>
-      <translation type="unfinished">Creates a FEM constraint for a displacement acting on a geometric entity</translation>
+      <translation>Ustvari MKE omejilo pomika, ki deluje na geometrijsko enoto</translation>
     </message>
   </context>
   <context>
@@ -755,12 +755,12 @@
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>Constraint fixed</source>
-      <translation type="unfinished">Constraint fixed</translation>
+      <translation>Omejitev pritrjenosti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Creates a FEM constraint for a fixed geometric entity</source>
-      <translation type="unfinished">Creates a FEM constraint for a fixed geometric entity</translation>
+      <translation>Ustvari omejilo MKE za nepremično geometrično prvino</translation>
     </message>
   </context>
   <context>
@@ -773,12 +773,12 @@
     <message>
       <location filename="../../Command.cpp" line="467"/>
       <source>Fluid boundary condition</source>
-      <translation type="unfinished">Fluid boundary condition</translation>
+      <translation>Pogoj zamejitve tekočine</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="468"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation type="unfinished">Create fluid boundary condition on face entity for Computional Fluid Dynamics</translation>
+      <translation>Ustvari pogoj zamejitve tekočin za ploskovno prvino pri računski dinamiki tekočin</translation>
     </message>
   </context>
   <context>
@@ -796,7 +796,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Creates a FEM constraint for a force acting on a geometric entity</source>
-      <translation type="unfinished">Creates a FEM constraint for a force acting on a geometric entity</translation>
+      <translation>Ustvari omejilo MKE za silo, ki deluje na geometrijsko enoto</translation>
     </message>
   </context>
   <context>
@@ -809,12 +809,12 @@
     <message>
       <location filename="../../Command.cpp" line="554"/>
       <source>Constraint gear</source>
-      <translation type="unfinished">Constraint gear</translation>
+      <translation>Omejitev zobnika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="555"/>
       <source>Creates a FEM constraint for a gear</source>
-      <translation type="unfinished">Creates a FEM constraint for a gear</translation>
+      <translation>Ustvari omejilo MKE za zobnik</translation>
     </message>
   </context>
   <context>
@@ -827,12 +827,12 @@
     <message>
       <location filename="../../Command.cpp" line="595"/>
       <source>Constraint heatflux</source>
-      <translation type="unfinished">Constraint heatflux</translation>
+      <translation>Omejitev toplotnega toka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Creates a FEM constraint for a heatflux acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a heatflux acting on a face</translation>
+      <translation>Ustvari omejilo MKE za toplotni tok, ki deluje na ploskev</translation>
     </message>
   </context>
   <context>
@@ -845,12 +845,12 @@
     <message>
       <location filename="../../Command.cpp" line="640"/>
       <source>Constraint initial temperature</source>
-      <translation type="unfinished">Constraint initial temperature</translation>
+      <translation>Omejitev začetne temperature</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="641"/>
       <source>Creates a FEM constraint for initial temperature acting on a body</source>
-      <translation type="unfinished">Creates a FEM constraint for initial temperature acting on a body</translation>
+      <translation>Ustvari omejilo MKE za začetno temperaturo, ki deluje na telo</translation>
     </message>
   </context>
   <context>
@@ -863,12 +863,12 @@
     <message>
       <location filename="../../Command.cpp" line="683"/>
       <source>Constraint plane rotation</source>
-      <translation type="unfinished">Constraint plane rotation</translation>
+      <translation>Omejitev ravninskega sukanja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="684"/>
       <source>Creates a FEM constraint for plane rotation face</source>
-      <translation type="unfinished">Creates a FEM constraint for plane rotation face</translation>
+      <translation>Ustvari omejilo MKE za ravninsko sukanje ploskve</translation>
     </message>
   </context>
   <context>
@@ -881,12 +881,12 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Constraint pressure</source>
-      <translation type="unfinished">Constraint pressure</translation>
+      <translation>Omejitev tlaka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
       <source>Creates a FEM constraint for a pressure acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a pressure acting on a face</translation>
+      <translation>Ustvari omejilo MKE za tlak, ki deluje na ploskev</translation>
     </message>
   </context>
   <context>
@@ -899,12 +899,12 @@
     <message>
       <location filename="../../Command.cpp" line="815"/>
       <source>Constraint pulley</source>
-      <translation type="unfinished">Constraint pulley</translation>
+      <translation>Omejitev škripca</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="816"/>
       <source>Creates a FEM constraint for a pulley</source>
-      <translation type="unfinished">Creates a FEM constraint for a pulley</translation>
+      <translation>Ustvari omejilo MKE za škripec</translation>
     </message>
   </context>
   <context>
@@ -917,12 +917,12 @@
     <message>
       <location filename="../../Command.cpp" line="770"/>
       <source>Constraint spring</source>
-      <translation type="unfinished">Constraint spring</translation>
+      <translation>Omejitev vzmeti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="771"/>
       <source>Creates a FEM constraint for a spring acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a spring acting on a face</translation>
+      <translation>Ustvari omejilo MKE za vzmet, ki deluje na ploskev</translation>
     </message>
   </context>
   <context>
@@ -935,12 +935,12 @@
     <message>
       <location filename="../../Command.cpp" line="861"/>
       <source>Constraint temperature</source>
-      <translation type="unfinished">Constraint temperature</translation>
+      <translation>Omejitev temperature</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="862"/>
       <source>Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</translation>
+      <translation>Ustvari omejilo MKE za temperaturo / zgoščen toplotni tok, ki deluje na ploskev</translation>
     </message>
   </context>
   <context>
@@ -953,12 +953,12 @@
     <message>
       <location filename="../../Command.cpp" line="904"/>
       <source>Constraint transform</source>
-      <translation type="unfinished">Constraint transform</translation>
+      <translation>Omejitev preoblikovanja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="905"/>
       <source>Create FEM constraint for transforming a face</source>
-      <translation type="unfinished">Create FEM constraint for transforming a face</translation>
+      <translation>Ustvari MKE omejilo preoblikovanja ploskve</translation>
     </message>
   </context>
   <context>
@@ -976,7 +976,7 @@
     <message>
       <location filename="../../Command.cpp" line="1097"/>
       <source>Creates a FEM mesh nodes set</source>
-      <translation type="unfinished">Creates a FEM mesh nodes set</translation>
+      <translation>Ustvari nabor vozlišč ploskovja MKE</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1125"/>
@@ -1018,12 +1018,12 @@
     <message>
       <location filename="../../Command.cpp" line="1607"/>
       <source>Apply changes to pipeline</source>
-      <translation type="unfinished">Apply changes to pipeline</translation>
+      <translation>Uporabi spremembe na cevovodu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1608"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
-      <translation type="unfinished">Apply changes to parameters directly and not on recompute only...</translation>
+      <translation>Uveljavi spremembe določilk neposredno in ne le pri preračunu ...</translation>
     </message>
   </context>
   <context>
@@ -1036,12 +1036,12 @@
     <message>
       <location filename="../../Command.cpp" line="1252"/>
       <source>Region clip filter</source>
-      <translation type="unfinished">Region clip filter</translation>
+      <translation>Sito obrezave območja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1253"/>
       <source>Define/create a clip filter which uses functions to define the cliped region</source>
-      <translation type="unfinished">Define/create a clip filter which uses functions to define the cliped region</translation>
+      <translation>Določi/ustvari sito obrezave, ki uporablja zmožnosti za določanje obrezananega območja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1534"/>
@@ -1051,7 +1051,7 @@
     <message>
       <location filename="../../Command.cpp" line="1535"/>
       <source>Select a pipeline, please.</source>
-      <translation type="unfinished">Select a pipeline, please.</translation>
+      <translation>Izberite cevovod.</translation>
     </message>
   </context>
   <context>
@@ -1059,7 +1059,7 @@
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="922"/>
       <source>Data At Point</source>
-      <translation type="unfinished">Data At Point</translation>
+      <translation>Podatki na točki</translation>
     </message>
   </context>
   <context>
@@ -1090,12 +1090,12 @@
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Line clip filter</source>
-      <translation type="unfinished">Line clip filter</translation>
+      <translation>Sito porezave črte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Define/create a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field along a line</translation>
+      <translation>Določi/ustvari porezavno sito, ki poreže polje vzdolž črte</translation>
     </message>
   </context>
   <context>
@@ -1253,7 +1253,7 @@
     <message>
       <location filename="../../Command.cpp" line="398"/>
       <source>Make FEM constraint displacement on face</source>
-      <translation type="unfinished">Make FEM constraint displacement on face</translation>
+      <translation>Naredi na ploskvi omejitev pomika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -1948,7 +1948,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="89"/>
       <source>FreeCAD result object</source>
-      <translation type="unfinished">FreeCAD result object</translation>
+      <translation>Dobljeni FreeCAD predmet</translation>
     </message>
   </context>
   <context>
@@ -1971,7 +1971,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="47"/>
       <source>Use materials from Materials directory in users FreeCAD user pref directory.</source>
-      <translation type="unfinished">Use materials from Materials directory in users FreeCAD user pref directory.</translation>
+      <translation>Uporabi snovi iz Mape snovi, ki je v prednastavljeni uporabniški mapi FreeCADa.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="63"/>
@@ -2402,7 +2402,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="450"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Znotraj enega omejila je mogoče izbrati le eno vrsto (oglišče, ploskev ali rob)!</translation>
     </message>
   </context>
   <context>
@@ -2431,7 +2431,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="157"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Znotraj enega omejila je mogoče izbrati le eno vrsto (oglišče, ploskev ali rob)!</translation>
     </message>
   </context>
   <context>
@@ -2560,7 +2560,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="773"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Znotraj enega omejila je mogoče izbrati le eno vrsto (oglišče, ploskev ali rob)!</translation>
     </message>
   </context>
   <context>
@@ -2589,7 +2589,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Znotraj enega omejila je mogoče izbrati le eno vrsto (oglišče, ploskev ali rob)!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
@@ -2858,7 +2858,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="319"/>
       <source>Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</source>
-      <translation type="unfinished">Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</translation>
+      <translation>Izbrati je mogoče le ploskve, ki se lahko preoblikujejo! Uporabi na površju najprej omejitev pomika, nato pa uporabi omejitev površja</translation>
     </message>
   </context>
   <context>
@@ -3017,7 +3017,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
       <source>use FreeCAD material editor</source>
-      <translation type="unfinished">use FreeCAD material editor</translation>
+      <translation>uporabi FreeCADov urejevalnik snovi</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
@@ -3781,12 +3781,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="585"/>
       <source>Constraint displacement</source>
-      <translation type="unfinished">Constraint displacement</translation>
+      <translation>Omejitev pomika</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="266"/>
       <source>Constraint fixed</source>
-      <translation type="unfinished">Constraint fixed</translation>
+      <translation>Omejitev pritrjenosti</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="886"/>
@@ -3801,7 +3801,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="119"/>
       <source>Constraint initial temperature</source>
-      <translation type="unfinished">Constraint initial temperature</translation>
+      <translation>Omejitev začetne temperature</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="287"/>
@@ -3811,27 +3811,27 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="283"/>
       <source>Constraint pressure</source>
-      <translation type="unfinished">Constraint pressure</translation>
+      <translation>Omejitev tlaka</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="196"/>
       <source>Constraint pulley</source>
-      <translation type="unfinished">Constraint pulley</translation>
+      <translation>Omejitev škripca</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="283"/>
       <source>Constraint spring</source>
-      <translation type="unfinished">Constraint spring</translation>
+      <translation>Omejitev vzmeti</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>
       <source>Constraint temperature</source>
-      <translation type="unfinished">Constraint temperature</translation>
+      <translation>Omejitev temperature</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="500"/>
       <source>Constraint transform</source>
-      <translation type="unfinished">Constraint transform</translation>
+      <translation>Omejitev preoblikovanja</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="260"/>
@@ -3849,12 +3849,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="22"/>
       <source>Result type</source>
-      <translation>Vrsta rezultata</translation>
+      <translation>Vrsta dobljenega</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="30"/>
       <source>Displacement Magnitude</source>
-      <translation type="unfinished">Displacement Magnitude</translation>
+      <translation>Velikost pomika</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="37"/>
@@ -3864,57 +3864,57 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="47"/>
       <source>Displacement Y</source>
-      <translation type="unfinished">Displacement Y</translation>
+      <translation>Pomik v Y</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="54"/>
       <source>Displacement X</source>
-      <translation type="unfinished">Displacement X</translation>
+      <translation>Pomik v X</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="61"/>
       <source>Peeq</source>
-      <translation type="unfinished">Peeq</translation>
+      <translation>Primerjalna plastična deformacija (peeq)</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="68"/>
       <source>Displacement Z</source>
-      <translation type="unfinished">Displacement Z</translation>
+      <translation>Pomik v Z</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="75"/>
       <source>Temperature</source>
-      <translation type="unfinished">Temperature</translation>
+      <translation>Temperatura</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="82"/>
       <source>von Mises Stress</source>
-      <translation type="unfinished">von Mises Stress</translation>
+      <translation>von Misesova napetost</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="89"/>
       <source>Max Principal Stress</source>
-      <translation type="unfinished">Max Principal Stress</translation>
+      <translation>Najv. glavna napetost</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="96"/>
       <source>Min Principal Stress</source>
-      <translation type="unfinished">Min Principal Stress</translation>
+      <translation>Najm. glavna napetost</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="103"/>
       <source>Max Shear Stress (Tresca)</source>
-      <translation type="unfinished">Max Shear Stress (Tresca)</translation>
+      <translation>Najv. strižna napetost (Tresca)</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="110"/>
       <source>Mass Flow Rate</source>
-      <translation type="unfinished">Mass Flow Rate</translation>
+      <translation>Masni pretok</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="117"/>
       <source>Network Pressure</source>
-      <translation type="unfinished">Network Pressure</translation>
+      <translation>Omrežni pritisk</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="128"/>
@@ -3929,7 +3929,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="162"/>
       <source>Histogram</source>
-      <translation type="unfinished">Histogram</translation>
+      <translation>Histogram</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="174"/>
@@ -3954,12 +3954,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="282"/>
       <source>User defined equation</source>
-      <translation type="unfinished">User defined equation</translation>
+      <translation>Uporabniška enačba</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="290"/>
       <source>Calculate and plot</source>
-      <translation type="unfinished">Calculate and plot</translation>
+      <translation>Izračunaj in izpiši</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="297"/>
@@ -3968,91 +3968,91 @@ exported from FreeCAD.</translation>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;"&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Napetostna enačba jakosti napetosti. Razpoložljive vrednosti so v obliki zapisa polja numpy. Izračun np.funkcije se lahko uporabi na razpoložljivih vrednostih. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
       <source>Hints user defined equations</source>
-      <translation type="unfinished">Hints user defined equations</translation>
+      <translation>Pomoč pri uporabniški enačbi</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="22"/>
       <source>Available result types:</source>
-      <translation type="unfinished">Available result types:</translation>
+      <translation>Razpoložljive vrste dobljenega:</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="45"/>
       <source>displacement: x, y, z</source>
-      <translation type="unfinished">displacement: x, y, z</translation>
+      <translation>pomik: x, y, z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="67"/>
       <source>mass flow rate: MF</source>
-      <translation type="unfinished">mass flow rate: MF</translation>
+      <translation>masni tok: MF</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="83"/>
       <source>network pressure: NP</source>
-      <translation type="unfinished">network pressure: NP</translation>
+      <translation>omrežni pritisk: NP</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="93"/>
       <source>von Mises stress: vM</source>
-      <translation type="unfinished">von Mises stress: vM</translation>
+      <translation>von Misesova napetost: vM</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="103"/>
       <source>temperature: T</source>
-      <translation type="unfinished">temperature: T</translation>
+      <translation>temperatura: T</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="113"/>
       <source>min. principal stress vector: s1x, s1y, s1z</source>
-      <translation type="unfinished">min. principal stress vector: s1x, s1y, s1z</translation>
+      <translation>vektor najm. glavne strižne napetosti: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="123"/>
       <source>principal stresses: P1, P2, P3</source>
-      <translation type="unfinished">principal stresses: P1, P2, P3</translation>
+      <translation>glavne napetosti: P1, P2, P3</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="133"/>
       <source>reinforcement ratio: rx, ry, rz</source>
-      <translation type="unfinished">reinforcement ratio: rx, ry, rz</translation>
+      <translation>razmerje ojačitev: rx, ry, rz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="143"/>
       <source>equivalent plastic strain: Peeq</source>
-      <translation type="unfinished">equivalent plastic strain: Peeq</translation>
+      <translation>primerjalna plastična deformacija: Peeq</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="153"/>
       <source>med. principal stress vector: s2x, s2y, s2z</source>
-      <translation type="unfinished">med. principal stress vector: s2x, s2y, s2z</translation>
+      <translation>vektor sred. glavne strižne napetosti: s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>stress: sxx, syy, szz, sxy, sxz, syz</source>
-      <translation type="unfinished">stress: sxx, syy, szz, sxy, sxz, syz</translation>
+      <translation>napetost: sxx, syy, szz, sxy, sxz, syz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="200"/>
       <source>strain: exx, eyy, ezz, exy, exz, eyz</source>
-      <translation type="unfinished">strain: exx, eyy, ezz, exy, exz, eyz</translation>
+      <translation>deformacija: exx, eyy, ezz, exy, exz, eyz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="210"/>
       <source>Mohr Coulomb: mc</source>
-      <translation type="unfinished">Mohr Coulomb: mc</translation>
+      <translation>Mohr Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="220"/>
       <source>max. principal stress vector: s3x, s3y, s3z</source>
-      <translation type="unfinished">max. principal stress vector: s3x, s3y, s3z</translation>
+      <translation>vektor najv. glavne strižne napetosti: s1x, s1y, s1z</translation>
     </message>
   </context>
   <context>
@@ -4416,7 +4416,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation>Pomik X</translation>
+      <translation>Pomik x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -4441,12 +4441,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation>Pomik Y</translation>
+      <translation>Pomik y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation>Pomik Z</translation>
+      <translation>Pomik z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
@@ -4855,7 +4855,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintTemperature.ui" line="50"/>
       <location filename="../../TaskFemConstraintTemperature.ui" line="74"/>
       <source>Temperature</source>
-      <translation type="unfinished">Temperature</translation>
+      <translation>Temperatura</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="63"/>
