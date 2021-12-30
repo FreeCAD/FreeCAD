@@ -317,7 +317,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1096"/>
       <source>Create rectangles</source>
-      <translation type="unfinished">Create rectangles</translation>
+      <translation>Skapa rektanglar</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1097"/>
@@ -416,7 +416,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="215"/>
       <source>Connect edges</source>
-      <translation type="unfinished">Connect edges</translation>
+      <translation>Anslut kanter</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="216"/>
@@ -916,7 +916,7 @@ med avseende på en linje eller tredje punkt</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1053"/>
       <source>Create rounded rectangle</source>
-      <translation type="unfinished">Create rounded rectangle</translation>
+      <translation>Skapa rundad rektangel</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1054"/>
@@ -1918,7 +1918,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="644"/>
       <source>Attach sketch</source>
-      <translation type="unfinished">Attach sketch</translation>
+      <translation>Bifoga skiss</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="649"/>
@@ -2005,7 +2005,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4653"/>
       <source>Add Pole circle</source>
-      <translation type="unfinished">Add Pole circle</translation>
+      <translation>Lägg till polcirkel</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5467"/>
@@ -2051,7 +2051,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7312"/>
       <source>Add hexagon</source>
-      <translation type="unfinished">Add hexagon</translation>
+      <translation>Lägg till hexagon</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="413"/>
@@ -2086,7 +2086,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1198"/>
       <source>Create symmetric geometry</source>
-      <translation type="unfinished">Create symmetric geometry</translation>
+      <translation>Skapa symmetrisk geometri</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1341"/>
@@ -2144,12 +2144,12 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="853"/>
       <source>Drag Point</source>
-      <translation type="unfinished">Drag Point</translation>
+      <translation>Dra punkt</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="884"/>
       <source>Drag Curve</source>
-      <translation type="unfinished">Drag Curve</translation>
+      <translation>Dra kurva</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="935"/>
@@ -4092,7 +4092,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
       <source>%N = %V</source>
-      <translation type="unfinished">%N = %V</translation>
+      <translation>%N = %V</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
@@ -5311,7 +5311,7 @@ Punkter måste placeras mindre än en femtedels ruta från en linje för att fä
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1189"/>
       <source>Create a rounded rectangle</source>
-      <translation type="unfinished">Create a rounded rectangle</translation>
+      <translation>Skapa en rundad rektangel</translation>
     </message>
   </context>
   <context>
@@ -5352,7 +5352,7 @@ Punkter måste placeras mindre än en femtedels ruta från en linje för att fä
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1181"/>
       <source>Create a rectangle</source>
-      <translation type="unfinished">Create a rectangle</translation>
+      <translation>Skapa en rektangel</translation>
     </message>
   </context>
   <context>

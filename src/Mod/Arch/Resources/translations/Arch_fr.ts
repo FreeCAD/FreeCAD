@@ -186,27 +186,27 @@
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>La boîte de capture pour les objets nouvellement créés exprimée comme [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Activer/désactiver la boîte de groupe automatique</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Définir automatiquement la taille à partir du contenu</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Une marge à utiliser lorsque la taille automatique est activée</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="192"/>
       <source>The base object this component is built upon</source>
-      <translation>L’objet de base sur lequel ce composant repose</translation>
+      <translation>L’objet de base à partir duquel ce composant est construit</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="194"/>
@@ -246,7 +246,7 @@
     <message>
       <location filename="ArchComponent.py" line="218"/>
       <source>The area of all vertical faces of this object</source>
-      <translation>L'aire géométrique de toutes les faces verticales de cet objet</translation>
+      <translation>L'aire de toutes les faces verticales de cet objet</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="618"/>
@@ -856,7 +856,7 @@
     <message>
       <location filename="ArchFrame.py" line="111"/>
       <source>The profile used to build this frame</source>
-      <translation>Le profil utilisé pour construire cette structure</translation>
+      <translation>Le profil utilisé pour construire ce cadre</translation>
     </message>
     <message>
       <location filename="ArchFrame.py" line="113"/>
@@ -1626,7 +1626,7 @@
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Décalage du départ le long du chemin d'extrusion (positif : étendre ; négatif : rogner)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
@@ -1636,7 +1636,7 @@
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Décalage de fin le long du chemin d'extrusion (positif : étendre ; négatif : rogner)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
@@ -3274,7 +3274,7 @@ Création du site abandonnée.</translation>
     <message>
       <location filename="ArchWall.py" line="528"/>
       <source>Use sketches</source>
-      <translation>Utiliser des croquis</translation>
+      <translation>Utiliser des esquisses</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="662"/>
@@ -5472,7 +5472,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="191"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation>Positionne par défaut la propriété "Bouge avec son objet de base" a "Activé"</translation>
+      <translation>Définir la propriété « Bouge avec son objet de base » à Vrai par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="207"/>
@@ -5705,7 +5705,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="103"/>
       <source>Use sketches</source>
-      <translation>Utiliser des croquis</translation>
+      <translation>Utiliser des esquisses</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="132"/>

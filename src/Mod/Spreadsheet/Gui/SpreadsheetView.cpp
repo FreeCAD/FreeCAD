@@ -419,7 +419,12 @@ void SheetView::aliasChanged(const QString& text)
     // check live the input and highlight if the user input invalid characters
 
     bool aliasOk = true;
-    QPalette palette = ui->cellAlias->palette();
+    static auto originalStylesheet = ui->cellAlias->styleSheet();
+    QString warningColor;
+    if (qApp->styleSheet().contains(QLatin1String("dark"), Qt::CaseInsensitive))
+        warningColor = QLatin1String("rgb(255,90,90)"); // Light red for dark mode
+    else
+        warningColor = QLatin1String("rgb(200,0,0)"); // Dark red for light mode
 
     if (!text.isEmpty() && !sheet->isValidAlias(Base::Tools::toStdString(text)))
         aliasOk = false;
@@ -427,16 +432,14 @@ void SheetView::aliasChanged(const QString& text)
     if (!aliasOk) {
         // change tooltip and make text color red
         ui->cellAlias->setToolTip(QObject::tr("Alias contains invalid characters!"));
-        palette.setColor(QPalette::Text, Qt::red);
+        ui->cellAlias->setStyleSheet(QLatin1String("color:") + warningColor);
     }
     else {
         // go back to normal
         ui->cellAlias->setToolTip(
             QObject::tr("Refer to cell by alias, for example\nSpreadsheet.my_alias_name instead of Spreadsheet.B1"));
-        palette.setColor(QPalette::Text, Qt::black);
+        ui->cellAlias->setStyleSheet(originalStylesheet);
     }
-    // apply the text color via the palette
-    ui->cellAlias->setPalette(palette);
 }
 
 void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex & previous  )

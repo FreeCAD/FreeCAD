@@ -144,9 +144,9 @@ or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <translation>Eine boolesche 'exclusiv-ODER' Operation mit zwei oder mehr ausgewählten Objekten,
-oder mit den Formen innerhalb einer Verbindung durchführen.
+oder mit den Formen innerhalb eines Verbundes durchführen.
 Das bedeutet, dass die sich überschneidenden Volumen der Formen entfernt werden.
-Ein 'Compoundfilter' kann verwendet werden, um die restlichen Stücke zu extrahieren.</translation>
+Ein 'Compound Filter' kann verwendet werden, um die restlichen Stücke zu extrahieren.</translation>
     </message>
   </context>
   <context>
@@ -631,7 +631,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="116"/>
       <source>Attachment editor</source>
-      <translation type="unfinished">Attachment editor</translation>
+      <translation>Anhang-Editor</translation>
     </message>
   </context>
   <context>
@@ -1486,7 +1486,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="88"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XY Ebene über 3 Punkte</translation>
+      <translation>XY-Ebene durch 3 Punkte</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="89"/>
@@ -1498,7 +1498,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="91"/>
       <source>XZ plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XZ Ebene über 3 Punkte</translation>
+      <translation>XZ-Ebene durch 3 Punkte</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="92"/>
@@ -1828,7 +1828,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="2163"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the color of each individual face of the selected object.</translation>
+      <translation>Die Farbe jeder einzelnen Fläche des ausgewählten Objekts festlegen.</translation>
     </message>
   </context>
   <context>
@@ -2108,7 +2108,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="780"/>
       <source>Compound tools</source>
-      <translation type="unfinished">Compound tools</translation>
+      <translation>Verbundwerkzeuge</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="781"/>
@@ -2292,12 +2292,12 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="329"/>
       <source>Create shape element copy</source>
-      <translation type="unfinished">Create shape element copy</translation>
+      <translation>Formelement-Kopie erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="330"/>
       <source>Create a non-parametric copy of the selected shape element</source>
-      <translation type="unfinished">Create a non-parametric copy of the selected shape element</translation>
+      <translation>Erstellt eine nicht-parametrische Kopie des ausgewählten Formelements</translation>
     </message>
   </context>
   <context>
@@ -2544,12 +2544,12 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="180"/>
       <source>Create points object from mesh</source>
-      <translation type="unfinished">Create points object from mesh</translation>
+      <translation>Punkteobjekt aus Netz erstellen</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Create selectable points object from selected mesh object</source>
-      <translation type="unfinished">Create selectable points object from selected mesh object</translation>
+      <translation>Erstellt ein auswählbares Punkteobjekt aus dem ausgewählten Netzobjekt</translation>
     </message>
   </context>
   <context>
@@ -2840,12 +2840,12 @@ der Projektion.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="301"/>
       <source>Create transformed copy</source>
-      <translation type="unfinished">Create transformed copy</translation>
+      <translation>Erstellen Transformierte Kopie </translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="302"/>
       <source>Create a non-parametric copy with transformed placement</source>
-      <translation type="unfinished">Create a non-parametric copy with transformed placement</translation>
+      <translation>Erstellen Sie eine nicht-parametrische Kopie mit transformierter Platzierung</translation>
     </message>
   </context>
   <context>
@@ -2854,7 +2854,7 @@ der Projektion.</translation>
       <location filename="../../Command.cpp" line="147"/>
       <location filename="../../Command.cpp" line="188"/>
       <source>Part Box Create</source>
-      <translation type="unfinished">Part Box Create</translation>
+      <translation>Teilbox erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="307"/>
@@ -2995,7 +2995,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="199"/>
       <source>Edit Mirror</source>
-      <translation type="unfinished">Edit Mirror</translation>
+      <translation>Spiegel bearbeiten</translation>
     </message>
   </context>
   <context>
@@ -3703,7 +3703,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="106"/>
       <source>Blank entities will not be imported</source>
-      <translation type="unfinished">Blank entities will not be imported</translation>
+      <translation>Leere Stellen werden nicht importiert</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="109"/>
@@ -3713,7 +3713,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="119"/>
       <source>If not empty, field contents will be used in the IGES file header</source>
-      <translation type="unfinished">If not empty, field contents will be used in the IGES file header</translation>
+      <translation>Falls nicht leer ,  wird der Inhalt des Feldes im Kopfzeile IGES-Datei verwendet</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="122"/>
@@ -3791,7 +3791,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="126"/>
       <source>Use legacy exporter</source>
-      <translation type="unfinished">Use legacy exporter</translation>
+      <translation>Verwende den ältere-Exporteur</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="139"/>
@@ -3807,12 +3807,12 @@ it inside the Placement property.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="145"/>
       <source>Export single object placement</source>
-      <translation type="unfinished">Export single object placement</translation>
+      <translation>Einzelne Objektplatzierung exportieren</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="174"/>
       <source>If not empty, field contents will be used in the STEP file header.</source>
-      <translation type="unfinished">If not empty, field contents will be used in the STEP file header.</translation>
+      <translation>Falls nicht leer, werden Feldinhalte im Kopfzeile STEP-Datei verwendet.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="177"/>
@@ -3859,12 +3859,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="245"/>
       <source>Use LinkGroup</source>
-      <translation type="unfinished">Use LinkGroup</translation>
+      <translation>Linkgruppe verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="258"/>
       <source>Select this to not import any invisible objects.</source>
-      <translation type="unfinished">Select this to not import any invisible objects.</translation>
+      <translation>Wählen Sie dies, um keine unsichtbaren Objekte zu importieren.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="261"/>
@@ -3920,7 +3920,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="365"/>
       <source>Assembly per document</source>
-      <translation type="unfinished">Assembly per document</translation>
+      <translation>Montage pro Dokument</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="370"/>
@@ -4907,7 +4907,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="354"/>
       <source>Text color for document annotations</source>
-      <translation type="unfinished">Text color for document annotations</translation>
+      <translation>Textfarbe für Dokumentanmerkungen</translation>
     </message>
   </context>
   <context>
@@ -5483,7 +5483,7 @@ Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
       <source>Run BOP check</source>
-      <translation type="unfinished">Run BOP check</translation>
+      <translation>BOP-Prüfung ausführen</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
@@ -5514,7 +5514,7 @@ but more stable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Log errors to report view.  Default: true</source>
-      <translation type="unfinished">Log errors to report view.  Default: true</translation>
+      <translation>Fehler protokollieren zur Meldung. Standard: Ja</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
@@ -5544,8 +5544,8 @@ the check geometry tool.  Default: false</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
       <source>
 Individual BOP Checks:</source>
-      <translation type="unfinished">
-Individual BOP Checks:</translation>
+      <translation>
+Individuelle BOP Checks:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1141"/>
@@ -5555,7 +5555,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Check for bad argument types.  Default: true</source>
-      <translation type="unfinished">Check for bad argument types.  Default: true</translation>
+      <translation>Auf schlechte Argument-Typen überprüfen. Standard: Ja</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1149"/>

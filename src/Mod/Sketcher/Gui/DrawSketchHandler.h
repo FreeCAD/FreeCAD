@@ -39,6 +39,28 @@ namespace SketcherGui {
 
 class ViewProviderSketch;
 
+/**
+ * In order to enforce a certain degree of encapsulation and promote a not
+ * too tight coupling, while still allowing well defined collaboration,
+ * DrawSketchHandler accesses ViewProviderSketch via this Attorney class
+ */
+class ViewProviderSketchDrawSketchHandlerAttorney {
+private:
+    static inline void setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos, const SbString &txt);
+    static inline void setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos);
+    static inline void resetPositionText(ViewProviderSketch &vp);
+    static inline void drawEdit(ViewProviderSketch &vp, const std::vector<Base::Vector2d> &EditCurve);
+    static inline void drawEditMarkers(ViewProviderSketch &vp, const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
+    static inline void setAxisPickStyle(ViewProviderSketch &vp, bool on);
+
+    static inline int getPreselectPoint(const ViewProviderSketch &vp);
+    static inline int getPreselectCurve(const ViewProviderSketch &vp);
+    static inline int getPreselectCross(const ViewProviderSketch &vp);
+
+    friend class DrawSketchHandler;
+};
+
+
 // A Simple data type to hold basic information for suggested constraints
 struct AutoConstraint
 {
@@ -56,6 +78,17 @@ struct AutoConstraint
 /** Handler to create new sketch geometry
   * This class has to be reimplemented to create geometry in the
   * sketcher while its in editing.
+  *
+  * DrawSketchHandler takes over the responsibility of drawing edit temporal curves and
+  * markers necessary to enable visual feedback to the user, as well as the UI interaction during
+  * such edits. This is its exclusive responsibility under the Single Responsibility Principle.
+  *
+  * A plethora of speciliased handlers derive from DrawSketchHandler for each specialised editing (see
+  * for example all the handlers for creation of new geometry). These derived classes do * not * have
+  * direct access to the ViewProviderSketchDrawSketchHandlerAttorney. This is intended to keep coupling
+  * under control. However, generic functionality requiring access to the Attorney can be implemented
+  * in DrawSketchHandler and used from its derived classes by virtue of the inheritance. This promotes a
+  * concentrating the coupling in a single point (and code reuse).
   */
 class SketcherGuiExport DrawSketchHandler
 {
@@ -98,7 +131,7 @@ protected:
     /**
      * Sets a cursor for 3D inventor view.
      * pixmap as a cursor image in device independent pixels.
-     * 
+     *
      * \param autoScale - set this to false if pixmap already scaled for HiDPI
      **/
     void setCursor(const QPixmap &pixmap, int x,int y, bool autoScale=true);
@@ -112,6 +145,15 @@ protected:
     unsigned long getCrosshairColor();
     qreal devicePixelRatio();
     void setCrosshairCursor(const char* svgName);
+
+    void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
+    void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
+    void setAxisPickStyle(bool on);
+
+    int getPreselectPoint(void) const;
+    int getPreselectCurve(void) const;
+    int getPreselectCross(void) const;
+
 
     /**
      * Returns constraints icons scaled to width.

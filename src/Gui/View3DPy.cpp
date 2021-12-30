@@ -738,22 +738,8 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
             scale = hGrp->GetFloat("NewDocumentCameraScale",100.0);
         }
-        if (scale > 1e-7) {
-            double f = 0.0; //focal dist
-            if (cam->isOfType(SoOrthographicCamera::getClassTypeId())){
-                static_cast<SoOrthographicCamera*>(cam)->height = scale;
-                f = scale;
-            } else if (cam->isOfType(SoPerspectiveCamera::getClassTypeId())){
-                //nothing to do
-                double ang = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue();
-                f = 0.5 * scale / sin(ang * 0.5);
-            }
-            SbVec3f lookDir;
-            rot.multVec(SbVec3f(0,0,-1), lookDir);
-            SbVec3f pos = lookDir * -f;
-            cam->focalDistance = f;
-            cam->position = pos;
-        }
+
+        setDefaultCameraHeight(scale);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -766,6 +752,31 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
     }
 
     return Py::None();
+}
+
+void View3DInventorPy::setDefaultCameraHeight(float scale)
+{
+    if (scale > 1e-7) {
+        SoCamera* cam = getView3DIventorPtr()->getViewer()->getCamera();
+        SbRotation rot = cam->orientation.getValue();
+
+        double f = 0.0; //focal dist
+        if (cam->isOfType(SoOrthographicCamera::getClassTypeId())){
+            static_cast<SoOrthographicCamera*>(cam)->height = scale;
+            f = scale;
+        }
+        else if (cam->isOfType(SoPerspectiveCamera::getClassTypeId())){
+            //nothing to do
+            double ang = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue();
+            f = 0.5 * scale / sin(ang * 0.5);
+        }
+
+        SbVec3f lookDir;
+        rot.multVec(SbVec3f(0,0,-1), lookDir);
+        SbVec3f pos = lookDir * -f;
+        cam->focalDistance = f;
+        cam->position = pos;
+    }
 }
 
 Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)

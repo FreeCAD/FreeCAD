@@ -874,19 +874,6 @@ class ShowWorker(QtCore.QThread):
                                 f = open(storename, "wb")
                             f.write(imagedata)
                             f.close()
-                            # resize the image to 300x300px if needed
-                            img = QtGui.QImage(storename)
-                            if (img.width() > 300) or (img.height() > 300):
-                                pix = QtGui.QPixmap()
-                                pix = pix.fromImage(
-                                    img.scaled(
-                                        300,
-                                        300,
-                                        QtCore.Qt.KeepAspectRatio,
-                                        QtCore.Qt.FastTransformation,
-                                    )
-                                )
-                                pix.save(storename, "jpeg", 100)
                     message = message.replace(
                         'src="' + origpath,
                         'src="file:///' + storename.replace("\\", "/"),

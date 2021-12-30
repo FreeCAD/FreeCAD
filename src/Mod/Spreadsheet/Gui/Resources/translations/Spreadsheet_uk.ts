@@ -542,7 +542,7 @@ Please select one cell only.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Копіювання і вставлення провалено</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
@@ -679,7 +679,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>\</source>
-      <translation type="unfinished">\</translation>
+      <translation>\</translation>
     </message>
     <message>
       <source>Escape Character: </source>

@@ -1711,6 +1711,23 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             return "Wireframe"
         return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
 
+    def setupContextMenu(self,vobj,menu):
+
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Wall_Tree.svg"),"Flip direction",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.flipDirection)
+        menu.addAction(action1)
+
+    def flipDirection(self):
+
+       if hasattr(self,"Object") and self.Object:
+           obj = self.Object
+           if obj.Align == "Left":
+                obj.Align = "Right"
+                FreeCAD.ActiveDocument.recompute()
+           elif obj.Align == "Right":
+                obj.Align = "Left"
+                FreeCAD.ActiveDocument.recompute()
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Wall',_CommandWall())

@@ -42,6 +42,12 @@ class ListDisplayStyle(IntEnum):
     COMPACT = 0
     EXPANDED = 1
 
+class StatusFilter(IntEnum):
+    ANY = 0
+    INSTALLED = 1
+    NOT_INSTALLED = 2
+    UPDATE_AVAILABLE = 3
+
 
 class PackageList(QWidget):
     """A widget that shows a list of packages and various widgets to control the display of the list"""
@@ -60,6 +66,7 @@ class PackageList(QWidget):
 
         self.ui.listPackages.clicked.connect(self.on_listPackages_clicked)
         self.ui.comboPackageType.currentIndexChanged.connect(self.update_type_filter)
+        self.ui.comboStatus.currentIndexChanged.connect(self.update_status_filter)
         self.ui.lineEditFilter.textChanged.connect(self.update_text_filter)
         self.ui.buttonCompactLayout.clicked.connect(
             lambda: self.set_view_style(ListDisplayStyle.COMPACT)
@@ -75,6 +82,8 @@ class PackageList(QWidget):
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         package_type = pref.GetInt("PackageTypeSelection", 1)
         self.ui.comboPackageType.setCurrentIndex(package_type)
+        status = pref.GetInt("StatusSelection", 0)
+        self.ui.comboStatus.setCurrentIndex(status)
 
     def setModel(self, model):
         self.item_model = model
@@ -104,6 +113,17 @@ class PackageList(QWidget):
         self.item_filter.setPackageFilter(type_filter)
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         pref.SetInt("PackageTypeSelection", type_filter)
+
+    def update_status_filter(self, status_filter: int) -> None:
+        """hide/show rows corresponding to the status filter
+
+        status_filter is an integer: 0 for any, 1 for installed, 2 for not installed, and 3 for update available
+
+        """
+
+        self.item_filter.setStatusFilter(status_filter)
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        pref.SetInt("StatusSelection", status_filter)
 
     def update_text_filter(self, text_filter: str) -> None:
         """filter name and description by the regex specified by text_filter"""
@@ -429,12 +449,19 @@ class PackageListFilter(QSortFilterProxyModel):
     def __init__(self):
         super().__init__()
         self.package_type = 0  # Default to showing everything
+        self.status = 0 # Default to showing any
         self.setSortCaseSensitivity(Qt.CaseInsensitive)
 
     def setPackageFilter(
         self, type: int
     ) -> None:  # 0=All, 1=Workbenches, 2=Macros, 3=Preference Packs
         self.package_type = type
+        self.invalidateFilter()
+
+    def setStatusFilter(
+        self, status: int
+    ) -> None:  # 0=Any, 1=Installed, 2=Not installed, 3=Update available
+        self.status = status
         self.invalidateFilter()
 
     def lessThan(self, left, right) -> bool:
@@ -454,6 +481,16 @@ class PackageListFilter(QSortFilterProxyModel):
                 return False
         elif self.package_type == 3:
             if not data.contains_preference_pack():
+                return False
+
+        if self.status == StatusFilter.INSTALLED:
+            if data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+                return False
+        elif self.status == StatusFilter.NOT_INSTALLED:
+            if data.update_status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+                return False
+        elif self.status == StatusFilter.UPDATE_AVAILABLE:
+            if data.update_status != AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
                 return False
 
         name = data.display_name
@@ -527,6 +564,20 @@ class Ui_PackageList(object):
 
         self.horizontalLayout_6.addWidget(self.comboPackageType)
 
+        self.labelStatus = QLabel(Form)
+        self.labelStatus.setObjectName("labelStatus")
+
+        self.horizontalLayout_6.addWidget(self.labelStatus)
+
+        self.comboStatus = QComboBox(Form)
+        self.comboStatus.addItem("")
+        self.comboStatus.addItem("")
+        self.comboStatus.addItem("")
+        self.comboStatus.addItem("")
+        self.comboStatus.setObjectName("comboStatus")
+
+        self.horizontalLayout_6.addWidget(self.comboStatus)
+
         self.lineEditFilter = QLineEdit(Form)
         self.lineEditFilter.setObjectName("lineEditFilter")
         self.lineEditFilter.setClearButtonEnabled(True)
@@ -561,7 +612,7 @@ class Ui_PackageList(object):
     def retranslateUi(self, Form):
         self.labelPackagesContaining.setText(
             QCoreApplication.translate(
-                "AddonsInstaller", "Show packages containing:", None
+                "AddonsInstaller", "Show Addons containing:", None
             )
         )
         self.comboPackageType.setItemText(
@@ -576,7 +627,21 @@ class Ui_PackageList(object):
         self.comboPackageType.setItemText(
             3, QCoreApplication.translate("AddonsInstaller", "Preference Packs", None)
         )
-
+        self.labelStatus.setText(
+            QCoreApplication.translate("AddonsInstaller", "Status:", None)
+        )
+        self.comboStatus.setItemText(
+            StatusFilter.ANY, QCoreApplication.translate("AddonsInstaller", "Any", None)
+        )
+        self.comboStatus.setItemText(
+            StatusFilter.INSTALLED, QCoreApplication.translate("AddonsInstaller", "Installed", None)
+        )
+        self.comboStatus.setItemText(
+            StatusFilter.NOT_INSTALLED, QCoreApplication.translate("AddonsInstaller", "Not installed", None)
+        )
+        self.comboStatus.setItemText(
+            StatusFilter.UPDATE_AVAILABLE, QCoreApplication.translate("AddonsInstaller", "Update available", None)
+        )
         self.lineEditFilter.setPlaceholderText(
             QCoreApplication.translate("AddonsInstaller", "Filter", None)
         )

@@ -140,7 +140,7 @@
     </message>
     <message>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>Insertar una proyección ortogonal de una parte in el actual dibujo</translation>
+      <translation>Inserta una proyección ortogonal de una pieza en el dibujo activo</translation>
     </message>
   </context>
   <context>
@@ -572,7 +572,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Make orthographic</source>
-      <translation>Hacer ortográfica</translation>
+      <translation>Hacer ortogonal</translation>
     </message>
     <message>
       <source>Show drawing</source>

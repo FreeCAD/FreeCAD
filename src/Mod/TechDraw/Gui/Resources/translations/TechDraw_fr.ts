@@ -318,15 +318,15 @@
     </message>
     <message>
       <source>Draw circle centerlines</source>
-      <translation type="unfinished">Draw circle centerlines</translation>
+      <translation>Dessiner les axes de centrage</translation>
     </message>
     <message>
       <source>Draw circle centerline cross at circles
     - select many circles or arcs
     - click this button</source>
-      <translation type="unfinished">Draw circle centerline cross at circles
-    - select many circles or arcs
-    - click this button</translation>
+      <translation>Dessiner un axe de centrage des cercles
+    - sélectionner plusieurs cercles ou arcs
+    - cliquer sur ce bouton</translation>
     </message>
   </context>
   <context>
@@ -337,7 +337,7 @@
     </message>
     <message>
       <source>Cosmetic thread bolt bottom view</source>
-      <translation>Vue cosmétique du bas du filet de vis</translation>
+      <translation>Filetage</translation>
     </message>
     <message>
       <source>Draw cosmetic screw thread ground view
@@ -356,7 +356,7 @@
     </message>
     <message>
       <source>Cosmetic thread bolt side view</source>
-      <translation>Vue cosmétique latérale de la vis</translation>
+      <translation>Corps de filetage</translation>
     </message>
     <message>
       <source>Draw cosmetic screw thread side view
@@ -375,7 +375,7 @@
     </message>
     <message>
       <source>Cosmetic thread hole bottom view</source>
-      <translation>Vue cosmétique du bas du taraudage</translation>
+      <translation>Taraudage</translation>
     </message>
     <message>
       <source>Draw cosmetic hole thread ground view
@@ -394,7 +394,7 @@
     </message>
     <message>
       <source>Cosmetic thread hole side view</source>
-      <translation>Vue cosmétique latérale du trou taraudé</translation>
+      <translation>Corps de taraudage</translation>
     </message>
     <message>
       <source>Draw cosmetic thread hole side view
@@ -1703,7 +1703,7 @@ la bordure en haut et à gauche</translation>
     </message>
     <message>
       <source>Hidden Line</source>
-      <translation>Ligne cachée</translation>
+      <translation>Lignes cachées</translation>
     </message>
     <message>
       <source>Bounding box</source>
@@ -1829,7 +1829,7 @@ Ce répertoire sera utilisé pour la sélection des symboles.</translation>
     </message>
     <message>
       <source>Show Loose 2D Geom</source>
-      <translation>Afficher les objets 2D</translation>
+      <translation>Inclure des objets 2D</translation>
     </message>
     <message>
       <source>Include edges with unexpected geometry (zero length etc.) in results</source>
@@ -1841,7 +1841,7 @@ Ce répertoire sera utilisé pour la sélection des symboles.</translation>
     </message>
     <message>
       <source>Edge Fuzz</source>
-      <translation>Détection d'arêtes</translation>
+      <translation>Sélection autour des bords</translation>
     </message>
     <message>
       <source>Override automatic dimension format</source>
@@ -1886,7 +1886,7 @@ Only change unless you know what you are doing!</source>
     </message>
     <message>
       <source>Debug Detail</source>
-      <translation>Détail de débogage</translation>
+      <translation>Débogage pour vues en coupe</translation>
     </message>
     <message>
       <source>Highlights border of section cut in section views</source>
@@ -1906,11 +1906,11 @@ Il sera alors nécessaire d'augmenter la limite de tuiles.</translation>
     </message>
     <message>
       <source>Max SVG Hatch Tiles</source>
-      <translation>Maximum de tuiles de hachures SVG</translation>
+      <translation>Taille maximum des tuiles de hachures SVG</translation>
     </message>
     <message>
       <source>Max PAT Hatch Segments</source>
-      <translation>Maximum de segments de hachures PAT</translation>
+      <translation>Nombre maximum de segments des hachures PAT</translation>
     </message>
     <message>
       <source>Maximum hatch line segments to use
@@ -1938,7 +1938,7 @@ can be a performance penalty in complex models.</source>
     </message>
     <message>
       <source>Mark Fuzz</source>
-      <translation>Détection des centrages</translation>
+      <translation>Sélection autour des marques centrales</translation>
     </message>
     <message>
       <source>Size of selection area around edges
@@ -1965,7 +1965,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Center Line Style</source>
-      <translation>Style de la ligne centrale</translation>
+      <translation>Style des lignes centrales</translation>
     </message>
     <message>
       <source>Style for section lines</source>
@@ -2009,7 +2009,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Hide</source>
-      <translation>Cacher</translation>
+      <translation>Caché</translation>
     </message>
     <message>
       <source>Solid Color</source>
@@ -2033,7 +2033,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Length of balloon leader line kink</source>
-      <translation>Longueur du coude de la ligne de repère du ballon</translation>
+      <translation>Longueur horizontale de la ligne des infobulles</translation>
     </message>
     <message>
       <source>Type for centerlines</source>
@@ -2073,7 +2073,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Balloon Leader End</source>
-      <translation>Extrémité de la bulle</translation>
+      <translation>Extrémité des infobulles</translation>
     </message>
     <message>
       <source>Standard to be used to draw section lines</source>
@@ -2101,15 +2101,15 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Show arc center marks in views</source>
-      <translation>Afficher les marques du centre de l'arc dans les vues</translation>
+      <translation>Afficher les marques des centres des arcs dans les vues</translation>
     </message>
     <message>
       <source>Show Center Marks</source>
-      <translation>Afficher les marques du centre</translation>
+      <translation>Afficher les marques des centres</translation>
     </message>
     <message>
       <source>Detail View Outline Shape</source>
-      <translation>Vue détaillée de la forme du contour</translation>
+      <translation>Forme du contour pour les vues détaillées</translation>
     </message>
     <message>
       <source>Style for balloon leader line ends</source>
@@ -2121,7 +2121,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Ballon Leader Kink Length</source>
-      <translation>Longueur horizontale de la ligne de la bulle</translation>
+      <translation>Longueur horizontale de la ligne de l'infobulle</translation>
     </message>
     <message>
       <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
@@ -2137,11 +2137,11 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Line Width Group</source>
-      <translation>Groupe d'épaisseur de ligne</translation>
+      <translation>Largeurs des lignes</translation>
     </message>
     <message>
       <source>Balloon Shape</source>
-      <translation>Forme de l'Infobulle</translation>
+      <translation>Forme des infobulles</translation>
     </message>
     <message>
       <source>Show arc centers in printed output</source>
@@ -2149,7 +2149,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Print Center Marks</source>
-      <translation>Afficher les Marques du Centre</translation>
+      <translation>Imprimer les marques des centres</translation>
     </message>
     <message>
       <source>Line style of detail highlight on base view</source>
@@ -2157,7 +2157,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Detail Highlight Style</source>
-      <translation>Style de mise en surbrillance des détails</translation>
+      <translation>Style de la ligne de la forme de contour des vues détaillées</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2180,7 +2180,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Hidden Line</source>
-      <translation>Ligne cachée</translation>
+      <translation>Lignes cachées</translation>
     </message>
     <message>
       <source>Hidden line color</source>
@@ -2196,7 +2196,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Section Face</source>
-      <translation>Face de section</translation>
+      <translation>Vues en coupe</translation>
     </message>
     <message>
       <source>Section face color</source>
@@ -2212,7 +2212,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Section Line</source>
-      <translation>Ligne de coupe</translation>
+      <translation>Lignes des vues en coupe</translation>
     </message>
     <message>
       <source>Section line color</source>
@@ -2280,7 +2280,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Detail Highlight</source>
-      <translation>Détail en surbrillance</translation>
+      <translation>Couleur des contours des vues détaillées</translation>
     </message>
     <message>
       <source>Leaderline</source>
@@ -2335,7 +2335,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Arrow Size</source>
-      <translation>Taille de flèche</translation>
+      <translation>Taille des flèches</translation>
     </message>
     <message>
       <source>Character used to indicate diameter dimensions</source>
@@ -2426,7 +2426,7 @@ peut remplacer le paramètre global &apos;Mettre à jour avec la 3D&apos;</trans
     </message>
     <message>
       <source>Allow Page Override (global policy)</source>
-      <translation>Autoriser le Remplacement de Page (stratégie globale)</translation>
+      <translation>Autoriser le remplacement de page (stratégie globale)</translation>
     </message>
     <message>
       <source>Keep drawing pages in sync with changes of 3D model in real time.
@@ -2446,7 +2446,7 @@ pour les ProjectionGroups</translation>
     </message>
     <message>
       <source>Auto-distribute Secondary Views</source>
-      <translation>Distribution automatique des Vues Secondaires</translation>
+      <translation>Distribution automatique des vues secondaires</translation>
     </message>
     <message>
       <source>Labels</source>
@@ -2464,7 +2464,7 @@ pour les ProjectionGroups</translation>
     </message>
     <message>
       <source>Label Size</source>
-      <translation>Taille d’étiquette</translation>
+      <translation>Taille des étiquettes</translation>
     </message>
     <message>
       <source>Font for labels</source>
@@ -2472,7 +2472,7 @@ pour les ProjectionGroups</translation>
     </message>
     <message>
       <source>Label size</source>
-      <translation>Taille d’étiquette</translation>
+      <translation>Taille des étiquettes</translation>
     </message>
     <message>
       <source>Conventions</source>
@@ -2536,7 +2536,7 @@ pour les ProjectionGroups</translation>
     </message>
     <message>
       <source>Hatch Pattern File</source>
-      <translation>Fichier de motif de hachure</translation>
+      <translation>Fichier des motifs hachurés</translation>
     </message>
     <message>
       <source>Default SVG or bitmap file for hatching</source>
@@ -2544,7 +2544,7 @@ pour les ProjectionGroups</translation>
     </message>
     <message>
       <source>Line Group File</source>
-      <translation>Fichier de groupe de lignes</translation>
+      <translation>Fichier des groupes de lignes</translation>
     </message>
     <message>
       <source>Alternate file for personal LineGroup definition</source>
@@ -2587,7 +2587,7 @@ pour les ProjectionGroups</translation>
     <name>TechDrawGui::DlgPrefsTechDrawHLRImp</name>
     <message>
       <source>HLR</source>
-      <translation>Lignes Cachées</translation>
+      <translation>Lignes cachées</translation>
     </message>
     <message>
       <source>Hidden Line Removal</source>
@@ -2615,7 +2615,7 @@ pour les ProjectionGroups</translation>
     </message>
     <message>
       <source>Show Smooth Lines</source>
-      <translation>Afficher les arêtes tangentes</translation>
+      <translation>Afficher les lignes de transition</translation>
     </message>
     <message>
       <source>Use an approximation to find hidden lines.
@@ -2624,7 +2624,7 @@ Fast, but result is a collection of short straight lines.</source>
     </message>
     <message>
       <source>Use Polygon Approximation</source>
-      <translation>Utiliser l'Approximation du Polygone</translation>
+      <translation>Utiliser l'approximation du polygone</translation>
     </message>
     <message>
       <source>Show hidden smooth edges</source>
@@ -2636,7 +2636,7 @@ Fast, but result is a collection of short straight lines.</source>
     </message>
     <message>
       <source>Show Hard Lines</source>
-      <translation>Afficher les bords durs</translation>
+      <translation>Afficher les lignes dures</translation>
     </message>
     <message>
       <source>Show hard and outline edges (always shown)</source>
@@ -2727,7 +2727,7 @@ Fast, but result is a collection of short straight lines.</source>
     </message>
     <message>
       <source>Center Mark Scale</source>
-      <translation>Centrer l'Échelle de Marquage</translation>
+      <translation>Échelle des marques centrales</translation>
     </message>
     <message>
       <source>Size of center marks. Multiplier of vertex size.</source>
@@ -2735,7 +2735,7 @@ Fast, but result is a collection of short straight lines.</source>
     </message>
     <message>
       <source>Template Edit Mark</source>
-      <translation>Marque d'Édition de Modèle</translation>
+      <translation>Modifier les balises du modèle</translation>
     </message>
     <message>
       <source>Multiplier for size of welding symbols</source>
@@ -2743,7 +2743,7 @@ Fast, but result is a collection of short straight lines.</source>
     </message>
     <message>
       <source>Welding Symbol Scale</source>
-      <translation>Échelle des Symboles de Soudage</translation>
+      <translation>Échelle des symboles de soudage</translation>
     </message>
     <message>
       <source>Scale of vertex dots. Multiplier of line width.</source>
@@ -2877,7 +2877,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Shape of the balloon bubble</source>
-      <translation>Forme de l'infobulle</translation>
+      <translation>Forme des infobulles</translation>
     </message>
     <message>
       <source>Circular</source>
@@ -2961,7 +2961,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Length of balloon leader line kink</source>
-      <translation>Longueur du coude de la ligne de repère du ballon</translation>
+      <translation>Longueur horizontale de la ligne des infobulles</translation>
     </message>
   </context>
   <context>

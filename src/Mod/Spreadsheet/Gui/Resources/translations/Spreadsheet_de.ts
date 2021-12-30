@@ -245,7 +245,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation>Ausgewählte Zellen zusammenführen</translation>
+      <translation>Verbindet die ausgewählten Zellen</translation>
     </message>
   </context>
   <context>
@@ -290,7 +290,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation>Text in ausgewählten Zellen fett</translation>
+      <translation>Stellt den Text in den ausgewählten Zellen fett dar</translation>
     </message>
   </context>
   <context>
@@ -305,7 +305,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation>Text in ausgewählten Zellen kursiv</translation>
+      <translation>Stellt den Text in den ausgewählten Zellen kursiv dar</translation>
     </message>
   </context>
   <context>
@@ -320,7 +320,7 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation>Unterstreiche Text in den ausgewählten Zellen</translation>
+      <translation>Unterstreicht den Text in den markierten Zellen</translation>
     </message>
   </context>
   <context>
@@ -362,7 +362,7 @@
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation>Zellen Vertikal zentrieren</translation>
+      <translation>Zellen vertikal zentrieren</translation>
     </message>
     <message>
       <source>Set bold text</source>
@@ -402,7 +402,7 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation>Zell(en) löschen</translation>
+      <translation>Zelle(n) löschen</translation>
     </message>
     <message>
       <source>Set foreground color</source>
@@ -437,7 +437,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Horizontale</translation>
+      <translation>Horizontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -453,7 +453,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation>Vertikale</translation>
+      <translation>Vertikal</translation>
     </message>
     <message>
       <source>Top</source>
@@ -481,7 +481,7 @@
     </message>
     <message>
       <source>&amp;Display unit</source>
-      <translation>&amp;Zeige Einheit</translation>
+      <translation>&amp;Einheit anzeigen</translation>
     </message>
     <message>
       <source>Unit string</source>
@@ -512,11 +512,11 @@
     </message>
     <message>
       <source>Show spreadsheet</source>
-      <translation>Zeige Kalkulationstabelle</translation>
+      <translation>Kalkulationstabelle anzeigen</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation>Vordergrundfarbe der Zelle(n) einstellen</translation>
+      <translation>Stellt die Vordergrundfarbe der Zelle(n) ein</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
@@ -524,7 +524,7 @@
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation>Hintergrundfarbe der Zelle(n) einstellen</translation>
+      <translation>Stellt die Hintergrundfarbe der Zelle(n) ein</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
@@ -663,7 +663,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zeichen, das verwendet wird, um Zeichenketten abzugrenzen, typischerweise ein einfaches Anführungszeichen (') oder ein doppeltes Anführungszeichen (&amp;quot;). Muss ein einzelnes Zeichen sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>"</source>
@@ -675,7 +675,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape-Zeichen, typischerweise der Backslash (\), verwendet um spezielle nicht druckbare Zeichen anzugeben, z.B. \t = tab. Muss ein einzelnes Zeichen sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>\</source>
@@ -687,11 +687,11 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zeichen, das als Feldtrenner verwendet wird. Standard ist tab, oft wird aber auch ein Komma (,) oder ein Semikolon (;) benutzt. Aus der Liste auswählen oder ein eigenes Zeichen  eingeben. Es muss ein einzelnes Zeichen sein oder eines der Wörter &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;oder &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>tab</translation>
     </message>
     <message>
       <source>;</source>
@@ -703,7 +703,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     </message>
     <message>
       <source>Quote Character: </source>
-      <translation type="unfinished">Quote Character: </translation>
+      <translation>Anführungszeichen: </translation>
     </message>
   </context>
   <context>
@@ -723,7 +723,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
       <source>Insert %n row(s) above</source>
       <translation>
         <numerusform>%n Zeile darüber einfügen</numerusform>
-        <numerusform>%n Zeilen darüber einfügen</numerusform>
+        <numerusform>%n Zeile(n) darüber einfügen</numerusform>
       </translation>
     </message>
     <message numerus="yes">

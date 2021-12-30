@@ -4698,7 +4698,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;Использовать выбор оригинала</translation>
     </message>
     <message>
       <source>Ignore dependencies and proceed with objects

@@ -1425,6 +1425,22 @@ std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstructionEleme
     return temp;
 }
 
+GeoListFacade Sketch::extractGeoListFacade() const
+{
+    std::vector<GeometryFacadeUniquePtr> temp;
+    temp.reserve(Geoms.size());
+    int internalGeometryCount = 0;
+    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
+        auto gf = GeometryFacade::getFacade(it->geo->clone(), true); // GeometryFacade is the owner of this allocation
+        if(!it->external)
+            internalGeometryCount++;
+
+        temp.push_back(std::move(gf));
+    }
+
+    return GeoListFacade::getGeoListModel(std::move(temp), internalGeometryCount);
+}
+
 void Sketch::updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext)
 {
     geoId = checkGeoId(geoId);

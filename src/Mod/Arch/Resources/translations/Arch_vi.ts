@@ -16,12 +16,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="336"/>
       <source>If true, the height value propagates to contained objects</source>
-      <translation type="unfinished">If true, the height value propagates to contained objects</translation>
+      <translation>Nếu đúng, giá trị chiều cao sẽ truyền đến các đối tượng được chứa</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="339"/>
       <source>The level of the (0,0,0) point of this level</source>
-      <translation type="unfinished">The level of the (0,0,0) point of this level</translation>
+      <translation>Mức (0,0,0) của điểm này</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="206"/>
@@ -46,12 +46,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="349"/>
       <source>This property stores an inventor representation for this object</source>
-      <translation type="unfinished">This property stores an inventor representation for this object</translation>
+      <translation>Thuộc tính này lưu trữ đại diện của nhà phát triển cho đối tượng này</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+      <translation>Nếu đúng, chỉ phần solid sẽ được đối tượng này thu thập khi được tham chiếu từ các tệp khác</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>

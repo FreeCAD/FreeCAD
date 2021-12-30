@@ -740,9 +740,9 @@ public:
         SelType newSelType = SelUnknown;
 
         //For each SelType allowed, check if button is released there and assign it to selIdPair
-        int VtId = sketchgui->getPreselectPoint();
-        int CrvId = sketchgui->getPreselectCurve();
-        int CrsId = sketchgui->getPreselectCross();
+        int VtId = getPreselectPoint();
+        int CrvId = getPreselectCurve();
+        int CrsId = getPreselectCross();
         if (allowedSelTypes & (SelRoot | SelVertexOrRoot) && CrsId == 0) {
             selIdPair.GeoId = Sketcher::GeoEnum::RtPnt;
             selIdPair.PosId = Sketcher::PointPos::start;
@@ -1809,8 +1809,8 @@ public:
 
     virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
-        int VtId = sketchgui->getPreselectPoint();
-        int CrsId = sketchgui->getPreselectCross();
+        int VtId = getPreselectPoint();
+        int CrsId = getPreselectCross();
         std::stringstream ss;
         int GeoId_temp;
         Sketcher::PointPos PosId_temp;

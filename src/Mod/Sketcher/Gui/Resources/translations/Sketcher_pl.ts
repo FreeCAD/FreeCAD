@@ -1046,7 +1046,7 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7192"/>
       <source>Create slot</source>
-      <translation>Utwórz rowek</translation>
+      <translation>Utwórz wpust</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7193"/>
@@ -2302,7 +2302,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <location filename="../../Command.cpp" line="172"/>
       <location filename="../../Command.cpp" line="590"/>
       <source>Don't attach</source>
-      <translation>Nie przyciągnięto</translation>
+      <translation>Nie dołączaj</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="123"/>

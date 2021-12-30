@@ -101,7 +101,7 @@
     <message>
       <location filename="commands.py" line="166"/>
       <source>Constant vacuum permittivity</source>
-      <translation type="unfinished">Constant vacuum permittivity</translation>
+      <translation>Constante vacuüm machtiging</translation>
     </message>
     <message>
       <location filename="commands.py" line="170"/>

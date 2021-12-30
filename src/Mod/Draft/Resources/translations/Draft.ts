@@ -485,6 +485,11 @@ or from the subelement &apos;VertexN&apos;, &apos;EdgeN&apos;, or &apos;FaceN&ap
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="draftlink.py" line="99"/>
+        <source>Force sync pattern placements even when array elements are expanded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="draftlink.py" line="104"/>
         <source>Show the individual array elements</source>
         <translation type="unfinished"></translation>
@@ -641,11 +646,6 @@ This property is read-only, as the number depends on the points contained within
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="hatch.py" line="49"/>
-        <source>The shape of this object</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="hatch.py" line="58"/>
         <source>The pattern name used by this object</source>
         <translation type="unfinished"></translation>
@@ -653,6 +653,11 @@ This property is read-only, as the number depends on the points contained within
     <message>
         <location filename="hatch.py" line="61"/>
         <source>The pattern scale used by this object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="hatch.py" line="49"/>
+        <source>The shape of this object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3690,6 +3695,16 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="make_label.py" line="272"/>
+        <source>Wrong input: label_type must be a string.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="make_label.py" line="277"/>
+        <source>Wrong input: label_type must be one of the following: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="make_label.py" line="278"/>
         <source>Wrong input: must be a string, &apos;Custom&apos;, &apos;Name&apos;, &apos;Label&apos;, &apos;Position&apos;, &apos;Length&apos;, &apos;Area&apos;, &apos;Volume&apos;, &apos;Tag&apos;, or &apos;Material&apos;.</source>
         <translation type="unfinished"></translation>
@@ -3767,6 +3782,36 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
     <message>
         <location filename="draft_annotation.py" line="130"/>
         <source>migrated &apos;DraftText&apos; type to &apos;Text&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="view_layer.py" line="358"/>
+        <source>Activate this layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="view_layer.py" line="364"/>
+        <source>Select layer contents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="view_layer.py" line="421"/>
+        <source>Merge layer duplicates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="view_layer.py" line="469"/>
+        <source>Add new layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="view_layer.py" line="454"/>
+        <source>Relabeling layer:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="view_layer.py" line="458"/>
+        <source>Merging layer:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4835,16 +4880,6 @@ The final angle will be the base angle plus this amount.</source>
     <message>
         <location filename="gui_rotate.py" line="411"/>
         <source>Pick rotation angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="view_layer.py" line="358"/>
-        <source>Activate this layer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="view_layer.py" line="364"/>
-        <source>Select layer contents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
