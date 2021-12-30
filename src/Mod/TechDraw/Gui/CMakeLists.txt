@@ -54,6 +54,7 @@ else()
 endif()
 
 set(TechDrawGui_UIC_SRCS
+    DlgPageChooser.ui
     DlgPrefsTechDrawAdvanced.ui
     DlgPrefsTechDrawAnnotation.ui
     DlgPrefsTechDrawColors.ui
@@ -117,6 +118,9 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
+    DlgPageChooser.ui
+    DlgPageChooser.cpp
+    DlgPageChooser.h
     DlgPrefsTechDrawGeneral.ui
     DlgPrefsTechDrawGeneralImp.cpp
     DlgPrefsTechDrawGeneralImp.h
