@@ -45,6 +45,7 @@
 #include "Selection.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "FileDialog.h"
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -237,10 +238,7 @@ public:
         auto color = item->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, parent);
         cd.setOption(QColorDialog::ShowAlphaChannel);
-        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
-        bool notNativeColorDialog = group->GetBool("DontUseNativeColorDialog", true);
-        if (notNativeColorDialog)
+        if (DialogOptions::dontUseNativeColorDialog())
             cd.setOptions(QColorDialog::DontUseNativeDialog);
         if (cd.exec()!=QDialog::Accepted || color==cd.selectedColor())
             return;
@@ -431,10 +429,7 @@ void ElementColors::on_addSelection_clicked()
         auto color = d->items.front()->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, this);
         cd.setOption(QColorDialog::ShowAlphaChannel);
-        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
-        bool notNativeColorDialog = group->GetBool("DontUseNativeColorDialog", true);
-        if (notNativeColorDialog)
+        if (DialogOptions::dontUseNativeColorDialog())
             cd.setOptions(QColorDialog::DontUseNativeDialog);
         if (cd.exec()!=QDialog::Accepted)
             return;

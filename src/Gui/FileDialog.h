@@ -29,6 +29,7 @@
 #include <QFileSystemModel>
 #include <QCompleter>
 #include <QPointer>
+#include <FCGlobal.h>
 
 class QButtonGroup;
 class QGridLayout;
@@ -38,6 +39,17 @@ class QLineEdit;
 class QSpacerItem;
 
 namespace Gui {
+
+/*!
+ * \brief The DialogOptions class
+ * Helper class to control whether to use native or Qt dialogs.
+ */
+class GuiExport DialogOptions
+{
+public:
+    static bool dontUseNativeFileDialog();
+    static bool dontUseNativeColorDialog();
+};
 
 /**
  * The FileDialog class provides dialogs that allow users to select files or directories.

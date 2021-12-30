@@ -782,10 +782,7 @@ void ColorButton::onChooseColor()
     if (d->modal) {
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
-        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
-        bool notNativeColorDialog = group->GetBool("DontUseNativeColorDialog", true);
-        if (notNativeColorDialog)
+        if (DialogOptions::dontUseNativeColorDialog())
             cd.setOptions(QColorDialog::DontUseNativeDialog);
         cd.setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
 
@@ -812,10 +809,7 @@ void ColorButton::onChooseColor()
         if (d->cd.isNull()) {
             d->old = d->col;
             d->cd = new QColorDialog(d->col, this);
-            ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-                  GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
-            bool notNativeColorDialog = group->GetBool("DontUseNativeColorDialog", true);
-            if (notNativeColorDialog)
+            if (DialogOptions::dontUseNativeColorDialog())
                 d->cd->setOptions(QColorDialog::DontUseNativeDialog);
             d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
             d->cd->setAttribute(Qt::WA_DeleteOnClose);
