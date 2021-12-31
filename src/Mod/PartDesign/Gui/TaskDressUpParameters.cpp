@@ -267,7 +267,7 @@ void TaskDressUpParameters::itemClickedTimeout() {
 
 void TaskDressUpParameters::createAddAllEdgesAction(QListWidget* parentList)
 {
-    // creates a context menu, a shortcut for it and connects it to e slot function
+    // creates a context menu, a shortcut for it and connects it to a slot function
 
     addAllEdgesAction = new QAction(tr("Add all edges"), this);
     addAllEdgesAction->setShortcut(QKeySequence(QString::fromLatin1("Ctrl+Shift+A")));
@@ -284,7 +284,7 @@ void TaskDressUpParameters::createAddAllEdgesAction(QListWidget* parentList)
 
 void TaskDressUpParameters::createDeleteAction(QListWidget* parentList, QWidget* parentButton)
 {
-    // creates a context menu, a shortcut for it and connects it to e slot function
+    // creates a context menu, a shortcut for it and connects it to a slot function
 
     deleteAction = new QAction(tr("Remove"), this);
     deleteAction->setShortcut(QKeySequence::Delete);
