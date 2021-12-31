@@ -81,6 +81,7 @@ except ImportError:
 
 # reject_listed addons
 macros_reject_list = []
+mod_reject_list = []
 
 # These addons will print an additional message informing the user
 obsolete = []
@@ -110,7 +111,7 @@ class UpdateWorker(QtCore.QThread):
         self.current_thread = QtCore.QThread.currentThread()
 
         # update info lists
-        global obsolete, macros_reject_list, py2only
+        global obsolete, macros_reject_list, mod_reject_list, py2only
         u = utils.urlopen(
             "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/addonflags.json"
         )
@@ -123,6 +124,9 @@ class UpdateWorker(QtCore.QThread):
 
             if "blacklisted" in j and "Macro" in j["blacklisted"]:
                 macros_reject_list = j["blacklisted"]["Macro"]
+
+            if "blacklisted" in j and "Mod" in j["blacklisted"]:
+                mod_reject_list = j["blacklisted"]["Mod"]
 
             if "py2only" in j and "Mod" in j["py2only"]:
                 py2only = j["py2only"]["Mod"]
@@ -223,6 +227,12 @@ class UpdateWorker(QtCore.QThread):
                 repo.load_metadata_file(md_file)
                 repo.installed_version = repo.metadata.Version
                 repo.updated_timestamp = os.path.getmtime(md_file)
+            if name in py2only:
+                repo.python2 = True
+            if name in mod_reject_list:
+                repo.rejected = True
+            if name in obsolete:
+                repo.obsolete = True
             self.addon_repo.emit(repo)
 
             self.status_message.emit(

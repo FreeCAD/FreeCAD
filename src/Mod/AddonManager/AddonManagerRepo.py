@@ -76,6 +76,9 @@ class AddonManagerRepo:
         self.url = url.strip()
         self.branch = branch.strip()
         self.update_status = status
+        self.python2 = False
+        self.obsolete = False
+        self.rejected = False
         self.repo_type = AddonManagerRepo.RepoType.WORKBENCH
         self.description = None
         from addonmanager_utilities import construct_git_url
@@ -114,19 +117,22 @@ class AddonManagerRepo:
         return instance
 
     @classmethod
-    def from_cache(self, data: Dict):
+    def from_cache(self, cache_dict: Dict):
         """Load basic data from cached dict data. Does not include Macro or Metadata information, which must be populated separately."""
 
-        mod_dir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", data["name"])
+        mod_dir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", cache_dict["name"])
         if os.path.isdir(mod_dir):
             status = AddonManagerRepo.UpdateStatus.UNCHECKED
         else:
             status = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-        instance = AddonManagerRepo(data["name"], data["url"], status, data["branch"])
-        instance.display_name = data["display_name"]
-        instance.repo_type = AddonManagerRepo.RepoType(data["repo_type"])
-        instance.description = data["description"]
-        instance.cached_icon_filename = data["cached_icon_filename"]
+        instance = AddonManagerRepo(
+            cache_dict["name"], cache_dict["url"], status, cache_dict["branch"]
+        )
+
+        for key, value in cache_dict.items():
+            instance.__dict__[key] = value
+
+        instance.repo_type = AddonManagerRepo.RepoType(cache_dict["repo_type"])
         if instance.repo_type == AddonManagerRepo.RepoType.PACKAGE:
             # There must be a cached metadata file, too
             cached_package_xml_file = os.path.join(
@@ -150,6 +156,9 @@ class AddonManagerRepo:
             "repo_type": int(self.repo_type),
             "description": self.description,
             "cached_icon_filename": self.get_cached_icon_filename(),
+            "python2": self.python2,
+            "obsolete": self.obsolete,
+            "rejected": self.rejected,
         }
 
     def load_metadata_file(self, file: str) -> None:

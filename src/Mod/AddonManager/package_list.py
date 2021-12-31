@@ -99,6 +99,9 @@ class PackageList(QWidget):
         else:
             self.ui.buttonCompactLayout.setChecked(True)
 
+        self.item_filter.setHidePy2(pref.GetBool("HidePy2", True))
+        self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", True))
+
     def on_listPackages_clicked(self, index: QModelIndex):
         source_selection = self.item_filter.mapToSource(index)
         selected_repo = self.item_model.repos[source_selection.row()]
@@ -452,6 +455,8 @@ class PackageListFilter(QSortFilterProxyModel):
         self.package_type = 0  # Default to showing everything
         self.status = 0  # Default to showing any
         self.setSortCaseSensitivity(Qt.CaseInsensitive)
+        self.hide_obsolete = False
+        self.hide_py2 = False
 
     def setPackageFilter(
         self, type: int
@@ -463,6 +468,14 @@ class PackageListFilter(QSortFilterProxyModel):
         self, status: int
     ) -> None:  # 0=Any, 1=Installed, 2=Not installed, 3=Update available
         self.status = status
+        self.invalidateFilter()
+
+    def setHidePy2(self, hide_py2: bool) -> None:
+        self.hide_py2 = hide_py2
+        self.invalidateFilter()
+
+    def setHideObsolete(self, hide_obsolete: bool) -> None:
+        self.hide_obsolete = hide_obsolete
         self.invalidateFilter()
 
     def lessThan(self, left, right) -> bool:
@@ -493,6 +506,22 @@ class PackageListFilter(QSortFilterProxyModel):
         elif self.status == StatusFilter.UPDATE_AVAILABLE:
             if data.update_status != AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
                 return False
+
+        # If it's not installed, check to see if it's Py2 only
+        if (
+            data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            and self.hide_py2
+            and data.python2
+        ):
+            return False
+
+        # If it's not installed, check to see if it's marked obsolete
+        if (
+            data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            and self.hide_obsolete
+            and data.obsolete
+        ):
+            return False
 
         name = data.display_name
         desc = data.description

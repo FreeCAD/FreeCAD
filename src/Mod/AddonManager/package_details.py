@@ -206,6 +206,29 @@ class PackageDetails(QWidget):
             self.ui.buttonUpdate.hide()
             self.ui.buttonCheckForUpdate.hide()
 
+        warningColorString = "rgb(200,0,0)"
+        if "dark" in QApplication.instance().styleSheet().lower():
+            warningColorString = "rgb(255,50,50)"
+
+        if repo.obsolete:
+            self.ui.labelWarningInfo.show()
+            self.ui.labelWarningInfo.setText(
+                "<h1>"
+                + translate("AddonsInstaller", "WARNING: This addon is obsolete")
+                + "</h1>"
+            )
+            self.ui.labelWarningInfo.setStyleSheet("color:" + warningColorString)
+        elif repo.python2:
+            self.ui.labelWarningInfo.show()
+            self.ui.labelWarningInfo.setText(
+                "<h1>"
+                + translate("AddonsInstaller", "WARNING: This addon is Python 2 Only")
+                + "</h1>"
+            )
+            self.ui.labelWarningInfo.setStyleSheet("color:" + warningColorString)
+        else:
+            self.ui.labelWarningInfo.hide()
+
     @classmethod
     def cache_path(self, repo: AddonManagerRepo) -> str:
         cache_path = FreeCAD.getUserCachePath()
@@ -388,6 +411,11 @@ class Ui_PackageDetails(object):
         self.labelPackageDetails.hide()
 
         self.verticalLayout_2.addWidget(self.labelPackageDetails)
+
+        self.labelWarningInfo = QLabel(PackageDetails)
+        self.labelWarningInfo.hide()
+
+        self.verticalLayout_2.addWidget(self.labelWarningInfo)
 
         self.textBrowserReadMe = QTextBrowser(PackageDetails)
         self.textBrowserReadMe.setObjectName("textBrowserReadMe")
