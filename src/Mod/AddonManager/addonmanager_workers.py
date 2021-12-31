@@ -31,6 +31,7 @@ import hashlib
 import threading
 import queue
 import io
+import time
 from datetime import datetime
 from typing import Union, List
 
@@ -635,6 +636,128 @@ class FillMacroListWorker(QtCore.QThread):
                 repo = AddonManagerRepo.from_macro(macro)
                 repo.url = "https://wiki.freecad.org/Macros_recipes"
                 self.add_macro_signal.emit(repo)
+
+
+class CacheMacroCode(QtCore.QThread):
+    """Download and cache the macro code, and parse its internal metadata"""
+
+    status_message = QtCore.Signal(str)
+    update_macro = QtCore.Signal(AddonManagerRepo)
+    progress_made = QtCore.Signal(int, int)
+
+    def __init__(self, repos: List[AddonManagerRepo]) -> None:
+        QtCore.QThread.__init__(self)
+        self.repos = repos
+        self.workers = []
+        self.terminators = []
+        self.lock = threading.Lock()
+        self.failed = []
+        self.counter = 0
+
+    def run(self):
+        self.status_message.emit(translate("AddonsInstaller", "Caching macro code..."))
+
+        self.repo_queue = queue.Queue()
+        current_thread = QtCore.QThread.currentThread()
+        num_macros = 0
+        for repo in self.repos:
+            if repo.macro is not None:
+                self.repo_queue.put(repo)
+                num_macros += 1
+
+        # Emulate QNetworkAccessManager and spool up six connections:
+        for _ in range(6):
+            self.update_and_advance(None)
+
+        while True:
+            if current_thread.isInterruptionRequested():
+                for worker in self.workers:
+                    worker.requestInterruption()
+                    worker.wait(100)
+                    if not worker.isFinished():
+                        # Kill it
+                        worker.terminate()
+                return
+            # Ensure our signals propagate out by running an internal thread-local event loop
+            QtCore.QCoreApplication.processEvents()
+            with self.lock:
+                if self.counter >= num_macros:
+                    break
+            time.sleep(0.1)
+
+        # Make sure all of our child threads have fully exited:
+        for i, worker in enumerate(self.workers):
+            worker.wait(50)
+            if not worker.isFinished():
+                FreeCAD.Console.PrintError(
+                    f"Addon Manager: a worker process failed to complete while fetching {worker.macro.name}\n"
+                )
+                worker.terminate()
+
+        self.repo_queue.join()
+        for terminator in self.terminators:
+            if terminator and terminator.isActive():
+                terminator.stop()
+
+        FreeCAD.Console.PrintMessage(
+            f"Out of {num_macros} macros, {len(self.failed)} failed"
+        )
+
+    def update_and_advance(self, repo: AddonManagerRepo) -> None:
+        if repo is not None:
+            if repo.macro.name not in self.failed:
+                self.update_macro.emit(repo)
+            self.repo_queue.task_done()
+            with self.lock:
+                self.counter += 1
+
+        if QtCore.QThread.currentThread().isInterruptionRequested():
+            return
+
+        self.progress_made.emit(
+            len(self.repos) - self.repo_queue.qsize(), len(self.repos)
+        )
+
+        try:
+            next_repo = self.repo_queue.get_nowait()
+            worker = GetMacroDetailsWorker(next_repo)
+            worker.finished.connect(lambda: self.update_and_advance(next_repo))
+            with self.lock:
+                self.workers.append(worker)
+                self.terminators.append(
+                    QtCore.QTimer.singleShot(10000, lambda: self.terminate(worker))
+                )
+            self.status_message.emit(
+                translate(
+                    "AddonsInstaller",
+                    f"Getting metadata from macro {next_repo.macro.name}",
+                )
+            )
+            worker.start()
+        except queue.Empty:
+            pass
+
+    def terminate(self, worker) -> None:
+        if not worker.isFinished():
+            macro_name = worker.macro.name
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    f"Timeout while fetching metadata for macro {macro_name}",
+                )
+                + "\n"
+            )
+            worker.requestInterruption()
+            worker.wait(100)
+            if worker.isRunning():
+                worker.terminate()
+                worker.wait(50)
+                if worker.isRunning():
+                    FreeCAD.Console.PrintError(
+                        f"Failed to kill process for macro {macro_name}!\n"
+                    )
+            with self.lock:
+                self.failed.append(macro_name)
 
 
 class ShowWorker(QtCore.QThread):
@@ -1545,11 +1668,15 @@ class UpdateAllWorker(QtCore.QThread):
         self.done.emit()
 
     def on_success(self, repo: AddonManagerRepo) -> None:
-        self.progress_made.emit(self.repo_queue.qsize(), len(self.repos))
+        self.progress_made.emit(
+            len(self.repos) - self.repo_queue.qsize(), len(self.repos)
+        )
         self.success.emit(repo)
 
     def on_failure(self, repo: AddonManagerRepo) -> None:
-        self.progress_made.emit(self.repo_queue.qsize(), len(self.repos))
+        self.progress_made.emit(
+            len(self.repos) - self.repo_queue.qsize(), len(self.repos)
+        )
         self.failure.emit(repo)
 
 

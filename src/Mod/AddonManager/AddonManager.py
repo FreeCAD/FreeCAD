@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from inspect import indentsize
 import os
 import shutil
 import stat
@@ -78,6 +79,7 @@ class CommandAddonManager:
         "update_worker",
         "check_worker",
         "show_worker",
+        "cache_macros_worker",
         "showmacro_worker",
         "macro_worker",
         "install_worker",
@@ -262,7 +264,7 @@ class CommandAddonManager:
         )
 
         # set info for the progress bar:
-        self.dialog.progressBar.setMaximum(100)
+        self.dialog.progressBar.setMaximum(1000)
 
         # begin populating the table in a set of sub-threads
         self.startup()
@@ -383,6 +385,7 @@ class CommandAddonManager:
             self.activate_table_widgets,
             self.populate_macros,
             self.update_metadata_cache,
+            self.cache_macros,
             self.check_updates,
         ]
         self.current_progress_region = 0
@@ -410,7 +413,6 @@ class CommandAddonManager:
 
     def populate_packages_table(self) -> None:
         self.item_model.clear()
-        self.current_progress_region += 1
 
         use_cache = not self.update_cache
         if use_cache:
@@ -456,7 +458,7 @@ class CommandAddonManager:
         if hasattr(self, "package_cache"):
             package_cache_path = self.get_cache_file_name("package_cache.json")
             with open(package_cache_path, "w") as f:
-                f.write(json.dumps(self.package_cache))
+                f.write(json.dumps(self.package_cache, indent="  "))
 
     def activate_table_widgets(self) -> None:
         self.packageList.setEnabled(True)
@@ -464,7 +466,6 @@ class CommandAddonManager:
         self.do_next_startup_phase()
 
     def populate_macros(self) -> None:
-        self.current_progress_region += 1
         if self.update_cache or not os.path.isfile(
             self.get_cache_file_name("macro_cache.json")
         ):
@@ -495,11 +496,10 @@ class CommandAddonManager:
     def write_macro_cache(self):
         macro_cache_path = self.get_cache_file_name("macro_cache.json")
         with open(macro_cache_path, "w") as f:
-            f.write(json.dumps(self.macro_cache))
+            f.write(json.dumps(self.macro_cache, indent="  "))
             self.macro_cache = []
 
     def update_metadata_cache(self) -> None:
-        self.current_progress_region += 1
         if self.update_cache:
             self.update_metadata_cache_worker = UpdateMetadataCacheWorker(
                 self.item_model.repos
@@ -532,10 +532,20 @@ class CommandAddonManager:
             repo.icon = self.get_icon(repo, update=True)
             self.item_model.reload_item(repo)
 
+    def cache_macros(self) -> None:
+        if self.update_cache:
+            self.cache_macros_worker = CacheMacroCode(self.item_model.repos)
+            self.cache_macros_worker.status_message.connect(self.show_information)
+            self.cache_macros_worker.update_macro.connect(self.on_package_updated)
+            self.cache_macros_worker.progress_made.connect(self.update_progress_bar)
+            self.cache_macros_worker.finished.connect(self.do_next_startup_phase)
+            self.cache_macros_worker.start()
+        else:
+            self.do_next_startup_phase()
+
     def check_updates(self) -> None:
         "checks every installed addon for available updates"
 
-        self.current_progress_region += 1
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         autocheck = pref.GetBool("AutoCheck", False)
         if not autocheck:
@@ -645,6 +655,7 @@ class CommandAddonManager:
         """shows generic text in the information pane (which might be collapsed)"""
 
         self.dialog.labelStatusInfo.setText(message)
+        self.dialog.labelStatusInfo.repaint()
 
     def show_workbench(self, repo: AddonManagerRepo) -> None:
         self.packageList.hide()
@@ -867,12 +878,20 @@ class CommandAddonManager:
     def update_progress_bar(self, current_value: int, max_value: int) -> None:
         """Update the progress bar, showing it if it's hidden"""
 
+        if current_value < 0:
+            FreeCAD.Console.PrintWarning(
+                f"Addon Manager: Internal error, current progress value is negative in region {self.current_progress_region}"
+            )
+
         self.show_progress_widgets()
-        region_size = 100 / self.number_of_progress_regions
-        value = (self.current_progress_region - 1) * region_size + (
-            current_value / max_value / self.number_of_progress_regions
-        ) * region_size
-        self.dialog.progressBar.setValue(value)
+        region_size = 100.0 / self.number_of_progress_regions
+        completed_region_portion = (self.current_progress_region - 1) * region_size
+        current_region_portion = (float(current_value) / float(max_value)) * region_size
+        value = completed_region_portion + current_region_portion
+        self.dialog.progressBar.setValue(
+            value * 10
+        )  # Out of 1000 segments, so it moves sort of smoothly
+        self.dialog.progressBar.repaint()
 
     def toggle_details(self) -> None:
         if self.dialog.labelStatusInfo.isHidden():

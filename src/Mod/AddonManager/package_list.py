@@ -358,6 +358,15 @@ class PackageListItemDelegate(QStyledItemDelegate):
                             f"\n{maintainer['name']} <{maintainer['email']}>"
                         )
                 self.widget.ui.labelMaintainer.setText(maintainers_string)
+        elif repo.macro and repo.macro.parsed:
+            if repo.macro.comment:
+                self.widget.ui.labelDescription.setText(repo.macro.comment)
+            elif repo.macro.desc:
+                comment, _, _ = repo.desc.partition("<br")
+                self.widget.ui.labelDescription.setText(comment)
+            self.widget.ui.labelVersion.setText(repo.macro.version)
+            if self.displayStyle == ListDisplayStyle.EXPANDED:
+                self.widget.ui.labelMaintainer.setText(repo.macro.author)
         else:
             self.widget.ui.labelDescription.setText("")
             self.widget.ui.labelVersion.setText("")

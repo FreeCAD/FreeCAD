@@ -23,10 +23,10 @@
 
 import os
 import re
-import sys
+import io
 import codecs
 import shutil
-from typing import Dict, Union, List
+from typing import Dict, Tuple, List
 
 import FreeCAD
 
@@ -56,10 +56,12 @@ class Macro(object):
         self.on_wiki = False
         self.on_git = False
         self.desc = ""
+        self.comment = ""
         self.code = ""
         self.url = ""
         self.version = ""
         self.src_filename = ""
+        self.author = ""
         self.other_files = []
         self.parsed = False
 
@@ -93,37 +95,56 @@ class Macro(object):
             os.path.join(FreeCAD.getUserMacroDir(True), "Macro_" + self.filename)
         )
 
-    def fill_details_from_file(self, filename):
-        with open(filename) as f:
-            # Number of parsed fields of metadata.  For now, __Comment__,
-            # __Web__, __Version__, __Files__.
-            number_of_required_fields = 4
-            re_desc = re.compile(r"^__Comment__\s*=\s*(['\"])(.*)\1")
-            re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1")
-            re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1")
-            re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1")
-            for line in f.readlines():
-                match = re.match(re_desc, line)
-                if match:
-                    self.desc = match.group(2)
-                    number_of_required_fields -= 1
-                match = re.match(re_url, line)
-                if match:
-                    self.url = match.group(2)
-                    number_of_required_fields -= 1
-                match = re.match(re_version, line)
-                if match:
-                    self.version = match.group(2)
-                    number_of_required_fields -= 1
-                match = re.match(re_files, line)
-                if match:
-                    self.other_files = [of.strip() for of in match.group(2).split(",")]
-                    number_of_required_fields -= 1
-                if number_of_required_fields <= 0:
-                    break
-            f.seek(0)
+    def fill_details_from_file(self, filename: str) -> None:
+        with open(filename, errors="replace") as f:
             self.code = f.read()
-            self.parsed = True
+            self.fill_details_from_code(self.code)
+
+    def fill_details_from_code(self, code: str) -> None:
+        # Number of parsed fields of metadata. Overrides anything set previously (the code is considered authoritative).
+        # For now:
+        # __Comment__
+        # __Web__
+        # __Version__
+        # __Files__
+        # __Author__
+        number_of_fields = 5
+        re_comment = re.compile(
+            r"^__Comment__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE
+        )
+        re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE)
+        re_version = re.compile(
+            r"^__Version__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE
+        )
+        re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE)
+        re_author = re.compile(r"^__Author__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE)
+
+        f = io.StringIO(code)
+        while f:
+            line = f.readline()
+            match = re.match(re_comment, line)
+            if match:
+                self.comment = match.group(2)
+                number_of_fields -= 1
+            match = re.match(re_author, line)
+            if match:
+                self.author = match.group(2)
+                number_of_fields -= 1
+            match = re.match(re_url, line)
+            if match:
+                self.url = match.group(2)
+                number_of_fields -= 1
+            match = re.match(re_version, line)
+            if match:
+                self.version = match.group(2)
+                number_of_fields -= 1
+            match = re.match(re_files, line)
+            if match:
+                self.other_files = [of.strip() for of in match.group(2).split(",")]
+                number_of_fields -= 1
+            if number_of_fields <= 0:
+                break
+        self.parsed = True
 
     def fill_details_from_wiki(self, url):
         code = ""
@@ -157,16 +178,9 @@ class Macro(object):
                         + "\n"
                     )
                     return
-                # code = u2.read()
-                # github is slow to respond...  We need to use this trick below
                 response = ""
                 block = 8192
-                # expected = int(u2.headers["content-length"])
-                while True:
-                    # print("expected:", expected, "got:", len(response))
-                    data = u2.read(block)
-                    if not data:
-                        break
+                while data := u2.read(block):
                     if isinstance(data, bytes):
                         data = data.decode("utf-8")
                     response += data
@@ -213,9 +227,9 @@ class Macro(object):
                 flat_code += chunk
             code = flat_code
         self.code = code
-        self.parsed = True
+        self.fill_details_from_code(self.code)
 
-    def install(self, macro_dir: str) -> (bool, List[str]):
+    def install(self, macro_dir: str) -> Tuple[bool, List[str]]:
         """Install a macro and all its related files
 
         Returns True if the macro was installed correctly.

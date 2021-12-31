@@ -29,11 +29,13 @@ import sys
 import ctypes
 import tempfile
 import ssl
+from typing import Union
 
 import urllib
 from urllib.request import Request
 from urllib.error import URLError
 from urllib.parse import urlparse
+from http.client import HTTPResponse
 
 from PySide2 import QtGui, QtCore, QtWidgets
 
@@ -94,7 +96,7 @@ def symlink(source, link_name):
                 raise ctypes.WinError()
 
 
-def urlopen(url: str):
+def urlopen(url: str) -> Union[None, HTTPResponse]:
     """Opens an url with urllib and streams it to a temp file"""
 
     timeout = 5
