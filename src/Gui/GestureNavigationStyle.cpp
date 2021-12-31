@@ -1010,7 +1010,7 @@ void GestureNavigationStyle::onSetRotationCenter(SbVec2s cursor){
     SbBool ret = NavigationStyle::lookAtPoint(cursor);
     if(!ret){
         this->interactiveCountDec(); //this was in original gesture nav. Not sure what is it needed for --DeepSOIC
-        Base::Console().Message(
+        Base::Console().Log(
             "No object under cursor! Can't set new center of rotation.\n");
     }
 
