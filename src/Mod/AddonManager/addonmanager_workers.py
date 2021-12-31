@@ -697,9 +697,14 @@ class CacheMacroCode(QtCore.QThread):
             if terminator and terminator.isActive():
                 terminator.stop()
 
-        FreeCAD.Console.PrintMessage(
-            f"Out of {num_macros} macros, {len(self.failed)} failed"
-        )
+        if len(self.failed) > 0:
+            num_failed = len(self.failed)
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    f"Out of {num_macros} macros, {num_failed} timed out while processing",
+                )
+            )
 
     def update_and_advance(self, repo: AddonManagerRepo) -> None:
         if repo is not None:

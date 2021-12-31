@@ -27,7 +27,7 @@ import io
 import codecs
 import shutil
 import time
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Union
 
 import FreeCAD
 
@@ -61,6 +61,7 @@ class Macro(object):
         self.code = ""
         self.url = ""
         self.version = ""
+        self.date = ""
         self.src_filename = ""
         self.author = ""
         self.other_files = []
@@ -110,7 +111,7 @@ class Macro(object):
         # __Version__
         # __Files__
         # __Author__
-        start = time.perf_counter()
+        # __Date__
         max_lines_to_search = 50
         line_counter = 0
         number_of_fields = 5
@@ -120,6 +121,7 @@ class Macro(object):
         re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1", flags=ic)
         re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1", flags=ic)
         re_author = re.compile(r"^__Author__\s*=\s*(['\"])(.*)\1", flags=ic)
+        re_date = re.compile(r"^__Date__\s*=\s*(['\"])(.*)\1", flags=ic)
 
         f = io.StringIO(code)
         while f and line_counter < max_lines_to_search:
@@ -146,6 +148,10 @@ class Macro(object):
             if match:
                 self.version = match.group(2)
                 number_of_fields -= 1
+            match = re.match(re_date, line)
+            if match:
+                self.date = match.group(2)
+                number_of_fields -= 1
             match = re.match(re_files, line)
             if match:
                 self.other_files = [of.strip() for of in match.group(2).split(",")]
@@ -157,8 +163,6 @@ class Macro(object):
         if len(self.comment) > 512:
             self.comment = self.comment[:511] + "…"
         self.parsed = True
-        end = time.perf_counter()
-        self.parse_time = end - start
 
     def fill_details_from_wiki(self, url):
         code = ""
@@ -244,6 +248,17 @@ class Macro(object):
             code = flat_code
         self.code = code
         self.fill_details_from_code(self.code)
+        if not self.author:
+            self.author = self.parse_desc("Author: ")
+        if not self.date:
+            self.date = self.parse_desc("Last modified: ")
+
+    def parse_desc(self, line_start: str) -> Union[str, None]:
+        components = self.desc.split(">")
+        for component in components:
+            if component.startswith(line_start):
+                end = component.find("<")
+                return component[len(line_start) : end]
 
     def install(self, macro_dir: str) -> Tuple[bool, List[str]]:
         """Install a macro and all its related files
