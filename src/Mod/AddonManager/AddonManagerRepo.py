@@ -130,7 +130,10 @@ class AddonManagerRepo:
         if instance.repo_type == AddonManagerRepo.RepoType.PACKAGE:
             # There must be a cached metadata file, too
             cached_package_xml_file = os.path.join(
-                FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata", instance.name
+                FreeCAD.getUserCachePath(),
+                "AddonManager",
+                "PackageMetadata",
+                instance.name,
             )
             if os.path.isfile(cached_package_xml_file):
                 instance.load_metadata_file(cached_package_xml_file)
@@ -149,12 +152,12 @@ class AddonManagerRepo:
             "cached_icon_filename": self.get_cached_icon_filename(),
         }
 
-    def load_metadata_file (self, file:str) -> None:
+    def load_metadata_file(self, file: str) -> None:
         if os.path.isfile(file):
             metadata = FreeCAD.Metadata(file)
             self.set_metadata(metadata)
 
-    def set_metadata (self, metadata:FreeCAD.Metadata) -> None:
+    def set_metadata(self, metadata: FreeCAD.Metadata) -> None:
         self.metadata = metadata
         self.display_name = metadata.Name
         self.repo_type = AddonManagerRepo.RepoType.PACKAGE
@@ -175,7 +178,9 @@ class AddonManagerRepo:
         elif self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
             content = self.metadata.Content
             if not content:
-                FreeCAD.Console.PrintWarning(f"Package {self.display_name} does not list any content items in its package.xml metadata file. Try refreshing the cache.\n")
+                FreeCAD.Console.PrintLog(
+                    f"Package {self.display_name} does not list any content items in its package.xml metadata file.\n"
+                )
                 return False
             return "workbench" in content
         else:

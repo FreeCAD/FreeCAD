@@ -42,6 +42,7 @@ class ListDisplayStyle(IntEnum):
     COMPACT = 0
     EXPANDED = 1
 
+
 class StatusFilter(IntEnum):
     ANY = 0
     INSTALLED = 1
@@ -129,7 +130,9 @@ class PackageList(QWidget):
         """filter name and description by the regex specified by text_filter"""
 
         if text_filter:
-            if hasattr(self.item_filter, "setFilterRegularExpression"): # Added in Qt 5.12
+            if hasattr(
+                self.item_filter, "setFilterRegularExpression"
+            ):  # Added in Qt 5.12
                 test_regex = QRegularExpression(text_filter)
             else:
                 test_regex = QRegExp(text_filter)
@@ -148,7 +151,7 @@ class PackageList(QWidget):
             self.ui.labelFilterValidity.show()
         else:
             self.ui.labelFilterValidity.hide()
-        if hasattr(self.item_filter, "setFilterRegularExpression"): # Added in Qt 5.12
+        if hasattr(self.item_filter, "setFilterRegularExpression"):  # Added in Qt 5.12
             self.item_filter.setFilterRegularExpression(text_filter)
         else:
             self.item_filter.setFilterRegExp(text_filter)
@@ -433,9 +436,7 @@ class PackageListItemDelegate(QStyledItemDelegate):
 
         return result
 
-    def paint(
-        self, painter: QPainter, option: QStyleOptionViewItem, _: QModelIndex
-    ):
+    def paint(self, painter: QPainter, option: QStyleOptionViewItem, _: QModelIndex):
         painter.save()
         self.widget.resize(option.rect.size())
         painter.translate(option.rect.topLeft())
@@ -449,7 +450,7 @@ class PackageListFilter(QSortFilterProxyModel):
     def __init__(self):
         super().__init__()
         self.package_type = 0  # Default to showing everything
-        self.status = 0 # Default to showing any
+        self.status = 0  # Default to showing any
         self.setSortCaseSensitivity(Qt.CaseInsensitive)
 
     def setPackageFilter(
@@ -495,7 +496,7 @@ class PackageListFilter(QSortFilterProxyModel):
 
         name = data.display_name
         desc = data.description
-        if hasattr(self, "filterRegularExpression"): # Added in Qt 5.12
+        if hasattr(self, "filterRegularExpression"):  # Added in Qt 5.12
             re = self.filterRegularExpression()
             if re.isValid():
                 re.setPatternOptions(QRegularExpression.CaseInsensitiveOption)
@@ -634,13 +635,16 @@ class Ui_PackageList(object):
             StatusFilter.ANY, QCoreApplication.translate("AddonsInstaller", "Any", None)
         )
         self.comboStatus.setItemText(
-            StatusFilter.INSTALLED, QCoreApplication.translate("AddonsInstaller", "Installed", None)
+            StatusFilter.INSTALLED,
+            QCoreApplication.translate("AddonsInstaller", "Installed", None),
         )
         self.comboStatus.setItemText(
-            StatusFilter.NOT_INSTALLED, QCoreApplication.translate("AddonsInstaller", "Not installed", None)
+            StatusFilter.NOT_INSTALLED,
+            QCoreApplication.translate("AddonsInstaller", "Not installed", None),
         )
         self.comboStatus.setItemText(
-            StatusFilter.UPDATE_AVAILABLE, QCoreApplication.translate("AddonsInstaller", "Update available", None)
+            StatusFilter.UPDATE_AVAILABLE,
+            QCoreApplication.translate("AddonsInstaller", "Update available", None),
         )
         self.lineEditFilter.setPlaceholderText(
             QCoreApplication.translate("AddonsInstaller", "Filter", None)

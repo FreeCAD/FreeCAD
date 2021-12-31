@@ -83,7 +83,7 @@ class CommandAddonManager:
         "install_worker",
         "update_metadata_cache_worker",
         "update_all_worker",
-        "update_check_single_worker"
+        "update_check_single_worker",
     ]
 
     lock = threading.Lock()
@@ -217,7 +217,9 @@ class CommandAddonManager:
         # set nice icons to everything, by theme with fallback to FreeCAD icons
         self.dialog.setWindowIcon(QtGui.QIcon(":/icons/AddonManager.svg"))
         self.dialog.buttonUpdateAll.setIcon(QtGui.QIcon(":/icons/button_valid.svg"))
-        self.dialog.buttonCheckForUpdates.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
+        self.dialog.buttonCheckForUpdates.setIcon(
+            QtGui.QIcon(":/icons/view-refresh.svg")
+        )
         self.dialog.buttonClose.setIcon(
             QtGui.QIcon.fromTheme("close", QtGui.QIcon(":/icons/process-stop.svg"))
         )
@@ -234,7 +236,9 @@ class CommandAddonManager:
         # connect slots
         self.dialog.rejected.connect(self.reject)
         self.dialog.buttonUpdateAll.clicked.connect(self.update_all)
-        self.dialog.buttonCheckForUpdates.clicked.connect(self.manually_check_for_updates)
+        self.dialog.buttonCheckForUpdates.clicked.connect(
+            self.manually_check_for_updates
+        )
         self.dialog.buttonClose.clicked.connect(self.dialog.reject)
         self.dialog.buttonUpdateCache.clicked.connect(self.on_buttonUpdateCache_clicked)
         self.dialog.buttonShowDetails.clicked.connect(self.toggle_details)
@@ -325,35 +329,28 @@ class CommandAddonManager:
         self.write_package_cache()
         self.write_macro_cache()
 
-        # all threads have finished
-        if oktoclose:
-            if self.restart_required:
-                # display restart dialog
-                m = QtWidgets.QMessageBox()
-                m.setWindowTitle(translate("AddonsInstaller", "Addon manager"))
-                m.setWindowIcon(QtGui.QIcon(":/icons/AddonManager.svg"))
-                m.setText(
-                    translate(
-                        "AddonsInstaller",
-                        "You must restart FreeCAD for changes to take " "effect.",
-                    )
+        if self.restart_required:
+            # display restart dialog
+            m = QtWidgets.QMessageBox()
+            m.setWindowTitle(translate("AddonsInstaller", "Addon manager"))
+            m.setWindowIcon(QtGui.QIcon(":/icons/AddonManager.svg"))
+            m.setText(
+                translate(
+                    "AddonsInstaller",
+                    "You must restart FreeCAD for changes to take effect.",
                 )
-                m.setIcon(m.Warning)
-                m.setStandardButtons(m.Ok | m.Cancel)
-                m.setDefaultButton(m.Cancel)
-                okBtn = m.button(QtWidgets.QMessageBox.StandardButton.Ok)
-                cancelBtn = m.button(QtWidgets.QMessageBox.StandardButton.Cancel)
-                okBtn.setText(translate("AddonsInstaller", "Restart now"))
-                cancelBtn.setText(translate("AddonsInstaller", "Restart later"))
-                ret = m.exec_()
-                if ret == m.Ok:
-                    # restart FreeCAD after a delay to give time to this dialog to close
-                    QtCore.QTimer.singleShot(1000, utils.restart_freecad)
-        else:
-            FreeCAD.Console.PrintWarning(
-                "Could not terminate sub-threads in Addon Manager.\n"
             )
-            self.cleanup_workers()
+            m.setIcon(m.Warning)
+            m.setStandardButtons(m.Ok | m.Cancel)
+            m.setDefaultButton(m.Cancel)
+            okBtn = m.button(QtWidgets.QMessageBox.StandardButton.Ok)
+            cancelBtn = m.button(QtWidgets.QMessageBox.StandardButton.Cancel)
+            okBtn.setText(translate("AddonsInstaller", "Restart now"))
+            cancelBtn.setText(translate("AddonsInstaller", "Restart later"))
+            ret = m.exec_()
+            if ret == m.Ok:
+                # restart FreeCAD after a delay to give time to this dialog to close
+                QtCore.QTimer.singleShot(1000, utils.restart_freecad)
 
     def startup(self) -> None:
         """Downloads the available packages listings and populates the table
@@ -475,14 +472,18 @@ class CommandAddonManager:
             self.macro_worker.status_message_signal.connect(self.show_information)
             self.macro_worker.progress_made.connect(self.update_progress_bar)
             self.macro_worker.add_macro_signal.connect(self.add_addon_repo)
-            self.macro_worker.finished.connect(self.do_next_startup_phase)  # Link to step 3
+            self.macro_worker.finished.connect(
+                self.do_next_startup_phase
+            )  # Link to step 3
             self.macro_worker.start()
         else:
             self.macro_worker = LoadMacrosFromCacheWorker(
                 self.get_cache_file_name("macro_cache.json")
             )
             self.macro_worker.add_macro_signal.connect(self.add_addon_repo)
-            self.macro_worker.finished.connect(self.do_next_startup_phase)  # Link to step 3
+            self.macro_worker.finished.connect(
+                self.do_next_startup_phase
+            )  # Link to step 3
             self.macro_worker.start()
 
     def cache_macro(self, macro: AddonManagerRepo):
@@ -719,20 +720,27 @@ class CommandAddonManager:
         self.install(repo)
 
     def check_for_update(self, repo: AddonManagerRepo) -> None:
-        """ Check a single repo for available updates asynchronously """
+        """Check a single repo for available updates asynchronously"""
 
-        if hasattr(self, "update_check_single_worker") and self.update_check_single_worker:
+        if (
+            hasattr(self, "update_check_single_worker")
+            and self.update_check_single_worker
+        ):
             if self.update_check_single_worker.isRunning():
                 self.update_check_single_worker.requestInterrupt()
                 self.update_check_single_worker.wait()
 
         self.update_check_single_worker = CheckSingleWorker(repo.name)
         self.update_check_single_worker.updateAvailable.connect(
-            lambda update_available : self.mark_repo_update_available(repo, update_available)
+            lambda update_available: self.mark_repo_update_available(
+                repo, update_available
+            )
         )
         self.update_check_single_worker.start()
 
-    def mark_repo_update_available(self, repo:AddonManagerRepo, available:bool) -> None:
+    def mark_repo_update_available(
+        self, repo: AddonManagerRepo, available: bool
+    ) -> None:
         if available:
             repo.update_status = AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE
         else:

@@ -127,7 +127,13 @@ class UpdateWorker(QtCore.QThread):
             if "py2only" in j and "Mod" in j["py2only"]:
                 py2only = j["py2only"]["Mod"]
         else:
-            FreeCAD.Console.PrintWarning("Debug: addon_flags.json not found\n")
+            message = translate(
+                "AddonsInstaller",
+                "Failed to connect to GitHub. Check your connection and proxy settings.",
+            )
+            FreeCAD.Console.PrintError(message + "\n")
+            self.status_message.emit(message)
+            return
 
         basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
@@ -167,7 +173,7 @@ class UpdateWorker(QtCore.QThread):
                 else:
                     state = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
                 repo = AddonManagerRepo(name, addon["url"], state, addon["branch"])
-                md_file = os.path.join(addondir,"package.xml")
+                md_file = os.path.join(addondir, "package.xml")
                 if os.path.isfile(md_file):
                     repo.load_metadata_file(md_file)
                     repo.installed_version = repo.metadata.Version
@@ -212,7 +218,7 @@ class UpdateWorker(QtCore.QThread):
             else:
                 state = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
             repo = AddonManagerRepo(name, url, state, branch)
-            md_file = os.path.join(addondir,"package.xml")
+            md_file = os.path.join(addondir, "package.xml")
             if os.path.isfile(md_file):
                 repo.load_metadata_file(md_file)
                 repo.installed_version = repo.metadata.Version
@@ -255,10 +261,12 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                         try:
                             repo.load_metadata_file(repo_metadata_cache_path)
                             repo.installed_version = repo.metadata.Version
-                            repo.updated_timestamp = os.path.getmtime(repo_metadata_cache_path)
+                            repo.updated_timestamp = os.path.getmtime(
+                                repo_metadata_cache_path
+                            )
                         except Exception:
-                            FreeCAD.Console.PrintWarning(
-                                translate("AddonsInstaller","Failed loading") + f"{repo_metadata_cache_path}\n"
+                            FreeCAD.Console.PrintLog(
+                                f"Failed loading {repo_metadata_cache_path}\n"
                             )
                             pass
                     self.addon_repo.emit(repo)
@@ -326,6 +334,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
         self.done.emit()
 
     def check_workbench(self, wb):
+        gitpython_warning = False
         if not have_git or NOGIT:
             return
         clonedir = self.moddir + os.sep + wb.name
@@ -344,8 +353,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                         FreeCAD.Console.PrintWarning(
                             translate(
                                 "AddonsInstaller",
-                                "Outdated GitPython detected, "
-                                "consider upgrading with pip.",
+                                "Outdated GitPython detected, consider upgrading with pip.",
                             )
                             + "\n"
                         )
@@ -362,10 +370,9 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                 FreeCAD.Console.PrintWarning(
                     "AddonManager: "
                     + translate(
-                        "AddonsInstaller", "Unable to fetch git updates for workbench"
+                        "AddonsInstaller",
+                        f"Unable to fetch git updates for workbench {wb.name}",
                     )
-                    + " "
-                    + wb.name
                 )
             else:
                 try:
@@ -380,8 +387,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                     self.update_status.emit(wb)
                 except Exception:
                     FreeCAD.Console.PrintWarning(
-                        "AddonManager - " + wb.name + " git status"
-                        " fatal: this operation must be run in a work tree \n"
+                        translate("AddonsInstaller", "git pull failed for {wb.name}")
                     )
 
     def check_package(self, package: AddonManagerRepo) -> None:
@@ -415,8 +421,11 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                 self.update_status.emit(package)
             except Exception as e:
                 FreeCAD.Console.PrintWarning(
-                    translate("AddonsInstaller", "Failed to read metadata from")
-                    + f" {installed_metadata_file}"
+                    translate(
+                        "AddonsInstaller",
+                        f"Failed to read metadata from {installed_metadata_file}",
+                    )
+                    + "\n"
                 )
 
     def check_macro(self, macro_wrapper: AddonManagerRepo) -> None:
@@ -434,7 +443,11 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                 macro_wrapper.macro.fill_details_from_wiki(url)
         except Exception:
             FreeCAD.Console.PrintWarning(
-                f"Failed to fetch code for macro '{macro_wrapper.macro.name}'\n"
+                translate(
+                    "AddonsInstaller",
+                    f"Failed to fetch code for macro '{macro_wrapper.macro.name}'",
+                )
+                + "\n"
             )
             return
 
@@ -523,16 +536,12 @@ class FillMacroListWorker(QtCore.QThread):
         """
 
         if not have_git or NOGIT:
-            self.status_message_signal.emit(
-                "GitPython not installed! Cannot retrieve macros from Git"
+            message = translate(
+                "AddonsInstaller",
+                "Failed to execute Git Python command: check installation of GitPython and/or git",
             )
-            FreeCAD.Console.PrintWarning(
-                translate(
-                    "AddonsInstaller",
-                    "GitPython not installed! Cannot retrieve macros from git",
-                )
-                + "\n"
-            )
+            self.status_message_signal.emit(message)
+            FreeCAD.Console.PrintWarning(message + "\n")
             return
 
         try:
@@ -546,11 +555,9 @@ class FillMacroListWorker(QtCore.QThread):
         except Exception as e:
             FreeCAD.Console.PrintWarning(
                 translate(
-                    "AddonsInstaller",
-                    "An error occurred fetching macros from GitHub:\n"
-                    f"{e}"
+                    "AddonsInstaller", "An error occurred fetching macros from GitHub"
                 )
-                + "\n"
+                + f":\n{e}\n"
             )
         n_files = 0
         for _, _, filenames in os.walk(self.repo_dir):
@@ -649,12 +656,10 @@ class ShowWorker(QtCore.QThread):
             # extract readme from html via regex
             readmeurl = utils.get_readme_html_url(self.repo)
             if not readmeurl:
-                FreeCAD.Console.PrintWarning(f"Debug: README not found for {url}\n")
+                FreeCAD.Console.PrintLog(f"README not found for {url}\n")
             u = utils.urlopen(readmeurl)
             if not u:
-                FreeCAD.Console.PrintWarning(
-                    f"Debug: README not found at {readmeurl}\n"
-                )
+                FreeCAD.Console.PrintLog(f"Debug: README not found at {readmeurl}\n")
             u = utils.urlopen(readmeurl)
             if u:
                 p = u.read()
@@ -665,14 +670,12 @@ class ShowWorker(QtCore.QThread):
                 if readme:
                     desc = readme[0]
             else:
-                FreeCAD.Console.PrintWarning(
-                    f"Debug: README not found at {readmeurl}\n"
-                )
+                FreeCAD.Console.PrintLog(f"Debug: README not found at {readmeurl}\n")
         else:
             # convert raw markdown using lib
             readmeurl = utils.get_readme_url(self.repo)
             if not readmeurl:
-                FreeCAD.Console.PrintWarning(f"Debug: README not found for {url}\n")
+                FreeCAD.Console.PrintLog(f"Debug: README not found for {url}\n")
             u = utils.urlopen(readmeurl)
             if u:
                 p = u.read()
@@ -695,7 +698,7 @@ class ShowWorker(QtCore.QThread):
                     message += "<br/></div><hr/><pre>" + desc + "</pre>"
                     desc = message
             else:
-                FreeCAD.Console.PrintWarning("Debug: README not found at {readmeurl}\n")
+                FreeCAD.Console.PrintLog("Debug: README not found at {readmeurl}\n")
             if desc == "":
                 # fall back to the description text
                 u = utils.urlopen(url)
@@ -966,7 +969,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             return
 
         if not have_git or NOGIT:
-            FreeCAD.Console.PrintWarning(
+            FreeCAD.Console.PrintLog(
                 translate(
                     "AddonsInstaller",
                     "GitPython not found. Using ZIP file download instead.",
@@ -1000,7 +1003,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
     def run_git(self, clonedir: str) -> None:
 
         if NOGIT or not have_git:
-            FreeCAD.Console.PrintWarning(
+            FreeCAD.Console.PrintLog(
                 translate(
                     "AddonsInstaller",
                     "No Git Python installed, skipping git operations",
@@ -1020,7 +1023,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "User requested updating a Python 2 workbench on "
+                    "You are installing a Python 2 workbench on "
                     "a system running Python 3 - ",
                 )
                 + str(self.repo.name)
@@ -1036,7 +1039,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 with bare_repo.config_writer() as cw:
                     cw.set("core", "bare", False)
             except AttributeError:
-                FreeCAD.Console.PrintWarning(
+                FreeCAD.Console.PrintLog(
                     translate(
                         "AddonsInstaller",
                         "Outdated GitPython detected, consider " "upgrading with pip.",
@@ -1082,8 +1085,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "AddonsInstaller",
-                        "User requested installing a Python 2 "
-                        "workbench on a system running Python 3 - ",
+                        "You are installing a Python 2 workbench on "
+                        "a system running Python 3 - ",
                     )
                     + str(self.repo.name)
                     + "\n"
@@ -1429,7 +1432,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                 break
 
         if aborted:
-            FreeCAD.Console.PrintMessage("Metadata update cancelled\n")
+            FreeCAD.Console.PrintLog("Metadata update cancelled\n")
             return
 
         # Update and serialize the updated index, overwriting whatever was
@@ -1573,7 +1576,9 @@ class UpdateSingleWorker(QtCore.QThread):
         install_succeeded, errors = repo.macro.install(cache_path)
 
         if install_succeeded:
-            install_succeeded, errors = repo.macro.install(FreeCAD.getUserMacroDir(True))
+            install_succeeded, errors = repo.macro.install(
+                FreeCAD.getUserMacroDir(True)
+            )
 
         if install_succeeded:
             self.success.emit(repo)
