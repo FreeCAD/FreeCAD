@@ -943,16 +943,20 @@ class Snapper:
         """Return a list of angle snap locations."""
         snaps = []
         if self.isEnabled("Angle"):
+            place = App.Placement()
+            place.Base = shape.Curve.Center
+            place.Rotation = App.Rotation(App.Vector(1, 0, 0),
+                                          App.Vector(0, 1, 0),
+                                          shape.Curve.Axis,
+                                          'ZXY')
             rad = shape.Curve.Radius
-            pos = shape.Curve.Center
-            for i in (0, 30, 45, 60, 90,
-                      120, 135, 150, 180,
-                      210, 225, 240, 270,
-                      300, 315, 330):
-                ang = math.radians(i)
-                cur = App.Vector(math.sin(ang) * rad + pos.x,
-                                 math.cos(ang) * rad + pos.y,
-                                 pos.z)
+            for deg in (0, 30, 45, 60,
+                        90,  120, 135, 150,
+                        180, 210, 225, 240,
+                        270, 300, 315, 330):
+                ang = math.radians(deg)
+                cur = App.Vector(math.sin(ang) * rad, math.cos(ang) * rad, 0)
+                cur = place.multVec(cur)
                 snaps.append([cur, 'angle', self.toWP(cur)])
         return snaps
 
@@ -961,21 +965,26 @@ class Snapper:
         """Return a list of center snap locations."""
         snaps = []
         if self.isEnabled("Center"):
-            pos = shape.Curve.Center
-            c = self.toWP(pos)
+            cen = shape.Curve.Center
+            cen_wp = self.toWP(cen)
             if hasattr(shape.Curve, "Radius"):
+                place = App.Placement()
+                place.Base = cen
+                place.Rotation = App.Rotation(App.Vector(1, 0, 0),
+                                              App.Vector(0, 1, 0),
+                                              shape.Curve.Axis,
+                                              'ZXY')
                 rad = shape.Curve.Radius
-                for i in (15, 37.5, 52.5, 75,
-                          105, 127.5, 142.5, 165,
-                          195, 217.5, 232.5, 255,
-                          285, 307.5, 322.5, 345):
-                    ang = math.radians(i)
-                    cur = App.Vector(math.sin(ang) * rad + pos.x,
-                                     math.cos(ang) * rad + pos.y,
-                                     pos.z)
-                    snaps.append([cur, 'center', c])
+                for deg in (15, 37.5, 52.5, 75,
+                            105, 127.5, 142.5, 165,
+                            195, 217.5, 232.5, 255,
+                            285, 307.5, 322.5, 345):
+                    ang = math.radians(deg)
+                    cur = App.Vector(math.sin(ang) * rad, math.cos(ang) * rad, 0)
+                    cur = place.multVec(cur)
+                    snaps.append([cur, 'center', cen_wp])
             else:
-                snaps.append([c, 'center', c])
+                snaps.append([cen, 'center', cen_wp])
         return snaps
 
 
