@@ -206,9 +206,13 @@ class PackageDetails(QWidget):
             self.ui.buttonUpdate.hide()
             self.ui.buttonCheckForUpdate.hide()
 
-        warningColorString = "rgb(200,0,0)"
-        if "dark" in QApplication.instance().styleSheet().lower():
-            warningColorString = "rgb(255,50,50)"
+        warningColorString = "rgb(255,0,0)"
+        if hasattr(QApplication.instance(),"styleSheet"):
+            # Qt 5.9 doesn't give a QApplication instance, so can't give the stylesheet info
+            if "dark" in QApplication.instance().styleSheet().lower():
+                warningColorString = "rgb(255,50,50)"
+            else:
+                warningColorString = "rgb(200,0,0)"
 
         if repo.obsolete:
             self.ui.labelWarningInfo.show()

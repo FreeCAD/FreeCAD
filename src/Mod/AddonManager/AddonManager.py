@@ -489,7 +489,8 @@ class CommandAddonManager:
     def cache_macro(self, macro: AddonManagerRepo):
         if not hasattr(self, "macro_cache"):
             self.macro_cache = []
-        self.macro_cache.append(macro.macro.to_cache())
+        if macro.macro is not None:
+            self.macro_cache.append(macro.macro.to_cache())
 
     def write_macro_cache(self):
         macro_cache_path = self.get_cache_file_name("macro_cache.json")
