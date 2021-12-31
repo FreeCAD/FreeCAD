@@ -465,7 +465,7 @@ class CommandPathSanity:
             )
 
         try:
-            result = subprocess.Popen(["asciidoctor", reportraw, "-o", reporthtml])
+            result = subprocess.run(["asciidoctor", reportraw, "-o", reporthtml])
             if str(result) == "32512":
                 msg = "asciidoctor not found. html cannot be generated."
                 QtGui.QMessageBox.information(None, "Path Sanity", msg)
