@@ -79,11 +79,11 @@ class CommandAddonManager:
         "update_worker",
         "check_worker",
         "show_worker",
-        "cache_macros_worker",
         "showmacro_worker",
         "macro_worker",
         "install_worker",
         "update_metadata_cache_worker",
+        "load_macro_metadata_worker",
         "update_all_worker",
         "update_check_single_worker",
     ]
@@ -385,7 +385,7 @@ class CommandAddonManager:
             self.activate_table_widgets,
             self.populate_macros,
             self.update_metadata_cache,
-            self.cache_macros,
+            self.load_macro_metadata,
             self.check_updates,
         ]
         self.current_progress_region = 0
@@ -466,32 +466,36 @@ class CommandAddonManager:
         self.do_next_startup_phase()
 
     def populate_macros(self) -> None:
-        if self.update_cache or not os.path.isfile(
-            self.get_cache_file_name("macro_cache.json")
-        ):
+        macro_cache_file = self.get_cache_file_name("macro_cache.json")
+        cache_is_bad = True
+        if os.path.isfile(macro_cache_file):
+            size = os.path.getsize(macro_cache_file)
+            if size > 1000:  # Make sure there is actually data in there
+                cache_is_bad = False
+        if self.update_cache or cache_is_bad:
             self.macro_worker = FillMacroListWorker(self.get_cache_file_name("Macros"))
             self.macro_worker.status_message_signal.connect(self.show_information)
             self.macro_worker.progress_made.connect(self.update_progress_bar)
             self.macro_worker.add_macro_signal.connect(self.add_addon_repo)
-            self.macro_worker.finished.connect(
-                self.do_next_startup_phase
-            )  # Link to step 3
+            self.macro_worker.finished.connect(self.do_next_startup_phase)
             self.macro_worker.start()
         else:
             self.macro_worker = LoadMacrosFromCacheWorker(
                 self.get_cache_file_name("macro_cache.json")
             )
             self.macro_worker.add_macro_signal.connect(self.add_addon_repo)
-            self.macro_worker.finished.connect(
-                self.do_next_startup_phase
-            )  # Link to step 3
+            self.macro_worker.finished.connect(self.do_next_startup_phase)
             self.macro_worker.start()
 
-    def cache_macro(self, macro: AddonManagerRepo):
+    def cache_macro(self, repo: AddonManagerRepo):
         if not hasattr(self, "macro_cache"):
             self.macro_cache = []
-        if macro.macro is not None:
-            self.macro_cache.append(macro.macro.to_cache())
+        if repo.macro is not None:
+            self.macro_cache.append(repo.macro.to_cache())
+        else:
+            FreeCAD.Console.PrintError(
+                f"Addon Manager: Internal error, cache_macro called on non-macro {repo.name}\n"
+            )
 
     def write_macro_cache(self):
         macro_cache_path = self.get_cache_file_name("macro_cache.json")
@@ -528,18 +532,23 @@ class CommandAddonManager:
         """Called when the named package has either new metadata or a new icon (or both)"""
 
         with self.lock:
-            self.cache_package(repo)
             repo.icon = self.get_icon(repo, update=True)
             self.item_model.reload_item(repo)
 
-    def cache_macros(self) -> None:
+    def load_macro_metadata(self) -> None:
         if self.update_cache:
-            self.cache_macros_worker = CacheMacroCode(self.item_model.repos)
-            self.cache_macros_worker.status_message.connect(self.show_information)
-            self.cache_macros_worker.update_macro.connect(self.on_package_updated)
-            self.cache_macros_worker.progress_made.connect(self.update_progress_bar)
-            self.cache_macros_worker.finished.connect(self.do_next_startup_phase)
-            self.cache_macros_worker.start()
+            self.load_macro_metadata_worker = CacheMacroCode(self.item_model.repos)
+            self.load_macro_metadata_worker.status_message.connect(
+                self.show_information
+            )
+            self.load_macro_metadata_worker.update_macro.connect(
+                self.on_package_updated
+            )
+            self.load_macro_metadata_worker.progress_made.connect(
+                self.update_progress_bar
+            )
+            self.load_macro_metadata_worker.finished.connect(self.do_next_startup_phase)
+            self.load_macro_metadata_worker.start()
         else:
             self.do_next_startup_phase()
 

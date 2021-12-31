@@ -286,7 +286,6 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
 
 class LoadMacrosFromCacheWorker(QtCore.QThread):
     add_macro_signal = QtCore.Signal(object)
-    done = QtCore.Signal()
 
     def __init__(self, cache_file: str):
         QtCore.QThread.__init__(self)
@@ -301,7 +300,6 @@ class LoadMacrosFromCacheWorker(QtCore.QThread):
                     return
                 new_macro = Macro.from_cache(item)
                 self.add_macro_signal.emit(AddonManagerRepo.from_macro(new_macro))
-        self.done.emit()
 
 
 class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):

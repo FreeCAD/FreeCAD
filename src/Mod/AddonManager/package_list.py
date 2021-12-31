@@ -367,6 +367,8 @@ class PackageListItemDelegate(QStyledItemDelegate):
                     self.widget.ui.labelMaintainer.setText(
                         caption + ": " + repo.macro.author
                     )
+                else:
+                    self.widget.ui.labelMaintainer.setText("")
         else:
             self.widget.ui.labelDescription.setText("")
             self.widget.ui.labelVersion.setText("")
