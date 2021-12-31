@@ -243,7 +243,6 @@ class CommandAddonManager:
         )
         self.dialog.buttonClose.clicked.connect(self.dialog.reject)
         self.dialog.buttonUpdateCache.clicked.connect(self.on_buttonUpdateCache_clicked)
-        self.dialog.buttonShowDetails.clicked.connect(self.toggle_details)
         self.dialog.buttonPauseUpdate.clicked.connect(self.stop_update)
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
@@ -871,7 +870,6 @@ class CommandAddonManager:
         self.dialog.labelStatusInfo.hide()
         self.dialog.progressBar.hide()
         self.dialog.buttonPauseUpdate.hide()
-        self.dialog.buttonShowDetails.hide()
         self.dialog.labelUpdateInProgress.hide()
         self.packageList.ui.lineEditFilter.setFocus()
 
@@ -879,9 +877,7 @@ class CommandAddonManager:
         if self.dialog.progressBar.isHidden():
             self.dialog.progressBar.show()
             self.dialog.buttonPauseUpdate.show()
-            self.dialog.buttonShowDetails.show()
-            self.dialog.labelStatusInfo.hide()
-            self.dialog.buttonShowDetails.setArrowType(QtCore.Qt.RightArrow)
+            self.dialog.labelStatusInfo.show()
             self.dialog.labelUpdateInProgress.show()
 
     def update_progress_bar(self, current_value: int, max_value: int) -> None:
@@ -901,14 +897,6 @@ class CommandAddonManager:
             value * 10
         )  # Out of 1000 segments, so it moves sort of smoothly
         self.dialog.progressBar.repaint()
-
-    def toggle_details(self) -> None:
-        if self.dialog.labelStatusInfo.isHidden():
-            self.dialog.labelStatusInfo.show()
-            self.dialog.buttonShowDetails.setArrowType(QtCore.Qt.DownArrow)
-        else:
-            self.dialog.labelStatusInfo.hide()
-            self.dialog.buttonShowDetails.setArrowType(QtCore.Qt.RightArrow)
 
     def stop_update(self) -> None:
         self.cleanup_workers()
