@@ -359,14 +359,14 @@ class PackageListItemDelegate(QStyledItemDelegate):
                         )
                 self.widget.ui.labelMaintainer.setText(maintainers_string)
         elif repo.macro and repo.macro.parsed:
-            if repo.macro.comment:
-                self.widget.ui.labelDescription.setText(repo.macro.comment)
-            elif repo.macro.desc:
-                comment, _, _ = repo.desc.partition("<br")
-                self.widget.ui.labelDescription.setText(comment)
+            self.widget.ui.labelDescription.setText(repo.macro.comment)
             self.widget.ui.labelVersion.setText(repo.macro.version)
             if self.displayStyle == ListDisplayStyle.EXPANDED:
-                self.widget.ui.labelMaintainer.setText(repo.macro.author)
+                if repo.macro.author:
+                    caption = translate("AddonsInstaller", "Author")
+                    self.widget.ui.labelMaintainer.setText(
+                        caption + ": " + repo.macro.author
+                    )
         else:
             self.widget.ui.labelDescription.setText("")
             self.widget.ui.labelVersion.setText("")
@@ -541,6 +541,12 @@ class PackageListFilter(QSortFilterProxyModel):
                 if re.match(name).hasMatch():
                     return True
                 if re.match(desc).hasMatch():
+                    return True
+                if (
+                    data.macro
+                    and data.macro.comment
+                    and re.match(data.macro.comment).hasMatch()
+                ):
                     return True
                 return False
             else:

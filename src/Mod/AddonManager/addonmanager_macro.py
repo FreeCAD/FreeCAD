@@ -26,6 +26,7 @@ import re
 import io
 import codecs
 import shutil
+import time
 from typing import Dict, Tuple, List
 
 import FreeCAD
@@ -64,6 +65,7 @@ class Macro(object):
         self.author = ""
         self.other_files = []
         self.parsed = False
+        self.parse_time = 0.0
 
     def __eq__(self, other):
         return self.filename == other.filename
@@ -108,23 +110,29 @@ class Macro(object):
         # __Version__
         # __Files__
         # __Author__
+        start = time.perf_counter()
+        max_lines_to_search = 50
+        line_counter = 0
         number_of_fields = 5
-        re_comment = re.compile(
-            r"^__Comment__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE
-        )
-        re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE)
-        re_version = re.compile(
-            r"^__Version__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE
-        )
-        re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE)
-        re_author = re.compile(r"^__Author__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE)
+        ic = re.IGNORECASE  # Shorten the line for Black
+        re_comment = re.compile(r"^__Comment__\s*=\s*(['\"])(.*)\1", flags=ic)
+        re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1", flags=ic)
+        re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1", flags=ic)
+        re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1", flags=ic)
+        re_author = re.compile(r"^__Author__\s*=\s*(['\"])(.*)\1", flags=ic)
 
         f = io.StringIO(code)
-        while f:
+        while f and line_counter < max_lines_to_search:
             line = f.readline()
+            line_counter += 1
+            if not line.startswith(
+                "__"
+            ):  # Speed things up a bit... this comparison is very cheap
+                continue
             match = re.match(re_comment, line)
             if match:
                 self.comment = match.group(2)
+                self.comment = re.sub("<.*?>", "", self.comment)  # Strip any HTML tags
                 number_of_fields -= 1
             match = re.match(re_author, line)
             if match:
@@ -144,7 +152,13 @@ class Macro(object):
                 number_of_fields -= 1
             if number_of_fields <= 0:
                 break
+
+        # Truncate long comments to speed up searches, and clean up display
+        if len(self.comment) > 512:
+            self.comment = self.comment[:511] + "…"
         self.parsed = True
+        end = time.perf_counter()
+        self.parse_time = end - start
 
     def fill_details_from_wiki(self, url):
         code = ""
@@ -220,6 +234,8 @@ class Macro(object):
             )
             desc = "No description available"
         self.desc = desc
+        self.comment, _, _ = desc.partition("<br")  # Up to the first line break
+        self.comment = re.sub("<.*?>", "", self.comment)  # Strip any tags
         self.url = url
         if isinstance(code, list):
             flat_code = ""
