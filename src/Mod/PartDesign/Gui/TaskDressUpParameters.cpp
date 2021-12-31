@@ -46,6 +46,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Tools.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
@@ -166,6 +167,10 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
             hideObject();
             DressUpView->highlightReferences(true);
             onButtonRefAdd(true);
+
+            if (deleteAction) {
+                deleteAction->setEnabled(widget->count() > 1);
+            }
         }
     }
 }
@@ -308,28 +313,26 @@ bool TaskDressUpParameters::KeyEvent(QEvent *e)
     // in case another instance takes key events, accept the overridden key event
     if (e && e->type() == QEvent::ShortcutOverride) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
-        if (kevent->modifiers() == Qt::NoModifier) {
-            if (deleteAction && kevent->key() == Qt::Key_Delete) {
-                kevent->accept();
-                return true;
-            }
-            if (addAllEdgesAction && kevent->key() == Qt::Key_A && kevent->modifiers() == (Qt::ControlModifier | Qt::ShiftModifier)){
-                kevent->accept();
-                return true;
-            }
+        if (deleteAction && Gui::QtTools::matches(kevent, deleteAction->shortcut())) {
+            kevent->accept();
+            return true;
+        }
+        if (addAllEdgesAction && Gui::QtTools::matches(kevent, addAllEdgesAction->shortcut())) {
+            kevent->accept();
+            return true;
         }
     }
     // if we have a Del key, trigger the deleteAction
     else if (e && e->type() == QEvent::KeyPress) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
-        if (kevent->key() == Qt::Key_Delete) {
-            if (deleteAction && deleteAction->isEnabled())
-                deleteAction->trigger();
+        if (deleteAction && deleteAction->isEnabled() &&
+            Gui::QtTools::matches(kevent, deleteAction->shortcut())) {
+            deleteAction->trigger();
             return true;
         }
-        if (kevent->key() == Qt::Key_A && kevent->modifiers() == (Qt::ControlModifier | Qt::ShiftModifier)) {
-            if (addAllEdgesAction && addAllEdgesAction->isEnabled())
-                addAllEdgesAction->trigger();
+        if (addAllEdgesAction && addAllEdgesAction->isEnabled() &&
+            Gui::QtTools::matches(kevent, addAllEdgesAction->shortcut())) {
+            addAllEdgesAction->trigger();
             return true;
         }
     }
