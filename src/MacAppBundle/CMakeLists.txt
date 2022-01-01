@@ -32,10 +32,14 @@ if(HOMEBREW_PREFIX)
         file(READ ${PTH_FILE} ADDITIONAL_DIR)
 
 	string(STRIP "${ADDITIONAL_DIR}" ADDITIONAL_DIR)
-        string(REGEX REPLACE "^${HOMEBREW_PREFIX}/Cellar/([A-Za-z0-9_]+).*$" "\\1" LIB_NAME ${ADDITIONAL_DIR})
-        string(REGEX REPLACE ".*libexec(.*)/site-packages" "libexec/${LIB_NAME}\\1" NEW_SITE_DIR ${ADDITIONAL_DIR})
+        string(FIND "${ADDITIONAL_DIR}" "${HOMEBREW_PREFIX}/Cellar" POSITION)
+        string(LENGTH "${ADDITIONAL_DIR}" DIR_LENGTH)
+        string(SUBSTRING "${ADDITIONAL_DIR}" ${POSITION} ${DIR_LENGTH}-${POSITION} DIR_TAIL)
+        string(REGEX MATCHALL "^([/A-Za-z0-9_.@-]+)" CLEAR_TAIL ${DIR_TAIL})
+        string(REGEX REPLACE "^${HOMEBREW_PREFIX}/Cellar/([A-Za-z0-9_]+).*$" "\\1" LIB_NAME ${CLEAR_TAIL})
+        string(REGEX REPLACE ".*libexec(.*)/site-packages" "libexec/${LIB_NAME}\\1" NEW_SITE_DIR ${CLEAR_TAIL})
 
-        install(DIRECTORY ${ADDITIONAL_DIR} DESTINATION ${CMAKE_INSTALL_PREFIX}/${NEW_SITE_DIR})
+        install(DIRECTORY ${CLEAR_TAIL} DESTINATION ${CMAKE_INSTALL_PREFIX}/${NEW_SITE_DIR})
 
         #update the paths of the .pth files copied into the bundle
         get_filename_component(PTH_FILENAME ${PTH_FILE} NAME)
@@ -120,7 +124,7 @@ find_package(PkgConfig)
 pkg_check_modules(ICU icu-uc)
 
 execute_process(
-       COMMAND find /usr/local/Cellar/nglib -name MacOS
+       COMMAND find -L /usr/local/Cellar/nglib -name MacOS
        OUTPUT_VARIABLE CONFIG_NGLIB)
 
 install(CODE 
