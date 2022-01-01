@@ -127,9 +127,7 @@ def urlopen(url: str) -> Union[None, HTTPResponse]:
         u = urllib.request.urlopen(req, timeout=timeout)
 
     except URLError as e:
-        FreeCAD.Console.PrintError(
-            translate("AddonsInstaller", f"Error loading {url}") + ":\n {e.reason}\n"
-        )
+        FreeCAD.Console.PrintLog(f"Error loading {url}:\n {e.reason}\n")
         return None
     except Exception:
         return None
