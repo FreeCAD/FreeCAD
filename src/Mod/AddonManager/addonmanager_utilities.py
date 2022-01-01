@@ -21,23 +21,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-import codecs
 import os
 import re
-import shutil
-import sys
 import ctypes
-import tempfile
 import ssl
 from typing import Union
 
 import urllib
-from urllib.request import Request
 from urllib.error import URLError
 from urllib.parse import urlparse
 from http.client import HTTPResponse
 
-from PySide2 import QtGui, QtCore, QtWidgets
+from PySide2 import QtCore, QtWidgets
 
 import FreeCAD
 import FreeCADGui

@@ -66,7 +66,6 @@ class Macro(object):
         self.author = ""
         self.other_files = []
         self.parsed = False
-        self.parse_time = 0.0
 
     def __eq__(self, other):
         return self.filename == other.filename

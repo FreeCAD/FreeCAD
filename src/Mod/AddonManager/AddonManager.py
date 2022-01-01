@@ -29,8 +29,7 @@ import shutil
 import stat
 import tempfile
 from datetime import date, timedelta
-from typing import Dict, Union
-from enum import Enum
+from typing import Dict
 
 from PySide2 import QtGui, QtCore, QtWidgets
 import FreeCADGui
