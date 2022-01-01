@@ -299,7 +299,9 @@ class LoadMacrosFromCacheWorker(QtCore.QThread):
                 if QtCore.QThread.currentThread().isInterruptionRequested():
                     return
                 new_macro = Macro.from_cache(item)
-                self.add_macro_signal.emit(AddonManagerRepo.from_macro(new_macro))
+                repo = AddonManagerRepo.from_macro(new_macro)
+                utils.update_macro_installation_details(repo)
+                self.add_macro_signal.emit(repo)
 
 
 class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
@@ -588,6 +590,7 @@ class FillMacroListWorker(QtCore.QThread):
                     macro.src_filename = os.path.join(dirpath, filename)
                     repo = AddonManagerRepo.from_macro(macro)
                     repo.url = "https://github.com/FreeCAD/FreeCAD-macros.git"
+                    utils.update_macro_installation_details(repo)
                     self.add_macro_signal.emit(repo)
 
     def retrieve_macros_from_wiki(self):
@@ -633,6 +636,7 @@ class FillMacroListWorker(QtCore.QThread):
                 macro.on_wiki = True
                 repo = AddonManagerRepo.from_macro(macro)
                 repo.url = "https://wiki.freecad.org/Macros_recipes"
+                utils.update_macro_installation_details(repo)
                 self.add_macro_signal.emit(repo)
 
 
@@ -1053,17 +1057,8 @@ class GetMacroDetailsWorker(QtCore.QThread):
             mac = mac.replace("+", "%2B")
             url = "https://wiki.freecad.org/Macro_" + mac
             self.macro.fill_details_from_wiki(url)
-        if self.macro.is_installed():
-            already_installed_msg = (
-                '<strong style="background: #00B629;">'
-                + translate("AddonsInstaller", "This macro is already installed.")
-                + "</strong><br>"
-            )
-        else:
-            already_installed_msg = ""
         message = (
-            already_installed_msg
-            + "<h1>"
+            "<h1>"
             + self.macro.name
             + "</h1>"
             + self.macro.desc
@@ -1719,6 +1714,7 @@ class UpdateSingleWorker(QtCore.QThread):
             install_succeeded, errors = repo.macro.install(
                 FreeCAD.getUserMacroDir(True)
             )
+            utils.update_macro_installation_details(repo)
 
         if install_succeeded:
             self.success.emit(repo)

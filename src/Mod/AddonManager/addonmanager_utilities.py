@@ -28,6 +28,7 @@ import ssl
 from typing import Union
 
 import urllib
+from urllib.request import Request
 from urllib.error import URLError
 from urllib.parse import urlparse
 from http.client import HTTPResponse
@@ -294,14 +295,75 @@ def fix_relative_links(text, base_url):
 
 
 def warning_color_string() -> str:
+    """A shade of red, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
+
     warningColorString = "rgb(255,0,0)"
     if hasattr(QtWidgets.QApplication.instance(), "styleSheet"):
         # Qt 5.9 doesn't give a QApplication instance, so can't give the stylesheet info
         if "dark" in QtWidgets.QApplication.instance().styleSheet().lower():
-            warningColorString = "rgb(255,50,50)"
+            warningColorString = "rgb(255,105,97)"
         else:
-            warningColorString = "rgb(200,0,0)"
+            warningColorString = "rgb(215,0,21)"
     return warningColorString
+
+
+def bright_color_string() -> str:
+    """A shade of green, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
+
+    brightColorString = "rgb(0,255,0)"
+    if hasattr(QtWidgets.QApplication.instance(), "styleSheet"):
+        # Qt 5.9 doesn't give a QApplication instance, so can't give the stylesheet info
+        if "dark" in QtWidgets.QApplication.instance().styleSheet().lower():
+            brightColorString = "rgb(48,219,91)"
+        else:
+            brightColorString = "rgb(36,138,61)"
+    return brightColorString
+
+
+def attention_color_string() -> str:
+    """A shade of orange, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
+
+    attentionColorString = "rgb(255,149,0)"
+    if hasattr(QtWidgets.QApplication.instance(), "styleSheet"):
+        # Qt 5.9 doesn't give a QApplication instance, so can't give the stylesheet info
+        if "dark" in QtWidgets.QApplication.instance().styleSheet().lower():
+            attentionColorString = "rgb(255,179,64)"
+        else:
+            attentionColorString = "rgb(255,149,0)"
+    return attentionColorString
+
+
+def get_macro_version_from_file(filename: str) -> str:
+    re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE)
+    with open(filename, "r", errors="ignore") as f:
+        line_counter = 0
+        max_lines_to_scan = 50
+        while line_counter < max_lines_to_scan:
+            line_counter += 1
+            line = f.readline()
+            if line.startswith("__"):
+                match = re.match(re_version, line)
+                if match:
+                    return match.group(2)
+    return ""
+
+
+def update_macro_installation_details(repo) -> None:
+    if repo is None or not hasattr(repo, "macro") or repo.macro is None:
+        FreeCAD.Console.PrintLog(f"Requested macro details for non-macro object\n")
+        return
+    test_file_one = os.path.join(FreeCAD.getUserMacroDir(True), repo.macro.filename)
+    test_file_two = os.path.join(
+        FreeCAD.getUserMacroDir(True), "Macro_" + repo.macro.filename
+    )
+    if os.path.exists(test_file_one):
+        repo.updated_timestamp = os.path.getmtime(test_file_one)
+        repo.installed_version = get_macro_version_from_file(test_file_one)
+    elif os.path.exists(test_file_two):
+        repo.updated_timestamp = os.path.getmtime(test_file_two)
+        repo.installed_version = get_macro_version_from_file(test_file_two)
+    else:
+        return
 
 
 #  @}

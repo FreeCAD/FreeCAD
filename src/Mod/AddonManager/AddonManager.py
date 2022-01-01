@@ -755,6 +755,8 @@ class CommandAddonManager:
                 real_install_succeeded, errors = macro.install(self.macro_repo_dir)
                 if not real_install_succeeded:
                     failed = True
+                else:
+                    utils.update_macro_installation_details(repo)
 
             if not failed:
                 message = translate(
