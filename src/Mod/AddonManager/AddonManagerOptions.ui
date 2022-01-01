@@ -78,6 +78,38 @@ installed addons will be checked for available updates
     </layout>
    </item>
    <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhidepy2">
+     <property name="text">
+      <string>Hide Addons marked Python 2 Only</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <string>HidePy2</string>
+     </property>
+     <property name="prefPath" stdset="0">
+      <string>Addons</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Gui::PrefCheckBox" name="guiprefcheckboxhideobsolete">
+     <property name="text">
+      <string>Hide Addons marked Obsolete</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <string>HideObsolete</string>
+     </property>
+     <property name="prefPath" stdset="0">
+      <string>Addons</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Custom repositories (one per line):</string>
@@ -128,9 +160,9 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
         <property name="text">
          <string>No proxy</string>
         </property>
-		<property name="checked">
-			<bool>true</bool>
-		</property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>NoProxyCheck</cstring>
         </property>

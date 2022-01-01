@@ -203,8 +203,8 @@ def GeneratePackageIcon(dir:str, subdirectory:str, workbench_metadata:FreeCAD.Me
         return
     absolute_filename = os.path.join(subdirectory, relative_filename)
     if wb_handle.Icon:
-        Wrn(f"Packaged workbench {workbench_metadata.Name} specified icon in class {workbench_metadata.Classname}:\n") 
-        Wrn(f" ... Overwriting that specification with package.xml data")
+        Log(f"Packaged workbench {workbench_metadata.Name} specified icon in class {workbench_metadata.Classname}:\n") 
+        Log(f" ... Overwriting that specification with package.xml data.\n")
     wb_handle.Icon = absolute_filename
 
 

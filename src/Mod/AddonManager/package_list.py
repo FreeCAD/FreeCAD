@@ -42,6 +42,7 @@ class ListDisplayStyle(IntEnum):
     COMPACT = 0
     EXPANDED = 1
 
+
 class StatusFilter(IntEnum):
     ANY = 0
     INSTALLED = 1
@@ -98,6 +99,9 @@ class PackageList(QWidget):
         else:
             self.ui.buttonCompactLayout.setChecked(True)
 
+        self.item_filter.setHidePy2(pref.GetBool("HidePy2", True))
+        self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", True))
+
     def on_listPackages_clicked(self, index: QModelIndex):
         source_selection = self.item_filter.mapToSource(index)
         selected_repo = self.item_model.repos[source_selection.row()]
@@ -129,7 +133,9 @@ class PackageList(QWidget):
         """filter name and description by the regex specified by text_filter"""
 
         if text_filter:
-            if hasattr(self.item_filter, "setFilterRegularExpression"): # Added in Qt 5.12
+            if hasattr(
+                self.item_filter, "setFilterRegularExpression"
+            ):  # Added in Qt 5.12
                 test_regex = QRegularExpression(text_filter)
             else:
                 test_regex = QRegExp(text_filter)
@@ -148,7 +154,7 @@ class PackageList(QWidget):
             self.ui.labelFilterValidity.show()
         else:
             self.ui.labelFilterValidity.hide()
-        if hasattr(self.item_filter, "setFilterRegularExpression"): # Added in Qt 5.12
+        if hasattr(self.item_filter, "setFilterRegularExpression"):  # Added in Qt 5.12
             self.item_filter.setFilterRegularExpression(text_filter)
         else:
             self.item_filter.setFilterRegExp(text_filter)
@@ -433,9 +439,7 @@ class PackageListItemDelegate(QStyledItemDelegate):
 
         return result
 
-    def paint(
-        self, painter: QPainter, option: QStyleOptionViewItem, _: QModelIndex
-    ):
+    def paint(self, painter: QPainter, option: QStyleOptionViewItem, _: QModelIndex):
         painter.save()
         self.widget.resize(option.rect.size())
         painter.translate(option.rect.topLeft())
@@ -449,8 +453,10 @@ class PackageListFilter(QSortFilterProxyModel):
     def __init__(self):
         super().__init__()
         self.package_type = 0  # Default to showing everything
-        self.status = 0 # Default to showing any
+        self.status = 0  # Default to showing any
         self.setSortCaseSensitivity(Qt.CaseInsensitive)
+        self.hide_obsolete = False
+        self.hide_py2 = False
 
     def setPackageFilter(
         self, type: int
@@ -462,6 +468,14 @@ class PackageListFilter(QSortFilterProxyModel):
         self, status: int
     ) -> None:  # 0=Any, 1=Installed, 2=Not installed, 3=Update available
         self.status = status
+        self.invalidateFilter()
+
+    def setHidePy2(self, hide_py2: bool) -> None:
+        self.hide_py2 = hide_py2
+        self.invalidateFilter()
+
+    def setHideObsolete(self, hide_obsolete: bool) -> None:
+        self.hide_obsolete = hide_obsolete
         self.invalidateFilter()
 
     def lessThan(self, left, right) -> bool:
@@ -493,9 +507,25 @@ class PackageListFilter(QSortFilterProxyModel):
             if data.update_status != AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
                 return False
 
+        # If it's not installed, check to see if it's Py2 only
+        if (
+            data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            and self.hide_py2
+            and data.python2
+        ):
+            return False
+
+        # If it's not installed, check to see if it's marked obsolete
+        if (
+            data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            and self.hide_obsolete
+            and data.obsolete
+        ):
+            return False
+
         name = data.display_name
         desc = data.description
-        if hasattr(self, "filterRegularExpression"): # Added in Qt 5.12
+        if hasattr(self, "filterRegularExpression"):  # Added in Qt 5.12
             re = self.filterRegularExpression()
             if re.isValid():
                 re.setPatternOptions(QRegularExpression.CaseInsensitiveOption)
@@ -634,13 +664,16 @@ class Ui_PackageList(object):
             StatusFilter.ANY, QCoreApplication.translate("AddonsInstaller", "Any", None)
         )
         self.comboStatus.setItemText(
-            StatusFilter.INSTALLED, QCoreApplication.translate("AddonsInstaller", "Installed", None)
+            StatusFilter.INSTALLED,
+            QCoreApplication.translate("AddonsInstaller", "Installed", None),
         )
         self.comboStatus.setItemText(
-            StatusFilter.NOT_INSTALLED, QCoreApplication.translate("AddonsInstaller", "Not installed", None)
+            StatusFilter.NOT_INSTALLED,
+            QCoreApplication.translate("AddonsInstaller", "Not installed", None),
         )
         self.comboStatus.setItemText(
-            StatusFilter.UPDATE_AVAILABLE, QCoreApplication.translate("AddonsInstaller", "Update available", None)
+            StatusFilter.UPDATE_AVAILABLE,
+            QCoreApplication.translate("AddonsInstaller", "Update available", None),
         )
         self.lineEditFilter.setPlaceholderText(
             QCoreApplication.translate("AddonsInstaller", "Filter", None)

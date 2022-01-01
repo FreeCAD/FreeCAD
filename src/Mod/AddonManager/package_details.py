@@ -62,7 +62,9 @@ class PackageDetails(QWidget):
         self.ui.buttonInstall.clicked.connect(lambda: self.install.emit(self.repo))
         self.ui.buttonUninstall.clicked.connect(lambda: self.uninstall.emit(self.repo))
         self.ui.buttonUpdate.clicked.connect(lambda: self.update.emit(self.repo))
-        self.ui.buttonCheckForUpdate.clicked.connect(lambda: self.check_for_update.emit(self.repo))
+        self.ui.buttonCheckForUpdate.clicked.connect(
+            lambda: self.check_for_update.emit(self.repo)
+        )
 
     def show_repo(self, repo: AddonManagerRepo, reload: bool = False) -> None:
 
@@ -151,7 +153,7 @@ class PackageDetails(QWidget):
                     + "."
                 )
             elif repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
-                
+
                 pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
                 autocheck = pref.GetBool("AutoCheck", False)
                 if autocheck:
@@ -160,9 +162,9 @@ class PackageDetails(QWidget):
                     )
                 else:
                     installed_version_string += (
-                        translate("AddonsInstaller", "Automatic update checks disabled") + "."
+                        translate("AddonsInstaller", "Automatic update checks disabled")
+                        + "."
                     )
-
 
             basedir = FreeCAD.getUserAppDataDir()
             moddir = os.path.join(basedir, "Mod", repo.name)
@@ -204,6 +206,33 @@ class PackageDetails(QWidget):
             self.ui.buttonUpdate.hide()
             self.ui.buttonCheckForUpdate.hide()
 
+        warningColorString = "rgb(255,0,0)"
+        if hasattr(QApplication.instance(),"styleSheet"):
+            # Qt 5.9 doesn't give a QApplication instance, so can't give the stylesheet info
+            if "dark" in QApplication.instance().styleSheet().lower():
+                warningColorString = "rgb(255,50,50)"
+            else:
+                warningColorString = "rgb(200,0,0)"
+
+        if repo.obsolete:
+            self.ui.labelWarningInfo.show()
+            self.ui.labelWarningInfo.setText(
+                "<h1>"
+                + translate("AddonsInstaller", "WARNING: This addon is obsolete")
+                + "</h1>"
+            )
+            self.ui.labelWarningInfo.setStyleSheet("color:" + warningColorString)
+        elif repo.python2:
+            self.ui.labelWarningInfo.show()
+            self.ui.labelWarningInfo.setText(
+                "<h1>"
+                + translate("AddonsInstaller", "WARNING: This addon is Python 2 Only")
+                + "</h1>"
+            )
+            self.ui.labelWarningInfo.setStyleSheet("color:" + warningColorString)
+        else:
+            self.ui.labelWarningInfo.hide()
+
     @classmethod
     def cache_path(self, repo: AddonManagerRepo) -> str:
         cache_path = FreeCAD.getUserCachePath()
@@ -230,15 +259,15 @@ class PackageDetails(QWidget):
                 or force
             ):
                 if force:
-                    FreeCAD.Console.PrintMessage(
+                    FreeCAD.Console.PrintLog(
                         f"Forced README cache update for {self.repo.name}\n"
                     )
                 elif download_interrupted:
-                    FreeCAD.Console.PrintMessage(
+                    FreeCAD.Console.PrintLog(
                         f"Restarting interrupted README download for {self.repo.name}\n"
                     )
                 else:
-                    FreeCAD.Console.PrintMessage(
+                    FreeCAD.Console.PrintLog(
                         f"Cache expired, downloading README for {self.repo.name} again\n"
                     )
                 os.remove(readme_cache_file)
@@ -386,6 +415,11 @@ class Ui_PackageDetails(object):
         self.labelPackageDetails.hide()
 
         self.verticalLayout_2.addWidget(self.labelPackageDetails)
+
+        self.labelWarningInfo = QLabel(PackageDetails)
+        self.labelWarningInfo.hide()
+
+        self.verticalLayout_2.addWidget(self.labelWarningInfo)
 
         self.textBrowserReadMe = QTextBrowser(PackageDetails)
         self.textBrowserReadMe.setObjectName("textBrowserReadMe")
