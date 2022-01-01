@@ -24,7 +24,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from inspect import indentsize
 import os
 import shutil
 import stat
@@ -155,6 +154,8 @@ class CommandAddonManager:
                     "DownloadMacros",
                     warning_dialog.checkBoxDownloadMacroMetadata.isChecked(),
                 )
+                if warning_dialog.checkBoxDownloadMacroMetadata.isChecked():
+                    self.trigger_recache = True
                 selected_proxy_option = warning_dialog.comboBoxProxy.currentIndex()
                 if selected_proxy_option == 0:
                     pref.SetBool("NoProxyCheck", True)
@@ -202,6 +203,8 @@ class CommandAddonManager:
         #  0: Update every launch
         # >0: Update every n days
         self.update_cache = False
+        if hasattr(self, "trigger_recache") and self.trigger_recache:
+            self.update_cache = True
         update_frequency = pref.GetInt("UpdateFrequencyComboEntry", 0)
         if update_frequency == 0:
             days_between_updates = -1

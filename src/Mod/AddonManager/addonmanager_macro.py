@@ -198,7 +198,10 @@ class Macro(object):
                     return
                 response = ""
                 block = 8192
-                while data := u2.read(block):
+                while True:
+                    data = u2.read(block)
+                    if not data:
+                        break
                     if isinstance(data, bytes):
                         data = data.decode("utf-8")
                     response += data
@@ -232,7 +235,7 @@ class Macro(object):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "Unable to retrieve a description for this macro.",
+                    f"Unable to retrieve a description from the wiki for macro {self.name}",
                 )
                 + "\n"
             )
