@@ -45,7 +45,7 @@ using namespace Points;
 
 PROPERTY_SOURCE(Points::Feature, App::GeoFeature)
 
-Feature::Feature() 
+Feature::Feature()
 {
     ADD_PROPERTY(Points, (PointKernel()));
 }
@@ -90,7 +90,7 @@ void Feature::onChanged(const App::Property* prop)
         if (p != this->Placement.getValue())
             this->Placement.setValue(p);
     }
-    
+
     GeoFeature::onChanged(prop);
 }
 

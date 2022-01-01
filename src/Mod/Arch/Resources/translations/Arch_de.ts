@@ -51,7 +51,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+      <translation>Wenn aktiviert, werden nur Volumenkörper von diesem Objekt gesammelt, wenn auf andere Dateien verwiesen wird</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
@@ -186,22 +186,22 @@
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>Die Erfassung-Box für neu erstellte Objekte, ausgedrückt als [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Schaltet den automatischen Gruppenbox ein/aus</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Automatische Größeneinstellung von Inhalten</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Eine Spanne verwendet wird, wenn die Autogröße eingeschaltet wird</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="192"/>
@@ -1276,7 +1276,7 @@
     <message>
       <location filename="ArchReference.py" line="106"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Verschmelzung von Objekten aus demselben Material</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="385"/>
@@ -1641,7 +1641,7 @@
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>End offset entlang des Extrusionspfades (positiv: erweitert, negativ: trimmen</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="684"/>
@@ -1651,22 +1651,22 @@
     <message>
       <location filename="ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>X-Offset zwischen dem Basis-Ursprung und der Werkzeug-Achse (nur verwendet, wenn Basis Perpendikular zu Werkzeug gewählt ist)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Y-Offset zwischen dem Basis-Ursprung und der Werkzeug-Achse (nur verwendet, wenn Basis Perpendikular zu Werkzeug gewählt ist)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="690"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Spiegele die Basis entlang ihrer Y-Achse (nur verwendet, wenn Basis Perpendikular zu Werkzeug verwendet wird)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="692"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Basis rotation um die Werkzeug-Achse (nur verwendet, wenn Basis Perpendikular zu Werkzeug verwendet wird)</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="404"/>
@@ -3472,7 +3472,7 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="ArchStructure.py" line="222"/>
       <source>Please select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Bitte wählen Sie zuerst das Basisobjekt und dann die Kanten als Extrusionspfade</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="245"/>
@@ -3482,7 +3482,7 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Bitte wählen Sie mindestens ein Achsenobjekt aus</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="345"/>
@@ -4605,7 +4605,7 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Erstelle mehrere Archstruktur-Objekte aus einer ausgewählten Basis, wobei jede ausgewählte Kante als Extrusionspfad verwendet wird</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="233"/>
@@ -4615,7 +4615,7 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>Erstellt ein strukturelles Systemobjekt aus einer ausgewählten Struktur und Achse</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="270"/>

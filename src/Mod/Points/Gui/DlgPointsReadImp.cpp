@@ -39,7 +39,7 @@ DlgPointsReadImp::DlgPointsReadImp(const char *FileName, QWidget* parent,  Qt::W
   _FileName = FileName;
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgPointsReadImp::~DlgPointsReadImp()

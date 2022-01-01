@@ -114,7 +114,7 @@ private:
     std::vector<value_type> _Points;
 
 public:
-    /// number of points stored 
+    /// number of points stored
     size_type size(void) const {return this->_Points.size();}
     size_type countValid(void) const;
     std::vector<value_type> getValidPoints() const;
@@ -195,4 +195,4 @@ public:
 } // namespace Points
 
 
-#endif // POINTS_POINTPROPERTIES_H 
+#endif // POINTS_POINTPROPERTIES_H

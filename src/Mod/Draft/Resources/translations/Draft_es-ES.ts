@@ -566,6 +566,11 @@ o desde el subelemento 'VerticeN', 'AristaN', o 'CaraN', respectivamente, si es 
       <translation>Rellena letras con caras</translation>
     </message>
     <message>
+      <location filename="draftlink.py" line="99"/>
+      <source>Force sync pattern placements even when array elements are expanded</source>
+      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+    </message>
+    <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
       <translation>Mostrar los elementos individuales de la matriz</translation>
@@ -727,11 +732,6 @@ Esta propiedad es de solo lectura, así que el número depende de los puntos con
       <translation>Ruta usada por este objeto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma de este objeto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Nombre del patrón utilizado por este objeto</translation>
@@ -740,6 +740,11 @@ Esta propiedad es de solo lectura, así que el número depende de los puntos con
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Escala del patrón usado por este objeto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma de este objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -3401,7 +3406,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Todas las formas deben ser coplanares</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="696"/>
@@ -3413,7 +3418,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="WorkingPlane.py" line="704"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Las formas seleccionadas deben definir un plano</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -3905,6 +3910,16 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Entrada incorrecta: subelemento no está en el objeto.</translation>
     </message>
     <message>
+      <location filename="make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
+    </message>
+    <message>
       <location filename="make_label.py" line="278"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
       <translation>Entrada incorrecta: debe ser una cadena, 'Personalizado', 'Nombre', 'Etiqueta', 'Posición', 'Longitud', 'Área', 'Volumen', 'Etiqueta', o 'Material'.</translation>
@@ -3983,6 +3998,36 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>se migró el tipo 'DraftText' a 'Text'</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="358"/>
+      <source>Activate this layer</source>
+      <translation>Activar esta capa</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="364"/>
+      <source>Select layer contents</source>
+      <translation>Seleccionar contenido de la capa</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Combinar duplicados de capa</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Añadir nueva capa</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -5057,16 +5102,6 @@ El ángulo final será el ángulo base más esta cantidad.</translation>
       <location filename="gui_rotate.py" line="411"/>
       <source>Pick rotation angle</source>
       <translation>Elegir ángulo de rotación</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="358"/>
-      <source>Activate this layer</source>
-      <translation>Activar esta capa</translation>
-    </message>
-    <message>
-      <location filename="view_layer.py" line="364"/>
-      <source>Select layer contents</source>
-      <translation>Seleccionar contenido de la capa</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="73"/>

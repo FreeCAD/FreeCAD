@@ -472,7 +472,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation>Если этот флажок установлен, стартовая страница будет автоматически закрыта при запуске FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>

@@ -32,6 +32,13 @@
 
 using namespace SketcherGui;
 
+// ******************** ViewProvider attorney *********************************************//
+inline void ViewProviderSketchShortcutListenerAttorney::deleteSelected(ViewProviderSketch & vp)
+{
+    vp.deleteSelected();
+};
+
+// ******************** ShortcutListener *********************************************//
 ShortcutListener::ShortcutListener(ViewProviderSketch * vp)
 {
     pViewProvider = vp;
@@ -50,7 +57,7 @@ bool ShortcutListener::eventFilter(QObject *obj, QEvent *event) {
             switch (kevent->key()) {
                 case Qt::Key_Delete:
                     kevent->accept();
-                    pViewProvider->deleteSelected(); // this takes a list of objects
+                    ViewProviderSketchShortcutListenerAttorney::deleteSelected(*pViewProvider);
                     return true;
                 default:
                     break;

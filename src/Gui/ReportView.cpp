@@ -204,6 +204,58 @@ void ReportHighlighter::setErrorColor( const QColor& col )
     errCol = col;
 }
 
+// ----------------------------------------------------------------------------
+
+namespace Gui {
+class ReportOutputParameter
+{
+public:
+    static bool showOnLogMessage()
+    {
+        return getGroup()->GetBool("checkShowReportViewOnLogMessage", false);
+    }
+    static void toggleShowOnLogMessage()
+    {
+        bool show = showOnLogMessage();
+        getGroup()->SetBool("checkShowReportViewOnLogMessage", !show);
+    }
+    static bool showOnMessage()
+    {
+        return getGroup()->GetBool("checkShowReportViewOnNormalMessage", false);
+    }
+    static void toggleShowOnMessage()
+    {
+        bool show = showOnMessage();
+        getGroup()->SetBool("checkShowReportViewOnNormalMessage", !show);
+    }
+    static bool showOnWarning()
+    {
+        return getGroup()->GetBool("checkShowReportViewOnWarning", false);
+    }
+    static void toggleShowOnWarning()
+    {
+        bool show = showOnWarning();
+        getGroup()->SetBool("checkShowReportViewOnWarning", !show);
+    }
+    static bool showOnError()
+    {
+        return getGroup()->GetBool("checkShowReportViewOnError", true);
+    }
+    static void toggleShowOnError()
+    {
+        bool show = showOnError();
+        getGroup()->SetBool("checkShowReportViewOnError", !show);
+    }
+
+private:
+    static ParameterGrp::handle getGroup()
+    {
+        return App::GetApplication().GetUserParameter().
+                GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
+    }
+};
+}
+
 // ----------------------------------------------------------
 
 /**
@@ -257,23 +309,24 @@ bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::User && obj == reportView.data()) {
         CustomReportEvent* cr = dynamic_cast<CustomReportEvent*>(event);
         if (cr) {
-            ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-                    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
             ReportHighlighter::Paragraph msgType = cr->messageType();
-            if (msgType == ReportHighlighter::Warning){
-                if (group->GetBool("checkShowReportViewOnWarning", true)) {
+            if (msgType == ReportHighlighter::Warning) {
+                if (ReportOutputParameter::showOnWarning()) {
                     showReportView();
                 }
-            } else if (msgType == ReportHighlighter::Error){
-                if (group->GetBool("checkShowReportViewOnError", true)) {
+            }
+            else if (msgType == ReportHighlighter::Error) {
+                if (ReportOutputParameter::showOnError()) {
                     showReportView();
                 }
-            } else if (msgType == ReportHighlighter::Message){
-                if (group->GetBool("checkShowReportViewOnNormalMessage", false)) {
+            }
+            else if (msgType == ReportHighlighter::Message) {
+                if (ReportOutputParameter::showOnMessage()) {
                     showReportView();
                 }
-            } else if (msgType == ReportHighlighter::LogText){
-                if (group->GetBool("checkShowReportViewOnLogMessage", false)) {
+            }
+            else if (msgType == ReportHighlighter::LogText) {
+                if (ReportOutputParameter::showOnLogMessage()) {
                     showReportView();
                 }
             }
@@ -484,11 +537,10 @@ void ReportOutput::changeEvent(QEvent *ev)
 
 void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 {
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("OutputWindow");
-    bool bShowOnLog = hGrp->GetBool("checkShowReportViewOnLogMessage",false);
-    bool bShowOnNormal = hGrp->GetBool("checkShowReportViewOnNormalMessage",false);
-    bool bShowOnWarn = hGrp->GetBool("checkShowReportViewOnWarning",true);
-    bool bShowOnError = hGrp->GetBool("checkShowReportViewOnError",true);
+    bool bShowOnLog = ReportOutputParameter::showOnLogMessage();
+    bool bShowOnNormal = ReportOutputParameter::showOnMessage();
+    bool bShowOnWarn = ReportOutputParameter::showOnWarning();
+    bool bShowOnError = ReportOutputParameter::showOnError();
 
     QMenu* menu = new QMenu(this);
     QMenu* optionMenu = new QMenu( menu );
@@ -517,7 +569,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     errAct->setChecked(bErr);
 
     QMenu* showOnMenu = new QMenu (optionMenu);
-    showOnMenu->setTitle(tr("Show report view on"));
+    showOnMenu->setTitle(tr("Show output window on"));
     optionMenu->addMenu(showOnMenu);
 
     QAction* showNormAct = showOnMenu->addAction(tr("Normal messages"), this, SLOT(onToggleShowReportViewOnNormalMessage()));
@@ -635,26 +687,22 @@ void ReportOutput::onToggleNormalMessage()
 
 void ReportOutput::onToggleShowReportViewOnWarning()
 {
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarning", true);
-    getWindowParameter()->SetBool("checkShowReportViewOnWarning", !show);
+    ReportOutputParameter::toggleShowOnWarning();
 }
 
 void ReportOutput::onToggleShowReportViewOnError()
 {
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnError", true);
-    getWindowParameter()->SetBool("checkShowReportViewOnError", !show);
+    ReportOutputParameter::toggleShowOnError();
 }
 
 void ReportOutput::onToggleShowReportViewOnNormalMessage()
 {
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnNormalMessage", false);
-    getWindowParameter()->SetBool("checkShowReportViewOnNormalMessage", !show);
+    ReportOutputParameter::toggleShowOnMessage();
 }
 
 void ReportOutput::onToggleShowReportViewOnLogMessage()
 {
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnLogMessage", false);
-    getWindowParameter()->SetBool("checkShowReportViewOnLogMessage", !show);
+    ReportOutputParameter::toggleShowOnLogMessage();
 }
 
 void ReportOutput::onToggleRedirectPythonStdout()

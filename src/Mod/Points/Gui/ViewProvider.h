@@ -128,7 +128,7 @@ public:
 
     /**
      * Extracts the point data from the feature \a pcFeature and creates
-     * an Inventor node \a SoNode with these data. 
+     * an Inventor node \a SoNode with these data.
      */
     virtual void attach(App::DocumentObject *);
     /// Update the point representation
@@ -156,7 +156,7 @@ public:
 
     /**
      * Extracts the point data from the feature \a pcFeature and creates
-     * an Inventor node \a SoNode with these data. 
+     * an Inventor node \a SoNode with these data.
      */
     virtual void attach(App::DocumentObject *);
     /// Update the point representation

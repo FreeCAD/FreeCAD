@@ -277,7 +277,7 @@ protected:
     }
     virtual pos_type seekoff(std::streambuf::off_type off,
         std::ios_base::seekdir way,
-        std::ios_base::openmode = 
+        std::ios_base::openmode =
             std::ios::in | std::ios::out) {
         int p_pos=-1;
         if (way == std::ios_base::beg)
@@ -310,7 +310,7 @@ private:
 };
 
 //Taken from https://github.com/PointCloudLibrary/pcl/blob/master/io/src/lzf.cpp
-unsigned int 
+unsigned int
 lzfDecompress (const void *const in_data,  unsigned int in_len,
                     void             *out_data, unsigned int out_len)
 {

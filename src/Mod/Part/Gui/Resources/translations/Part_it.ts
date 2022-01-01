@@ -3870,7 +3870,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="261"/>
       <source>Import invisible objects</source>
-      <translation type="unfinished">Import invisible objects</translation>
+      <translation>Importa oggetti invisibili</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="274"/>
@@ -3890,7 +3890,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="293"/>
       <source>Expand compound shape</source>
-      <translation type="unfinished">Expand compound shape</translation>
+      <translation>Espandi forma composta</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="306"/>
@@ -3906,7 +3906,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="325"/>
       <source>Ignore instance names</source>
-      <translation type="unfinished">Ignore instance names</translation>
+      <translation>Ignora nomi istanza</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="340"/>
@@ -4474,12 +4474,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Projection on surface</source>
-      <translation type="unfinished">Projection on surface</translation>
+      <translation>Proiezione sulla superficie</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
       <source>Select projection surface</source>
-      <translation type="unfinished">Select projection surface</translation>
+      <translation>Seleziona la superficie di proiezione</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
@@ -5475,7 +5475,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Skip settings page</source>
-      <translation type="unfinished">Skip settings page</translation>
+      <translation>Salta pagina impostazioni</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
@@ -5513,7 +5513,7 @@ but more stable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Log errors</source>
-      <translation type="unfinished">Log errors</translation>
+      <translation>Registro Errori</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
@@ -5523,7 +5523,7 @@ but more stable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>Expand shape content</source>
-      <translation type="unfinished">Expand shape content</translation>
+      <translation>Espandi contenuto di forma</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
@@ -5535,7 +5535,7 @@ the check geometry tool.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
       <source>Advanced shape content</source>
-      <translation type="unfinished">Advanced shape content</translation>
+      <translation>Contenuto avanzato della forma</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
@@ -5554,7 +5554,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1141"/>
       <source>  Bad type</source>
-      <translation type="unfinished">  Bad type</translation>
+      <translation>  Tipo errato</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
@@ -5564,7 +5564,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1149"/>
       <source>  Self-intersect</source>
-      <translation type="unfinished">  Self-intersect</translation>
+      <translation>  Autointersezione</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
@@ -5574,7 +5574,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1157"/>
       <source>  Too small edge</source>
-      <translation type="unfinished">  Too small edge</translation>
+      <translation>  Bordo troppo piccolo</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
@@ -5594,12 +5594,12 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1173"/>
       <source>  Continuity</source>
-      <translation type="unfinished">  Continuity</translation>
+      <translation>  Continuità</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1174"/>
       <source>Check for continuity.  Default: true</source>
-      <translation type="unfinished">Check for continuity.  Default: true</translation>
+      <translation>Controlla la continuità. Predefinito: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1181"/>

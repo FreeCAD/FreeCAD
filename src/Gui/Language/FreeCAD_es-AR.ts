@@ -1531,11 +1531,11 @@ this according to your screen size or personal taste</source>
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation>Personalizar cómo se muestra la vista de árbol en el panel (se requiere reiniciar).
+      <translation>Personaliza cómo se muestra la vista de árbol en el panel (se requiere reiniciar).
 
-'Vista Combinada': combinar vista de árbol y vista de propiedad en un panel.
-'Vista de Árbol y Vista de Propiedades': dividir vista de árbol y vista de propiedad en un panel separado.
-'Ambos': mantén los tres paneles, y puedes tener dos conjuntos de vista de árbol y vista de propiedad.</translation>
+'Vista Combinada': combina la vista de árbol y la vista de propiedad en un panel.
+'Vista de Árbol y Vista de Propiedades': divide la vista de árbol y la vista de propiedades en un panel separado.
+'Ambos': mantiene los tres paneles, y puedes tener dos conjuntos de vista de árbol y vista de propiedad.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
@@ -2618,7 +2618,7 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation>Los objetos se proyectarán en proyección ortográfica</translation>
+      <translation>Los objetos se proyectarán en proyección ortogonal</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
@@ -2856,7 +2856,7 @@ del objeto 3D que se muestra actualmente.</translation>
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
-      <translation>Permitir etiquetas de objetos duplicadas en un documento</translation>
+      <translation>Permitir etiquetas de objeto duplicadas en un documento</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
@@ -2991,7 +2991,7 @@ get date suffix according to the specified format</source>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
-      <translation>Permitir que los objetos tengan la misma etiqueta/nombre</translation>
+      <translation>Permite que los objetos tengan la misma etiqueta/nombre</translation>
     </message>
     <message>
       <source>Enable partial loading of external linked documents.
@@ -2999,15 +2999,15 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation>Habilitar la carga parcial de documentos vinculados externos.
+      <translation>Habilita la carga parcial de documentos enlazados externos.
 De esta manera solo los objetos referenciados y sus dependencias se cargarán
-cuando un documento vinculado se abra automáticamente junto con el documento principal.
+cuando un documento enlazado se abra automáticamente junto con el documento principal.
 Un documento parcialmente cargado no puede ser editado. Haga doble clic en el icono
 del documento en la vista de árbol para volver a cargarlo completamente.</translation>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
-      <translation>Deshabilita la carga parcial de objetos vinculados externos</translation>
+      <translation>Deshabilitar la carga parcial de objetos enlazados externos</translation>
     </message>
     <message>
       <source>All documents that will be created will get the specified author name.
@@ -3836,11 +3836,11 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Enable preselection and highlight by specified color</source>
-      <translation>Habilitar preselección y resaltado mediante el color especificado</translation>
+      <translation>Habilita la preselección y el resaltado mediante el color especificado</translation>
     </message>
     <message>
       <source>Enable selection highlighting and use specified color</source>
-      <translation>Activar resaltado de selección y usar el color especificado</translation>
+      <translation>Activa el resaltado de selección y usa el color especificado</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -7763,7 +7763,7 @@ Would you like to save the file with a different name?</source>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
-      <translation>Crear un vínculo al(los) objeto(s) seleccionado(s)</translation>
+      <translation>Crea un vínculo al(los) objeto(s) seleccionado(s)</translation>
     </message>
   </context>
   <context>
@@ -8375,7 +8375,7 @@ Would you like to save the file with a different name?</source>
     </message>
     <message>
       <source>Save the active document under a new file name</source>
-      <translation>Guardar el documento activo con un nuevo nombre de archivo</translation>
+      <translation>Guarda el documento activo con un nuevo nombre de archivo</translation>
     </message>
   </context>
   <context>
@@ -9338,7 +9338,7 @@ Would you like to save the file with a different name?</source>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
-      <translation>Cambia al modo de vista ortográfico</translation>
+      <translation>Cambia al modo de vista ortogonal</translation>
     </message>
   </context>
   <context>
@@ -9764,11 +9764,11 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation>Ortográfico</translation>
+      <translation>Ortogonal</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Configurar Vista a Modo Ortográfico</translation>
+      <translation>Configurar Vista a modo Ortogonal</translation>
     </message>
   </context>
   <context>

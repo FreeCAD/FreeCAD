@@ -96,6 +96,9 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
     createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
     connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
 
+    createAddAllEdgesAction(ui->listWidgetReferences);
+    connect(addAllEdgesAction, &QAction::triggered, this, &TaskChamferParameters::onAddAllEdges);
+
     connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
@@ -244,6 +247,12 @@ void TaskChamferParameters::onRefDeleted(void)
         ui->buttonRefRemove->setEnabled(false);
         ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
     }
+}
+
+void TaskChamferParameters::onAddAllEdges(void)
+{
+    TaskDressUpParameters::addAllEdges(ui->listWidgetReferences);
+    ui->buttonRefRemove->setEnabled(true);
 }
 
 void TaskChamferParameters::onTypeChanged(int index)

@@ -5042,7 +5042,7 @@ Voulez enregistrer les modifications ?</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>Faire glisser l'écran avec un doigt. Ou cliquer le bouton gauche de la souris. Dans l'atelier Esquisseur et les autres modes d'édition, maintenez en plus la touche Alt enfoncée.</translation>
+      <translation>Faire glisser l'écran avec un doigt. Ou cliquer le bouton gauche de la souris. Dans l'atelier Sketch et les autres modes d'édition, maintenez en plus la touche Alt enfoncée.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
@@ -5786,7 +5786,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Hide</source>
-      <translation>Cacher</translation>
+      <translation>Caché</translation>
     </message>
     <message>
       <source>Box select</source>

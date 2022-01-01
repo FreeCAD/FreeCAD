@@ -702,29 +702,14 @@
       <translation>Базовый объект %s.%s отклонен в результате операции</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="785"/>
-      <source>Heights</source>
-      <translation>Высоты</translation>
+      <location filename="PathProfileGui.py" line="165"/>
+      <source>Profile</source>
+      <translation>Профиль</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="966"/>
-      <source>Diameters</source>
-      <translation>Диаметры</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="997"/>
-      <source>AreaOp Operation</source>
-      <translation>AreaOp операция</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1122"/>
-      <source>Uncreate AreaOp Operation</source>
-      <translation>Отмена AreaOp операции</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1262"/>
-      <source>Pick Start Point</source>
-      <translation>Указать начальную точку</translation>
+      <location filename="PathProfileGui.py" line="168"/>
+      <source>Profile entire model, selected face(s) or selected edge(s)</source>
+      <translation>Обработать всю модель, выбранные грани или выбранные края</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="206"/>
@@ -745,11 +730,6 @@
       <location filename="PathCircularHoleBase.py" line="80"/>
       <source>List of disabled features</source>
       <translation>Список отключенных элементов</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="456"/>
-      <source>Unable to create path for face(s).</source>
-      <translation>Не удается создать траекторию для грани(ей).</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
@@ -810,6 +790,36 @@
       <location filename="InitGui.py" line="159"/>
       <source>Utils</source>
       <translation type="unfinished">Utils</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="785"/>
+      <source>Heights</source>
+      <translation>Высоты</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="966"/>
+      <source>Diameters</source>
+      <translation>Диаметры</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="997"/>
+      <source>AreaOp Operation</source>
+      <translation>AreaOp операция</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1122"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Отмена AreaOp операции</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1262"/>
+      <source>Pick Start Point</source>
+      <translation>Указать начальную точку</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="456"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Не удается создать траекторию для грани(ей).</translation>
     </message>
   </context>
   <context>
@@ -960,7 +970,7 @@
     <message>
       <location filename="PathFeatureExtensions.py" line="421"/>
       <source>Waterline error</source>
-      <translation type="unfinished">Waterline error</translation>
+      <translation>Ошибка уровня</translation>
     </message>
   </context>
   <context>
@@ -1283,9 +1293,34 @@
       <translation>Опция охлаждения для этой операции</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="194"/>
+      <source>Edit</source>
+      <translation>Редактировать</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="475"/>
       <source>Base Geometry</source>
       <translation>Базовая Геометрия</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="576"/>
+      <source>Vertexes are not supported</source>
+      <translation>Вершины не поддерживаются</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="583"/>
+      <source>Edges are not supported</source>
+      <translation>Кривые не поддерживаются</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="590"/>
+      <source>Faces are not supported</source>
+      <translation>Грани не поддерживаются</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="657"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation>Множественные операции обозначены как</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="672"/>
@@ -1299,9 +1334,24 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>ФинальнаяВысота не может быть изменена для этой операции. Если необходимо вручную установленная ФинальнаяВысота, пожалуйста, выберите другую операцию.</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Высоты</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="869"/>
       <source>Depths</source>
       <translation>Глубины</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1061"/>
+      <source>Diameters</source>
+      <translation>Диаметры</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1093"/>
+      <source>AreaOp Operation</source>
+      <translation>AreaOp операция</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1058"/>
@@ -1309,17 +1359,19 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Операция</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="1224"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Отмена AreaOp операции</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1371"/>
+      <source>Pick Start Point</source>
+      <translation>Указать начальную точку</translation>
+    </message>
+    <message>
       <location filename="PathJob.py" line="153"/>
       <source>Job Cycle Time Estimation</source>
       <translation>Оценка времени цикла задачи</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathOpGui</name>
-    <message>
-      <location filename="PathOpGui.py" line="603"/>
-      <source>Mulitiple operations are labeled as</source>
-      <translation>Множественные операции обозначены как</translation>
     </message>
   </context>
   <context>
@@ -1406,27 +1458,64 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Проверьте выставленное значение по умолчанию.</translation>
     </message>
     <message>
+      <location filename="PathProfile.py" line="196"/>
+      <source>CW</source>
+      <translation>ПЧ</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="197"/>
+      <source>CCW</source>
+      <translation>ПРЧ</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="200"/>
+      <source>Collectively</source>
+      <translation type="unfinished">Collectively</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="201"/>
+      <source>Individually</source>
+      <translation type="unfinished">Individually</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="204"/>
+      <source>Round</source>
+      <translation>Круглый</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="205"/>
+      <source>Square</source>
+      <translation>Квадрат</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="206"/>
+      <source>Miter</source>
+      <translation type="unfinished">Miter</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="209"/>
+      <source>Outside</source>
+      <translation type="unfinished">Outside</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="210"/>
+      <source>Inside</source>
+      <translation type="unfinished">Inside</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="479"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Не удается создать траекторию для грани(ей).</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="622"/>
+      <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
+      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+    </message>
+    <message>
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
       <translation>Для открытых краев проверьте Конечную Глубину для этой операции.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathProject</name>
-    <message>
-      <location filename="PathOpGui.py" line="533"/>
-      <source>Vertexes are not supported</source>
-      <translation>Вершины не поддерживаются</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="537"/>
-      <source>Edges are not supported</source>
-      <translation>Кривые не поддерживаются</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="541"/>
-      <source>Faces are not supported</source>
-      <translation>Грани не поддерживаются</translation>
     </message>
   </context>
   <context>
@@ -2083,17 +2172,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathToolBitLibraryCmd.py" line="39"/>
       <source>ToolBit Dock</source>
-      <translation type="unfinished">ToolBit Dock</translation>
+      <translation>Панель инструментов</translation>
     </message>
     <message>
       <location filename="PathToolBitLibraryCmd.py" line="40"/>
       <source>Toggle the Toolbit Dock</source>
-      <translation type="unfinished">Toggle the Toolbit Dock</translation>
+      <translation>Переключить панель инструментов</translation>
     </message>
     <message>
       <location filename="PathToolBitLibraryCmd.py" line="63"/>
       <source>ToolBit Library editor</source>
-      <translation type="unfinished">ToolBit Library editor</translation>
+      <translation>Редактор библиотеки инструментов</translation>
     </message>
     <message>
       <location filename="PathToolBitLibraryCmd.py" line="64"/>
@@ -3512,6 +3601,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathToolLibraryEditor.py" line="387"/>
       <source>Rename Selected Tool Table</source>
       <translation>Переименовать выбранную таблицу инструментов</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathOpGui</name>
+    <message>
+      <location filename="PathOpGui.py" line="603"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation>Множественные операции обозначены как</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathProject</name>
+    <message>
+      <location filename="PathOpGui.py" line="533"/>
+      <source>Vertexes are not supported</source>
+      <translation>Вершины не поддерживаются</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="537"/>
+      <source>Edges are not supported</source>
+      <translation>Кривые не поддерживаются</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="541"/>
+      <source>Faces are not supported</source>
+      <translation>Грани не поддерживаются</translation>
     </message>
   </context>
   <context>

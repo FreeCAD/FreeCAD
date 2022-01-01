@@ -99,14 +99,14 @@ public:
     std::vector<std::weak_ptr<const GeometryExtension>> getExtensions() const;
 
     bool hasExtension(Base::Type type) const;
-    bool hasExtension(std::string name) const;
+    bool hasExtension(const std::string & name) const;
     std::weak_ptr<const GeometryExtension> getExtension(Base::Type type) const;
-    std::weak_ptr<const GeometryExtension> getExtension(std::string name) const;
+    std::weak_ptr<const GeometryExtension> getExtension(const std::string & name) const;
     std::weak_ptr<GeometryExtension> getExtension(Base::Type type);
-    std::weak_ptr<GeometryExtension> getExtension(std::string name);
+    std::weak_ptr<GeometryExtension> getExtension(const std::string & name);
     void setExtension(std::unique_ptr<GeometryExtension> &&geo);
     void deleteExtension(Base::Type type);
-    void deleteExtension(std::string name);
+    void deleteExtension(const std::string & name);
 
     void mirror(const Base::Vector3d& point);
     void mirror(const Base::Vector3d& point, const Base::Vector3d& dir);

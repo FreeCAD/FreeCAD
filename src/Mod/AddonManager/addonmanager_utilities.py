@@ -125,7 +125,9 @@ def urlopen(url: str):
         u = urllib.request.urlopen(req, timeout=timeout)
 
     except URLError as e:
-        FreeCAD.Console.PrintError(f"Error loading {url}:\n {e.reason}\n")
+        FreeCAD.Console.PrintError(
+            translate("AddonsInstaller", f"Error loading {url}") + ":\n {e.reason}\n"
+        )
         return None
     except Exception:
         return None
@@ -148,7 +150,7 @@ def update_macro_details(old_macro, new_macro):
     """
 
     if old_macro.on_git and new_macro.on_git:
-        FreeCAD.Console.PrintWarning(
+        FreeCAD.Console.PrintLog(
             'The macro "{}" is present twice in github, please report'.format(
                 old_macro.name
             )
@@ -200,7 +202,7 @@ def get_zip_url(repo):
         reponame = baseurl.strip("/").split("/")[-1]
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
     else:
-        FreeCAD.Console.PrintWarning(
+        FreeCAD.Console.PrintLog(
             "Debug: addonmanager_utilities.get_zip_url: Unknown git host:",
             parsedUrl.netloc,
         )
@@ -251,7 +253,7 @@ def get_desc_regex(repo):
         or parsedUrl.netloc == "salsa.debian.org"
     ):
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
-    FreeCAD.Console.PrintWarning(
+    FreeCAD.Console.PrintLog(
         "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:", repo.url
     )
     return None

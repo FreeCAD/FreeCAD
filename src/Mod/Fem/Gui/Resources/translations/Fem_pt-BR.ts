@@ -223,7 +223,7 @@
     <message>
       <location filename="commands.py" line="325"/>
       <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
+      <translation>Cria uma seção de fluido FEM para fluxo 1D</translation>
     </message>
   </context>
   <context>
@@ -283,12 +283,12 @@
     <message>
       <location filename="commands.py" line="457"/>
       <source>Electricforce equation</source>
-      <translation type="unfinished">Electricforce equation</translation>
+      <translation>Equação de força elétrica</translation>
     </message>
     <message>
       <location filename="commands.py" line="461"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>Criar uma equação FEM para forças elétricas</translation>
     </message>
   </context>
   <context>
@@ -917,12 +917,12 @@
     <message>
       <location filename="../../Command.cpp" line="770"/>
       <source>Constraint spring</source>
-      <translation type="unfinished">Constraint spring</translation>
+      <translation>Restrição de mola</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="771"/>
       <source>Creates a FEM constraint for a spring acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a spring acting on a face</translation>
+      <translation>Criar uma restrição FEM para uma mola atuando sobre uma face</translation>
     </message>
   </context>
   <context>
@@ -1072,7 +1072,7 @@
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>Function cut filter</source>
-      <translation type="unfinished">Function cut filter</translation>
+      <translation>Função filtro de corte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -1388,7 +1388,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="82"/>
       <source>Marked</source>
-      <translation type="unfinished">Marked</translation>
+      <translation>Marcado</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
@@ -1405,13 +1405,13 @@
       <location filename="../../TaskPanelConstraintTemperature.ui" line="52"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="56"/>
       <source>25</source>
-      <translation type="unfinished">25</translation>
+      <translation>25</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="72"/>
       <source>ºC</source>
-      <translation type="unfinished">ºC</translation>
+      <translation>ºC</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="81"/>
@@ -1460,12 +1460,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="82"/>
       <source>Input file Editor</source>
-      <translation type="unfinished">Input file Editor</translation>
+      <translation>Editor de arquivo de entrada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="89"/>
       <source>Use internal editor for *.inp files</source>
-      <translation type="unfinished">Use internal editor for *.inp files</translation>
+      <translation>Usar editor interno para arquivos *.inp</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="114"/>
@@ -1475,12 +1475,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="121"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Pesquisar em diretórios binários conhecidos</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="146"/>
       <source>ccx binary path</source>
-      <translation type="unfinished">ccx binary path</translation>
+      <translation>caminho binário ccx</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="166"/>
@@ -1550,7 +1550,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="320"/>
       <source>Matrix solver</source>
-      <translation type="unfinished">Matrix solver</translation>
+      <translation>Solucionador de matriz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="327"/>
@@ -1560,7 +1560,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="334"/>
       <source>Non-linear geometry</source>
-      <translation type="unfinished">Non-linear geometry</translation>
+      <translation>Geometria não-linear</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="354"/>
@@ -1685,7 +1685,7 @@
       <location filename="../../DlgSettingsFemElmer.ui" line="127"/>
       <location filename="../../DlgSettingsFemElmer.ui" line="150"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Pesquisar em diretórios binários conhecidos</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="143"/>
@@ -1872,7 +1872,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="45"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Pesquisar em diretórios binários conhecidos</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="61"/>
@@ -2015,7 +2015,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="45"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Pesquisar em diretórios binários conhecidos</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="77"/>
@@ -2053,7 +2053,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="45"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Pesquisar em diretórios binários conhecidos</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="61"/>
@@ -3821,7 +3821,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="283"/>
       <source>Constraint spring</source>
-      <translation type="unfinished">Constraint spring</translation>
+      <translation>Restrição de mola</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>

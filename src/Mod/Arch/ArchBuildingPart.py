@@ -32,6 +32,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import draftutils.units as units
 else:
     # \cond
     def translate(ctxt,txt):
@@ -783,14 +784,14 @@ class ViewProviderBuildingPart:
                     else:
                         u = q.getUserPreferred()[2]
                     try:
-                        q = q.getValueAs(u)
+                        txt += units.display_external(float(q),None,'Length',vobj.ShowUnit,u)
                     except Exception:
                         q = q.getValueAs(q.getUserPreferred()[2])
-                    d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
-                    fmt = "{0:."+ str(d) + "f}"
-                    if not vobj.ShowUnit:
-                        u = ""
-                    txt += fmt.format(float(q)) + str(u)
+                        d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
+                        fmt = "{0:."+ str(d) + "f}"
+                        if not vobj.ShowUnit:
+                            u = ""
+                        txt += fmt.format(float(q)) + str(u)
                 if not txt:
                     txt = " " # empty texts make coin crash...
                 if isinstance(txt,unicode):

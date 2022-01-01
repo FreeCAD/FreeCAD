@@ -1425,6 +1425,22 @@ std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstructionEleme
     return temp;
 }
 
+GeoListFacade Sketch::extractGeoListFacade() const
+{
+    std::vector<GeometryFacadeUniquePtr> temp;
+    temp.reserve(Geoms.size());
+    int internalGeometryCount = 0;
+    for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
+        auto gf = GeometryFacade::getFacade(it->geo->clone(), true); // GeometryFacade is the owner of this allocation
+        if(!it->external)
+            internalGeometryCount++;
+
+        temp.push_back(std::move(gf));
+    }
+
+    return GeoListFacade::getGeoListModel(std::move(temp), internalGeometryCount);
+}
+
 void Sketch::updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext)
 {
     geoId = checkGeoId(geoId);
@@ -3493,7 +3509,7 @@ bool Sketch::updateNonDrivingConstraints()
             }
             else if((*it).constr->Type==Angle) {
 
-                (*it).constr->setValue(std::remainder(*((*it).value), 2.0*M_PI));
+                (*it).constr->setValue(std::fmod(*((*it).value), 2.0*M_PI));
             }
             else if((*it).constr->Type==Diameter && (*it).constr->First>=0 ) {
 

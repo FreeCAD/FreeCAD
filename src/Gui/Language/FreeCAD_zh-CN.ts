@@ -3326,7 +3326,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>已载入</translation>
     </message>
     <message>
       <source>Load now</source>
@@ -3788,7 +3788,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation>FEM (mm, N, sec)</translation>
+      <translation>有限元(毫米，牛顿，秒)</translation>
     </message>
   </context>
   <context>
@@ -4688,7 +4688,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;U使用原有选择</translation>
     </message>
     <message>
       <source>Ignore dependencies and proceed with objects

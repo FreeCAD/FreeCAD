@@ -44,6 +44,7 @@ public:
 private Q_SLOTS:
     void onLengthChanged(double);
     void onRefDeleted(void);
+    void onAddAllEdges(void);
 
 protected:
     double getLength(void) const;

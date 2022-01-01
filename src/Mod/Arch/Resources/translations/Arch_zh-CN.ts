@@ -131,7 +131,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="557"/>
       <source>If True, double-clicking this object in the tree activates it</source>
-      <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
+      <translation>如果真，双击树中的对象会激活它</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="561"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="587"/>
       <source>The distance between the level plane and the cut line</source>
-      <translation type="unfinished">The distance between the level plane and the cut line</translation>
+      <translation>水平面和切割线间的距离</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="590"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>根据内容自动设置大小</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
@@ -596,7 +596,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="1028"/>
       <source>Show the label in the 3D view</source>
-      <translation type="unfinished">Show the label in the 3D view</translation>
+      <translation>在 3D 视图中显示标签</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="941"/>
@@ -1236,7 +1236,7 @@
     <message>
       <location filename="ArchCurtainWall.py" line="246"/>
       <source>The thickness of the panels</source>
-      <translation type="unfinished">The thickness of the panels</translation>
+      <translation>面板厚度</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="250"/>

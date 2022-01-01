@@ -702,29 +702,14 @@
       <translation>L'oggetto di base %s.%s è rifiutato dall'operazione</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="785"/>
-      <source>Heights</source>
-      <translation>Altezze</translation>
+      <location filename="PathProfileGui.py" line="165"/>
+      <source>Profile</source>
+      <translation>Profilo</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="966"/>
-      <source>Diameters</source>
-      <translation>Diametri</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="997"/>
-      <source>AreaOp Operation</source>
-      <translation>Operazione AreaOp</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1122"/>
-      <source>Uncreate AreaOp Operation</source>
-      <translation>Elimina l'operazione AreaOp</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1262"/>
-      <source>Pick Start Point</source>
-      <translation>Scegli il punto iniziale</translation>
+      <location filename="PathProfileGui.py" line="168"/>
+      <source>Profile entire model, selected face(s) or selected edge(s)</source>
+      <translation>Profila l'intero modello, le facce selezionate o i bordi selezionati</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="206"/>
@@ -745,11 +730,6 @@
       <location filename="PathCircularHoleBase.py" line="80"/>
       <source>List of disabled features</source>
       <translation>Elenco dei tratti disabilitati</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="456"/>
-      <source>Unable to create path for face(s).</source>
-      <translation>Impossibile creare il percorso per la faccia(e).</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
@@ -810,6 +790,36 @@
       <location filename="InitGui.py" line="159"/>
       <source>Utils</source>
       <translation>Utilità</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="785"/>
+      <source>Heights</source>
+      <translation>Altezze</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="966"/>
+      <source>Diameters</source>
+      <translation>Diametri</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="997"/>
+      <source>AreaOp Operation</source>
+      <translation>Operazione AreaOp</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1122"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Elimina l'operazione AreaOp</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1262"/>
+      <source>Pick Start Point</source>
+      <translation>Scegli il punto iniziale</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="456"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Impossibile creare il percorso per la faccia(e).</translation>
     </message>
   </context>
   <context>
@@ -1283,9 +1293,34 @@
       <translation>Opzione di refrigerazione per questa operazione</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="194"/>
+      <source>Edit</source>
+      <translation>Modifica</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="475"/>
       <source>Base Geometry</source>
       <translation>Geometria Base</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="576"/>
+      <source>Vertexes are not supported</source>
+      <translation>Non sono supportati i vertici</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="583"/>
+      <source>Edges are not supported</source>
+      <translation>Non sono supportati gli spigoli</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="590"/>
+      <source>Faces are not supported</source>
+      <translation>Non sono supportate le facce</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="657"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation>Le operazioni mulitiple sono contrassegnate come</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="672"/>
@@ -1299,9 +1334,24 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>FinalDepth per questa operazione non può essere modificato. Se è necessario impostare manualmente il FinalDepth si prega di selezionare una operazione diversa.</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Altezze</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="869"/>
       <source>Depths</source>
       <translation>Profondità</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1061"/>
+      <source>Diameters</source>
+      <translation>Diametri</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1093"/>
+      <source>AreaOp Operation</source>
+      <translation>Operazione AreaOp</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1058"/>
@@ -1309,17 +1359,19 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Operazione</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="1224"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Elimina l'operazione AreaOp</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1371"/>
+      <source>Pick Start Point</source>
+      <translation>Scegli il punto iniziale</translation>
+    </message>
+    <message>
       <location filename="PathJob.py" line="153"/>
       <source>Job Cycle Time Estimation</source>
       <translation>Stima del tempo di lavorazione</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathOpGui</name>
-    <message>
-      <location filename="PathOpGui.py" line="603"/>
-      <source>Mulitiple operations are labeled as</source>
-      <translation>Le operazioni mulitiple sono contrassegnate come</translation>
     </message>
   </context>
   <context>
@@ -1406,27 +1458,64 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Controllare il suo valore predefinito.</translation>
     </message>
     <message>
+      <location filename="PathProfile.py" line="196"/>
+      <source>CW</source>
+      <translation>CW</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="197"/>
+      <source>CCW</source>
+      <translation>CCW</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="200"/>
+      <source>Collectively</source>
+      <translation type="unfinished">Collectively</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="201"/>
+      <source>Individually</source>
+      <translation type="unfinished">Individually</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="204"/>
+      <source>Round</source>
+      <translation>Arrotondato</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="205"/>
+      <source>Square</source>
+      <translation>Quadrato</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="206"/>
+      <source>Miter</source>
+      <translation type="unfinished">Miter</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="209"/>
+      <source>Outside</source>
+      <translation type="unfinished">Outside</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="210"/>
+      <source>Inside</source>
+      <translation type="unfinished">Inside</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="479"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Impossibile creare il percorso per la faccia(e).</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="622"/>
+      <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
+      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+    </message>
+    <message>
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
       <translation>Per i bordi aperti, controllare la profondità finale per questa operazione.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathProject</name>
-    <message>
-      <location filename="PathOpGui.py" line="533"/>
-      <source>Vertexes are not supported</source>
-      <translation>Non sono supportati i vertici</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="537"/>
-      <source>Edges are not supported</source>
-      <translation>Non sono supportati gli spigoli</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="541"/>
-      <source>Faces are not supported</source>
-      <translation>Non sono supportate le facce</translation>
     </message>
   </context>
   <context>
@@ -3515,6 +3604,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
     </message>
   </context>
   <context>
+    <name>PathOpGui</name>
+    <message>
+      <location filename="PathOpGui.py" line="603"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation>Le operazioni mulitiple sono contrassegnate come</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathProject</name>
+    <message>
+      <location filename="PathOpGui.py" line="533"/>
+      <source>Vertexes are not supported</source>
+      <translation>Non sono supportati i vertici</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="537"/>
+      <source>Edges are not supported</source>
+      <translation>Non sono supportati gli spigoli</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="541"/>
+      <source>Faces are not supported</source>
+      <translation>Non sono supportate le facce</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPathArea</name>
     <message>
       <location filename="../../Command.cpp" line="55"/>
@@ -3699,7 +3814,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="73"/>
       <source>Setup Sheet</source>
-      <translation type="unfinished">Setup Sheet</translation>
+      <translation>Configura Foglio</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="82"/>
@@ -3924,7 +4039,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PropertyCreate.ui" line="120"/>
       <source>Create another</source>
-      <translation type="unfinished">Create another</translation>
+      <translation>Crea un altro</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="14"/>

@@ -196,7 +196,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Автоматически устанавливать размер из содержимого</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
@@ -3579,7 +3579,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Выберите инструмент...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>

@@ -4407,7 +4407,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="95"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>Перпендикулярний</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="100"/>

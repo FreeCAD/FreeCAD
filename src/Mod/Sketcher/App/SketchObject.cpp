@@ -123,6 +123,8 @@ SketchObject::SketchObject()
     VLine->setConstruction(true);
     ExternalGeo.push_back(HLine->getGeometry());
     ExternalGeo.push_back(VLine->getGeometry());
+    HLine->setOwner(false); // we have transferred the ownership to ExternalGeo
+    VLine->setOwner(false); // we have transferred the ownership to ExternalGeo
     rebuildVertexIndex();
 
     lastDoF=0;
@@ -5160,6 +5162,7 @@ int SketchObject::exposeInternalGeometry(int GeoId)
         std::vector<Constraint *> icon;
 
         std::vector<Base::Vector3d> poles = bsp->getPoles();
+        std::vector<double> weights = bsp->getWeights();
         std::vector<double> knots = bsp->getKnots();
 
         double distance_p0_p1 = (poles[1]-poles[0]).Length(); // for visual purposes only
@@ -5187,10 +5190,9 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 icon.push_back(newConstr);
 
                 if(it != controlpointgeoids.begin()) {
-                    // if pole-weight newly created AND first weight is radius-constrained,
-                    // make it equal to first weight by default
-
-                    if(isfirstweightconstrained) {
+                    if(isfirstweightconstrained && weights[0] == weights[index]) {
+                        // if pole-weight newly created AND first weight is radius-constrained,
+                        // AND these weights are equal, constrain them to be equal
                         Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
                         newConstr2->Type = Sketcher::Equal;
                         newConstr2->First = currentgeoid+incrgeo+1;
@@ -7040,9 +7042,9 @@ std::vector<Part::Geometry*> SketchObject::getCompleteGeometry(void) const
     return vals;
 }
 
-std::vector<std::unique_ptr<const GeometryFacade>> SketchObject::getCompleteGeometryFacade(void) const
+GeoListFacade SketchObject::getGeoListFacade(void) const
 {
-    std::vector<std::unique_ptr<const GeometryFacade>> facade;
+    std::vector<GeometryFacadeUniquePtr> facade;
     facade.reserve( Geometry.getSize() + ExternalGeo.size() );
 
     for(auto geo : Geometry.getValues())
@@ -7051,7 +7053,7 @@ std::vector<std::unique_ptr<const GeometryFacade>> SketchObject::getCompleteGeom
     for(auto rit = ExternalGeo.rbegin(); rit != ExternalGeo.rend(); rit++)
         facade.push_back(GeometryFacade::getFacade(*rit));
 
-    return facade;
+    return GeoListFacade::getGeoListModel(std::move(facade), Geometry.getSize());
 }
 
 void SketchObject::rebuildVertexIndex(void)

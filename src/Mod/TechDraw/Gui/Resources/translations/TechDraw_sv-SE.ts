@@ -4178,7 +4178,7 @@ med hjälp av det givna X/Y-avstånden</translation>
     </message>
     <message>
       <source>Views</source>
-      <translation type="unfinished">Views</translation>
+      <translation>Visningar</translation>
     </message>
   </context>
 </TS>

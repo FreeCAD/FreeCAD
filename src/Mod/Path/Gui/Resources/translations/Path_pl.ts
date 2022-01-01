@@ -703,29 +703,14 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Obiekt bazowy %s.%s został odrzucony przez operację</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="785"/>
-      <source>Heights</source>
-      <translation>Wysokości</translation>
+      <location filename="PathProfileGui.py" line="165"/>
+      <source>Profile</source>
+      <translation>Kontur</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="966"/>
-      <source>Diameters</source>
-      <translation>Średnice</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="997"/>
-      <source>AreaOp Operation</source>
-      <translation>Operacja AreaOp</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1122"/>
-      <source>Uncreate AreaOp Operation</source>
-      <translation>Nieistniejąca operacja AreaOp</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="1262"/>
-      <source>Pick Start Point</source>
-      <translation>Wybierz punkt początkowy</translation>
+      <location filename="PathProfileGui.py" line="168"/>
+      <source>Profile entire model, selected face(s) or selected edge(s)</source>
+      <translation>Profiluj cały model, wybrane ściany lub wybrane krawędzie</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="206"/>
@@ -746,11 +731,6 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <location filename="PathCircularHoleBase.py" line="80"/>
       <source>List of disabled features</source>
       <translation>Lista wyłączonych funkcji</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="456"/>
-      <source>Unable to create path for face(s).</source>
-      <translation>Nie można utworzyć ścieżki dla powierzchni.</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
@@ -811,6 +791,36 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <location filename="InitGui.py" line="159"/>
       <source>Utils</source>
       <translation>Narzędzia</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="785"/>
+      <source>Heights</source>
+      <translation>Wysokości</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="966"/>
+      <source>Diameters</source>
+      <translation>Średnice</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="997"/>
+      <source>AreaOp Operation</source>
+      <translation>Operacja AreaOp</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1122"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Nieistniejąca operacja AreaOp</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1262"/>
+      <source>Pick Start Point</source>
+      <translation>Wybierz punkt początkowy</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="456"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Nie można utworzyć ścieżki dla powierzchni.</translation>
     </message>
   </context>
   <context>
@@ -909,7 +919,7 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     <message>
       <location filename="PathDressupTagGui.py" line="63"/>
       <source>Edit HoldingTags Dress-up</source>
-      <translation>Edytuj ulepszenia pól mocujących</translation>
+      <translation>Edytuj ulepszenia mostków</translation>
     </message>
   </context>
   <context>
@@ -1283,9 +1293,34 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Opcja chłodzenia dla tej operacji</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="194"/>
+      <source>Edit</source>
+      <translation>Edycja</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="475"/>
       <source>Base Geometry</source>
       <translation>Geometria podstawowa</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="576"/>
+      <source>Vertexes are not supported</source>
+      <translation>Vertexes nie są obsługiwane</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="583"/>
+      <source>Edges are not supported</source>
+      <translation>Krawędzie nie są obsługiwane</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="590"/>
+      <source>Faces are not supported</source>
+      <translation>Ściany nie są obsługiwane</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="657"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation>Operacje wielokrotne są nazywane jako</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="672"/>
@@ -1299,9 +1334,24 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Dla tej operacji nie można zmodyfikować głębokości końcowej. Jeśli konieczne jest ręczne ustawienie głębokości końcowej, wybierz inną operację.</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Wysokości</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="869"/>
       <source>Depths</source>
       <translation>Głębia</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1061"/>
+      <source>Diameters</source>
+      <translation>Średnice</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1093"/>
+      <source>AreaOp Operation</source>
+      <translation>Operacja AreaOp</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1058"/>
@@ -1309,17 +1359,19 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Operacja</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="1224"/>
+      <source>Uncreate AreaOp Operation</source>
+      <translation>Nieistniejąca operacja AreaOp</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="1371"/>
+      <source>Pick Start Point</source>
+      <translation>Wybierz punkt początkowy</translation>
+    </message>
+    <message>
       <location filename="PathJob.py" line="153"/>
       <source>Job Cycle Time Estimation</source>
       <translation>Szacowanie czasu pracy</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathOpGui</name>
-    <message>
-      <location filename="PathOpGui.py" line="603"/>
-      <source>Mulitiple operations are labeled as</source>
-      <translation>Operacje wielokrotne są nazywane jako</translation>
     </message>
   </context>
   <context>
@@ -1406,27 +1458,64 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Sprawdź jego wartość domyślną.</translation>
     </message>
     <message>
+      <location filename="PathProfile.py" line="196"/>
+      <source>CW</source>
+      <translation>Zgodnie ze wskazówkami zegara</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="197"/>
+      <source>CCW</source>
+      <translation>Przeciwnie do ruchu wskazówek zegara</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="200"/>
+      <source>Collectively</source>
+      <translation type="unfinished">Collectively</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="201"/>
+      <source>Individually</source>
+      <translation type="unfinished">Individually</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="204"/>
+      <source>Round</source>
+      <translation>Zaokrąglony</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="205"/>
+      <source>Square</source>
+      <translation>Kwadrat</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="206"/>
+      <source>Miter</source>
+      <translation type="unfinished">Miter</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="209"/>
+      <source>Outside</source>
+      <translation>Na zewnątrz</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="210"/>
+      <source>Inside</source>
+      <translation>Wewnątrz</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="479"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Nie można utworzyć ścieżki dla powierzchni.</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="622"/>
+      <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
+      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+    </message>
+    <message>
       <location filename="PathProfile.py" line="663"/>
       <source>For open edges, verify Final Depth for this operation.</source>
       <translation>W przypadku otwartych krawędzi sprawdź głębokość końcową dla tej operacji.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathProject</name>
-    <message>
-      <location filename="PathOpGui.py" line="533"/>
-      <source>Vertexes are not supported</source>
-      <translation>Vertexes nie są obsługiwane</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="537"/>
-      <source>Edges are not supported</source>
-      <translation>Krawędzie nie są obsługiwane</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="541"/>
-      <source>Faces are not supported</source>
-      <translation>Ściany nie są obsługiwane</translation>
     </message>
   </context>
   <context>
@@ -2462,42 +2551,42 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupDogbone.py" line="407"/>
       <source>The side of path to insert bones</source>
-      <translation>Strona ścieżki do zamieszczenia kości</translation>
+      <translation>Strona ścieżki do zamieszczenia nadcięcia w narożniku</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="410"/>
       <source>The style of bones</source>
-      <translation>Styl boniowania</translation>
+      <translation>Styl nadcięcie w narożnikach</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="413"/>
       <source>Bones that aren't dressed up</source>
-      <translation>Nieskonfigurowane kości</translation>
+      <translation>Nieskonfigurowane nadcięcie w narożnikach</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="416"/>
       <source>The algorithm to determine the bone length</source>
-      <translation>Algorytm do ustalenia długości kości</translation>
+      <translation>Algorytm do ustalenia długości nadcięcia</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="419"/>
       <source>Dressup length if Incision == custom</source>
-      <translation>Skonfigurowanie długości w przypadku nacięcia == reguła</translation>
+      <translation>Skonfigurowanie długości w przypadku nadcięcia == niestandardowe</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="960"/>
       <source>Edit Dogbone Dress-up</source>
-      <translation>Edycja ulepszenia Dogbone</translation>
+      <translation>Edycja ulepszenia nadcięcia w narożnikach</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="1184"/>
       <source>Dogbone Dress-up</source>
-      <translation>Ulepszenie Dogbone</translation>
+      <translation>Ulepszenie nadcięcie w narożnikach</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="1187"/>
       <source>Creates a Dogbone Dress-up object from a selected path</source>
-      <translation>Tworzy obiekt ulepszenia Dogbone z wybranych ścieżek</translation>
+      <translation>Tworzy obiekt ulepszenia nadcięcia w narożnikach z wybranych ścieżek</translation>
     </message>
     <message>
       <location filename="PathDressupDogbone.py" line="1199"/>
@@ -2512,7 +2601,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupDogbone.py" line="1207"/>
       <source>Create Dogbone Dress-up</source>
-      <translation>Utwórz ulepszenie Dogbone</translation>
+      <translation>Utwórz ulepszenie nadcięcie w narożnikach</translation>
     </message>
   </context>
   <context>
@@ -2707,12 +2796,12 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathDressupTag.py" line="253"/>
       <source>Please select a Profile object</source>
-      <translation>Proszę wybrać profil obiektu</translation>
+      <translation>Proszę wybrać profil objektu</translation>
     </message>
     <message>
       <location filename="PathDressupTagPreferences.py" line="80"/>
       <source>Holding Tag</source>
-      <translation>Pole mocujące</translation>
+      <translation>Mostek</translation>
     </message>
     <message>
       <location filename="PathDressupTagGui.py" line="204"/>
@@ -3371,7 +3460,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSlotGui.py" line="243"/>
       <source>Slot</source>
-      <translation>Rowek</translation>
+      <translation>Wpust</translation>
     </message>
     <message>
       <location filename="PathSlotGui.py" line="244"/>
@@ -3516,6 +3605,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathToolLibraryEditor.py" line="387"/>
       <source>Rename Selected Tool Table</source>
       <translation>Zmień nazwę zaznaczonej tabeli narzędzi</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathOpGui</name>
+    <message>
+      <location filename="PathOpGui.py" line="603"/>
+      <source>Mulitiple operations are labeled as</source>
+      <translation>Operacje wielokrotne są nazywane jako</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathProject</name>
+    <message>
+      <location filename="PathOpGui.py" line="533"/>
+      <source>Vertexes are not supported</source>
+      <translation>Vertexes nie są obsługiwane</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="537"/>
+      <source>Edges are not supported</source>
+      <translation>Krawędzie nie są obsługiwane</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="541"/>
+      <source>Faces are not supported</source>
+      <translation>Ściany nie są obsługiwane</translation>
     </message>
   </context>
   <context>
@@ -4795,7 +4910,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="90"/>
       <source>Boundary Shape</source>
-      <translation>Kształt Granicy</translation>
+      <translation>Kształt granicy</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
@@ -6393,7 +6508,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="14"/>
       <source>Dogbones</source>
-      <translation>Kształty kości</translation>
+      <translation>Nadcięcie w narożnikach</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="35"/>
@@ -6410,12 +6525,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wybierz styl wykończenia typu kość:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Kształt kości&lt;/span&gt; ... obierz najkrótszą ścieżkę do pokrycia narożnika,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... wydłuż wybrany kierunek aż narożnik będzie pokryty&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wybierz styl wykończenia typu nadcięcie w narożnikach:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Kształt kości&lt;/span&gt; ... obierz najkrótszą ścieżkę do pokrycia narożnika,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... wydłuż wybrany kierunek aż narożnik będzie pokryty&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
       <source>Dogbone</source>
-      <translation>Dogbone</translation>
+      <translation>Nadcięcie w narożnikach</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="57"/>
@@ -6445,7 +6560,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On which side of the profile bones are inserted - this also determines which corners are dressed up. The default value is determined based on the profile being dressed up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Po której stronie profilu wstawiane są kości - decyduje to również o tym, które narożniki zostaną wykończone. Wartość domyślna jest ustalana na podstawie profilu, który ma być poddany wykończeniu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Po której stronie profilu wstawiane są nadcięcia w narożnikach - decyduje to również o tym, które narożniki zostaną wykończone. Wartość domyślna jest ustalana na podstawie profilu, który ma być poddany wykończeniu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="94"/>
@@ -6465,7 +6580,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="114"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it's the radius of the tool (R) and for dogbones it's R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;custom&lt;/span&gt; ... let's you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Określa długość nacięcia kości do umieszczenia w profilu.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;adaptacyjny&lt;/span&gt; ... długość jest dostosowywana by przykryć narożnik bazując na kącie jego krawędzi, biorąc pod uwagę promień bieżącego narzędzia (domyślnie)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;zablokowane&lt;/span&gt; ... to samo co adaptacyjny dla kątów prostych. Dla kształtów typu T-bone jest to promień narzędzia (R) zaś dla cięć typu kość jest to R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;niestandardowe&lt;/span&gt; ... pozwala ustawić niestandardową (zablokowaną) długość poniżej&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Określa długość nadcięcia w narożnikach do umieszczenia w profilu.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;adaptacyjny&lt;/span&gt; ... długość jest dostosowywana by przykryć narożnik bazując na kącie jego krawędzi, biorąc pod uwagę promień bieżącego narzędzia (domyślnie)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;zablokowane&lt;/span&gt; ... to samo co adaptacyjny dla kątów prostych. Dla kształtów typu T-bone jest to promień narzędzia (R) zaś dla nadcięci w narożnikach jest to R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;niestandardowe&lt;/span&gt; ... pozwala ustawić niestandardową (zablokowaną) długość poniżej&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
@@ -6485,12 +6600,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=" font-weight:600;"&gt;Incision&lt;/span&gt; is set to &lt;span style=" font-weight:600;"&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Podaj długość każdej kości jeśli &lt;span style=" font-weight:600;"&gt;Nacięcie&lt;/span&gt; jest ustawione na &lt;span style=" font-weight:600;"&gt;użytkownika&lt;/span&gt;, w innym wypadku zignoruj.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Podaj długość każdego nadcięcia w narożnikach jeśli &lt;span style=" font-weight:600;"&gt;Nacięcie&lt;/span&gt; jest ustawione na wartość &lt;span style=" font-weight:600;"&gt;użytkownika&lt;/span&gt;, w innym wypadku zignoruj.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=" font-weight:600;"&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=" font-weight:600;"&gt;un-check&lt;/span&gt; the bones you don't want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=" font-weight:600;"&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you're trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lista lokalizacji kości (wraz z wszystkimi kośćmi w tej lokalizacji), które są częścią tego wykończenia. Lista ta jest określana na podstawie narożników w profilu i wybranej&lt;span style=" font-weight:600;"&gt;Strony&lt;/span&gt; dla kości. &lt;/p&gt;&lt;p&gt;Możesz &lt;span style=" font-weight:600;"&gt;odznaczyć&lt;/span&gt; kości, których nie chcesz wykańczać.&lt;/p&gt;&lt;p&gt;Jeśli kość jest &lt;span style=" font-weight:600;"&gt;wyszarzona&lt;/span&gt; to znaczy, że została już wykończona. Innymi słowy, jeśli wykończysz to cięcie typu kość ponownie, będziesz mógł tylko wybrać kości, które są tu odznaczone.&lt;/p&gt;&lt;p&gt;Jeśli ta lista jest pusta, prawdopodobnie próbujesz utworzyć kości po złej stronie profilu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lista lokalizacji nadcięć narożników (wraz z wszystkimi nadcięciami w tej lokalizacji), które są częścią tego wykończenia. Lista ta jest określana na podstawie narożników w profilu i wybranej&lt;span style=" font-weight:600;"&gt;Strony&lt;/span&gt; dla nadcięć. &lt;/p&gt;&lt;p&gt;Możesz &lt;span style=" font-weight:600;"&gt;odznaczyć&lt;/span&gt; nadcięcia, których nie chcesz wykańczać.&lt;/p&gt;&lt;p&gt;Jeśli nadcięcie jest &lt;span style=" font-weight:600;"&gt;wyszarzona&lt;/span&gt; to znaczy, że została już wykończona. Innymi słowy, jeśli wykończysz to nadcięcie narożnika ponownie, będziesz mógł tylko wybrać nadcięcia, które są tu odznaczone.&lt;/p&gt;&lt;p&gt;Jeśli ta lista jest pusta, prawdopodobnie próbujesz utworzyć nadcięcia po złej stronie profilu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>

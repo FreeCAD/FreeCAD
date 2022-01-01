@@ -292,7 +292,7 @@
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
       <translation>Una carpeta personalizada opcional que se mostrará en la parte inferior de la primera página.
-Mediante el uso de ";;" para separar rutas, puede agregar varias carpetas aquí</translation>
+Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
@@ -302,7 +302,7 @@ Mediante el uso de ";;" para separar rutas, puede agregar varias carpetas aquí<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation>Muestra un bloc de notas junto a las miniaturas del archivo, donde puedes mantener notas entre sesiones</translation>
+      <translation>Muestra un bloc de notas junto a las miniaturas del archivo, donde podés mantener notas entre sesiones</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
@@ -342,7 +342,7 @@ Mediante el uso de ";;" para separar rutas, puede agregar varias carpetas aquí<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
-      <translation>Color del gradiente de fondo</translation>
+      <translation>Color de fondo en degradé</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
@@ -457,7 +457,7 @@ Mediante el uso de ";;" para separar rutas, puede agregar varias carpetas aquí<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation>Si se selecciona esta opción, el icono 'Nuevo archivo' muestra un icono de degradado en lugar del icono normal</translation>
+      <translation>Si se selecciona esta opción, el icono 'Nuevo archivo' mostrará un icono en degradé en lugar del icono normal</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -467,7 +467,7 @@ Mediante el uso de ";;" para separar rutas, puede agregar varias carpetas aquí<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation>Elija el banco de trabajo al que cambiar después del lanzamiento del programa</translation>
+      <translation>Elegí el entorno de trabajo al que cambiar después del lanzamiento del programa</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>

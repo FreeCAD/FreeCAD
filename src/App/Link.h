@@ -99,7 +99,7 @@ public:
 #define LINK_PARAM_COPY_ON_CHANGE(...) \
     (LinkCopyOnChange, long, App::PropertyEnumeration, ((long)0), \
       "Disabled: disable copy on change\n"\
-      "Enabled: enable copy linked object on change of any of its propert marked as CopyOnChange\n"\
+      "Enabled: enable copy linked object on change of any of its properties marked as CopyOnChange\n"\
       "Owned: indicate the linked object has been copied and is own owned by the link. And the\n"\
       "       the link will try to sync any change of the original linked object back to the copy.",\
       ##__VA_ARGS__)

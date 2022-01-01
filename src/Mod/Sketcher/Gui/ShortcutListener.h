@@ -31,6 +31,13 @@ namespace SketcherGui {
 
 class ViewProviderSketch;
 
+class ViewProviderSketchShortcutListenerAttorney {
+private:
+    static inline void deleteSelected(ViewProviderSketch &vp);
+
+
+    friend class ShortcutListener;
+};
 
 class ShortcutListener: public QObject
 {

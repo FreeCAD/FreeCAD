@@ -130,9 +130,11 @@ class Macro(object):
         u = urlopen(url)
         if u is None:
             FreeCAD.Console.PrintWarning(
-                "AddonManager: Debug: connection is lost (proxy setting changed?)",
-                url,
-                "\n",
+                translate(
+                    "AddonsInstaller",
+                    f"Could not connect to {url} - check connection and proxy settings",
+                )
+                + "\n"
             )
             return
         p = u.read()
@@ -148,7 +150,11 @@ class Macro(object):
                 u2 = urlopen(rawcodeurl)
                 if u2 is None:
                     FreeCAD.Console.PrintWarning(
-                        "AddonManager: Debug: unable to open URL", rawcodeurl, "\n"
+                        translate(
+                            "AddonsInstaller",
+                            "Unable to open macro code URL {rawcodeurl}",
+                        )
+                        + "\n"
                     )
                     return
                 # code = u2.read()
@@ -252,7 +258,7 @@ class Macro(object):
         if len(warnings) > 0:
             return False, warnings
 
-        FreeCAD.Console.PrintMessage(f"Macro {self.name} was installed successfully.\n")
+        FreeCAD.Console.PrintLog(f"Macro {self.name} was installed successfully.\n")
         return True, []
 
     def remove(self) -> bool:
@@ -280,7 +286,11 @@ class Macro(object):
                 remove_directory_if_empty(os.path.dirname(dst_file))
             except Exception:
                 FreeCAD.Console.PrintWarning(
-                    f"Failed to remove macro file '{dst_file}': it might not exist, or its permissions changed\n"
+                    translate(
+                        "AddonsInstaller",
+                        f"Failed to remove macro file '{dst_file}': it might not exist, or its permissions changed",
+                    )
+                    + "\n"
                 )
         return True
 

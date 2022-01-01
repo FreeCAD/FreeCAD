@@ -2843,7 +2843,7 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="301"/>
       <source>Create transformed copy</source>
-      <translation type="unfinished">Create transformed copy</translation>
+      <translation>Skapa transformerad kopia</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="302"/>
@@ -2998,7 +2998,7 @@ of projection.</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="199"/>
       <source>Edit Mirror</source>
-      <translation type="unfinished">Edit Mirror</translation>
+      <translation>Redigera spegel</translation>
     </message>
   </context>
   <context>
@@ -3763,7 +3763,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="67"/>
       <source>Export invisible objects</source>
-      <translation type="unfinished">Export invisible objects</translation>
+      <translation>Exportera osynliga objekt</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="80"/>
@@ -4495,7 +4495,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
       <source>Add edge</source>
-      <translation type="unfinished">Add edge</translation>
+      <translation>Lägg till kant</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="56"/>
@@ -5559,7 +5559,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1141"/>
       <source>  Bad type</source>
-      <translation type="unfinished">  Bad type</translation>
+      <translation>  Dålig typ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
