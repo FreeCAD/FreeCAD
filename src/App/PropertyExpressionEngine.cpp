@@ -824,7 +824,8 @@ void PropertyExpressionEngine::renameExpressions(const std::map<ObjectIdentifier
     }
 
     aboutToSetValue();
-    expressions = newExpressions;
+    expressions.clear();
+    expressions.insert(newExpressions.begin(), newExpressions.end());
     for (ExpressionMap::const_iterator i = expressions.begin(); i != expressions.end(); ++i)
         expressionChanged(i->first);
 
