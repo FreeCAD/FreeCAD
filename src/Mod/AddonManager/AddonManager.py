@@ -111,32 +111,64 @@ class CommandAddonManager:
     def Activated(self) -> None:
 
         # display first use dialog if needed
-        readWarningParameter = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Addons"
-        )
-        readWarning = readWarningParameter.GetBool("readWarning", False)
-        newReadWarningParameter = FreeCAD.ParamGet(
-            "User parameter:Plugins/addonsRepository"
-        )
-        readWarning |= newReadWarningParameter.GetBool("readWarning", False)
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        readWarning = pref.GetBool("readWarning2022", False)
+
         if not readWarning:
-            if (
-                QtWidgets.QMessageBox.warning(
-                    None,
-                    "FreeCAD",
-                    translate(
-                        "AddonsInstaller",
-                        "The addons that can be installed here are not "
-                        "officially part of FreeCAD, and are not reviewed "
-                        "by the FreeCAD team. Make sure you know what you "
-                        "are installing!",
-                    ),
-                    QtWidgets.QMessageBox.Cancel | QtWidgets.QMessageBox.Ok,
-                )
-                != QtWidgets.QMessageBox.StandardButton.Cancel
-            ):
-                readWarningParameter.SetBool("readWarning", True)
+            warning_dialog = FreeCADGui.PySideUic.loadUi(
+                os.path.join(os.path.dirname(__file__), "first_run.ui")
+            )
+            autocheck = pref.GetBool("AutoCheck", False)
+            download_macros = pref.GetBool("DownloadMacros", False)
+            proxy_string = pref.GetString("ProxyUrl", "")
+            if pref.GetBool("NoProxyCheck", True):
+                proxy_option = 0
+            elif pref.GetBool("SystemProxyCheck", False):
+                proxy_option = 1
+            elif pref.GetBool("UserProxyCheck", False):
+                proxy_option = 2
+
+            def toggle_proxy_list(option: int):
+                if option == 2:
+                    warning_dialog.lineEditProxy.show()
+                else:
+                    warning_dialog.lineEditProxy.hide()
+
+            warning_dialog.checkBoxAutoCheck.setChecked(autocheck)
+            warning_dialog.checkBoxDownloadMacroMetadata.setChecked(download_macros)
+            warning_dialog.comboBoxProxy.setCurrentIndex(proxy_option)
+            toggle_proxy_list(proxy_option)
+            if proxy_option == 2:
+                warning_dialog.lineEditProxy.setText(proxy_string)
+
+            warning_dialog.comboBoxProxy.currentIndexChanged.connect(toggle_proxy_list)
+
+            warning_dialog.labelWarning.setStyleSheet(
+                f"color:{utils.warning_color_string()};font-weight:bold;"
+            )
+
+            if warning_dialog.exec() == QtWidgets.QDialog.Accepted:
                 readWarning = True
+                pref.SetBool("readWarning2022", True)
+                pref.SetBool("AutoCheck", warning_dialog.checkBoxAutoCheck.isChecked())
+                pref.SetBool(
+                    "DownloadMacros",
+                    warning_dialog.checkBoxDownloadMacroMetadata.isChecked(),
+                )
+                selected_proxy_option = warning_dialog.comboBoxProxy.currentIndex()
+                if selected_proxy_option == 0:
+                    pref.SetBool("NoProxyCheck", True)
+                    pref.SetBool("SystemProxyCheck", False)
+                    pref.SetBool("UserProxyCheck", False)
+                elif selected_proxy_option == 1:
+                    pref.SetBool("NoProxyCheck", False)
+                    pref.SetBool("SystemProxyCheck", True)
+                    pref.SetBool("UserProxyCheck", False)
+                else:
+                    pref.SetBool("NoProxyCheck", False)
+                    pref.SetBool("SystemProxyCheck", False)
+                    pref.SetBool("UserProxyCheck", True)
+                    pref.SetString("ProxyUrl", warning_dialog.lineEditProxy.text())
 
         if readWarning:
             self.launch()
@@ -384,9 +416,11 @@ class CommandAddonManager:
             self.activate_table_widgets,
             self.populate_macros,
             self.update_metadata_cache,
-            self.load_macro_metadata,
             self.check_updates,
         ]
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        if pref.GetBool("DownloadMacros", False):
+            self.startup_sequence.append(self.load_macro_metadata)
         self.current_progress_region = 0
         self.number_of_progress_regions = len(self.startup_sequence)
         self.do_next_startup_phase()
@@ -870,7 +904,6 @@ class CommandAddonManager:
         self.dialog.labelStatusInfo.hide()
         self.dialog.progressBar.hide()
         self.dialog.buttonPauseUpdate.hide()
-        self.dialog.labelUpdateInProgress.hide()
         self.packageList.ui.lineEditFilter.setFocus()
 
     def show_progress_widgets(self) -> None:
@@ -878,7 +911,6 @@ class CommandAddonManager:
             self.dialog.progressBar.show()
             self.dialog.buttonPauseUpdate.show()
             self.dialog.labelStatusInfo.show()
-            self.dialog.labelUpdateInProgress.show()
 
     def update_progress_bar(self, current_value: int, max_value: int) -> None:
         """Update the progress bar, showing it if it's hidden"""

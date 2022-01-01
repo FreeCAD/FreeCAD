@@ -300,4 +300,15 @@ def fix_relative_links(text, base_url):
     return new_text
 
 
+def warning_color_string() -> str:
+    warningColorString = "rgb(255,0,0)"
+    if hasattr(QtWidgets.QApplication.instance(), "styleSheet"):
+        # Qt 5.9 doesn't give a QApplication instance, so can't give the stylesheet info
+        if "dark" in QtWidgets.QApplication.instance().styleSheet().lower():
+            warningColorString = "rgb(255,50,50)"
+        else:
+            warningColorString = "rgb(200,0,0)"
+    return warningColorString
+
+
 #  @}
