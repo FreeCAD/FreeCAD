@@ -44,7 +44,7 @@ if FreeCAD.GuiUp:
 
 import addonmanager_utilities as utils
 from addonmanager_macro import Macro
-from addonmanager_metadata import MetadataDownloadWorker
+from addonmanager_metadata import MetadataDownloadWorker, DependencyDownloadWorker
 from AddonManagerRepo import AddonManagerRepo
 
 translate = FreeCAD.Qt.translate
@@ -1083,10 +1083,11 @@ class InstallWorkbenchWorker(QtCore.QThread):
     success = QtCore.Signal(AddonManagerRepo, str)
     failure = QtCore.Signal(AddonManagerRepo, str)
 
-    def __init__(self, repo: AddonManagerRepo):
+    def __init__(self, repo: AddonManagerRepo, all_repos: List[AddonManagerRepo] = []):
 
         QtCore.QThread.__init__(self)
         self.repo = repo
+        self.all_repos = all_repos
         if have_git and not NOGIT:
             self.git_progress = GitProgressMonitor()
             # TODO: What is wrong with these?
@@ -1210,36 +1211,31 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
     def run_git_clone(self, clonedir: str) -> None:
         self.status_message.emit("Checking module dependencies...")
-        depsok, answer = self.check_python_dependencies(self.repo.url)
-        if depsok:
-            if str(self.repo.name) in py2only:
-                FreeCAD.Console.PrintWarning(
-                    translate(
-                        "AddonsInstaller",
-                        "You are installing a Python 2 workbench on "
-                        "a system running Python 3 - ",
-                    )
-                    + str(self.repo.name)
-                    + "\n"
+        if str(self.repo.name) in py2only:
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "You are installing a Python 2 workbench on "
+                    "a system running Python 3 - ",
                 )
-            self.status_message.emit("Cloning module...")
-            repo = git.Repo.clone_from(self.repo.url, clonedir)
-
-            # Make sure to clone all the submodules as well
-            if repo.submodules:
-                repo.submodule_update(recursive=True)
-
-            if self.repo.branch in repo.heads:
-                repo.heads[self.repo.branch].checkout()
-
-            answer = translate(
-                "AddonsInstaller",
-                "Workbench successfully installed. Please restart "
-                "FreeCAD to apply the changes.",
+                + str(self.repo.name)
+                + "\n"
             )
-        else:
-            self.failure.emit(self.repo, answer)
-            return
+        self.status_message.emit("Cloning module...")
+        repo = git.Repo.clone_from(self.repo.url, clonedir)
+
+        # Make sure to clone all the submodules as well
+        if repo.submodules:
+            repo.submodule_update(recursive=True)
+
+        if self.repo.branch in repo.heads:
+            repo.heads[self.repo.branch].checkout()
+
+        answer = translate(
+            "AddonsInstaller",
+            "Workbench successfully installed. Please restart "
+            "FreeCAD to apply the changes.",
+        )
 
         if self.repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
             # symlink any macro contained in the module to the macros folder
@@ -1269,98 +1265,6 @@ class InstallWorkbenchWorker(QtCore.QThread):
                         answer += ":\n<b>" + f + "</b>"
         self.update_metadata()
         self.success.emit(self.repo, answer)
-
-    def check_python_dependencies(self, baseurl: str) -> Union[bool, str]:
-        """checks if the repo contains a metadata.txt and check its contents"""
-
-        ok = True
-        message = ""
-        depsurl = baseurl.replace("github.com", "raw.githubusercontent.com")
-        if not depsurl.endswith("/"):
-            depsurl += "/"
-        depsurl += "master/metadata.txt"
-        try:
-            mu = utils.urlopen(depsurl)
-        except Exception:
-            return True, translate(
-                "AddonsInstaller",
-                "No metadata.txt found, cannot evaluate Python dependencies",
-            )
-        if mu:
-            # metadata.txt found
-            depsfile = mu.read()
-            mu.close()
-
-            # urllib2 gives us a bytelike object instead of a string.  Have to
-            # consider that
-            try:
-                depsfile = depsfile.decode("utf-8")
-            except AttributeError:
-                pass
-
-            deps = depsfile.split("\n")
-            for line in deps:
-                if line.startswith("workbenches="):
-                    depswb = line.split("=")[1].split(",")
-                    for wb in depswb:
-                        if wb.strip():
-                            if not wb.strip() in FreeCADGui.listWorkbenches().keys():
-                                if (
-                                    not wb.strip() + "Workbench"
-                                    in FreeCADGui.listWorkbenches().keys()
-                                ):
-                                    ok = False
-                                    message += (
-                                        translate(
-                                            "AddonsInstaller", "Missing workbench"
-                                        )
-                                        + ": "
-                                        + wb
-                                        + ", "
-                                    )
-                elif line.startswith("pylibs="):
-                    depspy = line.split("=")[1].split(",")
-                    for pl in depspy:
-                        if pl.strip():
-                            try:
-                                __import__(pl.strip())
-                            except ImportError:
-                                ok = False
-                                message += (
-                                    translate(
-                                        "AddonsInstaller", "Missing python module"
-                                    )
-                                    + ": "
-                                    + pl
-                                    + ", "
-                                )
-                elif line.startswith("optionalpylibs="):
-                    opspy = line.split("=")[1].split(",")
-                    for pl in opspy:
-                        if pl.strip():
-                            try:
-                                __import__(pl.strip())
-                            except ImportError:
-                                message += translate(
-                                    "AddonsInstaller",
-                                    "Missing optional python module (doesn't prevent installing)",
-                                )
-                                message += ": " + pl + ", "
-        if message and (not ok):
-            final_message = translate(
-                "AddonsInstaller",
-                "Some errors were found that prevent installation of this workbench",
-            )
-            final_message += ": <b>" + message + "</b>. "
-            final_message += translate(
-                "AddonsInstaller", "Please install the missing components first."
-            )
-            message = final_message
-        return ok, message
-
-    def check_package_dependencies(self):
-        # TODO: Use the dependencies set in the package.xml metadata
-        pass
 
     def run_zip(self, zipdir: str) -> None:
         "downloads and unzip a zip version from a git repo"
@@ -1546,7 +1450,14 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.downloaders = []
         for repo in self.repos:
             if repo.metadata_url:
+                # package.xml
                 downloader = MetadataDownloadWorker(None, repo, self.index)
+                downloader.start_fetch(download_queue)
+                downloader.updated.connect(self.on_updated)
+                self.downloaders.append(downloader)
+
+                # metadata.txt
+                downloader = DependencyDownloadWorker(None, repo)
                 downloader.start_fetch(download_queue)
                 downloader.updated.connect(self.on_updated)
                 self.downloaders.append(downloader)
@@ -1575,7 +1486,8 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         # Update and serialize the updated index, overwriting whatever was
         # there before
         for downloader in self.downloaders:
-            self.index[downloader.repo.name] = downloader.last_sha1
+            if hasattr(downloader, "last_sha1"):
+                self.index[downloader.repo.name] = downloader.last_sha1
         if not os.path.exists(store):
             os.makedirs(store)
         with open(index_file, "w") as f:

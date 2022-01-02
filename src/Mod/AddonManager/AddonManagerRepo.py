@@ -23,7 +23,7 @@
 import FreeCAD
 
 import os
-from typing import Dict
+from typing import Dict, Set
 
 from addonmanager_macro import Macro
 
@@ -92,6 +92,14 @@ class AddonManagerRepo:
         self.macro = None  # Bridge to Gaël Écorchard's macro management class
         self.updated_timestamp = None
         self.installed_version = None
+
+        # Each repo is also a node in a directed dependency graph:
+        self.requires: Set[AddonManagerRepo] = set()
+        self.blocks: Set[AddonManagerRepo] = set()
+
+        # And maintains a list of required and optional Python dependencies
+        self.python_requires: Set[str] = set()
+        self.python_optional: Set[str] = set()
 
     def __str__(self) -> str:
         result = f"FreeCAD {self.repo_type}\n"
