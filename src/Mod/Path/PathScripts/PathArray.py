@@ -60,6 +60,8 @@ class ObjectArray:
                         "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Percent of copies to randomly offset"))
         obj.addProperty("App::PropertyVectorDistance", "JitterMagnitude",
                         "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Maximum random offset of copies"))
+        obj.addProperty("App::PropertyInteger", "JitterSeed",
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Seed value for jitter randomness"))
         obj.addProperty("App::PropertyLink", "ToolController",
                         "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
         obj.addProperty("App::PropertyBool", "Active",
@@ -88,6 +90,11 @@ class ObjectArray:
             angleMode = copiesMode = centreMode = 0
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
 
+        if not hasattr(obj, "JitterSeed"):
+            obj.addProperty("App::PropertyInteger", "JitterSeed",
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Seed value for jitter randomness"))
+            obj.JitterSeed = 0
+
         obj.setEditorMode('Angle', angleMode)
         obj.setEditorMode('Copies', copiesMode)
         obj.setEditorMode('Centre', centreMode)
@@ -97,6 +104,7 @@ class ObjectArray:
         obj.setEditorMode('SwapDirection', swapDirectionMode)
         obj.setEditorMode('JitterPercent', 0)
         obj.setEditorMode('JitterMagnitude', 0)
+        obj.setEditorMode('JitterSeed', 0)
         obj.setEditorMode('ToolController', 2)
 
     def onChanged(self, obj, prop):
@@ -190,9 +198,12 @@ class ObjectArray:
                 obj.Path = Path.Path()
             return
 
+        # use seed if specified, otherwise default to object name for consistency during recomputes
+        seed = obj.JitterSeed or obj.Name
+
         pa = PathArray(obj.Base, obj.Type, obj.Copies, obj.Offset,
                        obj.CopiesX, obj.CopiesY, obj.Angle, obj.Centre, obj.SwapDirection,
-                       obj.JitterMagnitude, obj.JitterPercent, obj.Name)
+                       obj.JitterMagnitude, obj.JitterPercent, seed)
         obj.Path = pa.getPath()
 
 
