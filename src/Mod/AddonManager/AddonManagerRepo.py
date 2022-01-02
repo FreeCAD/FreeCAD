@@ -23,9 +23,11 @@
 import FreeCAD
 
 import os
-from typing import Dict, Set
+from typing import Dict, Set, List
 
 from addonmanager_macro import Macro
+
+translate = FreeCAD.Qt.translate
 
 
 class AddonManagerRepo:
@@ -69,6 +71,17 @@ class AddonManagerRepo:
                 return "Update available"
             elif self.value == 4:
                 return "Restart required"
+
+    class Dependencies:
+        required = dict()
+        blockers = dict()
+        replaces = dict()
+        python_required: List[str] = []
+        python_optional: List[str] = []
+
+    class ResolutionFailed(RuntimeError):
+        def __init__(self, msg):
+            super().__init__(msg)
 
     def __init__(self, name: str, url: str, status: UpdateStatus, branch: str):
         self.name = name.strip()
@@ -259,3 +272,16 @@ class AddonManagerRepo:
         )
 
         return self.cached_icon_filename
+
+    def walk_dependency_tree(self, all_repos, deps):
+        """Compute the total dependency tree for this repo (recursive)"""
+
+        deps.python_requires |= self.python_requires
+        deps.python_optional |= self.python_optional
+        for dep in self.requires:
+            if dep in all_repos and not dep in deps.required:
+                deps.required.append(all_repos[dep])
+                all_repos[dep].walk_dependency_tree(all_repos, deps)
+        for dep in self.blocks:
+            if dep in all_repos:
+                deps.blockers[dep] = all_repos[dep]

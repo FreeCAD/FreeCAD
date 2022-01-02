@@ -192,17 +192,14 @@ class DependencyDownloadWorker(DownloadWorker):
     """A worker for downloading metadata.txt"""
 
     def __init__(self, parent, repo: AddonManagerRepo):
-        super().__init__(parent, repo.metadata_url)
+        super().__init__(parent, utils.construct_git_url(repo, "metadata.txt"))
         self.repo = repo
-        self.store = os.path.join(
-            FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
-        )
 
     def resolve_fetch(self):
         """Called when the data fetch completed, either with an error, or if it found the metadata file"""
 
         if self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
-            FreeCAD.Console.PrintLog(
+            FreeCAD.Console.PrintMessage(
                 f"Found a metadata.txt file for {self.repo.name}\n"
             )
             new_deps = self.fetch_task.readAll()
@@ -235,14 +232,24 @@ class DependencyDownloadWorker(DownloadWorker):
                     wb_name = wb.strip()
                     if wb_name:
                         self.repo.requires.add(wb_name)
+                        FreeCAD.Console.PrintMessage(
+                            f"{self.repo.display_name} requires FreeCAD Addon '{wb_name}'\n"
+                        )
+
             elif line.startswith("pylibs="):
                 depspy = line.split("=")[1].split(",")
                 for pl in depspy:
                     if pl.strip():
                         self.repo.python_requires.add(pl.strip())
+                        FreeCAD.Console.PrintMessage(
+                            f"{self.repo.display_name} requires python package '{pl.strip()}'\n"
+                        )
             elif line.startswith("optionalpylibs="):
                 opspy = line.split("=")[1].split(",")
                 for pl in opspy:
                     if pl.strip():
                         self.repo.python_optional.add(pl.strip())
+                        FreeCAD.Console.PrintMessage(
+                            f"{self.repo.display_name} optionally imports python package '{pl.strip()}'\n"
+                        )
         self.updated.emit(self.repo)

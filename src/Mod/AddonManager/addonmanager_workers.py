@@ -1125,6 +1125,28 @@ class InstallWorkbenchWorker(QtCore.QThread):
             os.makedirs(moddir)
         target_dir = moddir + os.sep + self.repo.name
 
+        deps = AddonManagerRepo.Dependencies()
+        repo_name_dict = dict()
+        for repo in self.all_repos:
+            repo_name_dict[repo.name] = repo
+            if not repo.name.endswith("Workbench"):
+                repo_name_dict[repo.name + "Workbench"] = repo
+            repo_name_dict[repo.display_name] = repo
+        self.repo.walk_dependency_tree(repo_name_dict, deps)
+
+        # For now just error out:
+        missing_repos = []
+        for dep in deps.required:
+            if dep.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+                missing_repos.append(dep)
+        if missing_repos:
+            FreeCAD.Console.PrintError(
+                f"{self.repo.display_name} requires the following Addons be installed:\n"
+            )
+            for repo in missing_repos:
+                FreeCAD.Console.PrintError(repo.display_name)
+            return
+
         if have_git and not NOGIT:
             self.run_git(target_dir)
         else:
