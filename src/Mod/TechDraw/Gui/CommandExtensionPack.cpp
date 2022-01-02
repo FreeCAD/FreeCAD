@@ -1187,7 +1187,6 @@ void CmdTechDrawExtensionLinePerpendicular::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     execLineParallelPerpendicular(this,false);
-    ///Base::Console().Message("Create perpendiculararallel line started\n");
 }
 
 bool CmdTechDrawExtensionLinePerpendicular::isActive(void)
@@ -1856,14 +1855,15 @@ void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, floa
     // create the 3/4 arc symbolizing a thread from top seen
     double scale = objFeat->getScale();
     int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
-    TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(GeoId);
+    TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
     std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
     if (GeoType == "Edge"){
         if (geom->geomType == TechDraw::CIRCLE){
-            TechDraw::Circle* cgen = static_cast<TechDraw::Circle *>(geom);
+            TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle> (geom);
             Base::Vector3d center = cgen->center;
             float radius = cgen->radius;
-            TechDraw::BaseGeom* threadArc = new TechDraw::AOC(center/scale, radius*factor/scale, 255.0, 165.0);
+            TechDraw::BaseGeomPtr threadArc =
+                    std::make_shared<TechDraw::AOC> (center/scale, radius*factor/scale, 255.0, 165.0);
             std::string arcTag = objFeat->addCosmeticEdge(threadArc);
             TechDraw::CosmeticEdge* arc = objFeat->getCosmeticEdge(arcTag);
             _setLineAttributes(arc);
@@ -1879,11 +1879,11 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
     if ((GeoType0 == "Edge") && (GeoType1 == "Edge")) {
         int GeoId0 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
         int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-        TechDraw::BaseGeom* geom0 = objFeat->getGeomByIndex(GeoId0);
-        TechDraw::BaseGeom* geom1 = objFeat->getGeomByIndex(GeoId1);
+        TechDraw::BaseGeomPtr geom0 = objFeat->getGeomByIndex(GeoId0);
+        TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
         if ((geom0->geomType == TechDraw::GENERIC) && (geom1->geomType == TechDraw::GENERIC)) {
-            TechDraw::Generic* line0 = static_cast<TechDraw::Generic *>(geom0);
-            TechDraw::Generic* line1 = static_cast<TechDraw::Generic *>(geom1);
+            TechDraw::GenericPtr line0 = std::static_pointer_cast<TechDraw::Generic> (geom0);
+            TechDraw::GenericPtr line1 = std::static_pointer_cast<TechDraw::Generic> (geom1);
             Base::Vector3d start0 = line0->points.at(0);
             Base::Vector3d end0 = line0->points.at(1);
             Base::Vector3d start1 = line1->points.at(0);

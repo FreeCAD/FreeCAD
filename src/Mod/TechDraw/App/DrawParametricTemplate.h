@@ -26,6 +26,7 @@
 #include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
 
+#include "Geometry.h"
 #include "DrawTemplate.h"
 
 namespace TechDraw
@@ -67,7 +68,7 @@ public:
     virtual unsigned int getMemSize(void) const;
 
 public:
-    std::vector<TechDraw::BaseGeom *> getGeometry() { return geom; }
+    std::vector<TechDraw::BaseGeomPtr> getGeometry() { return geom; }
     int clearGeometry();
 
     // Template Drawing Methods
@@ -80,7 +81,7 @@ protected:
     void onChanged(const App::Property* prop);
 
 protected:
-    std::vector<TechDraw::BaseGeom *> geom;
+    std::vector<TechDraw::BaseGeomPtr> geom;
 
 private:
     static const char* OrientationEnums[];

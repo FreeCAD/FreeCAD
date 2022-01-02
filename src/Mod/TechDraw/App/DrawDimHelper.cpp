@@ -166,14 +166,14 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
     gp_Ax3 projAx3(stdOrg, stdZ, stdX);
     gp_Pln projPlane(projAx3);                     // OZX
 
-    std::vector<BaseGeom*> bgList;
+    BaseGeomPtrVector bgList;
     if (!edgeNames.empty()) {
         for (auto& n: edgeNames) {
             if (!n.empty()) {
                 std::string geomType = DrawUtil::getGeomTypeFromName(n);
                 if (!n.empty() && (geomType == "Edge")) {
                     int i = DrawUtil::getIndexFromName(n);
-                    BaseGeom* bg = dvp->getGeomByIndex(i);
+                    BaseGeomPtr bg = dvp->getGeomByIndex(i);
                     if (bg != nullptr) {
                         bgList.push_back(bg);
                     }
@@ -182,7 +182,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
         }
     }
 
-    std::vector<BaseGeom*> selEdges = bgList;
+    BaseGeomPtrVector selEdges = bgList;
     if (selEdges.empty()) {
         selEdges = dvp->getEdgeGeometry();                  //do the whole View
     }

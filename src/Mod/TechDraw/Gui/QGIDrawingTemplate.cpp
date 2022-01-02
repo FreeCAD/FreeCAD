@@ -97,9 +97,9 @@ void QGIDrawingTemplate::draw()
     // Clear the previous geometry stored
 
     // Get a list of geometry and iterate
-    const std::vector<TechDraw::BaseGeom *> &geoms =  tmplte->getGeometry();
+    const TechDraw::BaseGeomPtrVector &geoms =  tmplte->getGeometry();
 
-    std::vector<TechDraw::BaseGeom *>::const_iterator it = geoms.begin();
+    TechDraw::BaseGeomPtrVector::const_iterator it = geoms.begin();
 
     QPainterPath path;
 
@@ -109,7 +109,7 @@ void QGIDrawingTemplate::draw()
         switch((*it)->geomType) {
           case TechDraw::GENERIC: {
 
-            TechDraw::Generic *geom = static_cast<TechDraw::Generic *>(*it);
+            TechDraw::GenericPtr geom = std::static_pointer_cast<TechDraw::Generic>(*it);
 
             path.moveTo(geom->points[0].x, geom->points[0].y);
             std::vector<Base::Vector3d>::const_iterator it = geom->points.begin();
