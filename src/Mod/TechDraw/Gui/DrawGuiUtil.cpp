@@ -80,6 +80,7 @@
 #include "QGVPage.h"
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"
+#include "DlgPageChooser.h"
 #include "DrawGuiUtil.h"
 
 using namespace TechDrawGui;
@@ -104,6 +105,8 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
 {
     TechDraw::DrawPage* page = nullptr;
+    std::vector<std::string> names;
+    std::vector<std::string> labels;
 
     //check Selection for a page
     std::vector<App::DocumentObject*> selPages = cmd->getSelection().
@@ -127,8 +130,18 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
                 page = qp->getDrawPage();
             } else {
                 // no active page
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Which page?"),
-                                     QObject::tr("Can not determine correct page."));
+                for(auto obj: selPages) {
+                    std::string name = obj->getNameInDocument();
+                    names.push_back(name);
+                    std::string label = obj->Label.getValue();
+                    labels.push_back(label);
+                }
+                DlgPageChooser dlg(labels, names, Gui::getMainWindow());
+                if(dlg.exec()==QDialog::Accepted) {
+                    std::string selName = dlg.getSelection();
+                    App::Document*  doc = cmd->getDocument();
+                    page = static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
+                }
             }
         } else { 
             //only 1 page in document - use it
@@ -136,8 +149,18 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
         }
     } else if (selPages.size() > 1) {
         //multiple pages in selection
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                             QObject::tr("Select only 1 page."));
+        for(auto obj: selPages) {
+            std::string name = obj->getNameInDocument();
+            names.push_back(name);
+            std::string label = obj->Label.getValue();
+            labels.push_back(label);
+        }
+        DlgPageChooser dlg(labels, names, Gui::getMainWindow());
+        if(dlg.exec()==QDialog::Accepted) {
+            std::string selName = dlg.getSelection();
+            App::Document*  doc = cmd->getDocument();
+            page = static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
+        }
     } else {
         //exactly 1 page in selection, use it
         page = static_cast<TechDraw::DrawPage*>(selPages.front());
