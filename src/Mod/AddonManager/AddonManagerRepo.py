@@ -73,11 +73,12 @@ class AddonManagerRepo:
                 return "Restart required"
 
     class Dependencies:
-        required = dict()
+        required_external_addons = dict()
         blockers = dict()
         replaces = dict()
-        python_required: List[str] = []
-        python_optional: List[str] = []
+        unrecognized_addons: Set[str] = set()
+        python_required: Set[str] = set()
+        python_optional: Set[str] = set()
 
     class ResolutionFailed(RuntimeError):
         def __init__(self, msg):
@@ -276,12 +277,16 @@ class AddonManagerRepo:
     def walk_dependency_tree(self, all_repos, deps):
         """Compute the total dependency tree for this repo (recursive)"""
 
-        deps.python_requires |= self.python_requires
+        deps.python_required |= self.python_requires
         deps.python_optional |= self.python_optional
         for dep in self.requires:
-            if dep in all_repos and not dep in deps.required:
-                deps.required.append(all_repos[dep])
-                all_repos[dep].walk_dependency_tree(all_repos, deps)
+            if dep in all_repos:
+                if not dep in deps.required:
+                    deps.required_external_addons.append(all_repos[dep])
+                    all_repos[dep].walk_dependency_tree(all_repos, deps)
+            else:
+                # Maybe this is an internal workbench, just store its name
+                deps.unrecognized_addons.add(dep)
         for dep in self.blocks:
             if dep in all_repos:
                 deps.blockers[dep] = all_repos[dep]

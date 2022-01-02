@@ -1129,23 +1129,56 @@ class InstallWorkbenchWorker(QtCore.QThread):
         repo_name_dict = dict()
         for repo in self.all_repos:
             repo_name_dict[repo.name] = repo
-            if not repo.name.endswith("Workbench"):
-                repo_name_dict[repo.name + "Workbench"] = repo
             repo_name_dict[repo.display_name] = repo
         self.repo.walk_dependency_tree(repo_name_dict, deps)
 
-        # For now just error out:
-        missing_repos = []
-        for dep in deps.required:
+        # TODO: These must be dialog boxes...
+
+        missing_external_addons = []
+        for dep in deps.required_external_addons:
             if dep.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
-                missing_repos.append(dep)
-        if missing_repos:
+                missing_external_addons.append(dep)
+        if missing_external_addons:
+            # For now just error out if we are missing an external addon:
             FreeCAD.Console.PrintError(
                 f"{self.repo.display_name} requires the following Addons be installed:\n"
             )
-            for repo in missing_repos:
-                FreeCAD.Console.PrintError(repo.display_name)
+            for repo in missing_external_addons:
+                FreeCAD.Console.PrintError("  * " + repo.display_name + "\n")
             return
+
+        # Now check the loaded addons to see if we are missing an internal workbench:
+        wbs = FreeCADGui.listWorkbenches()
+        missing_wbs = []
+        for dep in deps.unrecognized_addons:
+            if dep not in wbs and dep+"Workbench" not in wbs:
+                missing_wbs.append(dep)
+        if missing_wbs:
+            FreeCAD.Console.PrintError(
+                translate("AddonsInstaller",f"{self.repo.display_name} requires the following workbenches, but your version of FreeCAD does not appear to have them:") + "\n"
+            )
+            for wb in missing_wbs:
+                FreeCAD.Console.PrintError("  * " + wb + "\n")
+            # There's no recovering from this...
+            return
+
+        # Check the Python dependencies:
+        missing_python_requirements = []
+        for py_dep in deps.python_required:
+            try:
+                __import__(py_dep)
+            except ImportError:
+                missing_python_requirements.append(py_dep)
+
+        if missing_python_requirements:
+            # For now just error out if we are missing these:
+            FreeCAD.Console.PrintError(
+                f"{self.repo.display_name} requires the following Python libraries to be installed:\n"
+            )
+            for lib in missing_python_requirements:
+                FreeCAD.Console.PrintError("  * " + lib + "\n")
+            return
+
 
         if have_git and not NOGIT:
             self.run_git(target_dir)
