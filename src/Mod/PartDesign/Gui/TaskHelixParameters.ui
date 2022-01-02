@@ -43,9 +43,6 @@
      </item>
      <item>
       <widget class="QComboBox" name="axis">
-       <property name="toolTip">
-        <string>Axis the helix winds around</string>
-       </property>
        <item>
         <property name="text">
          <string>Base X axis</string>
@@ -96,9 +93,6 @@
      </item>
      <item>
       <widget class="QComboBox" name="inputMode">
-       <property name="toolTip">
-        <string>Parameter set defining the helix</string>
-       </property>
        <item>
         <property name="text">
          <string>Pitch-Height-Angle</string>
@@ -134,9 +128,6 @@
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="pitch">
-       <property name="toolTip">
-        <string>Axial distance between two turns</string>
-       </property>
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
@@ -164,9 +155,6 @@
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="height">
-       <property name="toolTip">
-        <string>Height of helix</string>
-       </property>
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
@@ -194,9 +182,6 @@
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="turns">
-       <property name="toolTip">
-        <string>Number of turns</string>
-       </property>
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
@@ -221,9 +206,6 @@
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="coneAngle">
-       <property name="toolTip">
-        <string>Angle of the cone that forms a hull around the helix.</string>
-       </property>
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
@@ -254,9 +236,6 @@
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="growth">
-       <property name="toolTip">
-        <string>Radial growth of helix per turn</string>
-       </property>
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
@@ -272,9 +251,6 @@
      <property name="enabled">
       <bool>true</bool>
      </property>
-     <property name="toolTip">
-      <string>Sets turning direction to left handed</string>
-     </property>
      <property name="text">
       <string>Left handed</string>
      </property>
@@ -285,9 +261,6 @@
      <property name="enabled">
       <bool>true</bool>
      </property>
-     <property name="toolTip">
-      <string>Reverses the Axis direction</string>
-     </property>
      <property name="text">
       <string>Reversed</string>
      </property>
@@ -295,9 +268,6 @@
    </item>
    <item>
     <widget class="QCheckBox" name="checkBoxOutside">
-     <property name="toolTip">
-      <string>the result will be the intersection of helix and the preexisting body</string>
-     </property>
      <property name="text">
       <string>Remove outside of profile</string>
      </property>
