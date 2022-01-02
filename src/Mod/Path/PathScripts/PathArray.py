@@ -231,7 +231,7 @@ class PathArray:
         if self.jitterPercent == 0:
             pass
         elif random.randint(0,100) < self.jitterPercent:
-            pos.x = pos.x + random.uniform(-self.jitterMagnitude.x, self.jitterMagnitude.y)
+            pos.x = pos.x + random.uniform(-self.jitterMagnitude.x, self.jitterMagnitude.x)
             pos.y = pos.y + random.uniform(-self.jitterMagnitude.y, self.jitterMagnitude.y)
             pos.z = pos.z + random.uniform(-self.jitterMagnitude.z, self.jitterMagnitude.z)
         return pos
