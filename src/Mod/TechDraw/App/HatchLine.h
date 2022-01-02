@@ -25,6 +25,8 @@
 #ifndef _TechDraw_HATCHLINE_H_
 #define _TechDraw_HATCHLINE_H_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <vector>
 #include <string>
 
@@ -34,6 +36,8 @@
 
 //class TopoDS_Edge;
 //class Bnd_Box;
+
+#include "Geometry.h"
 
 namespace TechDraw
 {
@@ -114,12 +118,12 @@ public:
 
     void setPATLineSpec(const PATLineSpec& s) { m_hatchLine = s; }
     void setEdges(std::vector<TopoDS_Edge> e) {m_edges = e;}
-    void setGeoms(std::vector<TechDraw::BaseGeom*>  g) {m_geoms = g;}
+    void setGeoms(std::vector<TechDraw::BaseGeomPtr>  g) {m_geoms = g;}
     void setBBox(const Bnd_Box& bb) {m_box = bb;}
 
     std::vector<TopoDS_Edge>    getEdges(void) { return m_edges; }
     TopoDS_Edge                 getEdge(int i) {return m_edges.at(i);}
-    std::vector<TechDraw::BaseGeom*> getGeoms(void) { return m_geoms; }
+    std::vector<TechDraw::BaseGeomPtr> getGeoms(void) { return m_geoms; }
 
     PATLineSpec       getPATLineSpec(void) { return m_hatchLine; }
     double            getOffset(void) { return m_hatchLine.getOffset(); }      //delta X offset
@@ -133,10 +137,10 @@ public:
     Base::Vector3d    getUnitDir(void);
     Base::Vector3d    getUnitOrtho(void);
     DashSpec          getDashSpec(void) { return m_hatchLine.getDashParms();}
-    Base::Vector3d    calcApparentStart(TechDraw::BaseGeom* g);
+    Base::Vector3d    calcApparentStart(TechDraw::BaseGeomPtr g);
     Base::Vector3d    findAtomStart(void);
     Base::Vector3d    getLineOrigin(void);                              //point corresponding to pattern origin for this line (O + n*intervalX)
-    Base::Vector3d    getPatternStartPoint(TechDraw::BaseGeom* g, double &offset, double scale = 1.0);
+    Base::Vector3d    getPatternStartPoint(TechDraw::BaseGeomPtr g, double &offset, double scale = 1.0);
 
     Bnd_Box getBBox(void) {return m_box;}
     double getMinX(void);
@@ -148,7 +152,7 @@ public:
 
 private:
     std::vector<TopoDS_Edge> m_edges;
-    std::vector<TechDraw::BaseGeom*> m_geoms;
+    std::vector<TechDraw::BaseGeomPtr> m_geoms;
     PATLineSpec m_hatchLine;
     Bnd_Box m_box;
 };

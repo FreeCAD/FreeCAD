@@ -521,7 +521,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
                 for ( ; expWire.More(); expWire.Next()) {
                     iedge++;
                     const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
-                    TechDraw::BaseGeom* e = BaseGeom::baseFactory(edge);
+                    TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(edge);
                     if (e != nullptr) {
                         w->geoms.push_back(e);
                     }

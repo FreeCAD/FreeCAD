@@ -149,8 +149,8 @@ TechDraw::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape sha
 //! get the projected edges with all their new intersections.
 std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDraw::GeometryObject* geometryObject)
 {
-    const std::vector<TechDraw::BaseGeom*>& goEdges = geometryObject->getVisibleFaceEdges(true,true);
-    std::vector<TechDraw::BaseGeom*>::const_iterator itEdge = goEdges.begin();
+    const std::vector<TechDraw::BaseGeomPtr>& goEdges = geometryObject->getVisibleFaceEdges(true,true);
+    std::vector<TechDraw::BaseGeomPtr>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
         origEdges.push_back((*itEdge)->occEdge);

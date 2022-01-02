@@ -142,14 +142,14 @@ void QGIViewPart::setViewPartFeature(TechDraw::DrawViewPart *obj)
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
 }
 
-QPainterPath QGIViewPart::drawPainterPath(TechDraw::BaseGeom *baseGeom) const
+QPainterPath QGIViewPart::drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const
 {
     double rot = getViewObject()->Rotation.getValue();
     return geomToPainterPath(baseGeom,rot);
 }
 
 
-QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double rot)
+QPainterPath QGIViewPart::geomToPainterPath(BaseGeomPtr baseGeom, double rot)
 {
     Q_UNUSED(rot);
     QPainterPath path;
@@ -160,7 +160,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
 
     switch(baseGeom->geomType) {
         case CIRCLE: {
-            TechDraw::Circle *geom = static_cast<TechDraw::Circle *>(baseGeom);
+            TechDraw::CirclePtr geom = std::static_pointer_cast<TechDraw::Circle>(baseGeom);
 
             double x = geom->center.x - geom->radius;
             double y = geom->center.y - geom->radius;
@@ -172,7 +172,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
             }
             break;
         case ARCOFCIRCLE:  {
-            TechDraw::AOC  *geom = static_cast<TechDraw::AOC *>(baseGeom);
+            TechDraw::AOCPtr geom = std::static_pointer_cast<TechDraw::AOC> (baseGeom);
             if (baseGeom->reversed) {
                 path.moveTo(Rez::guiX(geom->endPnt.x),
                             Rez::guiX(geom->endPnt.y));
@@ -203,7 +203,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
             }
             break;
         case TechDraw::ELLIPSE: {
-            TechDraw::Ellipse *geom = static_cast<TechDraw::Ellipse *>(baseGeom);
+            TechDraw::AOEPtr geom = std::static_pointer_cast<TechDraw::AOE> (baseGeom);
 
             // Calculate start and end points as ellipse with theta = 0 and pi
             double startX = geom->center.x + geom->major * cos(geom->angle),
@@ -235,7 +235,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
             }
             break;
         case TechDraw::ARCOFELLIPSE: {
-            TechDraw::AOE *geom = static_cast<TechDraw::AOE *>(baseGeom);
+            TechDraw::AOEPtr geom = std::static_pointer_cast<TechDraw::AOE> (baseGeom);
             if (baseGeom->reversed) {
                 path.moveTo(Rez::guiX(geom->endPnt.x),
                             Rez::guiX(geom->endPnt.y));
@@ -266,7 +266,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
             }
             break;
         case TechDraw::BEZIER: {
-            TechDraw::BezierSegment *geom = static_cast<TechDraw::BezierSegment *>(baseGeom);
+            TechDraw::BezierSegmentPtr geom = std::static_pointer_cast<TechDraw::BezierSegment>(baseGeom);
             if (baseGeom->reversed) {
                 if (!geom->pnts.empty()) {
                     Base::Vector3d rStart = geom->pnts.back();
@@ -317,7 +317,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
             }
             break;
         case TechDraw::BSPLINE: {
-            TechDraw::BSpline *geom = static_cast<TechDraw::BSpline *>(baseGeom);
+            TechDraw::BSplinePtr geom = std::static_pointer_cast<TechDraw::BSpline> (baseGeom);
             if (baseGeom->reversed) {
             // Move painter to the end of our last segment
                 std::vector<TechDraw::BezierSegment>::const_reverse_iterator it = geom->segments.rbegin();
@@ -372,7 +372,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
             }
             break;
         case TechDraw::GENERIC: {
-            TechDraw::Generic *geom = static_cast<TechDraw::Generic *>(baseGeom);
+            TechDraw::GenericPtr geom = std::static_pointer_cast<TechDraw::Generic> (baseGeom);
             if (baseGeom->reversed) {
                 if (!geom->points.empty()) {
                     Base::Vector3d rStart = geom->points.back();
@@ -536,8 +536,8 @@ void QGIViewPart::drawViewPart()
     // Draw Edges
     QColor edgeColor = PreferencesGui::normalQColor();
 
-    const std::vector<TechDraw::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
-    std::vector<TechDraw::BaseGeom *>::const_iterator itGeom = geoms.begin();
+    const TechDraw::BaseGeomPtrVector &geoms = viewPart->getEdgeGeometry();
+    TechDraw::BaseGeomPtrVector::const_iterator itGeom = geoms.begin();
     QGIEdge* item;
     for(int i = 0 ; itGeom != geoms.end(); itGeom++, i++) {
         bool showEdge = false;
@@ -717,17 +717,17 @@ QGIFace* QGIViewPart::drawFace(TechDraw::FacePtr f, int idx)
     std::vector<TechDraw::Wire *> fWires = f->wires;
     QPainterPath facePath;
     for(std::vector<TechDraw::Wire *>::iterator wire = fWires.begin(); wire != fWires.end(); ++wire) {
-        std::vector<TechDraw::BaseGeom*> geoms = (*wire)->geoms;
+        TechDraw::BaseGeomPtrVector geoms = (*wire)->geoms;
         if (geoms.empty())
             continue;
 
-        TechDraw::BaseGeom* firstGeom = geoms.front();
+        TechDraw::BaseGeomPtr firstGeom = geoms.front();
         QPainterPath wirePath;
         //QPointF startPoint(firstGeom->getStartPoint().x, firstGeom->getStartPoint().y);
         //wirePath.moveTo(startPoint);
         QPainterPath firstSeg = drawPainterPath(firstGeom);
         wirePath.connectPath(firstSeg);
-        for(std::vector<TechDraw::BaseGeom *>::iterator edge = ((*wire)->geoms.begin()) + 1; edge != (*wire)->geoms.end(); ++edge) {
+        for(TechDraw::BaseGeomPtrVector::iterator edge = ((*wire)->geoms.begin()) + 1; edge != (*wire)->geoms.end(); ++edge) {
             QPainterPath edgePath = drawPainterPath(*edge);
             //handle section faces differently
             if (idx == -1) {

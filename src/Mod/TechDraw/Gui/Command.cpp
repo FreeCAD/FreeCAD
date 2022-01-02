@@ -156,8 +156,7 @@ void CmdTechDrawPageDefault::activated(int iMsg)
         else {
             Base::Console().Log("INFO - Template: %s for Page: %s NOT Found\n", PageName.c_str(), TemplateName.c_str());
         }
-    }
-    else {
+    } else {
         QMessageBox::critical(Gui::getMainWindow(),
             QLatin1String("No template"),
             QLatin1String("No default template found"));
@@ -836,7 +835,7 @@ bool _checkDirectPlacement(const QGIViewPart* viewPart, const std::vector<std::s
     }
     else if (geoType == "Edge") {
         int index = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
-        TechDraw::BaseGeom* geo = static_cast<DrawViewPart*>(viewPart->getViewObject())->getGeomByIndex(index);
+        TechDraw::BaseGeomPtr geo = static_cast<DrawViewPart *>(viewPart->getViewObject())->getGeomByIndex(index);
         if (geo) {
             Base::Vector3d midPoint(Rez::guiX(geo->getMidPoint()));
             placement = viewPart->mapToScene(midPoint.x, midPoint.y);
