@@ -33,11 +33,11 @@ import PathScripts.PathUtils as PathUtils
 import math
 import copy
 
-from PySide import QtGui
-
 __doc__ = """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+from PathPythonGui.simple_edit_panel import SimpleEditPanel
 
 translate = FreeCAD.Qt.translate
 
@@ -591,115 +591,9 @@ class ObjectDressup:
         return Path.Path(commands)
 
 
-PROP_TYPE_QTYES = ["App::PropertyDistance", "App::PropertyAngle"]
-PROP_TYPE_NUMERIC = PROP_TYPE_QTYES + ["App::PropertyPercent", "App:PropertyFloat"]
-
-
-class SimpleEditPanel:
-    _fc = None
-    obj = None
-    form = None
-
-    def getFields(self):
-        for prop_name, (get_field, set_field) in self._fc.items():
-            setattr(self.obj, prop_name, get_field())
-
-    def setFields(self):
-        for prop_name, (get_field, set_field) in self._fc.items():
-            set_field(getattr(self.obj, prop_name))
-
-    def connectWidget(self, prop_name, widget, custom_lbls=None):
-        if custom_lbls is None:
-            custom_lbls = {}
-        if self._fc is None:
-            self._fc = {}
-        prop_type = self.obj.getTypeIdOfProperty(prop_name)
-        widget_type = type(widget).__name__
-        if prop_type == "App::PropertyEnumeration" and widget_type == "QComboBox":
-            enum = self.obj.getEnumerationsOfProperty(prop_name)
-            # Populate the combo box with the enumeration elements, use the form context for translation
-            elements = [
-                translate(self.form.objectName(), custom_lbls.get(itm, itm))
-                for itm in enum
-            ]
-            widget.clear()
-            widget.addItems(elements)
-
-            def _getter():
-                return enum[widget.currentIndex()]
-
-            def _setter(val):
-                widget.setCurrentIndex(enum.index(val))
-
-            self._fc[prop_name] = _getter, _setter
-        elif prop_type == "App::PropertyBool" and widget_type == "QCheckBox":
-            self._fc[prop_name] = widget.isChecked, widget.setChecked
-        elif prop_type in PROP_TYPE_NUMERIC and widget_type == "QDoubleSpinBox":
-            self._fc[prop_name] = widget.value, widget.setValue
-        elif prop_type in PROP_TYPE_QTYES and widget_type == "QLineEdit":
-            self._fc[prop_name] = widget.text, lambda v: widget.setText(str(v))
-        else:
-            raise ValueError(
-                f"Unsupported connection between '{prop_type}' property and '{widget_type}' widget"
-            )
-        # Set the tooltip to the one corresponding to the property.
-        widget.setToolTip(
-            translate("App::Property", self.obj.getDocumentationOfProperty(prop_name))
-        )
-
-
 class TaskDressupLeadInOut(SimpleEditPanel):
-    def __init__(self, obj, view):
-        self.obj = obj
-        self.viewProvider = view
-        FreeCAD.ActiveDocument.openTransaction("Edit LeadInOut Dress-up")
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/DressUpLeadInOutEdit.ui")
-        self.setupUi()
-
-    def getStandardButtons(self):
-        return int(
-            QtGui.QDialogButtonBox.Ok
-            | QtGui.QDialogButtonBox.Apply
-            | QtGui.QDialogButtonBox.Cancel
-        )
-
-    def clicked(self, button):
-        # callback for standard buttons
-        if button == QtGui.QDialogButtonBox.Apply:
-            self.updateModel()
-            FreeCAD.ActiveDocument.recompute()
-        if button == QtGui.QDialogButtonBox.Cancel:
-            self.abort()
-
-    def abort(self):
-        FreeCAD.ActiveDocument.abortTransaction()
-        self.cleanup(True)
-
-    def reject(self):
-        FreeCAD.ActiveDocument.abortTransaction()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-
-    def accept(self):
-        self.getFields()
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-
-    def cleanup(self, gui):
-        self.viewProvider.clearTaskPanel()
-        if gui:
-            FreeCADGui.Control.closeDialog()
-            FreeCAD.ActiveDocument.recompute()
-
-    def updateModel(self):
-        self.getFields()
-        self.obj.Proxy.execute(self.obj)
-        FreeCAD.ActiveDocument.recompute()
-
-    def open(self):
-        pass
+    _transaction_name = "Edit LeadInOut Dress-up"
+    _ui_file = ":/panels/DressUpLeadInOutEdit.ui"
 
     def setupUi(self):
         self.connectWidget("LeadIn", self.form.chkLeadIn)
