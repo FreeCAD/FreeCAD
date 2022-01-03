@@ -33,7 +33,7 @@
 #include "DlgPageChooser.h"
 #include "ui_DlgPageChooser.h"
 
-FC_LOG_LEVEL_INIT("Gui",true,true)
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace TechDrawGui;
 
@@ -47,7 +47,7 @@ DlgPageChooser::DlgPageChooser(
 {
     ui->setupUi(this);
     ui->lwPages->setSortingEnabled(true);
-    
+
     fillList(labels, names);
 
     connect(ui->bbButtons, SIGNAL(accepted()), this, SLOT(accept()));
@@ -71,7 +71,7 @@ void DlgPageChooser::fillList(std::vector<std::string> labels, std::vector<std::
     QString qText;
     int labelCount = labels.size();
     int i = 0;
-    for(; i < labelCount; i++) {
+    for (; i < labelCount; i++) {
         qLabel = Base::Tools::fromStdString(labels[i]);
         qName = Base::Tools::fromStdString(names[i]);
         qText = QString::fromUtf8("%1 (%2)").arg(qLabel).arg(qName);
@@ -80,7 +80,7 @@ void DlgPageChooser::fillList(std::vector<std::string> labels, std::vector<std::
     }
 }
 
-std::string DlgPageChooser::getSelection() const 
+std::string DlgPageChooser::getSelection() const
 {
     std::string result;
     QList<QListWidgetItem*> sels = ui->lwPages->selectedItems();

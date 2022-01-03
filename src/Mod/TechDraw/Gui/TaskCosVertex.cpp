@@ -86,10 +86,10 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     m_btnOK(nullptr),
     m_btnCancel(nullptr),
     m_pbTrackerState(TRACKERPICK),
-    m_savePoint(QPointF(0.0,0.0))
+    m_savePoint(QPointF(0.0, 0.0))
 {
-    if ( (m_basePage == nullptr) ||
-         (m_baseFeat == nullptr) )  {
+    if ((m_basePage == nullptr) ||
+        (m_baseFeat == nullptr)) {
         //should be caught in CMD caller
         Base::Console().Error("TaskCosVertex - bad parameters.  Can not proceed.\n");
         return;
@@ -118,12 +118,12 @@ TaskCosVertex::~TaskCosVertex()
 
 void TaskCosVertex::updateTask()
 {
-//    blockUpdate = true;
+    //    blockUpdate = true;
 
-//    blockUpdate = false;
+    //    blockUpdate = false;
 }
 
-void TaskCosVertex::changeEvent(QEvent *e)
+void TaskCosVertex::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -199,7 +199,7 @@ void TaskCosVertex::onTrackerClicked(bool b)
 
     QString msg = tr("Pick a point for cosmetic vertex");
     getMainWindow()->statusBar()->show();
-    Gui::getMainWindow()->showMessage(msg,3000);
+    Gui::getMainWindow()->showMessage(msg, 3000);
     ui->pbTracker->setText(QString::fromUtf8("Escape picking"));
     ui->pbTracker->setEnabled(true);
     m_pbTrackerState = TRACKERCANCEL;
@@ -217,22 +217,23 @@ void TaskCosVertex::startTracker(void)
         m_tracker = new QGTracker(m_scene, m_trackerMode);
         QObject::connect(
             m_tracker, SIGNAL(drawingFinished(std::vector<QPointF>, QGIView*)),
-            this     , SLOT  (onTrackerFinished(std::vector<QPointF>, QGIView*))
-           );
-    } else {
+            this, SLOT(onTrackerFinished(std::vector<QPointF>, QGIView*))
+        );
+    }
+    else {
         //this is too harsh. but need to avoid restarting process
         throw Base::RuntimeError("TechDrawNewLeader - tracker already active\n");
     }
     setEditCursor(Qt::CrossCursor);
     QString msg = tr("Left click to set a point");
     Gui::getMainWindow()->statusBar()->show();
-    Gui::getMainWindow()->showMessage(msg,3000);
+    Gui::getMainWindow()->showMessage(msg, 3000);
 }
 
 void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent)
 {
-//    Base::Console().Message("TCV::onTrackerFinished()\n");
-    (void) qgParent;
+    //    Base::Console().Message("TCV::onTrackerFinished()\n");
+    (void)qgParent;
     if (pts.empty()) {
         Base::Console().Error("TaskCosVertex - no points available\n");
         return;
@@ -279,8 +280,8 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
 void TaskCosVertex::removeTracker(void)
 {
 //    Base::Console().Message("TCV::removeTracker()\n");
-    if ( (m_tracker != nullptr) &&
-         (m_tracker->scene() != nullptr) ) {
+    if ((m_tracker != nullptr) &&
+        (m_tracker->scene() != nullptr)) {
         m_scene->removeItem(m_tracker);
         delete m_tracker;
         m_tracker = nullptr;
@@ -299,7 +300,7 @@ void TaskCosVertex::abandonEditSession(void)
 {
     QString msg = tr("In progress edit abandoned. Start over.");
     getMainWindow()->statusBar()->show();
-    Gui::getMainWindow()->showMessage(msg,4000);
+    Gui::getMainWindow()->showMessage(msg, 4000);
 
     ui->pbTracker->setEnabled(true);
 
@@ -328,14 +329,14 @@ bool TaskCosVertex::accept()
     removeTracker();
     double x = ui->dsbX->value().getValue();
     double y = ui->dsbY->value().getValue();
-    QPointF uiPoint(x,-y);
+    QPointF uiPoint(x, -y);
     addCosVertex(uiPoint);
-    
+
     m_baseFeat->recomputeFeature();
     m_baseFeat->requestPaint();
     m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     m_trackerMode = QGTracker::TrackerMode::None;
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
 }
@@ -352,8 +353,8 @@ bool TaskCosVertex::reject()
     }
 
     //make sure any dangling objects are cleaned up
-    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return false;
 }
@@ -363,7 +364,7 @@ TaskDlgCosVertex::TaskDlgCosVertex(TechDraw::DrawViewPart* baseFeat,
                                      TechDraw::DrawPage* page)
     : TaskDialog()
 {
-    widget  = new TaskCosVertex(baseFeat,page);
+    widget  = new TaskCosVertex(baseFeat, page);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-LeaderLine"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
