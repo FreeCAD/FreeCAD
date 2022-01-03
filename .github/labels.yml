@@ -9,9 +9,6 @@
 🏛 Arch:
 - 'src/Mod/Arch/**/*'
 
-AddonManager:
-- 'src/Mod/AddonManager/**/*'
-
 🚜 PartDesign:
 - 'src/Mod/PartDesign/**/*'
 
