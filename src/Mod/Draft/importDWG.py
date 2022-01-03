@@ -44,8 +44,6 @@ https://knowledge.autodesk.com/support/autocad/downloads/
 # *                                                                         *
 # ***************************************************************************
 
-# TODO: use subprocess.popen() instead of subprocess.call()
-
 import six
 import FreeCAD
 from FreeCAD import Console as FCC
@@ -217,10 +215,10 @@ def convertToDxf(dwgfilename):
         indir = os.path.dirname(dwgfilename)
         outdir = tempfile.mkdtemp()
         basename = os.path.basename(dwgfilename)
-        cmdline = ('"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"'
-                   % (teigha, indir, outdir, basename))
-        FCC.PrintMessage(translate("ImportDWG", "Converting: ")
-                         + cmdline + "\n")
+        cmdline = [teigha, indir, outdir, "ACAD2000", "DXF", "0", "1", basename]
+        FCC.PrintMessage(translate("draft", "Converting:") + " " + str(cmdline) + "\n")
+        proc = subprocess.Popen(cmdline)
+        proc.communicate()
         if six.PY2:
             if isinstance(cmdline, six.text_type):
                 encoding = sys.getfilesystemencoding()
@@ -270,10 +268,9 @@ def convertToDwg(dxffilename, dwgfilename):
         indir = os.path.dirname(dxffilename)
         outdir = os.path.dirname(dwgfilename)
         basename = os.path.basename(dxffilename)
-        cmdline = ('"%s" "%s" "%s" "ACAD2000" "DWG" "0" "1" "%s"'
-                   % (teigha, indir, outdir, basename))
-        FCC.PrintMessage(translate("ImportDWG", "Converting: ")
-                         + cmdline + "\n")
-        subprocess.call(cmdline, shell=True)  # os.system(cmdline)
+        cmdline = [teigha, indir, outdir, "ACAD2000", "DWG", "0", "1", basename]
+        FCC.PrintMessage(translate("draft", "Converting:") + " " + str(cmdline) + "\n")
+        proc = subprocess.Popen(cmdline)
+        proc.communicate()
         return dwgfilename
     return None
