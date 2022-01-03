@@ -94,6 +94,33 @@ NOGIT = False  # for debugging purposes, set this to True to always use http dow
 NOMARKDOWN = False  # for debugging purposes, set this to True to disable Markdown lib
 """Multithread workers for the Addon Manager"""
 
+class ConnectionChecker(QtCore.QThread):
+
+    success = QtCore.Signal()
+    failure = QtCore.Signal(str)
+
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+
+    def run(self):
+        FreeCAD.Console.PrintMessage(translate("AddonsInstaller","Checking network connection...\n"))
+        url = "https://api.github.com/zen"
+        request = utils.urlopen(url)
+        if QtCore.QThread.currentThread().isInterruptionRequested():
+            return
+        if not request:
+            self.failure.emit (translate("AddonsInstaller","Unable to connect to GitHub: check your internet connection and proxy settings and try again."))
+            return
+        result = request.read()
+        if QtCore.QThread.currentThread().isInterruptionRequested():
+            return
+        if not result:
+            self.failure.emit (translate("AddonsInstaller","Unable to read data from GitHub: check your internet connection and proxy settings and try again."))
+            return
+
+        result = result.decode("utf8")
+        FreeCAD.Console.PrintLog(f"GitHub's zen message response: {result}\n")
+        self.success.emit()
 
 class UpdateWorker(QtCore.QThread):
     """This worker updates the list of available workbenches"""

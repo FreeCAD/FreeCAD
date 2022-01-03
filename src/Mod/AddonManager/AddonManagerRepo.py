@@ -107,9 +107,10 @@ class AddonManagerRepo:
         self.updated_timestamp = None
         self.installed_version = None
 
-        # Each repo is also a node in a directed dependency graph:
-        self.requires: Set[AddonManagerRepo] = set()
-        self.blocks: Set[AddonManagerRepo] = set()
+        # Each repo is also a node in a directed dependency graph (referenced by name so 
+        # they cen be serialized):
+        self.requires: Set[str] = set()
+        self.blocks: Set[str] = set()
 
         # And maintains a list of required and optional Python dependencies
         self.python_requires: Set[str] = set()
@@ -165,6 +166,13 @@ class AddonManagerRepo:
             )
             if os.path.isfile(cached_package_xml_file):
                 instance.load_metadata_file(cached_package_xml_file)
+
+        if "requires" in cache_dict:
+            instance.requires = set(cache_dict["requires"])
+            instance.blocks = set(cache_dict["blocks"])
+            instance.python_requires = set(cache_dict["python_requires"])
+            instance.python_optional = set(cache_dict["python_optional"])
+
         return instance
 
     def to_cache(self) -> Dict:
@@ -181,6 +189,10 @@ class AddonManagerRepo:
             "python2": self.python2,
             "obsolete": self.obsolete,
             "rejected": self.rejected,
+            "requires": list(self.requires),
+            "blocks": list(self.blocks),
+            "python_requires": list(self.python_requires),
+            "python_optional": list(self.python_optional),
         }
 
     def load_metadata_file(self, file: str) -> None:

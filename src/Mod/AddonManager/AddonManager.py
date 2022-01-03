@@ -74,6 +74,7 @@ class CommandAddonManager:
     """The main Addon Manager class and FreeCAD command"""
 
     workers = [
+        "connection_checker",
         "update_worker",
         "check_worker",
         "show_worker",
@@ -171,7 +172,45 @@ class CommandAddonManager:
                     pref.SetString("ProxyUrl", warning_dialog.lineEditProxy.text())
 
         if readWarning:
-            self.launch()
+            # Check the connection in a new thread, so FreeCAD stays responsive
+            self.connection_checker = ConnectionChecker()
+            self.connection_checker.success.connect(self.launch)
+            self.connection_checker.failure.connect(self.network_connection_failed)
+            self.connection_checker.start()
+
+            # If it takes longer than a half second to check the connection, show a message:
+            self.connection_message_timer = QtCore.QTimer.singleShot(
+                500, self.show_connection_check_message
+            )
+
+    def show_connection_check_message(self):
+        if not self.connection_checker.isFinished():
+            self.connection_check_message = QtWidgets.QMessageBox(
+                QtWidgets.QMessageBox.Information,
+                translate("AddonsInstaller", "Checking connection"),
+                translate("AddonsInstaller", "Checking for connection to GitHub..."),
+                QtWidgets.QMessageBox.Cancel,
+            )
+            self.connection_check_message.buttonClicked.connect(
+                self.cancel_network_check
+            )
+            self.connection_check_message.show()
+
+    def cancel_network_check(self, button):
+        if not self.connection_checker.isFinished():
+            self.connection_checker.success.disconnect(self.launch)
+            self.connection_checker.failure.disconnect(self.network_connection_failed)
+            self.connection_checker.requestInterruption()
+            self.connection_checker.wait(500)
+            self.connection_check_message.close()
+
+    def network_connection_failed(self, message: str) -> None:
+        # This must run on the main GUI thread
+        if self.connection_check_message:
+            self.connection_check_message.close()
+        QtWidgets.QMessageBox.critical(
+            None, translate("AddonsInstaller", "Connection failed"), message
+        )
 
     def launch(self) -> None:
         """Shows the Addon Manager UI"""
@@ -304,6 +343,9 @@ class CommandAddonManager:
 
         # set the label text to start with
         self.show_information(translate("AddonsInstaller", "Loading addon information"))
+
+        if self.connection_check_message:
+            self.connection_check_message.close()
 
         # rock 'n roll!!!
         self.dialog.exec_()
