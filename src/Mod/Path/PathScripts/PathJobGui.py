@@ -167,6 +167,9 @@ class ViewProvider:
     def setEdit(self, vobj=None, mode=0):
         PathLog.track(mode)
         if 0 == mode:
+            job = self.vobj.Object
+            if not job.Proxy.integrityCheck(job):
+                return False
             self.openTaskPanel()
         return True
 
@@ -1413,7 +1416,10 @@ class TaskPanel:
 
     def setupUi(self, activate):
         self.setupGlobal.setupUi()
-        self.setupOps.setupUi()
+        try:
+            self.setupOps.setupUi()
+        except Exception as ee:
+            PathLog.error(str(ee))
         self.updateStockEditor(-1, False)
         self.setFields()
 
