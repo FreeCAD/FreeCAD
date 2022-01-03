@@ -107,7 +107,7 @@ class AddonManagerRepo:
         self.updated_timestamp = None
         self.installed_version = None
 
-        # Each repo is also a node in a directed dependency graph (referenced by name so 
+        # Each repo is also a node in a directed dependency graph (referenced by name so
         # they cen be serialized):
         self.requires: Set[str] = set()
         self.blocks: Set[str] = set()

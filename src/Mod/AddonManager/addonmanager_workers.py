@@ -94,6 +94,7 @@ NOGIT = False  # for debugging purposes, set this to True to always use http dow
 NOMARKDOWN = False  # for debugging purposes, set this to True to disable Markdown lib
 """Multithread workers for the Addon Manager"""
 
+
 class ConnectionChecker(QtCore.QThread):
 
     success = QtCore.Signal()
@@ -103,24 +104,37 @@ class ConnectionChecker(QtCore.QThread):
         QtCore.QThread.__init__(self)
 
     def run(self):
-        FreeCAD.Console.PrintMessage(translate("AddonsInstaller","Checking network connection...\n"))
+        FreeCAD.Console.PrintMessage(
+            translate("AddonsInstaller", "Checking network connection...\n")
+        )
         url = "https://api.github.com/zen"
         request = utils.urlopen(url)
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
         if not request:
-            self.failure.emit (translate("AddonsInstaller","Unable to connect to GitHub: check your internet connection and proxy settings and try again."))
+            self.failure.emit(
+                translate(
+                    "AddonsInstaller",
+                    "Unable to connect to GitHub: check your internect connection and proxy settings and try again.",
+                )
+            )
             return
         result = request.read()
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
         if not result:
-            self.failure.emit (translate("AddonsInstaller","Unable to read data from GitHub: check your internet connection and proxy settings and try again."))
+            self.failure.emit(
+                translate(
+                    "AddonsInstaller",
+                    "Unable to read data from GitHub: check your internet connection and proxy settings and try again.",
+                )
+            )
             return
 
         result = result.decode("utf8")
         FreeCAD.Console.PrintLog(f"GitHub's zen message response: {result}\n")
         self.success.emit()
+
 
 class UpdateWorker(QtCore.QThread):
     """This worker updates the list of available workbenches"""
@@ -1178,11 +1192,15 @@ class InstallWorkbenchWorker(QtCore.QThread):
         wbs = FreeCADGui.listWorkbenches()
         missing_wbs = []
         for dep in deps.unrecognized_addons:
-            if dep not in wbs and dep+"Workbench" not in wbs:
+            if dep not in wbs and dep + "Workbench" not in wbs:
                 missing_wbs.append(dep)
         if missing_wbs:
             FreeCAD.Console.PrintError(
-                translate("AddonsInstaller",f"{self.repo.display_name} requires the following workbenches, but your version of FreeCAD does not appear to have them:") + "\n"
+                translate(
+                    "AddonsInstaller",
+                    f"{self.repo.display_name} requires the following workbenches, but your version of FreeCAD does not appear to have them:",
+                )
+                + "\n"
             )
             for wb in missing_wbs:
                 FreeCAD.Console.PrintError("  * " + wb + "\n")
@@ -1205,7 +1223,6 @@ class InstallWorkbenchWorker(QtCore.QThread):
             for lib in missing_python_requirements:
                 FreeCAD.Console.PrintError("  * " + lib + "\n")
             return
-
 
         if have_git and not NOGIT:
             self.run_git(target_dir)
