@@ -1,33 +1,35 @@
 # -*- coding: utf-8 -*-
-#***************************************************************************
-#*   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This file is part of the FreeCAD CAx development system.              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   FreeCAD is distributed in the hope that it will be useful,            *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Lesser General Public License for more details.                   *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with FreeCAD; if not, write to the Free Software        *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Lesser General Public License for more details.                   *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
-'''
+"""
 These are a common functions and classes for creating custom post processors.
-'''
+"""
 
 from PySide import QtCore, QtGui
 import FreeCAD
+
+translate = FreeCAD.Qt.translate
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -41,15 +43,16 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
         keywordFormat = QtGui.QTextCharFormat()
         keywordFormat.setForeground(QtCore.Qt.cyan)
         keywordFormat.setFontWeight(QtGui.QFont.Bold)
-        keywordPatterns = ["\\bG[0-9]+\\b",
-                           "\\bM[0-9]+\\b"]
+        keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
 
-        self.highlightingRules = [(QtCore.QRegExp(pattern), keywordFormat) for pattern in keywordPatterns]
+        self.highlightingRules = [
+            (QtCore.QRegExp(pattern), keywordFormat) for pattern in keywordPatterns
+        ]
 
         speedFormat = QtGui.QTextCharFormat()
         speedFormat.setFontWeight(QtGui.QFont.Bold)
         speedFormat.setForeground(QtCore.Qt.green)
-        self.highlightingRules.append((QtCore.QRegExp("\\bF[0-9\\.]+\\b"),speedFormat))
+        self.highlightingRules.append((QtCore.QRegExp("\\bF[0-9\\.]+\\b"), speedFormat))
 
     def highlightBlock(self, text):
         for pattern, hlFormat in self.highlightingRules:
@@ -61,12 +64,11 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
                 index = expression.indexIn(text, index + length)
 
 
-
 class GCodeEditorDialog(QtGui.QDialog):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         if parent is None:
             parent = FreeCADGui.getMainWindow()
-        QtGui.QDialog.__init__(self,parent)
+        QtGui.QDialog.__init__(self, parent)
 
         layout = QtGui.QVBoxLayout(self)
 
@@ -83,7 +85,9 @@ class GCodeEditorDialog(QtGui.QDialog):
         # OK and Cancel buttons
         self.buttons = QtGui.QDialogButtonBox(
             QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
-            QtCore.Qt.Horizontal, self)
+            QtCore.Qt.Horizontal,
+            self,
+        )
         layout.addWidget(self.buttons)
 
         # restore placement and size
@@ -111,45 +115,68 @@ class GCodeEditorDialog(QtGui.QDialog):
 
 
 def stringsplit(commandline):
-    returndict = {'command':None, 'X':None, 'Y':None, 'Z':None, 'A':None, 'B':None, 'F':None, 'T':None, 'S':None, 'I':None, 'J':None,'K':None, 'txt': None}
+    returndict = {
+        "command": None,
+        "X": None,
+        "Y": None,
+        "Z": None,
+        "A": None,
+        "B": None,
+        "F": None,
+        "T": None,
+        "S": None,
+        "I": None,
+        "J": None,
+        "K": None,
+        "txt": None,
+    }
     wordlist = [a.strip() for a in commandline.split(" ")]
-    if wordlist[0][0] == '(':
-        returndict['command'] = 'message'
-        returndict['txt'] = wordlist[0]
+    if wordlist[0][0] == "(":
+        returndict["command"] = "message"
+        returndict["txt"] = wordlist[0]
     else:
-        returndict['command'] = wordlist[0]
+        returndict["command"] = wordlist[0]
     for word in wordlist[1:]:
         returndict[word[0]] = word[1:]
 
     return returndict
 
-def fmt(num,dec,units):
-    ''' used to format axis moves, feedrate, etc for decimal places and units'''
-    if units == 'G21': #metric
-        fnum = '%.*f' % (dec, num)
-    else: #inch
-        fnum = '%.*f' % (dec, num/25.4) #since FreeCAD uses metric units internally
+
+def fmt(num, dec, units):
+    """used to format axis moves, feedrate, etc for decimal places and units"""
+    if units == "G21":  # metric
+        fnum = "%.*f" % (dec, num)
+    else:  # inch
+        fnum = "%.*f" % (dec, num / 25.4)  # since FreeCAD uses metric units internally
     return fnum
 
+
 def editor(gcode):
-    '''pops up a handy little editor to look at the code output '''
+    """pops up a handy little editor to look at the code output"""
 
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
     # default Max Highlighter Size = 512 Ko
     defaultMHS = 512 * 1024
-    mhs = prefs.GetUnsigned('inspecteditorMaxHighlighterSize', defaultMHS)
+    mhs = prefs.GetUnsigned("inspecteditorMaxHighlighterSize", defaultMHS)
 
     dia = GCodeEditorDialog()
     dia.editor.setText(gcode)
     gcodeSize = len(dia.editor.toPlainText())
-    if (gcodeSize <= mhs):
+    if gcodeSize <= mhs:
         # because of poor performance, syntax highlighting is
         # limited to mhs octets (default 512 KB).
         # It seems than the response time curve has an inflexion near 500 KB
         # beyond 500 KB, the response time increases exponentially.
         dia.highlighter = GCodeHighlighter(dia.editor.document())
     else:
-        FreeCAD.Console.PrintMessage(translate("Path", "GCode size too big ({} o), disabling syntax highlighter.".format(gcodeSize)))
+        FreeCAD.Console.PrintMessage(
+            translate(
+                "Path",
+                "GCode size too big ({} o), disabling syntax highlighter.".format(
+                    gcodeSize
+                ),
+            )
+        )
     result = dia.exec_()
     if result:  # If user selected 'OK' get modified G Code
         final = dia.editor.toPlainText()
@@ -157,14 +184,12 @@ def editor(gcode):
         final = gcode
     return final
 
-def fcoms(string,commentsym):
-    ''' filter and rebuild comments with user preferred comment symbol'''
-    if len(commentsym)==1:
-        s1 = string.replace('(', commentsym)
-        comment = s1.replace(')', '')
+
+def fcoms(string, commentsym):
+    """filter and rebuild comments with user preferred comment symbol"""
+    if len(commentsym) == 1:
+        s1 = string.replace("(", commentsym)
+        comment = s1.replace(")", "")
     else:
         return string
     return comment
-
-
-
