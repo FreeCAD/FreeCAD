@@ -20,29 +20,71 @@
 # *                                                                         *
 # ***************************************************************************
 
-''' Used to create CNC machine fixture offsets such as G54,G55, etc...'''
+""" Used to create CNC machine fixture offsets such as G54,G55, etc..."""
 
 import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts.PathUtils as PathUtils
-from PySide import QtCore#, QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class Fixture:
-    def __init__(self,obj):
-        obj.addProperty("App::PropertyEnumeration", "Fixture", "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","Fixture Offset Number"))
-        obj.Fixture=['G53','G54','G55','G56','G57','G58','G59','G59.1', 'G59.2', 'G59.3', 'G59.4', 'G59.5','G59.6','G59.7', 'G59.8', 'G59.9']
-        obj.addProperty("App::PropertyBool","Active","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","Make False, to prevent operation from generating code"))
+    def __init__(self, obj):
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Fixture",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Fixture Offset Number"),
+        )
+        obj.Fixture = [
+            "G53",
+            "G54",
+            "G55",
+            "G56",
+            "G57",
+            "G58",
+            "G59",
+            "G59.1",
+            "G59.2",
+            "G59.3",
+            "G59.4",
+            "G59.5",
+            "G59.6",
+            "G59.7",
+            "G59.8",
+            "G59.9",
+        ]
+        obj.addProperty(
+            "App::PropertyBool",
+            "Active",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Make False, to prevent operation from generating code"
+            ),
+        )
 
         obj.Proxy = self
 
     def execute(self, obj):
-        fixlist = ['G53', 'G54', 'G55', 'G56', 'G57', 'G58', 'G59', 'G59.1',
-                   'G59.2', 'G59.3', 'G59.4', 'G59.5', 'G59.6', 'G59.7', 'G59.8', 'G59.9']
+        fixlist = [
+            "G53",
+            "G54",
+            "G55",
+            "G56",
+            "G57",
+            "G58",
+            "G59",
+            "G59.1",
+            "G59.2",
+            "G59.3",
+            "G59.4",
+            "G59.5",
+            "G59.6",
+            "G59.7",
+            "G59.8",
+            "G59.9",
+        ]
         fixture = fixlist.index(obj.Fixture)
         obj.Path = Path.Path(str(obj.Fixture))
         obj.Label = "Fixture" + str(fixture)
@@ -58,20 +100,19 @@ class Fixture:
 
 
 class _ViewProviderFixture:
-
     def __init__(self, vobj):  # mandatory
         #        obj.addProperty("App::PropertyFloat","SomePropertyName","PropertyGroup","Description of this property")
         vobj.Proxy = self
         mode = 2
-        vobj.setEditorMode('LineWidth', mode)
-        vobj.setEditorMode('MarkerColor', mode)
-        vobj.setEditorMode('NormalColor', mode)
-        vobj.setEditorMode('DisplayMode', mode)
-        vobj.setEditorMode('BoundingBox', mode)
-        vobj.setEditorMode('Selectable', mode)
-        vobj.setEditorMode('ShapeColor', mode)
-        vobj.setEditorMode('Transparency', mode)
-        vobj.setEditorMode('Visibility', mode)
+        vobj.setEditorMode("LineWidth", mode)
+        vobj.setEditorMode("MarkerColor", mode)
+        vobj.setEditorMode("NormalColor", mode)
+        vobj.setEditorMode("DisplayMode", mode)
+        vobj.setEditorMode("BoundingBox", mode)
+        vobj.setEditorMode("Selectable", mode)
+        vobj.setEditorMode("ShapeColor", mode)
+        vobj.setEditorMode("Transparency", mode)
+        vobj.setEditorMode("Visibility", mode)
 
     def __getstate__(self):  # mandatory
         return None
@@ -85,15 +126,15 @@ class _ViewProviderFixture:
     def onChanged(self, vobj, prop):  # optional
         # pylint: disable=unused-argument
         mode = 2
-        vobj.setEditorMode('LineWidth', mode)
-        vobj.setEditorMode('MarkerColor', mode)
-        vobj.setEditorMode('NormalColor', mode)
-        vobj.setEditorMode('DisplayMode', mode)
-        vobj.setEditorMode('BoundingBox', mode)
-        vobj.setEditorMode('Selectable', mode)
-        vobj.setEditorMode('ShapeColor', mode)
-        vobj.setEditorMode('Transparency', mode)
-        vobj.setEditorMode('Visibility', mode)
+        vobj.setEditorMode("LineWidth", mode)
+        vobj.setEditorMode("MarkerColor", mode)
+        vobj.setEditorMode("NormalColor", mode)
+        vobj.setEditorMode("DisplayMode", mode)
+        vobj.setEditorMode("BoundingBox", mode)
+        vobj.setEditorMode("Selectable", mode)
+        vobj.setEditorMode("ShapeColor", mode)
+        vobj.setEditorMode("Transparency", mode)
+        vobj.setEditorMode("Visibility", mode)
 
     def updateData(self, vobj, prop):  # optional
         # this is executed when a property of the APP OBJECT changes
@@ -109,11 +150,14 @@ class _ViewProviderFixture:
 
 
 class CommandPathFixture:
-
     def GetResources(self):
-        return {'Pixmap': 'Path_Datums',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Fixture", "Fixture"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Fixture", "Creates a Fixture Offset object")}
+        return {
+            "Pixmap": "Path_Datums",
+            "MenuText": QT_TRANSLATE_NOOP("PathFixture", "Fixture"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "PathFixture", "Creates a Fixture Offset object"
+            ),
+        }
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -123,9 +167,9 @@ class CommandPathFixture:
         return False
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Fixture", "Create a Fixture Offset"))
+        FreeCAD.ActiveDocument.openTransaction("Create a Fixture Offset")
         FreeCADGui.addModule("PathScripts.PathFixture")
-        snippet = '''
+        snippet = """
 import Path
 import PathScripts
 from PathScripts import PathUtils
@@ -137,14 +181,15 @@ PathScripts.PathFixture._ViewProviderFixture(obj.ViewObject)
 
 PathUtils.addToJob(obj)
 
-'''
+"""
         FreeCADGui.doCommand(snippet)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Fixture', CommandPathFixture())
+    FreeCADGui.addCommand("PathFixture", CommandPathFixture())
 
 
 FreeCAD.Console.PrintLog("Loading PathFixture... done\n")

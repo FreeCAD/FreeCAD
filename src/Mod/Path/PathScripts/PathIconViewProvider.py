@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCAD
 import PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
@@ -30,11 +31,17 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "ViewProvider who's main and only task is to assign an icon."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+translate = FreeCAD.Qt.translate
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 class ViewProvider(object):
-    '''Generic view provider to assign an icon.'''
+    """Generic view provider to assign an icon."""
 
     def __init__(self, vobj, icon):
         self.icon = icon
@@ -50,17 +57,17 @@ class ViewProvider(object):
         self.obj = vobj.Object
 
     def __getstate__(self):
-        attrs = {'icon': self.icon }
-        if hasattr(self, 'editModule'):
-            attrs['editModule'] = self.editModule
-            attrs['editCallback'] = self.editCallback
+        attrs = {"icon": self.icon}
+        if hasattr(self, "editModule"):
+            attrs["editModule"] = self.editModule
+            attrs["editCallback"] = self.editCallback
         return attrs
 
     def __setstate__(self, state):
-        self.icon = state['icon']
-        if state.get('editModule', None):
-            self.editModule = state['editModule']
-            self.editCallback = state['editCallback']
+        self.icon = state["icon"]
+        if state.get("editModule", None):
+            self.editModule = state["editModule"]
+            self.editCallback = state["editCallback"]
 
     def getIcon(self):
         return ":/icons/Path_{}.svg".format(self.icon)
@@ -70,7 +77,7 @@ class ViewProvider(object):
         self.editCallback = callback.__name__
 
     def _onEditCallback(self, edit):
-        if hasattr(self, 'editModule'):
+        if hasattr(self, "editModule"):
             mod = importlib.import_module(self.editModule)
             callback = getattr(mod, self.editCallback)
             callback(self.obj, self.vobj, edit)
@@ -88,31 +95,34 @@ class ViewProvider(object):
     def setupContextMenu(self, vobj, menu):
         # pylint: disable=unused-argument
         PathLog.track()
-        from PySide import QtCore, QtGui
-        edit = QtCore.QCoreApplication.translate('Path', 'Edit', None)
+        from PySide import QtGui
+
+        edit = translate("Path", "Edit")
         action = QtGui.QAction(edit, menu)
         action.triggered.connect(self.setEdit)
         menu.addAction(action)
 
+
 _factory = {}
 
+
 def Attach(vobj, name):
-    '''Attach(vobj, name) ... attach the appropriate view provider to the view object.
-    If no view provider was registered for the given name a default IconViewProvider is created.'''
+    """Attach(vobj, name) ... attach the appropriate view provider to the view object.
+    If no view provider was registered for the given name a default IconViewProvider is created."""
 
     PathLog.track(vobj.Object.Label, name)
-    global _factory # pylint: disable=global-statement
-    for key,value in PathUtil.keyValueIter(_factory):
+    global _factory  # pylint: disable=global-statement
+    for key, value in PathUtil.keyValueIter(_factory):
         if key == name:
             return value(vobj, name)
-    PathLog.track(vobj.Object.Label, name, 'PathIconViewProvider')
+    PathLog.track(vobj.Object.Label, name, "PathIconViewProvider")
     return ViewProvider(vobj, name)
 
+
 def RegisterViewProvider(name, provider):
-    '''RegisterViewProvider(name, provider) ... if an IconViewProvider is created for an object with the given name
-    an instance of provider is used instead.'''
+    """RegisterViewProvider(name, provider) ... if an IconViewProvider is created for an object with the given name
+    an instance of provider is used instead."""
 
     PathLog.track(name)
-    global _factory # pylint: disable=global-statement
+    global _factory  # pylint: disable=global-statement
     _factory[name] = provider
-
