@@ -34,11 +34,14 @@ def translate(context, text, disambig=None):
 
 
 class CommandPathSimpleCopy:
-
     def GetResources(self):
-        return {'Pixmap': 'Path_SimpleCopy',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SimpleCopy", "Simple Copy"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SimpleCopy", "Creates a non-parametric copy of another path")}
+        return {
+            "Pixmap": "Path_SimpleCopy",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_SimpleCopy", "Simple Copy"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Path_SimpleCopy", "Creates a non-parametric copy of another path"
+            ),
+        }
 
     def IsActive(self):
         if bool(FreeCADGui.Selection.getSelection()) is False:
@@ -46,7 +49,7 @@ class CommandPathSimpleCopy:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except Exception: # pylint: disable=broad-except
+        except Exception:  # pylint: disable=broad-except
             return False
 
     def Activated(self):
@@ -54,27 +57,38 @@ class CommandPathSimpleCopy:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_SimpleCopy", "Please select exactly one path object")+"\n")
+                translate("Path_SimpleCopy", "Please select exactly one path object")
+                + "\n"
+            )
             return
-        if not(selection[0].isDerivedFrom("Path::Feature")):
+        if not (selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Path_SimpleCopy", "Please select exactly one path object")+"\n")
+                translate("Path_SimpleCopy", "Please select exactly one path object")
+                + "\n"
+            )
             return
 
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_SimpleCopy", "Simple Copy"))
-        FreeCADGui.doCommand("srcpath = FreeCADGui.Selection.getSelectionEx()[0].Object.Path\n")
+            translate("Path_SimpleCopy", "Simple Copy")
+        )
+        FreeCADGui.doCommand(
+            "srcpath = FreeCADGui.Selection.getSelectionEx()[0].Object.Path\n"
+        )
 
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.addModule("PathScripts.PathCustom")
-        FreeCADGui.doCommand('obj = PathScripts.PathCustom.Create("' + selection[0].Name + '_SimpleCopy")')
-        FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
-        FreeCADGui.doCommand('obj.Gcode = [c.toGCode() for c in srcpath.Commands]')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand(
+            'obj = PathScripts.PathCustom.Create("'
+            + selection[0].Name
+            + '_SimpleCopy")'
+        )
+        FreeCADGui.doCommand("obj.ViewObject.Proxy = 0")
+        FreeCADGui.doCommand("obj.Gcode = [c.toGCode() for c in srcpath.Commands]")
+        FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_SimpleCopy', CommandPathSimpleCopy())
+    FreeCADGui.addCommand("Path_SimpleCopy", CommandPathSimpleCopy())
