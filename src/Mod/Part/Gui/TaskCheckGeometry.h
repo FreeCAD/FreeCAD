@@ -125,7 +125,7 @@ private:
     int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
                          const Message_ProgressScope& theScope);
 #endif
-    void buildShapeContent(const QString &baseName, const TopoDS_Shape &shape);
+    void buildShapeContent(App::DocumentObject *pObject, const QString &baseName, const TopoDS_Shape &shape);
     ResultModel *model;
     QTreeView *treeView;
     QLabel *message;
