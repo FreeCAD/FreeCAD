@@ -31,6 +31,7 @@ import argparse
 import datetime
 import shlex
 import PathScripts.PathUtil as PathUtil
+import regex
 
 
 TOOLTIP = '''
@@ -468,6 +469,12 @@ def parse(pathobj):
       # prepend a line number and append a newline
       if len(outstring) >= 1:
           out += linenumber() + format_outstring(outstring) + "\n"
+
+      # Check for comments containing machine-specific commands to pass literally to the controller
+      m = regex.match(r'^\(MC_RUN_COMMAND: ([^)]+)\)$', command)
+      if m:
+        raw_command = m.group(1)
+        out += linenumber() + raw_command + "\n"
 
   return out
 
