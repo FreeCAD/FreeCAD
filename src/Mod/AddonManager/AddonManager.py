@@ -320,7 +320,7 @@ class CommandAddonManager:
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
         self.packageDetails.execute.connect(self.executemacro)
-        self.packageDetails.install.connect(self.install)
+        self.packageDetails.install.connect(self.resolve_dependencies)
         self.packageDetails.uninstall.connect(self.remove)
         self.packageDetails.update.connect(self.update)
         self.packageDetails.back.connect(self.on_buttonBack_clicked)
@@ -344,7 +344,7 @@ class CommandAddonManager:
         # set the label text to start with
         self.show_information(translate("AddonsInstaller", "Loading addon information"))
 
-        if self.connection_check_message:
+        if hasattr(self, "connection_check_message") and self.connection_check_message:
             self.connection_check_message.close()
 
         # rock 'n roll!!!
@@ -756,6 +756,123 @@ class CommandAddonManager:
         """this function allows threads to update the main list of workbenches"""
 
         self.item_model.append_item(repo)
+
+    def resolve_dependencies(self, repo: AddonManagerRepo) -> None:
+        if not repo:
+            return
+
+        deps = AddonManagerRepo.Dependencies()
+        repo_name_dict = dict()
+        for r in self.item_model.repos:
+            repo_name_dict[repo.name] = r
+            repo_name_dict[repo.display_name] = r
+        repo.walk_dependency_tree(repo_name_dict, deps)
+
+        FreeCAD.Console.PrintMessage("The following Workbenches are required:\n")
+        for addon in deps.unrecognized_addons:
+            FreeCAD.Console.PrintMessage(addon + "\n")
+
+        FreeCAD.Console.PrintMessage("The following addons are required:\n")
+        for addon in deps.required_external_addons:
+            FreeCAD.Console.PrintMessage(addon + "\n")
+
+        FreeCAD.Console.PrintMessage("The following Python modules are required:\n")
+        for pyreq in deps.python_required:
+            FreeCAD.Console.PrintMessage(pyreq + "\n")
+
+        FreeCAD.Console.PrintMessage("The following Python modules are optional:\n")
+        for pyreq in deps.python_optional:
+            FreeCAD.Console.PrintMessage(pyreq + "\n")
+
+        missing_external_addons = []
+        for dep in deps.required_external_addons:
+            if dep.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+                missing_external_addons.append(dep)
+
+        # Now check the loaded addons to see if we are missing an internal workbench:
+        wbs = FreeCADGui.listWorkbenches()
+        missing_wbs = []
+        for dep in deps.unrecognized_addons:
+            if dep not in wbs and dep + "Workbench" not in wbs:
+                missing_wbs.append(dep)
+
+        # Check the Python dependencies:
+        missing_python_requirements = []
+        for py_dep in deps.python_required:
+            try:
+                __import__(py_dep)
+            except ImportError:
+                missing_python_requirements.append(py_dep)
+
+        missing_python_optionals = []
+        for py_dep in deps.python_optional:
+            try:
+                __import__(py_dep)
+            except ImportError:
+                missing_python_optionals.append(py_dep)
+
+        # Possible cases
+        # 1) Missing required FreeCAD workbenches. Unrecoverable failure, needs a new version of FreeCAD installation.
+        # 2) Missing required external AddOn(s). List for the user and ask for permission to install them.
+        # 3) Missing required Python modules. List for the user and ask for permission to attempt installation.
+        # 4) Missing optional Python modules. User can choose from the list to attempt to install any or all.
+        # Option 1 is standalone, and simply causes failure to install. Other options can be combined and are
+        # presented through a dialog box with options.
+
+        addon = repo.display_name if repo.display_name else repo.name
+        if missing_wbs:
+            if len(missing_wbs) == 1:
+                name = missing_wbs[0]
+                message = translate(
+                    "AddonsInstaller",
+                    f"Installing {addon} requires '{name}', which is not installed in your copy of FreeCAD.",
+                )
+            else:
+                message = translate(
+                    "AddonsInstaller",
+                    f"Installing {addon} requires the following workbenches, which are not installed in your copy of FreeCAD:\n",
+                )
+                for wb in missing_wbs:
+                    message += "  - " + wb + "\n"
+            QtWidgets.QMessageBox.critical(
+                self.dialog,
+                translate("AddonsInstaller", "Missing Requirement"),
+                message,
+                QtWidgets.QMessageBox.Cancel,
+            )
+        elif (
+            missing_external_addons
+            or missing_python_requirements
+            or missing_python_optionals
+        ):
+            dependency_dialog = FreeCADGui.PySideUic.loadUi(
+                os.path.join(
+                    os.path.dirname(__file__), "dependency_resolution_dialog.ui"
+                )
+            )
+            missing_external_addons.sort()
+            missing_python_requirements.sort()
+            missing_python_optionals.sort()
+            missing_python_optionals = [
+                option
+                for option in missing_python_optionals
+                if option not in missing_python_requirements
+            ]
+
+            for addon in missing_external_addons:
+                dependency_dialog.listWidgetAddons.addItem(addon)
+            for mod in missing_python_requirements:
+                dependency_dialog.listWidgetPythonRequired.addItem(mod)
+            for mod in missing_python_optionals:
+                item = QtWidgets.QListWidgetItem(mod)
+                item.setFlags(Qt.ItemIsUserCheckable)
+                dependency_dialog.listWidgetPythonOptional.addItem(item)
+
+            resolution = dependency_dialog.exec()
+
+        FreeCAD.Console.PrintError(
+            "Dependency resolution completed. Not installing since this is a test."
+        )
 
     def install(self, repo: AddonManagerRepo) -> None:
         """installs or updates a workbench, macro, or package"""

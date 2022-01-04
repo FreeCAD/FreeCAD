@@ -73,12 +73,13 @@ class AddonManagerRepo:
                 return "Restart required"
 
     class Dependencies:
-        required_external_addons = dict()
-        blockers = dict()
-        replaces = dict()
-        unrecognized_addons: Set[str] = set()
-        python_required: Set[str] = set()
-        python_optional: Set[str] = set()
+        def __init__(self):
+            self.required_external_addons = dict()
+            self.blockers = dict()
+            self.replaces = dict()
+            self.unrecognized_addons: Set[str] = set()
+            self.python_required: Set[str] = set()
+            self.python_optional: Set[str] = set()
 
     class ResolutionFailed(RuntimeError):
         def __init__(self, msg):
