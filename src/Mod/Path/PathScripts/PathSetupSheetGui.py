@@ -38,13 +38,7 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Task panel editor for a SetupSheet"
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
 LOGLEVEL = False
-
 
 if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -388,9 +382,7 @@ class TaskPanel:
         self.globalEditor = GlobalEditor(self.obj, self.globalForm)
         self.opsEditor = OpsDefaultEditor(self.obj, None)
         self.form = [op.form for op in self.opsEditor.ops] + [self.globalForm]
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_SetupSheet", "Edit SetupSheet")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Edit SetupSheet")
 
     def reject(self):
         self.globalEditor.reject()
@@ -432,7 +424,7 @@ class TaskPanel:
 
 def Create(name="SetupSheet"):
     """Create(name='SetupSheet') ... creates a new setup sheet"""
-    FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
+    FreeCAD.ActiveDocument.openTransaction("Create Job")
     ssheet = PathSetupSheet.Create(name)
     PathIconViewProvider.Attach(ssheet, name)
     return ssheet

@@ -23,22 +23,19 @@
 import FreeCAD
 import FreeCADGui
 import PathScripts
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """Path SimpleCopy command"""
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class CommandPathSimpleCopy:
     def GetResources(self):
         return {
             "Pixmap": "Path_SimpleCopy",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_SimpleCopy", "Simple Copy"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP("Path_SimpleCopy", "Simple Copy"),
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_SimpleCopy", "Creates a non-parametric copy of another path"
             ),
         }
@@ -68,9 +65,7 @@ class CommandPathSimpleCopy:
             )
             return
 
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_SimpleCopy", "Simple Copy")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Simple Copy")
         FreeCADGui.doCommand(
             "srcpath = FreeCADGui.Selection.getSelectionEx()[0].Object.Path\n"
         )

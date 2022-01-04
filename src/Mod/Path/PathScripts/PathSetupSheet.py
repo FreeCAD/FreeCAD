@@ -25,21 +25,21 @@ import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
-import PySide
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "A container for all default values and job specific configuration values."
 
-_RegisteredOps = {}
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+_RegisteredOps: dict = {}
 
 
-def translate(context, text, disambig=None):
-    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class Template:
@@ -114,34 +114,36 @@ class SetupSheet:
             "App::PropertySpeed",
             "VertRapid",
             "ToolController",
-            translate("PathSetupSheet", "Default speed for horizontal rapid moves."),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Default speed for horizontal rapid moves."
+            ),
         )
         obj.addProperty(
             "App::PropertySpeed",
             "HorizRapid",
             "ToolController",
-            translate("PathSetupSheet", "Default speed for vertical rapid moves."),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Default speed for vertical rapid moves."
+            ),
         )
-
         obj.addProperty(
             "App::PropertyStringList",
             "CoolantModes",
             "CoolantMode",
-            translate("PathSetupSheet", "Coolant Modes"),
+            QT_TRANSLATE_NOOP("App::Property", "Coolant Modes"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "CoolantMode",
             "CoolantMode",
-            translate("PathSetupSheet", "Default coolant mode."),
+            QT_TRANSLATE_NOOP("App::Property", "Default coolant mode."),
         )
-
         obj.addProperty(
             "App::PropertyLength",
             "SafeHeightOffset",
             "OperationHeights",
-            translate(
-                "PathSetupSheet",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.",
             ),
         )
@@ -149,16 +151,16 @@ class SetupSheet:
             "App::PropertyString",
             "SafeHeightExpression",
             "OperationHeights",
-            translate(
-                "PathSetupSheet", "Expression set for the SafeHeight of new operations."
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Expression set for the SafeHeight of new operations."
             ),
         )
         obj.addProperty(
             "App::PropertyLength",
             "ClearanceHeightOffset",
             "OperationHeights",
-            translate(
-                "PathSetupSheet",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.",
             ),
         )
@@ -166,34 +168,33 @@ class SetupSheet:
             "App::PropertyString",
             "ClearanceHeightExpression",
             "OperationHeights",
-            translate(
-                "PathSetupSheet",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Expression set for the ClearanceHeight of new operations.",
             ),
         )
-
         obj.addProperty(
             "App::PropertyString",
             "StartDepthExpression",
             "OperationDepths",
-            translate(
-                "PathSetupSheet", "Expression used for StartDepth of new operations."
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Expression used for StartDepth of new operations."
             ),
         )
         obj.addProperty(
             "App::PropertyString",
             "FinalDepthExpression",
             "OperationDepths",
-            translate(
-                "PathSetupSheet", "Expression used for FinalDepth of new operations."
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Expression used for FinalDepth of new operations."
             ),
         )
         obj.addProperty(
             "App::PropertyString",
             "StepDownExpression",
             "OperationDepths",
-            translate(
-                "PathSetupSheet", "Expression used for StepDown of new operations."
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Expression used for StepDown of new operations."
             ),
         )
 
@@ -403,7 +404,6 @@ class SetupSheet:
                     setattr(obj, prop, getattr(self.obj, propName))
         except Exception:
             PathLog.info("SetupSheet has no support for {}".format(opName))
-            # traceback.print_exc()
 
     def onDocumentRestored(self, obj):
 
@@ -412,7 +412,7 @@ class SetupSheet:
                 "App::PropertyStringList",
                 "CoolantModes",
                 "CoolantMode",
-                translate("PathSetupSheet", "Coolant Modes"),
+                QT_TRANSLATE_NOOP("App::Property", "Coolant Modes"),
             )
             obj.CoolantModes = self.DefaultCoolantModes
 
@@ -421,7 +421,7 @@ class SetupSheet:
                 "App::PropertyEnumeration",
                 "CoolantMode",
                 "CoolantMode",
-                translate("PathSetupSheet", "Default coolant mode."),
+                QT_TRANSLATE_NOOP("App::Property", "Default coolant mode."),
             )
             obj.CoolantMode = self.DefaultCoolantModes
 
