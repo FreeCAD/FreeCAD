@@ -271,6 +271,7 @@ class Rotate(gui_base_original.Modifier):
 
     def rotate_subelements(self, is_copy):
         """Rotate the subelements."""
+        Gui.addModule("Draft")
         try:
             if is_copy:
                 self.commit(translate("draft", "Copy"),

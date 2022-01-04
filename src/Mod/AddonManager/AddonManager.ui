@@ -29,26 +29,6 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
-        <widget class="QToolButton" name="buttonShowDetails">
-         <property name="toolTip">
-          <string>Show details</string>
-         </property>
-         <property name="text">
-          <string>...</string>
-         </property>
-         <property name="arrowType">
-          <enum>Qt::RightArrow</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelUpdateInProgress">
-         <property name="text">
-          <string>Loading...</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QProgressBar" name="progressBar">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -131,6 +111,13 @@
        </property>
        <property name="text">
         <string>Update all Addons</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCheckForUpdates">
+       <property name="text">
+        <string>Check for updates</string>
        </property>
       </widget>
      </item>

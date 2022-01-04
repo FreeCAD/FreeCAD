@@ -3002,7 +3002,7 @@ boost::filesystem::path findPath(const QString& stdHome, const QString& customHo
 
 /*!
  * \brief getCustomPaths
- * Returns a tripel of path names where to store config, data and temp. files.
+ * Returns a tuple of path names where to store config, data and temp. files.
  * The method therefore reads the environment variables:
  * \list
  * \li FREECAD_USER_HOME
@@ -3050,7 +3050,7 @@ std::tuple<QString, QString, QString> getCustomPaths()
 
 /*!
  * \brief getCustomPaths
- * Returns a tripel of XDG-compliant standard paths names where to store config, data and cached files.
+ * Returns a tuple of XDG-compliant standard paths names where to store config, data and cached files.
  * The method therefore reads the environment variables:
  * \list
  * \li XDG_CONFIG_HOME

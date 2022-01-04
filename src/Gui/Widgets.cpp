@@ -782,7 +782,8 @@ void ColorButton::onChooseColor()
     if (d->modal) {
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
-        cd.setOptions(QColorDialog::DontUseNativeDialog);
+        if (DialogOptions::dontUseNativeColorDialog())
+            cd.setOptions(QColorDialog::DontUseNativeDialog);
         cd.setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
 
         if (d->autoChange) {
@@ -808,7 +809,8 @@ void ColorButton::onChooseColor()
         if (d->cd.isNull()) {
             d->old = d->col;
             d->cd = new QColorDialog(d->col, this);
-            d->cd->setOptions(QColorDialog::DontUseNativeDialog);
+            if (DialogOptions::dontUseNativeColorDialog())
+                d->cd->setOptions(QColorDialog::DontUseNativeDialog);
             d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
             d->cd->setAttribute(Qt::WA_DeleteOnClose);
             connect(d->cd, SIGNAL(rejected()),

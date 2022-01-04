@@ -71,6 +71,7 @@ protected Q_SLOTS:
     void itemClickedTimeout();
     virtual void onRefDeleted(void) = 0;
     void createDeleteAction(QListWidget* parentList, QWidget* parentButton);
+    void createAddAllEdgesAction(QListWidget* parentList);
 
 protected:
     void exitSelectionMode();
@@ -78,7 +79,7 @@ protected:
     bool wasDoubleClicked = false;
     bool KeyEvent(QEvent *e);
     void hideOnError();
-
+    void addAllEdges(QListWidget* listWidget);
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };
     virtual void clearButtons(const selectionModes notThis) = 0;
@@ -91,6 +92,7 @@ protected:
     QWidget* proxy;
     ViewProviderDressUp *DressUpView;
     QAction* deleteAction;
+    QAction* addAllEdgesAction;
 
     bool allowFaces, allowEdges;
     selectionModes selectionMode;    

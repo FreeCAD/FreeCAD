@@ -90,6 +90,9 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
     createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
     connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
 
+    createAddAllEdgesAction(ui->listWidgetReferences);
+    connect(addAllEdgesAction, &QAction::triggered, this, &TaskFilletParameters::onAddAllEdges);
+
     connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
@@ -199,6 +202,12 @@ void TaskFilletParameters::onRefDeleted(void)
         ui->buttonRefRemove->setEnabled(false);
         ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
     }
+}
+
+void TaskFilletParameters::onAddAllEdges(void)
+{
+    TaskDressUpParameters::addAllEdges(ui->listWidgetReferences);
+    ui->buttonRefRemove->setEnabled(true);
 }
 
 void TaskFilletParameters::onLengthChanged(double len)

@@ -1192,6 +1192,7 @@ SET(FreeCADGui_SRCS
     SpaceballEvent.h
     PreferencePackManager.h
     Thumbnail.h
+    Tools.h
     Utilities.h
     WaitCursor.h
     ManualAlignment.h

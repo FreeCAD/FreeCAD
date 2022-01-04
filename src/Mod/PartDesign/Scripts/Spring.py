@@ -32,8 +32,8 @@ class MySpring:
       c.Radius = barradius
       p = c.toShape()
       section = Part.Wire([p])
-      makeSolid = 1  # change to 1 to make a solid
-      isFrenet = 1
+      makeSolid = True
+      isFrenet = True
       myspring = Part.Wire(myhelix).makePipeShell([section], makeSolid, isFrenet)
       fp.Shape = myspring
 

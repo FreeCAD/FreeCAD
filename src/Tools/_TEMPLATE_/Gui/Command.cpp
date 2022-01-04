@@ -47,7 +47,7 @@ Cmd_TEMPLATE_Test::Cmd_TEMPLATE_Test()
     sToolTipText  = QT_TR_NOOP("_TEMPLATE_ Test function");
     sWhatsThis    = "_TEMPLATE__Test";
     sStatusTip    = QT_TR_NOOP("_TEMPLATE_ Test function");
-    sPixmap       = "Test1";
+    sPixmap       = "_TEMPLATE_Workbench";
     sAccel        = "CTRL+H";
 }
 

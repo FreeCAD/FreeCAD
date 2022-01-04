@@ -26,12 +26,6 @@
 
 using namespace Sketcher;
 
-const int GeoEnum::RtPnt;
-const int GeoEnum::HAxis;
-const int GeoEnum::VAxis;
-const int GeoEnum::RefExt;
-const int GeoEnum::GeoUndef;
-
 bool GeoElementId::operator==(const GeoElementId& obj) const
 {
     return this->GeoId == obj.GeoId && this->Pos == obj.Pos;
