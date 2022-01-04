@@ -153,7 +153,7 @@ def parse(inputstring):
 
     axis = ["X", "Y", "Z", "A", "B", "C", "U", "V", "W"]
 
-    FreeCAD.Console.PrintMessage("preprocessing...")
+    FreeCAD.Console.PrintMessage("preprocessing...\n")
     PathLog.track(inputstring)
     # split the input by line
     lines = inputstring.splitlines()
@@ -191,7 +191,7 @@ def parse(inputstring):
         elif currcommand[0] in axis and lastcommand:
             output.append(lastcommand + " " + lin)
 
-    FreeCAD.Console.PrintMessage("done preprocessing.")
+    FreeCAD.Console.PrintMessage("done preprocessing.\n")
     return output
 
 
