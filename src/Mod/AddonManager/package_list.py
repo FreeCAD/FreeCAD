@@ -358,6 +358,32 @@ class PackageListItemDelegate(QStyledItemDelegate):
                             f"\n{maintainer['name']} <{maintainer['email']}>"
                         )
                 self.widget.ui.labelMaintainer.setText(maintainers_string)
+        elif repo.macro and repo.macro.parsed:
+            self.widget.ui.labelDescription.setText(repo.macro.comment)
+            self.widget.ui.labelVersion.setText(repo.macro.version)
+            if repo.macro.date:
+                if repo.macro.version:
+                    new_label = (
+                        "v"
+                        + repo.macro.version
+                        + ", "
+                        + translate("AddonsInstaller", "updated")
+                        + " "
+                        + repo.macro.date
+                    )
+                else:
+                    new_label = (
+                        translate("AddonsInstaller", "Updated") + " " + repo.macro.date
+                    )
+                self.widget.ui.labelVersion.setText(new_label)
+            if self.displayStyle == ListDisplayStyle.EXPANDED:
+                if repo.macro.author:
+                    caption = translate("AddonsInstaller", "Author")
+                    self.widget.ui.labelMaintainer.setText(
+                        caption + ": " + repo.macro.author
+                    )
+                else:
+                    self.widget.ui.labelMaintainer.setText("")
         else:
             self.widget.ui.labelDescription.setText("")
             self.widget.ui.labelVersion.setText("")
@@ -532,6 +558,12 @@ class PackageListFilter(QSortFilterProxyModel):
                 if re.match(name).hasMatch():
                     return True
                 if re.match(desc).hasMatch():
+                    return True
+                if (
+                    data.macro
+                    and data.macro.comment
+                    and re.match(data.macro.comment).hasMatch()
+                ):
                     return True
                 return False
             else:

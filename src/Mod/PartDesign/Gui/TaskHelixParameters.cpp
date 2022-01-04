@@ -301,9 +301,13 @@ void TaskHelixParameters::updateStatus()
 void TaskHelixParameters::updateUI()
 {
     fillAxisCombo();
-
+    assignToolTipsFromPropertyDocs();
     updateStatus();
+    adaptVisibilityToMode();
+}
 
+void TaskHelixParameters::adaptVisibilityToMode()
+{
     bool isPitchVisible = false;
     bool isHeightVisible = false;
     bool isTurnsVisible = false;
@@ -356,6 +360,52 @@ void TaskHelixParameters::updateUI()
     ui->labelGrowth->setVisible(isGrowthVisible);
 
     ui->checkBoxOutside->setVisible(isOutsideVisible);
+}
+
+void TaskHelixParameters::assignToolTipsFromPropertyDocs()
+{
+    auto pcHelix = static_cast<PartDesign::Helix*>(vp->getObject());
+    const char* propCategory = "App::Property"; // cf. https://tracker.freecadweb.org/view.php?id=0002524
+    QString toolTip;
+
+    // Beware that "Axis" in the GUI actually represents the property "ReferenceAxis"!
+    // The property "Axis" holds only the directional part of the reference axis and has no corresponding GUI element.
+    toolTip = QApplication::translate(propCategory, pcHelix->ReferenceAxis.getDocumentation());
+    ui->axis->setToolTip(toolTip);
+    ui->labelAxis->setToolTip(toolTip);
+
+    toolTip = QApplication::translate(propCategory, pcHelix->Mode.getDocumentation());
+    ui->inputMode->setToolTip(toolTip);
+    ui->labelInputMode->setToolTip(toolTip);
+
+    toolTip = QApplication::translate(propCategory, pcHelix->Pitch.getDocumentation());
+    ui->pitch->setToolTip(toolTip);
+    ui->labelPitch->setToolTip(toolTip);
+
+    toolTip = QApplication::translate(propCategory, pcHelix->Height.getDocumentation());
+    ui->height->setToolTip(toolTip);
+    ui->labelHeight->setToolTip(toolTip);
+
+    toolTip = QApplication::translate(propCategory, pcHelix->Turns.getDocumentation());
+    ui->turns->setToolTip(toolTip);
+    ui->labelTurns->setToolTip(toolTip);
+
+    toolTip = QApplication::translate(propCategory, pcHelix->Angle.getDocumentation());
+    ui->coneAngle->setToolTip(toolTip);
+    ui->labelConeAngle->setToolTip(toolTip);
+
+    toolTip = QApplication::translate(propCategory, pcHelix->Growth.getDocumentation());
+    ui->growth->setToolTip(toolTip);
+    ui->labelGrowth->setToolTip(toolTip);
+
+    toolTip = QApplication::translate(propCategory, pcHelix->LeftHanded.getDocumentation());
+    ui->checkBoxLeftHanded->setToolTip(toolTip);
+
+    toolTip = QApplication::translate(propCategory, pcHelix->Reversed.getDocumentation());
+    ui->checkBoxReversed->setToolTip(toolTip);
+
+    toolTip = QApplication::translate(propCategory, pcHelix->Outside.getDocumentation());
+    ui->checkBoxOutside->setToolTip(toolTip);
 }
 
 void TaskHelixParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -529,6 +579,7 @@ void TaskHelixParameters::changeEvent(QEvent* e)
         int axis = ui->axis->currentIndex();
         int mode = ui->inputMode->currentIndex();
         ui->retranslateUi(proxy);
+        assignToolTipsFromPropertyDocs();
 
         // Axes added by the user cannot be restored
         fillAxisCombo(true);

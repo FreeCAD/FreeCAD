@@ -192,6 +192,7 @@ class Scale(gui_base_original.Modifier):
         the selected object is not a rectangle or another object
         that can't be used with `scaleVertex` and `scaleEdge`.
         """
+        Gui.addModule("Draft")
         try:
             if self.task.isCopy.isChecked():
                 self.commit(translate("draft", "Copy"),
