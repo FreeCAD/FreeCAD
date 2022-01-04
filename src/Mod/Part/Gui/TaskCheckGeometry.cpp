@@ -451,7 +451,7 @@ void TaskCheckGeometryResults::goCheck()
         checkedCount++;
         checkedMap.Clear();
 
-        buildShapeContent(baseName, shape);
+        buildShapeContent(sel.pObject, baseName, shape);
 
         BRepCheck_Analyzer shapeCheck(shape);
         if (!shapeCheck.IsValid())
@@ -585,7 +585,7 @@ void TaskCheckGeometryResults::checkSub(const BRepCheck_Analyzer &shapeCheck, co
     }
 }
 
-void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const TopoDS_Shape &shape)
+void TaskCheckGeometryResults::buildShapeContent(App::DocumentObject *pObject, const QString &baseName, const TopoDS_Shape &shape)
 {
 
     bool advancedShapeContent = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->
@@ -603,7 +603,7 @@ void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const 
             throw Py::Exception();
         }
         Py::Tuple args(3);
-        args.setItem(0, Py::String(baseName.toStdString().c_str()));
+        args.setItem(0, Py::Object(pObject->getPyObject()));
         args.setItem(1, Py::Long(decimals));
         args.setItem(2, Py::Boolean(advancedShapeContent));
         Py::Module shapecontent(module, true);

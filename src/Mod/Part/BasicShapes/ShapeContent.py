@@ -12,12 +12,11 @@ import FreeCAD as App
 def roundVector(v,dec):
     return str([round(v[0],dec), round(v[1],dec), round(v[2],dec)])
 
-def buildShapeContent(basename, decimals=2, advancedShapeContent=True):
-    obj = basename[basename.index('.')+1:] #note: obj is a string, so is doc
-    doc = basename[:basename.index(obj)-1]
-    shp = App.getDocument(doc).getObject(obj).Shape
+def buildShapeContent(obj, decimals=2, advancedShapeContent=True):
+    shp = obj.Shape
     typeStr = str(shp.ShapeType)
-    result = doc+'.'+App.getDocument(doc).getObject(obj).Label+' ('+obj+'):\n'
+    lbl = '' if obj.Name == obj.Label else '(' + obj.Label + ')'
+    result = obj.Name + lbl + '\n'
     result += 'Shape type:  '+typeStr+'\n'
     result += 'Vertices:  '+str(len(shp.Vertexes))+'\n'
     result += 'Edges:  '+str(len(shp.Edges))+'\n'
@@ -65,9 +64,9 @@ def buildShapeContent(basename, decimals=2, advancedShapeContent=True):
                     result += str(p)+':  '+roundVector(props[p],decimals) +'\n'
                 else:
                     result += str(p)+':  '+str(props[p])+'\n'
-        object = App.getDocument(doc).getObject(obj)
-        if object.getGlobalPlacement() != object.Placement:
-            rpl = object.getGlobalPlacement() * object.Placement.inverse()
+
+        if obj.getGlobalPlacement() != obj.Placement:
+            rpl = obj.getGlobalPlacement() * obj.Placement.inverse()
             rot = rpl.Rotation
             if hasattr(shp, 'CenterOfMass'):
                 result += 'Global CenterOfMass:  '+roundVector(rpl.multVec(shp.CenterOfMass),decimals)+'\n'
