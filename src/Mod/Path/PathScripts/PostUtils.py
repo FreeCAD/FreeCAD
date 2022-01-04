@@ -29,6 +29,8 @@ These are a common functions and classes for creating custom post processors.
 from PySide import QtCore, QtGui
 import FreeCAD
 
+translate = FreeCAD.Qt.translate
+
 FreeCADGui = None
 if FreeCAD.GuiUp:
     import FreeCADGui

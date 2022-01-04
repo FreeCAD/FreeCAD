@@ -50,14 +50,14 @@ import re
 import PathScripts.PathCustom as PathCustom
 import PathScripts.PathCustomGui as PathCustomGui
 import PathScripts.PathOpGui as PathOpGui
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
-# LEVEL = PathLog.Level.DEBUG
-LEVEL = PathLog.Level.INFO
-PathLog.setLevel(LEVEL, PathLog.thisModule())
 
-if LEVEL == PathLog.Level.DEBUG:
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # to distinguish python built-in open function from the one declared below
@@ -66,7 +66,7 @@ if open.__module__ in ["__builtin__", "io"]:
 
 
 def open(filename):
-    "called when freecad opens a file."
+    """called when freecad opens a file."""
     PathLog.track(filename)
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
@@ -83,7 +83,7 @@ def matchToolController(op, toolnumber):
 
 
 def insert(filename, docname):
-    "called when freecad imports a file"
+    """called when freecad imports a file"""
     PathLog.track(filename)
     gfile = pythonopen(filename)
     gcode = gfile.read()
@@ -118,7 +118,7 @@ def insert(filename, docname):
             PathCustom.Create,
             PathCustomGui.TaskPanelOpPage,
             "Path_Custom",
-            QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
+            QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
             "",
             "",
         )
@@ -153,7 +153,7 @@ def parse(inputstring):
 
     axis = ["X", "Y", "Z", "A", "B", "C", "U", "V", "W"]
 
-    print("preprocessing...")
+    FreeCAD.Console.PrintMessage("preprocessing...")
     PathLog.track(inputstring)
     # split the input by line
     lines = inputstring.splitlines()
@@ -191,7 +191,7 @@ def parse(inputstring):
         elif currcommand[0] in axis and lastcommand:
             output.append(lastcommand + " " + lin)
 
-    print("done preprocessing.")
+    FreeCAD.Console.PrintMessage("done preprocessing.")
     return output
 
 

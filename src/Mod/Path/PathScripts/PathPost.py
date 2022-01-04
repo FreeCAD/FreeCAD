@@ -37,15 +37,11 @@ import os
 from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore, QtGui
 from datetime import datetime
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 LOG_MODULE = PathLog.thisModule()
 
 PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class _TempObject:
@@ -183,11 +179,9 @@ class CommandPathPost:
     def GetResources(self):
         return {
             "Pixmap": "Path_Post",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Post", "Post Process"),
+            "MenuText": QT_TRANSLATE_NOOP("Path_Post", "Post Process"),
             "Accel": "P, P",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "Path_Post", "Post Process the selected Job"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("Path_Post", "Post Process the selected Job"),
         }
 
     def IsActive(self):
@@ -224,9 +218,7 @@ class CommandPathPost:
 
     def Activated(self):
         PathLog.track()
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Post", "Post Process the Selected path(s)")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Post Process the Selected path(s)")
         FreeCADGui.addModule("PathScripts.PathPost")
 
         # Attempt to figure out what the user wants to post-process
