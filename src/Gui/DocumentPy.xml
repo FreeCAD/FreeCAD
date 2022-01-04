@@ -110,7 +110,7 @@ mergeProject(filename) -> None
         <UserDocu>Change TreeItem of a document object.
 toggleTreeItem(DocObject,[flag=0]) -> None
 --
-flag can be 0:Toggle, 1:Collaps, 2:Expand
+flag can be 0:Toggle, 1:Collapse, 2:Expand
 </UserDocu>
       </Documentation>
     </Methode>
