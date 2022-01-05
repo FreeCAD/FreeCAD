@@ -65,7 +65,7 @@
 #include <math.h>
 
 #include <QScreen>
-
+#include <Gui/FileDialog.h>
 #include "qtcolorpicker.h"
 
 /*! \class QtColorPicker
@@ -902,7 +902,12 @@ void ColorPickerPopup::getColorFromDialog()
 {
     //bool ok;
     //QRgb rgb = QColorDialog::getRgba(lastSel.rgba(), &ok, parentWidget());
-    QColor col = QColorDialog::getColor(lastSel,parentWidget(),0,QColorDialog::ShowAlphaChannel);
+    QColor col;
+    if (Gui::DialogOptions::dontUseNativeColorDialog()){
+        col = QColorDialog::getColor(lastSel, parentWidget(), 0, QColorDialog::ShowAlphaChannel|QColorDialog::DontUseNativeDialog);
+    } else {
+        col = QColorDialog::getColor(lastSel, parentWidget(), 0, QColorDialog::ShowAlphaChannel);
+    }
     if (!col.isValid())
     return;
 
