@@ -33,6 +33,7 @@
 #include <bitset>
 #include <boost/any.hpp>
 #include <CXX/Objects.hxx>
+#include <FCConfig.h>
 
 namespace App
 {
