@@ -100,7 +100,8 @@ App::DocumentObjectExecReturn *Pocket::execute()
 
     TopoDS_Shape profileshape;
     try {
-        Part::Feature* obj = getVerifiedObject();
+        getVerifiedObject();
+
         profileshape = getVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
