@@ -69,6 +69,8 @@ private:
     void addSketchAxes();
     void addPartAxes();
     int addCurrentLink();
+    void assignToolTipsFromPropertyDocs();
+    void adaptVisibilityToMode();
 
 private Q_SLOTS:
     void onPitchChanged(double);

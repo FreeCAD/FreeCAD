@@ -23,19 +23,27 @@
 import FreeCAD
 import FreeCADGui
 import Path
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """Path Hop object and FreeCAD command"""
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
+
 
 class ObjectHop:
-
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "NextObject", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The object to be reached by this hop"))
-        obj.addProperty("App::PropertyDistance", "HopHeight", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The Z height of the hop"))
+        obj.addProperty(
+            "App::PropertyLink",
+            "NextObject",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "The object to be reached by this hop"),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "HopHeight",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "The Z height of the hop"),
+        )
         obj.Proxy = self
 
     def __getstate__(self):
@@ -69,7 +77,6 @@ class ObjectHop:
 
 
 class ViewProviderPathHop:
-
     def __init__(self, vobj):
         self.Object = vobj.Object
         vobj.Proxy = self
@@ -88,11 +95,12 @@ class ViewProviderPathHop:
 
 
 class CommandPathHop:
-
     def GetResources(self):
-        return {'Pixmap': 'Path_Hop',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Hop", "Hop"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Hop", "Creates a Path Hop object")}
+        return {
+            "Pixmap": "Path_Hop",
+            "MenuText": QT_TRANSLATE_NOOP("Path_Hop", "Hop"),
+            "ToolTip": QT_TRANSLATE_NOOP("Path_Hop", "Creates a Path Hop object"),
+        }
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -107,31 +115,33 @@ class CommandPathHop:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_Hop", "Please select one path object")+"\n")
+                translate("Path_Hop", "Please select one path object") + "\n"
+            )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("Path_Hop", "The selected object is not a path")+"\n")
+                translate("Path_Hop", "The selected object is not a path") + "\n"
+            )
             return
 
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Hop", "Create Hop"))
+        FreeCAD.ActiveDocument.openTransaction("Create Hop")
         FreeCADGui.addModule("PathScripts.PathHop")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
-            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Hop")')
-        FreeCADGui.doCommand('PathScripts.PathHop.ObjectHop(obj)')
+            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Hop")'
+        )
+        FreeCADGui.doCommand("PathScripts.PathHop.ObjectHop(obj)")
+        FreeCADGui.doCommand("PathScripts.PathHop.ViewProviderPathHop(obj.ViewObject)")
         FreeCADGui.doCommand(
-            'PathScripts.PathHop.ViewProviderPathHop(obj.ViewObject)')
-        FreeCADGui.doCommand(
-            'obj.NextObject = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+            "obj.NextObject = FreeCAD.ActiveDocument." + selection[0].Name
+        )
+        FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Hop', CommandPathHop())
+    FreeCADGui.addCommand("Path_Hop", CommandPathHop())
 
 FreeCAD.Console.PrintLog("Loading PathHop... done\n")

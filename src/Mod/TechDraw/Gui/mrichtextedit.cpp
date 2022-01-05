@@ -51,9 +51,9 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Gui/FileDialog.h>
 
 #include <App/Application.h>
-
 #include "PreferencesGui.h"
 #include "mrichtextedit.h"
 
@@ -433,7 +433,12 @@ void MRichTextEdit::textStyle(int index) {
 }
 
 void MRichTextEdit::textFgColor() {
-    QColor col = QColorDialog::getColor(f_textedit->textColor(), this);
+    QColor col;
+    if (Gui::DialogOptions::dontUseNativeColorDialog()){
+        col = QColorDialog::getColor(f_textedit->textColor(),this, QLatin1String(""), QColorDialog::DontUseNativeDialog);
+    } else {
+        col = QColorDialog::getColor(f_textedit->textColor(), this);
+    }
     QTextCursor cursor = f_textedit->textCursor();
     if (!cursor.hasSelection()) {
         cursor.select(QTextCursor::WordUnderCursor);
@@ -450,7 +455,12 @@ void MRichTextEdit::textFgColor() {
 }
 
 void MRichTextEdit::textBgColor() {
-    QColor col = QColorDialog::getColor(f_textedit->textBackgroundColor(), this);
+    QColor col;
+    if (Gui::DialogOptions::dontUseNativeColorDialog()){
+        col = QColorDialog::getColor(f_textedit->textBackgroundColor(),this, QLatin1String(""), QColorDialog::DontUseNativeDialog);
+    } else {
+        col = QColorDialog::getColor(f_textedit->textBackgroundColor(), this);
+    }
     QTextCursor cursor = f_textedit->textCursor();
     if (!cursor.hasSelection()) {
         cursor.select(QTextCursor::WordUnderCursor);

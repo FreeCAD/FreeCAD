@@ -20,7 +20,6 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_Transform.hxx>
@@ -266,16 +265,19 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         std::vector<TopoDS_Shape> shapes;
         bool overlapping = false;
 
-        std::vector<gp_Trsf>::const_iterator t = transformations.begin();
-        bool first = true;
-        for (; t != transformations.end(); ++t) {
+        std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
+
+        // First transformation is skipped since it should not be part of the toolShape.
+        transformIter++;
+
+        for (; transformIter != transformations.end(); ++transformIter) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
             BRepBuilderAPI_Copy copy(origShape);
 
             shape = copy.Shape();
 
-            BRepBuilderAPI_Transform mkTrf(shape, *t, false); // No need to copy, now
+            BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
             if (!mkTrf.IsDone())
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
             shape = mkTrf.Shape();
@@ -283,14 +285,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             shapes.emplace_back(shape);
             builder.Add(compShape, shape);
 
-            if (overlapDetectionMode && !first)
+            if (overlapDetectionMode)
                 overlapping =  overlapping || (countSolids(TopoShape(origShape).fuse(shape))==1);
 
-            if (first)
-                first = false;
         }
 
         TopoDS_Shape toolShape;
+
 
 #ifndef FC_DEBUG
         if (overlapping || overlapMode == "Overlap mode")
@@ -300,7 +301,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 #endif
 
         if (overlapping || overlapMode == "Overlap mode")
-            toolShape = TopoShape(origShape).fuse(shapes, Precision::Confusion());
+            toolShape = TopoShape(shape).fuse(shapes, Precision::Confusion());
         else
             toolShape = compShape;
 
