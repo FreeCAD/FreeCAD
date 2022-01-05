@@ -482,6 +482,7 @@ class CommandAddonManager:
             self.update_cache = False
             pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
             pref.SetString("LastCacheUpdate", date.today().isoformat())
+            self.packageList.item_filter.invalidateFilter()
 
     def get_cache_file_name(self, file: str) -> str:
         cache_path = FreeCAD.getUserCachePath()

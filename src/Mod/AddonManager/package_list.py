@@ -658,8 +658,6 @@ class Ui_PackageList(object):
         self.listPackages.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.listPackages.setProperty("showDropIndicator", False)
         self.listPackages.setSelectionMode(QAbstractItemView.NoSelection)
-        self.listPackages.setLayoutMode(QListView.Batched)
-        self.listPackages.setBatchSize(15)
         self.listPackages.setResizeMode(QListView.Adjust)
         self.listPackages.setUniformItemSizes(False)
         self.listPackages.setAlternatingRowColors(True)
