@@ -699,7 +699,7 @@ class ghostTracker(Tracker):
         obj.ViewObject.show()
         self.finalize()
         sep = self.getNode(obj)
-        Tracker.__init__(self, children=[self.sep])
+        Tracker.__init__(self, children=[sep])
         self.on()
         obj.ViewObject.hide()
 
