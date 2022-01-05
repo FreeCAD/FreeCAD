@@ -71,6 +71,66 @@ void ExpressionSpinBox::bind(const App::ObjectIdentifier &_path)
     iconLabel->show();
 }
 
+void ExpressionSpinBox::showInvalidExpression(const QString& tip)
+{
+    spinbox->setReadOnly(true);
+    QPalette p(lineedit->palette());
+    p.setColor(QPalette::Active, QPalette::Text, Qt::red);
+    lineedit->setPalette(p);
+    iconLabel->setToolTip(tip);
+}
+
+void ExpressionSpinBox::showValidExpression(ExpressionSpinBox::Number number)
+{
+    std::unique_ptr<Expression> result(getExpression()->eval());
+    NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
+
+    if (value) {
+        switch (number) {
+        case Number::SetIfNumber:
+            setNumberExpression(value);
+            break;
+        case Number::KeepCurrent:
+            break;
+        }
+
+        spinbox->setReadOnly(true);
+        iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
+
+        QPalette p(lineedit->palette());
+        p.setColor(QPalette::Text, Qt::lightGray);
+        lineedit->setPalette(p);
+    }
+    iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+}
+
+void ExpressionSpinBox::clearExpression()
+{
+    spinbox->setReadOnly(false);
+    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
+    iconLabel->setPixmap(pixmap);
+
+    QPalette p(lineedit->palette());
+    p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
+    lineedit->setPalette(p);
+    iconLabel->setExpressionText(QString());
+}
+
+void ExpressionSpinBox::updateExpression()
+{
+    try {
+        if (isBound() && getExpression()) {
+            showValidExpression(Number::KeepCurrent);
+        }
+        else {
+            clearExpression();
+        }
+    }
+    catch (const Base::Exception & e) {
+        showInvalidExpression(QString::fromLatin1(e.what()));
+    }
+}
+
 void ExpressionSpinBox::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
@@ -79,11 +139,7 @@ void ExpressionSpinBox::setExpression(std::shared_ptr<Expression> expr)
         ExpressionBinding::setExpression(expr);
     }
     catch (const Base::Exception & e) {
-        spinbox->setReadOnly(true);
-        QPalette p(lineedit->palette());
-        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
-        lineedit->setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
+        showInvalidExpression(QString::fromLatin1(e.what()));
     }
 }
 
@@ -92,27 +148,10 @@ void ExpressionSpinBox::onChange()
     Q_ASSERT(isBound());
 
     if (getExpression()) {
-        std::unique_ptr<Expression> result(getExpression()->eval());
-        NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-        if (value) {
-            setNumberExpression(value);
-            spinbox->setReadOnly(true);
-            iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
-
-            QPalette p(lineedit->palette());
-            p.setColor(QPalette::Text, Qt::lightGray);
-            lineedit->setPalette(p);
-        }
-        iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+        showValidExpression(Number::SetIfNumber);
     }
     else {
-        spinbox->setReadOnly(false);
-        iconLabel->setPixmap(getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight)));
-        QPalette p(lineedit->palette());
-        p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-        lineedit->setPalette(p);
-        iconLabel->setExpressionText(QString());
+        clearExpression();
     }
 }
 
@@ -122,41 +161,7 @@ void ExpressionSpinBox::resizeWidget()
 
     QSize sz = iconLabel->sizeHint();
     iconLabel->move(lineedit->rect().right() - frameWidth - sz.width(), 0);
-
-    try {
-        if (isBound() && getExpression()) {
-            std::unique_ptr<Expression> result(getExpression()->eval());
-            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
-
-            if (value) {
-                spinbox->setReadOnly(true);
-                QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
-                iconLabel->setPixmap(pixmap);
-
-                QPalette p(lineedit->palette());
-                p.setColor(QPalette::Text, Qt::lightGray);
-                lineedit->setPalette(p);
-            }
-            iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
-        }
-        else {
-            spinbox->setReadOnly(false);
-            QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-            iconLabel->setPixmap(pixmap);
-
-            QPalette p(lineedit->palette());
-            p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
-            lineedit->setPalette(p);
-            iconLabel->setExpressionText(QString());
-        }
-    }
-    catch (const Base::Exception & e) {
-        spinbox->setReadOnly(true);
-        QPalette p(lineedit->palette());
-        p.setColor(QPalette::Active, QPalette::Text, Qt::red);
-        lineedit->setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
-    }
+    updateExpression();
 }
 
 void ExpressionSpinBox::openFormulaDialog()
@@ -187,7 +192,7 @@ void ExpressionSpinBox::openFormulaDialog()
 
 bool ExpressionSpinBox::handleKeyEvent(const QString& text)
 {
-    if (text == QString::fromUtf8("=") && isBound()) {
+    if (text == QLatin1String("=") && isBound()) {
         openFormulaDialog();
         return true;
     }
