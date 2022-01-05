@@ -2200,7 +2200,7 @@ void from_json(const nlohmann::json &j, Hole::CutDimensionSet &t)
     else if (thread_type_string == "metricfine")
         t.thread_type = Hole::CutDimensionSet::MetricFine;
     else
-        throw Base::IndexError(std::string("Thread type ‘") + thread_type_string + "’ unsupported");
+        throw Base::IndexError(std::string(u8"Thread type ‘") + thread_type_string + u8"’ unsupported");
 
     std::string  cut_type_string = j["cut_type"].get<std::string>();
     if (cut_type_string == "counterbore") {
