@@ -1081,32 +1081,61 @@ class CommandAddonManager:
 
     def on_update_all_completed(self) -> None:
         self.hide_progress_widgets()
+
+        def get_package_list(
+            message: str, repos: List[AddonManagerRepo], threshold: int
+        ):
+            """To ensure that the list doesn't get too long for the dialog, cut it off at some threshold"""
+            num_updates = len(repos)
+            if num_updates < threshold:
+                result = "".join([repo.name + "\n" for repo in repos])
+            else:
+                result = translate(
+                    "AddonsInstaller", f"{num_updates} total, see Report view for list"
+                )
+                for repo in repos:
+                    FreeCAD.Console.PrintMessage(f"{message}: {repo.name}\n")
+            return result
+
         if not self.subupdates_failed:
             message = (
                 translate(
                     "AddonsInstaller",
-                    "All packages were successfully updated. Packages:",
+                    "All packages were successfully updated",
                 )
-                + "\n"
+                + ": \n"
             )
-            message += "".join([repo.name + "\n" for repo in self.subupdates_succeeded])
+            message += get_package_list(
+                translate("AddonsInstaller", "Succeeded"), self.subupdates_succeeded, 15
+            )
         elif not self.subupdates_succeeded:
             message = (
-                translate("AddonsInstaller", "All packages updates failed. Packages:")
-                + "\n"
+                translate("AddonsInstaller", "All packages updates failed:") + "\n"
             )
-            message += "".join([repo.name + "\n" for repo in self.subupdates_failed])
+            message += get_package_list(
+                translate("AddonsInstaller", "Failed"), self.subupdates_failed, 15
+            )
         else:
             message = (
                 translate(
                     "AddonsInstaller",
-                    "Some packages updates failed. Successful packages:",
+                    "Some packages updates failed.",
                 )
-                + "\n"
+                + "\n\n"
+                + translate(
+                    "AddonsInstaller",
+                    "Succeeded",
+                )
+                + ":\n"
             )
-            message += "".join([repo.name + "\n" for repo in self.subupdates_succeeded])
-            message += translate("AddonsInstaller", "Failed packages:") + "\n"
-            message += "".join([repo.name + "\n" for repo in self.subupdates_failed])
+            message += get_package_list(
+                translate("AddonsInstaller", "Succeeded"), self.subupdates_succeeded, 8
+            )
+            message += "\n\n"
+            message += translate("AddonsInstaller", "Failed") + ":\n"
+            message += get_package_list(
+                translate("AddonsInstaller", "Failed"), self.subupdates_failed, 8
+            )
 
         for installed_repo in self.subupdates_succeeded:
             self.restart_required = True

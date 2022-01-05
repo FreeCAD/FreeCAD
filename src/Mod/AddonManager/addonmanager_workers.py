@@ -106,7 +106,7 @@ class ConnectionChecker(QtCore.QThread):
         QtCore.QThread.__init__(self)
 
     def run(self):
-        FreeCAD.Console.PrintMessage(
+        FreeCAD.Console.PrintLog(
             translate("AddonsInstaller", "Checking network connection...\n")
         )
         url = "https://api.github.com/zen"
@@ -117,7 +117,7 @@ class ConnectionChecker(QtCore.QThread):
             self.failure.emit(
                 translate(
                     "AddonsInstaller",
-                    "Unable to connect to GitHub: check your internect connection and proxy settings and try again.",
+                    "Unable to connect to GitHub: check your internet connection and proxy settings and try again.",
                 )
             )
             return
@@ -249,7 +249,7 @@ class UpdateWorker(QtCore.QThread):
             ),
             p,
         )
-        for name, path, url, _, branch in p:
+        for name, _, url, _, branch in p:
             if self.current_thread.isInterruptionRequested():
                 return
             if name in package_names:
@@ -368,8 +368,6 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
         self.current_thread = QtCore.QThread.currentThread()
         self.basedir = FreeCAD.getUserAppDataDir()
         self.moddir = self.basedir + os.sep + "Mod"
-        upds = []
-        gitpython_warning = False
         count = 1
         for repo in self.repos:
             if self.current_thread.isInterruptionRequested():
@@ -388,7 +386,6 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
         self.done.emit()
 
     def check_workbench(self, wb):
-        gitpython_warning = False
         if not have_git or NOGIT:
             return
         clonedir = self.moddir + os.sep + wb.name
@@ -452,7 +449,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                         AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
                     )
                 self.update_status.emit(package)
-            except Exception as e:
+            except Exception:
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "AddonsInstaller",
@@ -714,7 +711,7 @@ class CacheMacroCode(QtCore.QThread):
             time.sleep(0.1)
 
         # Make sure all of our child threads have fully exited:
-        for i, worker in enumerate(self.workers):
+        for worker in self.workers:
             worker.wait(50)
             if not worker.isFinished():
                 FreeCAD.Console.PrintError(
@@ -978,7 +975,6 @@ class ShowWorker(QtCore.QThread):
 
         imagepaths = re.findall('<img.*?src="(.*?)"', message)
         if imagepaths:
-            storedimages = []
             store = os.path.join(self.cache_path, "Images")
             if not os.path.exists(store):
                 os.makedirs(store)
@@ -1344,6 +1340,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
 
 class DependencyInstallationWorker(QtCore.QThread):
+    """Install dependencies: not yet implemented, DO NOT CALL"""
+
     def __init__(self, addons, python_required, python_optional):
         QtCore.QThread.__init__(self)
         self.addons = addons
@@ -1360,7 +1358,7 @@ class DependencyInstallationWorker(QtCore.QThread):
             FreeCAD.Console.PrintMessage(f"Pretending to install {repo.name}")
             time.sleep(3)
             continue
-            worker.run()
+            # worker.run()
 
         if self.python_required or self.python_optional:
             # See if we have pip available:
@@ -1381,7 +1379,7 @@ class DependencyInstallationWorker(QtCore.QThread):
             FreeCAD.Console.PrintMessage(f"Pretending to install {pymod}")
             time.sleep(3)
             continue
-            subprocess.check_call(["pip", "install", pymod])
+            # subprocess.check_call(["pip", "install", pymod])
 
         for pymod in self.python_optional:
             if QtCore.QThread.currentThread().isInterruptionRequested():
@@ -1390,7 +1388,7 @@ class DependencyInstallationWorker(QtCore.QThread):
                 FreeCAD.Console.PrintMessage(f"Pretending to install {pymod}")
                 time.sleep(3)
                 continue
-                subprocess.check_call([sys.executable, "-m", "pip", "install", pymod])
+                # subprocess.check_call([sys.executable, "-m", "pip", "install", pymod])
             except subprocess.CalledProcessError as e:
                 FreeCAD.Console.PrintError(
                     translate(
@@ -1570,7 +1568,7 @@ if have_git and not NOGIT:
 
         def update(
             self,
-            op_code: int,
+            _: int,
             cur_count: Union[str, float],
             max_count: Union[str, float, None] = None,
             message: str = "",
@@ -1622,7 +1620,7 @@ class UpdateAllWorker(QtCore.QThread):
         self.repo_queue.join()
 
         # Make sure all of our child threads have fully exited:
-        for i, worker in enumerate(workers):
+        for worker in workers:
             worker.wait()
 
         self.done.emit()
@@ -1670,12 +1668,10 @@ class UpdateSingleWorker(QtCore.QThread):
             FreeCAD.getUserCachePath(), "AddonManager", "MacroCache"
         )
         os.makedirs(cache_path, exist_ok=True)
-        install_succeeded, errors = repo.macro.install(cache_path)
+        install_succeeded, _ = repo.macro.install(cache_path)
 
         if install_succeeded:
-            install_succeeded, errors = repo.macro.install(
-                FreeCAD.getUserMacroDir(True)
-            )
+            install_succeeded, _ = repo.macro.install(FreeCAD.getUserMacroDir(True))
             utils.update_macro_installation_details(repo)
 
         if install_succeeded:
