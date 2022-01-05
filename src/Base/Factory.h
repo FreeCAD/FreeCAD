@@ -25,13 +25,11 @@
 #ifndef BASE_FACTORY_H
 #define BASE_FACTORY_H
 
-#include <typeinfo>
-#include <string>
-#include <map>
-#include <list>
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
+#include<typeinfo>
+#include<string>
+#include<map>
+#include<list>
+#include"../FCConfig.h"
 
 
 namespace Base

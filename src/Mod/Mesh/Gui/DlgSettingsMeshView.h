@@ -24,9 +24,6 @@
 #ifndef MESHGUI_DLGSETTINGSMESHVIEW_H
 #define MESHGUI_DLGSETTINGSMESHVIEW_H
 
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
 #include <Gui/PropertyPage.h>
 #include <memory>
 

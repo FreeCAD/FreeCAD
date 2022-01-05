@@ -30,9 +30,6 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/elements/SoReplacedElement.h>
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
 
 namespace MeshGui {
 

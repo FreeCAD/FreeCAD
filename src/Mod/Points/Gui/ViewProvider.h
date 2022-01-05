@@ -28,7 +28,6 @@
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Gui/ViewProviderBuilder.h>
 #include <Inventor/SbVec2f.h>
-#include <Mod/Points/PointsGlobal.h>
 
 
 class SoSwitch;

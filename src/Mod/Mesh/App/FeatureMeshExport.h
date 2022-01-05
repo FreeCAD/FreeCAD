@@ -27,9 +27,6 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
 
 namespace Mesh
 {

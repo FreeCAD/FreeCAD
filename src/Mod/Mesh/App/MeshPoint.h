@@ -24,13 +24,10 @@
 #ifndef MESH_MESHPOINT_H
 #define MESH_MESHPOINT_H
 
-#include <climits>
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
-#include <Base/Handle.h>
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
+
+#include "Mesh.h"
 
 using Base::Vector3d;
 
@@ -62,4 +59,4 @@ public:
 } // namespace Mesh
 
 
-#endif // MESH_MESHPOINT_H
+#endif // MESH_MESH_H

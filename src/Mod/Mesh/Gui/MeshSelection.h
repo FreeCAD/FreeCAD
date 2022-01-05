@@ -30,9 +30,6 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
 
 namespace Gui {
     class View3DInventorViewer;

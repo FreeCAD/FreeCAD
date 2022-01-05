@@ -22,10 +22,6 @@
 
 #ifndef BASE_MEMDEBUG_H
 #define BASE_MEMDEBUG_H
-#ifndef FC_GLOBAL_H
-#include <crtdbg.h>
-#include <FCGlobal.h>
-#endif
 
 namespace Base
 {

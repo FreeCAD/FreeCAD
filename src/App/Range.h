@@ -24,9 +24,6 @@
 #define RANGE_H
 
 #include <string>
-#ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
-#endif
 
 namespace App {
 

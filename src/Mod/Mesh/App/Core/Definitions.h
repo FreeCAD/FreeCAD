@@ -24,10 +24,6 @@
 #ifndef MESH_DEFINITIONS_H
 #define MESH_DEFINITIONS_H
 
-#ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
-#endif
-
 // default values
 #define MESH_MIN_PT_DIST           1.0e-6f
 #define MESH_MIN_EDGE_LEN          1.0e-3f

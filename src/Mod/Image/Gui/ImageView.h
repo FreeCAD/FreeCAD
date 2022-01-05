@@ -25,7 +25,6 @@
 #else
 #include "GLImageBox.h"
 #endif
-#include <Mod/Image/ImageGlobal.h>
 
 class QSlider;
 class QAction;
