@@ -455,6 +455,21 @@ void QuantitySpinBox::updateText(const Quantity &quant)
     handlePendingEmit();
 }
 
+void QuantitySpinBox::validateInput()
+{
+    Q_D(QuantitySpinBox);
+
+    int pos = 0;
+    QValidator::State state;
+    QString text = lineEdit()->text();
+    d->validateAndInterpret(text, pos, state);
+    if (state != QValidator::Acceptable) {
+        lineEdit()->setText(d->validStr);
+    }
+
+    handlePendingEmit();
+}
+
 Base::Quantity QuantitySpinBox::value() const
 {
     Q_D(const QuantitySpinBox);
@@ -700,6 +715,19 @@ QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
     }
 }
 
+void QuantitySpinBox::setExpression(std::shared_ptr<Expression> expr)
+{
+    Q_ASSERT(isBound());
+
+    try {
+        ExpressionBinding::setExpression(expr);
+        validateInput();
+    }
+    catch (const Base::Exception & e) {
+        showInvalidExpression(QString::fromLatin1(e.what()));
+    }
+}
+
 QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
 {
     Q_D(const QuantitySpinBox);
@@ -869,17 +897,7 @@ void QuantitySpinBox::focusInEvent(QFocusEvent * event)
 
 void QuantitySpinBox::focusOutEvent(QFocusEvent * event)
 {
-    Q_D(QuantitySpinBox);
-
-    int pos = 0;
-    QString text = lineEdit()->text();
-    QValidator::State state;
-    d->validateAndInterpret(text, pos, state);
-    if (state != QValidator::Acceptable) {
-        lineEdit()->setText(d->validStr);
-    }
-
-    handlePendingEmit();
+    validateInput();
 
     QToolTip::hideText();
     QAbstractSpinBox::focusOutEvent(event);

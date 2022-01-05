@@ -141,6 +141,7 @@ protected Q_SLOTS:
     void handlePendingEmit();
 
 protected:
+    virtual void setExpression(std::shared_ptr<App::Expression> expr);
     virtual void openFormulaDialog();
     virtual StepEnabled stepEnabled() const;
     virtual void showEvent(QShowEvent * event);
@@ -153,6 +154,7 @@ protected:
     virtual void paintEvent(QPaintEvent *event);
 
 private:
+    void validateInput();
     void updateText(const Base::Quantity&);
     void updateFromCache(bool);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
