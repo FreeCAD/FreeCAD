@@ -100,7 +100,8 @@ App::DocumentObjectExecReturn *Pad::execute()
 
     TopoDS_Shape sketchshape;
     try {
-        Part::Feature* obj = getVerifiedObject();
+        getVerifiedObject();
+
         sketchshape = getVerifiedFace();
     }
     catch (const Base::Exception& e) {
