@@ -98,10 +98,10 @@ App::DocumentObjectExecReturn *Pad::execute()
     Midplane.setReadOnly(hasReversed);
     Reversed.setReadOnly(hasMidplane);
 
-    Part::Feature* obj = 0;
     TopoDS_Shape sketchshape;
     try {
-        obj = getVerifiedObject();
+        getVerifiedObject();
+
         sketchshape = getVerifiedFace();
     }
     catch (const Base::Exception& e) {

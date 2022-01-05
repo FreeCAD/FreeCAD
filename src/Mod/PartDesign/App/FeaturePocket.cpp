@@ -98,10 +98,10 @@ App::DocumentObjectExecReturn *Pocket::execute()
     if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Pocket: Second length of pocket too small");
 
-    Part::Feature* obj = 0;
     TopoDS_Shape profileshape;
     try {
-        obj = getVerifiedObject();
+        getVerifiedObject();
+
         profileshape = getVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
