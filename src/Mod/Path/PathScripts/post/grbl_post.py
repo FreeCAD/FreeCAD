@@ -646,7 +646,7 @@ def drill_translate(outstring, cmd, params):
         )
         print(strF_Feedrate)
 
-        # preliminary mouvement(s)
+        # preliminary movement(s)
         if CURRENT_Z < RETRACT_Z:
             trBuff += linenumber() + strG0_RETRACT_Z
         trBuff += (
