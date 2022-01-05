@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>This Addon has the following required and optional depdencies. You must install them before this Addon can be used.</string>
+      <string>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
