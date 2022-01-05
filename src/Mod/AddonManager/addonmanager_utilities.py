@@ -294,6 +294,43 @@ def fix_relative_links(text, base_url):
     return new_text
 
 
+def repair_git_repo(repo_url: str, clone_dir: str) -> None:
+    # Repair addon installed with raw download by adding the .git
+    # directory to it
+    try:
+        bare_repo = git.Repo.clone_from(
+            repo_url, clone_dir + os.sep + ".git", bare=True
+        )
+        with bare_repo.config_writer() as cw:
+            cw.set("core", "bare", False)
+    except AttributeError:
+        FreeCAD.Console.PrintLog(
+            translate(
+                "AddonsInstaller",
+                "Outdated GitPython detected, consider upgrading with pip.",
+            )
+            + "\n"
+        )
+        cw = bare_repo.config_writer()
+        cw.set("core", "bare", False)
+        del cw
+    except Exception as e:
+        FreeCAD.Console.PrintWarning(
+            translate("AddonsInstaller", "Failed to repair missing .git directory")
+            + "\n"
+        )
+        FreeCAD.Console.PrintWarning(
+            translate("AddonsInstaller", "Repository URL") + f": {repo_url}\n"
+        )
+        FreeCAD.Console.PrintWarning(
+            translate("AddonsInstaller", "Clone directory") + f": {clone_dir}\n"
+        )
+        FreeCAD.Console.PrintWarning(e)
+        return
+    repo = git.Repo(clone_dir)
+    repo.head.reset("--hard")
+
+
 def warning_color_string() -> str:
     """A shade of red, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
 

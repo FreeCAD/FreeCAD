@@ -199,7 +199,7 @@ class DependencyDownloadWorker(DownloadWorker):
         """Called when the data fetch completed, either with an error, or if it found the metadata file"""
 
         if self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
-            FreeCAD.Console.PrintMessage(
+            FreeCAD.Console.PrintLog(
                 f"Found a metadata.txt file for {self.repo.name}\n"
             )
             new_deps = self.fetch_task.readAll()
@@ -232,7 +232,7 @@ class DependencyDownloadWorker(DownloadWorker):
                     wb_name = wb.strip()
                     if wb_name:
                         self.repo.requires.add(wb_name)
-                        FreeCAD.Console.PrintMessage(
+                        FreeCAD.Console.PrintLog(
                             f"{self.repo.display_name} requires FreeCAD Addon '{wb_name}'\n"
                         )
 
@@ -241,7 +241,7 @@ class DependencyDownloadWorker(DownloadWorker):
                 for pl in depspy:
                     if pl.strip():
                         self.repo.python_requires.add(pl.strip())
-                        FreeCAD.Console.PrintMessage(
+                        FreeCAD.Console.PrintLog(
                             f"{self.repo.display_name} requires python package '{pl.strip()}'\n"
                         )
             elif line.startswith("optionalpylibs="):
@@ -249,7 +249,7 @@ class DependencyDownloadWorker(DownloadWorker):
                 for pl in opspy:
                     if pl.strip():
                         self.repo.python_optional.add(pl.strip())
-                        FreeCAD.Console.PrintMessage(
+                        FreeCAD.Console.PrintLog(
                             f"{self.repo.display_name} optionally imports python package '{pl.strip()}'\n"
                         )
         self.updated.emit(self.repo)

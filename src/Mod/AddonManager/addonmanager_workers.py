@@ -32,6 +32,8 @@ import threading
 import queue
 import io
 import time
+import subprocess
+import sys
 from datetime import datetime
 from typing import Union, List
 
@@ -393,28 +395,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
         if os.path.exists(clonedir):
             # mark as already installed AND already checked for updates
             if not os.path.exists(clonedir + os.sep + ".git"):
-                # Repair addon installed with raw download
-                bare_repo = git.Repo.clone_from(
-                    wb.url, clonedir + os.sep + ".git", bare=True
-                )
-                try:
-                    with bare_repo.config_writer() as cw:
-                        cw.set("core", "bare", False)
-                except AttributeError:
-                    if not gitpython_warning:
-                        FreeCAD.Console.PrintWarning(
-                            translate(
-                                "AddonsInstaller",
-                                "Outdated GitPython detected, consider upgrading with pip.",
-                            )
-                            + "\n"
-                        )
-                        gitpython_warning = True
-                    cw = bare_repo.config_writer()
-                    cw.set("core", "bare", False)
-                    del cw
-                repo = git.Repo(clonedir)
-                repo.head.reset("--hard")
+                utils.repair_git_repo(wb.url, clonedir)
             gitrepo = git.Git(clonedir)
             try:
                 gitrepo.fetch()
@@ -566,7 +547,7 @@ class FillMacroListWorker(QtCore.QThread):
             self.status_message_signal.emit(
                 translate(
                     "AddonInstaller",
-                    "Retrieving macros from FreeCAD/FreeCAD-Macros Git repository",
+                    "Retrieving macros from FreeCAD wiki",
                 )
             )
             self.retrieve_macros_from_wiki()
@@ -598,6 +579,10 @@ class FillMacroListWorker(QtCore.QThread):
 
         try:
             if os.path.exists(self.repo_dir):
+                if not os.path.exists(os.path.join(self.repo_dir, ".git")):
+                    utils.repair_git_repo(
+                        "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
+                    )
                 gitrepo = git.Git(self.repo_dir)
                 gitrepo.pull()
             else:
@@ -912,27 +897,7 @@ class ShowWorker(QtCore.QThread):
                 )
                 if os.path.exists(clonedir):
                     if not os.path.exists(clonedir + os.sep + ".git"):
-                        # Repair addon installed with raw download
-                        bare_repo = git.Repo.clone_from(
-                            repo.url, clonedir + os.sep + ".git", bare=True
-                        )
-                        try:
-                            with bare_repo.config_writer() as cw:
-                                cw.set("core", "bare", False)
-                        except AttributeError:
-                            FreeCAD.Console.PrintWarning(
-                                translate(
-                                    "AddonsInstaller",
-                                    "Outdated GitPython detected, "
-                                    "consider upgrading with pip.",
-                                )
-                                + "\n"
-                            )
-                            cw = bare_repo.config_writer()
-                            cw.set("core", "bare", False)
-                            del cw
-                        repo = git.Repo(clonedir)
-                        repo.head.reset("--hard")
+                        utils.repair_git_repo(self.repo.url, clonedir)
                     gitrepo = git.Git(clonedir)
                     gitrepo.fetch()
                     if "git pull" in gitrepo.status():
@@ -1128,7 +1093,6 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
         QtCore.QThread.__init__(self)
         self.repo = repo
-        self.all_repos = all_repos
         if have_git and not NOGIT:
             self.git_progress = GitProgressMonitor()
             # TODO: What is wrong with these?
@@ -1203,27 +1167,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 + "\n"
             )
         if not os.path.exists(clonedir + os.sep + ".git"):
-            # Repair addon installed with raw download by adding the .git
-            # directory to it
-            bare_repo = git.Repo.clone_from(
-                self.repo.url, clonedir + os.sep + ".git", bare=True
-            )
-            try:
-                with bare_repo.config_writer() as cw:
-                    cw.set("core", "bare", False)
-            except AttributeError:
-                FreeCAD.Console.PrintLog(
-                    translate(
-                        "AddonsInstaller",
-                        "Outdated GitPython detected, consider " "upgrading with pip.",
-                    )
-                    + "\n"
-                )
-                cw = bare_repo.config_writer()
-                cw.set("core", "bare", False)
-                del cw
-            repo = git.Repo(clonedir)
-            repo.head.reset("--hard")
+            utils.repair_git_repo(self.repo.url, clonedir)
         repo = git.Git(clonedir)
         try:
             repo.pull()
@@ -1397,6 +1341,65 @@ class InstallWorkbenchWorker(QtCore.QThread):
             self.repo.load_metadata_file(package_xml)
             self.repo.installed_version = self.repo.metadata.Version
             self.repo.updated_timestamp = datetime.now().timestamp()
+
+
+class DependencyInstallationWorker(QtCore.QThread):
+    def __init__(self, addons, python_required, python_optional):
+        QtCore.QThread.__init__(self)
+        self.addons = addons
+        self.python_required = python_required
+        self.python_optional = python_optional
+
+    def run(self):
+
+        for repo in self.addons:
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                return
+            worker = InstallWorkbenchWorker(repo)
+            # Don't bother with a separate thread for this right now, just run it here:
+            FreeCAD.Console.PrintMessage(f"Pretending to install {repo.name}")
+            time.sleep(3)
+            continue
+            worker.run()
+
+        if self.python_required or self.python_optional:
+            # See if we have pip available:
+            try:
+                subprocess.check_call(["pip", "--version"])
+            except subprocess.CalledProcessError as e:
+                FreeCAD.Console.PrintError(
+                    translate(
+                        "AddonsInstaller", "Failed to execute pip. Returned error was:"
+                    )
+                    + f"\n{e.output}"
+                )
+                return
+
+        for pymod in self.python_required:
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                return
+            FreeCAD.Console.PrintMessage(f"Pretending to install {pymod}")
+            time.sleep(3)
+            continue
+            subprocess.check_call(["pip", "install", pymod])
+
+        for pymod in self.python_optional:
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                return
+            try:
+                FreeCAD.Console.PrintMessage(f"Pretending to install {pymod}")
+                time.sleep(3)
+                continue
+                subprocess.check_call([sys.executable, "-m", "pip", "install", pymod])
+            except subprocess.CalledProcessError as e:
+                FreeCAD.Console.PrintError(
+                    translate(
+                        "AddonsInstaller",
+                        "Failed to install option dependency {pymod}. Returned error was:",
+                    )
+                    + f"\n{e.output}"
+                )
+                # This is not fatal, we can just continue without it
 
 
 class CheckSingleWorker(QtCore.QThread):

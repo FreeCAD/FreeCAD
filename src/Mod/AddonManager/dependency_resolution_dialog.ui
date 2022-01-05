@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>455</width>
+    <height>200</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>This Addon has the following required and optional depdencies. Try to install them?</string>
+      <string>This Addon has the following required and optional depdencies. You must install them before this Addon can be used.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -44,7 +44,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
-        <string>Python modules</string>
+        <string>Required Python modules</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -53,19 +53,19 @@
        </layout>
       </widget>
      </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="title">
+        <string>Optional Python modules</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QListWidget" name="listWidgetPythonOptional"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="title">
-      <string>Optional Python modules (check to install)</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <widget class="QListWidget" name="listWidgetPythonOptional"/>
-      </item>
-     </layout>
-    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -73,7 +73,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ignore|QDialogButtonBox::Yes</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ignore</set>
      </property>
     </widget>
    </item>

@@ -85,6 +85,7 @@ class CommandAddonManager:
         "load_macro_metadata_worker",
         "update_all_worker",
         "update_check_single_worker",
+        "dependency_installation_worker",
     ]
 
     lock = threading.Lock()
@@ -603,6 +604,12 @@ class CommandAddonManager:
 
     def on_buttonUpdateCache_clicked(self) -> None:
         self.update_cache = True
+        cache_path = FreeCAD.getUserCachePath()
+        am_path = os.path.join(cache_path, "AddonManager")
+        try:
+            shutil.rmtree(am_path, onerror=self.remove_readonly)
+        except Exception:
+            pass
         self.startup()
 
     def on_package_updated(self, repo: AddonManagerRepo) -> None:
@@ -768,21 +775,21 @@ class CommandAddonManager:
             repo_name_dict[repo.display_name] = r
         repo.walk_dependency_tree(repo_name_dict, deps)
 
-        FreeCAD.Console.PrintMessage("The following Workbenches are required:\n")
+        FreeCAD.Console.PrintLog("The following Workbenches are required:\n")
         for addon in deps.unrecognized_addons:
-            FreeCAD.Console.PrintMessage(addon + "\n")
+            FreeCAD.Console.PrintLog(addon + "\n")
 
-        FreeCAD.Console.PrintMessage("The following addons are required:\n")
+        FreeCAD.Console.PrintLog("The following addons are required:\n")
         for addon in deps.required_external_addons:
-            FreeCAD.Console.PrintMessage(addon + "\n")
+            FreeCAD.Console.PrintLog(addon + "\n")
 
-        FreeCAD.Console.PrintMessage("The following Python modules are required:\n")
+        FreeCAD.Console.PrintLog("The following Python modules are required:\n")
         for pyreq in deps.python_required:
-            FreeCAD.Console.PrintMessage(pyreq + "\n")
+            FreeCAD.Console.PrintLog(pyreq + "\n")
 
-        FreeCAD.Console.PrintMessage("The following Python modules are optional:\n")
+        FreeCAD.Console.PrintLog("The following Python modules are optional:\n")
         for pyreq in deps.python_optional:
-            FreeCAD.Console.PrintMessage(pyreq + "\n")
+            FreeCAD.Console.PrintLog(pyreq + "\n")
 
         missing_external_addons = []
         for dep in deps.required_external_addons:
@@ -845,7 +852,7 @@ class CommandAddonManager:
             or missing_python_requirements
             or missing_python_optionals
         ):
-            dependency_dialog = FreeCADGui.PySideUic.loadUi(
+            self.dependency_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(
                     os.path.dirname(__file__), "dependency_resolution_dialog.ui"
                 )
@@ -860,19 +867,72 @@ class CommandAddonManager:
             ]
 
             for addon in missing_external_addons:
-                dependency_dialog.listWidgetAddons.addItem(addon)
+                self.dependency_dialog.listWidgetAddons.addItem(addon)
             for mod in missing_python_requirements:
-                dependency_dialog.listWidgetPythonRequired.addItem(mod)
+                self.dependency_dialog.listWidgetPythonRequired.addItem(mod)
             for mod in missing_python_optionals:
                 item = QtWidgets.QListWidgetItem(mod)
                 item.setFlags(Qt.ItemIsUserCheckable)
-                dependency_dialog.listWidgetPythonOptional.addItem(item)
+                self.dependency_dialog.listWidgetPythonOptional.addItem(item)
 
-            resolution = dependency_dialog.exec()
+            # For now, we don't offer to automatically install the dependencies
+            # self.dependency_dialog.buttonBox.button(
+            #    QtWidgets.QDialogButtonBox.Yes
+            # ).clicked.connect(lambda: self.dependency_dialog_yes_clicked(repo))
+            self.dependency_dialog.buttonBox.button(
+                QtWidgets.QDialogButtonBox.Ignore
+            ).clicked.connect(lambda: self.dependency_dialog_ignore_clicked(repo))
+            self.dependency_dialog.exec()
+        else:
+            self.install(repo)
 
-        FreeCAD.Console.PrintError(
-            "Dependency resolution completed. Not installing since this is a test."
+    def dependency_dialog_yes_clicked(self, repo: AddonManagerRepo) -> None:
+        # Get the lists out of the dialog:
+        addons = []
+        for row in range(self.dependency_dialog.listWidgetAddons.count()):
+            item = self.dependency_dialog.listWidgetAddons.item(row)
+            name = item.text()
+            for repo in self.item_model.repos:
+                if repo.name == name or repo.display_name == name:
+                    addons.append(repo)
+
+        python_required = []
+        for row in range(self.dependency_dialog.listWidgetPythonRequired.count()):
+            item = self.dependency_dialog.listWidgetPythonRequired.item(row)
+            python_required.append(item.text())
+
+        python_optional = []
+        for row in range(self.dependency_dialog.listWidgetPythonOptional.count()):
+            item = self.dependency_dialog.listWidgetPythonOptional.item(row)
+            if item.checked():
+                python_optional.append(item.text())
+
+        self.dependency_installation_worker = DependencyInstallationWorker(
+            addons, python_required, python_optional
         )
+        self.dependency_installation_worker.finished.connect(lambda: self.install(repo))
+        self.dependency_installation_dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Information,
+            translate("AddonsInstaller", "Installing dependencies"),
+            translate("AddonsInstaller", "Installing dependencies") + "...",
+            QtWidgets.QMessageBox.Cancel,
+            self.dialog,
+        )
+        self.dependency_installation_dialog.rejected.connect(
+            self.cancel_dependency_installation
+        )
+        self.dependency_installation_dialog.show()
+        self.dependency_installation_worker.start()
+
+    def dependency_dialog_ignore_clicked(self, repo: AddonManagerRepo) -> None:
+        self.install(repo)
+
+    def cancel_dependency_installation(self) -> None:
+        self.dependency_installation_worker.finished.disconnect(
+            lambda: self.install(repo)
+        )
+        self.dependency_installation_worker.requestInterruption()
+        self.dependency_installation_dialog.hide()
 
     def install(self, repo: AddonManagerRepo) -> None:
         """installs or updates a workbench, macro, or package"""
@@ -880,6 +940,9 @@ class CommandAddonManager:
         if hasattr(self, "install_worker") and self.install_worker:
             if self.install_worker.isRunning():
                 return
+
+        if hasattr(self, "dependency_installation_dialog"):
+            self.dependency_installation_dialog.hide()
 
         if not repo:
             return
