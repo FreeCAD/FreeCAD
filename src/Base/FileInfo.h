@@ -86,7 +86,7 @@ public:
      *@endcode
      */
     std::string completeExtension () const;
-    /// Checks for a special extension, NOT case sensetive
+    /// Checks for a special extension, NOT case sensitive
     bool hasExtension (const char* Ext) const;
     //@}
 
