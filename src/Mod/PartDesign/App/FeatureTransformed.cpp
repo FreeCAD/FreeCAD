@@ -265,19 +265,19 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         std::vector<TopoDS_Shape> shapes;
         bool overlapping = false;
 
-        std::vector<gp_Trsf>::const_iterator t = transformations.begin();
+        std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
 
         // First transformation is skipped since it should not be part of the toolShape.
-        t++;
+        transformIter++;
 
-        for (; t != transformations.end(); ++t) {
+        for (; transformIter != transformations.end(); ++transformIter) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
             BRepBuilderAPI_Copy copy(origShape);
 
             shape = copy.Shape();
 
-            BRepBuilderAPI_Transform mkTrf(shape, *t, false); // No need to copy, now
+            BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
             if (!mkTrf.IsDone())
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
             shape = mkTrf.Shape();
