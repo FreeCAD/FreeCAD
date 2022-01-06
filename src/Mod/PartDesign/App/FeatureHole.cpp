@@ -577,6 +577,10 @@ const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", NULL};
 
 PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
+const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
+// OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
+const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), FLT_MAX, 1.0 };
+
 Hole::Hole()
 {
     addSubType = FeatureAddSub::Subtractive;
@@ -604,6 +608,7 @@ Hole::Hole()
     ThreadFit.setEnums(ClearanceMetricEnums);
 
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
+    Diameter.setConstraints(&diameterRange);
 
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Hole", App::Prop_None, "Thread direction");
     ThreadDirection.setEnums(ThreadDirectionEnums);
@@ -619,6 +624,7 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(HoleCutDepth, (0.0), "Hole", App::Prop_None, "Head cut deth");
 
     ADD_PROPERTY_TYPE(HoleCutCountersinkAngle, (90.0), "Hole", App::Prop_None, "Head cut countersink angle");
+    HoleCutCountersinkAngle.setConstraints(&floatAngle);
 
     ADD_PROPERTY_TYPE(DepthType, (0L), "Hole", App::Prop_None, "Type");
     DepthType.setEnums(DepthTypeEnums);
@@ -629,12 +635,14 @@ Hole::Hole()
     DrillPoint.setEnums(DrillPointEnums);
 
     ADD_PROPERTY_TYPE(DrillPointAngle, (118.0), "Hole", App::Prop_None, "Drill point angle");
+    DrillPointAngle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(DrillForDepth, ((long)0), "Hole", App::Prop_None,
         "The size of the drill point will be taken into\n account for the depth of blind holes");
 
     ADD_PROPERTY_TYPE(Tapered, (false),"Hole",  App::Prop_None, "Tapered");
 
     ADD_PROPERTY_TYPE(TaperedAngle, (90.0), "Hole", App::Prop_None, "Tapered angle");
+    TaperedAngle.setConstraints(&floatAngle);
 }
 
 void Hole::updateHoleCutParams()
