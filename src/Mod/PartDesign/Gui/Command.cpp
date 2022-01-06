@@ -1913,19 +1913,20 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 
     // if 1 Part::Feature object selected, but no subobjects, select all edges for the user
     if (selection[0].getSubNames().size() == 0){
-        int count = TopShape.countSubElements("Edge");
+        std::string edgeTypeName = Part::TopoShape::shapeName(TopAbs_EDGE); //"Edge"
+        int count = TopShape.countSubElements(edgeTypeName.c_str());
         std::string docName = App::GetApplication().getDocumentName(base->getDocument());
         std::string objName = base->getNameInDocument();
         for (int ii = 0; ii < count; ii++){
             std::ostringstream edgeName;
-            edgeName << "Edge" << ii+1;
+            edgeName << edgeTypeName << ii+1;
             Gui::Selection().addSelection(docName.c_str(), objName.c_str(), edgeName.str().c_str());
         }
         selection = cmd->getSelection().getSelectionEx();
         if (selection.size() == 1){
             selected = selection[0];
         }
-    }
+   }
     return true;
 }
 
