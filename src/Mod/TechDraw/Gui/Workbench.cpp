@@ -289,7 +289,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem *extdimensions = new Gui::ToolBarItem(root);
     extdimensions->setCommand("TechDraw Extend Dimensions");
-    *extdimensions << "TechDraw_ExtensionInsertPraefixGroup";
+    *extdimensions << "TechDraw_ExtensionInsertPrefixGroup";
 //    *extdimensions << "TechDraw_ExtensionInsertDiameter";
 //    *extdimensions << "TechDraw_ExtensionInsertSquare";
     *extdimensions << "TechDraw_ExtensionCreateChainDimensionGroup";
@@ -420,7 +420,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 
     Gui::ToolBarItem *extdimensions = new Gui::ToolBarItem(root);
     extdimensions->setCommand("TechDraw Extend Dimensions");
-    *extdimensions << "TechDraw_ExtensionInsertPraefixGroup";
+    *extdimensions << "TechDraw_ExtensionInsertPrefixGroup";
 //    *extdimensions << "TechDraw_ExtensionInsertDiameter";
 //    *extdimensions << "TechDraw_ExtensionInsertSquare";
     *extdimensions << "TechDraw_ExtensionCreateChainDimensionGroup";
