@@ -1432,8 +1432,10 @@ void Hole::onChanged(const App::Property* prop)
     }
     else if (prop == &ThreadSize) {
         updateDiameterParam();
-        updateThreadDepthParam();
-        // updateHoleCutParams() will later automatically be called because updateDiameterParam() changes &Diameter
+        if (!isRestoring())
+            updateThreadDepthParam();
+        // updateHoleCutParams() will later automatically be called because
+        // updateDiameterParam() changes &Diameter
     }
     else if (prop == &ThreadFit) {
         updateDiameterParam();
@@ -1463,27 +1465,32 @@ void Hole::onChanged(const App::Property* prop)
         DrillPoint.setReadOnly(DepthMode != "Dimension");
         DrillPointAngle.setReadOnly(DepthMode != "Dimension");
         DrillForDepth.setReadOnly(DepthMode != "Dimension");
-        if (DepthMode != "Dimension") {
-            // if through all, set the depth accordingly
-            Depth.setValue(getThroughAllLength());
-            // the thread depth is not dimension, it is the same as the hole depth
-            ThreadDepth.setValue(getThroughAllLength());
+        if (!isRestoring()) {
+            if (DepthMode != "Dimension") {
+                // if through all, set the depth accordingly
+                Depth.setValue(getThroughAllLength());
+                // the thread depth is not dimension, it is the same as the hole depth
+                ThreadDepth.setValue(getThroughAllLength());
+            }
+            updateThreadDepthParam();
         }
-        updateThreadDepthParam();
     }
     else if (prop == &Depth) {
-        // the depth cannot be greater than the through-all length
-        if (Depth.getValue() > getThroughAllLength())
-            Depth.setValue(getThroughAllLength());
+        if (!isRestoring()) {
+            // the depth cannot be greater than the through-all length
+            if (Depth.getValue() > getThroughAllLength())
+                Depth.setValue(getThroughAllLength());
+        }
 
         if (std::string(ThreadDepthType.getValueAsString()) != "Dimension")
             updateDiameterParam();  // make sure diameter and pitch are updated.
 
-        // update the thread in every case
-        updateThreadDepthParam();
+        if (!isRestoring())
+            updateThreadDepthParam();
     }
     else if (prop == &ThreadDepthType) {
-        updateThreadDepthParam();
+        if (!isRestoring())
+            updateThreadDepthParam();
         ThreadDepth.setReadOnly(Threaded.getValue()
             && std::string(ThreadDepthType.getValueAsString()) != "Dimension");
     }
@@ -1587,7 +1594,6 @@ short Hole::mustExecute() const
 void Hole::Restore(Base::XMLReader& reader)
 {
     ProfileBased::Restore(reader);
-
     updateProps();
 }
 
