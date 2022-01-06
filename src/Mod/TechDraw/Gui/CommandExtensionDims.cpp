@@ -118,11 +118,11 @@ bool _checkSelAndObj(Gui::Command* cmd,
 // TechDraw_ExtensionInsertDiameter
 //===========================================================================
 
-void execInsertPraefixChar(Gui::Command* cmd,std::string praefixChar){
+void execInsertPrefixChar(Gui::Command* cmd,std::string praefixChar){
     // insert a praefix character into the format specifier
     std::vector<Gui::SelectionObject> selection;
-    if (_checkSelection(cmd,selection,"TechDraw Insert Praefix Character")){
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Praefix Character"));
+    if (_checkSelection(cmd,selection,"TechDraw Insert Prefix Character")){
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Prefix Character"));
         for (auto selected : selection){
             auto object = selected.getObject();
             if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())){
@@ -155,7 +155,7 @@ CmdTechDrawExtensionInsertDiameter::CmdTechDrawExtensionInsertDiameter()
 void CmdTechDrawExtensionInsertDiameter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execInsertPraefixChar(this,"⌀");
+    execInsertPrefixChar(this,"⌀");
 }
 
 bool CmdTechDrawExtensionInsertDiameter::isActive(void)
@@ -188,7 +188,7 @@ CmdTechDrawExtensionInsertSquare::CmdTechDrawExtensionInsertSquare()
 void CmdTechDrawExtensionInsertSquare::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execInsertPraefixChar(this,"〼");
+    execInsertPrefixChar(this,"〼");
 }
 
 bool CmdTechDrawExtensionInsertSquare::isActive(void)
@@ -199,13 +199,13 @@ bool CmdTechDrawExtensionInsertSquare::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_ExtensionInsertPraefixGroup
+// TechDraw_ExtensionInsertPrefixGroup
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdTechDrawExtensionInsertPraefixGroup)
+DEF_STD_CMD_ACL(CmdTechDrawExtensionInsertPrefixGroup)
 
-CmdTechDrawExtensionInsertPraefixGroup::CmdTechDrawExtensionInsertPraefixGroup()
-  : Command("TechDraw_ExtensionInsertPraefixGroup")
+CmdTechDrawExtensionInsertPrefixGroup::CmdTechDrawExtensionInsertPrefixGroup()
+  : Command("TechDraw_ExtensionInsertPrefixGroup")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
@@ -213,11 +213,11 @@ CmdTechDrawExtensionInsertPraefixGroup::CmdTechDrawExtensionInsertPraefixGroup()
     sToolTipText    = QT_TR_NOOP("Insert a '⌀' sign in a measure:\n\
     - select many measures\n\
     - click this button");
-    sWhatsThis      = "TechDraw_ExtensionInsertPraefixGroup";
+    sWhatsThis      = "TechDraw_ExtensionInsertPrefixGroup";
     sStatusTip      = sToolTipText;
 }
 
-void CmdTechDrawExtensionInsertPraefixGroup::activated(int iMsg)
+void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
 {
 //    Base::Console().Message("CMD::ExtensionLinePPGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
@@ -231,17 +231,17 @@ void CmdTechDrawExtensionInsertPraefixGroup::activated(int iMsg)
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch(iMsg) {
         case 0:                 //insert "⌀" as praefix
-            execInsertPraefixChar(this,"⌀");
+            execInsertPrefixChar(this,"⌀");
             break;
         case 1:                 //insert "〼" as praefix
-            execInsertPraefixChar(this,"〼");
+            execInsertPrefixChar(this,"〼");
             break;
         default:
             Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n",iMsg);
     };
 }
 
-Gui::Action * CmdTechDrawExtensionInsertPraefixGroup::createAction(void)
+Gui::Action * CmdTechDrawExtensionInsertPrefixGroup::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -266,7 +266,7 @@ Gui::Action * CmdTechDrawExtensionInsertPraefixGroup::createAction(void)
     return pcAction;
 }
 
-void CmdTechDrawExtensionInsertPraefixGroup::languageChange()
+void CmdTechDrawExtensionInsertPrefixGroup::languageChange()
 {
     Command::languageChange();
 
@@ -289,7 +289,7 @@ void CmdTechDrawExtensionInsertPraefixGroup::languageChange()
     arc2->setStatusTip(arc2->toolTip());
 }
 
-bool CmdTechDrawExtensionInsertPraefixGroup::isActive(void)
+bool CmdTechDrawExtensionInsertPrefixGroup::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -2206,7 +2206,7 @@ void CreateTechDrawCommandsExtensionDims(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdTechDrawExtensionInsertPraefixGroup());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionInsertPrefixGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionInsertDiameter());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionInsertSquare());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionIncreaseDecreaseGroup());
