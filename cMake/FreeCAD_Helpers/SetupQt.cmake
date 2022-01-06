@@ -3,7 +3,7 @@
 find_package(Qt5Core REQUIRED)
 set(CMAKE_AUTOMOC TRUE)
 
-# For FreeCAD 0.20, pegged to Ubutu 18.04 LTS:
+# For FreeCAD 0.20, pegged to Ubuntu 18.04 LTS:
 if(${Qt5Core_VERSION} VERSION_LESS "5.9")
     message (FATAL_ERROR "FreeCAD v0.20 requires Qt5 5.9 or later")
 endif()
