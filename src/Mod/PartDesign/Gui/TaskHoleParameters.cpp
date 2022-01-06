@@ -56,7 +56,7 @@ namespace bp = boost::placeholders;
     qApp->translate("PartDesignGui::TaskHoleParameters", "Cap screw (deprecated)");
 #endif
 
-TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent)
+TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* parent)
     : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole", tr("Hole parameters"))
     , observer(new Observer(this, static_cast<PartDesign::Hole*>(vp->getObject())))
     , isApplying(false)
@@ -420,7 +420,7 @@ void TaskHoleParameters::holeCutDepthChanged(double value)
 {
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
-    if (ui->HoleCutCountersinkAngle->isEnabled()){
+    if (ui->HoleCutCountersinkAngle->isEnabled()) {
         // we have a countersink and recalculate the HoleCutDiameter
 
         // store current depth
@@ -672,7 +672,7 @@ void TaskHoleParameters::threadDirectionChanged()
     recomputeFeature();
 }
 
-void TaskHoleParameters::changeEvent(QEvent *e)
+void TaskHoleParameters::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
@@ -680,7 +680,7 @@ void TaskHoleParameters::changeEvent(QEvent *e)
     }
 }
 
-void TaskHoleParameters::changedObject(const App::Document&, const App::Property &Prop)
+void TaskHoleParameters::changedObject(const App::Document&, const App::Property& Prop)
 {
     // happens when aborting the command
     if (vp == nullptr)
@@ -786,7 +786,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
             ui->directionRightHand->setChecked(true);
             ui->directionRightHand->blockSignals(false);
         }
-        if (direction == "Left"  && !ui->directionLeftHand->isChecked()) {
+        if (direction == "Left" && !ui->directionLeftHand->isChecked()) {
             ui->directionLeftHand->blockSignals(true);
             ui->directionLeftHand->setChecked(true);
             ui->directionLeftHand->blockSignals(false);
@@ -965,7 +965,7 @@ long TaskHoleParameters::getThreadType() const
 
 long TaskHoleParameters::getThreadSize() const
 {
-    if ( ui->ThreadSize->currentIndex() == -1 )
+    if (ui->ThreadSize->currentIndex() == -1)
         return 0;
     else
         return ui->ThreadSize->currentIndex();
@@ -973,7 +973,7 @@ long TaskHoleParameters::getThreadSize() const
 
 long TaskHoleParameters::getThreadClass() const
 {
-    if ( ui->ThreadSize->currentIndex() == -1 )
+    if (ui->ThreadSize->currentIndex() == -1)
         return 0;
     else
         return ui->ThreadClass->currentIndex();
@@ -1039,11 +1039,11 @@ Base::Quantity TaskHoleParameters::getDepth() const
 
 long TaskHoleParameters::getDrillPoint() const
 {
-    if ( ui->drillPointFlat->isChecked() )
+    if (ui->drillPointFlat->isChecked())
         return 0;
-    if ( ui->drillPointAngled->isChecked() )
+    if (ui->drillPointAngled->isChecked())
         return 1;
-    assert( 0 );
+    assert(0);
     return -1; // to avoid a compiler warning
 }
 
@@ -1108,39 +1108,39 @@ void TaskHoleParameters::apply()
     ui->TaperedAngle->apply();
 
     if (!pcHole->Threaded.isReadOnly())
-        FCMD_OBJ_CMD(obj,"Threaded = " << (getThreaded() ? 1 : 0));
+        FCMD_OBJ_CMD(obj, "Threaded = " << (getThreaded() ? 1 : 0));
     if (!pcHole->ModelThread.isReadOnly())
-        FCMD_OBJ_CMD(obj,"ModelThread = " << (getModelThread() ? 1 : 0));
+        FCMD_OBJ_CMD(obj, "ModelThread = " << (getModelThread() ? 1 : 0));
     if (!pcHole->ThreadDepthType.isReadOnly())
-        FCMD_OBJ_CMD(obj,"ThreadDepthType = " << getThreadDepthType());
+        FCMD_OBJ_CMD(obj, "ThreadDepthType = " << getThreadDepthType());
     if (!pcHole->ThreadDepth.isReadOnly())
-        FCMD_OBJ_CMD(obj,"ThreadDepth = " << getThreadDepth());
+        FCMD_OBJ_CMD(obj, "ThreadDepth = " << getThreadDepth());
     if (!pcHole->UseCustomThreadClearance.isReadOnly())
-        FCMD_OBJ_CMD(obj,"UseCustomThreadClearance = " << (getUseCustomThreadClearance() ? 1 : 0)   );
+        FCMD_OBJ_CMD(obj, "UseCustomThreadClearance = " << (getUseCustomThreadClearance() ? 1 : 0));
     if (!pcHole->CustomThreadClearance.isReadOnly())
-        FCMD_OBJ_CMD(obj,"CustomThreadClearance = " << getCustomThreadClearance());
+        FCMD_OBJ_CMD(obj, "CustomThreadClearance = " << getCustomThreadClearance());
     if (!pcHole->ThreadType.isReadOnly())
-        FCMD_OBJ_CMD(obj,"ThreadType = " << getThreadType());
+        FCMD_OBJ_CMD(obj, "ThreadType = " << getThreadType());
     if (!pcHole->ThreadSize.isReadOnly())
-        FCMD_OBJ_CMD(obj,"ThreadSize = " << getThreadSize());
+        FCMD_OBJ_CMD(obj, "ThreadSize = " << getThreadSize());
     if (!pcHole->ThreadClass.isReadOnly())
-        FCMD_OBJ_CMD(obj,"ThreadClass = " << getThreadClass());
+        FCMD_OBJ_CMD(obj, "ThreadClass = " << getThreadClass());
     if (!pcHole->ThreadFit.isReadOnly())
-        FCMD_OBJ_CMD(obj,"ThreadFit = " << getThreadFit());
+        FCMD_OBJ_CMD(obj, "ThreadFit = " << getThreadFit());
     if (!pcHole->ThreadDirection.isReadOnly())
-        FCMD_OBJ_CMD(obj,"ThreadDirection = " << getThreadDirection());
+        FCMD_OBJ_CMD(obj, "ThreadDirection = " << getThreadDirection());
     if (!pcHole->HoleCutType.isReadOnly())
-        FCMD_OBJ_CMD(obj,"HoleCutType = " << getHoleCutType());
+        FCMD_OBJ_CMD(obj, "HoleCutType = " << getHoleCutType());
     if (!pcHole->HoleCutCustomValues.isReadOnly())
         FCMD_OBJ_CMD(obj, "HoleCutCustomValues = " << (getHoleCutCustomValues() ? 1 : 0));
     if (!pcHole->DepthType.isReadOnly())
-        FCMD_OBJ_CMD(obj,"DepthType = " << getDepthType());
+        FCMD_OBJ_CMD(obj, "DepthType = " << getDepthType());
     if (!pcHole->DrillPoint.isReadOnly())
-        FCMD_OBJ_CMD(obj,"DrillPoint = " << getDrillPoint());
+        FCMD_OBJ_CMD(obj, "DrillPoint = " << getDrillPoint());
     if (!pcHole->DrillForDepth.isReadOnly())
         FCMD_OBJ_CMD(obj, "DrillForDepth = " << (getDrillForDepth() ? 1 : 0));
     if (!pcHole->Tapered.isReadOnly())
-        FCMD_OBJ_CMD(obj,"Tapered = " << getTapered());
+        FCMD_OBJ_CMD(obj, "Tapered = " << getTapered());
 
     isApplying = false;
 }
@@ -1150,11 +1150,11 @@ void TaskHoleParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgHoleParameters::TaskDlgHoleParameters(ViewProviderHole *HoleView)
+TaskDlgHoleParameters::TaskDlgHoleParameters(ViewProviderHole* HoleView)
     : TaskDlgSketchBasedParameters(HoleView)
 {
     assert(HoleView);
-    parameter  = new TaskHoleParameters(static_cast<ViewProviderHole*>(vp));
+    parameter = new TaskHoleParameters(static_cast<ViewProviderHole*>(vp));
 
     Content.push_back(parameter);
 }
@@ -1166,18 +1166,18 @@ TaskDlgHoleParameters::~TaskDlgHoleParameters()
 
 #include "moc_TaskHoleParameters.cpp"
 
-TaskHoleParameters::Observer::Observer(TaskHoleParameters *_owner, PartDesign::Hole * _hole)
+TaskHoleParameters::Observer::Observer(TaskHoleParameters* _owner, PartDesign::Hole* _hole)
     : DocumentObserver(_hole->getDocument())
     , owner(_owner)
     , hole(_hole)
 {
 }
 
-void TaskHoleParameters::Observer::slotChangedObject(const App::DocumentObject &Obj, const App::Property &Prop)
+void TaskHoleParameters::Observer::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
     if (&Obj == hole) {
         Base::Console().Log("Parameter %s was updated with a new value\n", Prop.getName());
-        if(Obj.getDocument())
-            owner->changedObject(*Obj.getDocument(),Prop);
+        if (Obj.getDocument())
+            owner->changedObject(*Obj.getDocument(), Prop);
     }
 }
