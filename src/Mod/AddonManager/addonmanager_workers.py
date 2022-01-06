@@ -143,7 +143,6 @@ class UpdateWorker(QtCore.QThread):
 
     status_message = QtCore.Signal(str)
     addon_repo = QtCore.Signal(object)
-    done = QtCore.Signal()
 
     def __init__(self):
 
@@ -233,8 +232,6 @@ class UpdateWorker(QtCore.QThread):
             "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/.gitmodules"
         )
         if not u:
-            self.done.emit()
-            self.stop = True
             return
         p = u.read()
         if isinstance(p, bytes):
@@ -283,14 +280,9 @@ class UpdateWorker(QtCore.QThread):
                 translate("AddonsInstaller", "Workbenches list was updated.")
             )
 
-        if not self.current_thread.isInterruptionRequested():
-            self.done.emit()
-            self.stop = True
-
 
 class LoadPackagesFromCacheWorker(QtCore.QThread):
     addon_repo = QtCore.Signal(object)
-    done = QtCore.Signal()
 
     def __init__(self, cache_file: str):
         QtCore.QThread.__init__(self)
@@ -324,7 +316,6 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                             )
                             pass
                     self.addon_repo.emit(repo)
-        self.done.emit()
 
 
 class LoadMacrosFromCacheWorker(QtCore.QThread):
@@ -352,7 +343,6 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
 
     update_status = QtCore.Signal(AddonManagerRepo)
     progress_made = QtCore.Signal(int, int)
-    done = QtCore.Signal()
 
     def __init__(self, repos: List[AddonManagerRepo]):
 
@@ -362,8 +352,6 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
     def run(self):
 
         if NOGIT or not have_git:
-            self.done.emit()
-            self.stop = True
             return
         self.current_thread = QtCore.QThread.currentThread()
         self.basedir = FreeCAD.getUserAppDataDir()
@@ -381,9 +369,6 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                     self.check_macro(repo)
                 elif repo.repo_type == AddonManagerRepo.RepoType.PACKAGE:
                     self.check_package(repo)
-
-        self.stop = True
-        self.done.emit()
 
     def check_workbench(self, wb):
         if not have_git or NOGIT:
@@ -518,7 +503,6 @@ class FillMacroListWorker(QtCore.QThread):
     add_macro_signal = QtCore.Signal(object)
     status_message_signal = QtCore.Signal(str)
     progress_made = QtCore.Signal(int, int)
-    done = QtCore.Signal()
 
     def __init__(self, repo_dir):
 
@@ -555,8 +539,6 @@ class FillMacroListWorker(QtCore.QThread):
         self.status_message_signal.emit(
             translate("AddonsInstaller", "Done locating macros.")
         )
-        self.stop = True
-        self.done.emit()
 
     def retrieve_macros_from_git(self):
         """Retrieve macros from FreeCAD-macros.git
@@ -796,7 +778,6 @@ class ShowWorker(QtCore.QThread):
     status_message = QtCore.Signal(str)
     readme_updated = QtCore.Signal(str)
     update_status = QtCore.Signal(AddonManagerRepo)
-    done = QtCore.Signal()
 
     def __init__(self, repo, cache_path):
 
@@ -866,7 +847,6 @@ class ShowWorker(QtCore.QThread):
                 # fall back to the description text
                 u = utils.urlopen(url)
                 if not u:
-                    self.stop = True
                     return
                 p = u.read()
                 if isinstance(p, bytes):
@@ -958,8 +938,6 @@ class ShowWorker(QtCore.QThread):
             self.readme_updated.emit(label)
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
-        self.done.emit()
-        self.stop = True
 
     def stopImageLoading(self):
         "this stops the image loading process and allow the thread to terminate earlier"
@@ -1033,7 +1011,6 @@ class GetMacroDetailsWorker(QtCore.QThread):
 
     status_message = QtCore.Signal(str)
     readme_updated = QtCore.Signal(str)
-    done = QtCore.Signal()
 
     def __init__(self, repo):
 
@@ -1073,8 +1050,6 @@ class GetMacroDetailsWorker(QtCore.QThread):
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
         self.readme_updated.emit(message)
-        self.done.emit()
-        self.stop = True
 
 
 class InstallWorkbenchWorker(QtCore.QThread):
@@ -1130,8 +1105,6 @@ class InstallWorkbenchWorker(QtCore.QThread):
             self.run_git(target_dir)
         else:
             self.run_zip(target_dir)
-
-        self.stop = True
 
     def run_git(self, clonedir: str) -> None:
 
@@ -1437,7 +1410,6 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
     status_message = QtCore.Signal(str)
     progress_made = QtCore.Signal(int, int)
-    done = QtCore.Signal()
     package_updated = QtCore.Signal(AddonManagerRepo)
 
     class AtomicCounter(object):
@@ -1535,10 +1507,6 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         with open(index_file, "w") as f:
             json.dump(self.index, f, indent="  ")
 
-        # Signal completion to our parent thread
-        self.done.emit()
-        self.stop = True
-
     def on_finished(self, reply):
         # Called by the QNetworkAccessManager's sub-threads when a fetch
         # process completed (in any state)
@@ -1586,7 +1554,6 @@ class UpdateAllWorker(QtCore.QThread):
     status_message = QtCore.Signal(str)
     success = QtCore.Signal(AddonManagerRepo)
     failure = QtCore.Signal(AddonManagerRepo)
-    done = QtCore.Signal()
 
     def __init__(self, repos):
         super().__init__()
@@ -1622,8 +1589,6 @@ class UpdateAllWorker(QtCore.QThread):
         # Make sure all of our child threads have fully exited:
         for worker in workers:
             worker.wait()
-
-        self.done.emit()
 
     def on_success(self, repo: AddonManagerRepo) -> None:
         self.progress_made.emit(
