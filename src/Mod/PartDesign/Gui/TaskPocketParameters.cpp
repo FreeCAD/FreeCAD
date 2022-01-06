@@ -203,7 +203,12 @@ void TaskPocketParameters::apply()
     ui->lengthEdit->apply();
     ui->lengthEdit2->apply();
 
-    FCMD_OBJ_CMD(obj,"Type = " << getMode());
+    FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
+    FCMD_OBJ_CMD(obj, "Direction = ("
+        << getXDirection() << ", " << getYDirection() << ", " << getZDirection() << ")");
+    FCMD_OBJ_CMD(obj, "ReferenceAxis = " << getReferenceAxis());
+    FCMD_OBJ_CMD(obj, "AlongSketchNormal = " << (getAlongSketchNormal() ? 1 : 0));
+    FCMD_OBJ_CMD(obj, "Type = " << getMode());
     QString facename = QString::fromLatin1("None");
     if (static_cast<Modes>(getMode()) == Modes::ToFace) {
         facename = getFaceName();
