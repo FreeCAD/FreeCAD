@@ -31,17 +31,17 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_styles">
        <property name="text">
-        <string>Linestyles:</string>
+        <string>Line style:</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QRadioButton" name="rbSolid">
        <property name="toolTip">
-        <string>Set Line style to solid</string>
+        <string>Set line style to solid</string>
        </property>
        <property name="text">
-        <string>solid</string>
+        <string>Solid</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -54,7 +54,7 @@
      <item row="2" column="0">
       <widget class="QRadioButton" name="rbDashed">
        <property name="text">
-        <string>dashed</string>
+        <string>Dashed</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -67,7 +67,7 @@
      <item row="3" column="0">
       <widget class="QRadioButton" name="rbDotted">
        <property name="text">
-        <string>dotted</string>
+        <string>Dotted</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -80,7 +80,7 @@
      <item row="4" column="0">
       <widget class="QRadioButton" name="rbDashDotted">
        <property name="text">
-        <string>dashdot</string>
+        <string>Dashdot</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -100,14 +100,14 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_width">
        <property name="text">
-        <string>Lineswidth:</string>
+        <string>Line width:</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QRadioButton" name="rbThin">
        <property name="text">
-        <string>thin 0,18</string>
+        <string>Thin 0,18</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -120,7 +120,7 @@
      <item row="2" column="0">
       <widget class="QRadioButton" name="rbMiddle">
        <property name="text">
-        <string>middle 0,35</string>
+        <string>Middle 0,35</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -136,7 +136,7 @@
      <item row="3" column="0">
       <widget class="QRadioButton" name="rbThick">
        <property name="text">
-        <string>thick 0,70</string>
+        <string>Thick 0,70</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -153,14 +153,14 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_colors">
        <property name="text">
-        <string>Linecolors:</string>
+        <string>Line color:</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QRadioButton" name="rbBlack">
        <property name="text">
-        <string>black</string>
+        <string>Black</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -176,7 +176,7 @@
      <item row="1" column="1">
       <widget class="QRadioButton" name="rbBlue">
        <property name="text">
-        <string>blue</string>
+        <string>Blue</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -189,7 +189,7 @@
      <item row="2" column="0">
       <widget class="QRadioButton" name="rbGrey">
        <property name="text">
-        <string>grey</string>
+        <string>Grey</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -202,7 +202,7 @@
      <item row="2" column="1">
       <widget class="QRadioButton" name="rbMagenta">
        <property name="text">
-        <string>magenta</string>
+        <string>Magenta</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -215,7 +215,7 @@
      <item row="3" column="0">
       <widget class="QRadioButton" name="rbRed">
        <property name="text">
-        <string>red</string>
+        <string>Red</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -228,7 +228,7 @@
      <item row="3" column="1">
       <widget class="QRadioButton" name="rbCyan">
        <property name="text">
-        <string>cyan</string>
+        <string>Cyan</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -241,7 +241,7 @@
      <item row="4" column="0">
       <widget class="QRadioButton" name="rbGreen">
        <property name="text">
-        <string>green</string>
+        <string>Green</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>
@@ -254,7 +254,7 @@
      <item row="4" column="1">
       <widget class="QRadioButton" name="rbYellow">
        <property name="text">
-        <string>yellow</string>
+        <string>Yellow</string>
        </property>
        <property name="autoExclusive">
         <bool>true</bool>

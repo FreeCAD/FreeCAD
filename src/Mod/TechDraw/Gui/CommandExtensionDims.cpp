@@ -78,6 +78,7 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 using namespace std;
 
+namespace TechDrawGui {
 //internal structures and sort functions
 struct dimVertex{
     // save a dimension defining vertex and its point
@@ -111,6 +112,7 @@ bool _checkSelAndObj(Gui::Command* cmd,
                      std::vector<Gui::SelectionObject>& selection,
                      TechDraw::DrawViewPart*& objFeat,
                      std::string message);
+}
 
 //===========================================================================
 // TechDraw_ExtensionInsertDiameter
@@ -2081,6 +2083,7 @@ bool CmdTechDrawExtensionCreateLengthArc::isActive(void)
     return (havePage && haveView);
 }
 
+namespace TechDrawGui {
 //===========================================================================
 // internal helper routines
 //===========================================================================
@@ -2195,6 +2198,7 @@ std::vector<TechDraw::DrawViewDimension*>_getDimensions(std::vector<Gui::Selecti
         }
     }
     return validDimension;
+}
 }
 
 //------------------------------------------------------------------------------

@@ -30,10 +30,6 @@
 
 #include <Mod/TechDraw/App/Cosmetic.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskSelectLineAttributes.h>
-
-class Ui_TaskSelectLineAttributes;
-
 class dimAttributes {
     double cascadeSpacing;
 
@@ -72,37 +68,33 @@ class QGIView;
 class QGIPrimPath;
 class MDIViewPage;
 class ViewProviderViewPart;
+class Ui_TaskSelectLineAttributes;
 
-class LineAttributes {
-    public:
-        enum edgeStyle{solid, dashed, dotted, dashdotted};
-        enum edgeWidth{small, middle, thick };
-        enum edgeColor{black, grey, red, green, blue, magenta, cyan, yellow};
-    private:
-        edgeStyle style;
-        edgeWidth width;
-        edgeColor color;
+class lineAttributes {
+    int style;
+    int width;
+    int color;
 
-    public:
+public:
 
-    LineAttributes(void);
-    void setStyle(edgeStyle);
-    edgeStyle getStyle(void) {return style;}
-    void setWidth(edgeWidth);
-    edgeWidth getWidth(void) {return width;}
+    lineAttributes(void);
+    void setStyle(int);
+    int getStyle(void) const {return style;}
+    void setWidth(int);
+    int getWidth(void) const {return width;}
     float getWidthValue(void);
-    void setColor(edgeColor);
-    edgeColor getColor(void) {return color;}
+    void setColor(int);
+    int getColor(void) const {return color;}
     App::Color getColorValue(void);
 
-}; // class LineAttributes
+}; // class lineAttributes
 
 class TaskSelectLineAttributes : public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskSelectLineAttributes(LineAttributes * ptActiveAttributes);
+    TaskSelectLineAttributes(lineAttributes * ptActiveAttributes);
     ~TaskSelectLineAttributes();
 
 public Q_SLOTS:
@@ -111,7 +103,6 @@ public:
     virtual bool accept();
     virtual bool reject();
     void updateTask();
-    LineAttributes* activeAttributes;
 
 protected Q_SLOTS:
 
@@ -121,8 +112,8 @@ protected:
     void setUiEdit(void);
 
 private:
+    lineAttributes* activeAttributes;
     std::unique_ptr<Ui_TaskSelectLineAttributes> ui;
-
 }; // class TaskSelectLineAttributes
 
 class TaskDlgSelectLineAttributes : public Gui::TaskView::TaskDialog
@@ -130,7 +121,7 @@ class TaskDlgSelectLineAttributes : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSelectLineAttributes(LineAttributes * ptActiveAttributes);
+    TaskDlgSelectLineAttributes(lineAttributes * ptActiveAttributes);
     ~TaskDlgSelectLineAttributes();
 
 public:

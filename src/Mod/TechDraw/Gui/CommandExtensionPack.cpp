@@ -79,9 +79,11 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 using namespace std;
 
-LineAttributes activeAttributes; // container holding global line attributes
+namespace TechDrawGui {
+//LineAttributes activeAttributes; // container holding global line attributes
 
 //internal helper functions
+lineAttributes& _getActiveLineAttributes();
 bool _circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
 Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3);
 void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, float factor);
@@ -157,6 +159,7 @@ void execHoleCircle(Gui::Command* cmd){
     objFeat->requestPaint();
     Gui::Command::commitCommand();
 }
+}
 
 DEF_STD_CMD_A(CmdTechDrawExtensionHoleCircle)
 
@@ -168,7 +171,7 @@ CmdTechDrawExtensionHoleCircle::CmdTechDrawExtensionHoleCircle()
     sMenuText       = QT_TR_NOOP("Draw bolt circle centerlines");
     sToolTipText    = QT_TR_NOOP("Draw the centerlines of a bolt circle\n\
     - pick favoured line attributes\n\
-    - select at least three cirles of a bolt circle\n\
+    - select at least three circles of a bolt circle\n\
     - click this button");
     sWhatsThis      = "TechDraw_ExtensionHoleCircle";
     sStatusTip      = sToolTipText;
@@ -352,7 +355,7 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::languageChange()
     arc2->setToolTip(QApplication::translate("TechDraw_Extension",
     "Draw the centerlines of a bolt circle\n\
     - pick favoured line attributes\n\
-    - select at least three cirles of a bolt circle\n\
+    - select at least three circles of a bolt circle\n\
     - click this buttone"));
     arc2->setStatusTip(arc2->toolTip());
 }
@@ -724,7 +727,7 @@ CmdTechDrawExtensionSelectLineAttributes::CmdTechDrawExtensionSelectLineAttribut
 void CmdTechDrawExtensionSelectLineAttributes::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new TaskDlgSelectLineAttributes(& activeAttributes));
+    Gui::Control().showDialog(new TaskDlgSelectLineAttributes(&_getActiveLineAttributes()));
 }
 
 bool CmdTechDrawExtensionSelectLineAttributes::isActive(void)
@@ -1433,8 +1436,8 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend){
                     Base::Vector3d P1 = genLine->points.at(1);
                     if (baseGeo->cosmetic){
                         std::string uniTag = baseGeo->getCosmeticTag();
-                        int oldStyle;
-                        float oldWeight;
+                        int oldStyle = 1;
+                        float oldWeight = 1.0f;
                         App::Color oldColor;
                         std::vector<std::string> toDelete;
                         toDelete.push_back(uniTag);
@@ -1647,6 +1650,13 @@ bool CmdTechDrawExtendShortenLineGroup::isActive(void)
 //===========================================================================
 // internal helper routines
 //===========================================================================
+namespace TechDrawGui {
+
+lineAttributes& _getActiveLineAttributes()
+{
+    static lineAttributes attributes;
+    return attributes;
+}
 
 bool _checkSel(Gui::Command* cmd,
                std::vector<Gui::SelectionObject>& selection,
@@ -1826,13 +1836,12 @@ void _intersectionCC(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::
     }
 }
 
-Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3){
-    // Circle through 3 points, calculate center point
-    Base::Vector2d p12d(p1.x,p1.y);
-    Base::Vector2d p22d(p2.x,p2.y);
-    Base::Vector2d p32d(p3.x,p3.y);
-    Base::Vector2d centerPoint = Part::Geom2dCircle::getCircleCenter(p12d, p22d, p32d);
-    return Base::Vector3d(centerPoint.x, centerPoint.y, 0.0);
+Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3) {
+    Base::Vector2d v1(p1.x, p1.y);
+    Base::Vector2d v2(p2.x, p2.y);
+    Base::Vector2d v3(p3.x, p3.y);
+    Base::Vector2d c = Part::Geom2dCircle::getCircleCenter(v1, v2, v3);
+    return Base::Vector3d(c.x, c.y, 0.0);
 }
 
 bool _circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C){
@@ -1909,16 +1918,16 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge) {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = int(activeAttributes.getStyle()+1);
-    cosEdge->m_format.m_weight = activeAttributes.getWidthValue();
-    cosEdge->m_format.m_color = activeAttributes.getColorValue();
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
+    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
+    cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge) {
-    // set line attributes of a centerline
-    cosEdge->m_format.m_style = int(activeAttributes.getStyle()+1);
-    cosEdge->m_format.m_weight = activeAttributes.getWidthValue();
-    cosEdge->m_format.m_color = activeAttributes.getColorValue();
+    // set line attributes of a cosmetic edge
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
+    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
+    cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
 }
 
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color) {
@@ -1926,6 +1935,7 @@ void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight
     cosEdge->m_format.m_style = style;
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
+}
 }
 
 //------------------------------------------------------------------------------
