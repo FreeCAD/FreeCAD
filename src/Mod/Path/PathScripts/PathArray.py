@@ -118,6 +118,12 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
         )
         obj.addProperty(
+		    "App::PropertyInteger",
+			"JitterSeed",
+			"Path",
+			QT_TRANSLATE_NOOP("App::Property","Seed value for jitter randomness"),
+		)
+        obj.addProperty(
             "App::PropertyLink",
             "ToolController",
             "Path",
@@ -158,6 +164,11 @@ class ObjectArray:
             angleMode = copiesMode = centreMode = 0
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
 
+        if not hasattr(obj, "JitterSeed"):
+            obj.addProperty("App::PropertyInteger", "JitterSeed",
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Seed value for jitter randomness"))
+            obj.JitterSeed = 0
+
         obj.setEditorMode("Angle", angleMode)
         obj.setEditorMode("Copies", copiesMode)
         obj.setEditorMode("Centre", centreMode)
@@ -167,6 +178,7 @@ class ObjectArray:
         obj.setEditorMode("SwapDirection", swapDirectionMode)
         obj.setEditorMode("JitterPercent", 0)
         obj.setEditorMode("JitterMagnitude", 0)
+        obj.setEditorMode("JitterSeed", 0)
         obj.setEditorMode("ToolController", 2)
 
     def onChanged(self, obj, prop):
@@ -270,6 +282,9 @@ class ObjectArray:
                 obj.Path = Path.Path()
             return
 
+        # use seed if specified, otherwise default to object name for consistency during recomputes
+        seed = obj.JitterSeed or obj.Name
+
         pa = PathArray(
             obj.Base,
             obj.Type,
@@ -282,8 +297,9 @@ class ObjectArray:
             obj.SwapDirection,
             obj.JitterMagnitude,
             obj.JitterPercent,
-            obj.Name,
+            seed,
         )
+
         obj.Path = pa.getPath()
 
 
@@ -334,7 +350,7 @@ class PathArray:
             pass
         elif random.randint(0, 100) < self.jitterPercent:
             pos.x = pos.x + random.uniform(
-                -self.jitterMagnitude.x, self.jitterMagnitude.y
+                -self.jitterMagnitude.x, self.jitterMagnitude.x
             )
             pos.y = pos.y + random.uniform(
                 -self.jitterMagnitude.y, self.jitterMagnitude.y
