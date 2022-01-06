@@ -30,7 +30,7 @@
 # include <Precision.hxx>
 #endif
 
-#include "ui_TaskPadParameters.h"
+#include "ui_TaskPadPocketParameters.h"
 #include "TaskPadParameters.h"
 #include <Gui/Command.h>
 #include <Gui/ViewProvider.h>

@@ -31,7 +31,7 @@
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderSketchBased.h"
 
-class Ui_TaskPadParameters;
+class Ui_TaskPadPocketParameters;
 
 namespace App {
 class Property;
@@ -118,7 +118,7 @@ private:
 
 protected:
     QWidget* proxy;
-    std::unique_ptr<Ui_TaskPadParameters> ui;
+    std::unique_ptr<Ui_TaskPadPocketParameters> ui;
     bool selectionFace;
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 };
