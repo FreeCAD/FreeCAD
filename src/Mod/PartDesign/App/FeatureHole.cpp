@@ -645,7 +645,7 @@ const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", NULL};
 
 PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
-const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
+const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 180.0 - Base::toDegrees<double>(Precision::Angular()), 1.0 };
 // OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
 const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), FLT_MAX, 1.0 };
 
