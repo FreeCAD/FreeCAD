@@ -1438,7 +1438,6 @@ void Hole::onChanged(const App::Property* prop)
         if (!isRestoring())
             updateThreadDepthParam();
         // updateHoleCutParams() will later automatically be called because
-        // updateDiameterParam() changes &Diameter
     }
     else if (prop == &ThreadFit) {
         updateDiameterParam();
