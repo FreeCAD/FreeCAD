@@ -870,9 +870,9 @@ void Hole::updateHoleCutParams()
             }
         }
 
-        // handle legacy types but don’t change user settings for
+        // handle legacy types but don't change user settings for
         // user defined None, Counterbore and Countersink
-        // handle legacy types but don’t change user settings for
+        // handle legacy types but don't change user settings for
         // user defined None, Counterbore and Countersink
         else if (holeCutTypeStr == "Cheesehead (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 1.6);
@@ -2200,7 +2200,7 @@ void from_json(const nlohmann::json &j, Hole::CutDimensionSet &t)
     else if (thread_type_string == "metricfine")
         t.thread_type = Hole::CutDimensionSet::MetricFine;
     else
-        throw Base::IndexError(std::string(u8"Thread type ‘") + thread_type_string + u8"’ unsupported");
+        throw Base::IndexError(std::string("Thread type '") + thread_type_string + "' unsupported");
 
     std::string  cut_type_string = j["cut_type"].get<std::string>();
     if (cut_type_string == "counterbore") {
@@ -2213,7 +2213,7 @@ void from_json(const nlohmann::json &j, Hole::CutDimensionSet &t)
         t.angle = j["angle"].get<double>();
     }
     else
-        throw Base::IndexError(std::string("Cut type ‘") + cut_type_string + "’ unsupported");
+        throw Base::IndexError(std::string("Cut type '") + cut_type_string + "' unsupported");
 
     t.name = j["name"].get<std::string>();
 }
@@ -2241,7 +2241,7 @@ void Hole::readCutDefinitions()
                     addCutType(screwtype);
                 }
                 catch(std::exception &e) {
-                    std::cerr << "Failed reading ‘" << f.filePath() << "’ with: "<< e.what() << "\n";
+                    std::cerr << "Failed reading '" << f.filePath() << "' with: "<< e.what() << "\n";
                 }
             }
         }
