@@ -88,11 +88,11 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy(void)
     // That would work perfectly with GCC 7.3.0. However, GCC 4.8.4 misserably fails:
     //
     // /home/travis/build/FreeCAD/FreeCAD/src/Mod/Part/App/GeometryDefaultExtension.cpp: In instantiation of
-    // ‘std::unique_ptr<Part::GeometryExtension> Part::GeometryDefaultExtension<T>::copy() const [with T = long int]’:
+    // 'std::unique_ptr<Part::GeometryExtension> Part::GeometryDefaultExtension<T>::copy() const [with T = long int]':
     // /home/travis/build/FreeCAD/FreeCAD/src/Mod/Part/App/GeometryDefaultExtension.cpp:164:16:   required from here
     // /home/travis/build/FreeCAD/FreeCAD/src/Mod/Part/App/GeometryDefaultExtension.cpp:84:12: error: cannot bind //
-    // ‘std::unique_ptr<Part::GeometryDefaultExtension<long int>, std::default_delete<Part::GeometryDefaultExtension<long int> > >’ lvalue
-    // to ‘std::unique_ptr<Part::GeometryDefaultExtension<long int>, std::default_delete<Part::GeometryDefaultExtension<long int> > >&&’
+    // 'std::unique_ptr<Part::GeometryDefaultExtension<long int>, std::default_delete<Part::GeometryDefaultExtension<long int> > >' lvalue
+    // to 'std::unique_ptr<Part::GeometryDefaultExtension<long int>, std::default_delete<Part::GeometryDefaultExtension<long int> > >&&'
 }
 
 template <typename T>
