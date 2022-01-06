@@ -101,6 +101,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->ThreadFit->setCurrentIndex(pcHole->ThreadFit.getValue());
     // Fit is only enabled (sensible) if not threaded
     ui->ThreadFit->setEnabled(!pcHole->Threaded.getValue());
+    ui->Diameter->setMinimum(pcHole->Diameter.getMinimum());
     ui->Diameter->setValue(pcHole->Diameter.getValue());
     // Diameter is only enabled if ThreadType is None
     if (pcHole->ThreadType.getValue() != 0L)
@@ -127,6 +128,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->HoleCutDiameter->setDisabled(pcHole->HoleCutDiameter.isReadOnly());
     ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
     ui->HoleCutDepth->setDisabled(pcHole->HoleCutDepth.isReadOnly());
+    ui->HoleCutCountersinkAngle->setMinimum(pcHole->HoleCutCountersinkAngle.getMinimum());
     ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
     ui->HoleCutCountersinkAngle->setDisabled(pcHole->HoleCutCountersinkAngle.isReadOnly());
 
@@ -136,6 +138,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
         ui->drillPointFlat->setChecked(true);
     else
         ui->drillPointAngled->setChecked(true);
+    ui->DrillPointAngle->setMinimum(pcHole->DrillPointAngle.getMinimum());
     ui->DrillPointAngle->setValue(pcHole->DrillPointAngle.getValue());
     ui->DrillForDepth->setChecked(pcHole->DrillForDepth.getValue());
     // drill point settings are only enabled (sensible) if type is 'Dimension'
