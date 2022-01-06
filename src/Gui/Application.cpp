@@ -2326,7 +2326,7 @@ void Application::runApplication(void)
     }
     catch (...) {
         // catching nasty stuff coming out of the event loop
-        Base::Console().Error("Event loop left through unknwown unhandled exception\n");
+        Base::Console().Error("Event loop left through unknown unhandled exception\n");
         App::Application::destructObserver();
         throw;
     }

@@ -383,7 +383,7 @@ void Model::selectionChanged(const SelectionChanges& msg)
     }
   };
   
-  //lamda for clearing selections.
+  //lambda for clearing selections.
   auto clearSelection = [this, highlightConnectorOff]()
   {
     BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
@@ -395,7 +395,7 @@ void Model::selectionChanged(const SelectionChanges& msg)
     }
   };
   
-  //lamda for getting rectangle.
+  //lambda for getting rectangle.
   auto getRectangle = [this](const char *in)
   {
     assert(in);
