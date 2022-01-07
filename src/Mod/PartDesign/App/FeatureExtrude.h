@@ -24,6 +24,7 @@
 #ifndef PARTDESIGN_FEATURE_EXTRUDE_H
 #define PARTDESIGN_FEATURE_EXTRUDE_H
 
+#include <App/PropertyGeo.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"

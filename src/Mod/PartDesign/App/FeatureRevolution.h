@@ -24,6 +24,7 @@
 #ifndef PARTDESIGN_Revolution_H
 #define PARTDESIGN_Revolution_H
 
+#include <App/PropertyGeo.h>
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
 

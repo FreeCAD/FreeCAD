@@ -24,6 +24,7 @@
 #ifndef PARTDESIGN_Helix_H
 #define PARTDESIGN_Helix_H
 
+#include <App/PropertyGeo.h>
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
 #include <TopoDS_Shape.hxx>

@@ -24,6 +24,7 @@
 #ifndef PARTDESIGN_Groove_H
 #define PARTDESIGN_Groove_H
 
+#include <App/PropertyGeo.h>
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
 
