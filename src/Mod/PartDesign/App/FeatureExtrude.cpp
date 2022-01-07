@@ -51,15 +51,17 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 
 #include "FeatureExtrude.h"
 
 using namespace PartDesign;
 
-
 PROPERTY_SOURCE(PartDesign::FeatureExtrude, PartDesign::ProfileBased)
 
 App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstraint = { -DBL_MAX, DBL_MAX, 1.0 };
+double FeatureExtrude::maxAngle = 90 - Base::toDegrees<double>(Precision::Angular());
+App::PropertyAngle::Constraints FeatureExtrude::floatAngle = { -maxAngle, maxAngle, 1.0 };
 
 FeatureExtrude::FeatureExtrude()
 {
@@ -71,6 +73,8 @@ short FeatureExtrude::mustExecute() const
         Type.isTouched() ||
         Length.isTouched() ||
         Length2.isTouched() ||
+        TaperAngle.isTouched() ||
+        TaperAngle2.isTouched() ||
         UseCustomVector.isTouched() ||
         Direction.isTouched() ||
         ReferenceAxis.isTouched() ||

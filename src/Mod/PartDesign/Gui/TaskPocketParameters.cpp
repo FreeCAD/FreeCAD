@@ -56,6 +56,10 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength2"));
     ui->offsetEdit->setEntryName(QByteArray("Offset"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketOffset"));
+    ui->taperEdit->setEntryName(QByteArray("TaperAngle"));
+    ui->taperEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketTaperAngle"));
+    ui->taperEdit2->setEntryName(QByteArray("TaperAngle2"));
+    ui->taperEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketTaperAngle2"));
 
     setupDialog();
 

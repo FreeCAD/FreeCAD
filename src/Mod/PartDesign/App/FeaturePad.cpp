@@ -75,6 +75,10 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     Offset.setConstraints(&signedLengthConstraint);
+    ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pad", App::Prop_None, "Taper angle");
+    TaperAngle.setConstraints(&floatAngle);
+    ADD_PROPERTY_TYPE(TaperAngle2, (0.0), "Pad", App::Prop_None, "Taper angle for 2nd direction");
+    TaperAngle2.setConstraints(&floatAngle);
 
     // Remove the constraints and keep the type to allow to accept negative values
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
@@ -186,7 +190,7 @@ App::DocumentObjectExecReturn *Pad::execute()
                     supportface = TopoDS_Face();
 
                 PrismMode mode = PrismMode::None;
-                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
+                Extrude(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
                 base.Nullify();
             }
             else {
@@ -203,12 +207,12 @@ App::DocumentObjectExecReturn *Pad::execute()
                 if (!Ex.More())
                     supportface = TopoDS_Face();
                 PrismMode mode = PrismMode::None;
-                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
+                Extrude(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
             }
         }
         else {
-            generatePrism(prism, sketchshape, method, dir, L, L2,
-                hasMidplane, hasReversed);
+            Extrude(prism, sketchshape, method, dir, L, L2,
+                    TaperAngle.getValue(), TaperAngle2.getValue(), hasMidplane, hasReversed);
         }
 
         if (prism.IsNull())

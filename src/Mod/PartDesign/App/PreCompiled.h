@@ -82,6 +82,7 @@
 # include <BRepLProp_SLProps.hxx>
 # include <BRepProj_Projection.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -89,6 +90,7 @@
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepFilletAPI_MakeChamfer.hxx>
 # include <BRepOffsetAPI_DraftAngle.hxx>
+# include <BRepOffsetAPI_MakeOffset.hxx>
 # include <BRepOffsetAPI_ThruSections.hxx>
 # include <BRepPrimAPI_MakeBox.hxx>
 # include <BRepPrimAPI_MakeCylinder.hxx>
