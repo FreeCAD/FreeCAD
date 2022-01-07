@@ -1773,34 +1773,34 @@ bool CmdTechDrawExtensionCreateCoordDimensionGroup::isActive(void)
 // TechDraw_ExtensionCreateHorizChamferDimension
 //===========================================================================
 
-void execCreateHorizChamferDimension(Gui::Command* cmd){
+void execCreateHorizChamferDimension(Gui::Command* cmd) {
     //create a horizontal chamfer dimension
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat;
-    if (!_checkSelAndObj(cmd,selection,objFeat,"TechDraw Create Horizontal Chamfer Dimension"))
+    if (!_checkSelAndObj(cmd, selection, objFeat, "TechDraw Create Horizontal Chamfer Dimension"))
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Horiz Chamfer Dim"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     std::vector<dimVertex> allVertexes;
-    allVertexes = _getVertexInfo(objFeat,subNames);
-    if (!allVertexes.empty()){
-        if (allVertexes.size() > 1){
-            const float Pi180 = 180.0/3.14159;
+    allVertexes = _getVertexInfo(objFeat, subNames);
+    if (!allVertexes.empty()) {
+        if (allVertexes.size() > 1) {
+            const auto Pi180 = 180.0 / M_PI;
             TechDraw::DrawViewDimension* dim;
-            dim = _createLinDimension(cmd,objFeat,allVertexes[0].name,allVertexes[1].name,"DistanceX");
-            float yMax = std::max(abs(allVertexes[0].point.y),abs(allVertexes[1].point.y))+7.0;
+            dim = _createLinDimension(cmd, objFeat, allVertexes[0].name, allVertexes[1].name, "DistanceX");
+            float yMax = std::max(abs(allVertexes[0].point.y), abs(allVertexes[1].point.y)) + 7.0;
             if (signbit(allVertexes[0].point.y))
                 yMax = -yMax;
             TechDraw::pointPair pp = dim->getLinearPoints();
-            Base::Vector3d mid = (pp.first + pp.second)/2.0;
+            Base::Vector3d mid = (pp.first + pp.second) / 2.0;
             dim->X.setValue(mid.x);
             dim->Y.setValue(-yMax);
-            float dx = allVertexes[0].point.x-allVertexes[1].point.x;
-            float dy = allVertexes[0].point.y-allVertexes[1].point.y;
-            float alpha = round(abs(atan(dy/dx))*Pi180);
-            std::string sAlpha = std::to_string((int) alpha);
+            float dx = allVertexes[0].point.x - allVertexes[1].point.x;
+            float dy = allVertexes[0].point.y - allVertexes[1].point.y;
+            float alpha = round(abs(atan(dy / dx)) * Pi180);
+            std::string sAlpha = std::to_string((int)alpha);
             std::string formatSpec = dim->FormatSpec.getStrValue();
-            formatSpec = formatSpec+"x"+sAlpha+"°";
+            formatSpec = formatSpec + "x" + sAlpha + "°";
             dim->FormatSpec.setValue(formatSpec);
             objFeat->requestPaint();
             cmd->getSelection().clearSelection();
@@ -1842,34 +1842,34 @@ bool CmdTechDrawExtensionCreateHorizChamferDimension::isActive(void)
 // TechDraw_ExtensionCreateVertChamferDimension
 //===========================================================================
 
-void execCreateVertChamferDimension(Gui::Command* cmd){
+void execCreateVertChamferDimension(Gui::Command* cmd) {
     //create a vertical chamfer dimension
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat;
-    if (!_checkSelAndObj(cmd,selection,objFeat,"TechDraw Create Vertical Chamfer Dimension"))
+    if (!_checkSelAndObj(cmd, selection, objFeat, "TechDraw Create Vertical Chamfer Dimension"))
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Vert Chamfer Dim"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     std::vector<dimVertex> allVertexes;
-    allVertexes = _getVertexInfo(objFeat,subNames);
-    if (!allVertexes.empty()){
-        if (allVertexes.size() > 1){
-            const float Pi180 = 180.0/3.14159;
+    allVertexes = _getVertexInfo(objFeat, subNames);
+    if (!allVertexes.empty()) {
+        if (allVertexes.size() > 1) {
+            const auto Pi180 = 180.0 / M_PI;
             TechDraw::DrawViewDimension* dim;
-            dim = _createLinDimension(cmd,objFeat,allVertexes[0].name,allVertexes[1].name,"DistanceY");
-            float xMax = std::max(abs(allVertexes[0].point.x),abs(allVertexes[1].point.x))+7.0;
+            dim = _createLinDimension(cmd, objFeat, allVertexes[0].name, allVertexes[1].name, "DistanceY");
+            float xMax = std::max(abs(allVertexes[0].point.x), abs(allVertexes[1].point.x)) + 7.0;
             if (signbit(allVertexes[0].point.x))
                 xMax = -xMax;
             TechDraw::pointPair pp = dim->getLinearPoints();
-            Base::Vector3d mid = (pp.first + pp.second)/2.0;
+            Base::Vector3d mid = (pp.first + pp.second) / 2.0;
             dim->X.setValue(xMax);
             dim->Y.setValue(-mid.y);
-            float dx = allVertexes[0].point.x-allVertexes[1].point.x;
-            float dy = allVertexes[0].point.y-allVertexes[1].point.y;
-            float alpha = round(abs(atan(dx/dy))*Pi180);
-            std::string sAlpha = std::to_string((int) alpha);
+            float dx = allVertexes[0].point.x - allVertexes[1].point.x;
+            float dy = allVertexes[0].point.y - allVertexes[1].point.y;
+            float alpha = round(abs(atan(dx / dy)) * Pi180);
+            std::string sAlpha = std::to_string((int)alpha);
             std::string formatSpec = dim->FormatSpec.getStrValue();
-            formatSpec = formatSpec+"x"+sAlpha+"°";
+            formatSpec = formatSpec + "x" + sAlpha + "°";
             dim->FormatSpec.setValue(formatSpec);
             objFeat->requestPaint();
             cmd->getSelection().clearSelection();
