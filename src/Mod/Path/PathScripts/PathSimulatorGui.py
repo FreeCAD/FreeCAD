@@ -31,7 +31,6 @@ import PathScripts.PathJob as PathJob
 import PathSimulator
 import math
 import os
-from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from FreeCAD import Vector, Base
 
@@ -311,9 +310,7 @@ class PathSimulation:
                     self.stock = newStock.removeSplitter()
             except Exception:
                 if self.debug:
-                    FreeCAD.Console.PrintError(
-                        "invalid cut at cmd #{}".format(self.icmd)
-                    )
+                    print("invalid cut at cmd #{}".format(self.icmd))
         if not self.disableAnim:
             self.cutTool.Placement = FreeCAD.Placement(self.curpos, self.stdrot)
         self.icmd += 1
@@ -622,9 +619,9 @@ class CommandPathSimulate:
     def GetResources(self):
         return {
             "Pixmap": "Path_Simulator",
-            "MenuText": QT_TRANSLATE_NOOP("Path_Simulator", "CAM Simulator"),
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "CAM Simulator"),
             "Accel": "P, M",
-            "ToolTip": QT_TRANSLATE_NOOP(
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
                 "Path_Simulator", "Simulate Path G-Code on stock"
             ),
         }
@@ -637,10 +634,9 @@ class CommandPathSimulate:
         return False
 
     def Activated(self):
+        pathSimulation = PathSimulation()
         pathSimulation.Activate()
 
-
-pathSimulation = PathSimulation()
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
