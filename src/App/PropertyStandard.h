@@ -82,6 +82,8 @@ public:
     virtual const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const { return _lValue; }
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -128,6 +130,8 @@ public:
     virtual unsigned int getMemSize (void) const;
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -228,6 +232,8 @@ public:
     virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &r) const;
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getEnum() == static_cast<decltype(this)>(&other)->getEnum();
     }
@@ -407,6 +413,8 @@ public:
     virtual unsigned int getMemSize (void) const;
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValues() == static_cast<decltype(this)>(&other)->getValues();
     }
@@ -465,6 +473,8 @@ public:
     virtual unsigned int getMemSize (void) const;
     
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValues() == static_cast<decltype(this)>(&other)->getValues();
     }
@@ -519,6 +529,8 @@ public:
     const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -708,6 +720,8 @@ public:
     const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getStrValue() == static_cast<decltype(this)>(&other)->getStrValue();
     }
@@ -756,6 +770,8 @@ public:
     virtual unsigned int getMemSize (void) const;
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && _uuid.getValue() == static_cast<decltype(this)>(&other)->_uuid.getValue();
     }
@@ -778,6 +794,8 @@ public:
     { return "Gui::PropertyEditor::PropertyFontItem"; }
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -863,6 +881,8 @@ public:
     const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -942,6 +962,8 @@ public:
     virtual unsigned int getMemSize (void) const{return sizeof(Color);}
     
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -1033,6 +1055,8 @@ public:
     virtual unsigned int getMemSize (void) const{return sizeof(_cMat);}
     
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }

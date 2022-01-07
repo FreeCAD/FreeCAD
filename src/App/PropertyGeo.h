@@ -109,6 +109,8 @@ public:
     }
 
     virtual bool isSame(const Property &other) const override {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -284,6 +286,8 @@ public:
     }
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
@@ -356,6 +360,8 @@ public:
     }
 
     virtual bool isSame(const Property &other) const override {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }

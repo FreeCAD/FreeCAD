@@ -279,6 +279,8 @@ void Property::setStatus(Status pos, bool on) {
 }
 
 bool Property::isSame(const Property &other) const {
+    if(&other == this)
+        return true;
     if(other.getTypeId() != getTypeId() || getMemSize() != other.getMemSize())
         return false;
 
