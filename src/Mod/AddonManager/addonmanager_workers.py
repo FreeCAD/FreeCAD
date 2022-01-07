@@ -1249,9 +1249,15 @@ class InstallWorkbenchWorker(QtCore.QThread):
             if os.path.exists(clonedir):
                 for f in os.listdir(clonedir):
                     if f.lower().endswith(".fcmacro"):
-                        utils.symlink(
-                            os.path.join(clonedir, f), os.path.join(macro_dir, f)
-                        )
+                        try:
+                            utils.symlink(
+                                os.path.join(clonedir, f), os.path.join(macro_dir, f)
+                            )
+                        except OSError:
+                            # If the symlink failed (e.g. for a non-admin user on Windows), copy the macro instead
+                            shutil.copy(
+                                os.path.join(clonedir, f), os.path.join(macro_dir, f)
+                            )
                         FreeCAD.ParamGet(
                             "User parameter:Plugins/" + self.repo.name
                         ).SetString("destination", clonedir)
