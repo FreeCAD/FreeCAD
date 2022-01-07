@@ -91,10 +91,10 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge);
 void _setLineAttributes(TechDraw::CenterLine* cosEdge);
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color);
-void _intersection(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::vector<Base::Vector3d>& interPoints);
-void _intersectionLL(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::vector<Base::Vector3d>& interPoints);
-void _intersectionCL(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::vector<Base::Vector3d>& interPoints);
-void _intersectionCC(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::vector<Base::Vector3d>& interPoints);
+void _intersection(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints);
+void _intersectionLL(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints);
+void _intersectionCL(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints);
+void _intersectionCC(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints);
 float _getAngle(Base::Vector3d center, Base::Vector3d point);
 std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames,TechDraw::DrawViewPart* objFeat);
 bool _checkSel(Gui::Command* cmd,
@@ -113,15 +113,15 @@ void execHoleCircle(Gui::Command* cmd){
     if (!_checkSel(cmd,selection,objFeat,"TechDraw Hole Circle"))
         return;
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    std::vector<TechDraw::Circle*> Circles;
+    std::vector<TechDraw::CirclePtr> Circles;
     for (std::string Name : SubNames){
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
-        TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(GeoId);
+        TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         if (GeoType == "Edge"){
             if (geom->geomType == TechDraw::CIRCLE ||
                 geom->geomType == TechDraw::ARCOFCIRCLE){
-                TechDraw::Circle* cgen = static_cast<TechDraw::Circle *>(geom);
+                TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
                 Circles.push_back(cgen);
             }
         }
@@ -138,11 +138,11 @@ void execHoleCircle(Gui::Command* cmd){
                                              Circles[1]->center,
                                              Circles[2]->center);
     float bigRadius = (Circles[0]->center-bigCenter).Length();
-    TechDraw::BaseGeom* bigCircle = new TechDraw::Circle(bigCenter/scale,bigRadius/scale);
+    TechDraw::BaseGeomPtr bigCircle = std::make_shared<TechDraw::Circle> (bigCenter/scale,bigRadius/scale);
     std::string bigCircleTag = objFeat->addCosmeticEdge(bigCircle);
     TechDraw::CosmeticEdge* ceCircle = objFeat->getCosmeticEdge(bigCircleTag);
     _setLineAttributes(ceCircle);
-    for (TechDraw::Circle* oneCircle : Circles){
+    for (TechDraw::CirclePtr oneCircle : Circles){
         Base::Vector3d oneCircleCenter = oneCircle->center;
         float oneRadius = oneCircle->radius;
         Base::Vector3d delta = (oneCircle->center-bigCenter).Normalize()*(oneRadius+2);
@@ -207,12 +207,12 @@ void execCircleCenterLines(Gui::Command* cmd){
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (std::string Name : SubNames) {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
-        TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(GeoId);
+        TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         if (GeoType == "Edge"){
             if (geom->geomType == TechDraw::CIRCLE ||
                 geom->geomType == TechDraw::ARCOFCIRCLE){
-                TechDraw::Circle* cgen = static_cast<TechDraw::Circle *>(geom);
+                TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
                 Base::Vector3d center = cgen->center;
                 center.y = -center.y;
                 float radius = cgen->radius;
@@ -769,7 +769,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg){
     const std::vector<std::string> subNames = selection[0].getSubNames();
     for (std::string name : subNames){
         int num = DrawUtil::getIndexFromName(name);
-        BaseGeom* baseGeo = objFeat->getGeomByIndex(num);
+        BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
         if (baseGeo != nullptr){
             if (baseGeo->cosmetic){
                 if (baseGeo->source() == 1){
@@ -831,9 +831,9 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
         std::string GeoType2 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
         if (GeoType1 == "Edge" && GeoType2 == "Edge"){
             int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            TechDraw::BaseGeom* geom1 = objFeat->getGeomByIndex(GeoId1);
+            TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            TechDraw::BaseGeom* geom2 = objFeat->getGeomByIndex(GeoId2);
+            TechDraw::BaseGeomPtr geom2 = objFeat->getGeomByIndex(GeoId2);
             _intersection(geom1, geom2, interPoints);
             if (!interPoints.empty()){
                 double scale = objFeat->getScale();
@@ -878,7 +878,7 @@ void execDrawCosmArc(Gui::Command* cmd){
         float arcRadius = (vertexPoints[1]-vertexPoints[0]).Length();
         float angle1 = _getAngle(vertexPoints[0],vertexPoints[1]);
         float angle2 = _getAngle(vertexPoints[0],vertexPoints[2]);
-        TechDraw::BaseGeom* baseGeo = new TechDraw::AOC(vertexPoints[0]/scale, arcRadius/scale, -angle2, -angle1);
+        TechDraw::BaseGeomPtr baseGeo = std::make_shared<TechDraw::AOC>(vertexPoints[0]/scale, arcRadius/scale, -angle2, -angle1);
         std::string arcTag = objFeat->addCosmeticEdge(baseGeo);
         TechDraw::CosmeticEdge* arcEdge = objFeat->getCosmeticEdge(arcTag);
         _setLineAttributes(arcEdge);
@@ -938,7 +938,7 @@ void execDrawCosmCircle(Gui::Command* cmd){
     if (vertexPoints.size() >= 2){
         double scale = objFeat->getScale();
         float circleRadius = (vertexPoints[1]-vertexPoints[0]).Length();
-        TechDraw::BaseGeom* baseGeo = new TechDraw::Circle(vertexPoints[0]/scale, circleRadius/scale);
+        TechDraw::BaseGeomPtr baseGeo = std::make_shared<TechDraw::Circle>(vertexPoints[0]/scale, circleRadius/scale);
         std::string cicleTag = objFeat->addCosmeticEdge(baseGeo);
         TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(cicleTag);
         _setLineAttributes(circleEdge);
@@ -1102,9 +1102,9 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel){
         if (GeoType1 == "Edge" && GeoType2 == "Vertex"){
             double scale = objFeat->getScale();
             int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            TechDraw::BaseGeom* geom1 = objFeat->getGeomByIndex(GeoId1);
+            TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            TechDraw::Generic* lineGen = static_cast<TechDraw::Generic *>(geom1);
+            TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
             Base::Vector3d lineStart = lineGen->points.at(0);
             Base::Vector3d lineEnd = lineGen->points.at(1);
             TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(GeoId2);
@@ -1427,10 +1427,10 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend){
         int num = DrawUtil::getIndexFromName(name);
         std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(name);
         if (geoType == "Edge"){
-            TechDraw::BaseGeom* baseGeo = objFeat->getGeomByIndex(num);
+            TechDraw::BaseGeomPtr baseGeo = objFeat->getGeomByIndex(num);
             if (baseGeo != nullptr){
                 if (baseGeo->geomType == TechDraw::GENERIC){ 
-                    TechDraw::Generic* genLine = static_cast<TechDraw::Generic*>(baseGeo);
+                    TechDraw::GenericPtr genLine = std::static_pointer_cast<TechDraw::Generic>(baseGeo);
                     Base::Vector3d P0 = genLine->points.at(0);
                     Base::Vector3d P1 = genLine->points.at(1);
                     if (baseGeo->cosmetic){
@@ -1711,7 +1711,7 @@ float _getAngle(Base::Vector3d center, Base::Vector3d point){
     return angle;
 }
 
-void _intersection(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::vector<Base::Vector3d>& interPoints){
+void _intersection(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints){
     // find intersection vertex(es) between two edges
     #define unknown 0
     #define isLine 1
@@ -1737,11 +1737,11 @@ void _intersection(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::ve
         _intersectionCC(geom2,geom1,interPoints);
 }
 
-void _intersectionLL(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::vector<Base::Vector3d>& interPoints){
+void _intersectionLL(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints){
     // find intersection vertex of two lines
     // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
-    TechDraw::Generic* gen1 = static_cast<TechDraw::Generic *>(geom1);
-    TechDraw::Generic* gen2 = static_cast<TechDraw::Generic *>(geom2);
+    TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
+    TechDraw::GenericPtr gen2 = std::static_pointer_cast<TechDraw::Generic>(geom2);
     Base::Vector3d startPnt1 = gen1->points.at(0);
     Base::Vector3d endPnt1 = gen1->points.at(1);
     Base::Vector3d startPnt2 = gen2->points.at(0);
@@ -1764,11 +1764,11 @@ void _intersectionLL(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::
     }
 }
 
-void _intersectionCL(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::vector<Base::Vector3d>& interPoints){
+void _intersectionCL(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints){
     // find intersection vertex(es) between one circle and one line
     // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
-    TechDraw::Circle* gen1 = static_cast<TechDraw::Circle *>(geom1);
-    TechDraw::Generic* gen2 = static_cast<TechDraw::Generic *>(geom2);
+    TechDraw::CirclePtr gen1 = std::static_pointer_cast<TechDraw::Circle>(geom1);
+    TechDraw::GenericPtr gen2 = std::static_pointer_cast<TechDraw::Generic>(geom2);
     Base::Vector3d cirleCenter = gen1->center;
     Base::Vector3d startPnt = gen2->points.at(0);
     Base::Vector3d endPnt = gen2->points.at(1);
@@ -1803,11 +1803,11 @@ void _intersectionCL(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::
     }
 }
 
-void _intersectionCC(TechDraw::BaseGeom* geom1, TechDraw::BaseGeom* geom2, std::vector<Base::Vector3d>& interPoints){
+void _intersectionCC(TechDraw::BaseGeomPtr geom1, TechDraw::BaseGeomPtr geom2, std::vector<Base::Vector3d>& interPoints){
     // find intersection vertex(es) between two circles
     // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
-    TechDraw::Circle* gen1 = static_cast<TechDraw::Circle *>(geom1);
-    TechDraw::Circle* gen2 = static_cast<TechDraw::Circle *>(geom2);
+    TechDraw::CirclePtr gen1 = std::static_pointer_cast<TechDraw::Circle>(geom1);
+    TechDraw::CirclePtr gen2 = std::static_pointer_cast<TechDraw::Circle>(geom2);
     Base::Vector3d Center1 = gen1->center;
     Base::Vector3d Center2 = gen2->center;
     float r1 = gen1->radius;
