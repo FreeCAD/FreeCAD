@@ -425,6 +425,8 @@ SET(Part_SRCS
     BSplineCurveBiArcs.cpp
     CrossSection.cpp
     CrossSection.h
+    ExtrusionHelper.cpp
+    ExtrusionHelper.h
     GeometryExtension.cpp
     GeometryExtension.h
     GeometryDefaultExtension.cpp

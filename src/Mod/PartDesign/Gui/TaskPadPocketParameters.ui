@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>436</height>
+    <height>490</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,6 +44,9 @@
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
@@ -60,6 +63,9 @@
       <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
        <property name="keyboardTracking">
         <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
        </property>
       </widget>
      </item>
@@ -259,6 +265,30 @@ measured along the specified direction</string>
     </widget>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QLabel" name="labelTaperAngle">
+       <property name="toolTip">
+        <string>Angle to taper the extrusion</string>
+       </property>
+       <property name="text">
+        <string>Taper angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="taperEdit">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">deg</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QLabel" name="labelLength2">
@@ -271,6 +301,33 @@ measured along the specified direction</string>
       <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
        <property name="keyboardTracking">
         <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QLabel" name="labelTaperAngle2">
+       <property name="toolTip">
+        <string>Angle to taper the extrusion</string>
+       </property>
+       <property name="text">
+        <string>2nd taper angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="taperEdit2">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">deg</string>
        </property>
       </widget>
      </item>

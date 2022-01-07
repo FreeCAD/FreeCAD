@@ -74,6 +74,10 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pocket", App::Prop_None, "Face where pocket will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pocket", App::Prop_None, "Offset from face in which pocket will end");
     Offset.setConstraints(&signedLengthConstraint);
+    ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pocket", App::Prop_None, "Taper angle");
+    TaperAngle.setConstraints(&floatAngle);
+    ADD_PROPERTY_TYPE(TaperAngle2, (0.0), "Pocket", App::Prop_None, "Taper angle for 2nd direction");
+    TaperAngle2.setConstraints(&floatAngle);
 
     // Remove the constraints and keep the type to allow to accept negative values
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
@@ -196,7 +200,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
                 supportface = TopoDS_Face();
             TopoDS_Shape prism;
             PrismMode mode = PrismMode::CutFromBase;
-            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
+            Extrude(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
@@ -215,8 +219,8 @@ App::DocumentObjectExecReturn *Pocket::execute()
         }
         else {
             TopoDS_Shape prism;
-            generatePrism(prism, profileshape, method, dir, L, L2,
-                        Midplane.getValue(), Reversed.getValue());
+            Extrude(prism, profileshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(),
+                    Midplane.getValue(), Reversed.getValue());
 
             if (prism.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");

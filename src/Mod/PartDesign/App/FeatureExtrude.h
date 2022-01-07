@@ -24,8 +24,10 @@
 #ifndef PARTDESIGN_FEATURE_EXTRUDE_H
 #define PARTDESIGN_FEATURE_EXTRUDE_H
 
+#include <App/PropertyGeo.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
+#include <Base/Tools.h>
 #include "FeatureSketchBased.h"
 
 namespace PartDesign
@@ -41,6 +43,8 @@ public:
     App::PropertyEnumeration Type;
     App::PropertyLength      Length;
     App::PropertyLength      Length2;
+    App::PropertyAngle       TaperAngle;
+    App::PropertyAngle       TaperAngle2;
     App::PropertyBool        UseCustomVector;
     App::PropertyVector      Direction;
     App::PropertyBool        AlongSketchNormal;
@@ -48,6 +52,8 @@ public:
     App::PropertyLinkSub     ReferenceAxis;
 
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
+    static double maxAngle;
+    static App::PropertyAngle::Constraints floatAngle;
 
     /** @name methods override feature */
     //@{

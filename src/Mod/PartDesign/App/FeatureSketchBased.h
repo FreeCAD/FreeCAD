@@ -143,28 +143,31 @@ protected:
                                 double offset);
 
     /**
-      * Generate a linear prism
-      * It will be a stand-alone solid created with BRepPrimAPI_MakePrism
+      * Generates an extrusion of the input sketchshape and stores it in the given &prism
       */
-    void generatePrism(TopoDS_Shape& prism,
-                       const TopoDS_Shape& sketchshape,
-                       const std::string& method,
-                       const gp_Dir& direction,
-                       const double L,
-                       const double L2,
-                       const bool midplane,
-                       const bool reversed);
+    void Extrude(TopoDS_Shape& prism,
+                 const TopoDS_Shape& sketchshape,
+                 const std::string& method,
+                 const gp_Dir& direction,
+                 const double L,
+                 const double L2,
+                 const double angle,
+                 const double angle2,
+                 const bool midplane,
+                 const bool reversed);
+
     // See BRepFeat_MakePrism
     enum PrismMode {
         CutFromBase = 0,
         FuseWithBase = 1,
         None = 2
     };
+
     /**
-      * Generate a linear prism
+      * Generates an extrusion of the input profileshape
       * It will be a stand-alone solid created with BRepFeat_MakePrism
       */
-    static void generatePrism(TopoDS_Shape& prism,
+    static void Extrude(TopoDS_Shape& prism,
                               const std::string& method,
                               const TopoDS_Shape& baseshape,
                               const TopoDS_Shape& profileshape,
@@ -173,6 +176,19 @@ protected:
                               const gp_Dir& direction,
                               PrismMode Mode,
                               Standard_Boolean Modify);
+
+    /**
+      * Generates a tapered prism of the input sketchshape and stores it in the given &prism
+      */
+    void generateTaperedPrism(TopoDS_Shape& prism,
+                              const TopoDS_Shape& sketchshape,
+                              const std::string& method,
+                              const gp_Dir& direction,
+                              const double L,
+                              const double L2,
+                              const double angle,
+                              const double angle2,
+                              const bool midplane);
 
     /// Check whether the wire after projection on the face is inside the face
     static bool checkWireInsideFace(const TopoDS_Wire& wire,

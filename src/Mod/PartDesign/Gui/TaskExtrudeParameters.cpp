@@ -73,6 +73,8 @@ void TaskExtrudeParameters::setupDialog()
     Base::Quantity l = extrude->Length.getQuantityValue();
     Base::Quantity l2 = extrude->Length2.getQuantityValue();
     Base::Quantity off = extrude->Offset.getQuantityValue();
+    Base::Quantity taper = extrude->TaperAngle.getQuantityValue();
+    Base::Quantity taper2 = extrude->TaperAngle2.getQuantityValue();
 
     bool alongNormal = extrude->AlongSketchNormal.getValue();
     bool useCustom = extrude->UseCustomVector.getValue();
@@ -107,6 +109,14 @@ void TaskExtrudeParameters::setupDialog()
     ui->lengthEdit->setValue(l);
     ui->lengthEdit2->setValue(l2);
     ui->offsetEdit->setValue(off);
+    ui->taperEdit->setMinimum(extrude->TaperAngle.getMinimum());
+    ui->taperEdit->setMaximum(extrude->TaperAngle.getMaximum());
+    ui->taperEdit->setSingleStep(extrude->TaperAngle.getStepSize());
+    ui->taperEdit->setValue(taper);
+    ui->taperEdit2->setMinimum(extrude->TaperAngle2.getMinimum());
+    ui->taperEdit2->setMaximum(extrude->TaperAngle2.getMaximum());
+    ui->taperEdit2->setSingleStep(extrude->TaperAngle2.getStepSize());
+    ui->taperEdit2->setValue(taper2);
 
     ui->checkBoxAlongDirection->setChecked(alongNormal);
     ui->checkBoxDirection->setChecked(useCustom);
@@ -126,6 +136,8 @@ void TaskExtrudeParameters::setupDialog()
     ui->lengthEdit->bind(extrude->Length);
     ui->lengthEdit2->bind(extrude->Length2);
     ui->offsetEdit->bind(extrude->Offset);
+    ui->taperEdit->bind(extrude->TaperAngle);
+    ui->taperEdit2->bind(extrude->TaperAngle2);
     ui->XDirectionEdit->bind(App::ObjectIdentifier::parse(extrude, std::string("Direction.x")));
     ui->YDirectionEdit->bind(App::ObjectIdentifier::parse(extrude, std::string("Direction.y")));
     ui->ZDirectionEdit->bind(App::ObjectIdentifier::parse(extrude, std::string("Direction.z")));
@@ -172,6 +184,10 @@ void TaskExtrudeParameters::readValuesFromHistory()
     ui->lengthEdit2->selectNumber();
     ui->offsetEdit->setToLastUsedValue();
     ui->offsetEdit->selectNumber();
+    ui->taperEdit->setToLastUsedValue();
+    ui->taperEdit->selectNumber();
+    ui->taperEdit2->setToLastUsedValue();
+    ui->taperEdit2->selectNumber();
 }
 
 void TaskExtrudeParameters::connectSlots()
@@ -184,6 +200,10 @@ void TaskExtrudeParameters::connectSlots()
             this, SLOT(onLength2Changed(double)));
     connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
             this, SLOT(onOffsetChanged(double)));
+    connect(ui->taperEdit, SIGNAL(valueChanged(double)),
+        this, SLOT(onTaperChanged(double)));
+    connect(ui->taperEdit2, SIGNAL(valueChanged(double)),
+        this, SLOT(onTaper2Changed(double)));
     connect(ui->directionCB, SIGNAL(activated(int)),
             this, SLOT(onDirectionCBChanged(int)));
     connect(ui->checkBoxAlongDirection, SIGNAL(toggled(bool)),
@@ -289,6 +309,20 @@ void TaskExtrudeParameters::onOffsetChanged(double len)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Offset.setValue(len);
+    tryRecomputeFeature();
+}
+
+void TaskExtrudeParameters::onTaperChanged(double angle)
+{
+    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    extrude->TaperAngle.setValue(angle);
+    tryRecomputeFeature();
+}
+
+void TaskExtrudeParameters::onTaper2Changed(double angle)
+{
+    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    extrude->TaperAngle2.setValue(angle);
     tryRecomputeFeature();
 }
 
@@ -769,6 +803,8 @@ void TaskExtrudeParameters::changeEvent(QEvent *e)
         QSignalBlocker length(ui->lengthEdit);
         QSignalBlocker length2(ui->lengthEdit2);
         QSignalBlocker offset(ui->offsetEdit);
+        QSignalBlocker taper(ui->taperEdit);
+        QSignalBlocker taper2(ui->taperEdit2);
         QSignalBlocker xdir(ui->XDirectionEdit);
         QSignalBlocker ydir(ui->YDirectionEdit);
         QSignalBlocker zdir(ui->ZDirectionEdit);
@@ -804,6 +840,8 @@ void TaskExtrudeParameters::saveHistory(void)
     ui->lengthEdit->pushToHistory();
     ui->lengthEdit2->pushToHistory();
     ui->offsetEdit->pushToHistory();
+    ui->taperEdit->pushToHistory();
+    ui->taperEdit2->pushToHistory();
 }
 
 void TaskExtrudeParameters::applyParameters(QString facename)
@@ -812,6 +850,8 @@ void TaskExtrudeParameters::applyParameters(QString facename)
 
     ui->lengthEdit->apply();
     ui->lengthEdit2->apply();
+    ui->taperEdit->apply();
+    ui->taperEdit2->apply();
     FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
     FCMD_OBJ_CMD(obj, "Direction = ("
         << getXDirection() << ", " << getYDirection() << ", " << getZDirection() << ")");
