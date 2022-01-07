@@ -2035,11 +2035,11 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg){
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Length Arc"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     int geoId = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
-    TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(geoId);
+    TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(geoId);
     std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(subNames[0]);
     if (geoType == "Edge"){
         if (geom->geomType == TechDraw::ARCOFCIRCLE){
-            TechDraw::AOC* arcTag = static_cast<TechDraw::AOC *>(geom);
+            TechDraw::AOCPtr arcTag = std::static_pointer_cast<TechDraw::AOC>(geom);
             float radius = arcTag->radius;
             Base::Vector3d centerPt = arcTag->center;
             centerPt.y = -centerPt.y;
@@ -2159,7 +2159,6 @@ std::vector<dimVertex> _getVertexInfo(TechDraw::DrawViewPart* objFeat,
         std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(name);
         if (geoType == "Vertex"){
             int geoId = TechDraw::DrawUtil::getIndexFromName(name);
-            //TechDraw::Vertex* vert = objFeat->getProjVertexByIndex(geoId);
             TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(geoId);
             nextVertex.name = name;
             nextVertex.point.x = vert->point().x;
