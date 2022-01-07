@@ -32,6 +32,8 @@ import threading
 import queue
 import io
 import time
+import subprocess
+import sys
 from datetime import datetime
 from typing import Union, List
 
@@ -44,7 +46,7 @@ if FreeCAD.GuiUp:
 
 import addonmanager_utilities as utils
 from addonmanager_macro import Macro
-from addonmanager_metadata import MetadataDownloadWorker
+from addonmanager_metadata import MetadataDownloadWorker, DependencyDownloadWorker
 from AddonManagerRepo import AddonManagerRepo
 
 translate = FreeCAD.Qt.translate
@@ -95,12 +97,52 @@ NOMARKDOWN = False  # for debugging purposes, set this to True to disable Markdo
 """Multithread workers for the Addon Manager"""
 
 
+class ConnectionChecker(QtCore.QThread):
+
+    success = QtCore.Signal()
+    failure = QtCore.Signal(str)
+
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+
+    def run(self):
+        FreeCAD.Console.PrintLog(
+            translate("AddonsInstaller", "Checking network connection...\n")
+        )
+        url = "https://api.github.com/zen"
+        request = utils.urlopen(url)
+        if QtCore.QThread.currentThread().isInterruptionRequested():
+            return
+        if not request:
+            self.failure.emit(
+                translate(
+                    "AddonsInstaller",
+                    "Unable to connect to GitHub: check your internet connection and proxy settings and try again.",
+                )
+            )
+            return
+        result = request.read()
+        if QtCore.QThread.currentThread().isInterruptionRequested():
+            return
+        if not result:
+            self.failure.emit(
+                translate(
+                    "AddonsInstaller",
+                    "Unable to read data from GitHub: check your internet connection and proxy settings and try again.",
+                )
+            )
+            return
+
+        result = result.decode("utf8")
+        FreeCAD.Console.PrintLog(f"GitHub's zen message response: {result}\n")
+        self.success.emit()
+
+
 class UpdateWorker(QtCore.QThread):
     """This worker updates the list of available workbenches"""
 
     status_message = QtCore.Signal(str)
     addon_repo = QtCore.Signal(object)
-    done = QtCore.Signal()
 
     def __init__(self):
 
@@ -190,8 +232,6 @@ class UpdateWorker(QtCore.QThread):
             "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/.gitmodules"
         )
         if not u:
-            self.done.emit()
-            self.stop = True
             return
         p = u.read()
         if isinstance(p, bytes):
@@ -206,7 +246,7 @@ class UpdateWorker(QtCore.QThread):
             ),
             p,
         )
-        for name, path, url, _, branch in p:
+        for name, _, url, _, branch in p:
             if self.current_thread.isInterruptionRequested():
                 return
             if name in package_names:
@@ -240,14 +280,9 @@ class UpdateWorker(QtCore.QThread):
                 translate("AddonsInstaller", "Workbenches list was updated.")
             )
 
-        if not self.current_thread.isInterruptionRequested():
-            self.done.emit()
-            self.stop = True
-
 
 class LoadPackagesFromCacheWorker(QtCore.QThread):
     addon_repo = QtCore.Signal(object)
-    done = QtCore.Signal()
 
     def __init__(self, cache_file: str):
         QtCore.QThread.__init__(self)
@@ -281,7 +316,6 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                             )
                             pass
                     self.addon_repo.emit(repo)
-        self.done.emit()
 
 
 class LoadMacrosFromCacheWorker(QtCore.QThread):
@@ -309,7 +343,6 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
 
     update_status = QtCore.Signal(AddonManagerRepo)
     progress_made = QtCore.Signal(int, int)
-    done = QtCore.Signal()
 
     def __init__(self, repos: List[AddonManagerRepo]):
 
@@ -319,14 +352,10 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
     def run(self):
 
         if NOGIT or not have_git:
-            self.done.emit()
-            self.stop = True
             return
         self.current_thread = QtCore.QThread.currentThread()
         self.basedir = FreeCAD.getUserAppDataDir()
         self.moddir = self.basedir + os.sep + "Mod"
-        upds = []
-        gitpython_warning = False
         count = 1
         for repo in self.repos:
             if self.current_thread.isInterruptionRequested():
@@ -341,39 +370,14 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                 elif repo.repo_type == AddonManagerRepo.RepoType.PACKAGE:
                     self.check_package(repo)
 
-        self.stop = True
-        self.done.emit()
-
     def check_workbench(self, wb):
-        gitpython_warning = False
         if not have_git or NOGIT:
             return
         clonedir = self.moddir + os.sep + wb.name
         if os.path.exists(clonedir):
             # mark as already installed AND already checked for updates
             if not os.path.exists(clonedir + os.sep + ".git"):
-                # Repair addon installed with raw download
-                bare_repo = git.Repo.clone_from(
-                    wb.url, clonedir + os.sep + ".git", bare=True
-                )
-                try:
-                    with bare_repo.config_writer() as cw:
-                        cw.set("core", "bare", False)
-                except AttributeError:
-                    if not gitpython_warning:
-                        FreeCAD.Console.PrintWarning(
-                            translate(
-                                "AddonsInstaller",
-                                "Outdated GitPython detected, consider upgrading with pip.",
-                            )
-                            + "\n"
-                        )
-                        gitpython_warning = True
-                    cw = bare_repo.config_writer()
-                    cw.set("core", "bare", False)
-                    del cw
-                repo = git.Repo(clonedir)
-                repo.head.reset("--hard")
+                utils.repair_git_repo(wb.url, clonedir)
             gitrepo = git.Git(clonedir)
             try:
                 gitrepo.fetch()
@@ -430,7 +434,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                         AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
                     )
                 self.update_status.emit(package)
-            except Exception as e:
+            except Exception:
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "AddonsInstaller",
@@ -499,7 +503,6 @@ class FillMacroListWorker(QtCore.QThread):
     add_macro_signal = QtCore.Signal(object)
     status_message_signal = QtCore.Signal(str)
     progress_made = QtCore.Signal(int, int)
-    done = QtCore.Signal()
 
     def __init__(self, repo_dir):
 
@@ -525,7 +528,7 @@ class FillMacroListWorker(QtCore.QThread):
             self.status_message_signal.emit(
                 translate(
                     "AddonInstaller",
-                    "Retrieving macros from FreeCAD/FreeCAD-Macros Git repository",
+                    "Retrieving macros from FreeCAD wiki",
                 )
             )
             self.retrieve_macros_from_wiki()
@@ -536,8 +539,6 @@ class FillMacroListWorker(QtCore.QThread):
         self.status_message_signal.emit(
             translate("AddonsInstaller", "Done locating macros.")
         )
-        self.stop = True
-        self.done.emit()
 
     def retrieve_macros_from_git(self):
         """Retrieve macros from FreeCAD-macros.git
@@ -557,6 +558,10 @@ class FillMacroListWorker(QtCore.QThread):
 
         try:
             if os.path.exists(self.repo_dir):
+                if not os.path.exists(os.path.join(self.repo_dir, ".git")):
+                    utils.repair_git_repo(
+                        "https://github.com/FreeCAD/FreeCAD-macros.git", self.repo_dir
+                    )
                 gitrepo = git.Git(self.repo_dir)
                 gitrepo.pull()
             else:
@@ -688,7 +693,7 @@ class CacheMacroCode(QtCore.QThread):
             time.sleep(0.1)
 
         # Make sure all of our child threads have fully exited:
-        for i, worker in enumerate(self.workers):
+        for worker in self.workers:
             worker.wait(50)
             if not worker.isFinished():
                 FreeCAD.Console.PrintError(
@@ -773,7 +778,6 @@ class ShowWorker(QtCore.QThread):
     status_message = QtCore.Signal(str)
     readme_updated = QtCore.Signal(str)
     update_status = QtCore.Signal(AddonManagerRepo)
-    done = QtCore.Signal()
 
     def __init__(self, repo, cache_path):
 
@@ -843,7 +847,6 @@ class ShowWorker(QtCore.QThread):
                 # fall back to the description text
                 u = utils.urlopen(url)
                 if not u:
-                    self.stop = True
                     return
                 p = u.read()
                 if isinstance(p, bytes):
@@ -871,27 +874,7 @@ class ShowWorker(QtCore.QThread):
                 )
                 if os.path.exists(clonedir):
                     if not os.path.exists(clonedir + os.sep + ".git"):
-                        # Repair addon installed with raw download
-                        bare_repo = git.Repo.clone_from(
-                            repo.url, clonedir + os.sep + ".git", bare=True
-                        )
-                        try:
-                            with bare_repo.config_writer() as cw:
-                                cw.set("core", "bare", False)
-                        except AttributeError:
-                            FreeCAD.Console.PrintWarning(
-                                translate(
-                                    "AddonsInstaller",
-                                    "Outdated GitPython detected, "
-                                    "consider upgrading with pip.",
-                                )
-                                + "\n"
-                            )
-                            cw = bare_repo.config_writer()
-                            cw.set("core", "bare", False)
-                            del cw
-                        repo = git.Repo(clonedir)
-                        repo.head.reset("--hard")
+                        utils.repair_git_repo(self.repo.url, clonedir)
                     gitrepo = git.Git(clonedir)
                     gitrepo.fetch()
                     if "git pull" in gitrepo.status():
@@ -955,8 +938,6 @@ class ShowWorker(QtCore.QThread):
             self.readme_updated.emit(label)
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
-        self.done.emit()
-        self.stop = True
 
     def stopImageLoading(self):
         "this stops the image loading process and allow the thread to terminate earlier"
@@ -972,7 +953,6 @@ class ShowWorker(QtCore.QThread):
 
         imagepaths = re.findall('<img.*?src="(.*?)"', message)
         if imagepaths:
-            storedimages = []
             store = os.path.join(self.cache_path, "Images")
             if not os.path.exists(store):
                 os.makedirs(store)
@@ -1031,7 +1011,6 @@ class GetMacroDetailsWorker(QtCore.QThread):
 
     status_message = QtCore.Signal(str)
     readme_updated = QtCore.Signal(str)
-    done = QtCore.Signal()
 
     def __init__(self, repo):
 
@@ -1071,8 +1050,6 @@ class GetMacroDetailsWorker(QtCore.QThread):
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
         self.readme_updated.emit(message)
-        self.done.emit()
-        self.stop = True
 
 
 class InstallWorkbenchWorker(QtCore.QThread):
@@ -1129,8 +1106,6 @@ class InstallWorkbenchWorker(QtCore.QThread):
         else:
             self.run_zip(target_dir)
 
-        self.stop = True
-
     def run_git(self, clonedir: str) -> None:
 
         if NOGIT or not have_git:
@@ -1161,27 +1136,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 + "\n"
             )
         if not os.path.exists(clonedir + os.sep + ".git"):
-            # Repair addon installed with raw download by adding the .git
-            # directory to it
-            bare_repo = git.Repo.clone_from(
-                self.repo.url, clonedir + os.sep + ".git", bare=True
-            )
-            try:
-                with bare_repo.config_writer() as cw:
-                    cw.set("core", "bare", False)
-            except AttributeError:
-                FreeCAD.Console.PrintLog(
-                    translate(
-                        "AddonsInstaller",
-                        "Outdated GitPython detected, consider " "upgrading with pip.",
-                    )
-                    + "\n"
-                )
-                cw = bare_repo.config_writer()
-                cw.set("core", "bare", False)
-                del cw
-            repo = git.Repo(clonedir)
-            repo.head.reset("--hard")
+            utils.repair_git_repo(self.repo.url, clonedir)
         repo = git.Git(clonedir)
         try:
             repo.pull()
@@ -1210,36 +1165,31 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
     def run_git_clone(self, clonedir: str) -> None:
         self.status_message.emit("Checking module dependencies...")
-        depsok, answer = self.check_python_dependencies(self.repo.url)
-        if depsok:
-            if str(self.repo.name) in py2only:
-                FreeCAD.Console.PrintWarning(
-                    translate(
-                        "AddonsInstaller",
-                        "You are installing a Python 2 workbench on "
-                        "a system running Python 3 - ",
-                    )
-                    + str(self.repo.name)
-                    + "\n"
+        if str(self.repo.name) in py2only:
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "You are installing a Python 2 workbench on "
+                    "a system running Python 3 - ",
                 )
-            self.status_message.emit("Cloning module...")
-            repo = git.Repo.clone_from(self.repo.url, clonedir)
-
-            # Make sure to clone all the submodules as well
-            if repo.submodules:
-                repo.submodule_update(recursive=True)
-
-            if self.repo.branch in repo.heads:
-                repo.heads[self.repo.branch].checkout()
-
-            answer = translate(
-                "AddonsInstaller",
-                "Workbench successfully installed. Please restart "
-                "FreeCAD to apply the changes.",
+                + str(self.repo.name)
+                + "\n"
             )
-        else:
-            self.failure.emit(self.repo, answer)
-            return
+        self.status_message.emit("Cloning module...")
+        repo = git.Repo.clone_from(self.repo.url, clonedir)
+
+        # Make sure to clone all the submodules as well
+        if repo.submodules:
+            repo.submodule_update(recursive=True)
+
+        if self.repo.branch in repo.heads:
+            repo.heads[self.repo.branch].checkout()
+
+        answer = translate(
+            "AddonsInstaller",
+            "Workbench successfully installed. Please restart "
+            "FreeCAD to apply the changes.",
+        )
 
         if self.repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
             # symlink any macro contained in the module to the macros folder
@@ -1269,98 +1219,6 @@ class InstallWorkbenchWorker(QtCore.QThread):
                         answer += ":\n<b>" + f + "</b>"
         self.update_metadata()
         self.success.emit(self.repo, answer)
-
-    def check_python_dependencies(self, baseurl: str) -> Union[bool, str]:
-        """checks if the repo contains a metadata.txt and check its contents"""
-
-        ok = True
-        message = ""
-        depsurl = baseurl.replace("github.com", "raw.githubusercontent.com")
-        if not depsurl.endswith("/"):
-            depsurl += "/"
-        depsurl += "master/metadata.txt"
-        try:
-            mu = utils.urlopen(depsurl)
-        except Exception:
-            return True, translate(
-                "AddonsInstaller",
-                "No metadata.txt found, cannot evaluate Python dependencies",
-            )
-        if mu:
-            # metadata.txt found
-            depsfile = mu.read()
-            mu.close()
-
-            # urllib2 gives us a bytelike object instead of a string.  Have to
-            # consider that
-            try:
-                depsfile = depsfile.decode("utf-8")
-            except AttributeError:
-                pass
-
-            deps = depsfile.split("\n")
-            for line in deps:
-                if line.startswith("workbenches="):
-                    depswb = line.split("=")[1].split(",")
-                    for wb in depswb:
-                        if wb.strip():
-                            if not wb.strip() in FreeCADGui.listWorkbenches().keys():
-                                if (
-                                    not wb.strip() + "Workbench"
-                                    in FreeCADGui.listWorkbenches().keys()
-                                ):
-                                    ok = False
-                                    message += (
-                                        translate(
-                                            "AddonsInstaller", "Missing workbench"
-                                        )
-                                        + ": "
-                                        + wb
-                                        + ", "
-                                    )
-                elif line.startswith("pylibs="):
-                    depspy = line.split("=")[1].split(",")
-                    for pl in depspy:
-                        if pl.strip():
-                            try:
-                                __import__(pl.strip())
-                            except ImportError:
-                                ok = False
-                                message += (
-                                    translate(
-                                        "AddonsInstaller", "Missing python module"
-                                    )
-                                    + ": "
-                                    + pl
-                                    + ", "
-                                )
-                elif line.startswith("optionalpylibs="):
-                    opspy = line.split("=")[1].split(",")
-                    for pl in opspy:
-                        if pl.strip():
-                            try:
-                                __import__(pl.strip())
-                            except ImportError:
-                                message += translate(
-                                    "AddonsInstaller",
-                                    "Missing optional python module (doesn't prevent installing)",
-                                )
-                                message += ": " + pl + ", "
-        if message and (not ok):
-            final_message = translate(
-                "AddonsInstaller",
-                "Some errors were found that prevent installation of this workbench",
-            )
-            final_message += ": <b>" + message + "</b>. "
-            final_message += translate(
-                "AddonsInstaller", "Please install the missing components first."
-            )
-            message = final_message
-        return ok, message
-
-    def check_package_dependencies(self):
-        # TODO: Use the dependencies set in the package.xml metadata
-        pass
 
     def run_zip(self, zipdir: str) -> None:
         "downloads and unzip a zip version from a git repo"
@@ -1454,6 +1312,67 @@ class InstallWorkbenchWorker(QtCore.QThread):
             self.repo.updated_timestamp = datetime.now().timestamp()
 
 
+class DependencyInstallationWorker(QtCore.QThread):
+    """Install dependencies: not yet implemented, DO NOT CALL"""
+
+    def __init__(self, addons, python_required, python_optional):
+        QtCore.QThread.__init__(self)
+        self.addons = addons
+        self.python_required = python_required
+        self.python_optional = python_optional
+
+    def run(self):
+
+        for repo in self.addons:
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                return
+            worker = InstallWorkbenchWorker(repo)
+            # Don't bother with a separate thread for this right now, just run it here:
+            FreeCAD.Console.PrintMessage(f"Pretending to install {repo.name}")
+            time.sleep(3)
+            continue
+            # worker.run()
+
+        if self.python_required or self.python_optional:
+            # See if we have pip available:
+            try:
+                subprocess.check_call(["pip", "--version"])
+            except subprocess.CalledProcessError as e:
+                FreeCAD.Console.PrintError(
+                    translate(
+                        "AddonsInstaller", "Failed to execute pip. Returned error was:"
+                    )
+                    + f"\n{e.output}"
+                )
+                return
+
+        for pymod in self.python_required:
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                return
+            FreeCAD.Console.PrintMessage(f"Pretending to install {pymod}")
+            time.sleep(3)
+            continue
+            # subprocess.check_call(["pip", "install", pymod])
+
+        for pymod in self.python_optional:
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                return
+            try:
+                FreeCAD.Console.PrintMessage(f"Pretending to install {pymod}")
+                time.sleep(3)
+                continue
+                # subprocess.check_call([sys.executable, "-m", "pip", "install", pymod])
+            except subprocess.CalledProcessError as e:
+                FreeCAD.Console.PrintError(
+                    translate(
+                        "AddonsInstaller",
+                        "Failed to install option dependency {pymod}. Returned error was:",
+                    )
+                    + f"\n{e.output}"
+                )
+                # This is not fatal, we can just continue without it
+
+
 class CheckSingleWorker(QtCore.QThread):
     """Worker to check for updates for a single addon"""
 
@@ -1491,7 +1410,6 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
     status_message = QtCore.Signal(str)
     progress_made = QtCore.Signal(int, int)
-    done = QtCore.Signal()
     package_updated = QtCore.Signal(AddonManagerRepo)
 
     class AtomicCounter(object):
@@ -1546,7 +1464,14 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.downloaders = []
         for repo in self.repos:
             if repo.metadata_url:
+                # package.xml
                 downloader = MetadataDownloadWorker(None, repo, self.index)
+                downloader.start_fetch(download_queue)
+                downloader.updated.connect(self.on_updated)
+                self.downloaders.append(downloader)
+
+                # metadata.txt
+                downloader = DependencyDownloadWorker(None, repo)
                 downloader.start_fetch(download_queue)
                 downloader.updated.connect(self.on_updated)
                 self.downloaders.append(downloader)
@@ -1575,15 +1500,12 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         # Update and serialize the updated index, overwriting whatever was
         # there before
         for downloader in self.downloaders:
-            self.index[downloader.repo.name] = downloader.last_sha1
+            if hasattr(downloader, "last_sha1"):
+                self.index[downloader.repo.name] = downloader.last_sha1
         if not os.path.exists(store):
             os.makedirs(store)
         with open(index_file, "w") as f:
             json.dump(self.index, f, indent="  ")
-
-        # Signal completion to our parent thread
-        self.done.emit()
-        self.stop = True
 
     def on_finished(self, reply):
         # Called by the QNetworkAccessManager's sub-threads when a fetch
@@ -1614,7 +1536,7 @@ if have_git and not NOGIT:
 
         def update(
             self,
-            op_code: int,
+            _: int,
             cur_count: Union[str, float],
             max_count: Union[str, float, None] = None,
             message: str = "",
@@ -1632,7 +1554,6 @@ class UpdateAllWorker(QtCore.QThread):
     status_message = QtCore.Signal(str)
     success = QtCore.Signal(AddonManagerRepo)
     failure = QtCore.Signal(AddonManagerRepo)
-    done = QtCore.Signal()
 
     def __init__(self, repos):
         super().__init__()
@@ -1666,10 +1587,8 @@ class UpdateAllWorker(QtCore.QThread):
         self.repo_queue.join()
 
         # Make sure all of our child threads have fully exited:
-        for i, worker in enumerate(workers):
+        for worker in workers:
             worker.wait()
-
-        self.done.emit()
 
     def on_success(self, repo: AddonManagerRepo) -> None:
         self.progress_made.emit(
@@ -1714,12 +1633,10 @@ class UpdateSingleWorker(QtCore.QThread):
             FreeCAD.getUserCachePath(), "AddonManager", "MacroCache"
         )
         os.makedirs(cache_path, exist_ok=True)
-        install_succeeded, errors = repo.macro.install(cache_path)
+        install_succeeded, _ = repo.macro.install(cache_path)
 
         if install_succeeded:
-            install_succeeded, errors = repo.macro.install(
-                FreeCAD.getUserMacroDir(True)
-            )
+            install_succeeded, _ = repo.macro.install(FreeCAD.getUserMacroDir(True))
             utils.update_macro_installation_details(repo)
 
         if install_succeeded:

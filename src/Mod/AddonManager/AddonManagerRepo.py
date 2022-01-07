@@ -23,9 +23,11 @@
 import FreeCAD
 
 import os
-from typing import Dict
+from typing import Dict, Set, List
 
 from addonmanager_macro import Macro
+
+translate = FreeCAD.Qt.translate
 
 
 class AddonManagerRepo:
@@ -70,6 +72,19 @@ class AddonManagerRepo:
             elif self.value == 4:
                 return "Restart required"
 
+    class Dependencies:
+        def __init__(self):
+            self.required_external_addons = dict()
+            self.blockers = dict()
+            self.replaces = dict()
+            self.unrecognized_addons: Set[str] = set()
+            self.python_required: Set[str] = set()
+            self.python_optional: Set[str] = set()
+
+    class ResolutionFailed(RuntimeError):
+        def __init__(self, msg):
+            super().__init__(msg)
+
     def __init__(self, name: str, url: str, status: UpdateStatus, branch: str):
         self.name = name.strip()
         self.display_name = self.name
@@ -92,6 +107,15 @@ class AddonManagerRepo:
         self.macro = None  # Bridge to Gaël Écorchard's macro management class
         self.updated_timestamp = None
         self.installed_version = None
+
+        # Each repo is also a node in a directed dependency graph (referenced by name so
+        # they cen be serialized):
+        self.requires: Set[str] = set()
+        self.blocks: Set[str] = set()
+
+        # And maintains a list of required and optional Python dependencies
+        self.python_requires: Set[str] = set()
+        self.python_optional: Set[str] = set()
 
     def __str__(self) -> str:
         result = f"FreeCAD {self.repo_type}\n"
@@ -143,6 +167,13 @@ class AddonManagerRepo:
             )
             if os.path.isfile(cached_package_xml_file):
                 instance.load_metadata_file(cached_package_xml_file)
+
+        if "requires" in cache_dict:
+            instance.requires = set(cache_dict["requires"])
+            instance.blocks = set(cache_dict["blocks"])
+            instance.python_requires = set(cache_dict["python_requires"])
+            instance.python_optional = set(cache_dict["python_optional"])
+
         return instance
 
     def to_cache(self) -> Dict:
@@ -159,6 +190,10 @@ class AddonManagerRepo:
             "python2": self.python2,
             "obsolete": self.obsolete,
             "rejected": self.rejected,
+            "requires": list(self.requires),
+            "blocks": list(self.blocks),
+            "python_requires": list(self.python_requires),
+            "python_optional": list(self.python_optional),
         }
 
     def load_metadata_file(self, file: str) -> None:
@@ -251,3 +286,20 @@ class AddonManagerRepo:
         )
 
         return self.cached_icon_filename
+
+    def walk_dependency_tree(self, all_repos, deps):
+        """Compute the total dependency tree for this repo (recursive)"""
+
+        deps.python_required |= self.python_requires
+        deps.python_optional |= self.python_optional
+        for dep in self.requires:
+            if dep in all_repos:
+                if not dep in deps.required:
+                    deps.required_external_addons.append(all_repos[dep])
+                    all_repos[dep].walk_dependency_tree(all_repos, deps)
+            else:
+                # Maybe this is an internal workbench, just store its name
+                deps.unrecognized_addons.add(dep)
+        for dep in self.blocks:
+            if dep in all_repos:
+                deps.blockers[dep] = all_repos[dep]
