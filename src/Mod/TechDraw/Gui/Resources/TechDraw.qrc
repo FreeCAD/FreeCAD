@@ -27,11 +27,42 @@
         <file>icons/TechDraw_3PtAngleDimension.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
         <file>icons/TechDraw_HorizontalDimension.svg</file>
+        <file>icons/TechDraw_ExtensionSelectLineAttributes.svg</file>
+        <file>icons/TechDraw_ExtensionExtendLine.svg</file>
+        <file>icons/TechDraw_ExtensionShortenLine.svg</file>
+        <file>icons/TechDraw_ExtensionLockUnlockView.svg</file>
+        <file>icons/TechDraw_ExtensionPositionSectionView.svg</file>
+        <file>icons/TechDraw_ExtensionChangeLineAttributes.svg</file>
+        <file>icons/TechDraw_ExtensionPosHorizChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionPosVertChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionPosObliqueChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCascadeHorizDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCascadeVertDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCascadeObliqueDimension.svg</file>
         <file>icons/TechDraw_ExtensionCircleCenterLines.svg</file>
+        <file>icons/TechDraw_ExtensionHoleCircle.svg</file>
+        <file>icons/TechDraw_ExtensionVertexAtIntersection.svg</file>
+        <file>icons/TechDraw_ExtensionDrawCosmCircle.svg</file>
+        <file>icons/TechDraw_ExtensionArc.svg</file>
+        <file>icons/TechDraw_ExtensionLineParallel.svg</file>
+        <file>icons/TechDraw_ExtensionLinePerpendicular.svg</file>
         <file>icons/TechDraw_ExtensionThreadHoleSide.svg</file>
         <file>icons/TechDraw_ExtensionThreadBoltSide.svg</file>
         <file>icons/TechDraw_ExtensionThreadHoleBottom.svg</file>
         <file>icons/TechDraw_ExtensionThreadBoltBottom.svg</file>
+        <file>icons/TechDraw_ExtensionInsertDiameter.svg</file>
+        <file>icons/TechDraw_ExtensionInsertSquare.svg</file>
+        <file>icons/TechDraw_ExtensionCreateHorizChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateVertChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateObliqueChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateHorizCoordDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateVertCoordDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateObliqueCoordDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateHorizChamferDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateVertChamferDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateLengthArc.svg</file>
+        <file>icons/TechDraw_ExtensionIncreaseDecimal.svg</file>
+        <file>icons/TechDraw_ExtensionDecreaseDecimal.svg</file>
         <file>icons/TechDraw_LengthDimension.svg</file>
         <file>icons/TechDraw_RadiusDimension.svg</file>
         <file>icons/TechDraw_Balloon.svg</file>
