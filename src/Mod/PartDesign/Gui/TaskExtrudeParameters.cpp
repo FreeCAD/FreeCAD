@@ -31,7 +31,7 @@
 # include <QSignalBlocker>
 #endif
 
-#include "ui_TaskPadParameters.h"
+#include "ui_TaskPadPocketParameters.h"
 #include "TaskExtrudeParameters.h"
 #include <Base/UnitsApi.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
@@ -46,7 +46,7 @@ using namespace Gui;
 TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderSketchBased *SketchBasedView, QWidget *parent,
                                              const std::string& pixmapname, const QString& parname)
     : TaskSketchBasedParameters(SketchBasedView, parent, pixmapname, parname)
-    , ui(new Ui_TaskPadParameters)
+    , ui(new Ui_TaskPadPocketParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);

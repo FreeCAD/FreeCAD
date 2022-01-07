@@ -117,7 +117,8 @@ App::DocumentObjectExecReturn *DrawParametricTemplate::execute(void)
 
 int DrawParametricTemplate::drawLine(double x1, double y1, double x2, double y2)
 {
-    TechDraw::Generic *line = new TechDraw::Generic();
+//    TechDraw::GenericPtr line = new TechDraw::Generic();
+    TechDraw::GenericPtr line(new TechDraw::Generic());
 
     line->points.emplace_back(x1, y1);
     line->points.emplace_back(x2, y2);
@@ -128,10 +129,7 @@ int DrawParametricTemplate::drawLine(double x1, double y1, double x2, double y2)
 
 int DrawParametricTemplate::clearGeometry()
 {
-    for(std::vector<TechDraw::BaseGeom *>::iterator it = geom.begin(); it != geom.end(); ++it) {
-        delete *it;
-        *it = 0;
-    }
+    //smart pointer will delete old geoms when ref count goes to zero?
     geom.clear();
     return 0;
 }

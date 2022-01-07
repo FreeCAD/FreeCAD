@@ -350,11 +350,11 @@ void execMidpoints(Gui::Command* cmd)
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Midpont Vertices"));
 
-    const std::vector<TechDraw::BaseGeom*> edges = dvp->getEdgeGeometry();
+    const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
     double scale = dvp->getScale();
     for (auto& s: selectedEdges) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
-        TechDraw::BaseGeom* geom = edges.at(GeoId);
+        TechDraw::BaseGeomPtr geom = edges.at(GeoId);
         Base::Vector3d mid = geom->getMidPoint();
         mid = DrawUtil::invertY(mid);
         dvp->addCosmeticVertex(mid / scale);
@@ -378,11 +378,11 @@ void execQuadrants(Gui::Command* cmd)
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Quadrant Vertices"));
 
-    const std::vector<TechDraw::BaseGeom*> edges = dvp->getEdgeGeometry();
+    const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
     double scale = dvp->getScale();
     for (auto& s: selectedEdges) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
-        TechDraw::BaseGeom* geom = edges.at(GeoId);
+        TechDraw::BaseGeomPtr geom = edges.at(GeoId);
             std::vector<Base::Vector3d> quads = geom->getQuads();
             for (auto& q: quads) {
                 Base::Vector3d iq = DrawUtil::invertY(q);
@@ -1198,7 +1198,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
-                TechDraw::BaseGeom* bg = objFeat->getGeomByIndex(idx);
+                TechDraw::BaseGeomPtr bg = objFeat->getGeomByIndex(idx);
                 if ((bg != nullptr) &&
                     (bg->cosmetic) ) {
                     int source = bg->source();

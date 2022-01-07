@@ -179,7 +179,7 @@ std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
     return result;
 }
 
-std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeom* bg)
+std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeomPtr bg)
 {
 //    Base::Console().Message("CEx::addCosmeticEdge(bg: %X)\n", bg);
     std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
@@ -223,7 +223,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::strin
         return result;
     }
     int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeom* base = dvp->getGeomByIndex(idx);
+    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
     if (base == nullptr) {
         return result;
     }
@@ -301,7 +301,7 @@ std::string CosmeticExtension::addCenterLine(TechDraw::CenterLine* cl)
 }
 
 
-std::string CosmeticExtension::addCenterLine(TechDraw::BaseGeom* bg)
+std::string CosmeticExtension::addCenterLine(TechDraw::BaseGeomPtr bg)
 {
 //    Base::Console().Message("CEx::addCenterLine(bg: %X)\n", bg);
     std::vector<CenterLine*> cLines = CenterLines.getValues();
@@ -341,7 +341,7 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(std::string na
         return result;
     }
     int idx = DrawUtil::getIndexFromName(name);
-    TechDraw::BaseGeom* base = dvp->getGeomByIndex(idx);
+    TechDraw::BaseGeomPtr base = dvp->getGeomByIndex(idx);
     if (base == nullptr) {
         return result;
     }

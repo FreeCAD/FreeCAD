@@ -91,8 +91,8 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     ui->setupUi(this);
 
     m_geomIndex = DrawUtil::getIndexFromName(m_edgeName);
-    const std::vector<TechDraw::BaseGeom*> &geoms = partFeat->getEdgeGeometry();
-    BaseGeom* bg = geoms.at(m_geomIndex);
+    const TechDraw::BaseGeomPtrVector &geoms = partFeat->getEdgeGeometry();
+    BaseGeomPtr bg = geoms.at(m_geomIndex);
     std::string tag = bg->getCosmeticTag();
     m_cl = partFeat->getCenterLine(tag);
     if (m_cl == nullptr) {         //checked by CommandAnnotate.  Should never happen.

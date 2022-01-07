@@ -78,7 +78,7 @@ PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
     (void) args;
     DrawViewPart* dvp = getDrawViewPartPtr();
     Py::List pEdgeList;
-    std::vector<TechDraw::BaseGeom*> geoms = dvp->getEdgeGeometry();
+    std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (g->hlrVisible) {
             PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
@@ -94,7 +94,7 @@ PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
     (void) args;
     DrawViewPart* dvp = getDrawViewPartPtr();
     Py::List pEdgeList;
-    std::vector<TechDraw::BaseGeom*> geoms = dvp->getEdgeGeometry();
+    std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (!g->hlrVisible) {
             PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
@@ -392,7 +392,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
 
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
-    TechDraw::BaseGeom* bg = new TechDraw::Circle(pnt1, radius);
+    TechDraw::BaseGeomPtr bg = std::make_shared<TechDraw::Circle> (pnt1, radius);
     std::string newTag = dvp->addCosmeticEdge(bg);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
@@ -435,7 +435,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     //from here on is almost duplicate of makeCosmeticCircle
     DrawViewPart* dvp = getDrawViewPartPtr();
     Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
-    TechDraw::BaseGeom* bg = new TechDraw::AOC(pnt1, radius, angle1, angle2);
+    TechDraw::BaseGeomPtr bg = std::make_shared<TechDraw::AOC> (pnt1, radius, angle1, angle2);
     std::string newTag = dvp->addCosmeticEdge(bg);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
@@ -698,7 +698,7 @@ PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::BaseGeom* geom = dvp->getGeomByIndex(edgeIndex);
+    TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(edgeIndex);
     if (geom == nullptr) {
         throw Py::ValueError("wrong edgeIndex");
     }
@@ -746,7 +746,7 @@ PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
 
     //this is scaled and +Yup
     //need unscaled and +Ydown
-    TechDraw::BaseGeom* geom = dvp->getGeomByIndex(edgeIndex);
+    TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(edgeIndex);
     if (geom == nullptr) {
         throw Py::ValueError("wrong edgeIndex");
     }

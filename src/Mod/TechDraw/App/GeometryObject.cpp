@@ -105,9 +105,9 @@ GeometryObject::~GeometryObject()
     clear();
 }
 
-const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges(const bool smooth, const bool seam) const
+const BaseGeomPtrVector GeometryObject::getVisibleFaceEdges(const bool smooth, const bool seam) const
 {
-    std::vector<BaseGeom *> result;
+    BaseGeomPtrVector result;
     bool smoothOK = smooth;
     bool seamOK = seam;
 
@@ -150,10 +150,7 @@ const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges(const bool smo
 
 void GeometryObject::clear()
 {
-    for(std::vector<BaseGeom *>::iterator it = edgeGeom.begin(); it != edgeGeom.end(); ++it) {
-        delete *it;
-        *it = 0;
-    }
+    //shared pointers will delete v/e/f when reference counts go to zero.
 
     vertexGeom.clear();
     faceGeom.clear();
@@ -477,7 +474,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         return; // There is no OpenCascade Geometry to be calculated
     }
 
-    BaseGeom* base;
+    BaseGeomPtr base;
     TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
     int i = 1;
     for ( ; edges.More(); edges.Next(),i++) {
@@ -510,12 +507,12 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
         //add vertices of new edge if not already in list
         if (hlrVisible) {
-            BaseGeom* lastAdded = edgeGeom.back();
+            BaseGeomPtr lastAdded = edgeGeom.back();
             bool v1Add = true, v2Add = true;
             bool c1Add = true;
             TechDraw::VertexPtr v1 = std::make_shared<TechDraw::Vertex>(lastAdded->getStartPoint());
             TechDraw::VertexPtr v2 = std::make_shared<TechDraw::Vertex>(lastAdded->getEndPoint());
-            TechDraw::Circle* circle = dynamic_cast<TechDraw::Circle*>(lastAdded);
+            TechDraw::CirclePtr circle = std::dynamic_pointer_cast<TechDraw::Circle>(lastAdded);
             TechDraw::VertexPtr c1;
             if (circle) {
                 c1 = std::make_shared<TechDraw::Vertex>(circle->center);
@@ -568,7 +565,7 @@ void GeometryObject::addVertex(TechDraw::VertexPtr v)
     vertexGeom.push_back(v);
 }
 
-void GeometryObject::addEdge(TechDraw::BaseGeom* bg)
+void GeometryObject::addEdge(TechDraw::BaseGeomPtr bg)
 {
     edgeGeom.push_back(bg);
 }
@@ -628,7 +625,7 @@ int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 {
 //    Base::Console().Message("GO::addCosmeticEdge(%X) 0\n", ce);
     double scale = m_parent->getScale();
-    TechDraw::BaseGeom* e = ce->scaledGeometry(scale);
+    TechDraw::BaseGeomPtr e = ce->scaledGeometry(scale);
     e->cosmetic = true;
     e->setCosmeticTag(ce->getTagAsString());
     e->hlrVisible = true;
@@ -646,7 +643,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    TechDraw::BaseGeom* e = BaseGeom::baseFactory(occEdge);
+    TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(occEdge);
     e->cosmetic = true;
 //    e->cosmeticLink = link;
     e->setCosmeticTag("tbi");
@@ -664,7 +661,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    TechDraw::BaseGeom* base = BaseGeom::baseFactory(occEdge);
+    TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(occEdge);
     base->cosmetic = true;
     base->setCosmeticTag(tagString);
     base->source(1);           //1-CosmeticEdge, 2-CenterLine
@@ -674,7 +671,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
     return idx;
 }
 
-int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
+int GeometryObject::addCosmeticEdge(TechDraw::BaseGeomPtr base,
                                     std::string tagString)
 {
 //    Base::Console().Message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
@@ -688,7 +685,7 @@ int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
     return idx;
 }
 
-int GeometryObject::addCenterLine(TechDraw::BaseGeom* base,
+int GeometryObject::addCenterLine(TechDraw::BaseGeomPtr base,
                                   std::string tag)
 //                                    int s, int si)
 {
@@ -773,7 +770,7 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
     Bnd_Box testBox;
     testBox.SetGap(0.0);
     if (!edgeGeom.empty()) {
-        for (std::vector<BaseGeom *>::const_iterator it( edgeGeom.begin() );
+        for (BaseGeomPtrVector::const_iterator it( edgeGeom.begin() );
                 it != edgeGeom.end(); ++it) {
              BRepBndLib::Add((*it)->occEdge, testBox);
         }

@@ -128,11 +128,11 @@ public:
     CosmeticEdge(CosmeticEdge* ce);
     CosmeticEdge(Base::Vector3d p1, Base::Vector3d p2);
     CosmeticEdge(TopoDS_Edge e);
-    CosmeticEdge(TechDraw::BaseGeom* g);
+    CosmeticEdge(TechDraw::BaseGeomPtr g);
     virtual ~CosmeticEdge();
 
     void initialize(void);
-    TechDraw::BaseGeom* scaledGeometry(double scale);
+    TechDraw::BaseGeomPtr scaledGeometry(double scale);
 
     virtual std::string toString(void) const;
     void dump(const char* title);
@@ -150,7 +150,7 @@ public:
     Base::Vector3d permaEnd; 
     double permaRadius;
 //    void unscaleEnds(double scale);
-    TechDraw::BaseGeom* m_geometry;
+    TechDraw::BaseGeomPtr m_geometry;
     LineFormat m_format;
 
     boost::uuids::uuid getTag() const;
@@ -176,7 +176,7 @@ public:
     CenterLine();
     CenterLine(CenterLine* cl);
     //set m_faces after using next 3 ctors
-    CenterLine(TechDraw::BaseGeom* bg);
+    CenterLine(TechDraw::BaseGeomPtr bg);
     CenterLine(Base::Vector3d p1, Base::Vector3d p2);
     CenterLine(Base::Vector3d p1, Base::Vector3d p2,
                int m, 
@@ -213,7 +213,7 @@ public:
                                          std::vector<std::string> subs,
                                          int mode = 0,
                                          bool flip = false);
-    TechDraw::BaseGeom* scaledGeometry(TechDraw::DrawViewPart* partFeat);
+    TechDraw::BaseGeomPtr scaledGeometry(TechDraw::DrawViewPart* partFeat);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints(
                                           TechDraw::DrawViewPart* partFeat,
                                           std::vector<std::string> faceNames,
@@ -260,7 +260,7 @@ public:
     LineFormat m_format;
     bool m_flip2Line;
 
-    TechDraw::BaseGeom* m_geometry;
+    TechDraw::BaseGeomPtr m_geometry;
 
     //Uniqueness
     boost::uuids::uuid getTag() const;

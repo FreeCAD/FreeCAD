@@ -129,6 +129,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
     ui->HoleCutDepth->setDisabled(pcHole->HoleCutDepth.isReadOnly());
     ui->HoleCutCountersinkAngle->setMinimum(pcHole->HoleCutCountersinkAngle.getMinimum());
+    ui->HoleCutCountersinkAngle->setMaximum(pcHole->HoleCutCountersinkAngle.getMaximum());
     ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
     ui->HoleCutCountersinkAngle->setDisabled(pcHole->HoleCutCountersinkAngle.isReadOnly());
 
@@ -139,6 +140,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     else
         ui->drillPointAngled->setChecked(true);
     ui->DrillPointAngle->setMinimum(pcHole->DrillPointAngle.getMinimum());
+    ui->DrillPointAngle->setMaximum(pcHole->DrillPointAngle.getMaximum());
     ui->DrillPointAngle->setValue(pcHole->DrillPointAngle.getValue());
     ui->DrillForDepth->setChecked(pcHole->DrillForDepth.getValue());
     // drill point settings are only enabled (sensible) if type is 'Dimension'
@@ -166,6 +168,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->Tapered->setChecked(pcHole->Tapered.getValue());
     // Angle is only enabled (sensible) if tapered
     ui->TaperedAngle->setEnabled(pcHole->Tapered.getValue());
+    ui->TaperedAngle->setMinimum(pcHole->TaperedAngle.getMinimum());
+    ui->TaperedAngle->setMaximum(pcHole->TaperedAngle.getMaximum());
     ui->TaperedAngle->setValue(pcHole->TaperedAngle.getValue());
     ui->Reversed->setChecked(pcHole->Reversed.getValue());
 

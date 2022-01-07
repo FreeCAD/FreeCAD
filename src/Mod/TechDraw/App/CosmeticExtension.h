@@ -62,7 +62,7 @@ public:
     virtual void            removeCosmeticVertex(std::vector<std::string> delTags);
 
     virtual std::string     addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
-    virtual std::string     addCosmeticEdge(TechDraw::BaseGeom* bg);
+    virtual std::string     addCosmeticEdge(TechDraw::BaseGeomPtr bg);
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(std::string name) const;
     virtual CosmeticEdge*   getCosmeticEdgeBySelection(int i) const;
     virtual CosmeticEdge*   getCosmeticEdge(std::string id) const;
@@ -72,7 +72,7 @@ public:
 
     virtual std::string     addCenterLine(Base::Vector3d start, Base::Vector3d end);
     virtual std::string     addCenterLine(TechDraw::CenterLine* cl);
-    virtual std::string     addCenterLine(TechDraw::BaseGeom* bg);
+    virtual std::string     addCenterLine(TechDraw::BaseGeomPtr bg);
     virtual CenterLine*     getCenterLineBySelection(std::string name) const;
     virtual CenterLine*     getCenterLineBySelection(int i) const;
     virtual CenterLine*     getCenterLine(std::string tag) const;

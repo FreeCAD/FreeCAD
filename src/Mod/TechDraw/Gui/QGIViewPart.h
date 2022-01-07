@@ -74,7 +74,7 @@ public:
     virtual void rotateView(void) override;
 
 
-    static QPainterPath geomToPainterPath(TechDraw::BaseGeom *baseGeom, double rotation = 0.0);
+    static QPainterPath geomToPainterPath(TechDraw::BaseGeomPtr baseGeom, double rotation = 0.0);
     /// Helper for pathArc()
     /*!
      * x_axis_rotation is in radian
@@ -94,7 +94,7 @@ public:
     bool getExporting(void) { return m_isExporting; }
 
 protected:
-    QPainterPath drawPainterPath(TechDraw::BaseGeom *baseGeom) const;
+    QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();
     QGIFace* drawFace(TechDraw::FacePtr f, int idx);
 

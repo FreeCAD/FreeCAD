@@ -314,7 +314,7 @@ QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d
     return fillItem;
 }
 
-QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeom* base, LineSet& ls)
+QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeomPtr base, LineSet& ls)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
     Base::Vector3d start(base->getStartPoint().x,
@@ -331,7 +331,7 @@ QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeom* base, LineSet& ls)
 
 
 //! make a fragment (length = remain) of a dashed line, with pattern starting at +offset
-QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDraw::BaseGeom* base, double remain, LineSet& ls)
+QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDraw::BaseGeomPtr base, double remain, LineSet& ls)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
     Base::Vector3d start(base->getStartPoint().x,

@@ -115,7 +115,7 @@ void TaskLineDecor::getDefaults(void)
     //set defaults to format of 1st edge
     if (!m_edges.empty()) {
         int num = DrawUtil::getIndexFromName(m_edges.front());
-        BaseGeom* bg = m_partFeat->getGeomByIndex(num);
+        BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
         if (bg != nullptr) {
             if (bg->cosmetic) {
                 if (bg->source() == 1) {
@@ -187,7 +187,7 @@ void TaskLineDecor::applyDecorations(void)
 //    Base::Console().Message("TLD::applyDecorations()\n");
     for (auto& e: m_edges) {
         int num = DrawUtil::getIndexFromName(e);
-        BaseGeom* bg = m_partFeat->getGeomByIndex(num);
+        BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
         if (bg != nullptr) {
             if (bg->cosmetic) {
                 if (bg->source() == 1) {
