@@ -105,8 +105,6 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
-    static const App::PropertyAngle::Constraints floatAngle;
-
 private:
     static const char* DepthTypeEnums[];
     static const char* ThreadTypeEnums[];
