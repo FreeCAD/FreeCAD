@@ -147,25 +147,26 @@ void ViewProviderMeshTransformDemolding::calcNormalVector(void)
 
 void ViewProviderMeshTransformDemolding::calcMaterialIndex(const SbRotation &rot)
 {
-  // 3.1415926535897932384626433832795
-  SbVec3f Up(0,0,1),result;
+    SbVec3f Up(0, 0, 1), result;
 
-  int i=0;
-  for( std::vector<SbVec3f>::const_iterator it=normalVector.begin();it != normalVector.end(); ++it,i++)
-  {
-    rot.multVec(*it,result);
+    int i = 0;
+    for (std::vector<SbVec3f>::const_iterator it = normalVector.begin(); it != normalVector.end(); ++it, i++)
+    {
+        rot.multVec(*it, result);
 
-    float Angle = acos( (result.dot(Up)) / (result.length() * Up.length()) ) * (180/3.1415926535);
+        float Angle = acos((result.dot(Up)) / (result.length() * Up.length())) * (180 / M_PI);
 
-    if(Angle < 87.0){
-//      pcMeshFaces->materialIndex .set1Value(i, 2);
-    }else if(Angle > 90.0){
-//      pcMeshFaces->materialIndex .set1Value(i, 1 );
-    }else{
-//      pcMeshFaces->materialIndex .set1Value(i, 0 );
+        if (Angle < 87.0) {
+            //      pcMeshFaces->materialIndex .set1Value(i, 2);
+        }
+        else if (Angle > 90.0) {
+            //      pcMeshFaces->materialIndex .set1Value(i, 1 );
+        }
+        else {
+            //      pcMeshFaces->materialIndex .set1Value(i, 0 );
+        }
+
     }
-
-  }
 }
 
 void ViewProviderMeshTransformDemolding::sValueChangedCallback(void *This, SoDragger *)
