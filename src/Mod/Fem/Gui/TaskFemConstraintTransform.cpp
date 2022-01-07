@@ -58,7 +58,6 @@
 #include <Mod/Fem/App/FemTools.h>
 
 #include <math.h>
-#define PI (3.141592653589793238462643383279502884L)
 
 using namespace FemGui;
 using namespace Gui;
@@ -333,25 +332,27 @@ void TaskFemConstraintTransform::addToSelection()
         double l = normal.z;
         //about Z-axis
         double about_z;
-        double mag_norm_z = sqrt(n*n +m*m) ;  //normal vector mapped onto XY plane
-        if (mag_norm_z ==0) {
+        double mag_norm_z = sqrt(n * n + m * m);  //normal vector mapped onto XY plane
+        if (mag_norm_z == 0) {
             about_z = 0;
-        } else {
-            about_z = (-1*(acos(m/mag_norm_z) * 180/PI) +180);
         }
-        if (n>0) {
-            about_z = about_z*(-1);
+        else {
+            about_z = (-1 * (acos(m / mag_norm_z) * 180 / M_PI) + 180);
+        }
+        if (n > 0) {
+            about_z = about_z * (-1);
         }
         //rotation to ZY plane
-        double m_p = n*sin(about_z*PI/180) + m*cos(about_z*PI/180);
+        double m_p = n * sin(about_z * M_PI / 180) + m * cos(about_z * M_PI / 180);
         double l_p = l;
         //about X-axis
         double about_x;
-        double mag_norm_x = sqrt(m_p*m_p + l_p*l_p);
-        if (mag_norm_x ==0){
+        double mag_norm_x = sqrt(m_p * m_p + l_p * l_p);
+        if (mag_norm_x == 0) {
             about_x = 0;
-        } else {
-            about_x = -(acos(l_p/mag_norm_x) * 180/PI); //rotation to the Z axis
+        }
+        else {
+            about_x = -(acos(l_p / mag_norm_x) * 180 / M_PI); //rotation to the Z axis
         }
         ui->sp_X->setValue(round(about_x));
         ui->sp_Z->setValue(round(about_z));
