@@ -1697,17 +1697,17 @@ std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames,T
     return vertexPoints;
 }
 
-float _getAngle(Base::Vector3d center, Base::Vector3d point){
+float _getAngle(Base::Vector3d center, Base::Vector3d point) {
     // get angle between x-axis and the vector from center to point
-    const float Pi180 = 180.0/3.14159;
-    Base::Vector3d vecCP = point-center;
+    const auto Pi180 = 180.0 / M_PI;
+    Base::Vector3d vecCP = point - center;
     float dy = vecCP.y;
     float sign = -1.0;
     if (dy < 0.0)
         sign = -sign;
-    float angle = acos(vecCP.Normalize().x)*Pi180*sign;
+    float angle = acos(vecCP.Normalize().x) * Pi180 * sign;
     if (angle < 0.0)
-        angle = 360+angle;
+        angle = 360 + angle;
     return angle;
 }
 
