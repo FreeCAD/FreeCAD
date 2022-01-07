@@ -755,8 +755,6 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
     }
 }
 
-static const char _GroupPrefix[] = "Configuration (";
-
 App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
 
     setupCopyOnChange();
