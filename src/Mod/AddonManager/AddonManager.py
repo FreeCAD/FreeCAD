@@ -1007,6 +1007,34 @@ class CommandAddonManager:
             basedir = FreeCAD.getUserAppDataDir()
             moddir = basedir + os.sep + "Mod"
             clonedir = moddir + os.sep + repo.name
+
+            # First remove any macros that were copied or symlinked in, as long as they have not been modified
+            macro_dir = FreeCAD.getUserMacroDir(True)
+            if os.path.exists(macro_dir) and os.path.exists(clonedir):
+                for macro_filename in os.listdir(clonedir):
+                    if macro_filename.lower().endswith(".fcmacro"):
+                        mod_macro_path = os.path.join(clonedir, macro_filename)
+                        macro_path = os.path.join(macro_dir, macro_filename)
+
+                        if not os.path.isfile(macro_path):
+                            continue
+
+                        # Load both files (one may be a symlink of the other, this will still work in that case)
+                        with open(mod_macro_path) as f1:
+                            f1_contents = f1.read()
+                        with open(macro_path) as f2:
+                            f2_contents = f2.read()
+
+                        if f1_contents == f2_contents:
+                            os.remove(macro_path)
+                        else:
+                            FreeCAD.Console.PrintMessage(
+                                translate(
+                                    "AddonsInstaller",
+                                    f"Macro {macro_filename} has local changes in the macros directory, so is not being removed by this uninstall process.\n",
+                                )
+                            )
+
             if os.path.exists(clonedir):
                 shutil.rmtree(clonedir, onerror=self.remove_readonly)
                 self.item_model.update_item_status(
