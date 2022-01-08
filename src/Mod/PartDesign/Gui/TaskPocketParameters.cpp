@@ -88,7 +88,8 @@ void TaskPocketParameters::updateUI(int index)
     bool isLengthEdit2Visible = false;
     bool isOffsetEditVisible  = false;
     bool isOffsetEditEnabled  = true;
-    bool isMidplateEnabled    = false;
+    bool isMidplaneEnabled    = false;
+    bool isMidplaneVisible    = false;
     bool isReversedEnabled    = false;
     bool isFaceEditEnabled    = false;
 
@@ -97,18 +98,16 @@ void TaskPocketParameters::updateUI(int index)
     if (mode == Modes::Dimension) {
         isLengthEditVisible = true;
         ui->lengthEdit->selectNumber();
-        // Make sure that the spin box has the focus to get key events
-        // Calling setFocus() directly doesn't work because the spin box is not
-        // yet visible.
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
-        isMidplateEnabled = true;
+        isMidplaneVisible = true;
+        isMidplaneEnabled = true;
         // Reverse only makes sense if Midplane is not true
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
     }
     else if (mode == Modes::ThroughAll) {
         isOffsetEditVisible = true;
         isOffsetEditEnabled = false; // offset may have some meaning for through all but it doesn't work
-        isMidplateEnabled = true;
+        isMidplaneEnabled = true;
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
     }
     else if (mode == Modes::ToFirst) {
@@ -146,7 +145,8 @@ void TaskPocketParameters::updateUI(int index)
     ui->offsetEdit->setEnabled( isOffsetEditVisible && isOffsetEditEnabled );
     ui->labelOffset->setVisible( isOffsetEditVisible );
 
-    ui->checkBoxMidplane->setEnabled( isMidplateEnabled );
+    ui->checkBoxMidplane->setEnabled( isMidplaneEnabled );
+    ui->checkBoxMidplane->setVisible(isMidplaneVisible);
 
     ui->checkBoxReversed->setEnabled( isReversedEnabled );
 

@@ -522,6 +522,7 @@ void TaskExtrudeParameters::onMidplaneChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Midplane.setValue(on);
+    ui->checkBoxReversed->setEnabled(!on);
     tryRecomputeFeature();
 }
 
@@ -529,6 +530,7 @@ void TaskExtrudeParameters::onReversedChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Reversed.setValue(on);
+    ui->checkBoxMidplane->setEnabled(!on);
     // update the direction
     tryRecomputeFeature();
     updateDirectionEdits();
