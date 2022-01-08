@@ -63,18 +63,17 @@ Pocket::Pocket()
 {
     addSubType = FeatureAddSub::Subtractive;
 
-    ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
+    ADD_PROPERTY_TYPE(Type, ((long)0), "Pocket", App::Prop_None, "Pocket type");
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
-    ADD_PROPERTY_TYPE(Length2,(100.0),"Pocket",App::Prop_None,"P");
+    ADD_PROPERTY_TYPE(Length, (100.0), "Pocket", App::Prop_None, "Pocket length");
+    ADD_PROPERTY_TYPE(Length2, (100.0), "Pocket", App::Prop_None, "Pocket length in 2nd direction");
     ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pocket", App::Prop_None, "Use custom vector for pocket direction");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pocket", App::Prop_None, "Pocket direction vector");
     ADD_PROPERTY_TYPE(ReferenceAxis, (0), "Pocket", App::Prop_None, "Reference axis of direction");
     ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pocket", App::Prop_None, "Measure pocket length along the sketch normal direction");
-    ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
-    ADD_PROPERTY_TYPE(Offset,(0.0),"Pocket",App::Prop_None,"Offset from face in which pocket will end");
-    static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
-    Offset.setConstraints ( &signedLengthConstraint );
+    ADD_PROPERTY_TYPE(UpToFace, (0), "Pocket", App::Prop_None, "Face where pocket will end");
+    ADD_PROPERTY_TYPE(Offset, (0.0), "Pocket", App::Prop_None, "Offset from face in which pocket will end");
+    Offset.setConstraints(&signedLengthConstraint);
 
     // Remove the constraints and keep the type to allow to accept negative values
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636

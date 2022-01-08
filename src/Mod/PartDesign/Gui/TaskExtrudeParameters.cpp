@@ -522,6 +522,7 @@ void TaskExtrudeParameters::onMidplaneChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Midplane.setValue(on);
+    ui->checkBoxReversed->setEnabled(!on);
     tryRecomputeFeature();
 }
 
@@ -529,6 +530,7 @@ void TaskExtrudeParameters::onReversedChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Reversed.setValue(on);
+    ui->checkBoxMidplane->setEnabled(!on);
     // update the direction
     tryRecomputeFeature();
     updateDirectionEdits();
@@ -616,16 +618,6 @@ void TaskExtrudeParameters::translateFaceName()
             ui->lineFaceName->setText(parts[0]);
         }
     }
-}
-
-double TaskExtrudeParameters::getLength(void) const
-{
-    return ui->lengthEdit->value().getValue();
-}
-
-double TaskExtrudeParameters::getLength2(void) const
-{
-    return ui->lengthEdit2->value().getValue();
 }
 
 double TaskExtrudeParameters::getOffset(void) const

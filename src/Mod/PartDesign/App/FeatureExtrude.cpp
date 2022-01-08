@@ -61,6 +61,7 @@ PROPERTY_SOURCE(PartDesign::FeatureExtrude, PartDesign::ProfileBased)
 
 FeatureExtrude::FeatureExtrude()
 {
+    signedLengthConstraint = { -DBL_MAX, DBL_MAX, 1.0 };
 }
 
 short FeatureExtrude::mustExecute() const
