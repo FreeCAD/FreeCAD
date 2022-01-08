@@ -171,8 +171,13 @@ Restart:
         auto curve = dynamic_cast<const Part::GeomCurve *>(geom);
 
         Base::Vector3d normal;
-        if(!(curve && curve->normalAt(pointoncurve, normal))) {
+        try {
+            if(!(curve && curve->normalAt(pointoncurve, normal))) {
                 normal = Base::Vector3d(1,0,0);
+            }
+        }
+        catch (const Base::CADKernelError&) {
+            normal = Base::Vector3d(1,0,0);
         }
 
         return normal;
@@ -1177,6 +1182,7 @@ Restart:
 
         } catch (Base::Exception &e) {
             Base::Console().Error("Exception during draw: %s\n", e.what());
+            e.ReportException();
         } catch (...){
             Base::Console().Error("Exception during draw: unknown\n");
         }
