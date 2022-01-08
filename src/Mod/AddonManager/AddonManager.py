@@ -207,7 +207,7 @@ class CommandAddonManager:
 
     def network_connection_failed(self, message: str) -> None:
         # This must run on the main GUI thread
-        if self.connection_check_message:
+        if hasattr(self,"connection_check_message") and self.connection_check_message:
             self.connection_check_message.close()
         QtWidgets.QMessageBox.critical(
             None, translate("AddonsInstaller", "Connection failed"), message
