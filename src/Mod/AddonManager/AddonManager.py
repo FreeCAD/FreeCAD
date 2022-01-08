@@ -577,6 +577,8 @@ class CommandAddonManager:
             )
 
     def write_macro_cache(self):
+        if not hasattr(self, "macro_cache"):
+            return
         macro_cache_path = self.get_cache_file_name("macro_cache.json")
         with open(macro_cache_path, "w") as f:
             f.write(json.dumps(self.macro_cache, indent="  "))
