@@ -35,10 +35,6 @@
 # include <Bnd_Box.hxx>
 #endif
 
-#ifndef FC_DEBUG
-#include <ctime>
-#endif
-
 #include "FeatureTransformed.h"
 #include "FeatureMultiTransform.h"
 #include "FeatureAddSub.h"
@@ -178,11 +174,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     std::string overlapMode = Overlap.getValueAsString();
     bool overlapDetectionMode = overlapMode == "Detect";
 
-#ifndef FC_DEBUG
-    std::clock_t start0;
-    start0 = std::clock();
-#endif
-
     std::vector<App::DocumentObject*> originals = Originals.getValues();
     if (originals.empty()) // typically InsideMultiTransform
         return App::DocumentObject::StdReturn;
@@ -293,7 +284,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         TopoDS_Shape toolShape;
 
 
-#ifndef FC_DEBUG
+#ifdef FC_DEBUG
         if (overlapping || overlapMode == "Overlap mode")
             Base::Console().Message("Transformed: Overlapping feature mode (fusing tool shapes)\n");
         else
@@ -335,10 +326,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     this->Shape.setValue(getSolid(support));  // picking the first solid
     rejected = getRemainingSolids(support);
-
-#ifndef FC_DEBUG
-    Base::Console().Message("Transformed: Elapsed CPU time: %f s\n", (std::clock() - start0  ) / (double)(CLOCKS_PER_SEC));
-#endif
 
     return App::DocumentObject::StdReturn;
 }
