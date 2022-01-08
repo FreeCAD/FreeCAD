@@ -435,7 +435,7 @@ PyObject *Sheet::getPyObject(void)
 
 Property * Sheet::getProperty(CellAddress key) const
 {
-    return props.getDynamicPropertyByName(key.toString(true).c_str());
+    return props.getDynamicPropertyByName(key.toString(CellAddress::Cell::ShowRowColumn).c_str());
 }
 
 /**
@@ -515,7 +515,7 @@ void Sheet::onSettingDocument()
 
 Property * Sheet::setFloatProperty(CellAddress key, double value)
 {
-    std::string name = key.toString(true);
+    std::string name = key.toString(CellAddress::Cell::ShowRowColumn);
     Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertyFloat * floatProp;
 
@@ -537,7 +537,7 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
 
 Property * Sheet::setIntegerProperty(CellAddress key, long value)
 {
-    std::string name = key.toString(true);
+    std::string name = key.toString(CellAddress::Cell::ShowRowColumn);
     Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertyInteger * intProp;
 
@@ -572,7 +572,7 @@ Property * Sheet::setIntegerProperty(CellAddress key, long value)
 
 Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base::Unit & unit)
 {
-    std::string name = key.toString(true);
+    std::string name = key.toString(CellAddress::Cell::ShowRowColumn);
     Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertySpreadsheetQuantity * quantityProp;
 
@@ -607,7 +607,7 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
 
 Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 {
-    std::string name = key.toString(true);
+    std::string name = key.toString(CellAddress::Cell::ShowRowColumn);
     Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertyString * stringProp = freecad_dynamic_cast<PropertyString>(prop);
 
@@ -627,7 +627,7 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 
 Property * Sheet::setObjectProperty(CellAddress key, Py::Object object)
 {
-    std::string name = key.toString(true);
+    std::string name = key.toString(CellAddress::Cell::ShowRowColumn);
     Property * prop = props.getDynamicPropertyByName(name.c_str());
     PropertyPythonObject * pyProp = freecad_dynamic_cast<PropertyPythonObject>(prop);
 

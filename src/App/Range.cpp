@@ -234,15 +234,17 @@ App::CellAddress App::stringToAddress(const char * strAddress, bool silent)
   * @returns Address given as a string.
   */
 
-std::string App::CellAddress::toString(bool noAbsolute, bool r, bool c) const
+std::string App::CellAddress::toString(Cell cell) const
 {
     std::stringstream s;
 
-    if(c) {
-        if(_absCol && !noAbsolute)
+    Base::Flags<Cell> flags(cell);
+    if (flags.testFlag(Cell::ShowColumn)) {
+        if (_absCol && flags.testFlag(Cell::Absolute))
             s << '$';
-        if (col() < 26)
+        if (col() < 26) {
             s << (char)('A' + col());
+        }
         else {
             int colnum = col() - 26;
 
@@ -251,8 +253,8 @@ std::string App::CellAddress::toString(bool noAbsolute, bool r, bool c) const
         }
     }
 
-    if(r) {
-        if(_absRow && !noAbsolute)
+    if (flags.testFlag(Cell::ShowRow)) {
+        if (_absRow && flags.testFlag(Cell::Absolute))
             s << '$';
         s << (row() + 1);
     }

@@ -24,6 +24,7 @@
 #define RANGE_H
 
 #include <string>
+#include <Base/Bitmask.h>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
@@ -39,6 +40,14 @@ AppExport int validColumn(const std::string &colstr);
 AppExport int validRow(const std::string &rowstr);
 
 struct AppExport CellAddress {
+    // See call of ENABLE_BITMASK_OPERATORS
+    enum class Cell {
+        Absolute = 1,
+        ShowRow = 2,
+        ShowColumn = 4,
+        ShowRowColumn = ShowRow | ShowColumn,
+        ShowFull = Absolute | ShowRow | ShowColumn
+    };
 
     CellAddress(int row = -1, int col = -1, bool absRow=false, bool absCol=false) 
         : _row(row), _col(col), _absRow(absRow), _absCol(absCol) 
@@ -76,7 +85,7 @@ struct AppExport CellAddress {
 
     inline bool isAbsoluteCol() const { return _absCol; }
 
-    std::string toString(bool noAbsolute=false, bool row=true, bool col=true) const;
+    std::string toString(Cell = Cell::ShowFull) const;
 
     // Static members
 
@@ -168,5 +177,7 @@ private:
 };
 
 }
+
+ENABLE_BITMASK_OPERATORS(App::CellAddress::Cell)
 
 #endif // RANGE_H
