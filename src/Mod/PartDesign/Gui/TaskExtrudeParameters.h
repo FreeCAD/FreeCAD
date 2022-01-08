@@ -89,8 +89,6 @@ protected:
     App::PropertyLinkSub* propReferenceAxis;
     void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
-    double getLength(void) const;
-    double getLength2(void) const;
     bool   getAlongSketchNormal(void) const;
     bool   getCustom(void) const;
     std::string getReferenceAxis(void) const;

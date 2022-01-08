@@ -620,16 +620,6 @@ void TaskExtrudeParameters::translateFaceName()
     }
 }
 
-double TaskExtrudeParameters::getLength(void) const
-{
-    return ui->lengthEdit->value().getValue();
-}
-
-double TaskExtrudeParameters::getLength2(void) const
-{
-    return ui->lengthEdit2->value().getValue();
-}
-
 double TaskExtrudeParameters::getOffset(void) const
 {
     return ui->offsetEdit->value().getValue();
