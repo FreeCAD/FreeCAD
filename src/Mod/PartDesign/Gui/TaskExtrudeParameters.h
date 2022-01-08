@@ -67,6 +67,16 @@ public:
         bool hasSketch = true);
     void applyParameters(QString facename);
 
+    enum class Modes {
+        Dimension,
+        ThroughAll,
+        ToLast = ThroughAll,
+        ToFirst,
+        ToFace,
+        TwoDimensions
+    };
+    void setCheckboxes(int index, Modes mode);
+
 protected Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);

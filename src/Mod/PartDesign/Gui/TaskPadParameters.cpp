@@ -80,70 +80,8 @@ void TaskPadParameters::updateUI(int index)
 {
     // update direction combobox
     fillDirectionCombo();
-    
-    // disable/hide everything unless we are sure we don't need it
-    // exception: the direction parameters are in any case visible
-    bool isLengthEditVisible  = false;
-    bool isLengthEdit2Visible = false;
-    bool isOffsetEditVisible  = false;
-    bool isMidplaneEnabled    = false;
-    bool isMidplaneVisible    = false;
-    bool isReversedEnabled    = false;
-    bool isFaceEditEnabled    = false;
-
-    Modes mode = static_cast<Modes>(index);
-
-    if (mode == Modes::Dimension) {
-        isLengthEditVisible = true;
-        ui->lengthEdit->selectNumber();
-        QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
-        isMidplaneEnabled = !ui->checkBoxReversed->isChecked();
-        isMidplaneVisible = true;
-        // Reverse only makes sense if Midplane is not true
-        isReversedEnabled = !ui->checkBoxMidplane->isChecked();
-    }
-    else if (mode == Modes::ToLast || mode == Modes::ToFirst) {
-        isOffsetEditVisible = true;
-        isReversedEnabled = true;
-    }
-    else if (mode == Modes::ToFace) {
-        isOffsetEditVisible = true;
-        isFaceEditEnabled   = true;
-        QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
-        // Go into reference selection mode if no face has been selected yet
-        if (ui->lineFaceName->property("FeatureName").isNull())
-            onButtonFace(true);
-        isReversedEnabled = true;
-    }
-    else if (mode == Modes::TwoDimensions) {
-        isLengthEditVisible  = true;
-        isLengthEdit2Visible = true;
-        isReversedEnabled    = true;
-    }
-
-    ui->lengthEdit->setVisible( isLengthEditVisible );
-    ui->lengthEdit->setEnabled( isLengthEditVisible );
-    ui->labelLength->setVisible( isLengthEditVisible );
-    ui->checkBoxAlongDirection->setVisible( isLengthEditVisible );
-
-    ui->offsetEdit->setVisible( isOffsetEditVisible );
-    ui->offsetEdit->setEnabled( isOffsetEditVisible );
-    ui->labelOffset->setVisible( isOffsetEditVisible );
-
-    ui->checkBoxMidplane->setEnabled( isMidplaneEnabled );
-    ui->checkBoxMidplane->setVisible( isMidplaneVisible );
-
-    ui->checkBoxReversed->setEnabled( isReversedEnabled );
-
-    ui->lengthEdit2->setVisible( isLengthEdit2Visible );
-    ui->lengthEdit2->setEnabled( isLengthEdit2Visible );
-    ui->labelLength2->setVisible( isLengthEdit2Visible );
-
-    ui->buttonFace->setEnabled( isFaceEditEnabled );
-    ui->lineFaceName->setEnabled( isFaceEditEnabled );
-    if (!isFaceEditEnabled) {
-        onButtonFace(false);
-    }
+    // set and enable checkboxes
+    setCheckboxes(index, static_cast<Modes>(index));
 }
 
 void TaskPadParameters::onModeChanged(int index)

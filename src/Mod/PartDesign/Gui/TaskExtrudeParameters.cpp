@@ -25,10 +25,10 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <QRegExp>
-# include <QTextStream>
 # include <Precision.hxx>
+# include <QRegExp>
 # include <QSignalBlocker>
+# include <QTextStream>
 #endif
 
 #include "ui_TaskPadPocketParameters.h"
@@ -387,6 +387,82 @@ void TaskExtrudeParameters::addAxisToCombo(App::DocumentObject* linkObj, std::st
     // store the face normal as sublink
     if (hasSketch)
         lnk.setValue(linkObj, std::vector<std::string>(1, linkSubname));
+}
+
+void TaskExtrudeParameters::setCheckboxes(int index, Modes mode)
+{
+    // disable/hide everything unless we are sure we don't need it
+    // exception: the direction parameters are in any case visible
+    bool isLengthEditVisible = false;
+    bool isLengthEdit2Visible = false;
+    bool isOffsetEditVisible = false;
+    bool isOffsetEditEnabled = true;
+    bool isMidplaneEnabled = false;
+    bool isMidplaneVisible = false;
+    bool isReversedEnabled = false;
+    bool isFaceEditEnabled = false;
+
+    if (mode == Modes::Dimension) {
+        isLengthEditVisible = true;
+        ui->lengthEdit->selectNumber();
+        QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
+        isMidplaneVisible = true;
+        isMidplaneEnabled = true;
+        // Reverse only makes sense if Midplane is not true
+        isReversedEnabled = !ui->checkBoxMidplane->isChecked();
+    }
+    else if (mode == Modes::ThroughAll) {
+        isOffsetEditVisible = true;
+        isOffsetEditEnabled = false; // offset may have some meaning for through all but it doesn't work
+        isMidplaneEnabled = true;
+        isReversedEnabled = !ui->checkBoxMidplane->isChecked();
+    }
+    else if (mode == Modes::ToFirst) {
+        isOffsetEditVisible = true;
+        isReversedEnabled = true;
+    }
+    else if (mode == Modes::ToLast) {
+        isOffsetEditVisible = true;
+        isReversedEnabled = true;
+    }
+    else if (mode == Modes::ToFace) {
+        isOffsetEditVisible = true;
+        isReversedEnabled = true;
+        isFaceEditEnabled = true;
+        QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
+        // Go into reference selection mode if no face has been selected yet
+        if (ui->lineFaceName->property("FeatureName").isNull())
+            onButtonFace(true);
+    }
+    else if (mode == Modes::TwoDimensions) {
+        isLengthEditVisible = true;
+        isLengthEdit2Visible = true;
+        isReversedEnabled = true;
+    }
+
+    ui->lengthEdit->setVisible(isLengthEditVisible);
+    ui->lengthEdit->setEnabled(isLengthEditVisible);
+    ui->labelLength->setVisible(isLengthEditVisible);
+    ui->checkBoxAlongDirection->setVisible(isLengthEditVisible);
+
+    ui->lengthEdit2->setVisible(isLengthEdit2Visible);
+    ui->lengthEdit2->setEnabled(isLengthEdit2Visible);
+    ui->labelLength2->setVisible(isLengthEdit2Visible);
+
+    ui->offsetEdit->setVisible(isOffsetEditVisible);
+    ui->offsetEdit->setEnabled(isOffsetEditVisible && isOffsetEditEnabled);
+    ui->labelOffset->setVisible(isOffsetEditVisible);
+
+    ui->checkBoxMidplane->setEnabled(isMidplaneEnabled);
+    ui->checkBoxMidplane->setVisible(isMidplaneVisible);
+
+    ui->checkBoxReversed->setEnabled(isReversedEnabled);
+
+    ui->buttonFace->setEnabled(isFaceEditEnabled);
+    ui->lineFaceName->setEnabled(isFaceEditEnabled);
+    if (!isFaceEditEnabled) {
+        onButtonFace(false);
+    }
 }
 
 void TaskExtrudeParameters::onDirectionCBChanged(int num)
