@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>343</width>
-    <height>798</height>
+    <width>300</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Extrude</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="sizePolicy">
@@ -201,7 +201,8 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</string>
+         <string>Length to extrude along direction (can be negative).
+If both lengths are zero, magnitude of direction is used.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
@@ -239,7 +240,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Length to extrude against direction (can be negative).</string>
+         <string>Length to extrude against the direction (can be negative).</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
@@ -273,7 +274,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Taper outward angle</string>
+        <string>Taper angle along</string>
        </property>
       </widget>
      </item>
@@ -286,7 +287,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Apply slope (draft) to extrusion side faces.</string>
+        <string>Taper (draft) angle along extrusion direction</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
@@ -311,7 +312,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Apply slope (draft) to extrusion side faces.</string>
+        <string>Taper (draft) angle against extrusion direction</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
@@ -324,6 +325,13 @@
        </property>
        <property name="singleStep">
         <double>5.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Taper angle against</string>
        </property>
       </widget>
      </item>
@@ -353,6 +361,9 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>Select shape(s) that should be extruded</string>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>
