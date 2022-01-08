@@ -67,6 +67,19 @@ public:
         bool hasSketch = true);
     void applyParameters(QString facename);
 
+    enum class Type {
+        Pad,
+        Pocket
+    };
+    enum class Modes {
+        Dimension,
+        ThroughAll,
+        ToLast = ThroughAll,
+        ToFirst,
+        ToFace,
+        TwoDimensions
+    };
+
 protected Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);
@@ -84,6 +97,7 @@ protected Q_SLOTS:
     virtual void onModeChanged(int);
 
 protected:
+    void setCheckboxes(Modes mode, Type type);
     void setupDialog();
     void readValuesFromHistory();
     void changeEvent(QEvent *e) override;

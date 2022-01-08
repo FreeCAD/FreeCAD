@@ -46,14 +46,6 @@ class TaskPocketParameters : public TaskExtrudeParameters
 {
     Q_OBJECT
 
-    enum class Modes {
-        Dimension,
-        ThroughAll,
-        ToFirst,
-        ToFace,
-        TwoDimensions
-    };
-
 public:
     TaskPocketParameters(ViewProviderPocket *PocketView, QWidget *parent = 0, bool newObj=false);
     ~TaskPocketParameters();
