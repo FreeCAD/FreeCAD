@@ -1,5 +1,4 @@
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -21,22 +20,30 @@
 #***************************************************************************
 
 
-# This is the start page template. It builds a HTML global variable that contains
-# the html code of the start page. It is built only once per FreeCAD session for now...
+# This is the start page template. It builds an HTML global variable that
+# contains the html code of the start page.
+# Note: It is built only once per FreeCAD session for now...
 
 import six
-import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,re
+import sys
+import os
+import tempfile
+import time
+import zipfile
+import re
+import FreeCAD
+import FreeCADGui
 import urllib.parse
 from . import TranslationTexts
-from PySide import QtCore,QtGui
+from PySide import QtCore, QtGui
 
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
 iconprovider = QtGui.QFileIconProvider()
-iconbank = {} # to store already created icons so we don't overpollute the temp dir
-tempfolder = None # store icons inside a subfolder in temp dir
-defaulticon = None # store a default icon for problematic file types
+iconbank = {}       # store pre-existing icons so we don't overpollute temp dir
+tempfolder = None   # store icons inside a subfolder in temp dir
+defaulticon = None  # store a default icon for problematic file types
 
 
 def encode(text):
@@ -235,7 +242,8 @@ def getDefaultIcon():
 
 def buildCard(filename,method,arg=None):
 
-    "builds a html <li> element representing a file. method is a script + a keyword, for ex. url.py?key="
+    """builds an html <li> element representing a file. 
+    method is a script + a keyword, for ex. url.py?key="""
 
     result = encode("")
     if os.path.exists(filename) and isOpenableByFreeCAD(filename):

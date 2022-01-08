@@ -1,5 +1,4 @@
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -20,9 +19,12 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,os
+import os
+import FreeCAD
+import FreeCADGui
+
 # filename will be given before this script is run
-FreeCAD.loadFile(os.path.join(FreeCAD.getResourceDir()+"examples",filename))
+FreeCAD.loadFile(os.path.join(FreeCAD.getResourceDir() + "examples", filename))
 FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
 from StartPage import StartPage

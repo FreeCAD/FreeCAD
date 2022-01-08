@@ -40,7 +40,7 @@ class TestStartPage(unittest.TestCase):
         """Check to see if all of the CSS placeholders have been replaced."""
         placeholders = ["BACKGROUND","BGTCOLOR","FONTFAMILY","FONTSIZE","LINKCOLOR",
                         "TEXTCOLOR","BOXCOLOR","BASECOLOR","SHADOW"]
-        
+
         page = StartPage.handle()
         for placeholder in placeholders:
             self.assertNotIn (placeholder, page, "{} was not removed from the CSS".format(placeholder))
@@ -87,7 +87,7 @@ class TestStartPage(unittest.TestCase):
 
         if len(badFilenames) > 0:
             self.fail("The following filenames contain backslashes, which is prohibited in HTML: {}".format(badFilenames))
-    
+
 
     def test_html_validates(self):
         # Send the generated html to the W3C validator for analysis (removing potentially-sensitive data first)
@@ -139,7 +139,7 @@ class TestStartPage(unittest.TestCase):
 
         except urllib.error.URLError:
             FreeCAD.Console.PrintWarning("Could not communicate with W3C validator")
-    
+
         if errorCount > 0 or warningCount > 0:
             StartPage.exportTestFile()
             FreeCAD.Console.PrintWarning("HTML validation failed: Start page source written to your home directory for analysis.")
@@ -156,7 +156,7 @@ class TestStartPage(unittest.TestCase):
         # Anonymize titles, which are used for mouseover text and might contain document information
         titleRE = re.compile(r'title="[\s\S]*?"') # Some titles have newlines in them
         html = titleRE.sub(repl=r'title="Y"', string=html)
-        
+
         # Anonymize the document names, which we display in <h4> tags
         h4RE = re.compile(r'<h4>.*?</h4>')
         html = h4RE.sub(repl=r'<h4>Z</h4>', string=html)
