@@ -307,7 +307,7 @@ bool ObjectIdentifier::verify(const App::Property &prop, bool silent) const {
     const std::string &name = components[result.propertyIndex].getName();
     CellAddress addr;
     bool isAddress = addr.parseAbsoluteAddress(name.c_str());
-    if((isAddress && addr.toString(true) != prop.getName()) ||
+    if((isAddress && addr.toString(CellAddress::Cell::ShowRowColumn) != prop.getName()) ||
        (!isAddress && name!=prop.getName()))
     {
         if(silent) return false;

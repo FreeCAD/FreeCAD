@@ -223,7 +223,7 @@ void DlgSheetConf::accept()
         // cell separately using a simpler expression can make it easy for us
         // to extract the name of the PropertyEnumeration for editing or unsetup.
         Gui::cmdAppObjectArgs(sheet, "set('%s', '=hiddenref(%s.String)')",
-                from.toString(true), prop->getFullName());
+                from.toString(CellAddress::Cell::ShowRowColumn), prop->getFullName());
 
         // Adjust the range to skip the first cell
         range = Range(from.row(),from.col()+1,to.row(),to.col());
@@ -232,9 +232,10 @@ void DlgSheetConf::accept()
         // PropertyEnumeration
         Gui::cmdAppObjectArgs(sheet, "setExpression('.cells.Bind.%s.%s', "
             "'tuple(.cells, <<%s>> + str(hiddenref(%s)+%d), <<%s>> + str(hiddenref(%s)+%d))')",
-            range.from().toString(true), range.to().toString(true),
-            range.from().toString(true,false,true), prop->getFullName(), from.row()+2,
-            range.to().toString(true,false,true), prop->getFullName(), from.row()+2);
+            range.from().toString(CellAddress::Cell::ShowRowColumn),
+            range.to().toString(CellAddress::Cell::ShowRowColumn),
+            range.from().toString(CellAddress::Cell::ShowColumn), prop->getFullName(), from.row()+2,
+            range.to().toString(CellAddress::Cell::ShowColumn), prop->getFullName(), from.row()+2);
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::commitCommand();
@@ -272,7 +273,7 @@ void DlgSheetConf::onDiscard() {
                     r.from().toString(), r.to().toString());
         }
 
-        Gui::cmdAppObjectArgs(sheet, "clear('%s')", from.toString(true));
+        Gui::cmdAppObjectArgs(sheet, "clear('%s')", from.toString(CellAddress::Cell::ShowRowColumn));
 
         if(prop && prop->getName()) {
             auto obj = path.getDocumentObject();
