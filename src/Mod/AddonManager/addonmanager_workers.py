@@ -177,6 +177,35 @@ class UpdateWorker(QtCore.QThread):
 
             if "py2only" in j and "Mod" in j["py2only"]:
                 py2only = j["py2only"]["Mod"]
+
+            if "deprecated" in j:
+                fc_major = int(FreeCAD.Version()[0])
+                fc_minor = int(FreeCAD.Version()[1])
+                for item in j["deprecated"]:
+                    if "as_of" in item and "name" in item:
+                        try:
+                            version_components = item["as_of"].split(".")
+                            major = int(version_components[0])
+                            if len(version_components) > 1:
+                                minor = int(version_components[1])
+                            else:
+                                minor = 0
+                            if major < fc_major or (
+                                major == fc_major and minor <= fc_minor
+                            ):
+                                if "kind" not in item or item["kind"] == "mod":
+                                    obsolete.append(item["name"])
+                                elif item["kind"] == "macro":
+                                    macros_reject_list.append(item["name"])
+                                else:
+                                    FreeCAD.Console.PrintMessage(
+                                        f'Unrecognized Addon kind {item["kind"]} in deprecation list.'
+                                    )
+                        except Exception:
+                            FreeCAD.Console.PrintMessage(
+                                f"Exception caught when parsing deprecated Addon {item['name']}, version {item['as_of']}"
+                            )
+
         else:
             message = translate(
                 "AddonsInstaller",
