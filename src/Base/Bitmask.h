@@ -20,6 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
+
+#ifndef BASE_BITMASK_H
+#define BASE_BITMASK_H
+
 #include <type_traits>
 
 /*!
@@ -33,6 +37,10 @@
  ENABLE_BITMASK_OPERATORS(Color)
 
  Color yellow = Color::Red | Color::Green;
+
+ Flags<Color> flags(yellow);
+ flags.testFlag(Color::Red);
+ flags.testFlag(Color::Green);
  @endcode
 */
 
@@ -95,3 +103,24 @@ constexpr enum_traits<>::t<T, T&> operator^=(T& a, T b) {
 template<>                           \
 struct enum_traits<x> :              \
        enum_traits<>::allow_bitops {};
+
+namespace Base {
+template <typename Enum>
+class Flags {
+    static_assert(std::is_enum<Enum>::value, "Flags is only usable on enumeration types.");
+    Enum i;
+
+public:
+    constexpr inline Flags(Enum f) : i(f) {}
+    constexpr bool testFlag(Enum f) {
+        using u = typename std::underlying_type<Enum>::type;
+        return (i & f) == f && (static_cast<u>(f) != 0 || i == f);
+    }
+    constexpr inline void setFlag(Enum f, bool on = true)
+    {
+        on ? (i |= f) : (i &= ~f);
+    }
+};
+}
+
+#endif
