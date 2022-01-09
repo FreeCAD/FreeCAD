@@ -413,6 +413,7 @@ class CommandAddonManager:
                 thread = getattr(self, worker)
                 if thread:
                     if not thread.isFinished():
+                        thread.blockSignals(True)
                         thread.requestInterruption()
                         worker_killed = True
                         oktoclose = False
@@ -974,9 +975,7 @@ class CommandAddonManager:
         self.install(repo)
 
     def cancel_dependency_installation(self) -> None:
-        self.dependency_installation_worker.finished.disconnect(
-            lambda: self.install(repo)
-        )
+        self.dependency_installation_worker.blockSignals(True)
         self.dependency_installation_worker.requestInterruption()
         self.dependency_installation_dialog.hide()
 
@@ -1053,6 +1052,7 @@ class CommandAddonManager:
             and self.update_check_single_worker
         ):
             if self.update_check_single_worker.isRunning():
+                self.update_check_single_worker.blockSignals(True)
                 self.update_check_single_worker.requestInterrupt()
                 self.update_check_single_worker.wait()
 

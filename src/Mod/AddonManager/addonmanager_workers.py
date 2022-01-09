@@ -678,11 +678,12 @@ class CacheMacroCode(QtCore.QThread):
         while True:
             if current_thread.isInterruptionRequested():
                 for worker in self.workers:
+                    worker.blockSignals(True)
                     worker.requestInterruption()
-                    worker.wait(100)
-                    if not worker.isFinished():
-                        # Kill it
-                        worker.terminate()
+                    if not worker.wait(100):
+                        FreeCAD.PrintWarning(
+                            f"Addon Manager: a worker process failed to halt ({worker.macro.name})"
+                        )
                 return
             # Ensure our signals propagate out by running an internal thread-local event loop
             QtCore.QCoreApplication.processEvents()
@@ -698,7 +699,6 @@ class CacheMacroCode(QtCore.QThread):
                 FreeCAD.Console.PrintError(
                     f"Addon Manager: a worker process failed to complete while fetching {worker.macro.name}\n"
                 )
-                worker.terminate()
 
         self.repo_queue.join()
         for terminator in self.terminators:
@@ -758,15 +758,13 @@ class CacheMacroCode(QtCore.QThread):
                 )
                 + "\n"
             )
+            worker.blockSignals(True)
             worker.requestInterruption()
             worker.wait(100)
             if worker.isRunning():
-                worker.terminate()
-                worker.wait(50)
-                if worker.isRunning():
-                    FreeCAD.Console.PrintError(
-                        f"Failed to kill process for macro {macro_name}!\n"
-                    )
+                FreeCAD.Console.PrintError(
+                    f"Failed to kill process for macro {macro_name}!\n"
+                )
             with self.lock:
                 self.failed.append(macro_name)
 
@@ -1591,6 +1589,7 @@ class UpdateAllWorker(QtCore.QThread):
         while not self.repo_queue.empty():
             if current_thread.isInterruptionRequested():
                 for worker in workers:
+                    worker.blockSignals(True)
                     worker.requestInterruption()
                     worker.wait()
                 return
