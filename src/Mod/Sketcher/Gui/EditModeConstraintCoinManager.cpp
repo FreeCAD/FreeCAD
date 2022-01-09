@@ -1266,6 +1266,12 @@ void EditModeConstraintCoinManager::updateConstraintColor(const std::vector<Sket
         // Check Constraint Type
         Sketcher::Constraint* constraint = constraints[i];
         ConstraintType type = constraint->Type;
+
+        // It may happen that color updates are triggered by programatic selection changes before a command final update. Then
+        // constraints may have been changed and the color will be updated as part
+        if (type != vConstrType[i])
+            break;
+
         bool hasDatumLabel  = (type == Sketcher::Angle ||
                                type == Sketcher::Radius ||
                                type == Sketcher::Diameter ||
