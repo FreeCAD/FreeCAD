@@ -198,20 +198,11 @@ void TaskPocketParameters::onModeChanged(int index)
 
 void TaskPocketParameters::apply()
 {
-    auto obj = vp->getObject();
-
-    ui->lengthEdit->apply();
-    ui->lengthEdit2->apply();
-
-    FCMD_OBJ_CMD(obj,"Type = " << getMode());
     QString facename = QString::fromLatin1("None");
     if (static_cast<Modes>(getMode()) == Modes::ToFace) {
         facename = getFaceName();
     }
-    FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());
-    FCMD_OBJ_CMD(obj,"Reversed = " << (getReversed()?1:0));
-    FCMD_OBJ_CMD(obj,"Midplane = " << (getMidplane()?1:0));
-    FCMD_OBJ_CMD(obj,"Offset = " << getOffset());
+    applyParameters(facename);
 }
 
 //**************************************************************************
