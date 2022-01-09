@@ -59,7 +59,9 @@ try:
     # 'git' has no attribute 'Repo'
     have_git = hasattr(git, "Repo")
     if not have_git:
-        FreeCAD.Console.PrintMessage("'import git' gave strange results (no Repo attribute)...")
+        FreeCAD.Console.PrintMessage(
+            "'import git' gave strange results (no Repo attribute)..."
+        )
 except ImportError:
     pass
 
@@ -1063,11 +1065,10 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
         QtCore.QThread.__init__(self)
         self.repo = repo
-        if have_git and not NOGIT:
-            self.git_progress = GitProgressMonitor()
-            # TODO: What is wrong with these?
-            # self.git_progress.progress_made.connect(self.progress_made.emit)
-            # self.git_progress.info_message.connect(self.status_message.emit)
+        self.update_timer = QtCore.QTimer()
+        self.update_timer.setInterval(100)
+        self.update_timer.timeout.connect(self.update_status)
+        self.update_timer.start()
 
     def run(self):
         "installs or updates the selected addon"
@@ -1087,7 +1088,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 FreeCAD.Console.PrintError(
                     translate(
                         "AddonsInstaller",
-                        "Your version of python doesn't appear to support ZIP "
+                        "Your version of Python doesn't appear to support ZIP "
                         "files. Unable to proceed.",
                     )
                     + "\n"
@@ -1101,9 +1102,17 @@ class InstallWorkbenchWorker(QtCore.QThread):
         target_dir = moddir + os.sep + self.repo.name
 
         if have_git and not NOGIT:
+            self.git_progress = GitProgressMonitor()
+            # Do the git process...
             self.run_git(target_dir)
+            self.update_timer.stop()
         else:
             self.run_zip(target_dir)
+
+    def update_status(self) -> None:
+        if hasattr(self, "git_progress"):
+            self.progress_made.emit(self.git_progress.current, self.git_progress.total)
+            self.status_message.emit(self.git_progress.message)
 
     def run_git(self, clonedir: str) -> None:
 
@@ -1138,7 +1147,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             utils.repair_git_repo(self.repo.url, clonedir)
         repo = git.Git(clonedir)
         try:
-            repo.pull()
+            repo.pull(progress=self.git_progress)
             answer = translate(
                 "AddonsInstaller",
                 "Workbench successfully updated. "
@@ -1158,7 +1167,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             repo_sms = git.Repo(clonedir)
             self.status_message.emit("Updating submodules...")
             for submodule in repo_sms.submodules:
-                submodule.update(init=True, recursive=True)
+                submodule.update(init=True, recursive=True, progress=self.git_progress)
             self.update_metadata()
             self.success.emit(self.repo, answer)
 
@@ -1175,11 +1184,11 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 + "\n"
             )
         self.status_message.emit("Cloning module...")
-        repo = git.Repo.clone_from(self.repo.url, clonedir)
+        repo = git.Repo.clone_from(self.repo.url, clonedir, progress=self.git_progress)
 
         # Make sure to clone all the submodules as well
         if repo.submodules:
-            repo.submodule_update(recursive=True)
+            repo.submodule_update(recursive=True, progress=self.git_progress)
 
         if self.repo.branch in repo.heads:
             repo.heads[self.repo.branch].checkout()
@@ -1265,42 +1274,65 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 pass
 
         current_thread = QtCore.QThread.currentThread()
-        if data_size and data_size > 5 * 1024 * 1024:
-            # Use an on-disk file and track download progress, if the zipfile
-            # is over 5mb
-            with tempfile.NamedTemporaryFile(delete=False) as temp:
-                bytes_to_read = 16 * 1024
-                bytes_read = 0
-                while True:
-                    if current_thread.isInterruptionRequested():
-                        return
-                    chunk = u.read(bytes_to_read)
-                    if not chunk:
-                        break
-                    bytes_read += bytes_to_read
-                    temp.write(chunk)
+
+        # Use an on-disk file and track download progress
+        locale = QtCore.QLocale()
+        with tempfile.NamedTemporaryFile(delete=False) as temp:
+            bytes_to_read = 1024 * 1024
+            bytes_read = 0
+            while True:
+                if current_thread.isInterruptionRequested():
+                    return
+                chunk = u.read(bytes_to_read)
+                if not chunk:
+                    break
+                bytes_read += bytes_to_read
+                temp.write(chunk)
+                if data_size:
                     self.progress_made.emit(bytes_read, data_size)
+                    percent = int(100 * float(bytes_read / data_size))
+                    MB_read = bytes_read / 1024 / 1024
+                    MB_total = data_size / 1024 / 1024
+                    bytes_str = locale.toString(MB_read)
+                    bytes_total_str = locale.toString(MB_total)
+                    self.status_message.emit(
+                        translate(
+                            "AddonsInstaller",
+                            f"Downloading: {bytes_str}MB of {bytes_total_str}MB ({percent}%)",
+                        )
+                    )
+                else:
+                    MB_read = bytes_read / 1024 / 1024
+                    bytes_str = locale.toString(MB_read)
+                    self.status_message.emit(
+                        translate(
+                            "AddonsInstaller",
+                            f"Downloading: {bytes_str}MB of unknown total",
+                        )
+                    )
+                QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
             zfile = zipfile.ZipFile(temp)
-        else:
-            zfile = io.BytesIO()
-            zfile.write(u.read())
-            zfile = zipfile.ZipFile(zfile)
-        master = zfile.namelist()[0]  # github will put everything in a subfolder
-        zfile.extractall(zipdir)
-        u.close()
-        zfile.close()
-        for filename in os.listdir(zipdir + os.sep + master):
-            shutil.move(
-                zipdir + os.sep + master + os.sep + filename, zipdir + os.sep + filename
+            master = zfile.namelist()[0]  # github will put everything in a subfolder
+            self.status_message.emit(
+                translate("AddonsInstaller", f"Download complete. Unzipping file...")
             )
-        os.rmdir(zipdir + os.sep + master)
-        if bakdir:
-            shutil.rmtree(bakdir)
-        self.update_metadata()
-        self.success.emit(
-            self.repo,
-            translate("AddonsInstaller", "Successfully installed") + " " + zipurl,
-        )
+            QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
+            zfile.extractall(zipdir)
+            u.close()
+            zfile.close()
+            for filename in os.listdir(zipdir + os.sep + master):
+                shutil.move(
+                    zipdir + os.sep + master + os.sep + filename,
+                    zipdir + os.sep + filename,
+                )
+            os.rmdir(zipdir + os.sep + master)
+            if bakdir:
+                shutil.rmtree(bakdir)
+            self.update_metadata()
+            self.success.emit(
+                self.repo,
+                translate("AddonsInstaller", "Successfully installed") + " " + zipurl,
+            )
 
     def update_metadata(self):
         basedir = FreeCAD.getUserAppDataDir()
@@ -1539,13 +1571,13 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 if have_git and not NOGIT:
 
     class GitProgressMonitor(git.RemoteProgress):
-        """An object that receives git progress updates and transforms them into Qt signals"""
-
-        progress_made = QtCore.Signal(int, int)
-        info_message = QtCore.Signal(str)
+        """An object that receives git progress updates and stores them for later display"""
 
         def __init__(self):
             super().__init__()
+            self.current = 0
+            self.total = 100
+            self.message = ""
 
         def update(
             self,
@@ -1555,9 +1587,10 @@ if have_git and not NOGIT:
             message: str = "",
         ) -> None:
             if max_count:
-                self.progress_made.emit(int(cur_count), int(max_count))
+                self.current = int(cur_count)
+                self.total = int(max_count)
             if message:
-                self.info_message.emit(message)
+                self.message = message
 
 
 class UpdateAllWorker(QtCore.QThread):

@@ -297,6 +297,18 @@ def fix_relative_links(text, base_url):
 def repair_git_repo(repo_url: str, clone_dir: str) -> None:
     # Repair addon installed with raw download by adding the .git
     # directory to it
+
+    try:
+        import git
+
+        # If GitPython is not installed, but the user has a directory named "git" in their Python path, they
+        # may have the import succeed, but it will not be a real GitPython installation
+        have_git = hasattr(git, "Repo")
+        if not have_git:
+            return
+    except ImportError:
+        return
+
     try:
         bare_repo = git.Repo.clone_from(
             repo_url, clone_dir + os.sep + ".git", bare=True
