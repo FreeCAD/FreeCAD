@@ -6066,9 +6066,6 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     // Trigger update now
     // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
     if (!delGeoId.empty()) {
-        // FIXME: Somehow this extra `Geometry.touch()` fixes a segfault.
-        // See https://forum.freecadweb.org/viewtopic.php?f=19&t=64962&sid=10272db50a635c633260517b14ecad37
-        Geometry.touch();
         delGeometriesExclusiveList(delGeoId);
     }
     else {
