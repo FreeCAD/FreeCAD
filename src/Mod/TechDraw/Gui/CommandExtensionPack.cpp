@@ -861,7 +861,7 @@ bool CmdTechDrawExtensionVertexAtIntersection::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_ExtensionDrawArc
+// TechDraw_ExtensionDrawCosmArc
 //===========================================================================
 
 void execDrawCosmArc(Gui::Command* cmd) {
@@ -890,10 +890,10 @@ void execDrawCosmArc(Gui::Command* cmd) {
     }
 }
 
-DEF_STD_CMD_A(CmdTechDrawExtensionArc)
+DEF_STD_CMD_A(CmdTechDrawExtensionDrawCosmArc)
 
-CmdTechDrawExtensionArc::CmdTechDrawExtensionArc()
-    : Command("TechDraw_ExtensionArc")
+CmdTechDrawExtensionDrawCosmArc::CmdTechDrawExtensionDrawCosmArc()
+    : Command("TechDraw_ExtensionDrawCosmArc")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
@@ -903,19 +903,19 @@ CmdTechDrawExtensionArc::CmdTechDrawExtensionArc()
     - center, start, end\n\
     - start defines the radius\n\
     - click this button");
-    sWhatsThis      = "TechDraw_ExtensionArc";
+    sWhatsThis      = "TechDraw_ExtensionDrawCosmArc";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_ExtensionArc";
+    sPixmap         = "TechDraw_ExtensionDrawCosmArc";
 }
 
-void CmdTechDrawExtensionArc::activated(int iMsg)
+void CmdTechDrawExtensionDrawCosmArc::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     //Base::Console().Message("Cosmetic Arc gestartet\n");
     execDrawCosmArc(this);
 }
 
-bool CmdTechDrawExtensionArc::isActive(void)
+bool CmdTechDrawExtensionDrawCosmArc::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -1036,9 +1036,9 @@ Gui::Action* CmdTechDrawExtensionDrawCirclesGroup::createAction(void)
     p1->setObjectName(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDrawCosmCircle"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionArc"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionArc"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionArc"));
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionDrawCosmArc"));
+    p2->setObjectName(QString::fromLatin1("TechDraw_ExtensionDrawCosmArc"));
+    p2->setWhatsThis(QString::fromLatin1("TechDraw_ExtensionDrawCosmArc"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1959,7 +1959,7 @@ void CreateTechDrawCommandsExtensions(void)
     rcCmdMgr.addCommand(new CmdTechDrawExtensionVertexAtIntersection());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCirclesGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCosmCircle());
-    rcCmdMgr.addCommand(new CmdTechDrawExtensionArc());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionDrawCosmArc());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionLinePPGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionLineParallel());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionLinePerpendicular());
