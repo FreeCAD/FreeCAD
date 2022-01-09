@@ -421,7 +421,6 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                 package.updated_timestamp = os.path.getmtime(installed_metadata_file)
             try:
                 installed_metadata = FreeCAD.Metadata(installed_metadata_file)
-                package.set_metadata(installed_metadata)
                 package.installed_version = installed_metadata.Version
                 # Packages are considered up-to-date if the metadata version matches. Authors should update
                 # their version string when they want the addon manager to alert users of a new version.
