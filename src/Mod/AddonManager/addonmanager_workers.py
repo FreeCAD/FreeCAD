@@ -58,6 +58,8 @@ try:
     # some versions of git module have no "Repo" class??  Bug #4072 module
     # 'git' has no attribute 'Repo'
     have_git = hasattr(git, "Repo")
+    if not have_git:
+        FreeCAD.Console.PrintMessage("'import git' gave strange results (no Repo attribute)...")
 except ImportError:
     pass
 
@@ -681,7 +683,7 @@ class CacheMacroCode(QtCore.QThread):
                     worker.blockSignals(True)
                     worker.requestInterruption()
                     if not worker.wait(100):
-                        FreeCAD.PrintWarning(
+                        FreeCAD.Console.PrintWarning(
                             f"Addon Manager: a worker process failed to halt ({worker.macro.name})"
                         )
                 return
