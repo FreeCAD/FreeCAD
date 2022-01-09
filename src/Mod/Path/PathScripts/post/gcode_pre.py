@@ -22,7 +22,7 @@
 # ***************************************************************************/
 
 
-'''
+"""
 This is an example preprocessor file for the Path workbench. Its aim is to
 open a gcode file, parse its contents, and create the appropriate objects
 in FreeCAD.
@@ -40,7 +40,7 @@ assumed. The user should carefully examine the resulting gcode!
 
 Read the Path Workbench documentation to know how to create Path objects
 from GCode.
-'''
+"""
 
 import os
 import FreeCAD
@@ -50,23 +50,23 @@ import re
 import PathScripts.PathCustom as PathCustom
 import PathScripts.PathCustomGui as PathCustomGui
 import PathScripts.PathOpGui as PathOpGui
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
-# LEVEL = PathLog.Level.DEBUG
-LEVEL = PathLog.Level.INFO
-PathLog.setLevel(LEVEL, PathLog.thisModule())
 
-if LEVEL == PathLog.Level.DEBUG:
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__', 'io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 
 def open(filename):
-    "called when freecad opens a file."
+    """called when freecad opens a file."""
     PathLog.track(filename)
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
@@ -83,17 +83,17 @@ def matchToolController(op, toolnumber):
 
 
 def insert(filename, docname):
-    "called when freecad imports a file"
+    """called when freecad imports a file"""
     PathLog.track(filename)
     gfile = pythonopen(filename)
     gcode = gfile.read()
     gfile.close()
 
     # Regular expression to match tool changes in the format 'M6 Tn'
-    p = re.compile('[mM]+?\s?0?6\s?T\d*\s')
+    p = re.compile("[mM]+?\s?0?6\s?T\d*\s")
 
     # split the gcode on tool changes
-    paths = re.split('([mM]+?\s?0?6\s?T\d*\s)', gcode)
+    paths = re.split("([mM]+?\s?0?6\s?T\d*\s)", gcode)
 
     # iterate the gcode sections and add customs for each
     toolnumber = 0
@@ -103,7 +103,7 @@ def insert(filename, docname):
         # if the section is a tool change, extract the tool number
         m = p.match(path)
         if m:
-            toolnumber = int(m.group().split('T')[-1])
+            toolnumber = int(m.group().split("T")[-1])
             continue
 
         # Parse the gcode and throw away any empty lists
@@ -113,10 +113,15 @@ def insert(filename, docname):
 
         # Create a custom and viewobject
         obj = PathCustom.Create("Custom")
-        res = PathOpGui.CommandResources('Custom', PathCustom.Create,
-                PathCustomGui.TaskPanelOpPage,
-                'Path_Custom',
-                QtCore.QT_TRANSLATE_NOOP('Path_Custom', 'Custom'), '', '')
+        res = PathOpGui.CommandResources(
+            "Custom",
+            PathCustom.Create,
+            PathCustomGui.TaskPanelOpPage,
+            "Path_Custom",
+            QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
+            "",
+            "",
+        )
         obj.ViewObject.Proxy = PathOpGui.ViewProvider(obj.ViewObject, res)
         obj.ViewObject.Proxy.setDeleteObjectsOnReject(False)
 
@@ -127,20 +132,28 @@ def insert(filename, docname):
     FreeCAD.ActiveDocument.recompute()
 
 
-
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
 
-    supported = ['G0', 'G00',
-                 'G1', 'G01',
-                 'G2', 'G02',
-                 'G3', 'G03',
-                 'G81', 'G82', 'G83',
-                 'G90', 'G91']
+    supported = [
+        "G0",
+        "G00",
+        "G1",
+        "G01",
+        "G2",
+        "G02",
+        "G3",
+        "G03",
+        "G81",
+        "G82",
+        "G83",
+        "G90",
+        "G91",
+    ]
 
     axis = ["X", "Y", "Z", "A", "B", "C", "U", "V", "W"]
 
-    print("preprocessing...")
+    FreeCAD.Console.PrintMessage("preprocessing...\n")
     PathLog.track(inputstring)
     # split the input by line
     lines = inputstring.splitlines()
@@ -178,7 +191,7 @@ def parse(inputstring):
         elif currcommand[0] in axis and lastcommand:
             output.append(lastcommand + " " + lin)
 
-    print("done preprocessing.")
+    FreeCAD.Console.PrintMessage("done preprocessing.\n")
     return output
 
 

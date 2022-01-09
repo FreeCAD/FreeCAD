@@ -31,6 +31,7 @@
 #include <Base/Quantity.h>
 
 #include "TaskFemConstraint.h"
+#include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintFixed.h"
 
 #include <QObject>
@@ -40,7 +41,7 @@
 class Ui_TaskFemConstraintFixed;
 
 namespace FemGui {
-class TaskFemConstraintFixed : public TaskFemConstraint
+class TaskFemConstraintFixed : public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
@@ -57,6 +58,7 @@ private Q_SLOTS:
 protected:
     bool event(QEvent *e);
     void changeEvent(QEvent *e);
+    void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateUI();

@@ -645,7 +645,9 @@ const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", NULL};
 
 PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
-const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
+const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 180.0 - Base::toDegrees<double>(Precision::Angular()), 1.0 };
+// OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
+const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), FLT_MAX, 1.0 };
 
 Hole::Hole()
 {
@@ -670,6 +672,7 @@ Hole::Hole()
     ThreadFit.setEnums(ClearanceMetricEnums);
 
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
+    Diameter.setConstraints(&diameterRange);
 
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Hole", App::Prop_None, "Thread direction");
     ThreadDirection.setEnums(ThreadDirectionEnums);
@@ -700,7 +703,7 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(DrillForDepth, ((long)0), "Hole", App::Prop_None,
         "The size of the drill point will be taken into\n account for the depth of blind holes");
 
-    ADD_PROPERTY_TYPE(Tapered, (false),"Hole",  App::Prop_None, "Tapered");
+    ADD_PROPERTY_TYPE(Tapered, (false), "Hole", App::Prop_None, "Tapered");
 
     ADD_PROPERTY_TYPE(TaperedAngle, (90.0), "Hole", App::Prop_None, "Tapered angle");
     TaperedAngle.setConstraints(&floatAngle);
@@ -710,7 +713,7 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(ThreadDepth, (23.5), "Hole", App::Prop_None, "Thread Length"); // default is assuming an M1
 
-    ADD_PROPERTY_TYPE(UseCustomThreadClearance, (false), "Hole",  App::Prop_None, "Use custom thread clearance");
+    ADD_PROPERTY_TYPE(UseCustomThreadClearance, (false), "Hole", App::Prop_None, "Use custom thread clearance");
 
     ADD_PROPERTY_TYPE(CustomThreadClearance, (0.0), "Hole", App::Prop_None, "Custom thread clearance (overrides ThreadClass)");
 
@@ -791,14 +794,14 @@ void Hole::updateHoleCutParams()
         }
 
         // cut definition
-        CutDimensionKey key { threadTypeStr, holeCutTypeStr };
+        CutDimensionKey key{ threadTypeStr, holeCutTypeStr };
         if (HoleCutTypeMap.count(key)) {
-            const CutDimensionSet &counter = find_cutDimensionSet(key);
+            const CutDimensionSet& counter = find_cutDimensionSet(key);
             if (counter.cut_type == CutDimensionSet::Counterbore) {
                 // disable HoleCutCountersinkAngle and reset it to ISO's default
                 HoleCutCountersinkAngle.setValue(90.0);
                 HoleCutCountersinkAngle.setReadOnly(true);
-                const CounterBoreDimension &dimen = counter.get_bore(threadSizeStr);
+                const CounterBoreDimension& dimen = counter.get_bore(threadSizeStr);
                 if (dimen.thread == "None") {
                     // valid values for visual feedback
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
@@ -811,7 +814,8 @@ void Hole::updateHoleCutParams()
                         HoleCutDiameter.setReadOnly(false);
                         HoleCutDepth.setReadOnly(false);
                     }
-                } else {
+                }
+                else {
                     // set normed values if not overwritten or if previously there
                     // were no normed values available and thus HoleCutCustomValues is checked and read-only
                     if (!HoleCutCustomValues.getValue()
@@ -829,8 +833,9 @@ void Hole::updateHoleCutParams()
                     }
                     HoleCutCustomValues.setReadOnly(false);
                 }
-            } else if (counter.cut_type == CutDimensionSet::Countersink) {
-                const CounterSinkDimension &dimen = counter.get_sink(threadSizeStr);
+            }
+            else if (counter.cut_type == CutDimensionSet::Countersink) {
+                const CounterSinkDimension& dimen = counter.get_sink(threadSizeStr);
                 if (dimen.thread == "None") {
                     // valid values for visual feedback
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
@@ -847,7 +852,8 @@ void Hole::updateHoleCutParams()
                         HoleCutDepth.setReadOnly(false);
                         HoleCutCountersinkAngle.setReadOnly(false);
                     }
-                } else {
+                }
+                else {
                     // set normed values if not overwritten or if previously there
                     // were no normed values available and thus HoleCutCustomValues is checked and read-only
                     if (!HoleCutCustomValues.getValue()
@@ -870,9 +876,9 @@ void Hole::updateHoleCutParams()
             }
         }
 
-        // handle legacy types but don’t change user settings for
+        // handle legacy types but don't change user settings for
         // user defined None, Counterbore and Countersink
-        // handle legacy types but don’t change user settings for
+        // handle legacy types but don't change user settings for
         // user defined None, Counterbore and Countersink
         else if (holeCutTypeStr == "Cheesehead (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 1.6);
@@ -941,7 +947,7 @@ double Hole::getThreadClassClearance()
 
     // Calculate how much clearance to add based on Thread tolerance class and pitch
     if (ThreadClass.getValueAsString()[1] == 'G') {
-        for(unsigned int i=0; i<ThreadClass_ISOmetric_data_size; i++) {
+        for (unsigned int i = 0; i < ThreadClass_ISOmetric_data_size; i++) {
             double p = ThreadClass_ISOmetric_data[i][0];
             if (pitch <= p) {
                 return ThreadClass_ISOmetric_data[i][1];
@@ -963,27 +969,27 @@ double Hole::getThreadRunout(int mode)
 
     double sf = 1.0;  // scale factor
     switch (mode) {
-        case 1:
-            sf = 1.0;
-            break;
-        case 2:
-            sf = 0.625;
-            break;
-        case 3:
-            sf = 1.6;
-            break;
-        default:
-            throw Base::ValueError("Unsupported argument");
+    case 1:
+        sf = 1.0;
+        break;
+    case 2:
+        sf = 0.625;
+        break;
+    case 3:
+        sf = 1.6;
+        break;
+    default:
+        throw Base::ValueError("Unsupported argument");
     }
-    for(unsigned int i=0; i<ThreadRunout_size; i++) {
+    for (unsigned int i = 0; i < ThreadRunout_size; i++) {
         double p = ThreadRunout[i][0];
         if (pitch <= p) {
-            return sf*ThreadRunout[i][1];
+            return sf * ThreadRunout[i][1];
         }
     }
 
     // For non-standard pitch we fall back on general engineering rule of thumb of 4*pitch.
-    return 4*pitch;
+    return 4 * pitch;
 }
 
 double Hole::getThreadPitch()
@@ -1211,7 +1217,7 @@ void Hole::updateDiameterParam()
     Diameter.setValue(diameter);
 }
 
-void Hole::onChanged(const App::Property *prop)
+void Hole::onChanged(const App::Property* prop)
 {
     if (prop == &ThreadType) {
         std::string type, holeCutTypeStr;
@@ -1220,7 +1226,7 @@ void Hole::onChanged(const App::Property *prop)
         if (HoleCutType.isValid())
             holeCutTypeStr = HoleCutType.getValueAsString();
 
-        if (type == "None" ) {
+        if (type == "None") {
             ThreadSize.setEnums(ThreadSize_None_Enums);
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_None_Enums);
@@ -1238,7 +1244,7 @@ void Hole::onChanged(const App::Property *prop)
             ModelThread.setValue(0);
             UseCustomThreadClearance.setValue(0);
         }
-        else if ( type == "ISOMetricProfile" ) {
+        else if (type == "ISOMetricProfile") {
             ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
@@ -1256,7 +1262,7 @@ void Hole::onChanged(const App::Property *prop)
             ThreadDepthType.setReadOnly(!Threaded.getValue());
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
-        else if ( type == "ISOMetricFineProfile" ) {
+        else if (type == "ISOMetricFineProfile") {
             ThreadSize.setEnums(ThreadSize_ISOmetricfine_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetricfine_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
@@ -1274,7 +1280,7 @@ void Hole::onChanged(const App::Property *prop)
             ThreadDepthType.setReadOnly(!Threaded.getValue());
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
-        else if ( type == "UNC" ) {
+        else if (type == "UNC") {
             ThreadSize.setEnums(ThreadSize_UNC_Enums);
             ThreadClass.setEnums(ThreadClass_UNC_Enums);
             HoleCutType.setEnums(HoleCutType_UNC_Enums);
@@ -1292,7 +1298,7 @@ void Hole::onChanged(const App::Property *prop)
             ThreadDepthType.setReadOnly(!Threaded.getValue());
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
-        else if ( type == "UNF" ) {
+        else if (type == "UNF") {
             ThreadSize.setEnums(ThreadSize_UNF_Enums);
             ThreadClass.setEnums(ThreadClass_UNF_Enums);
             HoleCutType.setEnums(HoleCutType_UNF_Enums);
@@ -1310,7 +1316,7 @@ void Hole::onChanged(const App::Property *prop)
             ThreadDepthType.setReadOnly(!Threaded.getValue());
             ThreadDepth.setReadOnly(!Threaded.getValue());
         }
-        else if ( type == "UNEF" ) {
+        else if (type == "UNEF") {
             ThreadSize.setEnums(ThreadSize_UNEF_Enums);
             ThreadClass.setEnums(ThreadClass_UNEF_Enums);
             HoleCutType.setEnums(HoleCutType_UNEF_Enums);
@@ -1370,7 +1376,7 @@ void Hole::onChanged(const App::Property *prop)
         ProfileBased::onChanged(&Threaded);
 
         // Diameter parameter depends on this
-        if (type != "None" )
+        if (type != "None")
             updateDiameterParam();
     }
     else if (prop == &Threaded) {
@@ -1429,8 +1435,9 @@ void Hole::onChanged(const App::Property *prop)
     }
     else if (prop == &ThreadSize) {
         updateDiameterParam();
-        updateThreadDepthParam();
-        // updateHoleCutParams() will later automatically be called because updateDiameterParam() changes &Diameter
+        if (!isRestoring())
+            updateThreadDepthParam();
+        // updateHoleCutParams() will later automatically be called because
     }
     else if (prop == &ThreadFit) {
         updateDiameterParam();
@@ -1460,27 +1467,32 @@ void Hole::onChanged(const App::Property *prop)
         DrillPoint.setReadOnly(DepthMode != "Dimension");
         DrillPointAngle.setReadOnly(DepthMode != "Dimension");
         DrillForDepth.setReadOnly(DepthMode != "Dimension");
-        if (DepthMode != "Dimension") {
-            // if through all, set the depth accordingly
-            Depth.setValue(getThroughAllLength());
-            // the thread depth is not dimension, it is the same as the hole depth
-            ThreadDepth.setValue(getThroughAllLength());
+        if (!isRestoring()) {
+            if (DepthMode != "Dimension") {
+                // if through all, set the depth accordingly
+                Depth.setValue(getThroughAllLength());
+                // the thread depth is not dimension, it is the same as the hole depth
+                ThreadDepth.setValue(getThroughAllLength());
+            }
+            updateThreadDepthParam();
         }
-        updateThreadDepthParam();
     }
     else if (prop == &Depth) {
-        // the depth cannot be greater than the through-all length
-        if (Depth.getValue() > getThroughAllLength())
-            Depth.setValue(getThroughAllLength());
+        if (!isRestoring()) {
+            // the depth cannot be greater than the through-all length
+            if (Depth.getValue() > getThroughAllLength())
+                Depth.setValue(getThroughAllLength());
+        }
 
         if (std::string(ThreadDepthType.getValueAsString()) != "Dimension")
             updateDiameterParam();  // make sure diameter and pitch are updated.
 
-        // update the thread in every case
-        updateThreadDepthParam();
+        if (!isRestoring())
+            updateThreadDepthParam();
     }
     else if (prop == &ThreadDepthType) {
-        updateThreadDepthParam();
+        if (!isRestoring())
+            updateThreadDepthParam();
         ThreadDepth.setReadOnly(Threaded.getValue()
             && std::string(ThreadDepthType.getValueAsString()) != "Dimension");
     }
@@ -1508,7 +1520,7 @@ void Hole::onChanged(const App::Property *prop)
   *
   * The result are the x and y coordinate of the intersection point.
   */
-static void computeIntersection(gp_Pnt pa1, gp_Pnt pa2, gp_Pnt pb1, gp_Pnt pb2, double & x, double & y)
+static void computeIntersection(gp_Pnt pa1, gp_Pnt pa2, gp_Pnt pb1, gp_Pnt pb2, double& x, double& y)
 {
     double vx1 = pa1.X() - pa2.X();
     double vy1 = pa1.Y() - pa2.Y();
@@ -1535,17 +1547,17 @@ static void computeIntersection(gp_Pnt pa1, gp_Pnt pa2, gp_Pnt pb1, gp_Pnt pb2, 
 
      */
 
-    assert( ( ( vx1 * - vy2 ) - ( -vx2 * vy1 ) ) != 0 );
+    assert(((vx1 * -vy2) - (-vx2 * vy1)) != 0);
 
-    double f = 1 / ( ( vx1 * - vy2 ) - ( -vx2 * vy1 ) );
+    double f = 1 / ((vx1 * -vy2) - (-vx2 * vy1));
 
-    double t1 = -vy2 * f * ( x2 - x1 ) + vx2 * f * ( y2 - y1 );
+    double t1 = -vy2 * f * (x2 - x1) + vx2 * f * (y2 - y1);
 
 #ifdef _DEBUG
-    double t2 = -vy1 * f * ( x2 - x1 ) + vx1 * f * ( y2 - y1 );
+    double t2 = -vy1 * f * (x2 - x1) + vx1 * f * (y2 - y1);
 
-    assert( ( x1 + t1 * vx1 ) - ( x2 + t2 * vx2 ) < 1e-6 );
-    assert( ( y1 + t1 * vy1 ) - ( y2 + t2 * vy2 ) < 1e-6 );
+    assert((x1 + t1 * vx1) - (x2 + t2 * vx2) < 1e-6);
+    assert((y1 + t1 * vy1) - (y2 + t2 * vy2) < 1e-6);
 #endif
 
     x = x1 + t1 * vx1;
@@ -1554,37 +1566,36 @@ static void computeIntersection(gp_Pnt pa1, gp_Pnt pa2, gp_Pnt pb1, gp_Pnt pb2, 
 
 short Hole::mustExecute() const
 {
-    if ( ThreadType.isTouched() ||
-         Threaded.isTouched() ||
-         ThreadSize.isTouched() ||
-         ThreadClass.isTouched() ||
-         ThreadFit.isTouched() ||
-         Diameter.isTouched() ||
-         ThreadDirection.isTouched() ||
-         HoleCutType.isTouched() ||
-         HoleCutDiameter.isTouched() ||
-         HoleCutDepth.isTouched() ||
-         HoleCutCountersinkAngle.isTouched() ||
-         DepthType.isTouched() ||
-         Depth.isTouched() ||
-         DrillPoint.isTouched() ||
-         DrillPointAngle.isTouched() ||
-         Tapered.isTouched() ||
-         TaperedAngle.isTouched() ||
-         ModelThread.isTouched() ||
-         UseCustomThreadClearance.isTouched() ||
-         CustomThreadClearance.isTouched() ||
-         ThreadDepthType.isTouched() ||
-         ThreadDepth.isTouched()
-    )
+    if (ThreadType.isTouched() ||
+        Threaded.isTouched() ||
+        ThreadSize.isTouched() ||
+        ThreadClass.isTouched() ||
+        ThreadFit.isTouched() ||
+        Diameter.isTouched() ||
+        ThreadDirection.isTouched() ||
+        HoleCutType.isTouched() ||
+        HoleCutDiameter.isTouched() ||
+        HoleCutDepth.isTouched() ||
+        HoleCutCountersinkAngle.isTouched() ||
+        DepthType.isTouched() ||
+        Depth.isTouched() ||
+        DrillPoint.isTouched() ||
+        DrillPointAngle.isTouched() ||
+        Tapered.isTouched() ||
+        TaperedAngle.isTouched() ||
+        ModelThread.isTouched() ||
+        UseCustomThreadClearance.isTouched() ||
+        CustomThreadClearance.isTouched() ||
+        ThreadDepthType.isTouched() ||
+        ThreadDepth.isTouched()
+        )
         return 1;
     return ProfileBased::mustExecute();
 }
 
-void Hole::Restore(Base::XMLReader &reader)
+void Hole::Restore(Base::XMLReader& reader)
 {
     ProfileBased::Restore(reader);
-
     updateProps();
 }
 
@@ -1619,14 +1630,15 @@ static gp_Pnt toPnt(gp_Vec dir)
     return gp_Pnt(dir.X(), dir.Y(), dir.Z());
 }
 
-App::DocumentObjectExecReturn *Hole::execute(void)
+App::DocumentObjectExecReturn* Hole::execute(void)
 {
     Part::Feature* profile = 0;
     TopoDS_Shape profileshape;
     try {
         profile = getVerifiedObject();
         profileshape = getVerifiedFace();
-    } catch (const Base::Exception& e) {
+    }
+    catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
@@ -1637,9 +1649,9 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     }
     catch (const Base::Exception&) {
         std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
-                                    "  - the active Body does not contain a base shape, so there is no\n"
-                                    "  material to be removed;\n"
-                                    "  - the selected sketch does not belong to the active Body."));
+            "  - the active Body does not contain a base shape, so there is no\n"
+            "  material to be removed;\n"
+            "  - the selected sketch does not belong to the active Body."));
         return new App::DocumentObjectExecReturn(text);
     }
 
@@ -1681,12 +1693,12 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         // Normalize xDir; this is needed as the computation above does not necessarily give a unit-length vector.
         xDir.Normalize();
 
-        if ( method == "Dimension" )
+        if (method == "Dimension")
             length = Depth.getValue();
-        else if ( method == "UpToFirst" ) {
+        else if (method == "UpToFirst") {
             /* FIXME */
         }
-        else if ( method == "ThroughAll" ) {
+        else if (method == "ThroughAll") {
             length = getThroughAllLength();
         }
         else
@@ -1699,14 +1711,14 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         const std::string holeCutType = HoleCutType.getValueAsString();
         const std::string threadType = ThreadType.getValueAsString();
         bool isCountersink = (holeCutType == "Countersink" ||
-              holeCutType == "Countersink socket screw (deprecated)" ||
-              isDynamicCountersink(threadType, holeCutType));
+            holeCutType == "Countersink socket screw (deprecated)" ||
+            isDynamicCountersink(threadType, holeCutType));
         bool isCounterbore = (holeCutType == "Counterbore" ||
-              holeCutType == "Cheesehead (deprecated)" ||
-              holeCutType == "Cap screw (deprecated)" ||
-              isDynamicCounterbore(threadType, holeCutType));
+            holeCutType == "Cheesehead (deprecated)" ||
+            holeCutType == "Cap screw (deprecated)" ||
+            isDynamicCounterbore(threadType, holeCutType));
 
-        double TaperedAngleVal = Tapered.getValue() ? Base::toRadians( TaperedAngle.getValue() ) : Base::toRadians(90.0);
+        double TaperedAngleVal = Tapered.getValue() ? Base::toRadians(TaperedAngle.getValue()) : Base::toRadians(90.0);
         double radiusBottom = Diameter.getValue() / 2.0 - length / tan(TaperedAngleVal);
 
         double radius = Diameter.getValue() / 2.0;
@@ -1717,13 +1729,13 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         double xPosCounter = 0.0;
         double zPosCounter = 0.0;
 
-        if (TaperedAngleVal <= 0.0 || TaperedAngleVal > Base::toRadians( 180.0 ) )
+        if (TaperedAngleVal <= 0.0 || TaperedAngleVal > Base::toRadians(180.0))
             return new App::DocumentObjectExecReturn("Hole error: Invalid taper angle");
 
-        if ( isCountersink ) {
-            double countersinkAngle = Base::toRadians( HoleCutCountersinkAngle.getValue() / 2.0 );
+        if (isCountersink) {
+            double countersinkAngle = Base::toRadians(HoleCutCountersinkAngle.getValue() / 2.0);
 
-            if ( countersinkAngle <= 0 || countersinkAngle > Base::toRadians( 180.0 ) )
+            if (countersinkAngle <= 0 || countersinkAngle > Base::toRadians(180.0))
                 return new App::DocumentObjectExecReturn("Hole error: Invalid countersink angle");
 
             if (holeCutRadius < radius)
@@ -1731,23 +1743,23 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
             // Top point
             gp_Pnt newPoint = toPnt(holeCutRadius * xDir);
-            mkWire.Add( BRepBuilderAPI_MakeEdge(lastPoint, newPoint) );
+            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
             lastPoint = newPoint;
 
             computeIntersection(gp_Pnt( holeCutRadius, 0, 0 ),
-                                gp_Pnt( holeCutRadius - sin( countersinkAngle ), -cos( countersinkAngle ), 0 ),
-                                gp_Pnt( radius, 0, 0 ),
-                                gp_Pnt( radiusBottom, -length, 0), xPosCounter, zPosCounter);
+                                gp_Pnt(holeCutRadius - sin(countersinkAngle), -cos(countersinkAngle), 0),
+                                gp_Pnt(radius, 0, 0),
+                                gp_Pnt(radiusBottom, -length, 0), xPosCounter, zPosCounter);
             if (-length > zPosCounter)
                 return new App::DocumentObjectExecReturn("Hole error: Invalid countersink");
 
             lengthCounter = zPosCounter;
 
             newPoint = toPnt(xPosCounter * xDir + zPosCounter * zDir);
-            mkWire.Add( BRepBuilderAPI_MakeEdge( lastPoint, newPoint ) );
+            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
             lastPoint = newPoint;
         }
-        else if ( isCounterbore ) {
+        else if (isCounterbore) {
             double holeCutDepth = HoleCutDepth.getValue();
 
             if (holeCutDepth <= 0.0)
@@ -1770,10 +1782,10 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             lastPoint = newPoint;
 
             // Compute intersection of tapered edge and line at bottom of counterbore hole
-            computeIntersection(gp_Pnt( 0, -holeCutDepth, 0 ),
-                                gp_Pnt( holeCutRadius, -holeCutDepth, 0 ),
-                                gp_Pnt( radius, 0, 0 ),
-                                gp_Pnt( radiusBottom, length, 0 ), xPosCounter, zPosCounter);
+            computeIntersection(gp_Pnt(0, -holeCutDepth, 0),
+                                gp_Pnt(holeCutRadius, -holeCutDepth, 0),
+                                gp_Pnt(radius, 0, 0),
+                                gp_Pnt(radiusBottom, length, 0), xPosCounter, zPosCounter);
 
             lengthCounter = zPosCounter;
             newPoint = toPnt(xPosCounter * xDir + zPosCounter * zDir);
@@ -1796,16 +1808,16 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             lastPoint = newPoint;
 
             newPoint = toPnt(-length * zDir);
-            mkWire.Add( BRepBuilderAPI_MakeEdge( lastPoint, newPoint ) );
+            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
             lastPoint = newPoint;
         }
         else if (drillPoint == "Angled") {
-            double drillPointAngle = Base::toRadians( ( 180.0 - DrillPointAngle.getValue() ) / 2.0 );
+            double drillPointAngle = Base::toRadians((180.0 - DrillPointAngle.getValue()) / 2.0);
             gp_Pnt newPoint;
             bool isDrillForDepth = DrillForDepth.getValue();
 
             // the angle is in any case > 0 and < 90 but nevertheless this safeguard:
-            if ( drillPointAngle <= 0.0 || drillPointAngle >= Base::toRadians( 180.0 ) )
+            if (drillPointAngle <= 0.0 || drillPointAngle >= Base::toRadians(180.0))
                 return new App::DocumentObjectExecReturn("Hole error: Invalid drill point angle");
 
             // if option to take drill point size into account
@@ -1841,7 +1853,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             }
         }
 
-        mkWire.Add( BRepBuilderAPI_MakeEdge(lastPoint, firstPoint) );
+        mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, firstPoint));
 
         TopoDS_Wire wire = mkWire.Wire();
 
@@ -1863,7 +1875,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
         // Make thread
         if (Threaded.getValue() && ModelThread.getValue()) {
-            bool leftHanded = (bool) ThreadDirection.getValue();
+            bool leftHanded = (bool)ThreadDirection.getValue();
 
             // Nomenclature and formulae according to Figure 1 of ISO 68-1
             // this is the same for all metric and UTS threads as stated here:
@@ -2079,10 +2091,10 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 void Hole::addCutType(const CutDimensionSet& dimensions)
 {
     const CutDimensionSet::ThreadType thread = dimensions.thread_type;
-    const std::string &name = dimensions.name;
+    const std::string& name = dimensions.name;
 
-    std::vector<std::string> *list;
-    switch(thread) {
+    std::vector<std::string>* list;
+    switch (thread) {
     case CutDimensionSet::Metric:
         HoleCutTypeMap.emplace(CutDimensionKey("ISOMetricProfile", name), dimensions);
         list = &HoleCutType_ISOmetric_Enums;
@@ -2097,22 +2109,22 @@ void Hole::addCutType(const CutDimensionSet& dimensions)
     // add the collected lists of JSON definitions to the lists
     // if a name doesn't already exist in the list
     if (std::all_of(list->begin(), list->end(),
-                [name](const std::string &x){ return x != name; }))
+                [name](const std::string& x) { return x != name; }))
         list->push_back(name);
 }
 
-bool Hole::isDynamicCounterbore(const std::string &thread,
-      const std::string &holeCutType)
+bool Hole::isDynamicCounterbore(const std::string& thread,
+    const std::string& holeCutType)
 {
-    CutDimensionKey key { thread, holeCutType };
+    CutDimensionKey key{ thread, holeCutType };
     return HoleCutTypeMap.count(key) &&
         HoleCutTypeMap.find(key)->second.cut_type == CutDimensionSet::Counterbore;
 }
 
-bool Hole::isDynamicCountersink(const std::string &thread,
-      const std::string &holeCutType)
+bool Hole::isDynamicCountersink(const std::string& thread,
+    const std::string& holeCutType)
 {
-    CutDimensionKey key { thread, holeCutType };
+    CutDimensionKey key{ thread, holeCutType };
     return HoleCutTypeMap.count(key) &&
         HoleCutTypeMap.find(key)->second.cut_type == CutDimensionSet::Countersink;
 }
@@ -2121,76 +2133,76 @@ bool Hole::isDynamicCountersink(const std::string &thread,
  * Counter Dimensions
  */
 
-const Hole::CounterBoreDimension Hole::CounterBoreDimension::nothing { "None", 0.0, 0.0 };
-const Hole::CounterSinkDimension Hole::CounterSinkDimension::nothing { "None", 0.0 };
+const Hole::CounterBoreDimension Hole::CounterBoreDimension::nothing{ "None", 0.0, 0.0 };
+const Hole::CounterSinkDimension Hole::CounterSinkDimension::nothing{ "None", 0.0 };
 
-Hole::CutDimensionKey::CutDimensionKey(const std::string &t, const std::string &c) :
-    thread_type { t }, cut_name { c }
+Hole::CutDimensionKey::CutDimensionKey(const std::string& t, const std::string& c) :
+    thread_type{ t }, cut_name{ c }
 {
 }
 
-bool Hole::CutDimensionKey::operator<(const CutDimensionKey &b) const
+bool Hole::CutDimensionKey::operator<(const CutDimensionKey& b) const
 {
     return thread_type < b.thread_type ||
-                         (thread_type == b.thread_type && cut_name < b.cut_name);
+        (thread_type == b.thread_type && cut_name < b.cut_name);
 }
 
-const Hole::CutDimensionSet& Hole::find_cutDimensionSet(const std::string &t,
-      const std::string &c) {
+const Hole::CutDimensionSet& Hole::find_cutDimensionSet(const std::string& t,
+      const std::string& c) {
     return HoleCutTypeMap.find(CutDimensionKey(t, c))->second;
 }
 
-const Hole::CutDimensionSet& Hole::find_cutDimensionSet(const CutDimensionKey &k)
+const Hole::CutDimensionSet& Hole::find_cutDimensionSet(const CutDimensionKey& k)
 {
     return HoleCutTypeMap.find(k)->second;
 }
 
-Hole::CutDimensionSet::CutDimensionSet(const std::string &nme,
-      std::vector<CounterBoreDimension> &&d, CutType cut, ThreadType thread, double a) :
-    bore_data{ std::move(d) }, cut_type{ cut }, thread_type{thread}, name{nme}, angle{a}
+Hole::CutDimensionSet::CutDimensionSet(const std::string& nme,
+      std::vector<CounterBoreDimension>&& d, CutType cut, ThreadType thread, double a) :
+    bore_data{ std::move(d) }, cut_type{ cut }, thread_type{ thread }, name{ nme }, angle{ a }
 {
 }
 
-Hole::CutDimensionSet::CutDimensionSet(const std::string &nme,
-      std::vector<CounterSinkDimension> &&d, CutType cut, ThreadType thread, double a) :
-    sink_data{ std::move(d) }, cut_type{ cut }, thread_type{thread}, name{nme}, angle{a}
+Hole::CutDimensionSet::CutDimensionSet(const std::string& nme,
+      std::vector<CounterSinkDimension>&& d, CutType cut, ThreadType thread, double a) :
+    sink_data{ std::move(d) }, cut_type{ cut }, thread_type{ thread }, name{ nme }, angle{ a }
 {
 }
 
-const Hole::CounterBoreDimension &Hole::CutDimensionSet::get_bore(const std::string &t) const
+const Hole::CounterBoreDimension& Hole::CutDimensionSet::get_bore(const std::string& t) const
 {
     auto i = std::find_if(bore_data.begin(), bore_data.end(),
-          [t](const Hole::CounterBoreDimension &x) { return x.thread == t; } );
+        [t](const Hole::CounterBoreDimension& x) { return x.thread == t; });
     if (i == bore_data.end())
         return CounterBoreDimension::nothing;
     else
         return *i;
 }
 
-const Hole::CounterSinkDimension &Hole::CutDimensionSet::get_sink(const std::string &t) const
+const Hole::CounterSinkDimension& Hole::CutDimensionSet::get_sink(const std::string& t) const
 {
     auto i = std::find_if(sink_data.begin(), sink_data.end(),
-          [t](const Hole::CounterSinkDimension &x) { return x.thread == t; } );
+        [t](const Hole::CounterSinkDimension& x) { return x.thread == t; });
     if (i == sink_data.end())
         return CounterSinkDimension::nothing;
     else
         return *i;
 }
 
-void from_json(const nlohmann::json &j, Hole::CounterBoreDimension &t)
+void from_json(const nlohmann::json& j, Hole::CounterBoreDimension& t)
 {
     t.thread = j["thread"].get<std::string>();
     t.diameter = j["diameter"].get<double>();
     t.depth = j["depth"].get<double>();
 }
 
-void from_json(const nlohmann::json &j, Hole::CounterSinkDimension &t)
+void from_json(const nlohmann::json& j, Hole::CounterSinkDimension& t)
 {
     t.thread = j["thread"].get<std::string>();
     t.diameter = j["diameter"].get<double>();
 }
 
-void from_json(const nlohmann::json &j, Hole::CutDimensionSet &t)
+void from_json(const nlohmann::json& j, Hole::CutDimensionSet& t)
 {
     t.name = j["name"].get<std::string>();
 
@@ -2200,38 +2212,39 @@ void from_json(const nlohmann::json &j, Hole::CutDimensionSet &t)
     else if (thread_type_string == "metricfine")
         t.thread_type = Hole::CutDimensionSet::MetricFine;
     else
-        throw Base::IndexError(std::string("Thread type ‘") + thread_type_string + "’ unsupported");
+        throw Base::IndexError(std::string("Thread type '") + thread_type_string + "' unsupported");
 
     std::string  cut_type_string = j["cut_type"].get<std::string>();
     if (cut_type_string == "counterbore") {
         t.cut_type = Hole::CutDimensionSet::Counterbore;
         t.bore_data = j["data"].get<std::vector<Hole::CounterBoreDimension> >();
         t.angle = 0.0;
-    } else if (cut_type_string == "countersink") {
+    }
+    else if (cut_type_string == "countersink") {
         t.cut_type = Hole::CutDimensionSet::Countersink;
         t.sink_data = j["data"].get<std::vector<Hole::CounterSinkDimension> >();
         t.angle = j["angle"].get<double>();
     }
     else
-        throw Base::IndexError(std::string("Cut type ‘") + cut_type_string + "’ unsupported");
+        throw Base::IndexError(std::string("Cut type '") + cut_type_string + "' unsupported");
 
     t.name = j["name"].get<std::string>();
 }
 
 void Hole::readCutDefinitions()
 {
-    std::vector<std::string> dirs {
+    std::vector<std::string> dirs{
         ::App::Application::getResourceDir() + "Mod/PartDesign/Resources/Hole",
         ::App::Application::getUserAppDataDir() + "PartDesign/Hole"
     };
 
     std::clog << "Looking for thread definitions in: ";
-    for (auto &i : dirs)
+    for (auto& i : dirs)
         std::clog << i << " ";
     std::clog << "\n";
-    for (auto &dir : dirs) {
-        std::vector<::Base::FileInfo> files { ::Base::FileInfo(dir).getDirectoryContent() };
-        for (const auto &f : files) {
+    for (auto& dir : dirs) {
+        std::vector<::Base::FileInfo> files{ ::Base::FileInfo(dir).getDirectoryContent() };
+        for (const auto& f : files) {
             if (f.extension() == "json") {
                 try {
                     std::ifstream input(f.filePath());
@@ -2240,8 +2253,8 @@ void Hole::readCutDefinitions()
                     CutDimensionSet screwtype = j.get<CutDimensionSet>();
                     addCutType(screwtype);
                 }
-                catch(std::exception &e) {
-                    std::cerr << "Failed reading ‘" << f.filePath() << "’ with: "<< e.what() << "\n";
+                catch (std::exception& e) {
+                    std::cerr << "Failed reading '" << f.filePath() << "' with: " << e.what() << "\n";
                 }
             }
         }

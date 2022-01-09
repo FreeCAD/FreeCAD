@@ -30,7 +30,7 @@
 # include <Precision.hxx>
 #endif
 
-#include "ui_TaskPadParameters.h"
+#include "ui_TaskPadPocketParameters.h"
 #include "TaskPadParameters.h"
 #include <Gui/Command.h>
 #include <Gui/ViewProvider.h>
@@ -89,7 +89,6 @@ void TaskPadParameters::updateUI(int index)
     bool isMidplaneEnabled    = false;
     bool isMidplaneVisible    = false;
     bool isReversedEnabled    = false;
-    bool isReversedVisible    = false;
     bool isFaceEditEnabled    = false;
 
     Modes mode = static_cast<Modes>(index);
@@ -97,20 +96,15 @@ void TaskPadParameters::updateUI(int index)
     if (mode == Modes::Dimension) {
         isLengthEditVisible = true;
         ui->lengthEdit->selectNumber();
-        // Make sure that the spin box has the focus to get key events
-        // Calling setFocus() directly doesn't work because the spin box is not
-        // yet visible.
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
         isMidplaneEnabled = !ui->checkBoxReversed->isChecked();
         isMidplaneVisible = true;
         // Reverse only makes sense if Midplane is not true
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
-        isReversedVisible = true;
     }
     else if (mode == Modes::ToLast || mode == Modes::ToFirst) {
         isOffsetEditVisible = true;
         isReversedEnabled = true;
-        isReversedVisible = true;
     }
     else if (mode == Modes::ToFace) {
         isOffsetEditVisible = true;
@@ -120,15 +114,11 @@ void TaskPadParameters::updateUI(int index)
         if (ui->lineFaceName->property("FeatureName").isNull())
             onButtonFace(true);
         isReversedEnabled = true;
-        isReversedVisible = true;
     }
     else if (mode == Modes::TwoDimensions) {
         isLengthEditVisible  = true;
         isLengthEdit2Visible = true;
-        isMidplaneEnabled    = !ui->checkBoxReversed->isChecked();
-        isMidplaneVisible    = true;
-        isReversedEnabled    = !ui->checkBoxMidplane->isChecked();
-        isReversedVisible    = true;
+        isReversedEnabled    = true;
     }
 
     ui->lengthEdit->setVisible( isLengthEditVisible );
@@ -144,7 +134,6 @@ void TaskPadParameters::updateUI(int index)
     ui->checkBoxMidplane->setVisible( isMidplaneVisible );
 
     ui->checkBoxReversed->setEnabled( isReversedEnabled );
-    ui->checkBoxReversed->setVisible( isReversedVisible );
 
     ui->lengthEdit2->setVisible( isLengthEdit2Visible );
     ui->lengthEdit2->setEnabled( isLengthEdit2Visible );

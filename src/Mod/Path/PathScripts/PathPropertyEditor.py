@@ -31,35 +31,36 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Task panel editor for Properties"
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class _PropertyEditor(object):
-    '''Base class of all property editors - just outlines the TableView delegate interface.'''
+    """Base class of all property editors - just outlines the TableView delegate interface."""
+
     def __init__(self, obj, prop):
-        self.obj  = obj
+        self.obj = obj
         self.prop = prop
 
     def widget(self, parent):
-        '''widget(parent) ... called by the delegate to get a new editor widget.
-        Must be implemented by subclasses and return the widget.'''
-        pass # pylint: disable=unnecessary-pass
+        """widget(parent) ... called by the delegate to get a new editor widget.
+        Must be implemented by subclasses and return the widget."""
+        pass  # pylint: disable=unnecessary-pass
 
     def setEditorData(self, widget):
-        '''setEditorData(widget) ... called by the delegate to initialize the editor.
+        """setEditorData(widget) ... called by the delegate to initialize the editor.
         The widget is the object returned by widget().
-        Must be implemented by subclasses.'''
-        pass # pylint: disable=unnecessary-pass
+        Must be implemented by subclasses."""
+        pass  # pylint: disable=unnecessary-pass
 
     def setModelData(self, widget):
-        '''setModelData(widget) ... called by the delegate to store new values.
-        Must be implemented by subclasses.'''
-        pass # pylint: disable=unnecessary-pass
+        """setModelData(widget) ... called by the delegate to store new values.
+        Must be implemented by subclasses."""
+        pass  # pylint: disable=unnecessary-pass
 
     def propertyValue(self):
         return self.obj.getPropertyByName(self.prop)
@@ -70,8 +71,9 @@ class _PropertyEditor(object):
     def displayString(self):
         return self.propertyValue()
 
+
 class _PropertyEditorBool(_PropertyEditor):
-    '''Editor for boolean values - uses a combo box.'''
+    """Editor for boolean values - uses a combo box."""
 
     def widget(self, parent):
         return QtGui.QComboBox(parent)
@@ -85,21 +87,22 @@ class _PropertyEditorBool(_PropertyEditor):
     def setModelData(self, widget):
         self.setProperty(widget.currentText() == str(True))
 
+
 class _PropertyEditorString(_PropertyEditor):
-    '''Editor for string values - uses a line edit.'''
+    """Editor for string values - uses a line edit."""
 
     def widget(self, parent):
         return QtGui.QLineEdit(parent)
 
     def setEditorData(self, widget):
-        text = '' if self.propertyValue() is None else self.propertyValue()
+        text = "" if self.propertyValue() is None else self.propertyValue()
         widget.setText(text)
 
     def setModelData(self, widget):
         self.setProperty(widget.text())
 
-class _PropertyEditorQuantity(_PropertyEditor):
 
+class _PropertyEditorQuantity(_PropertyEditor):
     def widget(self, parent):
         return QtGui.QLineEdit(parent)
 
@@ -117,23 +120,26 @@ class _PropertyEditorQuantity(_PropertyEditor):
 
     def displayString(self):
         if self.propertyValue() is None:
-            return ''
+            return ""
         return self.propertyValue().getUserPreferred()[0]
 
+
 class _PropertyEditorAngle(_PropertyEditorQuantity):
-    '''Editor for angle values - uses a line edit'''
+    """Editor for angle values - uses a line edit"""
 
     def defaultQuantity(self):
         return FreeCAD.Units.Quantity(0, FreeCAD.Units.Angle)
 
+
 class _PropertyEditorLength(_PropertyEditorQuantity):
-    '''Editor for length values - uses a line edit.'''
+    """Editor for length values - uses a line edit."""
 
     def defaultQuantity(self):
         return FreeCAD.Units.Quantity(0, FreeCAD.Units.Length)
 
+
 class _PropertyEditorPercent(_PropertyEditor):
-    '''Editor for percent values - uses a spin box.'''
+    """Editor for percent values - uses a spin box."""
 
     def widget(self, parent):
         return QtGui.QSpinBox(parent)
@@ -148,8 +154,9 @@ class _PropertyEditorPercent(_PropertyEditor):
     def setModelData(self, widget):
         self.setProperty(widget.value())
 
+
 class _PropertyEditorInteger(_PropertyEditor):
-    '''Editor for integer values - uses a spin box.'''
+    """Editor for integer values - uses a spin box."""
 
     def widget(self, parent):
         return QtGui.QSpinBox(parent)
@@ -163,8 +170,9 @@ class _PropertyEditorInteger(_PropertyEditor):
     def setModelData(self, widget):
         self.setProperty(widget.value())
 
+
 class _PropertyEditorFloat(_PropertyEditor):
-    '''Editor for float values - uses a double spin box.'''
+    """Editor for float values - uses a double spin box."""
 
     def widget(self, parent):
         return QtGui.QDoubleSpinBox(parent)
@@ -178,20 +186,20 @@ class _PropertyEditorFloat(_PropertyEditor):
     def setModelData(self, widget):
         self.setProperty(widget.value())
 
-class _PropertyEditorFile(_PropertyEditor):
 
+class _PropertyEditorFile(_PropertyEditor):
     def widget(self, parent):
         return QtGui.QLineEdit(parent)
 
     def setEditorData(self, widget):
-        text = '' if self.propertyValue() is None else self.propertyValue()
+        text = "" if self.propertyValue() is None else self.propertyValue()
         widget.setText(text)
 
     def setModelData(self, widget):
         self.setProperty(widget.text())
 
-class _PropertyEditorEnumeration(_PropertyEditor):
 
+class _PropertyEditorEnumeration(_PropertyEditor):
     def widget(self, parent):
         return QtGui.QComboBox(parent)
 
@@ -203,25 +211,28 @@ class _PropertyEditorEnumeration(_PropertyEditor):
     def setModelData(self, widget):
         self.setProperty(widget.currentText())
 
+
 _EditorFactory = {
-        'App::PropertyAngle'       : _PropertyEditorAngle,
-        'App::PropertyBool'        : _PropertyEditorBool,
-        'App::PropertyDistance'    : _PropertyEditorLength,
-        'App::PropertyEnumeration' : _PropertyEditorEnumeration,
-        #'App::PropertyFile'        : _PropertyEditorFile,
-        'App::PropertyFloat'       : _PropertyEditorFloat,
-        'App::PropertyInteger'     : _PropertyEditorInteger,
-        'App::PropertyLength'      : _PropertyEditorLength,
-        'App::PropertyPercent'     : _PropertyEditorPercent,
-        'App::PropertyString'      : _PropertyEditorString,
-        }
+    "App::PropertyAngle": _PropertyEditorAngle,
+    "App::PropertyBool": _PropertyEditorBool,
+    "App::PropertyDistance": _PropertyEditorLength,
+    "App::PropertyEnumeration": _PropertyEditorEnumeration,
+    #'App::PropertyFile'        : _PropertyEditorFile,
+    "App::PropertyFloat": _PropertyEditorFloat,
+    "App::PropertyInteger": _PropertyEditorInteger,
+    "App::PropertyLength": _PropertyEditorLength,
+    "App::PropertyPercent": _PropertyEditorPercent,
+    "App::PropertyString": _PropertyEditorString,
+}
+
 
 def Types():
-    '''Return the types of properties supported.'''
+    """Return the types of properties supported."""
     return [t for t in _EditorFactory]
 
+
 def Editor(obj, prop):
-    '''Returns an editor class to be used for the given property.'''
+    """Returns an editor class to be used for the given property."""
     factory = _EditorFactory[obj.getTypeIdOfProperty(prop)]
     if factory:
         return factory(obj, prop)

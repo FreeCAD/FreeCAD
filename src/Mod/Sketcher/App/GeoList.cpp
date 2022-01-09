@@ -342,7 +342,7 @@ GeoListModel<GeometryFacadeUniquePtr>::GeoListModel(
     }
 }
 
-template <>
+template <> SketcherExport
 GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>::~GeoListModel()
 {
     // GeometryFacade is responsible for taken ownership of its pointers and deleting them.
@@ -351,8 +351,20 @@ GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>::~GeoListModel()
 
 
 // instantiate the types so that other translation units can access template constructors
-template class GeoListModel<Part::Geometry *>;
-template class GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>;
+template class SketcherExport GeoListModel<Part::Geometry *>;
+#if !defined(__MINGW32__)
+template class SketcherExport GeoListModel<std::unique_ptr<const Sketcher::GeometryFacade>>;
+#else
+// Remark: It looks like when implementing a method of GeoListModel for GeometryFacadeUniquePtr then under MinGW
+// the explicit template instantiation doesn't do anything. As workaround all other methods must be declared separately
+template SketcherExport const Part::Geometry* GeoListModel<GeometryFacadeUniquePtr>::getGeometryFromGeoId(int geoId) const;
+template SketcherExport const Sketcher::GeometryFacade* GeoListModel<GeometryFacadeUniquePtr>::getGeometryFacadeFromGeoId(int geoId) const;
+template SketcherExport int GeoListModel<GeometryFacadeUniquePtr>::getGeoIdFromGeomListIndex(int index) const;
+template SketcherExport int GeoListModel<GeometryFacadeUniquePtr>::getVertexIdFromGeoElementId(const Sketcher::GeoElementId &) const;
+template SketcherExport GeoElementId GeoListModel<GeometryFacadeUniquePtr>::getGeoElementIdFromVertexId(int);
+template SketcherExport Base::Vector3d GeoListModel<GeometryFacadeUniquePtr>::getPoint(int geoId, Sketcher::PointPos pos) const;
+template SketcherExport Base::Vector3d GeoListModel<GeometryFacadeUniquePtr>::getPoint(const GeoElementId &) const;
+#endif
 
 
 } // namespace Sketcher

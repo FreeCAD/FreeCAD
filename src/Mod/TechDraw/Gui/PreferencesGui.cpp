@@ -41,7 +41,7 @@
 #include "PreferencesGui.h"
 
 //getters for parameters used in multiple places.
-//ensure this is in sync with preference page uis
+//ensure this is in sync with preference page user interfaces
 
 using namespace TechDrawGui;
 using namespace TechDraw;

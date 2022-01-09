@@ -59,7 +59,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintPressure */
 
 TaskFemConstraintPressure::TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintPressure")
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintPressure")
 { //Note change "pressure" in line above to new constraint name
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintPressure();
@@ -105,8 +105,10 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(ViewProviderFemConstraintPr
     }
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()),  this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()),  this, SLOT(removeFromSelection()));
+    connect(ui->btnAdd, SIGNAL(toggled(bool)),
+            this, SLOT(_addToSelection(bool)));
+    connect(ui->btnRemove, SIGNAL(toggled(bool)),
+            this, SLOT(_removeFromSelection(bool)));
 
     updateUI();
 }
@@ -259,6 +261,12 @@ bool TaskFemConstraintPressure::event(QEvent *e)
 
 void TaskFemConstraintPressure::changeEvent(QEvent *)
 {
+}
+
+void TaskFemConstraintPressure::clearButtons(const SelectionChangeModes notThis)
+{
+    if (notThis != refAdd) ui->btnAdd->setChecked(false);
+    if (notThis != refRemove) ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

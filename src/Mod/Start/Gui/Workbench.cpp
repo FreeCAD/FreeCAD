@@ -38,6 +38,7 @@
 #include <Gui/Selection.h>
 #include <Gui/ToolBoxManager.h>
 #include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -74,9 +75,13 @@ void StartGui::Workbench::loadStartPage()
     // Ensure that we don't open the Start page multiple times
     QString title = QCoreApplication::translate("Workbench", "Start page");
     QList<QWidget*> ch = Gui::getMainWindow()->windows();
-    for (QList<QWidget*>::const_iterator c = ch.begin(); c != ch.end(); ++c) {
-        if ((*c)->windowTitle() == title)
+    for (QList<QWidget*>::const_iterator c = ch.cbegin(); c != ch.cend(); ++c) {
+        if ((*c)->windowTitle() == title) {
+            Gui::MDIView* mdi = qobject_cast<Gui::MDIView*>((*c));
+            if (mdi)
+                Gui::getMainWindow()->setActiveWindow(mdi);
             return;
+        }
     }
 
     try {

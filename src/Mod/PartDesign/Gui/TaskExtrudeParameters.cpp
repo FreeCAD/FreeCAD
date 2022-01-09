@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,7 +31,7 @@
 # include <QSignalBlocker>
 #endif
 
-#include "ui_TaskPadParameters.h"
+#include "ui_TaskPadPocketParameters.h"
 #include "TaskExtrudeParameters.h"
 #include <Base/UnitsApi.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
@@ -46,7 +46,7 @@ using namespace Gui;
 TaskExtrudeParameters::TaskExtrudeParameters(ViewProviderSketchBased *SketchBasedView, QWidget *parent,
                                              const std::string& pixmapname, const QString& parname)
     : TaskSketchBasedParameters(SketchBasedView, parent, pixmapname, parname)
-    , ui(new Ui_TaskPadParameters)
+    , ui(new Ui_TaskPadPocketParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -522,6 +522,7 @@ void TaskExtrudeParameters::onMidplaneChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Midplane.setValue(on);
+    ui->checkBoxReversed->setEnabled(!on);
     tryRecomputeFeature();
 }
 
@@ -529,6 +530,7 @@ void TaskExtrudeParameters::onReversedChanged(bool on)
 {
     PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
     extrude->Reversed.setValue(on);
+    ui->checkBoxMidplane->setEnabled(!on);
     // update the direction
     tryRecomputeFeature();
     updateDirectionEdits();
@@ -616,16 +618,6 @@ void TaskExtrudeParameters::translateFaceName()
             ui->lineFaceName->setText(parts[0]);
         }
     }
-}
-
-double TaskExtrudeParameters::getLength(void) const
-{
-    return ui->lengthEdit->value().getValue();
-}
-
-double TaskExtrudeParameters::getLength2(void) const
-{
-    return ui->lengthEdit2->value().getValue();
 }
 
 double TaskExtrudeParameters::getOffset(void) const

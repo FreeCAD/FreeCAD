@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,10 +24,8 @@
 #ifndef PARTDESIGN_FEATURE_EXTRUDE_H
 #define PARTDESIGN_FEATURE_EXTRUDE_H
 
-#include <App/PropertyUnits.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-
 #include "FeatureSketchBased.h"
 
 namespace PartDesign
@@ -48,6 +46,8 @@ public:
     App::PropertyBool        AlongSketchNormal;
     App::PropertyLength      Offset;
     App::PropertyLinkSub     ReferenceAxis;
+
+    static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
 
     /** @name methods override feature */
     //@{

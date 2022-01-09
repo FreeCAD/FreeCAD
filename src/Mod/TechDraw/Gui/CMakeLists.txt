@@ -54,6 +54,7 @@ else()
 endif()
 
 set(TechDrawGui_UIC_SRCS
+    DlgPageChooser.ui
     DlgPrefsTechDrawAdvanced.ui
     DlgPrefsTechDrawAnnotation.ui
     DlgPrefsTechDrawColors.ui
@@ -66,6 +67,7 @@ set(TechDrawGui_UIC_SRCS
     TaskActiveView.ui
     TaskBalloon.ui
     TaskCosmeticLine.ui
+    TaskSelectLineAttributes.ui
     TaskCosVertex.ui
     TaskCenterLine.ui
     TaskDetail.ui
@@ -108,6 +110,7 @@ SET(TechDrawGui_SRCS
     CommandCreateDims.cpp
     CommandDecorate.cpp
     CommandAnnotate.cpp
+    CommandExtensionDims.cpp
     CommandExtensionPack.cpp
     Resources/TechDraw.qrc
     PreCompiled.cpp
@@ -117,6 +120,9 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
+    DlgPageChooser.ui
+    DlgPageChooser.cpp
+    DlgPageChooser.h
     DlgPrefsTechDrawGeneral.ui
     DlgPrefsTechDrawGeneralImp.cpp
     DlgPrefsTechDrawGeneralImp.h
@@ -178,6 +184,9 @@ SET(TechDrawGui_SRCS
     TaskWeldingSymbol.ui
     TaskWeldingSymbol.cpp
     TaskWeldingSymbol.h
+    TaskSelectLineAttributes.ui
+    TaskSelectLineAttributes.cpp
+    TaskSelectLineAttributes.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
@@ -367,6 +376,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskActiveView.ui
     TaskDetail.ui
     TaskCosmeticLine.ui
+    TaskSelectLineAttributes.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

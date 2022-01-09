@@ -32,6 +32,7 @@
 #include <string>
 #include <bitset>
 #include <boost/signals2.hpp>
+#include <FCGlobal.h>
 
 namespace Py {
 class Object;
@@ -440,7 +441,7 @@ public:
     // if the order of the elements in the list relevant?
     // if yes, certain operations, like restoring must make sure that the
     // order is kept despite errors.
-    inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); };
+    inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); }
     inline bool isOrderRelevant() const { return this->testStatus(Status::Ordered);}
 
 };
@@ -496,6 +497,8 @@ public:
     const_reference operator[] (int idx) const {return _lValueList[idx];} 
 
     virtual bool isSame(const Property &other) const override {
+        if (&other == this)
+            return true;
         return this->getTypeId() == other.getTypeId()
             && this->getValue() == static_cast<decltype(this)>(&other)->getValue();
     }

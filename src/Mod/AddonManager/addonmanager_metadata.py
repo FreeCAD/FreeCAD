@@ -22,8 +22,8 @@
 
 import FreeCAD
 
-import tempfile
 import os
+import io
 import hashlib
 from typing import Dict, List
 
@@ -33,35 +33,20 @@ from PySide2.QtCore import QObject
 import addonmanager_utilities as utils
 from AddonManagerRepo import AddonManagerRepo
 
+translate = FreeCAD.Qt.translate
 
-class MetadataDownloadWorker(QObject):
-    """A worker for downloading package.xml and associated icon(s)
 
-    To use, instantiate an object of this class and call the start_fetch() function
-    with a QNetworkAccessManager. It is expected that many of these objects will all
-    be created and associated with the same QNAM, which will then handle the actual
-    asynchronous downloads in some Qt-defined number of threads. To monitor progress
-    you should connect to the QNAM's "finished" signal, and ensure it is called the
-    number of times you expect based on how many workers you have enqueued.
-
-    """
-
+class DownloadWorker(QObject):
     updated = QtCore.Signal(AddonManagerRepo)
 
-    def __init__(self, parent, repo:AddonManagerRepo, index:Dict[str,str]):
-        """ repo is an AddonManagerRepo object, and index is a dictionary of SHA1 hashes of the package.xml files in the cache """
+    def __init__(self, parent, url: str):
+        """repo is an AddonManagerRepo object, and index is a dictionary of SHA1 hashes of the package.xml files in the cache"""
 
         super().__init__(parent)
-        self.repo = repo
-        self.index = index
-        self.store = os.path.join(
-            FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
-        )
-        self.last_sha1 = ""
-        self.url = self.repo.metadata_url
+        self.url = url
 
-    def start_fetch(self, network_manager:QtNetwork.QNetworkAccessManager):
-        """Asynchronously begin the network access. Intended as a set-and-forget black box for downloading metadata."""
+    def start_fetch(self, network_manager: QtNetwork.QNetworkAccessManager):
+        """Asynchronously begin the network access. Intended as a set-and-forget black box for downloading files."""
 
         self.request = QtNetwork.QNetworkRequest(QtCore.QUrl(self.url))
         self.request.setAttribute(
@@ -82,19 +67,43 @@ class MetadataDownloadWorker(QObject):
         # For now just blindly follow all redirects
         self.fetch_task.redirectAllowed.emit()
 
-    def on_ssl_error(self, reply:str, errors:List[str]):
-        FreeCAD.Console.PrintWarning(f"Error with encrypted connection:\n")
+    def on_ssl_error(self, reply: str, errors: List[str]):
+        FreeCAD.Console.PrintWarning(
+            translate("AddonsInstaller", "Error with encrypted connection") + "\n:"
+        )
         FreeCAD.Console.PrintWarning(reply)
         for error in errors:
             FreeCAD.Console.PrintWarning(error)
 
+
+class MetadataDownloadWorker(DownloadWorker):
+    """A worker for downloading package.xml and associated icon(s)
+
+    To use, instantiate an object of this class and call the start_fetch() function
+    with a QNetworkAccessManager. It is expected that many of these objects will all
+    be created and associated with the same QNAM, which will then handle the actual
+    asynchronous downloads in some Qt-defined number of threads. To monitor progress
+    you should connect to the QNAM's "finished" signal, and ensure it is called the
+    number of times you expect based on how many workers you have enqueued.
+
+    """
+
+    def __init__(self, parent, repo: AddonManagerRepo, index: Dict[str, str]):
+        """repo is an AddonManagerRepo object, and index is a dictionary of SHA1 hashes of the package.xml files in the cache"""
+
+        super().__init__(parent, repo.metadata_url)
+        self.repo = repo
+        self.index = index
+        self.store = os.path.join(
+            FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
+        )
+        self.last_sha1 = ""
+
     def resolve_fetch(self):
-        """ Called when the data fetch completed, either with an error, or if it found the metadata file """
+        """Called when the data fetch completed, either with an error, or if it found the metadata file"""
 
         if self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
-            FreeCAD.Console.PrintLog(
-                f"Found a metadata file for {self.repo.name}\n"
-            )
+            FreeCAD.Console.PrintLog(f"Found a package.xml file for {self.repo.name}\n")
             self.repo.repo_type = AddonManagerRepo.RepoType.PACKAGE
             new_xml = self.fetch_task.readAll()
             hasher = hashlib.sha1()
@@ -131,8 +140,9 @@ class MetadataDownloadWorker(QObject):
         ):
             pass
         else:
-            FreeCAD.Console.PrintWarning( 
-                translate("AddonsInstaller", "Failed to connect to") + f" {self.url}:\n {self.fetch_task.error()}\n"
+            FreeCAD.Console.PrintWarning(
+                translate("AddonsInstaller", "Failed to connect to URL")
+                + f":\n{self.url}\n {self.fetch_task.error()}\n"
             )
 
     def update_local_copy(self, new_xml):
@@ -154,7 +164,7 @@ class MetadataDownloadWorker(QObject):
 
         if not icon:
             # If there is no icon set for the entire package, see if there are
-            # any workbenches, which are required to have icons, and grab the first 
+            # any workbenches, which are required to have icons, and grab the first
             # one we find:
             content = self.repo.metadata.Content
             if "workbench" in content:
@@ -175,4 +185,71 @@ class MetadataDownloadWorker(QObject):
             with open(cache_file, "wb") as icon_file:
                 icon_file.write(icon_data)
                 self.repo.cached_icon_filename = cache_file
+        self.updated.emit(self.repo)
+
+
+class DependencyDownloadWorker(DownloadWorker):
+    """A worker for downloading metadata.txt"""
+
+    def __init__(self, parent, repo: AddonManagerRepo):
+        super().__init__(parent, utils.construct_git_url(repo, "metadata.txt"))
+        self.repo = repo
+
+    def resolve_fetch(self):
+        """Called when the data fetch completed, either with an error, or if it found the metadata file"""
+
+        if self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
+            FreeCAD.Console.PrintLog(
+                f"Found a metadata.txt file for {self.repo.name}\n"
+            )
+            new_deps = self.fetch_task.readAll()
+            self.parse_file(new_deps.data().decode("utf8"))
+        elif (
+            self.fetch_task.error()
+            == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError
+        ):
+            pass
+        elif (
+            self.fetch_task.error()
+            == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError
+        ):
+            pass
+        else:
+            FreeCAD.Console.PrintWarning(
+                translate("AddonsInstaller", "Failed to connect to URL")
+                + f":\n{self.url}\n {self.fetch_task.error()}\n"
+            )
+
+    def parse_file(self, data: str) -> None:
+        f = io.StringIO(data)
+        while True:
+            line = f.readline()
+            if not line:
+                break
+            if line.startswith("workbenches="):
+                depswb = line.split("=")[1].split(",")
+                for wb in depswb:
+                    wb_name = wb.strip()
+                    if wb_name:
+                        self.repo.requires.add(wb_name)
+                        FreeCAD.Console.PrintLog(
+                            f"{self.repo.display_name} requires FreeCAD Addon '{wb_name}'\n"
+                        )
+
+            elif line.startswith("pylibs="):
+                depspy = line.split("=")[1].split(",")
+                for pl in depspy:
+                    if pl.strip():
+                        self.repo.python_requires.add(pl.strip())
+                        FreeCAD.Console.PrintLog(
+                            f"{self.repo.display_name} requires python package '{pl.strip()}'\n"
+                        )
+            elif line.startswith("optionalpylibs="):
+                opspy = line.split("=")[1].split(",")
+                for pl in opspy:
+                    if pl.strip():
+                        self.repo.python_optional.add(pl.strip())
+                        FreeCAD.Console.PrintLog(
+                            f"{self.repo.display_name} optionally imports python package '{pl.strip()}'\n"
+                        )
         self.updated.emit(self.repo)

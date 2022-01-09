@@ -72,6 +72,8 @@ public:
     virtual const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && getValue() == static_cast<decltype(this)>(&other)->getValue()
             && _Unit == static_cast<decltype(this)>(&other)->_Unit;

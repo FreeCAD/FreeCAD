@@ -54,6 +54,7 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
 
 using namespace FemGui;
@@ -62,7 +63,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintDisplacement */
 
 TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintDisplacement")
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintDisplacement")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintDisplacement();
@@ -197,8 +198,10 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     ui->rotzfree->blockSignals(false);
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()),  this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()),  this, SLOT(removeFromSelection()));
+    connect(ui->btnAdd, SIGNAL(toggled(bool)),
+            this, SLOT(_addToSelection(bool)));
+    connect(ui->btnRemove, SIGNAL(toggled(bool)),
+            this, SLOT(_removeFromSelection(bool)));
 
     updateUI();
 }
@@ -561,6 +564,12 @@ void TaskFemConstraintDisplacement::changeEvent(QEvent *)
 //        ui->retranslateUi(proxy);
 //        ui->if_pressure->blockSignals(false);
 //    }
+}
+
+void TaskFemConstraintDisplacement::clearButtons(const SelectionChangeModes notThis)
+{
+    if (notThis != refAdd) ui->btnAdd->setChecked(false);
+    if (notThis != refRemove) ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

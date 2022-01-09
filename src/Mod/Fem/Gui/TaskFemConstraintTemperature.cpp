@@ -61,7 +61,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintTemperature */
 
 TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintTemperature")
+  : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintTemperature")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintTemperature();
@@ -120,8 +120,10 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstr
     }
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()),  this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()),  this, SLOT(removeFromSelection()));
+    connect(ui->btnAdd, SIGNAL(toggled(bool)),
+            this, SLOT(_addToSelection(bool)));
+    connect(ui->btnRemove, SIGNAL(toggled(bool)),
+            this, SLOT(_removeFromSelection(bool)));
 
     updateUI();
 }
@@ -314,6 +316,12 @@ void TaskFemConstraintTemperature::changeEvent(QEvent *)
 //        ui->retranslateUi(proxy);
 //        ui->if_pressure->blockSignals(false);
 //    }
+}
+
+void TaskFemConstraintTemperature::clearButtons(const SelectionChangeModes notThis)
+{
+    if (notThis != refAdd) ui->btnAdd->setChecked(false);
+    if (notThis != refRemove) ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

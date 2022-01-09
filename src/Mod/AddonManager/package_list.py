@@ -43,6 +43,13 @@ class ListDisplayStyle(IntEnum):
     EXPANDED = 1
 
 
+class StatusFilter(IntEnum):
+    ANY = 0
+    INSTALLED = 1
+    NOT_INSTALLED = 2
+    UPDATE_AVAILABLE = 3
+
+
 class PackageList(QWidget):
     """A widget that shows a list of packages and various widgets to control the display of the list"""
 
@@ -60,6 +67,7 @@ class PackageList(QWidget):
 
         self.ui.listPackages.clicked.connect(self.on_listPackages_clicked)
         self.ui.comboPackageType.currentIndexChanged.connect(self.update_type_filter)
+        self.ui.comboStatus.currentIndexChanged.connect(self.update_status_filter)
         self.ui.lineEditFilter.textChanged.connect(self.update_text_filter)
         self.ui.buttonCompactLayout.clicked.connect(
             lambda: self.set_view_style(ListDisplayStyle.COMPACT)
@@ -75,6 +83,8 @@ class PackageList(QWidget):
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         package_type = pref.GetInt("PackageTypeSelection", 1)
         self.ui.comboPackageType.setCurrentIndex(package_type)
+        status = pref.GetInt("StatusSelection", 0)
+        self.ui.comboStatus.setCurrentIndex(status)
 
     def setModel(self, model):
         self.item_model = model
@@ -88,6 +98,9 @@ class PackageList(QWidget):
             self.ui.buttonExpandedLayout.setChecked(True)
         else:
             self.ui.buttonCompactLayout.setChecked(True)
+
+        self.item_filter.setHidePy2(pref.GetBool("HidePy2", True))
+        self.item_filter.setHideObsolete(pref.GetBool("HideObsolete", True))
 
     def on_listPackages_clicked(self, index: QModelIndex):
         source_selection = self.item_filter.mapToSource(index)
@@ -105,11 +118,24 @@ class PackageList(QWidget):
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         pref.SetInt("PackageTypeSelection", type_filter)
 
+    def update_status_filter(self, status_filter: int) -> None:
+        """hide/show rows corresponding to the status filter
+
+        status_filter is an integer: 0 for any, 1 for installed, 2 for not installed, and 3 for update available
+
+        """
+
+        self.item_filter.setStatusFilter(status_filter)
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        pref.SetInt("StatusSelection", status_filter)
+
     def update_text_filter(self, text_filter: str) -> None:
         """filter name and description by the regex specified by text_filter"""
 
         if text_filter:
-            if hasattr(self.item_filter, "setFilterRegularExpression"): # Added in Qt 5.12
+            if hasattr(
+                self.item_filter, "setFilterRegularExpression"
+            ):  # Added in Qt 5.12
                 test_regex = QRegularExpression(text_filter)
             else:
                 test_regex = QRegExp(text_filter)
@@ -128,7 +154,7 @@ class PackageList(QWidget):
             self.ui.labelFilterValidity.show()
         else:
             self.ui.labelFilterValidity.hide()
-        if hasattr(self.item_filter, "setFilterRegularExpression"): # Added in Qt 5.12
+        if hasattr(self.item_filter, "setFilterRegularExpression"):  # Added in Qt 5.12
             self.item_filter.setFilterRegularExpression(text_filter)
         else:
             self.item_filter.setFilterRegExp(text_filter)
@@ -332,6 +358,32 @@ class PackageListItemDelegate(QStyledItemDelegate):
                             f"\n{maintainer['name']} <{maintainer['email']}>"
                         )
                 self.widget.ui.labelMaintainer.setText(maintainers_string)
+        elif repo.macro and repo.macro.parsed:
+            self.widget.ui.labelDescription.setText(repo.macro.comment)
+            self.widget.ui.labelVersion.setText(repo.macro.version)
+            if repo.macro.date:
+                if repo.macro.version:
+                    new_label = (
+                        "v"
+                        + repo.macro.version
+                        + ", "
+                        + translate("AddonsInstaller", "updated")
+                        + " "
+                        + repo.macro.date
+                    )
+                else:
+                    new_label = (
+                        translate("AddonsInstaller", "Updated") + " " + repo.macro.date
+                    )
+                self.widget.ui.labelVersion.setText(new_label)
+            if self.displayStyle == ListDisplayStyle.EXPANDED:
+                if repo.macro.author:
+                    caption = translate("AddonsInstaller", "Author")
+                    self.widget.ui.labelMaintainer.setText(
+                        caption + ": " + repo.macro.author
+                    )
+                else:
+                    self.widget.ui.labelMaintainer.setText("")
         else:
             self.widget.ui.labelDescription.setText("")
             self.widget.ui.labelVersion.setText("")
@@ -413,9 +465,7 @@ class PackageListItemDelegate(QStyledItemDelegate):
 
         return result
 
-    def paint(
-        self, painter: QPainter, option: QStyleOptionViewItem, _: QModelIndex
-    ):
+    def paint(self, painter: QPainter, option: QStyleOptionViewItem, _: QModelIndex):
         painter.save()
         self.widget.resize(option.rect.size())
         painter.translate(option.rect.topLeft())
@@ -429,12 +479,29 @@ class PackageListFilter(QSortFilterProxyModel):
     def __init__(self):
         super().__init__()
         self.package_type = 0  # Default to showing everything
+        self.status = 0  # Default to showing any
         self.setSortCaseSensitivity(Qt.CaseInsensitive)
+        self.hide_obsolete = False
+        self.hide_py2 = False
 
     def setPackageFilter(
         self, type: int
     ) -> None:  # 0=All, 1=Workbenches, 2=Macros, 3=Preference Packs
         self.package_type = type
+        self.invalidateFilter()
+
+    def setStatusFilter(
+        self, status: int
+    ) -> None:  # 0=Any, 1=Installed, 2=Not installed, 3=Update available
+        self.status = status
+        self.invalidateFilter()
+
+    def setHidePy2(self, hide_py2: bool) -> None:
+        self.hide_py2 = hide_py2
+        self.invalidateFilter()
+
+    def setHideObsolete(self, hide_obsolete: bool) -> None:
+        self.hide_obsolete = hide_obsolete
         self.invalidateFilter()
 
     def lessThan(self, left, right) -> bool:
@@ -456,15 +523,47 @@ class PackageListFilter(QSortFilterProxyModel):
             if not data.contains_preference_pack():
                 return False
 
+        if self.status == StatusFilter.INSTALLED:
+            if data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+                return False
+        elif self.status == StatusFilter.NOT_INSTALLED:
+            if data.update_status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
+                return False
+        elif self.status == StatusFilter.UPDATE_AVAILABLE:
+            if data.update_status != AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+                return False
+
+        # If it's not installed, check to see if it's Py2 only
+        if (
+            data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            and self.hide_py2
+            and data.python2
+        ):
+            return False
+
+        # If it's not installed, check to see if it's marked obsolete
+        if (
+            data.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED
+            and self.hide_obsolete
+            and data.obsolete
+        ):
+            return False
+
         name = data.display_name
         desc = data.description
-        if hasattr(self, "filterRegularExpression"): # Added in Qt 5.12
+        if hasattr(self, "filterRegularExpression"):  # Added in Qt 5.12
             re = self.filterRegularExpression()
             if re.isValid():
                 re.setPatternOptions(QRegularExpression.CaseInsensitiveOption)
                 if re.match(name).hasMatch():
                     return True
                 if re.match(desc).hasMatch():
+                    return True
+                if (
+                    data.macro
+                    and data.macro.comment
+                    and re.match(data.macro.comment).hasMatch()
+                ):
                     return True
                 return False
             else:
@@ -527,6 +626,20 @@ class Ui_PackageList(object):
 
         self.horizontalLayout_6.addWidget(self.comboPackageType)
 
+        self.labelStatus = QLabel(Form)
+        self.labelStatus.setObjectName("labelStatus")
+
+        self.horizontalLayout_6.addWidget(self.labelStatus)
+
+        self.comboStatus = QComboBox(Form)
+        self.comboStatus.addItem("")
+        self.comboStatus.addItem("")
+        self.comboStatus.addItem("")
+        self.comboStatus.addItem("")
+        self.comboStatus.setObjectName("comboStatus")
+
+        self.horizontalLayout_6.addWidget(self.comboStatus)
+
         self.lineEditFilter = QLineEdit(Form)
         self.lineEditFilter.setObjectName("lineEditFilter")
         self.lineEditFilter.setClearButtonEnabled(True)
@@ -545,8 +658,6 @@ class Ui_PackageList(object):
         self.listPackages.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.listPackages.setProperty("showDropIndicator", False)
         self.listPackages.setSelectionMode(QAbstractItemView.NoSelection)
-        self.listPackages.setLayoutMode(QListView.Batched)
-        self.listPackages.setBatchSize(15)
         self.listPackages.setResizeMode(QListView.Adjust)
         self.listPackages.setUniformItemSizes(False)
         self.listPackages.setAlternatingRowColors(True)
@@ -576,7 +687,24 @@ class Ui_PackageList(object):
         self.comboPackageType.setItemText(
             3, QCoreApplication.translate("AddonsInstaller", "Preference Packs", None)
         )
-
+        self.labelStatus.setText(
+            QCoreApplication.translate("AddonsInstaller", "Status:", None)
+        )
+        self.comboStatus.setItemText(
+            StatusFilter.ANY, QCoreApplication.translate("AddonsInstaller", "Any", None)
+        )
+        self.comboStatus.setItemText(
+            StatusFilter.INSTALLED,
+            QCoreApplication.translate("AddonsInstaller", "Installed", None),
+        )
+        self.comboStatus.setItemText(
+            StatusFilter.NOT_INSTALLED,
+            QCoreApplication.translate("AddonsInstaller", "Not installed", None),
+        )
+        self.comboStatus.setItemText(
+            StatusFilter.UPDATE_AVAILABLE,
+            QCoreApplication.translate("AddonsInstaller", "Update available", None),
+        )
         self.lineEditFilter.setPlaceholderText(
             QCoreApplication.translate("AddonsInstaller", "Filter", None)
         )

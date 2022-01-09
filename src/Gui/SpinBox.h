@@ -46,6 +46,18 @@ public:
     void setExpression(std::shared_ptr<App::Expression> expr);
 
 protected:
+    /*! Expression handling */
+    //@{
+    enum class Number {
+        KeepCurrent = 0,
+        SetIfNumber = 1
+    };
+    void showInvalidExpression(const QString&);
+    void showValidExpression(Number number);
+    void clearExpression();
+    void updateExpression();
+    //@}
+
     void onChange();
     virtual void setNumberExpression(App::NumberExpression*) = 0;
     void resizeWidget();

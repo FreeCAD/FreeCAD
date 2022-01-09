@@ -59,7 +59,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintHeatflux */
 
 TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintHeatflux")
+  : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintHeatflux")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintHeatflux();
@@ -130,8 +130,10 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     }
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()),  this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()),  this, SLOT(removeFromSelection()));
+    connect(ui->btnAdd, SIGNAL(toggled(bool)),
+            this, SLOT(_addToSelection(bool)));
+    connect(ui->btnRemove, SIGNAL(toggled(bool)),
+            this, SLOT(_removeFromSelection(bool)));
 
     ui->if_ambienttemp->blockSignals(false);
     //ui->if_facetemp->blockSignals(false);
@@ -373,6 +375,12 @@ void TaskFemConstraintHeatflux::changeEvent(QEvent *e)
         ui->if_ambienttemp->blockSignals(false);
         ui->if_filmcoef->blockSignals(false);
     }
+}
+
+void TaskFemConstraintHeatflux::clearButtons(const SelectionChangeModes notThis)
+{
+    if (notThis != refAdd) ui->btnAdd->setChecked(false);
+    if (notThis != refRemove) ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************

@@ -23,6 +23,8 @@
 #ifndef _TECHDRAW_GEOMETRYOBJECT_H
 #define _TECHDRAW_GEOMETRYOBJECT_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Compound.hxx>
 #include <gp_Pnt.hxx>
@@ -105,12 +107,12 @@ public:
     Base::BoundBox3d calcBoundingBox() const;
 
     const std::vector<VertexPtr>   & getVertexGeometry() const { return vertexGeom; }
-    const std::vector<BaseGeom *> & getEdgeGeometry() const { return edgeGeom; }
-    const std::vector<BaseGeom *> getVisibleFaceEdges(bool smooth, bool seam) const;
+    const BaseGeomPtrVector & getEdgeGeometry() const { return edgeGeom; }
+    const BaseGeomPtrVector getVisibleFaceEdges(bool smooth, bool seam) const;
     const std::vector<FacePtr>     & getFaceGeometry() const { return faceGeom; }
     
     void setVertexGeometry(std::vector<VertexPtr> newVerts) {vertexGeom = newVerts; }
-    void setEdgeGeometry(std::vector<BaseGeom*> newGeoms) {edgeGeom = newGeoms; }
+    void setEdgeGeometry(BaseGeomPtrVector newGeoms) {edgeGeom = newGeoms; }
 
     void projectShape(const TopoDS_Shape &input,
                       const gp_Ax2 &viewAxis);
@@ -147,7 +149,7 @@ public:
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
     void addVertex(TechDraw::VertexPtr v);
-    void addEdge(TechDraw::BaseGeom* bg);
+    void addEdge(TechDraw::BaseGeomPtr bg);
 
 
     int addCosmeticVertex(CosmeticVertex* cv);
@@ -161,10 +163,10 @@ public:
     int addCosmeticEdge(Base::Vector3d start,
                         Base::Vector3d end,
                         std::string tagString);
-    int addCosmeticEdge(TechDraw::BaseGeom* base,
+    int addCosmeticEdge(TechDraw::BaseGeomPtr base,
                         std::string tagString);
 
-    int addCenterLine(TechDraw::BaseGeom* bg,
+    int addCenterLine(TechDraw::BaseGeomPtr bg,
                       std::string tag);
 /*                       int s = 0, int si = -1);*/
 
@@ -192,7 +194,7 @@ protected:
     bool isWithinArc(double theta, double first, double last, bool cw) const;
 
     // Geometry
-    std::vector<BaseGeom *> edgeGeom;
+    BaseGeomPtrVector edgeGeom;
     std::vector<VertexPtr> vertexGeom;
     std::vector<FacePtr> faceGeom;
 

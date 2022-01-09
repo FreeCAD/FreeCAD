@@ -20,7 +20,6 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_Transform.hxx>
@@ -34,10 +33,6 @@
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBndLib.hxx>
 # include <Bnd_Box.hxx>
-#endif
-
-#ifndef FC_DEBUG
-#include <ctime>
 #endif
 
 #include "FeatureTransformed.h"
@@ -179,11 +174,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     std::string overlapMode = Overlap.getValueAsString();
     bool overlapDetectionMode = overlapMode == "Detect";
 
-#ifndef FC_DEBUG
-    std::clock_t start0;
-    start0 = std::clock();
-#endif
-
     std::vector<App::DocumentObject*> originals = Originals.getValues();
     if (originals.empty()) // typically InsideMultiTransform
         return App::DocumentObject::StdReturn;
@@ -266,16 +256,19 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         std::vector<TopoDS_Shape> shapes;
         bool overlapping = false;
 
-        std::vector<gp_Trsf>::const_iterator t = transformations.begin();
-        bool first = true;
-        for (; t != transformations.end(); ++t) {
+        std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
+
+        // First transformation is skipped since it should not be part of the toolShape.
+        transformIter++;
+
+        for (; transformIter != transformations.end(); ++transformIter) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
             BRepBuilderAPI_Copy copy(origShape);
 
             shape = copy.Shape();
 
-            BRepBuilderAPI_Transform mkTrf(shape, *t, false); // No need to copy, now
+            BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
             if (!mkTrf.IsDone())
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
             shape = mkTrf.Shape();
@@ -283,16 +276,15 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             shapes.emplace_back(shape);
             builder.Add(compShape, shape);
 
-            if (overlapDetectionMode && !first)
+            if (overlapDetectionMode)
                 overlapping =  overlapping || (countSolids(TopoShape(origShape).fuse(shape))==1);
 
-            if (first)
-                first = false;
         }
 
         TopoDS_Shape toolShape;
 
-#ifndef FC_DEBUG
+
+#ifdef FC_DEBUG
         if (overlapping || overlapMode == "Overlap mode")
             Base::Console().Message("Transformed: Overlapping feature mode (fusing tool shapes)\n");
         else
@@ -300,7 +292,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 #endif
 
         if (overlapping || overlapMode == "Overlap mode")
-            toolShape = TopoShape(origShape).fuse(shapes, Precision::Confusion());
+            toolShape = TopoShape(shape).fuse(shapes, Precision::Confusion());
         else
             toolShape = compShape;
 
@@ -334,10 +326,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     this->Shape.setValue(getSolid(support));  // picking the first solid
     rejected = getRemainingSolids(support);
-
-#ifndef FC_DEBUG
-    Base::Console().Message("Transformed: Elapsed CPU time: %f s\n", (std::clock() - start0  ) / (double)(CLOCKS_PER_SEC));
-#endif
 
     return App::DocumentObject::StdReturn;
 }

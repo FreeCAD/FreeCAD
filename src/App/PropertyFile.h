@@ -104,6 +104,8 @@ public:
     virtual unsigned int getMemSize (void) const;
 
     virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
         return getTypeId() == other.getTypeId()
             && _BaseFileName == static_cast<decltype(this)>(&other)->_BaseFileName
             && _OriginalName == static_cast<decltype(this)>(&other)->_OriginalName

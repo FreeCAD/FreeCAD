@@ -162,7 +162,7 @@ void DrawPage::onChanged(const App::Property* prop)
 //Page is just a container. It doesn't "do" anything.
 App::DocumentObjectExecReturn *DrawPage::execute(void)
 {
-    return App::DocumentObject::StdReturn;
+    return App::DocumentObject::execute();
 }
 
 // this is now irrelevant, b/c DP::execute doesn't do anything. 

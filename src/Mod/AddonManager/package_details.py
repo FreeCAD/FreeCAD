@@ -31,11 +31,13 @@ from datetime import date, timedelta
 
 import FreeCAD
 
-from addonmanager_utilities import translate  # this needs to be as is for pylupdate
+import addonmanager_utilities as utils
 from addonmanager_workers import ShowWorker, GetMacroDetailsWorker
 from AddonManagerRepo import AddonManagerRepo
 
 import inspect
+
+translate = FreeCAD.Qt.translate
 
 
 class PackageDetails(QWidget):
@@ -62,7 +64,9 @@ class PackageDetails(QWidget):
         self.ui.buttonInstall.clicked.connect(lambda: self.install.emit(self.repo))
         self.ui.buttonUninstall.clicked.connect(lambda: self.uninstall.emit(self.repo))
         self.ui.buttonUpdate.clicked.connect(lambda: self.update.emit(self.repo))
-        self.ui.buttonCheckForUpdate.clicked.connect(lambda: self.check_for_update.emit(self.repo))
+        self.ui.buttonCheckForUpdate.clicked.connect(
+            lambda: self.check_for_update.emit(self.repo)
+        )
 
     def show_repo(self, repo: AddonManagerRepo, reload: bool = False) -> None:
 
@@ -91,31 +95,34 @@ class PackageDetails(QWidget):
             self.ui.buttonExecute.hide()
 
         if repo.update_status != AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
-            installed_version_string = ""
-            if repo.installed_version:
-                installed_version_string = translate("AddonsInstaller", "Version") + " "
-                installed_version_string += repo.installed_version
-            else:
-                installed_version_string = (
-                    translate(
-                        "AddonsInstaller", "Unknown version (no package.xml file found)"
-                    )
-                    + " "
-                )
 
+            version = repo.installed_version
+            date = ""
+            installed_version_string = "<h3>"
             if repo.updated_timestamp:
-                installed_version_string += (
-                    " " + translate("AddonsInstaller", "installed on") + " "
-                )
-                installed_version_string += (
+                date = (
                     QDateTime.fromTime_t(repo.updated_timestamp)
                     .date()
                     .toString(Qt.SystemLocaleShortDate)
                 )
-                installed_version_string += ". "
+            if version and date:
+                installed_version_string += (
+                    translate(
+                        "AddonsInstaller", f"Version {version} installed on {date}"
+                    )
+                    + ". "
+                )
+            elif version:
+                installed_version_string += (
+                    translate("AddonsInstaller", f"Version {version} installed") + ". "
+                )
+            elif date:
+                installed_version_string += (
+                    translate("AddonsInstaller", f"Installed on {date}") + ". "
+                )
             else:
                 installed_version_string += (
-                    translate("AddonsInstaller", "installed") + ". "
+                    translate("AddonsInstaller", "Installed") + ". "
                 )
 
             if repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
@@ -127,12 +134,20 @@ class PackageDetails(QWidget):
                     )
                     installed_version_string += repo.metadata.Version
                     installed_version_string += ".</b>"
+                elif repo.macro and repo.macro.version:
+                    installed_version_string += (
+                        "<b>"
+                        + translate("AddonsInstaller", "Update available to version")
+                        + " "
+                    )
+                    installed_version_string += repo.macro.version
+                    installed_version_string += ".</b>"
                 else:
                     installed_version_string += (
                         "<b>"
                         + translate(
                             "AddonsInstaller",
-                            "Update available to unknown version (no package.xml file found)",
+                            "An update is available",
                         )
                         + ".</b>"
                     )
@@ -151,7 +166,7 @@ class PackageDetails(QWidget):
                     + "."
                 )
             elif repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
-                
+
                 pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
                 autocheck = pref.GetBool("AutoCheck", False)
                 if autocheck:
@@ -160,23 +175,36 @@ class PackageDetails(QWidget):
                     )
                 else:
                     installed_version_string += (
-                        translate("AddonsInstaller", "Automatic update checks disabled") + "."
+                        translate("AddonsInstaller", "Automatic update checks disabled")
+                        + "."
                     )
 
+            installed_version_string += "</h3>"
+            self.ui.labelPackageDetails.setText(installed_version_string)
+            if repo.update_status == AddonManagerRepo.UpdateStatus.UPDATE_AVAILABLE:
+                self.ui.labelPackageDetails.setStyleSheet(
+                    "color:" + utils.attention_color_string()
+                )
+            else:
+                self.ui.labelPackageDetails.setStyleSheet(
+                    "color:" + utils.bright_color_string()
+                )
+            self.ui.labelPackageDetails.show()
 
-            basedir = FreeCAD.getUserAppDataDir()
-            moddir = os.path.join(basedir, "Mod", repo.name)
-            installed_version_string += (
-                "<br/>"
-                + translate("AddonsInstaller", "Installation location")
-                + ": "
-                + moddir
+            if repo.macro is not None:
+                moddir = FreeCAD.getUserMacroDir(True)
+            else:
+                basedir = FreeCAD.getUserAppDataDir()
+                moddir = os.path.join(basedir, "Mod", repo.name)
+            installationLocationString = (
+                translate("AddonsInstaller", "Installation location") + ": " + moddir
             )
 
-            self.ui.labelPackageDetails.setText(installed_version_string)
-            self.ui.labelPackageDetails.show()
+            self.ui.labelInstallationLocation.setText(installationLocationString)
+            self.ui.labelInstallationLocation.show()
         else:
             self.ui.labelPackageDetails.hide()
+            self.ui.labelInstallationLocation.hide()
 
         if repo.update_status == AddonManagerRepo.UpdateStatus.NOT_INSTALLED:
             self.ui.buttonInstall.show()
@@ -204,6 +232,29 @@ class PackageDetails(QWidget):
             self.ui.buttonUpdate.hide()
             self.ui.buttonCheckForUpdate.hide()
 
+        if repo.obsolete:
+            self.ui.labelWarningInfo.show()
+            self.ui.labelWarningInfo.setText(
+                "<h1>"
+                + translate("AddonsInstaller", "WARNING: This addon is obsolete")
+                + "</h1>"
+            )
+            self.ui.labelWarningInfo.setStyleSheet(
+                "color:" + utils.warning_color_string()
+            )
+        elif repo.python2:
+            self.ui.labelWarningInfo.show()
+            self.ui.labelWarningInfo.setText(
+                "<h1>"
+                + translate("AddonsInstaller", "WARNING: This addon is Python 2 Only")
+                + "</h1>"
+            )
+            self.ui.labelWarningInfo.setStyleSheet(
+                "color:" + utils.warning_color_string()
+            )
+        else:
+            self.ui.labelWarningInfo.hide()
+
     @classmethod
     def cache_path(self, repo: AddonManagerRepo) -> str:
         cache_path = FreeCAD.getUserCachePath()
@@ -230,15 +281,15 @@ class PackageDetails(QWidget):
                 or force
             ):
                 if force:
-                    FreeCAD.Console.PrintMessage(
+                    FreeCAD.Console.PrintLog(
                         f"Forced README cache update for {self.repo.name}\n"
                     )
                 elif download_interrupted:
-                    FreeCAD.Console.PrintMessage(
+                    FreeCAD.Console.PrintLog(
                         f"Restarting interrupted README download for {self.repo.name}\n"
                     )
                 else:
-                    FreeCAD.Console.PrintMessage(
+                    FreeCAD.Console.PrintLog(
                         f"Cache expired, downloading README for {self.repo.name} again\n"
                     )
                 os.remove(readme_cache_file)
@@ -386,6 +437,17 @@ class Ui_PackageDetails(object):
         self.labelPackageDetails.hide()
 
         self.verticalLayout_2.addWidget(self.labelPackageDetails)
+
+        self.labelInstallationLocation = QLabel(PackageDetails)
+        self.labelInstallationLocation.setTextInteractionFlags(Qt.TextSelectableByMouse)
+        self.labelInstallationLocation.hide()
+
+        self.verticalLayout_2.addWidget(self.labelInstallationLocation)
+
+        self.labelWarningInfo = QLabel(PackageDetails)
+        self.labelWarningInfo.hide()
+
+        self.verticalLayout_2.addWidget(self.labelWarningInfo)
 
         self.textBrowserReadMe = QTextBrowser(PackageDetails)
         self.textBrowserReadMe.setObjectName("textBrowserReadMe")

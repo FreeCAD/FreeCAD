@@ -80,40 +80,40 @@ Helix::Helix()
 
     const char* group = "Helix";
     ADD_PROPERTY_TYPE(Base, (Base::Vector3d(0.0, 0.0, 0.0)), group, App::Prop_ReadOnly,
-        "The center point of the helix' start; derived from the reference axis.");
+        QT_TRANSLATE_NOOP("App::Property", "The center point of the helix' start; derived from the reference axis."));
     ADD_PROPERTY_TYPE(Axis, (Base::Vector3d(0.0, 1.0, 0.0)), group, App::Prop_ReadOnly,
-        "The helix' direction; derived from the reference axis.");
+        QT_TRANSLATE_NOOP("App::Property", "The helix' direction; derived from the reference axis."));
     ADD_PROPERTY_TYPE(ReferenceAxis, (0), group, App::Prop_None,
-        "The reference axis of the helix.");
+        QT_TRANSLATE_NOOP("App::Property", "The reference axis of the helix."));
     ADD_PROPERTY_TYPE(Mode, (long(initialMode)), group, App::Prop_None,
-        "The helix input mode specifies which properties are set by the user.\n"
-        "Dependent properties are then calculated.");
+        QT_TRANSLATE_NOOP("App::Property", "The helix input mode specifies which properties are set by the user.\n"
+            "Dependent properties are then calculated."));
     Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(Pitch, (10.0), group, App::Prop_None,
-        "The axial distance between two turns.");
+        QT_TRANSLATE_NOOP("App::Property", "The axial distance between two turns."));
     ADD_PROPERTY_TYPE(Height, (30.0), group, App::Prop_None,
-        "The height of the helix' path, not accounting for the extent of the profile.");
+        QT_TRANSLATE_NOOP("App::Property", "The height of the helix' path, not accounting for the extent of the profile."));
     ADD_PROPERTY_TYPE(Turns, (3.0), group, App::Prop_None,
-        "The number of turns in the helix.");
+        QT_TRANSLATE_NOOP("App::Property", "The number of turns in the helix."));
     Turns.setConstraints(&floatTurns);
     ADD_PROPERTY_TYPE(Angle, (0.0), group, App::Prop_None,
-        "The angle of the cone that forms a hull around the helix.\n"
-        "Non-zero values turn the helix into a conical spiral.\n"
-        "Positive values make the radius grow, nevatige shrink.");
+        QT_TRANSLATE_NOOP("App::Property", "The angle of the cone that forms a hull around the helix.\n"
+            "Non-zero values turn the helix into a conical spiral.\n"
+            "Positive values make the radius grow, nevatige shrink."));
     Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(Growth, (0.0), group, App::Prop_None,
-        "The growth of the helix' radius per turn.\n"
-        "Non-zero values turn the helix into a conical spiral.");
+        QT_TRANSLATE_NOOP("App::Property", "The growth of the helix' radius per turn.\n"
+            "Non-zero values turn the helix into a conical spiral."));
     ADD_PROPERTY_TYPE(LeftHanded, (false), group, App::Prop_None,
-        "Sets the turning direction to left handed,\n"
-        "i.e. counter-clockwise when moving along its axis.");
+        QT_TRANSLATE_NOOP("App::Property", "Sets the turning direction to left handed,\n"
+            "i.e. counter-clockwise when moving along its axis."));
     ADD_PROPERTY_TYPE(Reversed, (false), group, App::Prop_None,
-        "Determines whether the helix points in the opposite direction of the axis.");
+        QT_TRANSLATE_NOOP("App::Property", "Determines whether the helix points in the opposite direction of the axis."));
     ADD_PROPERTY_TYPE(Outside, (false), group, App::Prop_None,
-        "If set, the result will be the intersection of the profile and the preexisting body.");
+        QT_TRANSLATE_NOOP("App::Property", "If set, the result will be the intersection of the profile and the preexisting body."));
     ADD_PROPERTY_TYPE(HasBeenEdited, (false), group, App::Prop_Hidden,
-        "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
-        "so that self intersection is avoided.");
+        QT_TRANSLATE_NOOP("App::Property", "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
+            "so that self intersection is avoided."));
 
     setReadWriteStatusForMode(initialMode);
 }

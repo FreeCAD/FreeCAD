@@ -37,8 +37,7 @@ endif()
 
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
-    TaskPadParameters.ui
-    TaskPocketParameters.ui
+    TaskPadPocketParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskDraftParameters.ui
@@ -149,10 +148,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskSketchBasedParameters.h
     TaskExtrudeParameters.cpp
     TaskExtrudeParameters.h
-    TaskPadParameters.ui
+    TaskPadPocketParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
-    TaskPocketParameters.ui
     TaskPocketParameters.cpp
     TaskPocketParameters.h
     TaskChamferParameters.ui

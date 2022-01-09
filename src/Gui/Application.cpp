@@ -2295,7 +2295,8 @@ void Application::runApplication(void)
             flock->lock();
         }
         catch (const boost::interprocess::interprocess_exception& e) {
-            Base::Console().Warning("Failed to create a file lock for the IPC: %s\n", e.what());
+            QString msg = QString::fromLocal8Bit(e.what());
+            Base::Console().Warning("Failed to create a file lock for the IPC: %s\n", msg.toUtf8().constData());
         }
 
         Base::Console().Log("Init: Executing event loop...\n");
@@ -2325,7 +2326,7 @@ void Application::runApplication(void)
     }
     catch (...) {
         // catching nasty stuff coming out of the event loop
-        Base::Console().Error("Event loop left through unknwown unhandled exception\n");
+        Base::Console().Error("Event loop left through unknown unhandled exception\n");
         App::Application::destructObserver();
         throw;
     }
@@ -2457,7 +2458,8 @@ void Application::checkForPreviousCrashes()
         }
     }
     catch (const boost::interprocess::interprocess_exception& e) {
-        Base::Console().Warning("Failed check for previous crashes because of IPC error: %s\n", e.what());
+        QString msg = QString::fromLocal8Bit(e.what());
+        Base::Console().Warning("Failed check for previous crashes because of IPC error: %s\n", msg.toUtf8().constData());
     }
 }
 

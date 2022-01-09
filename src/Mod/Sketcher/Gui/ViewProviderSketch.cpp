@@ -185,11 +185,11 @@ void ViewProviderSketch::ParameterObserver::subscribeToParameters()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     hGrp->Attach(this);
 
-    ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrpskg->Attach(this);
-
     ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     hGrp2->Attach(this);
+
+    ParameterGrp::handle hGrpv = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    hGrpv->Attach(this);
 }
 
 void ViewProviderSketch::ParameterObserver::unsubscribeToParameters()
@@ -197,11 +197,11 @@ void ViewProviderSketch::ParameterObserver::unsubscribeToParameters()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     hGrp->Detach(this);
 
-    ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrpskg->Detach(this);
-
     ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     hGrp2->Detach(this);
+
+    ParameterGrp::handle hGrpv = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    hGrpv->Detach(this);
 }
 
 void ViewProviderSketch::ParameterObserver::initParameters()

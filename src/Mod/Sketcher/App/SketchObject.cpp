@@ -1082,8 +1082,8 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
     for (const auto ptr : this->Constraints.getValues())
         constraints.push_back(ptr->clone());
     std::vector< Constraint* > filteredConstraints(0);
-    for (auto it = sGeoIds.rbegin(); it != sGeoIds.rend(); ++it) {
-        int GeoId = *it;
+    for (auto itGeo = sGeoIds.rbegin(); itGeo != sGeoIds.rend(); ++itGeo) {
+        int GeoId = *itGeo;
         for (std::vector<Constraint*>::const_iterator it = constraints.begin();
              it != constraints.end(); ++it) {
 
@@ -5922,6 +5922,157 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
 
 
+    return true;
+}
+
+bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
+{
+    Base::StateLocker lock(managedoperation, true); // TODO: Check if this is still valid: no need to check input data validity as this is an sketchobject managed operation.
+
+    #if OCC_VERSION_HEX < 0x060900
+        THROWMT(Base::NotImplementedError, QT_TRANSLATE_NOOP("Exceptions", "This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher."))
+    #endif
+
+    // handling unacceptable cases
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."));
+
+    if (multiplicity == 0)
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "Knot cannot have zero multiplicity."));
+
+    const Part::Geometry *geo = getGeometry(GeoId);
+
+    if(geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+        THROWMT(Base::TypeError,QT_TRANSLATE_NOOP("Exceptions", "The Geometry Index (GeoId) provided is not a B-spline curve."));
+
+    const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+
+    int degree = bsp->getDegree();
+    double firstParam = bsp->getFirstParameter();
+    double lastParam = bsp->getLastParameter();
+
+    if (multiplicity > degree)
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "Knot multiplicity cannot be higher than the degree of the BSpline."));
+
+    if (param > lastParam || param < firstParam)
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "Knot cannot be inserted outside the BSpline parameter range."));
+
+    std::unique_ptr<Part::GeomBSplineCurve> bspline;
+
+    // run the command
+    try {
+      bspline.reset(static_cast<Part::GeomBSplineCurve *>(bsp->clone()));
+
+      bspline->insertKnot(param, multiplicity);
+    }
+    catch (const Base::Exception& e) {
+      Base::Console().Error("%s\n", e.what());
+      return false;
+    }
+
+    // once command is run update the internal geometries
+    std::vector<int> delGeoId;
+
+    std::vector<Base::Vector3d> poles = bsp->getPoles();
+    std::vector<Base::Vector3d> newpoles = bspline->getPoles();
+    std::vector<int> prevpole(bsp->countPoles());
+
+    for(int i = 0; i < int(poles.size()); i++)
+        prevpole[i] = -1;
+
+    int taken = 0;
+    for(int j = 0; j < int(poles.size()); j++){
+        for(int i = taken; i < int(newpoles.size()); i++){
+            if( newpoles[i] == poles[j] ) {
+                prevpole[j] = i;
+                taken++;
+                break;
+            }
+        }
+    }
+
+    // on fully removing a knot the knot geometry changes
+    std::vector<double> knots = bsp->getKnots();
+    std::vector<double> newknots = bspline->getKnots();
+    std::vector<int> prevknot(bsp->countKnots());
+
+    for(int i = 0; i < int(knots.size()); i++)
+        prevknot[i] = -1;
+
+    taken = 0;
+    for(int j = 0; j < int(knots.size()); j++){
+        for(int i = taken; i < int(newknots.size()); i++){
+            if( newknots[i] == knots[j] ) {
+                prevknot[j] = i;
+                taken++;
+                break;
+            }
+        }
+    }
+
+    const std::vector< Sketcher::Constraint * > &cvals = Constraints.getValues();
+
+    std::vector< Constraint * > newcVals(0);
+
+    // modify pole constraints
+    for (std::vector< Sketcher::Constraint * >::const_iterator it= cvals.begin(); it != cvals.end(); ++it) {
+        if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+        {
+            if((*it)->AlignmentType == Sketcher::BSplineControlPoint) {
+                if (prevpole[(*it)->InternalAlignmentIndex]!=-1) {
+                    assert(prevpole[(*it)->InternalAlignmentIndex] < bspline->countPoles());
+                    Constraint * newConstr = (*it)->clone();
+                    newConstr->InternalAlignmentIndex = prevpole[(*it)->InternalAlignmentIndex];
+                    newcVals.push_back(newConstr);
+                }
+                else { // it is an internal alignment geometry that is no longer valid => delete it and the pole circle
+                    delGeoId.push_back((*it)->First);
+                }
+            }
+            else if((*it)->AlignmentType == Sketcher::BSplineKnotPoint) {
+                if (prevknot[(*it)->InternalAlignmentIndex]!=-1) {
+                    assert(prevknot[(*it)->InternalAlignmentIndex] < bspline->countKnots());
+                    Constraint * newConstr = (*it)->clone();
+                    newConstr->InternalAlignmentIndex = prevknot[(*it)->InternalAlignmentIndex];
+                    newcVals.push_back(newConstr);
+                }
+                else { // it is an internal alignment geometry that is no longer valid => delete it and the knot point
+                    delGeoId.push_back((*it)->First);
+                }
+            }
+            else { // it is a bspline geometry, but not a controlpoint or knot
+                newcVals.push_back(*it);
+            }
+        }
+        else {
+            newcVals.push_back(*it);
+        }
+    }
+
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    std::vector< Part::Geometry * > newVals(vals);
+
+    newVals[GeoId] = bspline.release();
+
+    // Block acceptGeometry in OnChanged to avoid unnecessary checks and updates
+    {
+        Base::StateLocker lock(internaltransaction, true);
+        Geometry.setValues(std::move(newVals));
+
+        this->Constraints.setValues(std::move(newcVals));
+    }
+
+    // Trigger update now
+    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
+    if (!delGeoId.empty()) {
+        delGeometriesExclusiveList(delGeoId);
+    }
+    else {
+        Geometry.touch();
+    }
+
+    // handle this last return
     return true;
 }
 

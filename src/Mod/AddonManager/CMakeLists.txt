@@ -13,7 +13,9 @@ SET(AddonManager_SRCS
     addonmanager_workers.py
     AddonManager.ui
     AddonManagerOptions.ui
+    first_run.ui
     compact_view.py
+    dependency_resolution_dialog.ui
     expanded_view.py
     package_list.py
     package_details.py

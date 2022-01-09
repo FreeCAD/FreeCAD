@@ -419,18 +419,19 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         m_hasGeometry = true;
     } else if (Type.isValue("Radius")){
         int idx = DrawUtil::getIndexFromName(subElements[0]);
-        TechDraw::BaseGeom* base = getViewPart()->getGeomByIndex(idx);
-        TechDraw::Circle* circle;
+        TechDraw::BaseGeomPtr base = getViewPart()->getGeomByIndex(idx);
+        TechDraw::CirclePtr circle;
         arcPoints pts;
         pts.center = Base::Vector3d(0.0,0.0,0.0);
         pts.radius = 0.0;
         if ( (base && base->geomType == TechDraw::GeomType::CIRCLE) ||
            (base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE))  {
-            circle = static_cast<TechDraw::Circle*> (base);
+            circle = std::static_pointer_cast<TechDraw::Circle> (base);
             pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
             pts.radius = circle->radius;
             if (base->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
-                TechDraw::AOC* aoc = static_cast<TechDraw::AOC*> (circle);
+//                TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC> (circle);
+                TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC> (base);
                 pts.isArc = true;
                 pts.onCurve.first  = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
                 pts.midArc         = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
@@ -444,7 +445,8 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
             }
         } else if ((base && base->geomType == TechDraw::GeomType::ELLIPSE)  ||
                    (base && base->geomType == TechDraw::GeomType::ARCOFELLIPSE))  {
-            TechDraw::Ellipse* ellipse = static_cast<TechDraw::Ellipse*> (base);
+            TechDraw::EllipsePtr ellipse;
+            ellipse = std::static_pointer_cast<TechDraw::Ellipse> (base);
             if (ellipse->closed()) {
                 double r1 = ellipse->minor;
                 double r2 = ellipse->major;
@@ -457,7 +459,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * rAvg;   //arbitrary point on edge
                 pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rAvg;  //arbitrary point on edge
             } else {
-                TechDraw::AOE* aoe = static_cast<TechDraw::AOE*> (base);
+                TechDraw::AOEPtr aoe = std::static_pointer_cast<TechDraw::AOE> (base);
                 double r1 = aoe->minor;
                 double r2 = aoe->major;
                 double rAvg = (r1 + r2) / 2.0;
@@ -474,7 +476,8 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rAvg;  //arbitrary point on edge
             }
         } else if (base && base->geomType == TechDraw::GeomType::BSPLINE) {
-            TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*> (base);
+            TechDraw::BSplinePtr spline;
+            spline = std::static_pointer_cast<TechDraw::BSpline> (base);
             if (spline->isCircle()) {
                 bool circ,arc;
                 double rad;
@@ -506,18 +509,18 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         m_hasGeometry = true;
     } else if (Type.isValue("Diameter")){
         int idx = DrawUtil::getIndexFromName(subElements[0]);
-        TechDraw::BaseGeom* base = getViewPart()->getGeomByIndex(idx);
-        TechDraw::Circle* circle;
+        TechDraw::BaseGeomPtr base = getViewPart()->getGeomByIndex(idx);
+        TechDraw::CirclePtr circle;
         arcPoints pts;
         pts.center = Base::Vector3d(0.0,0.0,0.0);
         pts.radius = 0.0;
         if ((base && base->geomType == TechDraw::GeomType::CIRCLE) ||
            (base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE)) {
-            circle = static_cast<TechDraw::Circle*> (base);
+            circle = std::static_pointer_cast<TechDraw::Circle> (base);
             pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
             pts.radius = circle->radius;
             if (base->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
-                TechDraw::AOC* aoc = static_cast<TechDraw::AOC*> (circle);
+                TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC> (circle);
                 pts.isArc = true;
                 pts.onCurve.first  = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
                 pts.midArc         = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
@@ -531,7 +534,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
             }
         } else if ( (base && base->geomType == TechDraw::GeomType::ELLIPSE) ||
                     (base && base->geomType == TechDraw::GeomType::ARCOFELLIPSE) )  {
-            TechDraw::Ellipse* ellipse = static_cast<TechDraw::Ellipse*> (base);
+            TechDraw::EllipsePtr ellipse = std::static_pointer_cast<TechDraw::Ellipse> (base);
             if (ellipse->closed()) {
                 double r1 = ellipse->minor;
                 double r2 = ellipse->major;
@@ -544,7 +547,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * rAvg;   //arbitrary point on edge
                 pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rAvg;  //arbitrary point on edge
            } else {
-                TechDraw::AOE* aoe = static_cast<TechDraw::AOE*> (base);
+                TechDraw::AOEPtr aoe = std::static_pointer_cast<TechDraw::AOE> (base);
                 double r1 = aoe->minor;
                 double r2 = aoe->major;
                 double rAvg = (r1 + r2) / 2.0;
@@ -561,7 +564,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rAvg;  //arbitrary point on edge
            }
         } else if (base && base->geomType == TechDraw::GeomType::BSPLINE) {
-            TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*> (base);
+            TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline> (base);
             if (spline->isCircle()) {
                 bool circ,arc;
                 double rad;
@@ -598,18 +601,18 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         }
         int idx0 = DrawUtil::getIndexFromName(subElements[0]);
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-        TechDraw::BaseGeom* edge0 = getViewPart()->getGeomByIndex(idx0);
-        TechDraw::BaseGeom* edge1 = getViewPart()->getGeomByIndex(idx1);
-        TechDraw::Generic *gen0;
-        TechDraw::Generic *gen1;
+        TechDraw::BaseGeomPtr edge0 = getViewPart()->getGeomByIndex(idx0);
+        TechDraw::BaseGeomPtr edge1 = getViewPart()->getGeomByIndex(idx1);
+        TechDraw::GenericPtr gen0;
+        TechDraw::GenericPtr gen1;
         if (edge0 && edge0->geomType == TechDraw::GeomType::GENERIC) {
-             gen0 = static_cast<TechDraw::Generic*>(edge0);
+             gen0 = std::static_pointer_cast<TechDraw::Generic>(edge0);
         } else {
              Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
              return App::DocumentObject::StdReturn;
         }
         if (edge1 && edge1->geomType == TechDraw::GeomType::GENERIC) {
-             gen1 = static_cast<TechDraw::Generic*>(edge1);
+             gen1 = std::static_pointer_cast<TechDraw::Generic>(edge1);
         } else {
              Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
              return App::DocumentObject::StdReturn;
@@ -1094,10 +1097,10 @@ pointPair DrawViewDimension::getPointsOneEdge()
 
     //TODO: Check for straight line Edge?
     int idx = DrawUtil::getIndexFromName(subElements[0]);
-    TechDraw::BaseGeom* geom = getViewPart()->getGeomByIndex(idx);
-    TechDraw::Generic* gen;
+    TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(idx);
+    TechDraw::GenericPtr gen;
     if (geom && geom->geomType == TechDraw::GeomType::GENERIC) {
-        gen = static_cast<TechDraw::Generic*>(geom);
+        gen = std::static_pointer_cast<TechDraw::Generic>(geom);
     } else {
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt (1)\n",getNameInDocument());
         return result;
@@ -1115,8 +1118,8 @@ pointPair DrawViewDimension::getPointsTwoEdges()
 
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-    TechDraw::BaseGeom* geom0 = getViewPart()->getGeomByIndex(idx0);
-    TechDraw::BaseGeom* geom1 = getViewPart()->getGeomByIndex(idx1);
+    TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeomByIndex(idx0);
+    TechDraw::BaseGeomPtr geom1 = getViewPart()->getGeomByIndex(idx1);
     if ((geom0 == nullptr) ||
         (geom1 == nullptr) ) {
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt (2)\n",getNameInDocument());
@@ -1152,7 +1155,7 @@ pointPair DrawViewDimension::getPointsEdgeVert()
     const std::vector<std::string> &subElements      = References2D.getSubValues();
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-    TechDraw::BaseGeom* e;
+    TechDraw::BaseGeomPtr e;
     TechDraw::VertexPtr v;
     if (DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge") {
         e = getViewPart()->getGeomByIndex(idx0);
@@ -1216,7 +1219,7 @@ bool DrawViewDimension::checkReferences2D() const
                 if (!s.empty()) {
                     int idx = DrawUtil::getIndexFromName(s);
                     if (DrawUtil::getGeomTypeFromName(s) == "Edge") {
-                        TechDraw::BaseGeom* geom = getViewPart()->getGeomByIndex(idx);
+                        TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(idx);
                         if (geom == nullptr) {
                             result = false;
                             break;
@@ -1331,14 +1334,14 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
     bool result = false;
     const std::vector<std::string> &subElements      = References2D.getSubValues();
     int idx = DrawUtil::getIndexFromName(subElements[0]);
-    TechDraw::BaseGeom* base = getViewPart()->getGeomByIndex(idx);
+    TechDraw::BaseGeomPtr base = getViewPart()->getGeomByIndex(idx);
     if ( base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE )  {
-        TechDraw::AOC* aoc = static_cast<TechDraw::AOC*> (base);
+        TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC> (base);
         if (aoc->intersectsArc(s,pointOnCircle)) {
             result = true;
         }
     } else if ( base && base->geomType == TechDraw::GeomType::BSPLINE )  {
-        TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*> (base);
+        TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline> (base);
         if (spline->isCircle()) {
             if (spline->intersectsArc(s,pointOnCircle)) {
                 result = true;

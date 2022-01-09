@@ -50,8 +50,6 @@ True if Draft_rc.__name__ else False
 class ShapeStringTaskPanel:
     """TaskPanel for Draft_ShapeString."""
 
-    oldValueBuffer = False
-
     def __init__(self):
         self.form = QtGui.QWidget()
         self.form.setObjectName("ShapeStringTaskPanel")
@@ -79,6 +77,8 @@ class ShapeStringTaskPanel:
         self.fileSpec = Draft.getParam("FontFile", "")
         self.point = App.Vector(0.0, 0.0, 0.0)
         self.pointPicked = False
+        # Default for the "DontUseNativeFontDialog" preference:
+        self.font_dialog_pref = False
 
         QtCore.QObject.connect(self.task.fcFontFile, QtCore.SIGNAL("fileNameSelected(const QString&)"), self.fileSelect)
         QtCore.QObject.connect(self.task.pbReset, QtCore.SIGNAL("clicked()"), self.resetPoint)
@@ -164,11 +164,11 @@ class ShapeStringTaskPanel:
                 ParamGroup.SetBool("DontUseNativeFontDialog", True)
 
             param = ParamGroup.GetBool("DontUseNativeFontDialog")
-            self.oldValueBuffer = ParamGroup.GetBool("DontUseNativeDialog")
+            self.font_dialog_pref = ParamGroup.GetBool("DontUseNativeDialog")
             ParamGroup.SetBool("DontUseNativeDialog", param)
 
         elif flag == "Restore":
-            ParamGroup.SetBool("DontUseNativeDialog", self.oldValueBuffer)
+            ParamGroup.SetBool("DontUseNativeDialog", self.font_dialog_pref)
 
     def accept(self):
         """Execute when clicking the OK button."""

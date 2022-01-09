@@ -872,25 +872,37 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
+    std::vector<const SMDS_MeshNode*> nodes;
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
-        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        nodes.push_back(aNode);
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
+        double xyz[3];
+        aNode->GetXYZ(xyz);
+        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
 
         if (!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))) {
             // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
-            BRepExtrema_DistShapeShape measure(solid,s);
+            BRepExtrema_DistShapeShape measure(solid, s);
             measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1)
                 continue;
 
             if (measure.Value() < limit)
+#pragma omp critical
+            {
                 result.insert(aNode->GetID());
+            }
         }
     }
     return result;
@@ -909,25 +921,37 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
+    std::vector<const SMDS_MeshNode*> nodes;
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
-        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        nodes.push_back(aNode);
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
+        double xyz[3];
+        aNode->GetXYZ(xyz);
+        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
 
         if (!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))) {
             // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
-            BRepExtrema_DistShapeShape measure(face,s);
+            BRepExtrema_DistShapeShape measure(face, s);
             measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1)
                 continue;
 
             if (measure.Value() < limit)
+#pragma omp critical
+            {
                 result.insert(aNode->GetID());
+            }
         }
     }
 
@@ -947,25 +971,37 @@ std::set<int> FemMesh::getNodesByEdge(const TopoDS_Edge &edge) const
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
+    std::vector<const SMDS_MeshNode*> nodes;
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
-        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        nodes.push_back(aNode);
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
+        double xyz[3];
+        aNode->GetXYZ(xyz);
+        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
 
         if (!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))) {
             // create a vertex
-            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x, vec.y, vec.z));
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
-            BRepExtrema_DistShapeShape measure(edge,s);
+            BRepExtrema_DistShapeShape measure(edge, s);
             measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1)
                 continue;
 
             if (measure.Value() < limit)
+#pragma omp critical
+            {
                 result.insert(aNode->GetID());
+            }
         }
     }
 
@@ -984,13 +1020,24 @@ std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex &vertex) const
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
+    std::vector<const SMDS_MeshNode*> nodes;
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
-        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        nodes.push_back(aNode);
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
+        double xyz[3];
+        aNode->GetXYZ(xyz);
+        Base::Vector3d vec(xyz[0], xyz[1], xyz[2]);
         vec = Mtrx * vec;
 
-        if (Base::DistanceP2(node, vec) <= limit) {
+        if (Base::DistanceP2(node, vec) <= limit)
+#pragma omp critical
+        {
             result.insert(aNode->GetID());
         }
     }

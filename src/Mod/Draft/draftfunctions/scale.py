@@ -33,6 +33,7 @@ import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 import draftfunctions.join as join
 import draftmake.make_copy as make_copy
+import draftmake.make_line as make_line
 
 
 def scale(objectslist, scale=App.Vector(1,1,1),
@@ -187,7 +188,6 @@ def copy_scaled_edge(obj, edge_index, scale, center):
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
-    import Part
     vertex1 = scaleVectorFromCenter(
         obj.Placement.multVec(obj.Points[edge_index]),
         scale, center)
@@ -199,7 +199,7 @@ def copy_scaled_edge(obj, edge_index, scale, center):
         vertex2 = scaleVectorFromCenter(
             obj.Placement.multVec(obj.Points[edge_index+1]),
             scale, center)
-    return Part.makeLine(vertex1, vertex2)
+    return make_line.make_line(vertex1, vertex2)
 
 
 copyScaledEdge = copy_scaled_edge

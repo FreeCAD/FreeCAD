@@ -53,7 +53,7 @@ class TechDrawExport hTrimCurve {
 class TechDrawExport DrawDimHelper {
     public:
     static void makeExtentDim(DrawViewPart* dvp,
-//                              std::vector<TechDraw::BaseGeom*> selEdges,
+//                              std::vector<TechDraw::BaseGeomPtr> selEdges,
                               std::vector<std::string> edgeNames,
                               int direction);
     static gp_Pnt2d findClosestPoint(std::vector<hTrimCurve> hCurve2dList,

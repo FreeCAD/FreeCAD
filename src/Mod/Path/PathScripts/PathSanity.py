@@ -40,12 +40,10 @@ from collections import Counter
 from datetime import datetime
 import os
 import webbrowser
+import subprocess
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
-# Qt translation handling
-
-
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 LOG_MODULE = "PathSanity"
@@ -102,11 +100,11 @@ class CommandPathSanity:
     def GetResources(self):
         return {
             "Pixmap": "Path_Sanity",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP(
                 "Path_Sanity", "Check the path job for common errors"
             ),
             "Accel": "P, S",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_Sanity", "Check the path job for common errors"
             ),
         }
@@ -464,7 +462,7 @@ class CommandPathSanity:
             )
 
         try:
-            result = os.system("asciidoctor {} -o {}".format(reportraw, reporthtml))
+            result = subprocess.run(["asciidoctor", reportraw, "-o", reporthtml])
             if str(result) == "32512":
                 msg = "asciidoctor not found. html cannot be generated."
                 QtGui.QMessageBox.information(None, "Path Sanity", msg)

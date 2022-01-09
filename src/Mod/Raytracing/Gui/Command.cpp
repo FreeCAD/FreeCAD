@@ -31,16 +31,18 @@
 # include <Inventor/SoInput.h>
 # include <Inventor/nodes/SoNode.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
-# include <vector>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <QApplication>
 # include <QDir>
 # include <QFile>
 # include <QFileInfo>
 # include <QMessageBox>
+# include <sstream>
+# include <vector>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -678,11 +680,8 @@ void CmdRaytracingRender::activated(int)
             }
             openCommand("Render project");
             int width = hGrp->GetInt("OutputWidth", 800);
-            std::stringstream w;
-            w << width;
             int height = hGrp->GetInt("OutputHeight", 600);
-            std::stringstream h;
-            h << height;
+
             std::string par = hGrp->GetASCII("OutputParameters", "+P +A");
             doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'rb')",Sel[0].getFeatName());
             doCommand(Doc,"import os,subprocess,tempfile");
@@ -691,12 +690,30 @@ void CmdRaytracingRender::activated(int)
             doCommand(Doc,"f.write(PageFile.read())");
             doCommand(Doc,"f.close()");
             doCommand(Doc,"os.close(fd)");
+
+            renderer = Base::Tools::escapeEncodeFilename(renderer);
+            std::stringstream str;
+            str << "proc = subprocess.Popen(["
+                << "\"" << renderer << "\", ";
+            std::istringstream istr(par);
+            std::string s;
+            while (std::getline(istr, s, ' ')) {
+                s = Base::Tools::escapeEncodeString(s);
+                str << "\"" << s << "\", ";
+            }
+
+            str << "\"+W" << width  << "\", "
+                << "\"+H" << height << "\", "
+                << "\"+O" << imageFile.data() << "\"";
 #ifdef FC_OS_WIN32
             // http://povray.org/documentation/view/3.6.1/603/
-            doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" /EXIT /RENDER '+TempFile)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),imageFile.data());
-#else
-            doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" '+TempFile,shell=True)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),imageFile.data());
+            str << ", \"/EXIT\", \"/RENDER\"";
 #endif
+            str << ", TempFile])\n"
+                << "proc.communicate()";
+
+            doCommand(Doc, str.str().c_str());
+
             if (utf8Name != imageFile) {
                 imageFile = utf8Name;
                 if (QFile::exists(fn))

@@ -253,9 +253,9 @@ void TaskCosmeticLine::updateCosmeticLine(void)
     gp_Pnt gp1(p0.x, p0.y, p0.z);
     gp_Pnt gp2(p1.x, p1.y, p1.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    auto oldGeom = m_ce->m_geometry;
+//    auto oldGeom = m_ce->m_geometry;
     m_ce->m_geometry = TechDraw::BaseGeom::baseFactory(e);
-    delete oldGeom;
+//    delete oldGeom;
 
 //    Gui::Command::updateActive();
 //    Gui::Command::commitCommand();

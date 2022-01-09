@@ -45,7 +45,7 @@ namespace Attacher
 
 class AttachEngine;
 
-//Attention! The numbers assiciated to the modes are permanent, because they are what get written into files.
+//Attention! The numbers associated to the modes are permanent, because they are what get written into files.
 enum eMapMode {
     mmDeactivated,
     mmTranslate,

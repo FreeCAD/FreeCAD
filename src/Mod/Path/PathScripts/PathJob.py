@@ -20,8 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from PathScripts.PathPostProcessor import PostProcessor
-from PySide import QtCore
 import FreeCAD
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
@@ -31,6 +29,8 @@ import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
 import json
 import time
+from PathScripts.PathPostProcessor import PostProcessor
+from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -75,7 +75,6 @@ def isResourceClone(obj, propLink, resourceName):
 
 
 def createResourceClone(obj, orig, name, icon):
-
     clone = Draft.clone(orig)
     clone.Label = "%s-%s" % (name, orig.Label)
     clone.addProperty("App::PropertyString", "PathResource")
@@ -102,9 +101,12 @@ Notification = NotificationClass()
 
 
 class ObjectJob:
-
     def __init__(self, obj, models, templateFile=None):
         self.obj = obj
+        self.tooltip = None
+        self.tooltipArgs = None
+        obj.Proxy = self
+
         obj.addProperty(
             "App::PropertyFile",
             "PostProcessorOutputFile",
@@ -217,6 +219,15 @@ class ObjectJob:
         obj.PostProcessorArgs = PathPreferences.defaultPostProcessorArgs()
         obj.GeometryTolerance = PathPreferences.defaultGeometryTolerance()
 
+        self.setupOperations(obj)
+        self.setupSetupSheet(obj)
+        self.setupBaseModel(obj, models)
+        self.setupToolTable(obj)
+        self.setFromTemplateFile(obj, templateFile)
+        self.setupStock(obj)
+
+    def setupOperations(self, obj):
+        """setupOperations(obj)... setup the Operations group for the Job object."""
         ops = FreeCAD.ActiveDocument.addObject(
             "Path::FeatureCompoundPython", "Operations"
         )
@@ -227,25 +238,6 @@ class ObjectJob:
         obj.Operations = ops
         obj.setEditorMode("Operations", 2)  # hide
         obj.setEditorMode("Placement", 2)
-
-        self.setupSetupSheet(obj)
-        self.setupBaseModel(obj, models)
-        self.setupToolTable(obj)
-
-        self.tooltip = None
-        self.tooltipArgs = None
-
-        obj.Proxy = self
-
-        self.setFromTemplateFile(obj, templateFile)
-        if not obj.Stock:
-            stockTemplate = PathPreferences.defaultStockTemplate()
-            if stockTemplate:
-                obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
-            if not obj.Stock:
-                obj.Stock = PathStock.CreateFromBase(obj)
-        if obj.Stock.ViewObject:
-            obj.Stock.ViewObject.Visibility = False
 
     def setupSetupSheet(self, obj):
         if not getattr(obj, "SetupSheet", None):
@@ -264,10 +256,13 @@ class ObjectJob:
                 PathScripts.PathIconViewProvider.Attach(
                     obj.SetupSheet.ViewObject, "SetupSheet"
                 )
+            obj.SetupSheet.Label = "SetupSheet"
         self.setupSheet = obj.SetupSheet.Proxy
 
     def setupBaseModel(self, obj, models=None):
         PathLog.track(obj.Label, models)
+        addModels = False
+
         if not hasattr(obj, "Model"):
             obj.addProperty(
                 "App::PropertyLink",
@@ -277,6 +272,11 @@ class ObjectJob:
                     "PathJob", "The base objects for all operations"
                 ),
             )
+            addModels = True
+        elif obj.Model is None:
+            addModels = True
+
+        if addModels:
             model = FreeCAD.ActiveDocument.addObject(
                 "App::DocumentObjectGroup", "Model"
             )
@@ -287,6 +287,7 @@ class ObjectJob:
                     [createModelResourceClone(obj, base) for base in models]
                 )
             obj.Model = model
+            obj.Model.Label = "Model"
 
         if hasattr(obj, "Base"):
             PathLog.info(
@@ -297,6 +298,7 @@ class ObjectJob:
             obj.removeProperty("Base")
 
     def setupToolTable(self, obj):
+        addTable = False
         if not hasattr(obj, "Tools"):
             obj.addProperty(
                 "App::PropertyLink",
@@ -306,6 +308,11 @@ class ObjectJob:
                     "PathJob", "Collection of all tool controllers for the job"
                 ),
             )
+            addTable = True
+        elif obj.Tools is None:
+            addTable = True
+
+        if addTable:
             toolTable = FreeCAD.ActiveDocument.addObject(
                 "App::DocumentObjectGroup", "Tools"
             )
@@ -316,6 +323,17 @@ class ObjectJob:
                 toolTable.addObjects(obj.ToolController)
                 obj.removeProperty("ToolController")
             obj.Tools = toolTable
+
+    def setupStock(self, obj):
+        """setupStock(obj)... setup the Stock for the Job object."""
+        if not obj.Stock:
+            stockTemplate = PathPreferences.defaultStockTemplate()
+            if stockTemplate:
+                obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
+            if not obj.Stock:
+                obj.Stock = PathStock.CreateFromBase(obj)
+        if obj.Stock.ViewObject:
+            obj.Stock.ViewObject.Visibility = False
 
     def removeBase(self, obj, base, removeFromModel):
         if isResourceClone(obj, base, None):
@@ -403,13 +421,17 @@ class ObjectJob:
                 obj.Operations.Group = []
                 obj.Operations = ops
                 FreeCAD.ActiveDocument.removeObject(name)
-                ops.Label = label
+                if label == "Unnamed":
+                    ops.Label = "Operations"
+                else:
+                    ops.Label = label
 
     def onDocumentRestored(self, obj):
         self.setupBaseModel(obj)
         self.fixupOperations(obj)
         self.setupSetupSheet(obj)
         self.setupToolTable(obj)
+        self.integrityCheck(obj)
 
         obj.setEditorMode("Operations", 2)  # hide
         obj.setEditorMode("Placement", 2)
@@ -624,7 +646,10 @@ class ObjectJob:
     def nextToolNumber(self):
         # returns the next available toolnumber in the job
         group = self.obj.Tools.Group
-        return sorted([t.ToolNumber for t in group])[-1] + 1
+        if len(group) > 0:
+            return sorted([t.ToolNumber for t in group])[-1] + 1
+        else:
+            return 1
 
     def addToolController(self, tc):
         group = self.obj.Tools.Group
@@ -679,6 +704,49 @@ class ObjectJob:
             self.obj.Operations.Path.Center = center
             for op in self.allOperations():
                 op.Path.Center = center
+
+    def integrityCheck(self, job):
+        """integrityCheck(job)... Return True if job has all expected children objects.  Attempts to restore any missing children."""
+        suffix = ""
+        if len(job.Name) > 3:
+            suffix = job.Name[3:]
+
+        def errorMessage(grp, job):
+            PathLog.error(
+                translate("PathJobGui", "{} corrupt in {} job.".format(grp, job.Name))
+            )
+
+        if not job.Operations:
+            self.setupOperations(job)
+            job.Operations.Label = "Operations" + suffix
+            if not job.Operations:
+                errorMessage("Operations", job)
+                return False
+        if not job.SetupSheet:
+            self.setupSetupSheet(job)
+            job.SetupSheet.Label = "SetupSheet" + suffix
+            if not job.SetupSheet:
+                errorMessage("SetupSheet", job)
+                return False
+        if not job.Model:
+            self.setupBaseModel(job)
+            job.Model.Label = "Model" + suffix
+            if not job.Model:
+                errorMessage("Model", job)
+                return False
+        if not job.Stock:
+            self.setupStock(job)
+            job.Stock.Label = "Stock" + suffix
+            if not job.Stock:
+                errorMessage("Stock", job)
+                return False
+        if not job.Tools:
+            self.setupToolTable(job)
+            job.Tools.Label = "Tools" + suffix
+            if not job.Tools:
+                errorMessage("Tools", job)
+                return False
+        return True
 
     @classmethod
     def baseCandidates(cls):

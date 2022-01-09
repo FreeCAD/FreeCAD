@@ -23,10 +23,11 @@
 
 import os
 import re
-import sys
+import io
 import codecs
 import shutil
-from typing import Dict, Union, List
+import time
+from typing import Dict, Tuple, List, Union
 
 import FreeCAD
 
@@ -56,10 +57,13 @@ class Macro(object):
         self.on_wiki = False
         self.on_git = False
         self.desc = ""
+        self.comment = ""
         self.code = ""
         self.url = ""
         self.version = ""
+        self.date = ""
         self.src_filename = ""
+        self.author = ""
         self.other_files = []
         self.parsed = False
 
@@ -93,46 +97,82 @@ class Macro(object):
             os.path.join(FreeCAD.getUserMacroDir(True), "Macro_" + self.filename)
         )
 
-    def fill_details_from_file(self, filename):
-        with open(filename) as f:
-            # Number of parsed fields of metadata.  For now, __Comment__,
-            # __Web__, __Version__, __Files__.
-            number_of_required_fields = 4
-            re_desc = re.compile(r"^__Comment__\s*=\s*(['\"])(.*)\1")
-            re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1")
-            re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1")
-            re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1")
-            for line in f.readlines():
-                match = re.match(re_desc, line)
-                if match:
-                    self.desc = match.group(2)
-                    number_of_required_fields -= 1
-                match = re.match(re_url, line)
-                if match:
-                    self.url = match.group(2)
-                    number_of_required_fields -= 1
-                match = re.match(re_version, line)
-                if match:
-                    self.version = match.group(2)
-                    number_of_required_fields -= 1
-                match = re.match(re_files, line)
-                if match:
-                    self.other_files = [of.strip() for of in match.group(2).split(",")]
-                    number_of_required_fields -= 1
-                if number_of_required_fields <= 0:
-                    break
-            f.seek(0)
+    def fill_details_from_file(self, filename: str) -> None:
+        with open(filename, errors="replace") as f:
             self.code = f.read()
-            self.parsed = True
+            self.fill_details_from_code(self.code)
+
+    def fill_details_from_code(self, code: str) -> None:
+        # Number of parsed fields of metadata. Overrides anything set previously (the code is considered authoritative).
+        # For now:
+        # __Comment__
+        # __Web__
+        # __Version__
+        # __Files__
+        # __Author__
+        # __Date__
+        max_lines_to_search = 50
+        line_counter = 0
+        number_of_fields = 5
+        ic = re.IGNORECASE  # Shorten the line for Black
+        re_comment = re.compile(r"^__Comment__\s*=\s*(['\"])(.*)\1", flags=ic)
+        re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1", flags=ic)
+        re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1", flags=ic)
+        re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1", flags=ic)
+        re_author = re.compile(r"^__Author__\s*=\s*(['\"])(.*)\1", flags=ic)
+        re_date = re.compile(r"^__Date__\s*=\s*(['\"])(.*)\1", flags=ic)
+
+        f = io.StringIO(code)
+        while f and line_counter < max_lines_to_search:
+            line = f.readline()
+            line_counter += 1
+            if not line.startswith(
+                "__"
+            ):  # Speed things up a bit... this comparison is very cheap
+                continue
+            match = re.match(re_comment, line)
+            if match:
+                self.comment = match.group(2)
+                self.comment = re.sub("<.*?>", "", self.comment)  # Strip any HTML tags
+                number_of_fields -= 1
+            match = re.match(re_author, line)
+            if match:
+                self.author = match.group(2)
+                number_of_fields -= 1
+            match = re.match(re_url, line)
+            if match:
+                self.url = match.group(2)
+                number_of_fields -= 1
+            match = re.match(re_version, line)
+            if match:
+                self.version = match.group(2)
+                number_of_fields -= 1
+            match = re.match(re_date, line)
+            if match:
+                self.date = match.group(2)
+                number_of_fields -= 1
+            match = re.match(re_files, line)
+            if match:
+                self.other_files = [of.strip() for of in match.group(2).split(",")]
+                number_of_fields -= 1
+            if number_of_fields <= 0:
+                break
+
+        # Truncate long comments to speed up searches, and clean up display
+        if len(self.comment) > 512:
+            self.comment = self.comment[:511] + "…"
+        self.parsed = True
 
     def fill_details_from_wiki(self, url):
         code = ""
         u = urlopen(url)
         if u is None:
             FreeCAD.Console.PrintWarning(
-                "AddonManager: Debug: connection is lost (proxy setting changed?)",
-                url,
-                "\n",
+                translate(
+                    "AddonsInstaller",
+                    f"Could not connect to {url} - check connection and proxy settings",
+                )
+                + "\n"
             )
             return
         p = u.read()
@@ -148,16 +188,16 @@ class Macro(object):
                 u2 = urlopen(rawcodeurl)
                 if u2 is None:
                     FreeCAD.Console.PrintWarning(
-                        "AddonManager: Debug: unable to open URL", rawcodeurl, "\n"
+                        translate(
+                            "AddonsInstaller",
+                            f"Unable to open macro code URL {rawcodeurl}",
+                        )
+                        + "\n"
                     )
                     return
-                # code = u2.read()
-                # github is slow to respond...  We need to use this trick below
                 response = ""
                 block = 8192
-                # expected = int(u2.headers["content-length"])
                 while True:
-                    # print("expected:", expected, "got:", len(response))
                     data = u2.read(block)
                     if not data:
                         break
@@ -194,12 +234,14 @@ class Macro(object):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "Unable to retrieve a description for this macro.",
+                    f"Unable to retrieve a description from the wiki for macro {self.name}",
                 )
                 + "\n"
             )
             desc = "No description available"
         self.desc = desc
+        self.comment, _, _ = desc.partition("<br")  # Up to the first line break
+        self.comment = re.sub("<.*?>", "", self.comment)  # Strip any tags
         self.url = url
         if isinstance(code, list):
             flat_code = ""
@@ -207,9 +249,20 @@ class Macro(object):
                 flat_code += chunk
             code = flat_code
         self.code = code
-        self.parsed = True
+        self.fill_details_from_code(self.code)
+        if not self.author:
+            self.author = self.parse_desc("Author: ")
+        if not self.date:
+            self.date = self.parse_desc("Last modified: ")
 
-    def install(self, macro_dir: str) -> (bool, List[str]):
+    def parse_desc(self, line_start: str) -> Union[str, None]:
+        components = self.desc.split(">")
+        for component in components:
+            if component.startswith(line_start):
+                end = component.find("<")
+                return component[len(line_start) : end]
+
+    def install(self, macro_dir: str) -> Tuple[bool, List[str]]:
         """Install a macro and all its related files
 
         Returns True if the macro was installed correctly.
@@ -252,7 +305,7 @@ class Macro(object):
         if len(warnings) > 0:
             return False, warnings
 
-        FreeCAD.Console.PrintMessage(f"Macro {self.name} was installed successfully.\n")
+        FreeCAD.Console.PrintLog(f"Macro {self.name} was installed successfully.\n")
         return True, []
 
     def remove(self) -> bool:
@@ -280,7 +333,11 @@ class Macro(object):
                 remove_directory_if_empty(os.path.dirname(dst_file))
             except Exception:
                 FreeCAD.Console.PrintWarning(
-                    f"Failed to remove macro file '{dst_file}': it might not exist, or its permissions changed\n"
+                    translate(
+                        "AddonsInstaller",
+                        f"Failed to remove macro file '{dst_file}': it might not exist, or its permissions changed",
+                    )
+                    + "\n"
                 )
         return True
 

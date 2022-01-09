@@ -23,9 +23,11 @@
 import FreeCAD
 
 import os
-from typing import Dict
+from typing import Dict, Set, List
 
 from addonmanager_macro import Macro
+
+translate = FreeCAD.Qt.translate
 
 
 class AddonManagerRepo:
@@ -70,12 +72,28 @@ class AddonManagerRepo:
             elif self.value == 4:
                 return "Restart required"
 
+    class Dependencies:
+        def __init__(self):
+            self.required_external_addons = dict()
+            self.blockers = dict()
+            self.replaces = dict()
+            self.unrecognized_addons: Set[str] = set()
+            self.python_required: Set[str] = set()
+            self.python_optional: Set[str] = set()
+
+    class ResolutionFailed(RuntimeError):
+        def __init__(self, msg):
+            super().__init__(msg)
+
     def __init__(self, name: str, url: str, status: UpdateStatus, branch: str):
         self.name = name.strip()
         self.display_name = self.name
         self.url = url.strip()
         self.branch = branch.strip()
         self.update_status = status
+        self.python2 = False
+        self.obsolete = False
+        self.rejected = False
         self.repo_type = AddonManagerRepo.RepoType.WORKBENCH
         self.description = None
         from addonmanager_utilities import construct_git_url
@@ -89,6 +107,15 @@ class AddonManagerRepo:
         self.macro = None  # Bridge to Gaël Écorchard's macro management class
         self.updated_timestamp = None
         self.installed_version = None
+
+        # Each repo is also a node in a directed dependency graph (referenced by name so
+        # they cen be serialized):
+        self.requires: Set[str] = set()
+        self.blocks: Set[str] = set()
+
+        # And maintains a list of required and optional Python dependencies
+        self.python_requires: Set[str] = set()
+        self.python_optional: Set[str] = set()
 
     def __str__(self) -> str:
         result = f"FreeCAD {self.repo_type}\n"
@@ -114,26 +141,39 @@ class AddonManagerRepo:
         return instance
 
     @classmethod
-    def from_cache(self, data: Dict):
+    def from_cache(self, cache_dict: Dict):
         """Load basic data from cached dict data. Does not include Macro or Metadata information, which must be populated separately."""
 
-        mod_dir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", data["name"])
+        mod_dir = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", cache_dict["name"])
         if os.path.isdir(mod_dir):
             status = AddonManagerRepo.UpdateStatus.UNCHECKED
         else:
             status = AddonManagerRepo.UpdateStatus.NOT_INSTALLED
-        instance = AddonManagerRepo(data["name"], data["url"], status, data["branch"])
-        instance.display_name = data["display_name"]
-        instance.repo_type = AddonManagerRepo.RepoType(data["repo_type"])
-        instance.description = data["description"]
-        instance.cached_icon_filename = data["cached_icon_filename"]
+        instance = AddonManagerRepo(
+            cache_dict["name"], cache_dict["url"], status, cache_dict["branch"]
+        )
+
+        for key, value in cache_dict.items():
+            instance.__dict__[key] = value
+
+        instance.repo_type = AddonManagerRepo.RepoType(cache_dict["repo_type"])
         if instance.repo_type == AddonManagerRepo.RepoType.PACKAGE:
             # There must be a cached metadata file, too
             cached_package_xml_file = os.path.join(
-                FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata", instance.name
+                FreeCAD.getUserCachePath(),
+                "AddonManager",
+                "PackageMetadata",
+                instance.name,
             )
             if os.path.isfile(cached_package_xml_file):
                 instance.load_metadata_file(cached_package_xml_file)
+
+        if "requires" in cache_dict:
+            instance.requires = set(cache_dict["requires"])
+            instance.blocks = set(cache_dict["blocks"])
+            instance.python_requires = set(cache_dict["python_requires"])
+            instance.python_optional = set(cache_dict["python_optional"])
+
         return instance
 
     def to_cache(self) -> Dict:
@@ -147,14 +187,21 @@ class AddonManagerRepo:
             "repo_type": int(self.repo_type),
             "description": self.description,
             "cached_icon_filename": self.get_cached_icon_filename(),
+            "python2": self.python2,
+            "obsolete": self.obsolete,
+            "rejected": self.rejected,
+            "requires": list(self.requires),
+            "blocks": list(self.blocks),
+            "python_requires": list(self.python_requires),
+            "python_optional": list(self.python_optional),
         }
 
-    def load_metadata_file (self, file:str) -> None:
+    def load_metadata_file(self, file: str) -> None:
         if os.path.isfile(file):
             metadata = FreeCAD.Metadata(file)
             self.set_metadata(metadata)
 
-    def set_metadata (self, metadata:FreeCAD.Metadata) -> None:
+    def set_metadata(self, metadata: FreeCAD.Metadata) -> None:
         self.metadata = metadata
         self.display_name = metadata.Name
         self.repo_type = AddonManagerRepo.RepoType.PACKAGE
@@ -173,9 +220,16 @@ class AddonManagerRepo:
         if self.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
             return True
         elif self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+            if self.metadata is None:
+                FreeCAD.Console.PrintWarning(
+                    f"Addon Manager internal error: lost metadata for package {self.name}\n"
+                )
+                return False
             content = self.metadata.Content
             if not content:
-                FreeCAD.Console.PrintWarning(f"Package {self.display_name} does not list any content items in its package.xml metadata file. Try refreshing the cache.\n")
+                FreeCAD.Console.PrintLog(
+                    f"Package {self.display_name} does not list any content items in its package.xml metadata file.\n"
+                )
                 return False
             return "workbench" in content
         else:
@@ -187,6 +241,11 @@ class AddonManagerRepo:
         if self.repo_type == AddonManagerRepo.RepoType.MACRO:
             return True
         elif self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+            if self.metadata is None:
+                FreeCAD.Console.PrintWarning(
+                    f"Addon Manager internal error: lost metadata for package {self.name}\n"
+                )
+                return False
             content = self.metadata.Content
             return "macro" in content
         else:
@@ -196,6 +255,11 @@ class AddonManagerRepo:
         """Determine if this package contains a preference pack"""
 
         if self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+            if self.metadata is None:
+                FreeCAD.Console.PrintWarning(
+                    f"Addon Manager internal error: lost metadata for package {self.name}\n"
+                )
+                return False
             content = self.metadata.Content
             return "preferencepack" in content
         else:
@@ -237,3 +301,20 @@ class AddonManagerRepo:
         )
 
         return self.cached_icon_filename
+
+    def walk_dependency_tree(self, all_repos, deps):
+        """Compute the total dependency tree for this repo (recursive)"""
+
+        deps.python_required |= self.python_requires
+        deps.python_optional |= self.python_optional
+        for dep in self.requires:
+            if dep in all_repos:
+                if not dep in deps.required:
+                    deps.required_external_addons.append(all_repos[dep])
+                    all_repos[dep].walk_dependency_tree(all_repos, deps)
+            else:
+                # Maybe this is an internal workbench, just store its name
+                deps.unrecognized_addons.add(dep)
+        for dep in self.blocks:
+            if dep in all_repos:
+                deps.blockers[dep] = all_repos[dep]

@@ -1493,14 +1493,14 @@ int _isValidSingleEdge(Gui::Command* cmd) {
     if (SubNames.size() == 1) {                                                 //only 1 subshape selected
         if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
             int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
-            TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(GeoId);
+            TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
             if (!geom) {
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
                 return isInvalid;
             }
 
             if(geom->geomType == TechDraw::GENERIC) {
-                TechDraw::Generic* gen1 = static_cast<TechDraw::Generic *>(geom);
+                TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
                 if(gen1->points.size() > 2) {                                   //the edge is a polyline
                     return isInvalid;
                 }
@@ -1519,7 +1519,7 @@ int _isValidSingleEdge(Gui::Command* cmd) {
                        geom->geomType == TechDraw::ARCOFELLIPSE) {
                 edgeType = isEllipse;
             } else if (geom->geomType == TechDraw::BSPLINE) {
-                TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*>(geom);
+                TechDraw::BSplinePtr  spline = static_pointer_cast<TechDraw::BSpline> (geom);
                 if (spline->isCircle()) {
                     edgeType = isBSplineCircle;
                 } else {
@@ -1569,8 +1569,8 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
             int GeoId0( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
             int GeoId1( TechDraw::DrawUtil::getIndexFromName(SubNames[1]) );
-            TechDraw::BaseGeom* geom0 = objFeat0->getGeomByIndex(GeoId0);
-            TechDraw::BaseGeom* geom1 = objFeat0->getGeomByIndex(GeoId1);
+            TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
+            TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
 
             if ((!geom0) || (!geom1)) {                                         // missing gometry
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
@@ -1579,8 +1579,8 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
 
             if(geom0->geomType == TechDraw::GENERIC &&
                geom1->geomType == TechDraw::GENERIC) {
-                TechDraw::Generic *gen0 = static_cast<TechDraw::Generic *>(geom0);
-                TechDraw::Generic *gen1 = static_cast<TechDraw::Generic *>(geom1);
+                TechDraw::GenericPtr gen0 = std::static_pointer_cast<TechDraw::Generic> (geom0);
+                TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic> (geom1);
                 if(gen0->points.size() > 2 ||
                    gen1->points.size() > 2) {                          //the edge is a polyline
                     return isInvalid;                                  //not supported yet
@@ -1609,7 +1609,7 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
         int eId,vId;
-        TechDraw::BaseGeom* e;
+        TechDraw::BaseGeomPtr e;
         TechDraw::VertexPtr v;
         if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {

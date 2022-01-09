@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,7 +31,7 @@
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderSketchBased.h"
 
-class Ui_TaskPadParameters;
+class Ui_TaskPadPocketParameters;
 
 namespace App {
 class Property;
@@ -89,8 +89,6 @@ protected:
     App::PropertyLinkSub* propReferenceAxis;
     void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
-    double getLength(void) const;
-    double getLength2(void) const;
     bool   getAlongSketchNormal(void) const;
     bool   getCustom(void) const;
     std::string getReferenceAxis(void) const;
@@ -118,7 +116,7 @@ private:
 
 protected:
     QWidget* proxy;
-    std::unique_ptr<Ui_TaskPadParameters> ui;
+    std::unique_ptr<Ui_TaskPadPocketParameters> ui;
     bool selectionFace;
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 };

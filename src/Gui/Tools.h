@@ -24,6 +24,9 @@
 #define GUI_TOOLS_H
 
 #include <QFontMetrics>
+#include <QKeyEvent>
+#include <QKeySequence>
+#include <FCGlobal.h>
 
 namespace Gui {
 
@@ -46,6 +49,10 @@ public:
 #else
         return fm.width(text, len);
 #endif
+    }
+    static bool matches(QKeyEvent* ke, const QKeySequence& ks) {
+        uint searchkey = (ke->modifiers() | ke->key()) & ~(Qt::KeypadModifier | Qt::GroupSwitchModifier);
+        return ks == QKeySequence(searchkey);
     }
 };
 

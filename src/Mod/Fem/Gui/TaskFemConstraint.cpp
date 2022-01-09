@@ -201,6 +201,11 @@ void TaskFemConstraint::onButtonWizCancel()
     onButtonWizOk();
 }
 
+const QString TaskFemConstraint::makeRefText(const std::string& objName, const std::string& subName) const
+{
+    return QString::fromUtf8((objName + ":" + subName).c_str());
+}
+
 const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, const std::string& subName) const
 {
     return QString::fromUtf8((std::string(obj->getNameInDocument()) + ":" + subName).c_str());
@@ -208,7 +213,7 @@ const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, con
 
 void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 {
-    // creates a context menu, a shortcutt for it and connects it to e slot function
+    // creates a context menu, a shortcut for it and connects it to a slot function
 
     deleteAction = new QAction(tr("Delete"), this);
     deleteAction->setShortcut(QKeySequence::Delete);

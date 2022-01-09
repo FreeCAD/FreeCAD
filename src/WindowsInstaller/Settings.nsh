@@ -25,7 +25,7 @@ SetCompressor /SOLID lzma
 
 !define APP_VERSION "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}.${APP_VERSION_REVISION}${APP_EMERGENCY_DOT}${APP_VERSION_EMERGENCY}" # Version to display
 
-!define COPYRIGHT_YEAR 2021
+!define COPYRIGHT_YEAR 2022
 
 #--------------------------------
 # Installer file name
