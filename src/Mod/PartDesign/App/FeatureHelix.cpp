@@ -227,6 +227,8 @@ App::DocumentObjectExecReturn* Helix::execute(void)
 
         // generate the helix path
         TopoDS_Shape path = generateHelixPath();
+        TopoDS_Shape auxpath = generateHelixPath(1.0);
+
 
         std::vector<TopoDS_Wire> wires;
         try {
@@ -249,7 +251,9 @@ App::DocumentObjectExecReturn* Helix::execute(void)
 
             mkPS.SetTolerance(Precision::Confusion());
             mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-            mkPS.SetMode(true);  //This is for frenet
+
+            //mkPS.SetMode(true);  //This is for frenet
+            mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxilliary
 
             for (TopoDS_Wire& wire : wires) {
                 wire.Move(invObjLoc);
@@ -398,7 +402,7 @@ void Helix::updateAxis(void)
     Axis.setValue(dir.x, dir.y, dir.z);
 }
 
-TopoDS_Shape Helix::generateHelixPath(void)
+TopoDS_Shape Helix::generateHelixPath(double startOffset0)
 {
     double turns = Turns.getValue();
     double height = Height.getValue();
@@ -436,8 +440,11 @@ TopoDS_Shape Helix::generateHelixPath(void)
 
     // Find out in what quadrant relative to the axis the profile is located, and the exact position.
     Base::Vector3d profileCenter = getProfileCenterPoint();
-    double axisOffset = profileCenter * start - b * start;
-    double startOffset = profileCenter * v - b * v;
+
+    // The factor of 100 below ensures that profile size is small compared to the curvature of the helix.
+    // This improves the issue reported in https://forum.freecadweb.org/viewtopic.php?f=10&t=65048
+    double axisOffset = 100*(profileCenter * start - b * start);
+    double startOffset = startOffset0 + profileCenter * v - b * v;
     double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;
 
@@ -445,7 +452,7 @@ TopoDS_Shape Helix::generateHelixPath(void)
         // in this case ensure that axis is not in the sketch plane
         if (std::fabs(v * normal) < Precision::Confusion())
             throw Base::ValueError("Error: Result is self intersecting");
-        radius = 1.0; //fallback to radius 1
+        radius = 1000.0; //fallback to radius 1000
     }
 
     bool growthMode = std::string(Mode.getValueAsString()).find("growth") != std::string::npos;
