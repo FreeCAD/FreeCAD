@@ -190,7 +190,7 @@ class Macro(object):
                     FreeCAD.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
-                            "Unable to open macro code URL {rawcodeurl}",
+                            f"Unable to open macro code URL {rawcodeurl}",
                         )
                         + "\n"
                     )

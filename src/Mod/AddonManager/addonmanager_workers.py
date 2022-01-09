@@ -1485,13 +1485,18 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.num_downloads_completed = UpdateMetadataCacheWorker.AtomicCounter()
         aborted = False
         while True:
-            if current_thread.isInterruptionRequested() and not aborted:
+            if current_thread.isInterruptionRequested():
+                download_queue.finished.disconnect(self.on_finished)
                 for downloader in self.downloaders:
+                    downloader.updated.disconnect(self.on_updated)
                     downloader.abort()
                 aborted = True
-            QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
-            if self.num_downloads_completed.get() >= self.num_downloads_required:
+            if (
+                aborted
+                or self.num_downloads_completed.get() >= self.num_downloads_required
+            ):
                 break
+            QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
 
         if aborted:
             FreeCAD.Console.PrintLog("Metadata update cancelled\n")
@@ -1521,6 +1526,15 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.progress_made.emit(
             self.num_downloads_completed.get(), self.num_downloads_required
         )
+
+    def terminate_all(self):
+        got = self.num_downloads_completed.get()
+        wanted = self.num_downloads_required
+        if wanted < got:
+            FreeCAD.Console.PrintWarning(
+                f"During cache interruption, wanted {wanted}, got {got}, forcibly terminating now...\n"
+            )
+            self.num_downloads_completed.set(wanted)
 
 
 if have_git and not NOGIT:

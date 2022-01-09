@@ -207,7 +207,7 @@ class CommandAddonManager:
 
     def network_connection_failed(self, message: str) -> None:
         # This must run on the main GUI thread
-        if hasattr(self,"connection_check_message") and self.connection_check_message:
+        if hasattr(self, "connection_check_message") and self.connection_check_message:
             self.connection_check_message.close()
         QtWidgets.QMessageBox.critical(
             None, translate("AddonsInstaller", "Connection failed"), message
@@ -266,6 +266,16 @@ class CommandAddonManager:
             self.update_cache = True
         elif not os.path.isdir(am_path):
             self.update_cache = True
+        stopfile = self.get_cache_file_name("CACHE_UPDATE_INTERRUPTED")
+        if os.path.exists(stopfile):
+            self.update_cache = True
+            os.remove(stopfile)
+            FreeCAD.Console.PrintMessage(
+                translate(
+                    "AddonsInstaller",
+                    "Previous cache process was interrupted, restarting...\n",
+                )
+            )
 
         # If we are checking for updates automatically, hide the Check for updates button:
         autocheck = pref.GetBool("AutoCheck", False)
@@ -308,6 +318,10 @@ class CommandAddonManager:
         # enable/disable stuff
         self.dialog.buttonUpdateAll.setEnabled(False)
         self.hide_progress_widgets()
+        self.dialog.buttonUpdateCache.setEnabled(False)
+        self.dialog.buttonUpdateCache.setText(
+            translate("AddonsInstaller", "Starting up...")
+        )
 
         # connect slots
         self.dialog.rejected.connect(self.reject)
@@ -358,8 +372,21 @@ class CommandAddonManager:
                 thread = getattr(self, worker)
                 if thread:
                     if not thread.isFinished():
+                        thread.blockSignals(True)
                         thread.requestInterruption()
-                        thread.wait()
+        for worker in self.workers:
+            if hasattr(self, worker):
+                thread = getattr(self, worker)
+                if thread:
+                    if not thread.isFinished():
+                        finished = thread.wait(QtCore.QDeadlineTimer(500))
+                        if not finished:
+                            FreeCAD.Console.PrintWarning(
+                                translate(
+                                    "AddonsInstaller",
+                                    f"Worker process {worker} is taking a long time to stop...\n",
+                                )
+                            )
 
     def wait_on_other_workers(self) -> None:
         for worker in self.workers:
@@ -379,6 +406,7 @@ class CommandAddonManager:
 
         # ensure all threads are finished before closing
         oktoclose = True
+        worker_killed = False
         self.startup_sequence = []
         for worker in self.workers:
             if hasattr(self, worker):
@@ -386,6 +414,7 @@ class CommandAddonManager:
                 if thread:
                     if not thread.isFinished():
                         thread.requestInterruption()
+                        worker_killed = True
                         oktoclose = False
         while not oktoclose:
             oktoclose = True
@@ -398,14 +427,20 @@ class CommandAddonManager:
                         oktoclose = False
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
 
-        # Write the cache data
-        for repo in self.item_model.repos:
-            if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
-                self.cache_macro(repo)
-            else:
-                self.cache_package(repo)
-        self.write_package_cache()
-        self.write_macro_cache()
+        # Write the cache data if it's safe to do so:
+        if not worker_killed:
+            for repo in self.item_model.repos:
+                if repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+                    self.cache_macro(repo)
+                else:
+                    self.cache_package(repo)
+            self.write_package_cache()
+            self.write_macro_cache()
+        else:
+            self.write_cache_stopfile()
+            FreeCAD.Console.PrintLog(
+                "Not writing the cache because a process was forcibly terminated and the state is unknown.\n"
+            )
 
         if self.restart_required:
             # display restart dialog
@@ -480,6 +515,10 @@ class CommandAddonManager:
         else:
             self.hide_progress_widgets()
             self.update_cache = False
+            self.dialog.buttonUpdateCache.setEnabled(True)
+            self.dialog.buttonUpdateCache.setText(
+                translate("AddonsInstaller", "Refresh local cache")
+            )
             pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
             pref.SetString("LastCacheUpdate", date.today().isoformat())
             self.packageList.item_filter.invalidateFilter()
@@ -613,6 +652,10 @@ class CommandAddonManager:
             shutil.rmtree(am_path, onerror=self.remove_readonly)
         except Exception:
             pass
+        self.dialog.buttonUpdateCache.setEnabled(False)
+        self.dialog.buttonUpdateCache.setText(
+            translate("AddonsInstaller", "Updating cache...")
+        )
         self.startup()
 
     def on_package_updated(self, repo: AddonManagerRepo) -> None:
@@ -1141,8 +1184,15 @@ class CommandAddonManager:
             )
 
         for installed_repo in self.subupdates_succeeded:
-            self.restart_required = True
-            installed_repo.update_status = AddonManagerRepo.UpdateStatus.PENDING_RESTART
+            if not installed_repo.repo_type == AddonManagerRepo.RepoType.MACRO:
+                self.restart_required = True
+                installed_repo.update_status = (
+                    AddonManagerRepo.UpdateStatus.PENDING_RESTART
+                )
+            else:
+                installed_repo.update_status = (
+                    AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
+                )
             self.item_model.reload_item(installed_repo)
             for requested_repo in self.packages_with_updates:
                 if installed_repo.name == requested_repo.name:
@@ -1191,6 +1241,20 @@ class CommandAddonManager:
     def stop_update(self) -> None:
         self.cleanup_workers()
         self.hide_progress_widgets()
+        self.write_cache_stopfile()
+        self.dialog.buttonUpdateCache.setEnabled(True)
+        self.dialog.buttonUpdateCache.setText(
+            translate("AddonsInstaller", "Refresh local cache")
+        )
+
+    def write_cache_stopfile(self) -> None:
+        stopfile = self.get_cache_file_name("CACHE_UPDATE_INTERRUPTED")
+        with open(stopfile, "w", encoding="utf8") as f:
+            f.write(
+                "This file indicates that a cache operation was interrupted, and "
+                "the cache is in an unkown state. It will be deleted next time "
+                "AddonManager recaches."
+            )
 
     def on_package_installed(self, repo: AddonManagerRepo, message: str) -> None:
         self.hide_progress_widgets()

@@ -220,6 +220,11 @@ class AddonManagerRepo:
         if self.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
             return True
         elif self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+            if self.metadata is None:
+                FreeCAD.Console.PrintWarning(
+                    f"Addon Manager internal error: lost metadata for package {self.name}\n"
+                )
+                return False
             content = self.metadata.Content
             if not content:
                 FreeCAD.Console.PrintLog(
@@ -236,6 +241,11 @@ class AddonManagerRepo:
         if self.repo_type == AddonManagerRepo.RepoType.MACRO:
             return True
         elif self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+            if self.metadata is None:
+                FreeCAD.Console.PrintWarning(
+                    f"Addon Manager internal error: lost metadata for package {self.name}\n"
+                )
+                return False
             content = self.metadata.Content
             return "macro" in content
         else:
@@ -245,6 +255,11 @@ class AddonManagerRepo:
         """Determine if this package contains a preference pack"""
 
         if self.repo_type == AddonManagerRepo.RepoType.PACKAGE:
+            if self.metadata is None:
+                FreeCAD.Console.PrintWarning(
+                    f"Addon Manager internal error: lost metadata for package {self.name}\n"
+                )
+                return False
             content = self.metadata.Content
             return "preferencepack" in content
         else:
