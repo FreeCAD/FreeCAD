@@ -47,7 +47,7 @@ public:
     App::PropertyLength      Offset;
     App::PropertyLinkSub     ReferenceAxis;
 
-    App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
+    static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
 
     /** @name methods override feature */
     //@{
