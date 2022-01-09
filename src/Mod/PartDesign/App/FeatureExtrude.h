@@ -30,6 +30,7 @@
 
 namespace PartDesign
 {
+    static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = { -DBL_MAX, DBL_MAX, 1.0 };
 
 class PartDesignExport FeatureExtrude : public ProfileBased
 {
@@ -46,8 +47,6 @@ public:
     App::PropertyBool        AlongSketchNormal;
     App::PropertyLength      Offset;
     App::PropertyLinkSub     ReferenceAxis;
-
-    App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
 
     /** @name methods override feature */
     //@{
