@@ -34,9 +34,10 @@
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskExtrudeParameters.h"
 #include <Base/UnitsApi.h>
+#include <Gui/Command.h>
+#include <Gui/Widgets.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
 #include "ReferenceSelection.h"
-#include <Gui/Widgets.h>
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -726,6 +727,24 @@ void TaskExtrudeParameters::saveHistory(void)
     ui->lengthEdit->pushToHistory();
     ui->lengthEdit2->pushToHistory();
     ui->offsetEdit->pushToHistory();
+}
+
+void TaskExtrudeParameters::applyParameters(QString facename)
+{
+    auto obj = vp->getObject();
+
+    ui->lengthEdit->apply();
+    ui->lengthEdit2->apply();
+    FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
+    FCMD_OBJ_CMD(obj, "Direction = ("
+        << getXDirection() << ", " << getYDirection() << ", " << getZDirection() << ")");
+    FCMD_OBJ_CMD(obj, "ReferenceAxis = " << getReferenceAxis());
+    FCMD_OBJ_CMD(obj, "AlongSketchNormal = " << (getAlongSketchNormal() ? 1 : 0));
+    FCMD_OBJ_CMD(obj, "Type = " << getMode());
+    FCMD_OBJ_CMD(obj, "UpToFace = " << facename.toLatin1().data());
+    FCMD_OBJ_CMD(obj, "Reversed = " << (getReversed() ? 1 : 0));
+    FCMD_OBJ_CMD(obj, "Midplane = " << (getMidplane() ? 1 : 0));
+    FCMD_OBJ_CMD(obj, "Offset = " << getOffset());
 }
 
 void TaskExtrudeParameters::onModeChanged(int)

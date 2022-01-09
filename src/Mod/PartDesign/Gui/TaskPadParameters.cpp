@@ -177,24 +177,11 @@ void TaskPadParameters::onModeChanged(int index)
 
 void TaskPadParameters::apply()
 {
-    auto obj = vp->getObject();
-
-    ui->lengthEdit->apply();
-    ui->lengthEdit2->apply();
-    FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
-    FCMD_OBJ_CMD(obj, "Direction = ("
-        << getXDirection() << ", " << getYDirection() << ", " << getZDirection() << ")");
-    FCMD_OBJ_CMD(obj, "ReferenceAxis = " << getReferenceAxis());
-    FCMD_OBJ_CMD(obj, "AlongSketchNormal = " << (getAlongSketchNormal() ? 1 : 0));
-    FCMD_OBJ_CMD(obj,"Type = " << getMode());
     QString facename = QString::fromLatin1("None");
     if (static_cast<Modes>(getMode()) == Modes::ToFace) {
         facename = getFaceName();
     }
-    FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());
-    FCMD_OBJ_CMD(obj,"Reversed = " << (getReversed()?1:0));
-    FCMD_OBJ_CMD(obj,"Midplane = " << (getMidplane()?1:0));
-    FCMD_OBJ_CMD(obj,"Offset = " << getOffset());
+    applyParameters(facename);
 }
 
 //**************************************************************************

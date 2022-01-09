@@ -65,6 +65,7 @@ public:
     void fillDirectionCombo();
     void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText,
         bool hasSketch = true);
+    void applyParameters(QString facename);
 
 protected Q_SLOTS:
     void onLengthChanged(double);
