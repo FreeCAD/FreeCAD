@@ -89,6 +89,10 @@ public:
     virtual bool checkFit(void) const override { return true; }
     virtual bool checkFit(DrawPage*) const override { return true; }
 
+    virtual int countParentPages() const override;
+    virtual DrawPage* findParentPage() const override;
+    virtual std::vector<DrawPage*> findAllParentPages() const override;
+
 protected:
     void onChanged(const App::Property* prop) override;
     virtual bool isLocked(void) const override;
