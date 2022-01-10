@@ -246,6 +246,7 @@ void DrawView::onDocumentRestored()
  * in case it is also a child of another duplicate page
  * @return
  */
+//note this won't find parent pages for DrawProjItem since their parent is DrawProjGroup!
 int DrawView::countParentPages() const
 {
     int count = 0;
@@ -260,6 +261,9 @@ int DrawView::countParentPages() const
     return count;
 }
 
+//finds the first DrawPage in this Document that claims to own this DrawView
+//note that it is possible to manipulate the Views property of DrawPage so that
+//more than 1 DrawPage claims a DrawView.
 DrawPage* DrawView::findParentPage() const
 {
     // Get Feature Page
@@ -282,6 +286,33 @@ DrawPage* DrawView::findParentPage() const
 
     return page;
 }
+
+
+std::vector<DrawPage*> DrawView::findAllParentPages() const
+{
+    // Get Feature Page
+    std::vector<DrawPage*> result;
+    DrawPage *page = 0;
+    DrawViewCollection *collection = 0;
+    std::vector<App::DocumentObject*> parent = getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+            page = static_cast<TechDraw::DrawPage *>(*it);
+        }
+
+        if ((*it)->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
+            collection = static_cast<TechDraw::DrawViewCollection *>(*it);
+            page = collection->findParentPage();
+        }
+
+        if(page) {
+            result.emplace_back(page);
+        }
+    }
+
+    return result;
+}
+
 
 bool DrawView::isInClip()
 {

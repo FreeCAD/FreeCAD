@@ -444,6 +444,10 @@ void MDIViewPage::updateTemplate(bool forceUpdate)
 }
 
 //this is time consuming. should only be used when there is a problem.
+//Solve the situation where a DrawView belonging to this DrawPage has no QGraphicsItem in
+//the QGScene for the DrawPage -or-
+//a QGraphics item exists in the DrawPage's QGScene, but there is no corresponding DrawView
+//in the DrawPage.
 void MDIViewPage::fixOrphans(bool force)
 {
     if(!force) {
@@ -471,7 +475,6 @@ void MDIViewPage::fixOrphans(bool force)
             attachView(dv);
         }
     }
-
     // if qView doesn't have a Feature on this Page, delete it
     std::vector<QGIView*> qvss = m_view->getViews();
     // qvss may contain an item and its child item(s) and to avoid to access a deleted item a QPointer is needed
@@ -485,15 +488,41 @@ void MDIViewPage::fixOrphans(bool force)
             continue; // already deleted?
         App::DocumentObject* obj = doc->getObject(qv->getViewName());
         if (obj == nullptr) {
+            //no DrawView anywhere in Document
             m_view->removeQView(qv);
         } else {
-            TechDraw::DrawPage* pp = qv->getViewObject()->findParentPage();
-            /** avoid crash where a view might have more than one parent page
-             * if the user duplicated the page without duplicating dependencies
-             */
+            //DrawView exists in Document.  Does it belong to this DrawPage?
             int numParentPages = qv->getViewObject()->countParentPages();
-            if (thisPage != pp && numParentPages == 0) {
-               m_view->removeQView(qv);
+            if (numParentPages == 0) {
+                //DrawView does not belong to any DrawPage
+                //remove QGItem from QGScene
+                m_view->removeQView(qv);
+            } else if (numParentPages == 1) {
+                //Does DrawView belong to this DrawPage?
+                TechDraw::DrawPage* pp = qv->getViewObject()->findParentPage();
+                if (thisPage != pp) {
+                    //DrawView does not belong to this DrawPage
+                    //remove QGItem from QGScene
+                    m_view->removeQView(qv);
+                }
+            } else if (numParentPages > 1) {
+                //DrawView belongs to multiple DrawPages
+                //this is a problem - not supposed to happen
+                //check if this MDIViewPage corresponds to any parent DrawPage
+                //if not, delete the QGItem
+                Base::Console().Warning("%s belongs to multiple Pages\n", obj->getNameInDocument());
+                std::vector<TechDraw::DrawPage*> pPages = qv->getViewObject()->findAllParentPages();
+                bool found = false;
+                for (auto p: pPages) {
+                    if (thisPage == p) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    //none of the parent Pages for View coorespond to this Page
+                    m_view->removeQView(qv);
+                }
             }
         }
     }

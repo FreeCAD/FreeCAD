@@ -349,6 +349,38 @@ void DrawProjGroupItem::unsetupObject()
     DrawViewPart::unsetupObject();
 }
 
+//DPGIs have DPG as parent, not Page, so we need to ask the DPG how many Pages own it.
+int DrawProjGroupItem::countParentPages() const
+{
+    DrawProjGroup* dpg = getPGroup();
+    if (dpg != nullptr) {
+        int count = dpg->countParentPages();
+        return count;
+    }
+    return 0;
+}
+
+DrawPage* DrawProjGroupItem::findParentPage() const
+{
+    DrawProjGroup* dpg = getPGroup();
+    if (dpg != nullptr) {
+        DrawPage* dp = dpg->findParentPage();
+        return dp;
+    }
+    return nullptr;
+}
+
+std::vector<DrawPage*> DrawProjGroupItem::findAllParentPages() const
+{
+    DrawProjGroup* dpg = getPGroup();
+    if (dpg != nullptr) {
+        std::vector<DrawPage*> dps = dpg->findAllParentPages();
+        return dps;
+    }
+    std::vector<DrawPage*> empty;
+    return empty;
+}
+
 PyObject *DrawProjGroupItem::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {

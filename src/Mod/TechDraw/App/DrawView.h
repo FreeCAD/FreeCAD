@@ -23,6 +23,8 @@
 #ifndef _DrawView_h_
 #define _DrawView_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <boost_signals2.hpp>
 
 #include <QCoreApplication>
@@ -85,6 +87,7 @@ public:
     virtual PyObject *getPyObject(void) override;
 
     virtual DrawPage* findParentPage() const;
+    virtual std::vector<DrawPage*> findAllParentPages() const;
     virtual int countParentPages() const;
     virtual QRectF getRect() const;                      //must be overridden by derived class
     virtual double autoScale(void) const;
