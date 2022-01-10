@@ -435,7 +435,7 @@ class CheckWorkbenchesForUpdatesWorker(QtCore.QThread):
                     self.update_status.emit(wb)
                 except Exception:
                     FreeCAD.Console.PrintWarning(
-                        translate("AddonsInstaller", "git pull failed for {wb.name}")
+                        translate("AddonsInstaller", "git fetch failed for {wb.name}")
                     )
 
     def check_package(self, package: AddonManagerRepo) -> None:
@@ -1131,15 +1131,13 @@ class InstallWorkbenchWorker(QtCore.QThread):
         target_dir = moddir + os.sep + self.repo.name
 
         if have_git and not NOGIT:
-            self.git_progress = GitProgressMonitor()
             # Do the git process...
             self.run_git(target_dir)
-            self.update_timer.stop()
         else:
             self.run_zip(target_dir)
 
     def update_status(self) -> None:
-        if hasattr(self, "git_progress"):
+        if hasattr(self, "git_progress") and self.isRunning():
             self.progress_made.emit(self.git_progress.current, self.git_progress.total)
             self.status_message.emit(self.git_progress.message)
 
@@ -1154,6 +1152,8 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 + "\n"
             )
             return
+
+        self.git_progress = GitProgressMonitor()
 
         if os.path.exists(clonedir):
             self.run_git_update(clonedir)
@@ -1176,27 +1176,28 @@ class InstallWorkbenchWorker(QtCore.QThread):
             utils.repair_git_repo(self.repo.url, clonedir)
         repo = git.Git(clonedir)
         try:
-            repo.pull(progress=self.git_progress)
+            repo.pull() # Refuses to take a progress object?
             answer = translate(
                 "AddonsInstaller",
                 "Workbench successfully updated. "
                 "Please restart FreeCAD to apply the changes.",
             )
-        except Exception:
+        except Exception as e:
             answer = (
                 translate("AddonsInstaller", "Error updating module ")
                 + self.repo.name
                 + " - "
                 + translate("AddonsInstaller", "Please fix manually")
+                + " -- \n"
             )
-            answer += repo.status()
+            answer += str(e)
             self.failure.emit(self.repo, answer)
         else:
             # Update the submodules for this repository
             repo_sms = git.Repo(clonedir)
             self.status_message.emit("Updating submodules...")
             for submodule in repo_sms.submodules:
-                submodule.update(init=True, recursive=True, progress=self.git_progress)
+                submodule.update(init=True, recursive=True)
             self.update_metadata()
             self.success.emit(self.repo, answer)
 
@@ -1213,11 +1214,20 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 + "\n"
             )
         self.status_message.emit("Cloning module...")
+        current_thread = QtCore.QThread.currentThread()
+
+        # NOTE: There is no way to interrupt this process in GitPython: someday we should
+        # support pygit2/libgit2 so we can actually interrupt this properly.
         repo = git.Repo.clone_from(self.repo.url, clonedir, progress=self.git_progress)
+        if current_thread.isInterruptRequested():
+            return
 
         # Make sure to clone all the submodules as well
         if repo.submodules:
-            repo.submodule_update(recursive=True, progress=self.git_progress)
+            repo.submodule_update(recursive=True)
+
+        if current_thread.isInterruptRequested():
+            return
 
         if self.repo.branch in repo.heads:
             repo.heads[self.repo.branch].checkout()

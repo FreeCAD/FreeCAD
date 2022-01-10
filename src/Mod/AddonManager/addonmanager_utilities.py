@@ -48,8 +48,8 @@ except ImportError:
 else:
     try:
         # ssl_ctx = ssl.create_default_context(cafile=certifi.where())
-        ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-        # ssl_ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        # ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        ssl_ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
     except AttributeError:
         pass
 
@@ -118,7 +118,9 @@ def urlopen(url: str) -> Union[None, HTTPResponse]:
     urllib.request.install_opener(opener)
 
     # Url opening
-    req = urllib.request.Request(url, headers={"User-Agent": "Magic Browser"})
+    req = urllib.request.Request(
+        url, headers={"User-Agent": "Mozilla/5.0 Magic Browser"}
+    )
     try:
         u = urllib.request.urlopen(req, timeout=timeout)
 
@@ -199,8 +201,9 @@ def get_zip_url(repo):
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
     else:
         FreeCAD.Console.PrintLog(
-            "Debug: addonmanager_utilities.get_zip_url: Unknown git host:",
+            "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:",
             parsedUrl.netloc,
+            "\n",
         )
         return None
 
@@ -220,6 +223,7 @@ def construct_git_url(repo, filename):
         FreeCAD.Console.PrintLog(
             "Debug: addonmanager_utilities.construct_git_url: Unknown git host:"
             + parsed_url.netloc
+            + f" for file {filename}\n"
         )
     return None
 
@@ -250,7 +254,9 @@ def get_desc_regex(repo):
     ):
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
     FreeCAD.Console.PrintLog(
-        "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:", repo.url
+        "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
+        repo.url,
+        "\n",
     )
     return None
 
