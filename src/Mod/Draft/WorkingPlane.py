@@ -34,6 +34,7 @@ YZ, and XZ planes.
 #  in FreeCAD and a couple of utility functions.
 
 import math
+from sys import float_info
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD
@@ -226,7 +227,7 @@ class Plane:
             direction = self.axis
         return direction.dot(self.position.sub(p))
 
-    def projectPoint(self, p, direction=None):
+    def projectPoint(self, p, direction=None, force_projection=True):
         """Project a point onto the plane, by default orthogonally.
 
         Parameters
@@ -239,24 +240,38 @@ class Plane:
             It defaults to `None`, which then uses the `plane.axis` (normal)
             value, meaning that the point is projected perpendicularly
             to the plane.
+        force_projection: Bool, optional
+            Forces the projection if the deviation between the direction and
+            the normal is less than float epsilon from the orthogonality.
+            The direction of projection is modified to a float epsilon
+            deviation between the direction and the orthogonal.
+            It defaults to True.
 
         Returns
         -------
         Base::Vector3
             The projected vector, scaled to the appropriate distance.
         """
-        if not direction:
-            direction = self.axis
-        lp = self.getLocalCoords(p)
-        gp = self.getGlobalCoords(Vector(lp.x, lp.y, 0))
-        a = direction.getAngle(gp.sub(p))
-        if a > math.pi/2:
-            direction = direction.negative()
-            a = math.pi - a
-        ld = self.getLocalRot(direction)
-        gd = self.getGlobalRot(Vector(ld.x, ld.y, 0))
-        hyp = abs(math.tan(a) * lp.z)
-        return gp.add(DraftVecUtils.scaleTo(gd, hyp))
+
+        axis = Vector(self.axis).normalize()
+        if direction is None:
+            dir = axis
+        else:
+            dir = Vector(direction).normalize()
+
+        cos = dir.dot(axis)
+        delta_ax_proj = (p - self.position).dot(axis)
+        # check the only conflicting case: direction orthogonal to axis
+        if abs(cos) <= float_info.epsilon:
+            if force_projection:
+                cos = math.copysign(float_info.epsilon, delta_ax_proj)
+                dir = axis.cross(dir).cross(axis) - cos*axis
+            else:
+                return None
+
+        proj = p - delta_ax_proj/cos*dir
+
+        return proj
 
     def projectPointOld(self, p, direction=None):
         """Project a point onto the plane. OBSOLETE.
