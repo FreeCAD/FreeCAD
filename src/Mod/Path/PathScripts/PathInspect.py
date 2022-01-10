@@ -27,11 +27,9 @@ from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
 import Path
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class GCodeHighlighter(QtGui.QSyntaxHighlighter):
@@ -259,9 +257,9 @@ class CommandPathInspect:
     def GetResources(self):
         return {
             "Pixmap": "Path_Inspect",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Inspect", "Inspect G-code"),
+            "MenuText": QT_TRANSLATE_NOOP("Path_Inspect", "Inspect G-code"),
             "Accel": "P, I",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_Inspect", "Inspects the G-code contents of a path"
             ),
         }
