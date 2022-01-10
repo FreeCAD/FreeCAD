@@ -27,6 +27,7 @@ import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 from PySide import QtCore, QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Deburr Operation UI"
 __author__ = "sliptonic (Brad Collette), Schildkroet"
@@ -34,12 +35,14 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Deburr operation page controller and command implementation."
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
@@ -55,8 +58,16 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     """Page controller class for the Deburr operation."""
 
+    _ui_form = ":/panels/PageOpDeburrEdit.ui"
+
     def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDeburrEdit.ui")
+        form = FreeCADGui.PySideUic.loadUi(self._ui_form)
+        comboToPropertyMap = [("direction", "Direction")]
+        enumTups = PathDeburr.ObjectDeburr.propertyEnumerations(dataType="raw")
+
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+
+        return form
 
     def initPage(self, obj):
         self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(
@@ -81,8 +92,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         elif self.form.joinMiter.isChecked():
             obj.Join = "Miter"
 
-        if obj.Direction != str(self.form.direction.currentText()):
-            obj.Direction = str(self.form.direction.currentText())
+        if obj.Direction != str(self.form.direction.currentData()):
+            obj.Direction = str(self.form.direction.currentData())
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -133,9 +144,9 @@ Command = PathOpGui.SetupOperation(
     PathDeburr.Create,
     TaskPanelOpPage,
     "Path_Deburr",
-    QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Deburr"),
-    QtCore.QT_TRANSLATE_NOOP(
-        "PathDeburr", "Creates a Deburr Path along Edges or around Faces"
+    QT_TRANSLATE_NOOP("Path_Deburr", "Deburr"),
+    QT_TRANSLATE_NOOP(
+        "Path_Deburr", "Creates a Deburr Path along Edges or around Faces"
     ),
     PathDeburr.SetupProperties,
 )
