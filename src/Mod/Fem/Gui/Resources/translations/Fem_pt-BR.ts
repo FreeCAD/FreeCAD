@@ -101,12 +101,12 @@
     <message>
       <location filename="commands.py" line="166"/>
       <source>Constant vacuum permittivity</source>
-      <translation type="unfinished">Constant vacuum permittivity</translation>
+      <translation>Constante de permissividade do vácuo</translation>
     </message>
     <message>
       <location filename="commands.py" line="170"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>Cria uma permissão de vácuo constante FEM para sobrescrever o valor padrão</translation>
     </message>
   </context>
   <context>
@@ -555,6 +555,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCalculixCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Solver CalculiX padrão</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Cria uma malha FEM padrão para o CalculiX com as ferramentas ccx</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="commands.py" line="999"/>
@@ -565,19 +578,6 @@
       <location filename="commands.py" line="1004"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Altera os atributos do solver e executa os cálculos usando o solver selecionado</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCxxtools</name>
-    <message>
-      <location filename="commands.py" line="939"/>
-      <source>Solver CalculiX Standard</source>
-      <translation>Solver CalculiX padrão</translation>
-    </message>
-    <message>
-      <location filename="commands.py" line="944"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>Cria uma malha FEM padrão para o CalculiX com as ferramentas ccx</translation>
     </message>
   </context>
   <context>
@@ -689,6 +689,19 @@
       <location filename="selection_widgets.py" line="53"/>
       <source>Remove</source>
       <translation>Remover</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Solver CalculiX padrão</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Cria uma malha FEM padrão para o CalculiX com as ferramentas ccx</translation>
     </message>
   </context>
   <context>

@@ -3957,7 +3957,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="723"/>
       <source>Colors outside Sketcher</source>
-      <translation type="unfinished">Colors outside Sketcher</translation>
+      <translation>Taslakçının dışındaki renkler</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="731"/>
@@ -4015,7 +4015,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="124"/>
       <source>Line pattern used for grid lines.</source>
-      <translation type="unfinished">Line pattern used for grid lines.</translation>
+      <translation>Izgara çizgileri için kullanılan çizgi deseni.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="134"/>
@@ -4025,12 +4025,12 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
       <source>The number of polygons used for geometry approximation.</source>
-      <translation type="unfinished">The number of polygons used for geometry approximation.</translation>
+      <translation>Geometri yaklaşımı için kullanılan çokgen sayısı.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
       <source>A dialog will pop up to input a value for new dimensional constraints.</source>
-      <translation type="unfinished">A dialog will pop up to input a value for new dimensional constraints.</translation>
+      <translation>Yeni boyutsal kısıtlamalarla ilgili bir değer girilmesi için bir açılır pencere gösterilecek.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
@@ -4040,7 +4040,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="182"/>
       <source>The current sketcher creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current sketcher creation tool will remain active after creation.</translation>
+      <translation>Mevcut eskiz oluşturma aracı, oluşturulduktan sonra aktif kalacaktır.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
@@ -4050,7 +4050,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="201"/>
       <source>The current constraint creation tool will remain active after creation.</source>
-      <translation type="unfinished">The current constraint creation tool will remain active after creation.</translation>
+      <translation>Mevcut kısıtlama oluşturma aracı, oluşturulduktan sonra etkin kalacaktır.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="204"/>
@@ -4072,17 +4072,17 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="237"/>
       <source>If checked, displays the name on dimensional constraints (if exists).</source>
-      <translation type="unfinished">If checked, displays the name on dimensional constraints (if exists).</translation>
+      <translation>Seçilirse, boyutlu kısıtlamalar üzerinde (varsa) adı görüntüler.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
       <source>Show dimensional constraint name with format</source>
-      <translation type="unfinished">Show dimensional constraint name with format</translation>
+      <translation>Boyutlu kısıtlama adını düzeniyle göster</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
       <source>%N = %V</source>
-      <translation type="unfinished">%N = %V</translation>
+      <translation>%N = %V</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
@@ -4091,16 +4091,16 @@ Defaults to: %N = %V
 
 %N - name parameter
 %V - dimension value</source>
-      <translation type="unfinished">The format of the dimensional constraint string presentation.
-Defaults to: %N = %V
+      <translation>Boyutlu kısıtlama dizgisi sunumunun biçimi.
+Varsayılan: %N = %V
 
-%N - name parameter
-%V - dimension value</translation>
+%N - ad parametresi
+%V - boyut değeri</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
       <source>DimensionalStringFormat</source>
-      <translation type="unfinished">DimensionalStringFormat</translation>
+      <translation>BoyutluDizgiDüzeni</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
@@ -4110,7 +4110,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="312"/>
       <source>When opening a sketch, hide all features that depend on it.</source>
-      <translation type="unfinished">When opening a sketch, hide all features that depend on it.</translation>
+      <translation>Eskiz açılırken ona bağlı olan tüm özellikleri gizleyin.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
@@ -4120,7 +4120,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
-      <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
+      <translation>Eskiz açılırken harici geometri bağlantıları için kaynakları göster.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="334"/>
@@ -4130,7 +4130,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="350"/>
       <source>When opening a sketch, show objects the sketch is attached to.</source>
-      <translation type="unfinished">When opening a sketch, show objects the sketch is attached to.</translation>
+      <translation>Eskiz açarken, eskizin eklendiği nesneleri gösterin.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="353"/>
@@ -4140,7 +4140,7 @@ Defaults to: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
       <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
-      <translation type="unfinished">When closing a sketch, move camera back to where it was before the sketch was opened.</translation>
+      <translation>Bir eskizi kapatırken, kamerayı eskiz açılmadan önceki konumuna geri getirin.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="372"/>
@@ -4163,8 +4163,8 @@ Sadece "Kamera konumunu düzenleme sonrası eski haline getir" etkin ise çalı�
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a sketch in Section View mode by default.
-Then objects are only visible behind the sketch plane.</translation>
+      <translation>Varsayılan olarak Kesit Görünümü modunda bir eskiz açın.
+O zaman nesneler sadece eskiz düzleminin arkasında görünür.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
@@ -4179,7 +4179,7 @@ Then objects are only visible behind the sketch plane.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
       <source>Applies current visibility automation settings to all sketches in open documents.</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+      <translation>Görünürlük otomatikliği ayarlarını açık belgelerdeki tüm eskizlere uygula.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="456"/>
@@ -4387,7 +4387,7 @@ Ancak, uç noktalara bağlanan hiçbir kısıtlama bulunamadı.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="85"/>
       <source>Point on Object</source>
-      <translation type="unfinished">Point on Object</translation>
+      <translation>Nesne Üzerinde Nokta</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="90"/>
@@ -4497,17 +4497,17 @@ Ancak, uç noktalara bağlanan hiçbir kısıtlama bulunamadı.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="247"/>
       <source>Automation</source>
-      <translation type="unfinished">Automation</translation>
+      <translation>Otomasyon</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="265"/>
       <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
-      <translation type="unfinished">Constraint visualisation tracks filter selection so that filtered out constraints are hidden</translation>
+      <translation>Kısıtlama görselleştirmesi, filtre seçimini izler, böylece filtrelenen kısıtlamalar gizlenir</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="268"/>
       <source>Track filter selection</source>
-      <translation type="unfinished">Track filter selection</translation>
+      <translation>Filtre seçimini izle</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="295"/>

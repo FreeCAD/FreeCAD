@@ -21,7 +21,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="753"/>
       <source>Apply the changes to the current cell</source>
-      <translation type="unfinished">Apply the changes to the current cell</translation>
+      <translation>Değişiklikleri geçerli hücreye uygula</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="755"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="757"/>
       <source>Deletes the contents of the current cell</source>
-      <translation type="unfinished">Deletes the contents of the current cell</translation>
+      <translation>Geçerli hücrenin içeriğini siler</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="759"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="761"/>
       <source>Updates the values handled by controllers</source>
-      <translation type="unfinished">Updates the values handled by controllers</translation>
+      <translation>Denetleyiciler tarafından işlenen değerleri günceller</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="907"/>
@@ -69,7 +69,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+      <translation>Seçili bir elektronik tabloya bir hücre denetleyicisi ekler</translation>
     </message>
   </context>
   <context>
@@ -661,7 +661,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dizgileri sınırlamak için kullanılan karakter, genellikle tek tırnak (') veya çift tırnaktır (&amp;quot;). Tek bir karakter olmalıdır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>"</source>
@@ -669,27 +669,27 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message>
       <source>Delimiter Character: </source>
-      <translation type="unfinished">Delimiter Character: </translation>
+      <translation>Sınırlayıcı Karakter: </translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Çıkış karakteri, tipik olarak ters eğik çizgi (\), yazdırılamayan özel karakterleri belirtmek için kullanılır, ör. \t = sekme. Tek bir karakter olmalıdır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>\</source>
-      <translation type="unfinished">\</translation>
+      <translation>\</translation>
     </message>
     <message>
       <source>Escape Character: </source>
-      <translation type="unfinished">Escape Character: </translation>
+      <translation>Kaçış Karakteri: </translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Alan sınırlayıcı olarak kullanılacak karakter. Varsayılan sekmedir, ancak virgül (,) ve noktalı virgül (;) de yaygın olarak kullanılır. Listeden seçin veya alana kendinizinkini girin. Tek bir karakter veya &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;virgül&lt;/span&gt; veya &lt;span style kelimeleri olmalıdır =" font-style:italic;"&gt;noktalı virgül&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>sekme</translation>
     </message>
     <message>
       <source>;</source>
@@ -701,7 +701,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message>
       <source>Quote Character: </source>
-      <translation type="unfinished">Quote Character: </translation>
+      <translation>Alıntı Karakteri: </translation>
     </message>
   </context>
   <context>

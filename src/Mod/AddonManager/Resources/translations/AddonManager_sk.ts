@@ -4,6 +4,11 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="AddonManager.py" line="567"/>
+      <source>Installed</source>
+      <translation>Nainštalované</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="96"/>
       <source>Version</source>
       <translation>Verzia</translation>
@@ -11,47 +16,57 @@
     <message>
       <location filename="package_details.py" line="103"/>
       <source>Unknown version (no package.xml file found)</source>
-      <translation type="unfinished">Unknown version (no package.xml file found)</translation>
+      <translation>Neznáma verzia (nenašiel sa žiadny súbor package.xml)</translation>
     </message>
     <message>
       <location filename="package_details.py" line="108"/>
       <source>installed on</source>
-      <translation type="unfinished">installed on</translation>
+      <translation>nainštalované v</translation>
     </message>
     <message>
       <location filename="package_details.py" line="118"/>
       <source>installed</source>
-      <translation type="unfinished">installed</translation>
+      <translation>nainštalované</translation>
     </message>
     <message>
       <location filename="package_details.py" line="126"/>
       <source>Update available to version</source>
-      <translation type="unfinished">Update available to version</translation>
+      <translation>Dostupná aktualizácia na verziu</translation>
     </message>
     <message>
       <location filename="package_details.py" line="144"/>
       <source>This is the latest version available</source>
-      <translation type="unfinished">This is the latest version available</translation>
+      <translation>Toto je najnovšia dostupná verzia</translation>
     </message>
     <message>
       <location filename="package_details.py" line="151"/>
       <source>Updated, please restart FreeCAD to use</source>
-      <translation type="unfinished">Updated, please restart FreeCAD to use</translation>
+      <translation>Aktualizované. Na začatie používanie, prosím, reštartujte aplikáciu FreeCAD</translation>
     </message>
     <message>
       <location filename="package_details.py" line="159"/>
       <source>Update check in progress</source>
-      <translation type="unfinished">Update check in progress</translation>
+      <translation>Prebieha kontrola aktualizácií</translation>
     </message>
     <message>
       <location filename="package_details.py" line="163"/>
       <source>Automatic update checks disabled</source>
-      <translation type="unfinished">Automatic update checks disabled</translation>
+      <translation>Automatické kontroly aktualizácií sú zakázané</translation>
     </message>
     <message>
       <location filename="package_details.py" line="172"/>
       <source>Installation location</source>
-      <translation type="unfinished">Installation location</translation>
+      <translation>Umiestnenie inštalácie</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="240"/>
+      <source>WARNING: This addon is obsolete</source>
+      <translation type="unfinished">WARNING: This addon is obsolete</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="250"/>
+      <source>WARNING: This addon is Python 2 Only</source>
+      <translation type="unfinished">WARNING: This addon is Python 2 Only</translation>
     </message>
     <message>
       <location filename="package_details.py" line="312"/>
@@ -61,12 +76,12 @@
     <message>
       <location filename="package_details.py" line="407"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>Inštalovať</translation>
     </message>
     <message>
       <location filename="package_details.py" line="410"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>Odinštalovať</translation>
     </message>
     <message>
       <location filename="package_details.py" line="413"/>
@@ -76,17 +91,17 @@
     <message>
       <location filename="package_details.py" line="416"/>
       <source>Check for Update</source>
-      <translation type="unfinished">Check for Update</translation>
+      <translation>Skontrolovať aktualizáciu</translation>
     </message>
     <message>
       <location filename="package_details.py" line="419"/>
       <source>Run Macro</source>
-      <translation type="unfinished">Run Macro</translation>
+      <translation>Spustiť makro</translation>
     </message>
     <message>
       <location filename="package_details.py" line="424"/>
       <source>Return to package list</source>
-      <translation type="unfinished">Return to package list</translation>
+      <translation>Návrat na zoznam balíkov</translation>
     </message>
     <message numerus="yes">
       <location filename="package_details.py" line="431"/>
@@ -101,17 +116,17 @@
     <message>
       <location filename="package_list.py" line="119"/>
       <source>Filter is valid</source>
-      <translation type="unfinished">Filter is valid</translation>
+      <translation>Filter je platný</translation>
     </message>
     <message>
       <location filename="package_list.py" line="125"/>
       <source>Filter regular expression is invalid</source>
-      <translation type="unfinished">Filter regular expression is invalid</translation>
+      <translation>Filter regulárneho výrazu je platný</translation>
     </message>
     <message>
       <location filename="package_list.py" line="180"/>
       <source>Click for details about package</source>
-      <translation type="unfinished">Click for details about package</translation>
+      <translation>Kliknutím zobrazíte podrobnosti o balíku</translation>
     </message>
     <message>
       <location filename="package_list.py" line="185"/>
@@ -121,27 +136,37 @@
     <message>
       <location filename="package_list.py" line="190"/>
       <source>Click for details about macro</source>
-      <translation type="unfinished">Click for details about macro</translation>
+      <translation>Kliknutím zobrazíte podrobnosti o makre</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
       <source>Maintainer</source>
-      <translation type="unfinished">Maintainer</translation>
+      <translation>Správca</translation>
     </message>
     <message>
       <location filename="package_list.py" line="330"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>Správcovia:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="567"/>
-      <source>Installed</source>
-      <translation>Nainštalované</translation>
+      <location filename="package_list.py" line="371"/>
+      <source>updated</source>
+      <translation type="unfinished">updated</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="376"/>
+      <source>Updated</source>
+      <translation type="unfinished">Updated</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="382"/>
+      <source>Author</source>
+      <translation>Autor</translation>
     </message>
     <message>
       <location filename="package_list.py" line="404"/>
       <source>Up-to-date</source>
-      <translation type="unfinished">Up-to-date</translation>
+      <translation>Aktuálne</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="586"/>
@@ -151,27 +176,27 @@
     <message>
       <location filename="package_list.py" line="414"/>
       <source>Pending restart</source>
-      <translation type="unfinished">Pending restart</translation>
+      <translation>Čakajúci reštart</translation>
     </message>
     <message>
       <location filename="package_list.py" line="372"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Nainštalovaná verzia</translation>
     </message>
     <message>
       <location filename="package_list.py" line="380"/>
       <source>Unknown version</source>
-      <translation type="unfinished">Unknown version</translation>
+      <translation>Neznáma verzia</translation>
     </message>
     <message>
       <location filename="package_list.py" line="383"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>Nainštalované v</translation>
     </message>
     <message>
       <location filename="package_list.py" line="394"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Dostupná verzia</translation>
     </message>
     <message>
       <location filename="package_list.py" line="566"/>
@@ -199,6 +224,21 @@
       <translation type="unfinished">Preference Packs</translation>
     </message>
     <message>
+      <location filename="package_list.py" line="692"/>
+      <source>Status:</source>
+      <translation type="unfinished">Status:</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="695"/>
+      <source>Any</source>
+      <translation>Akékoľvek</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="702"/>
+      <source>Not installed</source>
+      <translation type="unfinished">Not installed</translation>
+    </message>
+    <message>
       <location filename="package_list.py" line="582"/>
       <source>Filter</source>
       <translation type="unfinished">Filter</translation>
@@ -209,9 +249,26 @@
       <translation>OK</translation>
     </message>
     <message>
+      <location filename="addonmanager_metadata.py" line="72"/>
+      <source>Error with encrypted connection</source>
+      <translation type="unfinished">Error with encrypted connection</translation>
+    </message>
+    <message>
       <location filename="addonmanager_metadata.py" line="135"/>
       <source>Failed to connect to</source>
-      <translation type="unfinished">Failed to connect to</translation>
+      <translation>Zlyhalo pripojenie k</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="220"/>
+      <source>Failed to connect to URL</source>
+      <translation type="unfinished">Failed to connect to URL</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="115"/>
+      <source>Checking network connection...
+</source>
+      <translation type="unfinished">Checking network connection...
+</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="167"/>
@@ -226,7 +283,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="261"/>
       <source>Failed loading</source>
-      <translation type="unfinished">Failed loading</translation>
+      <translation>Zlyhalo načítavanie</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="296"/>
@@ -259,9 +316,39 @@
       <translation type="unfinished">Failed to read metadata from</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="439"/>
+      <source>git pull failed for {wb.name}</source>
+      <translation type="unfinished">git pull failed for {wb.name}</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="514"/>
       <source>Done locating macros.</source>
       <translation type="unfinished">Done locating macros.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="551"/>
+      <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
+      <translation>To obvykle znamená, že už nie je udržiavaný, a že niektorý pokročilejší doplnok z tohto zoznamu poskytuje rovnaké funkcie.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="564"/>
+      <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
+      <translation>Tento pracovný priestor nemusí byť už udržiavaný a jeho inštalácia v systéme s jazykom Python verzie 3 bude mať pravdepodobne za následok chyby pri spúšťaní alebo počas používania.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="608"/>
+      <source>An error occurred fetching macros from GitHub</source>
+      <translation type="unfinished">An error occurred fetching macros from GitHub</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="665"/>
+      <source>This macro is already installed.</source>
+      <translation>Toto makro je už nainštalované.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="697"/>
+      <source>Caching macro code...</source>
+      <translation type="unfinished">Caching macro code...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="651"/>
@@ -304,19 +391,9 @@
       <translation>Tento doplnok je označený ako zastaraný</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="551"/>
-      <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation>To obvykle znamená, že už nie je udržiavaný, a že niektorý pokročilejší doplnok z tohto zoznamu poskytuje rovnaké funkcie.</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="559"/>
       <source>This addon is marked as Python 2 Only</source>
       <translation>Tento doplnok je označený ako kompatibilný iba s jazykom Python 2</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="564"/>
-      <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation>Tento pracovný priestor nemusí byť už udržiavaný a jeho inštalácia v systéme s jazykom Python verzie 3 bude mať pravdepodobne za následok chyby pri spúšťaní alebo počas používania.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="915"/>
@@ -332,11 +409,6 @@
       <location filename="addonmanager_workers.py" line="656"/>
       <source>Retrieving info from wiki</source>
       <translation>Prijímajú sa informácie z wiki</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="665"/>
-      <source>This macro is already installed.</source>
-      <translation>Toto makro je už nainštalované.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="700"/>
@@ -374,26 +446,6 @@
       <translation>Makro bolo nainštalované a je dostupné v ponuke Makro -&gt; Makrá</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="854"/>
-      <source>Missing optional python module (doesn&apos;t prevent installing)</source>
-      <translation>Chýba voliteľný modul jazyka python (inštalácii nebude zabránené)</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="857"/>
-      <source>Some errors were found that prevent to install this workbench</source>
-      <translation>Našli sa nejaké chyby, ktoré zabránili inštalácii tohto pracovného priestoru</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation type="unfinished">Error updating module </translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation type="unfinished">Please fix manually</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="835"/>
       <source>Missing workbench</source>
       <translation>Chýba pracovný priestor</translation>
@@ -404,9 +456,29 @@
       <translation>Chýba modul jazyka python</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="854"/>
+      <source>Missing optional python module (doesn&apos;t prevent installing)</source>
+      <translation>Chýba voliteľný modul jazyka python (inštalácii nebude zabránené)</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="857"/>
+      <source>Some errors were found that prevent to install this workbench</source>
+      <translation>Našli sa nejaké chyby, ktoré zabránili inštalácii tohto pracovného priestoru</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="859"/>
       <source>Please install the missing components first.</source>
       <translation>Prosím, najskôr nainštalujte chýbajúce súčasti.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation>Chyba pri aktualizácii modulu </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>Prosím, opravte to ručne</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="873"/>
@@ -424,34 +496,59 @@
       <translation>Inštalácia úspešná</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1403"/>
-      <source>Retrieving package metadata...</source>
-      <translation type="unfinished">Retrieving package metadata...</translation>
+      <location filename="addonmanager_workers.py" line="1405"/>
+      <source>Failed to execute pip. Returned error was:</source>
+      <translation type="unfinished">Failed to execute pip. Returned error was:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="86"/>
-      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Doplnky, ktoré tu môžete nainštalovať, nie sú oficiálnou súčasťou aplikácie FreeCAD a nie sú skontrolované tímom aplikácie FreeCAD. Uistite sa, že viete, čo inštalujete!</translation>
+      <location filename="addonmanager_workers.py" line="1403"/>
+      <source>Retrieving package metadata...</source>
+      <translation>Získavajú sa metaúdaje balíku...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_utilities.py" line="332"/>
+      <source>Failed to repair missing .git directory</source>
+      <translation type="unfinished">Failed to repair missing .git directory</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_utilities.py" line="335"/>
+      <source>Repository URL</source>
+      <translation type="unfinished">Repository URL</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_utilities.py" line="338"/>
+      <source>Clone directory</source>
+      <translation type="unfinished">Clone directory</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="191"/>
+      <source>Checking connection</source>
+      <translation type="unfinished">Checking connection</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="192"/>
+      <source>Checking for connection to GitHub...</source>
+      <translation type="unfinished">Checking for connection to GitHub...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="213"/>
+      <source>Connection failed</source>
+      <translation type="unfinished">Connection failed</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="324"/>
+      <source>Starting up...</source>
+      <translation type="unfinished">Starting up...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="258"/>
       <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
+      <translation>Načítavajú sa informácie o doplnku</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="199"/>
       <source>Addon manager</source>
       <translation>Správca doplnkov</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="203"/>
-      <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation>Pre uplatnenie zmien musíte reštartovať FreeCAD.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="204"/>
-      <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
-      <translation>Aby sa zmeny prejavili, musíte reštartovať aplikáciu FreeCAD. Stlačením tlačidla OK reštartujete aplikáciu FreeCAD ihneď alebo tlačidlom Zrušiť vykonáte reštart neskôr.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="209"/>
@@ -464,9 +561,14 @@
       <translation>Reštartovať neskôr</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="534"/>
-      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
-      <translation type="unfinished">Addon Manager: Skipping update check because AutoCheck user preference is False</translation>
+      <location filename="AddonManager.py" line="1248"/>
+      <source>Refresh local cache</source>
+      <translation type="unfinished">Refresh local cache</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="659"/>
+      <source>Updating cache...</source>
+      <translation type="unfinished">Updating cache...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
@@ -477,6 +579,26 @@
       <location filename="AddonManager.py" line="262"/>
       <source>Apply</source>
       <translation>Použiť</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="86"/>
+      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
+      <translation>Doplnky, ktoré tu môžete nainštalovať, nie sú oficiálnou súčasťou aplikácie FreeCAD a nie sú skontrolované tímom aplikácie FreeCAD. Uistite sa, že viete, čo inštalujete!</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="203"/>
+      <source>You must restart FreeCAD for changes to take effect.</source>
+      <translation>Pre uplatnenie zmien musíte reštartovať FreeCAD.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="204"/>
+      <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
+      <translation>Aby sa zmeny prejavili, musíte reštartovať aplikáciu FreeCAD. Stlačením tlačidla OK reštartujete aplikáciu FreeCAD ihneď alebo tlačidlom Zrušiť vykonáte reštart neskôr.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="534"/>
+      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
+      <translation type="unfinished">Addon Manager: Skipping update check because AutoCheck user preference is False</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="263"/>
@@ -521,37 +643,62 @@
     <message>
       <location filename="AddonManager.py" line="577"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="703"/>
-      <source>Installation of macro failed</source>
-      <translation type="unfinished">Installation of macro failed</translation>
+      <translation>Nie sú dostupné žiadne aktualizácie</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
-      <translation type="unfinished">All packages updates failed. Packages:</translation>
+      <translation>Aktualizácia všetkých balíkov zlyhala. Balíky:</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
-      <translation type="unfinished">Failed packages:</translation>
+      <translation>Zlyhané balíky:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation type="unfinished">Missing Requirement</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="964"/>
+      <source>Installing dependencies</source>
+      <translation type="unfinished">Installing dependencies</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="703"/>
+      <source>Installation of macro failed</source>
+      <translation>Inštalácia makra zlyhala</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1178"/>
+      <source>Succeeded</source>
+      <translation type="unfinished">Succeeded</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1159"/>
+      <source>All packages updates failed:</source>
+      <translation type="unfinished">All packages updates failed:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1183"/>
+      <source>Failed</source>
+      <translation type="unfinished">Failed</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="800"/>
       <source>Update report</source>
-      <translation type="unfinished">Update report</translation>
+      <translation>Hlásenie o aktualizácii</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="850"/>
       <source>Installation succeeded</source>
-      <translation type="unfinished">Installation succeeded</translation>
+      <translation>Inštalácia bola úspešná</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="866"/>
       <source>Installation failed</source>
-      <translation type="unfinished">Installation failed</translation>
+      <translation>Inštalácia zlyhala</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="504"/>

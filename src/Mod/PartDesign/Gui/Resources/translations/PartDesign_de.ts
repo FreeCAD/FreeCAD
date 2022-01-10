@@ -4008,12 +4008,12 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../../SprocketFeature.ui" line="118"/>
       <source>Bicycle with Derailleur</source>
-      <translation>Fahrrad mit Kettenschaltung</translation>
+      <translation>Bicycle with Derailleur</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="123"/>
       <source>Bicycle without Derailleur</source>
-      <translation>Fahrrad ohne Kettenschaltung</translation>
+      <translation>Bicycle without Derailleur</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="128"/>
@@ -4093,7 +4093,7 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../../SprocketFeature.ui" line="220"/>
       <source>0 in</source>
-      <translation type="unfinished">0 in</translation>
+      <translation>0 in</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>

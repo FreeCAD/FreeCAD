@@ -4,9 +4,14 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="PathSlot.py" line="112"/>
-      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation>Zeige temporäre Pfadkonstruktionsobjekte im DEBUG-Modus.</translation>
+      <location filename="PathSurface.py" line="140"/>
+      <source>Stop index(angle) for rotational scan</source>
+      <translation>Stopp-Index(Winkel) für Rotationssuche</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="134"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>Zusätzlicher Versatz zur ausgewählten Begrenzungsbox</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="125"/>
@@ -19,19 +24,9 @@
       <translation>Kleinere Werte liefern ein feineres und genaueres Netz - bei nur wenig erhöhtem Rechenaufwand.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="140"/>
-      <source>Stop index(angle) for rotational scan</source>
-      <translation>Stopp-Index(Winkel) für Rotationssuche</translation>
-    </message>
-    <message>
       <location filename="PathSurface.py" line="132"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation>Die Dropcutter-Linien werden parallel zu dieser Achse erstellt.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="134"/>
-      <source>Additional offset to the selected bounding box</source>
-      <translation>Zusätzlicher Versatz zur ausgewählten Begrenzungsbox</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="136"/>
@@ -47,6 +42,23 @@
       <location filename="PathSurface.py" line="143"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
       <translation>Eben: Flacher, 3D-Oberflächen-Scan. Drehend: rotierender Scan um die 4. Achse.</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="190"/>
+      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
+      <translation>Konvertiere koplanare Bögen zu G2 / G3 Befehlen (G-Code) für die Fräsmuster "Kreisförmig" und "Kreisförmiges ZickZack".</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="124"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
+      <translation>Kleinere Werte liefern ein feineres und genaueres Netz - bei deutlich höherem Rechenaufwand.
+erheblich.</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="126"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
+      <translation>Kleinere Werte liefern ein feineres und genaueres Netz - bei nur wenig erhöhtem Rechenaufwand 
+nur unwesentlich.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="129"/>
@@ -84,19 +96,24 @@
       <translation>Innere Areale der ausgewählten, größeren Fläche fräsen.</translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="144"/>
+      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
+      <translation>Wählen Sie den zu verwendendenden Algorithmus: OCL Dropcutter* oder Experimentell (Nicht OCL-basiert).</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="146"/>
       <source>Select the overall boundary for the operation.</source>
       <translation>Wählen Sie die Gesamtgrenze für die Operation.</translation>
     </message>
     <message>
-      <location filename="PathWaterline.py" line="150"/>
-      <source>Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</source>
-      <translation>Die Materialbearbeitungsrichtung das Fräswerkzeugs festlegen: Gleichlauf (im Uhrzeigersinn) oder Gegenlauf (gegen den Uhrzeigersinn)</translation>
+      <location filename="PathWaterline.py" line="148"/>
+      <source>Set to clear last layer in a `Multi-pass` operation.</source>
+      <translation>Auswählen, um die letzte Ebene eine `Multi-pass`-Operation zu räumen.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="119"/>
-      <source>Set the geometric clearing pattern to use for the operation.</source>
-      <translation>Legen Sie das geometrische Räummuster für die Operation fest.</translation>
+      <location filename="PathWaterline.py" line="150"/>
+      <source>Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</source>
+      <translation>Die Materialbearbeitungsrichtung des Fräswerkzeugs festlegen: Gleichlauf (im Uhrzeigersinn) oder Gegenlauf (gegen den Uhrzeigersinn)</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="154"/>
@@ -114,11 +131,6 @@
       <translation>Z-Achsen-Tiefen-Versatz zur Zieloberfläche einstellen.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="125"/>
-      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
-      <translation>Die Operation in einem Durchgang der ausgewählten Tiefe durchführen, oder in mehreren Durchgängen bis zur Zieltiefe.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="164"/>
       <source>Set the start point for the cut pattern.</source>
       <translation>Den Startpunkt für das Fräsmuster festlegen.</translation>
@@ -127,11 +139,6 @@
       <location filename="PathWaterline.py" line="166"/>
       <source>Choose location of the center point for starting the cut pattern.</source>
       <translation>Wählen Sie die Position des Mittelpunktes für den Start des Fräsmusters aus.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="179"/>
-      <source>Profile the edges of the selection.</source>
-      <translation>Die Kanten der Auswahl profilieren.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="168"/>
@@ -154,11 +161,6 @@
       <translation>Aktivieren Sie die separate Optimierung von Übergängen zwischen überlappenden Pfaden.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="190"/>
-      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
-      <translation>Konvertiere koplanare Bögen zu G2 / G3 Befehlen (G-Code) für die Fräsmuster "Kreisförmig" und "Kreisförmiges ZickZack".</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="177"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
       <translation>Kollineare und koradiale Artefaktlücken, die kleiner als dieser Schwellenwert sind, werden im Pfad verbunden.</translation>
@@ -169,9 +171,9 @@
       <translation>Feedback: drei kleinste Lücken in der Pfadgeometrie identifiziert.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="138"/>
-      <source>The custom start point for the path of this operation</source>
-      <translation>Der benutzerdefinierte Startpunkt für den Pfad dieser Operation</translation>
+      <location filename="PathSurface.py" line="179"/>
+      <source>Profile the edges of the selection.</source>
+      <translation>Die Kanten der Auswahl profilieren.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="140"/>
@@ -182,11 +184,6 @@
       <location filename="PathCopy.py" line="37"/>
       <source>The path to be copied</source>
       <translation>Der zu kopierende Pfad</translation>
-    </message>
-    <message>
-      <location filename="PathArray.py" line="64"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>Die Werkzeugsteuerung, die zur Berechnung des Werkzeugweges verwendet wird</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="59"/>
@@ -299,6 +296,11 @@
       <translation>Abwählen, damit die Aktion keinen Code generiert</translation>
     </message>
     <message>
+      <location filename="PathCustom.py" line="56"/>
+      <source>The gcode to be inserted</source>
+      <translation>Einzufügender G-Code</translation>
+    </message>
+    <message>
       <location filename="PathDressupRampEntry.py" line="71"/>
       <source>Ramping Method</source>
       <translation>Rampenmethode</translation>
@@ -374,28 +376,6 @@
       <translation>Fräsen von erhöhten Bereichen innerhalb der Fläche ausschließen.</translation>
     </message>
     <message>
-      <location filename="PathWaterline.py" line="124"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation>Kleinere Werte liefern ein feineres und genaueres Netz - bei deutlich höherem Rechenaufwand.
-erheblich.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="126"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
-      <translation>Kleinere Werte liefern ein feineres und genaueres Netz - bei nur wenig erhöhtem Rechenaufwand 
-nur unwesentlich.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="144"/>
-      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation>Wählen Sie den zu verwendendenden Algorithmus: OCL Dropcutter* oder Experimentell (Nicht OCL-basiert).</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="148"/>
-      <source>Set to clear last layer in a `Multi-pass` operation.</source>
-      <translation>Auswählen, um die letzte Ebene eine `Multi-pass`-Operation zu räumen.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="160"/>
       <source>Ignore outer waterlines above this height.</source>
       <translation>Ignoriere äußere Wasserlinien über dieser Höhe.</translation>
@@ -404,6 +384,11 @@ nur unwesentlich.</translation>
       <location filename="PathCollision.py" line="59"/>
       <source>The base object this collision refers to</source>
       <translation>Das Basisobjekt, auf das sich diese Kollision bezieht</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="112"/>
+      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
+      <translation>Zeige temporäre Pfadkonstruktionsobjekte im DEBUG-Modus.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="115"/>
@@ -416,6 +401,11 @@ nur unwesentlich.</translation>
       <translation>Gib den benutzerdefinierten Endpunkt für die Nut ein.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="119"/>
+      <source>Set the geometric clearing pattern to use for the operation.</source>
+      <translation>Legen Sie das geometrische Räummuster für die Operation fest.</translation>
+    </message>
+    <message>
       <location filename="PathSlot.py" line="121"/>
       <source>Positive extends the beginning of the path, negative shortens.</source>
       <translation>Positiv erweitert den Anfang des Pfades, negativ verkürzt ihn.</translation>
@@ -424,6 +414,11 @@ nur unwesentlich.</translation>
       <location filename="PathSlot.py" line="123"/>
       <source>Positive extends the end of the path, negative shortens.</source>
       <translation>Positiv erweitert das Ende des Pfades, negativ verkürzt es.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="125"/>
+      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
+      <translation>Die Operation in einem Durchgang der ausgewählten Tiefe durchführen, oder in mehreren Durchgängen bis zur Zieltiefe.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="127"/>
@@ -451,6 +446,11 @@ nur unwesentlich.</translation>
       <translation>Aktivieren, um die Fräsrichtung der Nut umzukehren.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="138"/>
+      <source>The custom start point for the path of this operation</source>
+      <translation>Der benutzerdefinierte Startpunkt für den Pfad dieser Operation</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="65"/>
       <source>Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</source>
       <translation>Adaptiven Algorithmus verwenden, um übermäßiges Luftfräsen über Taschen zu vermeiden.</translation>
@@ -464,6 +464,51 @@ nur unwesentlich.</translation>
       <location filename="PathPocket.py" line="69"/>
       <source>Process the model and stock in an operation with no Base Geometry selected.</source>
       <translation>Verarbeite Modell und Materialkörper in einer Operation, bei der keine Basisgeometrie ausgewählt wurde.</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="41"/>
+      <source>Comment or note for CNC program</source>
+      <translation type="unfinished">Comment or note for CNC program</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="119"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Standardgeschwindigkeit für horizontale Eilfahrten.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="127"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Standardgeschwindigkeit für vertikale Eilfahrten.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="415"/>
+      <source>Coolant Modes</source>
+      <translation>Kühlmittelmodi</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="424"/>
+      <source>Default coolant mode.</source>
+      <translation>Standard-Kühlmittelmodus.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="156"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Ausdruck für den Sicherheitsabstand (SafeHeight) von neuen Operationen.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="182"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Ausdruck für die Start-Tiefe (StartDepth) von neuen Operationen.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="190"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Ausdruck für die Ziel-Tiefe (FinalDepth) von neuen Operationen.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="198"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Ausdruck für die Stufenhöhe (StepDown) von neuen Operationen.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="71"/>
@@ -526,6 +571,11 @@ nur unwesentlich.</translation>
       <translation>Der Abstand zwischen den Kopien des linearen Musters</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="64"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>Die Werkzeugsteuerung, die zur Berechnung des Werkzeugweges verwendet wird</translation>
+    </message>
+    <message>
       <location filename="PathArray.py" line="48"/>
       <source>The number of copies in X direction in Linear pattern</source>
       <translation>Anzahl der Kopien in X-Richtung des linearen Musters</translation>
@@ -566,9 +616,49 @@ nur unwesentlich.</translation>
       <translation>Maximaler zufälliger Versatzes von Kopien</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="169"/>
+      <source>Seed value for jitter randomness</source>
+      <translation type="unfinished">Seed value for jitter randomness</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="111"/>
+      <source>The base object this stock is derived from</source>
+      <translation>Das Basisobjekt, von dem der Materialkörper abgeleitet wurde</translation>
+    </message>
+    <message>
       <location filename="PathStock.py" line="105"/>
       <source>A material for this object</source>
       <translation>Ein Material für dieses Objekt</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="243"/>
+      <source>Length of this stock box</source>
+      <translation>Länge des Materialkörpers</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="249"/>
+      <source>Width of this stock box</source>
+      <translation>Breite des Materialkörpers</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="255"/>
+      <source>Height of this stock box</source>
+      <translation>Höhe des Materialkörpers</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="295"/>
+      <source>Radius of this stock cylinder</source>
+      <translation>Radius des zylindrischen Materialkörpers</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="301"/>
+      <source>Height of this stock cylinder</source>
+      <translation>Höhe des zylindrischen Materialkörpers</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="337"/>
+      <source>Internal representation of stock type</source>
+      <translation>Interne Darstellung des Materialkörper-Typs</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="137"/>
@@ -622,6 +712,11 @@ nur unwesentlich.</translation>
       <location filename="PathJobGui.py" line="282"/>
       <source>Edit</source>
       <translation>Bearbeiten</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="184"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Fehler beim erkennen der Bohrfähigkeit: {}</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="472"/>
@@ -859,14 +954,6 @@ nur unwesentlich.</translation>
     </message>
   </context>
   <context>
-    <name>PathCustom</name>
-    <message>
-      <location filename="PathCustom.py" line="52"/>
-      <source>The gcode to be inserted</source>
-      <translation>Einzufügender G-Code</translation>
-    </message>
-  </context>
-  <context>
     <name>PathDeburr</name>
     <message>
       <location filename="PathDeburr.py" line="79"/>
@@ -973,6 +1060,19 @@ nur unwesentlich.</translation>
       <location filename="PathFeatureExtensions.py" line="421"/>
       <source>Waterline error</source>
       <translation>Wasserlinien-Fehler</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathFixture</name>
+    <message>
+      <location filename="PathFixture.py" line="156"/>
+      <source>Fixture</source>
+      <translation>Einspannung</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="159"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Erzeugt ein Einspannungs-Versatz-Objekt</translation>
     </message>
   </context>
   <context>
@@ -1378,6 +1478,19 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     </message>
   </context>
   <context>
+    <name>PathPlane</name>
+    <message>
+      <location filename="PathPlane.py" line="118"/>
+      <source>Selection Plane</source>
+      <translation>Auswahlebene</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="121"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Erzeugt ein Auswahlebenenobjekt</translation>
+    </message>
+  </context>
+  <context>
     <name>PathPocket</name>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="176"/>
@@ -1473,12 +1586,12 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     <message>
       <location filename="PathProfile.py" line="200"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Gemeinsam</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="201"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Individuell</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="204"/>
@@ -1493,7 +1606,7 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     <message>
       <location filename="PathProfile.py" line="206"/>
       <source>Miter</source>
-      <translation type="unfinished">Miter</translation>
+      <translation>Gehrung</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="209"/>
@@ -1513,7 +1626,7 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     <message>
       <location filename="PathProfile.py" line="622"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+      <translation>Prüfe die Kantenauswahl und die Anforderungen an die Endtiefe für die Profilerstellung der offenen Kanten.</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="663"/>
@@ -1547,64 +1660,6 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
       <location filename="PathPropertyBag.py" line="62"/>
       <source>List of custom property groups</source>
       <translation>Liste benutzerdefinierter Eigenschaftsgruppen</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathSetupSheet</name>
-    <message>
-      <location filename="PathSetupSheet.py" line="102"/>
-      <source>Default speed for horizontal rapid moves.</source>
-      <translation>Standardgeschwindigkeit für horizontale Eilfahrten.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="103"/>
-      <source>Default speed for vertical rapid moves.</source>
-      <translation>Standardgeschwindigkeit für vertikale Eilfahrten.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="287"/>
-      <source>Coolant Modes</source>
-      <translation>Kühlmittelmodi</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="291"/>
-      <source>Default coolant mode.</source>
-      <translation>Standard-Kühlmittelmodus.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="108"/>
-      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
-      <translation>Die Verwendung dieses Felds hängt vom Ausdruck des Sicherheitsabstandes (SafeHeightExpression) ab - standardmäßig wird der Wert zur Start-Tiefe (StartDepth) addiert und für den Sicherheitsabstand (SafeHeight) einer Operation verwendet.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="109"/>
-      <source>Expression set for the SafeHeight of new operations.</source>
-      <translation>Ausdruck für den Sicherheitsabstand (SafeHeight) von neuen Operationen.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="110"/>
-      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
-      <translation>Die Verwendung dieses Felds hängt vom Ausdruck der Rückzugsebene (ClearanceHeightExpression) ab - standardmäßig wird der Wert zur Start-Tiefe (StartDepth) addiert und für die Rückzugsebene (ClearanceHeight) einer Operation verwendet.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="111"/>
-      <source>Expression set for the ClearanceHeight of new operations.</source>
-      <translation>Ausdruck für die Rückzugsebene (ClearanceHeight) von neuen Operationen.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="113"/>
-      <source>Expression used for StartDepth of new operations.</source>
-      <translation>Ausdruck für die Start-Tiefe (StartDepth) von neuen Operationen.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="114"/>
-      <source>Expression used for FinalDepth of new operations.</source>
-      <translation>Ausdruck für die Ziel-Tiefe (FinalDepth) von neuen Operationen.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="115"/>
-      <source>Expression used for StepDown of new operations.</source>
-      <translation>Ausdruck für die Stufenhöhe (StepDown) von neuen Operationen.</translation>
     </message>
   </context>
   <context>
@@ -2300,14 +2355,6 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     </message>
   </context>
   <context>
-    <name>PathUtils</name>
-    <message>
-      <location filename="PathUtils.py" line="150"/>
-      <source>Issue determine drillability: {}</source>
-      <translation>Fehler beim erkennen der Bohrfähigkeit: {}</translation>
-    </message>
-  </context>
-  <context>
     <name>PathVcarve</name>
     <message>
       <location filename="PathVcarve.py" line="211"/>
@@ -2605,11 +2652,6 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="PathDressupAxisMap.py" line="149"/>
-      <source>Edit Dragknife Dress-up</source>
-      <translation>Schleppmesser-Erweiterung bearbeiten</translation>
-    </message>
-    <message>
       <location filename="PathDressupDragknife.py" line="541"/>
       <source>DragKnife Dress-up</source>
       <translation>Schleppmesser-Erweiterung</translation>
@@ -2638,6 +2680,11 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
       <location filename="PathDressupDragknife.py" line="569"/>
       <source>Create Dress-up</source>
       <translation>Erweiterung erzeugen</translation>
+    </message>
+    <message>
+      <location filename="PathDressupAxisMap.py" line="149"/>
+      <source>Edit Dragknife Dress-up</source>
+      <translation>Schleppmesser-Erweiterung bearbeiten</translation>
     </message>
   </context>
   <context>
@@ -2920,24 +2967,6 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     </message>
   </context>
   <context>
-    <name>Path_Fixture</name>
-    <message>
-      <location filename="PathFixture.py" line="115"/>
-      <source>Fixture</source>
-      <translation>Einspannung</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="118"/>
-      <source>Creates a Fixture Offset object</source>
-      <translation>Erzeugt ein Einspannungs-Versatz-Objekt</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="126"/>
-      <source>Create a Fixture Offset</source>
-      <translation>Einspannungsversatz erzeugen</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3024,11 +3053,6 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
       <translation>Exportiert den Path Auftrag als Vorlage, um diese für andere Aufträge zu verwenden</translation>
     </message>
     <message>
-      <location filename="PathJobGui.py" line="1559"/>
-      <source>Create Job</source>
-      <translation>Auftrag erstellen</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="609"/>
       <source>Edit Job</source>
       <translation>Auftrag bearbeiten</translation>
@@ -3053,6 +3077,11 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
       <source>Model Selection</source>
       <translation>Modellauswahl</translation>
     </message>
+    <message>
+      <location filename="PathJobGui.py" line="1559"/>
+      <source>Create Job</source>
+      <translation>Auftrag erstellen</translation>
+    </message>
   </context>
   <context>
     <name>Path_OpActiveToggle</name>
@@ -3068,19 +3097,6 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
       <location filename="PathCommands.py" line="170"/>
       <source>Copy the operation in the job</source>
       <translation>Eine Operation des Auftrags kopieren</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Plane</name>
-    <message>
-      <location filename="PathPlane.py" line="110"/>
-      <source>Selection Plane</source>
-      <translation>Auswahlebene</translation>
-    </message>
-    <message>
-      <location filename="PathPlane.py" line="122"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Erzeugt ein Auswahlebenenobjekt</translation>
     </message>
   </context>
   <context>
@@ -3415,14 +3431,6 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     </message>
   </context>
   <context>
-    <name>Path_SetupSheet</name>
-    <message>
-      <location filename="PathSetupSheetGui.py" line="371"/>
-      <source>Edit SetupSheet</source>
-      <translation>Einrichtungstabelle bearbeiten</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_SimpleCopy</name>
     <message>
       <location filename="PathSimpleCopy.py" line="65"/>
@@ -3603,6 +3611,119 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
       <location filename="PathToolLibraryEditor.py" line="387"/>
       <source>Rename Selected Tool Table</source>
       <translation>Ausgewählte Werkzeugtabelle umbenennen</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="PathCustom.py" line="52"/>
+      <source>The gcode to be inserted</source>
+      <translation>Einzufügender G-Code</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSetupSheet</name>
+    <message>
+      <location filename="PathSetupSheet.py" line="102"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Standardgeschwindigkeit für horizontale Eilfahrten.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="103"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Standardgeschwindigkeit für vertikale Eilfahrten.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="108"/>
+      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
+      <translation>Die Verwendung dieses Felds hängt vom Ausdruck des Sicherheitsabstandes (SafeHeightExpression) ab - standardmäßig wird der Wert zur Start-Tiefe (StartDepth) addiert und für den Sicherheitsabstand (SafeHeight) einer Operation verwendet.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="109"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Ausdruck für den Sicherheitsabstand (SafeHeight) von neuen Operationen.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="110"/>
+      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
+      <translation>Die Verwendung dieses Felds hängt vom Ausdruck der Rückzugsebene (ClearanceHeightExpression) ab - standardmäßig wird der Wert zur Start-Tiefe (StartDepth) addiert und für die Rückzugsebene (ClearanceHeight) einer Operation verwendet.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="111"/>
+      <source>Expression set for the ClearanceHeight of new operations.</source>
+      <translation>Ausdruck für die Rückzugsebene (ClearanceHeight) von neuen Operationen.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="113"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Ausdruck für die Start-Tiefe (StartDepth) von neuen Operationen.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="114"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Ausdruck für die Ziel-Tiefe (FinalDepth) von neuen Operationen.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="115"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Ausdruck für die Stufenhöhe (StepDown) von neuen Operationen.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="287"/>
+      <source>Coolant Modes</source>
+      <translation>Kühlmittelmodi</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="291"/>
+      <source>Default coolant mode.</source>
+      <translation>Standard-Kühlmittelmodus.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathUtils</name>
+    <message>
+      <location filename="PathUtils.py" line="150"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Fehler beim erkennen der Bohrfähigkeit: {}</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Fixture</name>
+    <message>
+      <location filename="PathFixture.py" line="115"/>
+      <source>Fixture</source>
+      <translation>Einspannung</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="118"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Erzeugt ein Einspannungs-Versatz-Objekt</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="126"/>
+      <source>Create a Fixture Offset</source>
+      <translation>Einspannungsversatz erzeugen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Plane</name>
+    <message>
+      <location filename="PathPlane.py" line="110"/>
+      <source>Selection Plane</source>
+      <translation>Auswahlebene</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="122"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Erzeugt ein Auswahlebenenobjekt</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_SetupSheet</name>
+    <message>
+      <location filename="PathSetupSheetGui.py" line="371"/>
+      <source>Edit SetupSheet</source>
+      <translation>Einrichtungstabelle bearbeiten</translation>
     </message>
   </context>
   <context>
@@ -4016,7 +4137,7 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
       <source>val1,val2,val3,...</source>
-      <translation type="unfinished">val1,val2,val3,...</translation>
+      <translation>val1,val2,val3,...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
@@ -4631,7 +4752,7 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
       <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Die Richtung, in der das Profil ausgeführt wird, im oder gegen den Uhrzeigersinn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
@@ -5235,7 +5356,7 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="244"/>
       <source>Currently using custom point inputs available in the Property View of the Data tab.</source>
-      <translation type="unfinished">Currently using custom point inputs available in the Property View of the Data tab.</translation>
+      <translation>Derzeit verwenden Sie benutzerdefinierte Punkteeingaben, die in der Eigenschaftenansicht des Daten-Tab verfügbar sind.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="269"/>
@@ -5452,7 +5573,7 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="249"/>
       <source>BoundBox extra offset X, Y</source>
-      <translation type="unfinished">BoundBox extra offset X, Y</translation>
+      <translation>Extra-Versatz des Begrenzungsrahmens X, Y</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="256"/>
@@ -5573,7 +5694,7 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="148"/>
       <source>TPI</source>
-      <translation type="unfinished">TPI</translation>
+      <translation>Gewindegänge pro Zoll (inch)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="183"/>
@@ -5808,7 +5929,7 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
       <location filename="../panels/ToolEditor.ui" line="237"/>
       <location filename="../panels/ToolEditor.ui" line="277"/>
       <source>0.00</source>
-      <translation type="unfinished">0.00</translation>
+      <translation>0,00</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
@@ -6077,7 +6198,7 @@ Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</transl
     <message>
       <location filename="../preferences/PathJob.ui" line="301"/>
       <source>DefaultPostProcessor</source>
-      <translation type="unfinished">DefaultPostProcessor</translation>
+      <translation>Standard-Post-Prozessor</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="304"/>
@@ -6643,7 +6764,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="92"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angles less than filter angle will not receive corner actions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angles less than filter angle will not receive corner actions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Winkel kleiner als der Filterwinkel erhalten keine Eckenaktionen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="14"/>
@@ -6663,7 +6784,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="106"/>
       <source>Extend In:</source>
-      <translation type="unfinished">Extend In:</translation>
+      <translation>Erweitern um:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="127"/>
@@ -6701,7 +6822,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="201"/>
       <source>Extend Out:</source>
-      <translation type="unfinished">Extend Out:</translation>
+      <translation>Erweitern um:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="222"/>

@@ -26,7 +26,7 @@
     <name>CmdQuadrants</name>
     <message>
       <source>Add Quadrant Vertices</source>
-      <translation>Dodaj wierzchołki kwadrantu </translation>
+      <translation>Dodaj wierzchołki kwadrantu</translation>
     </message>
   </context>
   <context>
@@ -610,7 +610,7 @@
     </message>
     <message>
       <source>Add Quadrant Vertices</source>
-      <translation>Dodaj wierzchołki kwadrantu </translation>
+      <translation>Dodaj wierzchołki kwadrantu</translation>
     </message>
   </context>
   <context>
@@ -809,7 +809,7 @@
     </message>
     <message>
       <source>Add Quadrant Vertices</source>
-      <translation>Dodaj wierzchołki kwadrantu </translation>
+      <translation>Dodaj wierzchołki kwadrantu</translation>
     </message>
     <message>
       <source>Create Annotation</source>
@@ -873,7 +873,7 @@
     </message>
     <message>
       <source>Edit Leader</source>
-      <translation>Edytuj linię odniesienia </translation>
+      <translation>Edytuj linię odniesienia</translation>
     </message>
     <message>
       <source>Create Anno</source>
@@ -1291,7 +1291,7 @@
     </message>
     <message>
       <source>No base View in Selection.</source>
-      <translation>Brak podstawowego widoku w zaznaczeniu</translation>
+      <translation>Brak bazowego widoku w zaznaczeniu.</translation>
     </message>
     <message>
       <source>You must select Faces or an existing CenterLine.</source>
@@ -1724,7 +1724,7 @@ górnej i lewej krawędzi</translation>
     </message>
     <message>
       <source>Pick arrow side symbol</source>
-      <translation>Wybierz boczny symbol strzałki </translation>
+      <translation>Wybierz symbol boczny strzałki</translation>
     </message>
     <message>
       <source>Symbol</source>
@@ -1867,7 +1867,7 @@ Zmieniaj tylko wtedy, gdy wiesz co robisz!</translation>
     </message>
     <message>
       <source>Perform a fuse operation on input shape(s) before Section view processing</source>
-      <translation>Wykonaj operację sumy logicznej na podanych kształtach przed przetworzeniem widoku przekroju </translation>
+      <translation>Wykonaj operację sumy logicznej na podanych kształtach przed przetworzeniem widoku przekroju</translation>
     </message>
     <message>
       <source>Fuse Before Section</source>
@@ -2095,7 +2095,7 @@ Szerokość każdej jednostki wynosi ok. 0,1 mm</translation>
     </message>
     <message>
       <source>Outline shape for detail views</source>
-      <translation>Kontur kształtu widoku części </translation>
+      <translation>Kształt konturu dla widoków szczegółowych</translation>
     </message>
     <message>
       <source>Circle</source>
@@ -2294,7 +2294,7 @@ Szerokość każdej jednostki wynosi ok. 0,1 mm</translation>
     </message>
     <message>
       <source>Default color for leader lines</source>
-      <translation>Domyślny kolor linii odniesienia </translation>
+      <translation>Domyślny kolor linii odniesienia</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3129,7 +3129,7 @@ Czy chcesz kontynuować?</translation>
     </message>
     <message>
       <source>In progress edit abandoned. Start over.</source>
-      <translation>W toku edycji - porzucona. Zacznij od początku.</translation>
+      <translation>W trakcie edycji - przerwano. Zacznij od początku.</translation>
     </message>
   </context>
   <context>
@@ -3586,7 +3586,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     </message>
     <message>
       <source>In progress edit abandoned. Start over.</source>
-      <translation>W toku edycji - porzucona. Zacznij od początku.</translation>
+      <translation>W trakcie edycji - przerwano. Zacznij od początku.</translation>
     </message>
   </context>
   <context>
@@ -3676,7 +3676,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     </message>
     <message>
       <source>Geometry2: </source>
-      <translation>Geometria2:</translation>
+      <translation>Geometria2: </translation>
     </message>
     <message>
       <source>To These Dimensions</source>
@@ -4030,7 +4030,7 @@ przy użyciu podanego odstępu X/Y</translation>
     </message>
     <message>
       <source>Nothing to apply. No section direction picked yet</source>
-      <translation>Nic do zastosowania. Nie wybrano jeszcze żadnego kierunku przekroju.</translation>
+      <translation>Nie ma nic do zastosowania. Nie wybrano jeszcze kierunku widoku dla przekroju</translation>
     </message>
     <message>
       <source>Can not continue. Object * %1 * not found.</source>

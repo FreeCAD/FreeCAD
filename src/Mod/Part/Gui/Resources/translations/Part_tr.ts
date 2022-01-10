@@ -489,7 +489,7 @@ Devam etmek istiyor musun?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="152"/>
       <source>Out Of Enum Range:</source>
-      <translation type="unfinished">Out Of Enum Range:</translation>
+      <translation>Numaralandırma Aralığı Dışı:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
@@ -628,7 +628,7 @@ Devam etmek istiyor musun?</translation>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="116"/>
       <source>Attachment editor</source>
-      <translation type="unfinished">Attachment editor</translation>
+      <translation>Ek dosya düzenleyici</translation>
     </message>
   </context>
   <context>
@@ -1922,8 +1922,8 @@ boyutları yeniden hesapla.</translation>
       <location filename="../../Command.cpp" line="2358"/>
       <source>Toggle on and off all direct dimensions,
 including angular.</source>
-      <translation type="unfinished">Toggle on and off all direct dimensions,
-including angular.</translation>
+      <translation>Yüzeye dik durmdaki tüm boyutları açıp kapatın,
+açısal dahil.</translation>
     </message>
   </context>
   <context>
@@ -1942,8 +1942,7 @@ including angular.</translation>
       <location filename="../../Command.cpp" line="2321"/>
       <source>Toggle on and off all currently visible dimensions,
 direct, orthogonal, and angular.</source>
-      <translation type="unfinished">Toggle on and off all currently visible dimensions,
-direct, orthogonal, and angular.</translation>
+      <translation>Şu anda görünür olan tüm dik, ortogonal ve açısal boyutları açıp kapatın.</translation>
     </message>
   </context>
   <context>
@@ -1963,9 +1962,7 @@ direct, orthogonal, and angular.</translation>
       <source>Toggle on and off all orthogonal dimensions,
 meaning that a direct dimension will be decomposed
 into its X, Y, and Z components.</source>
-      <translation type="unfinished">Toggle on and off all orthogonal dimensions,
-meaning that a direct dimension will be decomposed
-into its X, Y, and Z components.</translation>
+      <translation>Yüzeye dik olan X, Y ve Z bileşenlerine dönüştürülecek bir boyutun ayrıştırılacağı anlamına gelen tüm ortogonal ölçümlendirmeleri açıp kapatın.</translation>
     </message>
   </context>
   <context>
@@ -2290,12 +2287,12 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="329"/>
       <source>Create shape element copy</source>
-      <translation type="unfinished">Create shape element copy</translation>
+      <translation>Şekil öğesi kopyası oluştur</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="330"/>
       <source>Create a non-parametric copy of the selected shape element</source>
-      <translation type="unfinished">Create a non-parametric copy of the selected shape element</translation>
+      <translation>Seçili şekil öğesinin parametrik olmayan bir kopyasını oluşturun</translation>
     </message>
   </context>
   <context>
@@ -2542,12 +2539,12 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="180"/>
       <source>Create points object from mesh</source>
-      <translation type="unfinished">Create points object from mesh</translation>
+      <translation>Metal örgülerden noktalar nesnesi oluşturun</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Create selectable points object from selected mesh object</source>
-      <translation type="unfinished">Create selectable points object from selected mesh object</translation>
+      <translation>Seçili metal örgü nesnesinden seçilebilir noktalar nesnesi oluştur</translation>
     </message>
   </context>
   <context>
@@ -2578,7 +2575,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="2449"/>
       <source>Create projection on surface...</source>
-      <translation type="unfinished">Create projection on surface...</translation>
+      <translation>Yüzeyde izdüşüm oluşturun...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2450"/>
@@ -2586,10 +2583,8 @@ into its X, Y, and Z components.</translation>
 onto a face of another object.
 The camera view determines the direction
 of projection.</source>
-      <translation type="unfinished">Project edges, wires, or faces of one object
-onto a face of another object.
-The camera view determines the direction
-of projection.</translation>
+      <translation>Bir nesnenin kenarlarını, tellerini veya yüzlerini başka bir nesnenin yüzüne yansıtın.
+Kamera görünümü, izdüşüm yönünü belirler.</translation>
     </message>
   </context>
   <context>
@@ -2838,12 +2833,12 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="301"/>
       <source>Create transformed copy</source>
-      <translation type="unfinished">Create transformed copy</translation>
+      <translation>Dönüştürülen kopya oluştur</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="302"/>
       <source>Create a non-parametric copy with transformed placement</source>
-      <translation type="unfinished">Create a non-parametric copy with transformed placement</translation>
+      <translation>Dönüştürülen yerleşimle parametrik olmayan bir kopya oluşturun</translation>
     </message>
   </context>
   <context>
@@ -2852,12 +2847,12 @@ of projection.</translation>
       <location filename="../../Command.cpp" line="147"/>
       <location filename="../../Command.cpp" line="188"/>
       <source>Part Box Create</source>
-      <translation type="unfinished">Part Box Create</translation>
+      <translation>Parça Kutusu Oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="307"/>
       <source>Part Cut</source>
-      <translation type="unfinished">Part Cut</translation>
+      <translation>Parça Kesme</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="408"/>
@@ -2867,7 +2862,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="508"/>
       <source>Fusion</source>
-      <translation type="unfinished">Fusion</translation>
+      <translation>Kaynaşma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="921"/>
@@ -2887,7 +2882,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Part Import Curve Net</source>
-      <translation type="unfinished">Part Import Curve Net</translation>
+      <translation>Yerleştirilen Eğri Parçasının Neti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
@@ -2897,7 +2892,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1363"/>
       <source>Make face</source>
-      <translation type="unfinished">Make face</translation>
+      <translation>Yüz yapın</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1657"/>
@@ -2922,17 +2917,17 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="72"/>
       <source>Create Part Cylinder</source>
-      <translation type="unfinished">Create Part Cylinder</translation>
+      <translation>Parça Silindiri Oluştur</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="137"/>
       <source>Convert mesh</source>
-      <translation type="unfinished">Convert mesh</translation>
+      <translation>Metal örgüyü dönüştür</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="196"/>
       <source>Points from mesh</source>
-      <translation type="unfinished">Points from mesh</translation>
+      <translation>Metal örgülerden noktalar</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="373"/>
@@ -2947,7 +2942,7 @@ of projection.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1063"/>
       <source>Edit attachment</source>
-      <translation type="unfinished">Edit attachment</translation>
+      <translation>Ek dosyayı düzenle</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.cpp" line="432"/>
@@ -3053,7 +3048,7 @@ of projection.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="261"/>
       <source>Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Not: Yerleşim, eklenen nesnenin yerel alanında ifade edilir.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="184"/>
@@ -3079,22 +3074,22 @@ of projection.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the x-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>X-ekseni etrafında döndürme
+Not: Yerleşim, eklenen nesnenin yerel alanında ifade edilir.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="312"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the y-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Y-ekseni etrafında döndürme
+Not: Yerleşim, eklenen nesnenin yerel alanında ifade edilir.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the z-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Z-ekseni etrafında döndürme
+Not: Yerleşim, eklenen nesnenin yerel alanında ifade edilir.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
@@ -3429,8 +3424,7 @@ Note: The placement is expressed in local space of object being attached.</trans
       <location filename="../../DlgExtrusion.cpp" line="475"/>
       <source>Creating Extrusion failed.
 %1</source>
-      <translation type="unfinished">Creating Extrusion failed.
-%1</translation>
+      <translation>Ekstrüzyon oluşturulamadı</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="542"/>
@@ -3466,7 +3460,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Extrusion direction vector is zero-length. It must be non-zero.</translation>
+      <translation>Ekstrüzyon yönü vektörü sıfır uzunluktadır. Sıfırdan farklı olmalıdır.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="671"/>
@@ -3674,7 +3668,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Solids and shells will be exported as trimmed surface</source>
-      <translation type="unfinished">Solids and shells will be exported as trimmed surface</translation>
+      <translation>Katılar ve kabuklar, kırpılmış yüzey olarak ihraç edilecek</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="74"/>
@@ -3684,7 +3678,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
       <source>Solids will be exported as manifold solid B-Rep object, shells as shell</source>
-      <translation type="unfinished">Solids will be exported as manifold solid B-Rep object, shells as shell</translation>
+      <translation>Katılar, birçok katı Sınır-Gösterimi nesnesi olarak, kabuklar ise kabuk olarak dışa aktarılacaktır</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
@@ -3699,7 +3693,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../DlgImportExportIges.ui" line="106"/>
       <source>Blank entities will not be imported</source>
-      <translation type="unfinished">Blank entities will not be imported</translation>
+      <translation>Boş varlıklar içe aktarılmayacak</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="109"/>
@@ -3709,7 +3703,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../DlgImportExportIges.ui" line="119"/>
       <source>If not empty, field contents will be used in the IGES file header</source>
-      <translation type="unfinished">If not empty, field contents will be used in the IGES file header</translation>
+      <translation>Boş değilse, alan içeriği IGES dosya başlığında kullanılacaktır</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="122"/>
@@ -3752,7 +3746,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../DlgImportExportStep.ui" line="64"/>
       <source>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>Dışa aktarırken, görünmez bir nesneyi atlamak için bu seçeneğin işaretini kaldırın; bu, görünmezlik STEP stilini desteklemeyen CAD'ler için yararlıdır.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="67"/>
@@ -3787,7 +3781,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../DlgImportExportStep.ui" line="126"/>
       <source>Use legacy exporter</source>
-      <translation type="unfinished">Use legacy exporter</translation>
+      <translation>Eski python dışa aktarımcısını kullanın</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="139"/>
@@ -3795,20 +3789,17 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
 a single object. Please note that when import back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when import back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Tek bir nesneyi dışa aktarırken yerleşim bilgilerini saklamak için bu seçeneği işaretleyin. STEP dosyasını geri içe aktarırken, yerleştirmenin Yerleşim özelliği içinde tutmak yerine şekil geometrisine kodlanacağını lütfen unutmayın.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="145"/>
       <source>Export single object placement</source>
-      <translation type="unfinished">Export single object placement</translation>
+      <translation>Tek nesne yerleşimini dışa aktar</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="174"/>
       <source>If not empty, field contents will be used in the STEP file header.</source>
-      <translation type="unfinished">If not empty, field contents will be used in the STEP file header.</translation>
+      <translation>Boş değilse, alan içeriği STEP dosya başlığında kullanılacaktır.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="177"/>
@@ -3839,8 +3830,7 @@ it inside the Placement property.</translation>
       <location filename="../../DlgImportExportStep.ui" line="222"/>
       <source>If checked, no Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, no Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>Bu işaretliyse dosya okuma sırasında Bileşen birleşimi yapılmayacaktır(yavaş; ama daha yüksek detaylı).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="226"/>
@@ -3850,17 +3840,17 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="242"/>
       <source>Select this to use App::LinkGroup as group container, or else use App::Part.</source>
-      <translation type="unfinished">Select this to use App::LinkGroup as group container, or else use App::Part.</translation>
+      <translation>App::LinkGroup'u grup kapsayıcısı olarak kullanmak için bunu seçin veya App::Part'ı kullanın.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="245"/>
       <source>Use LinkGroup</source>
-      <translation type="unfinished">Use LinkGroup</translation>
+      <translation>LinkGroup'u kullanın</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="258"/>
       <source>Select this to not import any invisible objects.</source>
-      <translation type="unfinished">Select this to not import any invisible objects.</translation>
+      <translation>Görünmez nesneleri içe aktarmamak için bunu seçin.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="261"/>
@@ -3870,38 +3860,38 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="274"/>
       <source>Reduce number of objects using Link array</source>
-      <translation type="unfinished">Reduce number of objects using Link array</translation>
+      <translation>Bağlantı dizisini kullanarak nesne sayısını azaltın</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="277"/>
       <source>Reduce number of objects</source>
-      <translation type="unfinished">Reduce number of objects</translation>
+      <translation>Nesne sayısını azaltın</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="290"/>
       <source>Expand compound shape with multiple solids</source>
-      <translation type="unfinished">Expand compound shape with multiple solids</translation>
+      <translation>Çok katlı katılarla bileşen şeklini genişletin</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="293"/>
       <source>Expand compound shape</source>
-      <translation type="unfinished">Expand compound shape</translation>
+      <translation>Bileşen şeklini genişlet</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="306"/>
       <location filename="../../DlgImportExportStep.ui" line="309"/>
       <source>Show progress bar when importing</source>
-      <translation type="unfinished">Show progress bar when importing</translation>
+      <translation>İçe aktarırken ilerleme çubuğunu göster</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="322"/>
       <source>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</source>
-      <translation type="unfinished">Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</translation>
+      <translation>Örnek adını kullanmayın. Anlamsız otomatik oluşturulan örnek adlarına sahip bazı eski STEP dosyaları için kullanışlıdır.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="325"/>
       <source>Ignore instance names</source>
-      <translation type="unfinished">Ignore instance names</translation>
+      <translation>Örnek adlarını yoksay</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="340"/>
@@ -3916,12 +3906,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="365"/>
       <source>Assembly per document</source>
-      <translation type="unfinished">Assembly per document</translation>
+      <translation>Belge başına montaj</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="370"/>
       <source>Assembly per document in sub-directory</source>
-      <translation type="unfinished">Assembly per document in sub-directory</translation>
+      <translation>Alt dizindeki belge başına derleme</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="375"/>
@@ -3931,16 +3921,14 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="380"/>
       <source>Object per document in sub-directory</source>
-      <translation type="unfinished">Object per document in sub-directory</translation>
+      <translation>Alt dizindeki belge başına nesne</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.cpp" line="207"/>
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
-      <translation type="unfinished">This parameter indicates whether parametric curves (curves in parametric space of surface)
-should be written into the STEP file. This parameter can be set to off in order to minimize
-the size of the resulting STEP file.</translation>
+      <translation>Bu parametre, parametrik eğrilerin (yüzeyin parametrik uzayındaki eğriler) STEP dosyasına yazılması gerekip gerekmediğini gösterir. Elde edilen STEP dosyasının boyutunu en aza indirmek için bu parametre kapalı olarak ayarlanabilir.</translation>
     </message>
   </context>
   <context>
@@ -4484,12 +4472,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
       <source>Add wire</source>
-      <translation type="unfinished">Add wire</translation>
+      <translation>Tel ekle</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
       <source>Add edge</source>
-      <translation type="unfinished">Add edge</translation>
+      <translation>Kenar ekle</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="56"/>
@@ -4509,12 +4497,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
       <source>Extrude height</source>
-      <translation type="unfinished">Extrude height</translation>
+      <translation>Baskılama yüksekliği</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="116"/>
       <source>Solid depth</source>
-      <translation type="unfinished">Solid depth</translation>
+      <translation>Katı cismin içindeki derinlik</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="141"/>
@@ -4524,7 +4512,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="147"/>
       <source>Get current camera direction</source>
-      <translation type="unfinished">Get current camera direction</translation>
+      <translation>Geçerli kamera yönünü al</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
@@ -4549,12 +4537,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="162"/>
       <source>Have no active document!!!</source>
-      <translation type="unfinished">Have no active document!!!</translation>
+      <translation>Etkin belgeniz yok!!!</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
       <source>Can not create a projection object!!!</source>
-      <translation type="unfinished">Can not create a projection object!!!</translation>
+      <translation>Bir izdüşüm nesnesi oluşturulamıyor!!!</translation>
     </message>
   </context>
   <context>
@@ -4784,12 +4772,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Shape appearance</source>
-      <translation type="unfinished">Shape appearance</translation>
+      <translation>Görünümü şekillendirin</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Shape view properties</source>
-      <translation type="unfinished">Default Shape view properties</translation>
+      <translation>Varsayılan Şekil görünümü özellikleri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
@@ -4804,12 +4792,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="61"/>
       <source>Use random color instead</source>
-      <translation type="unfinished">Use random color instead</translation>
+      <translation>Bunun yerine rastgele renk kullanın</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="64"/>
       <source>Random</source>
-      <translation type="unfinished">Random</translation>
+      <translation>Rastgele</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
@@ -4840,22 +4828,22 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
       <source>Vertex color</source>
-      <translation type="unfinished">Vertex color</translation>
+      <translation>Köşe rengi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="158"/>
       <source>The default color for new vertices</source>
-      <translation type="unfinished">The default color for new vertices</translation>
+      <translation>Yeni köşeler için varsayılan renk</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="184"/>
       <source>Vertex size</source>
-      <translation type="unfinished">Vertex size</translation>
+      <translation>Köşe boyutu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="191"/>
       <source>The default size for new vertices</source>
-      <translation type="unfinished">The default size for new vertices</translation>
+      <translation>Yeni köşeler için varsayılan boyut</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="219"/>
@@ -4870,12 +4858,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="252"/>
       <source>Bounding box font size</source>
-      <translation type="unfinished">Bounding box font size</translation>
+      <translation>Sınırlayıcı kutu yazı tipi boyutu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="259"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The font size of bounding boxes in the 3D view</translation>
+      <translation>3B görünümdeki sınırlayıcı kutuların yazı tipi boyutu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="293"/>
@@ -4883,10 +4871,8 @@ the size of the resulting STEP file.</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">Bottom side of surface will be rendered the same way than top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Yüzeyin alt tarafı, üst kısımla aynı şekilde işlenecektir.
+İşaretli değilse, "Arka ışık rengi (tercihler bölümü Ekran -&gt; 3D Görünüm) seçeneğine bağlıdır; arka ışık rengi kullanılacak veya siyah olacaktır.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="299"/>
@@ -4896,7 +4882,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="333"/>
       <source>Default Annotation color</source>
-      <translation type="unfinished">Default Annotation color</translation>
+      <translation>Varsayılan Ek Açıklama rengi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="347"/>
@@ -4906,7 +4892,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="354"/>
       <source>Text color for document annotations</source>
-      <translation type="unfinished">Text color for document annotations</translation>
+      <translation>Belge ek açıklamaları için metnin rengi</translation>
     </message>
   </context>
   <context>
@@ -4939,7 +4925,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../Location.ui" line="90"/>
       <source>3D view</source>
-      <translation>3B</translation>
+      <translation>3B görünüm</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>
@@ -4951,7 +4937,7 @@ yoksa eskiz düzlemine dik vektör kullanılacak</translation>
     <message>
       <location filename="../../Location.ui" line="110"/>
       <source>Rotation axis</source>
-      <translation type="unfinished">Rotation axis</translation>
+      <translation>Dönme ekseni</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="118"/>
@@ -5322,8 +5308,7 @@ yoksa eskiz düzlemine dik vektör kullanılacak</translation>
       <location filename="../../TaskAttacher.ui" line="269"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Not: Yerleşim, eklenen nesnenin yerel koordinat sisteminde ifade edilir.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="188"/>
@@ -5350,32 +5335,29 @@ of object being attached.</translation>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the x-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>X-ekseni etrafında döndürme
+Not: Yerleşim, eklenen nesnenin yerel koordinat sisteminde ifade edilir.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="313"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the y-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Y-ekseni etrafında döndürme
+Not: Yerleşim, eklenen nesnenin yerel koordinat sisteminde ifade edilir.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="340"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the z-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Z-ekseni etrafında döndürme
+Not: Yerleşim, eklenen nesnenin yerel koordinat sisteminde ifade edilir.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip side of attachment and offset</source>
-      <translation type="unfinished">Flip side of attachment and offset</translation>
+      <translation>Eklentinin ters tarafı ve ekMiktar</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="367"/>
@@ -5440,7 +5422,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="750"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
+      <translation>AttachmentOffset'in döndürülmesi ifadelere bağlı olduğundan düzenlenemez.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="816"/>
@@ -5474,91 +5456,86 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Skip settings page</source>
-      <translation type="unfinished">Skip settings page</translation>
+      <translation>Ayarlar sayfasını atla</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Skip this settings page and run the geometry check automatically.
 Default: false</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically.
-Default: false</translation>
+      <translation>Bu ayarlar sayfasını atlayın ve geometri kontrolünü otomatik olarak çalıştırın. Varsayılan: yanlış</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
       <source>Run BOP check</source>
-      <translation type="unfinished">Run BOP check</translation>
+      <translation>BOP kontrolünü çalıştır</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always 
 mean the checked object is unusable.  Default: false</source>
-      <translation type="unfinished">Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always 
-mean the checked object is unusable.  Default: false</translation>
+      <translation>Harici mantık operatörleri, bazen standart BRep geometri denetiminin gözden kaçırdığı hataları denetler. Bu hatalar, kontrol edilen nesnenin her zaman kullanılamaz olduğu anlamına gelmez. Varsayılan: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1101"/>
       <source>Single-threaded</source>
-      <translation type="unfinished">Single-threaded</translation>
+      <translation>Tek vida dişli</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
-      <translation type="unfinished">Run the geometry check in a single thread.  This is slower,
-but more stable.  Default: false</translation>
+      <translation>Tek vida dişinde geometri kontrolünü çalıştırın. Bu yöntem, daha yavaş ama daha kararlıdır. Varsayılan: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Log errors</source>
-      <translation type="unfinished">Log errors</translation>
+      <translation>Veritabanı günlüğü hataları</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Log errors to report view.  Default: true</source>
-      <translation type="unfinished">Log errors to report view.  Default: true</translation>
+      <translation>Rapor görünümü için hataları veritabanı günlüğüne kaydedin. Varsayılan: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>Expand shape content</source>
-      <translation type="unfinished">Expand shape content</translation>
+      <translation>Şekil içeriğini genişlet</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>Şekil içeriğini genişletin. Değişiklikler bir sonraki kullanımınızda geçerli olacak
+geometri aracını kontrol edin. Varsayılan: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
       <source>Advanced shape content</source>
-      <translation type="unfinished">Advanced shape content</translation>
+      <translation>Gelişmiş şekil içeriği</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>Gelişmiş şekil içeriğini göster. Değişiklikler, geometriyi kontrol etme aracını bir sonraki kullanışınızda geçerli olacaktır. Varsayılan: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
       <source>
 Individual BOP Checks:</source>
-      <translation type="unfinished">
-Individual BOP Checks:</translation>
+      <translation>
+Bireysel BOP Kontrolleri:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1141"/>
       <source>  Bad type</source>
-      <translation type="unfinished">  Bad type</translation>
+      <translation>  Kötü tip</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Check for bad argument types.  Default: true</source>
-      <translation type="unfinished">Check for bad argument types.  Default: true</translation>
+      <translation>Kötü argüman türlerini kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1149"/>
@@ -5568,82 +5545,82 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1150"/>
       <source>Check for self-intersections.  Default: true</source>
-      <translation type="unfinished">Check for self-intersections.  Default: true</translation>
+      <translation>Kendi kendine kesişme olup olmadığını kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1157"/>
       <source>  Too small edge</source>
-      <translation type="unfinished">  Too small edge</translation>
+      <translation>  Çok küçük kenar</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
       <source>Check for edges that are too small.  Default: true</source>
-      <translation type="unfinished">Check for edges that are too small.  Default: true</translation>
+      <translation>Çok küçük kenarları kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1165"/>
       <source>  Nonrecoverable face</source>
-      <translation type="unfinished">  Nonrecoverable face</translation>
+      <translation>  Kurtarılamaz yüz</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1166"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
-      <translation type="unfinished">Check for nonrecoverable faces.  Default: true</translation>
+      <translation>Kurtarılamaz yüzleri kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1173"/>
       <source>  Continuity</source>
-      <translation type="unfinished">  Continuity</translation>
+      <translation>  Süreklilik</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1174"/>
       <source>Check for continuity.  Default: true</source>
-      <translation type="unfinished">Check for continuity.  Default: true</translation>
+      <translation>Sürekliliği kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1181"/>
       <source>  Incompatibility of face</source>
-      <translation type="unfinished">  Incompatibility of face</translation>
+      <translation>  Yüz uyumsuzluğu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1182"/>
       <source>Check for incompatible faces.  Default: true</source>
-      <translation type="unfinished">Check for incompatible faces.  Default: true</translation>
+      <translation>Uyumsuz yüzleri kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1189"/>
       <source>  Incompatibility of vertex</source>
-      <translation type="unfinished">  Incompatibility of vertex</translation>
+      <translation>  Köşe uyumsuzluğu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1190"/>
       <source>Check for incompatible vertices.  Default: true</source>
-      <translation type="unfinished">Check for incompatible vertices.  Default: true</translation>
+      <translation>Uyumsuz köşeleri kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1197"/>
       <source>  Incompatibility of edge</source>
-      <translation type="unfinished">  Incompatibility of edge</translation>
+      <translation>  Kenar uyumsuzluğu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1198"/>
       <source>Check for incompatible edges.  Default: true</source>
-      <translation type="unfinished">Check for incompatible edges.  Default: true</translation>
+      <translation>Uyumsuz kenarları kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
       <source>  Invalid curve on surface</source>
-      <translation type="unfinished">  Invalid curve on surface</translation>
+      <translation>  Yüzeyde geçersiz eğri</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1206"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
-      <translation type="unfinished">Check for invalid curves on surfaces.  Default: true</translation>
+      <translation>Yüzeylerde geçersiz eğriler olup olmadığını kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1269"/>
       <source>Run check</source>
-      <translation type="unfinished">Run check</translation>
+      <translation>Kontrolü çalıştır</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1275"/>
@@ -5656,12 +5633,12 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="383"/>
       <source>Check Geometry Results</source>
-      <translation type="unfinished">Check Geometry Results</translation>
+      <translation>Geometri Sonuçlarını Kontrol Et</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="402"/>
       <source>Check is running...</source>
-      <translation type="unfinished">Check is running...</translation>
+      <translation>Kontrol çalışıyor...</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="426"/>
@@ -5688,7 +5665,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
       <source>Click on the faces in the 3D view to select them</source>
-      <translation type="unfinished">Click on the faces in the 3D view to select them</translation>
+      <translation>Onları seçmek için 3B görünümdeki yüzlere tıklayın</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="39"/>
@@ -5698,7 +5675,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="87"/>
       <source>Resets color for all faces of the part</source>
-      <translation type="unfinished">Resets color for all faces of the part</translation>
+      <translation>Parçanın tüm yüzleri için rengi sıfırlar</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="90"/>
@@ -5709,8 +5686,7 @@ Individual BOP Checks:</translation>
       <location filename="../../TaskFaceColors.ui" line="97"/>
       <source>When checked, the you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, the you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>İşaretlendiğinde, 3B görünümde bir seçim dikdörtgenini sürükleyerek birden çok yüz seçebilirsiniz</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
@@ -5905,7 +5881,7 @@ bir veya daha fazla profil seçin ilave kenar veya tel seçin.</translation>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="14"/>
       <source>Tube</source>
-      <translation type="unfinished">Tube</translation>
+      <translation>Tüp</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>

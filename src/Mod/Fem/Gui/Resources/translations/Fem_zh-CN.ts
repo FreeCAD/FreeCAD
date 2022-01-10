@@ -555,6 +555,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCalculixCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>CalculiX求解器标准</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>使用 ccx 工具创建标准的有限元 CalculiX 求解</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="commands.py" line="999"/>
@@ -565,19 +578,6 @@
       <location filename="commands.py" line="1004"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>变更求解器属性并以所选求解器进行解算</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCxxtools</name>
-    <message>
-      <location filename="commands.py" line="939"/>
-      <source>Solver CalculiX Standard</source>
-      <translation>CalculiX求解器标准</translation>
-    </message>
-    <message>
-      <location filename="commands.py" line="944"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>使用 ccx 工具创建标准的有限元 CalculiX 求解</translation>
     </message>
   </context>
   <context>
@@ -689,6 +689,19 @@
       <location filename="selection_widgets.py" line="53"/>
       <source>Remove</source>
       <translation>删除</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>CalculiX求解器标准</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>使用 ccx 工具创建标准的有限元 CalculiX 求解</translation>
     </message>
   </context>
   <context>

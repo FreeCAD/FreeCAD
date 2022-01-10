@@ -2893,7 +2893,7 @@ de proyección.</translation>
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Part Import Curve Net</source>
-      <translation type="unfinished">Part Import Curve Net</translation>
+      <translation>Importar Curva Net de Pieza</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
@@ -5442,7 +5442,7 @@ del objeto que se adjunta.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="750"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
+      <translation>No es editable porque la rotación está restringida por la superposición de las expresiones.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="816"/>
@@ -5697,7 +5697,7 @@ Chequeos individuales de Operaciones Booleanas:</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="87"/>
       <source>Resets color for all faces of the part</source>
-      <translation type="unfinished">Resets color for all faces of the part</translation>
+      <translation>Restablece el color de todas las caras de la pieza</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="90"/>

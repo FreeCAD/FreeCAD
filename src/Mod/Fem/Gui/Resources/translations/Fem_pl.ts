@@ -555,6 +555,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCalculixCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Standardowy solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Tworzy standardowy solver MES CalculiX korzystając z narzędzi ccx</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="commands.py" line="999"/>
@@ -565,19 +578,6 @@
       <location filename="commands.py" line="1004"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Zmienia atrybuty solvera i uruchamia obliczenia dla wybranego solvera</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCxxtools</name>
-    <message>
-      <location filename="commands.py" line="939"/>
-      <source>Solver CalculiX Standard</source>
-      <translation>Standardowy solver CalculiX</translation>
-    </message>
-    <message>
-      <location filename="commands.py" line="944"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>Tworzy standardowy solver MES CalculiX korzystając z narzędzi ccx</translation>
     </message>
   </context>
   <context>
@@ -689,6 +689,19 @@
       <location filename="selection_widgets.py" line="53"/>
       <source>Remove</source>
       <translation>Skasuj</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Standardowy solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Tworzy standardowy solver MES CalculiX korzystając z narzędzi ccx</translation>
     </message>
   </context>
   <context>
@@ -1479,7 +1492,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="146"/>
       <source>ccx binary path</source>
-      <translation>Ścieżka pliku binarnego ccx</translation>
+      <translation>ścieżka pliku binarnego Calculix</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="166"/>
@@ -1539,7 +1552,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="285"/>
       <source>Use non ccx defaults</source>
-      <translation>Użyj domyślnych ustawień innych niż ccx</translation>
+      <translation>Użyj domyślnych ustawień innych niż Calculix</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="301"/>
@@ -1554,7 +1567,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="327"/>
       <source>Number of CPU's to use (Spooles only)</source>
-      <translation>Liczba rdzeni do obliczeń (tylko Spooles)</translation>
+      <translation>Liczba CPU do użycia (tylko Spooles)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="334"/>
@@ -5436,7 +5449,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="70"/>
       <source>Filter functions</source>
-      <translation>Funkcje filtrów</translation>
+      <translation>Funkcje filtra</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>

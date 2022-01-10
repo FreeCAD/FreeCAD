@@ -41,7 +41,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="761"/>
       <source>Updates the values handled by controllers</source>
-      <translation>Aktualizuje wartości obsługiwane przez kontrolery</translation>
+      <translation>Aktualizuje wartości obsługiwane przez formuły</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="907"/>
@@ -51,12 +51,12 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="933"/>
       <source>Add controller</source>
-      <translation>Dodaj kontroler</translation>
+      <translation>Dodaj formułę</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
-      <translation>Dodaj kontroler właściwości</translation>
+      <translation>Dodaj formułę właściwości</translation>
     </message>
   </context>
   <context>
@@ -64,12 +64,12 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="919"/>
       <source>Add controller</source>
-      <translation>Dodaj kontroler</translation>
+      <translation>Dodaj formułę</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation>Do wybranego arkusza kalkulacyjnego dodaje kontroler komórki</translation>
+      <translation>Do wybranego arkusza kalkulacyjnego dodaje formułę komórki</translation>
     </message>
   </context>
   <context>
@@ -90,12 +90,12 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="944"/>
       <source>Add property controller</source>
-      <translation>Dodaj kontroler właściwości</translation>
+      <translation>Dodaj formułę właściwości</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
-      <translation>Do wybranego arkusza kalkulacyjnego dodaje kontroler własności</translation>
+      <translation>Do wybranego arkusza kalkulacyjnego dodaje formułę własności</translation>
     </message>
   </context>
   <context>

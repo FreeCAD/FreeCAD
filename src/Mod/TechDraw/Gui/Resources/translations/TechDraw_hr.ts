@@ -337,15 +337,15 @@
     </message>
     <message>
       <source>Cosmetic thread bolt bottom view</source>
-      <translation type="unfinished">Cosmetic thread bolt bottom view</translation>
+      <translation>Pogled odozdo na Dekoracijski navoj vijka</translation>
     </message>
     <message>
       <source>Draw cosmetic screw thread ground view
     - select many circles
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic screw thread ground view
-    - select many circles
-    - click this button</translation>
+      <translation>Crtanje baze dekoracijskog navoja vijka
+ - odaberite više krugova
+ - pritisnite na ovu tipku</translation>
     </message>
   </context>
   <context>
@@ -356,15 +356,15 @@
     </message>
     <message>
       <source>Cosmetic thread bolt side view</source>
-      <translation type="unfinished">Cosmetic thread bolt side view</translation>
+      <translation>Pogled sa strane na Dekoracijski navoj vijka</translation>
     </message>
     <message>
       <source>Draw cosmetic screw thread side view
     - select two parallel lines
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic screw thread side view
-    - select two parallel lines
-    - click this button</translation>
+      <translation>Crtanje pogleda sa strane Dekoracijskog navoja vijka
+ - odaberite dvije paralelne linije
+ - pritisnite na ovu tipku</translation>
     </message>
   </context>
   <context>
@@ -375,15 +375,15 @@
     </message>
     <message>
       <source>Cosmetic thread hole bottom view</source>
-      <translation type="unfinished">Cosmetic thread hole bottom view</translation>
+      <translation>Pogled odozdo na Dekoracijski navoj rupe</translation>
     </message>
     <message>
       <source>Draw cosmetic hole thread ground view
     - select many circles
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic hole thread ground view
-    - select many circles
-    - click this button</translation>
+      <translation>Crtanje baze dekoracijskog navoja rupe
+ - odaberite više krugova
+ - pritisnite na ovu tipku</translation>
     </message>
   </context>
   <context>
@@ -394,15 +394,15 @@
     </message>
     <message>
       <source>Cosmetic thread hole side view</source>
-      <translation type="unfinished">Cosmetic thread hole side view</translation>
+      <translation>Pogled sa strane na Dekoracijski navoj rupe</translation>
     </message>
     <message>
       <source>Draw cosmetic thread hole side view
     - select two parallel lines
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic thread hole side view
-    - select two parallel lines
-    - click this button</translation>
+      <translation>Crtanje pogleda sa strane Dekoracijskog navoja rupe
+ - odaberite dvije paralelne linije
+ - pritisnite na ovu tipku</translation>
     </message>
   </context>
   <context>
@@ -1539,7 +1539,7 @@
     </message>
     <message>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>Tehničko Crtanje  Linije središta kruga</translation>
     </message>
     <message>
       <source>Selection is empty</source>
@@ -1547,23 +1547,23 @@
     </message>
     <message>
       <source>No object selected</source>
-      <translation type="unfinished">No object selected</translation>
+      <translation>Nema odabranog objekta</translation>
     </message>
     <message>
       <source>TechDraw Thread Hole Side</source>
-      <translation type="unfinished">TechDraw Thread Hole Side</translation>
+      <translation>Tehničko Crtanje Navoj pogled sa strane</translation>
     </message>
     <message>
       <source>TechDraw Thread Bolt Side</source>
-      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+      <translation>Tehničko Crtanje Vijak pogled sa strane</translation>
     </message>
     <message>
       <source>TechDraw Thread Hole Bottom</source>
-      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+      <translation>Tehničko Crtanje Navoj pogled odozdo</translation>
     </message>
     <message>
       <source>TechDraw Tread Bolt Bottom</source>
-      <translation type="unfinished">TechDraw Tread Bolt Bottom</translation>
+      <translation>Tehničko Crtanje Vijak pogled odozdo</translation>
     </message>
     <message>
       <source>Please select two straight lines</source>
@@ -1863,7 +1863,7 @@ Taj će se direktorij koristiti za odabir simbola.
     </message>
     <message>
       <source>Edge Fuzz</source>
-      <translation type="unfinished">Edge Fuzz</translation>
+      <translation>Okvir odabira Rub</translation>
     </message>
     <message>
       <source>Override automatic dimension format</source>
@@ -1970,7 +1970,7 @@ može smanjiti performanse u složenim modelima.
     </message>
     <message>
       <source>Mark Fuzz</source>
-      <translation type="unfinished">Mark Fuzz</translation>
+      <translation>Okvir odabira Središte</translation>
     </message>
     <message>
       <source>Size of selection area around edges

@@ -555,6 +555,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCalculixCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation type="unfinished">Solver CalculiX Standard</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="commands.py" line="999"/>
@@ -565,19 +578,6 @@
       <location filename="commands.py" line="1004"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCxxtools</name>
-    <message>
-      <location filename="commands.py" line="939"/>
-      <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
-    </message>
-    <message>
-      <location filename="commands.py" line="944"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
     </message>
   </context>
   <context>
@@ -689,6 +689,19 @@
       <location filename="selection_widgets.py" line="53"/>
       <source>Remove</source>
       <translation>Видалити</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation type="unfinished">Solver CalculiX Standard</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
     </message>
   </context>
   <context>

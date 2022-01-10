@@ -562,7 +562,7 @@ ou à partir du sous-élément 'VertexN', 'EdgeN', ou 'FaceN', respectivement, s
     <message>
       <location filename="draftlink.py" line="99"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+      <translation>Forcer la synchronisation des emplacements des motifs même lorsque les éléments du tableau sont étendus</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
@@ -734,14 +734,14 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
       <translation>La mise à l'échelle du motif utilisée par cet objet</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forme de cet objet</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>La rotation du motif utilisée par cet objet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forme de cet objet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1301,11 +1301,6 @@ au-delà de la ligne de cote</translation>
       <translation>Outils de réseau</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="154"/>
-      <source>Unable to insert new object into a scaled part</source>
-      <translation>Impossible d'insérer un nouvel objet dans une pièce redimensionnée</translation>
-    </message>
-    <message>
       <location filename="task_orthoarray.py" line="157"/>
       <source>True</source>
       <translation>Vrai</translation>
@@ -1491,6 +1486,11 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
       <translation>La direction de décalage n'est pas définie. Veuillez d'abord déplacer la souris de chaque côté de l'objet pour indiquer une direction</translation>
     </message>
     <message>
+      <location filename="gui_utils.py" line="154"/>
+      <source>Unable to insert new object into a scaled part</source>
+      <translation>Impossible d'insérer un nouvel objet dans une pièce redimensionnée</translation>
+    </message>
+    <message>
       <location filename="view_layer.py" line="402"/>
       <source>Merge layer duplicates</source>
       <translation>Fusionner les calques en double</translation>
@@ -1516,6 +1516,19 @@ It creates a construction group if it doesn't exist.</source>
       <translation>Ajoute les objets sélectionnés au groupe de construction,
 et change leur apparence en style de construction.
 Il crée un groupe de construction s'il n'existe pas.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_AddNamedGroup</name>
+    <message>
+      <location filename="gui_groups.py" line="361"/>
+      <source>Add a new named group</source>
+      <translation type="unfinished">Add a new named group</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="365"/>
+      <source>Add a new group with a given name.</source>
+      <translation type="unfinished">Add a new group with a given name.</translation>
     </message>
   </context>
   <context>
@@ -2239,6 +2252,11 @@ those that are at the same level as this object, including the upper group that 
 
 Si la sélection est un objet simple à l'intérieur d'un groupe, elle sélectionnera les objets "frères", c'est-à-dire
 ceux qui sont au même niveau que cet objet, ainsi que le groupe supérieur qui les contient tous.</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="167"/>
+      <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</source>
+      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</translation>
     </message>
   </context>
   <context>
@@ -3903,12 +3921,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="make_label.py" line="272"/>
       <source>Wrong input: label_type must be a string.</source>
-      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+      <translation>Mauvaise entrée : label_type doit être une chaîne de caractères.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="277"/>
       <source>Wrong input: label_type must be one of the following: </source>
-      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
+      <translation>Mauvaise entrée : label_type doit être l'un des éléments suivants : </translation>
     </message>
     <message>
       <location filename="make_label.py" line="278"/>
@@ -4013,12 +4031,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="view_layer.py" line="454"/>
       <source>Relabeling layer:</source>
-      <translation type="unfinished">Relabeling layer:</translation>
+      <translation>Renommage du calque :</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="458"/>
       <source>Merging layer:</source>
-      <translation type="unfinished">Merging layer:</translation>
+      <translation>Fusion du calque :</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4039,6 +4057,131 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Définir l'échelle d'annotation personnalisée au format x:x, x=x</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="650"/>
+      <source>Solids:</source>
+      <translation type="unfinished">Solids:</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="651"/>
+      <source>Faces:</source>
+      <translation>Faces :</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="652"/>
+      <source>Wires:</source>
+      <translation type="unfinished">Wires:</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="653"/>
+      <source>Edges:</source>
+      <translation type="unfinished">Edges:</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="654"/>
+      <source>Vertices:</source>
+      <translation type="unfinished">Vertices:</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="658"/>
+      <source>Face</source>
+      <translation>Face</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="663"/>
+      <source>Wire</source>
+      <translation>Fil</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="699"/>
+      <source>different types</source>
+      <translation type="unfinished">different types</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="709"/>
+      <source>Objects have different placements. Distance between the two base points: </source>
+      <translation type="unfinished">Objects have different placements. Distance between the two base points: </translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="712"/>
+      <source>has a different value</source>
+      <translation type="unfinished">has a different value</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="715"/>
+      <source>doesn't exist in one of the objects</source>
+      <translation type="unfinished">doesn't exist in one of the objects</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="827"/>
+      <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
+      <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="833"/>
+      <source>%s cannot be modified because its placement is readonly.</source>
+      <translation type="unfinished">%s cannot be modified because its placement is readonly.</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="977"/>
+      <source>Wrong input: unknown document.</source>
+      <translation type="unfinished">Wrong input: unknown document.</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="1055"/>
+      <source>This function will be deprecated in </source>
+      <translation type="unfinished">This function will be deprecated in </translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="1059"/>
+      <source>Please use </source>
+      <translation type="unfinished">Please use </translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="1059"/>
+      <source>This function will be deprecated. </source>
+      <translation type="unfinished">This function will be deprecated. </translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="81"/>
+      <source>No graphical interface</source>
+      <translation type="unfinished">No graphical interface</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="161"/>
+      <source>Unable to insert new object into a scaled part</source>
+      <translation>Impossible d'insérer un nouvel objet dans une pièce redimensionnée</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="267"/>
+      <source>Symbol not implemented. Using a default symbol.</source>
+      <translation type="unfinished">Symbol not implemented. Using a default symbol.</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="333"/>
+      <source>Visibility off; removed from list: </source>
+      <translation type="unfinished">Visibility off; removed from list: </translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="603"/>
+      <source>image is Null</source>
+      <translation type="unfinished">image is Null</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="609"/>
+      <source>filename does not exist on the system or in the resource file</source>
+      <translation type="unfinished">filename does not exist on the system or in the resource file</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="668"/>
+      <source>unable to load texture</source>
+      <translation type="unfinished">unable to load texture</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="738"/>
+      <source>Does not have 'ViewObject.RootNode'.</source>
+      <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="83"/>
@@ -4948,9 +5091,19 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Ajouter au groupe</translation>
     </message>
     <message>
+      <location filename="gui_groups.py" line="70"/>
+      <source>Add new group</source>
+      <translation type="unfinished">Add new group</translation>
+    </message>
+    <message>
       <location filename="gui_groups.py" line="183"/>
       <source>Select group</source>
       <translation>Sélectionner groupe</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="193"/>
+      <source>No new selection. You must select non-empty groups or objects inside groups.</source>
+      <translation type="unfinished">No new selection. You must select non-empty groups or objects inside groups.</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="257"/>
@@ -4966,6 +5119,21 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <location filename="gui_groups.py" line="359"/>
       <source>Add to construction group</source>
       <translation>Ajouter au groupe de construction</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="355"/>
+      <source>Add a new group with a given name</source>
+      <translation type="unfinished">Add a new group with a given name</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="383"/>
+      <source>Add group</source>
+      <translation type="unfinished">Add group</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="385"/>
+      <source>Group name</source>
+      <translation type="unfinished">Group name</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="76"/>

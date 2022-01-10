@@ -159,7 +159,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="146"/>
       <source>Ready...</source>
-      <translation>Preparado...</translation>
+      <translation>Pronto...</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="551"/>
@@ -202,7 +202,7 @@
       <location filename="../../Command.cpp" line="74"/>
       <location filename="../../Command.cpp" line="118"/>
       <source>All files</source>
-      <translation>Todos os arquivos</translation>
+      <translation>Todos os ficheiros</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
@@ -218,7 +218,7 @@
     <message>
       <location filename="../../Command.cpp" line="127"/>
       <source>Could not load the chosen image</source>
-      <translation>Não foi possível carregar a imagem selecionada</translation>
+      <translation>Não foi possível carregar a imagem escolhida</translation>
     </message>
   </context>
   <context>

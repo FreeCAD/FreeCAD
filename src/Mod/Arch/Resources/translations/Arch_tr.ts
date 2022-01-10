@@ -186,12 +186,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>[XMin,YMin,ZMin,XMax,YMax,ZMax] olarak ifade edilen yeni oluşturulan nesneler için yakalama kutusu</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Otomatik grup kutusunu açar/kapatır</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
@@ -201,7 +201,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Otomatik boyutlandırma açıkken kullanılacak bir kenar boşluğu</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="192"/>
@@ -1621,52 +1621,52 @@
     <message>
       <location filename="ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>Ekstrüzyon yolunun hesaplanan uzunluğu</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Ekstrüzyon yolu boyunca ekMiktar mesafesini sonlandır (pozitif: uzatma, negatif: kırpma)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>Ekstrüzyon yolu boyunca ekMiktar mesafesini sonlandır (pozitif: uzatma, negatif: kırpma</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Ekstrüzyon yolu boyunca ekMiktar mesafesini sonlandır (pozitif: uzatma, negatif: kırpma)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>Ekstrüzyon yolu boyunca ekMiktar mesafesini sonlandır (pozitif: uzatma, negatif: kırpma</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="684"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+      <translation>Yapının Tabanını Araç eksenine dik olarak otomatik olarak hizalayın</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Taban orijini ve Araç ekseni arasındaki X ekMiktarı (yalnızca BasePerpendicularToTool True ise kullanılır)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Taban orijini ve Araç ekseni arasındaki Y ekMiktarı (yalnızca BasePerpendicularToTool True ise kullanılır)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="690"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Tabanı Y ekseni boyunca yansıtın (yalnızca BasePerpendicularToTool True ise kullanılır)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="692"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Araç ekseni etrafında taban dönüşü (yalnızca BasePerpendicularToTool True ise kullanılır)</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="404"/>
@@ -3467,12 +3467,12 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     <message>
       <location filename="ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Seçimden Yapılar Oluşturun</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="222"/>
       <source>Please select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Lütfen önce temel nesneyi ve ardından ekstrüzyon yolları olarak kullanılacak kenarları seçin</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="245"/>
@@ -3482,7 +3482,7 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     <message>
       <location filename="ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Lütfen en az bir eksen nesnesi seçin</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="345"/>
@@ -3577,7 +3577,7 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     <message>
       <location filename="ArchStructure.py" line="1186"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Ekstrüzyon Araçları</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1325"/>
@@ -3587,7 +3587,7 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     <message>
       <location filename="ArchStructure.py" line="1192"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
-      <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
+      <translation>Araç olarak kullanılacak nesneyi veya kenarları seçin (ekstrüzyon yolu)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1247"/>
@@ -4600,12 +4600,12 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     <message>
       <location filename="ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Çok Katlı Yapılar</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Seçilen her bir kenarı bir ekstrüzyon yolu olarak kullanarak, seçili bir tabandan birden çok Kemer Yapısı nesnesi oluşturun</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="233"/>

@@ -454,7 +454,7 @@
     </message>
     <message>
       <source>Hatch a Face using Image File</source>
-      <translation>Kläck ett ansikte med hjälp av bildfil</translation>
+      <translation>Snittmarkera en yta med en bildfil</translation>
     </message>
   </context>
   <context>

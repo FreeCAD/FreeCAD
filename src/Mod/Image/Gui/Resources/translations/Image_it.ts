@@ -73,7 +73,7 @@
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Create ImagePlane</source>
-      <translation>Crea PianoImmagine</translation>
+      <translation>Crea un piano immagine</translation>
     </message>
   </context>
   <context>

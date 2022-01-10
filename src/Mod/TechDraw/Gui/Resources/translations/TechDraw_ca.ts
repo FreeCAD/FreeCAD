@@ -292,7 +292,7 @@
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Desar fitxer Dxf</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>
@@ -2799,7 +2799,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Desar fitxer Dxf</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>

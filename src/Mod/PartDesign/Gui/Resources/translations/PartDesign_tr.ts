@@ -2001,17 +2001,17 @@ seçimi bitirmek için tekrar basın</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="54"/>
       <source>Cheesehead (deprecated)</source>
-      <translation type="unfinished">Cheesehead (deprecated)</translation>
+      <translation>Cheesehead (kullanımdan kaldırıldı)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="55"/>
       <source>Countersink socket screw (deprecated)</source>
-      <translation type="unfinished">Countersink socket screw (deprecated)</translation>
+      <translation>Havşa başlı vida (kullanımdan kaldırıldı)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Cap screw (deprecated)</source>
-      <translation type="unfinished">Cap screw (deprecated)</translation>
+      <translation>Kapak vidası (kullanımdan kaldırıldı)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="60"/>
@@ -2364,8 +2364,8 @@ ya da referans olarak bir kenar seçin</translation>
       <location filename="../../TaskPadParameters.ui" line="102"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction, otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>Ped yönü için özel vektör kullanın, aksi takdirde
+eskiz düzleminin normal vektörü kullanılacaktır</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="115"/>
@@ -3305,17 +3305,17 @@ seçimi bitirmek için tekrar basın</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="950"/>
       <source>Move tip</source>
-      <translation type="unfinished">Move tip</translation>
+      <translation>İpucuyu taşı</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="951"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation type="unfinished">The moved feature appears after the currently set tip.</translation>
+      <translation>Taşınan özellik, o anda ayarlanmış olan ipucundan sonra görünür.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="952"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation type="unfinished">Do you want the last feature to be the new tip?</translation>
+      <translation>Son özelliğin yeni ipucu olmasını ister misiniz?</translation>
     </message>
   </context>
   <context>
@@ -4428,7 +4428,7 @@ Sadece diş açılmamış delikler içindir</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="520"/>
       <source>Check to override the values predefined by the 'Type'</source>
-      <translation type="unfinished">Check to override the values predefined by the 'Type'</translation>
+      <translation>'Tür' tarafından önceden tanımlanmış değerleri geçersiz kılmak için işaretleyin</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="523"/>

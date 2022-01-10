@@ -6,7 +6,7 @@
     <message>
       <location filename="InvoluteGearFeature.py" line="57"/>
       <source>Involute gear...</source>
-      <translation>Engranaje envolvente...</translation>
+      <translation>Engranaje evolvente...</translation>
     </message>
     <message>
       <location filename="InvoluteGearFeature.py" line="61"/>
@@ -19,7 +19,7 @@
     <message>
       <location filename="SprocketFeature.py" line="62"/>
       <source>Sprocket...</source>
-      <translation>Piñón...</translation>
+      <translation>Rueda Dentada...</translation>
     </message>
     <message>
       <location filename="SprocketFeature.py" line="66"/>
@@ -65,22 +65,22 @@
     <message>
       <location filename="WizardShaftTable.py" line="47"/>
       <source>Start edge type</source>
-      <translation>Tipo de borde inicial</translation>
+      <translation>Tipo de arista inicial</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="48"/>
       <source>Start edge size</source>
-      <translation>Tamaño del borde inicial</translation>
+      <translation>Tamaño de arista inicial</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="49"/>
       <source>End edge type</source>
-      <translation>Tipo de borde final</translation>
+      <translation>Tipo de arista final</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
-      <translation>Tamaño del borde final</translation>
+      <translation>Tamaño de arista final</translation>
     </message>
   </context>
   <context>
@@ -2551,7 +2551,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="144"/>
       <source>Remove Edge</source>
-      <translation>Eliminar arista</translation>
+      <translation>Eliminar Arista</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="166"/>
@@ -2635,7 +2635,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove Edge</source>
-      <translation>Eliminar arista</translation>
+      <translation>Eliminar Arista</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="75"/>
@@ -4560,12 +4560,12 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Sprocket...</source>
-      <translation>Piñón...</translation>
+      <translation>Rueda Dentada...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Involute gear...</source>
-      <translation>Engranaje envolvente...</translation>
+      <translation>Engranaje evolvente...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -4580,12 +4580,12 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
       <source>Part Design Helper</source>
-      <translation>Ayudante de diseño de piezas</translation>
+      <translation>Ayudante de Diseño de Pieza</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Part Design Modeling</source>
-      <translation>Modelado de diseño de piezas</translation>
+      <translation>Modelado de Diseño de Pieza</translation>
     </message>
   </context>
 </TS>

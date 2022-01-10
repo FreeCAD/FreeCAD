@@ -4,9 +4,14 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="PathSlot.py" line="112"/>
-      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation>Prikažite privremene objekte za izgradnju staza kada je modul u stanju DEBUG moda.</translation>
+      <location filename="PathSurface.py" line="140"/>
+      <source>Stop index(angle) for rotational scan</source>
+      <translation>Zaustavni indeks (kut) za rotacijsko skeniranje</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="134"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>Dodatni pomak za odabrani granični okvir</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="125"/>
@@ -20,19 +25,9 @@
       <translation>Manje vrijednosti daju finiju i precizniju mrežu. Manje vrijednosti ne povećavaju vrijeme obrade.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="140"/>
-      <source>Stop index(angle) for rotational scan</source>
-      <translation>Zaustavni indeks (kut) za rotacijsko skeniranje</translation>
-    </message>
-    <message>
       <location filename="PathSurface.py" line="132"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation>Linije spuštajućeg (drop-cutter) glodala stvaraju se paralelno s ovom osi.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="134"/>
-      <source>Additional offset to the selected bounding box</source>
-      <translation>Dodatni pomak za odabrani granični okvir</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="136"/>
@@ -48,6 +43,22 @@
       <location filename="PathSurface.py" line="143"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
       <translation>Ravan: U ravnini, 3D skeniranje površine. Rotacijsko: rotacijsko skeniranje 1/4 osi.</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="190"/>
+      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
+      <translation>Pretvorite koplanarne lukove u gcode naredbe G2 / G3  za uzorke rezanja `Circular` i` CircularZigZag`.</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="124"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
+      <translation>Manje vrijednosti daju finiju i precizniju mrežu. Manje vrijednosti uvelike povećavaju vrijeme obrade.
+</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="126"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
+      <translation>Manje vrijednosti daju finiju i precizniju mrežu. Manje vrijednosti ne povećavaju vrijeme obrade.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="129"/>
@@ -90,6 +101,13 @@
       <translation>Izrežite unutarnja područja značajke unutar većeg odabranog lica.</translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="144"/>
+      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
+      <translation>Odaberite algoritam koji ćete koristiti: OCL Dropcutter * ili eksperimentalni (ne temelji se na OCL).
+
+</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="146"/>
       <source>Select the overall boundary for the operation.</source>
       <translation>Odaberite cjelokupnu granicu za operaciju.
@@ -97,16 +115,16 @@
 </translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="148"/>
+      <source>Set to clear last layer in a `Multi-pass` operation.</source>
+      <translation>Postavite za brisanje posljednjeg sloja u operaciji `Višestruki-prolaz`.
+
+</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="150"/>
       <source>Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</source>
       <translation>Postavite smjer alata  rezanja da zahvaća materijal: Penjanje (U smjeru kazaljke na satu) ili Konvencionalno (Suprotno smjeru kazaljke na satu)</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="119"/>
-      <source>Set the geometric clearing pattern to use for the operation.</source>
-      <translation>Postavite geometrijski uzorak čišćenja koji će se koristiti za operaciju.
-
-</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="154"/>
@@ -128,11 +146,6 @@
       <translation>Postavite pomak dubine Z osi od ciljne površine.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="125"/>
-      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
-      <translation>Dovršite operaciju u jednom prolazu na dubini ili višestruki prolazi do krajnje dubine.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="164"/>
       <source>Set the start point for the cut pattern.</source>
       <translation>Postavite početnu točku rezanja uzorka.
@@ -143,13 +156,6 @@
       <location filename="PathWaterline.py" line="166"/>
       <source>Choose location of the center point for starting the cut pattern.</source>
       <translation>Odaberite mjesto središnje točke za početak rezanja uzorka.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="179"/>
-      <source>Profile the edges of the selection.</source>
-      <translation>Profili od rubova odabira.
-
-</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="168"/>
@@ -179,11 +185,6 @@
 </translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="190"/>
-      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
-      <translation>Pretvorite koplanarne lukove u gcode naredbe G2 / G3  za uzorke rezanja `Circular` i` CircularZigZag`.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="177"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
       <translation>Putanje su zatvorene kolinearnim i ko-radijalnim artefaktima koji su manji od ovog praga.</translation>
@@ -194,9 +195,9 @@
       <translation>Povratne informacije: tri najmanja razmaka identificirana u geometriji puta.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="138"/>
-      <source>The custom start point for the path of this operation</source>
-      <translation>Prilagođena početna točka za put ove operacije
+      <location filename="PathSurface.py" line="179"/>
+      <source>Profile the edges of the selection.</source>
+      <translation>Profili od rubova odabira.
 
 </translation>
     </message>
@@ -209,11 +210,6 @@
       <location filename="PathCopy.py" line="37"/>
       <source>The path to be copied</source>
       <translation>Put koji treba kopirati</translation>
-    </message>
-    <message>
-      <location filename="PathArray.py" line="64"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>Alat kontroler koji će se koristiti za izračunavanje staze</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="59"/>
@@ -326,6 +322,11 @@
       <translation>Postavite na netočno da spriječite generiranje koda</translation>
     </message>
     <message>
+      <location filename="PathCustom.py" line="56"/>
+      <source>The gcode to be inserted</source>
+      <translation>Gcode koji če biti umetnut</translation>
+    </message>
+    <message>
       <location filename="PathDressupRampEntry.py" line="71"/>
       <source>Ramping Method</source>
       <translation>Rampa metoda</translation>
@@ -409,31 +410,6 @@
 </translation>
     </message>
     <message>
-      <location filename="PathWaterline.py" line="124"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation>Manje vrijednosti daju finiju i precizniju mrežu. Manje vrijednosti uvelike povećavaju vrijeme obrade.
-</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="126"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
-      <translation>Manje vrijednosti daju finiju i precizniju mrežu. Manje vrijednosti ne povećavaju vrijeme obrade.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="144"/>
-      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation>Odaberite algoritam koji ćete koristiti: OCL Dropcutter * ili eksperimentalni (ne temelji se na OCL).
-
-</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="148"/>
-      <source>Set to clear last layer in a `Multi-pass` operation.</source>
-      <translation>Postavite za brisanje posljednjeg sloja u operaciji `Višestruki-prolaz`.
-
-</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="160"/>
       <source>Ignore outer waterlines above this height.</source>
       <translation>Ignorirajte vanjske vodne linije iznad ove visine.</translation>
@@ -444,6 +420,11 @@
       <translation>Osnovni objekt na kojem se temelji sudar</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="112"/>
+      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
+      <translation>Prikažite privremene objekte za izgradnju staza kada je modul u stanju DEBUG moda.</translation>
+    </message>
+    <message>
       <location filename="PathSlot.py" line="115"/>
       <source>Enter custom start point for slot path.</source>
       <translation>Unesite prilagođenu početnu točku za putanju utora.</translation>
@@ -452,6 +433,13 @@
       <location filename="PathSlot.py" line="117"/>
       <source>Enter custom end point for slot path.</source>
       <translation>Unesite prilagođenu krajnju točku za putanju utora.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="119"/>
+      <source>Set the geometric clearing pattern to use for the operation.</source>
+      <translation>Postavite geometrijski uzorak čišćenja koji će se koristiti za operaciju.
+
+</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="121"/>
@@ -466,6 +454,11 @@
       <translation>Pozitivno produžuje završetak puta, negativno skraćuje.
 
 </translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="125"/>
+      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
+      <translation>Dovršite operaciju u jednom prolazu na dubini ili višestruki prolazi do krajnje dubine.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="127"/>
@@ -501,6 +494,13 @@
 </translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="138"/>
+      <source>The custom start point for the path of this operation</source>
+      <translation>Prilagođena početna točka za put ove operacije
+
+</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="65"/>
       <source>Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</source>
       <translation>Upotrijebite prilagodljivi algoritam za uklanjanje pretjeranog glodanja po zraku iznad ravnog džepnog vrha.</translation>
@@ -514,6 +514,59 @@
       <location filename="PathPocket.py" line="69"/>
       <source>Process the model and stock in an operation with no Base Geometry selected.</source>
       <translation>Obradite model i osnovu u operaciji bez odabrane osnovne geometrije.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="41"/>
+      <source>Comment or note for CNC program</source>
+      <translation type="unfinished">Comment or note for CNC program</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="119"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Zadana brzina za vodoravni brzi hod.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="127"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Zadana brzina za okomite brze pokrete.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="415"/>
+      <source>Coolant Modes</source>
+      <translation>Načini rada rashladne tekućine</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="424"/>
+      <source>Default coolant mode.</source>
+      <translation>Zadani način rada rashladne tekućine.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="156"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Postavi ograničenje novih operacija na sigurnu visinu.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="182"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Izraz korišten za Početna dubina novih operacija.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="190"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Izraz korišten za Konačna dubina novih operacija.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="198"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Izraz korišten za Korak dolje novih operacija.
 
 </translation>
     </message>
@@ -582,6 +635,11 @@
       <translation>Razmak između kopija niza u linearnom uzorku</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="64"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>Alat kontroler koji će se koristiti za izračunavanje staze</translation>
+    </message>
+    <message>
       <location filename="PathArray.py" line="48"/>
       <source>The number of copies in X direction in Linear pattern</source>
       <translation>Broj kopija u smjeru X u linearnom uzorku</translation>
@@ -622,9 +680,51 @@
       <translation>Maksimalni slučajni pomak kopija</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="169"/>
+      <source>Seed value for jitter randomness</source>
+      <translation type="unfinished">Seed value for jitter randomness</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="111"/>
+      <source>The base object this stock is derived from</source>
+      <translation>Osnovni objekt iz kojeg je izvedena ova osnova
+
+</translation>
+    </message>
+    <message>
       <location filename="PathStock.py" line="105"/>
       <source>A material for this object</source>
       <translation>Materijal za ovaj objekt</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="243"/>
+      <source>Length of this stock box</source>
+      <translation>Dužina ovog temeljnog tijela</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="249"/>
+      <source>Width of this stock box</source>
+      <translation>Širina ovog temeljnog tijela</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="255"/>
+      <source>Height of this stock box</source>
+      <translation>Visina ovog temeljnog tijela</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="295"/>
+      <source>Radius of this stock cylinder</source>
+      <translation>Polumjer ovog temeljnog cilindra</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="301"/>
+      <source>Height of this stock cylinder</source>
+      <translation>Visina ovog temeljnog cilindra</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="337"/>
+      <source>Internal representation of stock type</source>
+      <translation>Unutarnja prezentacija vrste osnove</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="137"/>
@@ -678,6 +778,11 @@
       <location filename="PathJobGui.py" line="282"/>
       <source>Edit</source>
       <translation>Uredi</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="184"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Greška prilikom određivanja objekta za bušenje: {}</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="472"/>
@@ -927,14 +1032,6 @@
     </message>
   </context>
   <context>
-    <name>PathCustom</name>
-    <message>
-      <location filename="PathCustom.py" line="52"/>
-      <source>The gcode to be inserted</source>
-      <translation>Gcode koji če biti umetnut</translation>
-    </message>
-  </context>
-  <context>
     <name>PathDeburr</name>
     <message>
       <location filename="PathDeburr.py" line="79"/>
@@ -1046,6 +1143,19 @@
       <location filename="PathFeatureExtensions.py" line="421"/>
       <source>Waterline error</source>
       <translation>Greška vodene linije</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathFixture</name>
+    <message>
+      <location filename="PathFixture.py" line="156"/>
+      <source>Fixture</source>
+      <translation>Učvršćenje</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="159"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Stvara objekt Fixture Offset (pomak fiksiranja)</translation>
     </message>
   </context>
   <context>
@@ -1463,6 +1573,19 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
+    <name>PathPlane</name>
+    <message>
+      <location filename="PathPlane.py" line="118"/>
+      <source>Selection Plane</source>
+      <translation>Ravnina odabira</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="121"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Stvara objekt Ravnina odabira</translation>
+    </message>
+  </context>
+  <context>
     <name>PathPocket</name>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="176"/>
@@ -1640,72 +1763,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathPropertyBag.py" line="62"/>
       <source>List of custom property groups</source>
       <translation>List grupa prilagođenih svojstava</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathSetupSheet</name>
-    <message>
-      <location filename="PathSetupSheet.py" line="102"/>
-      <source>Default speed for horizontal rapid moves.</source>
-      <translation>Zadana brzina za vodoravni brzi hod.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="103"/>
-      <source>Default speed for vertical rapid moves.</source>
-      <translation>Zadana brzina za okomite brze pokrete.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="287"/>
-      <source>Coolant Modes</source>
-      <translation>Načini rada rashladne tekućine</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="291"/>
-      <source>Default coolant mode.</source>
-      <translation>Zadani način rada rashladne tekućine.
-
-</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="108"/>
-      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
-      <translation>Upotreba ovog polja ovisi o "SafeHeightExpression" - zadano je da se njegova vrijednost dodaje vrijednosti "Početna dubina" i koristi se za "Sigurnosna udaljenost" operacije.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="109"/>
-      <source>Expression set for the SafeHeight of new operations.</source>
-      <translation>Postavi ograničenje novih operacija na sigurnu visinu.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="110"/>
-      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
-      <translation>Upotreba ovog polja ovisi o 'Sigurna odobrena udaljenost' - zadano je da se njegova vrijednost dodaje vrijednosti 'Početna dubina' i koristi se za 'Odobrena udaljenost' operacije.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="111"/>
-      <source>Expression set for the ClearanceHeight of new operations.</source>
-      <translation>Postavi ograničenje novih Odobrena udaljenost operacija.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="113"/>
-      <source>Expression used for StartDepth of new operations.</source>
-      <translation>Izraz korišten za Početna dubina novih operacija.
-
-</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="114"/>
-      <source>Expression used for FinalDepth of new operations.</source>
-      <translation>Izraz korišten za Konačna dubina novih operacija.
-
-</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="115"/>
-      <source>Expression used for StepDown of new operations.</source>
-      <translation>Izraz korišten za Korak dolje novih operacija.
-
-</translation>
     </message>
   </context>
   <context>
@@ -2474,14 +2531,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
-    <name>PathUtils</name>
-    <message>
-      <location filename="PathUtils.py" line="150"/>
-      <source>Issue determine drillability: {}</source>
-      <translation>Greška prilikom određivanja objekta za bušenje: {}</translation>
-    </message>
-  </context>
-  <context>
     <name>PathVcarve</name>
     <message>
       <location filename="PathVcarve.py" line="211"/>
@@ -2793,11 +2842,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="PathDressupAxisMap.py" line="149"/>
-      <source>Edit Dragknife Dress-up</source>
-      <translation>Uredi  Dress-up poteznog noža</translation>
-    </message>
-    <message>
       <location filename="PathDressupDragknife.py" line="541"/>
       <source>DragKnife Dress-up</source>
       <translation>Nož za povlačenje (DragKnife) Dress-up</translation>
@@ -2826,6 +2870,11 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathDressupDragknife.py" line="569"/>
       <source>Create Dress-up</source>
       <translation>Napravi Dress-up</translation>
+    </message>
+    <message>
+      <location filename="PathDressupAxisMap.py" line="149"/>
+      <source>Edit Dragknife Dress-up</source>
+      <translation>Uredi  Dress-up poteznog noža</translation>
     </message>
   </context>
   <context>
@@ -3114,24 +3163,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
-    <name>Path_Fixture</name>
-    <message>
-      <location filename="PathFixture.py" line="115"/>
-      <source>Fixture</source>
-      <translation>Učvršćenje</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="118"/>
-      <source>Creates a Fixture Offset object</source>
-      <translation>Stvara objekt Fixture Offset (pomak fiksiranja)</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="126"/>
-      <source>Create a Fixture Offset</source>
-      <translation>Stvara Fixture Offset (pomak fiksiranja)</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3218,11 +3249,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <translation>Izvezi zadatak staze kao predložak koji se može koristi za druge zadatke</translation>
     </message>
     <message>
-      <location filename="PathJobGui.py" line="1559"/>
-      <source>Create Job</source>
-      <translation>Stvori zadatak</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="609"/>
       <source>Edit Job</source>
       <translation>Uredi zadatak</translation>
@@ -3247,6 +3273,11 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <source>Model Selection</source>
       <translation>Odabir modela</translation>
     </message>
+    <message>
+      <location filename="PathJobGui.py" line="1559"/>
+      <source>Create Job</source>
+      <translation>Stvori zadatak</translation>
+    </message>
   </context>
   <context>
     <name>Path_OpActiveToggle</name>
@@ -3262,19 +3293,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathCommands.py" line="170"/>
       <source>Copy the operation in the job</source>
       <translation>Kopirajte operaciju u zadatak</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Plane</name>
-    <message>
-      <location filename="PathPlane.py" line="110"/>
-      <source>Selection Plane</source>
-      <translation>Ravnina odabira</translation>
-    </message>
-    <message>
-      <location filename="PathPlane.py" line="122"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Stvara objekt Ravnina odabira</translation>
     </message>
   </context>
   <context>
@@ -3621,14 +3639,6 @@ Broj linija</translation>
     </message>
   </context>
   <context>
-    <name>Path_SetupSheet</name>
-    <message>
-      <location filename="PathSetupSheetGui.py" line="371"/>
-      <source>Edit SetupSheet</source>
-      <translation>Uredi Setup tabelu</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_SimpleCopy</name>
     <message>
       <location filename="PathSimpleCopy.py" line="65"/>
@@ -3815,6 +3825,127 @@ Broj linija</translation>
       <location filename="PathToolLibraryEditor.py" line="387"/>
       <source>Rename Selected Tool Table</source>
       <translation>Preimenuj odabranu tablicu alata</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="PathCustom.py" line="52"/>
+      <source>The gcode to be inserted</source>
+      <translation>Gcode koji če biti umetnut</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSetupSheet</name>
+    <message>
+      <location filename="PathSetupSheet.py" line="102"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Zadana brzina za vodoravni brzi hod.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="103"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Zadana brzina za okomite brze pokrete.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="108"/>
+      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
+      <translation>Upotreba ovog polja ovisi o "SafeHeightExpression" - zadano je da se njegova vrijednost dodaje vrijednosti "Početna dubina" i koristi se za "Sigurnosna udaljenost" operacije.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="109"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Postavi ograničenje novih operacija na sigurnu visinu.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="110"/>
+      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
+      <translation>Upotreba ovog polja ovisi o 'Sigurna odobrena udaljenost' - zadano je da se njegova vrijednost dodaje vrijednosti 'Početna dubina' i koristi se za 'Odobrena udaljenost' operacije.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="111"/>
+      <source>Expression set for the ClearanceHeight of new operations.</source>
+      <translation>Postavi ograničenje novih Odobrena udaljenost operacija.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="113"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Izraz korišten za Početna dubina novih operacija.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="114"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Izraz korišten za Konačna dubina novih operacija.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="115"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Izraz korišten za Korak dolje novih operacija.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="287"/>
+      <source>Coolant Modes</source>
+      <translation>Načini rada rashladne tekućine</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="291"/>
+      <source>Default coolant mode.</source>
+      <translation>Zadani način rada rashladne tekućine.
+
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathUtils</name>
+    <message>
+      <location filename="PathUtils.py" line="150"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Greška prilikom određivanja objekta za bušenje: {}</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Fixture</name>
+    <message>
+      <location filename="PathFixture.py" line="115"/>
+      <source>Fixture</source>
+      <translation>Učvršćenje</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="118"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Stvara objekt Fixture Offset (pomak fiksiranja)</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="126"/>
+      <source>Create a Fixture Offset</source>
+      <translation>Stvara Fixture Offset (pomak fiksiranja)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Plane</name>
+    <message>
+      <location filename="PathPlane.py" line="110"/>
+      <source>Selection Plane</source>
+      <translation>Ravnina odabira</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="122"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Stvara objekt Ravnina odabira</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_SetupSheet</name>
+    <message>
+      <location filename="PathSetupSheetGui.py" line="371"/>
+      <source>Edit SetupSheet</source>
+      <translation>Uredi Setup tabelu</translation>
     </message>
   </context>
   <context>
@@ -7010,22 +7141,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of holding tag.&lt;/p&gt;&lt;p&gt;Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of holding tag.&lt;/p&gt;&lt;p&gt;Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visina držanja oznake.&lt;/p&gt;&lt;p&gt;Imajte na umu da bi rezultirajuća oznaka mogla biti manja ako širina i kut oznake rezultiraju trokutastim oblikom.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="107"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plunge angle for ascent and descent of holding tag.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plunge angle for ascent and descent of holding tag.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kut poniranja za uspon i spuštanje oznake.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet at the top.&lt;/p&gt;&lt;p&gt;If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet at the top.&lt;/p&gt;&lt;p&gt;If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radijus obruba na vrhu.&lt;/p&gt;&lt;p&gt;Ako je radijus prevelik za oblik oznake, smanjuje se na najveći mogući radijus - što rezultira sfernim oblikom.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
       <source>Copy From</source>
-      <translation type="unfinished">Copy From</translation>
+      <translation>Kopiraj iz</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="155"/>
@@ -7051,12 +7182,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="51"/>
       <source>Drag to reorder, then update.</source>
-      <translation type="unfinished">Drag to reorder, then update.</translation>
+      <translation>Povucite da biste promijenili redoslijed, a zatim ažurirajte.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="67"/>
       <source>Add item selected in window.</source>
-      <translation type="unfinished">Add item selected in window.</translation>
+      <translation>Dodajte stavku odabranu u prozoru.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="70"/>
@@ -7066,7 +7197,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="77"/>
       <source>Remove Item selected in list, then update.</source>
-      <translation type="unfinished">Remove Item selected in list, then update.</translation>
+      <translation>Uklonite stavku odabranu na popisu, a zatim ažurirajte.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="80"/>
@@ -7076,7 +7207,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
       <source>Update the path with the removed and reordered items.</source>
-      <translation type="unfinished">Update the path with the removed and reordered items.</translation>
+      <translation>Ažurirajte put s uklonjenim i ponovno uređenim stavkama.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="90"/>
@@ -7086,7 +7217,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="97"/>
       <source>All objects will be profiled using the same depth and speed settings</source>
-      <translation type="unfinished">All objects will be profiled using the same depth and speed settings</translation>
+      <translation>Svi objekti bit će profilirani koristeći iste postavke dubine i brzine</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="123"/>
@@ -7166,12 +7297,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="14"/>
       <source>Z Depth Correction</source>
-      <translation type="unfinished">Z Depth Correction</translation>
+      <translation>Korekcija dubine Z</translation>
     </message>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="41"/>
       <source>Probe Points File</source>
-      <translation type="unfinished">Probe Points File</translation>
+      <translation>Datoteka točaka sonde</translation>
     </message>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="47"/>
@@ -7186,7 +7317,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="61"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Unesite naziv datoteke koja sadrži podatke sonde&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -7209,7 +7340,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
-      <translation type="unfinished">Activate / resume simulation</translation>
+      <translation>Aktivirajte / nastavite simulaciju</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
@@ -7229,7 +7360,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="95"/>
       <source>Single step simulation</source>
-      <translation type="unfinished">Single step simulation</translation>
+      <translation>Simulacija sa pojedinačnim koracima</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="98"/>
@@ -7239,7 +7370,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="115"/>
       <source>Run simulation till end without animation</source>
-      <translation type="unfinished">Run simulation till end without animation</translation>
+      <translation>Pokrenite simulaciju bez animacije do kraja</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="118"/>
@@ -7274,7 +7405,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
       <source>* Note: Volumetric simulation, inaccuracies are inherent.</source>
-      <translation type="unfinished">* Note: Volumetric simulation, inaccuracies are inherent.</translation>
+      <translation>* Napomena: Volumetrijska simulacija, netočnosti su inherentne.</translation>
     </message>
   </context>
   <context>
@@ -7282,7 +7413,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="14"/>
       <source>Tool Bit Attributes</source>
-      <translation type="unfinished">Tool Bit Attributes</translation>
+      <translation>Značajke alatnog nastavka</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="30"/>
@@ -7302,7 +7433,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="55"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display name of the Tool Bit (initial value taken from the shape file).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display name of the Tool Bit (initial value taken from the shape file).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Prikazni naziv Alatnog nastavka (početna vrijednost preuzeta iz datoteke oblika).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="61"/>
@@ -7317,7 +7448,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="96"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The file which defines the type and shape of the Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The file which defines the type and shape of the Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Datoteka koja definira vrstu i oblik Alatnog nastavka.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="99"/>
@@ -7327,7 +7458,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="106"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change file defining type and shape of Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change file defining type and shape of Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Promijenite datoteku koja definira vrstu i oblik Alatnog nastavka.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="109"/>
@@ -7385,7 +7516,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="20"/>
       <source>Tool Library</source>
-      <translation type="unfinished">Tool Library</translation>
+      <translation>Biblioteka Alata</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="28"/>
@@ -7400,7 +7531,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="71"/>
       <source>Tool Tables</source>
-      <translation type="unfinished">Tool Tables</translation>
+      <translation>Tabele Alata</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="234"/>
@@ -7435,12 +7566,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="368"/>
       <source>Create Tool Controllers for the selected tools</source>
-      <translation type="unfinished">Create Tool Controllers for the selected tools</translation>
+      <translation>Kontrola Alata za odabrane Alate</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="371"/>
       <source>Create Tool Controller(s)</source>
-      <translation type="unfinished">Create Tool Controller(s)</translation>
+      <translation>Stvori Kontrolu(e) Alata </translation>
     </message>
   </context>
   <context>
@@ -7448,7 +7579,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="20"/>
       <source>Tool Selector</source>
-      <translation type="unfinished">Tool Selector</translation>
+      <translation>Odabir Alata</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="30"/>
@@ -7458,12 +7589,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="78"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available Tool Bits to choose from.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available Tool Bits to choose from.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dostupni Alatni nastavci za odabir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create ToolControllers for the selected toolbits and add them to the Job&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create ToolControllers for the selected toolbits and add them to the Job&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stvorite Kontrolu(e) Alata  za odabrane Alatne nastavke i dodajte ih u posao&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="104"/>
@@ -7533,7 +7664,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="150"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Neobavezni argumenti proslijeđeni postprocesoru. Argumenti su specifični za svaki postprocesor, molimo pogledajte njegovu dokumentaciju za detalje.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="170"/>
@@ -7555,12 +7686,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="200"/>
       <source>Work Coordinate Systems</source>
-      <translation type="unfinished">Work Coordinate Systems</translation>
+      <translation>Radni Koordinatni sustavi</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="206"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.&lt;/p&gt;&lt;p&gt;This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.&lt;/p&gt;&lt;p&gt;Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.&lt;/p&gt;&lt;p&gt;Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.&lt;/p&gt;&lt;p&gt;This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.&lt;/p&gt;&lt;p&gt;Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.&lt;/p&gt;&lt;p&gt;Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Redoslijed po učvršćenju, uzrokovat će da se sve operacije izvode u prvom koordinatnom sustavu prije prelaska na drugi. Tada će se sve operacije tamo izvoditi istim redoslijedom.&lt;/p&gt;&lt;p&gt;Ovo je korisno ako operater može sigurno učitati rad u jedan koordinatni sustav dok stroj radi u drugom.&lt;/p&gt;&lt;p&gt;Redoslijed po alatu minimizirat će promjene alata. Izvršit će se promjena alata, zatim sve operacije u svim koordinatnim sustavima prije promjene alata.&lt;/p&gt;&lt;p&gt;Redoslijed po operaciji izvršit će svaku operaciju u svim koordinatnim sustavima prije prelaska na sljedeću operaciju. Ovo je posebno korisno u kombinaciji s 'podijeljenim izlazom' čak i sa samo jednim radnim koordinatnim sustavom jer će svaku operaciju staviti u zasebnu datoteku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="210"/>
@@ -7675,7 +7806,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="404"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ako se koristi više koordinatnih sustava, postavljanjem ovoga na TOČNO uzrokovat će se zapisivanje g-coda u više izlaznih datoteka kako je kontrolirano svojstvom 'redosljed po'. Na primjer, ako poredate po Učvršćenje, prva izlazna datoteka bit će za prvo učvršćenje, a zasebna datoteka za drugo.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="407"/>
@@ -7685,7 +7816,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="410"/>
       <source>Split Output</source>
-      <translation type="unfinished">Split Output</translation>
+      <translation>Podijeljeni Izlaz</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="421"/>

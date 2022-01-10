@@ -2657,15 +2657,15 @@ Per modificar aquesta opció cal reiniciar l'aplicació.</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Quin tipus d’antialiàsing multimostra s’utilitza</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Distància d'ull a ull usada per a projeccions estèreo.
+El valor especificat és un factor que es multiplicarà amb la
+mida de la caixa contenidora de l'objecte 3D que es mostra actualment.</translation>
     </message>
   </context>
   <context>
@@ -3287,23 +3287,23 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Workbench Name</source>
-      <translation type="unfinished">Workbench Name</translation>
+      <translation>Nom del banc de treball</translation>
     </message>
     <message>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>Càrrega automàtica?</translation>
     </message>
     <message>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>Carregar ara</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Per preservar recursos, FreeCAD no carrega els bancs de treball fins que es fan servir. Carregar-los pot proporcionar accés a preferències addicionals relacionades amb la seva funcionalitat. &lt;/p&gt; &lt;p&gt; Els següents bancs de treball estan disponibles en la present instal·lació, però encara no estan carregats:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Bancs de treball disponibles</translation>
     </message>
   </context>
   <context>
@@ -3314,27 +3314,27 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     </message>
     <message>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>Càrrega automàtica</translation>
     </message>
     <message>
       <source>If checked</source>
-      <translation type="unfinished">If checked</translation>
+      <translation>Si està seleccionat</translation>
     </message>
     <message>
       <source>will be loaded automatically when FreeCAD starts up</source>
-      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+      <translation>es carregarà automàticament en iniciar el FreeCAD</translation>
     </message>
     <message>
       <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+      <translation>Aquest és el mòdul d'inici actual i s'ha de carregar automàticament. Vegeu Preferències/General/Càrrega automàtica per canviar-ho.</translation>
     </message>
     <message>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>Carregat</translation>
     </message>
     <message>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>Carregar ara</translation>
     </message>
   </context>
   <context>
@@ -3638,11 +3638,11 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Gira a l'estat més proper possible quan es fa clic en una cara del cub</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Rotar fins al més proper</translation>
     </message>
     <message>
       <source>Cube size</source>
@@ -4501,31 +4501,31 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Rotació (sobre l'eix de les y):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Rotació (sobre l'eix de les x):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Rotació (sobre l'eix z):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Rotació (sobre l'eix z)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Rotació (sobre l'eix de les y)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Rotació (sobre l'eix de les x)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Angles d'Euler (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4690,13 +4690,13 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;Usar les seleccions originals</translation>
     </message>
     <message>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</translation>
+      <translation>Ignoreu les dependències i continueu amb els objectes
+seleccionats abans d'obrir aquest diàleg</translation>
     </message>
   </context>
   <context>
@@ -5594,7 +5594,7 @@ Esteu segur que voleu sortir sense desar les dades?</translation>
     <name>Gui::RecentFilesAction</name>
     <message>
       <source>Open file %1</source>
-      <translation>Obri el fitxer %1</translation>
+      <translation>Obrir el fitxer %1</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6045,7 +6045,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Búlgar</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6053,7 +6053,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Espanyol, Argentí</translation>
     </message>
   </context>
   <context>
@@ -7015,7 +7015,7 @@ Ruta física: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>No s'ha pogut desar el document</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7023,27 +7023,27 @@ Ruta física: </translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>S'ha produït un problema en intentar desar el fitxer. Això pot ser perquè algunes de les carpetes principals no existeixen, o no teniu els permisos suficients, o per altres motius. Detalls de l'error:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Voleu desar-lo amb un nom diferent?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Document no desat</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>No s'ha pogut desar el document %1. Vol cancel·lar el tancament?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
-      <translation type="unfinished">%1 Document(s) not saved</translation>
+      <translation>Document (s) %1 no desat</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Alguns documents no s'han pogut desar. Vol cancel·lar la sortida?</translation>
     </message>
   </context>
   <context>
@@ -8063,7 +8063,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Open...</source>
-      <translation>&amp;Obri...</translation>
+      <translation>&amp;Obrir...</translation>
     </message>
     <message>
       <source>Open a document or import files</source>
@@ -8821,11 +8821,11 @@ Would you like to save the file with a different name?</translation>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Mode d'edició</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Defineix el comportament en editar un objecte de l'arbre</translation>
     </message>
   </context>
   <context>

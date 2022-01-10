@@ -1108,7 +1108,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     </message>
     <message>
       <source>Export AMF files using compression</source>
-      <translation>Eksportowanie plików AMF przy użyciu kompresji</translation>
+      <translation>Eksport plików AMF z kompresją</translation>
     </message>
     <message>
       <source>Width:</source>
@@ -1486,7 +1486,7 @@ do gładszego wyglądu.
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Akceptuj tylko trójkąty zwrócone stroną zewnętrzną</translation>
+      <translation>Akceptuj tylko trójkąty o normalnych ścian zwrócone w stronę ekranu</translation>
     </message>
   </context>
   <context>
@@ -1615,7 +1615,7 @@ do gładszego wyglądu.
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Akceptuj tylko trójkąty zwrócone stroną zewnętrzną</translation>
+      <translation>Akceptuj tylko trójkąty o normalnych ścian zwrócone w stronę ekranu</translation>
     </message>
     <message>
       <source>Use a brush tool to select the area</source>

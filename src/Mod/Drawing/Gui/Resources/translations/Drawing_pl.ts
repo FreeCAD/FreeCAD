@@ -500,7 +500,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>%1%2 %3</source>
-      <translation>%1 %2 %3</translation>
+      <translation>%1%2 %3</translation>
     </message>
     <message>
       <source>Insert new %1%2 %3 drawing</source>

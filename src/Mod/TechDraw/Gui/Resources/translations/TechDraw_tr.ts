@@ -324,9 +324,9 @@
       <source>Draw circle centerline cross at circles
     - select many circles or arcs
     - click this button</source>
-      <translation type="unfinished">Draw circle centerline cross at circles
-    - select many circles or arcs
-    - click this button</translation>
+      <translation>Dairelerde daire merkez çizgisini çapraz çizin
+     - birden fazla daire veya çember yayı seçin
+     - bu düğmeye tıklayın</translation>
     </message>
   </context>
   <context>
@@ -343,9 +343,9 @@
       <source>Draw cosmetic screw thread ground view
     - select many circles
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic screw thread ground view
-    - select many circles
-    - click this button</translation>
+      <translation>Kozmetik vida dişi zemin görünümünü çizin
+     - birden fazla daire seçin
+     - bu düğmeye tıklayın</translation>
     </message>
   </context>
   <context>
@@ -362,9 +362,9 @@
       <source>Draw cosmetic screw thread side view
     - select two parallel lines
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic screw thread side view
-    - select two parallel lines
-    - click this button</translation>
+      <translation>Kozmetik vida dişi zemin görünümünü çizin
+     - birden fazla daire seçin
+     - bu düğmeye tıklayın</translation>
     </message>
   </context>
   <context>
@@ -381,9 +381,9 @@
       <source>Draw cosmetic hole thread ground view
     - select many circles
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic hole thread ground view
-    - select many circles
-    - click this button</translation>
+      <translation>Kozmetik vida dişi diş oyuğu zemin görünümünü çizin
+     - birden fazla daire seçin
+     - bu düğmeye tıklayın</translation>
     </message>
   </context>
   <context>
@@ -400,9 +400,9 @@
       <source>Draw cosmetic thread hole side view
     - select two parallel lines
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic thread hole side view
-    - select two parallel lines
-    - click this button</translation>
+      <translation>Kozmetik vida dişi diş açma oyuğu yan görünümünü çizin
+     - iki paralel çizgi seçin
+     - bu düğmeye tıklayın</translation>
     </message>
   </context>
   <context>
@@ -805,7 +805,7 @@
     </message>
     <message>
       <source>Add Midpont Vertices</source>
-      <translation type="unfinished">Add Midpont Vertices</translation>
+      <translation>Orta nokta köşeleri ekle</translation>
     </message>
     <message>
       <source>Add Quadrant Vertices</source>
@@ -1535,7 +1535,7 @@
     </message>
     <message>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>Teknik Çizim Çember Merkez Çizgileri</translation>
     </message>
     <message>
       <source>Selection is empty</source>
@@ -1547,19 +1547,19 @@
     </message>
     <message>
       <source>TechDraw Thread Hole Side</source>
-      <translation type="unfinished">TechDraw Thread Hole Side</translation>
+      <translation>Teknik Çizim Vida Dişi Diş Oyuğunun Yan Tarafı</translation>
     </message>
     <message>
       <source>TechDraw Thread Bolt Side</source>
-      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+      <translation>Teknik Çizim Vida Dişi Cıvata Yan Tarafı</translation>
     </message>
     <message>
       <source>TechDraw Thread Hole Bottom</source>
-      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+      <translation>Teknik Çizim Vida Dişi Diş Oyuğunun Alt Tarafı</translation>
     </message>
     <message>
       <source>TechDraw Tread Bolt Bottom</source>
-      <translation type="unfinished">TechDraw Tread Bolt Bottom</translation>
+      <translation>Teknik Çizim Vida Dişi Cıvata Alt Tarafı</translation>
     </message>
     <message>
       <source>Please select two straight lines</source>

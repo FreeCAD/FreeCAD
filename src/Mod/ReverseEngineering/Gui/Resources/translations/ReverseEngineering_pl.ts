@@ -439,7 +439,7 @@
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Akceptuj tylko trójkąty zwrócone stroną zewnętrzną</translation>
+      <translation>Akceptuj tylko trójkąty o normalnych ścian zwrócone w stronę ekranu</translation>
     </message>
     <message>
       <source>Segmentation</source>

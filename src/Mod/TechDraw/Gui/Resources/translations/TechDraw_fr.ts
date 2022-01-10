@@ -5,7 +5,7 @@
     <name>Cmd2LineCenterLine</name>
     <message>
       <source>Add Centerline between 2 Lines</source>
-      <translation>Ajoute une ligne centrale entre 2 lignes</translation>
+      <translation>Ajouter une ligne centrale entre 2 lignes</translation>
     </message>
   </context>
   <context>
@@ -37,7 +37,7 @@
     </message>
     <message>
       <source>Add Centerline between 2 Lines</source>
-      <translation>Ajoute une ligne centrale entre 2 lignes</translation>
+      <translation>Ajouter une ligne centrale entre 2 lignes</translation>
     </message>
   </context>
   <context>
@@ -129,7 +129,7 @@
     </message>
     <message>
       <source>Insert Balloon Annotation</source>
-      <translation>Insérer une annotation bulle</translation>
+      <translation>Insérer une infobulle</translation>
     </message>
   </context>
   <context>
@@ -288,7 +288,7 @@
     </message>
     <message>
       <source>Export Page as DXF</source>
-      <translation>Exporter une Page au format DXF</translation>
+      <translation>Exporter une page au format DXF</translation>
     </message>
     <message>
       <source>Save Dxf File</source>
@@ -307,7 +307,7 @@
     </message>
     <message>
       <source>Export Page as SVG</source>
-      <translation>Exporter une Page au format SVG</translation>
+      <translation>Exporter une page au format SVG</translation>
     </message>
   </context>
   <context>
@@ -833,7 +833,7 @@
     </message>
     <message>
       <source>Drag Balloon</source>
-      <translation>Faire glisser une annotation bulle</translation>
+      <translation>Faire glisser une infobulle</translation>
     </message>
     <message>
       <source>Drag Dimension</source>
@@ -841,7 +841,7 @@
     </message>
     <message>
       <source>Create Balloon</source>
-      <translation>Créer une annotation bulle</translation>
+      <translation>Créer une infobulle</translation>
     </message>
     <message>
       <source>Create ActiveView</source>
@@ -2041,7 +2041,7 @@ Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <source>Shape of balloon annotations</source>
-      <translation>Forme des annotations en bulle</translation>
+      <translation>Forme des infobulles</translation>
     </message>
     <message>
       <source>Circular</source>
@@ -2845,7 +2845,7 @@ Do you want to continue?</source>
     <name>TechDrawGui::TaskBalloon</name>
     <message>
       <source>Balloon</source>
-      <translation>Bulle</translation>
+      <translation>Infobulle</translation>
     </message>
     <message>
       <source>Text:</source>
@@ -2921,7 +2921,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>End symbol for the balloon line</source>
-      <translation>Symbole de fin pour la ligne de bulle</translation>
+      <translation>Symbole de fin pour la ligne de l'infobulle</translation>
     </message>
     <message>
       <source>End Symbol Scale:</source>
@@ -3222,9 +3222,8 @@ Do you want to continue?</source>
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
 Custom: custom scale factor is used</source>
-      <translation>Page: le facteur d'échelle de la page est utilisé
-Automatique : si la vue de détail est plus grande que la page,
-                   il sera redimensionné pour s'adapter à la page
+      <translation>Page : le facteur d'échelle de la page est utilisé,
+Automatique : si la vue de détail est plus grande que la page, elle sera redimensionnée pour s'adapter à la page,
 Personnalisé : un facteur d'échelle personnalisé est utilisé</translation>
     </message>
     <message>

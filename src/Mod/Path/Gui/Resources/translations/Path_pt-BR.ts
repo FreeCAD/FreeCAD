@@ -4,9 +4,14 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="PathSlot.py" line="112"/>
-      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation>Mostra os objetos temporários de construção de trajetória quando o módulo está no modo DEBUG.</translation>
+      <location filename="PathSurface.py" line="140"/>
+      <source>Stop index(angle) for rotational scan</source>
+      <translation>Parar índice(ângulo) para a verificação rotativa</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="134"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>Deslocamento adicional à caixa delimitadora selecionada</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="125"/>
@@ -19,19 +24,9 @@
       <translation>Valores menores produzem uma malha melhor e mais precisa. No entanto, não aumentam muito o tempo de processamento.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="140"/>
-      <source>Stop index(angle) for rotational scan</source>
-      <translation>Parar índice(ângulo) para a verificação rotativa</translation>
-    </message>
-    <message>
       <location filename="PathSurface.py" line="132"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation>Linhas de Dropcutter são criadas em paralelo a este eixo.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="134"/>
-      <source>Additional offset to the selected bounding box</source>
-      <translation>Deslocamento adicional à caixa delimitadora selecionada</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="136"/>
@@ -47,6 +42,21 @@
       <location filename="PathSurface.py" line="143"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
       <translation>Planar: Verificação de superfície Flat, 3D.  Girional: 4th-eixo de varredura rotativa.</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="190"/>
+      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
+      <translation>Converter os arcos coplanares em comandos gcode G2/G3 para padrões de corte `Circular` e `CircularZigZag`.</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="124"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
+      <translation>Valores menores dão uma malha melhor e mais precisa, mas aumentam muito o tempo de processamento.</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="126"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
+      <translation>Valores menores dão uma malha melhor e mais precisa. No entanto, não aumentam muito o tempo de processamento.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="129"/>
@@ -84,19 +94,24 @@
       <translation>Cortar áreas internas do objeto dentro de uma face selecionada maior.</translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="144"/>
+      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
+      <translation>Selecione o algoritmo a ser usado: Dropcutter OCL*, ou Experimental (não baseado em OCL).</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="146"/>
       <source>Select the overall boundary for the operation.</source>
       <translation>Selecione o limite geral para a operação.</translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="148"/>
+      <source>Set to clear last layer in a `Multi-pass` operation.</source>
+      <translation>Configurar a escavação da última camada em uma operação `Multi-pass`.</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="150"/>
       <source>Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</source>
       <translation>Defina uma direção para a ferramenta de corte para entrar no material: Escalada (Horária) ou Convencional (Anti-horária)</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="119"/>
-      <source>Set the geometric clearing pattern to use for the operation.</source>
-      <translation>Defina o padrão geométrico de escavação a usar para a operação.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="154"/>
@@ -114,11 +129,6 @@
       <translation>Defina o deslocamento de profundidade de eixo Z acima da superfície alvo.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="125"/>
-      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
-      <translation>Complete a operação em um único passo de profundidade, ou passe múltiplo para a profundidade final.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="164"/>
       <source>Set the start point for the cut pattern.</source>
       <translation>Definir o ponto de partida para o padrão de recorte.</translation>
@@ -127,11 +137,6 @@
       <location filename="PathWaterline.py" line="166"/>
       <source>Choose location of the center point for starting the cut pattern.</source>
       <translation>Escolha a localização central para iniciar o padrão de recorte.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="179"/>
-      <source>Profile the edges of the selection.</source>
-      <translation>Perfilar as bordas da seleção.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="168"/>
@@ -154,11 +159,6 @@
       <translation>Habilitar otimização separada das transições e quebras dentro de cada etapa da trajetória.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="190"/>
-      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
-      <translation>Converter os arcos coplanares em comandos gcode G2/G3 para padrões de corte `Circular` e `CircularZigZag`.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="177"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
       <translation>Artefatos colineares e co-radiais que são menores do que este valor serão fechados na trajetória.</translation>
@@ -169,9 +169,9 @@
       <translation>Comentário: três pequenas aberturas identificadas na geometria da trajetória.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="138"/>
-      <source>The custom start point for the path of this operation</source>
-      <translation>O ponto de início personalizado para a trajetória desta operação</translation>
+      <location filename="PathSurface.py" line="179"/>
+      <source>Profile the edges of the selection.</source>
+      <translation>Perfilar as bordas da seleção.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="140"/>
@@ -182,11 +182,6 @@
       <location filename="PathCopy.py" line="37"/>
       <source>The path to be copied</source>
       <translation>O caminho a ser copiado</translation>
-    </message>
-    <message>
-      <location filename="PathArray.py" line="64"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>O controlador de ferramenta que será usado para calcular a trajetória</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="59"/>
@@ -299,6 +294,11 @@
       <translation>Falso, para impedir a operação de geração de código</translation>
     </message>
     <message>
+      <location filename="PathCustom.py" line="56"/>
+      <source>The gcode to be inserted</source>
+      <translation>O gcode a ser inserido</translation>
+    </message>
+    <message>
       <location filename="PathDressupRampEntry.py" line="71"/>
       <source>Ramping Method</source>
       <translation>Método de subida</translation>
@@ -374,26 +374,6 @@
       <translation>Excluir zonas de fresagem dentro da cara.</translation>
     </message>
     <message>
-      <location filename="PathWaterline.py" line="124"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation>Valores menores dão uma malha melhor e mais precisa, mas aumentam muito o tempo de processamento.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="126"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
-      <translation>Valores menores dão uma malha melhor e mais precisa. No entanto, não aumentam muito o tempo de processamento.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="144"/>
-      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation>Selecione o algoritmo a ser usado: Dropcutter OCL*, ou Experimental (não baseado em OCL).</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="148"/>
-      <source>Set to clear last layer in a `Multi-pass` operation.</source>
-      <translation>Configurar a escavação da última camada em uma operação `Multi-pass`.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="160"/>
       <source>Ignore outer waterlines above this height.</source>
       <translation>Ignore linhas navegáveis externas acima desta altura.</translation>
@@ -402,6 +382,11 @@
       <location filename="PathCollision.py" line="59"/>
       <source>The base object this collision refers to</source>
       <translation>O objeto base a que esta colisão se refere</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="112"/>
+      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
+      <translation>Mostra os objetos temporários de construção de trajetória quando o módulo está no modo DEBUG.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="115"/>
@@ -414,6 +399,11 @@
       <translation>Insira o ponto final personalizado para a trajetória da fresta.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="119"/>
+      <source>Set the geometric clearing pattern to use for the operation.</source>
+      <translation>Defina o padrão geométrico de escavação a usar para a operação.</translation>
+    </message>
+    <message>
       <location filename="PathSlot.py" line="121"/>
       <source>Positive extends the beginning of the path, negative shortens.</source>
       <translation>Valores positivos estendem o início da trajetória, valores negativos encurtam.</translation>
@@ -422,6 +412,11 @@
       <location filename="PathSlot.py" line="123"/>
       <source>Positive extends the end of the path, negative shortens.</source>
       <translation>Valores positivos estendem o fim da trajetória, valores negativos encurtam.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="125"/>
+      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
+      <translation>Complete a operação em um único passo de profundidade, ou passe múltiplo para a profundidade final.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="127"/>
@@ -449,6 +444,11 @@
       <translation>Ativar para inverter a direção de corte da trajetória da fresta.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="138"/>
+      <source>The custom start point for the path of this operation</source>
+      <translation>O ponto de início personalizado para a trajetória desta operação</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="65"/>
       <source>Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</source>
       <translation>Usar um algoritmo adaptável para eliminar a fresa no ar excessiva acima do topo da cavidade planar.</translation>
@@ -462,6 +462,51 @@
       <location filename="PathPocket.py" line="69"/>
       <source>Process the model and stock in an operation with no Base Geometry selected.</source>
       <translation>Processar o modelo e o estoque em uma operação com nenhuma geometria base selecionada.</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="41"/>
+      <source>Comment or note for CNC program</source>
+      <translation type="unfinished">Comment or note for CNC program</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="119"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Velocidade padrão para movimentos rápidos horizontais.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="127"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Velocidade padrão para movimentos rápidos verticais.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="415"/>
+      <source>Coolant Modes</source>
+      <translation>Modos de resfriamento</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="424"/>
+      <source>Default coolant mode.</source>
+      <translation>Modo de resfriamento padrão.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="156"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Expressão pronta para a Altura Segura de novas operações.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="182"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Expressão usada para a profundidade inicial de novas operações.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="190"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Expressão usada para a profundidade final de novas operações.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="198"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Expressão usada para o passo de profundidade de novas operações.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="71"/>
@@ -524,6 +569,11 @@
       <translation>O espaçamento entre as cópias do arranjo em coordenada linear</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="64"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>O controlador de ferramenta que será usado para calcular a trajetória</translation>
+    </message>
+    <message>
       <location filename="PathArray.py" line="48"/>
       <source>The number of copies in X direction in Linear pattern</source>
       <translation>O número de cópias na direção X no padrão linear</translation>
@@ -564,9 +614,49 @@
       <translation>Deslocamento máximo aleatório de cópias</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="169"/>
+      <source>Seed value for jitter randomness</source>
+      <translation type="unfinished">Seed value for jitter randomness</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="111"/>
+      <source>The base object this stock is derived from</source>
+      <translation>O objeto de base do qual este estoque é derivado</translation>
+    </message>
+    <message>
       <location filename="PathStock.py" line="105"/>
       <source>A material for this object</source>
       <translation>Um material para este objeto</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="243"/>
+      <source>Length of this stock box</source>
+      <translation>Comprimento desta caixa de Stock (Estoque)</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="249"/>
+      <source>Width of this stock box</source>
+      <translation>Largura desta caixa de Stock (Estoque)</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="255"/>
+      <source>Height of this stock box</source>
+      <translation>Altura deste estoque</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="295"/>
+      <source>Radius of this stock cylinder</source>
+      <translation>Raio deste estoque</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="301"/>
+      <source>Height of this stock cylinder</source>
+      <translation>Altura deste estoque</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="337"/>
+      <source>Internal representation of stock type</source>
+      <translation>Representação interna do tipo de estoque</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="137"/>
@@ -620,6 +710,11 @@
       <location filename="PathJobGui.py" line="282"/>
       <source>Edit</source>
       <translation>Editar</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="184"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Problema para determinar perfurabilidade: {}</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="472"/>
@@ -857,14 +952,6 @@
     </message>
   </context>
   <context>
-    <name>PathCustom</name>
-    <message>
-      <location filename="PathCustom.py" line="52"/>
-      <source>The gcode to be inserted</source>
-      <translation>O gcode a ser inserido</translation>
-    </message>
-  </context>
-  <context>
     <name>PathDeburr</name>
     <message>
       <location filename="PathDeburr.py" line="79"/>
@@ -971,6 +1058,19 @@
       <location filename="PathFeatureExtensions.py" line="421"/>
       <source>Waterline error</source>
       <translation>Erro de linha d'água</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathFixture</name>
+    <message>
+      <location filename="PathFixture.py" line="156"/>
+      <source>Fixture</source>
+      <translation>Fixação</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="159"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Criar um ponto de fixação</translation>
     </message>
   </context>
   <context>
@@ -1376,6 +1476,19 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     </message>
   </context>
   <context>
+    <name>PathPlane</name>
+    <message>
+      <location filename="PathPlane.py" line="118"/>
+      <source>Selection Plane</source>
+      <translation>Plano de seleção</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="121"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Criar um plano de seleção</translation>
+    </message>
+  </context>
+  <context>
     <name>PathPocket</name>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="176"/>
@@ -1471,12 +1584,12 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="PathProfile.py" line="200"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Coletivamente</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="201"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Individualmente</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="204"/>
@@ -1491,7 +1604,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="PathProfile.py" line="206"/>
       <source>Miter</source>
-      <translation type="unfinished">Miter</translation>
+      <translation>Chanfro</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="209"/>
@@ -1511,7 +1624,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="PathProfile.py" line="622"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+      <translation>Verificar seleção de aresta e requisitos de profundidade final para perfilagem de aresta(s) aberta(s).</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="663"/>
@@ -1545,64 +1658,6 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <location filename="PathPropertyBag.py" line="62"/>
       <source>List of custom property groups</source>
       <translation>Lista de grupos de propriedades personalizadas</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathSetupSheet</name>
-    <message>
-      <location filename="PathSetupSheet.py" line="102"/>
-      <source>Default speed for horizontal rapid moves.</source>
-      <translation>Velocidade padrão para movimentos rápidos horizontais.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="103"/>
-      <source>Default speed for vertical rapid moves.</source>
-      <translation>Velocidade padrão para movimentos rápidos verticais.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="287"/>
-      <source>Coolant Modes</source>
-      <translation>Modos de resfriamento</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="291"/>
-      <source>Default coolant mode.</source>
-      <translation>Modo de resfriamento padrão.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="108"/>
-      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
-      <translation>O uso deste campo depende da SafeHeightExpression - por padrão, seu valor é somado a StartDepth e usado como SafeHeight em uma operação.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="109"/>
-      <source>Expression set for the SafeHeight of new operations.</source>
-      <translation>Expressão pronta para a Altura Segura de novas operações.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="110"/>
-      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
-      <translation>O uso deste campo depende da Expressão da Altura da Folga - por padrão é o valor adicionado à Profundidade Inicial e usada para Altura da Folga de uma operação.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="111"/>
-      <source>Expression set for the ClearanceHeight of new operations.</source>
-      <translation>Expressão pronta para Altura da Folga de novas operações.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="113"/>
-      <source>Expression used for StartDepth of new operations.</source>
-      <translation>Expressão usada para a profundidade inicial de novas operações.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="114"/>
-      <source>Expression used for FinalDepth of new operations.</source>
-      <translation>Expressão usada para a profundidade final de novas operações.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="115"/>
-      <source>Expression used for StepDown of new operations.</source>
-      <translation>Expressão usada para o passo de profundidade de novas operações.</translation>
     </message>
   </context>
   <context>
@@ -2298,14 +2353,6 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     </message>
   </context>
   <context>
-    <name>PathUtils</name>
-    <message>
-      <location filename="PathUtils.py" line="150"/>
-      <source>Issue determine drillability: {}</source>
-      <translation>Problema para determinar perfurabilidade: {}</translation>
-    </message>
-  </context>
-  <context>
     <name>PathVcarve</name>
     <message>
       <location filename="PathVcarve.py" line="211"/>
@@ -2604,11 +2651,6 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="PathDressupAxisMap.py" line="149"/>
-      <source>Edit Dragknife Dress-up</source>
-      <translation>Editar vestimento de canivete</translation>
-    </message>
-    <message>
       <location filename="PathDressupDragknife.py" line="541"/>
       <source>DragKnife Dress-up</source>
       <translation>Corte tangencial da trajetória adicional</translation>
@@ -2637,6 +2679,11 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <location filename="PathDressupDragknife.py" line="569"/>
       <source>Create Dress-up</source>
       <translation>Criar trajetória adicional (Dress-up)</translation>
+    </message>
+    <message>
+      <location filename="PathDressupAxisMap.py" line="149"/>
+      <source>Edit Dragknife Dress-up</source>
+      <translation>Editar vestimento de canivete</translation>
     </message>
   </context>
   <context>
@@ -2919,24 +2966,6 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     </message>
   </context>
   <context>
-    <name>Path_Fixture</name>
-    <message>
-      <location filename="PathFixture.py" line="115"/>
-      <source>Fixture</source>
-      <translation>Fixação</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="118"/>
-      <source>Creates a Fixture Offset object</source>
-      <translation>Criar um ponto de fixação</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="126"/>
-      <source>Create a Fixture Offset</source>
-      <translation>Criar um ponto de fixação</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3023,11 +3052,6 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <translation>Exporta a tarefa de trajetória como um modelo a ser usado para outras tarefas</translation>
     </message>
     <message>
-      <location filename="PathJobGui.py" line="1559"/>
-      <source>Create Job</source>
-      <translation>Criar Tarefa</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="609"/>
       <source>Edit Job</source>
       <translation>Editar Tarefa</translation>
@@ -3052,6 +3076,11 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <source>Model Selection</source>
       <translation>Seleção de modelo</translation>
     </message>
+    <message>
+      <location filename="PathJobGui.py" line="1559"/>
+      <source>Create Job</source>
+      <translation>Criar Tarefa</translation>
+    </message>
   </context>
   <context>
     <name>Path_OpActiveToggle</name>
@@ -3067,19 +3096,6 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <location filename="PathCommands.py" line="170"/>
       <source>Copy the operation in the job</source>
       <translation>Copiar operações na tarefa</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Plane</name>
-    <message>
-      <location filename="PathPlane.py" line="110"/>
-      <source>Selection Plane</source>
-      <translation>Plano de seleção</translation>
-    </message>
-    <message>
-      <location filename="PathPlane.py" line="122"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Criar um plano de seleção</translation>
     </message>
   </context>
   <context>
@@ -3414,14 +3430,6 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     </message>
   </context>
   <context>
-    <name>Path_SetupSheet</name>
-    <message>
-      <location filename="PathSetupSheetGui.py" line="371"/>
-      <source>Edit SetupSheet</source>
-      <translation>Editar SetupSheet</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_SimpleCopy</name>
     <message>
       <location filename="PathSimpleCopy.py" line="65"/>
@@ -3602,6 +3610,119 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <location filename="PathToolLibraryEditor.py" line="387"/>
       <source>Rename Selected Tool Table</source>
       <translation>Renomear a tabela de ferramentas selecionada</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="PathCustom.py" line="52"/>
+      <source>The gcode to be inserted</source>
+      <translation>O gcode a ser inserido</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSetupSheet</name>
+    <message>
+      <location filename="PathSetupSheet.py" line="102"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Velocidade padrão para movimentos rápidos horizontais.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="103"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Velocidade padrão para movimentos rápidos verticais.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="108"/>
+      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
+      <translation>O uso deste campo depende da SafeHeightExpression - por padrão, seu valor é somado a StartDepth e usado como SafeHeight em uma operação.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="109"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Expressão pronta para a Altura Segura de novas operações.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="110"/>
+      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
+      <translation>O uso deste campo depende da Expressão da Altura da Folga - por padrão é o valor adicionado à Profundidade Inicial e usada para Altura da Folga de uma operação.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="111"/>
+      <source>Expression set for the ClearanceHeight of new operations.</source>
+      <translation>Expressão pronta para Altura da Folga de novas operações.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="113"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Expressão usada para a profundidade inicial de novas operações.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="114"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Expressão usada para a profundidade final de novas operações.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="115"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Expressão usada para o passo de profundidade de novas operações.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="287"/>
+      <source>Coolant Modes</source>
+      <translation>Modos de resfriamento</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="291"/>
+      <source>Default coolant mode.</source>
+      <translation>Modo de resfriamento padrão.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathUtils</name>
+    <message>
+      <location filename="PathUtils.py" line="150"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Problema para determinar perfurabilidade: {}</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Fixture</name>
+    <message>
+      <location filename="PathFixture.py" line="115"/>
+      <source>Fixture</source>
+      <translation>Fixação</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="118"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Criar um ponto de fixação</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="126"/>
+      <source>Create a Fixture Offset</source>
+      <translation>Criar um ponto de fixação</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Plane</name>
+    <message>
+      <location filename="PathPlane.py" line="110"/>
+      <source>Selection Plane</source>
+      <translation>Plano de seleção</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="122"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Criar um plano de seleção</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_SetupSheet</name>
+    <message>
+      <location filename="PathSetupSheetGui.py" line="371"/>
+      <source>Edit SetupSheet</source>
+      <translation>Editar SetupSheet</translation>
     </message>
   </context>
   <context>
@@ -3950,7 +4071,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="186"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>Eixo motor</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
@@ -4015,7 +4136,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
       <source>val1,val2,val3,...</source>
-      <translation type="unfinished">val1,val2,val3,...</translation>
+      <translation>val1,val2,val3,...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
@@ -4030,7 +4151,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/PropertyCreate.ui" line="89"/>
       <source>ToolTip</source>
-      <translation type="unfinished">ToolTip</translation>
+      <translation>Aresta da ferramenta</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="117"/>
@@ -4050,7 +4171,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="35"/>
       <source>Create Toolbit</source>
-      <translation type="unfinished">Create Toolbit</translation>
+      <translation>Criar bite de ferramenta</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
@@ -4109,7 +4230,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <location filename="../panels/DlgJobChooser.ui" line="17"/>
       <source>Choose a Path Job</source>
-      <translation type="unfinished">Choose a Path Job</translation>
+      <translation>Escolha uma tarefa de trajetória</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
@@ -4183,12 +4304,12 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
-      <translation type="unfinished">Boundary Body</translation>
+      <translation>Corpo limite</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select what type of shape to use to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select what type of shape to use to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selecione o tipo de forma a ser usado para restringir a trajetória subjacente.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
@@ -4203,7 +4324,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Extender caixa limitadora do modelo</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
@@ -4213,7 +4334,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the body to be used to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the body to be used to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selecione o corpo a ser usado para restringir a trajetória subjacente.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="100"/>
@@ -4223,7 +4344,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>Comp. X</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
@@ -4233,7 +4354,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>Comp. Y</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
@@ -4243,7 +4364,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>Comp. Z</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
@@ -4795,12 +4916,12 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
       <source>Step over percent</source>
-      <translation type="unfinished">Step over percent</translation>
+      <translation>Porcentagem de profundidade de corte</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the percent of the tool diameter each helix will be offset to the previous one.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A step over of 100% means no overlap of the individual cuts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the percent of the tool diameter each helix will be offset to the previous one.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A step over of 100% means no overlap of the individual cuts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Especifique a porcentagem do diâmetro da ferramenta no qual cada hélice será deslocada em relação à anterior.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Um avanço de 100% significa que não haverá sobreposição dos cortes individuais.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
@@ -5034,12 +5155,12 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="331"/>
       <source>Use Start Point</source>
-      <translation type="unfinished">Use Start Point</translation>
+      <translation>Usar ponto inicial</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="269"/>
       <source>Clear Edges</source>
-      <translation type="unfinished">Clear Edges</translation>
+      <translation>Limpar arestas</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="52"/>
@@ -5318,13 +5439,13 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="259"/>
       <source>Cut Pattern</source>
-      <translation type="unfinished">Cut Pattern</translation>
+      <translation>Padrão de Corte</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="266"/>
       <source>Sample interval</source>
-      <translation type="unfinished">Sample interval</translation>
+      <translation>Intervalo de amostragem</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="85"/>
@@ -5424,7 +5545,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
       <location filename="../panels/PageOpSurfaceEdit.ui" line="204"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="175"/>
       <source>CircularZigZag</source>
-      <translation type="unfinished">CircularZigZag</translation>
+      <translation>CircularZigZag</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="214"/>
@@ -5446,7 +5567,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="241"/>
       <source>Rotational</source>
-      <translation type="unfinished">Rotational</translation>
+      <translation>Rotacional</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="249"/>
@@ -5461,7 +5582,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="287"/>
       <source>Scan Type</source>
-      <translation type="unfinished">Scan Type</translation>
+      <translation>Tipo de escaneamento</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="294"/>
@@ -5511,7 +5632,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
       <source>Thread</source>
-      <translation type="unfinished">Thread</translation>
+      <translation>Rosca</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="26"/>
@@ -5588,13 +5709,13 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="227"/>
       <source>Lead In/Out</source>
-      <translation type="unfinished">Lead In/Out</translation>
+      <translation>Avanço de Entrada/Saída</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="63"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="95"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="66"/>
@@ -5609,7 +5730,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
       <source>Filter Colinear lines</source>
-      <translation type="unfinished">Filter Colinear lines</translation>
+      <translation>Filtrar linhas colineares</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
@@ -5639,7 +5760,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
       <source>Boundary Adjustment</source>
-      <translation type="unfinished">Boundary Adjustment</translation>
+      <translation>Ajuste do limite</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="273"/>
@@ -5649,7 +5770,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/PointEdit.ui" line="14"/>
       <source>Point Edit</source>
-      <translation type="unfinished">Point Edit</translation>
+      <translation>Editar Ponto</translation>
     </message>
     <message>
       <location filename="../panels/PointEdit.ui" line="23"/>
@@ -5865,12 +5986,12 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../panels/ToolEditor.ui" line="247"/>
       <source>α = </source>
-      <translation type="unfinished">α = </translation>
+      <translation>α = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="267"/>
       <source>S = </source>
-      <translation type="unfinished">S = </translation>
+      <translation>S = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="308"/>
@@ -5930,7 +6051,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="103"/>
       <source>Initial # Tags </source>
-      <translation type="unfinished">Initial # Tags </translation>
+      <translation>#Tags iniciais </translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="110"/>
@@ -5995,7 +6116,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../preferences/PathJob.ui" line="105"/>
       <source>Default Geometry Tolerance</source>
-      <translation type="unfinished">Default Geometry Tolerance</translation>
+      <translation>Tolerância geométrica padrão</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="115"/>
@@ -6011,12 +6132,12 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../preferences/PathJob.ui" line="162"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>Arquivo de saída</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="174"/>
       <source>Default Path</source>
-      <translation type="unfinished">Default Path</translation>
+      <translation>Trajetória padrão</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="193"/>
@@ -6026,7 +6147,7 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../preferences/PathJob.ui" line="213"/>
       <source>File Save Policy</source>
-      <translation type="unfinished">File Save Policy</translation>
+      <translation>Política de Salvamento do Arquivo</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="232"/>
@@ -6116,22 +6237,22 @@ Se for necessário definir a profundidade final (FinalDepth) manualmente, seleci
     <message>
       <location filename="../preferences/PathJob.ui" line="391"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Extender caixa limitadora do modelo</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="418"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>Comp. X</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="435"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>Comp. Y</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="445"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>Comp. Z</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="473"/>
@@ -7308,7 +7429,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="136"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>Arquivo de saída</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="143"/>
@@ -7500,7 +7621,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="477"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Extender caixa limitadora do modelo</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="482"/>
@@ -7515,17 +7636,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="528"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>Comp. X</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="545"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>Comp. Y</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="555"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>Comp. Z</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="583"/>
@@ -7749,7 +7870,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1240"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>Eixo motor</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1261"/>

@@ -3426,7 +3426,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgExtrusion.cpp" line="423"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Dokument "%1" nie istnieje.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="470"/>
@@ -3451,7 +3451,9 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation>Odniesienie kierunek wytłaczania jest nieprawidłowe</translation>
+      <translation>Link kierunku wyciągnięcia jest nieprawidłowy.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="627"/>
@@ -4742,7 +4744,7 @@ rozmiar pliku STEP.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="70"/>
       <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
+      <translation>Ustawianie zbyt małego odchylenia powoduje, że teselacja trwa dłużej, a tym samym zamraża lub spowalnia interfejs użytkownika.</translation>
     </message>
   </context>
   <context>
@@ -6007,12 +6009,12 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>&amp;Simple</source>
-      <translation>&amp; Prosta</translation>
+      <translation>&amp;Uproszczony</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>&amp;Parametric</source>
-      <translation>Parametryczny</translation>
+      <translation>&amp;Parametryczny</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>

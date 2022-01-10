@@ -111,7 +111,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="547"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
-      <translation>Jeśli parametr ma wartość prawda, po włączeniu tej opcji płaszczyzna robocza dopasuje się do tego poziomu</translation>
+      <translation>Jeśli parametr ma wartość prawda, po włączeniu tej opcji płaszczyzna robocza dopasuje się do tej kondygnacji</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="550"/>

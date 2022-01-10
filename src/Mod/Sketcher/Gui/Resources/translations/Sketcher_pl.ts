@@ -317,7 +317,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1096"/>
       <source>Create rectangles</source>
-      <translation>Utwórz prostokąty</translation>
+      <translation>Utwórz prostokąt</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1097"/>
@@ -2232,7 +2232,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5786"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation>Wielokrotność nie może być zwiększona poza stopień krzywej złożonej</translation>
+      <translation>Wielokrotność nie może być zwiększona poza stopień krzywej złożonej.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5789"/>
@@ -2475,7 +2475,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
       <location filename="../../CommandAlterGeometry.cpp" line="124"/>
       <location filename="../../CommandAlterGeometry.cpp" line="132"/>
       <source>Select edge(s) from the sketch.</source>
-      <translation>Wybierz krawędź(ie) na szkicu</translation>
+      <translation>Wybierz krawędź(ie) na szkicu.</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="80"/>
@@ -4390,7 +4390,7 @@ Nie znaleziono jednak żadnych wiązań z punktami końcowymi.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="80"/>
       <source>Coincident</source>
-      <translation type="unfinished">Coincident</translation>
+      <translation>Zbieżność</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="85"/>
@@ -4818,7 +4818,7 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="51"/>
       <source>Solver messages</source>
-      <translation>Komunikaty solwera</translation>
+      <translation>Komunikaty solvera</translation>
     </message>
   </context>
   <context>
@@ -4879,7 +4879,7 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="90"/>
       <source>Delete constraints to external geom.</source>
-      <translation>Usuń wiązania do zewnętrznej geometrii</translation>
+      <translation>Usuń wiązania do zewnętrznej geometrii.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="100"/>
@@ -5031,12 +5031,12 @@ Punkty muszą być ustawione bliżej niż jedna piąta rozmiaru siatki od linii 
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6651"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation>Szkic nie jest w pełni związany, z &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 stopniem&lt;/span&gt;&lt;/a&gt; swobody</translation>
+      <translation>Szkic nie jest w pełni związany, z &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 stopniem&lt;/span&gt;&lt;/a&gt; swobody. %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6654"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
-      <translation>Szkic nie jest w pełni związany, z &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 stopniami&lt;/span&gt;&lt;/a&gt; swobody</translation>
+      <translation>Szkic nie jest w pełni związany, z &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 stopniami&lt;/span&gt;&lt;/a&gt; swobody. %2</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6659"/>

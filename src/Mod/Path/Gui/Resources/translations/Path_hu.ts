@@ -4,9 +4,14 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="PathSlot.py" line="112"/>
-      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation>Az ideiglenes építőobjektumok megjelenítésének útvonala, ha a modul DEBUG módban van.</translation>
+      <location filename="PathSurface.py" line="140"/>
+      <source>Stop index(angle) for rotational scan</source>
+      <translation>A körforgó letapogatás végpont indexe (szöge)</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="134"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>További eltolás a kiválasztott határolókerethez</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="125"/>
@@ -19,19 +24,9 @@
       <translation>A kisebb értékek finomabb, pontosabb hálót eredményeznek. A kisebb értékek nem növelik jelentősen a feldolgozási időt.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="140"/>
-      <source>Stop index(angle) for rotational scan</source>
-      <translation>A körforgó letapogatás végpont indexe (szöge)</translation>
-    </message>
-    <message>
       <location filename="PathSurface.py" line="132"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation>A legördülő vonalak ezzel a tengelyekkel párhuzamosan jönnek létre.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="134"/>
-      <source>Additional offset to the selected bounding box</source>
-      <translation>További eltolás a kiválasztott határolókerethez</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="136"/>
@@ -47,6 +42,21 @@
       <location filename="PathSurface.py" line="143"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
       <translation>Síkbeli: Lapos, 3D felület letapogatás.  Forgatás: 4-tengelyes forgató letapogatás.</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="190"/>
+      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
+      <translation>Konvertálja az egy síkba eső íveket G2/G3 G-kód parancsokká a 'kör' és a 'kör cikk-cakk' vágási mintákhoz.</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="124"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
+      <translation>A kisebb értékek finomabb, pontosabb hálót eredményeznek. Az alacsonyabb értékek jelentősen növelik a feldolgozási időt.</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="126"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
+      <translation>A kisebb értékek finomabb, pontosabb hálót biztosítanak. Az alacsonyabb értékek csak jelentéktelenül növelik a feldolgozási időt.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="129"/>
@@ -84,19 +94,24 @@
       <translation>Levágja a kijelölt felületek vagy élek belső területeit.</translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="144"/>
+      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
+      <translation>Válassza ki a használni kívánt algoritmust: OCL Stancoló* vagy kísérleti (nem OCL alapú).</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="146"/>
       <source>Select the overall boundary for the operation.</source>
       <translation>Jelölje ki a művelet teljes határvonalát.</translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="148"/>
+      <source>Set to clear last layer in a `Multi-pass` operation.</source>
+      <translation>Ürítse ki az utolsó réteget egy `több-áthaladású` műveletben.</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="150"/>
       <source>Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</source>
       <translation>Állítsa be a vágószerszám irányát az anyag szerkesztéséhez: Mászás (az óramutató járásával megegyező irányban) vagy hagyományos (az óramutató járásával ellentétes irányban)</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="119"/>
-      <source>Set the geometric clearing pattern to use for the operation.</source>
-      <translation>Állítsa be a művelet geometriai forgácsoló élmintázatát.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="154"/>
@@ -114,11 +129,6 @@
       <translation>Állítsa be a Z tengely mély eltolását a célfelületről.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="125"/>
-      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
-      <translation>Végezze el a műveletet egy menetben a mélységig, vagy több menetben haladva a végső mélységig.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="164"/>
       <source>Set the start point for the cut pattern.</source>
       <translation>Állítsa be a vágási minta kezdőpontját.</translation>
@@ -127,11 +137,6 @@
       <location filename="PathWaterline.py" line="166"/>
       <source>Choose location of the center point for starting the cut pattern.</source>
       <translation>Válassza ki a középpont helyét a vágási minta indításához.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="179"/>
-      <source>Profile the edges of the selection.</source>
-      <translation>Profilozza a kijelölés széleit.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="168"/>
@@ -154,11 +159,6 @@
       <translation>Engedélyezze az átmenetek külön optimalizálását és törését a pálya minden egyes lépésekkor.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="190"/>
-      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
-      <translation>Konvertálja az egy síkba eső íveket G2/G3 G-kód parancsokká a 'kör' és a 'kör cikk-cakk' vágási mintákhoz.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="177"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
       <translation>Az ennél a küszöbértéknél kisebb egy vonalba eső és egy sugárba eső műtárgyi térközök kapcsolódnak az elérési úthoz.</translation>
@@ -169,9 +169,9 @@
       <translation>Visszajelzés: a görbegeometria három legkisebb hézaga.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="138"/>
-      <source>The custom start point for the path of this operation</source>
-      <translation>A művelet röppályájának egyéni kezdőpontja</translation>
+      <location filename="PathSurface.py" line="179"/>
+      <source>Profile the edges of the selection.</source>
+      <translation>Profilozza a kijelölés széleit.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="140"/>
@@ -182,11 +182,6 @@
       <location filename="PathCopy.py" line="37"/>
       <source>The path to be copied</source>
       <translation>A másolni kívánt szerszámpálya útvonal</translation>
-    </message>
-    <message>
-      <location filename="PathArray.py" line="64"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>Útvonal kiszámításához használt eszköz vezérlő</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="59"/>
@@ -299,6 +294,11 @@
       <translation>Állítsa hamisra annak megakadályozására, hogy a művelet, kódot generálhasson</translation>
     </message>
     <message>
+      <location filename="PathCustom.py" line="56"/>
+      <source>The gcode to be inserted</source>
+      <translation>A beillesztendő gcode</translation>
+    </message>
+    <message>
       <location filename="PathDressupRampEntry.py" line="71"/>
       <source>Ramping Method</source>
       <translation>Futtatási módszer</translation>
@@ -374,26 +374,6 @@
       <translation>Zárja ki a felemelt területek marását a felületen belül.</translation>
     </message>
     <message>
-      <location filename="PathWaterline.py" line="124"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation>A kisebb értékek finomabb, pontosabb hálót eredményeznek. Az alacsonyabb értékek jelentősen növelik a feldolgozási időt.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="126"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
-      <translation>A kisebb értékek finomabb, pontosabb hálót biztosítanak. Az alacsonyabb értékek csak jelentéktelenül növelik a feldolgozási időt.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="144"/>
-      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation>Válassza ki a használni kívánt algoritmust: OCL Stancoló* vagy kísérleti (nem OCL alapú).</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="148"/>
-      <source>Set to clear last layer in a `Multi-pass` operation.</source>
-      <translation>Ürítse ki az utolsó réteget egy `több-áthaladású` műveletben.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="160"/>
       <source>Ignore outer waterlines above this height.</source>
       <translation>Figyelmen kívül hagyja a külső vízvonalakat ettől a magasságtól.</translation>
@@ -402,6 +382,11 @@
       <location filename="PathCollision.py" line="59"/>
       <source>The base object this collision refers to</source>
       <translation>Az alap objektum mely erre az ütközésre hivatkozik</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="112"/>
+      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
+      <translation>Az ideiglenes építőobjektumok megjelenítésének útvonala, ha a modul DEBUG módban van.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="115"/>
@@ -414,6 +399,11 @@
       <translation>Adja meg a horony egyéni végpontját.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="119"/>
+      <source>Set the geometric clearing pattern to use for the operation.</source>
+      <translation>Állítsa be a művelet geometriai forgácsoló élmintázatát.</translation>
+    </message>
+    <message>
       <location filename="PathSlot.py" line="121"/>
       <source>Positive extends the beginning of the path, negative shortens.</source>
       <translation>A pozitív kiterjeszti az elérési út elejét, negatívan lerövidíti azt.</translation>
@@ -422,6 +412,11 @@
       <location filename="PathSlot.py" line="123"/>
       <source>Positive extends the end of the path, negative shortens.</source>
       <translation>A pozitív kiterjeszti az elérési út végét, a negatív megrövidíti.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="125"/>
+      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
+      <translation>Végezze el a műveletet egy menetben a mélységig, vagy több menetben haladva a végső mélységig.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="127"/>
@@ -449,6 +444,11 @@
       <translation>Aktiválás a horony vágási irányának megfordításához.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="138"/>
+      <source>The custom start point for the path of this operation</source>
+      <translation>A művelet röppályájának egyéni kezdőpontja</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="65"/>
       <source>Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</source>
       <translation>Az adaptív algoritmussal elkerülheti a síkbeli zsebek feletti túlzott légmarásokat.</translation>
@@ -462,6 +462,51 @@
       <location filename="PathPocket.py" line="69"/>
       <source>Process the model and stock in an operation with no Base Geometry selected.</source>
       <translation>A modell és a primitív folyamat olyan műveletben, amely nem választja ki az alapgeometria beállítását.</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="41"/>
+      <source>Comment or note for CNC program</source>
+      <translation type="unfinished">Comment or note for CNC program</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="119"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Alapértelmezett sebesség a vízszintes irányú, gyors mozgásokhoz.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="127"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Alapértelmezett sebesség a függőleges irányú, gyors mozogásokhoz.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="415"/>
+      <source>Coolant Modes</source>
+      <translation>Hűtőközegmód</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="424"/>
+      <source>Default coolant mode.</source>
+      <translation>Alapértelmezett hűtőközeg mód.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="156"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Kifejezés megadása az új BiztonságiMagasság műveletekhez.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="182"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Kifejezés az új műveletek kezdőmélységéhez.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="190"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Kifejezés az új műveletek befejező mélységére.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="198"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Kifejezés az új műveletek szintmagasságára.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="71"/>
@@ -524,6 +569,11 @@
       <translation>Az elrendezés másolatok közötti távolság lineáris mintában</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="64"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>Útvonal kiszámításához használt eszköz vezérlő</translation>
+    </message>
+    <message>
       <location filename="PathArray.py" line="48"/>
       <source>The number of copies in X direction in Linear pattern</source>
       <translation>A másolatok száma X irányban lineáris mintában</translation>
@@ -564,9 +614,49 @@
       <translation>A másolatok maximális véletlenszerű eltolása</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="169"/>
+      <source>Seed value for jitter randomness</source>
+      <translation type="unfinished">Seed value for jitter randomness</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="111"/>
+      <source>The base object this stock is derived from</source>
+      <translation>Az alapobjektum, amelyből az alaptest származik</translation>
+    </message>
+    <message>
       <location filename="PathStock.py" line="105"/>
       <source>A material for this object</source>
       <translation>Egy anyag ehhez a tárgyhoz</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="243"/>
+      <source>Length of this stock box</source>
+      <translation>Ennek az alaptest mezőnek a hossza</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="249"/>
+      <source>Width of this stock box</source>
+      <translation>Ennek az alaptest mezőnek a szélessége</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="255"/>
+      <source>Height of this stock box</source>
+      <translation>Ennek az alaptest mezőnek a magassága</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="295"/>
+      <source>Radius of this stock cylinder</source>
+      <translation>Ennek az alaptest hengernek a sugara</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="301"/>
+      <source>Height of this stock cylinder</source>
+      <translation>Ennek az alaptest hengernek a magassága</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="337"/>
+      <source>Internal representation of stock type</source>
+      <translation>Alaptest típusának belső ábrázolása</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="137"/>
@@ -620,6 +710,11 @@
       <location filename="PathJobGui.py" line="282"/>
       <source>Edit</source>
       <translation>Szerkesztés</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="184"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Probléma meghatározza a fúrhatóságot: {}</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="472"/>
@@ -857,14 +952,6 @@
     </message>
   </context>
   <context>
-    <name>PathCustom</name>
-    <message>
-      <location filename="PathCustom.py" line="52"/>
-      <source>The gcode to be inserted</source>
-      <translation>A beillesztendő gcode</translation>
-    </message>
-  </context>
-  <context>
     <name>PathDeburr</name>
     <message>
       <location filename="PathDeburr.py" line="79"/>
@@ -971,6 +1058,19 @@
       <location filename="PathFeatureExtensions.py" line="421"/>
       <source>Waterline error</source>
       <translation>Vízvonal hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathFixture</name>
+    <message>
+      <location filename="PathFixture.py" line="156"/>
+      <source>Fixture</source>
+      <translation>Nullapont eltolás</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="159"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Nullapont eltolás létrehozása az objektumon</translation>
     </message>
   </context>
   <context>
@@ -1376,6 +1476,19 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
   </context>
   <context>
+    <name>PathPlane</name>
+    <message>
+      <location filename="PathPlane.py" line="118"/>
+      <source>Selection Plane</source>
+      <translation>Sík kiválasztása</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="121"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Megmunkálási sík létrehozása</translation>
+    </message>
+  </context>
+  <context>
     <name>PathPocket</name>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="176"/>
@@ -1471,12 +1584,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathProfile.py" line="200"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Közösen</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="201"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Egyénileg</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="204"/>
@@ -1491,7 +1604,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathProfile.py" line="206"/>
       <source>Miter</source>
-      <translation type="unfinished">Miter</translation>
+      <translation>Gérvágó</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="209"/>
@@ -1511,7 +1624,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="PathProfile.py" line="622"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+      <translation>Ellenőrizze az élkiválasztást és a végső mélységi követelményeket a nyitott él(ek) profilozásához.</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="663"/>
@@ -1545,64 +1658,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathPropertyBag.py" line="62"/>
       <source>List of custom property groups</source>
       <translation>A felhasználó által definiált tárgycsoportok listája</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathSetupSheet</name>
-    <message>
-      <location filename="PathSetupSheet.py" line="102"/>
-      <source>Default speed for horizontal rapid moves.</source>
-      <translation>Alapértelmezett sebesség a vízszintes irányú, gyors mozgásokhoz.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="103"/>
-      <source>Default speed for vertical rapid moves.</source>
-      <translation>Alapértelmezett sebesség a függőleges irányú, gyors mozogásokhoz.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="287"/>
-      <source>Coolant Modes</source>
-      <translation>Hűtőközegmód</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="291"/>
-      <source>Default coolant mode.</source>
-      <translation>Alapértelmezett hűtőközeg mód.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="108"/>
-      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
-      <translation>Ennek a mezőnek a használata függ a SafeHeightExpression kiterjesztésen - alapértelmezetten az értékéhez hozzáadódik a StartDepth és egy műveletben felhasználja ehhez: SafeHeight.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="109"/>
-      <source>Expression set for the SafeHeight of new operations.</source>
-      <translation>Kifejezés megadása az új BiztonságiMagasság műveletekhez.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="110"/>
-      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
-      <translation>Ennek a mezőnek a használata függ a ClearanceHeightExpression kiterjesztésen - alapértelmezetten az értékéhez hozzáadódik a StartDepth és egy műveletben felhasználja ehhez: ClearanceHeight.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="111"/>
-      <source>Expression set for the ClearanceHeight of new operations.</source>
-      <translation>Kifejezés megadása az új BiztonságiMagasság műveletekhez.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="113"/>
-      <source>Expression used for StartDepth of new operations.</source>
-      <translation>Kifejezés az új műveletek kezdőmélységéhez.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="114"/>
-      <source>Expression used for FinalDepth of new operations.</source>
-      <translation>Kifejezés az új műveletek befejező mélységére.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="115"/>
-      <source>Expression used for StepDown of new operations.</source>
-      <translation>Kifejezés az új műveletek szintmagasságára.</translation>
     </message>
   </context>
   <context>
@@ -2299,14 +2354,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
   </context>
   <context>
-    <name>PathUtils</name>
-    <message>
-      <location filename="PathUtils.py" line="150"/>
-      <source>Issue determine drillability: {}</source>
-      <translation>Probléma meghatározza a fúrhatóságot: {}</translation>
-    </message>
-  </context>
-  <context>
     <name>PathVcarve</name>
     <message>
       <location filename="PathVcarve.py" line="211"/>
@@ -2606,11 +2653,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="PathDressupAxisMap.py" line="149"/>
-      <source>Edit Dragknife Dress-up</source>
-      <translation>Dragknife kés felületének szerkesztése</translation>
-    </message>
-    <message>
       <location filename="PathDressupDragknife.py" line="541"/>
       <source>DragKnife Dress-up</source>
       <translation>DragKnife felépítés</translation>
@@ -2639,6 +2681,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathDressupDragknife.py" line="569"/>
       <source>Create Dress-up</source>
       <translation>Változtatást hoz létre</translation>
+    </message>
+    <message>
+      <location filename="PathDressupAxisMap.py" line="149"/>
+      <source>Edit Dragknife Dress-up</source>
+      <translation>Dragknife kés felületének szerkesztése</translation>
     </message>
   </context>
   <context>
@@ -2921,24 +2968,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
   </context>
   <context>
-    <name>Path_Fixture</name>
-    <message>
-      <location filename="PathFixture.py" line="115"/>
-      <source>Fixture</source>
-      <translation>Nullapont eltolás</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="118"/>
-      <source>Creates a Fixture Offset object</source>
-      <translation>Nullapont eltolás létrehozása az objektumon</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="126"/>
-      <source>Create a Fixture Offset</source>
-      <translation>Nullapont eltolás létrehozása</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3025,11 +3054,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Munka-útvonal exportja sablonként, felhasználható más munkákhoz</translation>
     </message>
     <message>
-      <location filename="PathJobGui.py" line="1559"/>
-      <source>Create Job</source>
-      <translation>Feladat létrehozás</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="609"/>
       <source>Edit Job</source>
       <translation>Feladat szerkesztés</translation>
@@ -3054,6 +3078,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <source>Model Selection</source>
       <translation>Modell kijelölés</translation>
     </message>
+    <message>
+      <location filename="PathJobGui.py" line="1559"/>
+      <source>Create Job</source>
+      <translation>Feladat létrehozás</translation>
+    </message>
   </context>
   <context>
     <name>Path_OpActiveToggle</name>
@@ -3069,19 +3098,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathCommands.py" line="170"/>
       <source>Copy the operation in the job</source>
       <translation>A művelet bemásolása a munkába</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Plane</name>
-    <message>
-      <location filename="PathPlane.py" line="110"/>
-      <source>Selection Plane</source>
-      <translation>Sík kiválasztása</translation>
-    </message>
-    <message>
-      <location filename="PathPlane.py" line="122"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Megmunkálási sík létrehozása</translation>
     </message>
   </context>
   <context>
@@ -3416,14 +3432,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
   </context>
   <context>
-    <name>Path_SetupSheet</name>
-    <message>
-      <location filename="PathSetupSheetGui.py" line="371"/>
-      <source>Edit SetupSheet</source>
-      <translation>Beállítólap szerkesztése</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_SimpleCopy</name>
     <message>
       <location filename="PathSimpleCopy.py" line="65"/>
@@ -3604,6 +3612,119 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathToolLibraryEditor.py" line="387"/>
       <source>Rename Selected Tool Table</source>
       <translation>A kijelölt szerszámlista átnevezése</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="PathCustom.py" line="52"/>
+      <source>The gcode to be inserted</source>
+      <translation>A beillesztendő gcode</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSetupSheet</name>
+    <message>
+      <location filename="PathSetupSheet.py" line="102"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Alapértelmezett sebesség a vízszintes irányú, gyors mozgásokhoz.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="103"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Alapértelmezett sebesség a függőleges irányú, gyors mozogásokhoz.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="108"/>
+      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
+      <translation>Ennek a mezőnek a használata függ a SafeHeightExpression kiterjesztésen - alapértelmezetten az értékéhez hozzáadódik a StartDepth és egy műveletben felhasználja ehhez: SafeHeight.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="109"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Kifejezés megadása az új BiztonságiMagasság műveletekhez.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="110"/>
+      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
+      <translation>Ennek a mezőnek a használata függ a ClearanceHeightExpression kiterjesztésen - alapértelmezetten az értékéhez hozzáadódik a StartDepth és egy műveletben felhasználja ehhez: ClearanceHeight.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="111"/>
+      <source>Expression set for the ClearanceHeight of new operations.</source>
+      <translation>Kifejezés megadása az új BiztonságiMagasság műveletekhez.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="113"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Kifejezés az új műveletek kezdőmélységéhez.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="114"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Kifejezés az új műveletek befejező mélységére.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="115"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Kifejezés az új műveletek szintmagasságára.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="287"/>
+      <source>Coolant Modes</source>
+      <translation>Hűtőközegmód</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="291"/>
+      <source>Default coolant mode.</source>
+      <translation>Alapértelmezett hűtőközeg mód.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathUtils</name>
+    <message>
+      <location filename="PathUtils.py" line="150"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Probléma meghatározza a fúrhatóságot: {}</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Fixture</name>
+    <message>
+      <location filename="PathFixture.py" line="115"/>
+      <source>Fixture</source>
+      <translation>Nullapont eltolás</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="118"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Nullapont eltolás létrehozása az objektumon</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="126"/>
+      <source>Create a Fixture Offset</source>
+      <translation>Nullapont eltolás létrehozása</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Plane</name>
+    <message>
+      <location filename="PathPlane.py" line="110"/>
+      <source>Selection Plane</source>
+      <translation>Sík kiválasztása</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="122"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Megmunkálási sík létrehozása</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_SetupSheet</name>
+    <message>
+      <location filename="PathSetupSheetGui.py" line="371"/>
+      <source>Edit SetupSheet</source>
+      <translation>Beállítólap szerkesztése</translation>
     </message>
   </context>
   <context>

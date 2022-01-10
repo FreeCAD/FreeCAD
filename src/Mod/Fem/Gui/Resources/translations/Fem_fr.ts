@@ -555,6 +555,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCalculixCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Solveur standard CalculiX</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Crée un solveur FEM standard CalculiX avec les outils ccx</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="commands.py" line="999"/>
@@ -565,19 +578,6 @@
       <location filename="commands.py" line="1004"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Modifier les attributs du solveur et lancer les calculs pour le solveur sélectionné</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCxxtools</name>
-    <message>
-      <location filename="commands.py" line="939"/>
-      <source>Solver CalculiX Standard</source>
-      <translation>Solveur standard CalculiX</translation>
-    </message>
-    <message>
-      <location filename="commands.py" line="944"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>Crée un solveur FEM standard CalculiX avec les outils ccx</translation>
     </message>
   </context>
   <context>
@@ -689,6 +689,19 @@
       <location filename="selection_widgets.py" line="53"/>
       <source>Remove</source>
       <translation>Enlever</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Solveur standard CalculiX</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Crée un solveur FEM standard CalculiX avec les outils ccx</translation>
     </message>
   </context>
   <context>
@@ -1783,7 +1796,7 @@ FEM : éléments FEM seulement (uniquement les arêtes n'appartenant pas aux fac
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="51"/>
       <source>sdfsdfsdfds</source>
-      <translation type="unfinished">sdfsdfsdfds</translation>
+      <translation>sdfsdfsdfds</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="54"/>
@@ -1990,7 +2003,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="140"/>
       <source>Delete card duplicates</source>
-      <translation type="unfinished">Delete card duplicates</translation>
+      <translation>Supprimer les doublons</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="156"/>
@@ -2029,7 +2042,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="124"/>
       <source>Comments</source>
-      <translation type="unfinished">Comments</translation>
+      <translation>Commentaires</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="131"/>
@@ -2057,7 +2070,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="61"/>
       <source>z88r</source>
-      <translation type="unfinished">z88r</translation>
+      <translation>z88r</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="77"/>
@@ -2438,7 +2451,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="284"/>
       <source>Basic</source>
-      <translation type="unfinished">Basic</translation>
+      <translation>Simple</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="285"/>
@@ -3031,17 +3044,17 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="155"/>
       <source>Density                     </source>
-      <translation type="unfinished">Density                     </translation>
+      <translation>Densité                     </translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="174"/>
       <source>8000 kg/m^3</source>
-      <translation type="unfinished">8000 kg/m^3</translation>
+      <translation>8000 kg / m^3</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="210"/>
       <source>Mechanical Properties</source>
-      <translation type="unfinished">Mechanical Properties</translation>
+      <translation>Propriétés mécaniques</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="221"/>
@@ -3051,7 +3064,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="240"/>
       <source>200 GPa</source>
-      <translation type="unfinished">200 GPa</translation>
+      <translation>200 GPa</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="265"/>
@@ -3061,7 +3074,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="314"/>
       <source>Fluidic Properties</source>
-      <translation type="unfinished">Fluidic Properties</translation>
+      <translation>Propriétés du fluide</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="325"/>
@@ -3086,7 +3099,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="410"/>
       <source>50 W/m/K</source>
-      <translation type="unfinished">50 W/m/K</translation>
+      <translation>50 W/m/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="435"/>
@@ -3169,7 +3182,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="26"/>
       <source>Fluid Section Parameter</source>
-      <translation type="unfinished">Fluid Section Parameter</translation>
+      <translation>Paramètre de section du fluide</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="45"/>
@@ -3609,12 +3622,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
       <source>Mesh region</source>
-      <translation type="unfinished">Mesh region</translation>
+      <translation>Zone de maillage</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
       <source>Max element size:</source>
-      <translation type="unfinished">Max element size:</translation>
+      <translation>Taille maximale de l'élément :</translation>
     </message>
   </context>
   <context>
@@ -3653,7 +3666,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="138"/>
       <source>Element order:</source>
-      <translation type="unfinished">Element order:</translation>
+      <translation>Ordre des éléments :</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="156"/>
@@ -3795,7 +3808,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="397"/>
       <source>Constraint heat flux</source>
-      <translation type="unfinished">Constraint heat flux</translation>
+      <translation>Contrainte de flux de chaleur</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="119"/>
@@ -3883,7 +3896,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="75"/>
       <source>Temperature</source>
-      <translation type="unfinished">Temperature</translation>
+      <translation>Température</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="82"/>
@@ -4568,7 +4581,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="327"/>
       <source>Turbulence specification</source>
-      <translation type="unfinished">Turbulence specification</translation>
+      <translation>Spécification des turbulences</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="349"/>
@@ -4815,7 +4828,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="76"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="86"/>
@@ -4854,12 +4867,12 @@ vecteur normal de la face est utilisée comme sens</translation>
       <location filename="../../TaskFemConstraintTemperature.ui" line="50"/>
       <location filename="../../TaskFemConstraintTemperature.ui" line="74"/>
       <source>Temperature</source>
-      <translation type="unfinished">Temperature</translation>
+      <translation>Température</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="63"/>
       <source>Concentrated heat flux</source>
-      <translation type="unfinished">Concentrated heat flux</translation>
+      <translation>Flux de chaleur concentré</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="81"/>
@@ -4975,17 +4988,17 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="29"/>
       <source>Point1</source>
-      <translation type="unfinished">Point1</translation>
+      <translation>Point 1</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="109"/>
       <source>Point2</source>
-      <translation type="unfinished">Point2</translation>
+      <translation>Point 2</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="187"/>
       <source>Select Points</source>
-      <translation type="unfinished">Select Points</translation>
+      <translation>Sélectionnez les points</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="199"/>
@@ -5000,7 +5013,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="244"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Champ</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="254"/>
@@ -5033,7 +5046,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="126"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Champ</translation>
     </message>
   </context>
   <context>
@@ -5052,7 +5065,7 @@ vecteur normal de la face est utilisée comme sens</translation>
       <location filename="../../TaskPostDisplay.ui" line="42"/>
       <location filename="../../TaskPostDisplay.ui" line="93"/>
       <source>Outline</source>
-      <translation type="unfinished">Outline</translation>
+      <translation>Contour</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="47"/>
@@ -5080,7 +5093,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="79"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Champ</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="116"/>
@@ -5090,7 +5103,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="130"/>
       <source>Magnitute</source>
-      <translation type="unfinished">Magnitute</translation>
+      <translation>Magnitute</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="135"/>
@@ -5133,7 +5146,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="42"/>
       <source>Outline</source>
-      <translation type="unfinished">Outline</translation>
+      <translation>Contour</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="47"/>
@@ -5168,7 +5181,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="144"/>
       <source>-100000</source>
-      <translation type="unfinished">-100000</translation>
+      <translation>-100000</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="188"/>
@@ -5357,7 +5370,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Fluid Constraints</source>
-      <translation type="unfinished">Fluid Constraints</translation>
+      <translation>Contraintes du fluide</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
@@ -5452,7 +5465,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
       <source>&amp;Filter functions</source>
-      <translation type="unfinished">&amp;Filter functions</translation>
+      <translation>&amp;Fonctions de filtrage</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>

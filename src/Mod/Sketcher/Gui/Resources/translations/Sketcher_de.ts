@@ -4027,7 +4027,7 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
       <source>The number of polygons used for geometry approximation.</source>
-      <translation type="unfinished">The number of polygons used for geometry approximation.</translation>
+      <translation>Anzahl der Polygone für geometrische Näherung.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
@@ -4102,7 +4102,7 @@ Standardmäßig: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="266"/>
       <source>DimensionalStringFormat</source>
-      <translation type="unfinished">DimensionalStringFormat</translation>
+      <translation>DimensionalStringFormat</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
@@ -4122,7 +4122,7 @@ Standardmäßig: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
-      <translation type="unfinished">When opening a sketch, show sources for external geometry links.</translation>
+      <translation>Beim Öffnen der Skizze zeigen von Quellen für externe Geometrieverbindungen.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="334"/>
@@ -4180,7 +4180,7 @@ Then objects are only visible behind the sketch plane.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
       <source>Applies current visibility automation settings to all sketches in open documents.</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in open documents.</translation>
+      <translation>Wendet die aktuelle Einstellung für die Sichtbarkeitsautomatisierung auf alle Skizzen in offenen Dokumenten an.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="456"/>

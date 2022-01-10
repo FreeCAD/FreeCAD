@@ -111,7 +111,7 @@
     <message>
       <location filename="../../Command.cpp" line="1601"/>
       <source>Additive loft</source>
-      <translation>Uzupełnianie wyciągnięciem po profilach</translation>
+      <translation>Uzupełnianie wyciągnięciem przez profile</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1602"/>
@@ -665,7 +665,7 @@
     <message>
       <location filename="../../Command.cpp" line="1651"/>
       <source>Subtractive loft</source>
-      <translation>Odejmowanie wyciągnięciem po profilach</translation>
+      <translation>Odejmowanie wyciągnięciem przez profile</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1652"/>
@@ -683,7 +683,7 @@
     <message>
       <location filename="../../Command.cpp" line="1551"/>
       <source>Subtractive pipe</source>
-      <translation>Subtraktywna rura</translation>
+      <translation>Odejmowanie wyciągnięciem wzdłuż ścieżki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1552"/>
@@ -2160,7 +2160,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="59"/>
       <source>Loft parameters</source>
-      <translation>Parametry wyciągnięcia po profilach</translation>
+      <translation>Parametry wyciągnięcia przez profile</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="81"/>

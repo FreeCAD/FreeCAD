@@ -4,6 +4,11 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="AddonManager.py" line="567"/>
+      <source>Installed</source>
+      <translation>インストール済み</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="96"/>
       <source>Version</source>
       <translation>バージョン</translation>
@@ -52,6 +57,16 @@
       <location filename="package_details.py" line="172"/>
       <source>Installation location</source>
       <translation type="unfinished">Installation location</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="240"/>
+      <source>WARNING: This addon is obsolete</source>
+      <translation type="unfinished">WARNING: This addon is obsolete</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="250"/>
+      <source>WARNING: This addon is Python 2 Only</source>
+      <translation type="unfinished">WARNING: This addon is Python 2 Only</translation>
     </message>
     <message>
       <location filename="package_details.py" line="312"/>
@@ -131,9 +146,19 @@
       <translation type="unfinished">Maintainers:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="567"/>
-      <source>Installed</source>
-      <translation>インストール済み</translation>
+      <location filename="package_list.py" line="371"/>
+      <source>updated</source>
+      <translation type="unfinished">updated</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="376"/>
+      <source>Updated</source>
+      <translation type="unfinished">Updated</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="382"/>
+      <source>Author</source>
+      <translation>作成者</translation>
     </message>
     <message>
       <location filename="package_list.py" line="404"/>
@@ -196,6 +221,21 @@
       <translation type="unfinished">Preference Packs</translation>
     </message>
     <message>
+      <location filename="package_list.py" line="692"/>
+      <source>Status:</source>
+      <translation type="unfinished">Status:</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="695"/>
+      <source>Any</source>
+      <translation>任意</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="702"/>
+      <source>Not installed</source>
+      <translation type="unfinished">Not installed</translation>
+    </message>
+    <message>
       <location filename="package_list.py" line="582"/>
       <source>Filter</source>
       <translation>フィルター</translation>
@@ -206,9 +246,26 @@
       <translation>OK</translation>
     </message>
     <message>
+      <location filename="addonmanager_metadata.py" line="72"/>
+      <source>Error with encrypted connection</source>
+      <translation type="unfinished">Error with encrypted connection</translation>
+    </message>
+    <message>
       <location filename="addonmanager_metadata.py" line="135"/>
       <source>Failed to connect to</source>
       <translation type="unfinished">Failed to connect to</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="220"/>
+      <source>Failed to connect to URL</source>
+      <translation type="unfinished">Failed to connect to URL</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="115"/>
+      <source>Checking network connection...
+</source>
+      <translation type="unfinished">Checking network connection...
+</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="167"/>
@@ -256,9 +313,39 @@
       <translation type="unfinished">Failed to read metadata from</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="439"/>
+      <source>git pull failed for {wb.name}</source>
+      <translation type="unfinished">git pull failed for {wb.name}</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="514"/>
       <source>Done locating macros.</source>
       <translation type="unfinished">Done locating macros.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="551"/>
+      <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
+      <translation>通常はすでにメンテナンスがされていないことを意味します。このリストにあるさらに高度なアドオンが同じ機能を提供している場合があります。</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="564"/>
+      <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
+      <translation>このワークベンチは保守されておらず、Python 3 システムにインストールすると起動時や使用中にエラーが発生する可能性が高くなります。</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="608"/>
+      <source>An error occurred fetching macros from GitHub</source>
+      <translation type="unfinished">An error occurred fetching macros from GitHub</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="665"/>
+      <source>This macro is already installed.</source>
+      <translation>このマクロは既にインストールされています。</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="697"/>
+      <source>Caching macro code...</source>
+      <translation type="unfinished">Caching macro code...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="651"/>
@@ -301,19 +388,9 @@
       <translation>このアドオンは非推奨に設定されています</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="551"/>
-      <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation>通常はすでにメンテナンスがされていないことを意味します。このリストにあるさらに高度なアドオンが同じ機能を提供している場合があります。</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="559"/>
       <source>This addon is marked as Python 2 Only</source>
       <translation>このアドオンは Python 2 専用として記されています</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="564"/>
-      <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation>このワークベンチは保守されておらず、Python 3 システムにインストールすると起動時や使用中にエラーが発生する可能性が高くなります。</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="915"/>
@@ -329,11 +406,6 @@
       <location filename="addonmanager_workers.py" line="656"/>
       <source>Retrieving info from wiki</source>
       <translation>Wikiからの情報を取得しています</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="665"/>
-      <source>This macro is already installed.</source>
-      <translation>このマクロは既にインストールされています。</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="700"/>
@@ -371,26 +443,6 @@
       <translation>マクロがインストールされました。メニューのマクロ -&gt; マクロから利用できます。</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="854"/>
-      <source>Missing optional python module (doesn&apos;t prevent installing)</source>
-      <translation>オプションのPythonモジュールが見つかりません(インストールは停止されません)</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="857"/>
-      <source>Some errors were found that prevent to install this workbench</source>
-      <translation>エラーが発生したためこのワークベンチをインストールすることができません</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation type="unfinished">Error updating module </translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation type="unfinished">Please fix manually</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="835"/>
       <source>Missing workbench</source>
       <translation>ワークベンチが見当たりません</translation>
@@ -401,9 +453,29 @@
       <translation>Pythonが見当たりません</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="854"/>
+      <source>Missing optional python module (doesn&apos;t prevent installing)</source>
+      <translation>オプションのPythonモジュールが見つかりません(インストールは停止されません)</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="857"/>
+      <source>Some errors were found that prevent to install this workbench</source>
+      <translation>エラーが発生したためこのワークベンチをインストールすることができません</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="859"/>
       <source>Please install the missing components first.</source>
       <translation>先ずは、見当たらないコンポーネントをインストールしてください。</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation type="unfinished">Error updating module </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation type="unfinished">Please fix manually</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="873"/>
@@ -421,14 +493,49 @@
       <translation>インストールが完了しました</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="1405"/>
+      <source>Failed to execute pip. Returned error was:</source>
+      <translation type="unfinished">Failed to execute pip. Returned error was:</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1403"/>
       <source>Retrieving package metadata...</source>
       <translation type="unfinished">Retrieving package metadata...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="86"/>
-      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>ここからインストールできますアドオンは、FreeCAD公式の一部ではないゆえにFreeCADチームによってレビューがなされていない。あなたが何をインストールしようとしているかを確認して下さい！</translation>
+      <location filename="addonmanager_utilities.py" line="332"/>
+      <source>Failed to repair missing .git directory</source>
+      <translation type="unfinished">Failed to repair missing .git directory</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_utilities.py" line="335"/>
+      <source>Repository URL</source>
+      <translation type="unfinished">Repository URL</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_utilities.py" line="338"/>
+      <source>Clone directory</source>
+      <translation type="unfinished">Clone directory</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="191"/>
+      <source>Checking connection</source>
+      <translation type="unfinished">Checking connection</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="192"/>
+      <source>Checking for connection to GitHub...</source>
+      <translation type="unfinished">Checking for connection to GitHub...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="213"/>
+      <source>Connection failed</source>
+      <translation type="unfinished">Connection failed</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="324"/>
+      <source>Starting up...</source>
+      <translation type="unfinished">Starting up...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="258"/>
@@ -441,16 +548,6 @@
       <translation>アドオンマネージャー</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="203"/>
-      <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="204"/>
-      <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
-      <translation>変更を反映するにはFreeCADを再起動する必要があります。今すぐFreeCADを再起動する場合はOKを、後で再起動する場合はキャンセルを押してください。</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="209"/>
       <source>Restart now</source>
       <translation type="unfinished">Restart now</translation>
@@ -461,9 +558,14 @@
       <translation type="unfinished">Restart later</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="534"/>
-      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
-      <translation type="unfinished">Addon Manager: Skipping update check because AutoCheck user preference is False</translation>
+      <location filename="AddonManager.py" line="1248"/>
+      <source>Refresh local cache</source>
+      <translation type="unfinished">Refresh local cache</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="659"/>
+      <source>Updating cache...</source>
+      <translation type="unfinished">Updating cache...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
@@ -474,6 +576,26 @@
       <location filename="AddonManager.py" line="262"/>
       <source>Apply</source>
       <translation>適用する</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="86"/>
+      <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
+      <translation>ここからインストールできますアドオンは、FreeCAD公式の一部ではないゆえにFreeCADチームによってレビューがなされていない。あなたが何をインストールしようとしているかを確認して下さい！</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="203"/>
+      <source>You must restart FreeCAD for changes to take effect.</source>
+      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="204"/>
+      <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
+      <translation>変更を反映するにはFreeCADを再起動する必要があります。今すぐFreeCADを再起動する場合はOKを、後で再起動する場合はキャンセルを押してください。</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="534"/>
+      <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
+      <translation type="unfinished">Addon Manager: Skipping update check because AutoCheck user preference is False</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="263"/>
@@ -521,11 +643,6 @@
       <translation type="unfinished">No updates available</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="703"/>
-      <source>Installation of macro failed</source>
-      <translation type="unfinished">Installation of macro failed</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation type="unfinished">All packages updates failed. Packages:</translation>
@@ -534,6 +651,36 @@
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
       <translation type="unfinished">Failed packages:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation type="unfinished">Missing Requirement</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="964"/>
+      <source>Installing dependencies</source>
+      <translation type="unfinished">Installing dependencies</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="703"/>
+      <source>Installation of macro failed</source>
+      <translation type="unfinished">Installation of macro failed</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1178"/>
+      <source>Succeeded</source>
+      <translation type="unfinished">Succeeded</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1159"/>
+      <source>All packages updates failed:</source>
+      <translation type="unfinished">All packages updates failed:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1183"/>
+      <source>Failed</source>
+      <translation type="unfinished">Failed</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="800"/>

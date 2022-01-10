@@ -6,17 +6,17 @@
     <message>
       <location filename="MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Netz ausbreiten</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Eine ebene Darstellung eines Netzes finden.</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Fläche ausbreiten</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation>Erstellt eine ungefähre Kurve über einem Netz.
+      <translation>Erstellt eine angenäherte Kurve auf einem Netz.
 Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
     </message>
   </context>
@@ -100,11 +100,11 @@ Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
     <name>Command</name>
     <message>
       <source>Trim with plane</source>
-      <translation>Mit Ebene trimmen</translation>
+      <translation>An Ebene trimmen</translation>
     </message>
     <message>
       <source>Section with plane</source>
-      <translation>Abschnitt mit Ebene</translation>
+      <translation>Mit Ebene schneiden</translation>
     </message>
   </context>
   <context>
@@ -423,8 +423,8 @@ Ein Wert im Bereich von 0.2-10.</translation>
     <message>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation type="unfinished">You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</translation>
+      <translation>Es wurde ein Körper ohne TIP ausgewählt.
+Bitte TIP des Körpers festlegen oder eine andere Form auswählen.</translation>
     </message>
     <message>
       <source>You have selected a shape without faces.
@@ -460,7 +460,7 @@ Wähle bitte eine andere Form aus.</translation>
     </message>
     <message>
       <source>Trim by plane</source>
-      <translation>Trimmen durch eine Ebene</translation>
+      <translation>Beschneiden mit einer Ebene</translation>
     </message>
     <message>
       <source>Select the side you want to keep.</source>

@@ -94,7 +94,7 @@
     </message>
     <message>
       <source>Open website...</source>
-      <translation>Otwórz witrynę ..</translation>
+      <translation>Otwórz witrynę ...</translation>
     </message>
     <message>
       <source>Opens a website in FreeCAD</source>

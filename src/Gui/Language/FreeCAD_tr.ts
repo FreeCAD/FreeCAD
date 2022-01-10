@@ -3291,7 +3291,7 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>Otomatik Yükle?</translation>
     </message>
     <message>
       <source>Load Now</source>
@@ -3303,7 +3303,7 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Mevcut Çalışma Tezgahları</translation>
     </message>
   </context>
   <context>
@@ -3314,7 +3314,7 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>Otomatik Yükle</translation>
     </message>
     <message>
       <source>If checked</source>
@@ -4504,31 +4504,31 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Eğmek (y-ekseni etrafında):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Yuvarlamak (x-ekseni etrafında):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Sapmak (z-ekseni etrafında):</translation>
     </message>
     <message>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Sapmak (z-ekseni etrafında)</translation>
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Eğmek (y-ekseni etrafında)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Yuvarlamak (x-ekseni etrafında)</translation>
     </message>
     <message>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Euler açıları (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4693,13 +4693,13 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;Orijinal Seçimleri Kullan</translation>
     </message>
     <message>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</translation>
+      <translation>Bağımlılıkları yoksay ve orijinal olarak bu iletişim 
+kutusunu açmadan önce seçilen nesnelerle devam et</translation>
     </message>
   </context>
   <context>
@@ -5990,7 +5990,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Czech</source>
-      <translation>Çekce</translation>
+      <translation>Çekçe</translation>
     </message>
     <message>
       <source>Hungarian</source>
@@ -7025,7 +7025,7 @@ Fiziksel yol: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Belge kaydedilemedi</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7033,19 +7033,19 @@ Fiziksel yol: </translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+      <translation>Dosyayı kaydetmeye çalışırken bir sorun oluştu. Bunun nedeni, bazı üst klasörlerin mevcut olmaması veya yeterli izne sahip olmamanız veya başka sebepler olabilir. Hata detayları:
 
 "%1"
 
-Would you like to save the file with a different name?</translation>
+Dosyayı farklı bir adla kaydetmek ister misiniz?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>Belge kaydedilmedi</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
-      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+      <translation>%1 belgesi kaydedilemedi. Kapatmayı iptal etmek istiyor musunuz?</translation>
     </message>
     <message>
       <source>%1 Document(s) not saved</source>
@@ -8831,11 +8831,11 @@ Would you like to save the file with a different name?</translation>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Düzenleme modu</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
-      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+      <translation>Ağaç listesinden bir nesneyi düzenlerken davranışı tanımlar</translation>
     </message>
   </context>
   <context>

@@ -283,7 +283,7 @@
     <message>
       <location filename="commands.py" line="457"/>
       <source>Electricforce equation</source>
-      <translation type="unfinished">Electricforce equation</translation>
+      <translation>Stromkraft-Gleichung</translation>
     </message>
     <message>
       <location filename="commands.py" line="461"/>
@@ -555,6 +555,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCalculixCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Solver CalculiX Standard</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>CalculiX-Solver erstellen</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="commands.py" line="999"/>
@@ -565,19 +578,6 @@
       <location filename="commands.py" line="1004"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Ändert Solver-Attribute und führt die Berechnungen für den ausgewählten Solver aus</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCxxtools</name>
-    <message>
-      <location filename="commands.py" line="939"/>
-      <source>Solver CalculiX Standard</source>
-      <translation>Solver CalculiX Standard</translation>
-    </message>
-    <message>
-      <location filename="commands.py" line="944"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>CalculiX-Solver erstellen</translation>
     </message>
   </context>
   <context>
@@ -692,6 +692,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Solver CalculiX Standard</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>CalculiX-Solver erstellen</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdFemConstraintBearing</name>
     <message>
       <location filename="../../Command.cpp" line="295"/>
@@ -719,7 +732,7 @@
     <message>
       <location filename="../../Command.cpp" line="337"/>
       <source>Constraint contact</source>
-      <translation type="unfinished">Constraint contact</translation>
+      <translation>Kontakt der Beschränkung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="338"/>
@@ -755,7 +768,7 @@
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>Constraint fixed</source>
-      <translation type="unfinished">Constraint fixed</translation>
+      <translation>Beschränkung fixiert</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="426"/>
@@ -1059,7 +1072,7 @@
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="922"/>
       <source>Data At Point</source>
-      <translation type="unfinished">Data At Point</translation>
+      <translation>Daten an Punkt</translation>
     </message>
   </context>
   <context>
@@ -1194,7 +1207,7 @@
     <message>
       <location filename="../../Command.cpp" line="1696"/>
       <source>Wrong selection type</source>
-      <translation type="unfinished">Wrong selection type</translation>
+      <translation>Falscher Auswahl-Typ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1697"/>
@@ -1323,7 +1336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1110"/>
       <source>Edit nodes set</source>
-      <translation type="unfinished">Edit nodes set</translation>
+      <translation>Knotensatz bearbeiten</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1118"/>
@@ -1703,7 +1716,7 @@
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="14"/>
       <source>INP</source>
-      <translation type="unfinished">INP</translation>
+      <translation>INP</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="33"/>
@@ -1724,7 +1737,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="63"/>
       <source>Export group data</source>
-      <translation type="unfinished">Export group data</translation>
+      <translation>Daten-Gruppe exportieren</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="70"/>
@@ -2439,7 +2452,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="284"/>
       <source>Basic</source>
-      <translation type="unfinished">Basic</translation>
+      <translation>Grundlagen</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="285"/>
@@ -2995,7 +3008,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="64"/>
       <source>Material name</source>
-      <translation type="unfinished">Material name</translation>
+      <translation>Materialname</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="71"/>
@@ -3128,7 +3141,7 @@ exported from FreeCAD.</translation>
       <location filename="../ui/MaterialReinforcement.ui" line="38"/>
       <location filename="../ui/MaterialReinforcement.ui" line="111"/>
       <source>Choose</source>
-      <translation type="unfinished">Choose</translation>
+      <translation>Auswählen</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="53"/>
@@ -3196,7 +3209,7 @@ exported from FreeCAD.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="568"/>
       <location filename="../ui/ElementFluid1D.ui" line="724"/>
       <source>0 mm^2</source>
-      <translation type="unfinished">0 mm^2</translation>
+      <translation>0 mm^2</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="85"/>
@@ -3258,7 +3271,7 @@ exported from FreeCAD.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="278"/>
       <location filename="../ui/ElementFluid1D.ui" line="348"/>
       <source>1 kg/s</source>
-      <translation type="unfinished">1 kg/s</translation>
+      <translation>1 kg/s</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="297"/>
@@ -3405,7 +3418,7 @@ exported from FreeCAD.</translation>
       <location filename="../ui/ElementRotation1D.ui" line="52"/>
       <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0.0</source>
-      <translation type="unfinished">0.0</translation>
+      <translation>0,0</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="92"/>
@@ -3575,7 +3588,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <source>1.0</source>
-      <translation type="unfinished">1.0</translation>
+      <translation>1,0</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="88"/>
@@ -3633,7 +3646,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
       <source>Element dimension:</source>
-      <translation type="unfinished">Element dimension:</translation>
+      <translation>Elementgröße:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
@@ -3644,7 +3657,7 @@ exported from FreeCAD.</translation>
       <location filename="../ui/MeshGmsh.ui" line="66"/>
       <location filename="../ui/MeshGmsh.ui" line="110"/>
       <source>0.0</source>
-      <translation type="unfinished">0.0</translation>
+      <translation>0,0</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="91"/>
@@ -3786,7 +3799,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="266"/>
       <source>Constraint fixed</source>
-      <translation type="unfinished">Constraint fixed</translation>
+      <translation>Beschränkung fixiert</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="886"/>
@@ -4085,7 +4098,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/SolverCalculix.ui" line="74"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>Netz überprüfen</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="81"/>
@@ -4579,7 +4592,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="376"/>
       <source>Length [m]</source>
-      <translation type="unfinished">Length [m]</translation>
+      <translation>Länge [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="402"/>
@@ -5129,7 +5142,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="28"/>
       <source>Scalar</source>
-      <translation type="unfinished">Scalar</translation>
+      <translation>Skalar</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="42"/>
@@ -5338,7 +5351,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Element Geometry</source>
-      <translation type="unfinished">Element Geometry</translation>
+      <translation>Element-Geometry</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -5423,7 +5436,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
       <source>M&amp;esh</source>
-      <translation type="unfinished">M&amp;esh</translation>
+      <translation>N&amp;etz</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>

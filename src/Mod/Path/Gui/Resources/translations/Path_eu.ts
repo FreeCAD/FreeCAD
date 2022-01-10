@@ -4,9 +4,14 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="PathSlot.py" line="112"/>
-      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation>Erakutsi aldi baterako bide-eraikuntzaren objektuak modulua ARAZKETA moduan dagoenean.</translation>
+      <location filename="PathSurface.py" line="140"/>
+      <source>Stop index(angle) for rotational scan</source>
+      <translation>Gelditzeko indizea (angelua) biraketa-eskaneatzerako</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="134"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>Hautatutako muga-kutxaren desplazamendu gehigarria</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="125"/>
@@ -19,19 +24,9 @@
       <translation>Balio txikiagoek amaraun estuago eta zehatzagoa sortzen dute. Balio txikiagoek ez dute prozesatze-denbora asko handitzen.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="140"/>
-      <source>Stop index(angle) for rotational scan</source>
-      <translation>Gelditzeko indizea (angelua) biraketa-eskaneatzerako</translation>
-    </message>
-    <message>
       <location filename="PathSurface.py" line="132"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation>Erortze-ebakigailuaren lerroak ardatz honen paraleloan sortzen dira.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="134"/>
-      <source>Additional offset to the selected bounding box</source>
-      <translation>Hautatutako muga-kutxaren desplazamendu gehigarria</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="136"/>
@@ -47,6 +42,21 @@
       <location filename="PathSurface.py" line="143"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
       <translation>Planarra: Laua, 3D gainazal eskaneatzea. Birakaria: 4. ardatzeko eskaneatze birakaria.</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="190"/>
+      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
+      <translation>Bihurtu arku planokideak G2/G3 gcode komandoetara, 'Zirkularra' eta 'Zigzag zirkularra' mozte-ereduetarako.</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="124"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
+      <translation>Balio txikiagoek amaraun estuago eta zehatzagoa sortzen dute. Balio txikiagoek prozesatze-denbora asko handitzen dute.</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="126"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
+      <translation>Balio txikiagoek amaraun estuago eta zehatzagoa sortzen dute. Balio txikiagoek ez dute prozesatze-denbora asko handitzen.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="129"/>
@@ -84,19 +94,24 @@
       <translation>Moztu hautatutako aurpegi handiago batean dauden barneko elementu-area.</translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="144"/>
+      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
+      <translation>Hautatu erabiliko den algoritmoa: OCL Dropcutter* edo esperimentala (OCL liburutegian oinarrituta ez dagoena).</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="146"/>
       <source>Select the overall boundary for the operation.</source>
       <translation>Hautatu eragiketarako muga orokorra.</translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="148"/>
+      <source>Set to clear last layer in a `Multi-pass` operation.</source>
+      <translation>Ezarri hau azken geruza garbitzeko pasaldi anitzeko eragiketa batean.</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="150"/>
       <source>Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</source>
       <translation>Ezarri mozte-tresnaren norabidea materiala kakotzeko: erlojuaren noranzkoan edo aurka</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="119"/>
-      <source>Set the geometric clearing pattern to use for the operation.</source>
-      <translation>Ezarri eragiketarako erabiliko den garbitze geometrikoko eredua.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="154"/>
@@ -114,11 +129,6 @@
       <translation>Ezarri Z ardatzeko sakonera-desplazamendua helburuko gainazaletik.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="125"/>
-      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
-      <translation>Osatu eragiketa pasaldi bakarrean sakoneran, edo pasaldi anitzetan azken sakoneraraino.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="164"/>
       <source>Set the start point for the cut pattern.</source>
       <translation>Ezarri mozte-ereduaren hasierako puntua.</translation>
@@ -127,11 +137,6 @@
       <location filename="PathWaterline.py" line="166"/>
       <source>Choose location of the center point for starting the cut pattern.</source>
       <translation>Aukeratu mozte-ereduaren hasierarako erdiko puntuaren kokalekua.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="179"/>
-      <source>Profile the edges of the selection.</source>
-      <translation>Profilatu hautapenaren ertzak.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="168"/>
@@ -154,11 +159,6 @@
       <translation>Gaitu gainditze-bide bakoitzeko tarteko trantsizioen eta barneko etenen optimizazio bereiziak.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="190"/>
-      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
-      <translation>Bihurtu arku planokideak G2/G3 gcode komandoetara, 'Zirkularra' eta 'Zigzag zirkularra' mozte-ereduetarako.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="177"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
       <translation>Atalase hau baino txikiagoak diren artefaktu-tarte lerrokideak eta erradiokideak itxi egiten dira bidean.</translation>
@@ -169,9 +169,9 @@
       <translation>Atzeraelikadura: hiru tarte txiki identifikatu dira bide-geometrian.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="138"/>
-      <source>The custom start point for the path of this operation</source>
-      <translation>Eragiketa honen bidearen hasiera-puntu pertsonalizatua</translation>
+      <location filename="PathSurface.py" line="179"/>
+      <source>Profile the edges of the selection.</source>
+      <translation>Profilatu hautapenaren ertzak.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="140"/>
@@ -182,11 +182,6 @@
       <location filename="PathCopy.py" line="37"/>
       <source>The path to be copied</source>
       <translation>Kopiatuko den bidea</translation>
-    </message>
-    <message>
-      <location filename="PathArray.py" line="64"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>Bidea kalkulatzeko erabiliko den tresna-kontrolatzailea</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="59"/>
@@ -299,6 +294,11 @@
       <translation>Markatu 'Gezurra', eragiketak koderik sortu dezan saihestu nahi baduzu</translation>
     </message>
     <message>
+      <location filename="PathCustom.py" line="56"/>
+      <source>The gcode to be inserted</source>
+      <translation>Txertatuko den gcode-a</translation>
+    </message>
+    <message>
       <location filename="PathDressupRampEntry.py" line="71"/>
       <source>Ramping Method</source>
       <translation>Arrapala sortzeko metodoa</translation>
@@ -374,26 +374,6 @@
       <translation>Baztertu aurpegi barruan igotako areak.</translation>
     </message>
     <message>
-      <location filename="PathWaterline.py" line="124"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation>Balio txikiagoek amaraun estuago eta zehatzagoa sortzen dute. Balio txikiagoek prozesatze-denbora asko handitzen dute.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="126"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
-      <translation>Balio txikiagoek amaraun estuago eta zehatzagoa sortzen dute. Balio txikiagoek ez dute prozesatze-denbora asko handitzen.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="144"/>
-      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation>Hautatu erabiliko den algoritmoa: OCL Dropcutter* edo esperimentala (OCL liburutegian oinarrituta ez dagoena).</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="148"/>
-      <source>Set to clear last layer in a `Multi-pass` operation.</source>
-      <translation>Ezarri hau azken geruza garbitzeko pasaldi anitzeko eragiketa batean.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="160"/>
       <source>Ignore outer waterlines above this height.</source>
       <translation>Ez ikusiarena egin altuera hau baino gorago dauden ur-lerroak.</translation>
@@ -402,6 +382,11 @@
       <location filename="PathCollision.py" line="59"/>
       <source>The base object this collision refers to</source>
       <translation>Talka honek erreferentziatzat duen oinarri-objektua</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="112"/>
+      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
+      <translation>Erakutsi aldi baterako bide-eraikuntzaren objektuak modulua ARAZKETA moduan dagoenean.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="115"/>
@@ -414,6 +399,11 @@
       <translation>Sartu amaiera-puntu pertsonalizatua arteka-biderako.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="119"/>
+      <source>Set the geometric clearing pattern to use for the operation.</source>
+      <translation>Ezarri eragiketarako erabiliko den garbitze geometrikoko eredua.</translation>
+    </message>
+    <message>
       <location filename="PathSlot.py" line="121"/>
       <source>Positive extends the beginning of the path, negative shortens.</source>
       <translation>Balio positiboak bidearen hasiera luzatzen du, negatiboak laburtu egiten du.</translation>
@@ -422,6 +412,11 @@
       <location filename="PathSlot.py" line="123"/>
       <source>Positive extends the end of the path, negative shortens.</source>
       <translation>Balio positiboak bidearen amaiera luzatzen du, negatiboak laburtu egiten du.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="125"/>
+      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
+      <translation>Osatu eragiketa pasaldi bakarrean sakoneran, edo pasaldi anitzetan azken sakoneraraino.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="127"/>
@@ -449,6 +444,11 @@
       <translation>Gaitu arteka-bidearen mozte-norabidea alderantzikatzeko.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="138"/>
+      <source>The custom start point for the path of this operation</source>
+      <translation>Eragiketa honen bidearen hasiera-puntu pertsonalizatua</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="65"/>
       <source>Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</source>
       <translation>Erabili algoritmo moldakorra gehiegizko aire-fresatzea kentzeko poltsa planarreko goialdearen gainetik.</translation>
@@ -462,6 +462,51 @@
       <location filename="PathPocket.py" line="69"/>
       <source>Process the model and stock in an operation with no Base Geometry selected.</source>
       <translation>Prozesatu eredua eta pieza oinarri-geometriarik hautatuta ez duen eragiketa batean.</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="41"/>
+      <source>Comment or note for CNC program</source>
+      <translation type="unfinished">Comment or note for CNC program</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="119"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Abiadura lehenetsia mugimendu azkar horizontaletarako.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="127"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Abiadura lehenetsia mugimendu azkar bertikaletarako.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="415"/>
+      <source>Coolant Modes</source>
+      <translation>Hozgarri-moduak</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="424"/>
+      <source>Default coolant mode.</source>
+      <translation>Hozgarri-modu lehenetsia.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="156"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Eragiketa berrien altuera segururako erabilitako adierazpena.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="182"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Eragiketa berrien hasierako sakonerarako erabilitako adierazpena.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="190"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Eragiketa berrien azken sakonerarako erabilitako adierazpena.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="198"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Eragiketa berrien beheratzerako erabilitako adierazpena.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="71"/>
@@ -524,6 +569,11 @@
       <translation>Matrize-kopien arteko tartea eredu linealean</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="64"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>Bidea kalkulatzeko erabiliko den tresna-kontrolatzailea</translation>
+    </message>
+    <message>
       <location filename="PathArray.py" line="48"/>
       <source>The number of copies in X direction in Linear pattern</source>
       <translation>X norabidean dagoen kopia kopurua eredu linealean</translation>
@@ -564,9 +614,49 @@
       <translation>Kopien ausazko desplazamendu maximoa</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="169"/>
+      <source>Seed value for jitter randomness</source>
+      <translation type="unfinished">Seed value for jitter randomness</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="111"/>
+      <source>The base object this stock is derived from</source>
+      <translation>Pieza gordin honen oinarri-objektua hemendik eratorri da</translation>
+    </message>
+    <message>
       <location filename="PathStock.py" line="105"/>
       <source>A material for this object</source>
       <translation>Objektu honentzako material bat</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="243"/>
+      <source>Length of this stock box</source>
+      <translation>Kutxa gordin honen luzera</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="249"/>
+      <source>Width of this stock box</source>
+      <translation>Kutxa gordin honen zabalera</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="255"/>
+      <source>Height of this stock box</source>
+      <translation>Kutxa gordin honen altuera</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="295"/>
+      <source>Radius of this stock cylinder</source>
+      <translation>Zilindro gordin honen erradioa</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="301"/>
+      <source>Height of this stock cylinder</source>
+      <translation>Zilindro gordin honen altuera</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="337"/>
+      <source>Internal representation of stock type</source>
+      <translation>Pieza gordinaren motaren barne-irudikapena</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="137"/>
@@ -620,6 +710,11 @@
       <location filename="PathJobGui.py" line="282"/>
       <source>Edit</source>
       <translation>Editatu</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="184"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Arazoa zulagarritasuna zehaztean: {}</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="472"/>
@@ -857,14 +952,6 @@
     </message>
   </context>
   <context>
-    <name>PathCustom</name>
-    <message>
-      <location filename="PathCustom.py" line="52"/>
-      <source>The gcode to be inserted</source>
-      <translation>Txertatuko den gcode-a</translation>
-    </message>
-  </context>
-  <context>
     <name>PathDeburr</name>
     <message>
       <location filename="PathDeburr.py" line="79"/>
@@ -970,6 +1057,19 @@
       <location filename="PathFeatureExtensions.py" line="421"/>
       <source>Waterline error</source>
       <translation>Errorea ur-lerroan</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathFixture</name>
+    <message>
+      <location filename="PathFixture.py" line="156"/>
+      <source>Fixture</source>
+      <translation>Finkapena</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="159"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Finkapen-desplazamenduko objektu bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -1375,6 +1475,19 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     </message>
   </context>
   <context>
+    <name>PathPlane</name>
+    <message>
+      <location filename="PathPlane.py" line="118"/>
+      <source>Selection Plane</source>
+      <translation>Hautapen-planoa</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="121"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Sortu hautapen-plano objektu bat</translation>
+    </message>
+  </context>
+  <context>
     <name>PathPocket</name>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="176"/>
@@ -1470,12 +1583,12 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="PathProfile.py" line="200"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Taldeka</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="201"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Banaka</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="204"/>
@@ -1544,64 +1657,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="PathPropertyBag.py" line="62"/>
       <source>List of custom property groups</source>
       <translation>Propietate-talde pertsonalizatuen zerrenda</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathSetupSheet</name>
-    <message>
-      <location filename="PathSetupSheet.py" line="102"/>
-      <source>Default speed for horizontal rapid moves.</source>
-      <translation>Abiadura lehenetsia mugimendu azkar horizontaletarako.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="103"/>
-      <source>Default speed for vertical rapid moves.</source>
-      <translation>Abiadura lehenetsia mugimendu azkar bertikaletarako.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="287"/>
-      <source>Coolant Modes</source>
-      <translation>Hozgarri-moduak</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="291"/>
-      <source>Default coolant mode.</source>
-      <translation>Hozgarri-modu lehenetsia.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="108"/>
-      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
-      <translation>Eremu honen erabilera altuera segururako adierazpenaren mendekoa da - modu lehenetsian, balio hori hasierako sakonerari gehitzen zaio eta eragiketa baten altuera segururako erabiltzen da.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="109"/>
-      <source>Expression set for the SafeHeight of new operations.</source>
-      <translation>Eragiketa berrien altuera segururako erabilitako adierazpena.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="110"/>
-      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
-      <translation>Eremu honen erabilera altuera segururako adierazpenaren mendekoa da - modu lehenetsian, balio hori hasierako sakonerari gehitzen zaio eta eragiketa baten altuera segururako erabiltzen da.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="111"/>
-      <source>Expression set for the ClearanceHeight of new operations.</source>
-      <translation>Eragiketa berrien altuera segururako erabilitako adierazpena.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="113"/>
-      <source>Expression used for StartDepth of new operations.</source>
-      <translation>Eragiketa berrien hasierako sakonerarako erabilitako adierazpena.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="114"/>
-      <source>Expression used for FinalDepth of new operations.</source>
-      <translation>Eragiketa berrien azken sakonerarako erabilitako adierazpena.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="115"/>
-      <source>Expression used for StepDown of new operations.</source>
-      <translation>Eragiketa berrien beheratzerako erabilitako adierazpena.</translation>
     </message>
   </context>
   <context>
@@ -2297,14 +2352,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     </message>
   </context>
   <context>
-    <name>PathUtils</name>
-    <message>
-      <location filename="PathUtils.py" line="150"/>
-      <source>Issue determine drillability: {}</source>
-      <translation>Arazoa zulagarritasuna zehaztean: {}</translation>
-    </message>
-  </context>
-  <context>
     <name>PathVcarve</name>
     <message>
       <location filename="PathVcarve.py" line="211"/>
@@ -2603,11 +2650,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="PathDressupAxisMap.py" line="149"/>
-      <source>Edit Dragknife Dress-up</source>
-      <translation>Editatu arraste-hortzeko jantzia</translation>
-    </message>
-    <message>
       <location filename="PathDressupDragknife.py" line="541"/>
       <source>DragKnife Dress-up</source>
       <translation>Arraste-hortzeko jantzia</translation>
@@ -2636,6 +2678,11 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="PathDressupDragknife.py" line="569"/>
       <source>Create Dress-up</source>
       <translation>Sortu jantzia</translation>
+    </message>
+    <message>
+      <location filename="PathDressupAxisMap.py" line="149"/>
+      <source>Edit Dragknife Dress-up</source>
+      <translation>Editatu arraste-hortzeko jantzia</translation>
     </message>
   </context>
   <context>
@@ -2918,24 +2965,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     </message>
   </context>
   <context>
-    <name>Path_Fixture</name>
-    <message>
-      <location filename="PathFixture.py" line="115"/>
-      <source>Fixture</source>
-      <translation>Finkapena</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="118"/>
-      <source>Creates a Fixture Offset object</source>
-      <translation>Finkapen-desplazamenduko objektu bat sortzen du</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="126"/>
-      <source>Create a Fixture Offset</source>
-      <translation>Sortu finkapen-desplazamendu bat</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3022,11 +3051,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <translation>Bide-lana txantiloi gisa esportatzen du, beste lan batzuetan erabili ahal izateko</translation>
     </message>
     <message>
-      <location filename="PathJobGui.py" line="1559"/>
-      <source>Create Job</source>
-      <translation>Sortu lana</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="609"/>
       <source>Edit Job</source>
       <translation>Editatu lana</translation>
@@ -3051,6 +3075,11 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <source>Model Selection</source>
       <translation>Ereduaren hautapena</translation>
     </message>
+    <message>
+      <location filename="PathJobGui.py" line="1559"/>
+      <source>Create Job</source>
+      <translation>Sortu lana</translation>
+    </message>
   </context>
   <context>
     <name>Path_OpActiveToggle</name>
@@ -3066,19 +3095,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="PathCommands.py" line="170"/>
       <source>Copy the operation in the job</source>
       <translation>Kopiatu eragiketa lanean</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Plane</name>
-    <message>
-      <location filename="PathPlane.py" line="110"/>
-      <source>Selection Plane</source>
-      <translation>Hautapen-planoa</translation>
-    </message>
-    <message>
-      <location filename="PathPlane.py" line="122"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Sortu hautapen-plano objektu bat</translation>
     </message>
   </context>
   <context>
@@ -3413,14 +3429,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     </message>
   </context>
   <context>
-    <name>Path_SetupSheet</name>
-    <message>
-      <location filename="PathSetupSheetGui.py" line="371"/>
-      <source>Edit SetupSheet</source>
-      <translation>Editatu konfigurazio-orria</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_SimpleCopy</name>
     <message>
       <location filename="PathSimpleCopy.py" line="65"/>
@@ -3601,6 +3609,119 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="PathToolLibraryEditor.py" line="387"/>
       <source>Rename Selected Tool Table</source>
       <translation>Aldatu izena hautatutako taula-mahaiari</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="PathCustom.py" line="52"/>
+      <source>The gcode to be inserted</source>
+      <translation>Txertatuko den gcode-a</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSetupSheet</name>
+    <message>
+      <location filename="PathSetupSheet.py" line="102"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Abiadura lehenetsia mugimendu azkar horizontaletarako.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="103"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Abiadura lehenetsia mugimendu azkar bertikaletarako.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="108"/>
+      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
+      <translation>Eremu honen erabilera altuera segururako adierazpenaren mendekoa da - modu lehenetsian, balio hori hasierako sakonerari gehitzen zaio eta eragiketa baten altuera segururako erabiltzen da.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="109"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Eragiketa berrien altuera segururako erabilitako adierazpena.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="110"/>
+      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
+      <translation>Eremu honen erabilera altuera segururako adierazpenaren mendekoa da - modu lehenetsian, balio hori hasierako sakonerari gehitzen zaio eta eragiketa baten altuera segururako erabiltzen da.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="111"/>
+      <source>Expression set for the ClearanceHeight of new operations.</source>
+      <translation>Eragiketa berrien altuera segururako erabilitako adierazpena.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="113"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Eragiketa berrien hasierako sakonerarako erabilitako adierazpena.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="114"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Eragiketa berrien azken sakonerarako erabilitako adierazpena.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="115"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Eragiketa berrien beheratzerako erabilitako adierazpena.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="287"/>
+      <source>Coolant Modes</source>
+      <translation>Hozgarri-moduak</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="291"/>
+      <source>Default coolant mode.</source>
+      <translation>Hozgarri-modu lehenetsia.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathUtils</name>
+    <message>
+      <location filename="PathUtils.py" line="150"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Arazoa zulagarritasuna zehaztean: {}</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Fixture</name>
+    <message>
+      <location filename="PathFixture.py" line="115"/>
+      <source>Fixture</source>
+      <translation>Finkapena</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="118"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Finkapen-desplazamenduko objektu bat sortzen du</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="126"/>
+      <source>Create a Fixture Offset</source>
+      <translation>Sortu finkapen-desplazamendu bat</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Plane</name>
+    <message>
+      <location filename="PathPlane.py" line="110"/>
+      <source>Selection Plane</source>
+      <translation>Hautapen-planoa</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="122"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Sortu hautapen-plano objektu bat</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_SetupSheet</name>
+    <message>
+      <location filename="PathSetupSheetGui.py" line="371"/>
+      <source>Edit SetupSheet</source>
+      <translation>Editatu konfigurazio-orria</translation>
     </message>
   </context>
   <context>
@@ -5490,7 +5611,7 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="345"/>
       <source>Profile Edges</source>
-      <translation type="unfinished">Profile Edges</translation>
+      <translation>Profil-ertzak</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="352"/>
@@ -5500,7 +5621,7 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="372"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If true, the cutter will remain inside the boundaries of the model or selected face(s)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If true, the cutter will remain inside the boundaries of the model or selected face(s)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Egia bada, ebakigailua ereduaren edo hautatutako aurpegi(ar)en mugen barruan mantenduko da&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="375"/>
@@ -5603,7 +5724,7 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="73"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Balio hau arkuak segmentu bihurtzeko erabiltzen da. Balioa txikiagoa bada, gcode-a handiagoa izango da. Balio handiagoekin, nahi ez diren segmentuak sortu daitezke erdiko lerro-bidean.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
@@ -5613,17 +5734,17 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets how aggressively colinear segments are filtered from the voronoi diagram&lt;/p&gt;&lt;p&gt;Valid values are 0 - 90 degrees (larger numbers filter more)&lt;/p&gt;&lt;p&gt;Default = 10&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets how aggressively colinear segments are filtered from the voronoi diagram&lt;/p&gt;&lt;p&gt;Valid values are 0 - 90 degrees (larger numbers filter more)&lt;/p&gt;&lt;p&gt;Default = 10&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Segmentu lerrokideak Voronoi diagramatik zein indarrarekin iragazten diren ezartzen du.&lt;/p&gt;&lt;p&gt;Baliozko balioak: 0 - 90 gradu (zenbaki handiagoarekin gehiago iragaziko da)&lt;/p&gt;&lt;p&gt;Balio lehenetsia = 10&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Balio positiboek ebakigailua mugaz haratago eramaten dute. Balio negatiboek muga baino lehenago gelditzen dute ebakigailua.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="116"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hautatu zein algoritmo erabiliko den: OCL Dropcutter* edo esperimentala (OCL oinarrikoa ez dena).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="120"/>
@@ -6398,12 +6519,12 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Sans'; font-size:16pt; font-weight:400; font-style:normal;"&gt;
 &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If openCAMlib is installed with its python interface it can be used by some additional 3d operations.&lt;/p&gt;
 &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Changing this value requires a restart of FreeCAD to take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Sans'; font-size:16pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If openCAMlib is installed with its python interface it can be used by some additional 3d operations.&lt;/p&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Changing this value requires a restart of FreeCAD to take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;openCAMlib bere Python interfazearekin instalatu bada, zenbait 3D eragiketa gehiagotan erabili daiteke.&lt;/p&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;FreeCAD berrabiarazi behar da balio hau aldatzeko.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="128"/>

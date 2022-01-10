@@ -3799,10 +3799,10 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
 a single object. Please note that when import back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when import back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Aktivieren Sie diese Option, um die Platzierungsinformationen beim Exportieren
+eines einzelnen Objekts. Bitte beachten Sie, dass beim Rückimport der STEP-Datei die
+Platzierung in die Formgeometrie kodiert wird, anstatt sie in der
+sie in der Eigenschaft Platzierung zu speichern.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="145"/>
@@ -4871,7 +4871,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="252"/>
       <source>Bounding box font size</source>
-      <translation type="unfinished">Bounding box font size</translation>
+      <translation>Schrifthöhe des Begrenzungsrahmens</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="259"/>
@@ -5497,7 +5497,7 @@ mean the checked object is unusable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1101"/>
       <source>Single-threaded</source>
-      <translation type="unfinished">Single-threaded</translation>
+      <translation>Einzelner Thread</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
@@ -5519,7 +5519,7 @@ but more stable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>Expand shape content</source>
-      <translation type="unfinished">Expand shape content</translation>
+      <translation>Form-Inhalt erweitern</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1120"/>

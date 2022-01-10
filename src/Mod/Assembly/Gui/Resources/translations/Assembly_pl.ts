@@ -243,7 +243,7 @@
     </message>
     <message>
       <source>Coincident</source>
-      <translation type="unfinished">Coincident</translation>
+      <translation>Zbieżność</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>

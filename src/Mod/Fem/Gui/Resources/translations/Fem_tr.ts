@@ -101,12 +101,12 @@
     <message>
       <location filename="commands.py" line="166"/>
       <source>Constant vacuum permittivity</source>
-      <translation type="unfinished">Constant vacuum permittivity</translation>
+      <translation>Vakum geçirgenliği sabiti</translation>
     </message>
     <message>
       <location filename="commands.py" line="170"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>Standart değerin üzerine yazmak için bir FEM sabit vakum geçirgenliği oluşturur</translation>
     </message>
   </context>
   <context>
@@ -132,7 +132,7 @@
     <message>
       <location filename="commands.py" line="206"/>
       <source>Creates a FEM constraint centrif</source>
-      <translation type="unfinished">Creates a FEM constraint centrif</translation>
+      <translation>Bir FEM kısıtlama merkezkaçı oluşturur</translation>
     </message>
   </context>
   <context>
@@ -153,7 +153,7 @@
     <message>
       <location filename="commands.py" line="236"/>
       <source>Constraint flow velocity</source>
-      <translation>Kısıtlama akış hızı</translation>
+      <translation>Akış hızını kısıtla</translation>
     </message>
     <message>
       <location filename="commands.py" line="240"/>
@@ -179,12 +179,12 @@
     <message>
       <location filename="commands.py" line="270"/>
       <source>Constraint sectionprint</source>
-      <translation type="unfinished">Constraint sectionprint</translation>
+      <translation>Kısıtlama bölümü baskısı</translation>
     </message>
     <message>
       <location filename="commands.py" line="274"/>
       <source>Creates a FEM constraint sectionprint</source>
-      <translation type="unfinished">Creates a FEM constraint sectionprint</translation>
+      <translation>Bir FEM kısıtlama bölüm baskısı oluşturur</translation>
     </message>
   </context>
   <context>
@@ -205,12 +205,12 @@
     <message>
       <location filename="commands.py" line="304"/>
       <source>Constraint tie</source>
-      <translation type="unfinished">Constraint tie</translation>
+      <translation>Kısıtlama bağı</translation>
     </message>
     <message>
       <location filename="commands.py" line="308"/>
       <source>Creates a FEM constraint tie</source>
-      <translation type="unfinished">Creates a FEM constraint tie</translation>
+      <translation>FEM kısıtlama bağı oluşturur</translation>
     </message>
   </context>
   <context>
@@ -223,7 +223,7 @@
     <message>
       <location filename="commands.py" line="325"/>
       <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
+      <translation>1B akış için bir FEM sıvı bölümü oluşturur</translation>
     </message>
   </context>
   <context>
@@ -283,12 +283,12 @@
     <message>
       <location filename="commands.py" line="457"/>
       <source>Electricforce equation</source>
-      <translation type="unfinished">Electricforce equation</translation>
+      <translation>Elektriksel kuvvet denklemi</translation>
     </message>
     <message>
       <location filename="commands.py" line="461"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>Elektriksel kuvvetler için bir FEM denklemi oluşturur</translation>
     </message>
   </context>
   <context>
@@ -322,12 +322,12 @@
     <message>
       <location filename="commands.py" line="440"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>Akı denklemi</translation>
     </message>
     <message>
       <location filename="commands.py" line="444"/>
       <source>Creates a FEM equation for flux</source>
-      <translation type="unfinished">Creates a FEM equation for flux</translation>
+      <translation>Akı için bir FEM denklemi oluşturur</translation>
     </message>
   </context>
   <context>
@@ -340,7 +340,7 @@
     <message>
       <location filename="commands.py" line="478"/>
       <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
+      <translation>Isı için bir FEM denklemi oluşturur</translation>
     </message>
   </context>
   <context>
@@ -348,7 +348,7 @@
     <message>
       <location filename="commands.py" line="496"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>FEM örnekleri aç</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@
     <message>
       <location filename="commands.py" line="537"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>Akışkan için bir FEM malzemesi oluşturur</translation>
     </message>
   </context>
   <context>
@@ -413,7 +413,7 @@
     <message>
       <location filename="commands.py" line="624"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Takviye edilmiş matris malzemesi (beton vb.) için bir malzeme oluşturur</translation>
     </message>
   </context>
   <context>
@@ -426,7 +426,7 @@
     <message>
       <location filename="commands.py" line="642"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Katı için bir FEM malzemesi oluşturur</translation>
     </message>
   </context>
   <context>
@@ -499,7 +499,7 @@
     <message>
       <location filename="commands.py" line="839"/>
       <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Netgen dahili metal örücü ile katı veya yüz şeklinden bir FEM metal örgüsü oluşturun</translation>
     </message>
   </context>
   <context>
@@ -546,12 +546,25 @@
     <message>
       <location filename="commands.py" line="980"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation type="unfinished">Solver CalculiX (new framework)</translation>
+      <translation>Çözücü CalculiX (yeni framework)</translation>
     </message>
     <message>
       <location filename="commands.py" line="985"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
+      <translation>Bir FEM çözücü CalculiX yeni framework 'ü oluşturur (sonuç hatası işlemeyi daha da azaltır)</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCalculixCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Çözücü CalculiX Standardı</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Ccx araçlarıyla standart bir FEM çözücü CalculiX oluşturur</translation>
     </message>
   </context>
   <context>
@@ -568,19 +581,6 @@
     </message>
   </context>
   <context>
-    <name>FEM_SolverCxxtools</name>
-    <message>
-      <location filename="commands.py" line="939"/>
-      <source>Solver CalculiX Standard</source>
-      <translation>Çözücü CalculiX Standardı</translation>
-    </message>
-    <message>
-      <location filename="commands.py" line="944"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>Ccx araçlarıyla standart bir FEM çözücü CalculiX oluşturur</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_SolverElmer</name>
     <message>
       <location filename="commands.py" line="1016"/>
@@ -590,7 +590,7 @@
     <message>
       <location filename="commands.py" line="1021"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>Bir FEM çözücü Elmer oluşturur</translation>
     </message>
   </context>
   <context>
@@ -598,12 +598,12 @@
     <message>
       <location filename="commands.py" line="1032"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>Çözücü Mystran</translation>
     </message>
     <message>
       <location filename="commands.py" line="1034"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation type="unfinished">Creates a FEM solver Mystran</translation>
+      <translation>Bir çözücü Mystran oluşturur</translation>
     </message>
   </context>
   <context>
@@ -692,6 +692,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Çözücü CalculiX Standardı</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Ccx araçlarıyla standart bir FEM çözücü CalculiX oluşturur</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdFemConstraintBearing</name>
     <message>
       <location filename="../../Command.cpp" line="295"/>
@@ -706,7 +719,7 @@
     <message>
       <location filename="../../Command.cpp" line="297"/>
       <source>Creates a FEM constraint for a bearing</source>
-      <translation type="unfinished">Creates a FEM constraint for a bearing</translation>
+      <translation>Rulman için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -724,7 +737,7 @@
     <message>
       <location filename="../../Command.cpp" line="338"/>
       <source>Creates a FEM constraint for contact between faces</source>
-      <translation type="unfinished">Creates a FEM constraint for contact between faces</translation>
+      <translation>Yüzeyler arası temas için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -742,7 +755,7 @@
     <message>
       <location filename="../../Command.cpp" line="383"/>
       <source>Creates a FEM constraint for a displacement acting on a geometric entity</source>
-      <translation type="unfinished">Creates a FEM constraint for a displacement acting on a geometric entity</translation>
+      <translation>Geometrik bir varlık üzerinde hareket eden bir yer değiştirme için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -760,7 +773,7 @@
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Creates a FEM constraint for a fixed geometric entity</source>
-      <translation type="unfinished">Creates a FEM constraint for a fixed geometric entity</translation>
+      <translation>Sabitlenmiş bir geometrik unsur için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -796,7 +809,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Creates a FEM constraint for a force acting on a geometric entity</source>
-      <translation type="unfinished">Creates a FEM constraint for a force acting on a geometric entity</translation>
+      <translation>Geometrik bir varlık üzerine etkiyen bir kuvvet için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -814,7 +827,7 @@
     <message>
       <location filename="../../Command.cpp" line="555"/>
       <source>Creates a FEM constraint for a gear</source>
-      <translation type="unfinished">Creates a FEM constraint for a gear</translation>
+      <translation>Dişli için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -832,7 +845,7 @@
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Creates a FEM constraint for a heatflux acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a heatflux acting on a face</translation>
+      <translation>Bir yüzeyde hareket eden ısı akışı için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -850,7 +863,7 @@
     <message>
       <location filename="../../Command.cpp" line="641"/>
       <source>Creates a FEM constraint for initial temperature acting on a body</source>
-      <translation type="unfinished">Creates a FEM constraint for initial temperature acting on a body</translation>
+      <translation>Bir gövde üzerinde hareket eden başlangıç sıcaklığı için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -863,12 +876,12 @@
     <message>
       <location filename="../../Command.cpp" line="683"/>
       <source>Constraint plane rotation</source>
-      <translation type="unfinished">Constraint plane rotation</translation>
+      <translation>Düzlem dönüşünü kısıtla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="684"/>
       <source>Creates a FEM constraint for plane rotation face</source>
-      <translation type="unfinished">Creates a FEM constraint for plane rotation face</translation>
+      <translation>Düzlem dönüş yüzeyi için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -886,7 +899,7 @@
     <message>
       <location filename="../../Command.cpp" line="726"/>
       <source>Creates a FEM constraint for a pressure acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a pressure acting on a face</translation>
+      <translation>Bir yüzeyde hareket eden basınç için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -899,12 +912,12 @@
     <message>
       <location filename="../../Command.cpp" line="815"/>
       <source>Constraint pulley</source>
-      <translation type="unfinished">Constraint pulley</translation>
+      <translation>Kasnağı kısıtla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="816"/>
       <source>Creates a FEM constraint for a pulley</source>
-      <translation type="unfinished">Creates a FEM constraint for a pulley</translation>
+      <translation>Kasnak için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -922,7 +935,7 @@
     <message>
       <location filename="../../Command.cpp" line="771"/>
       <source>Creates a FEM constraint for a spring acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a spring acting on a face</translation>
+      <translation>Bir yüzeyde hareket eden yay için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -935,12 +948,12 @@
     <message>
       <location filename="../../Command.cpp" line="861"/>
       <source>Constraint temperature</source>
-      <translation type="unfinished">Constraint temperature</translation>
+      <translation>Sıcaklığı kısıtla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="862"/>
       <source>Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</source>
-      <translation type="unfinished">Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</translation>
+      <translation>Bir yüzeyde hareket eden sıcaklık/yoğunlaşmış ısı akısı için bir FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -953,12 +966,12 @@
     <message>
       <location filename="../../Command.cpp" line="904"/>
       <source>Constraint transform</source>
-      <translation type="unfinished">Constraint transform</translation>
+      <translation>Dönüşümü kısıtla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="905"/>
       <source>Create FEM constraint for transforming a face</source>
-      <translation type="unfinished">Create FEM constraint for transforming a face</translation>
+      <translation>Bir yüzü dönüştürmek için FEM kısıtlaması oluşturur</translation>
     </message>
   </context>
   <context>
@@ -976,7 +989,7 @@
     <message>
       <location filename="../../Command.cpp" line="1097"/>
       <source>Creates a FEM mesh nodes set</source>
-      <translation type="unfinished">Creates a FEM mesh nodes set</translation>
+      <translation>Bir FEM metal örgü düğümleri dizisi oluşturur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1125"/>
@@ -999,7 +1012,7 @@
     <message>
       <location filename="../../Command.cpp" line="1040"/>
       <source>Node set by poly</source>
-      <translation type="unfinished">Node set by poly</translation>
+      <translation>Poly tarafından ayarlanan düğüm</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1041"/>
@@ -1018,12 +1031,12 @@
     <message>
       <location filename="../../Command.cpp" line="1607"/>
       <source>Apply changes to pipeline</source>
-      <translation type="unfinished">Apply changes to pipeline</translation>
+      <translation>İş hattına değişiklikleri uygula</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1608"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
-      <translation type="unfinished">Apply changes to parameters directly and not on recompute only...</translation>
+      <translation>Değişiklikleri yalnızca yeniden hesaplamada değil, doğrudan parametrelere uygulayın...</translation>
     </message>
   </context>
   <context>
@@ -1036,12 +1049,12 @@
     <message>
       <location filename="../../Command.cpp" line="1252"/>
       <source>Region clip filter</source>
-      <translation type="unfinished">Region clip filter</translation>
+      <translation>Bölge alıntısı süzgeci</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1253"/>
       <source>Define/create a clip filter which uses functions to define the cliped region</source>
-      <translation type="unfinished">Define/create a clip filter which uses functions to define the cliped region</translation>
+      <translation>Alıntılanmış bölgeyi tanımlamak için işlevler kullanan bir alıntı süzgeci tanımlayın/oluşturun</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1534"/>
@@ -1051,7 +1064,7 @@
     <message>
       <location filename="../../Command.cpp" line="1535"/>
       <source>Select a pipeline, please.</source>
-      <translation type="unfinished">Select a pipeline, please.</translation>
+      <translation>Bir iş hattı seçiniz, lütfen.</translation>
     </message>
   </context>
   <context>
@@ -1059,7 +1072,7 @@
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="922"/>
       <source>Data At Point</source>
-      <translation type="unfinished">Data At Point</translation>
+      <translation>Noktasal Veri</translation>
     </message>
   </context>
   <context>
@@ -1072,12 +1085,12 @@
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>Function cut filter</source>
-      <translation type="unfinished">Function cut filter</translation>
+      <translation>Kesme filtresi fonksiyonu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
       <source>Cut the data along an implicit function</source>
-      <translation type="unfinished">Cut the data along an implicit function</translation>
+      <translation>Verileri örtük bir fonksiyon boyunca kesin</translation>
     </message>
   </context>
   <context>
@@ -1090,12 +1103,12 @@
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Line clip filter</source>
-      <translation type="unfinished">Line clip filter</translation>
+      <translation>Çizgi alıntı süzgeci</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Define/create a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field along a line</translation>
+      <translation>Bir çizgi boyunca bir alanı alıntılayan alıntı süzgeci tanımlayın/oluşturun</translation>
     </message>
   </context>
   <context>
@@ -1108,12 +1121,12 @@
     <message>
       <location filename="../../Command.cpp" line="1330"/>
       <source>Data at point clip filter</source>
-      <translation type="unfinished">Data at point clip filter</translation>
+      <translation>Noktasal veri alıntısı süzgeci</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
       <source>Define/create a clip filter which clips a field data at point</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field data at point</translation>
+      <translation>Noktasal veri alanını alıntılayan bir alıntı süzgeci tanımlayın/oluşturun</translation>
     </message>
   </context>
   <context>
@@ -1126,12 +1139,12 @@
     <message>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Filter functions</source>
-      <translation type="unfinished">Filter functions</translation>
+      <translation>Süzgeç işlevleri</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1468"/>
       <source>Functions for use in postprocessing filter...</source>
-      <translation type="unfinished">Functions for use in postprocessing filter...</translation>
+      <translation>İşlem sonrası filtrede kullanılacak fonksiyonlar...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1579"/>
@@ -1154,12 +1167,12 @@
     <message>
       <location filename="../../Command.cpp" line="1358"/>
       <source>Stress linearization plot</source>
-      <translation type="unfinished">Stress linearization plot</translation>
+      <translation>Gerilme doğrusallaştırma grafiği</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1359"/>
       <source>Define/create stress linearization plots</source>
-      <translation type="unfinished">Define/create stress linearization plots</translation>
+      <translation>Gerilme doğrusallaştırma grafiklerini tanımlayın/oluşturun</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1389"/>
@@ -1171,7 +1184,7 @@
       <location filename="../../Command.cpp" line="1390"/>
       <location filename="../../Command.cpp" line="1396"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
-      <translation type="unfinished">Select a Clip filter which clips a STRESS field along a line, please.</translation>
+      <translation>Bir çizgi boyunca bir STRES alanını kırpan bir Darbe filtresi seçin, lütfen.</translation>
     </message>
   </context>
   <context>
@@ -1184,22 +1197,22 @@
     <message>
       <location filename="../../Command.cpp" line="1652"/>
       <source>Post pipeline from result</source>
-      <translation type="unfinished">Post pipeline from result</translation>
+      <translation>Sonuçtaki iş hattını yayınla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1653"/>
       <source>Creates a post processing pipeline from a result object</source>
-      <translation type="unfinished">Creates a post processing pipeline from a result object</translation>
+      <translation>Bir sonuç nesnesinden bir işlem sonrası oluşturur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1696"/>
       <source>Wrong selection type</source>
-      <translation type="unfinished">Wrong selection type</translation>
+      <translation>Yanlış seçim türü</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1697"/>
       <source>Select a result object, please.</source>
-      <translation type="unfinished">Select a result object, please.</translation>
+      <translation>Bir sonuç nesnesi seçin, lütfen.</translation>
     </message>
   </context>
   <context>
@@ -1212,12 +1225,12 @@
     <message>
       <location filename="../../Command.cpp" line="1415"/>
       <source>Scalar clip filter</source>
-      <translation type="unfinished">Scalar clip filter</translation>
+      <translation>Skaler kırpma filtresi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field with a scalar value</translation>
+      <translation>Skaler değere sahip bir alanı kırpan bir kırpma filtresi tanımlayın/oluşturun</translation>
     </message>
   </context>
   <context>
@@ -1230,12 +1243,12 @@
     <message>
       <location filename="../../Command.cpp" line="1441"/>
       <source>Warp filter</source>
-      <translation type="unfinished">Warp filter</translation>
+      <translation>Saptırma filtresi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1442"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
-      <translation type="unfinished">Warp the geometry along a vector field by a certain factor</translation>
+      <translation>Geometriyi bir vektör alanı boyunca belirli bir etkenle saptırın</translation>
     </message>
   </context>
   <context>
@@ -1243,107 +1256,107 @@
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Make FEM constraint for bearing</source>
-      <translation type="unfinished">Make FEM constraint for bearing</translation>
+      <translation>Rulman için bir FEM kısıtlaması yap</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="353"/>
       <source>Make FEM constraint contact on face</source>
-      <translation type="unfinished">Make FEM constraint contact on face</translation>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması yapın</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="398"/>
       <source>Make FEM constraint displacement on face</source>
-      <translation type="unfinished">Make FEM constraint displacement on face</translation>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlama yer değiştirmesi yapın</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>Make FEM constraint fixed geometry</source>
-      <translation type="unfinished">Make FEM constraint fixed geometry</translation>
+      <translation>Sabit geometri FEM kısıtlaması yap</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="483"/>
       <source>Create fluid boundary condition</source>
-      <translation type="unfinished">Create fluid boundary condition</translation>
+      <translation>Akışkan sınır koşulu oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Make FEM constraint force on geometry</source>
-      <translation type="unfinished">Make FEM constraint force on geometry</translation>
+      <translation>Geometri üzerinde FEM kısıtlama kuvveti yapın</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="569"/>
       <source>Make FEM constraint for gear</source>
-      <translation type="unfinished">Make FEM constraint for gear</translation>
+      <translation>Dişli için bir FEM kısıtlaması yap</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="611"/>
       <source>Make FEM constraint heatflux on face</source>
-      <translation type="unfinished">Make FEM constraint heatflux on face</translation>
+      <translation>Yüzeydeki ısı akısı FEM kısıtlaması yap</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="656"/>
       <source>Make FEM constraint initial temperature on body</source>
-      <translation type="unfinished">Make FEM constraint initial temperature on body</translation>
+      <translation>Gövdedeki başlangıç sıcaklığı FEM kısıtlaması yap</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="699"/>
       <source>Make FEM constraint Plane Rotation face</source>
-      <translation type="unfinished">Make FEM constraint Plane Rotation face</translation>
+      <translation>Düzlem Dönüş yüzeyi FEM kısıtlaması yap</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="741"/>
       <source>Make FEM constraint pressure on face</source>
-      <translation type="unfinished">Make FEM constraint pressure on face</translation>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlama basıncı yapın</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="786"/>
       <source>Make FEM constraint spring on face</source>
-      <translation type="unfinished">Make FEM constraint spring on face</translation>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması yayı yap</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="831"/>
       <source>Make FEM constraint for pulley</source>
-      <translation type="unfinished">Make FEM constraint for pulley</translation>
+      <translation>Kasnak için FEM kısıtlaması yapın</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="877"/>
       <source>Make FEM constraint temperature on face</source>
-      <translation type="unfinished">Make FEM constraint temperature on face</translation>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması sıcaklığı yapın</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="920"/>
       <source>Make FEM constraint transform on face</source>
-      <translation type="unfinished">Make FEM constraint transform on face</translation>
+      <translation>Bir geometrik yüzün üzerinde FEM kısıtlaması dönüşümü yapın</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1009"/>
       <source>Place robot</source>
-      <translation type="unfinished">Place robot</translation>
+      <translation>Robot yerleştir</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1110"/>
       <source>Edit nodes set</source>
-      <translation type="unfinished">Edit nodes set</translation>
+      <translation>Düğüm noktaları kümesini düzenle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1118"/>
       <source>Create nodes set</source>
-      <translation type="unfinished">Create nodes set</translation>
+      <translation>Düğüm noktaları kümesi oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1173"/>
       <source>Create filter</source>
-      <translation type="unfinished">Create filter</translation>
+      <translation>Filtre edici oluşturun</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1490"/>
       <source>Create function</source>
-      <translation type="unfinished">Create function</translation>
+      <translation>Fonksiyon oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1685"/>
       <source>Create pipeline from result</source>
-      <translation type="unfinished">Create pipeline from result</translation>
+      <translation>Sonuçtan iş hattı oluştur</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="236"/>
@@ -1363,7 +1376,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
       <source>Mesh groups detected. Please choose values for the different groups.</source>
-      <translation type="unfinished">Mesh groups detected. Please choose values for the different groups.</translation>
+      <translation>Metal örgü grupları algılandı. Lütfen farklı gruplar için değerler seçin.</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -1383,35 +1396,35 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="77"/>
       <source>Not Marked</source>
-      <translation type="unfinished">Not Marked</translation>
+      <translation>İşaretlenmedi</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="82"/>
       <source>Marked</source>
-      <translation type="unfinished">Marked</translation>
+      <translation>İşaretli</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
       <source>Select the vertices, lines and surfaces: </source>
-      <translation type="unfinished">Select the vertices, lines and surfaces: </translation>
+      <translation>Nokta, çizgi ve yüzeyleri seçin: </translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="43"/>
       <source>Temperature:</source>
-      <translation type="unfinished">Temperature:</translation>
+      <translation>Sıcaklık:</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="52"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="56"/>
       <source>25</source>
-      <translation type="unfinished">25</translation>
+      <translation>25</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="72"/>
       <source>ºC</source>
-      <translation type="unfinished">ºC</translation>
+      <translation>ºC</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="81"/>
@@ -1427,8 +1440,8 @@
       <location filename="../../TaskPanelInitialTemperature.ui" line="26"/>
       <source>Insert component's
  initial temperature:</source>
-      <translation type="unfinished">Insert component's
- initial temperature:</translation>
+      <translation>Bileşenin başlangıç
+       sıcaklığını girin:</translation>
     </message>
   </context>
   <context>
@@ -1436,12 +1449,12 @@
     <message>
       <location filename="../../Command.cpp" line="1580"/>
       <source>Create a plane function, defined by its origin and normal</source>
-      <translation type="unfinished">Create a plane function, defined by its origin and normal</translation>
+      <translation>Başlangıç noktası ve dik yönüne göre tanımlanan bir düzlem işlevi oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1585"/>
       <source>Create a sphere function, defined by its center and radius</source>
-      <translation type="unfinished">Create a sphere function, defined by its center and radius</translation>
+      <translation>Merkezi ve yarıçapına göre tanımlanan bir küre işlevi oluştur</translation>
     </message>
   </context>
   <context>
@@ -1460,12 +1473,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="82"/>
       <source>Input file Editor</source>
-      <translation type="unfinished">Input file Editor</translation>
+      <translation>Giriş dosyası Düzenleyici</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="89"/>
       <source>Use internal editor for *.inp files</source>
-      <translation type="unfinished">Use internal editor for *.inp files</translation>
+      <translation>.inp dosyaları için dahili düzenleyiciyi kullan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="114"/>
@@ -1475,32 +1488,32 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="121"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Bilinen ikili dizinlerde ara</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="146"/>
       <source>ccx binary path</source>
-      <translation type="unfinished">ccx binary path</translation>
+      <translation>ccx ikili yolu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="166"/>
       <source>Input file splitting</source>
-      <translation type="unfinished">Input file splitting</translation>
+      <translation>Giriş dosyası bölünüyor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="176"/>
       <source>Split writing of  *.inp</source>
-      <translation type="unfinished">Split writing of  *.inp</translation>
+      <translation>*.inp 'nin yazımını ayır</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="192"/>
       <source>CalculiX binary</source>
-      <translation type="unfinished">CalculiX binary</translation>
+      <translation>CalculiX ikilisi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="204"/>
       <source>Analysis defaults</source>
-      <translation type="unfinished">Analysis defaults</translation>
+      <translation>Çözümleme varsayılanları</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="212"/>
@@ -1525,42 +1538,42 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="253"/>
       <source>Thermomech</source>
-      <translation type="unfinished">Thermomech</translation>
+      <translation>Termomekanik</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="270"/>
       <source>Solver defaults</source>
-      <translation type="unfinished">Solver defaults</translation>
+      <translation>Çözücü varsayılanları</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="278"/>
       <source>Time incrementation control parameter</source>
-      <translation type="unfinished">Time incrementation control parameter</translation>
+      <translation>Zaman artırma denetimi parametresi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="285"/>
       <source>Use non ccx defaults</source>
-      <translation type="unfinished">Use non ccx defaults</translation>
+      <translation>ccx olmayan varsayılanları kullan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="301"/>
       <source>Use non-linear geometry</source>
-      <translation type="unfinished">Use non-linear geometry</translation>
+      <translation>Doğrusal olmayan geometri kullan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="320"/>
       <source>Matrix solver</source>
-      <translation type="unfinished">Matrix solver</translation>
+      <translation>Matris çözücü</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="327"/>
       <source>Number of CPU's to use (Spooles only)</source>
-      <translation type="unfinished">Number of CPU's to use (Spooles only)</translation>
+      <translation>Kullanılacak CPU sayısı (sadece biriktirmeler)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="334"/>
       <source>Non-linear geometry</source>
-      <translation type="unfinished">Non-linear geometry</translation>
+      <translation>Doğrusal olmayan geometri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="354"/>
@@ -1570,62 +1583,62 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="359"/>
       <source>Spooles</source>
-      <translation type="unfinished">Spooles</translation>
+      <translation>Biriktirmeler</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="364"/>
       <source>Iterative Scaling</source>
-      <translation type="unfinished">Iterative Scaling</translation>
+      <translation>Tekrarlı Ölçekleme</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="369"/>
       <source>Iterative Cholesky</source>
-      <translation type="unfinished">Iterative Cholesky</translation>
+      <translation>Tekrarlı Cholesky</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="399"/>
       <source>Time Initial Step</source>
-      <translation type="unfinished">Time Initial Step</translation>
+      <translation>Başlanıç Adımının Zamanı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="406"/>
       <source>Time End</source>
-      <translation type="unfinished">Time End</translation>
+      <translation>Bitiş zamanı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="463"/>
       <source>3D Output, unchecked for 2D</source>
-      <translation type="unfinished">3D Output, unchecked for 2D</translation>
+      <translation>2B için işaretlenmemiş 3B Çıktı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="479"/>
       <source>Beam, shell element 3D output format </source>
-      <translation type="unfinished">Beam, shell element 3D output format </translation>
+      <translation>Kiriş, kabuk elemanı 3D çıktı biçimi </translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="491"/>
       <source>Thermo mechanical defaults</source>
-      <translation type="unfinished">Thermo mechanical defaults</translation>
+      <translation>Termo mekanik varsayılanlar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="499"/>
       <source>Maximum number of iterations</source>
-      <translation type="unfinished">Maximum number of iterations</translation>
+      <translation>En çok tekrarlama sayısı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="528"/>
       <source>Use steady state</source>
-      <translation type="unfinished">Use steady state</translation>
+      <translation>Sabit durum kullan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="544"/>
       <source>Analysis type (transient or steady state)</source>
-      <translation type="unfinished">Analysis type (transient or steady state)</translation>
+      <translation>Analiz tipi (geçici veya sabit durum)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="556"/>
       <source>Frequency defaults</source>
-      <translation type="unfinished">Frequency defaults</translation>
+      <translation>Frekans varsayılanları</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="580"/>
@@ -1654,48 +1667,48 @@
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="14"/>
       <source>Elmer</source>
-      <translation type="unfinished">Elmer</translation>
+      <translation>Elmer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="34"/>
       <source>Elmer binaries</source>
-      <translation type="unfinished">Elmer binaries</translation>
+      <translation>Elmer ikilileri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="75"/>
       <source>Leave blank to use default ElmerGrid binary file</source>
-      <translation type="unfinished">Leave blank to use default ElmerGrid binary file</translation>
+      <translation>Varsayılan ElmerGrid ikili dosyasını kullanmak için boş bırakın</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="97"/>
       <source>ElmerSolver binary path</source>
-      <translation type="unfinished">ElmerSolver binary path</translation>
+      <translation>ElmerSolver ikili dosya dizini</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="113"/>
       <source>ElmerGrid binary path</source>
-      <translation type="unfinished">ElmerGrid binary path</translation>
+      <translation>ElmerGrid ikili dosya yolu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="120"/>
       <source>ElmerGrid:</source>
-      <translation type="unfinished">ElmerGrid:</translation>
+      <translation>ElmerGrid:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="127"/>
       <location filename="../../DlgSettingsFemElmer.ui" line="150"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Bilinen ikili dizinlerde ara</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="143"/>
       <source>ElmerSolver:</source>
-      <translation type="unfinished">ElmerSolver:</translation>
+      <translation>ElmerSolver:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="193"/>
       <source>Leave blank to use default Elmer elmer binary file</source>
-      <translation type="unfinished">Leave blank to use default Elmer elmer binary file</translation>
+      <translation>Varsayılan Elmer elmer ikili dosyasını kullanmak için boş bırakın</translation>
     </message>
   </context>
   <context>
@@ -1703,7 +1716,7 @@
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="14"/>
       <source>INP</source>
-      <translation type="unfinished">INP</translation>
+      <translation>INP</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="33"/>
@@ -1716,15 +1729,13 @@
 Every constraint and, if there are different materials, material
 consists of two mesh groups, faces and nodes where the
 constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every constraint and, if there are different materials, material
-consists of two mesh groups, faces and nodes where the
-constraint or material is applied.</translation>
+      <translation>Metal örgü grupları da dışa aktarılır.
+Her kısıtlama ve farklı malzemeler varsa; malzeme, kısıtlamanın veya malzemenin uygulandığı iki metal örgü grubundan, geometrik yüzlerden ve düğüm noktalarından oluşur.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="63"/>
       <source>Export group data</source>
-      <translation type="unfinished">Export group data</translation>
+      <translation>Grup verisini dışa aktar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="70"/>
@@ -1735,18 +1746,16 @@ for means volumes for a volume mesh and faces for a shell mesh.
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
-      <translation type="unfinished">All: All elements will be exported.
+      <translation>Tümü: Tüm öğeler dışa aktarılacaktır.
 
-Highest: Only the highest elements will be exported. This means
-for means volumes for a volume mesh and faces for a shell mesh.
+En Yüksek: Yalnızca en yüksek öğeler dışa aktarılacaktır. Bu, hacimli metal örgü için hacimler ve bir kabuklu metal örgü için geometrik yüzler anlamına gelir.
 
-FEM: Only FEM elements will be exported. This means only edges
-not belonging to faces and faces not belonging to volumes.</translation>
+FEM: Yalnızca FEM öğeleri dışa aktarılacaktır. Bu, yalnızca geometrik yüzlere ait olmayan kenarlar ve hacimlere ait olmayan geometrik yüzler anlamına gelir.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="82"/>
       <source>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation type="unfinished">element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
+      <translation>eleman parametresi: Tümü: tüm öğeler, en yüksek: yalnızca FEM en yüksek öğeleri: yalnızca FEM öğeleri (yalnızca geometrik yüzlere ait olmayan kenarlar ve hacimlere ait olmayan geometrik yüzler)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="92"/>
@@ -1756,7 +1765,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="97"/>
       <source>Highest</source>
-      <translation type="unfinished">Highest</translation>
+      <translation>En Yüksek</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="102"/>
@@ -1766,7 +1775,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="110"/>
       <source>Which mesh elements to export</source>
-      <translation type="unfinished">Which mesh elements to export</translation>
+      <translation>Dışa aktarılacak metal örgü elemanları</translation>
     </message>
   </context>
   <context>
@@ -1779,42 +1788,42 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="34"/>
       <source>Working directory for solving analysis and gmsh meshing</source>
-      <translation type="unfinished">Working directory for solving analysis and gmsh meshing</translation>
+      <translation>Çözümleme ve gmsh metal örgü oluşturma için çalışma dizini</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="51"/>
       <source>sdfsdfsdfds</source>
-      <translation type="unfinished">sdfsdfsdfds</translation>
+      <translation>sdfsdfsdfds</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="54"/>
       <source>Temporary directories</source>
-      <translation type="unfinished">Temporary directories</translation>
+      <translation>Geçici dizinler</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="75"/>
       <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</translation>
+      <translation>Uygulamanın, tüm çözücüler için çalışma dizinlerini yönetmesine (oluştur, sil) izin ver. Geçici dizinleri kullan.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="101"/>
       <source>Beside .FCStd file</source>
-      <translation type="unfinished">Beside .FCStd file</translation>
+      <translation>.FCStd dosyası yanına</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="119"/>
       <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
+      <translation>Belgenin FCStd dosyasının konumlandırıldığı aynı klasörde bir dizin oluştur. Her bir çözücü için aynı alt klasörü kullan (örn. bir ./mydoc.FCStd dosyası ve Elmer002 etiketli bir çözücü için ./mydoc/Elmer002 alt dizinini kullan).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="145"/>
       <source>Use custom directory</source>
-      <translation type="unfinished">Use custom directory</translation>
+      <translation>Özel dizin kullan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="163"/>
       <source>Use directory set below. Create own subdirectory for every solver. Name directory after the solver label prefixed with the document name.</source>
-      <translation type="unfinished">Use directory set below. Create own subdirectory for every solver. Name directory after the solver label prefixed with the document name.</translation>
+      <translation>Aşağıdaki ayarlanmış dizini kullan. Her çözücü için kendi alt dizinlerini oluştur. Belge adıyla başlayan çözücü etiketinden sonra dizini adlandır.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="190"/>
@@ -1824,7 +1833,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="250"/>
       <source>Overwrite solver working directory with the directory chosen above</source>
-      <translation type="unfinished">Overwrite solver working directory with the directory chosen above</translation>
+      <translation>Çözücü çalışma dizinini aşağıdaki seçili dizin ile değiştir</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="271"/>
@@ -1834,7 +1843,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="282"/>
       <source>Create mesh groups for analysis reference shapes (highly experimental)</source>
-      <translation type="unfinished">Create mesh groups for analysis reference shapes (highly experimental)</translation>
+      <translation>Analiz referans şekilleri için metal örgü grupları oluşturun (son derece deneysel)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="303"/>
@@ -1844,17 +1853,17 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="314"/>
       <source>Keep results on calculation re-run</source>
-      <translation type="unfinished">Keep results on calculation re-run</translation>
+      <translation>Hesaplamadaki sonuçları yeniden çalıştırmada da koru</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="330"/>
       <source>Restore result dialog settings</source>
-      <translation type="unfinished">Restore result dialog settings</translation>
+      <translation>Sonuç ileti ekranı ayarlarını geri yükle</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="349"/>
       <source>Hide constraints when open result dialog</source>
-      <translation type="unfinished">Hide constraints when open result dialog</translation>
+      <translation>Sonuç ileti ekranı açıldığında kısıtlamaları gizle</translation>
     </message>
   </context>
   <context>
@@ -1867,12 +1876,12 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="31"/>
       <source>Gmsh binary</source>
-      <translation type="unfinished">Gmsh binary</translation>
+      <translation>Gmsh ikili dosyası</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="45"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Bilinen ikili dizinlerde ara</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="61"/>
@@ -1882,12 +1891,12 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="77"/>
       <source>gmsh binary path</source>
-      <translation type="unfinished">gmsh binary path</translation>
+      <translation>gmsh ikili dosya yolu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="111"/>
       <source>Leave blank to use default gmsh binary file</source>
-      <translation type="unfinished">Leave blank to use default gmsh binary file</translation>
+      <translation>Varsayılan gmsh ikili dosyasını kullanmak için boş bırakın</translation>
     </message>
   </context>
   <context>
@@ -1895,7 +1904,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="14"/>
       <source>VTK</source>
-      <translation type="unfinished">VTK</translation>
+      <translation>VTK</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="36"/>
@@ -1905,7 +1914,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="44"/>
       <source>Which object to import into</source>
-      <translation type="unfinished">Which object to import into</translation>
+      <translation>Hangi nesnenin içe aktarılacağı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="51"/>
@@ -1919,36 +1928,31 @@ FreeCAD result object: The imported data will be converted into a
 FreeCAD FEM Result object. Note: this setting needs the exact result
 component names and thus it only works properly with VTK files
 exported from FreeCAD.</source>
-      <translation type="unfinished">VTK result object: A FreeCAD FEM VTK result object will be imported
-(equals to the object which was exported).
+      <translation>VTK sonuç nesnesi: Bir FreeCAD FEM VTK sonuç nesnesi içe aktarılacaktır (dışa aktarılan nesneye eşittir).
 
-FEM mesh object: The results in the VTK file will be omitted, only the
-mesh data will be imported and a FreeCAD FEM mesh object will be created.
+FEM metal örgü nesnesi: VTK dosyasındaki sonuçlar atlanacak, yalnızca metal örgü verileri içe aktarılacak ve bir FreeCAD FEM metal örgü nesnesi oluşturulacak.
 
-FreeCAD result object: The imported data will be converted into a
-FreeCAD FEM Result object. Note: this setting needs the exact result
-component names and thus it only works properly with VTK files
-exported from FreeCAD.</translation>
+FreeCAD sonuç nesnesi: İçe aktarılan veriler bir FreeCAD FEM Sonuç nesnesine dönüştürülecektir. Not: Bu ayar tam sonuç bileşen adlarına ihtiyaç duyar ve bu nedenle yalnızca FreeCAD'den dışa aktarılan VTK dosyalarıyla düzgün çalışır.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="66"/>
       <source>Choose in which object to import into</source>
-      <translation type="unfinished">Choose in which object to import into</translation>
+      <translation>Hangi nesnenin içe aktarılacağını seçiniz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="79"/>
       <source>VTK result object</source>
-      <translation type="unfinished">VTK result object</translation>
+      <translation>VTK sonuç nesnesi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="84"/>
       <source>FEM mesh object</source>
-      <translation type="unfinished">FEM mesh object</translation>
+      <translation>FEM metal örgü nesnesi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="89"/>
       <source>FreeCAD result object</source>
-      <translation type="unfinished">FreeCAD result object</translation>
+      <translation>FreeCAD sonuç nesnesi</translation>
     </message>
   </context>
   <context>
@@ -1961,7 +1965,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="23"/>
       <source>Card resources</source>
-      <translation type="unfinished">Card resources</translation>
+      <translation>Kart kaynakları</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="31"/>
@@ -1971,7 +1975,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="47"/>
       <source>Use materials from Materials directory in users FreeCAD user pref directory.</source>
-      <translation type="unfinished">Use materials from Materials directory in users FreeCAD user pref directory.</translation>
+      <translation>Kullanıcılar FreeCAD kullanıcı tercihli dizinindeki Malzeme dizininden malzemeler kullan.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="63"/>
@@ -1986,17 +1990,17 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="132"/>
       <source>Card sorting and duplicates</source>
-      <translation type="unfinished">Card sorting and duplicates</translation>
+      <translation>Kart sıralaması ve yedekler</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="140"/>
       <source>Delete card duplicates</source>
-      <translation type="unfinished">Delete card duplicates</translation>
+      <translation>Yedek kartları sil</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="156"/>
       <source>Sort by resources (opposite would be sort by cards)</source>
-      <translation type="unfinished">Sort by resources (opposite would be sort by cards)</translation>
+      <translation>Kaynaklara göre sırala (karşıtı, kartlara göre sıralamak olacaktır)</translation>
     </message>
   </context>
   <context>
@@ -2005,37 +2009,37 @@ exported from FreeCAD.</translation>
       <location filename="../../DlgSettingsFemMystran.ui" line="14"/>
       <location filename="../../DlgSettingsFemMystran.ui" line="61"/>
       <source>Mystran</source>
-      <translation type="unfinished">Mystran</translation>
+      <translation>Mystran</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="31"/>
       <source>Mystran binary</source>
-      <translation type="unfinished">Mystran binary</translation>
+      <translation>Mystran ikili dosyası</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="45"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Bilinen ikili dizinlerde ara</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="77"/>
       <source>Mystran binary path</source>
-      <translation type="unfinished">Mystran binary path</translation>
+      <translation>Mystran ikili dosya yolu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="111"/>
       <source>Leave blank to use default Mystran binary file location</source>
-      <translation type="unfinished">Leave blank to use default Mystran binary file location</translation>
+      <translation>Varsayılan Mystran ikili dosya konumunu kullanmak için boş bırakın</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="124"/>
       <source>Comments</source>
-      <translation type="unfinished">Comments</translation>
+      <translation>Yorumlar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="131"/>
       <source>write comments to input file</source>
-      <translation type="unfinished">write comments to input file</translation>
+      <translation>girdi dosyasına yorum yazın</translation>
     </message>
   </context>
   <context>
@@ -2043,32 +2047,32 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="14"/>
       <source>Z88</source>
-      <translation type="unfinished">Z88</translation>
+      <translation>Z88</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="31"/>
       <source>Z88 binary</source>
-      <translation type="unfinished">Z88 binary</translation>
+      <translation>Z88 ikili dosyası</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="45"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Bilinen ikili dizinlerde ara</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="61"/>
       <source>z88r</source>
-      <translation type="unfinished">z88r</translation>
+      <translation>z88r</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="77"/>
       <source>z88r binary path</source>
-      <translation type="unfinished">z88r binary path</translation>
+      <translation>z88r ikili dosya yolu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
       <source>Leave blank to use default Z88 z88r binary file</source>
-      <translation type="unfinished">Leave blank to use default Z88 z88r binary file</translation>
+      <translation>Varsayılan Z88 z88r ikili dosyasını kullanmak için boş bırakın</translation>
     </message>
   </context>
   <context>
@@ -2329,13 +2333,13 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="110"/>
       <source>Only one face in object! - moved to master face</source>
-      <translation type="unfinished">Only one face in object! - moved to master face</translation>
+      <translation>Nesnede yalnızca bir tane geometrik yüz! - asıl geometrik yüze taşındı</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="153"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="260"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
-      <translation type="unfinished">Only one master face and one slave face for a contact constraint!</translation>
+      <translation>Bir iletişim kısıtlaması için yalnızca bir asıl geometrik yüz ve bir bağımlı geometrik yüz!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="158"/>
@@ -2349,7 +2353,7 @@ exported from FreeCAD.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="162"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="179"/>
       <source>Only one slave face for a contact constraint!</source>
-      <translation type="unfinished">Only one slave face for a contact constraint!</translation>
+      <translation>Bir iletişim kısıtlaması için yalnızca bir bağımlı geometrik yüz!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="172"/>
@@ -2368,12 +2372,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="269"/>
       <source>Only one master for a contact constraint!</source>
-      <translation type="unfinished">Only one master for a contact constraint!</translation>
+      <translation>Bir iletişim kısıtlaması için yalnızca bir asıl yönetici!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="285"/>
       <source>Only one master face for a contact constraint!</source>
-      <translation type="unfinished">Only one master face for a contact constraint!</translation>
+      <translation>Bir iletişim kısıtlaması için yalnızca bir asıl geometrik yüz!</translation>
     </message>
   </context>
   <context>
@@ -2402,7 +2406,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="450"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Kısıtlama başına tek bir seçim türüne (köşe, yüz veya kenar) izin verilmektedir!</translation>
     </message>
   </context>
   <context>
@@ -2431,7 +2435,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="157"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Kısıtlama başına tek bir seçim türüne (köşe, yüz veya kenar) izin verilmektedir!</translation>
     </message>
   </context>
   <context>
@@ -2439,68 +2443,68 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="284"/>
       <source>Basic</source>
-      <translation type="unfinished">Basic</translation>
+      <translation>Temel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="285"/>
       <source>Turbulence</source>
-      <translation type="unfinished">Turbulence</translation>
+      <translation>Türbülans</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="286"/>
       <source>Thermal</source>
-      <translation type="unfinished">Thermal</translation>
+      <translation>Isıl</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="288"/>
       <source>select boundary type, faces and set value</source>
-      <translation type="unfinished">select boundary type, faces and set value</translation>
+      <translation>sınır türünü, yüzeyleri seçin ve değeri ayarlayın</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="453"/>
       <source>Intensity [0~1]</source>
-      <translation type="unfinished">Intensity [0~1]</translation>
+      <translation>Yoğunluk [0~1]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="455"/>
       <source>Dissipation Rate [m2/s3]</source>
-      <translation type="unfinished">Dissipation Rate [m2/s3]</translation>
+      <translation>Yitim Oranı [m2/s3]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="458"/>
       <source>Length Scale[m]</source>
-      <translation type="unfinished">Length Scale[m]</translation>
+      <translation>Uzunluk Ölçeği[m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="461"/>
       <source>Viscosity Ratio [1]</source>
-      <translation type="unfinished">Viscosity Ratio [1]</translation>
+      <translation>Viskozite Oranı [1]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="464"/>
       <source>Hydraulic Diameter [m]</source>
-      <translation type="unfinished">Hydraulic Diameter [m]</translation>
+      <translation>Hidrolik Çap [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="490"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="495"/>
       <source>Gradient [K/m]</source>
-      <translation type="unfinished">Gradient [K/m]</translation>
+      <translation>Gradyan [K/m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="499"/>
       <source>Flux [W/m2]</source>
-      <translation type="unfinished">Flux [W/m2]</translation>
+      <translation>Akı [W/m2]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="563"/>
       <source>Empty selection</source>
-      <translation type="unfinished">Empty selection</translation>
+      <translation>Seçimi boşalt</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="563"/>
       <source>Select an edge or a face, please.</source>
-      <translation type="unfinished">Select an edge or a face, please.</translation>
+      <translation>Bir kenar veya bir yüz seçin, lütfen.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="573"/>
@@ -2514,27 +2518,27 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="573"/>
       <source>Selected object is not a part object!</source>
-      <translation type="unfinished">Selected object is not a part object!</translation>
+      <translation>Seçilen nesne bir parça nesnesi değil!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="580"/>
       <source>Only one planar face or edge can be selected!</source>
-      <translation type="unfinished">Only one planar face or edge can be selected!</translation>
+      <translation>Tek bir düzlemsel yüz veya kenar seçilebilir!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="594"/>
       <source>Only planar faces can be picked for 3D</source>
-      <translation type="unfinished">Only planar faces can be picked for 3D</translation>
+      <translation>3B için yalnızca düzlemsel geometrik yüzler seçilebilir</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="600"/>
       <source>Only planar edges can be picked for 2D</source>
-      <translation type="unfinished">Only planar edges can be picked for 2D</translation>
+      <translation>2B için yalnızca düzlemsel kenarlar seçilebilir</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="605"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
-      <translation type="unfinished">Only faces for 3D part or edges for 2D can be picked</translation>
+      <translation>3B parça için yalnızca geometrik yüzler veya 2B parça için yalnızca kenarlar seçilebilir</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="738"/>
@@ -2560,7 +2564,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="773"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Kısıtlama başına tek bir seçim türüne (köşe, yüz veya kenar) izin verilmektedir!</translation>
     </message>
   </context>
   <context>
@@ -2589,7 +2593,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <translation>Kısıtlama başına tek bir seçim türüne (köşe, yüz veya kenar) izin verilmektedir!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
@@ -2600,7 +2604,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="320"/>
       <source>Select an edge or a face, please.</source>
-      <translation type="unfinished">Select an edge or a face, please.</translation>
+      <translation>Bir kenar veya bir yüz seçin, lütfen.</translation>
     </message>
   </context>
   <context>
@@ -2656,7 +2660,7 @@ exported from FreeCAD.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="232"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="286"/>
       <source>Selection must only consist of faces!</source>
-      <translation type="unfinished">Selection must only consist of faces!</translation>
+      <translation>Seçim sadece yüzlerden oluşmalıdır!</translation>
     </message>
   </context>
   <context>
@@ -2677,7 +2681,7 @@ exported from FreeCAD.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="133"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="186"/>
       <source>Only one face can be selected for a plane rotation constraint!</source>
-      <translation type="unfinished">Only one face can be selected for a plane rotation constraint!</translation>
+      <translation>Düzlem dönüş kısıtlaması için tek bir yüz seçilebilir!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="140"/>
@@ -2801,12 +2805,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
       <source>Constraint update error</source>
-      <translation type="unfinished">Constraint update error</translation>
+      <translation>Kısıtlama güncelleme hatası</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
       <source>The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!</source>
-      <translation type="unfinished">The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!</translation>
+      <translation>Dönüştürülebilir yüzler değiştirilmiş. Lütfen sadece dönüştürülebilir yüzleri ekleyin ve dönüştürülemez yüzleri kaldırın!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="247"/>
@@ -2832,7 +2836,7 @@ exported from FreeCAD.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="252"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="258"/>
       <source>Only one face for rectangular transform constraint!</source>
-      <translation type="unfinished">Only one face for rectangular transform constraint!</translation>
+      <translation>Dikdörtgensel dönüşüm kısıtlaması için tek bir yüz gereklidir!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="271"/>
@@ -2843,7 +2847,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="277"/>
       <source>Only one face for transform constraint!</source>
-      <translation type="unfinished">Only one face for transform constraint!</translation>
+      <translation>Dönüşüm kısıtlaması için tek bir yüz gereklidir!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="284"/>
@@ -2858,7 +2862,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="319"/>
       <source>Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</source>
-      <translation type="unfinished">Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</translation>
+      <translation>Sadece dönüştürülebilir yüzler seçilebilir! Öncelikle yer değiştirme kısıtlamasını yüzeye uygulayın, sonra kısıtlamayı yüzeye uygulayın</translation>
     </message>
   </context>
   <context>
@@ -2874,7 +2878,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="427"/>
       <source>Clip region, choose implicit function</source>
-      <translation type="unfinished">Clip region, choose implicit function</translation>
+      <translation>Bölgeyi alıntılayın, örtülü işlevi seçin</translation>
     </message>
   </context>
   <context>
@@ -2882,7 +2886,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1179"/>
       <source>Function cut, choose implicit function</source>
-      <translation type="unfinished">Function cut, choose implicit function</translation>
+      <translation>Kesilecek, örtük fonksiyonu seçiniz</translation>
     </message>
   </context>
   <context>
@@ -2890,7 +2894,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="549"/>
       <source>Data along a line options</source>
-      <translation type="unfinished">Data along a line options</translation>
+      <translation>Çizgisel veri seçenekleri</translation>
     </message>
   </context>
   <context>
@@ -2898,7 +2902,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="766"/>
       <source>Data at point options</source>
-      <translation type="unfinished">Data at point options</translation>
+      <translation>Noktasal veri seçenekleri</translation>
     </message>
   </context>
   <context>
@@ -2906,7 +2910,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="347"/>
       <source>Result display options</source>
-      <translation type="unfinished">Result display options</translation>
+      <translation>Sonuç ekranı seçenekleri</translation>
     </message>
   </context>
   <context>
@@ -2914,7 +2918,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="404"/>
       <source>Implicit function</source>
-      <translation type="unfinished">Implicit function</translation>
+      <translation>Örtülü işlev</translation>
     </message>
   </context>
   <context>
@@ -2922,7 +2926,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="930"/>
       <source>Scalar clip options</source>
-      <translation type="unfinished">Scalar clip options</translation>
+      <translation>Skaler kırpma seçenekleri</translation>
     </message>
   </context>
   <context>
@@ -2930,7 +2934,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1038"/>
       <source>Warp options</source>
-      <translation type="unfinished">Warp options</translation>
+      <translation>Saptırma seçenekleri</translation>
     </message>
   </context>
   <context>
@@ -2968,7 +2972,7 @@ exported from FreeCAD.</translation>
       <location filename="../ui/Material.ui" line="14"/>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <source>FEM material</source>
-      <translation type="unfinished">FEM material</translation>
+      <translation>FEM malzemesi</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="26"/>
@@ -2990,12 +2994,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="57"/>
       <source>Material card</source>
-      <translation type="unfinished">Material card</translation>
+      <translation>Malzeme kartı</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="64"/>
       <source>Material name</source>
-      <translation type="unfinished">Material name</translation>
+      <translation>Malzeme adı</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="71"/>
@@ -3012,37 +3016,37 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="99"/>
       <source>Editing material</source>
-      <translation type="unfinished">Editing material</translation>
+      <translation>Malzeme düzenleniyor</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
       <source>use FreeCAD material editor</source>
-      <translation type="unfinished">use FreeCAD material editor</translation>
+      <translation>FreeCAD malzeme düzenleyiciyi kullan</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
       <source>use this task panel</source>
-      <translation type="unfinished">use this task panel</translation>
+      <translation>bu görev panosunu kullanın</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
       <source>Basic Properties</source>
-      <translation type="unfinished">Basic Properties</translation>
+      <translation>Temel Özellikler</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="155"/>
       <source>Density                     </source>
-      <translation type="unfinished">Density                     </translation>
+      <translation>Yoğunluk                     </translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="174"/>
       <source>8000 kg/m^3</source>
-      <translation type="unfinished">8000 kg/m^3</translation>
+      <translation>8000 kg/m^3</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="210"/>
       <source>Mechanical Properties</source>
-      <translation type="unfinished">Mechanical Properties</translation>
+      <translation>Mekanik Özellikler</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="221"/>
@@ -3052,7 +3056,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="240"/>
       <source>200 GPa</source>
-      <translation type="unfinished">200 GPa</translation>
+      <translation>200 GPa</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="265"/>
@@ -3062,73 +3066,73 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/Material.ui" line="314"/>
       <source>Fluidic Properties</source>
-      <translation type="unfinished">Fluidic Properties</translation>
+      <translation>Akışkansal Özellikler</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="325"/>
       <source>Kinematic viscosity:</source>
-      <translation type="unfinished">Kinematic viscosity:</translation>
+      <translation>Kinematik viskozite:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="344"/>
       <source>0.000001 m^2/s</source>
-      <translation type="unfinished">0.000001 m^2/s</translation>
+      <translation>0.000001 m^2/s</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="380"/>
       <source>Thermal  Properties</source>
-      <translation type="unfinished">Thermal  Properties</translation>
+      <translation>Isıl Özellikler</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="391"/>
       <source>Thermal Conductivity:</source>
-      <translation type="unfinished">Thermal Conductivity:</translation>
+      <translation>Isıl İletim:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="410"/>
       <source>50 W/m/K</source>
-      <translation type="unfinished">50 W/m/K</translation>
+      <translation>50 W/m/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="435"/>
       <source>Expansion Coefficient:</source>
-      <translation type="unfinished">Expansion Coefficient:</translation>
+      <translation>Genişleme Katsayısı:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="454"/>
       <source>12 um/m/K</source>
-      <translation type="unfinished">12 um/m/K</translation>
+      <translation>12 um/m/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="479"/>
       <source>Specific Heat:</source>
-      <translation type="unfinished">Specific Heat:</translation>
+      <translation>Özgül Sıcaklık:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="498"/>
       <source>500 J/kg/K</source>
-      <translation type="unfinished">500 J/kg/K</translation>
+      <translation>500 J/kg/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="523"/>
       <source>Vol Expansion Coeff</source>
-      <translation type="unfinished">Vol Expansion Coeff</translation>
+      <translation>Hacm. Genişleme Kats.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="542"/>
       <source>0.001 m/m/K</source>
-      <translation type="unfinished">0.001 m/m/K</translation>
+      <translation>0.001 m/m/K</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
       <source>Matrix Material</source>
-      <translation type="unfinished">Matrix Material</translation>
+      <translation>Matris Malzemesi</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="38"/>
       <location filename="../ui/MaterialReinforcement.ui" line="111"/>
       <source>Choose</source>
-      <translation type="unfinished">Choose</translation>
+      <translation>Seçin</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="53"/>
@@ -3157,7 +3161,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="102"/>
       <source>Reinforcement Material</source>
-      <translation type="unfinished">Reinforcement Material</translation>
+      <translation>Takviye Malzemesi</translation>
     </message>
   </context>
   <context>
@@ -3170,17 +3174,17 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="26"/>
       <source>Fluid Section Parameter</source>
-      <translation type="unfinished">Fluid Section Parameter</translation>
+      <translation>Akışkan Kesiti Değişkeni</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="45"/>
       <source>Liquid Section Parameter</source>
-      <translation type="unfinished">Liquid Section Parameter</translation>
+      <translation>Sıvı Bölüm Parametresi</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <source>Pipe Area </source>
-      <translation type="unfinished">Pipe Area </translation>
+      <translation>Boru Alanı </translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="71"/>
@@ -3196,46 +3200,46 @@ exported from FreeCAD.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="568"/>
       <location filename="../ui/ElementFluid1D.ui" line="724"/>
       <source>0 mm^2</source>
-      <translation type="unfinished">0 mm^2</translation>
+      <translation>0 mm^2</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="85"/>
       <location filename="../ui/ElementFluid1D.ui" line="738"/>
       <source>Hydraulic Radius</source>
-      <translation type="unfinished">Hydraulic Radius</translation>
+      <translation>Hidrolik Yarıçap</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
       <source>0 mm</source>
-      <translation type="unfinished">0 mm</translation>
+      <translation>0 mm</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="106"/>
       <source>Manning Coefficient</source>
-      <translation type="unfinished">Manning Coefficient</translation>
+      <translation>Manning Katsayısı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
       <location filename="../ui/ElementFluid1D.ui" line="180"/>
       <source>Initial Area</source>
-      <translation type="unfinished">Initial Area</translation>
+      <translation>Başlangıç Alanı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="155"/>
       <source>Enlarged Area</source>
-      <translation type="unfinished">Enlarged Area</translation>
+      <translation>Genişletilmiş Alan</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted Area</source>
-      <translation type="unfinished">Contracted Area</translation>
+      <translation>Daraltılmış Alan</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
       <source>Inlet Pressure</source>
-      <translation type="unfinished">Inlet Pressure</translation>
+      <translation>Giriş Basıncı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
@@ -3246,29 +3250,29 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="260"/>
       <source>Inlet Mass Flow Rate</source>
-      <translation type="unfinished">Inlet Mass Flow Rate</translation>
+      <translation>Giriş Kütle Akış Oranı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="271"/>
       <location filename="../ui/ElementFluid1D.ui" line="341"/>
       <source>Mass flow rate</source>
-      <translation type="unfinished">Mass flow rate</translation>
+      <translation>Kütle akış oranı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="278"/>
       <location filename="../ui/ElementFluid1D.ui" line="348"/>
       <source>1 kg/s</source>
-      <translation type="unfinished">1 kg/s</translation>
+      <translation>1 kg/s</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="297"/>
       <source>Outlet Pressure</source>
-      <translation type="unfinished">Outlet Pressure</translation>
+      <translation>Çıkış Basıncı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="330"/>
       <source>Outlet Mass Flow Rate</source>
-      <translation type="unfinished">Outlet Mass Flow Rate</translation>
+      <translation>Çıkış Kütle Akış Oranı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="369"/>
@@ -3277,102 +3281,102 @@ exported from FreeCAD.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="561"/>
       <location filename="../ui/ElementFluid1D.ui" line="717"/>
       <source>Pipe Area</source>
-      <translation type="unfinished">Pipe Area</translation>
+      <translation>Boru Alanı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="390"/>
       <source>Entrance Area</source>
-      <translation type="unfinished">Entrance Area</translation>
+      <translation>Giriş bölgesi</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="436"/>
       <source>Diaphragm Area</source>
-      <translation type="unfinished">Diaphragm Area</translation>
+      <translation>Diyafram Alanı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend Radius/Pipe Diameter</source>
-      <translation type="unfinished">Bend Radius/Pipe Diameter</translation>
+      <translation>Büküm Yarıçapı/Boru Çapı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
       <source>Bend Angle</source>
-      <translation type="unfinished">Bend Angle</translation>
+      <translation>Büküm Açısı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
       <source>Head loss coefficient</source>
-      <translation type="unfinished">Head loss coefficient</translation>
+      <translation>Yük kaybı katsayısı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="582"/>
       <source>Gate valve closing coefficient</source>
-      <translation type="unfinished">Gate valve closing coefficient</translation>
+      <translation>Sürgülü vana kapatma katsayısı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
       <source>Pump Characteristic</source>
-      <translation type="unfinished">Pump Characteristic</translation>
+      <translation>Pompa Karakteristiği</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="621"/>
       <source>1</source>
-      <translation type="unfinished">1</translation>
+      <translation>1</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="626"/>
       <source>2</source>
-      <translation type="unfinished">2</translation>
+      <translation>2</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="631"/>
       <source>3</source>
-      <translation type="unfinished">3</translation>
+      <translation>3</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="636"/>
       <source>4</source>
-      <translation type="unfinished">4</translation>
+      <translation>4</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="641"/>
       <source>5</source>
-      <translation type="unfinished">5</translation>
+      <translation>5</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
-      <translation type="unfinished">Flow rate [mm^3/s]</translation>
+      <translation>Akış oranı [mm^3/s]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
       <source>Head Loss[mm]</source>
-      <translation type="unfinished">Head Loss[mm]</translation>
+      <translation>Yük Kaybı[mm]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
       <source>Grain diameter</source>
-      <translation type="unfinished">Grain diameter</translation>
+      <translation>Tane çapı</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="780"/>
       <source>Cross section form factor</source>
-      <translation type="unfinished">Cross section form factor</translation>
+      <translation>Enine kesit biçim etkeni</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
       <source>Gas Section Parameter</source>
-      <translation type="unfinished">Gas Section Parameter</translation>
+      <translation>Gaz Kesiti Değişkeni</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="843"/>
       <source>Open Channel Section Parameter</source>
-      <translation type="unfinished">Open Channel Section Parameter</translation>
+      <translation>Açık Kanal Kesit Değişkeni</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
       <source>Centrif parameter</source>
-      <translation type="unfinished">Centrif parameter</translation>
+      <translation>Merkezkaç değişkeni</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
@@ -3386,12 +3390,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="43"/>
       <source>Rotation frequency f&lt;sub&gt;rot&lt;/sub&gt; [rps]</source>
-      <translation type="unfinished">Rotation frequency f&lt;sub&gt;rot&lt;/sub&gt; [rps]</translation>
+      <translation>Dönme frekansı f&lt;sub&gt;rot&lt;/sub&gt; [rps]</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="74"/>
       <source>revolutions per second</source>
-      <translation type="unfinished">revolutions per second</translation>
+      <translation>saniye başına dönüş</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="80"/>
@@ -3405,49 +3409,49 @@ exported from FreeCAD.</translation>
       <location filename="../ui/ElementRotation1D.ui" line="52"/>
       <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0.0</source>
-      <translation type="unfinished">0.0</translation>
+      <translation>0.0</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="92"/>
       <source>1/s</source>
-      <translation type="unfinished">1/s</translation>
+      <translation>1/s</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
       <source>SectionPrint parameter</source>
-      <translation type="unfinished">SectionPrint parameter</translation>
+      <translation>Bölüm baskısı parametresi</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="14"/>
       <source>Tie parameter</source>
-      <translation type="unfinished">Tie parameter</translation>
+      <translation>Bağlantı Parametresi</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="77"/>
       <source>Tolerance:     </source>
-      <translation type="unfinished">Tolerance:     </translation>
+      <translation>Hata Payı:     </translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <source>Constraint Properties</source>
-      <translation type="unfinished">Constraint Properties</translation>
+      <translation>Kısıtlama Özellikleri</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="23"/>
       <source>Potential:</source>
-      <translation type="unfinished">Potential:</translation>
+      <translation>Potansiyel:</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="30"/>
       <source>Potential Constant</source>
-      <translation type="unfinished">Potential Constant</translation>
+      <translation>Potansiyel Sabiti</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="40"/>
       <source>Farfield / Electric infinity</source>
-      <translation type="unfinished">Farfield / Electric infinity</translation>
+      <translation>Uzak alan / Elektrik sonsuz</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="49"/>
@@ -3459,7 +3463,7 @@ exported from FreeCAD.</translation>
       <location filename="../ui/InitialFlowVelocity.ui" line="79"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="113"/>
       <source>unspecified</source>
-      <translation type="unfinished">unspecified</translation>
+      <translation>belirtilmemiş</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="97"/>
@@ -3470,39 +3474,39 @@ exported from FreeCAD.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="116"/>
       <source>Capacity Body: </source>
       <extracomment>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</extracomment>
-      <translation type="unfinished">Capacity Body: </translation>
+      <translation>Kapasite Gövdesi: </translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
       <source>Calculate Electric Force</source>
-      <translation type="unfinished">Calculate Electric Force</translation>
+      <translation>Elektrik Gücünü Hesapla</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
       <source>Beam section parameter</source>
-      <translation type="unfinished">Beam section parameter</translation>
+      <translation>Işın kesiti değişkeni</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <source>Cross section parameter</source>
-      <translation type="unfinished">Cross section parameter</translation>
+      <translation>Kesit değişkeni</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="53"/>
       <source>Width:   </source>
-      <translation type="unfinished">Width:   </translation>
+      <translation>Genişlik:   </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="97"/>
       <source>Height:     </source>
-      <translation type="unfinished">Height:     </translation>
+      <translation>Yükseklik:     </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="198"/>
       <location filename="../ui/ElementGeometry1D.ui" line="216"/>
       <source>Diameter:   </source>
-      <translation type="unfinished">Diameter:   </translation>
+      <translation>Çap:   </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="260"/>
@@ -3512,40 +3516,40 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell thickness parameter</source>
-      <translation type="unfinished">Shell thickness parameter</translation>
+      <translation>Et kalınlığı değişkeni</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="77"/>
       <source>Thickness:     </source>
-      <translation type="unfinished">Thickness:     </translation>
+      <translation>Kalınlık:     </translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
       <source>Beam section rotation</source>
-      <translation type="unfinished">Beam section rotation</translation>
+      <translation>Işın kesiti dönüşü</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="80"/>
       <source>Rotation:     </source>
-      <translation type="unfinished">Rotation:     </translation>
+      <translation>Dönüş:     </translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="20"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="23"/>
       <source>Velocity x:</source>
-      <translation type="unfinished">Velocity x:</translation>
+      <translation>Hız x:</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="27"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="57"/>
       <source>Velocity y:</source>
-      <translation type="unfinished">Velocity y:</translation>
+      <translation>Hız y:</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="34"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="91"/>
       <source>Velocity z:</source>
-      <translation type="unfinished">Velocity z:</translation>
+      <translation>Hız z:</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="49"/>
@@ -3555,47 +3559,47 @@ exported from FreeCAD.</translation>
       <location filename="../ui/InitialFlowVelocity.ui" line="72"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="106"/>
       <source>m/s</source>
-      <translation type="unfinished">m/s</translation>
+      <translation>m/s</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="122"/>
       <source>normal to boundary</source>
-      <translation type="unfinished">normal to boundary</translation>
+      <translation>sınıra dik</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
       <source>Mesh boundary layer settings</source>
-      <translation type="unfinished">Mesh boundary layer settings</translation>
+      <translation>Metal örgü sınır katmanı ayarları</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="37"/>
       <source>Max Layers</source>
-      <translation type="unfinished">Max Layers</translation>
+      <translation>Maks. Katman</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <source>1.0</source>
-      <translation type="unfinished">1.0</translation>
+      <translation>1.0</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="88"/>
       <source>Min/1st thickness</source>
-      <translation type="unfinished">Min/1st thickness</translation>
+      <translation>Min/1. kalınlık</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="95"/>
       <source>Growth ratio</source>
-      <translation type="unfinished">Growth ratio</translation>
+      <translation>Büyüme hızı</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
       <source>Mesh group</source>
-      <translation type="unfinished">Mesh group</translation>
+      <translation>Metal örgü grubu</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="26"/>
       <source>Identifier used for mesh export</source>
-      <translation type="unfinished">Identifier used for mesh export</translation>
+      <translation>Metal örgüyü dışa aktarma için kullanılan tanımlayıcı</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
@@ -3610,12 +3614,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
       <source>Mesh region</source>
-      <translation type="unfinished">Mesh region</translation>
+      <translation>Metal örgü bölgesi</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
       <source>Max element size:</source>
-      <translation type="unfinished">Max element size:</translation>
+      <translation>Maks. eleman boyutu:</translation>
     </message>
   </context>
   <context>
@@ -3623,17 +3627,17 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="14"/>
       <source>FEM Mesh by Gmsh</source>
-      <translation type="unfinished">FEM Mesh by Gmsh</translation>
+      <translation>Gmsh tarafından FEM Metal Örgüsü</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
       <source>FEM Mesh Parameter</source>
-      <translation type="unfinished">FEM Mesh Parameter</translation>
+      <translation>FEM Metal Örgü Parametresi</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
       <source>Element dimension:</source>
-      <translation type="unfinished">Element dimension:</translation>
+      <translation>Eleman boyutu:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
@@ -3644,7 +3648,7 @@ exported from FreeCAD.</translation>
       <location filename="../ui/MeshGmsh.ui" line="66"/>
       <location filename="../ui/MeshGmsh.ui" line="110"/>
       <source>0.0</source>
-      <translation type="unfinished">0.0</translation>
+      <translation>0.0</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="91"/>
@@ -3654,7 +3658,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="138"/>
       <source>Element order:</source>
-      <translation type="unfinished">Element order:</translation>
+      <translation>Eleman sırası:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="156"/>
@@ -3669,7 +3673,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="207"/>
       <source>Gmsh version</source>
-      <translation type="unfinished">Gmsh version</translation>
+      <translation>Gmsh sürümü</translation>
     </message>
   </context>
   <context>
@@ -3771,12 +3775,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="106"/>
       <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6, Groups: %7]</source>
-      <translation type="unfinished">[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6, Groups: %7]</translation>
+      <translation>[Düğüm Noktaları %1, Kenarlar: %2, Yüzler: %3, Çokgenler: %4, Hacimler: %5, Çokyüzlüler: %6, Gruplar: %7]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="418"/>
       <source>Constraint Contact</source>
-      <translation type="unfinished">Constraint Contact</translation>
+      <translation>Teması Kısıtla</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="585"/>
@@ -3791,12 +3795,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="886"/>
       <source>Constraint fluid boundary</source>
-      <translation type="unfinished">Constraint fluid boundary</translation>
+      <translation>Akışkan sınırını kısıtla</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="397"/>
       <source>Constraint heat flux</source>
-      <translation type="unfinished">Constraint heat flux</translation>
+      <translation>Isı akısını kısıtla</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="119"/>
@@ -3806,7 +3810,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="287"/>
       <source>Constraint planerotation</source>
-      <translation type="unfinished">Constraint planerotation</translation>
+      <translation>Düzlem dönüşünü kısıtla</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="283"/>
@@ -3816,7 +3820,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="196"/>
       <source>Constraint pulley</source>
-      <translation type="unfinished">Constraint pulley</translation>
+      <translation>Kasnağı kısıtla</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="283"/>
@@ -3826,17 +3830,17 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>
       <source>Constraint temperature</source>
-      <translation type="unfinished">Constraint temperature</translation>
+      <translation>Sıcaklığı kısıtla</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="500"/>
       <source>Constraint transform</source>
-      <translation type="unfinished">Constraint transform</translation>
+      <translation>Dönüşümü kısıtla</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="260"/>
       <source>Edit post processing object</source>
-      <translation type="unfinished">Edit post processing object</translation>
+      <translation>İşleme sonrası nesneyi düzenle</translation>
     </message>
   </context>
   <context>
@@ -3854,7 +3858,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="30"/>
       <source>Displacement Magnitude</source>
-      <translation type="unfinished">Displacement Magnitude</translation>
+      <translation>Yer Değiştirme Miktarı</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="37"/>
@@ -3864,57 +3868,57 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="47"/>
       <source>Displacement Y</source>
-      <translation type="unfinished">Displacement Y</translation>
+      <translation>Yer Değiştirme Y</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="54"/>
       <source>Displacement X</source>
-      <translation type="unfinished">Displacement X</translation>
+      <translation>Yer Değiştirme X</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="61"/>
       <source>Peeq</source>
-      <translation type="unfinished">Peeq</translation>
+      <translation>Peeq</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="68"/>
       <source>Displacement Z</source>
-      <translation type="unfinished">Displacement Z</translation>
+      <translation>Yer Değiştirme Z</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="75"/>
       <source>Temperature</source>
-      <translation type="unfinished">Temperature</translation>
+      <translation>Sıcaklık</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="82"/>
       <source>von Mises Stress</source>
-      <translation type="unfinished">von Mises Stress</translation>
+      <translation>von Mises Gerilmesi</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="89"/>
       <source>Max Principal Stress</source>
-      <translation type="unfinished">Max Principal Stress</translation>
+      <translation>Maks. Asıl Gerilme</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="96"/>
       <source>Min Principal Stress</source>
-      <translation type="unfinished">Min Principal Stress</translation>
+      <translation>Min. Asıl Gerilme</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="103"/>
       <source>Max Shear Stress (Tresca)</source>
-      <translation type="unfinished">Max Shear Stress (Tresca)</translation>
+      <translation>Maks. Kayma Gerilmesi (Tresca)</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="110"/>
       <source>Mass Flow Rate</source>
-      <translation type="unfinished">Mass Flow Rate</translation>
+      <translation>Kütle Akış Oranı</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="117"/>
       <source>Network Pressure</source>
-      <translation type="unfinished">Network Pressure</translation>
+      <translation>Şebeke Basıncı</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="128"/>
@@ -3929,7 +3933,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="162"/>
       <source>Histogram</source>
-      <translation type="unfinished">Histogram</translation>
+      <translation>Histogram</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="174"/>
@@ -3954,12 +3958,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="282"/>
       <source>User defined equation</source>
-      <translation type="unfinished">User defined equation</translation>
+      <translation>Kullanıcı tanımlı denklem</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="290"/>
       <source>Calculate and plot</source>
-      <translation type="unfinished">Calculate and plot</translation>
+      <translation>Hesapla ve grafik çizdir</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="297"/>
@@ -3968,91 +3972,91 @@ exported from FreeCAD.</translation>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;"&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Gerilme yoğunluğu stres denklemi. Kullanılabilir değerler numpy dizi biçimidir. Hesaplama np.function mevcut değerler üzerinde kullanılabilir. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
       <source>Hints user defined equations</source>
-      <translation type="unfinished">Hints user defined equations</translation>
+      <translation>Kullanıcı tanımlı denklemler ipuçları</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="22"/>
       <source>Available result types:</source>
-      <translation type="unfinished">Available result types:</translation>
+      <translation>Uygun sonuç türleri:</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="45"/>
       <source>displacement: x, y, z</source>
-      <translation type="unfinished">displacement: x, y, z</translation>
+      <translation>yer değiştirme: x, y, z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="67"/>
       <source>mass flow rate: MF</source>
-      <translation type="unfinished">mass flow rate: MF</translation>
+      <translation>kütle akış oranı: MF</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="83"/>
       <source>network pressure: NP</source>
-      <translation type="unfinished">network pressure: NP</translation>
+      <translation>şebeke basıncı: NP</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="93"/>
       <source>von Mises stress: vM</source>
-      <translation type="unfinished">von Mises stress: vM</translation>
+      <translation>von Mises gerilmesi: vM</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="103"/>
       <source>temperature: T</source>
-      <translation type="unfinished">temperature: T</translation>
+      <translation>sıcaklık: T</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="113"/>
       <source>min. principal stress vector: s1x, s1y, s1z</source>
-      <translation type="unfinished">min. principal stress vector: s1x, s1y, s1z</translation>
+      <translation>min. asıl gerilme vektörü: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="123"/>
       <source>principal stresses: P1, P2, P3</source>
-      <translation type="unfinished">principal stresses: P1, P2, P3</translation>
+      <translation>asıl gerilimler: P1, P2, P3</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="133"/>
       <source>reinforcement ratio: rx, ry, rz</source>
-      <translation type="unfinished">reinforcement ratio: rx, ry, rz</translation>
+      <translation>takviye oranı: rx, ry, rz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="143"/>
       <source>equivalent plastic strain: Peeq</source>
-      <translation type="unfinished">equivalent plastic strain: Peeq</translation>
+      <translation>eşdeğer kalıcı şekil değiştirme: Peeq</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="153"/>
       <source>med. principal stress vector: s2x, s2y, s2z</source>
-      <translation type="unfinished">med. principal stress vector: s2x, s2y, s2z</translation>
+      <translation>orta asıl gerilme vektörü: s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>stress: sxx, syy, szz, sxy, sxz, syz</source>
-      <translation type="unfinished">stress: sxx, syy, szz, sxy, sxz, syz</translation>
+      <translation>gerilme: sxx, syy, szz, sxy, sxz, syz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="200"/>
       <source>strain: exx, eyy, ezz, exy, exz, eyz</source>
-      <translation type="unfinished">strain: exx, eyy, ezz, exy, exz, eyz</translation>
+      <translation>gerinme: exx, eyy, ezz, exy, exz, eyz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="210"/>
       <source>Mohr Coulomb: mc</source>
-      <translation type="unfinished">Mohr Coulomb: mc</translation>
+      <translation>Mohr Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="220"/>
       <source>max. principal stress vector: s3x, s3y, s3z</source>
-      <translation type="unfinished">max. principal stress vector: s3x, s3y, s3z</translation>
+      <translation>maks. asıl gerilme vektörü: s3x, s3y, s3z</translation>
     </message>
   </context>
   <context>
@@ -4080,12 +4084,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/SolverCalculix.ui" line="67"/>
       <source>Thermo mechanical</source>
-      <translation type="unfinished">Thermo mechanical</translation>
+      <translation>Isıl mekanik</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="74"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>Metal Örgüyü kontrol ediniz</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="81"/>
@@ -4100,7 +4104,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/SolverCalculix.ui" line="98"/>
       <source>Buckling</source>
-      <translation type="unfinished">Buckling</translation>
+      <translation>Bükülme</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="110"/>
@@ -4115,7 +4119,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/SolverCalculix.ui" line="130"/>
       <source>Run CalculiX</source>
-      <translation type="unfinished">Run CalculiX</translation>
+      <translation>CalculiX' i çalıştır</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="151"/>
@@ -4209,7 +4213,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjacent nodes</source>
-      <translation type="unfinished">Collect adjacent nodes</translation>
+      <translation>Komşu düğüm noktalarını topla</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
@@ -4298,7 +4302,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="62"/>
       <source>Other pulley diameter</source>
-      <translation type="unfinished">Other pulley diameter</translation>
+      <translation>Diğer kasnak çapı</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="86"/>
@@ -4361,7 +4365,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="22"/>
       <source>Select master face, click Add or Remove</source>
-      <translation type="unfinished">Select master face, click Add or Remove</translation>
+      <translation>Bir asıl geometrik yüzü seçin, Ekle 'ye veya Kaldır 'a tıklayın</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="31"/>
@@ -4378,17 +4382,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="67"/>
       <source>Select slave face, click Add or Remove</source>
-      <translation type="unfinished">Select slave face, click Add or Remove</translation>
+      <translation>Bir bağlı yüzü seçin, Ekle 'ye veya Kaldır'a tıklayın</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="115"/>
       <source>Contact Stiffness</source>
-      <translation type="unfinished">Contact Stiffness</translation>
+      <translation>Temas Rijitliği</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="142"/>
       <source>Friction coefficient</source>
-      <translation type="unfinished">Friction coefficient</translation>
+      <translation>Sürtünme katsayısı</translation>
     </message>
   </context>
   <context>
@@ -4502,12 +4506,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="42"/>
       <source>Boundary </source>
-      <translation type="unfinished">Boundary </translation>
+      <translation>Sınır </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="65"/>
       <source>Subtype</source>
-      <translation type="unfinished">Subtype</translation>
+      <translation>Alt tür</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="84"/>
@@ -4527,34 +4531,34 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="137"/>
       <source>Help text</source>
-      <translation type="unfinished">Help text</translation>
+      <translation>Yardım metni</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="157"/>
       <source>Tab 1</source>
-      <translation type="unfinished">Tab 1</translation>
+      <translation>Sekme 1</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="172"/>
       <source>Value [Unit]</source>
-      <translation type="unfinished">Value [Unit]</translation>
+      <translation>Değer [Unit]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="241"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation type="unfinished">Select a planar edge or face, then press this button</translation>
+      <translation>Düzlemsel bir kenar veya yüz seçin, ardından bu düğmeye basın</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="244"/>
       <source>Direction </source>
-      <translation type="unfinished">Direction </translation>
+      <translation>Yön </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="275"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation type="unfinished">The direction of the edge or the direction of the
-normal vector of the face is used as direction</translation>
+      <translation>Kenarın yönü veya yüzün dik vektörü yönü
+yön olarak kullanılır</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="300"/>
@@ -4569,42 +4573,42 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="327"/>
       <source>Turbulence specification</source>
-      <translation type="unfinished">Turbulence specification</translation>
+      <translation>Türbülans özellikleri</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="349"/>
       <source>Intensity    </source>
-      <translation type="unfinished">Intensity    </translation>
+      <translation>Yoğunluk    </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="376"/>
       <source>Length [m]</source>
-      <translation type="unfinished">Length [m]</translation>
+      <translation>Uzunluk [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="402"/>
       <source>Tab 2</source>
-      <translation type="unfinished">Tab 2</translation>
+      <translation>Sekme 2</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="413"/>
       <source> Type </source>
-      <translation type="unfinished"> Type </translation>
+      <translation> Tür </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="430"/>
       <source>Temperature[K]</source>
-      <translation type="unfinished">Temperature[K]</translation>
+      <translation>Sıcaklık[K]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="453"/>
       <source>Heat flux [W/m2]</source>
-      <translation type="unfinished">Heat flux [W/m2]</translation>
+      <translation>Isı akısı [W/m2]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="460"/>
       <source>HT coeff</source>
-      <translation type="unfinished">HT coeff</translation>
+      <translation>Isı İletim Katsayısı</translation>
     </message>
   </context>
   <context>
@@ -4612,7 +4616,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Prescribed Force</source>
-      <translation type="unfinished">Prescribed Force</translation>
+      <translation>Öngörülen Kuvvet</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="38"/>
@@ -4637,7 +4641,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="99"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation type="unfinished">Select a planar edge or face, then press this button</translation>
+      <translation>Düzlemsel bir kenar veya yüz seçin, ardından bu düğmeye basın</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="102"/>
@@ -4648,8 +4652,8 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="109"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation type="unfinished">The direction of the edge or the direction of the
-normal vector of the face is used as direction</translation>
+      <translation>Kenarın yönü veya yüzün dik vektörü yönü
+yön olarak kullanılır</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="119"/>
@@ -4662,12 +4666,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="14"/>
       <source>TaskFemConstraintHeatflux</source>
-      <translation type="unfinished">TaskFemConstraintHeatflux</translation>
+      <translation>Fem Isı Akışı Kısıtlama Görevi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove:</source>
-      <translation type="unfinished">Select multiple face(s), click Add or Remove:</translation>
+      <translation>Birden fazla yüzü seçin, Ekle veya Kaldır'ı tıklayın:</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="29"/>
@@ -4682,34 +4686,34 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="50"/>
       <source>Surface Convection</source>
-      <translation type="unfinished">Surface Convection</translation>
+      <translation>Yüzeyden Isı Taşınımı</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="57"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="125"/>
       <source>Surface heat flux</source>
-      <translation type="unfinished">Surface heat flux</translation>
+      <translation>Yüzey ısı akısı</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="77"/>
       <source>Film coefficient</source>
-      <translation type="unfinished">Film coefficient</translation>
+      <translation>Film katsayısı</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="84"/>
       <source>1 W/m^2/K</source>
-      <translation type="unfinished">1 W/m^2/K</translation>
+      <translation>1 W/m^2/K</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="98"/>
       <source>Ambient Temperature</source>
-      <translation type="unfinished">Ambient Temperature</translation>
+      <translation>Ortam Sıcaklığı</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="105"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="132"/>
       <source>300 K</source>
-      <translation type="unfinished">300 K</translation>
+      <translation>300 K</translation>
     </message>
   </context>
   <context>
@@ -4722,12 +4726,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.ui" line="20"/>
       <source>Insert component's initial temperature:</source>
-      <translation type="unfinished">Insert component's initial temperature:</translation>
+      <translation>Bileşenin başlangıç sıcaklığını girin:</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.ui" line="30"/>
       <source>300 K</source>
-      <translation type="unfinished">300 K</translation>
+      <translation>300 K</translation>
     </message>
   </context>
   <context>
@@ -4740,7 +4744,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select a single face, click Add or Remove</source>
-      <translation type="unfinished">Select a single face, click Add or Remove</translation>
+      <translation>Tek bir yüzü seçin, Ekle veya Kaldır'ı tıklayın</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="29"/>
@@ -4783,12 +4787,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="57"/>
       <source>0 MPa</source>
-      <translation type="unfinished">0 MPa</translation>
+      <translation>0 MPa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="69"/>
       <source>Reverse Direction</source>
-      <translation type="unfinished">Reverse Direction</translation>
+      <translation>Yönü Ters Çevir</translation>
     </message>
   </context>
   <context>
@@ -4816,17 +4820,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="76"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="86"/>
       <source>Normal Stiffness</source>
-      <translation type="unfinished">Normal Stiffness</translation>
+      <translation>Normal Rijitlik</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="99"/>
       <source>Tangential Stiffness</source>
-      <translation type="unfinished">Tangential Stiffness</translation>
+      <translation>Teğetsel Rijitlik</translation>
     </message>
   </context>
   <context>
@@ -4855,17 +4859,17 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintTemperature.ui" line="50"/>
       <location filename="../../TaskFemConstraintTemperature.ui" line="74"/>
       <source>Temperature</source>
-      <translation type="unfinished">Temperature</translation>
+      <translation>Sıcaklık</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="63"/>
       <source>Concentrated heat flux</source>
-      <translation type="unfinished">Concentrated heat flux</translation>
+      <translation>Yoğun ısı akısı</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="81"/>
       <source>300 K</source>
-      <translation type="unfinished">300 K</translation>
+      <translation>300 K</translation>
     </message>
   </context>
   <context>
@@ -4878,17 +4882,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="22"/>
       <source>Rectangular transform</source>
-      <translation type="unfinished">Rectangular transform</translation>
+      <translation>Dikdörtgensel dönüşüm</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="32"/>
       <source>Cylindrical transform</source>
-      <translation type="unfinished">Cylindrical transform</translation>
+      <translation>Silindirik dönüşüm</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select a face, click Add or Remove</source>
-      <translation type="unfinished">Select a face, click Add or Remove</translation>
+      <translation>Bir yüzü seçin, Ekle veya Kaldır'ı tıklayın</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="53"/>
@@ -4903,23 +4907,23 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="94"/>
       <source>Rotation about X-Axis</source>
-      <translation type="unfinished">Rotation about X-Axis</translation>
+      <translation>X ekseni etrafında dönüş</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="115"/>
       <source>Rotation about Y-Axis</source>
-      <translation type="unfinished">Rotation about Y-Axis</translation>
+      <translation>Y ekseni etrafında dönüş</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="136"/>
       <source>Rotation about Z-Axis</source>
-      <translation type="unfinished">Rotation about Z-Axis</translation>
+      <translation>Z ekseni etrafında dönüş</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="155"/>
       <location filename="../../TaskFemConstraintTransform.ui" line="174"/>
       <source>Transformable surfaces</source>
-      <translation type="unfinished">Transformable surfaces</translation>
+      <translation>Dönüştürülebilir yüzeyler</translation>
     </message>
   </context>
   <context>
@@ -4945,12 +4949,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostClip.ui" line="73"/>
       <source>Inside Out</source>
-      <translation type="unfinished">Inside Out</translation>
+      <translation>Ters yüzü</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="80"/>
       <source>Cut Cells</source>
-      <translation type="unfinished">Cut Cells</translation>
+      <translation>Hücreleri Kes</translation>
     </message>
   </context>
   <context>
@@ -4976,22 +4980,22 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="29"/>
       <source>Point1</source>
-      <translation type="unfinished">Point1</translation>
+      <translation>1. Nokta</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="109"/>
       <source>Point2</source>
-      <translation type="unfinished">Point2</translation>
+      <translation>2. Nokta</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="187"/>
       <source>Select Points</source>
-      <translation type="unfinished">Select Points</translation>
+      <translation>Noktaları Seçin</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="199"/>
       <source>Resolution</source>
-      <translation type="unfinished">Resolution</translation>
+      <translation>Çözünürlük</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="230"/>
@@ -5001,7 +5005,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="244"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Alan</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="254"/>
@@ -5011,7 +5015,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="273"/>
       <source>Create Plot</source>
-      <translation type="unfinished">Create Plot</translation>
+      <translation>Grafik Çizimi Oluştur</translation>
     </message>
   </context>
   <context>
@@ -5029,12 +5033,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="107"/>
       <source>Select Point</source>
-      <translation type="unfinished">Select Point</translation>
+      <translation>Nokta Seçin</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="126"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Alan</translation>
     </message>
   </context>
   <context>
@@ -5053,7 +5057,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskPostDisplay.ui" line="42"/>
       <location filename="../../TaskPostDisplay.ui" line="93"/>
       <source>Outline</source>
-      <translation type="unfinished">Outline</translation>
+      <translation>Taslak</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="47"/>
@@ -5065,7 +5069,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskPostDisplay.ui" line="52"/>
       <location filename="../../TaskPostDisplay.ui" line="103"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>Kenarlıklı Yüzey</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
@@ -5076,12 +5080,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="73"/>
       <source>Coloring</source>
-      <translation type="unfinished">Coloring</translation>
+      <translation>Renklendirme</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="79"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Alan</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="116"/>
@@ -5091,7 +5095,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="130"/>
       <source>Magnitute</source>
-      <translation type="unfinished">Magnitute</translation>
+      <translation>Büyüklük</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="135"/>
@@ -5111,7 +5115,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="156"/>
       <source>Styling</source>
-      <translation type="unfinished">Styling</translation>
+      <translation>Biçimleme</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="162"/>
@@ -5129,12 +5133,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="28"/>
       <source>Scalar</source>
-      <translation type="unfinished">Scalar</translation>
+      <translation>Skaler</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="42"/>
       <source>Outline</source>
-      <translation type="unfinished">Outline</translation>
+      <translation>Taslak</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="47"/>
@@ -5144,7 +5148,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="52"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>Kenarlıklı Yüzey</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
@@ -5154,22 +5158,22 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
       <source>Min scalar</source>
-      <translation type="unfinished">Min scalar</translation>
+      <translation>En küçük skaler</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="108"/>
       <source>Clip scalar</source>
-      <translation type="unfinished">Clip scalar</translation>
+      <translation>Skaleri kırpınız</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
       <source>Max scalar</source>
-      <translation type="unfinished">Max scalar</translation>
+      <translation>En büyük skaler</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="144"/>
       <source>-100000</source>
-      <translation type="unfinished">-100000</translation>
+      <translation>-100000</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="188"/>
@@ -5179,7 +5183,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="209"/>
       <source>Clip inside out</source>
-      <translation type="unfinished">Clip inside out</translation>
+      <translation>Ters yüzü kırpınız</translation>
     </message>
   </context>
   <context>
@@ -5197,22 +5201,22 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="42"/>
       <source>warp vectors</source>
-      <translation type="unfinished">warp vectors</translation>
+      <translation>saptırma vektörleri</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="98"/>
       <source>Min warp</source>
-      <translation type="unfinished">Min warp</translation>
+      <translation>En az saptırma</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="105"/>
       <source>Warp factor</source>
-      <translation type="unfinished">Warp factor</translation>
+      <translation>Saptırma etkeni</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="118"/>
       <source>Max warp</source>
-      <translation type="unfinished">Max warp</translation>
+      <translation>En çok saptırma</translation>
     </message>
   </context>
   <context>
@@ -5300,7 +5304,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="194"/>
       <source>Tetrahedron count:</source>
-      <translation type="unfinished">Tetrahedron count:</translation>
+      <translation>Dörtyüzlü sayısı:</translation>
     </message>
   </context>
   <context>
@@ -5323,7 +5327,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>M&amp;odel</source>
-      <translation type="unfinished">M&amp;odel</translation>
+      <translation>M&amp;odel</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -5333,87 +5337,87 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>&amp;Materials</source>
-      <translation type="unfinished">&amp;Materials</translation>
+      <translation>&amp;Malzemeler</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Element Geometry</source>
-      <translation type="unfinished">Element Geometry</translation>
+      <translation>Eleman Geometrisi</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>&amp;Element Geometry</source>
-      <translation type="unfinished">&amp;Element Geometry</translation>
+      <translation>&amp;Eleman Geometrisi</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Electrostatic Constraints</source>
-      <translation type="unfinished">Electrostatic Constraints</translation>
+      <translation>Elektrostatik Kısıtlamalar</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>&amp;Electrostatic Constraints</source>
-      <translation type="unfinished">&amp;Electrostatic Constraints</translation>
+      <translation>&amp;Elektrostatik Kısıtlamalar</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Fluid Constraints</source>
-      <translation type="unfinished">Fluid Constraints</translation>
+      <translation>Akışkan Kısıtlamaları</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Fluid Constraints</source>
-      <translation type="unfinished">&amp;Fluid Constraints</translation>
+      <translation>&amp;Akışkan Kısıtlamaları</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Geometrical Constraints</source>
-      <translation type="unfinished">Geometrical Constraints</translation>
+      <translation>Geometrik Kısıtlamalar</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Geometrical Constraints</source>
-      <translation type="unfinished">&amp;Geometrical Constraints</translation>
+      <translation>&amp;Geometrik Kısıtlamalar</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mechanical Constraints</source>
-      <translation type="unfinished">Mechanical Constraints</translation>
+      <translation>Mekanik Kısıtlamalar</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Mechanical Constraints</source>
-      <translation type="unfinished">&amp;Mechanical Constraints</translation>
+      <translation>&amp;Mekanik Kısıtlamalar</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Thermal Constraints</source>
-      <translation type="unfinished">Thermal Constraints</translation>
+      <translation>Isıl Kısıtlamalar</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>&amp;Thermal Constraints</source>
-      <translation type="unfinished">&amp;Thermal Constraints</translation>
+      <translation>Isıl Kısı&amp;tlamalar</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Constraints without solver</source>
-      <translation type="unfinished">Constraints without solver</translation>
+      <translation>Çözücüsüz kısıtlamalar</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>&amp;Constraints without solver</source>
-      <translation type="unfinished">&amp;Constraints without solver</translation>
+      <translation>Çözü&amp;cüsüz kısıtlamalar</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Overwrite Constants</source>
-      <translation type="unfinished">Overwrite Constants</translation>
+      <translation>Sabit Değerlerin Üzerine Yaz</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>&amp;Overwrite Constants</source>
-      <translation type="unfinished">&amp;Overwrite Constants</translation>
+      <translation>&amp;Sabit Değerlerin Üzerine Yaz</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -5423,7 +5427,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
       <source>M&amp;esh</source>
-      <translation type="unfinished">M&amp;esh</translation>
+      <translation>M&amp;esh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>
@@ -5433,7 +5437,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
       <source>&amp;Solve</source>
-      <translation type="unfinished">&amp;Solve</translation>
+      <translation>&amp;Çöz</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
@@ -5443,17 +5447,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>&amp;Results</source>
-      <translation type="unfinished">&amp;Results</translation>
+      <translation>Sonuçla&amp;r</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="70"/>
       <source>Filter functions</source>
-      <translation type="unfinished">Filter functions</translation>
+      <translation>Süzgeç işlevleri</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
       <source>&amp;Filter functions</source>
-      <translation type="unfinished">&amp;Filter functions</translation>
+      <translation>&amp;Süzgeç işlevleri</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>
@@ -5466,12 +5470,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Command.cpp" line="1166"/>
       <source>Error: Wrong or no or to many vtk post processing objects.</source>
-      <translation type="unfinished">Error: Wrong or no or to many vtk post processing objects.</translation>
+      <translation>Hata: Yanlış, hiçbir veya çok fazla vtk işleme sonrası nesne.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1167"/>
       <source>The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipline object in the document.</source>
-      <translation type="unfinished">The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipline object in the document.</translation>
+      <translation>Filtre kurulamadı. Bir vtk işlem sonrası boru hattı nesnesi seçin veya hiçbir şey seçmeyin ve belgede tam olarak bir vtk işlem sonrası boru hattı nesnesi olduğundan emin olun.</translation>
     </message>
   </context>
 </TS>

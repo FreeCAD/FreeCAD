@@ -3587,7 +3587,7 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="ArchStructure.py" line="1192"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
-      <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
+      <translation>Wählen Sie das Objekt oder die Kanten aus, die als Werkzeug verwendet werden sollen (Extrusionspfad)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1247"/>

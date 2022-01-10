@@ -41,7 +41,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="761"/>
       <source>Updates the values handled by controllers</source>
-      <translation type="unfinished">Updates the values handled by controllers</translation>
+      <translation>Aktualisiert die Controller-verwalteten Werte</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="907"/>
@@ -51,12 +51,12 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="933"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>Controller hinzufügen</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>Eigenschafts-Controller hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -64,12 +64,12 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="919"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>Controller hinzufügen</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+      <translation>Einen Zellen-Controller zur ausgewählten Tabelle hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -82,7 +82,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
-      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+      <translation>Ein Tabellen-Objekt zum aktiven Dokument hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -90,12 +90,12 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="944"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>Eigenschafts-Controller hinzufügen</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+      <translation>Einen Eigenschaften-Controller zur ausgewählten Tabelle hinzufügen</translation>
     </message>
   </context>
   <context>

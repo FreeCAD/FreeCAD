@@ -555,6 +555,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCalculixCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Solver CalculiX padrão</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Cria um FEM solver CalculiX padrão com ferramentas ccx</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="commands.py" line="999"/>
@@ -565,19 +578,6 @@
       <location filename="commands.py" line="1004"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Altera os atributos do solver e executa os cálculos para o solver selecionado</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCxxtools</name>
-    <message>
-      <location filename="commands.py" line="939"/>
-      <source>Solver CalculiX Standard</source>
-      <translation>Solver CalculiX padrão</translation>
-    </message>
-    <message>
-      <location filename="commands.py" line="944"/>
-      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>Cria um FEM solver CalculiX padrão com ferramentas ccx</translation>
     </message>
   </context>
   <context>
@@ -689,6 +689,19 @@
       <location filename="selection_widgets.py" line="53"/>
       <source>Remove</source>
       <translation>Remover</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverCxxtools</name>
+    <message>
+      <location filename="commands.py" line="939"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Solver CalculiX padrão</translation>
+    </message>
+    <message>
+      <location filename="commands.py" line="944"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Cria um FEM solver CalculiX padrão com ferramentas ccx</translation>
     </message>
   </context>
   <context>
@@ -881,7 +894,7 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Constraint pressure</source>
-      <translation type="unfinished">Constraint pressure</translation>
+      <translation>Restringir pressão</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
@@ -935,7 +948,7 @@
     <message>
       <location filename="../../Command.cpp" line="861"/>
       <source>Constraint temperature</source>
-      <translation type="unfinished">Constraint temperature</translation>
+      <translation>Restringir temperatura</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="862"/>
@@ -3811,7 +3824,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="283"/>
       <source>Constraint pressure</source>
-      <translation type="unfinished">Constraint pressure</translation>
+      <translation>Restringir pressão</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="196"/>
@@ -3826,7 +3839,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="338"/>
       <source>Constraint temperature</source>
-      <translation type="unfinished">Constraint temperature</translation>
+      <translation>Restringir temperatura</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="500"/>

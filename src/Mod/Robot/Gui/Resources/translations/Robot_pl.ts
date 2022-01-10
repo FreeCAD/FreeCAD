@@ -337,7 +337,7 @@
     </message>
     <message>
       <source>Select one Trajectory object.</source>
-      <translation>Zaznacz jeden obiekt trasy pracy</translation>
+      <translation>Zaznacz jeden obiekt trasy pracy.</translation>
     </message>
     <message>
       <source>No preselection</source>
@@ -447,7 +447,7 @@
     <name>RobotGui::TaskEdge2TracParameter</name>
     <message>
       <source>TaskEdge2TracParameter</source>
-      <translation type="unfinished">TaskEdge2TracParameter</translation>
+      <translation>Zadanie Edge na Parametr Trac</translation>
     </message>
   </context>
   <context>
@@ -494,21 +494,21 @@
     </message>
     <message>
       <source>TaskRobot6Axis</source>
-      <translation type="unfinished">TaskRobot6Axis</translation>
+      <translation>Zadanie robota sześcioosiowego</translation>
     </message>
   </context>
   <context>
     <name>RobotGui::TaskRobotControl</name>
     <message>
       <source>TaskRobotControl</source>
-      <translation type="unfinished">TaskRobotControl</translation>
+      <translation>Kontrola zadania robota</translation>
     </message>
   </context>
   <context>
     <name>RobotGui::TaskRobotMessages</name>
     <message>
       <source>TaskRobotMessages</source>
-      <translation type="unfinished">TaskRobotMessages</translation>
+      <translation>Komunikaty zadania robota</translation>
     </message>
   </context>
   <context>
@@ -591,14 +591,14 @@
     </message>
     <message>
       <source>Trajectory</source>
-      <translation type="unfinished">Trajectory</translation>
+      <translation>Tor pracy</translation>
     </message>
   </context>
   <context>
     <name>RobotGui::TaskTrajectoryDressUpParameter</name>
     <message>
       <source>Dress Up Parameter</source>
-      <translation type="unfinished">Dress Up Parameter</translation>
+      <translation>Parametry ulepszenia</translation>
     </message>
   </context>
   <context>

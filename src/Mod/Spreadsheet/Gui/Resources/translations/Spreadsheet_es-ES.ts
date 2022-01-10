@@ -56,7 +56,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>Añadir controlador de propiedad</translation>
     </message>
   </context>
   <context>
@@ -69,7 +69,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+      <translation>Añade un controlador de celda a la hoja de cálculo seleccionada</translation>
     </message>
   </context>
   <context>
@@ -82,7 +82,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
-      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+      <translation>Añade un objeto de hoja de cálculo al documento activo</translation>
     </message>
   </context>
   <context>
@@ -90,12 +90,12 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="944"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>Añadir controlador de propiedad</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+      <translation>Añade un controlador de propiedad a la hoja de cálculo seleccionada</translation>
     </message>
   </context>
   <context>
@@ -659,11 +659,11 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Import/Export Settings</source>
-      <translation type="unfinished">Import/Export Settings</translation>
+      <translation>Opciones de Importar/Exportar</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carácter utilizado para delimitar cadenas, normalmente es una comilla simple (') o una comilla doble (&amp;quot;). Debe ser un solo carácter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>"</source>
@@ -671,11 +671,11 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Delimiter Character: </source>
-      <translation type="unfinished">Delimiter Character: </translation>
+      <translation>Carácter delimitador: </translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carácter de escape, normalmente la barra inversa (\), utilizada para indicar caracteres especiales imprimibles, e.. \t = tab. Debe ser un solo carácter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>\</source>
@@ -687,11 +687,11 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carácter a usar como delimitador de campo. Por defecto es una pestaña, pero comúnmente también se usan comas (,) y punto y coma (;). Seleccione de la lista o introduzca el suyo propio en el campo. Debe ser un solo carácter o las palabras &lt;span style=" font-style:italic;"&gt;pestaña&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;coma&lt;/span&gt;, o &lt;span style=" font-style:italic;"&gt;punto y coma&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>pestaña</translation>
     </message>
     <message>
       <source>;</source>
@@ -703,7 +703,7 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Quote Character: </source>
-      <translation type="unfinished">Quote Character: </translation>
+      <translation>Carácter de comilla: </translation>
     </message>
   </context>
   <context>

@@ -128,7 +128,7 @@ Deja esta propiedad vacía para poder establecer manualmente 'Eje' y 'Centro'.</
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>Un parámetro que determina cuántos planos de simetría tendrá la matriz circular.</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
@@ -236,13 +236,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>El objeto, y subelementos específicos del mismo,
+que esta cota está midiendo.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Hay varias posibilidades:
+- Un objeto, y una de sus aristas.
+- Un objeto, y dos de sus vértices.
+- Un arco, y su arista.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -568,7 +568,7 @@ o desde el subelemento 'VerticeN', 'AristaN', o 'CaraN', respectivamente, si es 
     <message>
       <location filename="draftlink.py" line="99"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+      <translation>Forzar sincronización de patrones incluso cuando se expanden elementos de matriz</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
@@ -742,14 +742,14 @@ Esta propiedad es de solo lectura, así que el número depende de los puntos con
       <translation>Escala del patrón usado por este objeto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma de este objeto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Rotación del patrón usado por este objeto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma de este objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1310,11 +1310,6 @@ más allá de la línea de dimensión</translation>
       <translation>Herramientas de matriz</translation>
     </message>
     <message>
-      <location filename="gui_utils.py" line="154"/>
-      <source>Unable to insert new object into a scaled part</source>
-      <translation>No se puede insertar un nuevo objeto en una parte escalada</translation>
-    </message>
-    <message>
       <location filename="task_orthoarray.py" line="157"/>
       <source>True</source>
       <translation>Verdadero</translation>
@@ -1502,6 +1497,11 @@ La matriz puede convertirse en una matriz polar o circular cambiando su tipo.</t
       <translation>La dirección del desplazamiento no está definida. Por favor, mueva el ratón a cada lado del objeto primero para indicar una dirección</translation>
     </message>
     <message>
+      <location filename="gui_utils.py" line="154"/>
+      <source>Unable to insert new object into a scaled part</source>
+      <translation>No se puede insertar un nuevo objeto en una parte escalada</translation>
+    </message>
+    <message>
       <location filename="view_layer.py" line="402"/>
       <source>Merge layer duplicates</source>
       <translation>Combinar duplicados de capa</translation>
@@ -1527,6 +1527,19 @@ It creates a construction group if it doesn't exist.</source>
       <translation>Añade los objetos seleccionados al grupo de construcción,
 y cambia su apariencia al estilo de construcción.
 Crea un grupo de construcción si no existe.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_AddNamedGroup</name>
+    <message>
+      <location filename="gui_groups.py" line="361"/>
+      <source>Add a new named group</source>
+      <translation type="unfinished">Add a new named group</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="365"/>
+      <source>Add a new group with a given name.</source>
+      <translation type="unfinished">Add a new group with a given name.</translation>
     </message>
   </context>
   <context>
@@ -1903,7 +1916,7 @@ Si otros objetos son seleccionados son ignorados.</translation>
     <message>
       <location filename="gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Crea rayados en las caras de un objeto seleccionado</translation>
     </message>
   </context>
   <context>
@@ -2250,6 +2263,11 @@ those that are at the same level as this object, including the upper group that 
       <translation>Si la selección es un grupo, selecciona todos los objetos que están dentro de este grupo, incluyendo los que están en subgrupos anidados.
 
 Si la selección es un objeto simple dentro de un grupo, seleccionará los objetos "hermanos", es decir, aquellos que están al mismo nivel que este objeto, incluyendo el grupo superior que los contiene todos.</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="167"/>
+      <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</source>
+      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</translation>
     </message>
   </context>
   <context>
@@ -3376,7 +3394,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="importDWG.py" line="286"/>
       <source>LibreDWG error</source>
-      <translation type="unfinished">LibreDWG error</translation>
+      <translation>Error de LibreDWG</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="295"/>
@@ -3391,17 +3409,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="importDWG.py" line="231"/>
       <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation type="unfinished">Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</translation>
+      <translation>Error durante la conversión DWG. Trate de mover el archivo DWG a una ruta de directorio sin espacios y caracteres no ingleses, o trate de guardar en una versión inferior de DWG.</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="300"/>
       <source>ODA File Converter not found</source>
-      <translation type="unfinished">ODA File Converter not found</translation>
+      <translation>Convertidor de archivos ODA no encontrado</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="310"/>
       <source>QCAD error</source>
-      <translation type="unfinished">QCAD error</translation>
+      <translation>Error QCAD</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="139"/>
@@ -3844,7 +3862,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="make_sketch.py" line="104"/>
       <source>No shape found</source>
-      <translation type="unfinished">No shape found</translation>
+      <translation>Forma no encontrada</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="109"/>
@@ -3856,7 +3874,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="make_sketch.py" line="111"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Todas las formas deben ser planas</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
@@ -3912,12 +3930,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="make_label.py" line="272"/>
       <source>Wrong input: label_type must be a string.</source>
-      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+      <translation>Entrada incorrecta: label_type debe ser una cadena.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="277"/>
       <source>Wrong input: label_type must be one of the following: </source>
-      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
+      <translation>Entrada incorrecta: label_type debe ser una de las siguientes: </translation>
     </message>
     <message>
       <location filename="make_label.py" line="278"/>
@@ -4022,12 +4040,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="view_layer.py" line="454"/>
       <source>Relabeling layer:</source>
-      <translation type="unfinished">Relabeling layer:</translation>
+      <translation>Capa de Reetiquetado:</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="458"/>
       <source>Merging layer:</source>
-      <translation type="unfinished">Merging layer:</translation>
+      <translation>Combinando capa:</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4048,6 +4066,131 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Establecer escala de anotación personalizada en formato x:x, x=x</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="650"/>
+      <source>Solids:</source>
+      <translation type="unfinished">Solids:</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="651"/>
+      <source>Faces:</source>
+      <translation>Caras:</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="652"/>
+      <source>Wires:</source>
+      <translation type="unfinished">Wires:</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="653"/>
+      <source>Edges:</source>
+      <translation type="unfinished">Edges:</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="654"/>
+      <source>Vertices:</source>
+      <translation type="unfinished">Vertices:</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="658"/>
+      <source>Face</source>
+      <translation>Cara</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="663"/>
+      <source>Wire</source>
+      <translation>Alambre</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="699"/>
+      <source>different types</source>
+      <translation type="unfinished">different types</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="709"/>
+      <source>Objects have different placements. Distance between the two base points: </source>
+      <translation type="unfinished">Objects have different placements. Distance between the two base points: </translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="712"/>
+      <source>has a different value</source>
+      <translation type="unfinished">has a different value</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="715"/>
+      <source>doesn't exist in one of the objects</source>
+      <translation type="unfinished">doesn't exist in one of the objects</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="827"/>
+      <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
+      <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="833"/>
+      <source>%s cannot be modified because its placement is readonly.</source>
+      <translation type="unfinished">%s cannot be modified because its placement is readonly.</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="977"/>
+      <source>Wrong input: unknown document.</source>
+      <translation type="unfinished">Wrong input: unknown document.</translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="1055"/>
+      <source>This function will be deprecated in </source>
+      <translation type="unfinished">This function will be deprecated in </translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="1059"/>
+      <source>Please use </source>
+      <translation type="unfinished">Please use </translation>
+    </message>
+    <message>
+      <location filename="utils.py" line="1059"/>
+      <source>This function will be deprecated. </source>
+      <translation type="unfinished">This function will be deprecated. </translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="81"/>
+      <source>No graphical interface</source>
+      <translation type="unfinished">No graphical interface</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="161"/>
+      <source>Unable to insert new object into a scaled part</source>
+      <translation>No se puede insertar un nuevo objeto en una parte escalada</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="267"/>
+      <source>Symbol not implemented. Using a default symbol.</source>
+      <translation type="unfinished">Symbol not implemented. Using a default symbol.</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="333"/>
+      <source>Visibility off; removed from list: </source>
+      <translation type="unfinished">Visibility off; removed from list: </translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="603"/>
+      <source>image is Null</source>
+      <translation type="unfinished">image is Null</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="609"/>
+      <source>filename does not exist on the system or in the resource file</source>
+      <translation type="unfinished">filename does not exist on the system or in the resource file</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="668"/>
+      <source>unable to load texture</source>
+      <translation type="unfinished">unable to load texture</translation>
+    </message>
+    <message>
+      <location filename="gui_utils.py" line="738"/>
+      <source>Does not have 'ViewObject.RootNode'.</source>
+      <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="83"/>
@@ -4359,7 +4502,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
     <message>
       <location filename="gui_dimensions.py" line="508"/>
       <source>Edge too short!</source>
-      <translation type="unfinished">Edge too short!</translation>
+      <translation>¡Arista demasiado corta!</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
@@ -4962,9 +5105,19 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <translation>Añadir al grupo</translation>
     </message>
     <message>
+      <location filename="gui_groups.py" line="70"/>
+      <source>Add new group</source>
+      <translation type="unfinished">Add new group</translation>
+    </message>
+    <message>
       <location filename="gui_groups.py" line="183"/>
       <source>Select group</source>
       <translation>Seleccionar grupo</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="193"/>
+      <source>No new selection. You must select non-empty groups or objects inside groups.</source>
+      <translation type="unfinished">No new selection. You must select non-empty groups or objects inside groups.</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="257"/>
@@ -4980,6 +5133,21 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responder Si.</transl
       <location filename="gui_groups.py" line="359"/>
       <source>Add to construction group</source>
       <translation>Añadir al grupo de construcción</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="355"/>
+      <source>Add a new group with a given name</source>
+      <translation type="unfinished">Add a new group with a given name</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="383"/>
+      <source>Add group</source>
+      <translation type="unfinished">Add group</translation>
+    </message>
+    <message>
+      <location filename="gui_groups.py" line="385"/>
+      <source>Group name</source>
+      <translation type="unfinished">Group name</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="76"/>

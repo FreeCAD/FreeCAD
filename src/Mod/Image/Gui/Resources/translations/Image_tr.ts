@@ -73,7 +73,7 @@
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Create ImagePlane</source>
-      <translation type="unfinished">Create ImagePlane</translation>
+      <translation>GörüntüDüzlemi Oluştur</translation>
     </message>
   </context>
   <context>

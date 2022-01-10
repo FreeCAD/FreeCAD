@@ -79,7 +79,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="JoinFeatures.py" line="293"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>Вбудувати об'єкт</translation>
     </message>
     <message>
       <location filename="JoinFeatures.py" line="298"/>

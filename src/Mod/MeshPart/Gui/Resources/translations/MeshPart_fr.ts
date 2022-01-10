@@ -6,17 +6,17 @@
     <message>
       <location filename="MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Développer le maillage</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Rechercher une représentation plane d’un maillage.</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Développer la face</translation>
     </message>
   </context>
   <context>

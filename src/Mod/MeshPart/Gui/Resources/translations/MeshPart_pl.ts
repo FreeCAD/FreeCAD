@@ -6,17 +6,17 @@
     <message>
       <location filename="MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Rozwiń siatkę</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Znajdź płaską reprezentację siatki.</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Rozwiń ścianę</translation>
     </message>
   </context>
   <context>
@@ -282,7 +282,7 @@ Odchylenie powierzchniowe pomnożone przez długość aktualnego segmentu oczek 
     </message>
     <message>
       <source>Relative surface deviation</source>
-      <translation>Względne odchylenie powierzchni:</translation>
+      <translation>Względne odchylenie powierzchni</translation>
     </message>
     <message>
       <source>Mesh will get face colors of the object</source>

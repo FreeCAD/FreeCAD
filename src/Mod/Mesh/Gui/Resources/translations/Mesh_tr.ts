@@ -230,11 +230,11 @@ Düzenli bir katı oluşturma</translation>
     </message>
     <message>
       <source>Create mesh from shape...</source>
-      <translation>Parçacıktan şekil oluştur</translation>
+      <translation>Şekilden metal örgü oluştur...</translation>
     </message>
     <message>
       <source>Tessellate shape</source>
-      <translation>Şekilden Örgü oluştur</translation>
+      <translation>Mozaik şekil döşe</translation>
     </message>
   </context>
   <context>
@@ -1698,7 +1698,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     </message>
     <message>
       <source>Inventor V2.1 ASCII</source>
-      <translation type="unfinished">Inventor V2.1 ASCII</translation>
+      <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
@@ -1706,7 +1706,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     </message>
     <message>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <source>All Files</source>

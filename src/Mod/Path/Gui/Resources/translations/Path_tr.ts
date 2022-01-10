@@ -4,9 +4,14 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="PathSlot.py" line="112"/>
-      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation>Modül HATA AYIKLAMA kipinde olduğunda geçici 'takım yolu inşa nesnelerini' göster.</translation>
+      <location filename="PathSurface.py" line="140"/>
+      <source>Stop index(angle) for rotational scan</source>
+      <translation>Dönel tarama için bitiş açısı</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="134"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>Seçili Sınır Kutusunu ilave ötele</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="125"/>
@@ -19,19 +24,9 @@
       <translation>Daha küçük değerler, daha iyi ve daha hassas ağ örgüsü sağlar. Bu değerler işleme süresini çok fazla artırmaz.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="140"/>
-      <source>Stop index(angle) for rotational scan</source>
-      <translation>Dönel tarama için bitiş açısı</translation>
-    </message>
-    <message>
       <location filename="PathSurface.py" line="132"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation>Dropcutter çizgileri bu eksene paralel olarak oluşturulur.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="134"/>
-      <source>Additional offset to the selected bounding box</source>
-      <translation>Seçili Sınır Kutusunu ilave ötele</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="136"/>
@@ -47,6 +42,21 @@
       <location filename="PathSurface.py" line="143"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
       <translation>Düzlemsel: Düz, 3D yüzey taraması. Dönel: 4. eksen dönel tarama.</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="190"/>
+      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
+      <translation>'Dairesel' ve 'Dairesel ZikZak' işleme desenleri için eş düzlemli yayları G2/G3 g kodu komutlarına dönüştür.</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="124"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
+      <translation>Daha küçük değerler, daha iyi ve daha hassas ağ örgüsü sağlar ama işleme süresini çok artırır.</translation>
+    </message>
+    <message>
+      <location filename="PathWaterline.py" line="126"/>
+      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
+      <translation>Daha küçük değerler, daha iyi ve daha hassas ağ örgüsü sağlar. Bu değerler işleme süresini çok fazla artırmaz.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="129"/>
@@ -84,19 +94,24 @@
       <translation>Seçilen daha geniş bir yüz içerisindeki şekil iç alanlarını işle.</translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="144"/>
+      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
+      <translation>Kullanılacak algoritmayı seçin: OCL Dropcutter * veya Deneysel (OCL tabanlı değil).</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="146"/>
       <source>Select the overall boundary for the operation.</source>
       <translation>İşlem için tüm sınırları seçin.</translation>
     </message>
     <message>
+      <location filename="PathWaterline.py" line="148"/>
+      <source>Set to clear last layer in a `Multi-pass` operation.</source>
+      <translation>Son katman temizlemeyi bir 'Çoklu-geçiş' işleminde ayarlar.</translation>
+    </message>
+    <message>
       <location filename="PathWaterline.py" line="150"/>
       <source>Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</source>
       <translation>Kesici takımın malzemeyi işleme yönünü ayarlayın: Tırmanma (SaatYönü) veya Alışılagelmiş (SaatYönüTersine)</translation>
-    </message>
-    <message>
-      <location filename="PathSlot.py" line="119"/>
-      <source>Set the geometric clearing pattern to use for the operation.</source>
-      <translation>İşlemde kullanmak için geometrik temizleme desenini ayarla.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="154"/>
@@ -114,11 +129,6 @@
       <translation>Hedef yüzeyden Z ekseni derinlik sapmasını ayarlayın.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="125"/>
-      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
-      <translation>Kesme derinliğinde tek geçiş ile veya son kesme derinliğinde çoklu geçiş ile işlemi tamamla.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="164"/>
       <source>Set the start point for the cut pattern.</source>
       <translation>İşleme deseni için başlangıç noktasını ayarla.</translation>
@@ -127,11 +137,6 @@
       <location filename="PathWaterline.py" line="166"/>
       <source>Choose location of the center point for starting the cut pattern.</source>
       <translation>İşleme desenine başlamak için merkez noktası konumunu seçin.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="179"/>
-      <source>Profile the edges of the selection.</source>
-      <translation>Seçimin kenarlarını profilleyin.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="168"/>
@@ -154,11 +159,6 @@
       <translation>Her geçiş mesafesi yolu arasında geçiş optimizasyonunu ve yol içerisine durakları dağıtmaya izin ver.</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="190"/>
-      <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
-      <translation>'Dairesel' ve 'Dairesel ZikZak' işleme desenleri için eş düzlemli yayları G2/G3 g kodu komutlarına dönüştür.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="177"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
       <translation>Bu alt sınırdan daha küçük, aynı doğrultu ve dairesellikteki yapı boşluklarını takım yolunda kapat.</translation>
@@ -169,9 +169,9 @@
       <translation>Geri bildirim: takım yolu geometrisindeki tanımlı en küçük üç boşluk.</translation>
     </message>
     <message>
-      <location filename="PathSlot.py" line="138"/>
-      <source>The custom start point for the path of this operation</source>
-      <translation>Bu işlemin takım yolu için özel başlangıç noktası</translation>
+      <location filename="PathSurface.py" line="179"/>
+      <source>Profile the edges of the selection.</source>
+      <translation>Seçimin kenarlarını profilleyin.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="140"/>
@@ -182,11 +182,6 @@
       <location filename="PathCopy.py" line="37"/>
       <source>The path to be copied</source>
       <translation>Kopyalanacak yol</translation>
-    </message>
-    <message>
-      <location filename="PathArray.py" line="64"/>
-      <source>The tool controller that will be used to calculate the path</source>
-      <translation>Yolu hesaplamak için kullanılacak takım denetleyicisi</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="59"/>
@@ -299,6 +294,11 @@
       <translation>İşlemin kod üretmesini önlemek için Yanlış yapın</translation>
     </message>
     <message>
+      <location filename="PathCustom.py" line="56"/>
+      <source>The gcode to be inserted</source>
+      <translation>Eklenecek gcode</translation>
+    </message>
+    <message>
       <location filename="PathDressupRampEntry.py" line="71"/>
       <source>Ramping Method</source>
       <translation>Bayiliği yöntemi</translation>
@@ -374,26 +374,6 @@
       <translation>Yüzey içindeki yükseltilmiş frezeleme alanlarını hariç tutun.</translation>
     </message>
     <message>
-      <location filename="PathWaterline.py" line="124"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation>Daha küçük değerler, daha iyi ve daha hassas ağ örgüsü sağlar ama işleme süresini çok artırır.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="126"/>
-      <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
-      <translation>Daha küçük değerler, daha iyi ve daha hassas ağ örgüsü sağlar. Bu değerler işleme süresini çok fazla artırmaz.</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="144"/>
-      <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation>Kullanılacak algoritmayı seçin: OCL Dropcutter * veya Deneysel (OCL tabanlı değil).</translation>
-    </message>
-    <message>
-      <location filename="PathWaterline.py" line="148"/>
-      <source>Set to clear last layer in a `Multi-pass` operation.</source>
-      <translation>Son katman temizlemeyi bir 'Çoklu-geçiş' işleminde ayarlar.</translation>
-    </message>
-    <message>
       <location filename="PathWaterline.py" line="160"/>
       <source>Ignore outer waterlines above this height.</source>
       <translation>Bu yüksekliğin üzerindeki su kesimi konturunu dikkate almayın.</translation>
@@ -402,6 +382,11 @@
       <location filename="PathCollision.py" line="59"/>
       <source>The base object this collision refers to</source>
       <translation>Bu çarpışmanın ifade ettiği temel nesne</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="112"/>
+      <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
+      <translation>Modül HATA AYIKLAMA kipinde olduğunda geçici 'takım yolu inşa nesnelerini' göster.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="115"/>
@@ -414,6 +399,11 @@
       <translation>Yuvanın takım yolu için özel bitiş noktası girin.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="119"/>
+      <source>Set the geometric clearing pattern to use for the operation.</source>
+      <translation>İşlemde kullanmak için geometrik temizleme desenini ayarla.</translation>
+    </message>
+    <message>
       <location filename="PathSlot.py" line="121"/>
       <source>Positive extends the beginning of the path, negative shortens.</source>
       <translation>Pozitif, takım yolu başlangıcını uzatırken negatif kısaltır.</translation>
@@ -422,6 +412,11 @@
       <location filename="PathSlot.py" line="123"/>
       <source>Positive extends the end of the path, negative shortens.</source>
       <translation>Pozitif, takım yolu bitişini uzatırken negatif kısaltır.</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="125"/>
+      <source>Complete the operation in a single pass at depth, or mulitiple passes to final depth.</source>
+      <translation>Kesme derinliğinde tek geçiş ile veya son kesme derinliğinde çoklu geçiş ile işlemi tamamla.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="127"/>
@@ -449,6 +444,11 @@
       <translation>Yuva yolunun kesme yönünü tersine çevirmeye izin ver.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="138"/>
+      <source>The custom start point for the path of this operation</source>
+      <translation>Bu işlemin takım yolu için özel başlangıç noktası</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="65"/>
       <source>Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</source>
       <translation>Düzlemsel cep tepesi üstündeki gereksiz boşta frezelemeyi gidermek için uyarlanabilir algoritma kullan.</translation>
@@ -462,6 +462,51 @@
       <location filename="PathPocket.py" line="69"/>
       <source>Process the model and stock in an operation with no Base Geometry selected.</source>
       <translation>Seçilen Temel Geometri olmaksızın model ve stok parçayı bir işlemde işle.</translation>
+    </message>
+    <message>
+      <location filename="PathComment.py" line="41"/>
+      <source>Comment or note for CNC program</source>
+      <translation type="unfinished">Comment or note for CNC program</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="119"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Dikey ani hareketler için varsayılan hız.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="127"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Dikey ani hareketler için varsayılan hız.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="415"/>
+      <source>Coolant Modes</source>
+      <translation>Soğutucu Kipleri</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="424"/>
+      <source>Default coolant mode.</source>
+      <translation>Varsayılan soğutucu kipi.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="156"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Yeni operasyonun GüvenliYükseklik değeri ifadesini ayarla.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="182"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Yeni işlemlerde Başlangıç Yüksekliği için kullanılan ifade.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="190"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Yeni işlemlerde Bitiş Derinliği için kullanılan ifade.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="198"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Yeni işlemlerde Adım Azaltma için kullanılan ifade.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="71"/>
@@ -524,6 +569,11 @@
       <translation>Doğrusal çoğaltmada, kopyalar arası boşluk</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="64"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>Yolu hesaplamak için kullanılacak takım denetleyicisi</translation>
+    </message>
+    <message>
       <location filename="PathArray.py" line="48"/>
       <source>The number of copies in X direction in Linear pattern</source>
       <translation>Doğrusal çoğaltmada X yönündeki kopya sayısı</translation>
@@ -564,9 +614,49 @@
       <translation>En çok rastgele kopya ötelemesi</translation>
     </message>
     <message>
+      <location filename="PathArray.py" line="169"/>
+      <source>Seed value for jitter randomness</source>
+      <translation type="unfinished">Seed value for jitter randomness</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="111"/>
+      <source>The base object this stock is derived from</source>
+      <translation>Bu stok malzemenin türetildiği temel nesne</translation>
+    </message>
+    <message>
       <location filename="PathStock.py" line="105"/>
       <source>A material for this object</source>
       <translation>Bu nesne için bir malzeme</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="243"/>
+      <source>Length of this stock box</source>
+      <translation>Bu stok kutusunun uzunluğu</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="249"/>
+      <source>Width of this stock box</source>
+      <translation>Bu stok kutusunun genişliği</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="255"/>
+      <source>Height of this stock box</source>
+      <translation>Bu stok kutusunun yüksekliği</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="295"/>
+      <source>Radius of this stock cylinder</source>
+      <translation>Bu stok silindirinin yarıçapı</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="301"/>
+      <source>Height of this stock cylinder</source>
+      <translation>Bu stok silindirin yüksekliği</translation>
+    </message>
+    <message>
+      <location filename="PathStock.py" line="337"/>
+      <source>Internal representation of stock type</source>
+      <translation>Stok tipinin dahili gösterimi</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="137"/>
@@ -620,6 +710,11 @@
       <location filename="PathJobGui.py" line="282"/>
       <source>Edit</source>
       <translation>Düzenle</translation>
+    </message>
+    <message>
+      <location filename="PathUtils.py" line="184"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Sorunun incelenmesini belirle: {}</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="472"/>
@@ -848,20 +943,12 @@
     <message>
       <location filename="PathArray.py" line="245"/>
       <source>No base objects for PathArray.</source>
-      <translation type="unfinished">No base objects for PathArray.</translation>
+      <translation>İzDizisi için temel nesne yok.</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="258"/>
       <source>Arrays of paths having different tool controllers are handled according to the tool controller of the first path.</source>
       <translation>Farklı takım denetleyicisi olan takım yolu dizileri, ilk takım yolunun takım denetleyicisine bakılarak işlenecek.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathCustom</name>
-    <message>
-      <location filename="PathCustom.py" line="52"/>
-      <source>The gcode to be inserted</source>
-      <translation>Eklenecek gcode</translation>
     </message>
   </context>
   <context>
@@ -971,6 +1058,19 @@
       <location filename="PathFeatureExtensions.py" line="421"/>
       <source>Waterline error</source>
       <translation>Su hattı hatası</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathFixture</name>
+    <message>
+      <location filename="PathFixture.py" line="156"/>
+      <source>Fixture</source>
+      <translation>Fikstürler</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="159"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Bir fikstür ofset nesnesi oluşturur</translation>
     </message>
   </context>
   <context>
@@ -1376,6 +1476,19 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     </message>
   </context>
   <context>
+    <name>PathPlane</name>
+    <message>
+      <location filename="PathPlane.py" line="118"/>
+      <source>Selection Plane</source>
+      <translation>Seçim Düzlemi</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="121"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Seçim Düzlemi nesnesi oluşturma</translation>
+    </message>
+  </context>
+  <context>
     <name>PathPocket</name>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="176"/>
@@ -1471,12 +1584,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathProfile.py" line="200"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Topluca</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="201"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Bireysel olarak</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="204"/>
@@ -1491,17 +1604,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathProfile.py" line="206"/>
       <source>Miter</source>
-      <translation type="unfinished">Miter</translation>
+      <translation>Gönye</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="209"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>Dışarıda</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="210"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation>İçeride</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="479"/>
@@ -1511,7 +1624,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="PathProfile.py" line="622"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+      <translation>Kenar seçimini ve açık kenar(lar) ın profilini çıkarma için Son İşlem Derinliği gereksinimlerini gözden geçirin.</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="663"/>
@@ -1545,64 +1658,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="PathPropertyBag.py" line="62"/>
       <source>List of custom property groups</source>
       <translation>Özel özellik gruplarının listesi</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathSetupSheet</name>
-    <message>
-      <location filename="PathSetupSheet.py" line="102"/>
-      <source>Default speed for horizontal rapid moves.</source>
-      <translation>Dikey ani hareketler için varsayılan hız.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="103"/>
-      <source>Default speed for vertical rapid moves.</source>
-      <translation>Dikey ani hareketler için varsayılan hız.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="287"/>
-      <source>Coolant Modes</source>
-      <translation>Soğutucu Kipleri</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="291"/>
-      <source>Default coolant mode.</source>
-      <translation>Varsayılan soğutucu kipi.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="108"/>
-      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
-      <translation>Bu alanın kullanımı GüvenliYükseklikİfadesi'ne bağlıdır. Varsayılan olarak bu değer başlangıç değerine eklenir ve operasyon için GüvenliYükseklik olarak kullanılır.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="109"/>
-      <source>Expression set for the SafeHeight of new operations.</source>
-      <translation>Yeni operasyonun GüvenliYükseklik değeri ifadesini ayarla.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="110"/>
-      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
-      <translation>Bu alanın kullanımı AralıkYükseklikİfadesi'ne bağlıdır. Varsayılan olarak bu değer başlangıç değerine eklenir ve operasyon için GüvenliYükseklik olarak kullanılır.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="111"/>
-      <source>Expression set for the ClearanceHeight of new operations.</source>
-      <translation>Yeni operasyonun AralıkYükseklik değeri ifadesini ayarla.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="113"/>
-      <source>Expression used for StartDepth of new operations.</source>
-      <translation>Yeni işlemlerde Başlangıç Yüksekliği için kullanılan ifade.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="114"/>
-      <source>Expression used for FinalDepth of new operations.</source>
-      <translation>Yeni işlemlerde Bitiş Derinliği için kullanılan ifade.</translation>
-    </message>
-    <message>
-      <location filename="PathSetupSheet.py" line="115"/>
-      <source>Expression used for StepDown of new operations.</source>
-      <translation>Yeni işlemlerde Adım Azaltma için kullanılan ifade.</translation>
     </message>
   </context>
   <context>
@@ -2298,14 +2353,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     </message>
   </context>
   <context>
-    <name>PathUtils</name>
-    <message>
-      <location filename="PathUtils.py" line="150"/>
-      <source>Issue determine drillability: {}</source>
-      <translation>Sorunun incelenmesini belirle: {}</translation>
-    </message>
-  </context>
-  <context>
     <name>PathVcarve</name>
     <message>
       <location filename="PathVcarve.py" line="211"/>
@@ -2603,11 +2650,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="PathDressupAxisMap.py" line="149"/>
-      <source>Edit Dragknife Dress-up</source>
-      <translation>DragKnife Giydirmeyi düzenle</translation>
-    </message>
-    <message>
       <location filename="PathDressupDragknife.py" line="541"/>
       <source>DragKnife Dress-up</source>
       <translation>DragKnife Giydirme</translation>
@@ -2636,6 +2678,11 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="PathDressupDragknife.py" line="569"/>
       <source>Create Dress-up</source>
       <translation>Giydirme</translation>
+    </message>
+    <message>
+      <location filename="PathDressupAxisMap.py" line="149"/>
+      <source>Edit Dragknife Dress-up</source>
+      <translation>DragKnife Giydirmeyi düzenle</translation>
     </message>
   </context>
   <context>
@@ -2918,24 +2965,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     </message>
   </context>
   <context>
-    <name>Path_Fixture</name>
-    <message>
-      <location filename="PathFixture.py" line="115"/>
-      <source>Fixture</source>
-      <translation>Fikstürler</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="118"/>
-      <source>Creates a Fixture Offset object</source>
-      <translation>Bir fikstür ofset nesnesi oluşturur</translation>
-    </message>
-    <message>
-      <location filename="PathFixture.py" line="126"/>
-      <source>Create a Fixture Offset</source>
-      <translation>Bir fikstür ofset nesnesi oluşturur</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3022,11 +3051,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <translation>Yol İşini, diğer işler için kullanılacak bir şablon olarak dışa aktarır</translation>
     </message>
     <message>
-      <location filename="PathJobGui.py" line="1559"/>
-      <source>Create Job</source>
-      <translation>Kopya oluştur</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="609"/>
       <source>Edit Job</source>
       <translation>İşi Düzenle</translation>
@@ -3051,6 +3075,11 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <source>Model Selection</source>
       <translation>Model Seçimi</translation>
     </message>
+    <message>
+      <location filename="PathJobGui.py" line="1559"/>
+      <source>Create Job</source>
+      <translation>Kopya oluştur</translation>
+    </message>
   </context>
   <context>
     <name>Path_OpActiveToggle</name>
@@ -3066,19 +3095,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="PathCommands.py" line="170"/>
       <source>Copy the operation in the job</source>
       <translation>İşlemi iş yerinde kopyala</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Plane</name>
-    <message>
-      <location filename="PathPlane.py" line="110"/>
-      <source>Selection Plane</source>
-      <translation>Seçim Düzlemi</translation>
-    </message>
-    <message>
-      <location filename="PathPlane.py" line="122"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Seçim Düzlemi nesnesi oluşturma</translation>
     </message>
   </context>
   <context>
@@ -3413,14 +3429,6 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     </message>
   </context>
   <context>
-    <name>Path_SetupSheet</name>
-    <message>
-      <location filename="PathSetupSheetGui.py" line="371"/>
-      <source>Edit SetupSheet</source>
-      <translation>ÇizimPlanını Düzenle</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_SimpleCopy</name>
     <message>
       <location filename="PathSimpleCopy.py" line="65"/>
@@ -3604,6 +3612,119 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     </message>
   </context>
   <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="PathCustom.py" line="52"/>
+      <source>The gcode to be inserted</source>
+      <translation>Eklenecek gcode</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathSetupSheet</name>
+    <message>
+      <location filename="PathSetupSheet.py" line="102"/>
+      <source>Default speed for horizontal rapid moves.</source>
+      <translation>Dikey ani hareketler için varsayılan hız.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="103"/>
+      <source>Default speed for vertical rapid moves.</source>
+      <translation>Dikey ani hareketler için varsayılan hız.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="108"/>
+      <source>The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.</source>
+      <translation>Bu alanın kullanımı GüvenliYükseklikİfadesi'ne bağlıdır. Varsayılan olarak bu değer başlangıç değerine eklenir ve operasyon için GüvenliYükseklik olarak kullanılır.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="109"/>
+      <source>Expression set for the SafeHeight of new operations.</source>
+      <translation>Yeni operasyonun GüvenliYükseklik değeri ifadesini ayarla.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="110"/>
+      <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.</source>
+      <translation>Bu alanın kullanımı AralıkYükseklikİfadesi'ne bağlıdır. Varsayılan olarak bu değer başlangıç değerine eklenir ve operasyon için GüvenliYükseklik olarak kullanılır.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="111"/>
+      <source>Expression set for the ClearanceHeight of new operations.</source>
+      <translation>Yeni operasyonun AralıkYükseklik değeri ifadesini ayarla.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="113"/>
+      <source>Expression used for StartDepth of new operations.</source>
+      <translation>Yeni işlemlerde Başlangıç Yüksekliği için kullanılan ifade.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="114"/>
+      <source>Expression used for FinalDepth of new operations.</source>
+      <translation>Yeni işlemlerde Bitiş Derinliği için kullanılan ifade.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="115"/>
+      <source>Expression used for StepDown of new operations.</source>
+      <translation>Yeni işlemlerde Adım Azaltma için kullanılan ifade.</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="287"/>
+      <source>Coolant Modes</source>
+      <translation>Soğutucu Kipleri</translation>
+    </message>
+    <message>
+      <location filename="PathSetupSheet.py" line="291"/>
+      <source>Default coolant mode.</source>
+      <translation>Varsayılan soğutucu kipi.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathUtils</name>
+    <message>
+      <location filename="PathUtils.py" line="150"/>
+      <source>Issue determine drillability: {}</source>
+      <translation>Sorunun incelenmesini belirle: {}</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Fixture</name>
+    <message>
+      <location filename="PathFixture.py" line="115"/>
+      <source>Fixture</source>
+      <translation>Fikstürler</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="118"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Bir fikstür ofset nesnesi oluşturur</translation>
+    </message>
+    <message>
+      <location filename="PathFixture.py" line="126"/>
+      <source>Create a Fixture Offset</source>
+      <translation>Bir fikstür ofset nesnesi oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Plane</name>
+    <message>
+      <location filename="PathPlane.py" line="110"/>
+      <source>Selection Plane</source>
+      <translation>Seçim Düzlemi</translation>
+    </message>
+    <message>
+      <location filename="PathPlane.py" line="122"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Seçim Düzlemi nesnesi oluşturma</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_SetupSheet</name>
+    <message>
+      <location filename="PathSetupSheetGui.py" line="371"/>
+      <source>Edit SetupSheet</source>
+      <translation>ÇizimPlanını Düzenle</translation>
+    </message>
+  </context>
+  <context>
     <name>PathOpGui</name>
     <message>
       <location filename="PathOpGui.py" line="603"/>
@@ -3644,7 +3765,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../../Command.cpp" line="57"/>
       <source>Creates a feature area from selected objects</source>
-      <translation type="unfinished">Creates a feature area from selected objects</translation>
+      <translation>Seçili nesnelerden bir özellik alanı oluşturur</translation>
     </message>
   </context>
   <context>
@@ -3657,12 +3778,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../../Command.cpp" line="138"/>
       <source>Area workplane</source>
-      <translation type="unfinished">Area workplane</translation>
+      <translation>Alan çalışma düzlemi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="139"/>
       <source>Select a workplane for a FeatureArea</source>
-      <translation type="unfinished">Select a workplane for a FeatureArea</translation>
+      <translation>Bir Özellik Alanı için bir çalışma düzlemi seçin</translation>
     </message>
   </context>
   <context>
@@ -3706,27 +3827,27 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Create Path Area View</source>
-      <translation type="unfinished">Create Path Area View</translation>
+      <translation>İz Alanı Görünümü Oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="115"/>
       <source>Create Path Area</source>
-      <translation type="unfinished">Create Path Area</translation>
+      <translation>İz Alanı Oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Select Workplane for Path Area</source>
-      <translation type="unfinished">Select Workplane for Path Area</translation>
+      <translation>İz Alanı için Çalışma Düzlemi Seçin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="254"/>
       <source>Create Path Compound</source>
-      <translation type="unfinished">Create Path Compound</translation>
+      <translation>İz Bileşeni Oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
       <source>Create Path Shape</source>
-      <translation type="unfinished">Create Path Shape</translation>
+      <translation>İz Şekli Oluştur</translation>
     </message>
   </context>
   <context>
@@ -3744,7 +3865,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a template to be used for the job.&lt;/p&gt;&lt;p&gt;In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a template to be used for the job.&lt;/p&gt;&lt;p&gt;In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İş için kullanılacak bir şablon seçin.&lt;/p&gt;&lt;p&gt;Şablon yoksa, mevcut bir işin açılır menüsünden bir şablon oluşturabilirsiniz. Dosyayı job_*.json olarak adlandırın ve bu listeden seçilebilmesi için makroya veya iz dizinine yerleştirin (tercihlere bakın).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -3754,7 +3875,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Select Base Models</source>
-      <translation type="unfinished">Select Base Models</translation>
+      <translation>Temel Modelleri Seçin</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -3769,32 +3890,32 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
       <source>Base Models</source>
-      <translation type="unfinished">Base Models</translation>
+      <translation>Temel Modeller</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
       <source>Job Template Export</source>
-      <translation type="unfinished">Job Template Export</translation>
+      <translation>İş Şablonu Dışa Aktarma</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled include all post processing settings in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled include all post processing settings in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Etkinleştirilirse, şablondaki tüm sonradan işleme ayarlarını dahil edin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="23"/>
       <source>Post Processing</source>
-      <translation type="unfinished">Post Processing</translation>
+      <translation>Rötuş</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current post processing configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current post processing configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Geçerli işlem sonrası yapılandırma hakkında ipucu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Etkinleştirilmişse, araç denetleyici tanımları şablonda saklanır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
@@ -3804,62 +3925,62 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="60"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Şablona dahil edilmesi gereken tüm takım denetleyicilerini kontrol edin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include values of the SetupSheet in the template.&lt;/p&gt;&lt;p&gt;Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include values of the SetupSheet in the template.&lt;/p&gt;&lt;p&gt;Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kurulum Sayfasının değerlerini şablona dahil etmeyi etkinleştirin.&lt;/p&gt;&lt;p&gt;Varsayılanlarından değiştirilen Kurulum Sayfasının tüm değerleri önceden seçilir. Bu alan seçilmediyse, mevcut Kurulum Sayfası değiştirilmemiştir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="73"/>
       <source>Setup Sheet</source>
-      <translation type="unfinished">Setup Sheet</translation>
+      <translation>Kurulum Sayfası</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="82"/>
       <source>Operation Depths</source>
-      <translation type="unfinished">Operation Depths</translation>
+      <translation>Çalışma Derinlikleri</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="92"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Şablondaki işlemler için varsayılan yükseklikleri dahil etmeyi etkinleştirin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="95"/>
       <source>Operation Heights</source>
-      <translation type="unfinished">Operation Heights</translation>
+      <translation>Çalışma Yükseklikleri</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Şablona varsayılan yüksek araç süratlerini dahil etmeyi etkinleştirin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="108"/>
       <source>Tool Rapid Speeds</source>
-      <translation type="unfinished">Tool Rapid Speeds</translation>
+      <translation>Takım Yüksek Süratleri</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="118"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable all Operations for which the configuration values should be exported.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that only operations are listed which currently have configuration values setup.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable all Operations for which the configuration values should be exported.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that only operations are listed which currently have configuration values setup.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yapılandırma değerlerinin dışa aktarılması gereken tüm İşlemleri etkinleştirin.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Yalnızca hangi işlemlerin listelendiğini unutmayın. şu anda yapılandırma değerleri kurulumuna sahip.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="125"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default coolant mode in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default coolant mode in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Şablona varsayılan soğutma sıvısı modunu dahil etmeyi etkinleştirin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="128"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Soğutucu Modu</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="141"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bound box).&lt;/p&gt;&lt;p&gt;This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.&lt;/p&gt;&lt;p&gt;Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bound box).&lt;/p&gt;&lt;p&gt;This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.&lt;/p&gt;&lt;p&gt;Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Etkinleştirilirse, stok oluşturma şablona dahil edilir. Bir şablon bir stok tanımı içermiyorsa, varsayılan stok oluşturma algoritması kullanılacaktır (Base nesnesinin bağlı kutusundan oluşturma).&lt;/p&gt;&lt;p&gt;Bu seçenek, stok bir kutu veya silindir ise veya makinenin işleme için standart bir yerleşimi vardır.&lt;/p&gt;&lt;p&gt;İşte mevcut bir katıdan bir stok nesnesi kullanılıyorsa bu seçeneğin devre dışı bırakıldığını unutmayın - bunlar bir şablonda saklanamaz.&lt;/p&gt;&lt;/body &gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="144"/>
@@ -3869,17 +3990,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="153"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current size settings for the stock object are included in the template.&lt;/p&gt;&lt;p&gt;For Box and Cylinder stocks this means the actual size of the stock solid being created.&lt;/p&gt;&lt;p&gt;For stock from the Base object's bound box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current size settings for the stock object are included in the template.&lt;/p&gt;&lt;p&gt;For Box and Cylinder stocks this means the actual size of the stock solid being created.&lt;/p&gt;&lt;p&gt;For stock from the Base object's bound box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Etkinleştirilirse, stok nesnesi için geçerli boyut ayarları şablona dahil edilir.&lt;/p&gt;&lt;p&gt;Kutu ve Silindir stokları için bu, stok katının gerçek boyutu anlamına gelir. oluşturuluyor.&lt;/p&gt;&lt;p&gt;Base nesnesinin bağlı kutusundan stok için, her yönde fazladan malzeme anlamına gelir. Böyle bir şablondan oluşturulan bir stok nesnesi, temel boyutunu yeni işin Base nesnesinden alır ve depolanan ekstra ayarları uygular.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="156"/>
       <source>Extent</source>
-      <translation type="unfinished">Extent</translation>
+      <translation>Kapsam</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="166"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current placement of the stock solid is stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current placement of the stock solid is stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Etkinleştirilirse, stok katının mevcut yerleşimi şablonda saklanır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="169"/>
@@ -3889,12 +4010,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="185"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock extent setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock extent setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mevcut stok kapsamı ayarı hakkında ipucu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="198"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock placement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock placement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mevcut stok yerleşimi hakkında ipucu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="236"/>
@@ -3904,57 +4025,57 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>Sonradan İşleyici</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors.&lt;/p&gt;&lt;p&gt;FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors.&lt;/p&gt;&lt;p&gt;FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Son çıkan işlemcilerden birini seçin.&lt;/p&gt;&lt;p&gt;FreeCAD, önceden yüklenmiş birkaç işlemci ile birlikte gelir, lütfen tercihlerinizde bunlardan en az birinin etkinleştirildiğinden emin olun..&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="14"/>
       <source>Tool Controller Editor</source>
-      <translation type="unfinished">Tool Controller Editor</translation>
+      <translation>Takım Denetleyici Düzenleyicisi</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="29"/>
       <source>Controller</source>
-      <translation type="unfinished">Controller</translation>
+      <translation>Denetleyici</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="35"/>
       <source>Controller Name /  Tool Number</source>
-      <translation type="unfinished">Controller Name /  Tool Number</translation>
+      <translation>Denetleyici İsmi / Takım Numarası</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
       <source>Horiz. Feed</source>
-      <translation type="unfinished">Horiz. Feed</translation>
+      <translation>Yat. Besleme</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="96"/>
       <source>Vert. Feed</source>
-      <translation type="unfinished">Vert. Feed</translation>
+      <translation>Dik. Besleme</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="125"/>
       <source>Horiz Rapid</source>
-      <translation type="unfinished">Horiz Rapid</translation>
+      <translation>Yat Sürat</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="154"/>
       <source>Vert Rapid</source>
-      <translation type="unfinished">Vert Rapid</translation>
+      <translation>Dik Sürat</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="186"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>Mil</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>İleri</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
@@ -3969,7 +4090,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="293"/>
       <source>Any modifications only affect this ToolController!</source>
-      <translation type="unfinished">Any modifications only affect this ToolController!</translation>
+      <translation>Herhangi bir değişiklik sadece bu Takım Kontrolcüsü'nü etkiler!</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
@@ -3979,7 +4100,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
       <source>Create Property</source>
-      <translation type="unfinished">Create Property</translation>
+      <translation>Özellik Oluşturma</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="20"/>
@@ -3989,12 +4110,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &amp;quot;Mixed Case&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &amp;quot;Mixed Case&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Özelliğin adı. Yalnızca harfler, sayılar ve alt çizgiler içerebilir. Karma büyüklükte isimler, boşluklarla birlikte &amp;quot;Karma Büyüklükte&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; görüntülenecektir</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The category group the property belongs to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The category group the property belongs to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Özelliğin ait olduğu kategori grubu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="44"/>
@@ -4004,7 +4125,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PropertyCreate.ui" line="51"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The type of the property value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The type of the property value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Özelliğin değerinin tipi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="58"/>
@@ -4014,57 +4135,57 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
       <source>val1,val2,val3,...</source>
-      <translation type="unfinished">val1,val2,val3,...</translation>
+      <translation>değ1,değ2,değ3,...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ToolTip to be displayed when user hovers mouse over property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ToolTip to be displayed when user hovers mouse over property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Özelliğin üzerine fareyi getirdiğinizde takım hakkında ipucu görüntülenir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="82"/>
       <source>Enums</source>
-      <translation type="unfinished">Enums</translation>
+      <translation>Numaralandırmalar</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="89"/>
       <source>ToolTip</source>
-      <translation type="unfinished">ToolTip</translation>
+      <translation>Takım hakkında ipucu</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="117"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if you want to create several properties in a batch.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if you want to create several properties in a batch.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir grup halinde birden fazla özellik oluşturmak isteyip istemediğinizi kontrol edin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="120"/>
       <source>Create another</source>
-      <translation type="unfinished">Create another</translation>
+      <translation>Başka bir tane oluştur</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="14"/>
       <source>Library Manager</source>
-      <translation type="unfinished">Library Manager</translation>
+      <translation>Kütüphane Yöneticisi</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="35"/>
       <source>Create Toolbit</source>
-      <translation type="unfinished">Create Toolbit</translation>
+      <translation>TakımUcu Oluştur</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mevcut takım ucunu bu arşive ekleyin.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="55"/>
       <source>Add Existing</source>
-      <translation type="unfinished">Add Existing</translation>
+      <translation>Mevcut olanı ekle</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçilen takım ucunu(veya uçlarını) bu arşivden silin.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="75"/>
@@ -4074,27 +4195,27 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="99"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a working path for the tool library editor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a working path for the tool library editor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Takım arşivi düzenleyicisi için bir çalışma izi seçin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="119"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add New Tool Table&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add New Tool Table&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yeni Takım Tablosu Ekle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="139"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the selected library with a new name or export to another format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the selected library with a new name or export to another format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçilen arşivi yeni bir adla kaydedin veya başka bir biçimde dışa aktarın&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="190"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Arşivdeki Takım Uçları Tablosu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="269"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Geçerli arşivi kaydedin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="272"/>
@@ -4108,12 +4229,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <location filename="../panels/DlgJobChooser.ui" line="17"/>
       <source>Choose a Path Job</source>
-      <translation type="unfinished">Choose a Path Job</translation>
+      <translation>Bir İz İşi Seçiniz</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
       <source>Choose a Tool Controller</source>
-      <translation type="unfinished">Choose a Tool Controller</translation>
+      <translation>Bir Takım Denetleyici seçiniz</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="29"/>
@@ -4123,7 +4244,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="23"/>
       <source>Copy Selected Tools</source>
-      <translation type="unfinished">Copy Selected Tools</translation>
+      <translation>Seçilen Takımları Kopyalayınız</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="29"/>
@@ -4141,12 +4262,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="20"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>İşlemci</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="33"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Argümanlar</translation>
     </message>
   </context>
   <context>
@@ -4182,12 +4303,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
-      <translation type="unfinished">Boundary Body</translation>
+      <translation>Sınır Gövdesi</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select what type of shape to use to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select what type of shape to use to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Temeldeki izi kısıtlamak için ne tür bir şekil kullanılacağını seçin.&lt;/p&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
@@ -4202,62 +4323,62 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Modelin Bağlı Kutusunu Genişletin</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
       <source>Use Existing Solid</source>
-      <translation type="unfinished">Use Existing Solid</translation>
+      <translation>Mevcut Katıyı Kullan</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the body to be used to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the body to be used to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Temeldeki İzi kısıtlamak için kullanılacak gövdeyi seçin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bağlı Kutunun MaxY. 'sindeki uzantı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>X Uzt.</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bağlı Kutunun MaxX. 'indeki uzantı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>Y Uzt.</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bağlı Kutunun MinX. 'indeki uzantı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>Z Uzt.</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bağlı Kutunun MinZ. 'sindeki uzantı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bağlı Kutunun MaxZ. 'sindeki uzantı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="162"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bağlı Kutunun MinY. 'sindeki uzantı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
@@ -4293,32 +4414,32 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="223"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kutunun uzunluğu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kutunun yüksekliği.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="237"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kutunun Genişliği.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İzin katı tarafından kısıtlandığını kontrol ettim. Aksi takdirde, katının hacmi, bir &amp;quot;uzak tutma bölgesini&amp;quot; tanımlar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
       <source>Constrained to Inside</source>
-      <translation type="unfinished">Constrained to Inside</translation>
+      <translation>İçeriye Kısıtlı</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="30"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected features to the list of base geometries for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected features to the list of base geometries for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçili özellikleri bu işlem için temel geometriler listesine ekleyin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="33"/>
@@ -4330,7 +4451,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="40"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove the selected list items from the list of base geometries. The operation will not be applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove the selected list items from the list of base geometries. The operation will not be applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçilen liste öğelerini temel geometriler listesinden kaldırın. İşlem onlara uygulanmayacak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="43"/>
@@ -4343,7 +4464,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clears list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clears list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Temel geometrilerin listesini temizler.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="66"/>
@@ -4354,12 +4475,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="73"/>
       <source>All objects will be processed using the same operation properties</source>
-      <translation type="unfinished">All objects will be processed using the same operation properties</translation>
+      <translation>Tüm nesneler aynı işlem özellikleri kullanılarak işlenecektir</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="95"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Selected features can be deleted entirely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Selected features can be deleted entirely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3B görünümde bir veya daha fazla özellik seçin ve bunları bu işlem için temel öğeler olarak eklemek için 'Ekle'ye basın.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt; /p&gt;&lt;p&gt;Seçili özellikler tamamen silinebilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="105"/>
@@ -4369,17 +4490,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="118"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of operations with Base Geometry in current Job.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of operations with Base Geometry in current Job.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Geçerli İş'te Temel Geometri ile yapılan işlemlerin listesi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="22"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of hole features and the determined radius of the associated hole.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of hole features and the determined radius of the associated hole.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delik unsurları tablosu ve ilişkili deliğin belirlenen yarıçapı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt; Onları seçip ardından Ekle'ye basarak işlemek için unsur ekleyebilirsiniz. Listeye yanlışlıkla eklenen bir özellik, Kaldır aracılığıyla kaldırılabilir ve artık işlenmez.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Sıfırla, geçerli tüm öğeleri listeden siler ve listeyi, modelden işleme uygun tüm dairesel deliklerle doldurur. Daha sonra özellikleri etkinleştirerek/devre dışı bırakarak, kaldırarak ve ekleyerek listeyi yeniden daraltabilirsiniz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="29"/>
       <source>Feature</source>
-      <translation type="unfinished">Feature</translation>
+      <translation>Özellik</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="34"/>
@@ -4390,7 +4511,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="42"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all list items and fill list with all eligible features from the job's base object.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all list items and fill list with all eligible features from the job's base object.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tüm liste öğelerini kaldırın ve listeyi işin temel nesnesinden tüm uygun özelliklerle doldurun.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="45"/>
@@ -4400,22 +4521,22 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="52"/>
       <source>All objects will be processed using the same operation properties.</source>
-      <translation type="unfinished">All objects will be processed using the same operation properties.</translation>
+      <translation>Tüm nesneler aynı işlem özellikleri kullanılarak işlenecektir.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="65"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected list items from the list of base geometries. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected list items from the list of base geometries. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Temel geometriler listesinden seçili liste öğelerini kaldırın. İşlem artık onlara uygulanmaz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="75"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected items from 3d view to the list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected items from 3d view to the list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3B görünümden seçili öğeleri temel geometriler listesine ekleyin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of locations to be processed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of locations to be processed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İşlenecek konumların listesi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
@@ -4432,12 +4553,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="40"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected location from the list. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected location from the list. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçilen konumu listeden kaldırın. İşlem artık onlara uygulanmaz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit selected location.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit selected location.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçili konumu düzenleyin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
@@ -4447,12 +4568,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="60"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keyfi konumlar eklemek için bir iletişim kutusu açar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="70"/>
       <source>All locations will be processed using the same operation properties.</source>
-      <translation type="unfinished">All locations will be processed using the same operation properties.</translation>
+      <translation>Tüm konumlar aynı işlem özellikleri kullanılarak işlenecektir.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
@@ -4464,19 +4585,19 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İşlemin Başlangıç Derinliği. İşlemin özel işlem uygulaması gereken Z-eksenindeki en yüksek nokta.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <location filename="../panels/PageDiametersEdit.ui" line="36"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İşlemin özel işlem uygulaması gereken Z-eksenindeki en düşük değere karşılık gelen işlemin derinliği.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="72"/>
       <location filename="../panels/PageDiametersEdit.ui" line="52"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Final Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Final Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İşlemin Son Derinliği olarak seçili özelliğin Z değerini aktarınız.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="75"/>
@@ -4490,13 +4611,13 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="111"/>
       <source>Finish Step Down</source>
-      <translation type="unfinished">Finish Step Down</translation>
+      <translation>Aşağıya İnme Adımını Bitiriniz</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="118"/>
       <location filename="../panels/PageDiametersEdit.ui" line="66"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçili özelliğin Z değerini işlem için Başlangıç Derinliği olarak aktarınız.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="144"/>
@@ -4508,17 +4629,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <location filename="../panels/SetupGlobal.ui" line="64"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>Aşağı Yönde Adım Atınız</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İşlemin son kesiminin derinliği. Daha temiz bir yüzey elde etmek için kullanılabilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="183"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth in Z-axis the operation moves downwards between layers.&lt;/p&gt;&lt;p&gt;This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth in Z-axis the operation moves downwards between layers.&lt;/p&gt;&lt;p&gt;This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İşlemin katmanlar arasında aşağı doğru hareket ettiği Z-eksenindeki derinlik.&lt;/p&gt;&lt;p&gt;Bu değer kullanılan takıma, kesilecek malzemeye, mevcut olan soğutmaya ve diğer birçok etkene bağlıdır. Lütfen uygun değer için alet üreticilerinin veri sayfalarına bakın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="80"/>
@@ -4543,12 +4664,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="51"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Takım ucunu süratli hareketlerle hareket ettirmenin güvenli olduğu yükseklik. Bu yüksekliğin altında tüm yanal ve aşağı hareketler ilerleme hızıyla gerçekleştirilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="67"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Takım ucunun yanal hareketinin herhangi bir sabitleyici tarafından veya parça / stok malzemenin kendisi tarafından engellenmediği yükseklik.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
@@ -4572,7 +4693,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu işlem için takım ve takım ayarları kullanılacaktır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
@@ -4584,7 +4705,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
       <source>ToolController</source>
-      <translation type="unfinished">ToolController</translation>
+      <translation>Takım Kontrolcüsü</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
@@ -4600,12 +4721,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/SetupGlobal.ui" line="241"/>
       <location filename="../panels/SetupGlobal.ui" line="247"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Soğutucu Modu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
       <source>G Gode</source>
-      <translation type="unfinished">G Gode</translation>
+      <translation>G Kodu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
@@ -4629,7 +4750,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saat yönünde veya saatin tersi yönünde uygulanan profilin yönü&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
@@ -4649,12 +4770,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="188"/>
       <source>W =</source>
-      <translation type="unfinished">W =</translation>
+      <translation>W =</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of chamfer cut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of chamfer cut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pah kesme genişliği.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>
@@ -4674,27 +4795,27 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="215"/>
       <source>h = </source>
-      <translation type="unfinished">h = </translation>
+      <translation>h = </translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="222"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extra depth of tool immersion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extra depth of tool immersion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Takımın daldırılması için daha fazla derinlik.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="282"/>
       <source>Join:</source>
-      <translation type="unfinished">Join:</translation>
+      <translation>Birleştir:</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="289"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Round joint&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Round joint&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yuvarlatılmış eklem&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="308"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Miter joint&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Miter joint&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gönyeli eklem&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="381"/>
@@ -4704,12 +4825,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="72"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Zaman</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="79"/>
       <source>Peck</source>
-      <translation type="unfinished">Peck</translation>
+      <translation>Gagalama ile delik delmek</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="87"/>
@@ -4721,12 +4842,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="92"/>
       <source>Drill Tip</source>
-      <translation type="unfinished">Drill Tip</translation>
+      <translation>Matkap Ucu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="97"/>
       <source>2x Drill Tip</source>
-      <translation type="unfinished">2x Drill Tip</translation>
+      <translation>2x Delme Ucu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="108"/>
@@ -4736,7 +4857,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="136"/>
       <source>Dwell</source>
-      <translation type="unfinished">Dwell</translation>
+      <translation>Kesinti</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="146"/>
@@ -4746,17 +4867,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="153"/>
       <source>Extend Depth</source>
-      <translation type="unfinished">Extend Depth</translation>
+      <translation>Derinliği Genişlet</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
       <source>Start at Vertex</source>
-      <translation type="unfinished">Start at Vertex</translation>
+      <translation>Köşeden başlayınız</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the vertex number of the underlying shape string at which engraving should start.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the vertex number of the underlying shape string at which engraving should start.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kazımanın başlaması gereken temel şekil dizgisinin tepe noktası numarasını belirtin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
@@ -4767,69 +4888,69 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
       <source>Start from</source>
-      <translation type="unfinished">Start from</translation>
+      <translation>'dan başlayınız</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Burgu işleminin içeriden başlayıp dışa doğru mu yoksa dışarıdan başlayıp merkeze doğru mu devam edeceğini belirtin.&lt;/p&gt;&lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="74"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="79"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation>İçeride</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="79"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="74"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>Dışarıda</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="94"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction for the helix, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction for the helix, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saat yönünde veya saatin tersi yönünde burgunun yönü&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
       <source>Step over percent</source>
-      <translation type="unfinished">Step over percent</translation>
+      <translation>Yüzde üzerinden adımla</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the percent of the tool diameter each helix will be offset to the previous one.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A step over of 100% means no overlap of the individual cuts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the percent of the tool diameter each helix will be offset to the previous one.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A step over of 100% means no overlap of the individual cuts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Her bir burgunun bir öncekine göre dengeleneceği takım çapının yüzdesini belirtin.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Bir adım %100'ün üzerinde, tek tek kesimlerin örtüşmediği anlamına gelir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
       <source>Click to disable Extensions</source>
-      <translation type="unfinished">Click to disable Extensions</translation>
+      <translation>Uzantıları devre dışı bırakmak için tıklayın</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="35"/>
       <source>Ignore Edges and Wires</source>
-      <translation type="unfinished">Ignore Edges and Wires</translation>
+      <translation>Kenarları ve Telleri Yoksay</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="50"/>
       <source>---</source>
-      <translation type="unfinished">---</translation>
+      <translation>---</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="75"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extend the corner between two edges of a pocket. If selected adjacent edges are combined.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extend the corner between two edges of a pocket. If selected adjacent edges are combined.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir paketin iki kenarı arasındaki köşeyi genişletin. Komşu kenarlar seçildiyse birleştirilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="78"/>
       <source>Extend Corners</source>
-      <translation type="unfinished">Extend Corners</translation>
+      <translation>Köşeleri Genişletiniz</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="88"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the extent of the dimension -the default value is half the tool diameter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the extent of the dimension -the default value is half the tool diameter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boyutun kapsamını ayarlayın -varsayılan değer takımın çapının yarısıdır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
@@ -4839,7 +4960,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçilirse tüm potansiyel uzantılar görselleştirilir. Etkinleştirilen uzantılar mor renkte ve etkin olmayan uzantılar sarı renkte.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="111"/>
@@ -4849,12 +4970,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="121"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tree of existing edges and their potential extensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tree of existing edges and their potential extensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mevcut kenarların ağaç listesi ve bunların olası uzantıları.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="146"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Şu anda seçili olan paket uzantısını etkinleştirin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
@@ -4864,7 +4985,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="156"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Disable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Disable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Şu anda seçili olan paket uzantısını devre dışı bırakınız.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="159"/>
@@ -4874,22 +4995,22 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="166"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all currently enabled extensions - leaving the plain pocket operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all currently enabled extensions - leaving the plain pocket operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yalın paket işlemini bırakarak - şu anda etkin olan tüm uzantıları kaldırın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.&lt;/p&gt;&lt;p&gt;The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.&lt;/p&gt;&lt;p&gt;The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ön kaplamanın seçilen yüzün (veya hiçbir yüz seçilmemişse parçanın) gerçek şekliyle mi sınırlandırılacağını yoksa sınırlayıcı kutunun yüzü kapalı mı olacağını belirtin.&lt;/p&gt;&lt;p&gt;Sonuncusu, aşağıdaki işlemler için tek tip yükseklikler sağlamak için tüm stok alanının yüzü için kullanılabilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="67"/>
       <source>Boundbox</source>
-      <translation type="unfinished">Boundbox</translation>
+      <translation>Bağlı kutu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="72"/>
       <source>Face Region</source>
-      <translation type="unfinished">Face Region</translation>
+      <translation>Yüzey Bölgesi</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="77"/>
@@ -4906,17 +5027,17 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="90"/>
       <source>Boundary Shape</source>
-      <translation type="unfinished">Boundary Shape</translation>
+      <translation>Sınır Şekli</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
       <source>Cut Mode</source>
-      <translation type="unfinished">Cut Mode</translation>
+      <translation>Kesim Modu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="113"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on.&lt;/p&gt;&lt;p&gt;Keeping that in mind climb mode is called when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bits rotation and the tools lateral movement are in the same direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on.&lt;/p&gt;&lt;p&gt;Keeping that in mind climb mode is called when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bits rotation and the tools lateral movement are in the same direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kesme modu, takım ucunun bir tarafındaki kesimin ortaya çıkan parçayı temsil ettiğini ve diğer tarafın ya önceden frezelenmiş olduğunu ya da daha sonra kaldırılacağını varsayar.&lt;/p&gt;&lt;p&gt;Bunu akılda tutarak tırmanma modu, takım ucu her dönüşte kesime hareket ettirildiğinde çağrılır, oysa geleneksel modda takım uçlarının dönüşü ve takımların yanal hareketi aynı yöndedir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="117"/>
@@ -4933,12 +5054,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="130"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>Desen</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Malzemeyi temizlemek için taşınan takım ucunun örneği çıkarılır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="144"/>
@@ -4984,39 +5105,39 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="189"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle in which the pattern is applied.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle in which the pattern is applied.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Desenin uygulandığı açı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="196"/>
       <source>Step Over Percent</source>
-      <translation type="unfinished">Step Over Percent</translation>
+      <translation>Yüzde üzerinden adımla</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="203"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="359"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="209"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Takım çapının yüzdesi olarak belirtilen, kalıbın her döngüsünde takımın yanal olarak yer değiştirme miktarı.&lt;/p&gt;&lt;p&gt;%100'ün üzerinden bir adım atmak iki farklı döngü arasında çakışma olmamasına neden olur.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="222"/>
       <source>Material Allowance</source>
-      <translation type="unfinished">Material Allowance</translation>
+      <translation>Malzemenin Toleransı</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="229"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of material that should be left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of material that should be left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hedef şekile göre bu işlemin yapılması sonucu olşacak artık malzeme miktarı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="242"/>
       <source>Min Travel</source>
-      <translation type="unfinished">Min Travel</translation>
+      <translation>En kısa Seyahat</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="249"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected the operation uses the outline of the selected base geometry and ignores all holes and islands.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected the operation uses the outline of the selected base geometry and ignores all holes and islands.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçilirse, işlem seçilen temel geometrinin ana hatlarını kullanır ve tüm delikleri ve adaları yok sayar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="252"/>
@@ -5026,24 +5147,24 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="259"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if this operation uses a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if this operation uses a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu işlemin bir başlangıç noktası kullanıp kullanmadığını belirtin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="262"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="331"/>
       <source>Use Start Point</source>
-      <translation type="unfinished">Use Start Point</translation>
+      <translation>Başlangıç Noktasını Kullan</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="269"/>
       <source>Clear Edges</source>
-      <translation type="unfinished">Clear Edges</translation>
+      <translation>Kenarları Temizle</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="52"/>
       <source>Probe Grid Points</source>
-      <translation type="unfinished">Probe Grid Points</translation>
+      <translation>Izgara Noktaları Sondası</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="78"/>
@@ -5063,12 +5184,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="101"/>
       <source>Y Offset</source>
-      <translation type="unfinished">Y Offset</translation>
+      <translation>Y Sapması</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="115"/>
       <source>X Offset</source>
-      <translation type="unfinished">X Offset</translation>
+      <translation>X Sapması</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="132"/>
@@ -5083,22 +5204,22 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="145"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename where the probe points should be written.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename where the probe points should be written.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sonda noktalarının yazılacağı dosya adını girin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="148"/>
       <source>ProbePoints.txt</source>
-      <translation type="unfinished">ProbePoints.txt</translation>
+      <translation>SondaNoktaları.txt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profilin temel geometri özelliklerinin içinde mi yoksa dışında mı uygulanacağını belirtin. Bu, yalnızca Telafi Kullan işaretliyse (varsayılan) önemlidir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="93"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hedef şekile göre bu işlemden kalan fazladan malzeme miktarı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="117"/>
@@ -5113,52 +5234,52 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this operation should use a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this operation should use a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu işlemin bir başlangıç noktası kullanması gerekip gerekmediğini kontrol edin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process holes in the base geometry.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that this does not include cylindrical holes, the assumption being that they will get drilled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process holes in the base geometry.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that this does not include cylindrical holes, the assumption being that they will get drilled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu profil işleminin temel geometrideki delikleri de işlemesi gerekip gerekmediğini kontrol edin.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Bulunan delikler otomatik olarak karşı kesim tarafında dengelenir ve çevre olarak zıt yönde uygulanır.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Bunun silindirik delikleri içermediğini, bunların delinecekleri varsayımıyla yapıldığını unutmayın. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="150"/>
       <source>Process Holes</source>
-      <translation type="unfinished">Process Holes</translation>
+      <translation>Delikleri İşle</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İşaretlenirse, profil işlemi takım yarıçapına göre kaydırılır. Denglenme yönü Kesim Tarafı tarafından belirlenir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="160"/>
       <source>Use Compensation</source>
-      <translation type="unfinished">Use Compensation</translation>
+      <translation>Telafiyi Kullan</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that the cut side and direction is reversed in respect to the specified values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that the cut side and direction is reversed in respect to the specified values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu profil işleminin normalde delinen silindirik deliklere de uygulanmasını isteyip istemediğinizi kontrol ediniz.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p &gt;Yeterli boyutta bir matkap yoksa veya delik numarası bir takım değişikliğini gerektirmiyorsa bu yararlı olabilir.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Kesilen taraf ve yönün belirtilen değerlere göre ters olduğuna dikkat ediniz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="170"/>
       <source>Process Circles</source>
-      <translation type="unfinished">Process Circles</translation>
+      <translation>Daireleri İşle</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="177"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process the outside perimeter of the base geometry shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process the outside perimeter of the base geometry shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu profil işleminin temel geometri şekillerinin dış çevresini de işlemesi gerekip gerekmediğini kontrol edin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="180"/>
       <source>Process Perimeter</source>
-      <translation type="unfinished">Process Perimeter</translation>
+      <translation>Çevreyi İşle</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="80"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the first selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the first selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İlk seçilen özellikte hangi noktanın kullanılacağını seçin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="87"/>
@@ -5170,7 +5291,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/PageOpSlotEdit.ui" line="92"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="174"/>
       <source>Center of BoundBox</source>
-      <translation type="unfinished">Center of BoundBox</translation>
+      <translation>Bağlı Kutunun Merkezi</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
@@ -5203,57 +5324,57 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="125"/>
       <source>Start Feature Reference</source>
-      <translation type="unfinished">Start Feature Reference</translation>
+      <translation>Özellik Referansını Başlatınız</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="141"/>
       <source>End Feature Reference</source>
-      <translation type="unfinished">End Feature Reference</translation>
+      <translation>Özellik Referansını Bitiriniz</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="162"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the second selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the second selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçilen ikinci özellikte hangi noktanın kullanılacağını seçin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="222"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No Base Geometry selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No Base Geometry selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Temel Geometri seçilmedi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="228"/>
       <source>No Base Geometry selected.</source>
-      <translation type="unfinished">No Base Geometry selected.</translation>
+      <translation>Hiçbir Temel Geometri seçilmedi.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Currently using custom point inputs in the Property View of the Data tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Currently using custom point inputs in the Property View of the Data tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Şu anda Veri sekmesinin Özellik Görünümünde özel nokta girişleri kullanılıyor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="244"/>
       <source>Currently using custom point inputs available in the Property View of the Data tab.</source>
-      <translation type="unfinished">Currently using custom point inputs available in the Property View of the Data tab.</translation>
+      <translation>Şu anda Veri sekmesinin Özellik Görünümünde özel nokta girişleri kullanılıyor.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="269"/>
       <source>Extend Path End</source>
-      <translation type="unfinished">Extend Path End</translation>
+      <translation>İzin Sonunu Uzatınız</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="285"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive extends the end of the path, negative shortens.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive extends the end of the path, negative shortens.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İzin sonunu pozitif genişletir, negatif ise daraltır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="301"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive extends the beginning of the path, negative shortens.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive extends the beginning of the path, negative shortens.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İzin başlangıcını pozitif genişletir, negatif ise daraltır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="317"/>
       <source>Extend Path Start</source>
-      <translation type="unfinished">Extend Path Start</translation>
+      <translation>İzin Başlangıcını Genişletiniz</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
@@ -5265,12 +5386,12 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="352"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the path orientation with regard to the feature(s) selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the path orientation with regard to the feature(s) selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçilen özelliğe(veya özelliklere) göre iz yönünü seçin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="356"/>
       <source>Start to End</source>
-      <translation type="unfinished">Start to End</translation>
+      <translation>Baştan Sona</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="361"/>
@@ -5287,7 +5408,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/PageOpSurfaceEdit.ui" line="263"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="99"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Derinlikte tek bir geçişte veya son derinliğe birden çok geçişte işlemi tamamlayın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="385"/>
@@ -5306,7 +5427,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="398"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to reverse the cut direction of the slot path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to reverse the cut direction of the slot path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yiv izinin kesme yönünü tersine çevirmeyi etkinleştirin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="401"/>
@@ -5323,29 +5444,29 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="266"/>
       <source>Sample interval</source>
-      <translation type="unfinished">Sample interval</translation>
+      <translation>Örnekle aralığı</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="85"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the X axis."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the X axis."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;X-ekseni boyunca seçili sınırlayıcı kutuya ilave dengelenme."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="95"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the Y axis."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional offset to the selected bounding box along the Y axis."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Y-ekseni boyunca seçili sınırlayıcı kutuya ilave dengelenme."&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="107"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="249"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the sampling resolution. Smaller values quickly increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the sampling resolution. Smaller values quickly increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Örnekleme çözünürlüğünü ayarlayın. Daha küçük değerler işleme süresini daha çabuk artırır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="117"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="133"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Doğrusal izlerin (eşdoğrusal noktalar) optimizasyonunu etkinleştirin. G Kodu çıktısından gereksiz ortak doğrusal noktaları kaldırır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="120"/>
@@ -5357,39 +5478,39 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/PageOpSurfaceEdit.ui" line="127"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="235"/>
       <source>BoundBox</source>
-      <translation type="unfinished">BoundBox</translation>
+      <translation>Bağlı kutu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="134"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="64"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the overall boundary for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the overall boundary for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İşlem için tüm sınırı seçin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="143"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="73"/>
       <source>BaseBoundBox</source>
-      <translation type="unfinished">BaseBoundBox</translation>
+      <translation>Temel Bağlayıcı Kutu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="151"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable separate optimization of transitions between, and breaks within, each step over path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable separate optimization of transitions between, and breaks within, each step over path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İz üzerinden atılan her adım arasındaki geçişlerin ve araların ayrı ayrı optimizasyonunu etkinleştiriniz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="154"/>
       <source>Optimize StepOver Transitions</source>
-      <translation type="unfinished">Optimize StepOver Transitions</translation>
+      <translation>Adım Atma Geçişlerini Optimize Edin</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="161"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profile the edges of the selection.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profile the edges of the selection.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçimin kenarlarını profilleyin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="170"/>
       <source>Only</source>
-      <translation type="unfinished">Only</translation>
+      <translation>Sadece</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="175"/>
@@ -5411,7 +5532,7 @@ FinalDepth'i manuel olarak ayarlamak gerekiyorsa, lütfen farklı bir işlem se�
       <location filename="../panels/PageOpSurfaceEdit.ui" line="195"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="161"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the geometric clearing pattern to use for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the geometric clearing pattern to use for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İşlem için kullanılacak geometrik temizleme modelini ayarlayın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="199"/>
@@ -5451,7 +5572,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="249"/>
       <source>BoundBox extra offset X, Y</source>
-      <translation type="unfinished">BoundBox extra offset X, Y</translation>
+      <translation>X, Y Üzerinde ilave Bağlı Kutu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="256"/>
@@ -5466,52 +5587,52 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="294"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dropcutter lines are created parallel to this axis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dropcutter lines are created parallel to this axis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İniş kesici çizgileri bu eksene paralel oluşturulur.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="311"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the Z-axis depth offset from the target surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the Z-axis depth offset from the target surface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hedef yüzeyden Z-ekseni derinliği dengelenmesini ayarlayın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="321"/>
       <source>Drop Cutter Direction</source>
-      <translation type="unfinished">Drop Cutter Direction</translation>
+      <translation>İniş Kesici Yönü</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="328"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make True, if specifying a Start Point&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Make True, if specifying a Start Point&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bir Başlangıç Noktası belirtiyorsanız Doğru Yap&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="338"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçili yüzlerin Temel Geometri listesindeki son 'N' yüzlerini kesmekten kaçının.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="345"/>
       <source>Profile Edges</source>
-      <translation type="unfinished">Profile Edges</translation>
+      <translation>Profil Kenarları</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="352"/>
       <source>Avoid Last X Faces</source>
-      <translation type="unfinished">Avoid Last X Faces</translation>
+      <translation>Son X Yüzeylerinden kaçın</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="372"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If true, the cutter will remain inside the boundaries of the model or selected face(s)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If true, the cutter will remain inside the boundaries of the model or selected face(s)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İşaretlenirse; kesici takım, model veya seçili yüzey(ler) in sınırları içerisinde kalacaktır&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="375"/>
       <source>Boundary Enforcement</source>
-      <translation type="unfinished">Boundary Enforcement</translation>
+      <translation>Sınır Zorlaması</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
       <source>Thread</source>
-      <translation type="unfinished">Thread</translation>
+      <translation>Vida dişi</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="26"/>
@@ -5521,12 +5642,12 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="37"/>
       <source>Left Hand</source>
-      <translation type="unfinished">Left Hand</translation>
+      <translation>Sol El</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="42"/>
       <source>Right Hand</source>
-      <translation type="unfinished">Right Hand</translation>
+      <translation>Sağ El</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="50"/>
@@ -5542,27 +5663,27 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="63"/>
       <source>Metric - internal</source>
-      <translation type="unfinished">Metric - internal</translation>
+      <translation>Metrik - dahili</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="68"/>
       <source>SAE - internal</source>
-      <translation type="unfinished">SAE - internal</translation>
+      <translation>SAE - dahili</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="79"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Uydurunuz</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="99"/>
       <source>Major Diameter</source>
-      <translation type="unfinished">Major Diameter</translation>
+      <translation>Büyük Çap</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
       <source>Minor Diameter</source>
-      <translation type="unfinished">Minor Diameter</translation>
+      <translation>Küçük Çap</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="127"/>
@@ -5572,7 +5693,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="148"/>
       <source>TPI</source>
-      <translation type="unfinished">TPI</translation>
+      <translation>TPI</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="183"/>
@@ -5583,58 +5704,58 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="189"/>
       <source>Passes</source>
-      <translation type="unfinished">Passes</translation>
+      <translation>Geçişler/Pasolar</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="227"/>
       <source>Lead In/Out</source>
-      <translation type="unfinished">Lead In/Out</translation>
+      <translation>Giriş/Çıkış Kablo Kılavuzu</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="63"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="95"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="66"/>
       <source>Discretization Deflection</source>
-      <translation type="unfinished">Discretization Deflection</translation>
+      <translation>Ayrıştırma Sapması</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="73"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu değer, yayları dilimlere ayırmada kullanılır. Daha küçük değerler daha büyük gcode ile sonuçlanacaktır. Daha büyük değerler, orta hattın izinde istenmeyen dilimlere neden olabilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="98"/>
       <source>Filter Colinear lines</source>
-      <translation type="unfinished">Filter Colinear lines</translation>
+      <translation>Eşdoğrusal Çizgileri Filtrele</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets how aggressively colinear segments are filtered from the voronoi diagram&lt;/p&gt;&lt;p&gt;Valid values are 0 - 90 degrees (larger numbers filter more)&lt;/p&gt;&lt;p&gt;Default = 10&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets how aggressively colinear segments are filtered from the voronoi diagram&lt;/p&gt;&lt;p&gt;Valid values are 0 - 90 degrees (larger numbers filter more)&lt;/p&gt;&lt;p&gt;Default = 10&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Voronoi şemasından aynı eşdoğrusal dilimlerin ne kadar girişken bir şekilde filtreleneceğini ayarlar&lt;/p&gt;&lt;p&gt;Geçerli değerler 0 - 90 derecedir (daha büyük numaralar daha fazla filtre uygular)&lt;/p&gt;&lt;p &gt;Varsayılan = 10&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Pozitif değerler kesici takımı, sınıra doğru veya sınırın ötesine ilerletir. Negatif değerler ise kesici takımı sınırdan uzağa geri çeker</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="116"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kullanılacak algoritmayı seçin: OCL İniş Kesici* veya Deneysel (OCL tabanlı değil).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="120"/>
       <source>OCL Dropcutter</source>
-      <translation type="unfinished">OCL Dropcutter</translation>
+      <translation>OCL İniş Kesici</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="125"/>
       <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <translation>Deneysel</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
@@ -5644,12 +5765,12 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="273"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>Algoritma</translation>
     </message>
     <message>
       <location filename="../panels/PointEdit.ui" line="14"/>
       <source>Point Edit</source>
-      <translation type="unfinished">Point Edit</translation>
+      <translation>Nokta Düzenleme</translation>
     </message>
     <message>
       <location filename="../panels/PointEdit.ui" line="23"/>
@@ -5669,22 +5790,22 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/PropertyBag.ui" line="14"/>
       <source>Property Bag</source>
-      <translation type="unfinished">Property Bag</translation>
+      <translation>Özellik Çantası</translation>
     </message>
     <message>
       <location filename="../panels/PropertyBag.ui" line="55"/>
       <source>Modify...</source>
-      <translation type="unfinished">Modify...</translation>
+      <translation>Değiştir...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyBag.ui" line="62"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Ekle...</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="14"/>
       <source>Setup Global</source>
-      <translation type="unfinished">Setup Global</translation>
+      <translation>Genel Kurulum</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="30"/>
@@ -5694,17 +5815,17 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="43"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İfade, yeni oluşturulan bir işlemin Başlangıç Derinliği olarak ayarlandı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="57"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İfade, yeni oluşturulan bir işlemin Bitiş Derinliği olarak ayarlandı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İfade, yeni oluşturulan bir işlemin Adım Azaltması olarak ayarlandı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="81"/>
@@ -5714,7 +5835,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="87"/>
       <source>Safe</source>
-      <translation type="unfinished">Safe</translation>
+      <translation>Güvenli</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="94"/>
@@ -5724,32 +5845,32 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İfade, yeni işlemler için Emniyetli Yükselti olarak ayarlandı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt; /p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İfade, yeni işlemler için Boşluk Yüksekliği olarak ayarlandı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan: &amp;quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;3 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;3 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boşluk Yüksekliği Dengeleme - yeni işlemler için varsayılan Boşluk Yüksekliği değerini ayarlayan ifadeler tarafından kullanılabilir.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan:&amp;quot;3 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="132"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>İfade</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="142"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SafeHeightOffset can be for expressions to set the SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;5 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SafeHeightOffset can be for expressions to set the SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;5 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Emniyetli Yükselti Dengeleme - yeni işlemler için varsayılan Emniyetli Yükselti değerini ayarlayan ifadeler tarafından kullanılabilir.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan:&amp;quot;5 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="172"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Yüksek Süratli</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="178"/>
@@ -5759,7 +5880,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="191"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid horizontal speed assigned as HorizRapid to new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid horizontal speed assigned as HorizRapid to new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yeni Takım Kontrolcüsüne YatySürat olarak atanan yataydaki yüksek sürat.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="198"/>
@@ -5769,7 +5890,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="211"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid vertical speed assigned to VertRapid of new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid vertical speed assigned to VertRapid of new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yeni Takım Kontrolcüsüne DikySürat olarak atanan dikeydeki yüksek sürat.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="20"/>
@@ -5784,7 +5905,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="36"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>İsmi Görüntüle</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="57"/>
@@ -5794,7 +5915,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="67"/>
       <source>Length Offset</source>
-      <translation type="unfinished">Length Offset</translation>
+      <translation>Uzantı Uzunluğu</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="74"/>
@@ -5807,39 +5928,39 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
       <location filename="../panels/ToolEditor.ui" line="237"/>
       <location filename="../panels/ToolEditor.ui" line="277"/>
       <source>0.00</source>
-      <translation type="unfinished">0.00</translation>
+      <translation>0.00</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
       <location filename="../panels/ToolEditor.ui" line="184"/>
       <source>Tool Parameter</source>
-      <translation type="unfinished">Tool Parameter</translation>
+      <translation>Takım Parametresi</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
       <source>Flat Radius</source>
-      <translation type="unfinished">Flat Radius</translation>
+      <translation>Yassı yarıçap</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="110"/>
       <source>Corner Radius</source>
-      <translation type="unfinished">Corner Radius</translation>
+      <translation>Köşe Yarıçapı</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="117"/>
       <source>Point/Tip Angle</source>
-      <translation type="unfinished">Point/Tip Angle</translation>
+      <translation>Nokta/Uç Açısı</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="124"/>
       <source>Cutting Edge Height</source>
-      <translation type="unfinished">Cutting Edge Height</translation>
+      <translation>Kesmek İçin Kenar Yüksekliği</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="161"/>
       <location filename="../panels/ToolEditor.ui" line="254"/>
       <source>180°</source>
-      <translation type="unfinished">180°</translation>
+      <translation>180°</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="164"/>
@@ -5850,27 +5971,27 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="196"/>
       <source>D = </source>
-      <translation type="unfinished">D = </translation>
+      <translation>D = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="213"/>
       <source>d =</source>
-      <translation type="unfinished">d =</translation>
+      <translation>d =</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="230"/>
       <source>H =</source>
-      <translation type="unfinished">H =</translation>
+      <translation>H =</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="247"/>
       <source>α = </source>
-      <translation type="unfinished">α = </translation>
+      <translation>α = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="267"/>
       <source>S = </source>
-      <translation type="unfinished">S = </translation>
+      <translation>S = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="308"/>
@@ -5880,62 +6001,62 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="20"/>
       <source>Tag Parameters</source>
-      <translation type="unfinished">Tag Parameters</translation>
+      <translation>Etiket Parametreleri</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="26"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the default width of holding tags.&lt;/p&gt;&lt;p&gt;If the width is set to 0 the dressup will try to guess a reasonable value based on the path itself.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the default width of holding tags.&lt;/p&gt;&lt;p&gt;If the width is set to 0 the dressup will try to guess a reasonable value based on the path itself.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Birleştirme etiketleri için varsayılan genişliğini ayarlayın.&lt;/p&gt;&lt;p&gt;Genişlik 0 olarak ayarlanırsa, giydirme, ize dayalı olarak makul bir değer tahmin etmeye çalışır. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="33"/>
       <source>Default Width</source>
-      <translation type="unfinished">Default Width</translation>
+      <translation>Varsayılan Genişlik</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="40"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plunge angle for the holding tags ascent and descent.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plunge angle for the holding tags ascent and descent.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Birleştirme etiketleri için yükselme ve alçalma dalma açısı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="59"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default height of holding tags.&lt;/p&gt;&lt;p&gt;If the specified height is 0 the dressup will use half the height of the part. Should the height be bigger than the height of the part the dressup will reduce the height to the height of the part.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default height of holding tags.&lt;/p&gt;&lt;p&gt;If the specified height is 0 the dressup will use half the height of the part. Should the height be bigger than the height of the part the dressup will reduce the height to the height of the part.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Varsayılan birleştirme etiketleri yüksekliği.&lt;/p&gt;&lt;p&gt;Belirtilen yükseklik 0 ise, giydirme bölümün yüksekliğinin yarısını kullanır. Yüksekliğin parçanın yüksekliğinden büyük olması durumunda, giydirme, yüksekliği parçanın yüksekliğine indirecektir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="66"/>
       <source>Default Angle</source>
-      <translation type="unfinished">Default Angle</translation>
+      <translation>Varsayılan Açı</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="73"/>
       <source>Default Height</source>
-      <translation type="unfinished">Default Height</translation>
+      <translation>Varsayılan Yükseklik</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="80"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Etiketin üst kenarındaki yuvarlama yarıçapı.&lt;/p&gt;&lt;p&gt;Yarıçap, etiket şeklinin desteklediğinden daha büyükse, ortaya çıkan şekil şöyle bir kubbeninki gibi olur.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
       <source>Default Radius</source>
-      <translation type="unfinished">Default Radius</translation>
+      <translation>Varsayılan Yarıçap</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="97"/>
       <source>Tag Generation</source>
-      <translation type="unfinished">Tag Generation</translation>
+      <translation>Etiket Üretimi</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="103"/>
       <source>Initial # Tags </source>
-      <translation type="unfinished">Initial # Tags </translation>
+      <translation>Başlangıç # Etiketleri </translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="110"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the number of tags generated when a new dressup is created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the number of tags generated when a new dressup is created.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yeni bir giydirme oluşturulduğunda oluşturulan etiketlerin sayısını belirtin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -5943,7 +6064,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="14"/>
       <source>Job Preferences</source>
-      <translation type="unfinished">Job Preferences</translation>
+      <translation>İş Tercihleri</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="32"/>
@@ -5958,7 +6079,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="44"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to look for templates, post processors, tool tables and other external files.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty the macro directory is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to look for templates, post processors, tool tables and other external files.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty the macro directory is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Şablonları, son çıkan işlemcileri, takım tablolarını ve diğer harici dosyaları arama yolu.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Boş bırakılırsa makro dizini kullanılır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="51"/>
@@ -5980,7 +6101,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default template to be selected when creating a new Job. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be helpful when almost all jobs will be processed by the same machine with a similar setup.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty no template will be preselected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default template to be selected when creating a new Job. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be helpful when almost all jobs will be processed by the same machine with a similar setup.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty no template will be preselected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yeni bir İş oluştururken seçilecek varsayılan şablon. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Bu, hemen hemen tüm işler benzer bir kurulumla aynı makine tarafından işleneceğinde yardımcı olabilir.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Boş bırakılırsa hiçbir şablon önceden seçilmez.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="89"/>
@@ -5990,113 +6111,113 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="98"/>
       <source>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</source>
-      <translation type="unfinished">Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</translation>
+      <translation>Dizinleri hesaplamak için kullanılan yeni İşler için varsayılan değer. Daha küçük değerler, hassasiyeti artırır; ancak hesaplamayı yavaşlatır</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="105"/>
       <source>Default Geometry Tolerance</source>
-      <translation type="unfinished">Default Geometry Tolerance</translation>
+      <translation>Varsayılan Geometri Toleransı</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="115"/>
       <source>Default Curve Accuracy</source>
-      <translation type="unfinished">Default Curve Accuracy</translation>
+      <translation>Varsayılan Eğri Hassasiyeti</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="150"/>
       <location filename="../preferences/PathJob.ui" line="265"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>Sonradan İşleyici</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="162"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>Çıktı Dosyası</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="174"/>
       <source>Default Path</source>
-      <translation type="unfinished">Default Path</translation>
+      <translation>Varsayılan Yol</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="193"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;br/&gt;%d ... name of the active document (with extension)&lt;br/&gt;%M ... user macro directory&lt;br/&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;br/&gt;%d ... name of the active document (with extension)&lt;br/&gt;%M ... user macro directory&lt;br/&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Son çıkan işlemci dışa aktarımı için varsayılan olarak kullanılacak bir dizin ve isteğe bağlı olarak dosya adı (aşağıya bakınız) girin.&lt;/p&gt;&lt;p&gt;Aşağıdaki ikameler, ad, sonradan işleme sırasında çözümlenir:&lt;/p&gt;&lt;p&gt;%D ... etkin belgenin dizini&lt;br/&gt;%d ... etkin belgenin adı (uzantılı)&lt;br/&gt; %M ... kullanıcı makro dizini&lt;br/&gt;%j ... etkin İş nesnesinin adı&lt;/p&gt;&lt;p&gt;Aşağıdaki örnek, belgeyle aynı ada sahip tüm dosyaları /home/freecad dizini ( lütfen tırnak işaretlerini kaldırın):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%dg-code&amp;quot;&lt;/p&gt;&lt;p&gt;Ad çakışmalarıyla nasıl başa çıkılacağına ilişkin aşağıdaki dosya kaydetme politikasına bakın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="213"/>
       <source>File Save Policy</source>
-      <translation type="unfinished">File Save Policy</translation>
+      <translation>Dosya Kaydetme Yöntemi</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="232"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Olası dosya adı çakışmalarıyla nasıl başa çıkacağınızı seçin. Her zaman bir iletişim kutusu açın, yalnızca çıktı dosyası zaten varsa bir iletişim kutusu açın, mevcut herhangi bir dosyanın üzerine yazın veya dosya adına benzersiz bir (3 basamaklı) sıralı kimlik ekleyin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="236"/>
       <source>Open File Dialog</source>
-      <translation type="unfinished">Open File Dialog</translation>
+      <translation>Dosya İletişim Kutusunu Açınız</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="241"/>
       <source>Open File Dialog on conflict</source>
-      <translation type="unfinished">Open File Dialog on conflict</translation>
+      <translation>Çakışmadaki Dosya İletişim Kutusunu Açınız</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="246"/>
       <source>Overwrite existing file</source>
-      <translation type="unfinished">Overwrite existing file</translation>
+      <translation>Mevcut dosyanın üzerine yaz</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="251"/>
       <source>Append Unique ID on conflict</source>
-      <translation type="unfinished">Append Unique ID on conflict</translation>
+      <translation>Çakışmadakine Benzersiz Kimlik ekle</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="274"/>
       <source>Post Processors Selection </source>
-      <translation type="unfinished">Post Processors Selection </translation>
+      <translation>Son Çıkan İşlemci Seçimi </translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="284"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yüklü herhangi bir son çıkan işlemci komut dosyası yok gibi görünüyor. Lütfen bazılarını makro dizininize ekleyin ve dosya adının &amp;quot;_post.py&amp;quot; ile bittiğinden emin olunuz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="291"/>
       <source>Default Post Processor</source>
-      <translation type="unfinished">Default Post Processor</translation>
+      <translation>Varsayılan Son Çıkan İşlemci</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="298"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors as the default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors as the default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Son çıkan işlemcilerden birini varsayılan olarak seçiniz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="301"/>
       <source>DefaultPostProcessor</source>
-      <translation type="unfinished">DefaultPostProcessor</translation>
+      <translation>Varsayılan Son Çıkan İşlemci</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="304"/>
       <source>Mod/Path</source>
-      <translation type="unfinished">Mod/Path</translation>
+      <translation>Mod/Dizin</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="311"/>
       <source>Default Arguments</source>
-      <translation type="unfinished">Default Arguments</translation>
+      <translation>Varsayılan Bağımsız Değişkenler</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="318"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yukarıda belirtilen varsayılan Son Çıkan İşlemcilere iletilen isteğe bağlı bağımsız değişkenler. Desteklenen bağımsız değişkenler için Son Çıkan İşlemcilerin belgelerine bakınız.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="356"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>Kurulum</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="362"/>
@@ -6116,22 +6237,22 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="391"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Modelin Bağlı Kutusunu Genişletin</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="418"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>X Uzt.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="435"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>Y Uzt.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="445"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>Z Uzt.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="473"/>
@@ -6182,22 +6303,22 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="639"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legacy Tools have no accurate shape representation and are stored in the user preferences of FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legacy Tools have no accurate shape representation and are stored in the user preferences of FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Miras Kalan Takımların hassas bir şekil gösterimi yoktur ve FreeCAD'in kullanıcı tercihlerinde saklanır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="642"/>
       <source>Use Legacy Tools</source>
-      <translation type="unfinished">Use Legacy Tools</translation>
+      <translation>Miras Kalan Takımları Kullanınız</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="649"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Takım uçları ve bunların şekillerine yapılan referanslar ya mutlak bir dizinle ya da arama yoluyla ilişkili bir dizinle saklanabilir.&lt;/p&gt;&lt;p&gt;Genel olarak düzen değişikliklerine karşı esneklikleri ve sağlamlıkları nedeniyle ilişkili dizinleri kullanın.&lt;/p&gt;&lt;p&gt;Farklı dizinlerde aynı ada sahip birden fazla takım veya takım şekli varsa, mutlak yolların kullanılması gerekebilir. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="652"/>
       <source>Store Absolute Paths</source>
-      <translation type="unfinished">Store Absolute Paths</translation>
+      <translation>Tam Yolları Saklayınız</translation>
     </message>
   </context>
   <context>
@@ -6214,7 +6335,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>GUI</source>
-      <translation type="unfinished">GUI</translation>
+      <translation>Grafik Kullanıcı Arayüzü</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="23"/>
@@ -6269,7 +6390,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="189"/>
       <source>Probe Path color</source>
-      <translation type="unfinished">Probe Path color</translation>
+      <translation>Renk Dizini Sondası</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="216"/>
@@ -6279,32 +6400,32 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="239"/>
       <source>Path Highlight Color</source>
-      <translation type="unfinished">Path Highlight Color</translation>
+      <translation>Vurgulama Rengi Dizini</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="272"/>
       <source>Bounding Box Normal Color</source>
-      <translation type="unfinished">Bounding Box Normal Color</translation>
+      <translation>Kapsayan Kutu Normal Rengi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="285"/>
       <source>Bounding Box Selection Color</source>
-      <translation type="unfinished">Bounding Box Selection Color</translation>
+      <translation>Kapsayan Kutu Seçim Rengi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="352"/>
       <source>UI Settings</source>
-      <translation type="unfinished">UI Settings</translation>
+      <translation>Kullanıcı Arayüzü Ayarları</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="361"/>
       <source>Path Selection Style</source>
-      <translation type="unfinished">Path Selection Style</translation>
+      <translation>Dizin Seçim Biçimi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="374"/>
       <source>Default path shape selection behavior in 3D viewer</source>
-      <translation type="unfinished">Default path shape selection behavior in 3D viewer</translation>
+      <translation>3B görüntüleyicide varsayılan dizin şekilinin seçim davranışı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="384"/>
@@ -6314,7 +6435,7 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="389"/>
       <source>Bounding Box</source>
-      <translation type="unfinished">Bounding Box</translation>
+      <translation>Kapsayan Kutu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="394"/>
@@ -6329,22 +6450,22 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="416"/>
       <source>Classic</source>
-      <translation type="unfinished">Classic</translation>
+      <translation>Klasik</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="421"/>
       <source>Classic - reversed</source>
-      <translation type="unfinished">Classic - reversed</translation>
+      <translation>Klasik - Ters Yönlü</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="426"/>
       <source>Multi Panel</source>
-      <translation type="unfinished">Multi Panel</translation>
+      <translation>Çok Elemanlı Panel</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="431"/>
       <source>Multi Panel - reversed</source>
-      <translation type="unfinished">Multi Panel - reversed</translation>
+      <translation>Çok Elemanlı Panel - Ters Yönlü</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="14"/>
@@ -6359,37 +6480,37 @@ tarama&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../preferences/Advanced.ui" line="26"/>
       <source>Suppress all warnings about setting speed rates for accurate cycle time calculation</source>
-      <translation type="unfinished">Suppress all warnings about setting speed rates for accurate cycle time calculation</translation>
+      <translation>Doğru çevrim süresi hesaplaması için sürat oranlarının ayarlanmasıyla ilgili tüm uyarıları zaptediniz</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="29"/>
       <source>Suppress all missing speeds warning</source>
-      <translation type="unfinished">Suppress all missing speeds warning</translation>
+      <translation>Tüm eksik sürat uyarılarını zaptediniz</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="45"/>
       <source>Suppress warning about setting the rapid speed rates for accurate cycle time calculation. Ignored if all speed warnings are already suppressed.</source>
-      <translation type="unfinished">Suppress warning about setting the rapid speed rates for accurate cycle time calculation. Ignored if all speed warnings are already suppressed.</translation>
+      <translation>Doğru çevrim süresi hesaplaması için yüksek süratli oranların ayarlanmasıyla ilgili uyarıyı bastırın. Tüm sürat uyarıları zaten zaptedilmişse yok sayılır.</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="48"/>
       <source>Suppress missing rapid speeds warning</source>
-      <translation type="unfinished">Suppress missing rapid speeds warning</translation>
+      <translation>Tüm eksik yüksek süratli uyarıları zaptediniz</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="64"/>
       <source>Suppress warning whenever a Path selection mode is activated</source>
-      <translation type="unfinished">Suppress warning whenever a Path selection mode is activated</translation>
+      <translation>Bir Dizin seçim modu etkinleştirildiğinde uyarıyı zaptediniz</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="67"/>
       <source>Suppress selection mode warning</source>
-      <translation type="unfinished">Suppress selection mode warning</translation>
+      <translation>Seçim modu uyarısını zaptediniz</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="92"/>
       <source>Open CAMlib</source>
-      <translation type="unfinished">Open CAMlib</translation>
+      <translation>CAMlib 'i açınız</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="116"/>
@@ -6399,27 +6520,27 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Sans'; font-size:16pt; font-weight:400; font-style:normal;"&gt;
 &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If openCAMlib is installed with its python interface it can be used by some additional 3d operations.&lt;/p&gt;
 &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Changing this value requires a restart of FreeCAD to take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Sans'; font-size:16pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If openCAMlib is installed with its python interface it can be used by some additional 3d operations.&lt;/p&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Changing this value requires a restart of FreeCAD to take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;openCAMlib kuruluysa python arayüzü ile bazı ilave 3d işlemler ile kullanılabilir.&lt;/p&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Bu değeri değiştirmenin etkili olması için FreeCAD'in yeniden başlatılması gereklidir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="128"/>
       <source>Enable OCL dependent features</source>
-      <translation type="unfinished">Enable OCL dependent features</translation>
+      <translation>OCL 'ye bağlı özellikleri etkinleştiriniz</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="141"/>
       <source>Suppress warning if openCAMlib cannot be found</source>
-      <translation type="unfinished">Suppress warning if openCAMlib cannot be found</translation>
+      <translation>openCAMlib bulunamazsa uyarıyı zaptediniz</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="144"/>
       <source>Suppress openCAMlib warning</source>
-      <translation type="unfinished">Suppress openCAMlib warning</translation>
+      <translation>openCAMlib uyarısını zaptediniz</translation>
     </message>
   </context>
   <context>
@@ -6448,7 +6569,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="14"/>
       <source>AxisMap Dressup</source>
-      <translation type="unfinished">AxisMap Dressup</translation>
+      <translation>Eksen Eşlemesi Donatımı</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="33"/>
@@ -6460,52 +6581,52 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="40"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The radius of the wrapped axis&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The radius of the wrapped axis&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sarılmış eksenin yarıçapı&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;The radius of the wrapped axis</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="50"/>
       <source>Axis Mapping</source>
-      <translation type="unfinished">Axis Mapping</translation>
+      <translation>Eksen Eşleme</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="57"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The input mapping axis.  Coordinates of the first axis will be mapped to the second.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The input mapping axis.  Coordinates of the first axis will be mapped to the second.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Giriş eşleme ekseni. Birinci eksenin koordinatları ikinci eksene eşlenecektir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="64"/>
       <source>X-&gt;A</source>
-      <translation type="unfinished">X-&gt;A</translation>
+      <translation>X-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="69"/>
       <source>Y-&gt;A</source>
-      <translation type="unfinished">Y-&gt;A</translation>
+      <translation>Y-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="74"/>
       <source>X-&gt;B</source>
-      <translation type="unfinished">X-&gt;B</translation>
+      <translation>X-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="79"/>
       <source>Y-&gt;B</source>
-      <translation type="unfinished">Y-&gt;B</translation>
+      <translation>Y-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="84"/>
       <source>X-&gt;C</source>
-      <translation type="unfinished">X-&gt;C</translation>
+      <translation>X-&gt;C</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="89"/>
       <source>Y-&gt;C</source>
-      <translation type="unfinished">Y-&gt;C</translation>
+      <translation>Y-&gt;C</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="14"/>
       <source>Dogbones</source>
-      <translation type="unfinished">Dogbones</translation>
+      <translation>Köpek kemikleri</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="35"/>
@@ -6522,7 +6643,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İstediğiniz kemik donatma biçimini seçin:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;Köpek kemiği&lt;/span&gt; ... köşeyi kapatmak için en kısa yolu seçer,&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;T-kemik&lt;/span&gt; ... köşe kapanana kadar belirli bir yöne doğru genişletir&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
@@ -6532,22 +6653,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="57"/>
       <source>T-bone horizontal</source>
-      <translation type="unfinished">T-bone horizontal</translation>
+      <translation>Yatayda T-kemik</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="62"/>
       <source>T-bone vertical</source>
-      <translation type="unfinished">T-bone vertical</translation>
+      <translation>Dikeyde T-kemik</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="67"/>
       <source>T-bone long edge</source>
-      <translation type="unfinished">T-bone long edge</translation>
+      <translation>uzun kenar T-kemik</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="72"/>
       <source>T-bone short edge</source>
-      <translation type="unfinished">T-bone short edge</translation>
+      <translation>kısa kenar T-kemik</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="80"/>
@@ -6557,7 +6678,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On which side of the profile bones are inserted - this also determines which corners are dressed up. The default value is determined based on the profile being dressed up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On which side of the profile bones are inserted - this also determines which corners are dressed up. The default value is determined based on the profile being dressed up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profil kemiklerinin olduğu tarafın üzerine eklenir - bu ayrıca hangi köşelerin donatılacağını da belirler. Varsayılan değer, giydirilen profile göre belirlenir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="94"/>
@@ -6572,17 +6693,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="107"/>
       <source>Incision          </source>
-      <translation type="unfinished">Incision          </translation>
+      <translation>Kesi          </translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="114"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it's the radius of the tool (R) and for dogbones it's R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;custom&lt;/span&gt; ... let's you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it's the radius of the tool (R) and for dogbones it's R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;custom&lt;/span&gt; ... let's you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profile eklenecek kemiğin kesi uzunluğunu belirler.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;adaptive&lt;/span&gt; ... uzunluk, mevcut takım yarıçapı dikkate alınarak kenarlarının açısına göre köşeyi kaplayacak şekilde uyarlanır (varsayılan).&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;fixed&lt;/span&gt; ... düz açılar için uyarlanabilir ile aynıdır. T kemikleri için aletin yarıçapı (R) ve köpek kemikleri için R * (2/√2 - 1)'dir.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600; font-style:italic;"&gt;custom&lt;/span&gt; ... aşağıda özel (sabit) bir uzunluk belirleyelim&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
       <source>adaptive</source>
-      <translation type="unfinished">adaptive</translation>
+      <translation>uyabilen</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="126"/>
@@ -6597,12 +6718,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=" font-weight:600;"&gt;Incision&lt;/span&gt; is set to &lt;span style=" font-weight:600;"&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=" font-weight:600;"&gt;Incision&lt;/span&gt; is set to &lt;span style=" font-weight:600;"&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Kesi&lt;/span&gt;&lt;span style=" font-weight:600;"&gt; özel&lt;/span&gt; olarak yok sayılacak şekilde ayarlanmışsa her bir kemik için uzunluk girin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=" font-weight:600;"&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=" font-weight:600;"&gt;un-check&lt;/span&gt; the bones you don't want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=" font-weight:600;"&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you're trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=" font-weight:600;"&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=" font-weight:600;"&gt;un-check&lt;/span&gt; the bones you don't want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=" font-weight:600;"&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you're trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu giydirmenin parçası olan kemik konumlarının listesi (o konumdaki tüm kemiklerle birlikte). Liste, profildeki köşelere ve kemikler için seçilen &lt;span style=" font-weight:600;"&gt;Tarafa göre&lt;/span&gt; belirlenir.&lt;/p&gt;&lt;p&gt; Donatmak istemediğiniz kemiklerin &lt;span style=" font-weight:600;"&gt;işaretini kaldırabilirsiniz.&lt;/span&gt;&lt;/p&gt;&lt;p&gt; Bir kemik &lt;span style=" font-weight:600;"&gt;grileşmişse&lt;/span&gt; önceki bir donatma tarafından donatıldığı anlamına gelir. Ya da başka bir deyişle, bu köpek kemiği donatmayı tekrar denerseniz, sadece burada işaretlenmemiş olan kemikleri seçebileceksiniz.&lt;/p&gt;&lt;p&gt; Bu liste boşsa, muhtemelen profilin yanlış tarafında kemik oluşturmaya çalışıyorsunuz demektir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -6612,37 +6733,37 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="14"/>
       <source>Dragknife Dressup</source>
-      <translation type="unfinished">Dragknife Dressup</translation>
+      <translation>Sürüklenen Bıçak Donatımı</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="33"/>
       <source>Filter Angle</source>
-      <translation type="unfinished">Filter Angle</translation>
+      <translation>Filtre Açısı</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="40"/>
       <source>Pivot Height</source>
-      <translation type="unfinished">Pivot Height</translation>
+      <translation>Pim Yüksekliği</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="47"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Distance the point trails behind the spindle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Distance the point trails behind the spindle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Milin arkasındaki nokta izlerinin mesafesi&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="66"/>
       <source>Offset Distance</source>
-      <translation type="unfinished">Offset Distance</translation>
+      <translation>Öteleme Mesafesi</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="73"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height to raise during corner action&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height to raise during corner action&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Köşe hareketi sırasında yükseltilecek yükseklik&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="92"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angles less than filter angle will not receive corner actions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angles less than filter angle will not receive corner actions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filtre açısından küçük olan açılar köşe hareketlerini almaz&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="14"/>
@@ -6652,22 +6773,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="82"/>
       <source>LeadIn</source>
-      <translation>Bitiştir</translation>
+      <translation>Besleme Yönetimi</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="97"/>
       <source>Enable LeadIn</source>
-      <translation type="unfinished">Enable LeadIn</translation>
+      <translation>Besleme yönetimini etkinleştiriniz</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="106"/>
       <source>Extend In:</source>
-      <translation type="unfinished">Extend In:</translation>
+      <translation>Giriş Tarafında Genişletiniz:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="127"/>
       <source>Style In:</source>
-      <translation type="unfinished">Style In:</translation>
+      <translation>Giriş Biçimi Oluşturunuz:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="147"/>
@@ -6690,32 +6811,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="177"/>
       <source>LeadOut</source>
-      <translation>AnaCıkıs</translation>
+      <translation>Temel Çıkış</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="192"/>
       <source>Enable LeadOut</source>
-      <translation type="unfinished">Enable LeadOut</translation>
+      <translation>Temel Çıkışı Etkinleştiriniz</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="201"/>
       <source>Extend Out:</source>
-      <translation type="unfinished">Extend Out:</translation>
+      <translation>Çıkış Tarafında Genişletiniz:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="222"/>
       <source>Style Out:</source>
-      <translation type="unfinished">Style Out:</translation>
+      <translation>Çıkış Biçimi Oluşturunuz:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="272"/>
       <source>Length / Radius:</source>
-      <translation type="unfinished">Length / Radius:</translation>
+      <translation>Uzunluk / Yarıçap:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="299"/>
       <source>Radius / Center:</source>
-      <translation type="unfinished">Radius / Center:</translation>
+      <translation>Yarıçap / Merkez:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="324"/>
@@ -6725,37 +6846,37 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="336"/>
       <source>Keep Tool Down</source>
-      <translation type="unfinished">Keep Tool Down</translation>
+      <translation>Takımı Aşağıda Tutun</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="343"/>
       <source>Rapid Plunge</source>
-      <translation type="unfinished">Rapid Plunge</translation>
+      <translation>Süratli Dalma</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="354"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply Lead In/Out on all layers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply Lead In/Out on all layers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tüm katmanların üzerine Temel Girişi/Çıkışı uygulayın&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="357"/>
       <source>Include Layers</source>
-      <translation type="unfinished">Include Layers</translation>
+      <translation>Katmanlar Yerleştiriniz</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="364"/>
       <source>Use Machine CRC</source>
-      <translation type="unfinished">Use Machine CRC</translation>
+      <translation>Makine Döngüsel Artıklık Denetimini Kullanınız</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="14"/>
       <source>Holding Tags</source>
-      <translation type="unfinished">Holding Tags</translation>
+      <translation>Birleştirme Etiketleri</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="29"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Ekle...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="39"/>
@@ -6765,12 +6886,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="49"/>
       <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <translation>Düzenle...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="59"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of current tags. Edit coordinates by double click or Edit button.&lt;/p&gt;&lt;p&gt;Tags are automatically disabled if they overlap with the previous tag, or don't lie on the base wire.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of current tags. Edit coordinates by double click or Edit button.&lt;/p&gt;&lt;p&gt;Tags are automatically disabled if they overlap with the previous tag, or don't lie on the base wire.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Geçerli etiketlerin listesi. Koordinatları çift tıklayarak veya Düzenle düğmesine basarak düzenleyin.&lt;/p&gt;&lt;p&gt;Etiketler, önceki etiketle örtüşürlerse veya ana kablo üzerinde durmuyorlarsa otomatik olarak devre dışı bırakılır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="72"/>
@@ -6785,43 +6906,43 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="86"/>
       <source>Angle            </source>
-      <translation type="unfinished">Angle            </translation>
+      <translation>Açı            </translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="93"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the resulting holding tag.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the resulting holding tag.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sonuçta elde edilen birleştirme etiketinin genişliği.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of holding tag.&lt;/p&gt;&lt;p&gt;Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of holding tag.&lt;/p&gt;&lt;p&gt;Note that resulting tag might be smaller if the tag's width and angle result in a triangular shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Birleştirme etiketinin yüksekliği.&lt;/p&gt;&lt;p&gt;Etiketin genişliği ve açısı üçgen bir şekil veriyorsa, sonuçtaki etiketin daha küçük olabileceğini unutmayın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="107"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plunge angle for ascent and descent of holding tag.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Plunge angle for ascent and descent of holding tag.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Birleştirme etiketinin yükselişi ve alçalması için dalma açısı.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet at the top.&lt;/p&gt;&lt;p&gt;If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet at the top.&lt;/p&gt;&lt;p&gt;If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yukarıdaki yuvarlamanın yarıçapı.&lt;/p&gt;&lt;p&gt;Yarıçap, etiket şekli için çok büyükse, mümkün olan maksimum yarıçapa indirgenir - bu da küresel bir şekle neden olur.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
       <source>Copy From</source>
-      <translation type="unfinished">Copy From</translation>
+      <translation>Şuradan Kopyalayınız</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="155"/>
       <location filename="../panels/HoldingTagsEdit.ui" line="181"/>
       <source>Replace All</source>
-      <translation type="unfinished">Replace All</translation>
+      <translation>Tümünü Değiştir</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="165"/>
       <source>Auto Generate</source>
-      <translation type="unfinished">Auto Generate</translation>
+      <translation>Otomatik Oluştur</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="20"/>
@@ -6836,22 +6957,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="51"/>
       <source>Drag to reorder, then update.</source>
-      <translation type="unfinished">Drag to reorder, then update.</translation>
+      <translation>Yeniden sıralamak için sürükleyiniz, ardından güncelleyiniz.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="67"/>
       <source>Add item selected in window.</source>
-      <translation type="unfinished">Add item selected in window.</translation>
+      <translation>Pencerede seçilen öğeyi ekleyiniz.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="70"/>
       <source>add</source>
-      <translation type="unfinished">add</translation>
+      <translation>ekleyiniz</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="77"/>
       <source>Remove Item selected in list, then update.</source>
-      <translation type="unfinished">Remove Item selected in list, then update.</translation>
+      <translation>Listede seçili olan öğeyi kaldırınız, ardından güncelleyiniz.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="80"/>
@@ -6861,7 +6982,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
       <source>Update the path with the removed and reordered items.</source>
-      <translation type="unfinished">Update the path with the removed and reordered items.</translation>
+      <translation>Kaldırılan ve yeniden sıralanan öğelerle dizini güncelleyin.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="90"/>
@@ -6871,7 +6992,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="97"/>
       <source>All objects will be profiled using the same depth and speed settings</source>
-      <translation type="unfinished">All objects will be profiled using the same depth and speed settings</translation>
+      <translation>Tüm nesneler aynı derinlik ve sürat ayarları kullanılarak profillendirilecektir</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="123"/>
@@ -6891,12 +7012,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="164"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>Aşağı Yönde Adım Atınız</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="178"/>
       <source>Finish Step Down</source>
-      <translation type="unfinished">Finish Step Down</translation>
+      <translation>Aşağıya İnme Adımını Bitiriniz</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="198"/>
@@ -6921,42 +7042,42 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="263"/>
       <source>ToolController</source>
-      <translation type="unfinished">ToolController</translation>
+      <translation>Takım Kontrolcüsü</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="273"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Soğutucu Modu</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="280"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bu işlem için takım ve takım ayarları kullanılacaktır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="299"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>Algoritma</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="307"/>
       <source>OCL Dropcutter</source>
-      <translation type="unfinished">OCL Dropcutter</translation>
+      <translation>OCL İniş Kesici</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="312"/>
       <source>OCL Waterline</source>
-      <translation type="unfinished">OCL Waterline</translation>
+      <translation>OCL Su hattı</translation>
     </message>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="14"/>
       <source>Z Depth Correction</source>
-      <translation type="unfinished">Z Depth Correction</translation>
+      <translation>Z Derinlik Düzeltme</translation>
     </message>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="41"/>
       <source>Probe Points File</source>
-      <translation type="unfinished">Probe Points File</translation>
+      <translation>Prob Noktaları Dosyası</translation>
     </message>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="47"/>
@@ -6971,7 +7092,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="61"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Prob verilerini içeren dosya adını girin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -6979,12 +7100,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <source>Path Simulator</source>
-      <translation type="unfinished">Path Simulator</translation>
+      <translation>İz Simülatörü</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
       <source>Stop running simulation</source>
-      <translation type="unfinished">Stop running simulation</translation>
+      <translation>Çalışan simülasyonu durdur</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="38"/>
@@ -6994,7 +7115,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
-      <translation type="unfinished">Activate / resume simulation</translation>
+      <translation>Simülasyonu etkinleştir / devam ettir</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
@@ -7004,32 +7125,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="75"/>
       <source>Pause simulation</source>
-      <translation type="unfinished">Pause simulation</translation>
+      <translation>Simülasyonu Duraklat</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="78"/>
       <source>Pause</source>
-      <translation type="unfinished">Pause</translation>
+      <translation>Duraklat</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="95"/>
       <source>Single step simulation</source>
-      <translation type="unfinished">Single step simulation</translation>
+      <translation>Tek adım simülasyonu</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="98"/>
       <source>Step</source>
-      <translation type="unfinished">Step</translation>
+      <translation>Adım</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="115"/>
       <source>Run simulation till end without animation</source>
-      <translation type="unfinished">Run simulation till end without animation</translation>
+      <translation>Simülasyonu animasyon olmadan sonuna kadar çalıştırın</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="118"/>
       <source>Fast Forward</source>
-      <translation type="unfinished">Fast Forward</translation>
+      <translation>İleri Sar</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="180"/>
@@ -7039,12 +7160,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="209"/>
       <source>G/s</source>
-      <translation type="unfinished">G/s</translation>
+      <translation>G/s</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
-      <translation type="unfinished">Accuracy:</translation>
+      <translation>İsabet Oranı:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="261"/>
@@ -7054,12 +7175,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
-      <translation type="unfinished">Job:</translation>
+      <translation>İş:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
       <source>* Note: Volumetric simulation, inaccuracies are inherent.</source>
-      <translation type="unfinished">* Note: Volumetric simulation, inaccuracies are inherent.</translation>
+      <translation>* Not: Hacimsel simülasyon, yanlışlıklar doğaldır.</translation>
     </message>
   </context>
   <context>
@@ -7067,7 +7188,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="14"/>
       <source>Tool Bit Attributes</source>
-      <translation type="unfinished">Tool Bit Attributes</translation>
+      <translation>Takım Ucu Nitelikleri</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="30"/>
@@ -7077,7 +7198,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="42"/>
       <source>Tool Bit</source>
-      <translation type="unfinished">Tool Bit</translation>
+      <translation>Takım ucu</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="48"/>
@@ -7087,22 +7208,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="55"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display name of the Tool Bit (initial value taken from the shape file).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display name of the Tool Bit (initial value taken from the shape file).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Takım ucunun görünen adı (şekil dosyasından alınan başlangıç değeri).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="61"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>İsmi Görüntüle</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="68"/>
       <source>Shape File</source>
-      <translation type="unfinished">Shape File</translation>
+      <translation>Şekil Dosyası</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="96"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The file which defines the type and shape of the Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The file which defines the type and shape of the Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Takım ucunun türünü ve şeklini tanımlayan dosya.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="99"/>
@@ -7112,7 +7233,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="106"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change file defining type and shape of Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change file defining type and shape of Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Takım ucunun türünü ve şeklini tanımlayan dosyayı değiştirin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="109"/>
@@ -7127,12 +7248,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="131"/>
       <source>Point/Tip Angle</source>
-      <translation type="unfinished">Point/Tip Angle</translation>
+      <translation>Nokta/Uç Açısı</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="138"/>
       <source>0 °</source>
-      <translation type="unfinished">0 °</translation>
+      <translation>0 °</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="141"/>
@@ -7142,12 +7263,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="148"/>
       <source>Cutting Edge Height</source>
-      <translation type="unfinished">Cutting Edge Height</translation>
+      <translation>Kesmek İçin Kenar Yüksekliği</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="155"/>
       <source>0 mm</source>
-      <translation type="unfinished">0 mm</translation>
+      <translation>0 mm</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="158"/>
@@ -7162,7 +7283,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="198"/>
       <source>Attributes</source>
-      <translation type="unfinished">Attributes</translation>
+      <translation>Nitelikler</translation>
     </message>
   </context>
   <context>
@@ -7170,27 +7291,27 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="20"/>
       <source>Tool Library</source>
-      <translation type="unfinished">Tool Library</translation>
+      <translation>Takım Arşivi</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="28"/>
       <source>Import...</source>
-      <translation type="unfinished">Import...</translation>
+      <translation>İçe aktar...</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="35"/>
       <source>Export...</source>
-      <translation type="unfinished">Export...</translation>
+      <translation>Dışa aktar...</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="71"/>
       <source>Tool Tables</source>
-      <translation type="unfinished">Tool Tables</translation>
+      <translation>Takım Tabloları</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="234"/>
       <source>New Tool</source>
-      <translation type="unfinished">New Tool</translation>
+      <translation>Yeni Takım</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="257"/>
@@ -7220,12 +7341,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="368"/>
       <source>Create Tool Controllers for the selected tools</source>
-      <translation type="unfinished">Create Tool Controllers for the selected tools</translation>
+      <translation>Seçilen araçlar için Takım Kontrolcüleri oluşturun</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="371"/>
       <source>Create Tool Controller(s)</source>
-      <translation type="unfinished">Create Tool Controller(s)</translation>
+      <translation>Takım Kontrolcü(ler) Oluştur</translation>
     </message>
   </context>
   <context>
@@ -7233,7 +7354,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="20"/>
       <source>Tool Selector</source>
-      <translation type="unfinished">Tool Selector</translation>
+      <translation>Takım Seçici</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="30"/>
@@ -7243,17 +7364,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="78"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available Tool Bits to choose from.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available Tool Bits to choose from.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aralarından seçim yapabileceğiniz mevcut Takım Uçları.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create ToolControllers for the selected toolbits and add them to the Job&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create ToolControllers for the selected toolbits and add them to the Job&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seçili takım uçları için Takım Kontrolcüleri oluşturun ve bunları İşe ekleyin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="104"/>
       <source>Add To Job</source>
-      <translation type="unfinished">Add To Job</translation>
+      <translation>İşe Ekle</translation>
     </message>
   </context>
   <context>
@@ -7261,7 +7382,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="14"/>
       <source>Job Edit</source>
-      <translation type="unfinished">Job Edit</translation>
+      <translation>İşi Düzenle</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="21"/>
@@ -7298,7 +7419,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="120"/>
       <source>Template Export</source>
-      <translation type="unfinished">Template Export</translation>
+      <translation>Şablon Dışarı Aktarma</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="130"/>
@@ -7308,17 +7429,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="136"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>Çıktı Dosyası</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="143"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;br/&gt;%d ... name of the active document (with extension)&lt;br/&gt;%M ... user macro directory&lt;br/&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;br/&gt;%d ... name of the active document (with extension)&lt;br/&gt;%M ... user macro directory&lt;br/&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Son çıkan işlemci dışa aktarımı için varsayılan olarak kullanılacak bir dizin ve isteğe bağlı olarak dosya adı (aşağıya bakınız) girin.&lt;/p&gt;&lt;p&gt;Aşağıdaki ikameler, ad, sonradan işleme sırasında çözümlenir:&lt;/p&gt;&lt;p&gt;%D ... etkin belgenin dizini&lt;br/&gt;%d ... etkin belgenin adı (uzantılı)&lt;br/&gt; %M ... kullanıcı makro dizini&lt;br/&gt;%j ... etkin İş nesnesinin adı&lt;/p&gt;&lt;p&gt;Aşağıdaki örnek, belgeyle aynı ada sahip tüm dosyaları /home/freecad dizini ( lütfen tırnak işaretlerini kaldırın):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%dg-code&amp;quot;&lt;/p&gt;&lt;p&gt;Ad çakışmalarıyla nasıl başa çıkılacağına ilişkin aşağıdaki dosya kaydetme politikasına bakın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="150"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Post İşlemciye iletilen isteğe bağlı bağımsız değişkenler. Bağımsız değişkenler her Son Çıkan İşlemci için özeldir, ayrıntılar için lütfen belgelerine bakın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="170"/>
@@ -7330,22 +7451,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="177"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>İşlemci</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="187"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Argümanlar</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="200"/>
       <source>Work Coordinate Systems</source>
-      <translation type="unfinished">Work Coordinate Systems</translation>
+      <translation>Çalışma Koordinat Sistemi</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="206"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.&lt;/p&gt;&lt;p&gt;This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.&lt;/p&gt;&lt;p&gt;Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.&lt;/p&gt;&lt;p&gt;Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.&lt;/p&gt;&lt;p&gt;This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.&lt;/p&gt;&lt;p&gt;Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.&lt;/p&gt;&lt;p&gt;Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sabitleyiciye Göre Sıralama, ikinciye geçmeden önce tüm işlemlerin birinci koordinat sisteminde uygulanmasına neden olur. Daha sonra tüm işlemler orada aynı sırayla gerçekleştirilecektir.&lt;/p&gt;&lt;p&gt;Makine başka bir koordinat sisteminde iş yaparken operatörün işi güvenli bir şekilde bir koordinat sistemine yükleyebilmesi durumunda bu yararlıdır.&lt;/p&gt;&lt;p&gt;Takım tarafından sıralama, Takım Değişikliklerini en aza indirecektir. Bir takım değişikliği yapılıcaktır, ardından takımları değiştirmeden önceki tüm koordinat sistemlerindeki tüm işlemler yapılacaktır.&lt;/p&gt;&lt;p&gt;İşlem bazında sıralama, sonraki işleme geçmeden önce her işlemi tüm koordinat sistemlerinde yapacaktır. Bu, her işlemi ayrı bir dosyaya koyacağından, yalnızca bir iş koordinat sistemiyle bile 'bölünmüş çıktı' ile bağlantılı olarak özellikle yararlıdır&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="210"/>
@@ -7365,7 +7486,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="228"/>
       <source>Systems</source>
-      <translation type="unfinished">Systems</translation>
+      <translation>Sistemler</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="235"/>
@@ -7375,112 +7496,112 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.&lt;/p&gt;&lt;p&gt;FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.&lt;/p&gt;&lt;p&gt;FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;İş Ötelemesi&lt;/span&gt;,&lt;span style=" font-style:italic;"&gt; Sabitleyici Ötelemeleri&lt;/span&gt; veya &lt;span style=" font-style:italic;"&gt;Sabitleyiciler&lt;/span&gt; olarak da adlandırılan &lt;span style=" font-style:italic;"&gt;İş Koordinat Sistemleri,&lt;/span&gt; aynı parçanın makinede birçok kez yapıldığı verimli üretim işleri oluşturmak için kullanışlıdır.&lt;/p&gt;&lt;p&gt;FreeCAD'in makine koordinat sistemi içinde belirli bir koordinat sisteminin nerede olduğu hakkında bilgisi yoktur, bu nedenle işinize ek koordinat sistemleri eklemek işinizde görsel bir değişiklik olmayacaktır. Ancak, gcode çıktınızı değiştirecektir. Çıktının tam olarak etkilenme şekli, 'sıralama ölçütü' ayarı tarafından kontrol edilir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="273"/>
       <source>G53</source>
-      <translation type="unfinished">G53</translation>
+      <translation>G53</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="281"/>
       <source>G54</source>
-      <translation type="unfinished">G54</translation>
+      <translation>G54</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="289"/>
       <source>G55</source>
-      <translation type="unfinished">G55</translation>
+      <translation>G55</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="297"/>
       <source>G56</source>
-      <translation type="unfinished">G56</translation>
+      <translation>G56</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="305"/>
       <source>G57</source>
-      <translation type="unfinished">G57</translation>
+      <translation>G57</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="313"/>
       <source>G58</source>
-      <translation type="unfinished">G58</translation>
+      <translation>G58</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="321"/>
       <source>G59</source>
-      <translation type="unfinished">G59</translation>
+      <translation>G59</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="329"/>
       <source>G59.1</source>
-      <translation type="unfinished">G59.1</translation>
+      <translation>G59.1</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="337"/>
       <source>G59.2</source>
-      <translation type="unfinished">G59.2</translation>
+      <translation>G59.2</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="345"/>
       <source>G59.3</source>
-      <translation type="unfinished">G59.3</translation>
+      <translation>G59.3</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="353"/>
       <source>G59.4</source>
-      <translation type="unfinished">G59.4</translation>
+      <translation>G59.4</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="361"/>
       <source>G59.5</source>
-      <translation type="unfinished">G59.5</translation>
+      <translation>G59.5</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="369"/>
       <source>G59.6</source>
-      <translation type="unfinished">G59.6</translation>
+      <translation>G59.6</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="377"/>
       <source>G59.7</source>
-      <translation type="unfinished">G59.7</translation>
+      <translation>G59.7</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="385"/>
       <source>G59.8</source>
-      <translation type="unfinished">G59.8</translation>
+      <translation>G59.8</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="393"/>
       <source>G59.9</source>
-      <translation type="unfinished">G59.9</translation>
+      <translation>G59.9</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="404"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Birden çok koordinat sistemi kullanılıyorsa, bunu TRUE olarak ayarlamak, gcode'un 'ile sırala' özelliği tarafından kontrol edildiği gibi birden çok çıktı dosyasına yazılmasına neden olur. Örneğin, Sabitleyici ile sipariş verirseniz, ilk çıktı dosyası ilk sabitleyici için ve ikincisi için ayrı dosya olacaktır.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p &gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="407"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post-processing will create multiple output files based on the &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; setting.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post-processing will create multiple output files based on the &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; setting.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;For example, if &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If &lt;span style=" font-style:italic;"&gt;order by&lt;/span&gt; is set to &lt;span style=" font-style:italic;"&gt;operation&lt;/span&gt; and &lt;span style=" font-style:italic;"&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;True ise, son çıkan işleme özelliği, &lt;span style=" font-style:italic;"&gt;ile sırala&lt;/span&gt; ayarına göre birden çok çıktı dosyası oluşturacaktır. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Örneğin, takım &lt;span style=" font-style:italic;"&gt;ile sırala&lt;/span&gt; olarak ayarlanırsa, ilk çıktı dosyası ilk takım değişikliğini ve sonraki takım değişikliği çağrılmadan önce tüm koordinat sistemlerinde o takımla yapılabilecek tüm işlemleri içerecektir.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;ile sırala&lt;/span&gt; yürütülen işleme ayarlanmışsa ve &lt;span style=" font-style:italic;"&gt;bölünmüş çıktı&lt;/span&gt; true ise her işlem ayrı bir dosyaya yazılacaktır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="410"/>
       <source>Split Output</source>
-      <translation type="unfinished">Split Output</translation>
+      <translation>Çıktıyı Bölümlere Ayır</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="421"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>Kurulum</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="439"/>
       <source>Layout</source>
-      <translation type="unfinished">Layout</translation>
+      <translation>Yerleşim</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="445"/>
@@ -7500,12 +7621,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="477"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Modelin Bağlı Kutusunu Genişletin</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="482"/>
       <source>Use Existing Solid</source>
-      <translation type="unfinished">Use Existing Solid</translation>
+      <translation>Mevcut Katıyı Kullan</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="490"/>
@@ -7515,17 +7636,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="528"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>X Uzt.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="545"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>Y Uzt.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="555"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>Z Uzt.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="583"/>
@@ -7556,27 +7677,27 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="645"/>
       <source>Center in Stock</source>
-      <translation type="unfinished">Center in Stock</translation>
+      <translation>Stokta Merkez</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="652"/>
       <source>XY in Stock</source>
-      <translation type="unfinished">XY in Stock</translation>
+      <translation>Stokta XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="659"/>
       <source>Set Origin</source>
-      <translation type="unfinished">Set Origin</translation>
+      <translation>Orijinii Seç</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="666"/>
       <source>Move to Origin</source>
-      <translation type="unfinished">Move to Origin</translation>
+      <translation>Orijine Taşı</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="676"/>
       <source>Set</source>
-      <translation type="unfinished">Set</translation>
+      <translation>Ayarla</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="682"/>
@@ -7591,37 +7712,37 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="696"/>
       <source>Z-Axis</source>
-      <translation type="unfinished">Z-Axis</translation>
+      <translation>Z-ekseni</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="703"/>
       <source>Y=0</source>
-      <translation type="unfinished">Y=0</translation>
+      <translation>Y=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="710"/>
       <source>Z=0</source>
-      <translation type="unfinished">Z=0</translation>
+      <translation>Z=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="717"/>
       <source>X=0</source>
-      <translation type="unfinished">X=0</translation>
+      <translation>X=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="724"/>
       <source>Link Stock and Model</source>
-      <translation type="unfinished">Link Stock and Model</translation>
+      <translation>Bağlantı Stoku ve Modeli</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="734"/>
       <source>Move - XY</source>
-      <translation type="unfinished">Move - XY</translation>
+      <translation>Taşı - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="892"/>
       <source>Rotate - XY</source>
-      <translation type="unfinished">Rotate - XY</translation>
+      <translation>Döndür - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="926"/>
@@ -7632,7 +7753,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/PathEdit.ui" line="1010"/>
       <location filename="../panels/PathEdit.ui" line="1293"/>
       <source>Default Values</source>
-      <translation type="unfinished">Default Values</translation>
+      <translation>Varsayılan Değerler</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1016"/>
@@ -7647,7 +7768,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1029"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StartDepth of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İfade, yeni oluşturulan bir işlemin Başlangıç Derinliği olarak ayarlandı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1036"/>
@@ -7657,17 +7778,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1043"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the FinalDepth for a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpFinalDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İfade, yeni oluşturulan bir işlemin Bitiş Derinliği olarak ayarlandı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan: OpStartDepth&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1050"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>Aşağı Yönde Adım Atınız</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1057"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İfade, yeni oluşturulan bir işlemin Adım Azaltması olarak ayarlandı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1067"/>
@@ -7677,7 +7798,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1073"/>
       <source>Safe</source>
-      <translation type="unfinished">Safe</translation>
+      <translation>Güvenli</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1080"/>
@@ -7687,17 +7808,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1087"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İfade, yeni işlemler için Emniyetli Yükselti olarak ayarlandı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt; /p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1094"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;İfade, yeni işlemler için Boşluk Yüksekliği olarak ayarlandı.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan: &amp;quot;OpStockZMax+SetupSheet.ClearanceHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;3 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;3 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boşluk Yüksekliği Dengeleme - yeni işlemler için varsayılan Boşluk Yüksekliği değerini ayarlayan ifadeler tarafından kullanılabilir.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan:&amp;quot;3 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1108"/>
@@ -7707,12 +7828,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1118"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>İfade</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1128"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SafeHeightOffset can be for expressions to set the SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;5 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SafeHeightOffset can be for expressions to set the SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;5 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Emniyetli Yükselti Dengeleme - yeni işlemler için varsayılan Emniyetli Yükselti değerini ayarlayan ifadeler tarafından kullanılabilir.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Varsayılan:&amp;quot;5 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1138"/>
@@ -7722,7 +7843,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1144"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Soğutucu Modu</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1175"/>
@@ -7738,18 +7859,18 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>
       <source>Nr.</source>
-      <translation type="unfinished">Nr.</translation>
+      <translation>Nr.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1222"/>
       <location filename="../panels/PathEdit.ui" line="1231"/>
       <source>Feed</source>
-      <translation type="unfinished">Feed</translation>
+      <translation>Akış</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1240"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>Mil</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1261"/>
@@ -7764,7 +7885,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1299"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Yüksek Süratli</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1308"/>
@@ -7774,7 +7895,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1321"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid horizontal speed assigned as HorizRapid to new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid horizontal speed assigned as HorizRapid to new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yeni Takım Kontrolcüsüne YatySürat olarak atanan yataydaki yüksek sürat.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1328"/>
@@ -7784,17 +7905,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1341"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid vertical speed assigned to VertRapid of new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid vertical speed assigned to VertRapid of new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Yeni Takım Kontrolcüsüne DikySürat olarak atanan dikeydeki yüksek sürat.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1369"/>
       <source>Workplan</source>
-      <translation type="unfinished">Workplan</translation>
+      <translation>İş Planı</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1381"/>
       <source>Active Tool </source>
-      <translation type="unfinished">Active Tool </translation>
+      <translation>Etkin Takım </translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1496"/>
@@ -7804,7 +7925,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1507"/>
       <source>Op Defaults</source>
-      <translation type="unfinished">Op Defaults</translation>
+      <translation>Op Varsayılanları</translation>
     </message>
   </context>
 </TS>
