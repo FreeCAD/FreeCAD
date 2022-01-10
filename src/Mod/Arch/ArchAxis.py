@@ -172,9 +172,9 @@ class CommandArchGrid:
     def GetResources(self):
 
         return {'Pixmap'  : 'Arch_Grid',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Axis","Grid"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Grid","Grid"),
                 'Accel': "A, X",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Axis","Creates a customizable grid object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Grid","Creates a customizable grid object")}
 
     def Activated(self):
 

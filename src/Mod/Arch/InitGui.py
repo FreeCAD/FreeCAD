@@ -68,7 +68,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
 
         # Set up command lists
         self.archtools = ["Arch_Wall",
-                          ([QT_TRANSLATE_NOOP("Arch", "Structure tools")],
+                          ([QT_TRANSLATE_NOOP("Workbench", "Structure tools")],
                               list(stru_group.GetCommands(stru_group))), # tuple len=2: submenu
                           ("Arch_StructureTools", ),                     # tuple len=1: toolbar flyout
                           "Arch_Rebar_Submenu",      # will be replaced or removed
@@ -82,13 +82,13 @@ class ArchWorkbench(FreeCADGui.Workbench):
                           "Arch_Reference",
                           "Arch_Window",
                           "Arch_Roof",
-                          ([QT_TRANSLATE_NOOP("Arch", "Axis tools")],
+                          ([QT_TRANSLATE_NOOP("Workbench", "Axis tools")],
                               list(axis_group.GetCommands(axis_group))),
                           ("Arch_AxisTools", ),
                           "Arch_SectionPlane",
                           "Arch_Space",
                           "Arch_Stairs",
-                          ([QT_TRANSLATE_NOOP("Arch", "Panel tools")],
+                          ([QT_TRANSLATE_NOOP("Workbench", "Panel tools")],
                               list(pan_group.GetCommands(pan_group))),
                           ("Arch_PanelTools", ),
                           "Arch_Equipment",
@@ -96,11 +96,11 @@ class ArchWorkbench(FreeCADGui.Workbench):
                           "Arch_Fence",
                           "Arch_Truss",
                           "Arch_Profile",
-                          ([QT_TRANSLATE_NOOP("Arch", "Material tools")],
+                          ([QT_TRANSLATE_NOOP("Workbench", "Material tools")],
                               list(mat_group.GetCommands(mat_group))),
                           ("Arch_MaterialTools", ),
                           "Arch_Schedule",
-                          ([QT_TRANSLATE_NOOP("Arch", "Pipe tools")],
+                          ([QT_TRANSLATE_NOOP("Workbench", "Pipe tools")],
                               list(pipe_group.GetCommands(pipe_group))),
                           ("Arch_PipeTools", ),
                           "Arch_CutPlane",
@@ -134,15 +134,15 @@ class ArchWorkbench(FreeCADGui.Workbench):
                     return tuple(RebarTools.RebarCommands + ["Arch_Rebar"])
 
                 def GetResources(self):
-                    _tooltip = ("Create various types of rebars, "
-                                "including U-shaped, L-shaped, and stirrup")
-                    return {'MenuText': QT_TRANSLATE_NOOP("Arch", 'Rebar tools'),
-                            'ToolTip': QT_TRANSLATE_NOOP("Arch", _tooltip)}
+                    return {'MenuText': QT_TRANSLATE_NOOP("Arch_RebarTools", "Rebar tools"),
+                            'ToolTip': QT_TRANSLATE_NOOP("Arch_RebarTools",
+                                                         "Create various types of rebars, "
+                                                         "including U-shaped, L-shaped, and stirrup")}
 
                 def IsActive(self):
                     return not FreeCAD.ActiveDocument is None
             FreeCADGui.addCommand('Arch_RebarTools', RebarGroupCommand())
-            self.archtools[3] = ([QT_TRANSLATE_NOOP("Arch", "Rebar tools")],
+            self.archtools[3] = ([QT_TRANSLATE_NOOP("Workbench", "Rebar tools")],
                                     RebarTools.RebarCommands + ["Arch_Rebar"])
             self.archtools[4] = ("Arch_RebarTools", )
 
@@ -159,38 +159,38 @@ class ArchWorkbench(FreeCADGui.Workbench):
                         QT_TRANSLATE_NOOP("Workbench", "Arch tools"),
                         self.archtools)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Draft", "Draft creation tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft creation tools"),
                         self.draft_drawing_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Draft", "Draft annotation tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft annotation tools"),
                         self.draft_annotation_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Draft", "Draft modification tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft modification tools"),
                         self.draft_modification_commands)
 
         # Set up menus
         it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Arch", "&Arch"),
-                      QT_TRANSLATE_NOOP("Arch", "Utilities")],
+                     [QT_TRANSLATE_NOOP("Workbench", "&Arch"),
+                      QT_TRANSLATE_NOOP("Workbench", "Utilities")],
                      self.utilities)
         it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Arch", "&Arch")],
+                     [QT_TRANSLATE_NOOP("Workbench", "&Arch")],
                      self.archtools)
         it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Arch", "&Draft"),
-                      QT_TRANSLATE_NOOP("Arch", "Creation")],
+                     [QT_TRANSLATE_NOOP("Workbench", "&Draft"),
+                      QT_TRANSLATE_NOOP("Workbench", "Creation")],
                      self.draft_drawing_commands)
         it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Arch", "&Draft"),
-                      QT_TRANSLATE_NOOP("Arch", "Annotation")],
+                     [QT_TRANSLATE_NOOP("Workbench", "&Draft"),
+                      QT_TRANSLATE_NOOP("Workbench", "Annotation")],
                      self.draft_annotation_commands)
         it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Arch", "&Draft"),
-                      QT_TRANSLATE_NOOP("Arch", "Modification")],
+                     [QT_TRANSLATE_NOOP("Workbench", "&Draft"),
+                      QT_TRANSLATE_NOOP("Workbench", "Modification")],
                      self.draft_modification_commands)
         it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Arch", "&Draft"),
-                      QT_TRANSLATE_NOOP("Arch", "Utilities")],
+                     [QT_TRANSLATE_NOOP("Workbench", "&Draft"),
+                      QT_TRANSLATE_NOOP("Workbench", "Utilities")],
                      self.draft_utility_commands)
 
         FreeCADGui.addIconPath(":/icons")

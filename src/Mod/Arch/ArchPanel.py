@@ -334,7 +334,7 @@ class CommandPanelCut:
         return {'Pixmap'  : 'Arch_Panel_Cut',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Panel_Cut","Panel Cut"),
                 'Accel': "P, C",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Creates 2D views of selected panels")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel_Cut","Creates 2D views of selected panels")}
 
     def IsActive(self):
 
