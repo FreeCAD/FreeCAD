@@ -29,7 +29,7 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
 import math
 
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -41,13 +41,14 @@ __author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Deburr operation."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 def toolDepthAndOffset(width, extraDepth, tool, printInfo):
@@ -122,36 +123,34 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "App::PropertyDistance",
             "Width",
             "Deburr",
-            QtCore.QT_TRANSLATE_NOOP("PathDeburr", "The desired width of the chamfer"),
+            QT_TRANSLATE_NOOP("App::Property", "The desired width of the chamfer"),
         )
         obj.addProperty(
             "App::PropertyDistance",
             "ExtraDepth",
             "Deburr",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathDeburr", "The additional depth of the tool path"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The additional depth of the tool path"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "Join",
             "Deburr",
-            QtCore.QT_TRANSLATE_NOOP("PathDeburr", "How to join chamfer segments"),
+            QT_TRANSLATE_NOOP("App::Property", "How to join chamfer segments"),
         )
-        obj.Join = ["Round", "Miter"]
+        # obj.Join = ["Round", "Miter"]
         obj.setEditorMode("Join", 2)  # hide for now
         obj.addProperty(
             "App::PropertyEnumeration",
             "Direction",
             "Deburr",
-            QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Direction of Operation"),
+            QT_TRANSLATE_NOOP("App::Property", "Direction of Operation"),
         )
-        obj.Direction = ["CW", "CCW"]
+        # obj.Direction = ["CW", "CCW"]
         obj.addProperty(
             "App::PropertyEnumeration",
             "Side",
             "Deburr",
-            QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Side of Operation"),
+            QT_TRANSLATE_NOOP("App::Property", "Side of Operation"),
         )
         obj.Side = ["Outside", "Inside"]
         obj.setEditorMode("Side", 2)  # Hide property, it's calculated by op
@@ -159,10 +158,53 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             "App::PropertyInteger",
             "EntryPoint",
             "Deburr",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathDeburr", "Select the segment, there the operations starts"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Select the segment, there the operations starts"
             ),
         )
+
+        ENUMS = self.propertyEnumerations()
+        for n in ENUMS:
+            setattr(obj, n[0], n[1])
+
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+
+        """opPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        # Enumeration lists for App::PropertyEnumeration properties
+        enums = {
+            "Direction": [
+                (translate("Path", "CW"), "CW"),
+                (translate("Path", "CCW"), "CCW"),
+            ],  # this is the direction that the profile runs
+            "Join": [
+                (translate("PathDeburr", "Round"), "Round"),
+                (translate("PathDeburr", "Miter"), "Miter"),
+            ],  # this is the direction that the profile runs
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            # data[k] = [tup[idx] for tup in v]
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
 
     def opOnDocumentRestored(self, obj):
         obj.setEditorMode("Join", 2)  # hide for now
