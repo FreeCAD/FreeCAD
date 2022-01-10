@@ -8,7 +8,7 @@
     workbenches are defined in modules, but not all modules contain a
     workbench. Practically, though, all the main modules define a
     workbench with the same name, so the terms are almost interchangeable.
-    
+
     Some of these modules are programmed in C++, others in Python, and some
     in a mix of C++ and Python.
 
