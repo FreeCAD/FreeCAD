@@ -101,30 +101,30 @@ class DraftWorkbench(FreeCADGui.Workbench):
 
         # Set up toolbars
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Draft", "Draft creation tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft creation tools"),
                         self.drawing_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Draft", "Draft annotation tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft annotation tools"),
                         self.annotation_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Draft", "Draft modification tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft modification tools"),
                         self.modification_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Draft", "Draft utility tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft utility tools"),
                         self.utility_commands_toolbar)
 
         # Set up menus
         it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Draft", "&Drafting")],
+                     [QT_TRANSLATE_NOOP("Workbench", "&Drafting")],
                      self.drawing_commands)
         it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Draft", "&Annotation")],
+                     [QT_TRANSLATE_NOOP("Workbench", "&Annotation")],
                      self.annotation_commands)
         it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Draft", "&Modification")],
+                     [QT_TRANSLATE_NOOP("Workbench", "&Modification")],
                      self.modification_commands)
         it.init_menu(self,
-                     [QT_TRANSLATE_NOOP("Draft", "&Utilities")],
+                     [QT_TRANSLATE_NOOP("Workbench", "&Utilities")],
                      self.utility_commands_menu)
 
         # Set up preferences pages

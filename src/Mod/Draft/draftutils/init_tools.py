@@ -45,7 +45,7 @@ def get_draft_drawing_commands():
     return ["Draft_Line",
             "Draft_Wire",
             "Draft_Fillet",
-            ([QT_TRANSLATE_NOOP("Draft", "Arc tools")],
+            ([QT_TRANSLATE_NOOP("Workbench", "Arc tools")],
                 list(arc_group.GetCommands(arc_group))), # tuple len=2: submenu
             ("Draft_ArcTools", ),                        # tuple len=1: toolbar flyout
             "Draft_Circle",
@@ -53,7 +53,7 @@ def get_draft_drawing_commands():
             "Draft_Rectangle",
             "Draft_Polygon",
             "Draft_BSpline",
-            ([QT_TRANSLATE_NOOP("Draft", "Bezier tools")],
+            ([QT_TRANSLATE_NOOP("Workbench", "Bezier tools")],
                 list(bez_group.GetCommands(bez_group))),
             ("Draft_BezierTools", ),
             "Draft_Point",
@@ -84,7 +84,7 @@ def get_draft_modification_commands():
             "Draft_Stretch",
             "Separator",
             "Draft_Clone",
-            ([QT_TRANSLATE_NOOP("Draft", "Array tools")],
+            ([QT_TRANSLATE_NOOP("Workbench", "Array tools")],
                 list(arr_group.GetCommands(arr_group))), # tuple len=2: submenu
             ("Draft_ArrayTools", ),                      # tuple len=1: toolbar flyout
             "Separator",
