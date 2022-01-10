@@ -43,7 +43,7 @@ def translate(context, text, disambig=None):
 
 
 class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
-    '''Enhanced base geometry page to also allow special base objects.'''
+    """Enhanced base geometry page to also allow special base objects."""
 
     def super(self):
         return super(TaskPanelBaseGeometryPage, self)
@@ -53,29 +53,33 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Page controller class for the Deburr operation.'''
+    """Page controller class for the Deburr operation."""
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDeburrEdit.ui")
 
     def initPage(self, obj):
-        self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(FreeCAD.getHomePath(), 'chamfer.svg')  # pylint: disable=attribute-defined-outside-init
-        self.opImage = QtGui.QPixmap(self.opImagePath)  # pylint: disable=attribute-defined-outside-init
+        self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(
+            FreeCAD.getHomePath(), "chamfer.svg"
+        )  # pylint: disable=attribute-defined-outside-init
+        self.opImage = QtGui.QPixmap(
+            self.opImagePath
+        )  # pylint: disable=attribute-defined-outside-init
         self.form.opImage.setPixmap(self.opImage)
-        iconMiter = QtGui.QIcon(':/icons/edge-join-miter-not.svg')
-        iconMiter.addFile(':/icons/edge-join-miter.svg', state=QtGui.QIcon.On)
-        iconRound = QtGui.QIcon(':/icons/edge-join-round-not.svg')
-        iconRound.addFile(':/icons/edge-join-round.svg', state=QtGui.QIcon.On)
+        iconMiter = QtGui.QIcon(":/icons/edge-join-miter-not.svg")
+        iconMiter.addFile(":/icons/edge-join-miter.svg", state=QtGui.QIcon.On)
+        iconRound = QtGui.QIcon(":/icons/edge-join-round-not.svg")
+        iconRound.addFile(":/icons/edge-join-round.svg", state=QtGui.QIcon.On)
         self.form.joinMiter.setIcon(iconMiter)
         self.form.joinRound.setIcon(iconRound)
 
     def getFields(self, obj):
-        PathGui.updateInputField(obj, 'Width', self.form.value_W)
-        PathGui.updateInputField(obj, 'ExtraDepth', self.form.value_h)
+        PathGui.updateInputField(obj, "Width", self.form.value_W)
+        PathGui.updateInputField(obj, "ExtraDepth", self.form.value_h)
         if self.form.joinRound.isChecked():
-            obj.Join = 'Round'
+            obj.Join = "Round"
         elif self.form.joinMiter.isChecked():
-            obj.Join = 'Miter'
+            obj.Join = "Miter"
 
         if obj.Direction != str(self.form.direction.currentText()):
             obj.Direction = str(self.form.direction.currentText())
@@ -84,20 +88,26 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
-        self.form.value_W.setText(FreeCAD.Units.Quantity(obj.Width.Value, FreeCAD.Units.Length).UserString)
-        self.form.value_h.setText(FreeCAD.Units.Quantity(obj.ExtraDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.value_W.setText(
+            FreeCAD.Units.Quantity(obj.Width.Value, FreeCAD.Units.Length).UserString
+        )
+        self.form.value_h.setText(
+            FreeCAD.Units.Quantity(
+                obj.ExtraDepth.Value, FreeCAD.Units.Length
+            ).UserString
+        )
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
-        self.form.joinRound.setChecked('Round' == obj.Join)
-        self.form.joinMiter.setChecked('Miter' == obj.Join)
+        self.form.joinRound.setChecked("Round" == obj.Join)
+        self.form.joinMiter.setChecked("Miter" == obj.Join)
         self.form.joinFrame.hide()
         self.selectInComboBox(obj.Direction, self.form.direction)
 
     def updateWidth(self):
-        PathGui.updateInputField(self.obj, 'Width', self.form.value_W)
+        PathGui.updateInputField(self.obj, "Width", self.form.value_W)
 
     def updateExtraDepth(self):
-        PathGui.updateInputField(self.obj, 'ExtraDepth', self.form.value_h)
+        PathGui.updateInputField(self.obj, "ExtraDepth", self.form.value_h)
 
     def getSignalsForUpdate(self, obj):
         signals = []
@@ -114,16 +124,20 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.value_h.editingFinished.connect(self.updateExtraDepth)
 
     def taskPanelBaseGeometryPage(self, obj, features):
-        '''taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries.'''
+        """taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries."""
         return TaskPanelBaseGeometryPage(obj, features)
 
 
-Command = PathOpGui.SetupOperation('Deburr',
-        PathDeburr.Create,
-        TaskPanelOpPage,
-        'Path_Deburr',
-        QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Deburr"),
-        QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Creates a Deburr Path along Edges or around Faces"),
-        PathDeburr.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "Deburr",
+    PathDeburr.Create,
+    TaskPanelOpPage,
+    "Path_Deburr",
+    QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Deburr"),
+    QtCore.QT_TRANSLATE_NOOP(
+        "PathDeburr", "Creates a Deburr Path along Edges or around Faces"
+    ),
+    PathDeburr.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathDeburrGui... done\n")
