@@ -168,6 +168,11 @@ SET(PathScripts_post_SRCS
     PathScripts/post/uccnc_post.py
 )
 
+SET(PathPythonGui_SRCS
+    PathPythonGui/__init__.py
+    PathPythonGui/simple_edit_panel.py
+)
+
 SET(Tools_SRCS
     Tools/README.md
 )
@@ -266,6 +271,7 @@ SET(all_files
     ${PathScripts_SRCS}
     ${Generator_SRCS}
     ${PathScripts_post_SRCS}
+    ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
     ${Tools_Library_SRCS}
@@ -324,6 +330,13 @@ INSTALL(
         ${PathScripts_post_SRCS}
     DESTINATION
         Mod/Path/PathScripts/post
+)
+
+INSTALL(
+    FILES
+        ${PathPythonGui_SRCS}
+    DESTINATION
+        Mod/Path/PathPythonGui
 )
 
 INSTALL(
