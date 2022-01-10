@@ -43,6 +43,11 @@
         <UserDocu>Return the orientation of this page</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="requestPaint">
+      <Documentation>
+        <UserDocu>Ask the Gui to redraw this page</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

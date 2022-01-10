@@ -93,6 +93,16 @@ PyObject* DrawPagePy::getAllViews(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
+PyObject* DrawPagePy::requestPaint(PyObject* args)
+{
+    (void) args;
+    DrawPage* page = getDrawPagePtr();
+    page->requestPaint();
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+
 //    double getPageWidth() const;
 PyObject* DrawPagePy::getPageWidth(PyObject *)
 {
