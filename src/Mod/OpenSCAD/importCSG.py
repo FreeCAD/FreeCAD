@@ -52,6 +52,7 @@ else:
 
 hassetcolor=[]
 alreadyhidden=[]
+original_root_objects = []
 
 # Get the token map from the lexer.  This is required.
 import tokrules
@@ -83,14 +84,15 @@ def setColorRecursively(obj, color, transp):
                 setColorRecursively(currentObject, color, transp)
 
 def fixVisibility():
-    for obj in FreeCAD.ActiveDocument.Objects:
-         if(( obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse") and shallHide(obj)):
-            if "Group" in obj.FullName:
-                alreadyhidden.append(obj)
+    # After an import, only the remaining root objects that we created should be visible, not any 
+    # of their individual component objects. But make sure to only handle the ones we just imported,
+    # not anything that already existed. And objects that exist at the toplevel without any
+    # children are ignored.
+    for root_object in FreeCAD.ActiveDocument.RootObjects:
+        if root_object not in original_root_objects:
+            root_object.ViewObject.Visibility=True
+            for obj in root_object.OutListRecursive:
                 obj.ViewObject.Visibility=False
-                for currentObject in obj.OutList:
-                    if(currentObject not in alreadyhidden):
-                        currentObject.ViewObject.Visibility=True
 
 if gui:
     try:
@@ -135,6 +137,8 @@ def insert(filename,docname):
     groupname_unused = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc=FreeCAD.getDocument(docname)
+        for obj in doc.RootObjects:
+            original_root_objects.append(obj)
     except NameError:
         doc=FreeCAD.newDocument(docname)
     #importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
