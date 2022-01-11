@@ -118,8 +118,8 @@ namespace TechDrawGui {
 // TechDraw_ExtensionInsertDiameter
 //===========================================================================
 
-void execInsertPrefixChar(Gui::Command* cmd, std::string praefixChar) {
-    // insert a praefix character into the format specifier
+void execInsertPrefixChar(Gui::Command* cmd, std::string prefixChar) {
+    // insert a prefix character into the format specifier
     std::vector<Gui::SelectionObject> selection;
     if (_checkSelection(cmd, selection, "TechDraw Insert Prefix Character")) {
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Prefix Character"));
@@ -128,7 +128,7 @@ void execInsertPrefixChar(Gui::Command* cmd, std::string praefixChar) {
             if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
                 auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string formatSpec = dim->FormatSpec.getStrValue();
-                formatSpec = praefixChar + formatSpec;
+                formatSpec = prefixChar + formatSpec;
                 dim->FormatSpec.setValue(formatSpec);
             }
         }
@@ -230,10 +230,10 @@ void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch (iMsg) {
-    case 0:                 //insert "⌀" as praefix
+    case 0:                 //insert "⌀" as prefix
         execInsertPrefixChar(this, "⌀");
         break;
-    case 1:                 //insert "〼" as praefix
+    case 1:                 //insert "〼" as prefix
         execInsertPrefixChar(this, "〼");
         break;
     default:
