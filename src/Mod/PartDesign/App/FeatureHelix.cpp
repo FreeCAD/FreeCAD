@@ -253,7 +253,7 @@ App::DocumentObjectExecReturn* Helix::execute(void)
             mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
 
             //mkPS.SetMode(true);  //This is for frenet
-            mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxilliary
+            mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
 
             for (TopoDS_Wire& wire : wires) {
                 wire.Move(invObjLoc);

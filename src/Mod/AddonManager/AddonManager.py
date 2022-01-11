@@ -1258,7 +1258,7 @@ class CommandAddonManager:
         with open(stopfile, "w", encoding="utf8") as f:
             f.write(
                 "This file indicates that a cache operation was interrupted, and "
-                "the cache is in an unkown state. It will be deleted next time "
+                "the cache is in an unknown state. It will be deleted next time "
                 "AddonManager recaches."
             )
 
