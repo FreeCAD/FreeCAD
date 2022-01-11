@@ -1219,14 +1219,14 @@ class InstallWorkbenchWorker(QtCore.QThread):
         # NOTE: There is no way to interrupt this process in GitPython: someday we should
         # support pygit2/libgit2 so we can actually interrupt this properly.
         repo = git.Repo.clone_from(self.repo.url, clonedir, progress=self.git_progress)
-        if current_thread.isInterruptRequested():
+        if current_thread.isInterruptionRequested():
             return
 
         # Make sure to clone all the submodules as well
         if repo.submodules:
             repo.submodule_update(recursive=True)
 
-        if current_thread.isInterruptRequested():
+        if current_thread.isInterruptionRequested():
             return
 
         if self.repo.branch in repo.heads:
