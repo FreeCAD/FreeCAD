@@ -71,7 +71,7 @@ def TestText(s):
     # Flushing to make sure the stream is written to the console
     # before the wrapping process stops executing. Without this line
     # executing the tests from command line did not show stats
-    # and proper tarceback in some cases.
+    # and proper traceback in some cases.
     sys.stdout.flush()
     return retval
 

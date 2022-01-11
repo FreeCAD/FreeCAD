@@ -520,7 +520,7 @@ void MDIViewPage::fixOrphans(bool force)
                     }
                 }
                 if (!found) {
-                    //none of the parent Pages for View coorespond to this Page
+                    //none of the parent Pages for View correspond to this Page
                     m_view->removeQView(qv);
                 }
             }

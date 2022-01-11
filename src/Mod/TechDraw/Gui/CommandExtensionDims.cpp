@@ -958,7 +958,7 @@ CmdTechDrawExtensionCascadeObliqueDimension::CmdTechDrawExtensionCascadeObliqueD
     sMenuText       = QT_TR_NOOP("Cascade Oblique Dimensions");
     sToolTipText    = QT_TR_NOOP("Cascade oblique dimensions\n\
     - select some parallel oblique measures\n\
-    - the first selected maesure defines the position\n\
+    - the first selected measure defines the position\n\
     - click this button");
     sWhatsThis      = "TechDraw_ExtensionCascadeObliqueDimension";
     sStatusTip      = sToolTipText;
@@ -1082,7 +1082,7 @@ void CmdTechDrawExtensionCascadeDimensionGroup::languageChange()
     arc3->setToolTip(QApplication::translate("TechDraw_Extension",
         "Cascade oblique dimensions\n\
     - select some parallel oblique measures\n\
-    - the first selected maesure defines the position\n\
+    - the first selected measure defines the position\n\
     - click this button"));
     arc3->setStatusTip(arc3->toolTip());
 }
