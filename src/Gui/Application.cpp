@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include "InventorAll.h"
+# include <unordered_map>
 # include <boost_signals2.hpp>
 # include <sstream>
 # include <stdexcept>
@@ -152,6 +153,35 @@ Application* Application::Instance = 0L;
 
 namespace Gui {
 
+class ViewProviderMap {
+    std::unordered_map<const App::DocumentObject *, ViewProvider *> map;
+
+public:
+    void newObject(const ViewProvider& vp)
+    {
+        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
+        if (vpd && vpd->getObject())
+            map[vpd->getObject()] = vpd;
+    }
+    void deleteObject(const ViewProvider& vp)
+    {
+        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
+        if (vpd && vpd->getObject())
+            map.erase(vpd->getObject());
+    }
+    void deleteDocument(const App::Document& doc) {
+        for (auto obj : doc.getObjects())
+            map.erase(obj);
+    }
+    Gui::ViewProvider* getViewProvider(const App::DocumentObject* obj) const
+    {
+        auto it = map.find(obj);
+        if (it == map.end())
+            return nullptr;
+        return it->second;
+    }
+};
+
 // Pimpl class
 struct ApplicationP
 {
@@ -190,6 +220,7 @@ struct ApplicationP
     bool startingUp;
     /// Handles all commands
     CommandManager commandManager;
+    ViewProviderMap viewproviderMap;
 };
 
 static PyObject *
@@ -818,6 +849,8 @@ void Application::slotDeleteDocument(const App::Document& Doc)
     if (d->activeDocument == doc->second)
         setActiveDocument(0);
 
+    d->viewproviderMap.deleteDocument(Doc);
+
     // For exception-safety use a smart pointer
     unique_ptr<Document> delDoc (doc->second);
     d->documents.erase(doc);
@@ -886,12 +919,14 @@ void Application::slotActiveDocument(const App::Document& Doc)
 
 void Application::slotNewObject(const ViewProvider& vp)
 {
+    d->viewproviderMap.newObject(vp);
     this->signalNewObject(vp);
 }
 
 void Application::slotDeletedObject(const ViewProvider& vp)
 {
     this->signalDeletedObject(vp);
+    d->viewproviderMap.deleteObject(vp);
 }
 
 void Application::slotChangedObject(const ViewProvider& vp, const App::Property& prop)
@@ -1167,16 +1202,7 @@ void Application::hideViewProvider(const App::DocumentObject* obj)
 
 Gui::ViewProvider* Application::getViewProvider(const App::DocumentObject* obj) const
 {
-    App::Document* doc = obj ? obj->getDocument() : 0;
-    if (doc) {
-        Gui::Document* gui = getDocument(doc);
-        if (gui) {
-            ViewProvider* vp = gui->getViewProvider(obj);
-            return vp;
-        }
-    }
-
-    return 0;
+    return d->viewproviderMap.getViewProvider(obj);
 }
 
 void Application::attachView(Gui::BaseView* pcView)
