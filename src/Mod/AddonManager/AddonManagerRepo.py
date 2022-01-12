@@ -98,9 +98,10 @@ class AddonManagerRepo:
         self.description = None
         from addonmanager_utilities import construct_git_url
 
-        self.metadata_url = (
-            "" if not self.url else construct_git_url(self, "package.xml")
-        )
+        if "github" in self.url or "gitlab" in self.url or "salsa" in self.url:
+            self.metadata_url = construct_git_url(self, "package.xml")
+        else:
+            self.metadata_url = None
         self.metadata = None
         self.icon = None
         self.cached_icon_filename = ""

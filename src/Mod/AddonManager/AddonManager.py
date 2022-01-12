@@ -976,7 +976,8 @@ class CommandAddonManager:
                 self.dependency_dialog.listWidgetPythonRequired.addItem(mod)
             for mod in missing_python_optionals:
                 item = QtWidgets.QListWidgetItem(mod)
-                item.setFlags(Qt.ItemIsUserCheckable)
+                item.setFlags(item.flags()|QtCore.Qt.ItemIsUserCheckable)
+                item.setCheckState(QtCore.Qt.Unchecked)
                 self.dependency_dialog.listWidgetPythonOptional.addItem(item)
 
             self.dependency_dialog.buttonBox.button(
@@ -1010,7 +1011,7 @@ class CommandAddonManager:
         python_optional = []
         for row in range(self.dependency_dialog.listWidgetPythonOptional.count()):
             item = self.dependency_dialog.listWidgetPythonOptional.item(row)
-            if item.checked():
+            if item.checkState() == QtCore.Qt.Checked:
                 python_optional.append(item.text())
 
         self.dependency_installation_worker = DependencyInstallationWorker(

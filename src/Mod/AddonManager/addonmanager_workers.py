@@ -46,7 +46,11 @@ if FreeCAD.GuiUp:
 
 import addonmanager_utilities as utils
 from addonmanager_macro import Macro
-from addonmanager_metadata import MetadataDownloadWorker, MetadataTxtDownloadWorker
+from addonmanager_metadata import (
+    MetadataDownloadWorker,
+    MetadataTxtDownloadWorker,
+    RequirementsTxtDownloadWorker,
+)
 from AddonManagerRepo import AddonManagerRepo
 
 translate = FreeCAD.Qt.translate
@@ -1553,6 +1557,16 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         )  # Must be created on this thread
         download_queue.finished.connect(self.on_finished)
 
+        # Prevent strange internal Qt errors about cache setup by pre-emptively setting
+        # up a cache. The error this fixes is:
+        # "caching was enabled after some bytes had been written"
+        qnam_cache = os.path.join(
+            FreeCAD.getUserCachePath(), "AddonManager", "QNAM_CACHE"
+        )
+        diskCache = QtNetwork.QNetworkDiskCache()
+        diskCache.setCacheDirectory(qnam_cache)
+        download_queue.setCache(diskCache)
+
         self.downloaders = []
         for repo in self.repos:
             if repo.metadata_url:
@@ -1564,6 +1578,12 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
 
                 # metadata.txt
                 downloader = MetadataTxtDownloadWorker(None, repo)
+                downloader.start_fetch(download_queue)
+                downloader.updated.connect(self.on_updated)
+                self.downloaders.append(downloader)
+
+                # requirements.txt
+                downloader = RequirementsTxtDownloadWorker(None, repo)
                 downloader.start_fetch(download_queue)
                 downloader.updated.connect(self.on_updated)
                 self.downloaders.append(downloader)
@@ -1615,8 +1635,13 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.package_updated.emit(repo)
 
     def send_ui_update(self):
-        self.progress_made.emit(
-            self.num_downloads_completed.get(), self.num_downloads_required
+        completed = self.num_downloads_completed.get()
+        required = self.num_downloads_required
+        percentage = int(100 * completed / required)
+        self.progress_made.emit(completed, required)
+        self.status_message.emit(
+            translate("AddonsInstaller", "Retrieving package metadata...")
+            + f" {completed} / {required} ({percentage}%)"
         )
 
     def terminate_all(self):

@@ -53,6 +53,16 @@ class DownloadWorker(QObject):
             QtNetwork.QNetworkRequest.RedirectPolicyAttribute,
             QtNetwork.QNetworkRequest.UserVerifiedRedirectPolicy,
         )
+        self.request.setAttribute(
+            QtNetwork.QNetworkRequest.CacheSaveControlAttribute, True
+        )
+        self.request.setAttribute(
+            QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+            QtNetwork.QNetworkRequest.PreferCache,
+        )
+        self.request.setAttribute(
+            QtNetwork.QNetworkRequest.BackgroundRequestAttribute, True
+        )
 
         self.fetch_task = network_manager.get(self.request)
         self.fetch_task.finished.connect(self.resolve_fetch)
@@ -251,7 +261,7 @@ class MetadataTxtDownloadWorker(DownloadWorker):
                 for pl in opspy:
                     dep = pl.strip()
                     if dep:
-                        self.repo.python_optional.add(pl.strip())
+                        self.repo.python_optional.add(dep)
                         FreeCAD.Console.PrintLog(
                             f"{self.repo.display_name} optionally imports python package '{pl.strip()}'\n"
                         )
@@ -292,17 +302,14 @@ class RequirementsTxtDownloadWorker(DownloadWorker):
 
     def parse_file(self, data: str) -> None:
         f = io.StringIO(data)
-        valid_lines = []
-        while True:
-            line = f.readline()
-            if not line:
-                break
-
-            break_chars = " <>=~!+"
+        lines = f.readlines()
+        for line in lines:
+            break_chars = " <>=~!+#"
+            package = line
             for n, c in enumerate(line):
                 if c in break_chars:
                     package = line[:n].strip()
-                    # We are stripping version information here: there is no direct support in FreeCAD
-                    # for using specific versions of these packages.
-                    self.repo.python_requires.add(package)
+                    break
+            if package:
+                self.repo.python_requires.add(package)
         self.updated.emit(self.repo)
