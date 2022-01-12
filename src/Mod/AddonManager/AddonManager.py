@@ -97,6 +97,25 @@ class CommandAddonManager:
             "Addon Manager",
         )
 
+        self.allowed_packages = set()
+        allow_file = os.path.join(
+            os.path.dirname(__file__), "ALLOWED_PYTHON_PACKAGES.txt"
+        )
+        if os.path.exists(allow_file):
+            with open(allow_file, "r", encoding="utf8") as f:
+                lines = f.readlines()
+                for line in lines:
+                    if line and len(line) > 0 and line[0] != "#":
+                        self.allowed_packages.add(line.strip())
+        else:
+            FreeCAD.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "Addon Manager installation problem: could not locate ALLOWED_PYTHON_PACKAGES.txt",
+                )
+                + "\n"
+            )
+
     def GetResources(self) -> Dict[str, str]:
         return {
             "Pixmap": "AddonManager",
@@ -859,10 +878,42 @@ class CommandAddonManager:
         # Check the Python dependencies:
         missing_python_requirements = []
         for py_dep in deps.python_required:
-            try:
-                __import__(py_dep)
-            except ImportError:
-                missing_python_requirements.append(py_dep)
+            if py_dep not in missing_python_requirements:
+                try:
+                    __import__(py_dep)
+                except ImportError:
+                    missing_python_requirements.append(py_dep)
+
+        bad_packages = []
+        for dep in missing_python_requirements:
+            if dep not in self.allowed_packages:
+                bad_packages.append(dep)
+
+        if bad_packages:
+            message = translate(
+                "AddonsInstaller",
+                "The Addon {repo.name} requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
+            )
+            if len(bad_packages) < 15:
+                for dep in bad_packages:
+                    message += f"\n  * {dep}"
+            else:
+                message += (
+                    "\n  * (" + translate("AddonsInstaller", "Too many to list") + ")"
+                )
+            QtWidgets.QMessageBox.critical(
+                None, translate("AddonsInstaller", "Connection failed"), message
+            )
+            FreeCAD.Console.PrintMessage(
+                translate(
+                    "AddonsInstaller",
+                    "The following Python packages are allowed to be automatically installed",
+                )
+                + ":\n"
+            )
+            for package in self.allowed_packages:
+                FreeCAD.Console.PrintMessage(f"  * {package}\n")
+            return
 
         missing_python_optionals = []
         for py_dep in deps.python_optional:
@@ -928,13 +979,15 @@ class CommandAddonManager:
                 item.setFlags(Qt.ItemIsUserCheckable)
                 self.dependency_dialog.listWidgetPythonOptional.addItem(item)
 
-            # For now, we don't offer to automatically install the dependencies
-            # self.dependency_dialog.buttonBox.button(
-            #    QtWidgets.QDialogButtonBox.Yes
-            # ).clicked.connect(lambda: self.dependency_dialog_yes_clicked(repo))
+            self.dependency_dialog.buttonBox.button(
+                QtWidgets.QDialogButtonBox.Yes
+            ).clicked.connect(lambda: self.dependency_dialog_yes_clicked(repo))
             self.dependency_dialog.buttonBox.button(
                 QtWidgets.QDialogButtonBox.Ignore
             ).clicked.connect(lambda: self.dependency_dialog_ignore_clicked(repo))
+            self.dependency_dialog.buttonBox.button(
+                QtWidgets.QDialogButtonBox.Cancel
+            ).setDefault(True)
             self.dependency_dialog.exec()
         else:
             self.install(repo)

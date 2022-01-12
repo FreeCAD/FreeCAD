@@ -46,7 +46,7 @@ if FreeCAD.GuiUp:
 
 import addonmanager_utilities as utils
 from addonmanager_macro import Macro
-from addonmanager_metadata import MetadataDownloadWorker, DependencyDownloadWorker
+from addonmanager_metadata import MetadataDownloadWorker, MetadataTxtDownloadWorker
 from AddonManagerRepo import AddonManagerRepo
 
 translate = FreeCAD.Qt.translate
@@ -1383,7 +1383,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
 
 class DependencyInstallationWorker(QtCore.QThread):
-    """Install dependencies: not yet implemented, DO NOT CALL"""
+    """Install dependencies using Addonmanager for FreeCAD, and pip for python"""
 
     def __init__(self, addons, python_required, python_optional):
         QtCore.QThread.__init__(self)
@@ -1397,16 +1397,31 @@ class DependencyInstallationWorker(QtCore.QThread):
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
             worker = InstallWorkbenchWorker(repo)
-            # Don't bother with a separate thread for this right now, just run it here:
-            FreeCAD.Console.PrintMessage(f"Pretending to install {repo.name}")
-            time.sleep(3)
-            continue
-            # worker.run()
+            worker.start()
+            while worker.isRunning():
+                if QtCore.QThread.currentThread().isInterruptionRequested():
+                    worker.requestInterruption()
+                    worker.wait()
+                    return
+                time.sleep(0.1)
+                QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
 
         if self.python_required or self.python_optional:
             # See if we have pip available:
+            python_exe = FreeCAD.ParamGet(
+                "User parameter:BaseApp/Preferences/Addons"
+            ).GetString("PythonExecutableForPip", "Not set")
+            if (
+                not python_exe
+                or python_exe == "Not set"
+                or not os.path.exists(python_exe)
+            ):
+                fc_dir = FreeCAD.getHomePath()
+                python_exe = os.path.join(fc_dir, "bin", "python")
             try:
-                subprocess.check_call(["pip", "--version"])
+                proc = subprocess.run(
+                    [python_exe, "-m", "pip", "--version"], stdout=subprocess.PIPE
+                )
             except subprocess.CalledProcessError as e:
                 FreeCAD.Console.PrintError(
                     translate(
@@ -1415,31 +1430,38 @@ class DependencyInstallationWorker(QtCore.QThread):
                     + f"\n{e.output}"
                 )
                 return
+            result = proc.stdout
+            FreeCAD.Console.PrintMessage(result.decode())
+            vendor_path = os.path.join(
+                FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages"
+            )
+            if not os.path.exists(vendor_path):
+                os.makedirs(vendor_path)
 
         for pymod in self.python_required:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
-            FreeCAD.Console.PrintMessage(f"Pretending to install {pymod}")
-            time.sleep(3)
-            continue
-            # subprocess.check_call(["pip", "install", pymod])
+            proc = subprocess.run(
+                [python_exe, "-m", "pip", "install", "--target", vendor_path, pymod],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            FreeCAD.Console.PrintMessage(proc.stdout.decode())
+            if proc.returncode != 0:
+                FreeCAD.Console.PrintError(proc.stderr.decode())
+                return
 
         for pymod in self.python_optional:
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
-            try:
-                FreeCAD.Console.PrintMessage(f"Pretending to install {pymod}")
-                time.sleep(3)
-                continue
-                # subprocess.check_call([sys.executable, "-m", "pip", "install", pymod])
-            except subprocess.CalledProcessError as e:
-                FreeCAD.Console.PrintError(
-                    translate(
-                        "AddonsInstaller",
-                        "Failed to install option dependency {pymod}. Returned error was:",
-                    )
-                    + f"\n{e.output}"
-                )
+            proc = subprocess.run(
+                [python_exe, "-m", "pip", "install", "--target", vendor_path, pymod],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            FreeCAD.Console.PrintMessage(proc.stdout.decode())
+            if proc.returncode != 0:
+                FreeCAD.Console.PrintError(proc.stderr.decode())
                 # This is not fatal, we can just continue without it
 
 
@@ -1541,7 +1563,7 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                 self.downloaders.append(downloader)
 
                 # metadata.txt
-                downloader = DependencyDownloadWorker(None, repo)
+                downloader = MetadataTxtDownloadWorker(None, repo)
                 downloader.start_fetch(download_queue)
                 downloader.updated.connect(self.on_updated)
                 self.downloaders.append(downloader)

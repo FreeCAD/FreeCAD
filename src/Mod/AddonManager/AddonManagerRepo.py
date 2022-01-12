@@ -113,7 +113,7 @@ class AddonManagerRepo:
         self.requires: Set[str] = set()
         self.blocks: Set[str] = set()
 
-        # And maintains a list of required and optional Python dependencies
+        # And maintains a list of required and optional Python dependencies from metadata.txt
         self.python_requires: Set[str] = set()
         self.python_optional: Set[str] = set()
 
