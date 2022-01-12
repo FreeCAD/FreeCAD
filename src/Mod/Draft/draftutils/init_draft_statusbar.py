@@ -33,12 +33,12 @@ and is populated by various widgets, buttons and menus.
 # @{
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
-from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
 
 from draftutils.init_tools import get_draft_snap_commands
+from draftutils.translate import translate
 
 #----------------------------------------------------------------------------
 # SCALE WIDGET FUNCTIONS
@@ -48,21 +48,21 @@ draft_scales_metrics =  ["1:1000", "1:500", "1:250", "1:200", "1:100",
                          "1:50", "1:25","1:20", "1:10", "1:5","1:2",
                          "1:1",
                          "2:1", "5:1", "10:1", "20:1",
-                         QT_TRANSLATE_NOOP("draft","custom"),
+                         translate("draft", "custom"),
                         ]
 
 draft_scales_arch_imperial =  ["1/16in=1ft", "3/32in=1ft", "1/8in=1ft",
                                "3/16in=1ft", "1/4in=1ft","3/8in=1ft",
                                "1/2in=1ft", "3/4in=1ft", "1in=1ft",
                                "1.5in=1ft", "3in=1ft",
-                               QT_TRANSLATE_NOOP("draft","custom"),
+                               translate("draft", "custom"),
                               ]
 
 draft_scales_eng_imperial =  ["1in=10ft", "1in=20ft", "1in=30ft",
                               "1in=40ft", "1in=50ft", "1in=60ft",
                               "1in=70ft", "1in=80ft", "1in=90ft",
                               "1in=100ft",
-                              QT_TRANSLATE_NOOP("draft","custom"),
+                              translate("draft", "custom"),
                              ]
 
 def get_scales(unit_system = 0):
@@ -135,9 +135,8 @@ def label_to_scale(label):
                 scale = num/den
                 return scale
             except Exception:
-                err = QT_TRANSLATE_NOOP("draft",
-                                        "Unable to convert input into a "
-                                        "scale factor")
+                err = translate("draft",
+                                "Unable to convert input into a  scale factor")
                 App.Console.PrintWarning(err)
                 return None
 
@@ -151,13 +150,11 @@ def _set_scale(action):
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
     scale_widget = sb.findChild(QtGui.QToolBar,"draft_status_scale_widget")
-    if action.text() == QT_TRANSLATE_NOOP("draft","custom"):
-        dialog_text = QT_TRANSLATE_NOOP("draft",
-                                        "Set custom annotation scale in "
-                                        "format x:x, x=x"
-                                       )
-        custom_scale = QtGui.QInputDialog.getText(None, "Set custom scale",
-                                                  dialog_text)
+    if action.text() == translate("draft", "custom"):
+        title_text = translate("draft", "Set custom scale")
+        dialog_text = translate("draft",
+                                "Set custom annotation scale in format x:x, x=x")
+        custom_scale = QtGui.QInputDialog.getText(None, title_text, dialog_text)
         if custom_scale[1]:
             print(custom_scale[0])
             scale = label_to_scale(custom_scale[0])
@@ -213,8 +210,8 @@ def init_draft_statusbar_scale():
     gUnits.triggered.connect(_set_scale)
     scale_label = scale_to_label(draft_annotation_scale)
     scaleLabel.setText(scale_label)
-    tooltip = "Set the scale used by draft annotation tools"
-    scaleLabel.setToolTip(QT_TRANSLATE_NOOP("draft",tooltip))
+    scaleLabel.setToolTip(translate("draft",
+                                    "Set the scale used by draft annotation tools"))
     scale_widget.addWidget(scaleLabel)
     scale_widget.scaleLabel = scaleLabel
 
@@ -248,8 +245,7 @@ def init_draft_statusbar_snap():
     gridbutton.setIcon(QtGui.QIcon.fromTheme("Draft",
                                              QtGui.QIcon(":/icons/"
                                                          "Draft_Grid.svg")))
-    gridbutton.setToolTip(QT_TRANSLATE_NOOP("Draft",
-                                            "Toggles Grid On/Off"))
+    gridbutton.setToolTip(translate("Draft", "Toggles Grid On/Off"))
     gridbutton.setObjectName("Grid_Statusbutton")
     gridbutton.setWhatsThis("Draft_ToggleGrid")
     gridbutton.setFlat(True)
@@ -262,12 +258,11 @@ def init_draft_statusbar_snap():
     snappref = param.GetString("snapModes","111111111101111")[0]
     snapbutton = QtGui.QPushButton(snap_widget)
     snapbutton.setIcon(QtGui.QIcon.fromTheme("Draft",
-                                              QtGui.QIcon(":/icons/"
-                                                          "Snap_Lock.svg")))
+                                             QtGui.QIcon(":/icons/"
+                                                         "Snap_Lock.svg")))
     snapbutton.setObjectName("Snap_Statusbutton")
     snapbutton.setWhatsThis("Draft_ToggleLockSnap")
-    snapbutton.setToolTip(QT_TRANSLATE_NOOP("Draft",
-                                          "Object snapping"))
+    snapbutton.setToolTip(translate("Draft", "Object snapping"))
     snapbutton.setCheckable(True)
     snapbutton.setChecked(bool(int(snappref)))
     snapbutton.setFlat(True)
@@ -298,8 +293,8 @@ def init_draft_statusbar_snap():
     dimbutton.setIcon(QtGui.QIcon.fromTheme("Draft",
                                             QtGui.QIcon(":/icons/"
                                                         "Snap_Dimensions.svg")))
-    dimbutton.setToolTip(QT_TRANSLATE_NOOP("Draft",
-                                           "Toggles Visual Aid Dimensions On/Off"))
+    dimbutton.setToolTip(translate("Draft",
+                                   "Toggles Visual Aid Dimensions On/Off"))
     dimbutton.setObjectName("Draft_Snap_Dimensions_Statusbutton")
     dimbutton.setWhatsThis("Draft_ToggleDimensions")
     dimbutton.setFlat(True)
@@ -318,8 +313,7 @@ def init_draft_statusbar_snap():
                                                           "Snap_Ortho.svg")))
     orthobutton.setObjectName("Draft_Snap_Ortho"+"_Statusbutton")
     orthobutton.setWhatsThis("Draft_ToggleOrtho")
-    orthobutton.setToolTip(QT_TRANSLATE_NOOP("Draft",
-                                             "Toggles Ortho On/Off"))
+    orthobutton.setToolTip(translate("Draft", "Toggles Ortho On/Off"))
     orthobutton.setFlat(True)
     orthobutton.setCheckable(True)
     orthobutton.setChecked(bool(int(ortopref)))
@@ -332,12 +326,12 @@ def init_draft_statusbar_snap():
     wppref = param.GetString("snapModes","111111111101111")[14]
     wpbutton = QtGui.QPushButton(snap_widget)
     wpbutton.setIcon(QtGui.QIcon.fromTheme("Draft",
-                                              QtGui.QIcon(":/icons/"
-                                                          "Snap_WorkingPlane.svg")))
+                                           QtGui.QIcon(":/icons/"
+                                                       "Snap_WorkingPlane.svg")))
     wpbutton.setObjectName("Draft_Snap_WorkingPlane_Statusbutton")
     wpbutton.setWhatsThis("Draft_ToggleWorkingPlaneSnap")
-    wpbutton.setToolTip(QT_TRANSLATE_NOOP("Draft",
-                                          "Toggles Constrain to Working Plane On/Off"))
+    wpbutton.setToolTip(translate("Draft",
+                                  "Toggles Constrain to Working Plane On/Off"))
     wpbutton.setFlat(True)
     wpbutton.setCheckable(True)
     wpbutton.setChecked(bool(int(wppref)))

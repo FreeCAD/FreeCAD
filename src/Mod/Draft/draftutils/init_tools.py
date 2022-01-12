@@ -32,6 +32,8 @@
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+from draftutils.translate import translate
+
 # Comment out commands that aren't ready to be used
 
 
@@ -154,7 +156,32 @@ def get_draft_snap_commands():
             'Draft_Snap_Grid',
             'Draft_Snap_WorkingPlane',
             'Draft_Snap_Dimensions',
-            'Separator', 'Draft_ToggleGrid']
+            'Separator',
+            'Draft_ToggleGrid']
+
+
+def get_draft_snap_tooltips():
+    """Return a dictionary with tooltips for the snapping commands.
+
+    For the snapping commands in the default toolbar and in the statusbar the
+    tooltips from the `GetResources` functions in gui_snaps.py are not used.
+    """
+    return {'Draft_Snap_Lock'         : translate('draft', 'Snap Lock'),
+            'Draft_Snap_Endpoint'     : translate('draft', 'Snap Endpoint'),
+            'Draft_Snap_Midpoint'     : translate('draft', 'Snap Midpoint'),
+            'Draft_Snap_Center'       : translate('draft', 'Snap Center'),
+            'Draft_Snap_Angle'        : translate('draft', 'Snap Angle'),
+            'Draft_Snap_Intersection' : translate('draft', 'Snap Intersection'),
+            'Draft_Snap_Perpendicular': translate('draft', 'Snap Perpendicular'),
+            'Draft_Snap_Extension'    : translate('draft', 'Snap Extension'),
+            'Draft_Snap_Parallel'     : translate('draft', 'Snap Parallel'),
+            'Draft_Snap_Special'      : translate('draft', 'Snap Special'),
+            'Draft_Snap_Near'         : translate('draft', 'Snap Near'),
+            'Draft_Snap_Ortho'        : translate('draft', 'Snap Ortho'),
+            'Draft_Snap_Grid'         : translate('draft', 'Snap Grid'),
+            'Draft_Snap_WorkingPlane' : translate('draft', 'Snap WorkingPlane'),
+            'Draft_Snap_Dimensions'   : translate('draft', 'Snap Dimensions'),
+            'Draft_ToggleGrid'        : translate('draft', 'Toggle Draft Grid')}
 
 
 def get_draft_context_commands():
