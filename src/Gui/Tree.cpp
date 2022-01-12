@@ -3384,32 +3384,8 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
 }
 
 ViewProviderDocumentObject* DocumentItem::getViewProvider(App::DocumentObject* obj) {
-    // Note: It is possible that we receive an invalid pointer from
-    // claimChildren(), e.g. if multiple properties were changed in
-    // a transaction and slotChangedObject() is triggered by one
-    // property being reset before the invalid pointer has been
-    // removed from another. Currently this happens for
-    // PartDesign::Body when cancelling a new feature in the dialog.
-    // First the new feature is deleted, then the Tip property is
-    // reset, but claimChildren() accesses the Model property which
-    // still contains the pointer to the deleted feature
-    //
-    // return obj && obj->getNameInDocument() && pDocument->isIn(obj);
-    //
-    // TODO: is the above isIn() check still necessary? Will
-    // getNameInDocument() check be sufficient?
-
-
-    if (!obj || !obj->getNameInDocument()) return 0;
-
-    ViewProvider* vp;
-    if (obj->getDocument() == pDocument->getDocument())
-        vp = pDocument->getViewProvider(obj);
-    else
-        vp = Application::Instance->getViewProvider(obj);
-    if (!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
-        return 0;
-    return static_cast<ViewProviderDocumentObject*>(vp);
+    return Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+            Application::Instance->getViewProvider(obj));
 }
 
 void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
