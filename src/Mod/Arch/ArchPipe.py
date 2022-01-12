@@ -144,7 +144,7 @@ class _CommandPipeConnector:
         return {'Pixmap'  : 'Arch_PipeConnector',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_PipeConnector","Connector"),
                 'Accel': "P, C",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Pipe","Creates a connector between 2 or 3 selected pipes")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_PipeConnector","Creates a connector between 2 or 3 selected pipes")}
 
     def IsActive(self):
 
