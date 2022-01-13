@@ -34,6 +34,7 @@ import io
 import time
 import subprocess
 import sys
+import platform
 from datetime import datetime
 from typing import Union, List
 
@@ -1180,7 +1181,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             utils.repair_git_repo(self.repo.url, clonedir)
         repo = git.Git(clonedir)
         try:
-            repo.pull() # Refuses to take a progress object?
+            repo.pull()  # Refuses to take a progress object?
             answer = translate(
                 "AddonsInstaller",
                 "Workbench successfully updated. "
@@ -1389,6 +1390,11 @@ class InstallWorkbenchWorker(QtCore.QThread):
 class DependencyInstallationWorker(QtCore.QThread):
     """Install dependencies using Addonmanager for FreeCAD, and pip for python"""
 
+    no_python_exe = QtCore.Signal()
+    no_pip = QtCore.Signal(str)  # Attempted command
+    failure = QtCore.Signal(str, str)  # Short message, detailed message
+    success = QtCore.Signal()
+
     def __init__(self, addons, python_required, python_optional):
         QtCore.QThread.__init__(self)
         self.addons = addons
@@ -1411,29 +1417,56 @@ class DependencyInstallationWorker(QtCore.QThread):
                 QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
 
         if self.python_required or self.python_optional:
-            # See if we have pip available:
-            python_exe = FreeCAD.ParamGet(
-                "User parameter:BaseApp/Preferences/Addons"
-            ).GetString("PythonExecutableForPip", "Not set")
+
+            # Find Python. In preference order
+            #   A) The value of the PythonExecutableForPip user preference
+            #   B) The executable located in the same bin directory as FreeCAD and called "python3"
+            #   C) The executable located in the same bin directory as FreeCAD and called "python"
+            #   D) The result of an shutil search for your system's "python3" executable
+            #   E) The result of an shutil search for your system's "python" executable
+            prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+            python_exe = prefs.GetString("PythonExecutableForPip", "Not set")
             if (
                 not python_exe
                 or python_exe == "Not set"
                 or not os.path.exists(python_exe)
             ):
                 fc_dir = FreeCAD.getHomePath()
+                python_exe = os.path.join(fc_dir, "bin", "python3")
+                if "Windows" in platform.system():
+                    python_exe += ".exe"
+
+            if not python_exe or not os.path.exists(python_exe):
                 python_exe = os.path.join(fc_dir, "bin", "python")
+                if "Windows" in platform.system():
+                    python_exe += ".exe"
+
+            if not python_exe or not os.path.exists(python_exe):
+                python_exe = shutil.which("python3")
+
+            if not python_exe or not os.path.exists(python_exe):
+                python_exe = shutil.which("python")
+
+            if not python_exe or not os.path.exists(python_exe):
+                self.no_python_exe.emit()
+                return
+
+            prefs.SetString("PythonExecutableForPip", python_exe)
+
+            pip_failed = False
             try:
                 proc = subprocess.run(
                     [python_exe, "-m", "pip", "--version"], stdout=subprocess.PIPE
                 )
             except subprocess.CalledProcessError as e:
-                FreeCAD.Console.PrintError(
-                    translate(
-                        "AddonsInstaller", "Failed to execute pip. Returned error was:"
-                    )
-                    + f"\n{e.output}"
-                )
+                pip_failed = True
+            if proc.returncode != 0:
+                pip_failed = True
+            if pip_failed:
+                self.no_pip.emit(f"{python_exe} -m pip --version")
                 return
+            FreeCAD.Console.PrintMessage(proc.stdout)
+            FreeCAD.Console.PrintWarning(proc.stderr)
             result = proc.stdout
             FreeCAD.Console.PrintMessage(result.decode())
             vendor_path = os.path.join(
@@ -1452,7 +1485,13 @@ class DependencyInstallationWorker(QtCore.QThread):
             )
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
             if proc.returncode != 0:
-                FreeCAD.Console.PrintError(proc.stderr.decode())
+                self.emit.failure(
+                    translate(
+                        "AddonsInstaller",
+                        f"Installation of Python package {pymod} failed",
+                    ),
+                    proc.stderr,
+                )
                 return
 
         for pymod in self.python_optional:
@@ -1465,8 +1504,16 @@ class DependencyInstallationWorker(QtCore.QThread):
             )
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
             if proc.returncode != 0:
-                FreeCAD.Console.PrintError(proc.stderr.decode())
-                # This is not fatal, we can just continue without it
+                self.emit.failure(
+                    translate(
+                        "AddonsInstaller",
+                        f"Installation of Python package {pymod} failed",
+                    ),
+                    proc.stderr,
+                )
+                return
+
+        self.success.emit()
 
 
 class CheckSingleWorker(QtCore.QThread):

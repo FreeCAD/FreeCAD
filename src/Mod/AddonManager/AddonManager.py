@@ -281,9 +281,13 @@ class CommandAddonManager:
                 last_cache_update = date.fromisoformat(last_cache_update_string)
             else:
                 # Python 3.6 and earlier don't have date.fromisoformat
-                date_re = re.compile("([0-9]{4})-?(1[0-2]|0[1-9])-?(3[01]|0[1-9]|[12][0-9])")
-                matches = date_re.match (last_cache_update_string)
-                last_cache_update = date(int(matches.group(1)),int(matches.group(2)),int(matches.group(3)))
+                date_re = re.compile(
+                    "([0-9]{4})-?(1[0-2]|0[1-9])-?(3[01]|0[1-9]|[12][0-9])"
+                )
+                matches = date_re.match(last_cache_update_string)
+                last_cache_update = date(
+                    int(matches.group(1)), int(matches.group(2)), int(matches.group(3))
+                )
             delta_update = timedelta(days=days_between_updates)
             if date.today() >= last_cache_update + delta_update:
                 self.update_cache = True
@@ -976,7 +980,7 @@ class CommandAddonManager:
                 self.dependency_dialog.listWidgetPythonRequired.addItem(mod)
             for mod in missing_python_optionals:
                 item = QtWidgets.QListWidgetItem(mod)
-                item.setFlags(item.flags()|QtCore.Qt.ItemIsUserCheckable)
+                item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
                 item.setCheckState(QtCore.Qt.Unchecked)
                 self.dependency_dialog.listWidgetPythonOptional.addItem(item)
 
@@ -1017,7 +1021,16 @@ class CommandAddonManager:
         self.dependency_installation_worker = DependencyInstallationWorker(
             addons, python_required, python_optional
         )
-        self.dependency_installation_worker.finished.connect(lambda: self.install(repo))
+        self.dependency_installation_worker.no_python_exe.connect(
+            lambda: self.no_python_exe(repo)
+        )
+        self.dependency_installation_worker.no_pip.connect(
+            lambda command: self.no_pip(command, repo)
+        )
+        self.dependency_installation_worker.failure.connect(
+            self.dependency_installation_failure
+        )
+        self.dependency_installation_worker.success.connect(lambda: self.install(repo))
         self.dependency_installation_dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Information,
             translate("AddonsInstaller", "Installing dependencies"),
@@ -1030,6 +1043,62 @@ class CommandAddonManager:
         )
         self.dependency_installation_dialog.show()
         self.dependency_installation_worker.start()
+
+    def no_python_exe(self, repo: AddonManagerRepo) -> None:
+        if hasattr(self, "dependency_installation_dialog"):
+            self.dependency_installation_dialog.hide()
+        result = QtWidgets.QMessageBox.critical(
+            self.dialog,
+            translate("AddonsInstaller", "Cannot execute Python"),
+            translate(
+                "AddonsInstaller",
+                "Failed to automatically locate your Python executable, or the path is set incorrectly. "
+                "Please check the Addon Manager preferences setting for the path to Python.",
+            )
+            + "\n\n"
+            + translate(
+                "AddonsInstaller",
+                f"Dependencies could not be installed. Continue with installation of {repo.name} anyway?",
+            ),
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+        )
+        if result == QtWidgets.QMessageBox.Yes:
+            self.install(repo)
+
+    def no_pip(self, command: str, repo: AddonManagerRepo) -> None:
+        if hasattr(self, "dependency_installation_dialog"):
+            self.dependency_installation_dialog.hide()
+        result = QtWidgets.QMessageBox.critical(
+            self.dialog,
+            translate("AddonsInstaller", "Cannot execute pip"),
+            translate(
+                "AddonsInstaller",
+                "Failed to execute pip, which may be missing from your Python installation. "
+                "Please ensure your system has pip installed and try again."
+                "The failed command was: ",
+            )
+            + f"\n\n{command}\n\n"
+            + translate(
+                "AddonsInstaller",
+                f"Continue with installation of {repo.name} anyway?",
+            ),
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+        )
+        if result == QtWidgets.QMessageBox.Yes:
+            self.install(repo)
+
+    def dependency_installation_failure(self, short_message: str, details: str) -> None:
+        if hasattr(self, "dependency_installation_dialog"):
+            self.dependency_installation_dialog.hide()
+        FreeCAD.Console.PrintError(details)
+        QtWidgets.QMessageBox.critical(
+            self.dialog,
+            translate("AddonsInstaller", "Package installation failed"),
+            short_message
+            + "\n\n"
+            + translate("AddonsInstaller", "See Report View for detailed failure log."),
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+        )
 
     def dependency_dialog_ignore_clicked(self, repo: AddonManagerRepo) -> None:
         self.install(repo)
