@@ -59,6 +59,8 @@ SketcherToolWidget::SketcherToolWidget(QWidget *parent)
         this, SLOT(emitSetparameterThree(double)));
     connect(ui->parameterFour, SIGNAL(valueChanged(double)),
         this, SLOT(emitSetparameterFour(double)));
+    connect(ui->parameterFive, SIGNAL(valueChanged(double)),
+        this, SLOT(emitSetparameterFive(double)));
 
 }
 
@@ -99,10 +101,17 @@ void SketcherToolWidget::emitSetparameterFour(double val)
 {
     isSettingSet[3] = 1;
     toolParameters[3] = val;
+    QMetaObject::invokeMethod(ui->parameterFive, "setFocus", Qt::QueuedConnection);
+}
+void SketcherToolWidget::emitSetparameterFive(double val)
+{
+    isSettingSet[4] = 1;
+    toolParameters[4] = val;
 }
 
 void SketcherToolWidget::setSettings(int toolSelected)
 {
+    //Set names and hide excess parameters
     switch (toolSelected) {
     case 0: //none, reset and hide all settings
         toolParameters.clear();
@@ -112,15 +121,18 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->label2->setVisible(0);
         ui->label3->setVisible(0);
         ui->label4->setVisible(0);
+        ui->label5->setVisible(0);
         setparameter(0, 0);
         setparameter(0, 1);
         setparameter(0, 2);
         setparameter(0, 3);
+        setparameter(0, 4);
 
         ui->parameterOne->setVisible(0);
         ui->parameterTwo->setVisible(0);
         ui->parameterThree->setVisible(0);
         ui->parameterFour->setVisible(0);
+        ui->parameterFive->setVisible(0);
         break;
     case 1: //rectangle : DrawSketchHandlerBox
         toolParameters.resize(4, 0);
@@ -130,10 +142,10 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->label2->setVisible(1);
         ui->label3->setVisible(1);
         ui->label4->setVisible(1);
-        ui->label->setText(QApplication::translate("TaskSketcherTool_p1_rectangle", "X position of 1st point"));
-        ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_rectangle", "Y position of 1st point"));
-        ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_rectangle", "Length (X) of the boxe"));
-        ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_rectangle", "Width (Y) of the boxe"));
+        ui->label->setText(QApplication::translate("TaskSketcherTool_p1_rectangle", "x of 1st point"));
+        ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_rectangle", "y of 1st point"));
+        ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_rectangle", "Length (along x axis)"));
+        ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_rectangle", "Width (along y axis)"));
         
         ui->parameterOne->setVisible(1);
         ui->parameterOne->setEnabled(1);
@@ -147,8 +159,36 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->parameterOne->selectNumber();
         QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
         break;
+    case 2: //Round corner rectangle : DrawSketchHandlerOblong
+        toolParameters.resize(5, 0);
+        isSettingSet.resize(5, 0);
+
+        ui->label->setVisible(1);
+        ui->label2->setVisible(1);
+        ui->label3->setVisible(1);
+        ui->label4->setVisible(1);
+        ui->label5->setVisible(1);
+        ui->label->setText(QApplication::translate("TaskSketcherTool_p1_rectangle", "x of 1st point"));
+        ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_rectangle", "y of 1st point"));
+        ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_rectangle", "Length (along x axis)"));
+        ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_rectangle", "Width (along y axis)"));
+        ui->label5->setText(QApplication::translate("TaskSketcherTool_p4_rectangle", "Corner radius"));
+
+        ui->parameterOne->setVisible(1);
+        ui->parameterOne->setEnabled(1);
+        ui->parameterTwo->setVisible(1);
+        ui->parameterTwo->setEnabled(0);
+        ui->parameterThree->setVisible(1);
+        ui->parameterThree->setEnabled(0);
+        ui->parameterFour->setVisible(1);
+        ui->parameterFour->setEnabled(0);
+        ui->parameterFive->setVisible(1);
+        ui->parameterFive->setEnabled(0);
+
+        ui->parameterOne->selectNumber();
+        QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        break;
     }
-    //Set names and hide excess parameters
 }
 
 void SketcherToolWidget::setparameter(double val, int i)
@@ -165,6 +205,9 @@ void SketcherToolWidget::setparameter(double val, int i)
     else if (i == 3) {
         ui->parameterFour->setValue(Base::Quantity(val, Base::Unit::Length));
     }
+    else if (i == 4) {
+        ui->parameterFive->setValue(Base::Quantity(val, Base::Unit::Length));
+    }
 }
 
 void SketcherToolWidget::setParameterActive(bool val, int i)
@@ -180,6 +223,9 @@ void SketcherToolWidget::setParameterActive(bool val, int i)
     }
     else if (i == 3) {
         ui->parameterFour->setEnabled(val);
+    }
+    else if (i == 4) {
+        ui->parameterFive->setEnabled(val);
     }
 }
 
@@ -200,6 +246,10 @@ void SketcherToolWidget::setParameterFocus(int i)
     else if (i == 3) {
         ui->parameterFour->selectNumber();
         QMetaObject::invokeMethod(ui->parameterFour, "setFocus", Qt::QueuedConnection);
+    }
+    else if (i == 4) {
+        ui->parameterFive->selectNumber();
+        QMetaObject::invokeMethod(ui->parameterFive, "setFocus", Qt::QueuedConnection);
     }
 }
 

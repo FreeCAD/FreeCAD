@@ -65,6 +65,7 @@ public Q_SLOTS:
     void emitSetparameterTwo(double val);
     void emitSetparameterThree(double val);
     void emitSetparameterFour(double val);
+    void emitSetparameterFive(double val);
 
 protected:
     void changeEvent(QEvent *e);

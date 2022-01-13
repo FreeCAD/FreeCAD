@@ -933,41 +933,67 @@ public:
         , EditCurve(37)
     {
     }
-    virtual ~DrawSketchHandlerOblong() {}
+    virtual ~DrawSketchHandlerOblong() {
+        sketchgui->toolSettings->widget->setSettings(0);
+    }
     /// mode table
     enum BoxMode {
         STATUS_SEEK_First,      /**< enum value ----. */
         STATUS_SEEK_Second,     /**< enum value ----. */
+        STATUS_SEEK_Third,     /**< enum value ----. */
         STATUS_End
     };
 
     virtual void activated(ViewProviderSketch*)
     {
         setCrosshairCursor("Sketcher_Pointer_Oblong");
+        sketchgui->toolSettings->widget->setSettings(2);
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos)
     {
-
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
             if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
+            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1 && sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                pressButton(onSketchPos);
+                releaseButton(onSketchPos);
+            }
         }
         else if (Mode == STATUS_SEEK_Second) {
-            float distanceX = onSketchPos.x - StartPos.x;
-            float distanceY = onSketchPos.y - StartPos.y;
-
-            lengthX = distanceX; lengthY = distanceY;
-            signX = Base::sgn(distanceX);
-            signY = Base::sgn(distanceY);
-            if (fabs(distanceX) > fabs(distanceY)) {
-                radius = fabs(distanceY) / 4; // we use a fourth of the smaller distance as default radius
+            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                lengthX = sketchgui->toolSettings->widget->toolParameters[2];
+                if (onSketchPos.x - StartPos.x < 0) {
+                    lengthX = -lengthX;
+                }
+                EndPos.x = StartPos.x + lengthX;
             }
             else {
-                radius = fabs(distanceX) / 4;
+                lengthX = onSketchPos.x - StartPos.x;
+                EndPos.x = onSketchPos.x;
+            }
+            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                lengthY = sketchgui->toolSettings->widget->toolParameters[3];
+                if (onSketchPos.y - StartPos.y < 0) {
+                    lengthY = -lengthY;
+                }
+                EndPos.y = StartPos.y + lengthY;
+            }
+            else {
+                lengthY = onSketchPos.y - StartPos.y;
+                EndPos.y = onSketchPos.y;
+            }
+
+            signX = Base::sgn(lengthX);
+            signY = Base::sgn(lengthY);
+            if (fabs(lengthX) > fabs(lengthY)) {
+                radius = fabs(lengthY) / 5; // we use a fifth of the smaller distance as default radius
+            }
+            else {
+                radius = fabs(lengthX) / 5;
             }
 
             // we draw the lines with 36 segments, 8 for each arc and 4 lines
@@ -1017,17 +1043,154 @@ public:
                 return;
             }
         }
+        else if (Mode == STATUS_SEEK_Third) {
+            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                radius = min(sketchgui->toolSettings->widget->toolParameters[4] , min(abs(lengthX / 2), abs(lengthY / 2)));
+            }
+            else {
+                double dx, dy;
+                dx = onSketchPos.x - StartPos.x;
+                if (dx < lengthX / 2) {
+                    dx = pow(onSketchPos.x - StartPos.x, 2);
+                }
+                else {
+                    dx = pow(onSketchPos.x - EndPos.x, 2);
+                }
+                dy = onSketchPos.y - StartPos.y;
+                if (dy < lengthY / 2) {
+                    dy = pow(onSketchPos.y - StartPos.y, 2);
+                }
+                else {
+                    dy = pow(onSketchPos.y - EndPos.y, 2);
+                }
+                radius = min(sqrt(dx + dy), min(abs(lengthX/2), abs(lengthY/2)));
+            }
+
+            // we draw the lines with 36 segments, 8 for each arc and 4 lines
+            // draw the arcs
+            for (int i = 0; i < 8; i++) {
+                // calculate the x,y positions forming the the arc
+                double angle = i * M_PI / 16.0;
+                double x_i = -radius * sin(angle);
+                double y_i = -radius * cos(angle);
+                // we are drawing clockwise starting with the arc that is besides StartPos
+                if (signX == signY) {
+                    EditCurve[i] = Base::Vector2d(StartPos.x + signX * (radius + x_i), StartPos.y + signY * (radius + y_i));
+                    EditCurve[9 + i] = Base::Vector2d(StartPos.x + signY * (radius + y_i), StartPos.y + lengthY - signX * (radius + x_i));
+                    EditCurve[18 + i] = Base::Vector2d(StartPos.x + lengthX - signX * (radius + x_i), StartPos.y + lengthY - signY * (radius + y_i));
+                    EditCurve[27 + i] = Base::Vector2d(StartPos.x + lengthX - signY * (radius + y_i), StartPos.y + signX * (radius + x_i));
+                }
+                else {
+                    EditCurve[i] = Base::Vector2d(StartPos.x - signY * (radius + y_i), StartPos.y - signX * (radius + x_i));
+                    EditCurve[9 + i] = Base::Vector2d(StartPos.x + lengthX - signX * (radius + x_i), StartPos.y + signY * (radius + y_i));
+                    EditCurve[18 + i] = Base::Vector2d(StartPos.x + lengthX + signY * (radius + y_i), StartPos.y + lengthY + signX * (radius + x_i));
+                    EditCurve[27 + i] = Base::Vector2d(StartPos.x + signX * (radius + x_i), StartPos.y + lengthY - signY * (radius + y_i));
+                }
+            }
+            // draw the lines
+            if (signX == signY) {
+                EditCurve[8] = Base::Vector2d(StartPos.x, StartPos.y + (signY * radius));
+                EditCurve[17] = Base::Vector2d(StartPos.x + (signX * radius), StartPos.y + lengthY);
+                EditCurve[26] = Base::Vector2d(StartPos.x + lengthX, StartPos.y + lengthY - (signY * radius));
+                EditCurve[35] = Base::Vector2d(StartPos.x + lengthX - (signX * radius), StartPos.y);
+            }
+            else {
+                EditCurve[8] = Base::Vector2d(StartPos.x + (signX * radius), StartPos.y);
+                EditCurve[17] = Base::Vector2d(StartPos.x + lengthX, StartPos.y + (signY * radius));
+                EditCurve[26] = Base::Vector2d(StartPos.x + lengthX - (signX * radius), StartPos.y + lengthY);
+                EditCurve[35] = Base::Vector2d(StartPos.x, StartPos.y + lengthY - (signY * radius));
+            }
+            // close the curve
+            EditCurve[36] = EditCurve[0];
+
+            SbString text;
+            text.sprintf(" (%.1fR %.1fX %.1fY)", radius, lengthX, lengthY);
+            setPositionText(onSketchPos, text);
+
+            sketchgui->drawEdit(EditCurve);
+            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                pressButton(onSketchPos);
+                releaseButton(onSketchPos);
+            }
+        }
         applyCursor();
     }
 
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode == STATUS_SEEK_First) {
-            StartPos = onSketchPos;
+            if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                StartPos.x = sketchgui->toolSettings->widget->toolParameters[0];
+            }
+            else {
+                StartPos.x = onSketchPos.x;
+            }
+            if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                StartPos.y = sketchgui->toolSettings->widget->toolParameters[1];
+            }
+            else {
+                StartPos.y = onSketchPos.y;
+            }
+
+            sketchgui->toolSettings->widget->setParameterActive(0, 0);
+            sketchgui->toolSettings->widget->setParameterActive(0, 1);
+            sketchgui->toolSettings->widget->setParameterActive(1, 2);
+            sketchgui->toolSettings->widget->setParameterActive(1, 3);
+            sketchgui->toolSettings->widget->setParameterFocus(2);
             Mode = STATUS_SEEK_Second;
         }
+        else if (Mode == STATUS_SEEK_Second) {
+            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                lengthX = sketchgui->toolSettings->widget->toolParameters[2];
+                if (onSketchPos.x - StartPos.x < 0) {
+                    lengthX = -lengthX;
+                }
+                EndPos.x = StartPos.x + lengthX;
+            }
+            else {
+                lengthX = onSketchPos.x - StartPos.x;
+                EndPos.x = onSketchPos.x;
+            }
+            if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                lengthY = sketchgui->toolSettings->widget->toolParameters[3];
+                if (onSketchPos.y - StartPos.y < 0) {
+                    lengthY = -lengthY;
+                }
+                EndPos.y = StartPos.y + lengthY;
+            }
+            else {
+                lengthY = onSketchPos.y - StartPos.y;
+                EndPos.y = onSketchPos.y;
+            }
+
+            sketchgui->toolSettings->widget->setParameterActive(0, 2);
+            sketchgui->toolSettings->widget->setParameterActive(0, 3);
+            sketchgui->toolSettings->widget->setParameterActive(1, 4);
+            sketchgui->toolSettings->widget->setParameterFocus(4);
+            Mode = STATUS_SEEK_Third;
+        }
         else {
-            EndPos = onSketchPos;
+            if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                radius = min(sketchgui->toolSettings->widget->toolParameters[4], min(abs(lengthX / 2), abs(lengthY / 2)));
+            }
+            else {
+                double dx, dy;
+                dx = onSketchPos.x - StartPos.x;
+                if (dx < lengthX / 2) {
+                    dx = pow(onSketchPos.x - StartPos.x, 2);
+                }
+                else {
+                    dx = pow(onSketchPos.x - EndPos.x, 2);
+                }
+                dy = onSketchPos.y - StartPos.y;
+                if (dy < lengthY / 2) {
+                    dy = pow(onSketchPos.y - StartPos.y, 2);
+                }
+                else {
+                    dy = pow(onSketchPos.y - EndPos.y, 2);
+                }
+                radius = min(sqrt(dx + dy), min(abs(lengthX/2), abs(lengthY/2)));
+            }
             Mode = STATUS_End;
         }
         return true;
@@ -1156,6 +1319,54 @@ public:
 
                 Gui::Command::commitCommand();
 
+                //add constraint if user typed in some dimensions in tool widget
+                if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
+                    if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
+
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
+                            signX == signY ? firstCurve + 1 : firstCurve + 7, signX == signY ? 1 : 2, sketchgui->toolSettings->widget->toolParameters[0]);
+
+                        //signX == signY ? firstCurve + 3 : firstCurve + 1, // horizontal constraint
+                        //signX == signY ? firstCurve + 7 : firstCurve + 5, // horizontal constraint
+                        //signX == signY ? firstCurve + 1 : firstCurve + 3, // vertical constraint
+                        //signX == signY ? firstCurve + 5 : firstCurve + 7, // vertical constraint
+                        Gui::Command::commitCommand();
+                    }
+                    if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
+
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
+                            signX == signY ? firstCurve + 7 : firstCurve + 1, signX == signY ? 2 : 1, sketchgui->toolSettings->widget->toolParameters[1]);
+
+                        Gui::Command::commitCommand();
+                    }
+                    if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point distance constraint"));
+
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                            signX == signY ? firstCurve + 1 : firstCurve + 3, 1, signX == signY ? firstCurve + 5 : firstCurve + 7, 2, sketchgui->toolSettings->widget->toolParameters[2]);
+
+                        Gui::Command::commitCommand();
+                    }
+                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point distance constraint"));
+
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                            signX == signY ? firstCurve + 3 : firstCurve + 1, 1, signX == signY ? firstCurve + 7 : firstCurve + 5, 2, sketchgui->toolSettings->widget->toolParameters[3]);
+
+                        Gui::Command::commitCommand();
+                    }
+                    if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Radius constraint"));
+
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                            firstCurve, radius);
+
+                        Gui::Command::commitCommand();
+                    }
+                }
+
                 // add auto constraints at the StartPos auxiliary point
                 if (sugConstr1.size() > 0) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex() - 1, Sketcher::PointPos::start);
@@ -1176,11 +1387,14 @@ public:
 
                 tryAutoRecompute(static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
             }
+            
+            sketchgui->toolSettings->widget->setSettings(0);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
 
             if (continuousMode) {
                 // This code enables the continuous creation mode.
+                sketchgui->toolSettings->widget->setSettings(2);
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
                 drawEdit(EditCurve);

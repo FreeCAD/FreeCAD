@@ -20,7 +20,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>X position of first point</string>
+        <string>Parameter 1</string>
        </property>
       </widget>
      </item>
@@ -42,7 +42,7 @@
      <item>
       <widget class="QLabel" name="label2">
        <property name="text">
-        <string>Y position of first point</string>
+        <string>Parameter 2</string>
        </property>
       </widget>
      </item>
@@ -64,7 +64,7 @@
      <item>
       <widget class="QLabel" name="label3">
        <property name="text">
-        <string>Length (X) of the boxe</string>
+        <string>Parameter 3</string>
        </property>
       </widget>
      </item>
@@ -86,12 +86,34 @@
      <item>
       <widget class="QLabel" name="label4">
        <property name="text">
-        <string>Width (Y) of the boxe</string>
+        <string>Parameter 4</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::PrefQuantitySpinBox" name="parameterFour">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   
+   <item>
+	<layout class="QHBoxLayout" name="horizontalLayout5">
+     <item>
+      <widget class="QLabel" name="label5">
+       <property name="text">
+        <string>Parameter 5</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterFive">
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
