@@ -46,6 +46,7 @@ public:
     App::PropertyBool        AlongSketchNormal;
     App::PropertyLength      Offset;
     App::PropertyLinkSub     ReferenceAxis;
+    App::PropertyAngle       TaperAngle;
 
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
 

@@ -23,8 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepOffsetAPI_DraftAngle.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
+# include <BRepTools.hxx>
 # include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepAdaptor_Surface.hxx>
@@ -44,6 +46,8 @@
 # include <TopoDS_Solid.hxx>
 # include <TopoDS_Wire.hxx>
 # include <TopExp_Explorer.hxx>
+# include <GeomLProp_SLProps.hxx>
+# include <BRepGProp_Face.hxx>
 #endif
 
 #include <App/Document.h>
@@ -75,6 +79,7 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     Offset.setConstraints(&signedLengthConstraint);
+    ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pad", App::Prop_None, "Pad taper angle");
 
     // Remove the constraints and keep the type to allow to accept negative values
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
@@ -216,6 +221,64 @@ App::DocumentObjectExecReturn *Pad::execute()
 
         // set the additive shape property for later usage in e.g. pattern
         prism = refineShapeIfActive(prism);
+
+        // Make pad tapered if so desired
+        double angle = TaperAngle.getValue()*M_PI/180.0;;
+        if (std::fabs(angle) > Precision::Confusion())
+        {
+            // get the support plane
+            TopoDS_Face face = TopoDS::Face(getVerifiedFace(true));
+            face.Move(invObjLoc);
+            gp_Pnt pnt;
+            gp_Vec vec(0.0, 0.0, 1.0);
+            BRepAdaptor_Surface adapt(face);
+            double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
+            double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
+            BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
+            if(prop.IsNormalDefined()) {
+                // handles the orientation state of the shape
+                BRepGProp_Face(face).Normal(u,v,pnt,vec);
+            }
+            gp_Pln neutralPlane(pnt, vec);
+
+
+            BRepOffsetAPI_DraftAngle mkDraft;
+            mkDraft.Init(prism);
+
+            TopExp_Explorer xp;
+
+            for (xp.Init(prism, TopAbs_FACE); xp.More(); xp.Next())
+            {
+                TopoDS_Face face = TopoDS::Face(xp.Current());
+
+                double umin, umax, vmin, vmax;
+                BRepTools::UVBounds(face,umin, umax, vmin, vmax);
+                Handle(Geom_Surface) aSurface = BRep_Tool::Surface(face);
+                GeomLProp_SLProps props(aSurface, umin, vmin, 1, 0.01);
+                gp_Dir normal = props.Normal();
+
+                if (std::fabs(normal*dir) > Precision::Confusion())
+                    continue;
+
+                // TODO: What is the flag for?
+                mkDraft.Add(face, dir, angle, neutralPlane);
+                if (!mkDraft.AddDone()) {
+                    // Note: the function ProblematicShape returns the face on which the error occurred
+                    // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
+                    //       therefore unusable. See http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341
+                    //       The only solution is to discard mkDraft and start over without the current face
+                    mkDraft.Remove(face);
+                    Base::Console().Error("Pad: failed to taper face. Omitted\n");
+                }
+            }
+
+            mkDraft.Build();
+            if (!mkDraft.IsDone())
+                return new App::DocumentObjectExecReturn("Failed to create draft");
+
+            prism = mkDraft.Shape();
+        }
+
         this->AddSubShape.setValue(prism);
 
         if (!base.IsNull()) {
