@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SketcherGui::TaskSketcherTool</class>
+ <widget class="QWidget" name="SketcherGui::TaskSketcherTool">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>312</width>
+    <height>254</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+  
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>X position of first point</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterOne">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout2">
+     <item>
+      <widget class="QLabel" name="label2">
+       <property name="text">
+        <string>Y position of first point</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterTwo">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item> 
+   
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout3">
+     <item>
+      <widget class="QLabel" name="label3">
+       <property name="text">
+        <string>Length (X) of the boxe</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterThree">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+	
+   <item>
+	<layout class="QHBoxLayout" name="horizontalLayout4">
+     <item>
+      <widget class="QLabel" name="label4">
+       <property name="text">
+        <string>Width (Y) of the boxe</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="parameterFour">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -38,6 +38,7 @@
 #include <QCoreApplication>
 #include <Gui/Document.h>
 #include "ShortcutListener.h"
+#include "TaskSketcherTool.h"
 
 #include <Mod/Sketcher/App/GeoList.h>
 
@@ -535,6 +536,7 @@ public:
     /// signals if the elements list has changed
     boost::signals2::signal<void ()> signalElementsChanged;
     //@}
+    TaskSketcherTool* toolSettings;
 
     /** @name Attorneys for collaboration with helper classes */
     //@{

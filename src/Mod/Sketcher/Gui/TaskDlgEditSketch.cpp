@@ -43,6 +43,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     : TaskDialog(),sketchView(sketchView)
 {
     assert(sketchView);
+    sketchView->toolSettings = new TaskSketcherTool(sketchView);
     Constraints = new TaskSketcherConstraints(sketchView);
     Elements = new TaskSketcherElements(sketchView);
     General = new TaskSketcherGeneral(sketchView);
@@ -52,6 +53,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     setEscapeButtonEnabled(hGrp->GetBool("LeaveSketchWithEscape", true));
 
+    Content.push_back(sketchView->toolSettings);
     Content.push_back(Messages);
 
     if (hGrp->GetBool("ShowSolverAdvancedWidget",false)) {
