@@ -35,6 +35,7 @@ set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
     TaskSketcherElements.ui
     TaskSketcherGeneral.ui
+    TaskSketcherTool.ui
     TaskSketcherMessages.ui
     TaskSketcherSolverAdvanced.ui
     TaskSketcherValidation.ui
@@ -92,6 +93,9 @@ SET(SketcherGui_SRCS
     TaskSketcherGeneral.ui
     TaskSketcherGeneral.cpp
     TaskSketcherGeneral.h
+    TaskSketcherTool.ui
+    TaskSketcherTool.cpp
+    TaskSketcherTool.h
     TaskSketcherMessages.ui
     TaskSketcherMessages.cpp
     TaskSketcherMessages.h
