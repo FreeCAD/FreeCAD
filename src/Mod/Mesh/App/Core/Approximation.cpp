@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <cstdlib>
-# include <iterator> 
+# include <iterator>
 #endif
 
 #include "Approximation.h"
@@ -118,7 +118,7 @@ Base::Vector3f Approximation::GetGravity() const
 }
 
 std::size_t Approximation::CountPoints() const
-{ 
+{
     return _vPoints.size();
 }
 
@@ -339,8 +339,8 @@ float PlaneFit::GetStdDeviation() const
 
 float PlaneFit::GetSignedStdDeviation() const
 {
-    // if the nearest point to the gravity is at the side 
-    // of normal direction the value will be 
+    // if the nearest point to the gravity is at the side
+    // of normal direction the value will be
     // positive otherwise negative
     if (!_bIsFitted)
         return FLOAT_MAX;
@@ -510,21 +510,21 @@ void QuadraticFit::CalcEigenValues(double &dLambda1, double &dLambda2, double &d
     /*
      * F(x,y,z) = a11*x*x + a22*y*y + a33*z*z +2*a12*x*y + 2*a13*x*z + 2*a23*y*z + 2*a10*x + 2*a20*y + 2*a30*z * a00 = 0
      *
-     * Formenmatrix:
+     * Form matrix:
      *
      *      ( a11   a12   a13 )
-     * A =  ( a21   a22   a23 )       wobei gilt a[i,j] = a[j,i]
+     * A =  ( a21   a22   a23 )       where a[i,j] = a[j,i]
      *      ( a31   a32   a33 )
      *
-     * Koeffizienten des Quadrik-Fits bezogen auf die hier verwendete Schreibweise:
-     * 
+     * Coefficients of the Quadrik-Fit based on the notation used here:
+     *
      *   0 = C[0] + C[1]*X + C[2]*Y + C[3]*Z + C[4]*X^2 + C[5]*Y^2
      *     + C[6]*Z^2 + C[7]*X*Y + C[8]*X*Z + C[9]*Y*Z
      *
-     * Quadratisch:   a11 := c[4],    a22 := c[5],    a33 := c[6]
-     * Gemischt:      a12 := c[7]/2,  a13 := c[8]/2,  a23 := c[9]/2
+     * Square:        a11 := c[4],    a22 := c[5],    a33 := c[6]
+     * Mixed:         a12 := c[7]/2,  a13 := c[8]/2,  a23 := c[9]/2
      * Linear:        a10 := c[1]/2,  a20 := c[2]/2,  a30 := c[3]/2
-     * Konstant:      a00 := c[0]
+     * Constant:      a00 := c[0]
      *
      */
 
@@ -1475,7 +1475,7 @@ float PolynomialFit::Fit()
 
 float PolynomialFit::Value(float x, float y) const
 {
-    float fValue = 
+    float fValue =
     _fCoeff[0]                   +
     _fCoeff[1] * x               +
     _fCoeff[2] * x * x           +
