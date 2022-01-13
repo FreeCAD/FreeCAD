@@ -51,7 +51,9 @@ import DraftGeomUtils
 import draftguitools.gui_trackers as trackers
 
 from draftutils.init_tools import get_draft_snap_commands
+from draftutils.init_tools import get_draft_snap_tooltips
 from draftutils.messages import _msg, _wrn
+from draftutils.translate import translate
 
 __title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
@@ -1472,7 +1474,7 @@ class Snapper:
         self.toolbar = QtGui.QToolBar(mw)
         mw.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar)
         self.toolbar.setObjectName("Draft Snap")
-        self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
+        self.toolbar.setWindowTitle(translate("Workbench", "Draft Snap"))
 
         # make snap buttons
         snap_gui_commands = get_draft_snap_commands()
@@ -1495,27 +1497,24 @@ class Snapper:
         button_suffix   The suffix that have to be applied to the command name
                         to define the button name
         """
+        tooltips_dict = get_draft_snap_tooltips()
         for gc in commands:
             if gc == "Separator":
                 continue
-            if gc == "Draft_ToggleGrid":
-                gb = self.init_grid_button(self.toolbar)
-                context.addAction(gb)
-                QtCore.QObject.connect(gb, QtCore.SIGNAL("triggered()"),
-                                    lambda f=Gui.doCommand,
-                                    arg='Gui.runCommand("Draft_ToggleGrid")':f(arg))
-                continue
             # setup toolbar buttons
-            command = 'Gui.runCommand("' + gc + '")'
             b = QtGui.QAction(context)
-            b.setIcon(QtGui.QIcon(':/icons/' + gc[6:] + '.svg'))
-            b.setText(QtCore.QCoreApplication.translate("Draft_Snap", "Snap " + gc[11:]))
-            b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap", "Snap " + gc[11:]))
+            if gc == "Draft_ToggleGrid":
+                b.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
+            else:
+                b.setIcon(QtGui.QIcon(":/icons/" + gc[6:] + ".svg"))
+                b.setCheckable(True)
+                b.setChecked(True)
+            b.setText(tooltips_dict[gc])
+            b.setToolTip(tooltips_dict[gc])
             b.setObjectName(gc + button_suffix)
-            b.setWhatsThis("Draft_" + gc[11:].capitalize())
-            b.setCheckable(True)
-            b.setChecked(True)
+            b.setWhatsThis(gc)
             context.addAction(b)
+            command = 'Gui.runCommand("' + gc + '")'
             QtCore.QObject.connect(b,
                                    QtCore.SIGNAL("triggered()"),
                                    lambda f=Gui.doCommand,
@@ -1524,18 +1523,6 @@ class Snapper:
         for b in context.actions():
             if len(b.statusTip()) == 0:
                 b.setStatusTip(b.toolTip())
-
-
-    def init_grid_button(self, context):
-        """Add grid button to the given toolbar"""
-        b = QtGui.QAction(context)
-        b.setIcon(QtGui.QIcon.fromTheme("Draft", QtGui.QIcon(":/icons/"
-                                                         "Draft_Grid.svg")))
-        b.setText(QtCore.QCoreApplication.translate("Draft_Snap", "Toggles Grid On/Off"))
-        b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap", "Toggle Draft Grid"))
-        b.setObjectName("Grid_Button")
-        b.setWhatsThis("Draft_ToggleGrid")
-        return b
 
 
     def restore_snap_buttons_state(self, toolbar, button_suffix):
@@ -1553,10 +1540,10 @@ class Snapper:
             snap = action.objectName()[11:].replace(button_suffix, "")
             if snap in self.active_snaps:
                 action.setChecked(True)
-                action.setToolTip(action.toolTip() + " (ON)")
+                action.setToolTip(action.toolTip() + " " + (translate("draft", "(ON)")))
             elif snap in Gui.Snapper.snaps: # required: the toolbar has more children than the buttons
                 action.setChecked(False)
-                action.setToolTip(action.toolTip() + " (OFF)")
+                action.setToolTip(action.toolTip() + " " + (translate("draft", "(OFF)")))
 
 
     def get_snap_toolbar(self):
