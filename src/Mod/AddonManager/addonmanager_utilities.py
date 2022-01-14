@@ -25,7 +25,7 @@ import os
 import re
 import ctypes
 import ssl
-from typing import Union
+from typing import Union, Optional
 
 import urllib
 from urllib.request import Request
@@ -53,7 +53,6 @@ else:
     except AttributeError:
         pass
 
-
 #  @package AddonManager_utilities
 #  \ingroup ADDONMANAGER
 #  \brief Utilities to work across different platforms, providers and python versions
@@ -72,7 +71,7 @@ def translate(context, text, disambig=None):
 
 
 def symlink(source, link_name):
-    "creates a symlink of a file, if possible"
+    """Creates a symlink of a file, if possible. Note that it fails on most modern Windows installations"""
 
     if os.path.exists(link_name) or os.path.lexists(link_name):
         pass
@@ -81,6 +80,8 @@ def symlink(source, link_name):
         if callable(os_symlink):
             os_symlink(source, link_name)
         else:
+            # NOTE: This does not work on most normal Windows 10 and later installations, unless developer
+            # mode is turned on. Make sure to catch any exception thrown and have a fallback plan.
             csl = ctypes.windll.kernel32.CreateSymbolicLinkW
             csl.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32)
             csl.restype = ctypes.c_ubyte
@@ -90,47 +91,6 @@ def symlink(source, link_name):
             flags += 2
             if csl(link_name, source, flags) == 0:
                 raise ctypes.WinError()
-
-
-def urlopen(url: str) -> Union[None, HTTPResponse]:
-    """Opens an url with urllib and streams it to a temp file"""
-
-    timeout = 5
-
-    # Proxy an ssl configuration
-    pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-    if pref.GetBool("NoProxyCheck", True):
-        proxies = {}
-    else:
-        if pref.GetBool("SystemProxyCheck", False):
-            proxy = urllib.request.getproxies()
-            proxies = {"http": proxy.get("http"), "https": proxy.get("http")}
-        elif pref.GetBool("UserProxyCheck", False):
-            proxy = pref.GetString("ProxyUrl", "")
-            proxies = {"http": proxy, "https": proxy}
-
-    if ssl_ctx:
-        handler = urllib.request.HTTPSHandler(context=ssl_ctx)
-    else:
-        handler = {}
-    proxy_support = urllib.request.ProxyHandler(proxies)
-    opener = urllib.request.build_opener(proxy_support, handler)
-    urllib.request.install_opener(opener)
-
-    # Url opening
-    req = urllib.request.Request(
-        url, headers={"User-Agent": "Mozilla/5.0 Magic Browser"}
-    )
-    try:
-        u = urllib.request.urlopen(req, timeout=timeout)
-
-    except URLError as e:
-        FreeCAD.Console.PrintLog(f"Error loading {url}:\n {e.reason}\n")
-        return None
-    except Exception:
-        return None
-    else:
-        return u
 
 
 def getserver(url):
@@ -205,6 +165,19 @@ def get_zip_url(repo):
             "\n",
         )
         return None
+
+
+def recognized_git_location(repo) -> bool:
+    parsed_url = urlparse(repo.url)
+    if (
+        parsed_url.netloc == "github.com"
+        or parsed_url.netloc == "framagit.com"
+        or parsed_url.netloc == "gitlab.com"
+        or parsed_url.netloc == "salsa.debian.org"
+    ):
+        return True
+    else:
+        return False
 
 
 def construct_git_url(repo, filename):
