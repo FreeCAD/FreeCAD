@@ -42,6 +42,8 @@ from package_list import PackageList, PackageListItemModel
 from package_details import PackageDetails
 from AddonManagerRepo import AddonManagerRepo
 
+from NetworkManager import HAVE_QTNETWORK
+
 __title__ = "FreeCAD Addon Manager Module"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann", "Kurt Kremitzki", "Chris Hennes"
 __url__ = "http://www.freecad.org"
@@ -228,9 +230,16 @@ class CommandAddonManager:
         # This must run on the main GUI thread
         if hasattr(self, "connection_check_message") and self.connection_check_message:
             self.connection_check_message.close()
-        QtWidgets.QMessageBox.critical(
-            None, translate("AddonsInstaller", "Connection failed"), message
-        )
+        if HAVE_QTNETWORK:
+            QtWidgets.QMessageBox.critical(
+                None, translate("AddonsInstaller", "Connection failed"), message
+            )
+        else:
+            QtWidgets.QMessageBox.critical(
+                None, 
+                translate("AddonsInstaller", "Missing dependency"), 
+                translate("AddonsInstaller", "Could not import QtNetwork -- see Report View for details. Addon Manager unavailable."),
+            )
 
     def launch(self) -> None:
         """Shows the Addon Manager UI"""
@@ -821,7 +830,7 @@ class CommandAddonManager:
         self.packageDetails.show_repo(selected_repo)
 
     def show_information(self, message: str) -> None:
-        """shows generic text in the information pane (which might be collapsed)"""
+        """shows generic text in the information pane"""
 
         self.dialog.labelStatusInfo.setText(message)
         self.dialog.labelStatusInfo.repaint()

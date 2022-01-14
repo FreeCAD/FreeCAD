@@ -30,9 +30,10 @@ import time
 from typing import Dict, Tuple, List, Union
 
 import FreeCAD
+from NetworkManager import AM_NETWORK_MANAGER
 
-from addonmanager_utilities import translate
-from addonmanager_utilities import urlopen
+translate = FreeCAD.Qt.translate
+
 from addonmanager_utilities import remove_directory_if_empty
 
 try:
@@ -165,28 +166,25 @@ class Macro(object):
 
     def fill_details_from_wiki(self, url):
         code = ""
-        u = urlopen(url)
-        if u is None:
+        p = AM_NETWORK_MANAGER.blocking_get(url)
+        if not p:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    f"Could not connect to {url} - check connection and proxy settings",
+                    f"Unable to open macro wiki page at {url}",
                 )
                 + "\n"
             )
             return
-        p = u.read()
-        if isinstance(p, bytes):
-            p = p.decode("utf-8")
-        u.close()
+        p = p.data().decode("utf8")
         # check if the macro page has its code hosted elsewhere, download if
         # needed
         if "rawcodeurl" in p:
             rawcodeurl = re.findall('rawcodeurl.*?href="(http.*?)">', p)
             if rawcodeurl:
                 rawcodeurl = rawcodeurl[0]
-                u2 = urlopen(rawcodeurl)
-                if u2 is None:
+                u2 = AM_NETWORK_MANAGER.blocking_get(rawcodeurl)
+                if not u2:
                     FreeCAD.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
@@ -195,18 +193,7 @@ class Macro(object):
                         + "\n"
                     )
                     return
-                response = ""
-                block = 8192
-                while True:
-                    data = u2.read(block)
-                    if not data:
-                        break
-                    if isinstance(data, bytes):
-                        data = data.decode("utf-8")
-                    response += data
-                if response:
-                    code = response
-                u2.close()
+                code = u2.data().decode("utf8")
         if not code:
             code = re.findall(r"<pre>(.*?)</pre>", p.replace("\n", "--endl--"))
             if code:
