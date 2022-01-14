@@ -1,5 +1,4 @@
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2012 Sebastian Hoogen <github@sebastianhoogen.de>       *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +19,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD OpenSCAD Workbench - GUI Commands"
+__title__ = "FreeCAD OpenSCAD Workbench - GUI Commands"
 __author__ = "Sebastian Hoogen"
 __url__ = ["https://www.freecadweb.org"]
 
@@ -106,7 +105,7 @@ class ExplodeGroup:
                 explode(obj)
 
     def GetResources(self):
-        return {'Pixmap'  : 'OpenSCAD_Explode_Group', 
+        return {'Pixmap'  : 'OpenSCAD_Explode_Group',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup', 'Explode Group'),
                 'ToolTip':  QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup', 'Remove fusion, apply placement to children, and color randomly')}
 
@@ -122,8 +121,8 @@ class ColorCodeShape:
             objs=FreeCAD.ActiveDocument.Objects
         colorcodeshapes.colorcodeshapes(objs)
     def GetResources(self):
-        return {'Pixmap'  : 'OpenSCAD_ColorCodeShape', 
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ColorCodeShape', 'Color Shapes'), 
+        return {'Pixmap'  : 'OpenSCAD_ColorCodeShape',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ColorCodeShape', 'Color Shapes'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ColorCodeShape', 'Color Shapes by validity and type')}
 
 class Edgestofaces:
@@ -411,7 +410,7 @@ class AddSCADTask:
         except OpenSCADUtils.OpenSCADError as e:
             self.form.textMsg.setPlainText(e.value)
             FreeCAD.Console.PrintError(e.value)
-     
+
     def refreshelement(self):
         self.form.textMsg.setPlainText('')
         doc=FreeCAD.activeDocument()
@@ -428,7 +427,7 @@ class AddSCADTask:
            with open(filename,'r') as fp :
               data = fp.read()
               self.form.textEdit.setText(data)
-    
+
     def saveelement(self) :
         filename, filter = QtGui.QFileDialog.getSaveFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
 
@@ -436,7 +435,7 @@ class AddSCADTask:
            Text = self.form.textEdit.toPlainText()
            with open(filename,'w') as fp :
               fp.write(Text)
-    
+
 class OpenSCADMeshBooleanWidget(QtGui.QWidget):
     def __init__(self,*args):
         QtGui.QWidget.__init__(self,*args)
@@ -513,8 +512,8 @@ class AddOpenSCADElement:
         FreeCADGui.Control.showDialog(panel)
 
     def GetResources(self):
-        return {'Pixmap'  : 'OpenSCAD_AddOpenSCADElement', 
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement', 'Add OpenSCAD Element...'), 
+        return {'Pixmap'  : 'OpenSCAD_AddOpenSCADElement',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement', 'Add OpenSCAD Element...'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement',
                             'Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary')}
 
@@ -528,8 +527,8 @@ class OpenSCADMeshBoolean:
         FreeCADGui.Control.showDialog(panel)
 
     def GetResources(self):
-        return {'Pixmap'  : 'OpenSCAD_MeshBooleans', 
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean','Mesh Boolean...'), 
+        return {'Pixmap'  : 'OpenSCAD_MeshBooleans',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean','Mesh Boolean...'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean',
                             'Export objects as meshes and use OpenSCAD to perform a boolean operation')}
 
@@ -567,8 +566,8 @@ class Minkowski:
         importCSG.process_ObjectsViaOpenSCAD(FreeCAD.activeDocument(),objList,"minkowski")
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
-        return {'Pixmap'  : 'OpenSCAD_Minkowski', 
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Minkowski'), 
+        return {'Pixmap'  : 'OpenSCAD_Minkowski',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Minkowski'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Perform Minkowski')}
 
 FreeCADGui.addCommand('OpenSCAD_ColorCodeShape',ColorCodeShape())

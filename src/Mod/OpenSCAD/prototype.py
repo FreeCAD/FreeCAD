@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 
-# This program is free software; you can redistribute it and/or modify 
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License (LGPL)
 # as published by the Free Software Foundation; either version 2 of
-# the License, or (at your option) any later version. 
+# the License, or (at your option) any later version.
 
 import FreeCAD
-import re,math
+import math
+import re
+
 from OpenSCADFeatures import *
 from OpenSCAD2Dgeom import *
 from OpenSCADUtils import *
@@ -14,50 +16,53 @@ from OpenSCADUtils import *
 if open.__module__ in ['__builtin__','io']:
     pythonopen = open # to distinguish python built-in open function from the one declared here
 
-def openscadmesh(doc,scadstr,objname):
+
+def openscadmesh(doc, scadstr, objname):
     import Part,Mesh,os,OpenSCADUtils
     tmpfilename=OpenSCADUtils.callopenscadstring(scadstr,'stl')
     if tmpfilename:
         #mesh1 = doc.getObject(objname) #reuse imported object
         Mesh.insert(tmpfilename)
         os.unlink(tmpfilename)
-        mesh1=doc.getObject(objname) #blog
+        mesh1 = doc.getObject(objname) #blog
         mesh1.ViewObject.hide()
         sh=Part.Shape()
-        sh.makeShapeFromMesh(mesh1.Mesh.Topology,0.1)
+        sh.makeShapeFromMesh(mesh1.Mesh.Topology, 0.1)
         solid = Part.Solid(sh)
-        obj=doc.addObject("Part::FeaturePython",objname)
-        ImportObject(obj,mesh1) #This object is not mutable from the GUI
+        obj = doc.addObject("Part::FeaturePython", objname)
+        ImportObject(obj, mesh1) #This object is not mutable from the GUI
         ViewProviderTree(obj.ViewObject)
-        solid=solid.removeSplitter()
+        solid = solid.removeSplitter()
         if solid.Volume < 0:
             solid.complement()
-        obj.Shape=solid#.removeSplitter()
+        obj.Shape = solid#.removeSplitter()
         return obj
     else:
         print(scadstr)
 
+
 class Node:
-    #fnmin=12 # maximal fn for implicit polygon rendering
-    fnmin= FreeCAD.ParamGet(\
+    #fnmin = 12 # maximal fn for implicit polygon rendering
+    fnmin = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").GetInt('useMaxFN')
-    planedim=1e10 #size of the square used as x-y-plane
-    def __init__(self,name,arguments=None,children=None,):
+    planedim = 1e10 #size of the square used as x-y-plane
+
+    def __init__(self, name, arguments=None, children=None,):
         pass
-        self.name=name
-        self.arguments=arguments or {}
-        self.children=children or []
+        self.name = name
+        self.arguments = arguments or {}
+        self.children = children or []
 
     def __repr__(self):
-        str1 ='Node(name=%s' % self.name
+        str1 = 'Node(name=%s' % self.name
         if self.arguments:
             str1 += ',arguments=%s' % self.arguments
         if self.children:
             str1 += ',children=%s' % self.children
         return str1+')'
-    
+
     def __nonzero__(self):
-        '''A Node is not obsolete if doesn't have children. 
+        '''A Node is not obsolete if doesn't have children.
         Only if as neither name children or arguments'''
         return bool(self.name or self.arguments or self.children)
 
@@ -65,17 +70,16 @@ class Node:
         '''return the number of children'''
         return len(self.children)
 
-    def __getitem__(self,key):
+    def __getitem__(self, key):
         '''direct access to the children'''
         return self.children.__getitem__(key)
 
-    def rlen(self,checkmultmarix=False):
+    def rlen(self, checkmultmarix=False):
         '''Total number of nodes'''
         if self.children:
             return 1+sum([ch.rlen() for ch in self.children])
         else:
             return 1
-
 
     def addtofreecad(self,doc=None,fcpar=None):
         def center(obj,x,y,z):
@@ -83,32 +87,33 @@ class Node:
                 FreeCAD.Vector(-x/2.0,-y/2.0,-z/2.0),\
                 FreeCAD.Rotation(0,0,0,1))
 
-        import FreeCAD,Part
+        import FreeCAD
+        import Part
         if not doc:
-            doc=FreeCAD.newDocument()
-        obj=None
-        namel=self.name.lower()
+            doc = FreeCAD.newDocument()
+        obj = None
+        namel = self.name.lower()
         multifeature={'union':"Part::MultiFuse",'imp_union':"Part::MultiFuse",
                       'intersection':"Part::MultiCommon"}
         if namel in multifeature:
             if len(self.children)>1:
-                obj=doc.addObject(multifeature[namel],namel)
+                obj = doc.addObject(multifeature[namel],namel)
                 subobjs = [child.addtofreecad(doc,obj) for child in self.children]
                 obj.Shapes = subobjs
                 for subobj in subobjs:
                     subobj.ViewObject.hide()
-            elif len(self.children)==1:
+            elif len(self.children) == 1:
                 obj = self.children[0].addtofreecad(doc,fcpar or True)
             else:
                 obj = fcpar
         elif namel == 'difference':
-            if len(self.children)==1:
+            if len(self.children) == 1:
                 obj = self.children[0].addtofreecad(doc,fcpar or True)
-            else: 
-                obj=doc.addObject("Part::Cut",namel)
+            else:
+                obj = doc.addObject("Part::Cut",namel)
                 base = self.children[0].addtofreecad(doc,obj)
-            
-                if len(self.children)==2:
+
+                if len(self.children) == 2:
                     tool = self.children[1].addtofreecad(doc,obj)
                 else:
                     tool = Node(name='imp_union',\
@@ -118,57 +123,57 @@ class Node:
                 base.ViewObject.hide()
                 tool.ViewObject.hide()
         elif namel == 'cube':
-            obj=doc.addObject('Part::Box',namel)
-            x,y,z=self.arguments['size']
-            obj.Length=x
-            obj.Width=y
-            obj.Height=z
+            obj = doc.addObject('Part::Box', namel)
+            x,y,z = self.arguments['size']
+            obj.Length = x
+            obj.Width = y
+            obj.Height = z
             if self.arguments['center']:
                 center(obj,x,y,z)
         elif namel == 'sphere':
-            obj=doc.addObject("Part::Sphere",namel)
+            obj = doc.addObject("Part::Sphere", namel)
             obj.Radius = self.arguments['r']
         elif namel == 'cylinder':
             h = self.arguments['h']
-            r1 ,r2 = self.arguments['r1'], self.arguments['r2']
+            r1, r2 = self.arguments['r1'], self.arguments['r2']
             if '$fn' in self.arguments and self.arguments['$fn'] > 2 \
             and self.arguments['$fn']<=Node.fnmin: # polygonal
                 if r1 == r2: # prismatic
                     obj = doc.addObject("Part::Prism","prism")
                     obj.Polygon = int(self.arguments['$fn'])
-                    obj.Circumradius  = r1
-                    obj.Height  = h
+                    obj.Circumradius = r1
+                    obj.Height = h
                     if self.arguments['center']:
                         center(obj,0,0,h)
                     #base.ViewObject.hide()
                 elif False: #use Frustum Feature with makeRuledSurface
-                    obj=doc.addObject("Part::FeaturePython",'frustum')
-                    Frustum(obj,r1,r2,int(self.arguments['$fn']),h)
+                    obj = doc.addObject("Part::FeaturePython",'frustum')
+                    Frustum(obj,r1,r2,int(self.arguments['$fn']), h)
                     ViewProviderTree(obj.ViewObject)
                     if self.arguments['center']:
                         center(obj,0,0,h)
                 else: #Use Part::Loft and GetWire Feature
-                    obj=doc.addObject('Part::Loft','frustum')
+                    obj = doc.addObject('Part::Loft', 'frustum')
                     import Draft
-                    p1 = Draft.makePolygon(int(self.arguments['$fn']),r1)
-                    p2 = Draft.makePolygon(int(self.arguments['$fn']),r2)
+                    p1 = Draft.makePolygon(int(self.arguments['$fn']), r1)
+                    p2 = Draft.makePolygon(int(self.arguments['$fn']), r2)
                     if self.arguments['center']:
                         p1.Placement = FreeCAD.Placement(\
                         FreeCAD.Vector(0.0,0.0,-h/2.0),FreeCAD.Rotation())
                         p2.Placement = FreeCAD.Placement(\
-                        FreeCAD.Vector(0.0,0.0,h/2.0),FreeCAD.Rotation())
+                        FreeCAD.Vector(0.0,0.0,h/2.0), F reeCAD.Rotation())
                     else:
                         p2.Placement = FreeCAD.Placement(\
                         FreeCAD.Vector(0.0,0.0,h),FreeCAD.Rotation())
-                    w1=doc.addObject("Part::FeaturePython",'polygonwire1')
-                    w2=doc.addObject("Part::FeaturePython",'polygonwire2')
+                    w1 = doc.addObject("Part::FeaturePython",'polygonwire1')
+                    w2 = doc.addObject("Part::FeaturePython",'polygonwire2')
                     GetWire(w1,p1)
                     GetWire(w2,p2)
                     ViewProviderTree(w1.ViewObject)
                     ViewProviderTree(w2.ViewObject)
-                    obj.Sections=[w1,w2]
-                    obj.Solid=True
-                    obj.Ruled=True
+                    obj.Sections = [w1,w2]
+                    obj.Solid = True
+                    obj.Ruled = True
                     p1.ViewObject.hide()
                     p2.ViewObject.hide()
                     w1.ViewObject.hide()
@@ -199,7 +204,7 @@ class Node:
             obj.Shape=solid#.removeSplitter()
 
         elif namel == 'polygon':
-            obj = doc.addObject("Part::Feature",namel)
+            obj = doc.addObject("Part::Feature", namel)
             points=self.arguments['points']
             paths = self.arguments.get('paths')
             if not paths:
@@ -242,7 +247,7 @@ class Node:
                     obj = self.children[0].addtofreecad(doc,fcpar or True)
                 else:
                     obj = Node(name='imp_union',\
-                            children=self.children).addtofreecad(doc,fcpar or True) 
+                            children = self.children).addtofreecad(doc,fcpar or True)
                     #FreeCAD.Console.PrintMessage('obj %s\nmat %s/n' % (obj.Placement,m1))
                 obj.Placement=FreeCAD.Placement(m1).multiply(obj.Placement)
             else: #we need to apply the matrix transformation to the Shape using a custom PythonFeature
@@ -349,49 +354,49 @@ class Node:
                         Mesh.insert(filename)
                         mesh1=doc.getObject(objname)
                     mesh1.ViewObject.hide()
-                    sh=Part.Shape()
+                    sh = Part.Shape()
                     sh.makeShapeFromMesh(mesh1.Mesh.Topology,0.1)
                     solid = Part.Solid(sh)
-                    obj=doc.addObject("Part::FeaturePython",'import_%s_%s'%(extension,objname))
+                    obj = doc.addObject("Part::FeaturePython",'import_%s_%s'%(extension,objname))
                     #obj=doc.addObject('Part::Feature',)
                     ImportObject(obj,mesh1) #This object is not mutable from the GUI
                     ViewProviderTree(obj.ViewObject)
-                    solid=solid.removeSplitter()
+                    solid = solid.removeSplitter()
                     if solid.Volume < 0:
                         #sh.reverse()
                         #sh = sh.copy()
                         solid.complement()
-                    obj.Shape=solid#.removeSplitter()
+                    obj.Shape = solid#.removeSplitter()
                 elif extension in ['dxf']:
                     layera = self.arguments.get('layer')
-                    featname='import_dxf_%s_%s'%(objname,layera)
+                    featname ='import_dxf_%s_%s'%(objname,layera)
                     # reusing an already imported object does not work if the
                     # shape in not yet calculated
                     import importDXF
                     global dxfcache
-                    layers=dxfcache.get(id(doc),[])
+                    layers = dxfcache.get(id(doc),[])
                     if layers:
-                        groupobj=[go for go in layers if (not layera) or go.Label == layera]
+                        groupobj = [go for go in layers if (not layera) or go.Label == layera]
                     else:
-                        groupobj= None
+                        groupobj = None
                     if not groupobj:
-                        groupname=objname
+                        groupname = objname
                         layers = importDXF.processdxf(doc,filename) or importDXF.layers
                         dxfcache[id(doc)] = layers[:]
                         for l in layers:
                             for o in l.Group:
                                 o.ViewObject.hide()
                             l.ViewObject.hide()
-                        groupobj=[go for go in layers if (not layera) or go.Label == layera]
-                    edges=[]
+                        groupobj = [go for go in layers if (not layera) or go.Label == layera]
+                    edges = []
                     for shapeobj in groupobj[0].Group:
                         edges.extend(shapeobj.Shape.Edges)
                     try:
-                        f=edgestofaces(edges)
+                        f = edgestofaces(edges)
                     except Part.OCCError:
                         FreeCAD.Console.PrintError('processing of dxf import failed\nPlease rework \'%s\' manually\n' % layera)
-                        f=Part.Shape() #empty Shape
-                    obj=doc.addObject("Part::FeaturePython",'import_dxf_%s_%s'%(objname,layera))
+                        f = Part.Shape() #empty Shape
+                    obj = doc.addObject("Part::FeaturePython",'import_dxf_%s_%s'%(objname,layera))
                     #obj=doc.addObject('Part::Feature',)
                     ImportObject(obj,groupobj[0]) #This object is not mutable from the GUI
                     ViewProviderTree(obj.ViewObject)
@@ -405,22 +410,22 @@ class Node:
                         if origin is not None and any([c != 0 for c in origin]):
                             raise(NotImplementedError)# order of transformations unknown
                         child = obj
-                        m1=FreeCAD.Matrix()
+                        m1 = FreeCAD.Matrix()
                         m1.scale(scale,scale,scale)
-                        obj=doc.addObject("Part::FeaturePython",'scale_import')
+                        obj = doc.addObject("Part::FeaturePython",'scale_import')
                         MatrixTransform(obj,m1,child) #This object is not mutable from the GUI
                         ViewProviderTree(obj.ViewObject)
                     elif origin is not None and any([c != 0 for c in origin]):
-                        placement=FreeCAD.Placement(FreeCAD.Vector(*[-c for c in origin]),FreeCAD.Rotation())
-                        obj.Placement=placement.multiply(obj.Placement)
+                        placement = FreeCAD.Placement(FreeCAD.Vector(*[-c for c in origin]),FreeCAD.Rotation())
+                        obj.Placement = placement.multiply(obj.Placement)
                 else:
                     FreeCAD.Console.ErrorMessage('Import of %s failed\n' % (filename))
 
 
         elif namel == 'minkowski':
-            childrennames=[child.name.lower() for child in self.children]
+            childrennames = [child.name.lower() for child in self.children]
             if len(self.children) == 2 and \
-                childrennames.count('cube')==1 and \
+                childrennames.count('cube') == 1 and \
                 (childrennames.count('sphere') + \
                 childrennames.count('cylinder')) == 1:
                 if self.children[0].name.lower() == 'cube':
@@ -429,15 +434,15 @@ class Node:
                 elif self.children[1].name.lower() == 'cube':
                     cube = self.children[1]
                     roundobj = self.children[0]
-                roundobjname=roundobj.name.lower()
+                roundobjname = roundobj.name.lower()
                 issphere =  roundobjname == 'sphere'
-                cubeobj=doc.addObject('Part::Box','roundedcube')
-                x,y,z=cube.arguments['size']
-                r=roundobj.arguments.get('r') or \
+                cubeobj = doc.addObject('Part::Box','roundedcube')
+                x,y,z = cube.arguments['size']
+                r = roundobj.arguments.get('r') or \
                         roundobj.arguments.get('r1')
-                cubeobj.Length=x+2*r
-                cubeobj.Width=y+2*r
-                cubeobj.Height=z+2*r*issphere
+                cubeobj.Length = x+2*r
+                cubeobj.Width = y+2*r
+                cubeobj.Height = z+2*r*issphere
                 obj=doc.addObject("Part::Fillet","%s_%s"%(namel,roundobjname))
                 obj.Base = cubeobj
                 cubeobj.ViewObject.hide()
@@ -450,13 +455,13 @@ class Node:
                 else: #htandle a rotated cylinder
                     #OffsetShape
                     raise(NotImplementedError)
-            elif childrennames.count('sphere')==1:
+            elif childrennames.count('sphere') == 1:
                 sphereindex=childrennames.index('sphere')
-                sphere=self.children[sphereindex]
-                offset=sphere.arguments['r']
-                nonsphere=self.children[0:sphereindex]+\
+                sphere = self.children[sphereindex]
+                offset = sphere.arguments['r']
+                nonsphere = self.children[0:sphereindex]+\
                         self.sphere[sphereindex+1:]
-                obj=doc.addObject("Part::FeaturePython",'Offset')
+                obj = doc.addObject("Part::FeaturePython",'Offset')
                 if len(nonsphere) == 1:
                     child = nonsphere[0].addtofreecad(doc,obj)
                 else:
@@ -466,7 +471,7 @@ class Node:
                 ViewProviderTree(obj.ViewObject)
             elif False:
                 raise(NotImplementedError)
-                pass # handle rotated cylinders and select edges that 
+                pass # handle rotated cylinders and select edges that
                      #radius = radius0 * m1.multiply(FreeCAD.Vector(0,0,1)).dot(edge.Curve.tangent(0)[0])
             else:
                 raise(NotImplementedError)
@@ -486,7 +491,7 @@ class Node:
         elif namel in ['glide','hull']:
             raise(NotImplementedError)
         elif namel in ['render','subdiv'] or True:
-            lenchld=len(self.children)
+            lenchld = len(self.children)
             if lenchld == 1:
                 FreeCAD.Console.PrintMessage('Not recognized %s\n' % (self))
                 obj = self.children[0].addtofreecad(doc,fcpar)
@@ -556,13 +561,13 @@ class Node:
         for i,child in enumerate(self.children):
             child.pprint2('%s[%d]'%(path,i),pathjust)
 
-        
+
 
 
 def parseexpression(e):
-    e=e.strip()
+    e = e.strip()
     el = e.lower()
-    if len(el)==0: return None
+    if len(el) == 0: return None
     if el == 'true': return True
     elif el == 'false': return False
     elif el == 'undef': return None
@@ -589,59 +594,59 @@ def parseexpression(e):
 
 def parseargs(argstring):
     if '=' in argstring:
-        level=0
-        tok=[]
-        a=[]
+        level = 0
+        tok = []
+        a = []
         for i,char in enumerate(argstring):
-            if char=='[': level+=1
-            elif char ==']': level -=1
-            if level==0 and (char=='=' or char==','):
+            if char == '[': level += 1
+            elif char ==']': level -= 1
+            if level == 0 and (char == '=' or char == ','):
                 tok.append(''.join(a).strip())
-                a=[]
+                a= []
             else:
                 a.append(char)
         tok.append(''.join(a).strip())
         #print(tok)
-        argdict=dict(zip(tok[0::2],[parseexpression(argstring) for argstring in tok[1::2]]))
-#        argdict={}
+        argdict = dict(zip(tok[0::2],[parseexpression(argstring) for argstring in tok[1::2]]))
+#        argdict = {}
 #        for key, value in re.findall(r"(\$?\w+)\s*=\s*(\[?\w+]?),?\s*",argstring):
-#            argdict[key] =  parseexpression(value)
+#            argdict[key] = parseexpression(value)
         return argdict
     else:
         return parseexpression(argstring)
 
 def parsenode(str1):
-    name,str2=str1.strip().split('(',1)
+    name, str2 = str1.strip().split('(',1)
     assert('}' not in name)
-    name=name.strip('#!%* ')#remove/ignore modifiers
-    args,str3=str2.split(')',1)
-    str4=str3.lstrip()
+    name = name.strip('#!%* ')#remove/ignore modifiers
+    args, str3 = str2.split(')',1)
+    str4 = str3.lstrip()
     if str4.startswith(';'):
         #has no children
-        nextelement=str4[1:].lstrip()
+        nextelement = str4[1:].lstrip()
         return Node(name,parseargs(args)),nextelement
     elif str4.startswith('{'):
         #has children
-        level=0
+        level = 0
         for index,char in enumerate(str4):
             if char == '{': level += 1
             elif char == '}': level -= 1
             if level == 0:
                 break
                 #end of children
-        childstr= str4[1:index].strip()
+        childstr = str4[1:index].strip()
         nextelement = str4[index+1:].lstrip()
-        bopen,bclose=childstr.count('{'),childstr.count('}')
+        bopen,bclose = childstr.count('{'),childstr.count('}')
         assert(bopen == bclose)
-        children=[]
+        children= []
         while childstr:
             try:
-                childnode,childstr=parsenode(childstr)
+                childnode,childstr = parsenode(childstr)
                 children.append(childnode)
             except ValueError:
                 raise
         if args:
-            args=parseargs(args)
+            args = parseargs(args)
         return Node(name,args,children),nextelement
 
 def readfile(filename):
@@ -656,7 +661,7 @@ def readfile(filename):
         f = pythonopen(tmpfile)
     else:
         f = pythonopen(filename)
-    rootnode=parsenode(f.read())[0]
+    rootnode =  p arsenode(f.read())[0]
     f.close()
     if isopenscad and tmpfile:
         try:
@@ -667,8 +672,8 @@ def readfile(filename):
 
 def open(filename):
     import os
-    docname=os.path.split(filename)[1]
-    doc=FreeCAD.newDocument(docname)
+    docname = os.path.split(filename)[1]
+    doc = FreeCAD.newDocument(docname)
     doc.Label = (docname.split('.',1)[0])
     readfile(filename).addtofreecad(doc)
     #doc.recompute()
@@ -676,9 +681,9 @@ def open(filename):
 
 def insert(filename,docname):
     try:
-        doc=FreeCAD.getDocument(docname)
+        doc = FreeCAD.getDocument(docname)
     except NameError:
-        doc=FreeCAD.newDocument(docname)
+        doc = FreeCAD.newDocument(docname)
     readfile(filename).addtofreecad(doc)
     #doc.recompute()
 

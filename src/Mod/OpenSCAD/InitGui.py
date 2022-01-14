@@ -5,7 +5,7 @@
 # runs when the gui is up
 
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
+#*   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -25,7 +25,6 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
 import FreeCAD
@@ -63,7 +62,7 @@ class OpenSCADWorkbench ( Workbench ):
             import OpenSCADUtils
             openscadfilename = OpenSCADUtils.searchforopenscadexe()
             if openscadfilename: #automatic search was succsessful
-                FreeCAD.addImportType("OpenSCAD Format (*.scad)","importCSG") 
+                FreeCAD.addImportType("OpenSCAD Format (*.scad)","importCSG")
                 param.SetString('openscadexecutable',openscadfilename) #save the result
         if openscadfilename:
             commands.extend(['OpenSCAD_AddOpenSCADElement', 'OpenSCAD_MeshBoolean',
@@ -82,6 +81,7 @@ class OpenSCADWorkbench ( Workbench ):
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/openscadprefs-base.ui","OpenSCAD")
+
     def GetClassName(self):
         return "Gui::PythonWorkbench"
 
