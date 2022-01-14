@@ -1,5 +1,4 @@
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2012 Sebastian Hoogen <github@sebastianhoogen.de>       *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +19,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD OpenSCAD Workbench - Parametric Features"
+__title__ = "FreeCAD OpenSCAD Workbench - Parametric Features"
 __author__ = "Sebastian Hoogen"
 __url__ = ["https://www.freecadweb.org"]
 
@@ -32,13 +31,15 @@ except NameError:
 '''
 This Script includes python Features to represent OpenSCAD Operations
 '''
+
+
 class ViewProviderTree:
     "A generic View Provider for Elements with Children"
-        
+
     def __init__(self, obj):
         obj.Proxy = self
         self.Object = obj.Object
-        
+
     def attach(self, obj):
         self.Object = obj.Object
         return
@@ -80,7 +81,7 @@ class ViewProviderTree:
             objs.extend(self.Object.Children)
 
         return objs
-   
+
     def getIcon(self):
         import OpenSCAD_rc
         if isinstance(self.Object.Proxy,RefineShape):
@@ -165,6 +166,7 @@ static char * openscadlogo_xpm[] = {
 "4444444444444444"};
 """
 
+
 class OpenSCADPlaceholder:
     def __init__(self,obj,children=None,arguments=None):
         obj.addProperty("App::PropertyLinkList",'Children','OpenSCAD',"Base Objects")
@@ -174,13 +176,14 @@ class OpenSCADPlaceholder:
             obj.Children = children
         if arguments:
             obj.Arguments = arguments
-             
+
     def execute(self,fp):
         import Part
         fp.Shape = Part.Compound([]) #empty Shape
 
-class Resize :
-    def __init__(self,obj,target,vector) :
+
+class Resize:
+    def __init__(self,obj,target,vector):
         import FreeCAD
         #self.Obj = obj
         self.Target = target
@@ -193,24 +196,24 @@ class Resize :
         obj.Proxy = self
 
     def onChanged(self, fp, prop):
-        if prop in ['Object','Vector'] :
+        if prop in ['Object','Vector']:
            self.createGeometry(fp)
-    
+
     def execute(self, fp):
         self.createGeometry(fp)
 
-    def createGeometry(self, fp) :
+    def createGeometry(self, fp):
         import FreeCAD
         mat = FreeCAD.Matrix()
         mat.A11 = self.Vector[0]
         mat.A22 = self.Vector[1]
         mat.A33 = self.Vector[2]
-        fp.Shape = self.Target.Shape.transformGeometry(mat) 
+        fp.Shape = self.Target.Shape.transformGeometry(mat)
 
     def __getstate__(self):
         return None
-    
-    def __setstate__(self,state):    
+
+    def __setstate__(self,state):
         return None
 
 
@@ -234,15 +237,16 @@ class MatrixTransform:
 
     def execute(self, fp):
         if fp.Matrix and fp.Base:
-            sh=fp.Base.Shape#.copy()
-            m=sh.Placement.toMatrix().multiply(fp.Matrix)
+            sh = fp.Base.Shape#.copy()
+            m = sh.Placement.toMatrix().multiply(fp.Matrix)
             fp.Shape = sh.transformGeometry(m)
         #else:
             #FreeCAD.Console.PrintMessage('base %s\nmat %s/n' % (fp.Base,fp.Matrix))
 
+
 class ImportObject:
     def __init__(self, obj,child=None):
-        obj.addProperty("App::PropertyLink","Base","Base",
+        obj.addProperty("App::PropertyLink", "Base", "Base",
                         "The base object that must be tranfsformed")
         obj.Proxy = self
         obj.Base = child
@@ -256,10 +260,11 @@ class ImportObject:
 #        if fp.Base:
 #            fp.Shape = fp.Base.Shape.copy()
 
+
 class RefineShape:
     '''return a refined shape'''
-    def __init__(self, obj,child=None):
-        obj.addProperty("App::PropertyLink","Base","Base",
+    def __init__(self, obj, child=None):
+        obj.addProperty("App::PropertyLink", "Base", "Base",
                         "The base object that must be refined")
         obj.Proxy = self
         obj.Base = child
@@ -271,14 +276,14 @@ class RefineShape:
     def execute(self, fp):
         if fp.Base and fp.Base.Shape.isValid():
             import OpenSCADUtils
-            sh=fp.Base.Shape.removeSplitter()
-            fp.Shape=OpenSCADUtils.applyPlacement(sh)
+            sh = fp.Base.Shape.removeSplitter()
+            fp.Shape = OpenSCADUtils.applyPlacement(sh)
 
 class IncreaseTolerance:
     '''increase the tolerance of every vertex
     in the current implementation its' placement is linked'''
     def __init__(self,obj,child,tolerance=0):
-        obj.addProperty("App::PropertyLink","Base","Base",
+        obj.addProperty("App::PropertyLink", "Base", "Base",
                         "The base object that wire must be extracted")
         obj.addProperty("App::PropertyDistance","Vertex","Tolerance","Vertexes tolerance (0 default)")
         obj.addProperty("App::PropertyDistance","Edge","Tolerance","Edges tolerance (0 default)")
@@ -307,11 +312,11 @@ class IncreaseTolerance:
             # New properties
             else:
                 for vertex in sh.Vertexes:
-                    vertex.Tolerance = max(vertex.Tolerance,fp.Vertex.Value)
+                    vertex.Tolerance = max(vertex.Tolerance, fp.Vertex.Value)
                 for edge in sh.Edges:
-                    edge.Tolerance = max(edge.Tolerance,fp.Edge.Value)
+                    edge.Tolerance = max(edge.Tolerance, fp.Edge.Value)
                 for face in sh.Faces:
-                    face.Tolerance = max(face.Tolerance,fp.Face.Value)
+                    face.Tolerance = max(face.Tolerance, fp.Face.Value)
 
             fp.Shape = sh
             fp.Placement = sh.Placement
@@ -319,7 +324,7 @@ class IncreaseTolerance:
 
 class GetWire:
     '''return the first wire from a given shape'''
-    def __init__(self, obj,child=None):
+    def __init__(self, obj, child=None):
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object that wire must be extracted")
         obj.Proxy = self
@@ -362,8 +367,8 @@ class Frustum:
             import FreeCAD,Part
             #from draftlibs import fcgeo
             plm = fp.Placement
-            wires=[]
-            faces=[]
+            wires = []
+            faces = []
             for ir,r in enumerate((fp.Radius1,fp.Radius2)):
                 angle = (math.pi*2)/fp.FacesNumber
                 pts = [FreeCAD.Vector(r.Value,0,ir*fp.Height.Value)]
@@ -374,13 +379,13 @@ class Frustum:
                 pts.append(pts[0])
                 shape = Part.makePolygon(pts)
                 face = Part.Face(shape)
-                if ir==0: #top face
+                if ir == 0: #top face
                     face.reverse()
                 wires.append(shape)
                 faces.append(face)
-            #shellperi=Part.makeRuledSurface(*wires)
-            shellperi=Part.makeLoft(wires)
-            shell=Part.Shell(shellperi.Faces+faces)
+            #shellperi = Part.makeRuledSurface(*wires)
+            shellperi = Part.makeLoft(wires)
+            shell = Part.Shell(shellperi.Faces+faces)
             fp.Shape = Part.Solid(shell)
             fp.Placement = plm
 
@@ -445,7 +450,7 @@ class Twist:
                     pipe_shell.build()
                     faces.extend(pipe_shell.shape().Faces)
                 try:
-                    fullshell=Part.Shell(faces)
+                    fullshell = Part.Shell(faces)
                     solid=Part.Solid(fullshell)
                     if solid.Volume < 0:
                         solid.reverse()
@@ -486,9 +491,9 @@ class PrismaticToroid:
             sweep_angle_per_segment = fp.Angle / num_segments # Always >= min_sweep_angle_per_segment
 
             # From the OpenSCAD documentation:
-            # The 2D shape must lie completely on either the right (recommended) or the left side of the Y-axis. 
-            # More precisely speaking, every vertex of the shape must have either x >= 0 or x <= 0. If the shape 
-            # spans the X axis a warning appears in the console windows and the rotate_extrude() is ignored. If 
+            # The 2D shape must lie completely on either the right (recommended) or the left side of the Y-axis.
+            # More precisely speaking, every vertex of the shape must have either x >= 0 or x <= 0. If the shape
+            # spans the X axis a warning appears in the console windows and the rotate_extrude() is ignored. If
             # the 2D shape touches the Y axis, i.e. at x=0, it must be a line that touches, not a point.
 
             for start_face in fp.Base.Shape.Faces:
@@ -509,7 +514,7 @@ class PrismaticToroid:
                             edges.append(edge)
 
                     ribs.append(Part.Wire(edges))
-                    
+
                 faces = []
                 shell = Part.makeShellFromWires (ribs)
                 for face in shell.Faces:
@@ -520,7 +525,7 @@ class PrismaticToroid:
                         faces.append(start_face.reversed()) # Reversed so the normal faces out of the shell
                         faces.append(end_face)
                     else:
-                        faces.append(start_face) 
+                        faces.append(start_face)
                         faces.append(end_face.reversed()) # Reversed so the normal faces out of the shell
 
                 try:

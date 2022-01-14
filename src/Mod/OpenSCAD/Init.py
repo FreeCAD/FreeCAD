@@ -2,7 +2,7 @@
 # (c) 2001 Juergen Riegel
 
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                        *
+#*   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -22,18 +22,21 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-import FreeCAD,os
-FreeCAD.addImportType("OpenSCAD CSG Format (*.csg)","importCSG")
+
+import os
+import FreeCAD
+
+FreeCAD.addImportType("OpenSCAD CSG Format (*.csg)", "importCSG")
+
 param = FreeCAD.ParamGet(\
-    "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+        "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 openscadfilename = param.GetString('openscadexecutable')
 openscadbin = openscadfilename and os.path.isfile(openscadfilename)
+
 if openscadbin:
-    FreeCAD.addImportType("OpenSCAD Format (*.scad)","importCSG")
+    FreeCAD.addImportType("OpenSCAD Format (*.scad)", "importCSG")
     FreeCAD.__unit_test__ += ["TestOpenSCADApp"]
 
-FreeCAD.addExportType("OpenSCAD CSG Format (*.csg)","exportCSG")
-FreeCAD.addExportType("OpenSCAD Format (*.scad)","exportCSG")
-
+FreeCAD.addExportType("OpenSCAD CSG Format (*.csg)", "exportCSG")
+FreeCAD.addExportType("OpenSCAD Format (*.scad)", "exportCSG")
