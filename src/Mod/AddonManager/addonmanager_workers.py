@@ -35,10 +35,13 @@ import time
 import subprocess
 import sys
 import platform
+import itertools
 from datetime import datetime
-from typing import Union, List
+from typing import Union, List, Dict
+from enum import Enum, auto
 
-from PySide2 import QtCore, QtNetwork
+
+from PySide2 import QtCore
 
 import FreeCAD
 
@@ -47,12 +50,9 @@ if FreeCAD.GuiUp:
 
 import addonmanager_utilities as utils
 from addonmanager_macro import Macro
-from addonmanager_metadata import (
-    MetadataDownloadWorker,
-    MetadataTxtDownloadWorker,
-    RequirementsTxtDownloadWorker,
-)
+
 from AddonManagerRepo import AddonManagerRepo
+from NetworkManager import AM_NETWORK_MANAGER
 
 translate = FreeCAD.Qt.translate
 
@@ -119,18 +119,7 @@ class ConnectionChecker(QtCore.QThread):
             translate("AddonsInstaller", "Checking network connection...\n")
         )
         url = "https://api.github.com/zen"
-        request = utils.urlopen(url)
-        if QtCore.QThread.currentThread().isInterruptionRequested():
-            return
-        if not request:
-            self.failure.emit(
-                translate(
-                    "AddonsInstaller",
-                    "Unable to connect to GitHub: check your internet connection and proxy settings and try again.",
-                )
-            )
-            return
-        result = request.read()
+        result = AM_NETWORK_MANAGER.blocking_get(url)
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
         if not result:
@@ -142,7 +131,7 @@ class ConnectionChecker(QtCore.QThread):
             )
             return
 
-        result = result.decode("utf8")
+        result = result.data().decode("utf8")
         FreeCAD.Console.PrintLog(f"GitHub's zen message response: {result}\n")
         self.success.emit()
 
@@ -164,12 +153,11 @@ class UpdateWorker(QtCore.QThread):
 
         # update info lists
         global obsolete, macros_reject_list, mod_reject_list, py2only
-        u = utils.urlopen(
+        p = AM_NETWORK_MANAGER.blocking_get(
             "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/addonflags.json"
         )
-        if u:
-            p = u.read()
-            u.close()
+        if p:
+            p = p.data().decode("utf8")
             j = json.loads(p)
             if "obsolete" in j and "Mod" in j["obsolete"]:
                 obsolete = j["obsolete"]["Mod"]
@@ -266,15 +254,12 @@ class UpdateWorker(QtCore.QThread):
                 self.addon_repo.emit(repo)
 
         # querying official addons
-        u = utils.urlopen(
+        p = AM_NETWORK_MANAGER.blocking_get(
             "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/.gitmodules"
         )
-        if not u:
+        if not p:
             return
-        p = u.read()
-        if isinstance(p, bytes):
-            p = p.decode("utf-8")
-        u.close()
+        p = p.data().decode("utf8")
         p = re.findall(
             (
                 r'(?m)\[submodule\s*"(?P<name>.*)"\]\s*'
@@ -642,8 +627,8 @@ class FillMacroListWorker(QtCore.QThread):
         Reads only the page https://wiki.freecad.org/Macros_recipes
         """
 
-        u = utils.urlopen("https://wiki.freecad.org/Macros_recipes")
-        if not u:
+        p = AM_NETWORK_MANAGER.blocking_get("https://wiki.freecad.org/Macros_recipes")
+        if not p:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
@@ -652,10 +637,7 @@ class FillMacroListWorker(QtCore.QThread):
                 + "\n"
             )
             return
-        p = u.read()
-        u.close()
-        if isinstance(p, bytes):
-            p = p.decode("utf-8")
+        p = p.data().decode("utf8")
         macros = re.findall('title="(Macro.*?)"', p)
         macros = [mac for mac in macros if ("translated" not in mac)]
         macro_names = []
@@ -835,18 +817,13 @@ class ShowWorker(QtCore.QThread):
             readmeurl = utils.get_readme_html_url(self.repo)
             if not readmeurl:
                 FreeCAD.Console.PrintLog(f"README not found for {url}\n")
-            u = utils.urlopen(readmeurl)
-            if not u:
+            p = AM_NETWORK_MANAGER.blocking_get(readmeurl)
+            if not p:
                 FreeCAD.Console.PrintLog(f"Debug: README not found at {readmeurl}\n")
-            u = utils.urlopen(readmeurl)
-            if u:
-                p = u.read()
-                if isinstance(p, bytes):
-                    p = p.decode("utf-8")
-                u.close()
-                readme = re.findall(regex, p, flags=re.MULTILINE | re.DOTALL)
-                if readme:
-                    desc = readme[0]
+            p = p.data().decode("utf8")
+            readme = re.findall(regex, p, flags=re.MULTILINE | re.DOTALL)
+            if readme:
+                desc = readme[0]
             else:
                 FreeCAD.Console.PrintLog(f"Debug: README not found at {readmeurl}\n")
         else:
@@ -854,12 +831,9 @@ class ShowWorker(QtCore.QThread):
             readmeurl = utils.get_readme_url(self.repo)
             if not readmeurl:
                 FreeCAD.Console.PrintLog(f"Debug: README not found for {url}\n")
-            u = utils.urlopen(readmeurl)
-            if u:
-                p = u.read()
-                if isinstance(p, bytes):
-                    p = p.decode("utf-8")
-                u.close()
+            p = AM_NETWORK_MANAGER.blocking_get(readmeurl)
+            if p:
+                p = p.data().decode("utf8")
                 desc = utils.fix_relative_links(p, readmeurl.rsplit("/README.md")[0])
                 if not NOMARKDOWN and have_markdown:
                     desc = markdown.markdown(desc, extensions=["md_in_html"])
@@ -877,25 +851,22 @@ class ShowWorker(QtCore.QThread):
                     desc = message
             else:
                 FreeCAD.Console.PrintLog("Debug: README not found at {readmeurl}\n")
-            if desc == "":
-                # fall back to the description text
-                u = utils.urlopen(url)
-                if not u:
+                if desc == "":
+                    # fall back to the description text
+                    p = AM_NETWORK_MANAGER.blocking_get(url)
+                    if not p:
+                        return
+                    p = p.data().decode("utf8")
+                    descregex = utils.get_desc_regex(self.repo)
+                    if descregex:
+                        desc = re.findall(descregex, p)
+                        if desc:
+                            desc = desc[0]
+                if not desc:
+                    desc = "Unable to retrieve addon description"
+                self.repo.description = desc
+                if QtCore.QThread.currentThread().isInterruptionRequested():
                     return
-                p = u.read()
-                if isinstance(p, bytes):
-                    p = p.decode("utf-8")
-                u.close()
-                descregex = utils.get_desc_regex(self.repo)
-                if descregex:
-                    desc = re.findall(descregex, p)
-                    if desc:
-                        desc = desc[0]
-            if not desc:
-                desc = "Unable to retrieve addon description"
-            self.repo.description = desc
-            if QtCore.QThread.currentThread().isInterruptionRequested():
-                return
         message = desc
         if self.repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
             # Addon is installed but we haven't checked it yet, so let's check if it has an update
@@ -920,7 +891,7 @@ class ShowWorker(QtCore.QThread):
                     AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
                 )
             self.update_status.emit(self.repo)
-            
+
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
         self.readme_updated.emit(message)
@@ -971,9 +942,9 @@ class ShowWorker(QtCore.QThread):
                         storename = os.path.join(store, wbName + name[-remainChars:])
                     if not os.path.exists(storename):
                         try:
-                            u = utils.urlopen(path)
-                            imagedata = u.read()
-                            u.close()
+                            imagedata = AM_NETWORK_MANAGER.blocking_get(path)
+                            if not imagedata:
+                                raise Exception
                         except Exception:
                             FreeCAD.Console.PrintLog(
                                 "AddonManager: Debug: Error retrieving image from "
@@ -987,7 +958,7 @@ class ShowWorker(QtCore.QThread):
                                 # lower length limit for path
                                 storename = storename[-140:]
                                 f = open(storename, "wb")
-                            f.write(imagedata)
+                            f.write(imagedata.data())
                             f.close()
                     message = message.replace(
                         'src="' + origpath,
@@ -1095,7 +1066,15 @@ class InstallWorkbenchWorker(QtCore.QThread):
             # Do the git process...
             self.run_git(target_dir)
         else:
-            self.run_zip(target_dir)
+
+            # The zip process uses an event loop, since the download can potentially be quite large
+            self.launch_zip(target_dir)
+            self.zip_complete = False
+            current_thread = QtCore.QThread.currentThread()
+            while not self.zip_complete:
+                if current_thread.isInterruptionRequested():
+                    return
+                QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
 
     def update_status(self) -> None:
         if hasattr(self, "git_progress") and self.isRunning():
@@ -1223,7 +1202,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
         self.update_metadata()
         self.success.emit(self.repo, answer)
 
-    def run_zip(self, zipdir: str) -> None:
+    def launch_zip(self, zipdir: str) -> None:
         "downloads and unzip a zip version from a git repo"
 
         bakdir = None
@@ -1237,97 +1216,91 @@ class InstallWorkbenchWorker(QtCore.QThread):
         if not zipurl:
             self.failure.emit(
                 self.repo,
-                translate("AddonsInstaller", "Error: Unable to locate zip from")
+                translate("AddonsInstaller", "Error: Unable to locate ZIP from")
                 + " "
                 + self.repo.name,
             )
             return
-        try:
-            u = utils.urlopen(zipurl)
-        except Exception:
+
+        self.zipdir = zipdir
+        self.bakdir = bakdir
+
+        AM_NETWORK_MANAGER.progress_made.connect(self.update_zip_status)
+        AM_NETWORK_MANAGER.progress_complete.connect(self.finish_zip)
+        self.zip_download_index = AM_NETWORK_MANAGER.submit_monitored_get(zipurl)
+
+    def update_zip_status(self, index: int, bytes_read: int, data_size: int):
+        if index == self.zip_download_index:
+            locale = QtCore.QLocale()
+            if data_size > 10 * 1024 * 1024: # To avoid overflows, show MB instead
+                MB_read = bytes_read / 1024 / 1024
+                MB_total = data_size / 1024 / 1024
+                self.progress_made.emit(MB_read, MB_total)
+                mbytes_str = locale.toString(MB_read)
+                mbytes_total_str = locale.toString(MB_total)
+                percent = int(100 * float(MB_read / MB_total))
+                self.status_message.emit(
+                    translate(
+                        "AddonsInstaller",
+                        f"Downloading: {mbytes_str}MB of {mbytes_total_str}MB ({percent}%)",
+                    )
+                )
+            elif data_size > 0:
+                self.progress_made.emit(bytes_read, data_size)
+                bytes_str = locale.toString(bytes_read)
+                bytes_total_str = locale.toString(data_size)
+                percent = int(100 * float(bytes_read / data_size))
+                self.status_message.emit(
+                    translate(
+                        "AddonsInstaller",
+                        f"Downloading: {bytes_str} of {bytes_total_str} bytes ({percent}%)",
+                    )
+                )
+            else:
+                MB_read = bytes_read / 1024 / 1024
+                bytes_str = locale.toString(MB_read)
+                self.status_message.emit(
+                    translate(
+                        "AddonsInstaller",
+                        f"Downloading: {bytes_str}MB of unknown total",
+                    )
+                )
+
+    def finish_zip(self, index: int, response_code: int, filename: os.PathLike):
+        self.zip_complete = True
+        if response_code != 200:
             self.failure.emit(
                 self.repo,
-                translate("AddonsInstaller", "Error: Unable to download")
-                + " "
-                + zipurl,
-            )
-            return
-        if not u:
-            self.failure.emit(
-                self.repo,
-                translate("AddonsInstaller", "Error: Unable to download")
-                + " "
-                + zipurl,
+                translate(
+                    "AddonsInstaller",
+                    f"Error: Error while downloading ZIP file for {self.repo.display_name}",
+                ),
             )
             return
 
-        data_size = 0
-        if "content-length" in u.headers:
-            try:
-                data_size = int(u.headers["content-length"])
-            except Exception:
-                pass
-
-        current_thread = QtCore.QThread.currentThread()
-
-        # Use an on-disk file and track download progress
-        locale = QtCore.QLocale()
-        with tempfile.NamedTemporaryFile(delete=False) as temp:
-            bytes_to_read = 1024 * 1024
-            bytes_read = 0
-            while True:
-                if current_thread.isInterruptionRequested():
-                    return
-                chunk = u.read(bytes_to_read)
-                if not chunk:
-                    break
-                bytes_read += bytes_to_read
-                temp.write(chunk)
-                if data_size:
-                    self.progress_made.emit(bytes_read, data_size)
-                    percent = int(100 * float(bytes_read / data_size))
-                    MB_read = bytes_read / 1024 / 1024
-                    MB_total = data_size / 1024 / 1024
-                    bytes_str = locale.toString(MB_read)
-                    bytes_total_str = locale.toString(MB_total)
-                    self.status_message.emit(
-                        translate(
-                            "AddonsInstaller",
-                            f"Downloading: {bytes_str}MB of {bytes_total_str}MB ({percent}%)",
-                        )
-                    )
-                else:
-                    MB_read = bytes_read / 1024 / 1024
-                    bytes_str = locale.toString(MB_read)
-                    self.status_message.emit(
-                        translate(
-                            "AddonsInstaller",
-                            f"Downloading: {bytes_str}MB of unknown total",
-                        )
-                    )
-                QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
-            zfile = zipfile.ZipFile(temp)
+        with zipfile.ZipFile(filename, "r") as zfile:
             master = zfile.namelist()[0]  # github will put everything in a subfolder
             self.status_message.emit(
                 translate("AddonsInstaller", f"Download complete. Unzipping file...")
             )
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
-            zfile.extractall(zipdir)
-            u.close()
-            zfile.close()
-            for filename in os.listdir(zipdir + os.sep + master):
-                shutil.move(
-                    zipdir + os.sep + master + os.sep + filename,
-                    zipdir + os.sep + filename,
-                )
-            os.rmdir(zipdir + os.sep + master)
-            if bakdir:
-                shutil.rmtree(bakdir)
-            self.update_metadata()
-            self.success.emit(
-                self.repo,
-                translate("AddonsInstaller", "Successfully installed") + " " + zipurl,
+            zfile.extractall(self.zipdir)
+        for filename in os.listdir(self.zipdir + os.sep + master):
+            shutil.move(
+                self.zipdir + os.sep + master + os.sep + filename,
+                self.zipdir + os.sep + filename,
             )
+        os.rmdir(self.zipdir + os.sep + master)
+        if self.bakdir:
+            shutil.rmtree(self.bakdir)
+        self.update_metadata()
+        self.success.emit(
+            self.repo,
+            translate(
+                "AddonsInstaller",
+                f"Successfully installed {self.repo.display_name} from ZIP file",
+            ),
+        )
 
     def update_metadata(self):
         basedir = FreeCAD.getUserAppDataDir()
@@ -1506,150 +1479,216 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
     progress_made = QtCore.Signal(int, int)
     package_updated = QtCore.Signal(AddonManagerRepo)
 
-    class AtomicCounter(object):
-        def __init__(self, start=0):
-            self.lock = threading.Lock()
-            self.count = start
-
-        def set(self, new_value):
-            with self.lock:
-                self.count = new_value
-
-        def get(self):
-            with self.lock:
-                return self.count
-
-        def increment(self):
-            with self.lock:
-                self.count += 1
-
-        def decrement(self):
-            with self.lock:
-                self.count -= 1
+    class RequestType(Enum):
+        PACKAGE_XML = auto()
+        METADATA_TXT = auto()
+        REQUIREMENTS_TXT = auto()
+        ICON = auto()
 
     def __init__(self, repos):
 
         QtCore.QThread.__init__(self)
         self.repos = repos
-        self.counter = UpdateMetadataCacheWorker.AtomicCounter()
+        self.requests: Dict[
+            int, (AddonManagerRepo, UpdateMetadataCacheWorker.RequestType)
+        ] = {}
+        AM_NETWORK_MANAGER.completed.connect(self.download_completed)
+        self.requests_completed = 0
+        self.total_requests = 0
+        self.store = os.path.join(
+            FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
+        )
+        self.updated_repos = set()
 
     def run(self):
         current_thread = QtCore.QThread.currentThread()
-        self.num_downloads_required = len(self.repos)
-        self.progress_made.emit(0, self.num_downloads_required)
-        self.status_message.emit(
-            translate("AddonsInstaller", "Retrieving package metadata...")
-        )
-        store = os.path.join(
-            FreeCAD.getUserCachePath(), "AddonManager", "PackageMetadata"
-        )
-        index_file = os.path.join(store, "index.json")
-        self.index = {}
-        if os.path.isfile(index_file):
-            with open(index_file, "r") as f:
-                index_string = f.read()
-                self.index = json.loads(index_string)
 
-        download_queue = (
-            QtNetwork.QNetworkAccessManager()
-        )  # Must be created on this thread
-        download_queue.finished.connect(self.on_finished)
-
-        # Prevent strange internal Qt errors about cache setup by pre-emptively setting
-        # up a cache. The error this fixes is:
-        # "caching was enabled after some bytes had been written"
-        qnam_cache = os.path.join(
-            FreeCAD.getUserCachePath(), "AddonManager", "QNAM_CACHE"
-        )
-        diskCache = QtNetwork.QNetworkDiskCache()
-        diskCache.setCacheDirectory(qnam_cache)
-        download_queue.setCache(diskCache)
-
-        self.downloaders = []
         for repo in self.repos:
-            if repo.metadata_url:
+            if repo.url and utils.recognized_git_location(repo):
                 # package.xml
-                downloader = MetadataDownloadWorker(None, repo, self.index)
-                downloader.start_fetch(download_queue)
-                downloader.updated.connect(self.on_updated)
-                self.downloaders.append(downloader)
+                index = AM_NETWORK_MANAGER.submit_unmonitored_get(
+                    utils.construct_git_url(repo, "package.xml")
+                )
+                self.requests[index] = (
+                    repo,
+                    UpdateMetadataCacheWorker.RequestType.PACKAGE_XML,
+                )
+                self.total_requests += 1
 
                 # metadata.txt
-                downloader = MetadataTxtDownloadWorker(None, repo)
-                downloader.start_fetch(download_queue)
-                downloader.updated.connect(self.on_updated)
-                self.downloaders.append(downloader)
+                index = AM_NETWORK_MANAGER.submit_unmonitored_get(
+                    utils.construct_git_url(repo, "metadata.txt")
+                )
+                self.requests[index] = (
+                    repo,
+                    UpdateMetadataCacheWorker.RequestType.METADATA_TXT,
+                )
+                self.total_requests += 1
 
                 # requirements.txt
-                downloader = RequirementsTxtDownloadWorker(None, repo)
-                downloader.start_fetch(download_queue)
-                downloader.updated.connect(self.on_updated)
-                self.downloaders.append(downloader)
+                index = AM_NETWORK_MANAGER.submit_unmonitored_get(
+                    utils.construct_git_url(repo, "requirements.txt")
+                )
+                self.requests[index] = (
+                    repo,
+                    UpdateMetadataCacheWorker.RequestType.REQUIREMENTS_TXT,
+                )
+                self.total_requests += 1
 
-        # Run a local event loop until we've processed all of the downloads:
-        # this is local to this thread, and does not affect the main event loop
-        ui_updater = QtCore.QTimer()
-        ui_updater.timeout.connect(self.send_ui_update)
-        ui_updater.start(100)  # Send an update back to the main thread every 100ms
-        self.num_downloads_required = len(self.downloaders)
-        self.num_downloads_completed = UpdateMetadataCacheWorker.AtomicCounter()
-        aborted = False
-        while True:
+        while self.requests:
             if current_thread.isInterruptionRequested():
-                download_queue.finished.disconnect(self.on_finished)
-                for downloader in self.downloaders:
-                    downloader.updated.disconnect(self.on_updated)
-                    downloader.abort()
-                aborted = True
-            if (
-                aborted
-                or self.num_downloads_completed.get() >= self.num_downloads_required
-            ):
-                break
+                AM_NETWORK_MANAGER.completed.disconnect(self.download_completed)
+                for request in self.requests.keys():
+                    AM_NETWORK_MANAGER.abort(request)
+                return
+            # 50 ms maximum between checks for interruption
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
 
-        if aborted:
-            FreeCAD.Console.PrintLog("Metadata update cancelled\n")
-            return
+        # This set contains one copy of each of the repos that got some kind of data in
+        # this process. For those repos, tell the main Addon Manager code that it needs
+        # to update its copy of the repo, and redraw its information.
+        for repo in self.updated_repos:
+            self.package_updated.emit(repo)
 
-        # Update and serialize the updated index, overwriting whatever was
-        # there before
-        for downloader in self.downloaders:
-            if hasattr(downloader, "last_sha1"):
-                self.index[downloader.repo.name] = downloader.last_sha1
-        if not os.path.exists(store):
-            os.makedirs(store)
-        with open(index_file, "w") as f:
-            json.dump(self.index, f, indent="  ")
+    def download_completed(
+        self, index: int, code: int, data: QtCore.QByteArray
+    ) -> None:
+        if index in self.requests:
+            self.requests_completed += 1
+            self.progress_made.emit(self.requests_completed, self.total_requests)
+            request = self.requests.pop(index)
+            if code == 200:  # HTTP success
+                self.updated_repos.add(request[0])  # mark this repo as updated
+                if request[1] == UpdateMetadataCacheWorker.RequestType.PACKAGE_XML:
+                    self.process_package_xml(request[0], data)
+                elif request[1] == UpdateMetadataCacheWorker.RequestType.METADATA_TXT:
+                    self.process_metadata_txt(request[0], data)
+                elif (
+                    request[1] == UpdateMetadataCacheWorker.RequestType.REQUIREMENTS_TXT
+                ):
+                    self.process_requirements_txt(request[0], data)
+                elif request[1] == UpdateMetadataCacheWorker.RequestType.ICON:
+                    self.process_icon(request[0], data)
 
-    def on_finished(self, reply):
-        # Called by the QNetworkAccessManager's sub-threads when a fetch
-        # process completed (in any state)
-        self.num_downloads_completed.increment()
-        reply.deleteLater()
-
-    def on_updated(self, repo):
-        # Called if this repo got new metadata and/or a new icon
-        self.package_updated.emit(repo)
-
-    def send_ui_update(self):
-        completed = self.num_downloads_completed.get()
-        required = self.num_downloads_required
-        percentage = int(100 * completed / required)
-        self.progress_made.emit(completed, required)
+    def process_package_xml(self, repo: AddonManagerRepo, data: QtCore.QByteArray):
+        repo.repo_type = AddonManagerRepo.RepoType.PACKAGE  # By definition
+        package_cache_directory = os.path.join(self.store, repo.name)
+        if not os.path.exists(package_cache_directory):
+            os.makedirs(package_cache_directory)
+        new_xml_file = os.path.join(package_cache_directory, "package.xml")
+        with open(new_xml_file, "wb") as f:
+            f.write(data.data())
+        metadata = FreeCAD.Metadata(new_xml_file)
+        repo.metadata = metadata
         self.status_message.emit(
-            translate("AddonsInstaller", "Retrieving package metadata...")
-            + f" {completed} / {required} ({percentage}%)"
+            translate("AddonsInstaller", f"Downloaded package.xml for {repo.name}")
         )
 
-    def terminate_all(self):
-        got = self.num_downloads_completed.get()
-        wanted = self.num_downloads_required
-        if wanted < got:
-            FreeCAD.Console.PrintWarning(
-                f"During cache interruption, wanted {wanted}, got {got}, forcibly terminating now...\n"
+        # Grab a new copy of the icon as well: we couldn't enqueue this earlier because
+        # we didn't know the path to it, which is stored in the package.xml file.
+        icon = metadata.Icon
+        if not icon:
+            # If there is no icon set for the entire package, see if there are
+            # any workbenches, which are required to have icons, and grab the first
+            # one we find:
+            content = repo.metadata.Content
+            if "workbench" in content:
+                wb = content["workbench"][0]
+                if wb.Icon:
+                    if wb.Subdirectory:
+                        subdir = wb.Subdirectory
+                    else:
+                        subdir = wb.Name
+                    repo.Icon = subdir + wb.Icon
+                    icon = repo.Icon
+
+        icon_url = utils.construct_git_url(repo, icon)
+        index = AM_NETWORK_MANAGER.submit_unmonitored_get(icon_url)
+        self.requests[index] = (repo, UpdateMetadataCacheWorker.RequestType.ICON)
+        self.total_requests += 1
+
+    def process_metadata_txt(self, repo: AddonManagerRepo, data: QtCore.QByteArray):
+        self.status_message.emit(
+            translate(
+                "AddonsInstaller", f"Downloaded metadata.txt for {repo.display_name}"
             )
-            self.num_downloads_completed.set(wanted)
+        )
+        f = io.StringIO(data.data().decode("utf8"))
+        while True:
+            line = f.readline()
+            if not line:
+                break
+            if line.startswith("workbenches="):
+                depswb = line.split("=")[1].split(",")
+                for wb in depswb:
+                    wb_name = wb.strip()
+                    if wb_name:
+                        repo.requires.add(wb_name)
+                        FreeCAD.Console.PrintLog(
+                            f"{repo.display_name} requires FreeCAD Addon '{wb_name}'\n"
+                        )
+
+            elif line.startswith("pylibs="):
+                depspy = line.split("=")[1].split(",")
+                for pl in depspy:
+                    dep = pl.strip()
+                    if dep:
+                        repo.python_requires.add(dep)
+                        FreeCAD.Console.PrintLog(
+                            f"{repo.display_name} requires python package '{dep}'\n"
+                        )
+
+            elif line.startswith("optionalpylibs="):
+                opspy = line.split("=")[1].split(",")
+                for pl in opspy:
+                    dep = pl.strip()
+                    if dep:
+                        repo.python_optional.add(dep)
+                        FreeCAD.Console.PrintLog(
+                            f"{repo.display_name} optionally imports python package '{pl.strip()}'\n"
+                        )
+        # For review and debugging purposes, store the file locally
+        package_cache_directory = os.path.join(self.store, repo.name)
+        if not os.path.exists(package_cache_directory):
+            os.makedirs(package_cache_directory)
+        new_xml_file = os.path.join(package_cache_directory, "metadata.txt")
+        with open(new_xml_file, "wb") as f:
+            f.write(data.data())
+
+    def process_requirements_txt(self, repo: AddonManagerRepo, data: QtCore.QByteArray):
+        self.status_message.emit(
+            translate(
+                "AddonsInstaller",
+                f"Downloaded requirements.txt for {repo.display_name}",
+            )
+        )
+        f = io.StringIO(data.data().decode("utf8"))
+        lines = f.readlines()
+        for line in lines:
+            break_chars = " <>=~!+#"
+            package = line
+            for n, c in enumerate(line):
+                if c in break_chars:
+                    package = line[:n].strip()
+                    break
+            if package:
+                repo.python_requires.add(package)
+        # For review and debugging purposes, store the file locally
+        package_cache_directory = os.path.join(self.store, repo.name)
+        if not os.path.exists(package_cache_directory):
+            os.makedirs(package_cache_directory)
+        new_xml_file = os.path.join(package_cache_directory, "requirements.txt")
+        with open(new_xml_file, "wb") as f:
+            f.write(data.data())
+
+    def process_icon(self, repo: AddonManagerRepo, data: QtCore.QByteArray):
+        self.status_message.emit(
+            translate("AddonsInstaller", f"Downloaded icon for {repo.display_name}")
+        )
+        cache_file = repo.get_cached_icon_filename()
+        with open(cache_file, "wb") as icon_file:
+            icon_file.write(data.data())
+            repo.cached_icon_filename = cache_file
 
 
 if have_git and not NOGIT:

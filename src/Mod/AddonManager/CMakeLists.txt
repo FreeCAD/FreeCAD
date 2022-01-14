@@ -8,7 +8,6 @@ SET(AddonManager_SRCS
     AddonManager.py
     AddonManagerRepo.py
     addonmanager_macro.py
-    addonmanager_metadata.py
     addonmanager_utilities.py
     addonmanager_workers.py
     AddonManager.ui
@@ -18,6 +17,7 @@ SET(AddonManager_SRCS
     compact_view.py
     dependency_resolution_dialog.ui
     expanded_view.py
+    NetworkManager.py
     package_list.py
     package_details.py
 )
