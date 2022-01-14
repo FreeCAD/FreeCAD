@@ -17,3 +17,4 @@ scipy
 xlrd
 xlutils
 xlwt
+PyYAML
