@@ -1198,6 +1198,7 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(const Base:
 
     auto rp = ViewProviderSketchCoinAttorney::getRayPickAction(viewProvider);
 
+
     float scaled_step = step * ViewProviderSketchCoinAttorney::getScaleFactor(viewProvider);
 
     int multiplier = 0;
@@ -1207,7 +1208,9 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(const Base:
         // Calculate new position of constraint
         relPos = norm * 0.5f + dir * multiplier;
         freePos = origPos + relPos * scaled_step;
-
+        if (!rp){    //prevent crash : https://forum.freecadweb.org/viewtopic.php?f=8&t=65305
+            return relPos * step;
+        }
         rp->setRadius(0.1f);
         rp->setPickAll(true);
         rp->setRay(SbVec3f(freePos.x, freePos.y, -1.f), SbVec3f(0, 0, 1) );
