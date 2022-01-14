@@ -215,7 +215,7 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     ui->spineBaseEdit->clear();
                 }
             }
-            else if (stateHandler->getSelectionMode() == StateHandlerTaskPipe::refSpine) {
+            else if (stateHandler->getSelectionMode() == StateHandlerTaskPipe::SelectionModes::refSpine) {
                 ui->listWidgetReferences->clear();
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);

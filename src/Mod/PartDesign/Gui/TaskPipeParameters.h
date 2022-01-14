@@ -27,7 +27,6 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Gui/Widgets.h>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderPipe.h"
@@ -39,6 +38,7 @@ class Property;
 }
 
 namespace Gui {
+class ButtonGroup;
 class ViewProvider;
 }
 
