@@ -39,9 +39,9 @@ import draftmake.make_line as make_line
 def scale(objectslist, scale=App.Vector(1,1,1),
           center=App.Vector(0,0,0), copy=False):
     """scale(objects, scale, [center], copy)
-    
-    Scales the objects contained in objects (that can be a list of objects or 
-    an object) of the given  around given center. 
+
+    Scales the objects contained in objects (that can be a list of objects or
+    an object) of the given  around given center.
 
     Parameters
     ----------
@@ -55,7 +55,7 @@ def scale(objectslist, scale=App.Vector(1,1,1),
 
     copy : bool
         If copy is True, the actual objects are not scaled, but copies
-        are created instead. 
+        are created instead.
 
     Return
     ----------
@@ -124,8 +124,8 @@ def scale(objectslist, scale=App.Vector(1,1,1),
                 obj.YSize = obj.YSize * scale.y
         if obj.ViewObject and hasattr(obj.ViewObject,"FontSize"):
             obj.ViewObject.FontSize = obj.ViewObject.FontSize * scale.y
-                
-                
+
+
         if copy:
             gui_utils.format_object(newobj,obj)
         newobjlist.append(newobj)
@@ -148,7 +148,7 @@ def scale_vertex(obj, vertex_index, scale, center):
     """
     points = obj.Points
     points[vertex_index] = obj.Placement.inverse().multVec(
-        scaleVectorFromCenter(
+        scale_vector_from_center(
             obj.Placement.multVec(points[vertex_index]),
             scale, center))
     obj.Points = points
@@ -173,11 +173,11 @@ def scale_edge(obj, edge_index, scale, center):
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
-    scaleVertex(obj, edge_index, scale, center)
-    if utils.isClosedEdge(edge_index, obj):
-        scaleVertex(obj, 0, scale, center)
+    scale_vertex(obj, edge_index, scale, center)
+    if utils.is_closed_edge(edge_index, obj):
+        scale_vertex(obj, 0, scale, center)
     else:
-        scaleVertex(obj, edge_index+1, scale, center)
+        scale_vertex(obj, edge_index+1, scale, center)
 
 
 scaleEdge = scale_edge
@@ -188,15 +188,15 @@ def copy_scaled_edge(obj, edge_index, scale, center):
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
-    vertex1 = scaleVectorFromCenter(
+    vertex1 = scale_vector_from_center(
         obj.Placement.multVec(obj.Points[edge_index]),
         scale, center)
-    if utils.isClosedEdge(edge_index, obj):
-        vertex2 = scaleVectorFromCenter(
+    if utils.is_closed_edge(edge_index, obj):
+        vertex2 = scale_vector_from_center(
             obj.Placement.multVec(obj.Points[0]),
             scale, center)
     else:
-        vertex2 = scaleVectorFromCenter(
+        vertex2 = scale_vector_from_center(
             obj.Placement.multVec(obj.Points[edge_index+1]),
             scale, center)
     return make_line.make_line(vertex1, vertex2)
@@ -212,7 +212,7 @@ def copy_scaled_edges(arguments):
     """
     copied_edges = []
     for argument in arguments:
-        copied_edges.append(copyScaledEdge(argument[0], argument[1],
+        copied_edges.append(copy_scaled_edge(argument[0], argument[1],
             argument[2], argument[3]))
     join.join_wires(copied_edges)
 
