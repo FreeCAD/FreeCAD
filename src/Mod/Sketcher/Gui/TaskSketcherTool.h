@@ -49,6 +49,10 @@ class SketcherToolWidget : public QWidget
 public:
     SketcherToolWidget(QWidget *parent=0);
     ~SketcherToolWidget();
+
+    //bool eventFilter(QObject* object, QEvent* event);
+
+    void keyPressEvent(QKeyEvent* event);
     
     //bool eventFilter(QObject *object, QEvent *event);
 
@@ -58,6 +62,7 @@ public:
     void setSettings(int toolSelected);
     std::vector<double> toolParameters;
     std::vector<bool> isSettingSet;
+    bool ctrlPressed;
 
 //Q_SIGNALS:
 public Q_SLOTS:

@@ -61,15 +61,27 @@ SketcherToolWidget::SketcherToolWidget(QWidget *parent)
         this, SLOT(emitSetparameterFour(double)));
     connect(ui->parameterFive, SIGNAL(valueChanged(double)),
         this, SLOT(emitSetparameterFive(double)));
-
+    ctrlPressed = 0;
 }
 
 SketcherToolWidget::~SketcherToolWidget(){}
 
 /*bool SketcherToolWidget::eventFilter(QObject* object, QEvent* event)
 {
+    if (event->type() == QEvent::KeyPress) {
+
+    }
     return false;
 }*/
+
+void SketcherToolWidget::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Control)
+    {
+        ctrlPressed = 1;
+        Base::Console().Warning("Ctrl pressed\n");
+    }
+    QWidget::keyReleaseEvent(event);
+}
 
 void SketcherToolWidget::emitSetparameter(double val)
 {
@@ -112,6 +124,9 @@ void SketcherToolWidget::emitSetparameterFive(double val)
 void SketcherToolWidget::setSettings(int toolSelected)
 {
     //Set names and hide excess parameters
+    //For reference unit can be changed with : 
+    //ui->parameterFour->setUnit(Base::Unit::Length);
+    //ui->parameterFour->setUnit(Base::Unit::Angle);
     switch (toolSelected) {
     case 0: //none, reset and hide all settings
         toolParameters.clear();
@@ -172,7 +187,7 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_rectangle", "y of 1st point"));
         ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_rectangle", "Length (along x axis)"));
         ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_rectangle", "Width (along y axis)"));
-        ui->label5->setText(QApplication::translate("TaskSketcherTool_p4_rectangle", "Corner radius"));
+        ui->label5->setText(QApplication::translate("TaskSketcherTool_p5_Oblong", "Corner radius"));
 
         ui->parameterOne->setVisible(1);
         ui->parameterOne->setEnabled(1);
@@ -187,6 +202,94 @@ void SketcherToolWidget::setSettings(int toolSelected)
 
         ui->parameterOne->selectNumber();
         QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        break;
+    case 3: //Circle : DrawSketchHandlerCircle & arc
+        toolParameters.resize(3, 0);
+        isSettingSet.resize(3, 0);
+
+        ui->label->setVisible(1);
+        ui->label2->setVisible(1);
+        ui->label3->setVisible(1);
+        ui->label->setText(QApplication::translate("TaskSketcherTool_p1_rectangle", "x of 1st point"));
+        ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_rectangle", "y of 1st point"));
+        ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_circle", "Radius"));
+
+        ui->parameterOne->setVisible(1);
+        ui->parameterOne->setEnabled(1);
+        ui->parameterTwo->setVisible(1);
+        ui->parameterTwo->setEnabled(0);
+        ui->parameterThree->setVisible(1);
+        ui->parameterThree->setEnabled(0);
+
+        ui->parameterOne->selectNumber();
+        QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        break;
+    case 4: //Point : DrawSketchHandlerPoint
+        toolParameters.resize(2, 0);
+        isSettingSet.resize(2, 0);
+
+        ui->label->setVisible(1);
+        ui->label2->setVisible(1);
+        ui->label->setText(QApplication::translate("TaskSketcherTool_p1_point", "x of point"));
+        ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_point", "y of point"));
+
+        ui->parameterOne->setVisible(1);
+        ui->parameterOne->setEnabled(1);
+        ui->parameterTwo->setVisible(1);
+        ui->parameterTwo->setEnabled(0);
+
+        ui->parameterOne->selectNumber();
+        QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        break;
+    case 5: //Line : DrawSketchHandlerLine & arcby3points & circle by 3 points
+        toolParameters.resize(4, 0);
+        isSettingSet.resize(4, 0);
+
+        ui->label->setVisible(1);
+        ui->label2->setVisible(1);
+        ui->label3->setVisible(1);
+        ui->label4->setVisible(1);
+        ui->label->setText(QApplication::translate("TaskSketcherTool_p1_rectangle", "x of 1st point"));
+        ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_rectangle", "y of 1st point"));
+        ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_rectangle", "x of 2nd point"));
+        ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_rectangle", "y of 2nd point"));
+
+        ui->parameterOne->setVisible(1);
+        ui->parameterOne->setEnabled(1);
+        ui->parameterTwo->setVisible(1);
+        ui->parameterTwo->setEnabled(0);
+        ui->parameterThree->setVisible(1);
+        ui->parameterThree->setEnabled(0);
+        ui->parameterFour->setVisible(1);
+        ui->parameterFour->setEnabled(0);
+
+        ui->parameterOne->selectNumber();
+        QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        break;
+    case 6: //PolyLine (from second line) : DrawSketchHandlerLine & arcby3points & circle by 3 points
+        toolParameters.resize(4, 0);
+        isSettingSet.resize(4, 0);
+
+        ui->label->setVisible(1);
+        ui->label2->setVisible(1);
+        ui->label3->setVisible(1);
+        ui->label4->setVisible(1);
+        ui->label->setText(QApplication::translate("TaskSketcherTool_p1_rectangle", "x of n-1 point"));
+        ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_rectangle", "y of n-1 point"));
+        ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_rectangle", "x of n point"));
+        ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_rectangle", "y of n point"));
+
+        ui->parameterOne->setVisible(1);
+        ui->parameterOne->setEnabled(0);
+        ui->parameterTwo->setVisible(1);
+        ui->parameterTwo->setEnabled(0);
+        ui->parameterThree->setVisible(1);
+        ui->parameterThree->setEnabled(1);
+        ui->parameterFour->setVisible(1);
+        ui->parameterFour->setEnabled(1);
+
+        ui->parameterThree->selectNumber();
+        QMetaObject::invokeMethod(ui->parameterThree, "setFocus", Qt::QueuedConnection);
         break;
     }
 }
