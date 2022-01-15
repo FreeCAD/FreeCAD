@@ -84,11 +84,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
     m_saveCE(nullptr),
     m_createMode(false)
 {
-    if (m_partFeat == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskCosmeticLine - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of partFeat is checked in calling command
 
     m_ce = m_partFeat->getCosmeticEdgeBySelection(m_edgeName);
     if (m_ce == nullptr) {
@@ -113,11 +109,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
     m_is3d(is3d),
     m_createMode(true)
 {
-    if (m_partFeat == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskCosmeticLine - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of partFeat is checked in calling command
 
     ui->setupUi(this);
 

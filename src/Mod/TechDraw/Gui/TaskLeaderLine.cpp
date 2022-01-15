@@ -96,11 +96,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     m_saveY(0.0),
     m_haveMdi(false)
 {
-    if (m_lineVP == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskLeaderLine - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of leadVP is guaranteed by caller being ViewProviderLeaderLine.setEdit
 
     m_lineFeat = m_lineVP->getFeature();
 
@@ -189,12 +185,7 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     m_saveY(0.0),
     m_haveMdi(false)
 {
-    if ( (m_basePage == nullptr) ||
-         (m_baseFeat == nullptr) )  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskLeaderLine - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of basePage and baseFeat is checked in CmdTechDrawLeaderLine (CommandAnnotate.cpp)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);

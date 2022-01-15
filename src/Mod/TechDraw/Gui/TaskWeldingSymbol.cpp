@@ -92,12 +92,8 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
     m_otherDirty(false)
 {
 //TODO: why does DWS need DLL as parent?
-//    Base::Console().Message("TWS::TWS() - create mode\n");
-    if  (m_leadFeat == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskWeldingSymbol - bad parameters. Can not proceed.\n");
-        return;
-    }
+
+    //existence of leader is guaranteed by CmdTechDrawWeldSymbol (CommandAnnotate.cpp)
     ui->setupUi(this);
 
     setUiPrimary();
@@ -126,12 +122,8 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     m_createMode(false),
     m_otherDirty(false)
 {
-//    Base::Console().Message("TWS::TWS() - edit mode\n");
-    if  (m_weldFeat == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskWeldingSymbol - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of weld is guaranteed by CmdTechDrawWeldSymbol (CommandAnnotate.cpp)
+    //                                or ViewProviderWeld.setEdit
 
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
     if ( (obj != nullptr) &&

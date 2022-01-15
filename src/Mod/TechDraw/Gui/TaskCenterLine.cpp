@@ -95,13 +95,9 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     BaseGeomPtr bg = geoms.at(m_geomIndex);
     std::string tag = bg->getCosmeticTag();
     m_cl = partFeat->getCenterLine(tag);
-    if (m_cl == nullptr) {         //checked by CommandAnnotate.  Should never happen.
-        Base::Console().Message("TCL::TCL() - no centerline found\n");
-    }
-    else {
-        m_type = m_cl->m_type;
-        m_mode = m_cl->m_mode;
-    }
+    //existence of m_cl is checked in CommandAnnotate
+    m_type = m_cl->m_type;
+   m_mode = m_cl->m_mode;
 
     setUiEdit();
     // connect the dialog objects
@@ -128,12 +124,7 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_mode(0),           // 0 - vertical, 1 - horizontal, 2 - aligned
     m_editMode(editMode)
 {
-    if ( (m_basePage == nullptr) ||
-         (m_partFeat == nullptr) )  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskCenterLine - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of page and feature are checked by isActive method of calling command
 
     ui->setupUi(this);
     std::string check = subNames.front();
