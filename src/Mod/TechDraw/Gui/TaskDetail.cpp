@@ -96,12 +96,10 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_mode(CREATEMODE),
     m_created(false)
 {
-    if (m_baseFeat == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskDetail - bad parameters - base feature.  Can not proceed.\n");
-        return;
-    }
+    //existence of baseFeat checked in CmdTechDrawDetailView (Command.cpp)
+
     m_basePage = m_baseFeat->findParentPage();
+    //it is possible that the basePage could be unparented and have no corresponding Page
     if (m_basePage == nullptr) {
         Base::Console().Error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
         return;

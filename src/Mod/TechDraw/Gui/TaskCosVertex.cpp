@@ -88,12 +88,7 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     m_pbTrackerState(TRACKERPICK),
     m_savePoint(QPointF(0.0, 0.0))
 {
-    if ((m_basePage == nullptr) ||
-        (m_baseFeat == nullptr)) {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskCosVertex - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //baseFeat and page existence checked in cosmetic vertex command (CommandAnnotate.cpp)
 
     ui->setupUi(this);
 
