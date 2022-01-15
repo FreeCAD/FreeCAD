@@ -81,7 +81,9 @@ class Tracker:
         ToDo.delay(self._insertSwitch, self.switch)
 
     def finalize(self):
-        """Finish the command by removing the switch."""
+        """Finish the command by removing the switch.
+        Also called by ghostTracker.remove.
+        """
         ToDo.delay(self._removeSwitch, self.switch)
         self.switch = None
 
@@ -694,14 +696,10 @@ class ghostTracker(Tracker):
         super().__init__(dotted, scolor, swidth,
                          children=self.children, name="ghostTracker")
 
-    def update(self, obj):
-        """Recreate the ghost from a new object."""
-        obj.ViewObject.show()
-        self.finalize()
-        sep = self.getNode(obj)
-        super().__init__(children=[sep])
-        self.on()
-        obj.ViewObject.hide()
+    def remove(self):
+        """Remove the ghost when switching to and from subelement mode."""
+        if self.switch:
+            self.finalize()
 
     def move(self, delta):
         """Move the ghost to a given position.
@@ -1151,7 +1149,7 @@ class gridTracker(Tracker):
                 loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
                 hpts = BimProject.getHuman(loc)
                 pts.extend([tuple(p) for p in hpts])
-                pidx.append(len(hpts))                
+                pidx.append(len(hpts))
             except Exception:
                 # BIM not installed
                 return

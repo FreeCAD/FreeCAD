@@ -84,7 +84,6 @@ class Mirror(gui_base_original.Modifier):
 
         self.sel = Gui.Selection.getSelection()
         self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Mirror")
-        self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
         # self.ghost = trackers.ghostTracker(self.sel)

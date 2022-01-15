@@ -46,28 +46,30 @@ class ScaleTaskPanel:
     """The task panel for the Draft Scale tool."""
 
     def __init__(self):
+        decimals = App.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals", 2)
         self.sourceCmd = None
         self.form = QtGui.QWidget()
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_Scale.svg"))
         layout = QtGui.QGridLayout(self.form)
         self.xLabel = QtGui.QLabel()
         layout.addWidget(self.xLabel, 0, 0, 1, 1)
         self.xValue = QtGui.QDoubleSpinBox()
         self.xValue.setRange(0.0000001, 1000000.0)
-        self.xValue.setDecimals(Draft.precision())
+        self.xValue.setDecimals(decimals)
         self.xValue.setValue(1)
         layout.addWidget(self.xValue,0,1,1,1)
         self.yLabel = QtGui.QLabel()
         layout.addWidget(self.yLabel,1,0,1,1)
         self.yValue = QtGui.QDoubleSpinBox()
-        self.yValue.setRange(.0000001,1000000.0)
-        self.yValue.setDecimals(Draft.precision())
+        self.yValue.setRange(0.0000001, 1000000.0)
+        self.yValue.setDecimals(decimals)
         self.yValue.setValue(1)
         layout.addWidget(self.yValue,1,1,1,1)
         self.zLabel = QtGui.QLabel()
         layout.addWidget(self.zLabel,2,0,1,1)
         self.zValue = QtGui.QDoubleSpinBox()
-        self.zValue.setRange(.0000001,1000000.0)
-        self.zValue.setDecimals(Draft.precision())
+        self.zValue.setRange(0.0000001, 1000000.0)
+        self.zValue.setDecimals(decimals)
         self.zValue.setValue(1)
         layout.addWidget(self.zValue,2,1,1,1)
         self.lock = QtGui.QCheckBox()
@@ -93,16 +95,23 @@ class ScaleTaskPanel:
         QtCore.QObject.connect(self.lock,QtCore.SIGNAL("toggled(bool)"),self.setLock)
         QtCore.QObject.connect(self.relative,QtCore.SIGNAL("toggled(bool)"),self.setRelative)
         QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("toggled(bool)"),self.setCopy)
+        QtCore.QObject.connect(self.isSubelementMode,QtCore.SIGNAL("toggled(bool)"),self.setSubelementMode)
         QtCore.QObject.connect(self.isClone,QtCore.SIGNAL("toggled(bool)"),self.setClone)
         self.retranslateUi()
 
     def setLock(self, state):
         """Set the uniform scaling."""
         App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleUniform", state)
+        if state:
+            val = self.xValue.value()
+            self.yValue.setValue(val)
+            self.zValue.setValue(val)
 
     def setRelative(self, state):
         """Set the relative scaling."""
         App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleRelative", state)
+        if self.sourceCmd:
+            self.sourceCmd.scaleGhost(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
 
     def setCopy(self, state):
         """Set the scale and copy option."""
@@ -110,11 +119,20 @@ class ScaleTaskPanel:
         if state and self.isClone.isChecked():
             self.isClone.setChecked(False)
 
+    def setSubelementMode(self, state):
+        if state and self.isClone.isChecked():
+            self.isClone.setChecked(False)
+        if self.sourceCmd:
+            self.sourceCmd.set_ghosts()
+            self.sourceCmd.scaleGhost(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
+
     def setClone(self, state):
         """Set the clone and scale option."""
         App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleClone", state)
         if state and self.isCopy.isChecked():
             self.isCopy.setChecked(False)
+        if state and self.isSubelementMode.isChecked():
+            self.isSubelementMode.setChecked(False)
 
     def setValue(self, val=None):
         """Set the value of the points."""
