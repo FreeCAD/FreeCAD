@@ -1143,6 +1143,45 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         sheet.setAlias('C3','test')
 
+    def testCrossLinkEmptyPropertyName(self):
+        # https://forum.freecadweb.org/viewtopic.php?f=3&t=58603
+        base = FreeCAD.newDocument("base")
+        sheet = base.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('A1', 'x')
+        sheet.set('x', '42mm')
+        base.recompute()
+
+        square = FreeCAD.newDocument("square")
+        body = square.addObject('PartDesign::Body','Body')
+        box = square.addObject('PartDesign::AdditiveBox','Box')
+        body.addObject(box)
+        box.Length = 10.00
+        box.Width = 10.00
+        box.Height = 10.00
+        square.recompute()
+
+        basePath = self.TempPath + os.sep + 'base.FCStd'
+        base.saveAs(basePath)
+        squarePath = self.TempPath + os.sep + 'square.FCStd'
+        square.saveAs(squarePath)
+
+        base.save()
+        square.save()
+
+        FreeCAD.closeDocument(square.Name)
+        FreeCAD.closeDocument(base.Name)
+
+        ##
+        ## preparation done
+        base = FreeCAD.openDocument(basePath)
+        square = FreeCAD.openDocument(squarePath)
+
+        square.Box.setExpression('Length', u'base#Spreadsheet.x')
+        square.recompute()
+
+        square.save()
+        base.save()
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
