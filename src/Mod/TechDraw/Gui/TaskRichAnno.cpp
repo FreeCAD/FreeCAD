@@ -94,12 +94,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_rte(nullptr),
     m_haveMdi(false)
 {
-//    Base::Console().Message("TRA::TRA() - edit\n");
-    if (m_annoVP == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskRichAnno - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of annoVP is guaranteed by caller being ViewProviderRichAnno.setEdit
 
     m_annoFeat = m_annoVP->getFeature();
 
@@ -170,12 +165,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_rte(nullptr),
     m_haveMdi(false)
 {
-//    Base::Console().Message("TRA::TRA() - create\n");
-    if (m_basePage == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskRichAnno - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of baseFeat and page guaranteed by CmdTechDrawRichTextAnnotation (CommandAnnotate.cpp)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
@@ -186,9 +176,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_mdi = dvp->getMDIViewPage();
     if (m_mdi != nullptr) {
         m_view = m_mdi->getQGVPage();
-        if (baseFeat != nullptr) {
-            m_qgParent = m_view->findQViewForDocObj(baseFeat);
-        }
+        m_qgParent = m_view->findQViewForDocObj(baseFeat);
     } else {
         m_haveMdi = false;
     }

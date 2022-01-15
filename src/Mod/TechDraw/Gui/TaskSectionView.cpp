@@ -83,13 +83,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_saved(false),
     m_abort(false)
 {
-//    Base::Console().Message("TSV::TSV() - create mode\n");
-    if  (m_base == nullptr)  {
-        //should be caught in CMD caller
-        std::string msg = Base::Tools::toStdString(tr("TaskSectionView - bad parameters.  Can not proceed."));
-        Base::Console().Error((msg + "\n").c_str());
-        return;
-    }
+    //existence of base is guaranteed by CmdTechDrawSectionView (Command.cpp)
+
     m_sectionName = std::string();
     m_doc         = m_base->getDocument();
 
@@ -118,13 +113,7 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_saved(false),
     m_abort(false)
 {
-
-    if  (m_section == nullptr)  {
-        //should be caught in CMD caller
-        std::string msg = Base::Tools::toStdString(tr("TaskSectionView - bad parameters.  Can not proceed."));
-        Base::Console().Error((msg + "\n").c_str());
-        return;
-    }
+    //existence of section is guaranteed by ViewProviderViewSection.setEdit
 
     m_doc = m_section->getDocument();
     m_sectionName = m_section->getNameInDocument();
