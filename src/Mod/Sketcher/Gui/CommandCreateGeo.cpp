@@ -928,7 +928,6 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
     ConstructionMethod constructionMethod;
     Base::Vector2d center, firstPoint, secondPoint;
-    TaskSketcherTool *settings;
 };
 
 DEF_STD_CMD_AU(CmdSketcherCreateRectangle)
@@ -1140,22 +1139,32 @@ public:
                 radius = min(sketchgui->toolSettings->widget->toolParameters[4] , min(abs(lengthX / 2), abs(lengthY / 2)));
             }
             else {
-                double dx, dy;
-                dx = onSketchPos.x - StartPos.x;
-                if (dx < lengthX / 2) {
-                    dx = pow(onSketchPos.x - StartPos.x, 2);
+                double dx, dy, minX, minY, maxX, maxY;
+                minX = min(StartPos.x, EndPos.x);
+                maxX = max(StartPos.x, EndPos.x);
+                minY = min(StartPos.y, EndPos.y);
+                maxY = max(StartPos.y, EndPos.y);
+                if (onSketchPos.x < minX || onSketchPos.y < minY || onSketchPos.x > maxX || onSketchPos.y > maxY) {
+                    radius = 0.001;
                 }
                 else {
-                    dx = pow(onSketchPos.x - EndPos.x, 2);
+                    dx = onSketchPos.x - minX;
+                    dy = onSketchPos.y - minY;
+                    if (dx < abs(lengthX / 2)) {
+                        dx = (onSketchPos.x - minX);
+                    }
+                    else {
+                        dx = -(onSketchPos.x - maxX);
+                    }
+                    dy = onSketchPos.y - minY;
+                    if (dy < abs(lengthY / 2)) {
+                        dy = (onSketchPos.y - minY);
+                    }
+                    else {
+                        dy = -(onSketchPos.y - maxY);
+                    }
+                    radius = min((dx + dy +sqrt(2*dx*dy)), min(abs(lengthX / 2), abs(lengthY / 2)) * 0.99);
                 }
-                dy = onSketchPos.y - StartPos.y;
-                if (dy < lengthY / 2) {
-                    dy = pow(onSketchPos.y - StartPos.y, 2);
-                }
-                else {
-                    dy = pow(onSketchPos.y - EndPos.y, 2);
-                }
-                radius = min(sqrt(dx + dy), min(abs(lengthX/2), abs(lengthY/2)));
             }
 
             // we draw the lines with 36 segments, 8 for each arc and 4 lines
@@ -1199,7 +1208,7 @@ public:
             text.sprintf(" (%.1fR %.1fX %.1fY)", radius, lengthX, lengthY);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
                 pressButton(onSketchPos);
                 releaseButton(onSketchPos);
@@ -1266,22 +1275,32 @@ public:
                 radius = min(sketchgui->toolSettings->widget->toolParameters[4], min(abs(lengthX / 2), abs(lengthY / 2)));
             }
             else {
-                double dx, dy;
-                dx = onSketchPos.x - StartPos.x;
-                if (dx < lengthX / 2) {
-                    dx = pow(onSketchPos.x - StartPos.x, 2);
+                double dx, dy, minX, minY, maxX, maxY;
+                minX = min(StartPos.x, EndPos.x);
+                maxX = max(StartPos.x, EndPos.x);
+                minY = min(StartPos.y, EndPos.y);
+                maxY = max(StartPos.y, EndPos.y);
+                if (onSketchPos.x < minX || onSketchPos.y < minY || onSketchPos.x > maxX || onSketchPos.y > maxY) {
+                    radius = 0.001;
                 }
                 else {
-                    dx = pow(onSketchPos.x - EndPos.x, 2);
+                    dx = onSketchPos.x - minX;
+                    dy = onSketchPos.y - minY;
+                    if (dx < abs(lengthX / 2)) {
+                        dx = (onSketchPos.x - minX);
+                    }
+                    else {
+                        dx = -(onSketchPos.x - maxX);
+                    }
+                    dy = onSketchPos.y - minY;
+                    if (dy < abs(lengthY / 2)) {
+                        dy = (onSketchPos.y - minY);
+                    }
+                    else {
+                        dy = -(onSketchPos.y - maxY);
+                    }
+                    radius = min((dx + dy +sqrt(2*dx*dy)), min(abs(lengthX / 2), abs(lengthY / 2)) * 0.99);
                 }
-                dy = onSketchPos.y - StartPos.y;
-                if (dy < lengthY / 2) {
-                    dy = pow(onSketchPos.y - StartPos.y, 2);
-                }
-                else {
-                    dy = pow(onSketchPos.y - EndPos.y, 2);
-                }
-                radius = min(sqrt(dx + dy), min(abs(lengthX/2), abs(lengthY/2)));
             }
             Mode = STATUS_End;
         }
@@ -2539,10 +2558,6 @@ public:
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
-            if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                pressButton(onSketchPos);
-                releaseButton(onSketchPos);
-            }
         }
         else if (Mode==STATUS_SEEK_Third) {
             double angle1 = atan2(onSketchPos.y - CenterPoint.y,
@@ -3020,33 +3035,33 @@ public:
             if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                 if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                        firstCurve, 1, sketchgui->toolSettings->widget->toolParameters[0]);
+                    
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%i,%i,%f)) ",
+                        firstCurve, (int) arcPos1, sketchgui->toolSettings->widget->toolParameters[0]);
 
                     Gui::Command::commitCommand();
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
 
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                        firstCurve, 1, sketchgui->toolSettings->widget->toolParameters[1]);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%i,%i,%f)) ",
+                        firstCurve, (int)arcPos1, sketchgui->toolSettings->widget->toolParameters[1]);
 
                     Gui::Command::commitCommand();
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
 
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                        firstCurve, 2, sketchgui->toolSettings->widget->toolParameters[2]);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%i,%i,%f)) ",
+                        firstCurve, (int)arcPos2, sketchgui->toolSettings->widget->toolParameters[2]);
 
                     Gui::Command::commitCommand();
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
 
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                        firstCurve, 2, sketchgui->toolSettings->widget->toolParameters[3]);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%i,%i,%f)) ",
+                        firstCurve, (int)arcPos2, sketchgui->toolSettings->widget->toolParameters[3]);
 
                     Gui::Command::commitCommand();
                 }
@@ -6050,7 +6065,7 @@ public:
         else if (Mode == STATUS_SEEK_Third) {
             try
             {
-                CenterPoint = EditCurve[N + 1] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+                CenterPoint = EditCurve[N + 1] = Part::Geom2dCircle::getCircleCenter(FirstPoint, SecondPoint, onSketchPos);
                 
                 radius = (onSketchPos - CenterPoint).Length();
                 double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
@@ -6071,7 +6086,7 @@ public:
                 text.sprintf(" (%.1fR,%.1fdeg)", (float)radius, (float)lineAngle * 180 / M_PI);
                 setPositionText(onSketchPos, text);
 
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 
                 if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f),
                     AutoConstraint::CURVE)) {

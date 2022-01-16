@@ -80,6 +80,11 @@ void SketcherToolWidget::keyPressEvent(QKeyEvent* event) {
         ctrlPressed = 1;
         Base::Console().Warning("Ctrl pressed\n");
     }
+    if (event->key() == Qt::Key_Escape)
+    {
+        ctrlPressed = 1;
+        Base::Console().Warning("Esc pressed\n");
+    }
     QWidget::keyReleaseEvent(event);
 }
 
