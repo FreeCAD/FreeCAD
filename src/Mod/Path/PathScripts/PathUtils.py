@@ -176,31 +176,30 @@ def horizontalFaceLoop(obj, face, faceList=None):
 
 
 def filterArcs(arcEdge):
-    """filterArcs(Edge) -used to split arcs that over 180 degrees. Returns list"""
+    """filterArcs(Edge) -used to split an arc that is over 180 degrees. Returns list"""
     PathLog.track()
-    s = arcEdge
-    if isinstance(s.Curve, Part.Circle):
-        splitlist = []
-        angle = abs(s.LastParameter - s.FirstParameter)
-        # overhalfcircle = False
-        goodarc = False
-        if angle > math.pi:
-            pass
-            # overhalfcircle = True
+    splitlist = []
+    if isinstance(arcEdge.Curve, Part.Circle):
+        angle = abs(arcEdge.LastParameter - arcEdge.FirstParameter)  # Angle in radians
+        goodarc = angle <= math.pi
+
+        if goodarc:
+            splitlist.append(arcEdge)
         else:
-            goodarc = True
-        if not goodarc:
-            arcstpt = s.valueAt(s.FirstParameter)
-            arcmid = s.valueAt(
-                (s.LastParameter - s.FirstParameter) * 0.5 + s.FirstParameter
+            arcstpt = arcEdge.valueAt(arcEdge.FirstParameter)
+            arcmid = arcEdge.valueAt(
+                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.5 +
+                arcEdge.FirstParameter
             )
-            arcquad1 = s.valueAt(
-                (s.LastParameter - s.FirstParameter) * 0.25 + s.FirstParameter
+            arcquad1 = arcEdge.valueAt(
+                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.25 +
+                arcEdge.FirstParameter
             )  # future midpt for arc1
-            arcquad2 = s.valueAt(
-                (s.LastParameter - s.FirstParameter) * 0.75 + s.FirstParameter
+            arcquad2 = arcEdge.valueAt(
+                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.75 +
+                arcEdge.FirstParameter
             )  # future midpt for arc2
-            arcendpt = s.valueAt(s.LastParameter)
+            arcendpt = arcEdge.valueAt(arcEdge.LastParameter)
             # reconstruct with 2 arcs
             arcseg1 = Part.ArcOfCircle(arcstpt, arcquad1, arcmid)
             arcseg2 = Part.ArcOfCircle(arcmid, arcquad2, arcendpt)
@@ -209,9 +208,8 @@ def filterArcs(arcEdge):
             eseg2 = arcseg2.toShape()
             splitlist.append(eseg1)
             splitlist.append(eseg2)
-        else:
-            splitlist.append(s)
-    elif isinstance(s.Curve, Part.LineSegment):
+
+    elif isinstance(arcEdge.Curve, Part.LineSegment):
         pass
     return splitlist
 
