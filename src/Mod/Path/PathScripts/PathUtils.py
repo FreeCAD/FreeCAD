@@ -20,19 +20,17 @@
 # *                                                                         *
 # ***************************************************************************
 """PathUtils -common functions used in PathScripts for filtering, sorting, and generating gcode toolpath data """
+
 import FreeCAD
-import Path
-
-# import PathScripts
-import PathScripts.PathJob as PathJob
-import PathScripts.PathGeom as PathGeom
-import math
-import numpy
-
 from FreeCAD import Vector
 from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
+import Path
+import PathScripts.PathGeom as PathGeom
+import PathScripts.PathJob as PathJob
+import math
+from numpy import linspace
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -149,7 +147,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         # verify they form a valid hole by getting the outline and comparing
         # the resulting XY footprint with that of the faces
         comp = Part.makeCompound([obj.Shape.getElement(f) for f in faces])
-        outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0, 0, 1))
+        outline = TechDraw.findShapeOutline(comp, 1, Vector(0, 0, 1))
 
         # findShapeOutline always returns closed wires, by removing the
         # trace-backs single edge spikes don't contribute to the bound box
@@ -188,16 +186,16 @@ def filterArcs(arcEdge):
         else:
             arcstpt = arcEdge.valueAt(arcEdge.FirstParameter)
             arcmid = arcEdge.valueAt(
-                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.5 +
-                arcEdge.FirstParameter
+                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.5
+                + arcEdge.FirstParameter
             )
             arcquad1 = arcEdge.valueAt(
-                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.25 +
-                arcEdge.FirstParameter
+                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.25
+                + arcEdge.FirstParameter
             )  # future midpt for arc1
             arcquad2 = arcEdge.valueAt(
-                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.75 +
-                arcEdge.FirstParameter
+                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.75
+                + arcEdge.FirstParameter
             )  # future midpt for arc2
             arcendpt = arcEdge.valueAt(arcEdge.LastParameter)
             # reconstruct with 2 arcs
@@ -219,9 +217,7 @@ def makeWorkplane(shape):
     Creates a workplane circle at the ZMin level.
     """
     PathLog.track()
-    loc = FreeCAD.Vector(
-        shape.BoundBox.Center.x, shape.BoundBox.Center.y, shape.BoundBox.ZMin
-    )
+    loc = Vector(shape.BoundBox.Center.x, shape.BoundBox.Center.y, shape.BoundBox.ZMin)
     c = Part.makeCircle(10, loc)
     return c
 
@@ -273,11 +269,11 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
         eLength = partshape.BoundBox.ZLength - sec.BoundBox.ZMin
 
     # Shift the section based on selection and depthparams.
-    newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), sec.Placement.Rotation)
+    newPlace = FreeCAD.Placement(Vector(0, 0, zShift), sec.Placement.Rotation)
     sec.Placement = newPlace
 
     # Extrude the section to top of Boundbox or desired height
-    envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
+    envelopeshape = sec.extrude(Vector(0, 0, eLength))
     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
         removalshape.Shape = envelopeshape
@@ -451,13 +447,11 @@ def sort_locations(locations, keys, attractors=None):
     keys: two-element list of keys for X and Y coordinates. for example ['x','y']
     originally written by m0n5t3r for PathHelix
     """
+    from queue import PriorityQueue
+    from collections import defaultdict
+
     if attractors is None:
         attractors = []
-    try:
-        from queue import PriorityQueue
-    except ImportError:
-        from Queue import PriorityQueue
-    from collections import defaultdict
 
     attractors = attractors or [keys[0]]
 
@@ -724,7 +718,7 @@ class depth_params(object):
         than max_size."""
 
         steps_needed = math.ceil((start - stop) / max_size)
-        depths = list(numpy.linspace(stop, start, steps_needed, endpoint=False))
+        depths = list(linspace(stop, start, steps_needed, endpoint=False))
 
         return depths
 
@@ -736,7 +730,7 @@ class depth_params(object):
 
         fullsteps = int((start - stop) / size)
         last_step = start - (fullsteps * size)
-        depths = list(numpy.linspace(last_step, start, fullsteps, endpoint=False))
+        depths = list(linspace(last_step, start, fullsteps, endpoint=False))
 
         if last_step == stop:
             return depths
@@ -800,7 +794,7 @@ def RtoIJ(startpoint, command):
     chord = endpoint.sub(startpoint)
 
     # Take its perpendicular (we assume the arc is in the XY plane)
-    perp = chord.cross(FreeCAD.Vector(0, 0, 1))
+    perp = chord.cross(Vector(0, 0, 1))
 
     # use pythagoras to get the perp length
     plength = math.sqrt(radius ** 2 - (chord.Length / 2) ** 2)
