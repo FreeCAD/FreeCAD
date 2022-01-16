@@ -21,10 +21,13 @@
 # ***************************************************************************
 
 import FreeCAD
+import Part
+import Path
 import PathFeedRate
 import PathMachineState
-import Path
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathToolController as PathToolController
+import PathScripts.PathUtils as PathUtils
 
 from PathTests.PathTestUtils import PathTestBase
 
@@ -65,18 +68,18 @@ class TestPathHelpers(PathTestBase):
 
         machine = PathMachineState.MachineState()
         state = machine.getState()
-        self.assertTrue(state['X'] == 0 )
-        self.assertTrue(state['Y'] == 0 )
-        self.assertTrue(state['Z'] == 0 )
+        self.assertTrue(state["X"] == 0)
+        self.assertTrue(state["Y"] == 0)
+        self.assertTrue(state["Z"] == 0)
         self.assertTrue(machine.WCS == "G54")
 
         for c in self.commandlist:
             result = machine.addCommand(c)
 
         state = machine.getState()
-        self.assertTrue(state['X'] == 20 )
-        self.assertTrue(state['Y'] == 20 )
-        self.assertTrue(state['Z'] == 5 )
+        self.assertTrue(state["X"] == 20)
+        self.assertTrue(state["Y"] == 20)
+        self.assertTrue(state["Z"] == 5)
 
         machine.addCommand(Path.Command("M3 S200"))
         self.assertTrue(machine.S == 200)
@@ -105,7 +108,32 @@ class TestPathHelpers(PathTestBase):
         # Test that Drilling moves are handled correctly
         result = machine.addCommand(Path.Command("G81 X50 Y50 Z0"))
         state = machine.getState()
-        self.assertTrue(state['X'] == 50 )
-        self.assertTrue(state['Y'] == 50 )
-        self.assertTrue(state['Z'] == 5 )
+        self.assertTrue(state["X"] == 50)
+        self.assertTrue(state["Y"] == 50)
+        self.assertTrue(state["Z"] == 5)
 
+    def test02(self):
+        """Test PathUtils filterarcs"""
+
+        # filter a full circle
+        c = Part.Circle()
+        c.Radius = 5
+        edge = c.toShape()
+
+        results = PathUtils.filterArcs(edge)
+        self.assertTrue(len(results) == 2)
+        e1 = results[0]
+        self.assertTrue(isinstance(e1.Curve, Part.Circle))
+        self.assertTrue(PathGeom.pointsCoincide(edge.Curve.Location, e1.Curve.Location))
+        self.assertTrue(edge.Curve.Radius == e1.Curve.Radius)
+
+        # filter a 180 degree arc
+        results = PathUtils.filterArcs(e1)
+        self.assertTrue(len(results) == 1)
+
+        # Handle a straight segment
+        v1 = FreeCAD.Vector(0, 0, 0)
+        v2 = FreeCAD.Vector(10, 0, 0)
+        l = Part.makeLine(v1, v2)
+        results = PathUtils.filterArcs(l)
+        self.assertTrue(len(results) == 0)
