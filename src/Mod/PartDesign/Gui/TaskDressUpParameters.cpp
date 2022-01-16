@@ -181,7 +181,9 @@ void TaskDressUpParameters::onButtonRefAdd(bool checked)
         clearButtons(refAdd);
         hideObject();
         selectionMode = refAdd;
-        addAllEdgesAction->setEnabled(true);
+        if (addAllEdgesAction){
+            addAllEdgesAction->setEnabled(true);
+        }
         AllowSelectionFlags allow;
         allow.setFlag(AllowSelection::EDGE, allowEdges);
         allow.setFlag(AllowSelection::FACE, allowFaces);
@@ -189,7 +191,9 @@ void TaskDressUpParameters::onButtonRefAdd(bool checked)
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
         DressUpView->highlightReferences(true);
     } else {
-        addAllEdgesAction->setEnabled(false);
+        if (addAllEdgesAction){
+            addAllEdgesAction->setEnabled(false);
+        }
         exitSelectionMode();
         DressUpView->highlightReferences(false);
     }
