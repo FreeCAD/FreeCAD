@@ -639,7 +639,7 @@ def rampPlunge(edge, rampangle, destZ, startZ):
     return rampCmds
 
 
-def sort_jobs(locations, keys, attractors=None):
+def sort_locations(locations, keys, attractors=None):
     """sort holes by the nearest neighbor method
     keys: two-element list of keys for X and Y coordinates. for example ['x','y']
     originally written by m0n5t3r for PathHelix

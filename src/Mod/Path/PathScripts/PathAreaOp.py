@@ -327,21 +327,21 @@ class ObjectOp(PathOp.ObjectOp):
                 shapes.append(shp)
 
         if len(shapes) > 1:
-            jobs = list()
+            locations = []
             for s in shapes:
                 if s[2] == 'OpenEdge':
                     shp = Part.makeCompound(s[0])
                 else:
                     shp = s[0]
-                jobs.append({
+                locations.append({
                     'x': shp.BoundBox.XMax,
                     'y': shp.BoundBox.YMax,
                     'shape': s
                 })
 
-            jobs = PathUtils.sort_jobs(jobs, ['x', 'y'])
+            locations = PathUtils.sort_locations(locations, ['x', 'y'])
 
-            shapes = [j['shape'] for j in jobs]
+            shapes = [j['shape'] for j in locations]
 
         sims = []
         for shape, isHole, sub in shapes:

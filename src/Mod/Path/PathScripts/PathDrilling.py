@@ -160,7 +160,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
         self.commandlist.append(Path.Command(obj.ReturnLevel))
 
-        holes = PathUtils.sort_jobs(holes, ["x", "y"])
+        holes = PathUtils.sort_locations(holes, ["x", "y"])
 
         # This section is technical debt. The computation of the
         # target shapes should be factored out for re-use.
