@@ -10,6 +10,7 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+
 def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
     """
     checks if a candidate cylindrical face is drillable
@@ -55,7 +56,7 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
     if not candidate.ShapeType == "Face":
         raise TypeError("expected a Face")
 
-    if not str(candidate.Surface) == "<Cylinder object>":
+    if not isinstance(candidate.Surface, Part.Cylinder):
         raise TypeError("expected a cylinder")
 
     if len(candidate.Edges) != 3:
@@ -174,9 +175,8 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
         raise TypeError("expected a Face or Edge. Got a {}".format(candidate.ShapeType))
 
     try:
-        if (
-            candidate.ShapeType == "Face"
-            and str(candidate.Surface) == "<Cylinder object>"
+        if candidate.ShapeType == "Face" and isinstance(
+            candidate.Surface, Part.Cylinder
         ):
             return isDrillableCylinder(obj, candidate, tooldiameter, vector)
         else:
@@ -215,21 +215,23 @@ def getDrillableTargets(obj, ToolDiameter=None, vector=App.Vector(0, 0, 1)):
 
     results = []
     for i in range(1, len(shp.Faces)):
-        fname = 'Face{}'.format(i)
+        fname = "Face{}".format(i)
         PathLog.debug(fname)
         candidate = obj.getSubObject(fname)
 
-        if not str(candidate.Surface) == '<Cylinder object>':
+        if not isinstance(candidate.Surface, Part.Cylinder):
             continue
 
         try:
-            drillable = isDrillable(shp, candidate, tooldiameter=ToolDiameter, vector=vector)
+            drillable = isDrillable(
+                shp, candidate, tooldiameter=ToolDiameter, vector=vector
+            )
             PathLog.debug("fname: {} : drillable {}".format(fname, drillable))
         except Exception as e:
             PathLog.debug(e)
             continue
 
         if drillable:
-            results.append((obj,fname))
+            results.append((obj, fname))
 
     return results

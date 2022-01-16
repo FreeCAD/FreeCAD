@@ -144,9 +144,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         self.commandlist.append(Path.Command("(Begin Drilling)"))
 
         # rapid to clearance height
-        command = Path.Command(
-            "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
-        )
+        command = Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
         machine.addCommand(command)
         self.commandlist.append(command)
 
@@ -184,19 +182,15 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # move to hole location
 
-            command = Path.Command(
-                "G0", {"X": hole["x"], "Y": hole["y"], "F": self.horizRapid}
-            )
+            command = Path.Command("G0", {"X": hole["x"], "Y": hole["y"]})
             self.commandlist.append(command)
             machine.addCommand(command)
 
-            command = Path.Command("G0", {"Z": startHeight, "F": self.vertRapid})
+            command = Path.Command("G0", {"Z": startHeight})
             self.commandlist.append(command)
             machine.addCommand(command)
 
-            command = Path.Command(
-                "G1", {"Z": obj.StartDepth.Value, "F": self.vertFeed}
-            )
+            command = Path.Command("G1", {"Z": obj.StartDepth.Value})
             self.commandlist.append(command)
             machine.addCommand(command)
 
@@ -216,7 +210,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 PathLog.info(e)
                 continue
 
-            self.commandlist.extend(drillcommands)
+            for command in drillcommands:
+                self.commandlist.append(command)
+                machine.addCommand(command)
 
         # Cancel canned drilling cycle
         self.commandlist.append(Path.Command("G80"))
