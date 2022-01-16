@@ -141,7 +141,7 @@ App::Property *DlgSheetConf::prepare(CellAddress &from, CellAddress &to,
                                 vexpr->getPath().getProperty());
             if(prop) {
                 auto obj = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
-                if(obj) {
+                if (obj && prop->hasName()) {
                     path = ObjectIdentifier(sheet);
                     path.setDocumentObjectName(obj,true);
                     path << ObjectIdentifier::SimpleComponent(prop->getName());

@@ -118,8 +118,20 @@ public:
         return sizeof(father) + sizeof(StatusBits);
     }
 
-    /// get the name of this property in the belonging container
+    /** Get the name of this property in the belonging container
+     * With \ref hasName() it can be checked beforehand if a valid name is set.
+     * @note If no name is set this function returns an empty string, i.e. "".
+     */
     const char* getName(void) const;
+    /** Check if the property has a name set.
+     * If no name is set then \ref getName() will return an empty string
+     */
+    bool hasName() const;
+    /** Check if the passed name is valid.
+     * If \a name is null or an empty string it's considered invalid,
+     * and valid otherwise.
+     */
+    static bool isValidName(const char* name);
 
     std::string getFullName() const;
 

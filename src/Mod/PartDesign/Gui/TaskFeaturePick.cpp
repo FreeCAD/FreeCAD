@@ -340,7 +340,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
             App::Property* cprop = *it++;
 
-            if( strcmp(prop->getName(), "Label") == 0 ) {
+            if( prop->getName() && strcmp(prop->getName(), "Label") == 0 ) {
                 static_cast<App::PropertyString*>(cprop)->setValue(name.c_str());
                 continue;
             }

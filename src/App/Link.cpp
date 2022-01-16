@@ -184,7 +184,7 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
             propName = prop->getName();
         else
             propName = extensionGetPropertyName(prop);
-        if(!propName)
+        if(!Property::isValidName(propName))
             propName = "?";
         FC_TRACE("set property " << infos[idx].name << ": " << propName);
     }

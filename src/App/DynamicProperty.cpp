@@ -211,7 +211,7 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char*
 
 bool DynamicProperty::addProperty(Property *prop)
 {
-    if(!prop || !prop->getName())
+    if(!prop || !prop->hasName())
         return false;
     auto &index = props.get<0>();
     if(index.count(prop->getName()))

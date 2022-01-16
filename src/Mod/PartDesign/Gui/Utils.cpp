@@ -435,7 +435,7 @@ void relinkToBody (PartDesign::Feature *feature) {
                     }
                 }
 
-                if ( !valueStr.empty () ) {
+                if ( !valueStr.empty () && prop->hasName()) {
                     FCMD_OBJ_CMD(obj,prop->getName() << '=' << valueStr);
                 }
             }

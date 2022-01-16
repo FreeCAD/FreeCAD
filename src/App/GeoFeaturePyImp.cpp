@@ -66,8 +66,8 @@ PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
 
     GeoFeature* object = this->getGeoFeaturePtr();
     const PropertyComplexGeoData* prop = object->getPropertyOfGeometry();
-    const char* name = prop ? prop->getName() : 0;
-    if (name) {
+    const char* name = prop ? prop->getName() : nullptr;
+    if (Property::isValidName(name)) {
         return Py::new_reference_to(Py::String(std::string(name)));
     }
     return Py::new_reference_to(Py::None());
