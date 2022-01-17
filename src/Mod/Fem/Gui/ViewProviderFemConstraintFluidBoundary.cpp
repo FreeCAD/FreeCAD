@@ -45,7 +45,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintFluidBoundary, FemGui::ViewProviderFemConstraint)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintFluidBoundary, FemGui::ViewProviderFemConstraintOnBoundary)
 
 
 ViewProviderFemConstraintFluidBoundary::ViewProviderFemConstraintFluidBoundary()

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2022 FreeCAD Developers                                 *
+ *   Author: Ajinkya Dahale <dahale.a.p@gmail.com>                         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,31 +21,31 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H
+#define GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H
+#include <Mod/Part/App/PartFeature.h>
 
-#include "ViewProviderFemConstraintOnBoundary.h"
+#include "ViewProviderFemConstraint.h"
 
-namespace FemGui
+namespace FemGui {
+
+class FemGuiExport ViewProviderFemConstraintOnBoundary : public FemGui::ViewProviderFemConstraint
 {
-
-class FemGuiExport ViewProviderFemConstraintFixed : public FemGui::ViewProviderFemConstraintOnBoundary
-{
-    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintFixed);
+    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintOnBoundary);
 
 public:
-    /// Constructor
-    ViewProviderFemConstraintFixed();
-    virtual ~ViewProviderFemConstraintFixed();
+    ViewProviderFemConstraintOnBoundary();
+    virtual ~ViewProviderFemConstraintOnBoundary();
 
-    virtual void updateData(const App::Property*);
+    void highlightReferences(const bool on) override;
 
-protected:
-    virtual bool setEdit(int ModNum);
+private:
+    std::map< Part::Feature*, std::vector<App::Color> > originalPointColors;
+    std::map< Part::Feature*, std::vector<App::Color> > originalLineColors;
+    std::map< Part::Feature*, std::vector<App::Color> > originalFaceColors;
 };
 
-} //namespace FemGui
+}
 
-
-#endif // GUI_VIEWPROVIDERFEMCONSTRAINTFIXED_H
+#endif // GUI_VIEWPROVIDERFEMCONSTRAINTONBOUNDARY_H
