@@ -334,15 +334,15 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
 
 void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape& shape, std::list<TopoDS_Shape>& drafts)
 {
-    double distanceFwd = tan(params.taperAngleFwd)*params.lengthFwd;
-    double distanceRev = tan(params.taperAngleRev)*params.lengthRev;
+    double distanceFwd = tan(params.taperAngleFwd) * params.lengthFwd;
+    double distanceRev = tan(params.taperAngleRev) * params.lengthRev;
 
-    gp_Vec vecFwd = gp_Vec(params.dir)*params.lengthFwd;
-    gp_Vec vecRev = gp_Vec(params.dir.Reversed())*params.lengthRev;
+    gp_Vec vecFwd = gp_Vec(params.dir) * params.lengthFwd;
+    gp_Vec vecRev = gp_Vec(params.dir.Reversed()) * params.lengthRev;
 
     bool bFwd = fabs(params.lengthFwd) > Precision::Confusion();
     bool bRev = fabs(params.lengthRev) > Precision::Confusion();
-    bool bMid = !bFwd || !bRev || params.lengthFwd*params.lengthRev > 0.0; //include the source shape as loft section?
+    bool bMid = !bFwd || !bRev || params.lengthFwd * params.lengthRev > 0.0; //include the source shape as loft section?
 
     TopoDS_Wire sourceWire;
     if (shape.IsNull())
@@ -385,7 +385,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
             xp.Next();
         }
 
-        auto makeOffset = [&numEdges,&sourceWire](const gp_Vec& translation, double offset) -> TopoDS_Shape {
+        auto makeOffset = [&numEdges, &sourceWire](const gp_Vec& translation, double offset) -> TopoDS_Shape {
             BRepOffsetAPI_MakeOffset mkOffset;
 #if OCC_VERSION_HEX >= 0x060800
             mkOffset.Init(GeomAbs_Arc);
@@ -399,7 +399,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
             TopoDS_Wire movedSourceWire = TopoDS::Wire(sourceWire.Moved(loc));
 
             TopoDS_Shape offsetShape;
-            if (fabs(offset)>Precision::Confusion()) {
+            if (fabs(offset) > Precision::Confusion()) {
                 TopLoc_Location wireLocation;
                 TopLoc_Location edgeLocation;
                 if (numEdges == 1) {
@@ -432,7 +432,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
         };
 
         //first. add wire for reversed part of extrusion
-        if (bRev){
+        if (bRev) {
             TopoDS_Shape offsetShape = makeOffset(vecRev, distanceRev);
             if (offsetShape.IsNull())
                 Standard_Failure::Raise("Tapered shape is empty");
@@ -450,12 +450,12 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
         }
 
         //next. Add source wire as middle section. Order is important.
-        if (bMid){
+        if (bMid) {
             list_of_sections.push_back(sourceWire);
         }
 
         //finally. Forward extrusion offset wire.
-        if (bFwd){
+        if (bFwd) {
             TopoDS_Shape offsetShape = makeOffset(vecFwd, distanceFwd);
             if (offsetShape.IsNull())
                 Standard_Failure::Raise("Tapered shape is empty");
@@ -486,7 +486,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
             mkGenerator.Build();
             drafts.push_back(mkGenerator.Shape());
         }
-        catch (Standard_Failure &){
+        catch (Standard_Failure&) {
             throw;
         }
         catch (...) {
@@ -501,12 +501,12 @@ TYPESYSTEM_SOURCE(Part::FaceMakerExtrusion, Part::FaceMakerCheese)
 
 std::string FaceMakerExtrusion::getUserFriendlyName() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Part Extrude facemaker"));
+    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker", "Part Extrude facemaker"));
 }
 
 std::string FaceMakerExtrusion::getBriefExplanation() const
 {
-    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker","Supports making faces with holes, does not support nesting."));
+    return std::string(QT_TRANSLATE_NOOP("Part_FaceMaker", "Supports making faces with holes, does not support nesting."));
 }
 
 void FaceMakerExtrusion::Build()
@@ -518,13 +518,14 @@ void FaceMakerExtrusion::Build()
     TopoDS_Shape inputShape;
     if (mySourceShapes.empty())
         throw Base::ValueError("No input shapes!");
-    if (mySourceShapes.size() == 1){
+    if (mySourceShapes.size() == 1) {
         inputShape = mySourceShapes[0];
-    } else {
+    }
+    else {
         TopoDS_Builder builder;
         TopoDS_Compound cmp;
         builder.MakeCompound(cmp);
-        for (const TopoDS_Shape& sh: mySourceShapes){
+        for (const TopoDS_Shape& sh : mySourceShapes) {
             builder.Add(cmp, sh);
         }
         inputShape = cmp;
@@ -538,14 +539,14 @@ void FaceMakerExtrusion::Build()
     if (mapOfWires.IsEmpty()) {
         TopTools_IndexedMapOfShape mapOfEdges;
         TopExp::MapShapes(inputShape, TopAbs_EDGE, mapOfEdges);
-        for (int i=1; i<=mapOfEdges.Extent(); i++) {
+        for (int i = 1; i <= mapOfEdges.Extent(); i++) {
             BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(mapOfEdges.FindKey(i)));
             wires.push_back(mkWire.Wire());
         }
     }
     else {
         wires.reserve(mapOfWires.Extent());
-        for (int i=1; i<=mapOfWires.Extent(); i++) {
+        for (int i = 1; i <= mapOfWires.Extent(); i++) {
             wires.push_back(TopoDS::Wire(mapOfWires.FindKey(i)));
         }
     }
