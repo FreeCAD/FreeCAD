@@ -26,11 +26,11 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINTDISPLACEMENT_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINTDISPLACEMENT_H
 
-#include "ViewProviderFemConstraint.h"
+#include "ViewProviderFemConstraintOnBoundary.h"
 
 namespace FemGui {
 
-class FemGuiExport ViewProviderFemConstraintDisplacement : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintDisplacement : public FemGui::ViewProviderFemConstraintOnBoundary
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemConstraintDisplacement);
 
