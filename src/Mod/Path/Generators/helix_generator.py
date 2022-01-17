@@ -56,10 +56,6 @@ def generate(
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
 
-    # Swap start and end points if edge line is inverted
-    if startPoint.z < endPoint.z:
-        endPoint = edge.Vertexes[0].Point
-        startPoint = edge.Vertexes[1].Point
 
     PathLog.track(
         "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startat {})".format(
@@ -114,6 +110,10 @@ def generate(
         and (isclose(startPoint.sub(endPoint).y, 0, rtol=1e-05, atol=1e-06))
     ):
         raise ValueError("edge is not aligned with Z axis")
+
+    if startPoint.z < endPoint.z:
+        raise ValueError("start point is below end point")
+
 
     if inner_radius > 0:
         PathLog.debug("(annulus mode)\n")
