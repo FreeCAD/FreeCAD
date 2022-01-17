@@ -32,7 +32,7 @@ __doc__ = "Generates the helix for a single spot targetshape"
 __contributors__ = "russ4262 (Russell Johnson), Lorenz Hüdepohl"
 
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -56,7 +56,6 @@ def generate(
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
 
-
     PathLog.track(
         "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startat {})".format(
             startPoint.x,
@@ -73,17 +72,17 @@ def generate(
         )
     )
 
-    if hole_radius < 0.0:
-        raise ValueError("hole_radius < 0")
-
-    if not type(hole_radius) is float:
+    if not type(hole_radius) in [float, int]:
         raise ValueError("hole_radius must be a float")
 
-    if not type(inner_radius) is float:
+    if not type(inner_radius) in [float, int]:
         raise ValueError("inner_radius must be a float")
 
-    if not type(tool_diameter) is float:
+    if not type(tool_diameter) in [float, int]:
         raise ValueError("tool_diameter must be a float")
+
+    if hole_radius < 0.0:
+        raise ValueError("hole_radius < 0")
 
     if inner_radius > 0 and hole_radius - inner_radius < tool_diameter:
         raise ValueError(
@@ -113,7 +112,6 @@ def generate(
 
     if startPoint.z < endPoint.z:
         raise ValueError("start point is below end point")
-
 
     if inner_radius > 0:
         PathLog.debug("(annulus mode)\n")
@@ -147,8 +145,11 @@ def generate(
                     2 * hole_radius, tool_diameter
                 )
             )
-    nz = max(int(ceil((startPoint.z - endPoint.z) / step_down)), 2)
-    zi = linspace(startPoint.z, endPoint.z, 2 * nz + 1)
+    # calculate the number of full and partial turns required
+    # Each full turn is two 180 degree arcs. Zsteps is equally spaced step
+    # down values
+    turncount = max(int(ceil((startPoint.z - endPoint.z) / step_down)), 2)
+    zsteps = linspace(startPoint.z, endPoint.z, 2 * turncount + 1)
 
     def helix_cut_r(r):
         commandlist = []
@@ -157,14 +158,14 @@ def generate(
             Path.Command("G0", {"X": startPoint.x + r, "Y": startPoint.y})
         )
         commandlist.append(Path.Command("G1", {"Z": startPoint.z}))
-        for i in range(1, nz + 1):
+        for i in range(1, turncount + 1):
             commandlist.append(
                 Path.Command(
                     arc_cmd,
                     {
                         "X": startPoint.x - r,
                         "Y": startPoint.y,
-                        "Z": zi[2 * i - 1],
+                        "Z": zsteps[2 * i - 1],
                         "I": -r,
                         "J": 0.0,
                     },
@@ -176,7 +177,7 @@ def generate(
                     {
                         "X": startPoint.x + r,
                         "Y": startPoint.y,
-                        "Z": zi[2 * i],
+                        "Z": zsteps[2 * i],
                         "I": r,
                         "J": 0.0,
                     },
@@ -206,6 +207,12 @@ def generate(
                 },
             )
         )
+        if hole_radius <= tool_diameter:
+            # no plug remains, safe to move to center for retract
+            commandlist.append(
+                Path.Command("G0", {"X": endPoint.x, "Y": endPoint.y, "Z": endPoint.z})
+            )
+        commandlist.append(Path.Command("G0", {"Z": startPoint.z}))
         commandlist.append(
             Path.Command(
                 "G0", {"X": startPoint.x, "Y": startPoint.y, "Z": startPoint.z}

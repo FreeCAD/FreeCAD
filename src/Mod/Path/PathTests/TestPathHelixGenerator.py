@@ -59,7 +59,9 @@ G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.500000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
 G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.000000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
+G0 Z20.000000\
 G0 X5.000000 Y5.000000 Z20.000000"
+
 
     def test00(self):
         """Test Basic Helix Generator Return"""
@@ -69,6 +71,7 @@ G0 X5.000000 Y5.000000 Z20.000000"
         self.assertTrue(type(result[0]) is Path.Command)
 
         gcode = "".join([r.toGCode() for r in result])
+        print(gcode)
         self.assertTrue(
             gcode == self.expectedHelixGCode, "Incorrect helix g-code generated"
         )
@@ -76,7 +79,7 @@ G0 X5.000000 Y5.000000 Z20.000000"
     def test01(self):
         """Test Basic Helix Generator hole_radius is float > 0"""
         args = _resetArgs()
-        args["hole_radius"] = 10
+        args["hole_radius"] = '10'
         self.assertRaises(ValueError, generator.generate, **args)
 
         args["hole_radius"] = -10.0
@@ -85,13 +88,13 @@ G0 X5.000000 Y5.000000 Z20.000000"
     def test02(self):
         """Test Basic Helix Generator inner_radius is float"""
         args = _resetArgs()
-        args["inner_radius"] = 2
+        args["inner_radius"] = '2'
         self.assertRaises(ValueError, generator.generate, **args)
 
     def test03(self):
         """Test Basic Helix Generator tool_diameter is float"""
         args = _resetArgs()
-        args["tool_diameter"] = 5
+        args["tool_diameter"] = '5'
         self.assertRaises(ValueError, generator.generate, **args)
 
     def test04(self):
