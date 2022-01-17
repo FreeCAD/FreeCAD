@@ -1014,6 +1014,8 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
 {
     // maximum radius for mouse moves when selecting a geometry before switching to drag mode
     const int dragIgnoredDistance = 3;
+    prvMoveCursorPos = cursorPos;
+    prvMoveViewer = viewer;
 
     if (!isInEditMode())
         return false;

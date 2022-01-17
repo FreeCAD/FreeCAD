@@ -47,22 +47,20 @@ class SketcherToolWidget : public QWidget
     Q_OBJECT
 
 public:
-    SketcherToolWidget(QWidget *parent=0);
+    SketcherToolWidget(QWidget *parent=0, ViewProviderSketch* sketchView=0);
     ~SketcherToolWidget();
 
-    //bool eventFilter(QObject* object, QEvent* event);
-
+    bool eventFilter(QObject* object, QEvent* event);
     void keyPressEvent(QKeyEvent* event);
     
-    //bool eventFilter(QObject *object, QEvent *event);
 
     void setparameter(double val, int i);
     void setParameterActive(bool val, int i);
     void setParameterFocus(int i);
     void setSettings(int toolSelected);
+    bool isWidgetActive;
     std::vector<double> toolParameters;
     std::vector<bool> isSettingSet;
-    bool ctrlPressed;
 
 //Q_SIGNALS:
 public Q_SLOTS:
@@ -76,6 +74,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
+    ViewProviderSketch* sketchView;
     std::unique_ptr<Ui_TaskSketcherTool> ui;
 };
 

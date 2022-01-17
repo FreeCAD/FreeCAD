@@ -1736,7 +1736,8 @@ public:
         if (Mode != STATUS_SEEK_Second)
             return; // SegmentMode can be changed only in STATUS_SEEK_Second mode
 
-        if ( (key == SoKeyboardEvent::RIGHT_CONTROL || key == SoKeyboardEvent::LEFT_CONTROL) && pressed && previousCurve != -1) {
+        if ( (key == SoKeyboardEvent::RIGHT_SHIFT || key == SoKeyboardEvent::LEFT_SHIFT) && pressed && previousCurve != -1) {
+            //Note: for key press to be registered by the registerPressedKey when tool settings is being used (has focus), then the key has to be mapped in taskSketcherTool.cpp
             // loop through the following modes:
             // SEGMENT_MODE_Line, TRANSITION_MODE_Free / TRANSITION_MODE_Tangent
             // SEGMENT_MODE_Line, TRANSITION_MODE_Perpendicular_L
@@ -2240,7 +2241,7 @@ public:
 
                 //Constraint if user tool setting was used to create the point.
                 if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
-                    if (firstCurve == lastCurve) {
+                    if (firstCurve == lastCurve) { //First point constrained only in case of the first curve
                         if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
                             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
 
@@ -2261,17 +2262,27 @@ public:
                     if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
 
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                            lastCurve, 2, sketchgui->toolSettings->widget->toolParameters[2]);
-
+                        if (SegmentMode == SEGMENT_MODE_Arc) {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
+                                lastCurve, (startAngle > endAngle) ? 1 : 2, sketchgui->toolSettings->widget->toolParameters[2]);
+                        }
+                        else{
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
+                                lastCurve, 2, sketchgui->toolSettings->widget->toolParameters[2]);
+                        }
                         Gui::Command::commitCommand();
                     }
                     if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
 
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                            lastCurve, 2, sketchgui->toolSettings->widget->toolParameters[3]);
-
+                        if (SegmentMode == SEGMENT_MODE_Arc) {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
+                                lastCurve, (startAngle > endAngle) ? 1 : 2, sketchgui->toolSettings->widget->toolParameters[3]);
+                        }
+                        else {
+                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
+                                lastCurve, 2, sketchgui->toolSettings->widget->toolParameters[3]);
+                        }
                         Gui::Command::commitCommand();
                     }
                 }
@@ -2314,23 +2325,9 @@ public:
 
                 applyCursor();
 
-                /*TODO If the tool setting has the focus, then the user can't change the mode with the M key. 
-                So the tool cant stay active after the first line.
-                TODO : find a way to catch the M (or CTRL?) key press at the widget level (or?) such that the tool can stay
-                usable for further points just by reseting toolParameters[2] and toolParameters[3] as following code does : 
-                */
-                /*sketchgui->toolSettings->widget->setparameter(sketchgui->toolSettings->widget->toolParameters[2], 0);
-                sketchgui->toolSettings->widget->setparameter(sketchgui->toolSettings->widget->toolParameters[3], 1);
-                sketchgui->toolSettings->widget->setparameter(0, 2);
-                sketchgui->toolSettings->widget->setparameter(0, 3);
-                sketchgui->toolSettings->widget->isSettingSet.clear();
-                sketchgui->toolSettings->widget->isSettingSet.resize(4, 0);
-                sketchgui->toolSettings->widget->setParameterFocus(2);*/
-                //For now let's just close : 
-                sketchgui->toolSettings->widget->setParameterActive(0, 2);
-                sketchgui->toolSettings->widget->setParameterActive(0, 3);
-                sketchgui->toolSettings->widget->isSettingSet[2] = 0;
-                sketchgui->toolSettings->widget->isSettingSet[3] = 0;
+                //reset the tool parameters
+                sketchgui->toolSettings->widget->setSettings(0);
+                sketchgui->toolSettings->widget->setSettings(6);
 
                 Mode = STATUS_SEEK_Second;
                 if (SegmentMode == SEGMENT_MODE_Arc) {
@@ -2355,6 +2352,7 @@ public:
         // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
 
+        sketchgui->toolSettings->widget->setSettings(0);
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
 
         bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -2369,6 +2367,7 @@ public:
                 DrawSketchHandler::quit();
             }
             else {
+                sketchgui->toolSettings->widget->setSettings(5);
                 // This code disregards existing data and enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;
                 SegmentMode=SEGMENT_MODE_Line;
@@ -2448,7 +2447,7 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create polyline");
-    sToolTipText    = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
+    sToolTipText    = QT_TR_NOOP("Create a polyline in the sketch. 'Shift' Key cycles behaviour");
     sWhatsThis      = "Sketcher_CreatePolyline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreatePolyline";
@@ -3534,7 +3533,9 @@ public:
       , editCurve(33), fixedAxisLength(0)
     {
     }
-    virtual ~DrawSketchHandlerEllipse(){}
+    virtual ~DrawSketchHandlerEllipse(){
+        sketchgui->toolSettings->widget->setSettings(0);
+    }
     /// Mode table, describes what step of the process we are in
     enum SelectMode {
         STATUS_SEEK_PERIAPSIS,  /**< enum value, looking for click to set periapsis. */
@@ -3556,6 +3557,7 @@ public:
      */
     virtual void activated(ViewProviderSketch *)
     {
+        sketchgui->toolSettings->widget->setSettings(7);
         setCrosshairCursor("Sketcher_Pointer_Create_Ellipse");
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
@@ -3581,8 +3583,25 @@ public:
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
-            } else if (mode == STATUS_SEEK_APOAPSIS) {
-                solveEllipse(onSketchPos);
+                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1 && sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                    pressButton(onSketchPos);
+                    releaseButton(onSketchPos);
+                }
+            } 
+            else if (mode == STATUS_SEEK_APOAPSIS) {
+                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    apoapsis.x = sketchgui->toolSettings->widget->toolParameters[2];
+                }
+                else {
+                    apoapsis.x = onSketchPos.x;
+                }
+                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                    apoapsis.y = sketchgui->toolSettings->widget->toolParameters[3];
+                }
+                else {
+                    apoapsis.y = onSketchPos.y;
+                }
+                solveEllipse(apoapsis);
                 approximateEllipse();
 
                 // Display radius for user
@@ -3599,8 +3618,23 @@ public:
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
-            } else if (mode == STATUS_SEEK_B) {
-                solveEllipse(onSketchPos);
+                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                    pressButton(onSketchPos);
+                    releaseButton(onSketchPos);
+                }
+            } 
+            else if (mode == STATUS_SEEK_B) {
+                Base::Vector2d pointAtRadius;
+                if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                    //get a point at distance SettingSet[4]
+                    double theta = atan((periapsis.x - apoapsis.x) / (periapsis.y - apoapsis.y));
+                    pointAtRadius.x = apoapsis.x - sketchgui->toolSettings->widget->toolParameters[4] * cos(theta);
+                    pointAtRadius.y = apoapsis.y + sketchgui->toolSettings->widget->toolParameters[4] * sin(theta);
+                }
+                else {
+                    pointAtRadius = onSketchPos;
+                }
+                solveEllipse(pointAtRadius);
                 approximateEllipse();
 
                 // Display radius for user
@@ -3614,16 +3648,38 @@ public:
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
+                if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                    pressButton(onSketchPos);
+                    releaseButton(onSketchPos);
+                }
             }
-        } else { // method is CENTER_PERIAPSIS_B
+        } 
+        else { // method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
                 setPositionText(onSketchPos);
                 if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) { // TODO: ellipse prio 1
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
-            } else if (mode == STATUS_SEEK_PERIAPSIS) {
-                solveEllipse(onSketchPos);
+                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1 && sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                    pressButton(onSketchPos);
+                    releaseButton(onSketchPos);
+                }
+            } 
+            else if (mode == STATUS_SEEK_PERIAPSIS) {
+                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
+                    periapsis.x = sketchgui->toolSettings->widget->toolParameters[2];
+                }
+                else {
+                    periapsis.x = onSketchPos.x;
+                }
+                if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                    periapsis.y = sketchgui->toolSettings->widget->toolParameters[3];
+                }
+                else {
+                    periapsis.y = onSketchPos.y;
+                }
+                solveEllipse(periapsis);
                 approximateEllipse();
 
                 // Display radius for user
@@ -3638,8 +3694,23 @@ public:
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
-            } else if ((mode == STATUS_SEEK_A) || (mode == STATUS_SEEK_B)) {
-                solveEllipse(onSketchPos);
+                if (sketchgui->toolSettings->widget->isSettingSet[2] == 1 && sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                    pressButton(onSketchPos);
+                    releaseButton(onSketchPos);
+                }
+            } 
+            else if ((mode == STATUS_SEEK_A) || (mode == STATUS_SEEK_B)) {
+                Base::Vector2d pointAtRadius;
+                if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                    //get a point at distance SettingSet[4]
+                    double theta = atan((periapsis.x - centroid.x) / (periapsis.y - centroid.y));
+                    pointAtRadius.x = centroid.x - sketchgui->toolSettings->widget->toolParameters[4] * cos(theta);
+                    pointAtRadius.y = centroid.y + sketchgui->toolSettings->widget->toolParameters[4] * sin(theta);
+                }
+                else {
+                    pointAtRadius = onSketchPos;
+                }
+                solveEllipse(pointAtRadius);
                 approximateEllipse();
 
                 // Display radius for user
@@ -3652,6 +3723,10 @@ public:
                     AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
+                }
+                if (sketchgui->toolSettings->widget->isSettingSet[4] == 1) {
+                    pressButton(onSketchPos);
+                    releaseButton(onSketchPos);
                 }
             }
         }
@@ -3667,23 +3742,89 @@ public:
     {
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
-                periapsis = onSketchPos;
+                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                    periapsis.x = sketchgui->toolSettings->widget->toolParameters[0];
+                }
+                else {
+                    periapsis.x = onSketchPos.x;
+                }
+                if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                    periapsis.y = sketchgui->toolSettings->widget->toolParameters[1];
+                }
+                else {
+                    periapsis.y = onSketchPos.y;
+                }
+
+                sketchgui->toolSettings->widget->setParameterActive(0, 0);
+                sketchgui->toolSettings->widget->setParameterActive(0, 1);
+                sketchgui->toolSettings->widget->setParameterActive(1, 2);
+                sketchgui->toolSettings->widget->setParameterActive(1, 3);
+                sketchgui->toolSettings->widget->setParameterFocus(2);
                 mode = STATUS_SEEK_APOAPSIS;
             }
             else if (mode == STATUS_SEEK_APOAPSIS) {
-                apoapsis = onSketchPos;
+                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                    apoapsis.x = sketchgui->toolSettings->widget->toolParameters[2];
+                }
+                else {
+                    apoapsis.x = onSketchPos.x;
+                }
+                if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                    apoapsis.y = sketchgui->toolSettings->widget->toolParameters[3];
+                }
+                else {
+                    apoapsis.y = onSketchPos.y;
+                }
+                sketchgui->toolSettings->widget->setParameterActive(0, 2);
+                sketchgui->toolSettings->widget->setParameterActive(0, 3);
+                sketchgui->toolSettings->widget->setParameterActive(1, 4);
+                sketchgui->toolSettings->widget->setParameterFocus(4);
                 mode = STATUS_SEEK_B;
             }
             else {
                 mode = STATUS_Close;
             }
-        } else { // method is CENTER_PERIAPSIS_B
+        } 
+        else { // method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
-                centroid = onSketchPos;
+                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                    centroid.x = sketchgui->toolSettings->widget->toolParameters[0];
+                }
+                else {
+                    centroid.x = onSketchPos.x;
+                }
+                if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                    centroid.y = sketchgui->toolSettings->widget->toolParameters[1];
+                }
+                else {
+                    centroid.y = onSketchPos.y;
+                }
+
+                sketchgui->toolSettings->widget->setParameterActive(0, 0);
+                sketchgui->toolSettings->widget->setParameterActive(0, 1);
+                sketchgui->toolSettings->widget->setParameterActive(1, 2);
+                sketchgui->toolSettings->widget->setParameterActive(1, 3);
+                sketchgui->toolSettings->widget->setParameterFocus(2);
+
                 mode = STATUS_SEEK_PERIAPSIS;
             }
             else if (mode == STATUS_SEEK_PERIAPSIS) {
-                periapsis = onSketchPos;
+                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                    periapsis.x = sketchgui->toolSettings->widget->toolParameters[2];
+                }
+                else {
+                    periapsis.x = onSketchPos.x;
+                }
+                if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                    periapsis.y = sketchgui->toolSettings->widget->toolParameters[3];
+                }
+                else {
+                    periapsis.y = onSketchPos.y;
+                }
+                sketchgui->toolSettings->widget->setParameterActive(0, 2);
+                sketchgui->toolSettings->widget->setParameterActive(0, 3);
+                sketchgui->toolSettings->widget->setParameterActive(1, 4);
+                sketchgui->toolSettings->widget->setParameterFocus(4);
                 mode = STATUS_SEEK_B;
             }
             else {
@@ -3703,10 +3844,13 @@ public:
         Q_UNUSED(onSketchPos);
         if (mode == STATUS_Close) {
             saveEllipse();
+
+            sketchgui->toolSettings->widget->setSettings(0);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
 
             if(continuousMode){
+                sketchgui->toolSettings->widget->setSettings(7);
                 if (constrMethod == 0) {
                     method = CENTER_PERIAPSIS_B;
                     mode = STATUS_SEEK_CENTROID;
@@ -4184,6 +4328,26 @@ private:
         Gui::Command::commitCommand();
 
         if (method == CENTER_PERIAPSIS_B) {
+            //add constraint if user typed in some dimensions in tool widget
+            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
+                if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
+
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
+                        currentgeoid, 3, sketchgui->toolSettings->widget->toolParameters[0]);
+
+                    Gui::Command::commitCommand();
+                }
+                if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
+
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
+                        currentgeoid, 3, sketchgui->toolSettings->widget->toolParameters[1]);
+
+                    Gui::Command::commitCommand();
+                }
+            }
+
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
                 createAutoConstraints(sugConstr1, currentgeoid, Sketcher::PointPos::mid);

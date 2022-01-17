@@ -45,8 +45,8 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
 
-SketcherToolWidget::SketcherToolWidget(QWidget *parent)
-  : QWidget(parent), ui(new Ui_TaskSketcherTool)
+SketcherToolWidget::SketcherToolWidget(QWidget *parent, ViewProviderSketch* sketchView)
+  : QWidget(parent), ui(new Ui_TaskSketcherTool), sketchView(sketchView)
 {
     ui->setupUi(this);
     
@@ -61,69 +61,112 @@ SketcherToolWidget::SketcherToolWidget(QWidget *parent)
         this, SLOT(emitSetparameterFour(double)));
     connect(ui->parameterFive, SIGNAL(valueChanged(double)),
         this, SLOT(emitSetparameterFive(double)));
-    ctrlPressed = 0;
+    ui->parameterOne->installEventFilter(this);
+    ui->parameterTwo->installEventFilter(this);
+    ui->parameterThree->installEventFilter(this);
+    ui->parameterFour->installEventFilter(this);
+    ui->parameterFive->installEventFilter(this);
+    
+    isWidgetActive = 0;
 }
 
 SketcherToolWidget::~SketcherToolWidget(){}
 
-/*bool SketcherToolWidget::eventFilter(QObject* object, QEvent* event)
+bool SketcherToolWidget::eventFilter(QObject* object, QEvent* event)
 {
-    if (event->type() == QEvent::KeyPress) {
-
+    if (object == ui->parameterOne && event->type() == QEvent::FocusIn) {
+        ui->parameterOne->selectNumber();
+    }
+    else if (object == ui->parameterTwo && event->type() == QEvent::FocusIn) {
+        ui->parameterTwo->selectNumber();
+    }
+    else if (object == ui->parameterThree && event->type() == QEvent::FocusIn) {
+        ui->parameterThree->selectNumber();
+    }
+    else if (object == ui->parameterFour && event->type() == QEvent::FocusIn) {
+        ui->parameterFour->selectNumber();
+    }
+    else if (object == ui->parameterFive && event->type() == QEvent::FocusIn) {
+        ui->parameterFive->selectNumber();
     }
     return false;
-}*/
+}
 
 void SketcherToolWidget::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Control)
     {
-        ctrlPressed = 1;
-        Base::Console().Warning("Ctrl pressed\n");
+        sketchView->keyPressed(0, SoKeyboardEvent::LEFT_CONTROL);
+    }
+    if (event->key() == Qt::Key_Shift)
+    {
+        sketchView->keyPressed(1, SoKeyboardEvent::RIGHT_SHIFT);
     }
     if (event->key() == Qt::Key_Escape)
     {
-        ctrlPressed = 1;
-        Base::Console().Warning("Esc pressed\n");
+        sketchView->keyPressed(0, SoKeyboardEvent::ESCAPE);
     }
-    QWidget::keyReleaseEvent(event);
+    //It whould be best to catch all keys than manually mapping them here...
+    //But I can't find how to. Maybe with this below function
+    //const SoEvent* keyboard->translateEvent(event)
+    //sketchView->keyPressed(0, sokey);
+    //QWidget::keyReleaseEvent(event);
 }
+
 
 void SketcherToolWidget::emitSetparameter(double val)
 {
     isSettingSet[0] = 1;
     toolParameters[0] = val;
-    ui->parameterTwo->selectNumber();
     QMetaObject::invokeMethod(ui->parameterTwo, "setFocus", Qt::QueuedConnection);
-    ui->parameterOne->setEnabled(0);
     ui->parameterTwo->setEnabled(1);
+
+    //Make a mousemove to update geometry.
+    if(isWidgetActive) {
+        sketchView->mouseMove(sketchView->prvMoveCursorPos, sketchView->prvMoveViewer);
+    }
 }
 void SketcherToolWidget::emitSetparameterTwo(double val)
 {
     isSettingSet[1] = 1;
     toolParameters[1] = val;
-    ui->parameterThree->selectNumber();
     QMetaObject::invokeMethod(ui->parameterThree, "setFocus", Qt::QueuedConnection);
+    ui->parameterOne->setEnabled(0);
     ui->parameterTwo->setEnabled(0);
     ui->parameterThree->setEnabled(1);
     ui->parameterFour->setEnabled(1);
+
+    if (isWidgetActive) {
+        sketchView->mouseMove(sketchView->prvMoveCursorPos, sketchView->prvMoveViewer);
+    }
 }
 void SketcherToolWidget::emitSetparameterThree(double val)
 {
     isSettingSet[2] = 1;
     toolParameters[2] = val;
-    ui->parameterFour->selectNumber();
     QMetaObject::invokeMethod(ui->parameterFour, "setFocus", Qt::QueuedConnection);
+
+    if (isWidgetActive) {
+        sketchView->mouseMove(sketchView->prvMoveCursorPos, sketchView->prvMoveViewer);
+    }
 }
 void SketcherToolWidget::emitSetparameterFour(double val)
 {
     isSettingSet[3] = 1;
     toolParameters[3] = val;
     QMetaObject::invokeMethod(ui->parameterFive, "setFocus", Qt::QueuedConnection);
+
+    if (isWidgetActive) {
+        sketchView->mouseMove(sketchView->prvMoveCursorPos, sketchView->prvMoveViewer);
+    }
 }
 void SketcherToolWidget::emitSetparameterFive(double val)
 {
     isSettingSet[4] = 1;
     toolParameters[4] = val;
+
+    if (isWidgetActive) {
+        sketchView->mouseMove(sketchView->prvMoveCursorPos, sketchView->prvMoveViewer);
+    }
 }
 
 void SketcherToolWidget::setSettings(int toolSelected)
@@ -134,6 +177,7 @@ void SketcherToolWidget::setSettings(int toolSelected)
     //ui->parameterFour->setUnit(Base::Unit::Angle);
     switch (toolSelected) {
     case 0: //none, reset and hide all settings
+        isWidgetActive = 0;
         toolParameters.clear();
         isSettingSet.clear();
 
@@ -170,14 +214,14 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->parameterOne->setVisible(1);
         ui->parameterOne->setEnabled(1);
         ui->parameterTwo->setVisible(1);
-        ui->parameterTwo->setEnabled(0);
+        ui->parameterTwo->setEnabled(1);
         ui->parameterThree->setVisible(1);
         ui->parameterThree->setEnabled(0);
         ui->parameterFour->setVisible(1);
         ui->parameterFour->setEnabled(0);
 
-        ui->parameterOne->selectNumber();
         QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        isWidgetActive = 1;
         break;
     case 2: //Round corner rectangle : DrawSketchHandlerOblong
         toolParameters.resize(5, 0);
@@ -197,7 +241,7 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->parameterOne->setVisible(1);
         ui->parameterOne->setEnabled(1);
         ui->parameterTwo->setVisible(1);
-        ui->parameterTwo->setEnabled(0);
+        ui->parameterTwo->setEnabled(1);
         ui->parameterThree->setVisible(1);
         ui->parameterThree->setEnabled(0);
         ui->parameterFour->setVisible(1);
@@ -205,8 +249,8 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->parameterFive->setVisible(1);
         ui->parameterFive->setEnabled(0);
 
-        ui->parameterOne->selectNumber();
         QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        isWidgetActive = 1;
         break;
     case 3: //Circle : DrawSketchHandlerCircle & arc
         toolParameters.resize(3, 0);
@@ -222,12 +266,12 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->parameterOne->setVisible(1);
         ui->parameterOne->setEnabled(1);
         ui->parameterTwo->setVisible(1);
-        ui->parameterTwo->setEnabled(0);
+        ui->parameterTwo->setEnabled(1);
         ui->parameterThree->setVisible(1);
         ui->parameterThree->setEnabled(0);
 
-        ui->parameterOne->selectNumber();
         QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        isWidgetActive = 1;
         break;
     case 4: //Point : DrawSketchHandlerPoint
         toolParameters.resize(2, 0);
@@ -241,10 +285,10 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->parameterOne->setVisible(1);
         ui->parameterOne->setEnabled(1);
         ui->parameterTwo->setVisible(1);
-        ui->parameterTwo->setEnabled(0);
+        ui->parameterTwo->setEnabled(1);
 
-        ui->parameterOne->selectNumber();
         QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        isWidgetActive = 1;
         break;
     case 5: //Line : DrawSketchHandlerLine & arcby3points & circle by 3 points
         toolParameters.resize(4, 0);
@@ -262,16 +306,16 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->parameterOne->setVisible(1);
         ui->parameterOne->setEnabled(1);
         ui->parameterTwo->setVisible(1);
-        ui->parameterTwo->setEnabled(0);
+        ui->parameterTwo->setEnabled(1);
         ui->parameterThree->setVisible(1);
         ui->parameterThree->setEnabled(0);
         ui->parameterFour->setVisible(1);
         ui->parameterFour->setEnabled(0);
 
-        ui->parameterOne->selectNumber();
         QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        isWidgetActive = 1;
         break;
-    case 6: //PolyLine (from second line) : DrawSketchHandlerLine & arcby3points & circle by 3 points
+    case 6: //PolyLine (from second line)
         toolParameters.resize(4, 0);
         isSettingSet.resize(4, 0);
 
@@ -279,10 +323,10 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->label2->setVisible(1);
         ui->label3->setVisible(1);
         ui->label4->setVisible(1);
-        ui->label->setText(QApplication::translate("TaskSketcherTool_p1_rectangle", "x of n-1 point"));
-        ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_rectangle", "y of n-1 point"));
-        ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_rectangle", "x of n point"));
-        ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_rectangle", "y of n point"));
+        ui->label->setText(QApplication::translate("TaskSketcherTool_p1_polyline", "x of n-1 point"));
+        ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_polyline", "y of n-1 point"));
+        ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_polyline", "x of n point"));
+        ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_polyline", "y of n point"));
 
         ui->parameterOne->setVisible(1);
         ui->parameterOne->setEnabled(0);
@@ -293,8 +337,37 @@ void SketcherToolWidget::setSettings(int toolSelected)
         ui->parameterFour->setVisible(1);
         ui->parameterFour->setEnabled(1);
 
-        ui->parameterThree->selectNumber();
         QMetaObject::invokeMethod(ui->parameterThree, "setFocus", Qt::QueuedConnection);
+        isWidgetActive = 1;
+        break;
+    case 7: //Ellipse : DrawSketchHandlerEllipse
+        toolParameters.resize(5, 0);
+        isSettingSet.resize(5, 0);
+
+        ui->label->setVisible(1);
+        ui->label2->setVisible(1);
+        ui->label3->setVisible(1);
+        ui->label4->setVisible(1);
+        ui->label5->setVisible(1);
+        ui->label->setText(QApplication::translate("TaskSketcherTool_p1_Ellipse", "x of 1st point"));
+        ui->label2->setText(QApplication::translate("TaskSketcherTool_p2_Ellipse", "y of 1st point"));
+        ui->label3->setText(QApplication::translate("TaskSketcherTool_p3_Ellipse", "x of 2nd point"));
+        ui->label4->setText(QApplication::translate("TaskSketcherTool_p4_Ellipse", "y of 2nd point"));
+        ui->label5->setText(QApplication::translate("TaskSketcherTool_p5_Ellipse", "Second radius"));
+
+        ui->parameterOne->setVisible(1);
+        ui->parameterOne->setEnabled(1);
+        ui->parameterTwo->setVisible(1);
+        ui->parameterTwo->setEnabled(1);
+        ui->parameterThree->setVisible(1);
+        ui->parameterThree->setEnabled(0);
+        ui->parameterFour->setVisible(1);
+        ui->parameterFour->setEnabled(0);
+        ui->parameterFive->setVisible(1);
+        ui->parameterFive->setEnabled(0);
+
+        QMetaObject::invokeMethod(ui->parameterOne, "setFocus", Qt::QueuedConnection);
+        isWidgetActive = 1;
         break;
     }
 }
@@ -375,7 +448,7 @@ TaskSketcherTool::TaskSketcherTool(ViewProviderSketch *sketchView)
     : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Tool settings"),true, 0)
     , sketchView(sketchView)
 {
-    widget = new SketcherToolWidget(this);
+    widget = new SketcherToolWidget(this, sketchView);
     this->groupLayout()->addWidget(widget);
 
     widget->setSettings(0);
