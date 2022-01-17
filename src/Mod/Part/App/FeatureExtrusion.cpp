@@ -385,7 +385,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
             xp.Next();
         }
 
-        auto makeOffset = [&numEdges, &sourceWire](const gp_Vec& translation, double offset) -> TopoDS_Shape {
+        auto makeOffset = [&numEdges, &sourceWire](const gp_Vec& translation, double offset) -> TopoDS_Wire {
             BRepOffsetAPI_MakeOffset mkOffset;
 #if OCC_VERSION_HEX >= 0x060800
             mkOffset.Init(GeomAbs_Arc);
@@ -428,25 +428,27 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
                 offsetShape = movedSourceWire;
             }
 
-            return offsetShape;
-        };
-
-        //first. add wire for reversed part of extrusion
-        if (bRev) {
-            TopoDS_Shape offsetShape = makeOffset(vecRev, distanceRev);
             if (offsetShape.IsNull())
                 Standard_Failure::Raise("Tapered shape is empty");
             TopAbs_ShapeEnum type = offsetShape.ShapeType();
+            TopoDS_Wire resultWire;
             if (type == TopAbs_WIRE) {
-                list_of_sections.push_back(TopoDS::Wire(offsetShape));
+                resultWire = TopoDS::Wire(offsetShape);
             }
             else if (type == TopAbs_EDGE) {
                 BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(offsetShape));
-                list_of_sections.push_back(mkWire.Wire());
+                resultWire = mkWire.Wire();
             }
             else {
                 Standard_Failure::Raise("Tapered shape type is not supported");
             }
+
+            return resultWire;
+        };
+
+        //first. add wire for reversed part of extrusion
+        if (bRev) {
+            list_of_sections.push_back(makeOffset(vecRev, distanceRev));
         }
 
         //next. Add source wire as middle section. Order is important.
@@ -456,20 +458,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&
 
         //finally. Forward extrusion offset wire.
         if (bFwd) {
-            TopoDS_Shape offsetShape = makeOffset(vecFwd, distanceFwd);
-            if (offsetShape.IsNull())
-                Standard_Failure::Raise("Tapered shape is empty");
-            TopAbs_ShapeEnum type = offsetShape.ShapeType();
-            if (type == TopAbs_WIRE) {
-                list_of_sections.push_back(TopoDS::Wire(offsetShape));
-            }
-            else if (type == TopAbs_EDGE) {
-                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(offsetShape));
-                list_of_sections.push_back(mkWire.Wire());
-            }
-            else {
-                Standard_Failure::Raise("Tapered shape type is not supported");
-            }
+            list_of_sections.push_back(makeOffset(vecFwd, distanceFwd));
         }
 
         //make loft
