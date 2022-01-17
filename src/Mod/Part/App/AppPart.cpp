@@ -147,6 +147,7 @@
 #include <Mod/Part/App/HLRBRep/HLRBRep_PolyAlgoPy.h>
 #include <Mod/Part/App/HLRBRep/PolyHLRToShapePy.h>
 #include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
+#include <Mod/Part/App/PrecisionPy.h>
 #include "PropertyGeometryList.h"
 #include "DatumFeature.h"
 #include "Attacher.h"
@@ -289,6 +290,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::GeometryStringExtensionPy ::Type,partModule,"GeometryStringExtension");
     Base::Interpreter().addType(&Part::GeometryBoolExtensionPy ::Type,partModule,"GeometryBoolExtension");
     Base::Interpreter().addType(&Part::GeometryDoubleExtensionPy ::Type,partModule,"GeometryDoubleExtension");
+    Base::Interpreter().addType(&Part::PrecisionPy ::Type,partModule,"Precision");
 
     // BRepFeat package
     PyObject* brepfeatModule(module.getAttr("BRepFeat").ptr());
