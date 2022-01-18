@@ -32,7 +32,7 @@
 #include "ReferenceHighlighter.h"
 
 
-using namespace PartDesignGui;
+using namespace PartGui;
 
 ReferenceHighlighter::ReferenceHighlighter(const TopoDS_Shape& shape, const App::Color& color)
     : defaultColor(color)

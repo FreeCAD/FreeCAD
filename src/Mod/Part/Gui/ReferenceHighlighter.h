@@ -21,21 +21,22 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGNGUI_REFERENCEHIGHLIGHTER_H
-#define PARTDESIGNGUI_REFERENCEHIGHLIGHTER_H
+#ifndef PARTGUI_REFERENCEHIGHLIGHTER_H
+#define PARTGUI_REFERENCEHIGHLIGHTER_H
 
-#include <App/Material.h>
 #include <TopoDS_Shape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <vector>
+#include <App/Material.h>
+#include <Mod/Part/PartGlobal.h>
 
-namespace PartDesignGui {
+namespace PartGui {
 
 /*!
  * \brief The ReferenceHighlighter class
  * \author Werner Mayer
  */
-class ReferenceHighlighter
+class PartGuiExport ReferenceHighlighter
 {
 public:
     /*!
@@ -86,7 +87,7 @@ private:
 };
 
 
-} // namespace PartDesignGui
+} // namespace PartGui
 
 
-#endif // PARTDESIGNGUI_REFERENCEHIGHLIGHTER_H
+#endif // PARTGUI_REFERENCEHIGHLIGHTER_H
