@@ -132,7 +132,7 @@ public:
                     quantity.setUnit(unit);
                     result = quantity;
 
-                    // Now translate the text into the unit system
+                    // Now translate the quantity into its string representation using the user-defined unit system
                     input = Base::UnitsApi::schemaTranslate(result);
                 }
             }
