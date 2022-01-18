@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2022 Pierre-Louis Boyer <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -90,12 +90,6 @@ public:
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                   Gui::SelectionSingleton::MessageType Reason);
     SketcherToolWidget* widget;
-
-//public Q_SLOTS:
-    //void onSetparameter(double val, int i);
-    //void onSetparameterTwo(double val);
-    //void onSetparameterThree(double val);
-    //void onSetparameterFour(double val);
 
 private:
     void onChangedSketchView(const Gui::ViewProvider&,

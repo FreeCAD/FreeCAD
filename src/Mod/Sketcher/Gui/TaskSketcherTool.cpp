@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2022 Pierre-Louis Boyer <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -72,6 +72,7 @@ SketcherToolWidget::SketcherToolWidget(QWidget *parent, ViewProviderSketch* sket
 
 SketcherToolWidget::~SketcherToolWidget(){}
 
+//pre-select the number of the spinbox when it gets the focus.
 bool SketcherToolWidget::eventFilter(QObject* object, QEvent* event)
 {
     if (object == ui->parameterOne && event->type() == QEvent::FocusIn) {
@@ -173,8 +174,7 @@ void SketcherToolWidget::setSettings(int toolSelected)
 {
     //Set names and hide excess parameters
     //For reference unit can be changed with : 
-    //ui->parameterFour->setUnit(Base::Unit::Length);
-    //ui->parameterFour->setUnit(Base::Unit::Angle);
+    //setUnit(Base::Unit::Length); Base::Unit::Angle
     switch (toolSelected) {
     case 0: //none, reset and hide all settings
         isWidgetActive = 0;

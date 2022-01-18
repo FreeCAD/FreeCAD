@@ -2259,6 +2259,8 @@ public:
                             Gui::Command::commitCommand();
                         }
                     }
+                    bool firstCstrCreated = 0;
+
                     if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
 
@@ -2271,8 +2273,12 @@ public:
                                 lastCurve, 2, sketchgui->toolSettings->widget->toolParameters[2]);
                         }
                         Gui::Command::commitCommand();
+                        firstCstrCreated = 1;
                     }
-                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
+                    if (sketchgui->toolSettings->widget->isSettingSet[3] == 1 
+                        && ((TransitionMode != TRANSITION_MODE_Perpendicular_L && TransitionMode != TRANSITION_MODE_Perpendicular_R) || !firstCstrCreated) 
+                        && (TransitionMode != TRANSITION_MODE_Tangent || SegmentMode == SEGMENT_MODE_Arc || !firstCstrCreated)) {
+                        //complex if to avoid over-constraining due to tangent and perpendicular constraints
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
 
                         if (SegmentMode == SEGMENT_MODE_Arc) {
