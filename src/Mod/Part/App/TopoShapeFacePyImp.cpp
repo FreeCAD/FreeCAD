@@ -521,23 +521,20 @@ PyObject* TopoShapeFacePy::normalAt(PyObject *args)
 {
     double u,v;
     if (!PyArg_ParseTuple(args, "dd",&u,&v))
-        return 0;
+        return nullptr;
 
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->getShape());
-    BRepAdaptor_Surface adapt(f);
+    Standard_Boolean done;
+    gp_Dir dir;
 
-    BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
-    if (prop.IsNormalDefined()) {
-        gp_Pnt pnt; gp_Vec vec;
-        // handles the orientation state of the shape
-        BRepGProp_Face(f).Normal(u,v,pnt,vec);
-        vec.Normalize();
-        return new Base::VectorPy(new Base::Vector3d(vec.X(),vec.Y(),vec.Z()));
-    }
-    else {
+    Tools::getNormal(f, u, v, Precision::Confusion(), dir, done);
+
+    if (!done) {
         PyErr_SetString(PartExceptionOCCError, "normal not defined");
-        return 0;
+        return nullptr;
     }
+
+    return new Base::VectorPy(new Base::Vector3d(dir.X(),dir.Y(),dir.Z()));
 }
 
 PyObject* TopoShapeFacePy::getUVNodes(PyObject *args)

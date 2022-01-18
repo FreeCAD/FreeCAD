@@ -145,6 +145,7 @@
 #include "GeometryMigrationExtension.h"
 
 #include "Geometry.h"
+#include "Tools.h"
 
 #if OCC_VERSION_HEX >= 0x070600
 using GeomAdaptor_HCurve = GeomAdaptor_Curve;
@@ -4235,11 +4236,12 @@ bool GeomSurface::tangentV(double u, double v, gp_Dir& dirV) const
 bool GeomSurface::normal(double u, double v, gp_Dir& dir) const
 {
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
-    GeomLProp_SLProps prop(s,u,v,2,Precision::Confusion());
-    if (prop.IsNormalDefined()) {
-        dir = prop.Normal();
+    Standard_Boolean done;
+
+    Tools::getNormal(s, u, v, Precision::Confusion(), dir, done);
+
+    if (done)
         return true;
-    }
 
     return false;
 }
