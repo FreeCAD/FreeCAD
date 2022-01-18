@@ -789,6 +789,15 @@ Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
     return v;
 }
 
+// test the circulation of the triangle A-B-C
+bool DrawUtil::circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C) 
+{
+    if (A.x * B.y + A.y * C.x + B.x * C.y - C.x * B.y - C.y * A.x - B.x * A.y > 0.0)
+        return true;
+    else
+        return false;
+}
+
 // Supplementary mathematical functions
 // ====================================
 

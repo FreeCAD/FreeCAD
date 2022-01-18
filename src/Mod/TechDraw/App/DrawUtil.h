@@ -121,6 +121,7 @@ class TechDrawExport DrawUtil {
         static PyObject* colorToPyTuple(App::Color color);
         static bool isCrazy(TopoDS_Edge e);
         static Base::Vector3d getFaceCenter(TopoDS_Face f);
+        static bool circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
 
         // Supplementary mathematical functions
         static int sgn(double x);
