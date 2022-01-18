@@ -29,8 +29,10 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepLProp_SLProps.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <BRep_Tool.hxx>
+# include <CSLib.hxx>
 # include <Geom_BSplineSurface.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomAPI_IntSS.hxx>
@@ -39,6 +41,7 @@
 # include <Geom_Point.hxx>
 # include <GeomAdaptor_Curve.hxx>
 # include <GeomLib.hxx>
+# include <GeomLProp_SLProps.hxx>
 # include <GeomPlate_BuildPlateSurface.hxx>
 # include <GeomPlate_CurveConstraint.hxx>
 # include <GeomPlate_MakeApprox.hxx>
@@ -655,4 +658,58 @@ Handle(Poly_Polygon3D) Part::Tools::polygonOfEdge(const TopoDS_Edge& edge, TopLo
     BRepMesh_IncrementalMesh(shape, 0.1);
     TopLoc_Location tmp;
     return BRep_Tool::Polygon3D(TopoDS::Edge(shape), tmp);
+}
+
+// helper function to use in getNormal, here we pass the local properties
+// of the surface given by the #LProp_SLProps objects
+template <typename T>
+void getNormalBySLProp(T prop, double u, double v, Standard_Real lastU, Standard_Real lastV,
+                     const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done)
+{
+    if (prop.D1U().Magnitude() > tol &&
+        prop.D1V().Magnitude() > tol &&
+        prop.IsNormalDefined()) {
+        dir = prop.Normal();
+        done = Standard_True;
+    }
+    // use an alternative method in case of a null normal
+    else {
+        CSLib_NormalStatus stat;
+        CSLib::Normal(prop.D1U(), prop.D1V(), prop.D2U(), prop.D2V(), prop.DUV(),
+            tol, done, stat, dir);
+        // at the right boundary, the normal is flipped with respect to the
+        // normal on surrounding points.
+        if (stat == CSLib_D1NuIsNull) {
+            if (Abs(lastV - v) < tol)
+                dir.Reverse();
+        }
+        else if (stat == CSLib_D1NvIsNull || stat == CSLib_D1NuIsParallelD1Nv) {
+            if (Abs(lastU - u) < tol)
+                dir.Reverse();
+        }
+    }
+}
+
+void Part::Tools::getNormal(const Handle(Geom_Surface)& surf, double u, double v,
+                            const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done)
+{
+    GeomLProp_SLProps prop(surf, u, v, 1, tol);
+    Standard_Real u1,u2,v1,v2;
+    surf->Bounds(u1,u2,v1,v2);
+
+    getNormalBySLProp<GeomLProp_SLProps>(prop, u, v, u2, v2, tol, dir, done);
+}
+
+void Part::Tools::getNormal(const TopoDS_Face& face, double u, double v,
+                            const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done)
+{
+    BRepAdaptor_Surface adapt(face);
+    BRepLProp_SLProps prop(adapt, u, v, 1, tol);
+    Standard_Real u2 = adapt.LastUParameter();
+    Standard_Real v2 = adapt.LastVParameter();
+
+    getNormalBySLProp<BRepLProp_SLProps>(prop, u, v, u2, v2, tol, dir, done);
+
+    if (face.Orientation() == TopAbs_REVERSED)
+        dir.Reverse();
 }
