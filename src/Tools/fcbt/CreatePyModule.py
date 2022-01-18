@@ -32,7 +32,7 @@ import MakeAppTools
 import re
 
 FilFilter = ["^.*\\.o$",
-          "^.*\\Makefile$",
+          "^.*Makefile$",
           "^.*\\.la$",
           "^.*\\.lo$",
           "^.*\\.positions$",
