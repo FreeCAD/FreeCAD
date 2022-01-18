@@ -976,24 +976,6 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     return result;
 }
 
-bool CenterLine::Circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C)
-{
-    // the determinant of this matrix calculates the area of a triangle, see
-    // https://en.wikipedia.org/wiki/Triangle#Using_coordinates
-    // a 3x3 matrix would also do the job, but FC supports only 4x4 matrixes
-    Base::Matrix4D CircMatrix(
-        A.x, A.y, 1, 0,
-        B.x, B.y, 1, 0,
-        C.x, C.y, 1, 0,
-        0, 0, 0, 1);
-
-    // the sign delivers the dicrection of travel along the triangle edges
-    if (CircMatrix.determinant() > 0)
-        return true;
-    else
-        return false;
-}
-
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawViewPart* partFeat,
                                                       std::vector<std::string> edgeNames, 
                                                       int mode, double ext,
@@ -1042,7 +1024,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     // https://wiki.freecadweb.org/File:TD-CenterLineFlip.png for an illustration of the problem.
     // Thus we test this by a circulation test, see this post for a brief explanation:
     // https://forum.freecadweb.org/viewtopic.php?p=505733#p505615
-    if (Circulation(l1p1, l1p2, l2p1) != Circulation(l1p2, l2p2, l2p1)) {
+    if (DrawUtil::circulation(l1p1, l1p2, l2p1) != DrawUtil::circulation(l1p2, l2p2, l2p1)) {
         Base::Vector3d temp; // reverse line 1
         temp = l1p1;
         l1p1 = l1p2;

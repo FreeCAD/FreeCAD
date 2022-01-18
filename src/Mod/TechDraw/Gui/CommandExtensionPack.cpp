@@ -84,7 +84,6 @@ namespace TechDrawGui {
 
     //internal helper functions
     lineAttributes& _getActiveLineAttributes();
-    bool _circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
     Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3);
     void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, float factor);
     void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat, float factor);
@@ -1845,14 +1844,6 @@ namespace TechDrawGui {
         return Base::Vector3d(c.x, c.y, 0.0);
     }
 
-    bool _circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C) {
-        // test the circulation of the triangle A-B-C
-        if (A.x * B.y + A.y * C.x + B.x * C.y - C.x * B.y - C.y * A.x - B.x * A.y > 0.0)
-            return true;
-        else
-            return false;
-    }
-
     void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, float factor) {
         // create the 3/4 arc symbolizing a thread from top seen
         double scale = objFeat->getScale();
@@ -1890,7 +1881,7 @@ namespace TechDrawGui {
                 Base::Vector3d end0 = line0->points.at(1);
                 Base::Vector3d start1 = line1->points.at(0);
                 Base::Vector3d end1 = line1->points.at(1);
-                if (_circulation(start0, end0, start1) != _circulation(end0, end1, start1)) {
+                if (DrawUtil::circulation(start0, end0, start1) != DrawUtil::circulation(end0, end1, start1)) {
                     Base::Vector3d help1 = start1;
                     Base::Vector3d help2 = end1;
                     start1 = help2;
