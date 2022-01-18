@@ -12,6 +12,21 @@ set(TechDraw_Scripts
 )
 
 if(BUILD_GUI)
+    list (APPEND Image_Scripts InitGui.py)
+    set(TechDraw_ToolsScripts
+        TechDrawTools/__init__.py
+        TechDrawTools/CommandMoveView.py
+        TechDrawTools/CommandCopyView.py
+        TechDrawTools/TaskMoveView.py
+        TechDrawTools/TaskCopyView.py
+        TechDrawTools/TDToolsUtil.py
+        TechDrawTools/TDToolsMovers.py
+        Gui/TaskMoveView.ui
+        Gui/DlgPageChooser.ui
+    )
+endif(BUILD_GUI)
+
+if(BUILD_GUI)
     list (APPEND TechDraw_Scripts InitGui.py)
 endif(BUILD_GUI)
 
@@ -24,7 +39,7 @@ SET(TechDraw_LineGroupFile
 )
 
 add_custom_target(TechDraw_Data ALL
-SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_LineGroupFile}
+SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_LineGroupFile} ${TechDraw_ToolsScripts}
 )
 
 fc_target_copy_resource(TechDraw_Data
@@ -43,11 +58,24 @@ fc_target_copy_resource(TechDraw_Data
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     ${TechDraw_LineGroupFile})
 
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/TechDraw
+    ${TechDraw_ToolsScripts}
+)
+
 INSTALL(
     FILES
         ${TechDraw_Scripts}
     DESTINATION
         Mod/TechDraw
+)
+
+INSTALL(
+    FILES
+        ${TechDraw_ToolsScripts}
+    DESTINATION
+        Mod/TechDraw/TechDrawTools
 )
 
 INSTALL(

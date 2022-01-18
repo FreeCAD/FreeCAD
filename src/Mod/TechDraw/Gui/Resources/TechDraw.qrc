@@ -109,6 +109,8 @@
         <file>icons/actions/TechDraw_Symbol.svg</file>
         <file>icons/actions/TechDraw_Tile.svg</file>
         <file>icons/actions/TechDraw_WeldSymbol.svg</file>
+        <file>icons/actions/TechDraw_MoveView.svg</file>
+        <file>icons/actions/TechDraw_CopyView.svg</file>
         <file>icons/actions/section-up.svg</file>  
         <file>icons/actions/section-down.svg</file>
         <file>icons/actions/section-left.svg</file>

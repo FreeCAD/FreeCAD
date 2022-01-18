@@ -24,7 +24,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="lPrompt">
      <property name="text">
       <string>FreeCAD could not determine which Page to use.  Please select a Page.</string>
      </property>
