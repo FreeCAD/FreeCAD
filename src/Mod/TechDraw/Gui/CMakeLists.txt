@@ -83,6 +83,8 @@ set(TechDrawGui_UIC_SRCS
     TaskSectionView.ui
     TaskWeldingSymbol.ui
     SymbolChooser.ui
+    TaskMoveView.ui
+
 )
 
 if(BUILD_QT5)
@@ -207,6 +209,7 @@ SET(TechDrawGui_SRCS
     TaskCosmeticLine.ui
     TaskCosmeticLine.cpp
     TaskCosmeticLine.h
+    TaskMoveView.ui
 )
 
 SET(TechDrawGuiView_SRCS
@@ -377,6 +380,8 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskDetail.ui
     TaskCosmeticLine.ui
     TaskSelectLineAttributes.ui
+    TaskMoveView.ui
+
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

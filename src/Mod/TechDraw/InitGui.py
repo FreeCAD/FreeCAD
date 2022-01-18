@@ -39,6 +39,12 @@ class TechDrawWorkbench (Workbench):
     def Initialize(self):
         # load the module
         import TechDrawGui
+
+        try:
+            import TechDrawTools
+        except ImportError as err:
+            FreeCAD.Console.PrintError("Features from TechDrawTools package cannot be loaded. {err}\n".format(err= str(err)))
+
     def GetClassName(self):
         return "TechDrawGui::Workbench"
 
