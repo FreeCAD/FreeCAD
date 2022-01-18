@@ -1181,6 +1181,8 @@ class SpreadsheetCases(unittest.TestCase):
 
         square.save()
         base.save()
+        FreeCAD.closeDocument(square.Name)
+        FreeCAD.closeDocument(base.Name)
 
     def tearDown(self):
         #closing doc

@@ -302,7 +302,7 @@ void Model::slotDeleteObject(const ViewProviderDocumentObject &VPDObjectIn)
 void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, const App::Property& propertyIn)
 {
   std::string name("Empty Name");
-  if (propertyIn.getName()) //getName can return 0.
+  if (propertyIn.hasName())
     name = propertyIn.getName();
   assert(!name.empty());
   

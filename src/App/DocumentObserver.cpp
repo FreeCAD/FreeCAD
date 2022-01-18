@@ -180,7 +180,7 @@ void DocumentObjectT::operator=(const DocumentObject* obj)
 }
 
 void DocumentObjectT::operator=(const Property *prop) {
-    if(!prop || !prop->getName()
+    if(!prop || !prop->hasName()
              || !prop->getContainer()
              || !prop->getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId()))
     {

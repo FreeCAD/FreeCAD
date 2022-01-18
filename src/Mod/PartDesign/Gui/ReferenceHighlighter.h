@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_REFERENCEHIGHLIGHTER_H
-#define PARTGUI_REFERENCEHIGHLIGHTER_H
+#ifndef PARTDESIGNGUI_REFERENCEHIGHLIGHTER_H
+#define PARTDESIGNGUI_REFERENCEHIGHLIGHTER_H
 
 #include <App/Material.h>
 #include <TopoDS_Shape.hxx>
@@ -89,4 +89,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_REFERENCEHIGHLIGHTER_H
+#endif // PARTDESIGNGUI_REFERENCEHIGHLIGHTER_H

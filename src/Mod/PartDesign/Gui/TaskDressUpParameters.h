@@ -95,7 +95,7 @@ protected:
     QAction* addAllEdgesAction;
 
     bool allowFaces, allowEdges;
-    selectionModes selectionMode;    
+    selectionModes selectionMode;
     int transactionID;
 };
 
