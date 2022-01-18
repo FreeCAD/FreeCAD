@@ -100,7 +100,28 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
     //check if the links are valid before making the recompute
     if(!GeoFeatureGroupExtension::areLinksValid(this)) {
 #if 1
-        Base::Console().Warning("%s / %s: Links go out of the allowed scope\n", getTypeId().getName(), getNameInDocument());
+        std::vector<App::DocumentObject*> invalid_linkobjs;
+        std::string objnames = "", scopenames = "";
+        GeoFeatureGroupExtension::getInvalidLinkObjects(this, invalid_linkobjs);
+        for (auto& obj : invalid_linkobjs) {
+            objnames += obj->getNameInDocument();
+            objnames += " ";
+            for (auto& scope : obj->getParents()) {
+                scopenames += scope.first->getNameInDocument();
+                scopenames += " ";
+            }
+        }
+        if (objnames.empty()) {
+            objnames = "N/A";
+        } else {
+            objnames.pop_back();
+        }
+        if (scopenames.empty()) {
+            scopenames = "N/A";
+        } else {
+            scopenames.pop_back();
+        }
+        Base::Console().Warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. Instead, the linked object(s) reside within '%s'.\n", getTypeId().getName(), objnames.c_str(), getNameInDocument(), scopenames.c_str());
 #else
         return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
 #endif
