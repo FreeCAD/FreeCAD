@@ -57,7 +57,7 @@ def generate(
     endPoint = edge.Vertexes[1].Point
 
     PathLog.track(
-        "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startat {})".format(
+        "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startAt {})".format(
             startPoint.x,
             startPoint.y,
             hole_radius,
@@ -72,17 +72,17 @@ def generate(
         )
     )
 
-    if not type(hole_radius) in [float, int]:
+    if type(hole_radius) not in [float, int]:
         raise ValueError("hole_radius must be a float")
-
-    if not type(inner_radius) in [float, int]:
-        raise ValueError("inner_radius must be a float")
-
-    if not type(tool_diameter) in [float, int]:
-        raise ValueError("tool_diameter must be a float")
 
     if hole_radius < 0.0:
         raise ValueError("hole_radius < 0")
+
+    if type(inner_radius) not in [float, int]:
+        raise ValueError("inner_radius must be a float")
+
+    if type(tool_diameter) not in [float, int]:
+        raise ValueError("tool_diameter must be a float")
 
     if inner_radius > 0 and hole_radius - inner_radius < tool_diameter:
         raise ValueError(
@@ -91,7 +91,7 @@ def generate(
             )
         )
 
-    if inner_radius == 0.0 and not hole_radius > tool_diameter:
+    if not hole_radius * 2 > tool_diameter:
         raise ValueError(
             "Cannot helix a hole of diameter {0} with a tool of diameter {1}".format(
                 2 * hole_radius, tool_diameter
@@ -115,13 +115,13 @@ def generate(
 
     if inner_radius > 0:
         PathLog.debug("(annulus mode)\n")
-        hole_radius = hole_radius - tool_diameter / 2
-        inner_radius = inner_radius + tool_diameter / 2
-        if abs((hole_radius - inner_radius) / step_over) < 1e-5:
-            radii = [(hole_radius + inner_radius) / 2]
+        outer_radius = hole_radius - tool_diameter / 2
+        step_radius = inner_radius + tool_diameter / 2
+        if abs((outer_radius - step_radius) / step_over) < 1e-5:
+            radii = [(outer_radius + step_radius) / 2]
         else:
-            nr = max(int(ceil((hole_radius - inner_radius) / step_over)), 2)
-            radii = linspace(hole_radius, inner_radius, nr)
+            nr = max(int(ceil((outer_radius - step_radius) / step_over)), 2)
+            radii = linspace(outer_radius, step_radius, nr)
 
     elif hole_radius <= 2 * step_over:
         PathLog.debug("(single helix mode)\n")
@@ -132,13 +132,14 @@ def generate(
                     2 * hole_radius, tool_diameter
                 )
             )
+        outer_radius = hole_radius
     else:
         PathLog.debug("(full hole mode)\n")
-        hole_radius = hole_radius - tool_diameter / 2
-        inner_radius = step_over / 2
+        outer_radius = hole_radius - tool_diameter / 2
+        step_radius = step_over / 2
 
-        nr = max(1 + int(ceil((hole_radius - inner_radius) / step_over)), 2)
-        radii = [r for r in linspace(hole_radius, inner_radius, nr) if r > 0]
+        nr = max(1 + int(ceil((outer_radius - step_radius) / step_over)), 2)
+        radii = [r for r in linspace(outer_radius, step_radius, nr) if r > 0]
         if not radii:
             raise ValueError(
                 "Cannot helix a hole of diameter {0} with a tool of diameter {1}".format(
@@ -207,18 +208,35 @@ def generate(
                 },
             )
         )
-        if hole_radius <= tool_diameter:
-            # no plug remains, safe to move to center for retract
-            commandlist.append(
+        return commandlist
+
+    def retract():
+        # try to move to a safe place to retract without leaving a dwell
+        # mark
+        retractcommands = []
+        # Calculate retraction
+        if hole_radius <= tool_diameter:  # simple case where center is clear
+            center_clear = True
+
+        elif startAt == "Inside" and inner_radius == 0.0:  # middle is clear
+            center_clear = True
+        else:
+            center_clear = False
+
+        if center_clear:
+            retractcommands.append(
                 Path.Command("G0", {"X": endPoint.x, "Y": endPoint.y, "Z": endPoint.z})
             )
-        commandlist.append(Path.Command("G0", {"Z": startPoint.z}))
-        commandlist.append(
-            Path.Command(
-                "G0", {"X": startPoint.x, "Y": startPoint.y, "Z": startPoint.z}
-            )
-        )
-        return commandlist
+
+        # Technical Debt.
+        # If the operation is clearing multiple passes in annulus mode (inner
+        # radius > 0.0 and len(radii) > 1) then there is a derivable
+        # safe place which does not touch the inner or outer wall on all radii except
+        # the first.  This is left as a future improvement.
+
+        retractcommands.append(Path.Command("G0", {"Z": startPoint.z}))
+
+        return retractcommands
 
     if startAt == "Inside":
         radii = radii[::-1]
@@ -226,5 +244,6 @@ def generate(
     commands = []
     for r in radii:
         commands.extend(helix_cut_r(r))
+        commands.extend(retract())
 
     return commands

@@ -59,8 +59,8 @@ G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.500000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
 G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.000000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
-G0 Z20.000000\
-G0 X5.000000 Y5.000000 Z20.000000"
+G0 X5.000000 Y5.000000 Z18.000000\
+G0 Z20.000000"
 
 
     def test00(self):
@@ -106,8 +106,8 @@ G0 X5.000000 Y5.000000 Z20.000000"
         args["tool_diameter"] = 5.0
         self.assertRaises(ValueError, generator.generate, **args)
 
-        # require tool fit 2: hole radius less than tool diam with zero inner radius
-        args["hole_radius"] = 4.5
+        # require tool fit 2: hole diameter not greater than tool diam with zero inner radius
+        args["hole_radius"] = 2.0
         args["inner_radius"] = 0.0
         args["tool_diameter"] = 5.0
         self.assertRaises(ValueError, generator.generate, **args)
@@ -161,3 +161,23 @@ G0 X5.000000 Y5.000000 Z20.000000"
 
         self.assertRaises(ValueError, generator.generate, **args)
 
+    def test10(self):
+        """Test Helix Retraction"""
+
+        # if center is clear, the second to last move should be a rapid away
+        # from the wall
+        args = _resetArgs()
+        v1 = FreeCAD.Vector(0, 0, 20)
+        v2 = FreeCAD.Vector(0, 0, 18)
+        edg = Part.makeLine(v1, v2)
+        args["edge"] = edg
+        args["inner_radius"] = 0.0
+        args["tool_diameter"] = 5.0
+        result = generator.generate(**args)
+        self.assertTrue(result[-2].Name == "G0")
+
+        # if center is not clear, retraction is one straight up on the last
+        # move. the second to last move should be a G2
+        args["inner_radius"] = 2.0
+        result = generator.generate(**args)
+        self.assertTrue(result[-2].Name == "G2")
