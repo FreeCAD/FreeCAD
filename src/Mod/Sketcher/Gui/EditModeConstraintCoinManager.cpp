@@ -1401,6 +1401,16 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(void)
     rebuildConstraintNodes(geolistfacade);
 }
 
+void EditModeConstraintCoinManager::setConstraintSelectability(bool enabled /* = true */)
+{
+    if (enabled) {
+        editModeScenegraphNodes.constrGrpSelect->style.setValue(SoPickStyle::SHAPE);
+    }
+    else {
+        editModeScenegraphNodes.constrGrpSelect->style.setValue(SoPickStyle::UNPICKABLE);
+    }
+}
+
 void EditModeConstraintCoinManager::rebuildConstraintNodes(const GeoListFacade & geolistfacade)
 {
     const std::vector<Sketcher::Constraint *> &constrlist = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
@@ -2399,7 +2409,16 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.ConstraintDrawStyle);
 
     // add the group where all the constraints has its SoSeparator
+    editModeScenegraphNodes.constrGrpSelect = new SoPickStyle(); // used to toggle constraints selectability
+    editModeScenegraphNodes.constrGrpSelect->style.setValue(SoPickStyle::SHAPE);
+    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGrpSelect);
+    setConstraintSelectability(); // Ensure default value;
+
     editModeScenegraphNodes.constrGroup = new SmSwitchboard();
     editModeScenegraphNodes.constrGroup->setName("ConstraintGroup");
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGroup);
+
+    SoPickStyle *ps = new SoPickStyle(); // used to following nodes aren't impacted
+    ps->style.setValue(SoPickStyle::SHAPE);
+    editModeScenegraphNodes.EditRoot->addChild(ps);
 }
