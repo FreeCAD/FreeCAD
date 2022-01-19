@@ -23,7 +23,9 @@
 import FreeCAD
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
-import PathScripts.PathUtils as PathUtils
+
+# import PathScripts.PathUtils as PathUtils
+import PathScripts.drillableLib as drillableLib
 
 from PySide import QtCore
 
@@ -46,9 +48,11 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
-
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class ObjectOp(PathOp.ObjectOp):
     """Base class for proxy objects of all operations on circular holes."""
@@ -172,7 +176,6 @@ class ObjectOp(PathOp.ObjectOp):
             return False
 
         holes = []
-
         for base, subs in obj.Base:
             for sub in subs:
                 PathLog.debug("processing {} in {}".format(sub, base.Name))
@@ -204,85 +207,19 @@ class ObjectOp(PathOp.ObjectOp):
     def findAllHoles(self, obj):
         """findAllHoles(obj) ... find all holes of all base models and assign as features."""
         PathLog.track()
-        if not self.getJob(obj):
+        job = self.getJob(obj)
+        if not job:
             return
+
+        matchvector = None if job.JobType == "Multiaxis" else FreeCAD.Vector(0, 0, 1)
+        tooldiameter = obj.ToolController.Tool.Diameter
+
         features = []
         for base in self.model:
-            features.extend(self.findHoles(obj, base))
+            features.extend(
+                drillableLib.getDrillableTargets(
+                    base, ToolDiameter=tooldiameter, vector=matchvector
+                )
+            )
         obj.Base = features
         obj.Disabled = []
-
-    def findHoles(self, obj, baseobject):
-        """findHoles(obj, baseobject) ... inspect baseobject and identify all features that resemble a straight cricular hole."""
-        shape = baseobject.Shape
-        PathLog.track("obj: {} shape: {}".format(obj, shape))
-        holelist = []
-        features = []
-        # tooldiameter = float(obj.ToolController.Proxy.getTool(obj.ToolController).Diameter)
-        tooldiameter = None
-        PathLog.debug(
-            "search for holes larger than tooldiameter: {}: ".format(tooldiameter)
-        )
-        if DraftGeomUtils.isPlanar(shape):
-            PathLog.debug("shape is planar")
-            for i in range(len(shape.Edges)):
-                candidateEdgeName = "Edge" + str(i + 1)
-                e = shape.getElement(candidateEdgeName)
-                if PathUtils.isDrillable(shape, e, tooldiameter):
-                    PathLog.debug(
-                        "edge candidate: {} (hash {})is drillable ".format(
-                            e, e.hashCode()
-                        )
-                    )
-                    x = e.Curve.Center.x
-                    y = e.Curve.Center.y
-                    diameter = e.BoundBox.XLength
-                    holelist.append(
-                        {
-                            "featureName": candidateEdgeName,
-                            "feature": e,
-                            "x": x,
-                            "y": y,
-                            "d": diameter,
-                            "enabled": True,
-                        }
-                    )
-                    features.append((baseobject, candidateEdgeName))
-                    PathLog.debug(
-                        "Found hole feature %s.%s"
-                        % (baseobject.Label, candidateEdgeName)
-                    )
-        else:
-            PathLog.debug("shape is not planar")
-            for i in range(len(shape.Faces)):
-                candidateFaceName = "Face" + str(i + 1)
-                f = shape.getElement(candidateFaceName)
-                if PathUtils.isDrillable(shape, f, tooldiameter):
-                    PathLog.debug("face candidate: {} is drillable ".format(f))
-                    if hasattr(f.Surface, "Center"):
-                        x = f.Surface.Center.x
-                        y = f.Surface.Center.y
-                        diameter = f.BoundBox.XLength
-                    else:
-                        center = f.Edges[0].Curve.Center
-                        x = center.x
-                        y = center.y
-                        diameter = f.Edges[0].Curve.Radius * 2
-                    holelist.append(
-                        {
-                            "featureName": candidateFaceName,
-                            "feature": f,
-                            "x": x,
-                            "y": y,
-                            "d": diameter,
-                            "enabled": True,
-                        }
-                    )
-                    features.append((baseobject, candidateFaceName))
-                    PathLog.debug(
-                        "Found hole feature %s.%s"
-                        % (baseobject.Label, candidateFaceName)
-                    )
-
-        PathLog.debug("holes found: {}".format(holelist))
-        return features

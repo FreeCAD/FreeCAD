@@ -234,3 +234,16 @@ int Type::getNumTypes(void)
 {
   return typedata.size();
 }
+
+Type Type::getTypeIfDerivedFrom(const char* name , const Type parent, bool bLoadModule)
+{
+  if (bLoadModule)
+    importModule(name);
+
+  Type type = fromName(name);
+
+  if (type.isDerivedFrom(parent))
+    return type;
+  else
+    return Type::badType();
+}

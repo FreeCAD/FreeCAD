@@ -192,6 +192,25 @@ class DocumentBasicCases(unittest.TestCase):
     with self.assertRaises(ValueError):
       obj.myEnumeration = enumeration_choices[0]
 
+  def testWrongTypes(self):
+    with self.assertRaises(TypeError):
+      self.Doc.addObject("App::DocumentObjectExtension")
+
+    class Feature:
+      pass
+    with self.assertRaises(TypeError):
+      self.Doc.addObject(type="App::DocumentObjectExtension", objProxy=Feature(), attach=True)
+
+    ext = FreeCAD.Base.TypeId.fromName("App::DocumentObjectExtension")
+    self.assertEqual(ext.createInstance(), None)
+
+    obj = self.Doc.addObject("App::FeaturePython", "Object")
+    with self.assertRaises(TypeError):
+      obj.addProperty("App::DocumentObjectExtension", "Property")
+
+    with self.assertRaises(TypeError):
+      self.Doc.findObjects(Type="App::DocumentObjectExtension")
+
   def testMem(self):
     self.Doc.MemSize
 

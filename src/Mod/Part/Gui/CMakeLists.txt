@@ -208,6 +208,8 @@ SET(PartGui_SRCS
     ViewProviderPrimitive.h
     Workbench.cpp
     Workbench.h
+    ReferenceHighlighter.cpp
+    ReferenceHighlighter.h
     ShapeFromMesh.cpp
     ShapeFromMesh.h
     TaskFaceColors.cpp

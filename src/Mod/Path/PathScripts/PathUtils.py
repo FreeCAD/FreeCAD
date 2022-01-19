@@ -20,19 +20,17 @@
 # *                                                                         *
 # ***************************************************************************
 """PathUtils -common functions used in PathScripts for filtering, sorting, and generating gcode toolpath data """
+
 import FreeCAD
-import Path
-
-# import PathScripts
-import PathScripts.PathJob as PathJob
-import PathScripts.PathGeom as PathGeom
-import math
-import numpy
-
 from FreeCAD import Vector
 from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
+import Path
+import PathScripts.PathGeom as PathGeom
+import PathScripts.PathJob as PathJob
+import math
+from numpy import linspace
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -71,119 +69,6 @@ def waiting_effects(function):
         return res
 
     return new_function
-
-
-def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
-    """
-    Checks candidates to see if they can be drilled.
-    Candidates can be either faces - circular or cylindrical or circular edges.
-    The tooldiameter can be optionally passed.  if passed, the check will return
-    False for any holes smaller than the tooldiameter.
-    obj=Shape
-    candidate = Face or Edge
-    tooldiameter=float
-    """
-    PathLog.track(
-        "obj: {} candidate: {} tooldiameter {}".format(obj, candidate, tooldiameter)
-    )
-    if list == type(obj):
-        for shape in obj:
-            if isDrillable(shape, candidate, tooldiameter, includePartials):
-                return (True, shape)
-        return (False, None)
-
-    drillable = False
-    try:
-        if candidate.ShapeType == "Face":
-            face = candidate
-            # eliminate flat faces
-            if (round(face.ParameterRange[0], 8) == 0.0) and (
-                round(face.ParameterRange[1], 8) == round(math.pi * 2, 8)
-            ):
-                for (
-                    edge
-                ) in face.Edges:  # Find seam edge and check if aligned to Z axis.
-                    if isinstance(edge.Curve, Part.Line):
-                        PathLog.debug("candidate is a circle")
-                        v0 = edge.Vertexes[0].Point
-                        v1 = edge.Vertexes[1].Point
-                        # check if the cylinder seam is vertically aligned.  Eliminate tilted holes
-                        if (
-                            numpy.isclose(v1.sub(v0).x, 0, rtol=1e-05, atol=1e-06)
-                        ) and (numpy.isclose(v1.sub(v0).y, 0, rtol=1e-05, atol=1e-06)):
-                            drillable = True
-                            # vector of top center
-                            lsp = Vector(
-                                face.BoundBox.Center.x,
-                                face.BoundBox.Center.y,
-                                face.BoundBox.ZMax,
-                            )
-                            # vector of bottom center
-                            lep = Vector(
-                                face.BoundBox.Center.x,
-                                face.BoundBox.Center.y,
-                                face.BoundBox.ZMin,
-                            )
-                            # check if the cylindrical 'lids' are inside the base
-                            # object.  This eliminates extruded circles but allows
-                            # actual holes.
-                            if obj.isInside(lsp, 1e-6, False) or obj.isInside(
-                                lep, 1e-6, False
-                            ):
-                                PathLog.track(
-                                    "inside check failed. lsp: {}  lep: {}".format(
-                                        lsp, lep
-                                    )
-                                )
-                                drillable = False
-                            # eliminate elliptical holes
-                            elif not hasattr(face.Surface, "Radius"):
-                                PathLog.debug("candidate face has no radius attribute")
-                                drillable = False
-                            else:
-                                if tooldiameter is not None:
-                                    drillable = face.Surface.Radius >= tooldiameter / 2
-                                else:
-                                    drillable = True
-            elif type(face.Surface) == Part.Plane and PathGeom.pointsCoincide(
-                face.Surface.Axis, FreeCAD.Vector(0, 0, 1)
-            ):
-                if len(face.Edges) == 1 and type(face.Edges[0].Curve) == Part.Circle:
-                    center = face.Edges[0].Curve.Center
-                    if obj.isInside(center, 1e-6, False):
-                        if tooldiameter is not None:
-                            drillable = face.Edges[0].Curve.Radius >= tooldiameter / 2
-                        else:
-                            drillable = True
-        else:
-            for edge in candidate.Edges:
-                if isinstance(edge.Curve, Part.Circle) and (
-                    includePartials or edge.isClosed()
-                ):
-                    PathLog.debug("candidate is a circle or ellipse")
-                    if not hasattr(edge.Curve, "Radius"):
-                        PathLog.debug("No radius.  Ellipse.")
-                        drillable = False
-                    else:
-                        PathLog.debug("Has Radius, Circle")
-                        if tooldiameter is not None:
-                            drillable = edge.Curve.Radius >= tooldiameter / 2
-                            if not drillable:
-                                FreeCAD.Console.PrintMessage(
-                                    "Found a drillable hole with diameter: {}: "
-                                    "too small for the current tool with "
-                                    "diameter: {}".format(
-                                        edge.Curve.Radius * 2, tooldiameter
-                                    )
-                                )
-                        else:
-                            drillable = True
-        PathLog.debug("candidate is drillable: {}".format(drillable))
-    except Exception as ex:  # pylint: disable=broad-except
-        PathLog.warning(
-            translate("Path", "Issue determine drillability: {}").format(ex)
-        )
-    return drillable
 
 
 # set at 4 decimal places for testing
@@ -262,7 +147,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         # verify they form a valid hole by getting the outline and comparing
         # the resulting XY footprint with that of the faces
         comp = Part.makeCompound([obj.Shape.getElement(f) for f in faces])
-        outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0, 0, 1))
+        outline = TechDraw.findShapeOutline(comp, 1, Vector(0, 0, 1))
 
         # findShapeOutline always returns closed wires, by removing the
         # trace-backs single edge spikes don't contribute to the bound box
@@ -289,31 +174,30 @@ def horizontalFaceLoop(obj, face, faceList=None):
 
 
 def filterArcs(arcEdge):
-    """filterArcs(Edge) -used to split arcs that over 180 degrees. Returns list"""
+    """filterArcs(Edge) -used to split an arc that is over 180 degrees. Returns list"""
     PathLog.track()
-    s = arcEdge
-    if isinstance(s.Curve, Part.Circle):
-        splitlist = []
-        angle = abs(s.LastParameter - s.FirstParameter)
-        # overhalfcircle = False
-        goodarc = False
-        if angle > math.pi:
-            pass
-            # overhalfcircle = True
+    splitlist = []
+    if isinstance(arcEdge.Curve, Part.Circle):
+        angle = abs(arcEdge.LastParameter - arcEdge.FirstParameter)  # Angle in radians
+        goodarc = angle <= math.pi
+
+        if goodarc:
+            splitlist.append(arcEdge)
         else:
-            goodarc = True
-        if not goodarc:
-            arcstpt = s.valueAt(s.FirstParameter)
-            arcmid = s.valueAt(
-                (s.LastParameter - s.FirstParameter) * 0.5 + s.FirstParameter
+            arcstpt = arcEdge.valueAt(arcEdge.FirstParameter)
+            arcmid = arcEdge.valueAt(
+                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.5
+                + arcEdge.FirstParameter
             )
-            arcquad1 = s.valueAt(
-                (s.LastParameter - s.FirstParameter) * 0.25 + s.FirstParameter
+            arcquad1 = arcEdge.valueAt(
+                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.25
+                + arcEdge.FirstParameter
             )  # future midpt for arc1
-            arcquad2 = s.valueAt(
-                (s.LastParameter - s.FirstParameter) * 0.75 + s.FirstParameter
+            arcquad2 = arcEdge.valueAt(
+                (arcEdge.LastParameter - arcEdge.FirstParameter) * 0.75
+                + arcEdge.FirstParameter
             )  # future midpt for arc2
-            arcendpt = s.valueAt(s.LastParameter)
+            arcendpt = arcEdge.valueAt(arcEdge.LastParameter)
             # reconstruct with 2 arcs
             arcseg1 = Part.ArcOfCircle(arcstpt, arcquad1, arcmid)
             arcseg2 = Part.ArcOfCircle(arcmid, arcquad2, arcendpt)
@@ -322,9 +206,8 @@ def filterArcs(arcEdge):
             eseg2 = arcseg2.toShape()
             splitlist.append(eseg1)
             splitlist.append(eseg2)
-        else:
-            splitlist.append(s)
-    elif isinstance(s.Curve, Part.LineSegment):
+
+    elif isinstance(arcEdge.Curve, Part.LineSegment):
         pass
     return splitlist
 
@@ -334,9 +217,7 @@ def makeWorkplane(shape):
     Creates a workplane circle at the ZMin level.
     """
     PathLog.track()
-    loc = FreeCAD.Vector(
-        shape.BoundBox.Center.x, shape.BoundBox.Center.y, shape.BoundBox.ZMin
-    )
+    loc = Vector(shape.BoundBox.Center.x, shape.BoundBox.Center.y, shape.BoundBox.ZMin)
     c = Part.makeCircle(10, loc)
     return c
 
@@ -388,11 +269,11 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
         eLength = partshape.BoundBox.ZLength - sec.BoundBox.ZMin
 
     # Shift the section based on selection and depthparams.
-    newPlace = FreeCAD.Placement(FreeCAD.Vector(0, 0, zShift), sec.Placement.Rotation)
+    newPlace = FreeCAD.Placement(Vector(0, 0, zShift), sec.Placement.Rotation)
     sec.Placement = newPlace
 
     # Extrude the section to top of Boundbox or desired height
-    envelopeshape = sec.extrude(FreeCAD.Vector(0, 0, eLength))
+    envelopeshape = sec.extrude(Vector(0, 0, eLength))
     if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
         removalshape.Shape = envelopeshape
@@ -561,211 +442,16 @@ def addToJob(obj, jobname=None):
     return job
 
 
-def rapid(x=None, y=None, z=None):
-    """Returns gcode string to perform a rapid move."""
-    retstr = "G00"
-    if (x is not None) or (y is not None) or (z is not None):
-        if x is not None:
-            retstr += " X" + str("%.4f" % x)
-        if y is not None:
-            retstr += " Y" + str("%.4f" % y)
-        if z is not None:
-            retstr += " Z" + str("%.4f" % z)
-    else:
-        return ""
-    return retstr + "\n"
-
-
-def feed(x=None, y=None, z=None, horizFeed=0, vertFeed=0):
-    """Return gcode string to perform a linear feed."""
-    retstr = "G01 F"
-    if (x is None) and (y is None):
-        retstr += str("%.4f" % horizFeed)
-    else:
-        retstr += str("%.4f" % vertFeed)
-
-    if (x is not None) or (y is not None) or (z is not None):
-        if x is not None:
-            retstr += " X" + str("%.4f" % x)
-        if y is not None:
-            retstr += " Y" + str("%.4f" % y)
-        if z is not None:
-            retstr += " Z" + str("%.4f" % z)
-    else:
-        return ""
-    return retstr + "\n"
-
-
-def arc(cx, cy, sx, sy, ex, ey, horizFeed=0, ez=None, ccw=False):
-    """
-    Return gcode string to perform an arc.
-
-    Assumes XY plane or helix around Z
-    Don't worry about starting Z- assume that's dealt with elsewhere
-    If start/end radii aren't within eps, abort.
-
-    cx, cy -- arc center coordinates
-    sx, sy -- arc start coordinates
-    ex, ey -- arc end coordinates
-    ez -- ending Z coordinate.  None unless helix.
-    horizFeed -- horiz feed speed
-    ccw -- arc direction
-    """
-
-    eps = 0.01
-    if (
-        math.sqrt((cx - sx) ** 2 + (cy - sy) ** 2)
-        - math.sqrt((cx - ex) ** 2 + (cy - ey) ** 2)
-    ) >= eps:
-        PathLog.error(translate("Path", "Illegal arc: Start and end radii not equal"))
-        return ""
-
-    retstr = ""
-    if ccw:
-        retstr += "G03 F" + str(horizFeed)
-    else:
-        retstr += "G02 F" + str(horizFeed)
-
-    retstr += " X" + str("%.4f" % ex) + " Y" + str("%.4f" % ey)
-
-    if ez is not None:
-        retstr += " Z" + str("%.4f" % ez)
-
-    retstr += " I" + str("%.4f" % (cx - sx)) + " J" + str("%.4f" % (cy - sy))
-
-    return retstr + "\n"
-
-
-def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed):
-    """
-    Return gcode string to perform helical entry move.
-
-    plungePos -- vector of the helical entry location
-    destZ -- the lowest Z position or milling level
-    startZ -- Starting Z position for helical move
-    rampangle -- entry angle
-    toold -- tool diameter
-    plungeR -- the radius of the entry helix
-    """
-    # toold = self.radius * 2
-
-    helixCmds = "(START HELICAL PLUNGE)\n"
-    if plungePos is None:
-        raise Exception("Helical plunging requires a position!")
-
-    helixX = plungePos.x + toold / 2 * plungeR
-    helixY = plungePos.y
-
-    helixCirc = math.pi * toold * plungeR
-    dzPerRev = math.sin(rampangle / 180.0 * math.pi) * helixCirc
-
-    # Go to the start of the helix position
-    helixCmds += rapid(helixX, helixY)
-    helixCmds += rapid(z=startZ)
-
-    # Helix as required to get to the requested depth
-    lastZ = startZ
-    curZ = max(startZ - dzPerRev, destZ)
-    done = False
-    while not done:
-        done = curZ == destZ
-        # NOTE: FreeCAD doesn't render this, but at least LinuxCNC considers it valid
-        # helixCmds += arc(plungePos.x, plungePos.y, helixX, helixY, helixX, helixY, ez = curZ, ccw=True)
-
-        # Use two half-helixes; FreeCAD renders that correctly,
-        # and it fits with the other code breaking up 360-degree arcs
-        helixCmds += arc(
-            plungePos.x,
-            plungePos.y,
-            helixX,
-            helixY,
-            helixX - toold * plungeR,
-            helixY,
-            horizFeed,
-            ez=(curZ + lastZ) / 2.0,
-            ccw=True,
-        )
-        helixCmds += arc(
-            plungePos.x,
-            plungePos.y,
-            helixX - toold * plungeR,
-            helixY,
-            helixX,
-            helixY,
-            horizFeed,
-            ez=curZ,
-            ccw=True,
-        )
-        lastZ = curZ
-        curZ = max(curZ - dzPerRev, destZ)
-
-    return helixCmds
-
-
-def rampPlunge(edge, rampangle, destZ, startZ):
-    """
-    Return gcode string to linearly ramp down to milling level.
-
-    edge -- edge to follow
-    rampangle -- entry angle
-    destZ -- Final Z depth
-    startZ -- Starting Z depth
-
-    FIXME: This ramps along the first edge, assuming it's long
-    enough, NOT just wiggling back and forth by ~0.75 * toolD.
-    Not sure if that's any worse, but it's simpler
-    I think this should be changed to be limited to a maximum ramp size.  Otherwise machine time will get longer than it needs to be.
-    """
-
-    rampCmds = "(START RAMP PLUNGE)\n"
-    if edge is None:
-        raise Exception("Ramp plunging requires an edge!")
-
-    sPoint = edge.Vertexes[0].Point
-    ePoint = edge.Vertexes[1].Point
-    # Evidently edges can get flipped- pick the right one in this case
-    if ePoint == sPoint:
-        # print "FLIP"
-        ePoint = edge.Vertexes[-1].Point
-
-    rampDist = edge.Length
-    rampDZ = math.sin(rampangle / 180.0 * math.pi) * rampDist
-
-    rampCmds += rapid(sPoint.x, sPoint.y)
-    rampCmds += rapid(z=startZ)
-
-    # Ramp down to the requested depth
-
-    curZ = max(startZ - rampDZ, destZ)
-    done = False
-    while not done:
-        done = curZ == destZ
-
-        # If it's an arc, handle it!
-        if isinstance(edge.Curve, Part.Circle):
-            raise Exception("rampPlunge: Screw it, not handling an arc.")
-        # Straight feed! Easy!
-        else:
-            rampCmds += feed(ePoint.x, ePoint.y, curZ)
-            rampCmds += feed(sPoint.x, sPoint.y)
-
-        curZ = max(curZ - rampDZ, destZ)
-
-    return rampCmds
-
-
-def sort_jobs(locations, keys, attractors=None):
+def sort_locations(locations, keys, attractors=None):
     """sort holes by the nearest neighbor method
     keys: two-element list of keys for X and Y coordinates. for example ['x','y']
     originally written by m0n5t3r for PathHelix
     """
+    from queue import PriorityQueue
+    from collections import defaultdict
+
     if attractors is None:
         attractors = []
-    try:
-        from queue import PriorityQueue
-    except ImportError:
-        from Queue import PriorityQueue
-    from collections import defaultdict
 
     attractors = attractors or [keys[0]]
 
@@ -1032,7 +718,7 @@ class depth_params(object):
         than max_size."""
 
         steps_needed = math.ceil((start - stop) / max_size)
-        depths = list(numpy.linspace(stop, start, steps_needed, endpoint=False))
+        depths = list(linspace(stop, start, steps_needed, endpoint=False))
 
         return depths
 
@@ -1044,7 +730,7 @@ class depth_params(object):
 
         fullsteps = int((start - stop) / size)
         last_step = start - (fullsteps * size)
-        depths = list(numpy.linspace(last_step, start, fullsteps, endpoint=False))
+        depths = list(linspace(last_step, start, fullsteps, endpoint=False))
 
         if last_step == stop:
             return depths
@@ -1108,7 +794,7 @@ def RtoIJ(startpoint, command):
     chord = endpoint.sub(startpoint)
 
     # Take its perpendicular (we assume the arc is in the XY plane)
-    perp = chord.cross(FreeCAD.Vector(0, 0, 1))
+    perp = chord.cross(Vector(0, 0, 1))
 
     # use pythagoras to get the perp length
     plength = math.sqrt(radius ** 2 - (chord.Length / 2) ** 2)

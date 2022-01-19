@@ -33,10 +33,10 @@
 #include "Utils.h"
 #include "ViewProviderPipe.h"
 #include "TaskPipeParameters.h"
-#include "ReferenceHighlighter.h"
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePipe.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
@@ -167,7 +167,7 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
             edgeColors = svp->LineColorArray.getValues();
             std::vector<App::Color> colors = edgeColors;
 
-            ReferenceHighlighter highlighter(base->Shape.getValue(), svp->LineColor.getValue());
+            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), svp->LineColor.getValue());
             highlighter.getEdgeColors(edges, colors);
             svp->LineColorArray.setValues(colors);
         }
