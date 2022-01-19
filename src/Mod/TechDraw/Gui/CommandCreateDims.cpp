@@ -58,9 +58,9 @@
 # include <Mod/TechDraw/App/DrawPage.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
 # include <Mod/TechDraw/App/Geometry.h>
+# include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/QGVPage.h>
-
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -563,10 +563,12 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
 
     commitCommand();
     dim->recomputeFeature();
+
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
-    dim->Y.setValue(-mid.y);
+    double fontSize = Preferences::dimFontSizeMM();
+    dim->Y.setValue(-mid.y + 0.5 * fontSize);
 
     //Horrible hack to force Tree update (claimChildren)
     double x = objFeat->X.getValue();
@@ -668,7 +670,8 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
-    dim->Y.setValue(-mid.y);
+    double fontSize = Preferences::dimFontSizeMM();
+    dim->Y.setValue(-mid.y + 0.5 * fontSize);
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -769,7 +772,8 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
-    dim->Y.setValue(-mid.y);
+    double fontSize = Preferences::dimFontSizeMM();
+    dim->Y.setValue(-mid.y + 0.5 * fontSize);
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
