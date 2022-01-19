@@ -101,7 +101,7 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
     if(!GeoFeatureGroupExtension::areLinksValid(this)) {
 #if 1
         // Get objects that have invalid link scope, and print their names.
-        // Truncate the invalid object list name strings for readibility, if they happen to be very long.
+        // Truncate the invalid object list name strings for readability, if they happen to be very long.
         std::vector<App::DocumentObject*> invalid_linkobjs;
         std::string objnames = "", scopenames = "";
         GeoFeatureGroupExtension::getInvalidLinkObjects(this, invalid_linkobjs);
