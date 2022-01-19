@@ -647,8 +647,7 @@ class FillMacroListWorker(QtCore.QThread):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "There appears to be an issue connecting to the Wiki, "
-                    "therefore FreeCAD cannot retrieve the Wiki macro list at this time",
+                    "Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time",
                 )
                 + "\n"
             )
@@ -899,7 +898,7 @@ class ShowWorker(QtCore.QThread):
                 return
         message = desc
         if self.repo.update_status == AddonManagerRepo.UpdateStatus.UNCHECKED:
-            # Addon is installed but we haven't checked it yet, so lets check if it has an update
+            # Addon is installed but we haven't checked it yet, so let's check if it has an update
             upd = False
             # checking for updates
             if not NOGIT and have_git:
@@ -921,49 +920,7 @@ class ShowWorker(QtCore.QThread):
                     AddonManagerRepo.UpdateStatus.NO_UPDATE_AVAILABLE
                 )
             self.update_status.emit(self.repo)
-
-            if QtCore.QThread.currentThread().isInterruptionRequested():
-                return
-
-        # If the Addon is obsolete, let the user know through the Addon UI
-        if self.repo.name in obsolete:
-            message = """
-<div style="width: 100%; text-align:center; background: #FFB3B3;">
-    <strong style="color: #FFFFFF; background: #FF0000;">
-"""
-            message += (
-                translate("AddonsInstaller", "This addon is marked as obsolete")
-                + "</strong><br/><br/>"
-            )
-            message += (
-                translate(
-                    "AddonsInstaller",
-                    "This usually means it is no longer maintained, "
-                    "and some more advanced addon in this list "
-                    "provides the same functionality.",
-                )
-                + "<br/></div><hr/>"
-                + desc
-            )
-
-        # If the Addon is Python 2 only, let the user know through the Addon UI
-        if self.repo.name in py2only:
-            message = """
-<div style="width: 100%; text-align:center; background: #ffe9b3;">
-    <strong style="color: #FFFFFF; background: #ff8000;">
-"""
-            message += (
-                translate("AddonsInstaller", "This addon is marked as Python 2 Only")
-                + "</strong><br/><br/>"
-            )
-            message += translate(
-                "AddonsInstaller",
-                "This workbench may no longer be maintained and "
-                "installing it on a Python 3 system will more than "
-                "likely result in errors at startup or while in use.",
-            )
-            message += "<br/></div><hr/>" + desc
-
+            
         if QtCore.QThread.currentThread().isInterruptionRequested():
             return
         self.readme_updated.emit(message)
@@ -1122,8 +1079,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                 FreeCAD.Console.PrintError(
                     translate(
                         "AddonsInstaller",
-                        "Your version of Python doesn't appear to support ZIP "
-                        "files. Unable to proceed.",
+                        "Your version of Python doesn't appear to support ZIP files. Unable to proceed.",
                     )
                     + "\n"
                 )
@@ -1171,8 +1127,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "You are installing a Python 2 workbench on "
-                    "a system running Python 3 - ",
+                    "You are installing a Python 2 workbench on a system running Python 3 - ",
                 )
                 + str(self.repo.name)
                 + "\n"
@@ -1184,8 +1139,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             repo.pull()  # Refuses to take a progress object?
             answer = translate(
                 "AddonsInstaller",
-                "Workbench successfully updated. "
-                "Please restart FreeCAD to apply the changes.",
+                "Workbench successfully updated. Please restart FreeCAD to apply the changes.",
             )
         except Exception as e:
             answer = (
@@ -1212,8 +1166,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "You are installing a Python 2 workbench on "
-                    "a system running Python 3 - ",
+                    "You are installing a Python 2 workbench on a system running Python 3 - ",
                 )
                 + str(self.repo.name)
                 + "\n"
@@ -1239,8 +1192,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
 
         answer = translate(
             "AddonsInstaller",
-            "Workbench successfully installed. Please restart "
-            "FreeCAD to apply the changes.",
+            "Workbench successfully installed. Please restart FreeCAD to apply the changes.",
         )
 
         if self.repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH:
@@ -1265,8 +1217,7 @@ class InstallWorkbenchWorker(QtCore.QThread):
                         ).SetString("destination", clonedir)
                         answer += "\n\n" + translate(
                             "AddonsInstaller",
-                            "A macro has been installed and is available "
-                            "under Macro -> Macros menu",
+                            "A macro has been installed and is available under Macro -> Macros menu",
                         )
                         answer += ":\n<b>" + f + "</b>"
         self.update_metadata()

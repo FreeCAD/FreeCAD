@@ -1052,8 +1052,7 @@ class CommandAddonManager:
             translate("AddonsInstaller", "Cannot execute Python"),
             translate(
                 "AddonsInstaller",
-                "Failed to automatically locate your Python executable, or the path is set incorrectly. "
-                "Please check the Addon Manager preferences setting for the path to Python.",
+                "Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.",
             )
             + "\n\n"
             + translate(
@@ -1073,9 +1072,7 @@ class CommandAddonManager:
             translate("AddonsInstaller", "Cannot execute pip"),
             translate(
                 "AddonsInstaller",
-                "Failed to execute pip, which may be missing from your Python installation. "
-                "Please ensure your system has pip installed and try again."
-                "The failed command was: ",
+                "Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: ",
             )
             + f"\n\n{command}\n\n"
             + translate(
@@ -1157,8 +1154,7 @@ class CommandAddonManager:
             if not failed:
                 message = translate(
                     "AddonsInstaller",
-                    "Macro successfully installed. The macro is "
-                    "now available from the Macros dialog.",
+                    "Macro successfully installed. The macro is now available from the Macros dialog.",
                 )
                 self.on_package_installed(repo, message)
             else:
