@@ -190,7 +190,6 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
     }
 }
 
-
 /* Sketch commands =======================================================*/
 
 static const char cursor_crosshair_color_fmt[] = "+ c #%06lX";
@@ -213,6 +212,36 @@ unsigned long DrawSketchHandler::getCrosshairColor()
     return color;
 }
 
+bool DrawSketchHandler::distanceXYorPointOnObject(bool distanceXZeroYOne, int geoId, Sketcher::PointPos posId, double distance) {
+    if (distance == 0) {
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add pointOnObject constraint"));
+        if (distanceXZeroYOne) {
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                geoId, static_cast<int>(posId), Sketcher::GeoEnum::HAxis);
+        }
+        else {
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                geoId, static_cast<int>(posId), Sketcher::GeoEnum::VAxis);
+        }
+        Gui::Command::commitCommand();
+        return 0;
+    }
+    else {
+        if (!distanceXZeroYOne) {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceY constraint"));
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
+                geoId, static_cast<int>(posId), distance);
+        }
+        else {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX constraint"));
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
+                geoId, static_cast<int>(posId), distance);
+        }
+        Gui::Command::commitCommand();
+        return 1;
+    }
+
+}
 /* Create  Line =====================================================*/
 
 class DrawSketchHandlerLine: public DrawSketchHandler
@@ -353,36 +382,16 @@ public:
             //add constraint if user typed in some dimensions in tool widget
             if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                 if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                        firstCurve, 1, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                        firstCurve, 1, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                        firstCurve, 2, sketchgui->toolSettings->widget->toolParameters[2]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[2]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                        firstCurve, 2, sketchgui->toolSettings->widget->toolParameters[3]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[3]);
                 }
             }
 
@@ -798,20 +807,10 @@ public:
                 //add constraint if user typed in some dimensions in tool widget
                 if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                     if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                            firstCurve, 1, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                        Gui::Command::commitCommand();
+                        distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
                     }
                     if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                            firstCurve, 1, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                        Gui::Command::commitCommand();
+                        distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
                     }
                     if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point distance constraint"));
@@ -848,20 +847,10 @@ public:
                 //add constraint if user typed in some dimensions in tool widget
                 if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                     if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                            firstCurve+4, 1, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                        Gui::Command::commitCommand();
+                        distanceXYorPointOnObject(0, firstCurve +4, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
                     }
                     if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                            firstCurve+4, 1, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                        Gui::Command::commitCommand();
+                        distanceXYorPointOnObject(1, firstCurve + 4, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
                     }
                     if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point distance constraint"));
@@ -1433,20 +1422,10 @@ public:
                 //add constraint if user typed in some dimensions in tool widget
                 if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                     if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                            signX == signY ? firstCurve + 1 : firstCurve + 7, signX == signY ? 1 : 2, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                        Gui::Command::commitCommand();
+                        distanceXYorPointOnObject(0, signX == signY ? firstCurve + 1 : firstCurve + 7, signX == signY ? Sketcher::PointPos::start : Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[0]);
                     }
                     if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                            signX == signY ? firstCurve + 7 : firstCurve + 1, signX == signY ? 2 : 1, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                        Gui::Command::commitCommand();
+                        distanceXYorPointOnObject(1, signX == signY ? firstCurve + 7 : firstCurve + 1, signX == signY ? Sketcher::PointPos::end : Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
                     }
                     if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point distance constraint"));
@@ -2243,53 +2222,33 @@ public:
                 if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                     if (firstCurve == lastCurve) { //First point constrained only in case of the first curve
                         if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                                lastCurve, 1, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                            Gui::Command::commitCommand();
+                            distanceXYorPointOnObject(0, lastCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
                         }
                         if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                                lastCurve, 1, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                            Gui::Command::commitCommand();
+                            distanceXYorPointOnObject(1, lastCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
                         }
                     }
                     bool firstCstrCreated = 0;
 
                     if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
                         if (SegmentMode == SEGMENT_MODE_Arc) {
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                                lastCurve, (startAngle > endAngle) ? 1 : 2, sketchgui->toolSettings->widget->toolParameters[2]);
+                            distanceXYorPointOnObject(0, lastCurve, (startAngle > endAngle) ? Sketcher::PointPos::start : Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[2]);
                         }
                         else{
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                                lastCurve, 2, sketchgui->toolSettings->widget->toolParameters[2]);
+                            distanceXYorPointOnObject(0, lastCurve, Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[2]);
                         }
-                        Gui::Command::commitCommand();
                         firstCstrCreated = 1;
                     }
                     if (sketchgui->toolSettings->widget->isSettingSet[3] == 1 
                         && ((TransitionMode != TRANSITION_MODE_Perpendicular_L && TransitionMode != TRANSITION_MODE_Perpendicular_R) || !firstCstrCreated) 
                         && (TransitionMode != TRANSITION_MODE_Tangent || SegmentMode == SEGMENT_MODE_Arc || !firstCstrCreated)) {
                         //complex if to avoid over-constraining due to tangent and perpendicular constraints
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
                         if (SegmentMode == SEGMENT_MODE_Arc) {
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                                lastCurve, (startAngle > endAngle) ? 1 : 2, sketchgui->toolSettings->widget->toolParameters[3]);
+                            distanceXYorPointOnObject(1, lastCurve, (startAngle > endAngle) ? Sketcher::PointPos::start : Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[3]);
                         }
                         else {
-                            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                                lastCurve, 2, sketchgui->toolSettings->widget->toolParameters[3]);
+                            distanceXYorPointOnObject(1, lastCurve, Sketcher::PointPos::end, sketchgui->toolSettings->widget->toolParameters[3]);
                         }
-                        Gui::Command::commitCommand();
                     }
                 }
 
@@ -2453,7 +2412,7 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create polyline");
-    sToolTipText    = QT_TR_NOOP("Create a polyline in the sketch. 'Shift' Key cycles behaviour");
+    sToolTipText    = QT_TR_NOOP("Create a polyline in the sketch. 'Space' Key cycles behaviour");
     sWhatsThis      = "Sketcher_CreatePolyline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreatePolyline";
@@ -2684,20 +2643,10 @@ public:
             //add constraint if user typed in some dimensions in tool widget
             if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                 if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                        firstCurve, 3, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                        firstCurve, 3, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Radius constraint"));
@@ -3039,36 +2988,16 @@ public:
             //add constraint if user typed in some dimensions in tool widget
             if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                 if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-                    
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%i,%i,%f)) ",
-                        firstCurve, (int) arcPos1, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(0, firstCurve, arcPos1, sketchgui->toolSettings->widget->toolParameters[0]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%i,%i,%f)) ",
-                        firstCurve, (int)arcPos1, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(1, firstCurve, arcPos1, sketchgui->toolSettings->widget->toolParameters[1]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%i,%i,%f)) ",
-                        firstCurve, (int)arcPos2, sketchgui->toolSettings->widget->toolParameters[2]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(0, firstCurve, arcPos2, sketchgui->toolSettings->widget->toolParameters[2]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[3] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%i,%i,%f)) ",
-                        firstCurve, (int)arcPos2, sketchgui->toolSettings->widget->toolParameters[3]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(1, firstCurve, arcPos2, sketchgui->toolSettings->widget->toolParameters[3]);
                 }
             }
 
@@ -3392,20 +3321,10 @@ public:
             //add constraint if user typed in some dimensions in tool widget
             if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                 if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                        firstCurve, 3, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                        firstCurve, 3, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Radius constraint"));
@@ -3568,6 +3487,10 @@ public:
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
             mode = STATUS_SEEK_CENTROID;
+            sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
+                "x of Center Point"), 0);
+            sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
+                "y of Center Point"), 0);
         } else {
             method = PERIAPSIS_APOAPSIS_B;
             mode = STATUS_SEEK_PERIAPSIS;
@@ -3860,6 +3783,10 @@ public:
                 if (constrMethod == 0) {
                     method = CENTER_PERIAPSIS_B;
                     mode = STATUS_SEEK_CENTROID;
+                    sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
+                        "x of Center Point"), 0);
+                    sketchgui->toolSettings->widget->setLabel(QApplication::translate("ConstrainContextually",
+                        "y of Center Point"), 0);
                 } else {
                     method = PERIAPSIS_APOAPSIS_B;
                     mode = STATUS_SEEK_PERIAPSIS;
@@ -4337,20 +4264,10 @@ private:
             //add constraint if user typed in some dimensions in tool widget
             if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                 if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                        currentgeoid, 3, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(0, currentgeoid, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                        currentgeoid, 3, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(1, currentgeoid, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
                 }
             }
 
@@ -6596,22 +6513,12 @@ public:
 
             //add constraint if user typed in some dimensions in tool widget
             int firstCurve = getHighestCurveIndex();
-            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
+            if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] != 0) {
                 if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                        firstCurve, 1, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(0, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[0]);
                 }
                 if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                        firstCurve, 1, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                    Gui::Command::commitCommand();
+                    distanceXYorPointOnObject(1, firstCurve, Sketcher::PointPos::start, sketchgui->toolSettings->widget->toolParameters[1]);
                 }
             }
 
@@ -8557,20 +8464,10 @@ public:
                 int lastCurve = getHighestCurveIndex(); //last geoID is the circle
                 if (sketchgui->toolSettings->widget->isSettingSet[0] + sketchgui->toolSettings->widget->isSettingSet[1] + sketchgui->toolSettings->widget->isSettingSet[2] + sketchgui->toolSettings->widget->isSettingSet[3] != 0) {
                     if (sketchgui->toolSettings->widget->isSettingSet[0] == 1) {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point horizontal distance constraint"));
-
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                            lastCurve, 3, sketchgui->toolSettings->widget->toolParameters[0]);
-
-                        Gui::Command::commitCommand();
+                        distanceXYorPointOnObject(0, lastCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[0]);
                     }
                     if (sketchgui->toolSettings->widget->isSettingSet[1] == 1) {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add point to point vertical distance constraint"));
-
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                            lastCurve, 3, sketchgui->toolSettings->widget->toolParameters[1]);
-
-                        Gui::Command::commitCommand();
+                        distanceXYorPointOnObject(1, lastCurve, Sketcher::PointPos::mid, sketchgui->toolSettings->widget->toolParameters[1]);
                     }
                     if (sketchgui->toolSettings->widget->isSettingSet[2] == 1) {
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Radius constraint"));

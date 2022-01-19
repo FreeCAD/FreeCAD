@@ -145,6 +145,7 @@ protected:
     unsigned long getCrosshairColor();
     qreal devicePixelRatio();
     void setCrosshairCursor(const char* svgName);
+    bool distanceXYorPointOnObject(bool distanceXZeroYOne, int geoId, Sketcher::PointPos PosId, double distance);
 
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
     void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);

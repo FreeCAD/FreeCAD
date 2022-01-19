@@ -28,6 +28,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Selection.h>
 #include <boost_signals2.hpp>
+#include <Inventor/events/SoKeyboardEvent.h>
 
 namespace App {
 class Property;
@@ -51,10 +52,11 @@ public:
     ~SketcherToolWidget();
 
     bool eventFilter(QObject* object, QEvent* event);
-    void keyPressEvent(QKeyEvent* event);
     
 
     void setparameter(double val, int i);
+    void setLabel(const QString& atext, int i);
+    void setUnit(Base::Unit unit, int i);
     void setParameterActive(bool val, int i);
     void setParameterFocus(int i);
     void setSettings(int toolSelected);

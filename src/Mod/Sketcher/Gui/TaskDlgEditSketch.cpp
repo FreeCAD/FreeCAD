@@ -64,6 +64,8 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     Content.push_back(Constraints);
     Content.push_back(Elements);
 
+    //TODO: find a way to showGroupBox to be able to collapse/expand from tasksketchertool.cpp
+    //sketchView->toolSettings->hideGroupBox();
     if (!hGrp->GetBool("ExpandedMessagesWidget",true))
         Messages->hideGroupBox();
     if (!hGrp->GetBool("ExpandedSolverAdvancedWidget",false))
@@ -111,6 +113,8 @@ bool TaskDlgEditSketch::reject()
     hGrp->SetBool("ExpandedEditControlWidget",General->isGroupVisible());
     hGrp->SetBool("ExpandedConstraintsWidget",Constraints->isGroupVisible());
     hGrp->SetBool("ExpandedElementsWidget",Elements->isGroupVisible());
+
+    sketchView->purgeHandler();
 
     std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').resetEdit()", document.c_str());

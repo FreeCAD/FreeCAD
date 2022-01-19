@@ -125,6 +125,24 @@
     </layout>
    </item>
    
+   <item>
+	<layout class="QHBoxLayout" name="horizontalLayout6">
+     <item>
+      <widget class="QLabel" name="notice">
+       <property name="text">
+        <string>Parameter 5</string>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>400</width>
+         <height>500</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   
   </layout>
  </widget>
  <customwidgets>

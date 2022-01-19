@@ -276,6 +276,8 @@ SbVec2s ViewProviderSketch::DoubleClick::prvClickPos; //used by double-click-det
 SbVec2s ViewProviderSketch::DoubleClick::prvCursorPos;
 SbVec2s ViewProviderSketch::DoubleClick::newCursorPos;
 
+SbVec2s ViewProviderSketch::prvMoveCursorPos;
+
 //**************************************************************************
 // Construction/Destruction
 
@@ -467,8 +469,10 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
         }
     default:
         {
-            if (isInEditMode() && sketchHandler)
+            if (isInEditMode() && sketchHandler) {
+                //Base::Console().Warning("key pressed %i   -   pressed = %i\n", *sketchHandler, pressed);
                 sketchHandler->registerPressedKey(pressed,key);
+            }
         }
     }
 

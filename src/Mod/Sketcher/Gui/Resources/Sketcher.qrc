@@ -7,6 +7,8 @@
     <qresource>
         <file>icons/constraints/Constraint_Block.svg</file>
         <file>icons/constraints/Constraint_Concentric.svg</file>
+        <file>icons/constraints/Constraint_Contextual.svg</file>
+        <file>icons/constraints/Constraint_Contextual_Driven.svg</file>
         <file>icons/constraints/Constraint_Diameter.svg</file>
         <file>icons/constraints/Constraint_Diameter_Driven.svg</file>
         <file>icons/constraints/Constraint_Ellipse_Axis_Angle.svg</file>

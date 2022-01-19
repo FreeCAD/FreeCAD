@@ -408,7 +408,7 @@ public:
     App::PropertyString EditingWorkbench;
     //@}
 
-    SbVec2s prvMoveCursorPos;
+    static SbVec2s prvMoveCursorPos;
     Gui::View3DInventorViewer * prvMoveViewer;
 
     // TODO: It is difficult to imagine that these functions are necessary in the public interface. This requires review at a second stage and possibly
@@ -527,6 +527,9 @@ public:
     virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer) override;
     //@}
 
+    /// moves a selected constraint
+    void moveConstraint(int constNum, const Base::Vector2d& toPos);
+
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     virtual QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
 
@@ -639,9 +642,6 @@ private:
     //@{
     /// snap points x,y (mouse coordinates) onto grid if enabled
     void snapToGrid(double &x, double &y);
-
-    /// moves a selected constraint
-    void moveConstraint(int constNum, const Base::Vector2d &toPos);
 
     /// returns whether the sketch is in edit mode.
     bool isInEditMode() const;
