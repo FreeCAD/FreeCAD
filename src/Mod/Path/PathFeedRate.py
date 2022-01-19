@@ -44,7 +44,7 @@ else:
 
 
 def setFeedRate(commandlist, ToolController):
-    """Set the appropriate feed rate for a list of Path commands using the information from a Tool Controler
+    """Set the appropriate feed rate for a list of Path commands using the information from a Tool Controller
 
     Every motion command in the list will have a feed rate parameter added or overwritten based
     on the information stored in the tool controller. If a motion is a plunge (vertical) motion, the
