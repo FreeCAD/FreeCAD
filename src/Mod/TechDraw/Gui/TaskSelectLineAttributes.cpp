@@ -180,11 +180,17 @@ App::Color lineAttributes::getColorValue(void)
 dimAttributes::dimAttributes(void)
 {
     cascadeSpacing = 7.0;
+    lineStretch = 2.0;
 }
 
 void dimAttributes::setCascadeSpacing(double spacing)
 {
     cascadeSpacing = spacing;
+}
+
+void dimAttributes::setLineStretch(double stretch)
+{
+    lineStretch = stretch;
 }
 
 dimAttributes activeDimAttributes; // container holding dimension attributes
@@ -291,6 +297,8 @@ void TaskSelectLineAttributes::setUiEdit()
 
     double cascadeSpacing = activeDimAttributes.getCascadeSpacing();
     ui->sbSpacing->setValue(cascadeSpacing);
+    double lineStretching = activeDimAttributes.getLineStretch();
+    ui->sbStretch->setValue(lineStretching);
 
 }
 
@@ -355,6 +363,8 @@ bool TaskSelectLineAttributes::accept()
 
     double cascadeSpacing = ui->sbSpacing->value();
     activeDimAttributes.setCascadeSpacing(cascadeSpacing);
+    double lineStretching = ui->sbStretch->value();
+    activeDimAttributes.setLineStretch(lineStretching);
 
     return true;
 }
