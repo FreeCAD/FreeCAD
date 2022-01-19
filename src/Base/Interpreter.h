@@ -97,7 +97,7 @@ class BaseExport PyException : public Exception
 {
 public:
     /// constructor does the whole job
-    PyException(void);
+    PyException();
     PyException(const Py::Object &obj);
     ~PyException() throw();
 
@@ -106,13 +106,13 @@ public:
     /// this method determines if the original exception
     /// can be reconstructed or not, if yes throws the reconstructed version
     /// if not, throws a generic PyException.
-    static void ThrowException(void);
+    static void ThrowException();
 
     ///  this function returns the stack trace
-    const std::string &getStackTrace(void) const {return _stackTrace;}
-    const std::string &getErrorType(void) const {return _errorType;}
+    const std::string &getStackTrace() const {return _stackTrace;}
+    const std::string &getErrorType() const {return _errorType;}
     virtual PyObject *getPyExceptionType(void) const override {return _exceptionType;}
-    void ReportException (void) const override;
+    void ReportException () const override;
     /// Sets the Python error indicator and an error message
     virtual void setPyException() const override;
 

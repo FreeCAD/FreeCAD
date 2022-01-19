@@ -135,15 +135,15 @@ inline void Assert(int expr, char *msg)         // C++ assert
 /// return with no return value if nothing happens
 #define Py_Return return Py_INCREF(Py_None), Py_None
 /// returns an error
-#define Py_Error(E, M)   _Py_Error(return(NULL),E,M)
+#define Py_Error(E, M)   _Py_Error(return(nullptr),E,M)
 #define _Py_Error(R, E, M)   {PyErr_SetString(E, M); R;}
 /// returns an error
-#define Py_ErrorObj(E, O)   _Py_ErrorObj(return(NULL),E,O)
+#define Py_ErrorObj(E, O)   _Py_ErrorObj(return(nullptr),E,O)
 #define _Py_ErrorObj(R, E, O)   {PyErr_SetObject(E, O); R;}
 /// checks on a condition and returns an error on failure
 #define Py_Try(F) {if (!(F)) return NULL;}
 /// assert which returns with an error on failure
-#define Py_Assert(A,E,M) {if (!(A)) {PyErr_SetString(E, M); return NULL;}}
+#define Py_Assert(A,E,M) {if (!(A)) {PyErr_SetString(E, M); return nullptr;}}
 
 
 /// This must be the first line of each PyC++ class
@@ -458,10 +458,6 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 #define PY_TRY	try
 
 #define __PY_CATCH(R)                                               \
-    catch(Base::AbortException &e)                                  \
-    {                                                               \
-        _Py_ErrorObj(R,Base::BaseExceptionFreeCADAbort,e.getPyObject());\
-    }                                                               \
     catch(Base::Exception &e)                                       \
     {                                                               \
         auto pye = e.getPyExceptionType();                          \
@@ -469,7 +465,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
             pye = Base::BaseExceptionFreeCADError;                  \
         _Py_ErrorObj(R,pye,e.getPyObject());                        \
     }                                                               \
-    catch(std::exception &e)                                        \
+    catch(const std::exception &e)                                  \
     {                                                               \
         _Py_Error(R,Base::BaseExceptionFreeCADError,e.what());      \
     }                                                               \
@@ -492,7 +488,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 #  define _PY_CATCH(R) __PY_CATCH(R)
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
 
-#define PY_CATCH _PY_CATCH(return(NULL))
+#define PY_CATCH _PY_CATCH(return(nullptr))
 
 /** Python helper class
  *  This class encapsulate the Decoding of UTF8 to a python object.
@@ -501,8 +497,9 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 inline PyObject * PyAsUnicodeObject(const char *str)
 {
     // Returns a new reference, don't increment it!
-    PyObject *p = PyUnicode_DecodeUTF8(str,strlen(str),0);
-    if(!p)
+    Py_ssize_t len = Py_SAFE_DOWNCAST(strlen(str), size_t, Py_ssize_t);
+    PyObject *p = PyUnicode_DecodeUTF8(str, len, nullptr);
+    if (!p)
         throw Base::UnicodeError("UTF8 conversion failure at PyAsUnicodeString()");
     return p;
 }

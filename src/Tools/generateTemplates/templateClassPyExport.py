@@ -568,11 +568,6 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 -
         return ret;
     } // Please sync the following catch implementation with PY_CATCH
-    catch(Base::AbortException &e)
-    {
-        PyErr_SetObject(Base::BaseExceptionFreeCADAbort,e.getPyObject());
-        return nullptr;
-    }
     catch(Base::Exception &e)
     {
         auto pye = e.getPyExceptionType();
@@ -581,7 +576,7 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
         PyErr_SetObject(pye,e.getPyObject());
         return nullptr;
     }
-    catch(std::exception &e)
+    catch(const std::exception &e)
     {
         PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
         return nullptr;
@@ -589,11 +584,6 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
     catch(const Py::Exception&)
     {
         // The exception text is already set
-        return nullptr;
-    }
-    catch(const char *e)
-    {
-        PyErr_SetString(Base::BaseExceptionFreeCADError,e);
         return nullptr;
     }
 #ifndef DONT_CATCH_CXX_EXCEPTIONS
@@ -741,11 +731,6 @@ PyObject *@self.export.Name@::_getattr(const char *attr)			// __getattr__ functi
         PyObject *r = getCustomAttributes(attr);
         if(r) return r;
     } // Please sync the following catch implementation with PY_CATCH
-    catch(Base::AbortException &e)
-    {
-        PyErr_SetObject(Base::BaseExceptionFreeCADAbort,e.getPyObject());
-        return nullptr;
-    }
     catch(Base::Exception &e)
     {
         auto pye = e.getPyExceptionType();
@@ -754,7 +739,7 @@ PyObject *@self.export.Name@::_getattr(const char *attr)			// __getattr__ functi
         PyErr_SetObject(pye,e.getPyObject());
         return nullptr;
     }
-    catch(std::exception &e)
+    catch(const std::exception &e)
     {
         PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
         return nullptr;
@@ -762,11 +747,6 @@ PyObject *@self.export.Name@::_getattr(const char *attr)			// __getattr__ functi
     catch(const Py::Exception&)
     {
         // The exception text is already set
-        return nullptr;
-    }
-    catch(const char *e)
-    {
-        PyErr_SetString(Base::BaseExceptionFreeCADError,e);
         return nullptr;
     }
 #ifndef DONT_CATCH_CXX_EXCEPTIONS
@@ -801,11 +781,6 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
         else if (r == -1)
             return -1;
     } // Please sync the following catch implementation with PY_CATCH
-    catch(Base::AbortException &e)
-    {
-        PyErr_SetObject(Base::BaseExceptionFreeCADAbort,e.getPyObject());
-        return -1;
-    }
     catch(Base::Exception &e)
     {
         auto pye = e.getPyExceptionType();
@@ -814,7 +789,7 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
         PyErr_SetObject(pye,e.getPyObject());
         return -1;
     }
-    catch(std::exception &e)
+    catch(const std::exception &e)
     {
         PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
         return -1;
@@ -822,11 +797,6 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
     catch(const Py::Exception&)
     {
         // The exception text is already set
-        return -1;
-    }
-    catch(const char *e)
-    {
-        PyErr_SetString(Base::BaseExceptionFreeCADError,e);
         return -1;
     }
 #ifndef DONT_CATCH_CXX_EXCEPTIONS

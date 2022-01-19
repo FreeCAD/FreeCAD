@@ -39,7 +39,7 @@ using namespace Base;
 TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass)
 
 
-Exception::Exception(void)
+Exception::Exception()
   : _line(0)
   , _isTranslatable(false)
   , _isReported(false)
@@ -48,7 +48,8 @@ Exception::Exception(void)
 }
 
 Exception::Exception(const Exception &inst)
-  : _sErrMsg(inst._sErrMsg)
+  : BaseClass(inst)
+  , _sErrMsg(inst._sErrMsg)
   , _file(inst._file)
   , _line(inst._line)
   , _function(inst._function)
@@ -82,7 +83,7 @@ Exception &Exception::operator=(const Exception &inst)
     return *this;
 }
 
-const char* Exception::what(void) const throw()
+const char* Exception::what() const throw()
 {
     return _sErrMsg.c_str();
 }
@@ -105,7 +106,7 @@ void Exception::ReportException (void) const
     }
 }
 
-PyObject * Exception::getPyObject(void)
+PyObject * Exception::getPyObject()
 {
     Py::Dict edict;
     edict.setItem("sclassname", Py::String(typeid(*this).name()));
@@ -178,6 +179,11 @@ AbortException::AbortException()
 const char* AbortException::what() const throw()
 {
     return Exception::what();
+}
+
+PyObject * AbortException::getPyExceptionType() const
+{
+    return BaseExceptionFreeCADAbort;
 }
 
 // ---------------------------------------------------------
@@ -297,7 +303,7 @@ const char* FileException::what() const throw()
     return _sErrMsgAndFileName.c_str();
 }
 
-void FileException::ReportException (void) const
+void FileException::ReportException () const
 {
     if (!_isReported) {
         const char *msg;
@@ -315,7 +321,7 @@ void FileException::ReportException (void) const
     }
 }
 
-PyObject * FileException::getPyObject(void)
+PyObject * FileException::getPyObject()
 {
     Py::Dict edict(Exception::getPyObject(), true);
     edict.setItem("filename", Py::String(this->file.fileName()));
@@ -324,7 +330,7 @@ PyObject * FileException::getPyObject(void)
 
 void FileException::setPyObject( PyObject * pydict)
 {
-    if (pydict!=NULL) {
+    if (pydict!=nullptr) {
         Exception::setPyObject(pydict);
 
         Py::Dict edict(pydict);
@@ -659,43 +665,43 @@ PyObject *NotImplementedError::getPyExceptionType() const {
 
 // ---------------------------------------------------------
 
-DivisionByZeroError::DivisionByZeroError()
+ZeroDivisionError::ZeroDivisionError()
   : Exception()
 {
 }
 
-DivisionByZeroError::DivisionByZeroError(const char * sMessage)
+ZeroDivisionError::ZeroDivisionError(const char * sMessage)
   : Exception(sMessage)
 {
 }
 
-DivisionByZeroError::DivisionByZeroError(const std::string& sMessage)
+ZeroDivisionError::ZeroDivisionError(const std::string& sMessage)
   : Exception(sMessage)
 {
 }
 
-PyObject *DivisionByZeroError::getPyExceptionType() const {
+PyObject *ZeroDivisionError::getPyExceptionType() const {
     return PyExc_ZeroDivisionError;
 }
 
 // ---------------------------------------------------------
 
-ReferencesError::ReferencesError()
+ReferenceError::ReferenceError()
 : Exception()
 {
 }
 
-ReferencesError::ReferencesError(const char * sMessage)
+ReferenceError::ReferenceError(const char * sMessage)
   : Exception(sMessage)
 {
 }
 
-ReferencesError::ReferencesError(const std::string& sMessage)
+ReferenceError::ReferenceError(const std::string& sMessage)
   : Exception(sMessage)
 {
 }
 
-PyObject *ReferencesError::getPyExceptionType() const {
+PyObject *ReferenceError::getPyExceptionType() const {
     return PyExc_ReferenceError;
 }
 
@@ -871,7 +877,7 @@ SignalException::SignalException()
 
 SignalException::~SignalException()
 {
-    sigaction (SIGSEGV, &old_action, NULL);
+    sigaction (SIGSEGV, &old_action, nullptr);
 #ifdef _DEBUG
     std::cout << "Restore old signal handler" << std::endl;
 #endif
