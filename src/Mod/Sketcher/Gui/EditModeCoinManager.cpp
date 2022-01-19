@@ -627,6 +627,16 @@ void EditModeCoinManager::updateColor(const GeoListFacade & geolistfacade)
     pEditModeConstraintCoinManager->updateConstraintColor(constraints);
 }
 
+void EditModeCoinManager::setConstraintSelectability(bool enabled /* = true */)
+{
+    if (enabled) {
+        editModeScenegraphNodes.constrGrpSelect->style.setValue(SoPickStyle::SHAPE);
+    }
+    else {
+        editModeScenegraphNodes.constrGrpSelect->style.setValue(SoPickStyle::UNPICKABLE);
+    }
+}
+
 void EditModeCoinManager::createEditModeInventorNodes()
 {
     // 1 - Create the edit root node
@@ -745,6 +755,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
 
     // coin nodes for the constraints +++++++++++++++++++++++++++++++++++++++++++++++++++
     pEditModeConstraintCoinManager->createEditModeInventorNodes();
+    setConstraintSelectability(); // Ensure default value;
 
     // group node for the Geometry information visual +++++++++++++++++++++++++++++++++++
     MtlBind = new SoMaterialBinding;

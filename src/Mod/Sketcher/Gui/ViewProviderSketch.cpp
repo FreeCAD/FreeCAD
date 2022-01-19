@@ -368,6 +368,8 @@ void ViewProviderSketch::activateHandler(DrawSketchHandler *newHandler)
     sketchHandler->sketchgui = this;
     sketchHandler->activated(this);
 
+    editCoinManager->setConstraintSelectability(false);
+
     // make sure receiver has focus so immediately pressing Escape will be handled by
     // ViewProviderSketch::keyPressed() and dismiss the active handler, and not the entire
     // sketcher editor
@@ -387,7 +389,7 @@ void ViewProviderSketch::deactivateHandler()
         sketchHandler->unsetCursor();
         sketchHandler = nullptr;
     }
-
+    editCoinManager->setConstraintSelectability(true);
     Mode = STATUS_NONE;
 }
 
