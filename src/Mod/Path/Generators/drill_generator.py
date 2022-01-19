@@ -67,6 +67,9 @@ def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1):
     ):
         raise ValueError("edge is not aligned with Z axis")
 
+    if startPoint.z < endPoint.z:
+        raise ValueError("start point is below end point")
+
     cmdParams = {}
     cmdParams["X"] = startPoint.x
     cmdParams["Y"] = startPoint.y

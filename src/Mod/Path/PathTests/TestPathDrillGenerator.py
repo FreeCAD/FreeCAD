@@ -64,7 +64,11 @@ class TestPathDrillGenerator(PathTestUtils.PathTestBase):
         """Test edge alignment check"""
         v1 = FreeCAD.Vector(0, 10, 10)
         v2 = FreeCAD.Vector(0, 0, 0)
+        e = Part.makeLine(v1, v2)
+        self.assertRaises(ValueError, generator.generate, e)
 
+        v1 = FreeCAD.Vector(0, 0, 0)
+        v2 = FreeCAD.Vector(0, 0, 10)
         e = Part.makeLine(v1, v2)
 
         self.assertRaises(ValueError, generator.generate, e)

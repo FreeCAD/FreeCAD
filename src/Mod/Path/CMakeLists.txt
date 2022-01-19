@@ -148,6 +148,7 @@ SET(PathScripts_SRCS
 SET(Generator_SRCS
     Generators/drill_generator.py
     Generators/rotation_generator.py
+    Generators/helix_generator.py
 )
 
 SET(PathScripts_post_SRCS
@@ -231,6 +232,7 @@ SET(PathTests_SRCS
     PathTests/TestPathGeom.py
     PathTests/TestPathHelix.py
     PathTests/TestPathHelpers.py
+    PathTests/TestPathHelixGenerator.py
     PathTests/TestPathLog.py
     PathTests/TestPathOpTools.py
     PathTests/TestPathPost.py
