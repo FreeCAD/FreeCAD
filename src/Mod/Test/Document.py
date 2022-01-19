@@ -205,7 +205,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.assertEqual(ext.createInstance(), None)
 
     obj = self.Doc.addObject("App::FeaturePython", "Object")
-    with self.assertRaises(RuntimeError):
+    with self.assertRaises(TypeError):
       obj.addProperty("App::DocumentObjectExtension", "Property")
 
     with self.assertRaises(TypeError):

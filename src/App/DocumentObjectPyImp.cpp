@@ -88,19 +88,8 @@ PyObject*  DocumentObjectPy::addProperty(PyObject *args)
         PyMem_Free(sDoc);
     }
 
-    App::Property* prop=0;
-    try {
-        prop = getDocumentObjectPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
+    getDocumentObjectPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
             PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
-    }
-    catch (const Base::Exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    if (!prop) {
-        std::stringstream str;
-        str << "No property found of type '" << sType << "'" << std::ends;
-        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
-    }
 
     return Py::new_reference_to(this);
 }
@@ -111,13 +100,8 @@ PyObject*  DocumentObjectPy::removeProperty(PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &sName))
         return NULL;
 
-    try {
-        bool ok = getDocumentObjectPtr()->removeDynamicProperty(sName);
-        return Py_BuildValue("O", (ok ? Py_True : Py_False));
-    }
-    catch (const Base::Exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
+    bool ok = getDocumentObjectPtr()->removeDynamicProperty(sName);
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
 PyObject*  DocumentObjectPy::supportedProperties(PyObject *args)
