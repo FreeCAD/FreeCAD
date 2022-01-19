@@ -233,6 +233,11 @@ public:
     void updateGridExtent();
     //@}
 
+    /** @name change constraints selectability*/
+    //@{
+    void setConstraintSelectability(bool enabled = true);
+    //@}
+
 private:
     // This function populates the coin nodes with the information of the current geometry
     void processGeometry(const GeoListFacade & geolistfacade);
