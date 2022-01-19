@@ -51,6 +51,8 @@ from ArchSectionPlane import *
 from ArchWindow import *
 from ArchWindowPresets import *
 from ArchAxis import *
+from ArchAxisSystem import *
+from ArchGrid import *
 from ArchRoof import *
 from ArchSpace import *
 from ArchStairs import *

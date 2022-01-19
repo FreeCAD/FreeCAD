@@ -28,6 +28,8 @@ SET(Arch_SRCS
     ArchWindow.py
     ArchWindowPresets.py
     ArchAxis.py
+    ArchAxisSystem.py
+    ArchGrid.py
     ArchVRM.py
     ArchRoof.py
     ArchStairs.py
