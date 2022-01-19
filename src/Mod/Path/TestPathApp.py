@@ -28,6 +28,7 @@ from PathTests.TestPathDeburr import TestPathDeburr
 from PathTests.TestPathDepthParams import depthTestCases
 from PathTests.TestPathDressupDogbone import TestDressupDogbone
 from PathTests.TestPathDressupHoldingTags import TestHoldingTags
+from PathTests.TestPathDrillable import TestPathDrillable
 from PathTests.TestPathDrillGenerator import TestPathDrillGenerator
 from PathTests.TestPathGeom import TestPathGeom
 # from PathTests.TestPathHelix import TestPathHelix
