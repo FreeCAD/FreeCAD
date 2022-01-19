@@ -28,6 +28,7 @@ import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
+import PathScripts.drillableLib as drillableLib
 import math
 import numpy
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -444,7 +445,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 for baseShape, wire in holes:
                     cont = False
                     f = Part.makeFace(wire, "Part::FaceMakerSimple")
-                    drillable = PathUtils.isDrillable(baseShape, wire)
+                    drillable = drillableLib.isDrillable(baseShape, f)
 
                     if obj.processCircles:
                         if drillable:
