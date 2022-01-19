@@ -237,7 +237,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
      <item>
       <widget class="QLabel" name="fclabel">
        <property name="text">
-        <string>Python executable:</string>
+        <string>Python executable (optional):</string>
        </property>
       </widget>
      </item>
@@ -256,7 +256,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
         </size>
        </property>
        <property name="toolTip">
-        <string>The path to the Python executable for package installation with pip</string>
+        <string>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</string>
        </property>
        <property name="prefEntry" stdset="0">
         <cstring>PythonExecutableForPip</cstring>
