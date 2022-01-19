@@ -1447,7 +1447,12 @@ void execCreateHorizCoordDimension(Gui::Command* cmd) {
     allVertexes = _getVertexInfo(objFeat, subNames);
     if (!allVertexes.empty()) {
         if (allVertexes.size() > 1) {
+            dimVertex firstVertex = allVertexes[0];
+            dimVertex secondVertex = allVertexes[1];
             std::sort(allVertexes.begin(), allVertexes.end(), sortX);
+            if (firstVertex.point.x > secondVertex.point.x) {
+                std::reverse(allVertexes.begin(), allVertexes.end());
+            }
             float dimDistance = activeDimAttributes.getCascadeSpacing();
             float yMaster = allVertexes[0].point.y - dimDistance;
             if (signbit(yMaster))
@@ -1513,8 +1518,12 @@ void execCreateVertCoordDimension(Gui::Command* cmd) {
     allVertexes = _getVertexInfo(objFeat, subNames);
     if (!allVertexes.empty()) {
         if (allVertexes.size() > 1) {
+            dimVertex firstVertex = allVertexes[0];
+            dimVertex secondVertex = allVertexes[1];
             std::sort(allVertexes.begin(), allVertexes.end(), sortY);
-            std::reverse(allVertexes.begin(), allVertexes.end());
+            if (firstVertex.point.y > secondVertex.point.y) {
+                std::reverse(allVertexes.begin(), allVertexes.end());
+            }
             float dimDistance = activeDimAttributes.getCascadeSpacing();
             float xMaster = allVertexes[0].point.x + dimDistance;
             if (signbit(xMaster))
@@ -1609,7 +1618,12 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
                 else
                     carrierVertexes.push_back(oldVertex);
             }
+            dimVertex firstVertex = carrierVertexes[0];
+            dimVertex secondVertex = carrierVertexes[1];
             std::sort(carrierVertexes.begin(), carrierVertexes.end(), sortX);
+            if (firstVertex.point.x > secondVertex.point.x) {
+                std::reverse(carrierVertexes.begin(), carrierVertexes.end());
+            }
             for (long unsigned int n = 0; n < allVertexes.size() - 1; n++) {
                 TechDraw::DrawViewDimension* dim;
                 dim = _createLinDimension(cmd, objFeat, carrierVertexes[0].name, carrierVertexes[n + 1].name, "Distance");
