@@ -1456,7 +1456,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend) {
                         }
                         double scale = objFeat->getScale();
                         Base::Vector3d direction = (P1 - P0).Normalize();
-                        Base::Vector3d delta = direction * 2.0;
+                        Base::Vector3d delta = direction * activeDimAttributes.getLineStretch();
                         Base::Vector3d startPt, endPt;
                         if (extend) {
                             startPt = P0 - delta;

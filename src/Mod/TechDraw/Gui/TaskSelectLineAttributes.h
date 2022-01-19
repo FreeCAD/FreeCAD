@@ -32,12 +32,15 @@
 
 class dimAttributes {
     double cascadeSpacing;
+    double lineStretch;
 
     public:
 
     dimAttributes(void);
     void setCascadeSpacing(double);
     double getCascadeSpacing(void) {return cascadeSpacing;}
+    void setLineStretch(double);
+    double getLineStretch(void) {return lineStretch;}
 
 }; // class dimAttributes
 
