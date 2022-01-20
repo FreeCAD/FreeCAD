@@ -134,6 +134,15 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
         )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "OffsetExtra",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Extra value to stay away from final profile- good for roughing toolpath",
+            ),
+        )
 
         ENUMS = self.helixOpPropertyEnumerations()
         for n in ENUMS:
@@ -148,6 +157,16 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
             )
 
+        if not hasattr(obj, "OffsetExtra"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "OffsetExtra",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extra value to stay away from final profile- good for roughing toolpath",
+                ),
+            )
     def circularHoleExecute(self, obj, holes):
         """circularHoleExecute(obj, holes) ... generate helix commands for each hole in holes"""
         PathLog.track()
@@ -177,13 +196,13 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "step_down": obj.StepDown.Value,
             "step_over": obj.StepOver / 100,
             "tool_diameter": tooldiamter,
-            "inner_radius": obj.StartRadius.Value,
+            "inner_radius": obj.StartRadius.Value + obj.OffsetExtra.Value,
             "direction": obj.Direction,
             "startAt": obj.StartSide,
         }
 
         for hole in holes:
-            args["hole_radius"] = hole["r"] / 2
+            args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetExtra.Value)
             startPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
