@@ -22,7 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathHelix as PathHelix
 import PathScripts.PathLog as PathLog
@@ -45,10 +45,10 @@ else:
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
-    '''Page controller class for Helix operations.'''
+    """Page controller class for Helix operations."""
 
     def getForm(self):
-        '''getForm() ... return UI'''
+        """getForm() ... return UI"""
 
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
         comboToPropertyMap = [("startSide", "StartSide"), ("direction", "Direction")]
@@ -74,7 +74,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
                 box.addItem(text, data)
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        """getFields(obj) ... transfers values from UI to obj's proprties"""
         PathLog.track()
         if obj.Direction != str(self.form.direction.currentText()):
             obj.Direction = str(self.form.direction.currentText())
@@ -87,7 +87,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         PathLog.track()
 
         self.form.stepOverPercent.setValue(obj.StepOver)
@@ -98,7 +98,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setupCoolant(obj, self.form.coolantController)
 
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
 
         signals.append(self.form.stepOverPercent.editingFinished)
@@ -109,12 +109,17 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         return signals
 
-Command = PathOpGui.SetupOperation('Helix',
-        PathHelix.Create,
-        TaskPanelOpPage,
-        'Path_Helix',
-        QT_TRANSLATE_NOOP("Path_Helix", "Helix"),
-        QT_TRANSLATE_NOOP("Path_Helix", "Creates a Path Helix object from a features of a base object"),
-        PathHelix.SetupProperties)
+
+Command = PathOpGui.SetupOperation(
+    "Helix",
+    PathHelix.Create,
+    TaskPanelOpPage,
+    "Path_Helix",
+    QT_TRANSLATE_NOOP("Path_Helix", "Helix"),
+    QT_TRANSLATE_NOOP(
+        "Path_Helix", "Creates a Path Helix object from a features of a base object"
+    ),
+    PathHelix.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathHelixGui... done\n")
