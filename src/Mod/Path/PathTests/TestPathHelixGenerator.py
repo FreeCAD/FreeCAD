@@ -42,7 +42,7 @@ def _resetArgs():
         "edge": edg,
         "hole_radius": 10.0,
         "step_down": 1.0,
-        "step_over": 5.0,
+        "step_over": 0.5,
         "tool_diameter": 5.0,
         "inner_radius": 0.0,
         "direction": "CW",
@@ -62,7 +62,6 @@ G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
 G0 X5.000000 Y5.000000 Z18.000000\
 G0 Z20.000000"
 
-
     def test00(self):
         """Test Basic Helix Generator Return"""
         args = _resetArgs()
@@ -71,34 +70,27 @@ G0 Z20.000000"
         self.assertTrue(type(result[0]) is Path.Command)
 
         gcode = "".join([r.toGCode() for r in result])
-        print(gcode)
         self.assertTrue(
             gcode == self.expectedHelixGCode, "Incorrect helix g-code generated"
         )
 
     def test01(self):
-        """Test Basic Helix Generator hole_radius is float > 0"""
+        """Test Value and Type checking"""
         args = _resetArgs()
-        args["hole_radius"] = '10'
-        self.assertRaises(ValueError, generator.generate, **args)
+        args["hole_radius"] = "10"
+        self.assertRaises(TypeError, generator.generate, **args)
 
         args["hole_radius"] = -10.0
         self.assertRaises(ValueError, generator.generate, **args)
 
-    def test02(self):
-        """Test Basic Helix Generator inner_radius is float"""
         args = _resetArgs()
-        args["inner_radius"] = '2'
-        self.assertRaises(ValueError, generator.generate, **args)
+        args["inner_radius"] = "2"
+        self.assertRaises(TypeError, generator.generate, **args)
 
-    def test03(self):
-        """Test Basic Helix Generator tool_diameter is float"""
         args = _resetArgs()
-        args["tool_diameter"] = '5'
-        self.assertRaises(ValueError, generator.generate, **args)
+        args["tool_diameter"] = "5"
+        self.assertRaises(TypeError, generator.generate, **args)
 
-    def test04(self):
-        """Test Basic Helix Generator tool fit with radius difference less than tool diameter"""
         args = _resetArgs()
         # require tool fit 1: radius diff less than tool diam
         args["hole_radius"] = 10.0
@@ -112,14 +104,18 @@ G0 Z20.000000"
         args["tool_diameter"] = 5.0
         self.assertRaises(ValueError, generator.generate, **args)
 
-    def test05(self):
-        """Test Basic Helix Generator validate the startAt enumeration value"""
+        # step_over is a percent value between 0 and 1
+        args = _resetArgs()
+        args["step_over"] = 50
+        self.assertRaises(ValueError, generator.generate, **args)
+        args["step_over"] = "50"
+        self.assertRaises(TypeError, generator.generate, **args)
+
+        # Other argument testing
         args = _resetArgs()
         args["startAt"] = "Other"
         self.assertRaises(ValueError, generator.generate, **args)
 
-    def test06(self):
-        """Test Basic Helix Generator validate the direction enumeration value"""
         args = _resetArgs()
         args["direction"] = "clock"
         self.assertRaises(ValueError, generator.generate, **args)
