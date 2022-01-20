@@ -27,6 +27,9 @@ import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathHelix as PathHelix
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+translate = FreeCAD.Qt.translate
 
 from PySide import QtCore
 
@@ -46,7 +49,29 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def getForm(self):
         '''getForm() ... return UI'''
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
+
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
+        comboToPropertyMap = [("startSide", "StartSide"), ("direction", "Direction")]
+
+        enumTups = PathHelix.ObjectHelix.helixOpPropertyEnumerations(dataType="raw")
+
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+        return form
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
 
     def getFields(self, obj):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
@@ -88,8 +113,8 @@ Command = PathOpGui.SetupOperation('Helix',
         PathHelix.Create,
         TaskPanelOpPage,
         'Path_Helix',
-        QtCore.QT_TRANSLATE_NOOP("Path_Helix", "Helix"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Helix", "Creates a Path Helix object from a features of a base object"),
+        QT_TRANSLATE_NOOP("Path_Helix", "Helix"),
+        QT_TRANSLATE_NOOP("Path_Helix", "Creates a Path Helix object from a features of a base object"),
         PathHelix.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathHelixGui... done\n")
