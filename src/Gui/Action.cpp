@@ -921,8 +921,8 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     int numRecentFiles = std::min<int>(recentFiles.count(), files.count());
     for (int index = 0; index < numRecentFiles; index++) {
         QFileInfo fi(files[index]);
-        QString accel = tr(QString::fromLatin1(shortcut_modifiers.c_str())\
-                           .append(QString::number(index+1,10)).toStdString().c_str());
+        QString accel = QString::fromStdString(shortcut_modifiers);
+        accel.append(QString::number(index+1,10)).toStdString();
         recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(index+1).arg(fi.baseName()));
         recentFiles[index]->setStatusTip(tr("Run macro %1 (Shift+click to edit) shortcut: %2").arg(files[index]).arg(accel));
         recentFiles[index]->setToolTip(files[index]); // set the full name that we need later for saving
