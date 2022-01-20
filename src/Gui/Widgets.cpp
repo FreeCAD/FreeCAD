@@ -371,7 +371,7 @@ void ActionSelector::on_downButton_clicked()
 
 /**
  * Constructs a line edit with no text.
- * The \a parent and \a name arguments are sent to the QLineEdit constructor.
+ * The \a parent argument is sent to the QLineEdit constructor.
  */
 AccelLineEdit::AccelLineEdit ( QWidget * parent )
   : QLineEdit(parent)
