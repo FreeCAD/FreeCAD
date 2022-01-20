@@ -129,7 +129,7 @@ private:
 // ------------------------------------------------------------------------------
 
 /**
- * The AccelLineEdit class provides a lineedit to specfify shortcuts.
+ * The AccelLineEdit class provides a lineedit to specify shortcuts.
  * \author Werner Mayer
  */
 class GuiExport AccelLineEdit : public QLineEdit
