@@ -82,7 +82,8 @@ void DlgSettingsMacroImp::saveSettings()
     ui->FileLogCheckBox->onSave();
     ui->MacroPath_2->onSave();
     ui->RecentMacros->onSave();
-    ui->ShortcutModifiers->onSave();
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
+    hGrp->SetASCII("ShortcutModifiers", qPrintable(ui->ShortcutModifiers->text()));
     ui->ShortcutCount->onSave();
     setRecentMacroSize();
 }
@@ -97,7 +98,8 @@ void DlgSettingsMacroImp::loadSettings()
     ui->FileLogCheckBox->onRestore();
     ui->MacroPath_2->onRestore();
     ui->RecentMacros->onRestore();
-    ui->ShortcutModifiers->onRestore();
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
+    ui->ShortcutModifiers->setText(QString::fromStdString(hGrp->GetASCII("ShortcutModifiers", "Ctrl+Shift+")));
     ui->ShortcutCount->onRestore();
 }
 
