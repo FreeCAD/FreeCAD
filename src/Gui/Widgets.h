@@ -150,6 +150,22 @@ private:
 // ------------------------------------------------------------------------------
 
 /**
+ * The ModifierLineEdit class provides a lineedit to specify modifiers.
+ */
+class GuiExport ModifierLineEdit : public QLineEdit
+{
+  Q_OBJECT
+
+public:
+    ModifierLineEdit(QWidget * parent=0);
+
+protected:
+    void keyPressEvent(QKeyEvent * e);
+};
+
+// ------------------------------------------------------------------------------
+
+/**
  * The ClearLineEdit class adds a clear button at the right side.
  * http://stackoverflow.com/questions/21232224/qlineedit-with-custom-button
  */
