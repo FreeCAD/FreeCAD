@@ -463,6 +463,66 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
 
 // ------------------------------------------------------------------------------
 
+/* TRANSLATOR Gui::ModifierLineEdit */
+
+/**
+ * Constructs a line edit with no text.
+ * The \a parent argument is sent to the QLineEdit constructor.
+ */
+ModifierLineEdit::ModifierLineEdit ( QWidget * parent )
+  : QLineEdit(parent)
+{
+    setPlaceholderText(tr("none"));
+}
+
+/**
+ * Checks which modifiers are pressed and show it as text.
+ */
+void ModifierLineEdit::keyPressEvent ( QKeyEvent * e)
+{
+    int key = e->key();
+    Qt::KeyboardModifiers state = e->modifiers();
+
+    switch(key) {
+    case Qt::Key_Backspace:
+    case Qt::Key_Delete:
+        clear();
+        return;
+    case Qt::Key_Control:
+    case Qt::Key_Shift:
+    case Qt::Key_Alt:
+    case Qt::Key_Meta:
+        break;;
+    default:
+        return;
+    }
+
+    clear();
+    QString txtLine;
+
+    // Handles modifiers applying a mask.
+    if ((state & Qt::ControlModifier) == Qt::ControlModifier) {
+        QKeySequence ks(Qt::CTRL);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if ((state & Qt::AltModifier) == Qt::AltModifier) {
+        QKeySequence ks(Qt::ALT);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if ((state & Qt::ShiftModifier) == Qt::ShiftModifier) {
+        QKeySequence ks(Qt::SHIFT);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if ((state & Qt::MetaModifier) == Qt::MetaModifier) {
+        QKeySequence ks(Qt::META);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+
+    setText(txtLine);
+}
+
+// ------------------------------------------------------------------------------
+
 #if QT_VERSION >= 0x050200
 ClearLineEdit::ClearLineEdit (QWidget * parent)
   : QLineEdit(parent)
