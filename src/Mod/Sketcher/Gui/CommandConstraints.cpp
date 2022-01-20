@@ -3725,12 +3725,6 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
     int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef, GeoId3 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::PointPos::none, PosId2 = Sketcher::PointPos::none, PosId3 = Sketcher::PointPos::none;
 
-    // check if the edge already has a Block constraint
-    if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
-        showNoConstraintBetweenFixedGeometry();
-        return;
-    }
-
     switch (seqIndex) {
     case 0: // {SelEdge, SelEdgeOrAxis}
     case 1: // {SelEdgeOrAxis, SelEdge}
@@ -3738,6 +3732,12 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
     case 3: // {SelExternalEdge, SelEdge}
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
+
+        // check if the edge already has a Block constraint
+        if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
+            showNoConstraintBetweenFixedGeometry();
+            return;
+        }
 
         const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
@@ -3914,6 +3914,12 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
     }
 
     if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
+
+        // check if the edge already has a Block constraint
+        if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
+            showNoConstraintBetweenFixedGeometry();
+            return;
+        }
 
         if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -4417,12 +4423,6 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
     int GeoId1 = GeoEnum::GeoUndef, GeoId2 = GeoEnum::GeoUndef, GeoId3 = GeoEnum::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::PointPos::none, PosId2 = Sketcher::PointPos::none, PosId3 = Sketcher::PointPos::none;
 
-    // check if the edge already has a Block constraint
-    if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
-      showNoConstraintBetweenFixedGeometry();
-      return;
-    }
-
     switch (seqIndex) {
     case 0: // {SelEdge, SelEdgeOrAxis}
     case 1: // {SelEdgeOrAxis, SelEdge}
@@ -4430,6 +4430,12 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
     case 3: // {SelExternalEdge, SelEdge}
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
+
+        // check if the edge already has a Block constraint
+        if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
+            showNoConstraintBetweenFixedGeometry();
+            return;
+        }
 
         const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
@@ -4588,6 +4594,12 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
         PosId1 = selSeq.at(0).PosId; PosId2 = selSeq.at(1).PosId;
 
+        // check if the edge already has a Block constraint
+        if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
+            showNoConstraintBetweenFixedGeometry();
+            return;
+        }
+
         if (isSimpleVertex(Obj, GeoId1, PosId1) ||
             isSimpleVertex(Obj, GeoId2, PosId2)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -4624,6 +4636,12 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
     }
 
     if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
+
+        // check if the edge already has a Block constraint
+        if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
+            showNoConstraintBetweenFixedGeometry();
+            return;
+        }
 
         if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
