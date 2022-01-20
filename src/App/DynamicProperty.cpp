@@ -181,25 +181,29 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char*
     if(Base::Tools::getIdentifier(name) != name) 
         FC_THROWM(Base::NameError, "Invalid property name '" << name << "'");
 
-    Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(type,true));
-    if (!base) 
-        FC_THROWM(Base::RuntimeError, "Failed to create property " 
-                << pc.getFullName() << '.' << name << " of type " << type);
-    if (!base->getTypeId().isDerivedFrom(Property::getClassTypeId())) {
-        delete base;
-        FC_THROWM(Base::ValueError, "Invalid type " << type << " for property " << pc.getFullName() << '.' << name);
+    Base::Type propType = Base::Type::getTypeIfDerivedFrom(type, App::Property::getClassTypeId(), true);
+    if (propType.isBad()) {
+        FC_THROWM(Base::TypeError, "Invalid type "
+                << type << " for property " << pc.getFullName() << '.' << name);
     }
 
-    // get unique name
-    Property* pcProperty = static_cast<Property*>(base);
+    void* propInstance = propType.createInstance();
+    if (!propInstance) {
+        FC_THROWM(Base::RuntimeError, "Failed to create property "
+                << pc.getFullName() << '.' << name << " of type " << type);
+    }
+
+    Property* pcProperty = static_cast<Property*>(propInstance);
 
     auto res = props.get<0>().emplace(pcProperty,name, nullptr, group, doc, attr, ro, hidden);
 
     pcProperty->setContainer(&pc);
     pcProperty->myName = res.first->name.c_str();
 
-    if(ro) attr |= Prop_ReadOnly;
-    if(hidden) attr |= Prop_Hidden;
+    if(ro)
+        attr |= Prop_ReadOnly;
+    if(hidden)
+        attr |= Prop_Hidden;
 
     pcProperty->syncType(attr);
     pcProperty->StatusBits.set((size_t)Property::PropDynamic);

@@ -50,7 +50,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintHeatflux, FemGui::ViewProviderFemConstraint)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintHeatflux, FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintHeatflux::ViewProviderFemConstraintHeatflux()
 {

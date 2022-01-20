@@ -101,6 +101,8 @@ public:
   bool isDerivedFrom(const Type type) const;
 
   static int getAllDerivedFrom(const Type type, std::vector<Type>& List);
+  /// Returns the given named type if is derived from parent type, otherwise return bad type
+  static Type getTypeIfDerivedFrom(const char* name , const Type parent, bool bLoadModule=false);
 
   static int getNumTypes(void);
 

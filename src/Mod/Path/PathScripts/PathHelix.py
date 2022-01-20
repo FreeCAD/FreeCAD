@@ -29,7 +29,7 @@ import PathScripts.PathOp as PathOp
 
 from PathScripts.PathUtils import fmt
 from PathScripts.PathUtils import findParentJob
-from PathScripts.PathUtils import sort_jobs
+from PathScripts.PathUtils import sort_locations
 from PySide import QtCore
 
 __title__ = "Path Helix Drill Operation"
@@ -79,7 +79,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         output = ''
         output += "G0 Z" + fmt(zsafe)
 
-        holes = sort_jobs(holes, ['x', 'y'])
+        holes = sort_locations(holes, ['x', 'y'])
         for hole in holes:
             output += self.helix_cut(obj, hole['x'], hole['y'], hole['r'] / 2, float(obj.StartRadius.Value), (float(obj.StepOver.Value) / 50.0) * self.radius)
         PathLog.debug(output)

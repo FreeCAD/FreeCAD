@@ -32,11 +32,11 @@
 # include <TopExp.hxx>
 #endif
 
-#include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Gui/Application.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
+#include <Mod/PartDesign/App/FeatureDressUp.h>
 
 #include "ViewProviderDressUp.h"
-#include "ReferenceHighlighter.h"
 #include "TaskDressUpParameters.h"
 
 using namespace PartDesignGui;
@@ -99,7 +99,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
             originalFaceColors = vp->DiffuseColor.getValues();
             std::vector<App::Color> colors = originalFaceColors;
 
-            ReferenceHighlighter highlighter(base->Shape.getValue(), ShapeColor.getValue());
+            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), ShapeColor.getValue());
             highlighter.getFaceColors(faces, colors);
             vp->DiffuseColor.setValues(colors);
         }
@@ -107,7 +107,7 @@ void ViewProviderDressUp::highlightReferences(const bool on)
             originalLineColors = vp->LineColorArray.getValues();
             std::vector<App::Color> colors = originalLineColors;
 
-            ReferenceHighlighter highlighter(base->Shape.getValue(), LineColor.getValue());
+            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), LineColor.getValue());
             highlighter.getEdgeColors(edges, colors);
             vp->LineColorArray.setValues(colors);
         }

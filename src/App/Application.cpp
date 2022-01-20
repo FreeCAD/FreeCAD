@@ -178,8 +178,8 @@ using namespace std;
 
 ParameterManager *App::Application::_pcSysParamMngr;
 ParameterManager *App::Application::_pcUserParamMngr;
-Base::ConsoleObserverStd  *Application::_pConsoleObserverStd =0;
-Base::ConsoleObserverFile *Application::_pConsoleObserverFile =0;
+Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
+Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
 AppExport std::map<std::string,std::string> Application::mConfig;
 BaseExport extern PyObject* Base::BaseExceptionFreeCADError;
@@ -262,7 +262,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         PyModuleDef_HEAD_INIT,
         "__FreeCADConsole__", Console_doc, -1,
         ConsoleSingleton::Methods,
-        NULL, NULL, NULL, NULL
+        nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
 
@@ -289,11 +289,11 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         PyDict_SetItemString(modules, "__FreeCADBase__", pBaseModule);
     }
 
-    Base::BaseExceptionFreeCADError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, NULL);
+    Base::BaseExceptionFreeCADError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, nullptr);
     Py_INCREF(Base::BaseExceptionFreeCADError);
     PyModule_AddObject(pBaseModule, "FreeCADError", Base::BaseExceptionFreeCADError);
 
-    Base::BaseExceptionFreeCADAbort = PyErr_NewException("Base.FreeCADAbort", PyExc_BaseException, NULL);
+    Base::BaseExceptionFreeCADAbort = PyErr_NewException("Base.FreeCADAbort", PyExc_BaseException, nullptr);
     Py_INCREF(Base::BaseExceptionFreeCADAbort);
     PyModule_AddObject(pBaseModule, "FreeCADAbort", Base::BaseExceptionFreeCADAbort);
 
@@ -343,7 +343,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         PyModuleDef_HEAD_INIT,
         "Units", "The Unit API", -1,
         Base::UnitsApi::Methods,
-        NULL, NULL, NULL, NULL
+        nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pUnitsModule = PyModule_Create(&UnitsModuleDef);
     Base::Interpreter().addType(&Base::QuantityPy  ::Type,pUnitsModule,"Quantity");
@@ -1790,7 +1790,7 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
         throw Base::AccessViolation();
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        //throw Base::DivisionByZeroError("Division by zero!");
+        //throw Base::ZeroDivisionError("Division by zero!");
         Base::Console().Error("SEH exception (%u): Division by zero\n", code);
         return;
     }
@@ -1837,7 +1837,7 @@ void Application::init(int argc, char ** argv)
     }
 }
 
-void Application::initTypes(void)
+void Application::initTypes()
 {
     // Base types
     Base::Type                      ::init();
@@ -2019,8 +2019,8 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::RuntimeError>;
     new ExceptionProducer<Base::BadGraphError>;
     new ExceptionProducer<Base::NotImplementedError>;
-    new ExceptionProducer<Base::DivisionByZeroError>;
-    new ExceptionProducer<Base::ReferencesError>;
+    new ExceptionProducer<Base::ZeroDivisionError>;
+    new ExceptionProducer<Base::ReferenceError>;
     new ExceptionProducer<Base::ExpressionError>;
     new ExceptionProducer<Base::ParserError>;
     new ExceptionProducer<Base::UnicodeError>;

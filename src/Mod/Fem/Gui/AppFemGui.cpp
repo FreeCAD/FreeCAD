@@ -52,6 +52,7 @@
 #include "ViewProviderSetFaces.h"
 #include "ViewProviderSetGeometry.h"
 #include "ViewProviderFemConstraint.h"
+#include "ViewProviderFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintBearing.h"
 #include "ViewProviderFemConstraintFixed.h"
 #include "ViewProviderFemConstraintForce.h"
@@ -116,6 +117,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderFemConstraint                           ::init();
     FemGui::ViewProviderFemConstraintPython                     ::init();
 
+    FemGui::ViewProviderFemConstraintOnBoundary                 ::init();
     FemGui::ViewProviderFemConstraintBearing                    ::init();
     FemGui::ViewProviderFemConstraintContact                    ::init();
     FemGui::ViewProviderFemConstraintDisplacement               ::init();

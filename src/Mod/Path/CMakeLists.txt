@@ -10,6 +10,8 @@ set(Path_Scripts
     Init.py
     PathCommands.py
     TestPathApp.py
+    PathMachineState.py
+    PathFeedRate.py
 )
 
 if(BUILD_GUI)
@@ -25,6 +27,7 @@ INSTALL(
 
 SET(PathScripts_SRCS
     PathCommands.py
+    PathScripts/drillableLib.py
     PathScripts/PathAdaptive.py
     PathScripts/PathAdaptiveGui.py
     PathScripts/PathAreaOp.py
@@ -144,6 +147,8 @@ SET(PathScripts_SRCS
 
 SET(Generator_SRCS
     Generators/drill_generator.py
+    Generators/rotation_generator.py
+    Generators/helix_generator.py
 )
 
 SET(PathScripts_post_SRCS
@@ -208,6 +213,7 @@ SET(Tools_Shape_SRCS
 SET(PathTests_SRCS
     PathTests/__init__.py
     PathTests/boxtest.fcstd
+    PathTests/Drilling_1.FCStd
     PathTests/PathTestUtils.py
     PathTests/test_adaptive.fcstd
     PathTests/test_centroid_00.ngc
@@ -221,8 +227,12 @@ SET(PathTests_SRCS
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathDrillGenerator.py
+    PathTests/TestPathDrillable.py
+    PathTests/TestPathRotationGenerator.py
     PathTests/TestPathGeom.py
     PathTests/TestPathHelix.py
+    PathTests/TestPathHelpers.py
+    PathTests/TestPathHelixGenerator.py
     PathTests/TestPathLog.py
     PathTests/TestPathOpTools.py
     PathTests/TestPathPost.py

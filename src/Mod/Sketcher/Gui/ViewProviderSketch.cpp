@@ -556,7 +556,7 @@ void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f &point, const SbVe
     // line
     Base::Vector3d R1(point[0],point[1],point[2]),RA(normal[0],normal[1],normal[2]);
     if (fabs(RN*RA) < FLT_EPSILON)
-        throw Base::DivisionByZeroError("View direction is parallel to sketch plane");
+        throw Base::ZeroDivisionError("View direction is parallel to sketch plane");
     // intersection point on plane
     Base::Vector3d S = R1 + ((RN * (R0-R1))/(RN*RA))*RA;
 
@@ -597,7 +597,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
         getCoordsOnSketchPlane(pos,normal,x,y);
         snapToGrid(x, y);
     }
-    catch (const Base::DivisionByZeroError&) {
+    catch (const Base::ZeroDivisionError&) {
         return false;
     }
 
@@ -1041,7 +1041,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         getCoordsOnSketchPlane(line.getPosition(),line.getDirection(),x,y);
         snapToGrid(x, y);
     }
-    catch (const Base::DivisionByZeroError&) {
+    catch (const Base::ZeroDivisionError&) {
         return false;
     }
 
@@ -3491,7 +3491,7 @@ double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
 
         return -atan2((y1-y0),(x1-x0))*180/M_PI;
     }
-    catch (const Base::DivisionByZeroError&) {
+    catch (const Base::ZeroDivisionError&) {
         return 0;
     }
 }

@@ -42,6 +42,7 @@ link_directories(${SMESH_LIB_PATH})
 set(FemGui_LIBS
     Fem
     FreeCADGui
+    PartGui
 )
 
 
@@ -220,6 +221,8 @@ SET(FemGui_SRCS_ViewProvider
     FemSelectionGate.h
     ViewProviderFemConstraint.cpp
     ViewProviderFemConstraint.h
+    ViewProviderFemConstraintOnBoundary.cpp
+    ViewProviderFemConstraintOnBoundary.h
     ViewProviderFemConstraintBearing.cpp
     ViewProviderFemConstraintBearing.h
     ViewProviderFemConstraintFixed.cpp
