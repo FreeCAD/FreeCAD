@@ -68,6 +68,9 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
 
+    /// Highlight the references that have been selected
+    virtual void highlightReferences(const bool /* on */) {}
+
     static std::string gethideMeshShowPartStr();
     static std::string gethideMeshShowPartStr(const std::string showConstr);
 

@@ -100,8 +100,8 @@ public:
      * link is wrong.
      */
     static bool fetchAxisLink(const App::PropertyLinkSub& axisLink,
-                              Base::Vector3d &basepoint,
-                              Base::Vector3d &dir);
+                              Base::Vector3d& basepoint,
+                              Base::Vector3d& dir);
 
     /**
      * @brief computeFinalParameters: applies mode logic and fetches links, to
@@ -110,7 +110,7 @@ public:
      */
     ExtrusionParameters computeFinalParameters();
 
-    static Base::Vector3d calculateShapeNormal(const App::PropertyLink &shapeLink);
+    static Base::Vector3d calculateShapeNormal(const App::PropertyLink& shapeLink);
 
 public: //mode enumerations
     enum eDirMode{

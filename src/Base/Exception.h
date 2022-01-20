@@ -28,10 +28,11 @@
 #include <exception>
 #include <stdexcept>
 #include <string>
-#include <signal.h>
-#include <Python.h>
+#include <csignal>
 #include "FileInfo.h"
 #include "BaseClass.h"
+
+typedef struct _object PyObject;
 
 /* MACROS FOR THROWING EXCEPTIONS */
 
@@ -96,10 +97,10 @@ public:
 
   Exception &operator=(const Exception &inst);
 
-  virtual const char* what(void) const throw();
+  virtual const char* what() const throw();
 
   /// Reports exception. It includes a mechanism to only report an exception once.
-  virtual void ReportException (void) const;
+  virtual void ReportException () const;
 
   inline void setMessage(const char * sMessage);
   inline void setMessage(const std::string& sMessage);
@@ -121,7 +122,7 @@ public:
   inline void setReported(bool reported) { _isReported = reported; }
 
   /// returns a Python dictionary containing the exception data
-  virtual PyObject * getPyObject(void);
+  virtual PyObject * getPyObject();
   /// returns sets the exception data from a Python dictionary
   virtual void setPyObject( PyObject * pydict);
 
@@ -138,7 +139,7 @@ protected:
   * This way, the file, line, and function are automatically inserted. */
   Exception(const char * sMessage);
   Exception(const std::string& sMessage);
-  Exception(void);
+  Exception();
   Exception(const Exception &inst);
 
 protected:
@@ -168,6 +169,8 @@ public:
   virtual ~AbortException() throw() {}
   /// Description of the exception
   virtual const char* what() const throw();
+  /// returns the corresponding python exception type
+  virtual PyObject * getPyExceptionType() const;
 };
 
 /**
@@ -234,7 +237,7 @@ class BaseExport FileException : public Exception
 {
 public:
   /// With massage and file name
-  FileException(const char * sMessage, const char * sFileName=0);
+  FileException(const char * sMessage, const char * sFileName=nullptr);
   /// With massage and file name
   FileException(const char * sMessage, const FileInfo& File);
   /// standard construction
@@ -248,11 +251,11 @@ public:
   /// Description of the exception
   virtual const char* what() const throw() override;
   /// Report generation
-  virtual void ReportException (void) const override;
+  virtual void ReportException () const override;
   /// Get file name for use with translatable message
   std::string getFileName() const;
   /// returns a Python dictionary containing the exception data
-  virtual PyObject * getPyObject(void) override;
+  virtual PyObject * getPyObject() override;
   /// returns sets the exception data from a Python dictionary
   virtual void setPyObject( PyObject * pydict) override;
 
@@ -262,7 +265,7 @@ protected:
   // necessary   for what() legacy behaviour as it returns a buffer that
   // can not be of a temporary object to be destroyed at end of what()
   std::string _sErrMsgAndFileName;
-  void setFileName(const char * sFileName=0);
+  void setFileName(const char * sFileName=nullptr);
 };
 
 /**
@@ -523,15 +526,15 @@ public:
  * The ZeroDivisionError can be used to indicate a division by zero.
  * @author Werner Mayer
  */
-class BaseExport DivisionByZeroError : public Exception
+class BaseExport ZeroDivisionError : public Exception
 {
 public:
   /// Construction
-  DivisionByZeroError();
-  DivisionByZeroError(const char * sMessage);
-  DivisionByZeroError(const std::string& sMessage);
+  ZeroDivisionError();
+  ZeroDivisionError(const char * sMessage);
+  ZeroDivisionError(const std::string& sMessage);
   /// Destruction
-  virtual ~DivisionByZeroError() throw() {}
+  virtual ~ZeroDivisionError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
 };
 
@@ -539,15 +542,15 @@ public:
  * The ReferenceError can be used to indicate a reference counter has the wrong value.
  * @author Werner Mayer
  */
-class BaseExport ReferencesError : public Exception
+class BaseExport ReferenceError : public Exception
 {
 public:
   /// Construction
-  ReferencesError();
-  ReferencesError(const char * sMessage);
-  ReferencesError(const std::string& sMessage);
+  ReferenceError();
+  ReferenceError(const char * sMessage);
+  ReferenceError(const std::string& sMessage);
   /// Destruction
-  virtual ~ReferencesError() throw() {}
+  virtual ~ReferenceError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
 };
 

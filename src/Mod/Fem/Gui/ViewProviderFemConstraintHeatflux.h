@@ -26,11 +26,11 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINTHEATFLUX_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINTHEATFLUX_H
 
-#include "ViewProviderFemConstraint.h"
+#include "ViewProviderFemConstraintOnBoundary.h"
 
 namespace FemGui {
 
-class FemGuiExport ViewProviderFemConstraintHeatflux : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintHeatflux : public FemGui::ViewProviderFemConstraintOnBoundary
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemConstraintHeatflux);
 

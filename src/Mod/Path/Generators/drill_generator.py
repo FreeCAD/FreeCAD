@@ -39,8 +39,6 @@ else:
 
 
 def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1):
-
-
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
 
@@ -68,6 +66,9 @@ def generate(edge, dwelltime=0.0, peckdepth=0.0, repeat=1):
         and (numpy.isclose(startPoint.sub(endPoint).y, 0, rtol=1e-05, atol=1e-06))
     ):
         raise ValueError("edge is not aligned with Z axis")
+
+    if startPoint.z < endPoint.z:
+        raise ValueError("start point is below end point")
 
     cmdParams = {}
     cmdParams["X"] = startPoint.x

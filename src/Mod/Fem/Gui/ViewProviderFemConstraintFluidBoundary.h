@@ -25,12 +25,12 @@
 #ifndef GUI_VIEWPROVIDERFEMFLUIDBOUNDARY_H
 #define GUI_VIEWPROVIDERFEMFLUIDBOUNDARY_H
 
-#include "ViewProviderFemConstraint.h"
+#include "ViewProviderFemConstraintOnBoundary.h"
 
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemConstraintFluidBoundary : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintFluidBoundary : public FemGui::ViewProviderFemConstraintOnBoundary
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemConstraintFluidBoundary);
 

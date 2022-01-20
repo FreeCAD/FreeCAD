@@ -59,10 +59,12 @@ using namespace Gui;
 TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstraint *ConstraintView, QWidget *parent, const char* pixmapname)
     : TaskFemConstraint(ConstraintView, parent, pixmapname)
 {
+    ConstraintView->highlightReferences(true);
 }
 
 TaskFemConstraintOnBoundary::~TaskFemConstraintOnBoundary()
 {
+    ConstraintView->highlightReferences(false);
 }
 
 void TaskFemConstraintOnBoundary::_addToSelection(bool checked)
@@ -73,6 +75,7 @@ void TaskFemConstraintOnBoundary::_addToSelection(bool checked)
         if (selection.empty()) {
             this->clearButtons(refAdd);
             selChangeMode = refAdd;
+            ConstraintView->highlightReferences(true);
         } else {
             this->addToSelection();
             clearButtons(none);
@@ -90,6 +93,7 @@ void TaskFemConstraintOnBoundary::_removeFromSelection(bool checked)
         if (selection.empty()) {
             this->clearButtons(refRemove);
             selChangeMode = refRemove;
+            ConstraintView->highlightReferences(true);
         } else {
             this->removeFromSelection();
             clearButtons(none);
@@ -116,6 +120,7 @@ void TaskFemConstraintOnBoundary::onSelectionChanged(const Gui::SelectionChanges
         default:
             return;
         }
+        ConstraintView->highlightReferences(true);
     }
 }
 

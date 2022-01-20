@@ -42,7 +42,7 @@
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPressure, FemGui::ViewProviderFemConstraint)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPressure, FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintPressure::ViewProviderFemConstraintPressure()
 {
