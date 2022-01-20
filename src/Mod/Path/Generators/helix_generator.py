@@ -51,7 +51,7 @@ def generate(
 ):
     """generate(edge, hole_radius, inner_radius, step_over) ... generate helix commands.
     hole_radius, inner_radius: outer and inner radius of the hole
-    step_over: step over radius value"""
+    step_over: step over % of tool diameter"""
 
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
@@ -73,16 +73,16 @@ def generate(
     )
 
     if type(hole_radius) not in [float, int]:
-        raise ValueError("hole_radius must be a float")
+        raise TypeError("Invalid type for hole radius")
 
     if hole_radius < 0.0:
         raise ValueError("hole_radius < 0")
 
     if type(inner_radius) not in [float, int]:
-        raise ValueError("inner_radius must be a float")
+        raise TypeError("inner_radius must be a float")
 
     if type(tool_diameter) not in [float, int]:
-        raise ValueError("tool_diameter must be a float")
+        raise TypeError("tool_diameter must be a float")
 
     if inner_radius > 0 and hole_radius - inner_radius < tool_diameter:
         raise ValueError(
@@ -104,6 +104,13 @@ def generate(
     elif direction not in ["CW", "CCW"]:
         raise ValueError("Invalid value for parameter 'direction'")
 
+    if type(step_over) not in [float, int]:
+        raise TypeError("Invalid value for parameter 'step_over'")
+
+    if step_over <= 0 or step_over > 1:
+        raise ValueError("Invalid value for parameter 'step_over'")
+    step_over_distance = step_over * tool_diameter
+
     if not (
         isclose(startPoint.sub(endPoint).x, 0, rtol=1e-05, atol=1e-06)
         and (isclose(startPoint.sub(endPoint).y, 0, rtol=1e-05, atol=1e-06))
@@ -117,13 +124,13 @@ def generate(
         PathLog.debug("(annulus mode)\n")
         outer_radius = hole_radius - tool_diameter / 2
         step_radius = inner_radius + tool_diameter / 2
-        if abs((outer_radius - step_radius) / step_over) < 1e-5:
-            radii = [(outer_radius + step_radius) / 2]
+        if abs((outer_radius - step_radius) / step_over_distance) < 1e-5:
+            radii = [(outer_radius + inner_radius) / 2]
         else:
-            nr = max(int(ceil((outer_radius - step_radius) / step_over)), 2)
+            nr = max(int(ceil((outer_radius - inner_radius) / step_over_distance)), 2)
             radii = linspace(outer_radius, step_radius, nr)
 
-    elif hole_radius <= 2 * step_over:
+    elif hole_radius <= 2 * tool_diameter:
         PathLog.debug("(single helix mode)\n")
         radii = [hole_radius - tool_diameter / 2]
         if radii[0] <= 0:
@@ -136,16 +143,17 @@ def generate(
     else:
         PathLog.debug("(full hole mode)\n")
         outer_radius = hole_radius - tool_diameter / 2
-        step_radius = step_over / 2
 
-        nr = max(1 + int(ceil((outer_radius - step_radius) / step_over)), 2)
-        radii = [r for r in linspace(outer_radius, step_radius, nr) if r > 0]
+        nr = max(1 + int(ceil((outer_radius - inner_radius) / step_over_distance)), 2)
+        PathLog.debug("nr: {}".format(nr))
+        radii = [r for r in linspace(outer_radius, inner_radius, nr) if r > 0]
         if not radii:
             raise ValueError(
                 "Cannot helix a hole of diameter {0} with a tool of diameter {1}".format(
                     2 * hole_radius, tool_diameter
                 )
             )
+    PathLog.debug("Radii: {}".format(radii))
     # calculate the number of full and partial turns required
     # Each full turn is two 180 degree arcs. Zsteps is equally spaced step
     # down values
