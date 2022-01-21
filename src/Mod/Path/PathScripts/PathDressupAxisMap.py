@@ -41,18 +41,34 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-movecommands = ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']
-rapidcommands = ['G0', 'G00']
-arccommands = ['G2', 'G3', 'G02', 'G03']
+movecommands = ["G1", "G01", "G2", "G02", "G3", "G03"]
+rapidcommands = ["G0", "G00"]
+arccommands = ["G2", "G3", "G02", "G03"]
 
 
 class ObjectDressup:
-
     def __init__(self, obj):
         maplist = ["X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C"]
-        obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The base path to modify"))
-        obj.addProperty("App::PropertyEnumeration", "AxisMap", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The input mapping axis"))
-        obj.addProperty("App::PropertyDistance", "Radius", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The radius of the wrapped axis"))
+        obj.addProperty(
+            "App::PropertyLink",
+            "Base",
+            "Path",
+            QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The base path to modify"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "AxisMap",
+            "Path",
+            QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The input mapping axis"),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "Radius",
+            "Path",
+            QtCore.QT_TRANSLATE_NOOP(
+                "Path_DressupAxisMap", "The radius of the wrapped axis"
+            ),
+        )
         obj.AxisMap = maplist
         obj.AxisMap = "Y->A"
         obj.Proxy = self
@@ -64,22 +80,26 @@ class ObjectDressup:
         return None
 
     def _linear2angular(self, radius, length):
-        '''returns an angular distance in degrees to achieve a linear move of a given lenth'''
+        """returns an angular distance in degrees to achieve a linear move of a given lenth"""
         circum = 2 * math.pi * float(radius)
         return 360 * (float(length) / circum)
 
     def _stripArcs(self, path, d):
-        '''converts all G2/G3 commands into G1 commands'''
+        """converts all G2/G3 commands into G1 commands"""
         newcommandlist = []
-        currLocation = {'X': 0, 'Y': 0, 'Z': 0, 'F': 0}
+        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
 
         for p in path:
             if p.Name in arccommands:
-                curVec = FreeCAD.Vector(currLocation['X'], currLocation['Y'], currLocation['Z'])
+                curVec = FreeCAD.Vector(
+                    currLocation["X"], currLocation["Y"], currLocation["Z"]
+                )
                 arcwire = PathGeom.edgeForCmd(p, curVec)
                 pointlist = arcwire.discretize(Deflection=d)
                 for point in pointlist:
-                    newcommand = Path.Command("G1", {'X': point.x, 'Y': point.y, 'Z': point.z})
+                    newcommand = Path.Command(
+                        "G1", {"X": point.x, "Y": point.y, "Z": point.z}
+                    )
                     newcommandlist.append(newcommand)
                     currLocation.update(newcommand.Parameters)
             else:
@@ -105,20 +125,28 @@ class ObjectDressup:
                             pathlist = self._stripArcs(pp, d)
 
                         newcommandlist = []
-                        currLocation = {'X': 0, 'Y': 0, 'Z': 0, 'F': 0}
+                        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
 
                         for c in pathlist:
                             newparams = dict(c.Parameters)
                             remapvar = newparams.pop(inAxis, None)
                             if remapvar is not None:
-                                newparams[outAxis] = self._linear2angular(obj.Radius, remapvar)
-                                locdiff = dict(set(newparams.items()) - set(currLocation.items()))
-                                if len(locdiff) == 1 and outAxis in locdiff:  # pure rotation.  Calculate rotational feed rate
-                                    if 'F' in c.Parameters:
-                                        feed = c.Parameters['F']
+                                newparams[outAxis] = self._linear2angular(
+                                    obj.Radius, remapvar
+                                )
+                                locdiff = dict(
+                                    set(newparams.items()) - set(currLocation.items())
+                                )
+                                if (
+                                    len(locdiff) == 1 and outAxis in locdiff
+                                ):  # pure rotation.  Calculate rotational feed rate
+                                    if "F" in c.Parameters:
+                                        feed = c.Parameters["F"]
                                     else:
-                                        feed = currLocation['F']
-                                    newparams.update({"F": self._linear2angular(obj.Radius, feed)})
+                                        feed = currLocation["F"]
+                                    newparams.update(
+                                        {"F": self._linear2angular(obj.Radius, feed)}
+                                    )
                                 newcommand = Path.Command(c.Name, newparams)
                                 newcommandlist.append(newcommand)
                                 currLocation.update(newparams)
@@ -131,7 +159,7 @@ class ObjectDressup:
                         obj.Path = path
 
     def onChanged(self, obj, prop):
-        if 'Restore' not in obj.State and prop == "Radius":
+        if "Restore" not in obj.State and prop == "Radius":
             job = PathUtils.findParentJob(obj)
             if job:
                 job.Proxy.setCenterOfRotation(self.center(obj))
@@ -141,12 +169,13 @@ class ObjectDressup:
 
 
 class TaskPanel:
-
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/AxisMapEdit.ui")
-        self.radius = PathGui.QuantitySpinBox(self.form.radius, obj, 'Radius')
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupDragKnife", "Edit Dragknife Dress-up"))
+        self.radius = PathGui.QuantitySpinBox(self.form.radius, obj, "Radius")
+        FreeCAD.ActiveDocument.openTransaction(
+            translate("Path_DressupDragKnife", "Edit Dragknife Dress-up")
+        )
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -187,7 +216,6 @@ class TaskPanel:
 
 
 class ViewProviderDressup:
-
     def __init__(self, vobj):
         self.obj = vobj.Object
 
@@ -226,7 +254,7 @@ class ViewProviderDressup:
         return None
 
     def onDelete(self, arg1=None, arg2=None):
-        '''this makes sure that the base operation is added back to the project and visible'''
+        """this makes sure that the base operation is added back to the project and visible"""
         # pylint: disable=unused-argument
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
@@ -241,10 +269,16 @@ class CommandPathDressup:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path_Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "Axis Map Dress-up"),
-                'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "Remap one axis to another.")}
+        return {
+            "Pixmap": "Path_Dressup",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "Path_DressupAxisMap", "Axis Map Dress-up"
+            ),
+            "Accel": "",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Path_DressupAxisMap", "Remap one axis to another."
+            ),
+        }
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -258,35 +292,49 @@ class CommandPathDressup:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Path_Dressup", "Please select one path object\n"))
+            FreeCAD.Console.PrintError(
+                translate("Path_Dressup", "Please select one path object\n")
+            )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("Path_Dressup", "The selected object is not a path\n"))
+            FreeCAD.Console.PrintError(
+                translate("Path_Dressup", "The selected object is not a path\n")
+            )
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("Path_Dressup", "Please select a Path object"))
+            FreeCAD.Console.PrintError(
+                translate("Path_Dressup", "Please select a Path object")
+            )
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupAxisMap", "Create Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(
+            translate("Path_DressupAxisMap", "Create Dress-up")
+        )
         FreeCADGui.addModule("PathScripts.PathDressupAxisMap")
         FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "AxisMapDressup")')
-        FreeCADGui.doCommand('PathScripts.PathDressupAxisMap.ObjectDressup(obj)')
-        FreeCADGui.doCommand('base = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('job = PathScripts.PathUtils.findParentJob(base)')
-        FreeCADGui.doCommand('obj.Base = base')
-        FreeCADGui.doCommand('obj.Radius = 45')
-        FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
-        FreeCADGui.doCommand('obj.ViewObject.Proxy = PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
-        FreeCADGui.doCommand('obj.ViewObject.Document.setEdit(obj.ViewObject, 0)')
+        FreeCADGui.doCommand(
+            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "AxisMapDressup")'
+        )
+        FreeCADGui.doCommand("PathScripts.PathDressupAxisMap.ObjectDressup(obj)")
+        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
+        FreeCADGui.doCommand("obj.Base = base")
+        FreeCADGui.doCommand("obj.Radius = 45")
+        FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
+        FreeCADGui.doCommand(
+            "obj.ViewObject.Proxy = PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)"
+        )
+        FreeCADGui.doCommand(
+            "Gui.ActiveDocument.getObject(base.Name).Visibility = False"
+        )
+        FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_DressupAxisMap', CommandPathDressup())
+    FreeCADGui.addCommand("Path_DressupAxisMap", CommandPathDressup())
 
 FreeCAD.Console.PrintLog("Loading PathDressup... done\n")
