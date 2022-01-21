@@ -153,7 +153,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
     QString objname = QString::fromLatin1(obj->getNameInDocument());
     try {
         // clear variables from previous run, if any
-        QString cmd = QLatin1String("try:\n    del(doc,obj,shp,elt,elts)\nexcept:\n    pass\n");
+        QString cmd = QLatin1String("try:\n    del(doc,obj,shp,sub,subs)\nexcept:\n    pass\n");
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         cmd = QString::fromLatin1("doc = App.getDocument(\"%1\")").arg(docname);
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
@@ -165,13 +165,13 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
                 QString subname = QString::fromLatin1(subnames[0].c_str());
                 cmd = QString::fromLatin1("shp = obj.Shape");
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-                cmd = QString::fromLatin1("elt = obj.getSubObject(\"%1\")")
+                cmd = QString::fromLatin1("sub = obj.getSubObject(\"%1\")")
                     .arg(subname);
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             }
             if (subnames.size() > 1){
                 std::ostringstream strm;
-                strm << "elts = [";
+                strm << "subs = [";
                 for (std::vector<std::string>::iterator it = subnames.begin(); it != subnames.end(); ++it) {
                     strm << "obj.getSubObject(\"" << *it << "\"),";
                 }
