@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from lazy_loader.lazy_loader import LazyLoader
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
@@ -27,22 +28,17 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
 import copy
 
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
+__doc__ = "Base class for all ops in the engrave family."
 
+# lazily loaded modules
 DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Part = LazyLoader("Part", globals(), "Part")
 
-from PySide import QtCore
-
-__doc__ = "Base class for all ops in the engrave family."
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class ObjectOp(PathOp.ObjectOp):
