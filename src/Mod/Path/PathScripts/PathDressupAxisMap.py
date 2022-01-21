@@ -26,8 +26,16 @@ import math
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGui as PathGui
+import PathScripts.PathLog as PathLog
+from PySide.QtCore import QT_TRANSLATE_NOOP
+from PathGeom import CmdMoveArc
 
-from PySide import QtCore
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -36,14 +44,7 @@ __doc__ = """Axis remapping Dressup object and FreeCAD command.  This dressup re
 For example, you can re-map the Y axis to A to control a 4th axis rotary."""
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
-movecommands = ["G1", "G01", "G2", "G02", "G3", "G03"]
-rapidcommands = ["G0", "G00"]
-arccommands = ["G2", "G3", "G02", "G03"]
+translate = FreeCAD.Qt.translate
 
 
 class ObjectDressup:
@@ -53,21 +54,19 @@ class ObjectDressup:
             "App::PropertyLink",
             "Base",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The base path to modify"),
+            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "AxisMap",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The input mapping axis"),
+            QT_TRANSLATE_NOOP("App::Property", "The input mapping axis"),
         )
         obj.addProperty(
             "App::PropertyDistance",
             "Radius",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupAxisMap", "The radius of the wrapped axis"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The radius of the wrapped axis"),
         )
         obj.AxisMap = maplist
         obj.AxisMap = "Y->A"
@@ -90,7 +89,7 @@ class ObjectDressup:
         currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
 
         for p in path:
-            if p.Name in arccommands:
+            if p.Name in CmdMoveArc:
                 curVec = FreeCAD.Vector(
                     currLocation["X"], currLocation["Y"], currLocation["Z"]
                 )
@@ -119,7 +118,7 @@ class ObjectDressup:
                 if obj.Base.Path:
                     if obj.Base.Path.Commands:
                         pp = obj.Base.Path.Commands
-                        if len([i for i in pp if i.Name in arccommands]) == 0:
+                        if len([i for i in pp if i.Name in CmdMoveArc]) == 0:
                             pathlist = pp
                         else:
                             pathlist = self._stripArcs(pp, d)
@@ -173,9 +172,7 @@ class TaskPanel:
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/AxisMapEdit.ui")
         self.radius = PathGui.QuantitySpinBox(self.form.radius, obj, "Radius")
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_DressupDragKnife", "Edit Dragknife Dress-up")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Edit Dragknife Dress-up")
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -271,11 +268,9 @@ class CommandPathDressup:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupAxisMap", "Axis Map Dress-up"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupAxisMap", "Axis Map Dress-up"),
             "Accel": "",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupAxisMap", "Remap one axis to another."
             ),
         }
@@ -308,9 +303,7 @@ class CommandPathDressup:
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_DressupAxisMap", "Create Dress-up")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Create Dress-up")
         FreeCADGui.addModule("PathScripts.PathDressupAxisMap")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
