@@ -26,7 +26,9 @@ import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathProbe as PathProbe
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathGui as PathGui
+import PathScripts.PathLog as PathLog
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtCore, QtGui
 
 __title__ = "Path Probing Operation UI"
@@ -35,9 +37,13 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Probing operation page controller and command implementation."
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+translate = FreeCAD.Qt.translate
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -98,8 +104,8 @@ Command = PathOpGui.SetupOperation(
     PathProbe.Create,
     TaskPanelOpPage,
     "Path_Probe",
-    QtCore.QT_TRANSLATE_NOOP("Probe", "Probe"),
-    QtCore.QT_TRANSLATE_NOOP("Probe", "Create a Probing Grid from a job stock"),
+    QtCore.QT_TRANSLATE_NOOP("Path_Probe", "Probe"),
+    QtCore.QT_TRANSLATE_NOOP("Path_Probe", "Create a Probing Grid from a job stock"),
     PathProbe.SetupProperties,
 )
 

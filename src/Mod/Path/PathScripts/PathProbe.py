@@ -27,8 +27,8 @@ import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from PySide import QtCore
 
 __title__ = "Path Probing Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -40,11 +40,6 @@ if False:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ObjectProbing(PathOp.ObjectOp):
@@ -59,23 +54,19 @@ class ObjectProbing(PathOp.ObjectOp):
             "App::PropertyLength",
             "Xoffset",
             "Probe",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "X offset between tool and probe"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "X offset between tool and probe"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "Yoffset",
             "Probe",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "Y offset between tool and probe"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Y offset between tool and probe"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "PointCountX",
             "Probe",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Number of points to probe in X direction"
             ),
         )
@@ -83,7 +74,7 @@ class ObjectProbing(PathOp.ObjectOp):
             "App::PropertyInteger",
             "PointCountY",
             "Probe",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Number of points to probe in Y direction"
             ),
         )
@@ -91,7 +82,7 @@ class ObjectProbing(PathOp.ObjectOp):
             "App::PropertyFile",
             "OutputFileName",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "The output location for the probe data to be written"
             ),
         )
