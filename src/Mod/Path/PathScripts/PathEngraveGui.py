@@ -30,17 +30,20 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore, QtGui
 
+
 __title__ = "Path Engrave Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Engrave operation page controller and command implementation."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
@@ -86,7 +89,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     # selectively add some elements of the drawing to the Base
                     for sub in sel.SubElementNames:
                         if "Vertex" in sub:
-                            PathLog.info(translate("Path", "Ignoring vertex"))
+                            PathLog.info("Ignoring vertex")
                         else:
                             self.obj.Proxy.addBase(self.obj, base, sub)
                 else:
@@ -166,9 +169,9 @@ Command = PathOpGui.SetupOperation(
     PathEngrave.Create,
     TaskPanelOpPage,
     "Path_Engrave",
-    QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Engrave"),
+    QtCore.QT_TRANSLATE_NOOP("Path_Engrave", "Engrave"),
     QtCore.QT_TRANSLATE_NOOP(
-        "PathEngrave", "Creates an Engraving Path around a Draft ShapeString"
+        "Path_Engrave", "Creates an Engraving Path around a Draft ShapeString"
     ),
     PathEngrave.SetupProperties,
 )
