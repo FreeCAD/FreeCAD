@@ -32,20 +32,25 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Face Mill operation page controller and command implementation."
 
+
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
-    '''Page controller class for the face milling operation.'''
+    """Page controller class for the face milling operation."""
 
     def pocketFeatures(self):
-        '''pocketFeatures() ... return FeatureFacing (see PathPocketBaseGui)'''
+        """pocketFeatures() ... return FeatureFacing (see PathPocketBaseGui)"""
         return PathPocketBaseGui.FeatureFacing
 
-Command = PathOpGui.SetupOperation('MillFace',
-        PathMillFace.Create,
-        TaskPanelOpPage,
-        'Path_Face',
-        QtCore.QT_TRANSLATE_NOOP("Path_Face", "Face"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Face", "Create a Facing Operation from a model or face"),
-        PathMillFace.SetupProperties)
+
+Command = PathOpGui.SetupOperation(
+    "MillFace",
+    PathMillFace.Create,
+    TaskPanelOpPage,
+    "Path_Face",
+    QtCore.QT_TRANSLATE_NOOP("Path_Face", "Face"),
+    QtCore.QT_TRANSLATE_NOOP(
+        "Path_Face", "Create a Facing Operation from a model or face"
+    ),
+    PathMillFace.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathMillFaceGui... done\n")
-
