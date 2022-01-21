@@ -147,3 +147,8 @@ class UnitBasicCases(unittest.TestCase):
         self.failUnless(compare(tu('sin(pi)'), math.sin(math.pi)))
         self.failUnless(compare(tu('cos(pi)'), math.cos(math.pi)))
         self.failUnless(compare(tu('tan(pi)'), math.tan(math.pi)))
+
+    def testQuantity(self):
+        length = FreeCAD.Units.Quantity(1, "m")
+        self.assertEqual(length.Value, 1000)
+        self.assertEqual(length.Unit, FreeCAD.Units.Length)

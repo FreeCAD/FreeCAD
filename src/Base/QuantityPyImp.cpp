@@ -133,7 +133,22 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch(const Base::Exception& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
-            return-1;
+            return -1;
+        }
+
+        return 0;
+    }
+
+    PyErr_Clear(); // set by PyArg_ParseTuple()
+    if (PyArg_ParseTuple(args,"det", &f, "utf-8", &string)) {
+        QString unit = QString::fromUtf8(string);
+        PyMem_Free(string);
+        try {
+            *self = Quantity(f, unit);
+        }
+        catch(const Base::Exception& e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return -1;
         }
 
         return 0;
