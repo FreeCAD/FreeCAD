@@ -37,13 +37,11 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "UI and Command for Path Drilling Operation."
 __contributors__ = "IMBack!"
 
-LOGLEVEL = False
-
-if LOGLEVEL:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.NOTICE, PathLog.thisModule())
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
@@ -83,7 +81,28 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def getForm(self):
         """getForm() ... return UI"""
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
+
+        comboToPropertyMap = [("ExtraOffset", "ExtraOffset")]
+        enumTups = PathDrilling.ObjectDrilling.propertyEnumerations(dataType="raw")
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+
+        return form
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
 
     def updateQuantitySpinBoxes(self, index=None):
         # pylint: disable=unused-argument
@@ -102,8 +121,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()
         if obj.PeckEnabled != self.form.peckEnabled.isChecked():
             obj.PeckEnabled = self.form.peckEnabled.isChecked()
-        if obj.ExtraOffset != str(self.form.ExtraOffset.currentText()):
-            obj.ExtraOffset = str(self.form.ExtraOffset.currentText())
+        if obj.ExtraOffset != str(self.form.ExtraOffset.currentData()):
+            obj.ExtraOffset = str(self.form.ExtraOffset.currentData())
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
