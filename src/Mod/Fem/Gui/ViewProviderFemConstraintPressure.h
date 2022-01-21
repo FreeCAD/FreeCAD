@@ -24,11 +24,11 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
 
-#include "ViewProviderFemConstraint.h"
+#include "ViewProviderFemConstraintOnBoundary.h"
 
 namespace FemGui {
 
-class FemGuiExport ViewProviderFemConstraintPressure : public FemGui::ViewProviderFemConstraint
+class FemGuiExport ViewProviderFemConstraintPressure : public FemGui::ViewProviderFemConstraintOnBoundary
 {
     PROPERTY_HEADER(FemGui::ViewProviderFemConstraintPressure);
 

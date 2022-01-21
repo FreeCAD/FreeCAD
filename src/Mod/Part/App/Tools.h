@@ -195,6 +195,28 @@ public:
      * \param loc
      */
     static Handle(Poly_Polygon3D) polygonOfEdge(const TopoDS_Edge& edge, TopLoc_Location& loc);
+    /*!
+     * \brief getNormal
+     * Returns the normal at the given parameters on the surface and the state of the calculation
+     * \param surf
+     * \param u
+     * \param v
+     * \param tol
+     * \param dir
+     * \param done
+     */
+    static void getNormal(const Handle(Geom_Surface)& surf, double u, double v, const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done);
+     /* \brief getNormal
+     * Returns the normal at the given parameters on the face and the state of the calculation.
+     * The orientation is taken into account
+     * \param face
+     * \param u
+     * \param v
+     * \param tol
+     * \param dir
+     * \param done
+     */
+    static void getNormal(const TopoDS_Face& face, double u, double v, const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done);
 };
 
 } //namespace Part

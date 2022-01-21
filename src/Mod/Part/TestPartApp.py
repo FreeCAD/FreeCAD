@@ -22,6 +22,7 @@
 import FreeCAD, unittest, Part
 import copy 
 from FreeCAD import Units
+from FreeCAD import Base
 App = FreeCAD
 
 from parttests.regression_tests import RegressionTests
@@ -153,3 +154,27 @@ class PartTestBSplineCurve(unittest.TestCase):
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartTest")
+
+class PartTestNormals(unittest.TestCase):
+    def setUp(self):
+        self.face = Part.makePlane(1, 1)
+
+    def testFaceNormal(self):
+        self.assertEqual(self.face.normalAt(0, 0), Base.Vector(0, 0, 1))
+        self.assertEqual(self.face.Surface.normal(0, 0), Base.Vector(0, 0, 1))
+
+    def testReverseOrientation(self):
+        self.face.reverse()
+        self.assertEqual(self.face.normalAt(0, 0), Base.Vector(0, 0, -1))
+        self.assertEqual(self.face.Surface.normal(0, 0), Base.Vector(0, 0, 1))
+
+    def testPlacement(self):
+        self.face.reverse()
+        self.face.Placement.Rotation.Angle = 1
+        self.face.Placement.Rotation.Axis = (1,1,1)
+        vec = Base.Vector(-0.63905, 0.33259, -0.69353)
+        self.assertGreater(self.face.normalAt(0, 0).dot(vec), 0.9999)
+        self.assertLess(self.face.Surface.normal(0, 0).dot(vec), -0.9999)
+
+    def tearDown(self):
+        pass

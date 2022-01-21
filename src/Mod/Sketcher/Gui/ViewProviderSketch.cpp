@@ -1283,7 +1283,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
     const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
     Constraint *Constr = constrlist[constNum];
 
-#ifdef _DEBUG
+#ifdef FC_DEBUG
     int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
     int extGeoCount = getSketchObject()->getExternalGeometryCount();
 #endif
@@ -1291,7 +1291,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
     // with memory allocation
     const std::vector<Part::Geometry *> geomlist = getSolvedSketch().extractGeometry(true, true);
 
-#ifdef _DEBUG
+#ifdef FC_DEBUG
     assert(int(geomlist.size()) == extGeoCount + intGeoCount);
     assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
            || Constr->First != GeoEnum::GeoUndef);
