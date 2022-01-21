@@ -165,8 +165,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
                 QString subname = QString::fromLatin1(subnames[0].c_str());
                 cmd = QString::fromLatin1("shp = obj.Shape");
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-                cmd = QString::fromLatin1("sub = obj.getSubObject(\"%1\")")
-                    .arg(subname);
+                cmd = QString::fromLatin1("sub = obj.getSubObject(\"%1\")").arg(subname);
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             }
             if (subnames.size() > 1){
