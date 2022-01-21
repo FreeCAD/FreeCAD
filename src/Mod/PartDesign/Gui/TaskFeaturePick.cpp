@@ -442,7 +442,14 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
     return copy;
 }
 
-void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& /*msg*/)
+bool TaskFeaturePick::isSingleSelectionEnabled() const
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                      GetGroup("Preferences")->GetGroup("Selection");
+    return hGrp->GetBool("singleClickFeatureSelect", true);
+}
+
+void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (doSelection)
         return;
@@ -454,6 +461,12 @@ void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& /*msg*/)
             QString t = item->data(Qt::UserRole).toString();
             if (t.compare(QString::fromLatin1(obj.FeatName))==0) {
                 item->setSelected(true);
+
+                if (msg.Type == Gui::SelectionChanges::AddSelection) {
+                    if (isSingleSelectionEnabled()) {
+                        QMetaObject::invokeMethod(qobject_cast<Gui::ControlSingleton*>(&Gui::Control()), "accept", Qt::QueuedConnection);
+                    }
+                }
             }
         }
     }

@@ -66,6 +66,7 @@ public:
     std::vector<App::DocumentObject*> getFeatures();
     std::vector<App::DocumentObject*> buildFeatures();
     void showExternal(bool val);
+    bool isSingleSelectionEnabled() const;
 
     static App::DocumentObject* makeCopy(App::DocumentObject* obj, std::string sub, bool independent);
 
