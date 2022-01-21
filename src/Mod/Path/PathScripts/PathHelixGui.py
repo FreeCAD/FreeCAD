@@ -27,6 +27,7 @@ import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathHelix as PathHelix
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
+import PathScripts.PathGui as PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 translate = FreeCAD.Qt.translate
@@ -76,12 +77,13 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's proprties"""
         PathLog.track()
-        if obj.Direction != str(self.form.direction.currentText()):
-            obj.Direction = str(self.form.direction.currentText())
-        if obj.StartSide != str(self.form.startSide.currentText()):
-            obj.StartSide = str(self.form.startSide.currentText())
+        if obj.Direction != str(self.form.direction.currentData()):
+            obj.Direction = str(self.form.direction.currentData())
+        if obj.StartSide != str(self.form.startSide.currentData()):
+            obj.StartSide = str(self.form.startSide.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
+        PathGui.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -96,6 +98,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
+
+        self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
