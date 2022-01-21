@@ -98,9 +98,10 @@ class AddonManagerRepo:
         self.description = None
         from addonmanager_utilities import construct_git_url
 
-        self.metadata_url = (
-            "" if not self.url else construct_git_url(self, "package.xml")
-        )
+        if "github" in self.url or "gitlab" in self.url or "salsa" in self.url:
+            self.metadata_url = construct_git_url(self, "package.xml")
+        else:
+            self.metadata_url = None
         self.metadata = None
         self.icon = None
         self.cached_icon_filename = ""
@@ -113,7 +114,7 @@ class AddonManagerRepo:
         self.requires: Set[str] = set()
         self.blocks: Set[str] = set()
 
-        # And maintains a list of required and optional Python dependencies
+        # And maintains a list of required and optional Python dependencies from metadata.txt
         self.python_requires: Set[str] = set()
         self.python_optional: Set[str] = set()
 

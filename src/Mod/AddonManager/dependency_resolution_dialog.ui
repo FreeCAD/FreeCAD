@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>455</width>
-    <height>200</height>
+    <height>260</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,9 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.</string>
+      <string>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
+
+Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -73,7 +75,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ignore</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ignore|QDialogButtonBox::Yes</set>
      </property>
     </widget>
    </item>

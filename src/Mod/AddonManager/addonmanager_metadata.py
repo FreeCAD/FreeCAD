@@ -25,7 +25,7 @@ import FreeCAD
 import os
 import io
 import hashlib
-from typing import Dict, List
+from typing import Dict, List, Set
 
 from PySide2 import QtCore, QtNetwork
 from PySide2.QtCore import QObject
@@ -52,6 +52,16 @@ class DownloadWorker(QObject):
         self.request.setAttribute(
             QtNetwork.QNetworkRequest.RedirectPolicyAttribute,
             QtNetwork.QNetworkRequest.UserVerifiedRedirectPolicy,
+        )
+        self.request.setAttribute(
+            QtNetwork.QNetworkRequest.CacheSaveControlAttribute, True
+        )
+        self.request.setAttribute(
+            QtNetwork.QNetworkRequest.CacheLoadControlAttribute,
+            QtNetwork.QNetworkRequest.PreferCache,
+        )
+        self.request.setAttribute(
+            QtNetwork.QNetworkRequest.BackgroundRequestAttribute, True
         )
 
         self.fetch_task = network_manager.get(self.request)
@@ -188,7 +198,7 @@ class MetadataDownloadWorker(DownloadWorker):
         self.updated.emit(self.repo)
 
 
-class DependencyDownloadWorker(DownloadWorker):
+class MetadataTxtDownloadWorker(DownloadWorker):
     """A worker for downloading metadata.txt"""
 
     def __init__(self, parent, repo: AddonManagerRepo):
@@ -239,17 +249,67 @@ class DependencyDownloadWorker(DownloadWorker):
             elif line.startswith("pylibs="):
                 depspy = line.split("=")[1].split(",")
                 for pl in depspy:
-                    if pl.strip():
-                        self.repo.python_requires.add(pl.strip())
+                    dep = pl.strip()
+                    if dep:
+                        self.repo.python_requires.add(dep)
                         FreeCAD.Console.PrintLog(
-                            f"{self.repo.display_name} requires python package '{pl.strip()}'\n"
+                            f"{self.repo.display_name} requires python package '{dep}'\n"
                         )
+
             elif line.startswith("optionalpylibs="):
                 opspy = line.split("=")[1].split(",")
                 for pl in opspy:
-                    if pl.strip():
-                        self.repo.python_optional.add(pl.strip())
+                    dep = pl.strip()
+                    if dep:
+                        self.repo.python_optional.add(dep)
                         FreeCAD.Console.PrintLog(
                             f"{self.repo.display_name} optionally imports python package '{pl.strip()}'\n"
                         )
+        self.updated.emit(self.repo)
+
+
+class RequirementsTxtDownloadWorker(DownloadWorker):
+    """A worker for downloading requirements.txt"""
+
+    def __init__(self, parent, repo: AddonManagerRepo):
+        super().__init__(parent, utils.construct_git_url(repo, "requirements.txt"))
+        self.repo = repo
+
+    def resolve_fetch(self):
+        """Called when the data fetch completed, either with an error, or if it found the metadata file"""
+
+        if self.fetch_task.error() == QtNetwork.QNetworkReply.NetworkError.NoError:
+            FreeCAD.Console.PrintLog(
+                f"Found a requirements.txt file for {self.repo.name}\n"
+            )
+            new_deps = self.fetch_task.readAll()
+            self.parse_file(new_deps.data().decode("utf8"))
+        elif (
+            self.fetch_task.error()
+            == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError
+        ):
+            pass
+        elif (
+            self.fetch_task.error()
+            == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError
+        ):
+            pass
+        else:
+            FreeCAD.Console.PrintWarning(
+                translate("AddonsInstaller", "Failed to connect to URL")
+                + f":\n{self.url}\n {self.fetch_task.error()}\n"
+            )
+
+    def parse_file(self, data: str) -> None:
+        f = io.StringIO(data)
+        lines = f.readlines()
+        for line in lines:
+            break_chars = " <>=~!+#"
+            package = line
+            for n, c in enumerate(line):
+                if c in break_chars:
+                    package = line[:n].strip()
+                    break
+            if package:
+                self.repo.python_requires.add(package)
         self.updated.emit(self.repo)

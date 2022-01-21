@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>388</width>
+    <width>757</width>
     <height>621</height>
    </rect>
   </property>
@@ -233,6 +233,42 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
     </widget>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="fclabel">
+       <property name="text">
+        <string>Python executable (optional):</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</string>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>PythonExecutableForPip</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Addons</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -271,6 +307,11 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
   <customwidget>
    <class>Gui::PrefLineEdit</class>
    <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFileChooser</class>
+   <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

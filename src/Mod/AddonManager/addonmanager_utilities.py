@@ -197,7 +197,6 @@ def get_zip_url(repo):
     ):
         # https://framagit.org/freecad-france/mooc-workbench/-/archive/master/mooc-workbench-master.zip
         # https://salsa.debian.org/mess42/pyrate/-/archive/master/pyrate-master.zip
-        reponame = baseurl.strip("/").split("/")[-1]
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
     else:
         FreeCAD.Console.PrintLog(
@@ -237,7 +236,7 @@ def get_readme_url(repo):
 def get_metadata_url(url):
     "Returns the location of a package.xml metadata file"
 
-    return construct_git_url(repo, "package.xml")
+    return construct_git_url(url, "package.xml")
 
 
 def get_desc_regex(repo):
