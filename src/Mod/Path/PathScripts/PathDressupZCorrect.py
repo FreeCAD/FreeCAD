@@ -32,7 +32,7 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from PathGeom import CmdMoveArc, CmdMoveStraight
+from PathScripts.PathGeom import CmdMoveArc, CmdMoveStraight
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader

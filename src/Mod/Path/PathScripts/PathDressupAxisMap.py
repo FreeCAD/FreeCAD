@@ -28,7 +28,7 @@ import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from PathGeom import CmdMoveArc
+from PathScripts.PathGeom import CmdMoveArc
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
