@@ -189,7 +189,7 @@ PathUtils.addToJob(obj)
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("PathFixture", CommandPathFixture())
+    FreeCADGui.addCommand("Path_Fixture", CommandPathFixture())
 
 
 FreeCAD.Console.PrintLog("Loading PathFixture... done\n")
