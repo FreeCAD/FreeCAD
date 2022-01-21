@@ -454,6 +454,11 @@ void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& /*msg*/)
             QString t = item->data(Qt::UserRole).toString();
             if (t.compare(QString::fromLatin1(obj.FeatName))==0) {
                 item->setSelected(true);
+
+                ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                ->GetGroup("Preferences")->GetGroup("Selection");
+                if (hGrp->GetBool("singleClickFeatureSelect", true))
+                    QMetaObject::invokeMethod(qobject_cast<Gui::ControlSingleton*>(&Gui::Control()), "accept", Qt::QueuedConnection);
             }
         }
     }
