@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>330</width>
-    <height>417</height>
+    <height>706</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,9 +62,6 @@
 If 'Equal Tolerance' is checked this is also
 the negated value for 'Under Tolerance'.</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
           <property name="singleStep">
            <double>0.100000000000000</double>
           </property>
@@ -93,9 +90,6 @@ the negated value for 'Under Tolerance'.</string>
 If 'Equal Tolerance' is checked it will be replaced
 by negative value of 'Over Tolerance'.</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
           <property name="singleStep">
            <double>0.100000000000000</double>
           </property>
@@ -117,17 +111,10 @@ by negative value of 'Over Tolerance'.</string>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_11">
-          <property name="text">
-           <string>Format Specifier:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="leFormatSpecifier">
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="leFormatSpecifierUnderTolerance">
           <property name="toolTip">
-           <string>Text to be displayed</string>
+           <string>Specifies the undertolerance format in printf() style, or arbitrary text</string>
           </property>
          </widget>
         </item>
@@ -149,24 +136,10 @@ be used instead if the dimension value</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="leFormatSpecifierOverTolerance">
-          <property name="toolTip">
-           <string>Specifies the overtolerance format in printf() style, or arbitrary text</string>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label_12">
           <property name="text">
            <string>UnderTolerance Format Specifier:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="leFormatSpecifierUnderTolerance">
-          <property name="toolTip">
-            <string>Specifies the undertolerance format in printf() style, or arbitrary text</string>
           </property>
          </widget>
         </item>
@@ -178,6 +151,27 @@ be used instead if the dimension value</string>
           </property>
           <property name="text">
            <string>Arbitrary Tolerance Text</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Format Specifier:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="leFormatSpecifier">
+          <property name="toolTip">
+           <string>Text to be displayed</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="leFormatSpecifierOverTolerance">
+          <property name="toolTip">
+           <string>Specifies the overtolerance format in printf() style, or arbitrary text</string>
           </property>
          </widget>
         </item>
@@ -249,9 +243,6 @@ be used instead if the dimension value</string>
           <property name="toolTip">
            <string>Fontsize for 'Text'</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
           <property name="minimum">
            <double>0.000000000000000</double>
           </property>
@@ -305,6 +296,109 @@ be used instead if the dimension value</string>
      </layout>
     </widget>
    </item>
+   <item>
+    <widget class="QGroupBox" name="gbLines">
+     <property name="title">
+      <string>Lines</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Extension line angle</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="pbDimUseDefault">
+          <property name="toolTip">
+           <string>Set dimension line angle to default (ortho view).</string>
+          </property>
+          <property name="text">
+           <string>Use default</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="rbOverride">
+          <property name="toolTip">
+           <string>Use override angles if checked. Use default angles if unchecked.</string>
+          </property>
+          <property name="text">
+           <string>Override angles</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="pbDimUseSelection">
+          <property name="toolTip">
+           <string>Set dimension line angle to match selected edge or vertices.</string>
+          </property>
+          <property name="text">
+           <string>Use selection</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="dsbDimAngle">
+          <property name="toolTip">
+           <string>Angle of dimension line with drawing X axis (degrees)</string>
+          </property>
+          <property name="minimum">
+           <double>-360.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>360.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QDoubleSpinBox" name="dsbExtAngle">
+          <property name="toolTip">
+           <string>Angle of extension lines with drawing X axis (degrees)</string>
+          </property>
+          <property name="minimum">
+           <double>-360.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>360.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Dimension line angle</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QPushButton" name="pbExtUseSelection">
+          <property name="toolTip">
+           <string>Set extension line angle to match selected edge or vertices.</string>
+          </property>
+          <property name="text">
+           <string>Use selection</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QPushButton" name="pbExtUseDefault">
+          <property name="toolTip">
+           <string>Set extension line angle to default (ortho).</string>
+          </property>
+          <property name="text">
+           <string>Use default</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -319,8 +413,6 @@ be used instead if the dimension value</string>
    <header>Gui/Widgets.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="Resources/TechDraw.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
