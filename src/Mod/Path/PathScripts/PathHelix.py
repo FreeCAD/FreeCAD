@@ -30,6 +30,8 @@ import Path
 import PathScripts.PathCircularHoleBase as PathCircularHoleBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
+import PathFeedRate
+
 
 __title__ = "Path Helix Drill Operation"
 __author__ = "Lorenz Hüdepohl"
@@ -170,16 +172,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         PathLog.track()
         self.commandlist.append(Path.Command("(helix cut operation)"))
 
-        self.commandlist.append(
-            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-        )
-
-        zsafe = (
-            max(baseobj.Shape.BoundBox.ZMax for baseobj, features in obj.Base)
-            + obj.ClearanceHeight.Value
-        )
-        output = ""
-        output += "G0 Z" + fmt(zsafe)
+        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         holes = sort_locations(holes, ["x", "y"])
 
@@ -205,12 +198,32 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
 
+            # move to starting postion
+            self.commandlist.append(
+                Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
+            )
+            self.commandlist.append(
+                Path.Command(
+                    "G0",
+                    {
+                        "X": startPoint.x,
+                        "Y": startPoint.y,
+                        "Z": obj.ClearanceHeight.Value,
+                    },
+                )
+            )
+            self.commandlist.append(
+                Path.Command(
+                    "G0", {"X": startPoint.x, "Y": startPoint.y, "Z": startPoint.z}
+                )
+            )
+
             results = helix_generator.generate(**args)
 
             for command in results:
                 self.commandlist.append(command)
 
-        PathLog.debug(output)
+        PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
 
 def SetupProperties():
