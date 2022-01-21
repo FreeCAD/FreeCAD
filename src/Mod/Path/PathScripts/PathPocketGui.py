@@ -32,19 +32,25 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Pocket operation page controller and command implementation."
 
+
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
-    '''Page controller class for Pocket operation'''
+    """Page controller class for Pocket operation"""
 
     def pocketFeatures(self):
-        '''pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)'''
+        """pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)"""
         return PathPocketBaseGui.FeaturePocket
 
-Command = PathOpGui.SetupOperation('Pocket 3D',
-        PathPocket.Create,
-        TaskPanelOpPage,
-        'Path_3DPocket',
-        QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "3D Pocket"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Creates a Path 3D Pocket object from a face or faces"),
-        PathPocket.SetupProperties)
+
+Command = PathOpGui.SetupOperation(
+    "Pocket 3D",
+    PathPocket.Create,
+    TaskPanelOpPage,
+    "Path_3DPocket",
+    QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "3D Pocket"),
+    QtCore.QT_TRANSLATE_NOOP(
+        "Path_Pocket", "Creates a Path 3D Pocket object from a face or faces"
+    ),
+    PathPocket.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")
