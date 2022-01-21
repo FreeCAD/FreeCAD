@@ -106,6 +106,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals = []
 
         signals.append(self.form.stepOverPercent.editingFinished)
+        signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.direction.currentIndexChanged)
         signals.append(self.form.startSide.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
