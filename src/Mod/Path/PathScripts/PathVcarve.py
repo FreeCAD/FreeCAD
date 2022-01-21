@@ -29,8 +29,9 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathPreferences as PathPreferences
-
 import math
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 
 from PySide import QtCore
 
@@ -43,14 +44,14 @@ EXTERIOR2 = 3
 COLINEAR = 4
 TWIN = 5
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
+translate = FreeCAD.Qt.translate
 
 VD = []
 Vertex = {}
@@ -217,8 +218,8 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 "App::PropertyLinkList",
                 "BaseShapes",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathVcarve", "Additional base objects to be engraved"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Additional base objects to be engraved"
                 ),
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
@@ -229,16 +230,16 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             "App::PropertyFloat",
             "Discretize",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathVcarve", "The deflection value for discretizing arcs"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The deflection value for discretizing arcs"
             ),
         )
         obj.addProperty(
             "App::PropertyFloat",
             "Colinear",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathVcarve",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Cutoff for removing colinear segments (degrees). \
                         default=10.0.",
             ),
@@ -247,7 +248,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             "App::PropertyFloat",
             "Tolerance",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("PathVcarve", ""),
+            QT_TRANSLATE_NOOP("App::Property", "Vcarve Tolerance"),
         )
         obj.Colinear = 10.0
         obj.Discretize = 0.01
@@ -385,15 +386,9 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 )
 
         except Exception as e:
-            # PathLog.error(e)
-            # traceback.print_exc()
             PathLog.error(
-                translate(
-                    "PathVcarve",
-                    "Error processing Base object. Engraving operation will produce no output.",
-                )
+                "Error processing Base object. Engraving operation will produce no output."
             )
-            # raise e
 
     def opUpdateDepths(self, obj, ignoreErrors=False):
         """updateDepths(obj) ... engraving is always done at the top most z-value"""

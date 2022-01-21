@@ -27,13 +27,14 @@ import PathScripts.PathVcarve as PathVcarve
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathUtils as PathUtils
-
 from PySide import QtCore, QtGui
+
 
 __title__ = "Path Vcarve Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Vcarve operation page controller and command implementation."
+
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -41,9 +42,7 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
@@ -70,8 +69,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 continue
             if base in shapes:
                 PathLog.notice(
-                    (translate("Path", "Base shape %s already in the list") + "\n")
-                    % (sel.Object.Label)
+                    "Base shape %s already in the list".format(sel.Object.Label)
                 )
                 continue
             if base.isDerivedFrom("Part::Part2DObject"):
@@ -79,7 +77,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     # selectively add some elements of the drawing to the Base
                     for sub in sel.SubElementNames:
                         if "Vertex" in sub:
-                            PathLog.info(translate("Path", "Ignoring vertex"))
+                            PathLog.info("Ignoring vertex")
                         else:
                             self.obj.Proxy.addBase(self.obj, base, sub)
                 else:
