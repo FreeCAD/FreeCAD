@@ -28,6 +28,10 @@ These are a common functions and classes for creating custom post processors.
 
 from PySide import QtCore, QtGui
 import FreeCAD
+from PathMachineState import MachineState
+import Path
+import Part
+from PathScripts.PathGeom import CmdMoveArc, edgeForCmd, cmdsForEdge
 
 translate = FreeCAD.Qt.translate
 
@@ -193,3 +197,32 @@ def fcoms(string, commentsym):
     else:
         return string
     return comment
+
+def splitArcs(path):
+    """filters a path object and replaces at G2/G3 moves with discrete G1
+    returns a Path object"""
+    prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+    deflection = prefGrp.GetFloat("LibAreaCurveAccuarcy", 0.01)
+
+    results = []
+    if not isinstance(path, Path.Path):
+        raise TypeError("path must be a Path object")
+
+    machine = MachineState()
+    for command in path.Commands:
+
+        if command.Name not in CmdMoveArc:
+            machine.addCommand(command)
+            results.append(command)
+            continue
+
+        edge = edgeForCmd(command, machine.getPosition())
+        pts =edge.discretize(Deflection=deflection)
+        edges = [Part.makeLine(v1, v2) for v1, v2 in zip(pts, pts[1:])]
+        for edge in edges:
+            results.extend(cmdsForEdge(edge))
+
+        machine.addCommand(command)
+
+    return Path.Path(results)
+

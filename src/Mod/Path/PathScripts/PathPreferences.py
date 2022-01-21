@@ -54,7 +54,7 @@ UseAbsoluteToolPaths            = "UseAbsoluteToolPaths"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance               = "GeometryTolerance"
-LibAreaCurveAccuracy            = "LibAreaCurveAccuarcy"
+LibAreaCurveAccuracy            = "LibAreaCurveAccuracy"
 
 WarningSuppressRapidSpeeds      = "WarningSuppressRapidSpeeds"
 WarningSuppressAllSpeeds        = "WarningSuppressAllSpeeds"

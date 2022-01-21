@@ -37,6 +37,7 @@ from PathTests.TestPathHelixGenerator import TestPathHelixGenerator
 from PathTests.TestPathLog import TestPathLog
 from PathTests.TestPathOpTools import TestPathOpTools
 # from PathTests.TestPathPost import PathPostTestCases
+from PathTests.TestPathPost import TestPathPostUtils
 from PathTests.TestPathPreferences import TestPathPreferences
 from PathTests.TestPathPropertyBag import TestPathPropertyBag
 from PathTests.TestPathRotationGenerator import TestPathRotationGenerator
@@ -66,6 +67,7 @@ False if TestPathHelpers.__name__ else True
 False if TestPathLog.__name__ else True
 False if TestPathOpTools.__name__ else True
 # False if TestPathPost.__name__ else True
+False if TestPathPostUtils.__name__ else True
 False if TestPathPreferences.__name__ else True
 False if TestPathPropertyBag.__name__ else True
 False if TestPathRotationGenerator.__name__ else True
