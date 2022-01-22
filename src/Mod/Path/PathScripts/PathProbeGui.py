@@ -22,11 +22,13 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathProbe as PathProbe
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathGui as PathGui
+import PathScripts.PathLog as PathLog
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtCore, QtGui
 
 __title__ = "Path Probing Operation UI"
@@ -35,38 +37,46 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Probing operation page controller and command implementation."
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+translate = FreeCAD.Qt.translate
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Page controller class for the Probing operation.'''
+    """Page controller class for the Probing operation."""
 
     def getForm(self):
-        '''getForm() ... returns UI'''
+        """getForm() ... returns UI"""
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpProbeEdit.ui")
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        """getFields(obj) ... transfers values from UI to obj's proprties"""
         self.updateToolController(obj, self.form.toolController)
-        PathGui.updateInputField(obj, 'Xoffset', self.form.Xoffset)
-        PathGui.updateInputField(obj, 'Yoffset', self.form.Yoffset)
+        PathGui.updateInputField(obj, "Xoffset", self.form.Xoffset)
+        PathGui.updateInputField(obj, "Yoffset", self.form.Yoffset)
         obj.PointCountX = self.form.PointCountX.value()
         obj.PointCountY = self.form.PointCountY.value()
         obj.OutputFileName = str(self.form.OutputFileName.text())
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         self.setupToolController(obj, self.form.toolController)
-        self.form.Xoffset.setText(FreeCAD.Units.Quantity(obj.Xoffset.Value, FreeCAD.Units.Length).UserString)
-        self.form.Yoffset.setText(FreeCAD.Units.Quantity(obj.Yoffset.Value, FreeCAD.Units.Length).UserString)
+        self.form.Xoffset.setText(
+            FreeCAD.Units.Quantity(obj.Xoffset.Value, FreeCAD.Units.Length).UserString
+        )
+        self.form.Yoffset.setText(
+            FreeCAD.Units.Quantity(obj.Yoffset.Value, FreeCAD.Units.Length).UserString
+        )
         self.form.OutputFileName.setText(obj.OutputFileName)
         self.form.PointCountX.setValue(obj.PointCountX)
         self.form.PointCountY.setValue(obj.PointCountY)
 
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.PointCountX.valueChanged)
@@ -78,16 +88,25 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return signals
 
     def SetOutputFileName(self):
-        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Probe", "Select Output File"), None, translate("Path_Probe", "All Files (*.*)"))
+        filename = QtGui.QFileDialog.getSaveFileName(
+            self.form,
+            translate("Path_Probe", "Select Output File"),
+            None,
+            translate("Path_Probe", "All Files (*.*)"),
+        )
         if filename and filename[0]:
             self.obj.OutputFileName = str(filename[0])
             self.setFields(self.obj)
 
 
-Command = PathOpGui.SetupOperation('Probe', PathProbe.Create, TaskPanelOpPage,
-                'Path_Probe',
-                QtCore.QT_TRANSLATE_NOOP("Probe", "Probe"),
-                QtCore.QT_TRANSLATE_NOOP("Probe", "Create a Probing Grid from a job stock"),
-                PathProbe.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "Probe",
+    PathProbe.Create,
+    TaskPanelOpPage,
+    "Path_Probe",
+    QtCore.QT_TRANSLATE_NOOP("Path_Probe", "Probe"),
+    QtCore.QT_TRANSLATE_NOOP("Path_Probe", "Create a Probing Grid from a job stock"),
+    PathProbe.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathProbeGui... done\n")
