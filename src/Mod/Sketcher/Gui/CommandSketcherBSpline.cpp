@@ -1033,13 +1033,35 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     try {
         // TODO: Get param from user input by clicking on desired spot
         // Get param from user input into a box
-        bool paramPicked;
-        // TODO: get min/max values from the BSpline
-        double param = QInputDialog::getDouble(
-            Gui::getMainWindow(), QObject::tr("Knot parameter"),
-            QObject::tr("Please provide the parameter where the knot is to be inserted."),
-            0.5, -DBL_MAX, DBL_MAX, 8, &paramPicked);
-        if (paramPicked) {
+        const Part::GeomBSplineCurve *bsp =
+            static_cast<const Part::GeomBSplineCurve *>(Obj->getGeometry(GeoId));
+        const auto& knots = bsp->getKnots();
+        const auto& mults = bsp->getMultiplicities();
+        QInputDialog knotDialog(Gui::getMainWindow());
+        knotDialog.setInputMode(QInputDialog::DoubleInput);
+        knotDialog.setDoubleDecimals(8);
+        knotDialog.setWindowTitle(QObject::tr("Knot parameter"));
+        // use values from `knots` and `weights` and insert in label
+        std::stringstream knotList;
+        for (auto knot : knots)
+            knotList << " " << knot << ",";
+        std::stringstream multList;
+        for (auto mult : mults)
+            multList << " " << mult << ",";
+        knotDialog.setLabelText(QObject::tr("Please provide the parameter where the knot is to be inserted.\n"
+                                            "Current knots: %1\n"
+                                            "Multiplicities: %2\n")
+                                .arg(QString::fromUtf8(knotList.str().c_str()))
+                                .arg(QString::fromUtf8(multList.str().c_str())));
+        // use an appropriate middle value from `knots`
+        knotDialog.setDoubleValue(0.5 * (knots.front() + knots.back()));
+        // use min/max from `knots`
+        knotDialog.setDoubleRange(knots.front(), knots.back());
+
+        int ret = knotDialog.exec();
+
+        if (ret == QDialog::Accepted) {
+            double param = knotDialog.doubleValue();
             Gui::cmdAppObjectArgs(selection[0].getObject(),
                                   "insertBSplineKnot(%d, %lf, %d) ",
                                   GeoId, param, 1);
@@ -1048,7 +1070,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
             // Warning: GeoId list might have changed
             // as the consequence of deleting pole circles and
             // particularly B-spline GeoID might have changed.
-        }
+        };
     }
     catch (const Base::CADKernelError& e) {
       e.ReportException();
