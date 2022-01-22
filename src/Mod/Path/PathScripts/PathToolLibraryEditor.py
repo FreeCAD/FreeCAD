@@ -21,7 +21,8 @@
 # ***************************************************************************
 
 from __future__ import print_function
-
+from PySide import QtCore, QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
@@ -30,17 +31,17 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBitLibraryCmd as PathToolBitLibraryCmd
 import PathScripts.PathToolEdit as PathToolEdit
-import PathScripts.PathUtils as PathUtils
 import PathScripts.PathToolLibraryManager as ToolLibraryManager
-
-from PySide import QtCore, QtGui
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+import PathScripts.PathUtils as PathUtils
 
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+translate = FreeCAD.Qt.translate
 
 
 class EditorPanel:
@@ -187,7 +188,7 @@ class EditorPanel:
         """imports a tooltable from a file"""
         filename = QtGui.QFileDialog.getOpenFileName(
             self.form,
-            translate("TooltableEditor", "Open tooltable", None),
+            translate("Path_ToolTable", "Open tooltable", None),
             None,
             "{};;{};;{}".format(
                 self.TLM.TooltableTypeJSON,
@@ -204,7 +205,7 @@ class EditorPanel:
         """export a tooltable to a file"""
         filename = QtGui.QFileDialog.getSaveFileName(
             self.form,
-            translate("TooltableEditor", "Save tooltable", None),
+            translate("Path_ToolTable", "Save tooltable", None),
             None,
             "{};;{};;{}".format(
                 self.TLM.TooltableTypeJSON,
@@ -382,8 +383,8 @@ class EditorPanel:
         name = self.TLM.getCurrentTableName()
         newName, ok = QtGui.QInputDialog.getText(
             None,
-            translate("TooltableEditor", "Rename Tooltable"),
-            translate("TooltableEditor", "Enter Name:"),
+            translate("Path_ToolTable", "Rename Tooltable"),
+            translate("Path_ToolTable", "Enter Name:"),
             QtGui.QLineEdit.Normal,
             name,
         )
@@ -420,15 +421,15 @@ class EditorPanel:
 
         self.form.ButtonAddToolTable.clicked.connect(self.addNewToolTable)
         self.form.ButtonAddToolTable.setToolTip(
-            translate("TooltableEditor", "Add New Tool Table")
+            translate("Path_ToolTable", "Add New Tool Table")
         )
         self.form.ButtonRemoveToolTable.clicked.connect(self.removeToolTable)
         self.form.ButtonRemoveToolTable.setToolTip(
-            translate("TooltableEditor", "Delete Selected Tool Table")
+            translate("Path_ToolTable", "Delete Selected Tool Table")
         )
         self.form.ButtonRenameToolTable.clicked.connect(self.renameTable)
         self.form.ButtonRenameToolTable.setToolTip(
-            translate("TooltableEditor", "Rename Selected Tool Table")
+            translate("Path_ToolTable", "Rename Selected Tool Table")
         )
 
         self.setFields()
@@ -497,9 +498,9 @@ class CommandToolLibraryEdit:
     def GetResources(self):
         return {
             "Pixmap": "Path_ToolTable",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_ToolTable", "Tool Manager"),
+            "MenuText": QT_TRANSLATE_NOOP("Path_ToolTable", "Tool Manager"),
             "Accel": "P, T",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP("Path_ToolTable", "Tool Manager"),
+            "ToolTip": QT_TRANSLATE_NOOP("Path_ToolTable", "Tool Manager"),
         }
 
     def IsActive(self):
