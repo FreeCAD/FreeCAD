@@ -20,26 +20,22 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
+from PySide import QtCore, QtGui
 import FreeCADGui
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPropertyEditor as PathPropertyEditor
-import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathUtil as PathUtil
 import os
 import re
 
-from PySide import QtCore, QtGui
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
-
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class _Delegate(QtGui.QStyledItemDelegate):

@@ -20,12 +20,19 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import PathScripts
+import PathScripts.PathLog as PathLog
 import os
 
-from PySide import QtCore
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class CommandToolBitCreate:
@@ -39,9 +46,9 @@ class CommandToolBitCreate:
     def GetResources(self):
         return {
             "Pixmap": "Path_ToolBit",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Create Tool"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "PathToolBit", "Creates a new ToolBit object"
+            "MenuText": QT_TRANSLATE_NOOP("Path_ToolBitCreate", "Create Tool"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_ToolBitCreate", "Creates a new ToolBit object"
             ),
         }
 
@@ -63,14 +70,14 @@ class CommandToolBitSave:
 
     def GetResources(self):
         if self.saveAs:
-            menuTxt = QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Save Tool as...")
+            menuTxt = QT_TRANSLATE_NOOP("Path_ToolBitSaveAs", "Save Tool as...")
         else:
-            menuTxt = QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Save Tool")
+            menuTxt = QT_TRANSLATE_NOOP("Path_ToolBitSave", "Save Tool")
         return {
             "Pixmap": "Path_ToolBit",
             "MenuText": menuTxt,
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "PathToolBit", "Save an existing ToolBit object to a file"
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_ToolBitSave", "Save an existing ToolBit object to a file"
             ),
         }
 
@@ -130,9 +137,9 @@ class CommandToolBitLoad:
     def GetResources(self):
         return {
             "Pixmap": "Path_ToolBit",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Load Tool"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "PathToolBit", "Load an existing ToolBit object from a file"
+            "MenuText": QT_TRANSLATE_NOOP("Path_ToolBitLoad", "Load Tool"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_ToolBitLoad", "Load an existing ToolBit object from a file"
             ),
         }
 
