@@ -20,6 +20,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
@@ -29,8 +31,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
-
-from PySide import QtCore, QtGui
+import PathScripts.PathToolController as PathToolController
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -38,9 +39,13 @@ from lazy_loader.lazy_loader import LazyLoader
 Part = LazyLoader("Part", globals(), "Part")
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+translate = FreeCAD.Qt.translate
 
 
 class ViewProvider:
@@ -144,12 +149,10 @@ class CommandPathToolController(object):
     def GetResources(self):
         return {
             "Pixmap": "Path_LengthOffset",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP(
                 "Path_ToolController", "Add Tool Controller to the Job"
             ),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "Path_ToolController", "Add Tool Controller"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller"),
         }
 
     def selectedJob(self):
@@ -190,6 +193,12 @@ class ToolControllerEditor(object):
             self.form.buttonBox.hide()
         self.obj = obj
 
+        comboToPropertyMap = [("spindleDirection", "SpindleDir")]
+        enumTups = PathToolController.ToolController.propertyEnumerations(
+            dataType="raw"
+        )
+
+        self.populateCombobox(self.form, enumTups, comboToPropertyMap)
         self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj, "VertFeed")
         self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj, "HorizFeed")
         self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj, "VertRapid")
@@ -204,6 +213,43 @@ class ToolControllerEditor(object):
             self.form.toolBox.widget(1).hide()
             self.form.toolBox.removeItem(1)
 
+    def selectInComboBox(self, name, combo):
+        """selectInComboBox(name, combo) ...
+        helper function to select a specific value in a combo box."""
+        blocker = QtCore.QSignalBlocker(combo)
+        index = combo.currentIndex()  # Save initial index
+
+        # Search using currentData and return if found
+        newindex = combo.findData(name)
+        if newindex >= 0:
+            combo.setCurrentIndex(newindex)
+            return
+
+        # if not found, search using current text
+        newindex = combo.findText(name, QtCore.Qt.MatchFixedString)
+        if newindex >= 0:
+            combo.setCurrentIndex(newindex)
+            return
+
+        # not found, return unchanged
+        combo.setCurrentIndex(index)
+        return
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
+
     def updateUi(self):
         tc = self.obj
         self.form.tcName.setText(tc.Label)
@@ -213,11 +259,14 @@ class ToolControllerEditor(object):
         self.vertFeed.updateSpinBox()
         self.vertRapid.updateSpinBox()
         self.form.spindleSpeed.setValue(tc.SpindleSpeed)
-        index = self.form.spindleDirection.findText(
-            tc.SpindleDir, QtCore.Qt.MatchFixedString
-        )
-        if index >= 0:
-            self.form.spindleDirection.setCurrentIndex(index)
+
+        self.selectInComboBox(tc.SpindleDir, self.form.spindleDirection)
+
+        # index = self.form.spindleDirection.findText(
+        #     tc.SpindleDir, QtCore.Qt.MatchFixedString
+        # )
+        # if index >= 0:
+        #     self.form.spindleDirection.setCurrentIndex(index)
 
         if self.editor:
             self.editor.updateUI()
@@ -232,14 +281,14 @@ class ToolControllerEditor(object):
             self.horizRapid.updateProperty()
             self.vertRapid.updateProperty()
             tc.SpindleSpeed = self.form.spindleSpeed.value()
-            tc.SpindleDir = self.form.spindleDirection.currentText()
+            tc.SpindleDir = self.form.spindleDirection.currentData()
 
             if self.editor:
                 self.editor.updateTool()
                 tc.Tool = self.editor.tool
 
         except Exception as e:
-            PathLog.error(translate("PathToolController", "Error updating TC: %s") % e)
+            PathLog.error("Error updating TC: {}".format(e))
 
     def refresh(self):
         self.form.blockSignals(True)

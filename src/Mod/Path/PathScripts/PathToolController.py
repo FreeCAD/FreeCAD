@@ -22,21 +22,21 @@
 
 """Tool Controller defines tool, spindle speed and feed rates for Path Operations"""
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
 
-from PySide import QtCore
 
-# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ToolControllerTemplate:
@@ -66,62 +66,87 @@ class ToolController:
             "App::PropertyIntegerConstraint",
             "ToolNumber",
             "Tool",
-            QtCore.QT_TRANSLATE_NOOP("PathToolController", "The active tool"),
+            QT_TRANSLATE_NOOP("App::Property", "The active tool"),
         )
         obj.ToolNumber = (0, 0, 10000, 1)
         obj.addProperty(
             "App::PropertyFloat",
             "SpindleSpeed",
             "Tool",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathToolController", "The speed of the cutting spindle in RPM"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The speed of the cutting spindle in RPM"
             ),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "SpindleDir",
             "Tool",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathToolController", "Direction of spindle rotation"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
         )
-        obj.SpindleDir = ["Forward", "Reverse"]
         obj.addProperty(
             "App::PropertySpeed",
             "VertFeed",
             "Feed",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathToolController", "Feed rate for vertical moves in Z"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Feed rate for vertical moves in Z"),
         )
         obj.addProperty(
             "App::PropertySpeed",
             "HorizFeed",
             "Feed",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathToolController", "Feed rate for horizontal moves"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Feed rate for horizontal moves"),
         )
         obj.addProperty(
             "App::PropertySpeed",
             "VertRapid",
             "Rapid",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathToolController", "Rapid rate for vertical moves in Z"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Rapid rate for vertical moves in Z"),
         )
         obj.addProperty(
             "App::PropertySpeed",
             "HorizRapid",
             "Rapid",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathToolController", "Rapid rate for horizontal moves"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Rapid rate for horizontal moves"),
         )
         obj.setEditorMode("Placement", 2)
 
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
+
         if createTool:
             self.ensureUseLegacyTool(obj, legacyTool)
+
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+        """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        # Enumeration lists for App::PropertyEnumeration properties
+        enums = {
+            "SpindleDir": [
+                (translate("Path_ToolController", "Forward"), "Forward"),
+                (translate("Path_ToolController", "Reverse"), "Reverse"),
+            ],  # this is the direction that the profile runs
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
 
     def onDocumentRestored(self, obj):
         obj.setEditorMode("Placement", 2)
@@ -192,18 +217,13 @@ class ToolController:
                             )
             else:
                 PathLog.error(
-                    translate(
-                        "PathToolController",
-                        "Unsupported PathToolController template version %s",
+                    "Unsupported PathToolController template version {}".format(
+                        template.get(ToolControllerTemplate.Version)
                     )
-                    % template.get(ToolControllerTemplate.Version)
                 )
         else:
             PathLog.error(
-                translate(
-                    "PathToolController",
-                    "PathToolController template has no version - corrupted template file?",
-                )
+                "PathToolController template has no version - corrupted template file?"
             )
 
     def templateAttrs(self, obj):
@@ -290,8 +310,8 @@ class ToolController:
                     "Path::PropertyTool",
                     "Tool",
                     "Base",
-                    QtCore.QT_TRANSLATE_NOOP(
-                        "PathToolController", "The tool used by this controller"
+                    QT_TRANSLATE_NOOP(
+                        "App::Property", "The tool used by this controller"
                     ),
                 )
             else:
@@ -299,8 +319,8 @@ class ToolController:
                     "App::PropertyLink",
                     "Tool",
                     "Base",
-                    QtCore.QT_TRANSLATE_NOOP(
-                        "PathToolController", "The tool used by this controller"
+                    QT_TRANSLATE_NOOP(
+                        "App::Property", "The tool used by this controller"
                     ),
                 )
 
