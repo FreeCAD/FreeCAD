@@ -227,10 +227,18 @@ def construct_git_url(repo, filename):
     return None
 
 
-def get_readme_url(repo):
-    "Returns the location of a readme file"
+def get_readme_html_url(repo):
+    "Returns the location of an HTML-rendered README.md file"
 
-    return construct_git_url(repo, "README.md")
+    if repo.metadata:
+        for url in repo.metadata.Urls:
+            if url["type"] == "readme":
+                return url["location"]
+
+    if parsed_url.netloc == "github.com" or parsed_url.netloc == "framagit.com":
+        return f"{repo.url}/blob/{repo.branch}/README.md#{repo.display_name}"
+    else:
+        return construct_git_url(repo, "README.md")
 
 
 def get_metadata_url(url):

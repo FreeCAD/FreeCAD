@@ -24,6 +24,7 @@
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
+from PySide2.QtWebEngineWidgets import *
 
 import os
 import shutil
@@ -67,8 +68,12 @@ class PackageDetails(QWidget):
         self.ui.buttonCheckForUpdate.clicked.connect(
             lambda: self.check_for_update.emit(self.repo)
         )
+        self.ui.webView.loadFinished.connect(self.load_started)
 
     def show_repo(self, repo: AddonManagerRepo, reload: bool = False) -> None:
+        
+        self.ui.labelPageLoading.show()
+        self.ui.webView.hide()
 
         self.repo = repo
 
@@ -314,61 +319,19 @@ class PackageDetails(QWidget):
 
     def show_workbench(self, repo: AddonManagerRepo) -> None:
         """loads information of a given workbench"""
-
-        if not self.show_cached_readme(repo):
-            self.ui.textBrowserReadMe.setText(
-                translate(
-                    "AddonsInstaller", "Fetching README.md from package repository"
-                )
-            )
-            self.worker = ShowWorker(repo, PackageDetails.cache_path(repo))
-            self.worker.readme_updated.connect(
-                lambda desc: self.cache_readme(repo, desc)
-            )
-            self.worker.readme_updated.connect(
-                lambda desc: self.ui.textBrowserReadMe.setText(desc)
-            )
-            self.worker.update_status.connect(self.update_status.emit)
-            self.worker.update_status.connect(self.show)
-            self.worker.start()
+        url = utils.get_readme_html_url(repo)
+        self.ui.webView.load(QUrl(url))
 
     def show_package(self, repo: AddonManagerRepo) -> None:
         """Show the details for a package (a repo with a package.xml metadata file)"""
-
-        if not self.show_cached_readme(repo):
-            self.ui.textBrowserReadMe.setText(
-                translate(
-                    "AddonsInstaller", "Fetching README.md from package repository"
-                )
-            )
-            self.worker = ShowWorker(repo, PackageDetails.cache_path(repo))
-            self.worker.readme_updated.connect(
-                lambda desc: self.cache_readme(repo, desc)
-            )
-            self.worker.readme_updated.connect(
-                lambda desc: self.ui.textBrowserReadMe.setText(desc)
-            )
-            self.worker.update_status.connect(self.update_status.emit)
-            self.worker.update_status.connect(self.show)
-            self.worker.start()
+        
+        url = utils.get_readme_html_url(repo)
+        self.ui.webView.load(QUrl(url))
 
     def show_macro(self, repo: AddonManagerRepo) -> None:
         """loads information of a given macro"""
 
-        if not self.show_cached_readme(repo):
-            self.ui.textBrowserReadMe.setText(
-                translate(
-                    "AddonsInstaller", "Fetching README.md from package repository"
-                )
-            )
-            self.worker = GetMacroDetailsWorker(repo)
-            self.worker.readme_updated.connect(
-                lambda desc: self.cache_readme(repo, desc)
-            )
-            self.worker.readme_updated.connect(
-                lambda desc: self.ui.textBrowserReadMe.setText(desc)
-            )
-            self.worker.start()
+        self.ui.webView.load(QUrl(repo.macro.url))
 
     def cache_readme(self, repo: AddonManagerRepo, readme: str) -> None:
         cache_path = PackageDetails.cache_path(repo)
@@ -377,6 +340,9 @@ class PackageDetails(QWidget):
         with open(readme_cache_file, "wb") as f:
             f.write(readme.encode())
 
+    def load_started(self):
+        self.ui.labelPageLoading.hide()
+        self.ui.webView.show()
 
 class Ui_PackageDetails(object):
     def setupUi(self, PackageDetails):
@@ -449,12 +415,15 @@ class Ui_PackageDetails(object):
 
         self.verticalLayout_2.addWidget(self.labelWarningInfo)
 
-        self.textBrowserReadMe = QTextBrowser(PackageDetails)
-        self.textBrowserReadMe.setObjectName("textBrowserReadMe")
-        self.textBrowserReadMe.setOpenExternalLinks(True)
-        self.textBrowserReadMe.setOpenLinks(True)
+        self.labelPageLoading = QLabel(PackageDetails)
+        self.labelPageLoading.setObjectName("labelPageLoading")
 
-        self.verticalLayout_2.addWidget(self.textBrowserReadMe)
+        self.verticalLayout_2.addWidget(self.labelPageLoading)
+
+        self.webView = QWebEngineView(PackageDetails)
+        self.webView.setObjectName("webView")
+
+        self.verticalLayout_2.addWidget(self.webView)
 
         self.retranslateUi(PackageDetails)
 
@@ -488,6 +457,13 @@ class Ui_PackageDetails(object):
             QCoreApplication.translate(
                 "AddonsInstaller",
                 "Delete cached version of this README and re-download",
+                None,
+            )
+        )
+        self.labelPageLoading.setText(
+            QCoreApplication.translate (
+                "AddonsInstaller",
+                "Loading README page...",
                 None,
             )
         )
