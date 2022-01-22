@@ -47,8 +47,8 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class ViewProvider(object):
-    '''ViewProvider for a ToolBit.
-    It's sole job is to provide an icon and invoke the TaskPanel on edit.'''
+    """ViewProvider for a ToolBit.
+    It's sole job is to provide an icon and invoke the TaskPanel on edit."""
 
     def __init__(self, vobj, name):
         PathLog.track(name, vobj.Object)
@@ -67,9 +67,9 @@ class ViewProvider(object):
         png = self.obj.Proxy.getBitThumbnail(self.obj)
         if png:
             pixmap = QtGui.QPixmap()
-            pixmap.loadFromData(png, 'PNG')
+            pixmap.loadFromData(png, "PNG")
             return QtGui.QIcon(pixmap)
-        return ':/icons/Path_ToolBit.svg'
+        return ":/icons/Path_ToolBit.svg"
 
     def __getstate__(self):
         return None
@@ -84,7 +84,7 @@ class ViewProvider(object):
 
     def getDisplayMode(self, mode):
         # pylint: disable=unused-argument
-        return 'Default'
+        return "Default"
 
     def _openTaskPanel(self, vobj, deleteOnReject):
         PathLog.track()
@@ -117,15 +117,16 @@ class ViewProvider(object):
         if os.path.exists(vobj.Object.BitShape):
             self.setEdit(vobj)
         else:
-            msg = translate('PathToolBit',
-                    'Toolbit cannot be edited: Shapefile not found')
-            diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, 'Error', msg)
+            msg = translate(
+                "PathToolBit", "Toolbit cannot be edited: Shapefile not found"
+            )
+            diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, "Error", msg)
             diag.setWindowModality(QtCore.Qt.ApplicationModal)
             diag.exec_()
 
 
 class TaskPanel:
-    '''TaskPanel for the SetupSheet - if it is being edited directly.'''
+    """TaskPanel for the SetupSheet - if it is being edited directly."""
 
     def __init__(self, vobj, deleteOnReject):
         PathLog.track(vobj.Object.Label)
@@ -134,15 +135,16 @@ class TaskPanel:
         self.editor = PathToolBitEdit.ToolBitEditor(self.obj)
         self.form = self.editor.form
         self.deleteOnReject = deleteOnReject
-        FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit',
-                                                         'Edit ToolBit'))
+        FreeCAD.ActiveDocument.openTransaction(translate("PathToolBit", "Edit ToolBit"))
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
         self.editor.reject()
         FreeCADGui.Control.closeDialog()
         if self.deleteOnReject:
-            FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Uncreate ToolBit'))
+            FreeCAD.ActiveDocument.openTransaction(
+                translate("PathToolBit", "Uncreate ToolBit")
+            )
             self.editor.reject()
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
@@ -169,17 +171,19 @@ class TaskPanel:
 
 
 class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
-
-    def Create(self, name='ToolBit', shapeFile=None, path=None):
-        '''Create(name = 'ToolBit') ... creates a new tool bit.
-        It is assumed the tool will be edited immediately so the internal bit body is still attached.'''
+    def Create(self, name="ToolBit", shapeFile=None, path=None):
+        """Create(name = 'ToolBit') ... creates a new tool bit.
+        It is assumed the tool will be edited immediately so the internal bit body is still attached."""
 
         PathLog.track(name, shapeFile, path)
-        FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Create ToolBit'))
+        FreeCAD.ActiveDocument.openTransaction(
+            translate("PathToolBit", "Create ToolBit")
+        )
         tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile, path)
         PathIconViewProvider.Attach(tool.ViewObject, name)
         FreeCAD.ActiveDocument.commitTransaction()
         return tool
+
 
 def isValidFileName(filename):
     print(filename)
@@ -194,9 +198,9 @@ def GetNewToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
 
-    foo = QtGui.QFileDialog.getSaveFileName(parent, 'Tool',
-                                            PathPreferences.lastPathToolBit(),
-                                            '*.fctb')
+    foo = QtGui.QFileDialog.getSaveFileName(
+        parent, "Tool", PathPreferences.lastPathToolBit(), "*.fctb"
+    )
     if foo and foo[0]:
         if not isValidFileName(foo[0]):
             msgBox = QtGui.QMessageBox()
@@ -212,9 +216,9 @@ def GetNewToolFile(parent=None):
 def GetToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
-    foo = QtGui.QFileDialog.getOpenFileName(parent, 'Tool',
-                                            PathPreferences.lastPathToolBit(),
-                                            '*.fctb')
+    foo = QtGui.QFileDialog.getOpenFileName(
+        parent, "Tool", PathPreferences.lastPathToolBit(), "*.fctb"
+    )
     if foo and foo[0]:
         PathPreferences.setLastPathToolBit(os.path.dirname(foo[0]))
         return foo[0]
@@ -224,9 +228,9 @@ def GetToolFile(parent=None):
 def GetToolFiles(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
-    foo = QtGui.QFileDialog.getOpenFileNames(parent, 'Tool',
-                                             PathPreferences.lastPathToolBit(),
-                                             '*.fctb')
+    foo = QtGui.QFileDialog.getOpenFileNames(
+        parent, "Tool", PathPreferences.lastPathToolBit(), "*.fctb"
+    )
     if foo and foo[0]:
         PathPreferences.setLastPathToolBit(os.path.dirname(foo[0][0]))
         return foo[0]
@@ -243,8 +247,9 @@ def GetToolShapeFile(parent=None):
     elif not os.path.isdir(location):
         location = PathPreferences.filePath()
 
-    fname = QtGui.QFileDialog.getOpenFileName(parent, 'Select Tool Shape',
-                                              location, '*.fcstd')
+    fname = QtGui.QFileDialog.getOpenFileName(
+        parent, "Select Tool Shape", location, "*.fcstd"
+    )
     if fname and fname[0]:
         if fname != location:
             newloc = os.path.dirname(fname[0])
@@ -255,21 +260,21 @@ def GetToolShapeFile(parent=None):
 
 
 def LoadTool(parent=None):
-    '''
+    """
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
-    '''
+    """
     foo = GetToolFile(parent)
     return PathToolBit.Factory.CreateFrom(foo) if foo else foo
 
 
 def LoadTools(parent=None):
-    '''
+    """
     LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
-    '''
+    """
     return [PathToolBit.Factory.CreateFrom(foo) for foo in GetToolFiles(parent)]
 
 
 # Set the factory so all tools are created with UI
 PathToolBit.Factory = ToolBitGuiFactory()
 
-PathIconViewProvider.RegisterViewProvider('ToolBit', ViewProvider)
+PathIconViewProvider.RegisterViewProvider("ToolBit", ViewProvider)

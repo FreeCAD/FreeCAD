@@ -27,58 +27,70 @@ import PathScripts.PathPreferences as PathPreferences
 
 
 class CommandToolBitSelectorOpen:
-    '''
+    """
     Command to toggle the ToolBitSelector Dock
-    '''
+    """
 
     def __init__(self):
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path_ToolTable',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "ToolBit Dock"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "Toggle the Toolbit Dock"),
-                'Accel': "P, T",
-                'CmdType': "ForEdit"}
+        return {
+            "Pixmap": "Path_ToolTable",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "ToolBit Dock"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "PathToolBitLibrary", "Toggle the Toolbit Dock"
+            ),
+            "Accel": "P, T",
+            "CmdType": "ForEdit",
+        }
 
     def IsActive(self):
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
         import PathScripts.PathToolBitLibraryGui as PathToolBitLibraryGui
+
         dock = PathToolBitLibraryGui.ToolBitSelector()
         dock.open()
 
 
 class CommandToolBitLibraryOpen:
-    '''
+    """
     Command to open ToolBitLibrary editor.
-    '''
+    """
 
     def __init__(self):
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path_ToolTable',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "ToolBit Library editor"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "Open an editor to manage ToolBit libraries"),
-                'CmdType': "ForEdit"}
+        return {
+            "Pixmap": "Path_ToolTable",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "PathToolBitLibrary", "ToolBit Library editor"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "PathToolBitLibrary", "Open an editor to manage ToolBit libraries"
+            ),
+            "CmdType": "ForEdit",
+        }
 
     def IsActive(self):
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
         import PathScripts.PathToolBitLibraryGui as PathToolBitLibraryGui
+
         library = PathToolBitLibraryGui.ToolBitLibrary()
 
         library.open()
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Path_ToolBitLibraryOpen', CommandToolBitLibraryOpen())
-    FreeCADGui.addCommand('Path_ToolBitDock', CommandToolBitSelectorOpen())
+    FreeCADGui.addCommand("Path_ToolBitLibraryOpen", CommandToolBitLibraryOpen())
+    FreeCADGui.addCommand("Path_ToolBitDock", CommandToolBitSelectorOpen())
 
-BarList = ['Path_ToolBitDock']
-MenuList = ['Path_ToolBitLibraryOpen', 'Path_ToolBitDock']
+BarList = ["Path_ToolBitDock"]
+MenuList = ["Path_ToolBitLibraryOpen", "Path_ToolBitDock"]
 
 FreeCAD.Console.PrintLog("Loading PathToolBitLibraryCmd... done\n")
