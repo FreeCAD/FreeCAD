@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2022 - Wanderer Fan <wandererfan@gmail.com>             *
+# *   Copyright (c) 2022 Wanderer Fan <wandererfan@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,8 +21,8 @@
 """Provides the TechDraw CopyView Task Dialog."""
 
 __title__ = "TechDrawTools.TaskCopyView"
-__author__ = "WandeererFan"
-__url__ = "http://www.freecadweb.org/index.html"
+__author__ = "WandererFan"
+__url__ = "https://www.freecadweb.org"
 __version__ = "00.01"
 __date__ = "2022/01/11"
 

@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2022 - Wanderer Fan <wandererfan@gmail.com>             *
+# *   Copyright (c) 2022 Wanderer Fan <wandererfan@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -24,8 +23,8 @@ __title__ = "TechDrawTools package"
 __author__  = "WandererFan"
 __url__     = "https://www.freecadweb.org"
 __version__ = "00.01"
-__date__    = "2022-01-11" 
- 
+__date__    = "2022-01-11"
+
 ## @package TechDrawTools
 #  \ingroup TechDraw
 #  \brief TechDrawTools Package for TechDraw workbench
