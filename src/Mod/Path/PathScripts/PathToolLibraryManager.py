@@ -23,7 +23,6 @@
 from __future__ import print_function
 
 import FreeCAD
-import FreeCADGui
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
@@ -31,16 +30,15 @@ import PathScripts.PathUtil as PathUtil
 import json
 import os
 import xml.sax
+from PySide import QtGui
 
-from PySide import QtCore, QtGui
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
-
-
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
+translate = FreeCAD.Qt.translate
 
 # Tooltable XML readers
 class FreeCADTooltableHandler(xml.sax.ContentHandler):
