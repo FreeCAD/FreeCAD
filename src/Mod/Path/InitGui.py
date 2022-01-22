@@ -150,7 +150,7 @@ class PathWorkbench(Workbench):
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
-            specialcmdlist.append("Path_Thread_Milling")
+            specialcmdlist.append("Path_ThreadMilling")
             twodopcmdlist.append("Path_Slot")
 
         if PathPreferences.advancedOCLFeaturesEnabled():

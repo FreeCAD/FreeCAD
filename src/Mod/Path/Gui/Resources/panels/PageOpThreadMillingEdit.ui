@@ -30,18 +30,8 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="threadOrientation">
         <property name="currentIndex">
-         <number>1</number>
+         <number>-1</number>
         </property>
-        <item>
-         <property name="text">
-          <string>Left Hand</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Right Hand</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="1" column="0">
@@ -52,23 +42,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="threadType">
-        <item>
-         <property name="text">
-          <string>Custom</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Metric - internal</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>SAE - internal</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="threadType"/>
       </item>
       <item row="2" column="1">
        <widget class="QComboBox" name="threadName"/>
@@ -208,18 +182,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="opDirection">
-        <item>
-         <property name="text">
-          <string>Climb</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Conventional</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="opDirection"/>
       </item>
       <item row="2" column="0">
        <widget class="QCheckBox" name="leadInOut">
@@ -236,7 +199,7 @@
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QDoubleSpinBox</extends>
+   <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
