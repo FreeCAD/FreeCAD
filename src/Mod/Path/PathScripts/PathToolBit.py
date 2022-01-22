@@ -25,10 +25,10 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPropertyBag as PathPropertyBag
 import PathScripts.PathUtil as PathUtil
-import PySide
 import json
 import os
 import zipfile
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -44,12 +44,12 @@ PropertyGroupShape = "Shape"
 
 _DebugFindTool = False
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
 
-
-def translate(context, text, disambig=None):
-    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 def _findToolFile(name, containerFile, typ):
@@ -142,31 +142,35 @@ class ToolBit(object):
             "App::PropertyFile",
             "BitShape",
             "Base",
-            translate("PathToolBit", "Shape for bit shape"),
+            QT_TRANSLATE_NOOP("App::Property", "Shape for bit shape"),
         )
         obj.addProperty(
             "App::PropertyLink",
             "BitBody",
             "Base",
-            translate("PathToolBit", "The parametrized body representing the tool bit"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The parametrized body representing the tool bit"
+            ),
         )
         obj.addProperty(
             "App::PropertyFile",
             "File",
             "Base",
-            translate("PathToolBit", "The file of the tool"),
+            QT_TRANSLATE_NOOP("App::Property", "The file of the tool"),
         )
         obj.addProperty(
             "App::PropertyString",
             "ShapeName",
             "Base",
-            translate("PathToolBit", "The name of the shape file"),
+            QT_TRANSLATE_NOOP("App::Property", "The name of the shape file"),
         )
         obj.addProperty(
             "App::PropertyStringList",
             "BitPropertyNames",
             "Base",
-            translate("PathToolBit", "List of all properties inherited from the bit"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "List of all properties inherited from the bit"
+            ),
         )
 
         if path:
@@ -202,8 +206,8 @@ class ToolBit(object):
                 "App::PropertyStringList",
                 "BitPropertyNames",
                 "Base",
-                translate(
-                    "PathToolBit", "List of all properties inherited from the bit"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "List of all properties inherited from the bit"
                 ),
             )
             propNames = []
@@ -365,14 +369,8 @@ class ToolBit(object):
                 self._setupProperty(obj, prop, attributes)
                 propNames.append(prop)
         if not propNames:
-            PathLog.error(
-                translate(
-                    "PathToolBit",
-                    "Did not find a PropertyBag in {} - not a ToolBit shape?".format(
-                        docName
-                    ),
-                )
-            )
+            PathLog.error("Did not find a PropertyBag in {} - not a ToolBit shape?".format(
+                        docName))
 
         # has to happen last because it could trigger op.execute evaluations
         obj.BitPropertyNames = propNames

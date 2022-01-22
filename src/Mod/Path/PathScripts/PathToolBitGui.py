@@ -20,6 +20,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
@@ -29,21 +31,19 @@ import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolBitEdit as PathToolBitEdit
 import os
 
-from PySide import QtCore, QtGui
-
 __title__ = "Tool Bit UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Task panel editor for a ToolBit"
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+translate = FreeCAD.Qt.translate
 
 
 class ViewProvider(object):
@@ -135,16 +135,14 @@ class TaskPanel:
         self.editor = PathToolBitEdit.ToolBitEditor(self.obj)
         self.form = self.editor.form
         self.deleteOnReject = deleteOnReject
-        FreeCAD.ActiveDocument.openTransaction(translate("PathToolBit", "Edit ToolBit"))
+        FreeCAD.ActiveDocument.openTransaction("Edit ToolBit")
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
         self.editor.reject()
         FreeCADGui.Control.closeDialog()
         if self.deleteOnReject:
-            FreeCAD.ActiveDocument.openTransaction(
-                translate("PathToolBit", "Uncreate ToolBit")
-            )
+            FreeCAD.ActiveDocument.openTransaction("Uncreate ToolBit")
             self.editor.reject()
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
@@ -176,9 +174,7 @@ class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
         It is assumed the tool will be edited immediately so the internal bit body is still attached."""
 
         PathLog.track(name, shapeFile, path)
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("PathToolBit", "Create ToolBit")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Create ToolBit")
         tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile, path)
         PathIconViewProvider.Attach(tool.ViewObject, name)
         FreeCAD.ActiveDocument.commitTransaction()

@@ -42,15 +42,18 @@ import uuid as UUID
 from functools import partial
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 _UuidRole = PySide.QtCore.Qt.UserRole + 1
 _PathRole = PySide.QtCore.Qt.UserRole + 2
 
 
-def translate(context, text, disambig=None):
-    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 def checkWorkingDir():
@@ -76,7 +79,9 @@ def checkWorkingDir():
     if ret == qm.No:
         return False
 
-    msg = translate("Path", "Choose a writable location for your toolbits", None)
+    msg = translate(
+        "Path_ToolBit", "Choose a writable location for your toolbits", None
+    )
     while not dirOK():
         workingdir = PySide.QtGui.QFileDialog.getExistingDirectory(
             None, msg, PathPreferences.filePath()
@@ -656,13 +661,11 @@ class ToolBitLibrary(object):
         print("all done")
 
     def libraryNew(self):
-        TooltableTypeJSON = translate(
-            "PathToolLibraryManager", "Tooltable JSON (*.fctl)"
-        )
+        TooltableTypeJSON = translate("Path_ToolBit", "Tooltable JSON (*.fctl)")
 
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
             self.form,
-            translate("TooltableEditor", "Save toolbit library", None),
+            translate("Path_ToolBit", "Save toolbit library", None),
             PathPreferences.lastPathToolLibrary(),
             "{}".format(TooltableTypeJSON),
         )
@@ -786,16 +789,12 @@ class ToolBitLibrary(object):
 
     def librarySaveAs(self, path):
 
-        TooltableTypeJSON = translate(
-            "PathToolLibraryManager", "Tooltable JSON (*.fctl)"
-        )
-        TooltableTypeLinuxCNC = translate(
-            "PathToolLibraryManager", "LinuxCNC tooltable (*.tbl)"
-        )
+        TooltableTypeJSON = translate("Path_ToolBit", "Tooltable JSON (*.fctl)")
+        TooltableTypeLinuxCNC = translate("Path_ToolBit", "LinuxCNC tooltable (*.tbl)")
 
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
             self.form,
-            translate("TooltableEditor", "Save toolbit library", None),
+            translate("Path_ToolBit", "Save toolbit library", None),
             PathPreferences.lastPathToolLibrary(),
             "{};;{}".format(TooltableTypeJSON, TooltableTypeLinuxCNC),
         )
