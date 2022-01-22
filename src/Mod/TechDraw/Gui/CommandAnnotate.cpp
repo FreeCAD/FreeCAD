@@ -258,7 +258,7 @@ Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction(void)
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-CosmeticVertex"));
     p1->setObjectName(QString::fromLatin1("TechDraw_CosmeticVertex"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertx"));
+    p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertex"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_Midpoints"));
     p2->setObjectName(QString::fromLatin1("TechDraw_Midpoints"));
@@ -348,7 +348,7 @@ void execMidpoints(Gui::Command* cmd)
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Midpont Vertices"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Midpoint Vertices"));
 
     const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
     double scale = dvp->getScale();
