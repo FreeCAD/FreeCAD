@@ -22,11 +22,15 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathHelix as PathHelix
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
+import PathScripts.PathGui as PathGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+translate = FreeCAD.Qt.translate
 
 from PySide import QtCore
 
@@ -42,27 +46,50 @@ else:
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
-    '''Page controller class for Helix operations.'''
+    """Page controller class for Helix operations."""
 
     def getForm(self):
-        '''getForm() ... return UI'''
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
+        """getForm() ... return UI"""
+
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
+        comboToPropertyMap = [("startSide", "StartSide"), ("direction", "Direction")]
+
+        enumTups = PathHelix.ObjectHelix.helixOpPropertyEnumerations(dataType="raw")
+
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+        return form
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        """getFields(obj) ... transfers values from UI to obj's proprties"""
         PathLog.track()
-        if obj.Direction != str(self.form.direction.currentText()):
-            obj.Direction = str(self.form.direction.currentText())
-        if obj.StartSide != str(self.form.startSide.currentText()):
-            obj.StartSide = str(self.form.startSide.currentText())
+        if obj.Direction != str(self.form.direction.currentData()):
+            obj.Direction = str(self.form.direction.currentData())
+        if obj.StartSide != str(self.form.startSide.currentData()):
+            obj.StartSide = str(self.form.startSide.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
+        PathGui.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         PathLog.track()
 
         self.form.stepOverPercent.setValue(obj.StepOver)
@@ -72,11 +99,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
+        self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
+
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
 
         signals.append(self.form.stepOverPercent.editingFinished)
+        signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.direction.currentIndexChanged)
         signals.append(self.form.startSide.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
@@ -84,12 +114,17 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         return signals
 
-Command = PathOpGui.SetupOperation('Helix',
-        PathHelix.Create,
-        TaskPanelOpPage,
-        'Path_Helix',
-        QtCore.QT_TRANSLATE_NOOP("Path_Helix", "Helix"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Helix", "Creates a Path Helix object from a features of a base object"),
-        PathHelix.SetupProperties)
+
+Command = PathOpGui.SetupOperation(
+    "Helix",
+    PathHelix.Create,
+    TaskPanelOpPage,
+    "Path_Helix",
+    QT_TRANSLATE_NOOP("Path_Helix", "Helix"),
+    QT_TRANSLATE_NOOP(
+        "Path_Helix", "Creates a Path Helix object from a features of a base object"
+    ),
+    PathHelix.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathHelixGui... done\n")
