@@ -107,7 +107,7 @@ Unit::Unit(const QString& expr)
     try {
         *this = Quantity::parse(expr).getUnit();
     }
-    catch (...) {
+    catch (const Base::ParserError&) {
         Sig.Length                   = 0;
         Sig.Mass                     = 0;
         Sig.Time                     = 0;

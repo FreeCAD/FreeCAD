@@ -96,7 +96,7 @@ Quantity::Quantity(double value, const QString& unit)
         this->_Unit = tmpQty.getUnit();
         this->_Value = value * tmpQty.getValue();
     }
-    catch (const Base::Exception&) {
+    catch (const Base::ParserError&) {
         this->_Value = 0.0;
         this->_Unit = Unit();
     }

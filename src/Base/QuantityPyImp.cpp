@@ -131,7 +131,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         try {
             *self = Quantity::parse(qstr);
         }
-        catch(const Base::Exception& e) {
+        catch(const Base::ParserError& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
             return -1;
         }
@@ -146,7 +146,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         try {
             *self = Quantity(f, unit);
         }
-        catch(const Base::Exception& e) {
+        catch(const Base::ParserError& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
             return -1;
         }

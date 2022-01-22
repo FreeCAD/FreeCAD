@@ -150,7 +150,7 @@ public:
             value = result.getValue();
             return true;
         }
-        catch (Base::Exception&) {
+        catch (Base::ParserError&) {
             return false;
         }
     }
@@ -631,7 +631,7 @@ void QuantitySpinBox::setUnitText(const QString& str)
         Base::Quantity quant = Base::Quantity::parse(str);
         setUnit(quant.getUnit());
     }
-    catch (const Base::Exception&) {
+    catch (const Base::ParserError&) {
     }
 }
 

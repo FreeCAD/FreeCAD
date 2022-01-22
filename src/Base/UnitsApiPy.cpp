@@ -154,13 +154,9 @@ PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args)
     try {
         rtn = Quantity::parse(qstr);
     }
-    catch (const Base::Exception&) {
-        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
-        return 0L;
-    }
-    catch (const std::exception&) {
-        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
-        return 0L;
+    catch (const Base::ParserError&) {
+        PyErr_Format(PyExc_ValueError, "invalid unit expression \n");
+        return nullptr;
     }
 
     return new QuantityPy(new Quantity(rtn));
