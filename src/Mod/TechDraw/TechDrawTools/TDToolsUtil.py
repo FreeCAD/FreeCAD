@@ -18,7 +18,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides utility funtions for TD Tools."""
+"""Provides utility functions for TD Tools."""
 
 import FreeCAD as App
 
