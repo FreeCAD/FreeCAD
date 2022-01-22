@@ -20,13 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
 
-from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -46,13 +46,11 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
-
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
@@ -68,8 +66,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 "App::PropertyBool",
                 "UseOutline",
                 "Pocket",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathPocketShape", "Uses the outline of the base geometry."
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Uses the outline of the base geometry."
                 ),
             )
 
@@ -113,10 +111,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     if "Face" in sub:
                         if sub not in avoidFeatures and not self.clasifySub(base, sub):
                             PathLog.error(
-                                translate(
-                                    "PathPocket", "Pocket does not support shape %s.%s"
+                                "Pocket does not support shape {}.{}".format(
+                                    base.Label, sub
                                 )
-                                % (base.Label, sub)
                             )
 
             # Convert horizontal faces to use outline only if requested
@@ -136,12 +133,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     face = Part.Face(w)
                     # face.tessellate(0.1)
                     if PathGeom.isRoughly(face.Area, 0):
-                        PathLog.error(
-                            translate(
-                                "PathPocket",
-                                "Vertical faces do not form a loop - ignoring",
-                            )
-                        )
+                        PathLog.error("Vertical faces do not form a loop - ignoring")
                     else:
                         self.horiz.append(face)
 
@@ -271,11 +263,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 self.vert.append(face)
                 return True
             else:
-                PathLog.error(
-                    translate(
-                        "Path", "Failed to identify vertical face from {}.".format(sub)
-                    )
-                )
+                PathLog.error("Failed to identify vertical face from {}".format(sub))
 
         else:
             PathLog.debug("  -type(face.Surface): {}".format(type(face.Surface)))
