@@ -29,35 +29,34 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathPreferences as PathPreferences
-
-import traceback
-
 import math
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 
 from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Vcarve operation"
 
-PRIMARY   = 0
+PRIMARY = 0
 SECONDARY = 1
 EXTERIOR1 = 2
 EXTERIOR2 = 3
-COLINEAR  = 4
-TWIN      = 5
+COLINEAR = 4
+TWIN = 5
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
+translate = FreeCAD.Qt.translate
 
 VD = []
 Vertex = {}
 
-_sorting = 'global'
+_sorting = "global"
 
 
 def _collectVoronoiWires(vd):
@@ -104,13 +103,13 @@ def _collectVoronoiWires(vd):
         we = []
         vFirst = knots[0]
         vStart = vFirst
-        vLast  = vFirst
+        vLast = vFirst
         if len(vertex[vStart]):
             while vStart is not None:
-                vLast  = vStart
-                edges  = vertex[vStart]
+                vLast = vStart
+                edges = vertex[vStart]
                 if len(edges) > 0:
-                    edge   = edges[0]
+                    edge = edges[0]
                     vStart = traverse(vStart, edge, we)
                 else:
                     vStart = None
@@ -133,11 +132,11 @@ def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
         return (p, l)
 
     begin = {}
-    end   = {}
+    end = {}
 
     for i, w in enumerate(wires):
         begin[i] = w[0].Vertices[0].toPoint()
-        end[i]   = w[-1].Vertices[1].toPoint()
+        end[i] = w[-1].Vertices[1].toPoint()
 
     result = []
     while begin:
@@ -145,23 +144,24 @@ def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
         (eIdx, eLen) = closestTo(start, end)
         if bLen < eLen:
             result.append(wires[bIdx])
-            start =   end[bIdx]
-            del     begin[bIdx]
-            del       end[bIdx]
+            start = end[bIdx]
+            del begin[bIdx]
+            del end[bIdx]
         else:
             result.append([e.Twin for e in reversed(wires[eIdx])])
             start = begin[eIdx]
-            del     begin[eIdx]
-            del       end[eIdx]
+            del begin[eIdx]
+            del end[eIdx]
 
     return result
 
+
 class _Geometry(object):
-    '''POD class so the limits only have to be calculated once.'''
+    """POD class so the limits only have to be calculated once."""
 
     def __init__(self, zStart, zStop, zScale):
         self.start = zStart
-        self.stop  = zStop
+        self.stop = zStop
         self.scale = zScale
 
     @classmethod
@@ -170,8 +170,8 @@ class _Geometry(object):
         rMin = float(tool.TipDiameter) / 2.0
         toolangle = math.tan(math.radians(tool.CuttingEdgeAngle.Value / 2.0))
         zScale = 1.0 / toolangle
-        zStop  = zStart - rMax * zScale
-        zOff   = rMin * zScale
+        zStop = zStart - rMax * zScale
+        zOff = rMin * zScale
 
         return _Geometry(zStart + zOff, max(zStop + zOff, zFinal), zScale)
 
@@ -182,45 +182,74 @@ class _Geometry(object):
 
         return cls.FromTool(obj.ToolController.Tool, zStart, finalDepth)
 
+
 def _calculate_depth(MIC, geom):
     # given a maximum inscribed circle (MIC) and tool angle,
     # return depth of cut relative to zStart.
     depth = geom.start - round(MIC * geom.scale, 4)
-    PathLog.debug('zStart value: {} depth: {}'.format(geom.start, depth))
+    PathLog.debug("zStart value: {} depth: {}".format(geom.start, depth))
 
     return max(depth, geom.stop)
+
 
 def _getPartEdge(edge, depths):
     dist = edge.getDistances()
     zBegin = _calculate_depth(dist[0], depths)
-    zEnd   = _calculate_depth(dist[1], depths)
+    zEnd = _calculate_depth(dist[1], depths)
     return edge.toShape(zBegin, zEnd)
 
+
 class ObjectVcarve(PathEngraveBase.ObjectOp):
-    '''Proxy class for Vcarve operation.'''
+    """Proxy class for Vcarve operation."""
 
     def opFeatures(self, obj):
-        '''opFeatures(obj) ... return all standard features and edges based geomtries'''
-        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureDepths | PathOp.FeatureBaseFaces | PathOp.FeatureCoolant
+        """opFeatures(obj) ... return all standard features and edges based geomtries"""
+        return (
+            PathOp.FeatureTool
+            | PathOp.FeatureHeights
+            | PathOp.FeatureDepths
+            | PathOp.FeatureBaseFaces
+            | PathOp.FeatureCoolant
+        )
 
     def setupAdditionalProperties(self, obj):
-        if not hasattr(obj, 'BaseShapes'):
-            obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path",
-                            QtCore.QT_TRANSLATE_NOOP("PathVcarve",
-                                "Additional base objects to be engraved"))
-        obj.setEditorMode('BaseShapes', 2)  # hide
+        if not hasattr(obj, "BaseShapes"):
+            obj.addProperty(
+                "App::PropertyLinkList",
+                "BaseShapes",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Additional base objects to be engraved"
+                ),
+            )
+        obj.setEditorMode("BaseShapes", 2)  # hide
 
     def initOperation(self, obj):
-        '''initOperation(obj) ... create vcarve specific properties.'''
-        obj.addProperty("App::PropertyFloat", "Discretize", "Path",
-                        QtCore.QT_TRANSLATE_NOOP("PathVcarve",
-                        "The deflection value for discretizing arcs"))
-        obj.addProperty("App::PropertyFloat", "Colinear", "Path",
-                        QtCore.QT_TRANSLATE_NOOP("PathVcarve",
-                        "Cutoff for removing colinear segments (degrees). \
-                        default=10.0."))
-        obj.addProperty("App::PropertyFloat", "Tolerance", "Path",
-                QtCore.QT_TRANSLATE_NOOP("PathVcarve", ""))
+        """initOperation(obj) ... create vcarve specific properties."""
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Discretize",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The deflection value for discretizing arcs"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Colinear",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Cutoff for removing colinear segments (degrees). \
+                        default=10.0.",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Tolerance",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Vcarve Tolerance"),
+        )
         obj.Colinear = 10.0
         obj.Discretize = 0.01
         obj.Tolerance = PathPreferences.defaultGeometryTolerance()
@@ -237,27 +266,31 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         return edges
 
     def buildPathMedial(self, obj, faces):
-        '''constructs a medial axis path using openvoronoi'''
+        """constructs a medial axis path using openvoronoi"""
 
         def insert_many_wires(vd, wires):
             for wire in wires:
-                PathLog.debug('discretize value: {}'.format(obj.Discretize))
+                PathLog.debug("discretize value: {}".format(obj.Discretize))
                 pts = wire.discretize(QuasiDeflection=obj.Discretize)
                 ptv = [FreeCAD.Vector(p.x, p.y) for p in pts]
                 ptv.append(ptv[0])
 
                 for i in range(len(pts)):
-                    vd.addSegment(ptv[i], ptv[i+1])
+                    vd.addSegment(ptv[i], ptv[i + 1])
 
         def cutWire(edges):
             path = []
             path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
             e = edges[0]
             p = e.valueAt(e.FirstParameter)
-            path.append(Path.Command("G0 X{} Y{} Z{}".format(p.x, p.y, obj.SafeHeight.Value)))
+            path.append(
+                Path.Command("G0 X{} Y{} Z{}".format(p.x, p.y, obj.SafeHeight.Value))
+            )
             hSpeed = obj.ToolController.HorizFeed.Value
             vSpeed = obj.ToolController.VertFeed.Value
-            path.append(Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, p.z, vSpeed)))
+            path.append(
+                Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, p.z, vSpeed))
+            )
             for e in edges:
                 path.extend(PathGeom.cmdsForEdge(e, hSpeed=hSpeed, vSpeed=vSpeed))
 
@@ -274,19 +307,22 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             for e in vd.Edges:
                 e.Color = PRIMARY if e.isPrimary() else SECONDARY
             vd.colorExterior(EXTERIOR1)
-            vd.colorExterior(EXTERIOR2,
-                lambda v: not f.isInside(v.toPoint(f.BoundBox.ZMin),
-                obj.Tolerance, True))
+            vd.colorExterior(
+                EXTERIOR2,
+                lambda v: not f.isInside(
+                    v.toPoint(f.BoundBox.ZMin), obj.Tolerance, True
+                ),
+            )
             vd.colorColinear(COLINEAR, obj.Colinear)
             vd.colorTwins(TWIN)
 
             wires = _collectVoronoiWires(vd)
-            if _sorting != 'global':
+            if _sorting != "global":
                 wires = _sortVoronoiWires(wires)
             voronoiWires.extend(wires)
             VD.append((f, vd, wires))
 
-        if _sorting == 'global':
+        if _sorting == "global":
             voronoiWires = _sortVoronoiWires(voronoiWires)
 
         geom = _Geometry.FromObj(obj, self.model[0])
@@ -301,14 +337,23 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         self.commandlist = pathlist
 
     def opExecute(self, obj):
-        '''opExecute(obj) ... process engraving operation'''
+        """opExecute(obj) ... process engraving operation"""
         PathLog.track()
 
         if not hasattr(obj.ToolController.Tool, "CuttingEdgeAngle"):
-            PathLog.error(translate("Path_Vcarve", "VCarve requires an engraving cutter with CuttingEdgeAngle"))
+            PathLog.error(
+                translate(
+                    "Path_Vcarve",
+                    "VCarve requires an engraving cutter with CuttingEdgeAngle",
+                )
+            )
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
-            PathLog.error(translate("Path_Vcarve", "Engraver Cutting Edge Angle must be < 180 degrees."))
+            PathLog.error(
+                translate(
+                    "Path_Vcarve", "Engraver Cutting Edge Angle must be < 180 degrees."
+                )
+            )
             return
 
         try:
@@ -325,27 +370,33 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             if not faces:
                 for model in self.model:
-                    if model.isDerivedFrom('Sketcher::SketchObject') or model.isDerivedFrom('Part::Part2DObject'):
+                    if model.isDerivedFrom(
+                        "Sketcher::SketchObject"
+                    ) or model.isDerivedFrom("Part::Part2DObject"):
                         faces.extend(model.Shape.Faces)
 
             if faces:
                 self.buildPathMedial(obj, faces)
             else:
-                PathLog.error(translate('PathVcarve', 'The Job Base Object has no engraveable element. Engraving operation will produce no output.'))
+                PathLog.error(
+                    translate(
+                        "PathVcarve",
+                        "The Job Base Object has no engraveable element. Engraving operation will produce no output.",
+                    )
+                )
 
         except Exception as e:
-            #PathLog.error(e)
-            #traceback.print_exc()
-            PathLog.error(translate('PathVcarve', 'Error processing Base object. Engraving operation will produce no output.'))
-            #raise e
+            PathLog.error(
+                "Error processing Base object. Engraving operation will produce no output."
+            )
 
     def opUpdateDepths(self, obj, ignoreErrors=False):
-        '''updateDepths(obj) ... engraving is always done at the top most z-value'''
+        """updateDepths(obj) ... engraving is always done at the top most z-value"""
         job = PathUtils.findParentJob(obj)
         self.opSetDefaultValues(obj, job)
 
     def opSetDefaultValues(self, obj, job):
-        '''opSetDefaultValues(obj) ... set depths for vcarving'''
+        """opSetDefaultValues(obj) ... set depths for vcarving"""
         if PathOp.FeatureDepths & self.opFeatures(obj):
             if job and len(job.Model.Group) > 0:
                 bb = job.Proxy.modelBoundBox(job)
@@ -355,15 +406,20 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 obj.OpFinalDepth = -0.1
 
     def isToolSupported(self, obj, tool):
-        '''isToolSupported(obj, tool) ... returns True if v-carve op can work with tool.'''
-        return hasattr(tool, 'Diameter') and hasattr(tool, 'CuttingEdgeAngle') and hasattr(tool, 'TipDiameter')
+        """isToolSupported(obj, tool) ... returns True if v-carve op can work with tool."""
+        return (
+            hasattr(tool, "Diameter")
+            and hasattr(tool, "CuttingEdgeAngle")
+            and hasattr(tool, "TipDiameter")
+        )
+
 
 def SetupProperties():
     return ["Discretize"]
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a Vcarve operation.'''
+    """Create(name) ... Creates and returns a Vcarve operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectVcarve(obj, name, parentJob)

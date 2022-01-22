@@ -30,11 +30,14 @@ import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
+from PathScripts.PathGeom import CmdMoveArc, CmdMoveStraight
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
+
+Part = LazyLoader("Part", globals(), "Part")
 
 """Z Depth Correction Dressup.  This dressup takes a probe file as input and does bilinear interpolation of the Zdepths to correct for a surface which is not parallel to the milling table/bed.  The probe file should conform to the format specified by the linuxcnc G38 probe logging: 9-number coordinate consisting of XYZABCUVW http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g38
 """
@@ -43,32 +46,51 @@ LOGLEVEL = False
 
 LOG_MODULE = PathLog.thisModule()
 
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
-movecommands = ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']
-rapidcommands = ['G0', 'G00']
-arccommands = ['G2', 'G3', 'G02', 'G03']
+translate = FreeCAD.Qt.translate
 
 
 class ObjectDressup:
-
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The base path to modify"))
-        obj.addProperty("App::PropertyFile", "probefile", "ProbeData", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "The point file from the surface probing."))
+        obj.addProperty(
+            "App::PropertyLink",
+            "Base",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
+        )
+        obj.addProperty(
+            "App::PropertyFile",
+            "probefile",
+            "ProbeData",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The point file from the surface probing."
+            ),
+        )
         obj.Proxy = self
         obj.addProperty("Part::PropertyPartShape", "interpSurface", "Path")
-        obj.addProperty("App::PropertyDistance", "ArcInterpolate", "Interpolate", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Deflection distance for arc interpolation"))
-        obj.addProperty("App::PropertyDistance", "SegInterpolate", "Interpolate", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrectp", "break segments into smaller segments of this length."))
+        obj.addProperty(
+            "App::PropertyDistance",
+            "ArcInterpolate",
+            "Interpolate",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Deflection distance for arc interpolation"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "SegInterpolate",
+            "Interpolate",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "break segments into smaller segments of this length.",
+            ),
+        )
         obj.ArcInterpolate = 0.1
         obj.SegInterpolate = 1.0
 
@@ -95,12 +117,12 @@ class ObjectDressup:
         if filename == "":
             return
 
-        f1 = open(filename, 'r')
+        f1 = open(filename, "r")
 
         try:
             pointlist = []
             for line in f1.readlines():
-                if line == '\n':
+                if line == "\n":
                     continue
                 w = line.split()
                 xval = round(float(w[0]), 2)
@@ -148,32 +170,47 @@ class ObjectDressup:
                         pathlist = obj.Base.Path.Commands
 
                         newcommandlist = []
-                        currLocation = {'X': 0, 'Y': 0, 'Z': 0, 'F': 0}
+                        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
 
                         for c in pathlist:
                             PathLog.debug(c)
                             PathLog.debug("     curLoc:{}".format(currLocation))
                             newparams = dict(c.Parameters)
-                            zval = newparams.get("Z", currLocation['Z'])
-                            if c.Name in movecommands:
-                                curVec = FreeCAD.Vector(currLocation['X'], currLocation['Y'], currLocation['Z'])
+                            zval = newparams.get("Z", currLocation["Z"])
+                            if c.Name in CmdMoveStraight + CmdMoveArc:
+                                curVec = FreeCAD.Vector(
+                                    currLocation["X"],
+                                    currLocation["Y"],
+                                    currLocation["Z"],
+                                )
                                 arcwire = PathGeom.edgeForCmd(c, curVec)
                                 if arcwire is None:
                                     continue
-                                if c.Name in arccommands:
+                                if c.Name in CmdMoveArc:
                                     pointlist = arcwire.discretize(Deflection=curveD)
                                 else:
                                     disc_number = int(arcwire.Length / sampleD)
                                     if disc_number > 1:
-                                        pointlist = arcwire.discretize(Number=int(arcwire.Length / sampleD))
+                                        pointlist = arcwire.discretize(
+                                            Number=int(arcwire.Length / sampleD)
+                                        )
                                     else:
                                         pointlist = [v.Point for v in arcwire.Vertexes]
                                 for point in pointlist:
-                                    offset = self._bilinearInterpolate(surface, point.x, point.y)
-                                    newcommand = Path.Command("G1", {'X': point.x, 'Y': point.y, 'Z': point.z + offset})
+                                    offset = self._bilinearInterpolate(
+                                        surface, point.x, point.y
+                                    )
+                                    newcommand = Path.Command(
+                                        "G1",
+                                        {
+                                            "X": point.x,
+                                            "Y": point.y,
+                                            "Z": point.z + offset,
+                                        },
+                                    )
                                     newcommandlist.append(newcommand)
                                     currLocation.update(newcommand.Parameters)
-                                    currLocation['Z'] = zval
+                                    currLocation["Z"] = zval
 
                             else:
                                 # Non Feed Command
@@ -184,12 +221,13 @@ class ObjectDressup:
 
 
 class TaskPanel:
-
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ZCorrectEdit.ui")
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupZCorrect", "Edit Z Correction Dress-up"))
-        self.interpshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "InterpolationSurface")
+        FreeCAD.ActiveDocument.openTransaction("Edit Z Correction Dress-up")
+        self.interpshape = FreeCAD.ActiveDocument.addObject(
+            "Part::Feature", "InterpolationSurface"
+        )
         self.interpshape.Shape = obj.interpSurface
         self.interpshape.ViewObject.Transparency = 60
         self.interpshape.ViewObject.ShapeColor = (1.00000, 1.00000, 0.01961)
@@ -218,9 +256,9 @@ class TaskPanel:
 
         if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
             for obj in FreeCAD.ActiveDocument.Objects:
-                if obj.Name.startswith('Shape'):
+                if obj.Name.startswith("Shape"):
                     FreeCAD.ActiveDocument.removeObject(obj.Name)
-            print('object name %s' % self.obj.Name)
+            print("object name %s" % self.obj.Name)
             if hasattr(self.obj.Proxy, "shapes"):
                 PathLog.info("showing shapes attribute")
                 for shapes in self.obj.Proxy.shapes.itervalues():
@@ -249,14 +287,18 @@ class TaskPanel:
         self.form.SetProbePointFileName.clicked.connect(self.SetProbePointFileName)
 
     def SetProbePointFileName(self):
-        filename = QtGui.QFileDialog.getOpenFileName(self.form, translate("Path_Probe", "Select Probe Point File"), None, translate("Path_Probe", "All Files (*.*)"))
+        filename = QtGui.QFileDialog.getOpenFileName(
+            self.form,
+            translate("Path_Probe", "Select Probe Point File"),
+            None,
+            translate("Path_Probe", "All Files (*.*)"),
+        )
         if filename and filename[0]:
             self.obj.probefile = str(filename[0])
             self.setFields()
 
 
 class ViewProviderDressup:
-
     def __init__(self, vobj):
         vobj.Proxy = self
 
@@ -289,7 +331,7 @@ class ViewProviderDressup:
         return None
 
     def onDelete(self, arg1=None, arg2=None):
-        '''this makes sure that the base operation is added back to the project and visible'''
+        """this makes sure that the base operation is added back to the project and visible"""
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
         job = PathUtils.findParentJob(arg1.Object)
         job.Proxy.addOperation(arg1.Object.Base)
@@ -298,18 +340,23 @@ class ViewProviderDressup:
 
 
 class CommandPathDressup:
-
     def GetResources(self):
-        return {'Pixmap': 'Path_Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Z Depth Correction Dress-up"),
-                'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Use Probe Map to correct Z depth")}
+        return {
+            "Pixmap": "Path_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP(
+                "Path_DressupZCorrect", "Z Depth Correction Dress-up"
+            ),
+            "Accel": "",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_DressupZCorrect", "Use Probe Map to correct Z depth"
+            ),
+        }
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):
@@ -317,32 +364,44 @@ class CommandPathDressup:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Path_Dressup", "Please select one path object\n"))
+            FreeCAD.Console.PrintError(
+                translate("Path_Dressup", "Please select one path object\n")
+            )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("Path_Dressup", "The selected object is not a path\n"))
+            FreeCAD.Console.PrintError(
+                translate("Path_Dressup", "The selected object is not a path\n")
+            )
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("Path_Dressup", "Please select a Path object"))
+            FreeCAD.Console.PrintError(
+                translate("Path_Dressup", "Please select a Path object")
+            )
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupZCorrect", "Create Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction("Create Dress-up")
         FreeCADGui.addModule("PathScripts.PathDressupZCorrect")
         FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "ZCorrectDressup")')
-        FreeCADGui.doCommand('PathScripts.PathDressupZCorrect.ObjectDressup(obj)')
-        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('PathScripts.PathDressupZCorrect.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
-        FreeCADGui.doCommand('obj.ViewObject.Document.setEdit(obj.ViewObject, 0)')
+        FreeCADGui.doCommand(
+            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "ZCorrectDressup")'
+        )
+        FreeCADGui.doCommand("PathScripts.PathDressupZCorrect.ObjectDressup(obj)")
+        FreeCADGui.doCommand("obj.Base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand(
+            "PathScripts.PathDressupZCorrect.ViewProviderDressup(obj.ViewObject)"
+        )
+        FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
+        FreeCADGui.doCommand(
+            "Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False"
+        )
+        FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_DressupZCorrect', CommandPathDressup())
+    FreeCADGui.addCommand("Path_DressupZCorrect", CommandPathDressup())
 
 FreeCAD.Console.PrintLog("Loading PathDressup... done\n")

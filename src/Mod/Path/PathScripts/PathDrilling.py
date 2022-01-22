@@ -25,7 +25,6 @@ from __future__ import print_function
 
 
 from Generators import drill_generator as generator
-from PySide import QtCore
 import FreeCAD
 import Part
 import Path
@@ -35,6 +34,7 @@ import PathScripts.PathCircularHoleBase as PathCircularHoleBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Drilling Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -42,20 +42,55 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Path Drilling operation."
 __contributors__ = "IMBack!"
 
-
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ObjectDrilling(PathCircularHoleBase.ObjectOp):
     """Proxy object for Drilling operation."""
+
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+        """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        # Enumeration lists for App::PropertyEnumeration properties
+        enums = {
+            "ReturnLevel": [
+                (translate("Path_Drilling", "G99"), "G99"),
+                (translate("Path_Drilling", "G98"), "G98"),
+            ],  # How high to retract after a drilling move
+            "ExtraOffset": [
+                (translate("Path_Drilling", "None"), "None"),
+                (translate("Path_Drilling", "Drill Tip"), "Drill Tip"),
+                (translate("Path_Drilling", "2x Drill Tip"), "2x Drill Tip"),
+            ],  # extra drilling depth to clear drill taper
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
 
     def circularHoleFeatures(self, obj):
         """circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations."""
@@ -69,7 +104,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "App::PropertyLength",
             "PeckDepth",
             "Drill",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Incremental Drill depth before retracting to clear chips",
             ),
@@ -78,27 +113,25 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "App::PropertyBool",
             "PeckEnabled",
             "Drill",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable pecking"),
+            QT_TRANSLATE_NOOP("App::Property", "Enable pecking"),
         )
         obj.addProperty(
             "App::PropertyFloat",
             "DwellTime",
             "Drill",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "The time to dwell between peck cycles"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "DwellEnabled",
             "Drill",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"),
+            QT_TRANSLATE_NOOP("App::Property", "Enable dwell"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "AddTipLength",
             "Drill",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Calculate the tip length and subtract from final depth",
             ),
@@ -107,7 +140,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "App::PropertyEnumeration",
             "ReturnLevel",
             "Drill",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Controls how tool retracts Default=G99"
             ),
         )
@@ -115,7 +148,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "App::PropertyDistance",
             "RetractHeight",
             "Drill",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "The height where feed starts and height during retract tool when path is finished while in a peck operation",
             ),
@@ -124,17 +157,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "App::PropertyEnumeration",
             "ExtraOffset",
             "Drill",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "How far the drill depth is extended"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "How far the drill depth is extended"),
         )
 
-        obj.ReturnLevel = ["G99", "G98"]  # Canned Cycle Return Level
-        obj.ExtraOffset = [
-            "None",
-            "Drill Tip",
-            "2x Drill Tip",
-        ]  # Canned Cycle Return Level
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
 
     def circularHoleExecute(self, obj, holes):
         """circularHoleExecute(obj, holes) ... generate drill operation for each hole in holes."""

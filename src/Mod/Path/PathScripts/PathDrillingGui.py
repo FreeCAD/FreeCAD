@@ -22,7 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathDrilling as PathDrilling
 import PathScripts.PathGui as PathGui
@@ -37,23 +37,27 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "UI and Command for Path Drilling Operation."
 __contributors__ = "IMBack!"
 
-LOGLEVEL = False
-
-if LOGLEVEL:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
-    PathLog.setLevel(PathLog.Level.NOTICE, PathLog.thisModule())
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
-    '''Controller for the drilling operation's page'''
+    """Controller for the drilling operation's page"""
 
     def initPage(self, obj):
         # pylint: disable=attribute-defined-outside-init
-        self.peckDepthSpinBox = PathGui.QuantitySpinBox(self.form.peckDepth, obj, 'PeckDepth')
-        self.peckRetractSpinBox = PathGui.QuantitySpinBox(self.form.peckRetractHeight, obj, 'RetractHeight')
-        self.dwellTimeSpinBox = PathGui.QuantitySpinBox(self.form.dwellTime, obj, 'DwellTime')
+        self.peckDepthSpinBox = PathGui.QuantitySpinBox(
+            self.form.peckDepth, obj, "PeckDepth"
+        )
+        self.peckRetractSpinBox = PathGui.QuantitySpinBox(
+            self.form.peckRetractHeight, obj, "RetractHeight"
+        )
+        self.dwellTimeSpinBox = PathGui.QuantitySpinBox(
+            self.form.dwellTime, obj, "DwellTime"
+        )
 
     def registerSignalHandlers(self, obj):
         self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
@@ -76,17 +80,38 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.dwellTimelabel.setEnabled(True)
 
     def getForm(self):
-        '''getForm() ... return UI'''
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
+        """getForm() ... return UI"""
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
 
-    def updateQuantitySpinBoxes(self, index = None):
+        comboToPropertyMap = [("ExtraOffset", "ExtraOffset")]
+        enumTups = PathDrilling.ObjectDrilling.propertyEnumerations(dataType="raw")
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+
+        return form
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
+
+    def updateQuantitySpinBoxes(self, index=None):
         # pylint: disable=unused-argument
         self.peckDepthSpinBox.updateSpinBox()
         self.peckRetractSpinBox.updateSpinBox()
         self.dwellTimeSpinBox.updateSpinBox()
 
     def getFields(self, obj):
-        '''setFields(obj) ... update obj's properties with values from the UI'''
+        """setFields(obj) ... update obj's properties with values from the UI"""
         PathLog.track()
         self.peckDepthSpinBox.updateProperty()
         self.peckRetractSpinBox.updateProperty()
@@ -96,14 +121,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()
         if obj.PeckEnabled != self.form.peckEnabled.isChecked():
             obj.PeckEnabled = self.form.peckEnabled.isChecked()
-        if obj.ExtraOffset != str(self.form.ExtraOffset.currentText()):
-            obj.ExtraOffset = str(self.form.ExtraOffset.currentText())
+        if obj.ExtraOffset != str(self.form.ExtraOffset.currentData()):
+            obj.ExtraOffset = str(self.form.ExtraOffset.currentData())
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
-        '''setFields(obj) ... update UI with obj properties' values'''
+        """setFields(obj) ... update UI with obj properties' values"""
         PathLog.track()
         self.updateQuantitySpinBoxes()
 
@@ -122,9 +147,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
-
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model'''
+        """getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model"""
         signals = []
 
         signals.append(self.form.peckRetractHeight.editingFinished)
@@ -139,15 +163,21 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         return signals
 
     def updateData(self, obj, prop):
-        if prop in ['PeckDepth', 'RetractHeight'] and not prop in ['Base', 'Disabled']:
+        if prop in ["PeckDepth", "RetractHeight"] and not prop in ["Base", "Disabled"]:
             self.updateQuantitySpinBoxes()
 
-Command = PathOpGui.SetupOperation('Drilling',
-        PathDrilling.Create,
-        TaskPanelOpPage,
-        'Path_Drilling',
-        QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Drilling"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Creates a Path Drilling object from a features of a base object"),
-        PathDrilling.SetupProperties)
+
+Command = PathOpGui.SetupOperation(
+    "Drilling",
+    PathDrilling.Create,
+    TaskPanelOpPage,
+    "Path_Drilling",
+    QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Drilling"),
+    QtCore.QT_TRANSLATE_NOOP(
+        "Path_Drilling",
+        "Creates a Path Drilling object from a features of a base object",
+    ),
+    PathDrilling.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathDrillingGui... done\n")
