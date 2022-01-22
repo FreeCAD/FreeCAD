@@ -21,28 +21,74 @@
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCAD
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 
-from PySide import QtCore
 
 __title__ = "Base Path Pocket Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path pocket operations."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ObjectPocket(PathAreaOp.ObjectOp):
     """Base class for proxy objects of all pocket operations."""
+
+    @classmethod
+    def pocketPropertyEnumerations(self, dataType="data"):
+        """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        enums = {
+            "CutMode": [
+                (translate("Path_Pocket", "Climb"), "Climb"),
+                (translate("Path_Pocket", "Conventional"), "Conventional"),
+            ],  # this is the direction that the profile runs
+            "StartAt": [
+                (translate("Path_Pocket", "Center"), "Center"),
+                (translate("Path_Pocket", "Edge"), "Edge"),
+            ],
+            "OffsetPattern": [
+                (translate("Path_Pocket", "ZigZag"), "ZigZag"),
+                (translate("Path_Pocket", "Offset"), "Offset"),
+                (translate("Path_Pocket", "Spiral"), "Spiral"),
+                (translate("Path_Pocket", "ZigZagOffset"), "ZigZagOffset"),
+                (translate("Path_Pocket", "Line"), "Line"),
+                (translate("Path_Pocket", "Grid"), "Grid"),
+                (translate("Path_Pocket", "Triangle"), "Triangle"),
+            ],  # Fill Pattern
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
 
     def areaOpFeatures(self, obj):
         """areaOpFeatures(obj) ... Pockets have a FinishDepth and work on Faces"""
@@ -76,7 +122,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "App::PropertyEnumeration",
             "CutMode",
             "Pocket",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)",
             ),
@@ -85,7 +131,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "App::PropertyDistance",
             "ExtraOffset",
             "Pocket",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Extra offset to apply to the operation. Direction is operation dependent.",
             ),
@@ -94,15 +140,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "App::PropertyEnumeration",
             "StartAt",
             "Pocket",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "Start pocketing at center or boundary"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Start pocketing at center or boundary"),
         )
         obj.addProperty(
             "App::PropertyPercent",
             "StepOver",
             "Pocket",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Percent of cutter diameter to step over on each pass"
             ),
         )
@@ -110,40 +154,31 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "App::PropertyFloat",
             "ZigZagAngle",
             "Pocket",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Angle of the zigzag pattern"),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of the zigzag pattern"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "OffsetPattern",
             "Face",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Clearing pattern to use"),
+            QT_TRANSLATE_NOOP("App::Property", "Clearing pattern to use"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "MinTravel",
             "Pocket",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"),
+            QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "KeepToolDown",
             "Pocket",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Attempts to avoid unnecessary retractions."
             ),
         )
 
-        obj.CutMode = ["Climb", "Conventional"]
-        obj.StartAt = ["Center", "Edge"]
-        obj.OffsetPattern = [
-            "ZigZag",
-            "Offset",
-            "Spiral",
-            "ZigZagOffset",
-            "Line",
-            "Grid",
-            "Triangle",
-        ]
+        for n in self.pocketPropertyEnumerations():
+            setattr(obj, n[0], n[1])
 
         self.initPocketOp(obj)
 

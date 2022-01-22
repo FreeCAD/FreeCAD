@@ -26,8 +26,7 @@ import FreeCAD
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
-
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import numpy
 
 # lazily loaded modules
@@ -42,33 +41,66 @@ __doc__ = "Class and implementation of Mill Facing operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ObjectFace(PathPocketBase.ObjectPocket):
     """Proxy object for Mill Facing operation."""
 
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+        """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        enums = {
+            "BoundaryShape": [
+                (translate("Path_Pocket", "Boundbox"), "Boundbox"),
+                (translate("Path_Pocket", "Face Region"), "Face Region"),
+                (translate("Path_Pocket", "Perimeter"), "Perimeter"),
+                (translate("Path_Pocket", "Stock"), "Stock"),
+            ],
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
+
     def initPocketOp(self, obj):
+        PathLog.track()
         """initPocketOp(obj) ... create facing specific properties"""
         obj.addProperty(
             "App::PropertyEnumeration",
             "BoundaryShape",
             "Face",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "Shape to use for calculating Boundary"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "ClearEdges",
             "Face",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property", "Clear edges of surface (Only applicable to BoundBox)"
             ),
         )
@@ -77,12 +109,13 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                 "App::PropertyBool",
                 "ExcludeRaisedAreas",
                 "Face",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Exclude milling raised areas inside the face."
                 ),
             )
 
-        obj.BoundaryShape = ["Boundbox", "Face Region", "Perimeter", "Stock"]
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
 
     def pocketInvertExtraOffset(self):
         return True

@@ -26,8 +26,7 @@ import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocketShape as PathPocketShape
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
 import PathScripts.PathFeatureExtensionsGui as PathFeatureExtensionsGui
-
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -39,13 +38,13 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Pocket Shape operation page controller and command implementation."
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+translate = FreeCAD.Qt.translate
 
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
@@ -68,9 +67,9 @@ Command = PathOpGui.SetupOperation(
     PathPocketShape.Create,
     TaskPanelOpPage,
     "Path_Pocket",
-    QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Pocket Shape"),
-    QtCore.QT_TRANSLATE_NOOP(
-        "Path_Pocket", "Creates a Path Pocket object from a face or faces"
+    QT_TRANSLATE_NOOP("Path_Pocket_Shape", "Pocket Shape"),
+    QT_TRANSLATE_NOOP(
+        "Path_Pocket_Shape", "Creates a Path Pocket object from a face or faces"
     ),
     PathPocketShape.SetupProperties,
 )

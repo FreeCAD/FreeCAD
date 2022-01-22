@@ -25,18 +25,21 @@ import FreeCADGui
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-
-from PySide import QtCore  # , QtGui
+import PathScripts.PathPocket as PathPocket
+import PathScripts.PathLog as PathLog
 
 __title__ = "Path Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Base page controller and command implementation for path pocket operations."
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
+translate = FreeCAD.Qt.translate
 
 FeaturePocket = 0x01
 FeatureFacing = 0x02
@@ -62,6 +65,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """getForm() ... returns UI, adapted to the results from pocketFeatures()"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
 
+        comboToPropertyMap = [
+            ("cutMode", "CutMode"),
+            ("offsetPattern", "OffsetPattern"),
+        ]
+        enumTups = PathPocket.ObjectPocket.pocketPropertyEnumerations(dataType="raw")
+
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+
         if not FeatureFacing & self.pocketFeatures():
             form.facingWidget.hide()
             form.clearEdges.hide()
@@ -84,6 +95,21 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return form
 
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
+
     def updateMinTravel(self, obj, setModel=True):
         if obj.UseStartPoint:
             self.form.minTravel.setEnabled(True)
@@ -105,12 +131,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's proprties"""
-        if obj.CutMode != str(self.form.cutMode.currentText()):
-            obj.CutMode = str(self.form.cutMode.currentText())
+        if obj.CutMode != str(self.form.cutMode.currentData()):
+            obj.CutMode = str(self.form.cutMode.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
-        if obj.OffsetPattern != str(self.form.offsetPattern.currentText()):
-            obj.OffsetPattern = str(self.form.offsetPattern.currentText())
+        if obj.OffsetPattern != str(self.form.offsetPattern.currentData()):
+            obj.OffsetPattern = str(self.form.offsetPattern.currentData())
 
         PathGui.updateInputField(obj, "ExtraOffset", self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
@@ -127,8 +153,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateMinTravel(obj)
 
         if FeatureFacing & self.pocketFeatures():
-            if obj.BoundaryShape != str(self.form.boundaryShape.currentText()):
-                obj.BoundaryShape = str(self.form.boundaryShape.currentText())
+            print(obj.BoundaryShape)
+            print(self.form.boundaryShape.currentText())
+            print(self.form.boundaryShape.currentData())
+            if obj.BoundaryShape != str(self.form.boundaryShape.currentData()):
+                obj.BoundaryShape = str(self.form.boundaryShape.currentData())
             if obj.ClearEdges != self.form.clearEdges.isChecked():
                 obj.ClearEdges = self.form.clearEdges.isChecked()
 
