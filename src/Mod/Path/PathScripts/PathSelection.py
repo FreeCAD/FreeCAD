@@ -402,7 +402,7 @@ def select(op):
     opsel["Vcarve"] = vcarveselect
     opsel["Probe"] = probeselect
     opsel["Custom"] = customselect
-    opsel["Thread Milling"] = drillselect
+    opsel["ThreadMilling"] = drillselect
     opsel["TurnFace"] = turnselect
     opsel["TurnProfile"] = turnselect
     opsel["TurnPartoff"] = turnselect
