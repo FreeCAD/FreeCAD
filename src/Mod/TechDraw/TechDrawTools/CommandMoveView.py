@@ -22,7 +22,7 @@
 
 __title__ = "TechDrawTools.CommandMoveView"
 __author__ = "WandererFan"
-__url__ = "http://www.freecadweb.org/index.html"
+__url__ = "https://www.freecadweb.org"
 __version__ = "00.01"
 __date__ = "2022/01/11"
 
