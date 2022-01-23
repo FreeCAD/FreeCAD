@@ -66,8 +66,8 @@ Pad::Pad()
 
     ADD_PROPERTY_TYPE(Type, (0L), "Pad", App::Prop_None, "Pad type");
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY_TYPE(Length, (100.0), "Pad", App::Prop_None, "Pad length");
-    ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None, "Pad length in 2nd direction");
+    ADD_PROPERTY_TYPE(Length, (10.0), "Pad", App::Prop_None, "Pad length");
+    ADD_PROPERTY_TYPE(Length2, (10.0), "Pad", App::Prop_None, "Pad length in 2nd direction");
     ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pad", App::Prop_None, "Use custom vector for pad direction");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
     ADD_PROPERTY_TYPE(ReferenceAxis, (0), "Pad", App::Prop_None, "Reference axis of direction");
