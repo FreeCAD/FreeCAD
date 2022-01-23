@@ -363,6 +363,8 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_SpreadsheetView";
+    *views << "TechDraw_MoveView";
+    *views << "TechDraw_CopyView";
 
     Gui::ToolBarItem *clips = new Gui::ToolBarItem(root);
     clips->setCommand("TechDraw Clips");
