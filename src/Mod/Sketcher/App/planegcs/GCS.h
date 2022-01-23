@@ -312,6 +312,12 @@ namespace GCS
                                    bool flipn1, bool flipn2,
                                    int tagId, bool driving = true);
 
+        int addConstraintOffsetRadius(Circle &c1, Circle &c2, double *offset, int tagId, bool driving = true);
+        int addConstraintOffsetRadius(Arc &c1, Circle &c2, double *offset, int tagId, bool driving = true);
+        int addConstraintOffsetRadius(Arc &c1, Arc &c2, double *offset, int tagId, bool driving = true);
+        int addConstraintOffsetRadius(Circle &c1, Arc &c2, double *offset, int tagId, bool driving = true);
+
+
         // internal alignment constraints
         int addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType, int tagId=0, bool driving = true);
         int addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId=0, bool driving = true);

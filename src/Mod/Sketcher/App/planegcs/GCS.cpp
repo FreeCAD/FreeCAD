@@ -1120,6 +1120,26 @@ int System::addConstraintSnellsLaw(Curve &ray1, Curve &ray2,
     return addConstraint(constr);
 }
 
+int System::addConstraintOffsetRadius(Circle &c1, Circle &c2, double *offset, int tagId, bool driving)
+{
+    return addConstraintDifference(c1.rad, c2.rad, offset, tagId, driving);
+}
+
+int System::addConstraintOffsetRadius(Arc &c1, Circle &c2, double *offset, int tagId, bool driving)
+{
+    return addConstraintDifference(c1.rad, c2.rad, offset, tagId, driving);
+}
+
+int System::addConstraintOffsetRadius(Arc &c1, Arc &c2, double *offset, int tagId, bool driving)
+{
+    return addConstraintDifference(c1.rad, c2.rad, offset, tagId, driving);
+}
+
+int System::addConstraintOffsetRadius(Circle &c1, Arc &c2, double *offset, int tagId, bool driving)
+{
+    return addConstraintDifference(c1.rad, c2.rad, offset, tagId, driving);
+}
+
 int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType, int tagId, bool driving)
 {
     Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);

@@ -2143,7 +2143,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one line or one point and one line or two points from the sketch."));
+            QObject::tr("Select exactly one line or one point and one line or two points, or two arcs/circles from the sketch."));
         return;
     }
 
@@ -2272,9 +2272,37 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             return;
         }
     }
+    else if (isEdge(GeoId1,PosId1) && isEdge(GeoId2,PosId2))  { // circle to circle radial offset distance
+        const Part::Geometry *geom = Obj->getGeometry(GeoId2);
+        if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {   // circle to circle distance
+            //const Part::GeomCircle *circleSeg;
+            //circleSeg = static_cast<const Part::GeomCircle*>(geom);
+            double radius1 = 10.0;   // TODO: Get the radius from the circle GeoId1
+            double radius2 = 20.0;   // TODO: Get the radius from the circle GeoId2
+            double ActDist = std::abs(radius1-radius2);
+
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle radius offset distance constraint"));
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
+                GeoId1,GeoId2,ActDist);
+
+            if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                     "setDriving(%i,%s)",
+                     ConStr.size()-1,"False");
+                finishDatumConstraint (this, Obj, false);
+            }
+            else
+                finishDatumConstraint (this, Obj, true);
+
+            return;
+        }
+    }
 
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("Select exactly one line or one point and one line or two points from the sketch."));
+        QObject::tr("Select exactly one line or one point and one line or two points or two arcs/circles from the sketch."));
     return;
 }
 
@@ -2363,6 +2391,11 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
             }
             else
                 finishDatumConstraint (this, Obj, true);
+        }
+        else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Not implemented yet"),
+                QObject::tr("This constraint will be use for circle to circle offset"));
+
         }
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
