@@ -1353,7 +1353,7 @@ void CmdPartDesignPocket::activated(int iMsg)
     if (!PartDesignGui::assureModernWorkflow(doc))
         return;
 
-    prepareProfileBased(this, "Pocket", 10.0);
+    prepareProfileBased(this, "Pocket", 5.0);
 }
 
 bool CmdPartDesignPocket::isActive(void)
