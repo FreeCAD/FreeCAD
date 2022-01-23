@@ -69,6 +69,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     "Choose how to process multiple Base Geometry features.",
                 ),
             )
+
         if not hasattr(obj, "AdaptivePocketStart"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -293,7 +294,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             except Exception as ee:
                 PathLog.warning(ee)
                 PathLog.error(
-                    "A planar adaptive start is unavailable. The non-planar will be attempted."
+                    translate(
+                        "Path",
+                        "A planar adaptive start is unavailable. The non-planar will be attempted.",
+                    )
                 )
                 tryNonPlanar = True
             else:
@@ -306,7 +310,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     )  # NON-planar face method
                 except Exception as eee:
                     PathLog.warning(eee)
-                    PathLog.error("The non-planar adaptive start is also unavailable.")
+                    PathLog.error(
+                        translate(
+                            "Path", "The non-planar adaptive start is also unavailable."
+                        )
+                        + "(1)"
+                    )
                     isHighFacePlanar = False
                 else:
                     makeHighFace = 2
@@ -331,7 +340,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             highFace.Shape.BoundBox.ZMin - mn,
                         )
                     )
-                    PathLog.error("The non-planar adaptive start is also unavailable.")
+                    PathLog.error(
+                        translate(
+                            "Path", "The non-planar adaptive start is also unavailable."
+                        )
+                        + "(2)"
+                    )
                     isHighFacePlanar = False
                     makeHighFace = 0
         else:
