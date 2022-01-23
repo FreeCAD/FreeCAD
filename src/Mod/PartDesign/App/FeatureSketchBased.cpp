@@ -821,9 +821,9 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
                         intersections++;
                     }
                 }
-                }
             }
         }
+    }
 
     // Note: We might check this inside the loop but then we have to rely on TopExp_Explorer
     // returning the wire's edges in adjacent order (because of the coincident line checking)
@@ -838,7 +838,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
 
     return false;
 #endif
-    }
+}
 
 void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
 {
