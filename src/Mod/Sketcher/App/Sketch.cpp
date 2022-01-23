@@ -1797,6 +1797,20 @@ int Sketch::addConstraint(const Constraint *constraint)
                                         constraint->Second,constraint->SecondPos,
                                         c.value,c.driving);
         }
+        else if (constraint->FirstPos == PointPos::none &&
+            constraint->SecondPos == PointPos::none &&
+            constraint->Second != GeoEnum::GeoUndef &&
+            constraint->Third == GeoEnum::GeoUndef) {        // circle to circle, circle to arc, etc.
+
+            c.value = new double(constraint->getValue());
+            if(c.driving)
+                FixParameters.push_back(c.value);
+            else {
+                Parameters.push_back(c.value);
+                DrivenParameters.push_back(c.value);
+            }
+            rtn = addDistanceConstraint(constraint->First, constraint->Second,c.value,c.driving);
+        }
         else if (constraint->Second != GeoEnum::GeoUndef) {
             if (constraint->FirstPos != PointPos::none) { // point to line distance
                 c.value = new double(constraint->getValue());
@@ -2737,6 +2751,40 @@ int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPo
         GCSsys.addConstraintP2PDistance(p1, p2, value, tag, driving);
         return ConstraintsCounter;
     }
+    return -1;
+}
+
+// circle-circle offset distance constraint
+int Sketch::addDistanceConstraint(int geoId1, int geoId2, double * value, bool driving)
+{
+    if ((Geoms[geoId1].type == Circle)  && (Geoms[geoId2].type == Circle)) {
+        GCS::Circle &c1 = Circles[Geoms[geoId1].index];
+        GCS::Circle &c2 = Circles[Geoms[geoId2].index];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintC2CDistance(c1, c2, value, tag, driving);
+        return ConstraintsCounter;
+    }
+    //~ else if ((Geoms[geoId1].type == Arc) && (Geoms[geoId2].type == Arc)) {
+        //~ GCS::Arc &a1 = Arcs[Geoms[geoId1].index];
+        //~ GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
+        //~ int tag = ++ConstraintsCounter;
+        //~ GCSsys.addConstraintOffsetRadius(a1, a2, value, tag, driving);
+        //~ return ConstraintsCounter;
+    //~ }
+    //~ else if ((Geoms[geoId1].type == Circle) && (Geoms[geoId2].type == Arc)) {
+        //~ GCS::Circle &c1 = Circles[Geoms[geoId1].index];
+        //~ GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
+        //~ int tag = ++ConstraintsCounter;
+        //~ GCSsys.addConstraintOffsetRadius(c1, a2, value, tag, driving);
+        //~ return ConstraintsCounter;
+    //~ }
+    //~ else if ((Geoms[geoId1].type == Arc) && (Geoms[geoId2].type == Circle)) {
+        //~ GCS::Arc &a1 = Arcs[Geoms[geoId1].index];
+        //~ GCS::Circle &c2 = Circles[Geoms[geoId2].index];
+        //~ int tag = ++ConstraintsCounter;
+        //~ GCSsys.addConstraintOffsetRadius(a1, c2, value, tag, driving);
+        //~ return ConstraintsCounter;
+    //~ }
     return -1;
 }
 

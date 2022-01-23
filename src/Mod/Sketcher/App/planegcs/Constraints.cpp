@@ -2585,5 +2585,93 @@ double ConstraintEqualLineLength::grad(double *param)
     return deriv*scale;
 }
 
+// ConstraintC2CDistance
+ConstraintC2CDistance::ConstraintC2CDistance(Circle &c1, Circle &c2, double *d)
+{
+    this->c1 = c1;
+    this->c1.PushOwnParams(pvec);
+
+    this->c2 = c2;
+    this->c2.PushOwnParams(pvec);
+
+    this->d = *d;
+
+    origpvec = pvec;
+    pvecChangedFlag = true;
+    rescale();
+}
+
+void ConstraintC2CDistance::ReconstructGeomPointers()
+{
+    int i=0;
+    c1.ReconstructOnNewPvec(pvec, i);
+    c2.ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+ConstraintType ConstraintC2CDistance::getTypeId()
+{
+    return C2CDistance;
+}
+
+void ConstraintC2CDistance::rescale(double coef)
+{
+    scale = coef * 1;
+}
+
+void ConstraintC2CDistance::errorgrad(double *err, double *grad, double *param)
+{
+    if (pvecChangedFlag) ReconstructGeomPointers();
+
+    DeriVector2 ct1 (c1.center, param);
+    DeriVector2 ct2 (c2.center, param);
+
+    DeriVector2 v1 = ct1.subtr(ct2);
+
+    double length, dlength;
+    length = v1.length(dlength);
+
+    if (length > 1e-10) {
+        if (err) {
+            if (length <= *c1.rad)       //inner case 1
+                *err = length + d + *c2.rad - *c1.rad;
+            else if (length <= *c2.rad)  //inner case 2
+                *err = length + d + *c1.rad - *c2.rad;
+            else                        // outer case
+                *err = length - (d + *c1.rad + *c2.rad);
+        }
+        if (grad)
+            *grad = dlength;
+    } else {                            //concentric case
+        if (err)
+            *err = *c2.rad - *c1.rad - d;
+        if (grad) {
+            if (param == c1.rad)
+                *grad = -1.0;
+            else if (param == c2.rad)
+                *grad = 1.0;
+            else
+                *grad = 0.0;
+        }
+    }
+}
+
+double ConstraintC2CDistance::error()
+{
+    double err;
+    errorgrad(&err,nullptr,nullptr);
+    return scale * err;
+}
+
+double ConstraintC2CDistance::grad(double *param)
+{
+    if ( findParamInPvec(param) == -1 )
+        return 0.0;
+
+    double deriv;
+    errorgrad(nullptr, &deriv, param);
+
+    return deriv*scale;
+}
 
 } //namespace GCS

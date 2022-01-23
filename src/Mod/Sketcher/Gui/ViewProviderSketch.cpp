@@ -1426,6 +1426,32 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
                 // calculate the projection of p1 onto line2
                 p2.ProjectToLine(p1-l2p1, l2p2-l2p1);
                 p2 += p1;
+            } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to circle distance
+                const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
+                const Part::GeomCircle *circleSeg1 = static_cast<const Part::GeomCircle *>(geo1);
+                const Part::GeomCircle *circleSeg2 = static_cast<const Part::GeomCircle *>(geo);
+                auto center1 = circleSeg1->getCenter();
+                auto center2 = circleSeg2->getCenter();
+                double radius1 = circleSeg1->getRadius();
+                double radius2 = circleSeg2->getRadius();
+                Base::Vector3d v = center1 - center2;
+                double length = v.Length();
+                v = v.Normalize();
+                if (v.IsNull()) { //concentric case
+                    p1 = center1 + radius1 * Base::Vector3d(1.,0.,0.);
+                    p2 = center1 + radius2 * Base::Vector3d(1.,0.,0.);
+                } else {
+                    if (length <= radius1){ //inner case 1
+                        p1 = center1 - v * radius1;
+                        p2 = center2 - v * radius2;
+                    } else if (length <= radius2) { // inner case 2
+                        p1 = center2 + v * radius2;
+                        p2 = center1 + v * radius1;
+                    } else { //outer case
+                        p1 = center1 - v * radius1;
+                        p2 = center2 + v * radius2;
+                    }
+                }
             } else
                 return;
         } else if (Constr->FirstPos != Sketcher::PointPos::none) {

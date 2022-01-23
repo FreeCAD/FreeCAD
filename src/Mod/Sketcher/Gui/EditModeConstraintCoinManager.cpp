@@ -654,25 +654,52 @@ Restart:
                         if (Constr->SecondPos != Sketcher::PointPos::none) { // point to point distance
                             pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                             pnt2 = geolistfacade.getPoint(Constr->Second, Constr->SecondPos);
-                        } else if (Constr->Second != GeoEnum::GeoUndef) { // point to line distance
+                        } else if (Constr->Second != GeoEnum::GeoUndef) {
                             pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
 
                             const Part::Geometry *geo = geolistfacade.getGeometryFromGeoId(Constr->Second);
-                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // point to line distance
                                 const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
                                 Base::Vector3d l2p2 = lineSeg->getEndPoint();
                                 // calculate the projection of p1 onto line2
                                 pnt2.ProjectToLine(pnt1-l2p1, l2p2-l2p1);
                                 pnt2 += pnt1;
+                            } else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) { // circle to circle distance
+                                const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
+                                auto circleSeg1 = static_cast<const Part::GeomCircle*>(geo1);
+                                auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
+                                auto center1 = circleSeg1->getCenter();
+                                auto center2 = circleSeg2->getCenter();
+                                double radius1 = circleSeg1->getRadius();
+                                double radius2 = circleSeg2->getRadius();
+                                Base::Vector3d v = center1 - center2;
+                                double length = v.Length();
+                                v = v.Normalize();
+                                if (v.IsNull()) { //concentric case
+                                    pnt1 = center1 + radius1 * Base::Vector3d(1.,0.,0.);
+                                    pnt2 = center1 + radius2 * Base::Vector3d(1.,0.,0.);
+                                } else {
+                                    if (length <= radius1){ //inner case 1
+                                        pnt1 = center1 - v * radius1;
+                                        pnt2 = center2 - v * radius2;
+                                    } else if (length <= radius2) { // inner case 2
+                                        pnt1 = center2 + v * radius2;
+                                        pnt2 = center1 + v * radius1;
+                                    } else { //outer case
+                                        pnt1 = center1 - v * radius1;
+                                        pnt2 = center2 + v * radius2;
+                                    }
+                                }
+                                //TODO allow to move the label
                             } else
                                 break;
                         } else if (Constr->FirstPos != Sketcher::PointPos::none) {
                             pnt2 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                         } else if (Constr->First != GeoEnum::GeoUndef) {
-                            const Part::Geometry *geo = geolistfacade.getGeometryFromGeoId(Constr->First);
-                            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
+                            const Part::Geometry *geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
+                            if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // segment distance
+                                const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geo1);
                                 pnt1 = lineSeg->getStartPoint();
                                 pnt2 = lineSeg->getEndPoint();
                             } else

@@ -244,6 +244,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
+            else if (strcmp("Distance",ConstraintType) == 0) {
+                this->getConstraintPtr()->Type = Distance;
+                this->getConstraintPtr()->First = FirstIndex;
+                this->getConstraintPtr()->Second = SecondIndex;
+                this->getConstraintPtr()->setValue(Value);
+                return 0;
+            }
             else if (strcmp("DistanceX",ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
@@ -481,7 +488,7 @@ std::string ConstraintPy::representation() const
         case Coincident         : result << "'Coincident'>";break;
         case Horizontal         : result << "'Horizontal' (" << getConstraintPtr()->First << ")>";break;
         case Vertical           : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
-        case Block            	: result << "'Block' (" << getConstraintPtr()->First << ")>";break;
+        case Block              : result << "'Block' (" << getConstraintPtr()->First << ")>";break;
         case Radius             : result << "'Radius'>";break;
         case Diameter           : result << "'Diameter'>";break;
         case Weight             : result << "'Weight'>";break;

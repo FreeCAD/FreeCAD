@@ -276,6 +276,15 @@ public:
     *   Parameters array, as the case may be.
     */
     int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, double *  value, bool driving = true);
+    /**
+    *   add a length or distance constraint
+    *
+    *   double * value is a pointer to double allocated in the heap, containing the
+    *   constraint value and already inserted into either the FixParameters or
+    *   Parameters array, as the case may be.
+    */
+    int addDistanceConstraint(int geoId1, int geoId2, double * value, bool driving = true);
+
     /// add a parallel constraint between two lines
     int addParallelConstraint(int geoId1, int geoId2);
     /// add a perpendicular constraint between two lines

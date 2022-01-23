@@ -2189,7 +2189,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
     if (SubNames.empty() || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one line or one point and one line or two points from the sketch."));
+            QObject::tr("Select exactly one line or one point and one line or two points, or two arcs/circles from the sketch."));
         return;
     }
 
@@ -2284,6 +2284,52 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             return;
         }
     }
+    else if (isEdge(GeoId1,PosId1) && isEdge(GeoId2,PosId2))  { // circle to circle distance
+        const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+        const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+        if (geom1->getTypeId() == Part::GeomCircle::getClassTypeId()
+        && geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ) {
+            auto circleSeg1 = static_cast<const Part::GeomCircle*>(geom1);
+            double radius1 = circleSeg1->getRadius();
+            Base::Vector3<double> center1 = circleSeg1->getCenter();
+
+            auto circleSeg2 = static_cast<const Part::GeomCircle*>(geom2);
+            double radius2 = circleSeg2->getRadius();
+            Base::Vector3<double> center2 = circleSeg2->getCenter();
+
+            double ActDist = 0.;
+            if (center1 == center2)             // concentric case
+                ActDist = radius1 - radius2;
+            else {
+                Base::Vector3<double> v = center1 - center2;
+                if (v.Length() <= radius1)      //inner case 1
+                    ActDist = radius1 - radius2 - v.Length();
+                else if (v.Length() <= radius2) //inner case 2
+                    ActDist = radius2 - radius1 - v.Length();
+                else                            // outer case
+                    ActDist = v.Length() - radius1 - radius2;
+            }
+            ActDist = std::abs(ActDist);
+
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f)) ",
+                GeoId1,GeoId2,ActDist);
+
+            if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                     "setDriving(%i,%s)",
+                     ConStr.size()-1,"False");
+                finishDatumConstraint (this, Obj, false);
+            }
+            else
+                finishDatumConstraint (this, Obj, true);
+
+            return;
+        }
+    }
     else if (isEdge(GeoId1,PosId1)) { // line length
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -2320,7 +2366,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     }
 
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("Select exactly one line or one point and one line or two points from the sketch."));
+        QObject::tr("Select exactly one line or one point and one line or two points or two arcs/circles from the sketch."));
     return;
 }
 
@@ -2408,6 +2454,11 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
             }
             else
                 finishDatumConstraint (this, Obj, true);
+        }
+        else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Not implemented yet"),
+                QObject::tr("This constraint will be use for circle to circle offset"));
+
         }
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),

@@ -315,6 +315,9 @@ namespace GCS
                                    bool flipn1, bool flipn2,
                                    int tagId, bool driving = true);
 
+        int addConstraintC2CDistance(Circle &c1, Circle &c2, double *dist, int tagId, bool driving = true);
+
+
         // internal alignment constraints
         int addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType, int tagId=0, bool driving = true);
         int addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId=0, bool driving = true);
