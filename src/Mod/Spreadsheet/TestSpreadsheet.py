@@ -1184,6 +1184,50 @@ class SpreadsheetCases(unittest.TestCase):
         FreeCAD.closeDocument(square.Name)
         FreeCAD.closeDocument(base.Name)
 
+    def testExpressionWithAlias(self):
+        # https://forum.freecadweb.org/viewtopic.php?p=564502#p564502
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Input")
+        ss1.setAlias('A1', 'one')
+        ss1.setAlias('A2', 'two')
+        ss1.set("A1","1")
+        ss1.set("A2","2")
+        self.doc.recompute()
+
+        ss2 = self.doc.addObject("Spreadsheet::Sheet", "Output")
+        ss2.set("A1","=Input.A1 + Input.A2")
+        ss2.set("A2","=Input.one + Input.two")
+        ss2.set("A3","=<<Input>>.A1 + <<Input>>.A2")
+        ss2.set("A4","=<<Input>>.one + <<Input>>.two")
+        self.doc.recompute()
+
+        self.assertEqual(ss2.get("A1"), 3)
+        self.assertEqual(ss2.get("A2"), 3)
+        self.assertEqual(ss2.get("A3"), 3)
+        self.assertEqual(ss2.get("A4"), 3)
+
+        project_path = self.TempPath + os.sep + 'alias.FCStd'
+        self.doc.saveAs(project_path)
+        FreeCAD.closeDocument(self.doc.Name)
+        self.doc = FreeCAD.openDocument(project_path)
+        ss1 = self.doc.Input
+        ss2 = self.doc.Output
+
+        self.assertEqual(ss2.get("A1"), 3)
+        self.assertEqual(ss2.get("A2"), 3)
+        self.assertEqual(ss2.get("A3"), 3)
+        self.assertEqual(ss2.get("A4"), 3)
+
+        ss1.set("A1","2")
+        self.doc.recompute()
+
+        self.assertEqual(ss1.get("A1"), 2)
+        self.assertEqual(ss1.get("one"), 2)
+
+        self.assertEqual(ss2.get("A1"), 4)
+        self.assertEqual(ss2.get("A2"), 4)
+        self.assertEqual(ss2.get("A3"), 4)
+        self.assertEqual(ss2.get("A4"), 4)
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
