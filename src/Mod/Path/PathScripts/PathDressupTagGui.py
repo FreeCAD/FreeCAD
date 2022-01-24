@@ -22,7 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathDressupHoldingTags as PathDressupTag
@@ -60,7 +60,9 @@ class PathDressupTagTaskPanel:
         self.getPoint = PathGetPoint.TaskPanel(self.form.removeEditAddGroup, True)
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
-            FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
+            FreeCAD.ActiveDocument.openTransaction(
+                translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up")
+            )
             self.jvoVisible = self.jvo.isVisible()
             if self.jvoVisible:
                 self.jvo.hide()
@@ -76,7 +78,11 @@ class PathDressupTagTaskPanel:
         self.editItem = None
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
+        return int(
+            QtGui.QDialogButtonBox.Ok
+            | QtGui.QDialogButtonBox.Apply
+            | QtGui.QDialogButtonBox.Cancel
+        )
 
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
@@ -201,7 +207,9 @@ class PathDressupTagTaskPanel:
             self.Disabled = self.obj.Disabled
             self.updateTagsView()
         else:
-            PathLog.error(translate('Path_DressupTag', 'Cannot copy tags - internal error')+'\n')
+            PathLog.error(
+                translate("Path_DressupTag", "Cannot copy tags - internal error") + "\n"
+            )
 
     def updateModel(self):
         self.getFields()
@@ -273,10 +281,16 @@ class PathDressupTagTaskPanel:
     def setFields(self):
         self.updateTagsView()
         self.form.sbCount.setValue(len(self.Positions))
-        self.form.ifHeight.setText(FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString)
-        self.form.ifWidth.setText(FreeCAD.Units.Quantity(self.obj.Width, FreeCAD.Units.Length).UserString)
+        self.form.ifHeight.setText(
+            FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString
+        )
+        self.form.ifWidth.setText(
+            FreeCAD.Units.Quantity(self.obj.Width, FreeCAD.Units.Length).UserString
+        )
         self.form.dsbAngle.setValue(self.obj.Angle)
-        self.form.ifRadius.setText(FreeCAD.Units.Quantity(self.obj.Radius, FreeCAD.Units.Length).UserString)
+        self.form.ifRadius.setText(
+            FreeCAD.Units.Quantity(self.obj.Radius, FreeCAD.Units.Length).UserString
+        )
 
     def setupUi(self):
         self.Positions = self.obj.Positions
@@ -292,7 +306,9 @@ class PathDressupTagTaskPanel:
             self.form.cbTagGeneration.setEnabled(False)
 
         enableCopy = False
-        for tags in sorted([o.Label for o in FreeCAD.ActiveDocument.Objects if 'DressupTag' in o.Name]):
+        for tags in sorted(
+            [o.Label for o in FreeCAD.ActiveDocument.Objects if "DressupTag" in o.Name]
+        ):
             if tags != self.obj.Label:
                 enableCopy = True
                 self.form.cbSource.addItem(tags)
@@ -319,8 +335,8 @@ class HoldingTagMarker:
         self.pos = coin.SoTranslation()
         self.pos.translation = (point.x, point.y, point.z)
         self.sphere = coin.SoSphere()
-        self.scale = coin.SoType.fromName('SoShapeScale').createInstance()
-        self.scale.setPart('shape', self.sphere)
+        self.scale = coin.SoType.fromName("SoShapeScale").createInstance()
+        self.scale.setPart("shape", self.sphere)
         self.scale.scaleFactor.setValue(7)
         self.material = coin.SoMaterial()
         self.sep.addChild(self.pos)
@@ -337,15 +353,18 @@ class HoldingTagMarker:
     def setEnabled(self, enabled):
         self.enabled = enabled
         if enabled:
-            self.material.diffuseColor = self.color[0] if not self.selected else self.color[2]
+            self.material.diffuseColor = (
+                self.color[0] if not self.selected else self.color[2]
+            )
             self.material.transparency = 0.0
         else:
-            self.material.diffuseColor = self.color[1] if not self.selected else self.color[2]
+            self.material.diffuseColor = (
+                self.color[1] if not self.selected else self.color[2]
+            )
             self.material.transparency = 0.6
 
 
 class PathDressupTagViewProvider:
-
     def __init__(self, vobj):
         PathLog.track()
         self.vobj = vobj
@@ -376,15 +395,25 @@ class PathDressupTagViewProvider:
 
     def setupColors(self):
         def colorForColorValue(val):
-            v = [((val >> n) & 0xff) / 255. for n in [24, 16, 8, 0]]
+            v = [((val >> n) & 0xFF) / 255.0 for n in [24, 16, 8, 0]]
             return coin.SbColor(v[0], v[1], v[2])
 
         pref = PathPreferences.preferences()
         #                                                      R         G          B          A
-        npc = pref.GetUnsigned('DefaultPathMarkerColor', ((85*256 + 255)*256 + 0) * 256 + 255)
-        hpc = pref.GetUnsigned('DefaultHighlightPathColor', ((255*256 + 125)*256 + 0)*256 + 255)
-        dpc = pref.GetUnsigned('DefaultDisabledPathColor', ((205*256 + 205)*256 + 205)*256 + 154)
-        self.colors = [colorForColorValue(npc), colorForColorValue(dpc), colorForColorValue(hpc)]
+        npc = pref.GetUnsigned(
+            "DefaultPathMarkerColor", ((85 * 256 + 255) * 256 + 0) * 256 + 255
+        )
+        hpc = pref.GetUnsigned(
+            "DefaultHighlightPathColor", ((255 * 256 + 125) * 256 + 0) * 256 + 255
+        )
+        dpc = pref.GetUnsigned(
+            "DefaultDisabledPathColor", ((205 * 256 + 205) * 256 + 205) * 256 + 154
+        )
+        self.colors = [
+            colorForColorValue(npc),
+            colorForColorValue(dpc),
+            colorForColorValue(hpc),
+        ]
 
     def attach(self, vobj):
         PathLog.track()
@@ -398,7 +427,9 @@ class PathDressupTagViewProvider:
 
         if self.obj and self.obj.Base:
             for i in self.obj.Base.InList:
-                if hasattr(i, 'Group') and self.obj.Base.Name in [o.Name for o in i.Group]:
+                if hasattr(i, "Group") and self.obj.Base.Name in [
+                    o.Name for o in i.Group
+                ]:
                     i.Group = [o for o in i.Group if o.Name != self.obj.Base.Name]
             if self.obj.Base.ViewObject:
                 self.obj.Base.ViewObject.Visibility = False
@@ -416,7 +447,7 @@ class PathDressupTagViewProvider:
         return [self.obj.Base]
 
     def onDelete(self, arg1=None, arg2=None):
-        '''this makes sure that the base operation is added back to the job and visible'''
+        """this makes sure that the base operation is added back to the job and visible"""
         # pylint: disable=unused-argument
         PathLog.track()
         if self.obj.Base and self.obj.Base.ViewObject:
@@ -436,7 +467,9 @@ class PathDressupTagViewProvider:
             self.switch.removeChild(tag.sep)
         tags = []
         for i, p in enumerate(positions):
-            tag = HoldingTagMarker(self.obj.Proxy.pointAtBottom(self.obj, p), self.colors)
+            tag = HoldingTagMarker(
+                self.obj.Proxy.pointAtBottom(self.obj, p), self.colors
+            )
             tag.setEnabled(not i in disabled)
             tags.append(tag)
             self.switch.addChild(tag.sep)
@@ -444,7 +477,7 @@ class PathDressupTagViewProvider:
 
     def updateData(self, obj, propName):
         PathLog.track(propName)
-        if 'Disabled' == propName:
+        if "Disabled" == propName:
             self.updatePositions(obj.Positions, obj.Disabled)
 
     def onModelChanged(self):
@@ -468,7 +501,7 @@ class PathDressupTagViewProvider:
 
     def unsetEdit(self, vobj, mode):
         # pylint: disable=unused-argument
-        if hasattr(self, 'panel') and self.panel:
+        if hasattr(self, "panel") and self.panel:
             self.panel.abort()
 
     def setupTaskPanel(self, panel):
@@ -500,7 +533,9 @@ class PathDressupTagViewProvider:
             z = self.tags[0].point.z
         p = FreeCAD.Vector(x, y, z)
         for i, tag in enumerate(self.tags):
-            if PathGeom.pointsCoincide(p, tag.point, tag.sphere.radius.getValue() * 1.3):
+            if PathGeom.pointsCoincide(
+                p, tag.point, tag.sphere.radius.getValue() * 1.3
+            ):
                 return i
         return -1
 
@@ -519,12 +554,14 @@ class PathDressupTagViewProvider:
         FreeCADGui.updateGui()
 
 
-def Create(baseObject, name='DressupTag'):
-    '''
+def Create(baseObject, name="DressupTag"):
+    """
     Create(basePath, name = 'DressupTag') ... create tag dressup object for the given base path.
     Use this command only iff the UI is up - for batch processing see PathDressupTag.Create
-    '''
-    FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupTag", "Create a Tag dressup"))
+    """
+    FreeCAD.ActiveDocument.openTransaction(
+        translate("Path_DressupTag", "Create a Tag dressup")
+    )
     obj = PathDressupTag.Create(baseObject, name)
     obj.ViewObject.Proxy = PathDressupTagViewProvider(obj.ViewObject)
     FreeCAD.ActiveDocument.commitTransaction()
@@ -536,14 +573,18 @@ class CommandPathDressupTag:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path_Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Tag Dress-up'),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Creates a Tag Dress-up object from a selected path')}
+        return {
+            "Pixmap": "Path_Dressup",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Tag Dress-up"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Path_DressupTag", "Creates a Tag Dress-up object from a selected path"
+            ),
+        }
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == 'Job':
+                if o.Name[:3] == "Job":
                     return True
         return False
 
@@ -551,19 +592,27 @@ class CommandPathDressupTag:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate('Path_DressupTag', 'Please select one path object')+'\n')
+            PathLog.error(
+                translate("Path_DressupTag", "Please select one path object") + "\n"
+            )
             return
         baseObject = selection[0]
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate('Path_DressupTag', 'Create Tag Dress-up'))
-        FreeCADGui.addModule('PathScripts.PathDressupTagGui')
-        FreeCADGui.doCommand("PathScripts.PathDressupTagGui.Create(App.ActiveDocument.%s)" % baseObject.Name)
+        FreeCAD.ActiveDocument.openTransaction(
+            translate("Path_DressupTag", "Create Tag Dress-up")
+        )
+        FreeCADGui.addModule("PathScripts.PathDressupTagGui")
+        FreeCADGui.doCommand(
+            "PathScripts.PathDressupTagGui.Create(App.ActiveDocument.%s)"
+            % baseObject.Name
+        )
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_DressupTag', CommandPathDressupTag())
+    FreeCADGui.addCommand("Path_DressupTag", CommandPathDressupTag())
 
-PathLog.notice('Loading PathDressupTagGui... done\n')
+PathLog.notice("Loading PathDressupTagGui... done\n")

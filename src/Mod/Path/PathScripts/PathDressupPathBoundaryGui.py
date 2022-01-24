@@ -22,26 +22,26 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathDressupPathBoundary as PathDressupPathBoundary
 import PathScripts.PathLog as PathLog
 
 from PySide import QtGui, QtCore
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule()
+# PathLog.trackModule()
 
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-class TaskPanel(object):
 
+class TaskPanel(object):
     def __init__(self, obj, viewProvider):
         self.obj = obj
         self.viewProvider = viewProvider
-        self.form = FreeCADGui.PySideUic.loadUi(':/panels/DressupPathBoundary.ui')
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/DressupPathBoundary.ui")
         if obj.Stock:
             self.visibilityBoundary = obj.Stock.ViewObject.Visibility
             obj.Stock.ViewObject.Visibility = True
@@ -58,7 +58,11 @@ class TaskPanel(object):
         self.stockEdit = None
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
+        return int(
+            QtGui.QDialogButtonBox.Ok
+            | QtGui.QDialogButtonBox.Apply
+            | QtGui.QDialogButtonBox.Cancel
+        )
 
     def modifyStandardButtons(self, buttonBox):
         self.buttonBox = buttonBox
@@ -113,32 +117,42 @@ class TaskPanel(object):
         def setupFromBaseEdit():
             PathLog.track(index, force)
             if force or not self.stockFromBase:
-                self.stockFromBase = PathJobGui.StockFromBaseBoundBoxEdit(self.obj, self.form, force)
+                self.stockFromBase = PathJobGui.StockFromBaseBoundBoxEdit(
+                    self.obj, self.form, force
+                )
             self.stockEdit = self.stockFromBase
 
         def setupCreateBoxEdit():
             PathLog.track(index, force)
             if force or not self.stockCreateBox:
-                self.stockCreateBox = PathJobGui.StockCreateBoxEdit(self.obj, self.form, force)
+                self.stockCreateBox = PathJobGui.StockCreateBoxEdit(
+                    self.obj, self.form, force
+                )
             self.stockEdit = self.stockCreateBox
 
         def setupCreateCylinderEdit():
             PathLog.track(index, force)
             if force or not self.stockCreateCylinder:
-                self.stockCreateCylinder = PathJobGui.StockCreateCylinderEdit(self.obj, self.form, force)
+                self.stockCreateCylinder = PathJobGui.StockCreateCylinderEdit(
+                    self.obj, self.form, force
+                )
             self.stockEdit = self.stockCreateCylinder
 
         def setupFromExisting():
             PathLog.track(index, force)
             if force or not self.stockFromExisting:
-                self.stockFromExisting = PathJobGui.StockFromExistingEdit(self.obj, self.form, force)
+                self.stockFromExisting = PathJobGui.StockFromExistingEdit(
+                    self.obj, self.form, force
+                )
             if self.stockFromExisting.candidates(self.obj):
                 self.stockEdit = self.stockFromExisting
                 return True
             return False
 
         if index == -1:
-            if self.obj.Stock is None or PathJobGui.StockFromBaseBoundBoxEdit.IsStock(self.obj):
+            if self.obj.Stock is None or PathJobGui.StockFromBaseBoundBoxEdit.IsStock(
+                self.obj
+            ):
                 setupFromBaseEdit()
             elif PathJobGui.StockCreateBoxEdit.IsStock(self.obj):
                 setupCreateBoxEdit()
@@ -147,7 +161,10 @@ class TaskPanel(object):
             elif PathJobGui.StockFromExistingEdit.IsStock(self.obj):
                 setupFromExisting()
             else:
-                PathLog.error(translate('PathJob', "Unsupported stock object %s") % self.obj.Stock.Label)
+                PathLog.error(
+                    translate("PathJob", "Unsupported stock object %s")
+                    % self.obj.Stock.Label
+                )
         else:
             if index == PathJobGui.StockFromBaseBoundBoxEdit.Index:
                 setupFromBaseEdit()
@@ -160,7 +177,10 @@ class TaskPanel(object):
                     setupFromBaseEdit()
                     index = -1
             else:
-                PathLog.error(translate('PathJob', "Unsupported stock type %s (%d)") % (self.form.stock.currentText(), index))
+                PathLog.error(
+                    translate("PathJob", "Unsupported stock type %s (%d)")
+                    % (self.form.stock.currentText(), index)
+                )
         self.stockEdit.activate(self.obj, index == -1)
 
     def setupUi(self):
@@ -183,15 +203,14 @@ class TaskPanel(object):
 
 
 class DressupPathBoundaryViewProvider(object):
-
     def __init__(self, vobj):
         self.attach(vobj)
 
     def __getstate__(self):
         return None
+
     def __setstate__(self, state):
         return None
-
 
     def attach(self, vobj):
         self.vobj = vobj
@@ -225,8 +244,10 @@ class DressupPathBoundaryViewProvider(object):
         self.panel = None
 
 
-def Create(base, name='DressupPathBoundary'):
-    FreeCAD.ActiveDocument.openTransaction(translate('Path_DressupPathBoundary', 'Create a Boundary dressup'))
+def Create(base, name="DressupPathBoundary"):
+    FreeCAD.ActiveDocument.openTransaction(
+        translate("Path_DressupPathBoundary", "Create a Boundary dressup")
+    )
     obj = PathDressupPathBoundary.Create(base, name)
     obj.ViewObject.Proxy = DressupPathBoundaryViewProvider(obj.ViewObject)
     obj.Base.ViewObject.Visibility = False
@@ -235,18 +256,26 @@ def Create(base, name='DressupPathBoundary'):
     obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
     return obj
 
+
 class CommandPathDressupPathBoundary:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path_Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('Path_DressupPathBoundary', 'Boundary Dress-up'),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP('Path_DressupPathBoundary', 'Creates a Path Boundary Dress-up object from a selected path')}
+        return {
+            "Pixmap": "Path_Dressup",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "Path_DressupPathBoundary", "Boundary Dress-up"
+            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Path_DressupPathBoundary",
+                "Creates a Path Boundary Dress-up object from a selected path",
+            ),
+        }
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == 'Job':
+                if o.Name[:3] == "Job":
                     return True
         return False
 
@@ -254,19 +283,28 @@ class CommandPathDressupPathBoundary:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate('Path_DressupPathBoundary', 'Please select one path object')+'\n')
+            PathLog.error(
+                translate("Path_DressupPathBoundary", "Please select one path object")
+                + "\n"
+            )
             return
         baseObject = selection[0]
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate('Path_DressupPathBoundary', 'Create Path Boundary Dress-up'))
-        FreeCADGui.addModule('PathScripts.PathDressupPathBoundaryGui')
-        FreeCADGui.doCommand("PathScripts.PathDressupPathBoundaryGui.Create(App.ActiveDocument.%s)" % baseObject.Name)
+        FreeCAD.ActiveDocument.openTransaction(
+            translate("Path_DressupPathBoundary", "Create Path Boundary Dress-up")
+        )
+        FreeCADGui.addModule("PathScripts.PathDressupPathBoundaryGui")
+        FreeCADGui.doCommand(
+            "PathScripts.PathDressupPathBoundaryGui.Create(App.ActiveDocument.%s)"
+            % baseObject.Name
+        )
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_DressupPathBoundary', CommandPathDressupPathBoundary())
+    FreeCADGui.addCommand("Path_DressupPathBoundary", CommandPathDressupPathBoundary())
 
-PathLog.notice('Loading PathDressupPathBoundaryGui... done\n')
+PathLog.notice("Loading PathDressupPathBoundaryGui... done\n")
