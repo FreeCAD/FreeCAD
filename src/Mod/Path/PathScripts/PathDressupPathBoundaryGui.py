@@ -20,21 +20,22 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathDressupPathBoundary as PathDressupPathBoundary
 import PathScripts.PathLog as PathLog
 
-from PySide import QtGui, QtCore
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class TaskPanel(object):
@@ -245,9 +246,7 @@ class DressupPathBoundaryViewProvider(object):
 
 
 def Create(base, name="DressupPathBoundary"):
-    FreeCAD.ActiveDocument.openTransaction(
-        translate("Path_DressupPathBoundary", "Create a Boundary dressup")
-    )
+    FreeCAD.ActiveDocument.openTransaction("Create a Boundary dressup")
     obj = PathDressupPathBoundary.Create(base, name)
     obj.ViewObject.Proxy = DressupPathBoundaryViewProvider(obj.ViewObject)
     obj.Base.ViewObject.Visibility = False
@@ -263,10 +262,10 @@ class CommandPathDressupPathBoundary:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP(
                 "Path_DressupPathBoundary", "Boundary Dress-up"
             ),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupPathBoundary",
                 "Creates a Path Boundary Dress-up object from a selected path",
             ),
@@ -291,9 +290,7 @@ class CommandPathDressupPathBoundary:
         baseObject = selection[0]
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_DressupPathBoundary", "Create Path Boundary Dress-up")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Create Path Boundary Dress-up")
         FreeCADGui.addModule("PathScripts.PathDressupPathBoundaryGui")
         FreeCADGui.doCommand(
             "PathScripts.PathDressupPathBoundaryGui.Create(App.ActiveDocument.%s)"
