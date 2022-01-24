@@ -1,4 +1,4 @@
-#**************************************************************************
+# **************************************************************************
 #   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -18,25 +18,21 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 
-import FreeCAD, os, sys, unittest, Part
-import Measure
-import TechDraw
-import time
-App = FreeCAD
+import unittest
 
-from TDTest.DHatchTest         import DHatchTest
-from TDTest.DProjGroupTest     import DProjGroupTest
+from TDTest.DHatchTest import DHatchTest
+from TDTest.DProjGroupTest import DProjGroupTest
 from TDTest.DVAnnoSymImageTest import DVAnnoSymImageTest
-from TDTest.DVDimensionTest    import DVDimensionTest
-from TDTest.DVPartTest         import DVPartTest
-from TDTest.DVSectionTest      import DVSectionTest
-from TDTest.DVBalloonTest      import DVBalloonTest
+from TDTest.DVDimensionTest import DVDimensionTest
+from TDTest.DVPartTest import DVPartTest
+from TDTest.DVSectionTest import DVSectionTest
+from TDTest.DVBalloonTest import DVBalloonTest
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD TechDraw module
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class TechDrawTestCases(unittest.TestCase):
