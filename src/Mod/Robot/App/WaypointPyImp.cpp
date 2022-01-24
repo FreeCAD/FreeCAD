@@ -129,14 +129,14 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
                 getWaypointPtr()->Velocity = 0;
         }
     else
-        getWaypointPtr()->Velocity = Base::UnitsApi::toDbl(vel,Base::Unit::Velocity);
+        getWaypointPtr()->Velocity = Base::UnitsApi::toDouble(vel,Base::Unit::Velocity);
     getWaypointPtr()->Cont = cont?true:false;
     getWaypointPtr()->Tool = tool;
     getWaypointPtr()->Base = base;
     if(acc == 0)
         getWaypointPtr()->Accelaration  = 100;
     else
-        getWaypointPtr()->Accelaration  = Base::UnitsApi::toDbl(acc,Base::Unit::Acceleration);
+        getWaypointPtr()->Accelaration  = Base::UnitsApi::toDouble(acc,Base::Unit::Acceleration);
 
     return 0;
 }

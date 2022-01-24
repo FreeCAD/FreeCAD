@@ -31,6 +31,7 @@
 #endif
 #include <string>
 #include <QString>
+#include <FCGlobal.h>
 
 namespace Base {
 
