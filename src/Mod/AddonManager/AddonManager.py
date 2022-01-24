@@ -1452,6 +1452,17 @@ class CommandAddonManager:
     def remove(self, repo: AddonManagerRepo) -> None:
         """uninstalls a macro or workbench"""
 
+        confirm = QtWidgets.QMessageBox.question(
+            self.dialog,
+            translate("AddonsInstaller", "Confirm remove"),
+            translate(
+                "AddonsInstaller", "Are you sure you want to uninstall this Addon?"
+            ),
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel,
+        )
+        if confirm == QtWidgets.QMessageBox.Cancel:
+            return
+
         if (
             repo.repo_type == AddonManagerRepo.RepoType.WORKBENCH
             or repo.repo_type == AddonManagerRepo.RepoType.PACKAGE
