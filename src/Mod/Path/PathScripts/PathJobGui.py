@@ -25,27 +25,25 @@ from PySide import QtCore, QtGui
 from collections import Counter
 from contextlib import contextmanager
 from pivy import coin
-import json
-import math
-import traceback
-
 import FreeCAD
 import FreeCADGui
-
+import PathScripts.PathGeom as PathGeom
+import PathScripts.PathGuiInit as PathGuiInit
 import PathScripts.PathJob as PathJob
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathJobDlg as PathJobDlg
-import PathScripts.PathGeom as PathGeom
-import PathScripts.PathGuiInit as PathGuiInit
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathStock as PathStock
+import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolControllerGui as PathToolControllerGui
 import PathScripts.PathToolLibraryEditor as PathToolLibraryEditor
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathToolBitGui as PathToolBitGui
+import json
+import math
+import traceback
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -54,14 +52,13 @@ Draft = LazyLoader("Draft", globals(), "Draft")
 Part = LazyLoader("Part", globals(), "Part")
 DraftVecUtils = LazyLoader("DraftVecUtils", globals(), "DraftVecUtils")
 
+translate = FreeCAD.Qt.translate
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 def _OpenCloseResourceEditor(obj, vobj, edit):
@@ -282,7 +279,7 @@ class ViewProvider:
         PathLog.track()
         for action in menu.actions():
             menu.removeAction(action)
-        action = QtGui.QAction(translate("Path", "Edit"), menu)
+        action = QtGui.QAction(translate("Path_Job", "Edit"), menu)
         action.triggered.connect(self.setEdit)
         menu.addAction(action)
 
@@ -387,7 +384,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         if self.IsStock(obj):
             self.getFieldsStock(obj.Stock, fields)
         else:
-            PathLog.error(translate("PathJob", "Stock not from Base bound box!"))
+            PathLog.error("Stock not from Base bound box!")
 
     def setFields(self, obj):
         PathLog.track()
@@ -479,7 +476,7 @@ class StockCreateBoxEdit(StockEdit):
                         self.form.stockBoxHeight.text()
                     )
             else:
-                PathLog.error(translate("PathJob", "Stock not a box!"))
+                PathLog.error("Stock not a box!")
         except Exception:
             pass
 
@@ -525,7 +522,7 @@ class StockCreateCylinderEdit(StockEdit):
                         self.form.stockCylinderHeight.text()
                     )
             else:
-                PathLog.error(translate("PathJob", "Stock not a cylinder!"))
+                PathLog.error(translate("Path_Job", "Stock not a cylinder!"))
         except Exception:
             pass
 
@@ -609,7 +606,7 @@ class TaskPanel:
     DataProperty = QtCore.Qt.ItemDataRole.UserRole + 1
 
     def __init__(self, vobj, deleteOnReject):
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Edit Job"))
+        FreeCAD.ActiveDocument.openTransaction("Edit Job")
         self.vobj = vobj
         self.vproxy = vobj.Proxy
         self.obj = vobj.Object
@@ -644,6 +641,11 @@ class TaskPanel:
             self.form.postProcessorArguments.toolTip()
         )
 
+        # Populate the other comboboxes with enums from the job class
+        comboToPropertyMap = [("orderBy", "OrderOutputBy")]
+        enumTups = PathJob.ObjectJob.propertyEnumerations(dataType="raw")
+        self.populateCombobox(self.form, enumTups, comboToPropertyMap)
+
         self.vproxy.setupEditVisibility(self.obj)
 
         self.stockFromBase = None
@@ -658,6 +660,21 @@ class TaskPanel:
         self.setupOps = PathSetupSheetGui.OpsDefaultEditor(
             self.obj.SetupSheet, self.form
         )
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
 
     def preCleanup(self):
         PathLog.track()
@@ -682,9 +699,7 @@ class TaskPanel:
         FreeCAD.ActiveDocument.abortTransaction()
         if self.deleteOnReject and FreeCAD.ActiveDocument.getObject(self.name):
             PathLog.info("Uncreate Job")
-            FreeCAD.ActiveDocument.openTransaction(
-                translate("Path_Job", "Uncreate Job")
-            )
+            FreeCAD.ActiveDocument.openTransaction("Uncreate Job")
             if self.obj.ViewObject.Proxy.onDelete(self.obj.ViewObject, None):
                 FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
@@ -1257,7 +1272,7 @@ class TaskPanel:
                 setupFromExisting()
             else:
                 PathLog.error(
-                    translate("PathJob", "Unsupported stock object %s")
+                    translate("Path_Job", "Unsupported stock object %s")
                     % self.obj.Stock.Label
                 )
         else:
@@ -1273,7 +1288,7 @@ class TaskPanel:
                     index = -1
             else:
                 PathLog.error(
-                    translate("PathJob", "Unsupported stock type %s (%d)")
+                    translate("Path_Job", "Unsupported stock type %s (%d)")
                     % (self.form.stock.currentText(), index)
                 )
         self.stockEdit.activate(self.obj, index == -1)
@@ -1562,7 +1577,7 @@ def Create(base, template=None):
     """Create(base, template) ... creates a job instance for the given base object
     using template to configure it."""
     FreeCADGui.addModule("PathScripts.PathJob")
-    FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
+    FreeCAD.ActiveDocument.openTransaction("Create Job")
     try:
         obj = PathJob.Create("Job", base, template)
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject)

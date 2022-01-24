@@ -20,6 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PathScripts.PathPostProcessor import PostProcessor
+from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
@@ -29,8 +32,7 @@ import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
 import json
 import time
-from PathScripts.PathPostProcessor import PostProcessor
-from PySide import QtCore
+
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -38,12 +40,13 @@ from lazy_loader.lazy_loader import LazyLoader
 Draft = LazyLoader("Draft", globals(), "Draft")
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class JobTemplate:
@@ -111,34 +114,35 @@ class ObjectJob:
             "App::PropertyFile",
             "PostProcessorOutputFile",
             "Output",
-            QtCore.QT_TRANSLATE_NOOP("PathJob", "The NC output file for this project"),
+            QT_TRANSLATE_NOOP("App::Property", "The NC output file for this project"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "PostProcessor",
             "Output",
-            QtCore.QT_TRANSLATE_NOOP("PathJob", "Select the Post Processor"),
+            QT_TRANSLATE_NOOP("App::Property", "Select the Post Processor"),
         )
         obj.addProperty(
             "App::PropertyString",
             "PostProcessorArgs",
             "Output",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathJob", "Arguments for the Post Processor (specific to the script)"
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Arguments for the Post Processor (specific to the script)",
             ),
         )
         obj.addProperty(
             "App::PropertyString",
             "LastPostProcessDate",
             "Output",
-            QtCore.QT_TRANSLATE_NOOP("PathJob", "Last Time the Job was post-processed"),
+            QT_TRANSLATE_NOOP("App::Property", "Last Time the Job was post-processed"),
         )
         obj.setEditorMode("LastPostProcessDate", 2)  # Hide
         obj.addProperty(
             "App::PropertyString",
             "LastPostProcessOutput",
             "Output",
-            QtCore.QT_TRANSLATE_NOOP("PathJob", "Last Time the Job was post-processed"),
+            QT_TRANSLATE_NOOP("App::Property", "Last Time the Job was post-processed"),
         )
         obj.setEditorMode("LastPostProcessOutput", 2)  # Hide
 
@@ -146,21 +150,21 @@ class ObjectJob:
             "App::PropertyString",
             "Description",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("PathJob", "An optional description for this job"),
+            QT_TRANSLATE_NOOP("App::Property", "An optional description for this job"),
         )
         obj.addProperty(
             "App::PropertyString",
             "CycleTime",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("PathOp", "Job Cycle Time Estimation"),
+            QT_TRANSLATE_NOOP("App::Property", "Job Cycle Time Estimation"),
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
         obj.addProperty(
             "App::PropertyDistance",
             "GeometryTolerance",
             "Geometry",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathJob",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "For computing Paths; smaller increases accuracy, but slows down computation",
             ),
         )
@@ -169,14 +173,14 @@ class ObjectJob:
             "App::PropertyLink",
             "Stock",
             "Base",
-            QtCore.QT_TRANSLATE_NOOP("PathJob", "Solid object to be used as stock."),
+            QT_TRANSLATE_NOOP("App::Property", "Solid object to be used as stock."),
         )
         obj.addProperty(
             "App::PropertyLink",
             "Operations",
             "Base",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathJob",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Compound path of all operations in the order they are processed.",
             ),
         )
@@ -185,7 +189,7 @@ class ObjectJob:
             "App::PropertyEnumeration",
             "JobType",
             "Base",
-            QtCore.QT_TRANSLATE_NOOP("PathJob", "Select the Type of Job"),
+            QT_TRANSLATE_NOOP("App::Property", "Select the Type of Job"),
         )
         obj.setEditorMode("JobType", 2)  # Hide
 
@@ -193,30 +197,31 @@ class ObjectJob:
             "App::PropertyBool",
             "SplitOutput",
             "Output",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathJob", "Split output into multiple gcode files"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Split output into multiple gcode files"
             ),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "OrderOutputBy",
             "WCS",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathJob", "If multiple WCS, order the output this way"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "If multiple WCS, order the output this way"
             ),
         )
         obj.addProperty(
             "App::PropertyStringList",
             "Fixtures",
             "WCS",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathJob", "The Work Coordinate Systems for the Job"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The Work Coordinate Systems for the Job"
             ),
         )
-        obj.OrderOutputBy = ["Fixture", "Tool", "Operation"]
+
         obj.Fixtures = ["G54"]
 
-        obj.JobType = ["2D", "2.5D", "Lathe", "Multiaxis"]
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
 
         obj.PostProcessorOutputFile = PathPreferences.defaultOutputFile()
         obj.PostProcessor = postProcessors = PathPreferences.allEnabledPostProcessors()
@@ -235,6 +240,45 @@ class ObjectJob:
         self.setupToolTable(obj)
         self.setFromTemplateFile(obj, templateFile)
         self.setupStock(obj)
+
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+        """propertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        enums = {
+            "OrderOutputBy": [
+                (translate("Path_Job", "Fixture"), "Fixture"),
+                (translate("Path_Job", "Tool"), "Tool"),
+                (translate("Path_Job", "Operation"), "Operation"),
+            ],
+            "JobType": [
+                (translate("Path_Job", "2D"), "2D"),
+                (translate("Path_Job", "2.5D"), "2.5D"),
+                (translate("Path_Job", "Lathe"), "Lathe"),
+                (translate("Path_Job", "Multiaxis"), "Multiaxis"),
+            ],
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
 
     def setupOperations(self, obj):
         """setupOperations(obj)... setup the Operations group for the Job object."""
@@ -255,8 +299,8 @@ class ObjectJob:
                 "App::PropertyLink",
                 "SetupSheet",
                 "Base",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathJob", "SetupSheet holding the settings for this job"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "SetupSheet holding the settings for this job"
                 ),
             )
             obj.SetupSheet = PathSetupSheet.Create()
@@ -278,8 +322,8 @@ class ObjectJob:
                 "App::PropertyLink",
                 "Model",
                 "Base",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathJob", "The base objects for all operations"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "The base objects for all operations"
                 ),
             )
             addModels = True
@@ -314,8 +358,8 @@ class ObjectJob:
                 "App::PropertyLink",
                 "Tools",
                 "Base",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathJob", "Collection of all tool controllers for the job"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Collection of all tool controllers for the job"
                 ),
             )
             addTable = True
@@ -451,7 +495,7 @@ class ObjectJob:
                 "App::PropertyString",
                 "CycleTime",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"),
+                QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
             )
             obj.setEditorMode("CycleTime", 1)  # read-only
 
@@ -460,8 +504,8 @@ class ObjectJob:
                 "App::PropertyStringList",
                 "Fixtures",
                 "WCS",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathJob", "The Work Coordinate Systems for the Job"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "The Work Coordinate Systems for the Job"
                 ),
             )
             obj.Fixtures = ["G54"]
@@ -471,8 +515,8 @@ class ObjectJob:
                 "App::PropertyEnumeration",
                 "OrderOutputBy",
                 "WCS",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathJob", "If multiple WCS, order the output this way"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "If multiple WCS, order the output this way"
                 ),
             )
             obj.OrderOutputBy = ["Fixture", "Tool", "Operation"]
@@ -482,8 +526,8 @@ class ObjectJob:
                 "App::PropertyBool",
                 "SplitOutput",
                 "Output",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathJob", "Split output into multiple gcode files"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Split output into multiple gcode files"
                 ),
             )
             obj.SplitOutput = False
@@ -493,11 +537,12 @@ class ObjectJob:
                 "App::PropertyEnumeration",
                 "JobType",
                 "Base",
-                QtCore.QT_TRANSLATE_NOOP("PathJob", "Select the Type of Job"),
+                QT_TRANSLATE_NOOP("App::Property", "Select the Type of Job"),
             )
             obj.setEditorMode("JobType", 2)  # Hide
 
-            obj.JobType = ["2D", "2.5D", "Lathe", "Multiaxis"]
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
@@ -577,9 +622,11 @@ class ObjectJob:
                 obj.Tools.Group = tcs
             else:
                 PathLog.error(
-                    translate("PathJob", "Unsupported PathJob template version %s")
-                    % attrs.get(JobTemplate.Version)
+                    "Unsupported PathJob template version {}".format(
+                        attrs.get(JobTemplate.Version)
+                    )
                 )
+
         if not tcs:
             self.addToolController(PathToolController.Create())
 
@@ -733,9 +780,7 @@ class ObjectJob:
             suffix = job.Name[3:]
 
         def errorMessage(grp, job):
-            PathLog.error(
-                translate("PathJobGui", "{} corrupt in {} job.".format(grp, job.Name))
-            )
+            PathLog.error("{} corrupt in {} job.".format(grp, job.Name))
 
         if not job.Operations:
             self.setupOperations(job)
