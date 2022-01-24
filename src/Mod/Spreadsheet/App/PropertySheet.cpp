@@ -1142,10 +1142,11 @@ void PropertySheet::addDependencies(CellAddress key)
                 cellToPropertyNameMap[key].insert(propName);
 
                 // Also an alias?
-                if (docObj==owner && name.size()) {
-                    auto j = revAliasProp.find(name);
+                if (name.size() && docObj->isDerivedFrom(Sheet::getClassTypeId())) {
+                    auto other = static_cast<Sheet*>(docObj);
+                    auto j = other->cells.revAliasProp.find(name);
 
-                    if (j != revAliasProp.end()) {
+                    if (j != other->cells.revAliasProp.end()) {
                         propName = docObjName + "." + j->second.toString();
                         FC_LOG("dep " << key.toString() << " -> " << propName);
 
