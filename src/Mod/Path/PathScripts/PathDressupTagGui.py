@@ -20,26 +20,27 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
+from pivy import coin
 import FreeCAD
 import FreeCADGui
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
+import PathScripts.PathDressupHoldingTags as PathDressupTag
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
-import PathScripts.PathDressupHoldingTags as PathDressupTag
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtils as PathUtils
 
-from PySide import QtCore, QtGui
-from pivy import coin
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 def addDebugDisplay():
@@ -60,9 +61,7 @@ class PathDressupTagTaskPanel:
         self.getPoint = PathGetPoint.TaskPanel(self.form.removeEditAddGroup, True)
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
-            FreeCAD.ActiveDocument.openTransaction(
-                translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up")
-            )
+            FreeCAD.ActiveDocument.openTransaction("Edit HoldingTags Dress-up")
             self.jvoVisible = self.jvo.isVisible()
             if self.jvoVisible:
                 self.jvo.hide()
@@ -207,9 +206,7 @@ class PathDressupTagTaskPanel:
             self.Disabled = self.obj.Disabled
             self.updateTagsView()
         else:
-            PathLog.error(
-                translate("Path_DressupTag", "Cannot copy tags - internal error") + "\n"
-            )
+            PathLog.error("Cannot copy tags - internal error")
 
     def updateModel(self):
         self.getFields()
@@ -381,7 +378,7 @@ class PathDressupTagViewProvider:
     def debugDisplay(self):
         # if False and addDebugDisplay():
         #    if not hasattr(self.vobj, 'Debug'):
-        #        self.vobj.addProperty('App::PropertyLink', 'Debug', 'Debug', QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Some elements for debugging'))
+        #        self.vobj.addProperty('App::PropertyLink', 'Debug', 'Debug', QT_TRANSLATE_NOOP('Path_DressupTag', 'Some elements for debugging'))
         #        dbg = self.vobj.Object.Document.addObject('App::DocumentObjectGroup', 'TagDebug')
         #        self.vobj.Debug = dbg
         #    return True
@@ -559,9 +556,7 @@ def Create(baseObject, name="DressupTag"):
     Create(basePath, name = 'DressupTag') ... create tag dressup object for the given base path.
     Use this command only iff the UI is up - for batch processing see PathDressupTag.Create
     """
-    FreeCAD.ActiveDocument.openTransaction(
-        translate("Path_DressupTag", "Create a Tag dressup")
-    )
+    FreeCAD.ActiveDocument.openTransaction("Create a Tag dressup")
     obj = PathDressupTag.Create(baseObject, name)
     obj.ViewObject.Proxy = PathDressupTagViewProvider(obj.ViewObject)
     FreeCAD.ActiveDocument.commitTransaction()
@@ -575,8 +570,8 @@ class CommandPathDressupTag:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Tag Dress-up"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupTag", "Tag Dress-up"),
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupTag", "Creates a Tag Dress-up object from a selected path"
             ),
         }
@@ -599,9 +594,7 @@ class CommandPathDressupTag:
         baseObject = selection[0]
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_DressupTag", "Create Tag Dress-up")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Create Tag Dress-up")
         FreeCADGui.addModule("PathScripts.PathDressupTagGui")
         FreeCADGui.doCommand(
             "PathScripts.PathDressupTagGui.Create(App.ActiveDocument.%s)"

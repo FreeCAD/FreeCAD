@@ -20,6 +20,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
@@ -33,16 +35,14 @@ from lazy_loader.lazy_loader import LazyLoader
 DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Part = LazyLoader("Part", globals(), "Part")
 
-from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
-from PySide import QtCore
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 MaxInt = 99999999999999
@@ -122,56 +122,50 @@ class ObjectDressup:
             "App::PropertyLink",
             "Base",
             "Base",
-            QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "The base path to modify"),
+            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "Width",
             "Tag",
-            QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Width of tags."),
+            QT_TRANSLATE_NOOP("App::Property", "Width of tags."),
         )
         obj.addProperty(
             "App::PropertyLength",
             "Height",
             "Tag",
-            QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Height of tags."),
+            QT_TRANSLATE_NOOP("App::Property", "Height of tags."),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "Angle",
             "Tag",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupTag", "Angle of tag plunge and ascent."
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of tag plunge and ascent."),
         )
         obj.addProperty(
             "App::PropertyLength",
             "Radius",
             "Tag",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupTag", "Radius of the fillet for the tag."
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of the fillet for the tag."),
         )
         obj.addProperty(
             "App::PropertyVectorList",
             "Positions",
             "Tag",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupTag", "Locations of inserted holding tags"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Locations of inserted holding tags"),
         )
         obj.addProperty(
             "App::PropertyIntegerList",
             "Disabled",
             "Tag",
-            QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "IDs of disabled holding tags"),
+            QT_TRANSLATE_NOOP("App::Property", "IDs of disabled holding tags"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "SegmentationFactor",
             "Tag",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupTag",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Factor determining the # of segments used to approximate rounded tags.",
             ),
         )
