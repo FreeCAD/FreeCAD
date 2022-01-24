@@ -24,8 +24,16 @@ import FreeCAD
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocket as PathPocket
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
+import PathScripts.PathLog as PathLog
 
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 __title__ = "Path Pocket Operation UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -42,13 +50,13 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 
 
 Command = PathOpGui.SetupOperation(
-    "Pocket 3D",
+    "Pocket3D",
     PathPocket.Create,
     TaskPanelOpPage,
     "Path_3DPocket",
-    QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "3D Pocket"),
-    QtCore.QT_TRANSLATE_NOOP(
-        "Path_Pocket", "Creates a Path 3D Pocket object from a face or faces"
+    QT_TRANSLATE_NOOP("Path_Pocket3D", "3D Pocket"),
+    QT_TRANSLATE_NOOP(
+        "Path_Pocket3D", "Creates a Path 3D Pocket object from a face or faces"
     ),
     PathPocket.SetupProperties,
 )
