@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import PathScripts.PathDressup as PathDressup
@@ -29,15 +30,14 @@ import PathScripts.PathStock as PathStock
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
-from PySide import QtCore
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 def _vstr(v):
@@ -52,17 +52,15 @@ class DressupPathBoundary(object):
             "App::PropertyLink",
             "Base",
             "Base",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupPathBoundary", "The base path to modify"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
         obj.Base = base
         obj.addProperty(
             "App::PropertyLink",
             "Stock",
             "Boundary",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupPathBoundary",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Solid object to be used to limit the generated Path.",
             ),
         )
@@ -71,8 +69,8 @@ class DressupPathBoundary(object):
             "App::PropertyBool",
             "Inside",
             "Boundary",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupPathBoundary",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "Determines if Boundary describes an inclusion or exclusion mask.",
             ),
         )

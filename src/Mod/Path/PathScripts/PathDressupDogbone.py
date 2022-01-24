@@ -21,6 +21,9 @@
 # ***************************************************************************
 
 from __future__ import print_function
+
+from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import PathScripts.PathDressup as PathDressup
@@ -29,8 +32,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
-
-from PySide import QtCore
+from PathScripts.PathGeom import CmdMoveCW, CmdMoveStraight, CmdMoveArc, CmdMoveRapid
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -38,26 +40,22 @@ from lazy_loader.lazy_loader import LazyLoader
 DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Part = LazyLoader("Part", globals(), "Part")
 
-LOG_MODULE = PathLog.thisModule()
 
-PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
-# PathLog.trackModule(LOG_MODULE)
-
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-movecommands = ["G0", "G00", "G1", "G01", "G2", "G02", "G3", "G03"]
-movestraight = ["G1", "G01"]
-movecw = ["G2", "G02"]
-moveccw = ["G3", "G03"]
-movearc = movecw + moveccw
+translate = FreeCAD.Qt.translate
+
+
+movecommands = CmdMoveStraight + CmdMoveRapid + CmdMoveArc
 
 
 def debugMarker(vector, label, color=None, radius=0.5):
-    if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
+    if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
         obj.Label = label
         obj.Radius = radius
@@ -69,7 +67,7 @@ def debugMarker(vector, label, color=None, radius=0.5):
 
 
 def debugCircle(vector, r, label, color=None):
-    if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
+    if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         obj = FreeCAD.ActiveDocument.addObject("Part::Cylinder", label)
         obj.Label = label
         obj.Radius = r
@@ -121,9 +119,9 @@ def edgesForCommands(cmds, startPt):
     for cmd in cmds:
         if cmd.Name in movecommands:
             pt = pointFromCommand(cmd, lastPt)
-            if cmd.Name in movestraight:
+            if cmd.Name in CmdMoveStraight:
                 edges.append(Part.Edge(Part.LineSegment(lastPt, pt)))
-            elif cmd.Name in movearc:
+            elif cmd.Name in CmdMoveArc:
                 center = lastPt + pointFromCommand(
                     cmd, FreeCAD.Vector(0, 0, 0), "I", "J", "K"
                 )
@@ -134,7 +132,7 @@ def edgesForCommands(cmds, startPt):
                 if d == 0:
                     # we're dealing with half a circle here
                     angle = getAngle(A) + math.pi / 2
-                    if cmd.Name in movecw:
+                    if cmd.Name in CmdMoveCW:
                         angle -= math.pi
                 else:
                     C = A + B
@@ -432,14 +430,14 @@ class ObjectDressup(object):
             "App::PropertyLink",
             "Base",
             "Base",
-            QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "The base path to modify"),
+            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "Side",
             "Dressup",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupDogbone", "The side of path to insert bones"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The side of path to insert bones"
             ),
         )
         obj.Side = [Side.Left, Side.Right]
@@ -448,7 +446,7 @@ class ObjectDressup(object):
             "App::PropertyEnumeration",
             "Style",
             "Dressup",
-            QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "The style of bones"),
+            QT_TRANSLATE_NOOP("App::Property", "The style of bones"),
         )
         obj.Style = Style.All
         obj.Style = Style.Dogbone
@@ -456,8 +454,8 @@ class ObjectDressup(object):
             "App::PropertyIntegerList",
             "BoneBlacklist",
             "Dressup",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupDogbone", "Bones that aren't dressed up"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Bones that aren't dressed up"
             ),
         )
         obj.BoneBlacklist = []
@@ -466,8 +464,8 @@ class ObjectDressup(object):
             "App::PropertyEnumeration",
             "Incision",
             "Dressup",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupDogbone", "The algorithm to determine the bone length"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The algorithm to determine the bone length"
             ),
         )
         obj.Incision = Incision.All
@@ -476,8 +474,8 @@ class ObjectDressup(object):
             "App::PropertyFloat",
             "Custom",
             "Dressup",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupDogbone", "Dressup length if Incision == custom"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Dressup length if Incision == custom"
             ),
         )
         obj.Custom = 0.0
@@ -510,7 +508,7 @@ class ObjectDressup(object):
     # Answer true if a dogbone could be on either end of the chord, given its command
     def canAttachDogbone(self, cmd, chord):
         return (
-            cmd.Name in movestraight
+            cmd.Name in CmdMoveStraight
             and not chord.isAPlungeMove()
             and not chord.isANoopMove()
         )
@@ -884,7 +882,7 @@ class ObjectDressup(object):
                         commands.append(c1)
                         # 3. change where c2 starts, this depends on the command itself
                         c2 = bone2.inCommands[j]
-                        if c2.Name in movearc:
+                        if c2.Name in CmdMoveArc:
                             center = e2.Curve.Center
                             offset = center - pt
                             c2Params = c2.Parameters
@@ -1142,9 +1140,7 @@ class TaskPanel(object):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DogboneEdit.ui")
         self.s = None
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_DressupDogbone", "Edit Dogbone Dress-up")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Edit Dogbone Dress-up")
         self.height = 10
         self.markers = []
 
@@ -1231,7 +1227,7 @@ class TaskPanel(object):
         self.form.customLabel.setEnabled(customSelected)
         self.updateBoneList()
 
-        if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
+        if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
             for obj in FreeCAD.ActiveDocument.Objects:
                 if obj.Name.startswith("Shape"):
                     FreeCAD.ActiveDocument.removeObject(obj.Name)
@@ -1384,10 +1380,10 @@ class CommandDressupDogbone(object):
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP(
                 "Path_DressupDogbone", "Dogbone Dress-up"
             ),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupDogbone",
                 "Creates a Dogbone Dress-up object from a selected path",
             ),
@@ -1418,9 +1414,7 @@ class CommandDressupDogbone(object):
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_DressupDogbone", "Create Dogbone Dress-up")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Create Dogbone Dress-up")
         FreeCADGui.addModule("PathScripts.PathDressupDogbone")
         FreeCADGui.doCommand(
             "PathScripts.PathDressupDogbone.Create(FreeCAD.ActiveDocument.%s)"
