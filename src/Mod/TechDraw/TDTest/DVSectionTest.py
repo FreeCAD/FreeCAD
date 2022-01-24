@@ -6,9 +6,6 @@
 from __future__ import print_function
 
 import FreeCAD
-import Part
-import Measure
-import TechDraw
 import os
 
 def DVSectionTest():

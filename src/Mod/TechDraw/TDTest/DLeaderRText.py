@@ -8,9 +8,6 @@
 from __future__ import print_function
 
 import FreeCAD
-import Part
-import Measure
-import TechDraw
 import os
 
 def DLeaderTest():
@@ -29,7 +26,7 @@ p, li { white-space: pre-wrap; }
     FreeCAD.ActiveDocument=FreeCAD.getDocument("TDLead")
 
     #make source feature
-    box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
+    FreeCAD.ActiveDocument.addObject("Part::Box","Box")
 
     #make a page
     page = FreeCAD.ActiveDocument.addObject('TechDraw::DrawPage','Page')
@@ -58,7 +55,7 @@ p, li { white-space: pre-wrap; }
     leaderObj.StartSymbol = 0
     leaderObj.EndSymbol = 4
     print("adding leader to page")
-    rc = page.addView(leaderObj)
+    page.addView(leaderObj)
     leaderObj.X = 5
     leaderObj.Y = 5
     print("finished leader")
@@ -66,7 +63,7 @@ p, li { white-space: pre-wrap; }
     #make RTA
     print("making RTA")
     blockObj = FreeCAD.ActiveDocument.addObject('TechDraw::DrawRichAnno','DrawRichAnno')
-    rc = page.addView(blockObj)
+    page.addView(blockObj)
     blockObj.AnnoParent = leaderObj
     blockObj.X = 5
     blockObj.Y = 5
