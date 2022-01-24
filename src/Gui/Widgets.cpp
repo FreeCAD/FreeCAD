@@ -473,7 +473,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
 ModifierLineEdit::ModifierLineEdit ( QWidget * parent )
   : QLineEdit(parent)
 {
-    setPlaceholderText(tr("Press a keyboard shortcut"));
+    setPlaceholderText(tr("Press modifier keys"));
 }
 
 /**
