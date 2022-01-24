@@ -302,10 +302,10 @@ namespace e57
          file_->seek( xmlLogicalOffset_, CheckedFile::Logical );
          uint64_t xmlPhysicalOffset = file_->position( CheckedFile::Physical );
          *file_ << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-#ifdef E57_OXYGEN_SUPPORT //???                                                             \
+#ifdef E57_OXYGEN_SUPPORT /*//???                                                             \
                           //???        *file_ << "<?oxygen                                  \
                           // RNGSchema=\"file:/C:/kevin/astm/DataFormat/xif/las_v0_05.rnc\" \
-                          // type=\"compact\"?>\n";
+                          // type=\"compact\"?>\n";*/
 #endif
 
          //??? need to add name space attributes to e57Root
