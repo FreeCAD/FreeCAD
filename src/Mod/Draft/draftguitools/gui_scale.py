@@ -99,7 +99,7 @@ class Scale(gui_base_original.Modifier):
         self.selected_subelements = Gui.Selection.getSelectionEx()
         self.refs = []
         self.ui.pointUi(title=translate("draft",self.featureName), icon="Draft_Scale")
-        self.ui.modUi()
+        self.ui.isRelative.hide()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
         self.pickmode = False
@@ -108,19 +108,24 @@ class Scale(gui_base_original.Modifier):
         _msg(translate("draft", "Pick base point"))
 
     def set_ghosts(self):
-        """Set the previews of the objects to scale."""
-        if self.ui.isSubelementMode.isChecked():
-            return self.set_subelement_ghosts()
-        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
+        """Set the ghost to display."""
+        for ghost in self.ghosts:
+            ghost.remove()
+        if self.task and self.task.isSubelementMode.isChecked():
+            self.ghosts = self.get_subelement_ghosts()
+        else:
+            self.ghosts = [trackers.ghostTracker(self.selected_objects)]
 
-    def set_subelement_ghosts(self):
-        """Set the previews of the subelements from an object to scale."""
+    def get_subelement_ghosts(self):
+        """Get ghost for the subelements (vertices, edges)."""
         import Part
 
+        ghosts = []
         for object in self.selected_subelements:
             for subelement in object.SubObjects:
                 if isinstance(subelement, (Part.Vertex, Part.Edge)):
-                    self.ghosts.append(trackers.ghostTracker(subelement))
+                    ghosts.append(trackers.ghostTracker(subelement))
+        return ghosts
 
     def pickRef(self):
         """Pick a point of reference."""

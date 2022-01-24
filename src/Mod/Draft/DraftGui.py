@@ -615,7 +615,10 @@ class DraftToolBar:
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
         QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+
         QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
+        QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
+
         QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
         QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("stateChanged(int)"),self.setGlobal)
         QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill)
@@ -981,7 +984,8 @@ class DraftToolBar:
 
     def rotateSetCenterUi(self):
         self.pointUi(translate("draft", "Rotate"),icon="Draft_Rotate")
-        self.continueCmd.show()
+        self.modUi()
+        self.isRelative.hide()
 
     def pointUi(self, title=translate("draft","Point"), cancel=None, extra=None,
                 getcoords=None, rel=False, icon="Draft_Draft"):
@@ -1305,6 +1309,9 @@ class DraftToolBar:
         if self.sourceCmd:
             if self.sourceCmd.featureName == "Offset":
                 p.SetBool("OffsetCopyMode",bool(val))
+
+    def setSubelementMode(self):
+        self.sourceCmd.set_ghosts()
 
     def relocate(self):
         """relocates the right-aligned buttons depending on the toolbar size"""

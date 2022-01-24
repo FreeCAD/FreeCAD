@@ -174,19 +174,23 @@ class Move(gui_base_original.Modifier):
 
     def set_ghosts(self):
         """Set the ghost to display."""
+        for ghost in self.ghosts:
+            ghost.remove()
         if self.ui.isSubelementMode.isChecked():
-            return self.set_subelement_ghosts()
-        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
+            self.ghosts = self.get_subelement_ghosts()
+        else:
+            self.ghosts = [trackers.ghostTracker(self.selected_objects)]
 
-    def set_subelement_ghosts(self):
-        """Set ghost for the subelements."""
+    def get_subelement_ghosts(self):
+        """Get ghost for the subelements (vertices, edges)."""
         import Part
 
+        ghosts = []
         for object in self.selected_subelements:
             for subelement in object.SubObjects:
-                if (isinstance(subelement, Part.Vertex)
-                        or isinstance(subelement, Part.Edge)):
-                    self.ghosts.append(trackers.ghostTracker(subelement))
+                if isinstance(subelement, (Part.Vertex, Part.Edge)):
+                    ghosts.append(trackers.ghostTracker(subelement))
+        return ghosts
 
     def move(self, is_copy=False):
         """Perform the move of the subelements or the entire object."""
