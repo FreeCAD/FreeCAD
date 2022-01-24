@@ -339,7 +339,7 @@ class _Writer(object):
     def _isCollection(self, data):
         return (
             not isinstance(data, six.string_types)
-            and isinstance(data, collections.Iterable)
+            and isinstance(data, collections.abc.Iterable)
         )
 
     def _checkScalar(self, dataType):
