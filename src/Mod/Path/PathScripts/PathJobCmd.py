@@ -20,6 +20,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
@@ -31,16 +33,14 @@ import PathScripts.PathUtil as PathUtil
 import json
 import os
 
-from PySide import QtCore, QtGui
 
+translate = FreeCAD.Qt.translate
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class CommandJobCreate:
@@ -56,9 +56,9 @@ class CommandJobCreate:
     def GetResources(self):
         return {
             "Pixmap": "Path_Job",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
+            "MenuText": QT_TRANSLATE_NOOP("Path_Job", "Job"),
             "Accel": "P, J",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_Job", "Creates a Path Job object"
             ),
         }
@@ -102,9 +102,9 @@ class CommandJobTemplateExport:
     def GetResources(self):
         return {
             "Pixmap": "Path_ExportTemplate",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "Path_Job", "Exports Path Job as a template to be used for other jobs"
+            "MenuText": QT_TRANSLATE_NOOP("Path_ExportTemplate", "Export Template"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_ExportTemplate", "Exports Path Job as a template to be used for other jobs"
             ),
         }
 

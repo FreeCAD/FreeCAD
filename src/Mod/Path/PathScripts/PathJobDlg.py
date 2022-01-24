@@ -20,6 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
+from collections import Counter
+import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
@@ -29,17 +32,14 @@ import PathScripts.PathUtil as PathUtil
 import glob
 import os
 
-from PySide import QtCore, QtGui
-from collections import Counter
+translate = FreeCAD.Qt.translate
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class _ItemDelegate(QtGui.QStyledItemDelegate):
@@ -60,9 +60,9 @@ class JobCreate:
     def __init__(self, parent=None, sel=None):
         # pylint: disable=unused-argument
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
-        self.itemsSolid = QtGui.QStandardItem(translate("PathJob", "Solids"))
-        self.items2D = QtGui.QStandardItem(translate("PathJob", "2D"))
-        self.itemsJob = QtGui.QStandardItem(translate("PathJob", "Jobs"))
+        self.itemsSolid = QtGui.QStandardItem(translate("Path_Job", "Solids"))
+        self.items2D = QtGui.QStandardItem(translate("Path_Job", "2D"))
+        self.itemsJob = QtGui.QStandardItem(translate("Path_Job", "Jobs"))
         self.dialog.templateGroup.hide()
         self.dialog.modelGroup.hide()
         # debugging support
@@ -331,7 +331,7 @@ class JobTemplateExport:
             stockType = PathStock.StockType.FromStock(job.Stock)
             if stockType == PathStock.StockType.FromBase:
                 seHint = translate(
-                    "PathJob", "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f"
+                    "Path_Job", "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f"
                 ) % (
                     job.Stock.ExtXneg,
                     job.Stock.ExtXpos,
@@ -342,19 +342,19 @@ class JobTemplateExport:
                 )
                 self.dialog.stockPlacement.setChecked(False)
             elif stockType == PathStock.StockType.CreateBox:
-                seHint = translate("PathJob", "Box: %.2f x %.2f x %.2f") % (
+                seHint = translate("Path_Job", "Box: %.2f x %.2f x %.2f") % (
                     job.Stock.Length,
                     job.Stock.Width,
                     job.Stock.Height,
                 )
             elif stockType == PathStock.StockType.CreateCylinder:
-                seHint = translate("PathJob", "Cylinder: %.2f x %.2f") % (
+                seHint = translate("Path_Job", "Cylinder: %.2f x %.2f") % (
                     job.Stock.Radius,
                     job.Stock.Height,
                 )
             else:
                 seHint = "-"
-                PathLog.error(translate("PathJob", "Unsupported stock type"))
+                PathLog.error(translate("Path_Job", "Unsupported stock type"))
             self.dialog.stockExtentHint.setText(seHint)
             spHint = "%s" % job.Stock.Placement
             self.dialog.stockPlacementHint.setText(spHint)
