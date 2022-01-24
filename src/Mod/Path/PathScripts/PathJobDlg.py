@@ -43,7 +43,6 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class _ItemDelegate(QtGui.QStyledItemDelegate):
-
     def __init__(self, controller, parent):
         self.controller = controller
         QtGui.QStyledItemDelegate.__init__(self, parent)
@@ -54,15 +53,16 @@ class _ItemDelegate(QtGui.QStyledItemDelegate):
         self.controller.setupColumnEditor(index, editor)
         return editor
 
+
 class JobCreate:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
 
     def __init__(self, parent=None, sel=None):
         # pylint: disable=unused-argument
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
-        self.itemsSolid = QtGui.QStandardItem(translate('PathJob', 'Solids'))
-        self.items2D    = QtGui.QStandardItem(translate('PathJob', '2D'))
-        self.itemsJob   = QtGui.QStandardItem(translate('PathJob', 'Jobs'))
+        self.itemsSolid = QtGui.QStandardItem(translate("PathJob", "Solids"))
+        self.items2D = QtGui.QStandardItem(translate("PathJob", "2D"))
+        self.itemsJob = QtGui.QStandardItem(translate("PathJob", "Jobs"))
         self.dialog.templateGroup.hide()
         self.dialog.modelGroup.hide()
         # debugging support
@@ -74,27 +74,40 @@ class JobCreate:
     def setupTitle(self, title):
         self.dialog.setWindowTitle(title)
 
-    def setupModel(self, job = None):
+    def setupModel(self, job=None):
 
         if job:
-            preSelected = Counter([PathUtil.getPublicObject(job.Proxy.baseObject(job, obj)).Label for obj in job.Model.Group])
+            preSelected = Counter(
+                [
+                    PathUtil.getPublicObject(job.Proxy.baseObject(job, obj)).Label
+                    for obj in job.Model.Group
+                ]
+            )
             jobResources = job.Model.Group + [job.Stock]
         else:
-            preSelected = Counter([obj.Label for obj in FreeCADGui.Selection.getSelection()])
+            preSelected = Counter(
+                [obj.Label for obj in FreeCADGui.Selection.getSelection()]
+            )
             jobResources = []
 
-        self.candidates = sorted(PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label)
+        self.candidates = sorted(
+            PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label
+        )
 
         # If there is only one possibility we might as well make sure it's selected
         if not preSelected and 1 == len(self.candidates):
             preSelected = Counter([self.candidates[0].Label])
 
         expandSolids = False
-        expand2Ds    = False
-        expandJobs   = False
+        expand2Ds = False
+        expandJobs = False
 
         for base in self.candidates:
-            if not base in jobResources and not PathJob.isResourceClone(job, base, None) and not hasattr(base, 'StockType'):
+            if (
+                not base in jobResources
+                and not PathJob.isResourceClone(job, base, None)
+                and not hasattr(base, "StockType")
+            ):
                 item0 = QtGui.QStandardItem()
                 item1 = QtGui.QStandardItem()
 
@@ -149,7 +162,7 @@ class JobCreate:
 
         self.delegate = _ItemDelegate(self, self.dialog.modelTree)
         self.model = QtGui.QStandardItemModel(self.dialog)
-        self.model.setHorizontalHeaderLabels(['Model', 'Count'])
+        self.model.setHorizontalHeaderLabels(["Model", "Count"])
 
         if self.itemsSolid.hasChildren():
             self.model.appendRow(self.itemsSolid)
@@ -213,7 +226,9 @@ class JobCreate:
     def setupTemplate(self):
         templateFiles = []
         for path in PathPreferences.searchPaths():
-            cleanPaths = [f.replace("\\", "/") for f in self.templateFilesIn(path)]  # Standardize slashes used across os platforms
+            cleanPaths = [
+                f.replace("\\", "/") for f in self.templateFilesIn(path)
+            ]  # Standardize slashes used across os platforms
             templateFiles.extend(cleanPaths)
 
         template = {}
@@ -229,7 +244,7 @@ class JobCreate:
             template[name] = tFile
         selectTemplate = PathPreferences.defaultJobTemplate()
         index = 0
-        self.dialog.jobTemplate.addItem('<none>', '')
+        self.dialog.jobTemplate.addItem("<none>", "")
         for name in sorted(template.keys()):
             if template[name] == selectTemplate:
                 index = self.dialog.jobTemplate.count()
@@ -238,16 +253,18 @@ class JobCreate:
         self.dialog.templateGroup.show()
 
     def templateFilesIn(self, path):
-        '''templateFilesIn(path) ... answer all file in the given directory which fit the job template naming convention.
-        PathJob template files are name job_*.json'''
+        """templateFilesIn(path) ... answer all file in the given directory which fit the job template naming convention.
+        PathJob template files are name job_*.json"""
         PathLog.track(path)
-        return glob.glob(path + '/job_*.json')
+        return glob.glob(path + "/job_*.json")
 
     def getModels(self):
         models = []
 
         for i in range(self.itemsSolid.rowCount()):
-            for j in range(self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)):  # pylint: disable=unused-variable
+            for j in range(
+                self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)
+            ):  # pylint: disable=unused-variable
                 models.append(self.itemsSolid.child(i).data(self.DataObject))
 
         for i in range(self.items2D.rowCount()):
@@ -259,12 +276,14 @@ class JobCreate:
                 # Note that we do want to use the models (resource clones) of the
                 # source job as base objects for the new job in order to get the
                 # identical placement, and anything else that's been customized.
-                models.extend(self.itemsJob.child(i, 0).data(self.DataObject).Model.Group)
+                models.extend(
+                    self.itemsJob.child(i, 0).data(self.DataObject).Model.Group
+                )
 
         return models
 
     def getTemplate(self):
-        '''answer the file name of the template to be assigned'''
+        """answer the file name of the template to be assigned"""
         return self.dialog.jobTemplate.itemData(self.dialog.jobTemplate.currentIndex())
 
     def exec_(self):
@@ -298,24 +317,44 @@ class JobTemplateExport:
     def updateUI(self):
         job = self.job
         if job.PostProcessor:
-            ppHint = "%s %s %s" % (job.PostProcessor, job.PostProcessorArgs, job.PostProcessorOutputFile)
+            ppHint = "%s %s %s" % (
+                job.PostProcessor,
+                job.PostProcessorArgs,
+                job.PostProcessorOutputFile,
+            )
             self.dialog.postProcessingHint.setText(ppHint)
         else:
             self.dialog.postProcessingGroup.setEnabled(False)
             self.dialog.postProcessingGroup.setChecked(False)
 
-        if job.Stock and not PathJob.isResourceClone(job, 'Stock', 'Stock'):
+        if job.Stock and not PathJob.isResourceClone(job, "Stock", "Stock"):
             stockType = PathStock.StockType.FromStock(job.Stock)
             if stockType == PathStock.StockType.FromBase:
-                seHint = translate('PathJob', "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f") % (job.Stock.ExtXneg, job.Stock.ExtXpos, job.Stock.ExtYneg, job.Stock.ExtYpos, job.Stock.ExtZneg, job.Stock.ExtZpos)
+                seHint = translate(
+                    "PathJob", "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f"
+                ) % (
+                    job.Stock.ExtXneg,
+                    job.Stock.ExtXpos,
+                    job.Stock.ExtYneg,
+                    job.Stock.ExtYpos,
+                    job.Stock.ExtZneg,
+                    job.Stock.ExtZpos,
+                )
                 self.dialog.stockPlacement.setChecked(False)
             elif stockType == PathStock.StockType.CreateBox:
-                seHint = translate('PathJob', "Box: %.2f x %.2f x %.2f") % (job.Stock.Length, job.Stock.Width, job.Stock.Height)
+                seHint = translate("PathJob", "Box: %.2f x %.2f x %.2f") % (
+                    job.Stock.Length,
+                    job.Stock.Width,
+                    job.Stock.Height,
+                )
             elif stockType == PathStock.StockType.CreateCylinder:
-                seHint = translate('PathJob', "Cylinder: %.2f x %.2f") % (job.Stock.Radius, job.Stock.Height)
+                seHint = translate("PathJob", "Cylinder: %.2f x %.2f") % (
+                    job.Stock.Radius,
+                    job.Stock.Height,
+                )
             else:
-                seHint = '-'
-                PathLog.error(translate('PathJob', 'Unsupported stock type'))
+                seHint = "-"
+                PathLog.error(translate("PathJob", "Unsupported stock type"))
             self.dialog.stockExtentHint.setText(seHint)
             spHint = "%s" % job.Stock.Placement
             self.dialog.stockPlacementHint.setText(spHint)
@@ -325,7 +364,13 @@ class JobTemplateExport:
         heightsChanged = not job.SetupSheet.Proxy.hasDefaultOperationHeights()
         coolantChanged = not job.SetupSheet.Proxy.hasDefaultCoolantMode()
         opsWithSettings = job.SetupSheet.Proxy.operationsWithSettings()
-        settingsChanged = rapidChanged or depthsChanged or heightsChanged or coolantChanged or 0 != len(opsWithSettings)
+        settingsChanged = (
+            rapidChanged
+            or depthsChanged
+            or heightsChanged
+            or coolantChanged
+            or 0 != len(opsWithSettings)
+        )
         self.dialog.settingsGroup.setChecked(settingsChanged)
         self.dialog.settingToolRapid.setChecked(rapidChanged)
         self.dialog.settingOperationDepths.setChecked(depthsChanged)
@@ -346,7 +391,11 @@ class JobTemplateExport:
             self.dialog.toolsList.addItem(item)
 
     def checkUncheckTools(self):
-        state = QtCore.Qt.CheckState.Checked if self.dialog.toolsGroup.isChecked() else QtCore.Qt.CheckState.Unchecked
+        state = (
+            QtCore.Qt.CheckState.Checked
+            if self.dialog.toolsGroup.isChecked()
+            else QtCore.Qt.CheckState.Unchecked
+        )
         for i in range(self.dialog.toolsList.count()):
             self.dialog.toolsList.item(i).setCheckState(state)
 
