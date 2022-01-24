@@ -62,7 +62,6 @@ def moveViews():
         print("Please select 1 Drawing Page and 1 TechDraw Page")
         return
 
-    i = 1
     for o in dPage.OutList:
         newName = "DraftView" + str(i).zfill(3)
         print("moving " + o.Name + " to " + newName)
@@ -70,9 +69,8 @@ def moveViews():
         no = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewSymbol", newName)
         no.Symbol = svg
         tPage.addView(no)
-        i += 1
 
-    print("moveViews moved " + str(i - 1) + " views")
+    print("moveViews moved " + str(len(dPage.OutList)) + " views")
 
 
 if __name__ == "__main__":
