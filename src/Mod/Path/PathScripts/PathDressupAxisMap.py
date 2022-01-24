@@ -79,7 +79,7 @@ class ObjectDressup:
         return None
 
     def _linear2angular(self, radius, length):
-        """returns an angular distance in degrees to achieve a linear move of a given lenth"""
+        """returns an angular distance in degrees to achieve a linear move of a given length"""
         circum = 2 * math.pi * float(radius)
         return 360 * (float(length) / circum)
 
