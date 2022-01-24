@@ -244,7 +244,7 @@ void CheckedFile::read( char *buf, size_t nRead, size_t /*bufSize*/ )
    std::vector<char> page_buffer_v( physicalPageSize );
    char *page_buffer = &page_buffer_v[0];
 
-   auto checksumMod = static_cast<const unsigned int>( std::nearbyint( 100.0 / checkSumPolicy_ ) );
+   const auto checksumMod = static_cast<unsigned int>( std::nearbyint( 100.0 / checkSumPolicy_ ) );
 
    while ( nRead > 0 )
    {
