@@ -7,9 +7,6 @@
 from __future__ import print_function
 
 import FreeCAD
-import Part
-import Measure
-import TechDraw
 
 import os
 
@@ -37,7 +34,7 @@ def DHatchTest():
     #make Views
     view1 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewPart','View')
     FreeCAD.ActiveDocument.View.Source = [box]
-    rc = page.addView(view1)
+    page.addView(view1)
     FreeCAD.ActiveDocument.recompute()
 
     #make hatch
@@ -46,7 +43,7 @@ def DHatchTest():
     hatch.Source = (view1,["Face0"])
     hatch.HatchPattern = hatchFileSpec          #comment out to use default from preferences
     print("adding hatch to page")
-    rc = page.addView(hatch)
+    page.addView(hatch)
     print("finished hatch")
 
     FreeCAD.ActiveDocument.recompute()

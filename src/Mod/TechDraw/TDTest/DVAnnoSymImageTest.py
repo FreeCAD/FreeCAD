@@ -6,9 +6,6 @@
 from __future__ import print_function
 
 import FreeCAD
-import Part
-import Measure
-import TechDraw
 import os
 
 def DVAnnoSymImageTest():
@@ -35,7 +32,7 @@ def DVAnnoSymImageTest():
     sl.append(s)
     anno.Text = sl
     anno.TextStyle = 'Bold'
-    rc = page.addView(anno)
+    page.addView(anno)
     anno.X = 30.0
     anno.Y = 150.0
 
@@ -45,14 +42,14 @@ def DVAnnoSymImageTest():
     svg = f.read()
     f.close()
     sym.Symbol = svg
-    rc = page.addView(sym)
+    page.addView(sym)
     sym.X = 220.0
     sym.Y = 150.0
 
     #image
     img = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewImage','TestImage')
     img.ImageFile = imageFileSpec
-    rc = page.addView(img)
+    page.addView(img)
 
     FreeCAD.ActiveDocument.recompute()
     rc = False

@@ -9,9 +9,6 @@ from __future__ import print_function
 
 import FreeCAD
 from FreeCAD import Units
-import Part
-import Measure
-import TechDraw
 import os
 
 def DVBalloonTest():
@@ -24,8 +21,8 @@ def DVBalloonTest():
     FreeCAD.ActiveDocument=FreeCAD.getDocument("TDBalloon")
 
     #make source feature
-    box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
-    sphere = FreeCAD.ActiveDocument.addObject("Part::Sphere","Sphere")
+    FreeCAD.ActiveDocument.addObject("Part::Box","Box")
+    FreeCAD.ActiveDocument.addObject("Part::Sphere","Sphere")
 
     #make a page
     page = FreeCAD.ActiveDocument.addObject('TechDraw::DrawPage','Page')
@@ -38,12 +35,12 @@ def DVBalloonTest():
     #make Views
     view1 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewPart','View')
     FreeCAD.ActiveDocument.View.Source = [FreeCAD.ActiveDocument.Box]
-    rc = page.addView(view1)
+    page.addView(view1)
     view1.X = Units.Quantity(30.0,Units.Length)
     view1.Y = Units.Quantity(150.0,Units.Length)
     view2 = FreeCAD.activeDocument().addObject('TechDraw::DrawViewPart','View001')
     FreeCAD.activeDocument().View001.Source = [FreeCAD.activeDocument().Sphere]
-    rc = page.addView(view2)
+    page.addView(view2)
     view2.X = Units.Quantity(220.0,Units.Length)
     view2.Y = Units.Quantity(150.0,Units.Length)
     FreeCAD.ActiveDocument.recompute()
@@ -59,7 +56,7 @@ def DVBalloonTest():
     balloon1.X=balloon1.OriginY + Units.Quantity(20.0,Units.Length)
 
     print("adding balloon1 to page")
-    rc = page.addView(balloon1)
+    page.addView(balloon1)
 
     balloon2 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewBalloon','Balloon2')
     balloon2.SourceView=view2
@@ -71,7 +68,7 @@ def DVBalloonTest():
     balloon2.X=balloon2.OriginY + Units.Quantity(20.0,Units.Length)
 
     print("adding balloon2 to page")
-    rc = page.addView(balloon2)
+    page.addView(balloon2)
 
     FreeCAD.ActiveDocument.recompute()
 
