@@ -93,6 +93,10 @@ public:
     virtual void printPdf();
     /** Show a preview dialog */
     virtual void printPreview();
+    /** Save the printer configuration */
+    void savePrinterSettings(QPrinter* printer);
+    /** Restore the printer configuration */
+    void restorePrinterSettings(QPrinter* printer);
     //@}
 
     /** @name Undo/Redo actions */
