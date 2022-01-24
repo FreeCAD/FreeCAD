@@ -6,9 +6,6 @@
 from __future__ import print_function
 
 import FreeCAD
-import Part
-import Measure
-import TechDraw
 import os
 
 def DVPartTest():
@@ -20,7 +17,7 @@ def DVPartTest():
     FreeCAD.setActiveDocument("TDPart")
     FreeCAD.ActiveDocument=FreeCAD.getDocument("TDPart")
 
-    box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
+    FreeCAD.ActiveDocument.addObject("Part::Box","Box")
 
     page = FreeCAD.ActiveDocument.addObject('TechDraw::DrawPage','Page')
     FreeCAD.ActiveDocument.addObject('TechDraw::DrawSVGTemplate','Template')
@@ -31,7 +28,7 @@ def DVPartTest():
     print("page created")
 
     view = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewPart','View')
-    rc = page.addView(view)
+    page.addView(view)
 
     FreeCAD.ActiveDocument.View.Source = [FreeCAD.ActiveDocument.Box]
 

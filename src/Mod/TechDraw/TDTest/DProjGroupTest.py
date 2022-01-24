@@ -10,9 +10,6 @@
 from __future__ import print_function
 
 import FreeCAD
-import Part
-import Measure
-import TechDraw
 import os
 
 def DProjGroupTest():
@@ -52,12 +49,12 @@ def DProjGroupTest():
     doc.openTransaction("Create Proj Group")
     groupName = 'ProjGroup'
     group = FreeCAD.ActiveDocument.addObject('TechDraw::DrawProjGroup', groupName)
-    rc = page.addView(group)
+    page.addView(group)
     print("Group created")
     group.Source = [fusion]
 
     print("adding views")
-    frontView = group.addProjection("Front")               ##need an Anchor
+    group.addProjection("Front")               ##need an Anchor
     print("added Front")
 
     #update group
@@ -71,19 +68,19 @@ def DProjGroupTest():
     print("Front/Anchor recomputed")
 
     print("adding left")
-    leftView = group.addProjection("Left")
+    group.addProjection("Left")
     print("added Left")
-    topView = group.addProjection("Top")
+    group.addProjection("Top")
     print("added Top")
-    rightView = group.addProjection("Right")
+    group.addProjection("Right")
     print("added Right")
-    rearView = group.addProjection("Rear")
+    group.addProjection("Rear")
     print("added Rear")
-    BottomView = group.addProjection("Bottom")
+    group.addProjection("Bottom")
     print("added Bottom")
 
     #remove a view from projection group
-    iv = group.removeProjection("Left")
+    group.removeProjection("Left")
     print("removed Left")
 
     ##test getItemByLabel method
