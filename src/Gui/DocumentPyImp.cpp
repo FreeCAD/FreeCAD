@@ -105,42 +105,45 @@ PyObject* DocumentPy::setEdit(PyObject *args)
 {
     char *psFeatStr;
     int mod = 0;
-    char *subname = 0;
-    ViewProvider *vp = 0;
-    App::DocumentObject *obj = 0;
+    char *subname = nullptr;
+    ViewProvider *vp = nullptr;
+    App::DocumentObject *obj = nullptr;
 
     // by name
-    if (PyArg_ParseTuple(args, "s|is;Name of the object to edit has to be given!", &psFeatStr,&mod,&subname)) {
+    if (PyArg_ParseTuple(args, "s|is", &psFeatStr,&mod,&subname)) {
         obj = getDocumentPtr()->getDocument()->getObject(psFeatStr);
         if (!obj) {
             PyErr_Format(Base::BaseExceptionFreeCADError, "No such object found in document: '%s'", psFeatStr);
-            return 0;
+            return nullptr;
         }
     }
     else {
         PyErr_Clear();
         PyObject *pyObj;
         if (!PyArg_ParseTuple(args, "O|is", &pyObj,&mod,&subname))
-            return 0;
+            return nullptr;
 
-        if (PyObject_TypeCheck(pyObj,&App::DocumentObjectPy::Type))
+        if (PyObject_TypeCheck(pyObj,&App::DocumentObjectPy::Type)) {
             obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
-        else if (PyObject_TypeCheck(pyObj,&ViewProviderPy::Type))
+        }
+        else if (PyObject_TypeCheck(pyObj,&ViewProviderPy::Type)) {
             vp = static_cast<ViewProviderPy*>(pyObj)->getViewProviderPtr();
+        }
         else {
-            PyErr_SetString(PyExc_TypeError,"Expect the first argument to be string|DocObject|ViewObject");
-            return 0;
+            PyErr_SetString(PyExc_TypeError,"Expect the first argument to be string, DocumentObject or ViewObject");
+            return nullptr;
         }
     }
 
     if (!vp) {
         if (!obj || !obj->getNameInDocument() || !(vp=Application::Instance->getViewProvider(obj))) {
             PyErr_SetString(PyExc_ValueError,"Invalid document object");
-            return 0;
+            return nullptr;
         }
     }
 
     bool ok = getDocumentPtr()->setEdit(vp,mod,subname);
+
     return PyBool_FromLong(ok ? 1 : 0);
 }
 
