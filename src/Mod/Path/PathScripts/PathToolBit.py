@@ -25,30 +25,32 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPropertyBag as PathPropertyBag
 import PathScripts.PathUtil as PathUtil
-import PySide
 import json
 import os
 import zipfile
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
+
+Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Tool bits."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Class to deal with and represent a tool bit."
 
-PropertyGroupShape = 'Shape'
+PropertyGroupShape = "Shape"
 
 _DebugFindTool = False
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule()
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-def translate(context, text, disambig=None):
-    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
 def _findToolFile(name, containerFile, typ):
     PathLog.track(name)
@@ -74,7 +76,6 @@ def _findToolFile(name, containerFile, typ):
                     return (True, fullPath)
         return (False, None)
 
-
     for p in paths:
         found, path = _findFile(p, name)
         if found:
@@ -83,26 +84,26 @@ def _findToolFile(name, containerFile, typ):
 
 
 def findToolShape(name, path=None):
-    '''findToolShape(name, path) ... search for name, if relative path look in path'''
+    """findToolShape(name, path) ... search for name, if relative path look in path"""
     PathLog.track(name, path)
-    return _findToolFile(name, path, 'Shape')
+    return _findToolFile(name, path, "Shape")
 
 
 def findToolBit(name, path=None):
-    '''findToolBit(name, path) ... search for name, if relative path look in path'''
+    """findToolBit(name, path) ... search for name, if relative path look in path"""
     PathLog.track(name, path)
-    if name.endswith('.fctb'):
-        return _findToolFile(name, path, 'Bit')
-    return _findToolFile("{}.fctb".format(name), path, 'Bit')
+    if name.endswith(".fctb"):
+        return _findToolFile(name, path, "Bit")
+    return _findToolFile("{}.fctb".format(name), path, "Bit")
 
 
 # Only used in ToolBit unit test module: TestPathToolBit.py
 def findToolLibrary(name, path=None):
-    '''findToolLibrary(name, path) ... search for name, if relative path look in path'''
+    """findToolLibrary(name, path) ... search for name, if relative path look in path"""
     PathLog.track(name, path)
-    if name.endswith('.fctl'):
-        return _findToolFile(name, path, 'Library')
-    return _findToolFile("{}.fctl".format(name), path, 'Library')
+    if name.endswith(".fctl"):
+        return _findToolFile(name, path, "Library")
+    return _findToolFile("{}.fctl".format(name), path, "Library")
 
 
 def _findRelativePath(path, typ):
@@ -110,7 +111,7 @@ def _findRelativePath(path, typ):
     relative = path
     for p in PathPreferences.searchPathsTool(typ):
         if path.startswith(p):
-            p = path[len(p):]
+            p = path[len(p) :]
             if os.path.sep == p[0]:
                 p = p[1:]
             if len(p) < len(relative):
@@ -130,23 +131,52 @@ def findRelativePathTool(path):
 
 
 def findRelativePathLibrary(path):
-    return _findRelativePath(path, 'Library')
+    return _findRelativePath(path, "Library")
+
 
 class ToolBit(object):
-
     def __init__(self, obj, shapeFile, path=None):
         PathLog.track(obj.Label, shapeFile, path)
         self.obj = obj
-        obj.addProperty('App::PropertyFile', 'BitShape', 'Base', translate('PathToolBit', 'Shape for bit shape'))
-        obj.addProperty('App::PropertyLink', 'BitBody', 'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
-        obj.addProperty('App::PropertyFile', 'File', 'Base', translate('PathToolBit', 'The file of the tool'))
-        obj.addProperty('App::PropertyString', 'ShapeName', 'Base', translate('PathToolBit', 'The name of the shape file'))
-        obj.addProperty('App::PropertyStringList', 'BitPropertyNames', 'Base', translate('PathToolBit', 'List of all properties inherited from the bit'))
+        obj.addProperty(
+            "App::PropertyFile",
+            "BitShape",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "Shape for bit shape"),
+        )
+        obj.addProperty(
+            "App::PropertyLink",
+            "BitBody",
+            "Base",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The parametrized body representing the tool bit"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyFile",
+            "File",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "The file of the tool"),
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "ShapeName",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "The name of the shape file"),
+        )
+        obj.addProperty(
+            "App::PropertyStringList",
+            "BitPropertyNames",
+            "Base",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "List of all properties inherited from the bit"
+            ),
+        )
 
         if path:
             obj.File = path
         if shapeFile is None:
-            obj.BitShape = 'endmill.fcstd'
+            obj.BitShape = "endmill.fcstd"
             self._setupBitShape(obj)
             self.unloadBitBody(obj)
         else:
@@ -159,7 +189,7 @@ class ToolBit(object):
 
     def __setstate__(self, state):
         for obj in FreeCAD.ActiveDocument.Objects:
-            if hasattr(obj, 'Proxy') and obj.Proxy == self:
+            if hasattr(obj, "Proxy") and obj.Proxy == self:
                 self.obj = obj
                 break
         return None
@@ -168,14 +198,21 @@ class ToolBit(object):
         # when files are shared it is essential to be able to change/set the shape file,
         # otherwise the file is hard to use
         # obj.setEditorMode('BitShape', 1)
-        obj.setEditorMode('BitBody', 2)
-        obj.setEditorMode('File', 1)
-        obj.setEditorMode('Shape', 2)
-        if not hasattr(obj, 'BitPropertyNames'):
-            obj.addProperty('App::PropertyStringList', 'BitPropertyNames', 'Base', translate('PathToolBit', 'List of all properties inherited from the bit'))
+        obj.setEditorMode("BitBody", 2)
+        obj.setEditorMode("File", 1)
+        obj.setEditorMode("Shape", 2)
+        if not hasattr(obj, "BitPropertyNames"):
+            obj.addProperty(
+                "App::PropertyStringList",
+                "BitPropertyNames",
+                "Base",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "List of all properties inherited from the bit"
+                ),
+            )
             propNames = []
             for prop in obj.PropertiesList:
-                if obj.getGroupOfProperty(prop) == 'Bit':
+                if obj.getGroupOfProperty(prop) == "Bit":
                     val = obj.getPropertyByName(prop)
                     typ = obj.getTypeIdOfProperty(prop)
                     dsc = obj.getDocumentationOfProperty(prop)
@@ -185,10 +222,10 @@ class ToolBit(object):
 
                     PathUtil.setProperty(obj, prop, val)
                     propNames.append(prop)
-                elif obj.getGroupOfProperty(prop) == 'Attribute':
+                elif obj.getGroupOfProperty(prop) == "Attribute":
                     propNames.append(prop)
             obj.BitPropertyNames = propNames
-        obj.setEditorMode('BitPropertyNames', 2)
+        obj.setEditorMode("BitPropertyNames", 2)
 
         for prop in obj.BitPropertyNames:
             if obj.getGroupOfProperty(prop) == PropertyGroupShape:
@@ -202,7 +239,7 @@ class ToolBit(object):
 
     def onChanged(self, obj, prop):
         PathLog.track(obj.Label, prop)
-        if prop == 'BitShape' and 'Restore' not in obj.State:
+        if prop == "BitShape" and "Restore" not in obj.State:
             self._setupBitShape(obj)
 
     def onDelete(self, obj, arg2=None):
@@ -212,7 +249,11 @@ class ToolBit(object):
 
     def _updateBitShape(self, obj, properties=None):
         if obj.BitBody is not None:
-            for attributes in [o for o in obj.BitBody.Group if hasattr(o, 'Proxy') and hasattr(o.Proxy, 'getCustomProperties')]:
+            for attributes in [
+                o
+                for o in obj.BitBody.Group
+                if hasattr(o, "Proxy") and hasattr(o.Proxy, "getCustomProperties")
+            ]:
                 for prop in attributes.Proxy.getCustomProperties():
                     # the property might not exist in our local object (new attribute in shape)
                     # for such attributes we just keep the default
@@ -291,7 +332,7 @@ class ToolBit(object):
         dsc = orig.getDocumentationOfProperty(prop)
 
         obj.addProperty(typ, prop, grp, dsc)
-        if 'App::PropertyEnumeration' == typ:
+        if "App::PropertyEnumeration" == typ:
             setattr(obj, prop, orig.getEnumerationsOfProperty(prop))
 
         obj.setEditorMode(prop, 1)
@@ -315,16 +356,21 @@ class ToolBit(object):
         if bitBody.ViewObject:
             bitBody.ViewObject.Visibility = False
 
-        PathLog.debug("bitBody.{} ({}): {}".format(bitBody.Label, bitBody.Name, type(bitBody)))
+        PathLog.debug(
+            "bitBody.{} ({}): {}".format(bitBody.Label, bitBody.Name, type(bitBody))
+        )
 
         propNames = []
-        for attributes in [o for o in bitBody.Group if PathPropertyBag.IsPropertyBag(o)]:
+        for attributes in [
+            o for o in bitBody.Group if PathPropertyBag.IsPropertyBag(o)
+        ]:
             PathLog.debug("Process properties from {}".format(attributes.Label))
             for prop in attributes.Proxy.getCustomProperties():
                 self._setupProperty(obj, prop, attributes)
                 propNames.append(prop)
         if not propNames:
-            PathLog.error(translate('PathToolBit', 'Did not find a PropertyBag in {} - not a ToolBit shape?'.format(docName)))
+            PathLog.error("Did not find a PropertyBag in {} - not a ToolBit shape?".format(
+                        docName))
 
         # has to happen last because it could trigger op.execute evaluations
         obj.BitPropertyNames = propNames
@@ -332,20 +378,32 @@ class ToolBit(object):
         self._copyBitShape(obj)
 
     def toolShapeProperties(self, obj):
-        '''toolShapeProperties(obj) ... return all properties defining it's shape'''
-        return sorted([prop for prop in obj.BitPropertyNames if obj.getGroupOfProperty(prop) == PropertyGroupShape])
+        """toolShapeProperties(obj) ... return all properties defining it's shape"""
+        return sorted(
+            [
+                prop
+                for prop in obj.BitPropertyNames
+                if obj.getGroupOfProperty(prop) == PropertyGroupShape
+            ]
+        )
 
     def toolAdditionalProperties(self, obj):
-        '''toolShapeProperties(obj) ... return all properties unrelated to it's shape'''
-        return sorted([prop for prop in obj.BitPropertyNames if obj.getGroupOfProperty(prop) != PropertyGroupShape])
+        """toolShapeProperties(obj) ... return all properties unrelated to it's shape"""
+        return sorted(
+            [
+                prop
+                for prop in obj.BitPropertyNames
+                if obj.getGroupOfProperty(prop) != PropertyGroupShape
+            ]
+        )
 
     def toolGroupsAndProperties(self, obj, includeShape=True):
-        '''toolGroupsAndProperties(obj) ... returns a dictionary of group names with a list of property names.'''
+        """toolGroupsAndProperties(obj) ... returns a dictionary of group names with a list of property names."""
         category = {}
         for prop in obj.BitPropertyNames:
             group = obj.getGroupOfProperty(prop)
             if includeShape or group != PropertyGroupShape:
-                properties  = category.get(group, [])
+                properties = category.get(group, [])
                 properties.append(prop)
                 category[group] = properties
         return category
@@ -354,10 +412,10 @@ class ToolBit(object):
         if obj.BitShape:
             path = findToolShape(obj.BitShape)
             if path:
-                with open(path, 'rb') as fd:
+                with open(path, "rb") as fd:
                     try:
                         zf = zipfile.ZipFile(fd)
-                        pf = zf.open('thumbnails/Thumbnail.png', 'r')
+                        pf = zf.open("thumbnails/Thumbnail.png", "r")
                         data = pf.read()
                         pf.close()
                         return data
@@ -368,55 +426,58 @@ class ToolBit(object):
     def saveToFile(self, obj, path, setFile=True):
         PathLog.track(path)
         try:
-            with open(path, 'w') as fp:
-                json.dump(self.templateAttrs(obj), fp, indent='  ')
+            with open(path, "w") as fp:
+                json.dump(self.templateAttrs(obj), fp, indent="  ")
             if setFile:
                 obj.File = path
             return True
         except (OSError, IOError) as e:
-            PathLog.error("Could not save tool {} to {} ({})".format(obj.Label, path, e))
+            PathLog.error(
+                "Could not save tool {} to {} ({})".format(obj.Label, path, e)
+            )
             raise
 
     def templateAttrs(self, obj):
         attrs = {}
-        attrs['version'] = 2  # Path.Tool is version 1
-        attrs['name'] = obj.Label
+        attrs["version"] = 2  # Path.Tool is version 1
+        attrs["name"] = obj.Label
         if PathPreferences.toolsStoreAbsolutePaths():
-            attrs['shape'] = obj.BitShape
+            attrs["shape"] = obj.BitShape
         else:
             # attrs['shape'] = findRelativePathShape(obj.BitShape)
             # Extract the name of the shape file
-            __, filShp = os.path.split(obj.BitShape)  #  __ is an ignored placeholder acknowledged by LGTM
-            attrs['shape'] = str(filShp)
+            __, filShp = os.path.split(
+                obj.BitShape
+            )  #  __ is an ignored placeholder acknowledged by LGTM
+            attrs["shape"] = str(filShp)
         params = {}
         for name in obj.BitPropertyNames:
             params[name] = PathUtil.getPropertyValueString(obj, name)
-        attrs['parameter'] = params
+        attrs["parameter"] = params
         params = {}
-        attrs['attribute'] = params
+        attrs["attribute"] = params
         return attrs
 
 
 def Declaration(path):
     PathLog.track(path)
-    with open(path, 'r') as fp:
+    with open(path, "r") as fp:
         return json.load(fp)
 
 
 class ToolBitFactory(object):
-
-    def CreateFromAttrs(self, attrs, name='ToolBit', path=None):
+    def CreateFromAttrs(self, attrs, name="ToolBit", path=None):
         PathLog.track(attrs, path)
-        obj = Factory.Create(name, attrs['shape'], path)
-        obj.Label = attrs['name']
-        params = attrs['parameter']
+        obj = Factory.Create(name, attrs["shape"], path)
+        obj.Label = attrs["name"]
+        params = attrs["parameter"]
         for prop in params:
             PathUtil.setProperty(obj, prop, params[prop])
         obj.Proxy._updateBitShape(obj)
         obj.Proxy.unloadBitBody(obj)
         return obj
 
-    def CreateFrom(self, path, name='ToolBit'):
+    def CreateFrom(self, path, name="ToolBit"):
         PathLog.track(name, path)
         try:
             data = Declaration(path)
@@ -426,9 +487,9 @@ class ToolBitFactory(object):
             PathLog.error("%s not a valid tool file (%s)" % (path, e))
             raise
 
-    def Create(self, name='ToolBit', shapeFile=None, path=None):
+    def Create(self, name="ToolBit", shapeFile=None, path=None):
         PathLog.track(name, shapeFile, path)
-        obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
         obj.Proxy = ToolBit(obj, shapeFile, path)
         return obj
 

@@ -22,13 +22,16 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathThreadMilling as PathThreadMilling
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 import csv
+
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 
 from PySide import QtCore
 
@@ -37,52 +40,88 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "UI and Command for Path Thread Milling Operation."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-def setupCombo(combo, selections):
-    combo.clear()
-    for item in selections:
-        combo.addItem(item)
+translate = FreeCAD.Qt.translate
+
 
 def fillThreads(combo, dataFile):
     combo.blockSignals(True)
     combo.clear()
-    with open("{}Mod/Path/Data/Threads/{}.csv".format(FreeCAD.getHomePath(), dataFile)) as fp:
+    with open(
+        "{}Mod/Path/Data/Threads/{}.csv".format(FreeCAD.getHomePath(), dataFile)
+    ) as fp:
         reader = csv.DictReader(fp)
         for row in reader:
-            combo.addItem(row['name'], row)
+            combo.addItem(row["name"], row)
     combo.setEnabled(True)
     combo.blockSignals(False)
 
+
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
-    '''Controller for the thread milling operation's page'''
+    """Controller for the thread milling operation's page"""
 
     def initPage(self, obj):
-        self.majorDia = PathGui.QuantitySpinBox(self.form.threadMajor, obj, 'MajorDiameter') # pylint: disable=attribute-defined-outside-init
-        self.minorDia = PathGui.QuantitySpinBox(self.form.threadMinor, obj, 'MinorDiameter') # pylint: disable=attribute-defined-outside-init
-        self.pitch    = PathGui.QuantitySpinBox(self.form.threadPitch, obj, 'Pitch') # pylint: disable=attribute-defined-outside-init
+        self.majorDia = PathGui.QuantitySpinBox(
+            self.form.threadMajor, obj, "MajorDiameter"
+        )  # pylint: disable=attribute-defined-outside-init
+        self.minorDia = PathGui.QuantitySpinBox(
+            self.form.threadMinor, obj, "MinorDiameter"
+        )  # pylint: disable=attribute-defined-outside-init
+        self.pitch = PathGui.QuantitySpinBox(
+            self.form.threadPitch, obj, "Pitch"
+        )  # pylint: disable=attribute-defined-outside-init
 
-        setupCombo(self.form.threadOrientation, obj.Proxy.ThreadOrientations)
-        setupCombo(self.form.threadType, obj.Proxy.ThreadTypes)
-        setupCombo(self.form.opDirection, obj.Proxy.Directions)
+        # setupCombo(self.form.threadOrientation, obj.Proxy.ThreadOrientations)
+        # setupCombo(self.form.threadType, obj.Proxy.ThreadTypes)
+        # setupCombo(self.form.opDirection, obj.Proxy.Directions)
 
     def getForm(self):
-        '''getForm() ... return UI'''
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpThreadMillingEdit.ui")
+        """getForm() ... return UI"""
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpThreadMillingEdit.ui")
+        comboToPropertyMap = [
+            ("threadOrientation", "ThreadOrientation"),
+            ("threadType", "ThreadType"),
+            ("opDirection", "Direction"),
+        ]
+        enumTups = PathThreadMilling.ObjectThreadMilling.propertyEnumerations(
+            dataType="raw"
+        )
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+
+        return form
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
 
     def getFields(self, obj):
-        '''getFields(obj) ... update obj's properties with values from the UI'''
+        """getFields(obj) ... update obj's properties with values from the UI"""
         PathLog.track()
 
         self.majorDia.updateProperty()
         self.minorDia.updateProperty()
         self.pitch.updateProperty()
 
-        obj.ThreadOrientation = self.form.threadOrientation.currentText()
-        obj.ThreadType = self.form.threadType.currentText()
+        obj.ThreadOrientation = self.form.threadOrientation.currentData()
+        obj.ThreadType = self.form.threadType.currentData()
         obj.ThreadName = self.form.threadName.currentText()
-        obj.Direction = self.form.opDirection.currentText()
+        obj.Direction = self.form.opDirection.currentData()
         obj.Passes = self.form.opPasses.value()
         obj.LeadInOut = self.form.leadInOut.checkState() == QtCore.Qt.Checked
         obj.TPI = self.form.threadTPI.value()
@@ -90,23 +129,22 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
-        '''setFields(obj) ... update UI with obj properties' values'''
+        """setFields(obj) ... update UI with obj properties' values"""
         PathLog.track()
 
-        self.form.threadOrientation.setCurrentText(obj.ThreadOrientation)
+        self.selectInComboBox(obj.ThreadOrientation, self.form.threadOrientation)
+        self.selectInComboBox(obj.ThreadType, self.form.threadType)
+        self.selectInComboBox(obj.Direction, self.form.opDirection)
 
-        self.form.threadType.blockSignals(True)
         self.form.threadName.blockSignals(True)
-        self.form.threadType.setCurrentText(obj.ThreadType)
-        self._updateFromThreadType()
         self.form.threadName.setCurrentText(obj.ThreadName)
-        self.form.threadType.blockSignals(False)
         self.form.threadName.blockSignals(False)
         self.form.threadTPI.setValue(obj.TPI)
 
         self.form.opPasses.setValue(obj.Passes)
-        self.form.opDirection.setCurrentText(obj.Direction)
-        self.form.leadInOut.setCheckState(QtCore.Qt.Checked if obj.LeadInOut else QtCore.Qt.Unchecked)
+        self.form.leadInOut.setCheckState(
+            QtCore.Qt.Checked if obj.LeadInOut else QtCore.Qt.Unchecked
+        )
 
         self.majorDia.updateSpinBox()
         self.minorDia.updateSpinBox()
@@ -114,16 +152,24 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.setupToolController(obj, self.form.toolController)
 
-
     def _isThreadMetric(self):
-        return self.form.threadType.currentText() == PathThreadMilling.ObjectThreadMilling.ThreadTypeMetricInternal
+        return (
+            self.form.threadType.currentData()
+            == PathThreadMilling.ObjectThreadMilling.ThreadTypeMetricInternal
+        )
 
     def _isThreadImperial(self):
-        return self.form.threadType.currentText() == PathThreadMilling.ObjectThreadMilling.ThreadTypeImperialInternal
+        return (
+            self.form.threadType.currentData()
+            == PathThreadMilling.ObjectThreadMilling.ThreadTypeImperialInternal
+        )
 
     def _updateFromThreadType(self):
 
-        if self.form.threadType.currentText() == PathThreadMilling.ObjectThreadMilling.ThreadTypeCustom:
+        if (
+            self.form.threadType.currentData()
+            == PathThreadMilling.ObjectThreadMilling.ThreadTypeCustom
+        ):
             self.form.threadName.setEnabled(False)
             self.form.threadFit.setEnabled(False)
             self.form.threadFitLabel.setEnabled(False)
@@ -140,7 +186,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.threadTPI.setEnabled(False)
             self.form.threadTPILabel.setEnabled(False)
             self.form.threadTPI.setValue(0)
-            fillThreads(self.form.threadName, 'metric-internal')
+            fillThreads(self.form.threadName, "metric-internal")
 
         if self._isThreadImperial():
             self.form.threadFit.setEnabled(True)
@@ -150,24 +196,24 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.threadTPI.setEnabled(True)
             self.form.threadTPILabel.setEnabled(True)
             self.pitch.updateSpinBox(0)
-            fillThreads(self.form.threadName, 'imperial-internal')
+            fillThreads(self.form.threadName, "imperial-internal")
 
     def _updateFromThreadName(self):
         thread = self.form.threadName.currentData()
         fit = float(self.form.threadFit.value()) / 100
-        mamin = float(thread['dMajorMin'])
-        mamax = float(thread['dMajorMax'])
+        mamin = float(thread["dMajorMin"])
+        mamax = float(thread["dMajorMax"])
         major = mamin + (mamax - mamin) * fit
-        mimin = float(thread['dMinorMin'])
-        mimax = float(thread['dMinorMax'])
+        mimin = float(thread["dMinorMin"])
+        mimax = float(thread["dMinorMax"])
         minor = mimin + (mimax - mimin) * fit
 
         if self._isThreadMetric():
-            pitch = float(thread['pitch'])
+            pitch = float(thread["pitch"])
             self.pitch.updateSpinBox(pitch)
 
         if self._isThreadImperial():
-            tpi = int(thread['tpi'])
+            tpi = int(thread["tpi"])
             self.form.threadTPI.setValue(tpi)
             minor = minor * 25.4
             major = major * 25.4
@@ -178,7 +224,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setDirty()
 
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model'''
+        """getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model"""
         signals = []
 
         signals.append(self.form.threadMajor.editingFinished)
@@ -200,12 +246,17 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.threadFit.valueChanged.connect(self._updateFromThreadName)
 
 
-Command = PathOpGui.SetupOperation('Thread Milling',
-        PathThreadMilling.Create,
-        TaskPanelOpPage,
-        'Path_ThreadMilling',
-        QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Thread Milling"),
-        QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Creates a Path Thread Milling operation from features of a base object"),
-        PathThreadMilling.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "ThreadMilling",
+    PathThreadMilling.Create,
+    TaskPanelOpPage,
+    "Path_ThreadMilling",
+    QT_TRANSLATE_NOOP("Path_ThreadMilling", "Thread Milling"),
+    QT_TRANSLATE_NOOP(
+        "Path_ThreadMilling",
+        "Creates a Path Thread Milling operation from features of a base object",
+    ),
+    PathThreadMilling.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathThreadMillingGui ... done\n")

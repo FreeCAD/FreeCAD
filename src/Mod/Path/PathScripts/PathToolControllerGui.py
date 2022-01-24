@@ -20,45 +20,50 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
-
-from PySide import QtCore, QtGui
+import PathScripts.PathToolController as PathToolController
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
+
+Part = LazyLoader("Part", globals(), "Part")
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+translate = FreeCAD.Qt.translate
 
 
 class ViewProvider:
-
     def __init__(self, vobj):
         vobj.Proxy = self
         self.vobj = vobj
 
     def attach(self, vobj):
         mode = 2
-        vobj.setEditorMode('LineWidth', mode)
-        vobj.setEditorMode('MarkerColor', mode)
-        vobj.setEditorMode('NormalColor', mode)
-        vobj.setEditorMode('DisplayMode', mode)
-        vobj.setEditorMode('BoundingBox', mode)
-        vobj.setEditorMode('Selectable', mode)
-        vobj.setEditorMode('ShapeColor', mode)
-        vobj.setEditorMode('Transparency', mode)
-        vobj.setEditorMode('Visibility', mode)
+        vobj.setEditorMode("LineWidth", mode)
+        vobj.setEditorMode("MarkerColor", mode)
+        vobj.setEditorMode("NormalColor", mode)
+        vobj.setEditorMode("DisplayMode", mode)
+        vobj.setEditorMode("BoundingBox", mode)
+        vobj.setEditorMode("Selectable", mode)
+        vobj.setEditorMode("ShapeColor", mode)
+        vobj.setEditorMode("Transparency", mode)
+        vobj.setEditorMode("Visibility", mode)
         self.vobj = vobj
 
     def __getstate__(self):
@@ -73,12 +78,12 @@ class ViewProvider:
     def onChanged(self, vobj, prop):
         # pylint: disable=unused-argument
         mode = 2
-        vobj.setEditorMode('LineWidth', mode)
-        vobj.setEditorMode('MarkerColor', mode)
-        vobj.setEditorMode('NormalColor', mode)
-        vobj.setEditorMode('DisplayMode', mode)
-        vobj.setEditorMode('BoundingBox', mode)
-        vobj.setEditorMode('Selectable', mode)
+        vobj.setEditorMode("LineWidth", mode)
+        vobj.setEditorMode("MarkerColor", mode)
+        vobj.setEditorMode("NormalColor", mode)
+        vobj.setEditorMode("DisplayMode", mode)
+        vobj.setEditorMode("BoundingBox", mode)
+        vobj.setEditorMode("Selectable", mode)
 
     def onDelete(self, vobj, args=None):
         # pylint: disable=unused-argument
@@ -115,7 +120,7 @@ class ViewProvider:
         PathLog.track()
         for action in menu.actions():
             menu.removeAction(action)
-        action = QtGui.QAction(translate('Path', 'Edit'), menu)
+        action = QtGui.QAction(translate("Path", "Edit"), menu)
         action.triggered.connect(self.setEdit)
         menu.addAction(action)
 
@@ -126,7 +131,7 @@ class ViewProvider:
         return []
 
 
-def Create(name='Default Tool', tool=None, toolNumber=1):
+def Create(name="Default Tool", tool=None, toolNumber=1):
     PathLog.track(tool, toolNumber)
 
     obj = PathScripts.PathToolController.Create(name, tool, toolNumber)
@@ -142,16 +147,20 @@ class CommandPathToolController(object):
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path_LengthOffset',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller to the Job"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller")}
+        return {
+            "Pixmap": "Path_LengthOffset",
+            "MenuText": QT_TRANSLATE_NOOP(
+                "Path_ToolController", "Add Tool Controller to the Job"
+            ),
+            "ToolTip": QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller"),
+        }
 
     def selectedJob(self):
         if FreeCAD.ActiveDocument:
             sel = FreeCADGui.Selection.getSelectionEx()
-            if sel and sel[0].Object.Name[:3] == 'Job':
+            if sel and sel[0].Object.Name[:3] == "Job":
                 return sel[0].Object
-        jobs = [o for o in FreeCAD.ActiveDocument.Objects if o.Name[:3] == 'Job']
+        jobs = [o for o in FreeCAD.ActiveDocument.Objects if o.Name[:3] == "Job"]
         if 1 == len(jobs):
             return jobs[0]
         return None
@@ -178,29 +187,68 @@ class CommandPathToolController(object):
 
 
 class ToolControllerEditor(object):
-
     def __init__(self, obj, asDialog):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DlgToolControllerEdit.ui")
         if not asDialog:
             self.form.buttonBox.hide()
         self.obj = obj
 
-        self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj,
-                                                'VertFeed')
-        self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj,
-                                                 'HorizFeed')
-        self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj,
-                                                 'VertRapid')
-        self.horizRapid = PathGui.QuantitySpinBox(self.form.horizRapid, obj,
-                                                  'HorizRapid')
+        comboToPropertyMap = [("spindleDirection", "SpindleDir")]
+        enumTups = PathToolController.ToolController.propertyEnumerations(
+            dataType="raw"
+        )
+
+        self.populateCombobox(self.form, enumTups, comboToPropertyMap)
+        self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj, "VertFeed")
+        self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj, "HorizFeed")
+        self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj, "VertRapid")
+        self.horizRapid = PathGui.QuantitySpinBox(
+            self.form.horizRapid, obj, "HorizRapid"
+        )
 
         if obj.Proxy.usesLegacyTool(obj):
-            self.editor = PathToolEdit.ToolEditor(obj.Tool,
-                                                  self.form.toolEditor)
+            self.editor = PathToolEdit.ToolEditor(obj.Tool, self.form.toolEditor)
         else:
             self.editor = None
             self.form.toolBox.widget(1).hide()
             self.form.toolBox.removeItem(1)
+
+    def selectInComboBox(self, name, combo):
+        """selectInComboBox(name, combo) ...
+        helper function to select a specific value in a combo box."""
+        blocker = QtCore.QSignalBlocker(combo)
+        index = combo.currentIndex()  # Save initial index
+
+        # Search using currentData and return if found
+        newindex = combo.findData(name)
+        if newindex >= 0:
+            combo.setCurrentIndex(newindex)
+            return
+
+        # if not found, search using current text
+        newindex = combo.findText(name, QtCore.Qt.MatchFixedString)
+        if newindex >= 0:
+            combo.setCurrentIndex(newindex)
+            return
+
+        # not found, return unchanged
+        combo.setCurrentIndex(index)
+        return
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
 
     def updateUi(self):
         tc = self.obj
@@ -211,10 +259,14 @@ class ToolControllerEditor(object):
         self.vertFeed.updateSpinBox()
         self.vertRapid.updateSpinBox()
         self.form.spindleSpeed.setValue(tc.SpindleSpeed)
-        index = self.form.spindleDirection.findText(tc.SpindleDir,
-                                                    QtCore.Qt.MatchFixedString)
-        if index >= 0:
-            self.form.spindleDirection.setCurrentIndex(index)
+
+        self.selectInComboBox(tc.SpindleDir, self.form.spindleDirection)
+
+        # index = self.form.spindleDirection.findText(
+        #     tc.SpindleDir, QtCore.Qt.MatchFixedString
+        # )
+        # if index >= 0:
+        #     self.form.spindleDirection.setCurrentIndex(index)
 
         if self.editor:
             self.editor.updateUI()
@@ -229,15 +281,14 @@ class ToolControllerEditor(object):
             self.horizRapid.updateProperty()
             self.vertRapid.updateProperty()
             tc.SpindleSpeed = self.form.spindleSpeed.value()
-            tc.SpindleDir = self.form.spindleDirection.currentText()
+            tc.SpindleDir = self.form.spindleDirection.currentData()
 
             if self.editor:
                 self.editor.updateTool()
                 tc.Tool = self.editor.tool
 
         except Exception as e:
-            PathLog.error(translate("PathToolController",
-                                    "Error updating TC: %s") % e)
+            PathLog.error("Error updating TC: {}".format(e))
 
     def refresh(self):
         self.form.blockSignals(True)
@@ -259,7 +310,6 @@ class ToolControllerEditor(object):
 
 
 class TaskPanel:
-
     def __init__(self, obj):
         self.editor = ToolControllerEditor(obj, False)
         self.form = self.editor.form
@@ -309,8 +359,7 @@ class TaskPanel:
     def setupUi(self):
         if self.editor.editor:
             t = Part.makeCylinder(1, 1)
-            self.toolrep = FreeCAD.ActiveDocument.addObject("Part::Feature",
-                                                            "tool")
+            self.toolrep = FreeCAD.ActiveDocument.addObject("Part::Feature", "tool")
             self.toolrep.Shape = t
 
         self.setFields()
@@ -337,6 +386,6 @@ class DlgToolControllerEdit:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_ToolController', CommandPathToolController())
+    FreeCADGui.addCommand("Path_ToolController", CommandPathToolController())
 
 FreeCAD.Console.PrintLog("Loading PathToolControllerGui... done\n")
