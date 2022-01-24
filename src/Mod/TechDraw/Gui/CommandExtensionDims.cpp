@@ -1507,6 +1507,7 @@ CmdTechDrawExtensionCreateHorizCoordDimension::CmdTechDrawExtensionCreateHorizCo
     sToolTipText    = QT_TR_NOOP("Create multiple evenly spaced horizontal dimensions starting from the same baseline:<br>\
 - Specify the cascade spacing (optional)<br>\
 - Select three or more vertexes<br>\
+- The selection order of the first two vertexes determines the position of the baseline<br>\
 - Click this tool");
     sWhatsThis      = "TechDraw_ExtensionCreateHorizCoordDimension";
     sStatusTip      = sMenuText;
@@ -1579,6 +1580,7 @@ CmdTechDrawExtensionCreateVertCoordDimension::CmdTechDrawExtensionCreateVertCoor
     sToolTipText    = QT_TR_NOOP("Create multiple evenly spaced vertical dimensions starting from the same baseline:<br>\
 - Specify the cascade spacing (optional)<br>\
 - Select three or more vertexes<br>\
+- The selection order of the first two vertexes determines the position of the baseline<br>\
 - Click this tool");
     sWhatsThis      = "TechDraw_ExtensionCreateVertCoordDimension";
     sStatusTip      = sMenuText;
@@ -1676,7 +1678,8 @@ CmdTechDrawExtensionCreateObliqueCoordDimension::CmdTechDrawExtensionCreateObliq
     sToolTipText    = QT_TR_NOOP("Create multiple evenly spaced oblique dimensions starting from the same baseline:<br>\
 - Specify the cascade spacing (optional)<br>\
 - Select three or more vertexes<br>\
-- The first two vertexes define the direction<br>\
+- The selection order of the first two vertexes determines the position of the baseline<br>\
+- The first two vertexes also define the direction<br>\
 - Click this tool");
     sWhatsThis      = "TechDraw_ExtensionCreateObliqueCoordDimension";
     sStatusTip      = sMenuText;
@@ -1711,6 +1714,7 @@ CmdTechDrawExtensionCreateCoordDimensionGroup::CmdTechDrawExtensionCreateCoordDi
     sToolTipText    = QT_TR_NOOP("Create multiple evenly spaced horizontal dimensions starting from the same baseline:<br>\
 - Specify the cascade spacing (optional)<br>\
 - Select three or more vertexes<br>\
+- The selection order of the first two vertexes determines the position of the baseline<br>\
 - Click this tool");
     sWhatsThis      = "TechDraw_ExtensionCreateCoordDimensionGroup";
     sStatusTip      = sMenuText;
@@ -1787,6 +1791,7 @@ void CmdTechDrawExtensionCreateCoordDimensionGroup::languageChange()
 "Create multiple evenly spaced horizontal dimensions starting from the same baseline:<br>\
 - Specify the cascade spacing (optional)<br>\
 - Select three or more vertexes<br>\
+- The selection order of the first two vertexes determines the position of the baseline<br>\
 - Click this tool"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = a[1];
@@ -1795,6 +1800,7 @@ void CmdTechDrawExtensionCreateCoordDimensionGroup::languageChange()
 "Create multiple evenly spaced vertical dimensions starting from the same baseline:<br>\
 - Specify the cascade spacing (optional)<br>\
 - Select three or more vertexes<br>\
+- The selection order of the first two vertexes determines the position of the baseline<br>\
 - Click this tool"));
     arc2->setStatusTip(arc2->text());
     QAction* arc3 = a[2];
@@ -1803,7 +1809,8 @@ void CmdTechDrawExtensionCreateCoordDimensionGroup::languageChange()
 "Create multiple evenly spaced oblique dimensions starting from the same baseline:<br>\
 - Specify the cascade spacing (optional)<br>\
 - Select three or more vertexes<br>\
-- The first two vertexes define the direction<br>\
+- The selection order of the first two vertexes determines the position of the baseline<br>\
+- The first two vertexes also define the direction<br>\
 - Click this tool"));
     arc3->setStatusTip(arc3->text());
 }
