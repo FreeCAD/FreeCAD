@@ -20,13 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
-
-from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -42,13 +41,14 @@ __created__ = "2014"
 __scriptVersion__ = "2e"
 __lastModified__ = "2020-02-13 17:22 CST"
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
@@ -64,18 +64,17 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 "App::PropertyEnumeration",
                 "HandleMultipleFeatures",
                 "Pocket",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathPocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
                     "Choose how to process multiple Base Geometry features.",
                 ),
             )
-        obj.HandleMultipleFeatures = ["Collectively", "Individually"]
         if not hasattr(obj, "AdaptivePocketStart"):
             obj.addProperty(
                 "App::PropertyBool",
                 "AdaptivePocketStart",
                 "Pocket",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Use adaptive algorithm to eliminate excessive air milling above planar pocket top.",
                 ),
@@ -85,7 +84,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 "App::PropertyBool",
                 "AdaptivePocketFinish",
                 "Pocket",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Use adaptive algorithm to eliminate excessive air milling below planar pocket bottom.",
                 ),
@@ -95,11 +94,47 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 "App::PropertyBool",
                 "ProcessStockArea",
                 "Pocket",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Process the model and stock in an operation with no Base Geometry selected.",
                 ),
             )
+
+        # populate the property enumerations
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
+
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+        """propertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        enums = {
+            "HandleMultipleFeatures": [
+                (translate("Path_Pocket", "Collectively"), "Collectively"),
+                (translate("Path_Pocket", "Individually"), "Individually"),
+            ],
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
 
     def opOnDocumentRestored(self, obj):
         """opOnDocumentRestored(obj) ... adds the properties if they doesn't exist."""
@@ -258,10 +293,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             except Exception as ee:
                 PathLog.warning(ee)
                 PathLog.error(
-                    translate(
-                        "Path",
-                        "A planar adaptive start is unavailable. The non-planar will be attempted.",
-                    )
+                    "A planar adaptive start is unavailable. The non-planar will be attempted."
                 )
                 tryNonPlanar = True
             else:
@@ -274,12 +306,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     )  # NON-planar face method
                 except Exception as eee:
                     PathLog.warning(eee)
-                    PathLog.error(
-                        translate(
-                            "Path", "The non-planar adaptive start is also unavailable."
-                        )
-                        + "(1)"
-                    )
+                    PathLog.error("The non-planar adaptive start is also unavailable.")
                     isHighFacePlanar = False
                 else:
                     makeHighFace = 2
@@ -304,12 +331,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             highFace.Shape.BoundBox.ZMin - mn,
                         )
                     )
-                    PathLog.error(
-                        translate(
-                            "Path", "The non-planar adaptive start is also unavailable."
-                        )
-                        + "(2)"
-                    )
+                    PathLog.error("The non-planar adaptive start is also unavailable.")
                     isHighFacePlanar = False
                     makeHighFace = 0
         else:
@@ -420,8 +442,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             cuts.append(cuts[cbi].cut(envBottom))
 
         # package pocket details into tuple
-        sdi = len(starts) - 1
-        fdi = len(finals) - 1
         cbi = len(cuts) - 1
         pocket = (cuts[cbi], False, "3DPocket")
         if FreeCAD.GuiUp:
