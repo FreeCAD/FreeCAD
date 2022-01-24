@@ -977,6 +977,8 @@ class _Wall(ArchComponent.Component):
         If "Length" has changed, record the old length so that .onChanged() can
         be sure that the base needs to be changed.
 
+        Also call ArchComponent.Component.onBeforeChange().
+
         Parameters
         ----------
         prop: string
@@ -985,6 +987,7 @@ class _Wall(ArchComponent.Component):
 
         if prop == "Length":
             self.oldLength = obj.Length.Value
+        ArchComponent.Component.onBeforeChange(self,obj,prop)
 
     def onChanged(self, obj, prop):
         """Method called when the object has a property changed.
