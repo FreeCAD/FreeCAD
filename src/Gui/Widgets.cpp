@@ -397,14 +397,19 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
     int key = e->key();
     Qt::KeyboardModifiers state = e->modifiers();
 
-    // Backspace clears the shortcut
+    // Backspace clears the shortcut if text is present, else sets Backspace as shortcut.
     // If a modifier is pressed without any other key, return.
     // AltGr is not a modifier but doesn't have a QtSring representation.
     switch(key) {
     case Qt::Key_Backspace:
         if (state == Qt::NoModifier) {
             keyPressedCount = 0;
-            setText(noneStr);
+            if (isNone()) {
+                QKeySequence ks(key);
+                setText(ks.toString(QKeySequence::NativeText));
+            } else {
+                setText(noneStr);
+            }
         }
     case Qt::Key_Control:
     case Qt::Key_Shift:
