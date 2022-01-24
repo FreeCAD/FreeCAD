@@ -30,9 +30,6 @@
 
 import FreeCAD
 import FreeCADGui
-import Part
-import Drawing
-import TechDraw
 
 svgHead = "<svg\n" + " xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n" + "    xmlns:freecad=\"http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace\">\n"
 svgTail = "\n</svg>"
