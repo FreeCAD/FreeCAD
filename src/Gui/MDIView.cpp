@@ -26,12 +26,15 @@
 #ifndef _PreComp_
 # include <boost_signals2.hpp>
 # include <boost_bind_bind.hpp>
-# include <qapplication.h>
-# include <qregexp.h>
+# include <QApplication>
+# include <QRegExp>
 # include <QEvent>
 # include <QCloseEvent>
 # include <QMdiSubWindow>
-#include <iostream>
+# include <QPrinter>
+# include <QPrintDialog>
+# include <QPrinterInfo>
+# include <iostream>
 #endif
 
 
@@ -242,6 +245,32 @@ void MDIView::printPdf()
 void MDIView::printPreview()
 {
     std::cerr << "Printing preview not implemented for " << this->metaObject()->className() << std::endl;
+}
+
+void MDIView::savePrinterSettings(QPrinter* printer)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
+    hGrp = hGrp->GetGroup(printer->printerName().toUtf8());
+
+    hGrp->SetInt("DefaultPageSize", printer->pageLayout().pageSize().id());
+    hGrp->SetInt("DefaultPageOrientation", static_cast<int>(printer->pageLayout().orientation()));
+    hGrp->SetInt("DefaultColorMode", static_cast<int>(printer->colorMode()));
+}
+
+void MDIView::restorePrinterSettings(QPrinter* printer)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
+    hGrp = hGrp->GetGroup(printer->printerName().toUtf8());
+
+    QPrinterInfo info = QPrinterInfo::defaultPrinter();
+    int initialDefaultPageSize = info.isNull() ? QPageSize::A4 : info.defaultPageSize().id();
+    int defaultPageSize = hGrp->GetInt("DefaultPageSize", initialDefaultPageSize);
+    int defaultPageOrientation = hGrp->GetInt("DefaultPageOrientation", QPageLayout::Portrait);
+    int defaultColorMode = hGrp->GetInt("DefaultColorMode", QPrinter::ColorMode::Color);
+
+    printer->setPageSize(QPageSize(static_cast<QPageSize::PageSizeId>(defaultPageSize)));
+    printer->setPageOrientation(static_cast<QPageLayout::Orientation>(defaultPageOrientation));
+    printer->setColorMode(static_cast<QPrinter::ColorMode>(defaultColorMode));
 }
 
 QStringList MDIView::undoActions() const

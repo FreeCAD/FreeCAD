@@ -494,10 +494,13 @@ void View3DInventor::print()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
+    restorePrinterSettings(&printer);
+
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
         Gui::WaitCursor wc;
         print(&printer);
+        savePrinterSettings(&printer);
     }
 }
 
@@ -518,19 +521,13 @@ void View3DInventor::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    int initialDefaultPageSize = !QPrinterInfo::defaultPrinter().isNull() ? QPrinterInfo::defaultPrinter().defaultPageSize().id() : QPageSize::A4;
-    int defaultPageSize = hGrp->GetInt("DefaultPageSize", initialDefaultPageSize);
-    int defaultPageOrientation = hGrp->GetInt("DefaultPageOrientation", QPageLayout::Portrait);
-    printer.setPageSize(QPageSize(static_cast<QPageSize::PageSizeId>(defaultPageSize)));
-    printer.setPageOrientation(static_cast<QPageLayout::Orientation>(defaultPageOrientation));
+    restorePrinterSettings(&printer);
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
             this, SLOT(print(QPrinter *)));
     dlg.exec();
-    hGrp -> SetInt("DefaultPageSize", printer.pageLayout().pageSize().id());
-    hGrp -> SetInt("DefaultPageOrientation", static_cast<int>(printer.pageLayout().orientation()));
+    savePrinterSettings(&printer);
 }
 
 void View3DInventor::print(QPrinter* printer)
