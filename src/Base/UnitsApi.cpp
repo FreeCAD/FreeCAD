@@ -52,35 +52,12 @@
 
 using namespace Base;
 
-
-//const QString  UnitsApi::getQuantityName(QuantityType t)
-//{
-//    // check limits
-//    assert(t<9);
-//    // returns
-//    return QString::fromLatin1(QuantityNames[t]);
-//}
 // === static attributes  ================================================
-double UnitsApi::defaultFactor = 1.0;
 
 UnitsSchemaPtr  UnitsApi::UserPrefSystem(new UnitsSchemaInternal());
-UnitSystem    UnitsApi::actSystem = UnitSystem::SI1;
+UnitSystem    UnitsApi::currentSystem = UnitSystem::SI1;
 
-//double   UnitsApi::UserPrefFactor [50];
-//QString  UnitsApi::UserPrefUnit   [50];
-int      UnitsApi::UserPrefDecimals = 2;
-
-UnitsApi::UnitsApi(const char* /*filter*/)
-{
-}
-
-UnitsApi::UnitsApi(const std::string& /*filter*/)
-{
-}
-
-UnitsApi::~UnitsApi()
-{
-}
+int UnitsApi::UserPrefDecimals = 2;
 
 const char* UnitsApi::getDescription(UnitSystem system)
 {
@@ -143,12 +120,12 @@ void UnitsApi::setSchema(UnitSystem s)
     }
 
     UserPrefSystem = createSchema(s);
-    actSystem = s;
+    currentSystem = s;
 
     // for wrong value fall back to standard schema
     if (!UserPrefSystem) {
         UserPrefSystem = std::make_unique<UnitsSchemaInternal>();
-        actSystem = UnitSystem::SI1;
+        currentSystem = UnitSystem::SI1;
     }
 
     UserPrefSystem->setSchemaUnits(); // if necessary a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
@@ -172,19 +149,6 @@ QString UnitsApi::toNumber(double d, const QuantityFormat& f)
     return number;
 }
 
-//double UnitsApi::translateUnit(const char* str)
-//{
-//    bool temp;
-//    return parse(str,temp );
-//}
-//
-//double UnitsApi::translateUnit(const QString & str)
-//{
-//    bool temp;
-//    return parse(str.toUtf8() ,temp);
-//}
-//
-
 // === static translation methods ==========================================
 
 QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
@@ -192,26 +156,7 @@ QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double &factor, Q
     return UserPrefSystem->schemaTranslate(quant,factor,unitString);
 }
 
-
-//QString UnitsApi::toStrWithUserPrefs(QuantityType t,double Value)
-//{
-//    return UserPrefSystem->toStrWithUserPrefs(t,Value);
-//    //double UnitValue = Value/UserPrefFactor[t];
-//    //return QString::fromLatin1("%1 %2").arg(UnitValue).arg(UserPrefUnit[t]);
-//}
-//
-//void UnitsApi::toStrWithUserPrefs(QuantityType t,double Value,QString &outValue,QString &outUnit)
-//{
-//    UserPrefSystem->toStrWithUserPrefs(t,Value,outValue,outUnit);
-//}
-//
-//PyObject *UnitsApi::toPyWithUserPrefs(QuantityType t,double Value)
-//{
-//    return PyFloat_FromDouble(Value * UserPrefFactor[t]);
-//}
-//
-
-double UnitsApi::toDbl(PyObject *ArgObj, const Base::Unit &u)
+double UnitsApi::toDouble(PyObject *ArgObj, const Base::Unit &u)
 {
     if (PyUnicode_Check(ArgObj)) {
         QString str = QString::fromUtf8(PyUnicode_AsUTF8(ArgObj));
@@ -263,4 +208,3 @@ int UnitsApi::getDecimals()
 {
     return UserPrefDecimals;
 }
-
