@@ -1492,6 +1492,7 @@ CmdTechDrawExtensionExtendLine::CmdTechDrawExtensionExtendLine()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Extend Line");
     sToolTipText    = QT_TR_NOOP("Extend a cosmetic line or centerline at both ends:<br>\
+- Specify the delta distance (optional)<br>\
 - Select a single line<br>\
 - Click this tool");
     sWhatsThis      = "TechDraw_ExtensionExtendLine";
@@ -1526,6 +1527,7 @@ CmdTechDrawExtensionShortenLine::CmdTechDrawExtensionShortenLine()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Shorten Line");
     sToolTipText    = QT_TR_NOOP("Shorten a cosmetic line or centerline at both ends:<br>\
+- Specify the delta distance (optional)<br>\
 - Select a single line<br>\
 - Click this tool");
     sWhatsThis      = "TechDraw_ExtensionShortenLine";
@@ -1560,6 +1562,7 @@ CmdTechDrawExtendShortenLineGroup::CmdTechDrawExtendShortenLineGroup()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Extend Line");
     sToolTipText    = QT_TR_NOOP("Extend a cosmetic line or centerline at both ends:<br>\
+- Specify the delta distance (optional)<br>\
 - Select a single line<br>\
 - Click this tool");
     sWhatsThis      = "TechDraw_ExtensionExtendShortenLineGroup";
@@ -1628,6 +1631,7 @@ void CmdTechDrawExtendShortenLineGroup::languageChange()
     arc1->setText(QApplication::translate("CmdTechDrawExtensionExtendLine", "Extend Line"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionExtendLine",
 "Extend a cosmetic line or centerline at both ends:<br>\
+- Specify the delta distance (optional)<br>\
 - Select a single line<br>\
 - Click this tool"));
     arc1->setStatusTip(arc1->text());
@@ -1635,6 +1639,7 @@ void CmdTechDrawExtendShortenLineGroup::languageChange()
     arc2->setText(QApplication::translate("CmdTechDrawExtensionShortenLine", "Shorten Line"));
     arc2->setToolTip(QApplication::translate("CmdTechDrawExtensionShortenLine",
 "Shorten a cosmetic line or centerline at both ends:<br>\
+- Specify the delta distance (optional)<br>\
 - Select a single line<br>\
 - Click this tool"));
     arc2->setStatusTip(arc2->text());
