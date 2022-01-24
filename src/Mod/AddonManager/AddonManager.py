@@ -1478,6 +1478,15 @@ class CommandAddonManager:
                                 )
                             )
 
+            # Second, run the Addon's "uninstall.py" script, if it exists
+            uninstall_script = os.path.join(clonedir,"uninstall.py")
+            if os.path.exists(uninstall_script):
+                try:
+                    with open(uninstall_script, 'r') as f:
+                        exec(f.read())
+                except Exception:
+                    FreeCAD.Console.PrintError(translate("AddonsInstaller","Execution of Addon's uninstall.py script failed. Proceeding with uninstall...") + "\n")
+
             if os.path.exists(clonedir):
                 shutil.rmtree(clonedir, onerror=self.remove_readonly)
                 self.item_model.update_item_status(
