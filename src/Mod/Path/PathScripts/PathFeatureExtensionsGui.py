@@ -20,16 +20,15 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
+from pivy import coin
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathFeatureExtensions as FeatureExtensions
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathFeatureExtensions as FeatureExtensions
-
-from PySide import QtCore, QtGui
-from pivy import coin
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -42,12 +41,13 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Extensions feature page controller."
 
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class _Extension(object):

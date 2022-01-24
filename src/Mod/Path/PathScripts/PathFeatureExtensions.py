@@ -20,10 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import Part
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
-import Part
 import math
 
 # lazily loaded modules
@@ -31,20 +32,20 @@ from lazy_loader.lazy_loader import LazyLoader
 
 PathUtils = LazyLoader("PathScripts.PathUtils", globals(), "PathScripts.PathUtils")
 
-from PySide import QtCore
 
 __title__ = "Path Features Extensions"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Class and implementation of face extensions features."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 def endPoints(edgeOrWire):
@@ -104,6 +105,7 @@ def extendWire(feature, wire, length):
     try:
         off2D = wire.makeOffset2D(length)
     except FreeCAD.Base.FreeCADError as ee:
+        PathLog.debug(ee)
         return None
     endPts = endPoints(wire)  # Assumes wire is NOT closed
     if endPts:
@@ -389,6 +391,7 @@ class Extension(object):
             try:
                 off2D = sub.makeOffset2D(length)
             except FreeCAD.Base.FreeCADError as ee:
+                PathLog.debug(ee)
                 return None
 
             if isOutside:
@@ -511,24 +514,22 @@ def initialize_properties(obj):
             "App::PropertyDistance",
             "ExtensionLengthDefault",
             "Extension",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathPocketShape", "Default length of extensions."
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Default length of extensions."),
         )
     if not hasattr(obj, "ExtensionFeature"):
         obj.addProperty(
             "App::PropertyLinkSubListGlobal",
             "ExtensionFeature",
             "Extension",
-            QtCore.QT_TRANSLATE_NOOP("PathPocketShape", "List of features to extend."),
+            QT_TRANSLATE_NOOP("App::Property", "List of features to extend."),
         )
     if not hasattr(obj, "ExtensionCorners"):
         obj.addProperty(
             "App::PropertyBool",
             "ExtensionCorners",
             "Extension",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathPocketShape",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
                 "When enabled connected extension edges are combined to wires.",
             ),
         )
