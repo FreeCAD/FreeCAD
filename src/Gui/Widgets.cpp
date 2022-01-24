@@ -401,6 +401,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
     // AltGr is not a modifier but doesn't have a QString representation.
     switch(key) {
     case Qt::Key_Backspace:
+    case Qt::Key_Delete:
         if (state == Qt::NoModifier) {
             keyPressedCount = 0;
             if (isNone()) {
@@ -472,7 +473,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
 ModifierLineEdit::ModifierLineEdit ( QWidget * parent )
   : QLineEdit(parent)
 {
-    setPlaceholderText(tr("none"));
+    setPlaceholderText(tr("Press a keyboard shortcut"));
 }
 
 /**
@@ -492,7 +493,7 @@ void ModifierLineEdit::keyPressEvent ( QKeyEvent * e)
     case Qt::Key_Shift:
     case Qt::Key_Alt:
     case Qt::Key_Meta:
-        break;;
+        break;
     default:
         return;
     }
