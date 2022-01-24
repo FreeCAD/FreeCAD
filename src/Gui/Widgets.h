@@ -144,7 +144,6 @@ protected:
     void keyPressEvent(QKeyEvent * e);
 
 private:
-    QString noneStr;
     int keyPressedCount;
 };
 

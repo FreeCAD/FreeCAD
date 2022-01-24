@@ -376,15 +376,14 @@ void ActionSelector::on_downButton_clicked()
 AccelLineEdit::AccelLineEdit ( QWidget * parent )
   : QLineEdit(parent)
 {
-    noneStr = tr("none");
-    setText(noneStr);
+    setPlaceholderText(tr("Press a keyboard shortcut"));
+    setClearButtonEnabled(true);
     keyPressedCount = 0;
 }
 
 bool AccelLineEdit::isNone() const
 {
-    QString t = text();
-    return t.isEmpty() || t == noneStr;
+    return text().isEmpty();
 }
 
 /**
@@ -399,7 +398,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
 
     // Backspace clears the shortcut if text is present, else sets Backspace as shortcut.
     // If a modifier is pressed without any other key, return.
-    // AltGr is not a modifier but doesn't have a QtSring representation.
+    // AltGr is not a modifier but doesn't have a QString representation.
     switch(key) {
     case Qt::Key_Backspace:
         if (state == Qt::NoModifier) {
@@ -407,8 +406,9 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
             if (isNone()) {
                 QKeySequence ks(key);
                 setText(ks.toString(QKeySequence::NativeText));
-            } else {
-                setText(noneStr);
+            }
+            else {
+                clear();
             }
         }
     case Qt::Key_Control:
@@ -431,7 +431,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
         txtLine.clear();
         break;
     default:
-        txtLine += QString::fromLatin1(",");
+        txtLine += QChar::fromLatin1(',');
         break;
     }
 
