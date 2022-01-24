@@ -3009,7 +3009,7 @@ def getSplineSegs(edge):
         It returns the point in `edge.FirstParameter`,
         all the intermediate points, and the point in `edge.LastParameter`.
 
-        If the `segmentlenth` variable is zero in the parameters database,
+        If the `segmentlength` variable is zero in the parameters database,
         then it only returns the first and the last point of the `edge`.
     """
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")

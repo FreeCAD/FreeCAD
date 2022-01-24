@@ -198,7 +198,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
 
-            # move to starting postion
+            # move to starting position
             self.commandlist.append(
                 Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
             )
