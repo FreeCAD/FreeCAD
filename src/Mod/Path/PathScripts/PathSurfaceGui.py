@@ -22,7 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathSurface as PathSurface
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
@@ -36,7 +36,7 @@ __doc__ = "Surface operation page controller and command implementation."
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Page controller class for the Surface operation.'''
+    """Page controller class for the Surface operation."""
 
     def initPage(self, obj):
         self.setTitle("3D Surface - " + obj.Label)
@@ -45,11 +45,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.propEnums = PathSurface.ObjectSurface.opPropertyEnumerations(False)
 
     def getForm(self):
-        '''getForm() ... returns UI'''
+        """getForm() ... returns UI"""
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpSurfaceEdit.ui")
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        """getFields(obj) ... transfers values from UI to obj's proprties"""
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
@@ -74,29 +74,33 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             This type of dynamic combobox population is done for the
             Tool Controller selection.
         """
-        val = self.propEnums['CutPattern'][self.form.cutPattern.currentIndex()]
+        val = self.propEnums["CutPattern"][self.form.cutPattern.currentIndex()]
         if obj.CutPattern != val:
             obj.CutPattern = val
 
-        val = self.propEnums['ProfileEdges'][self.form.profileEdges.currentIndex()]
+        val = self.propEnums["ProfileEdges"][self.form.profileEdges.currentIndex()]
         if obj.ProfileEdges != val:
             obj.ProfileEdges = val
 
         if obj.AvoidLastX_Faces != self.form.avoidLastX_Faces.value():
             obj.AvoidLastX_Faces = self.form.avoidLastX_Faces.value()
 
-        obj.DropCutterExtraOffset.x = FreeCAD.Units.Quantity(self.form.boundBoxExtraOffsetX.text()).Value
-        obj.DropCutterExtraOffset.y = FreeCAD.Units.Quantity(self.form.boundBoxExtraOffsetY.text()).Value
+        obj.DropCutterExtraOffset.x = FreeCAD.Units.Quantity(
+            self.form.boundBoxExtraOffsetX.text()
+        ).Value
+        obj.DropCutterExtraOffset.y = FreeCAD.Units.Quantity(
+            self.form.boundBoxExtraOffsetY.text()
+        ).Value
 
         if obj.DropCutterDir != str(self.form.dropCutterDirSelect.currentText()):
             obj.DropCutterDir = str(self.form.dropCutterDirSelect.currentText())
 
-        PathGui.updateInputField(obj, 'DepthOffset', self.form.depthOffset)
+        PathGui.updateInputField(obj, "DepthOffset", self.form.depthOffset)
 
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
 
-        PathGui.updateInputField(obj, 'SampleInterval', self.form.sampleInterval)
+        PathGui.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
@@ -107,11 +111,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.OptimizeLinearPaths != self.form.optimizeEnabled.isChecked():
             obj.OptimizeLinearPaths = self.form.optimizeEnabled.isChecked()
 
-        if obj.OptimizeStepOverTransitions != self.form.optimizeStepOverTransitions.isChecked():
-            obj.OptimizeStepOverTransitions = self.form.optimizeStepOverTransitions.isChecked()
+        if (
+            obj.OptimizeStepOverTransitions
+            != self.form.optimizeStepOverTransitions.isChecked()
+        ):
+            obj.OptimizeStepOverTransitions = (
+                self.form.optimizeStepOverTransitions.isChecked()
+            )
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
@@ -126,20 +135,36 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             and the UI panel QComboBox list.
         The original method is commented out below.
         """
-        idx = self.propEnums['CutPattern'].index(obj.CutPattern)
+        idx = self.propEnums["CutPattern"].index(obj.CutPattern)
         self.form.cutPattern.setCurrentIndex(idx)
-        idx = self.propEnums['ProfileEdges'].index(obj.ProfileEdges)
+        idx = self.propEnums["ProfileEdges"].index(obj.ProfileEdges)
         self.form.profileEdges.setCurrentIndex(idx)
         # self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
         # self.selectInComboBox(obj.ProfileEdges, self.form.profileEdges)
 
         self.form.avoidLastX_Faces.setValue(obj.AvoidLastX_Faces)
-        self.form.boundBoxExtraOffsetX.setText(FreeCAD.Units.Quantity(obj.DropCutterExtraOffset.x, FreeCAD.Units.Length).UserString)
-        self.form.boundBoxExtraOffsetY.setText(FreeCAD.Units.Quantity(obj.DropCutterExtraOffset.y, FreeCAD.Units.Length).UserString)
+        self.form.boundBoxExtraOffsetX.setText(
+            FreeCAD.Units.Quantity(
+                obj.DropCutterExtraOffset.x, FreeCAD.Units.Length
+            ).UserString
+        )
+        self.form.boundBoxExtraOffsetY.setText(
+            FreeCAD.Units.Quantity(
+                obj.DropCutterExtraOffset.y, FreeCAD.Units.Length
+            ).UserString
+        )
         self.selectInComboBox(obj.DropCutterDir, self.form.dropCutterDirSelect)
-        self.form.depthOffset.setText(FreeCAD.Units.Quantity(obj.DepthOffset.Value, FreeCAD.Units.Length).UserString)
+        self.form.depthOffset.setText(
+            FreeCAD.Units.Quantity(
+                obj.DepthOffset.Value, FreeCAD.Units.Length
+            ).UserString
+        )
         self.form.stepOver.setValue(obj.StepOver)
-        self.form.sampleInterval.setText(FreeCAD.Units.Quantity(obj.SampleInterval.Value, FreeCAD.Units.Length).UserString)
+        self.form.sampleInterval.setText(
+            FreeCAD.Units.Quantity(
+                obj.SampleInterval.Value, FreeCAD.Units.Length
+            ).UserString
+        )
 
         if obj.UseStartPoint:
             self.form.useStartPoint.setCheckState(QtCore.Qt.Checked)
@@ -164,7 +189,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
@@ -188,12 +213,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return signals
 
     def updateVisibility(self, sentObj=None):
-        '''updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects.'''
-        if self.form.scanType.currentText() == 'Planar':
+        """updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects."""
+        if self.form.scanType.currentText() == "Planar":
             self.form.cutPattern.show()
             self.form.cutPattern_label.show()
             self.form.optimizeStepOverTransitions.show()
-            if hasattr(self.form, 'profileEdges'):
+            if hasattr(self.form, "profileEdges"):
                 self.form.profileEdges.show()
                 self.form.profileEdges_label.show()
                 self.form.avoidLastX_Faces.show()
@@ -204,11 +229,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.boundBoxExtraOffset_label.hide()
             self.form.dropCutterDirSelect.hide()
             self.form.dropCutterDirSelect_label.hide()
-        elif self.form.scanType.currentText() == 'Rotational':
+        elif self.form.scanType.currentText() == "Rotational":
             self.form.cutPattern.hide()
             self.form.cutPattern_label.hide()
             self.form.optimizeStepOverTransitions.hide()
-            if hasattr(self.form, 'profileEdges'):
+            if hasattr(self.form, "profileEdges"):
                 self.form.profileEdges.hide()
                 self.form.profileEdges_label.hide()
                 self.form.avoidLastX_Faces.hide()
@@ -224,12 +249,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.scanType.currentIndexChanged.connect(self.updateVisibility)
 
 
-Command = PathOpGui.SetupOperation('Surface',
-        PathSurface.Create,
-        TaskPanelOpPage,
-        'Path_3DSurface',
-        QtCore.QT_TRANSLATE_NOOP("Path_Surface", "3D Surface"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Surface", "Create a 3D Surface Operation from a model"),
-        PathSurface.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "Surface",
+    PathSurface.Create,
+    TaskPanelOpPage,
+    "Path_3DSurface",
+    QtCore.QT_TRANSLATE_NOOP("Path_Surface", "3D Surface"),
+    QtCore.QT_TRANSLATE_NOOP(
+        "Path_Surface", "Create a 3D Surface Operation from a model"
+    ),
+    PathSurface.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathSurfaceGui... done\n")
