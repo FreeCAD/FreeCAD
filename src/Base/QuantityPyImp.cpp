@@ -33,7 +33,7 @@
 using namespace Base;
 
 // returns a string which represents the object e.g. when printed in python
-std::string QuantityPy::representation(void) const
+std::string QuantityPy::representation() const
 {
     std::stringstream ret;
 #if 0
@@ -238,12 +238,12 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
 
     if (!quant.isValid()) {
         PyErr_SetString(PyExc_TypeError, "Either quantity, string, float or unit expected");
-        return 0;
+        return nullptr;
     }
 
     if (getQuantityPtr()->getUnit() != quant.getUnit() && quant.isQuantity()) {
         PyErr_SetString(PyExc_ValueError, "Unit mismatch");
-        return 0;
+        return nullptr;
     }
 
     quant = Quantity(getQuantityPtr()->getValueAs(quant));
@@ -265,7 +265,7 @@ PyObject * QuantityPy::number_float_handler (PyObject *self)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
-        return 0;
+        return nullptr;
     }
 
     QuantityPy* q = static_cast<QuantityPy*>(self);
@@ -276,7 +276,7 @@ PyObject * QuantityPy::number_int_handler (PyObject *self)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
-        return 0;
+        return nullptr;
     }
 
     QuantityPy* q = static_cast<QuantityPy*>(self);
@@ -287,7 +287,7 @@ PyObject * QuantityPy::number_negative_handler (PyObject *self)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
-        return 0;
+        return nullptr;
     }
 
     Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
@@ -299,7 +299,7 @@ PyObject * QuantityPy::number_positive_handler (PyObject *self)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
-        return 0;
+        return nullptr;
     }
 
     Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
@@ -310,7 +310,7 @@ PyObject * QuantityPy::number_absolute_handler (PyObject *self)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
-        return 0;
+        return nullptr;
     }
 
     Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
@@ -407,7 +407,7 @@ PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
-        return 0;
+        return nullptr;
     }
 
     double d1, d2;
@@ -426,7 +426,7 @@ PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other
     }
     else {
         PyErr_SetString(PyExc_TypeError, "Expected quantity or number");
-        return 0;
+        return nullptr;
     }
 
     PyObject* p1 = PyFloat_FromDouble(d1);
@@ -435,7 +435,7 @@ PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other
     Py_DECREF(p1);
     Py_DECREF(p2);
     if (!r)
-        return 0;
+        return nullptr;
     double q = PyFloat_AsDouble(r);
     Py_DECREF(r);
     return new QuantityPy(new Quantity(q,a->getUnit()));
@@ -445,14 +445,14 @@ PyObject * QuantityPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*ot
 {
     //PyNumber_Divmod();
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, PyObject * /*modulo*/)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
-        return 0;
+        return nullptr;
     }
 
     PY_TRY {
@@ -475,7 +475,7 @@ PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, Py
         }
         else {
             PyErr_SetString(PyExc_TypeError, "Expected quantity or number");
-            return 0;
+            return nullptr;
         }
     }PY_CATCH
 }
@@ -487,7 +487,7 @@ int QuantityPy::number_nonzero_handler (PyObject *self)
     }
 
     Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-    return a->getValue() != 0;
+    return a->getValue() != 0.0;
 }
 
 PyObject* QuantityPy::richCompare(PyObject *v, PyObject *w, int op)
@@ -497,7 +497,7 @@ PyObject* QuantityPy::richCompare(PyObject *v, PyObject *w, int op)
         const Quantity * u1 = static_cast<QuantityPy*>(v)->getQuantityPtr();
         const Quantity * u2 = static_cast<QuantityPy*>(w)->getQuantityPtr();
 
-        PyObject *res=0;
+        PyObject *res=nullptr;
         if (op == Py_NE) {
             res = (!(*u1 == *u2)) ? Py_True : Py_False;
             Py_INCREF(res);
@@ -533,7 +533,7 @@ PyObject* QuantityPy::richCompare(PyObject *v, PyObject *w, int op)
         // Try to get floating numbers
         double u1 = PyFloat_AsDouble(v);
         double u2 = PyFloat_AsDouble(w);
-        PyObject *res=0;
+        PyObject *res=nullptr;
         if (op == Py_NE) {
             res = (u1 != u2) ? Py_True : Py_False;
             Py_INCREF(res);
@@ -571,7 +571,7 @@ PyObject* QuantityPy::richCompare(PyObject *v, PyObject *w, int op)
     return Py_NotImplemented;
 }
 
-Py::Float QuantityPy::getValue(void) const
+Py::Float QuantityPy::getValue() const
 {
     return Py::Float(getQuantityPtr()->getValue());
 }
@@ -581,7 +581,7 @@ void QuantityPy::setValue(Py::Float arg)
     getQuantityPtr()->setValue(arg);
 }
 
-Py::Object QuantityPy::getUnit(void) const
+Py::Object QuantityPy::getUnit() const
 {
     return Py::asObject(new UnitPy(new Unit(getQuantityPtr()->getUnit())));
 }
@@ -596,12 +596,12 @@ void QuantityPy::setUnit(Py::Object arg)
     getQuantityPtr()->setUnit(*static_cast<Base::UnitPy*>((*arg))->getUnitPtr());
 }
 
-Py::String QuantityPy::getUserString(void) const
+Py::String QuantityPy::getUserString() const
 {
     return Py::String(getQuantityPtr()->getUserString().toUtf8(),"utf-8");
 }
 
-Py::Dict QuantityPy::getFormat(void) const
+Py::Dict QuantityPy::getFormat() const
 {
     QuantityFormat fmt = getQuantityPtr()->getFormat();
 
@@ -685,36 +685,36 @@ int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 PyObject * QuantityPy::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_TypeError, "bad operand type for unary ~");
-    return 0;
+    return nullptr;
 }
 
 PyObject * QuantityPy::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for <<");
-    return 0;
+    return nullptr;
 }
 
 PyObject * QuantityPy::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for >>");
-    return 0;
+    return nullptr;
 }
 
 PyObject * QuantityPy::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for &");
-    return 0;
+    return nullptr;
 }
 
 PyObject * QuantityPy::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for ^");
-    return 0;
+    return nullptr;
 }
 
 PyObject * QuantityPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for |");
-    return 0;
+    return nullptr;
 }
 

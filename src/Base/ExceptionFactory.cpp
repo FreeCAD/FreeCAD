@@ -27,20 +27,20 @@
 
 using namespace Base;
 
-ExceptionFactory* ExceptionFactory::_pcSingleton = NULL;
+ExceptionFactory* ExceptionFactory::_pcSingleton = nullptr;
 
-ExceptionFactory& ExceptionFactory::Instance(void)
+ExceptionFactory& ExceptionFactory::Instance()
 {
-    if (_pcSingleton == NULL)
+    if (_pcSingleton == nullptr)
         _pcSingleton = new ExceptionFactory;
     return *_pcSingleton;
 }
 
-void ExceptionFactory::Destruct (void)
+void ExceptionFactory::Destruct ()
 {
-    if (_pcSingleton != 0)
+    if (_pcSingleton != nullptr)
         delete _pcSingleton;
-    _pcSingleton = 0;
+    _pcSingleton = nullptr;
 }
 
 void ExceptionFactory::raiseException (PyObject * pydict) const

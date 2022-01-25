@@ -34,7 +34,7 @@
 
 using namespace Base;
 
-Matrix4D::Matrix4D (void)
+Matrix4D::Matrix4D ()
 {
     setToUnity();
 }
@@ -91,7 +91,7 @@ Matrix4D::Matrix4D (const Vector3d& rclBase, const Vector3d& rclDir, double fAng
     this->rotLine(rclBase,rclDir,fAngle);
 }
 
-void Matrix4D::setToUnity (void)
+void Matrix4D::setToUnity ()
 {
     dMtrx4D[0][0] = 1.0; dMtrx4D[0][1] = 0.0; dMtrx4D[0][2] = 0.0; dMtrx4D[0][3] = 0.0;
     dMtrx4D[1][0] = 0.0; dMtrx4D[1][1] = 1.0; dMtrx4D[1][2] = 0.0; dMtrx4D[1][3] = 0.0;
@@ -99,7 +99,7 @@ void Matrix4D::setToUnity (void)
     dMtrx4D[3][0] = 0.0; dMtrx4D[3][1] = 0.0; dMtrx4D[3][2] = 0.0; dMtrx4D[3][3] = 1.0;
 }
 
-void Matrix4D::nullify(void)
+void Matrix4D::nullify()
 {
     dMtrx4D[0][0] = 0.0; dMtrx4D[0][1] = 0.0; dMtrx4D[0][2] = 0.0; dMtrx4D[0][3] = 0.0;
     dMtrx4D[1][0] = 0.0; dMtrx4D[1][1] = 0.0; dMtrx4D[1][2] = 0.0; dMtrx4D[1][3] = 0.0;
@@ -436,7 +436,7 @@ void Matrix4D::transform (const Vector3d& rclVct, const Matrix4D& rclMtrx)
     move(rclVct);
 }
 
-void Matrix4D::inverse (void)
+void Matrix4D::inverse ()
 {
   Matrix4D clInvTrlMat, clInvRotMat;
   short  iz, is;
@@ -560,7 +560,7 @@ void Matrix_invert (Matrix a, Matrix inva)
   Matrix_gauss(temp,inva);
 }
 
-void  Matrix4D::inverseOrthogonal(void)
+void  Matrix4D::inverseOrthogonal()
 {
     Base::Vector3d c(dMtrx4D[0][3],dMtrx4D[1][3],dMtrx4D[2][3]);
     transpose();
@@ -570,7 +570,7 @@ void  Matrix4D::inverseOrthogonal(void)
     dMtrx4D[2][3] = -c.z; dMtrx4D[3][2] = 0;
 }
 
-void Matrix4D::inverseGauss (void)
+void Matrix4D::inverseGauss ()
 {
   double matrix        [16];
   double inversematrix [16] = { 1 ,0 ,0 ,0 ,
@@ -621,19 +621,19 @@ void Matrix4D::setGLMatrix (const double dMtrx[16])
       dMtrx4D[iz][is] = dMtrx[ iz + 4*is ];
 }
 
-unsigned long Matrix4D::getMemSpace (void)
+unsigned long Matrix4D::getMemSpace ()
 {
     return sizeof(Matrix4D);
 }
 
-void Matrix4D::Print (void) const
+void Matrix4D::Print () const
 {
     short i;
     for (i = 0; i < 4; i++)
         printf("%9.3f %9.3f %9.3f %9.3f\n", dMtrx4D[i][0], dMtrx4D[i][1], dMtrx4D[i][2], dMtrx4D[i][3]);
 }
 
-void Matrix4D::transpose (void)
+void Matrix4D::transpose ()
 {
   double  dNew[4][4];
 
@@ -649,7 +649,7 @@ void Matrix4D::transpose (void)
 
 
 // write the 12 double of the matrix in a stream
-std::string Matrix4D::toString(void) const
+std::string Matrix4D::toString() const
 {
   std::stringstream str;
   for (int i = 0; i < 4; i++)
@@ -675,7 +675,7 @@ void Matrix4D::fromString(const std::string &str)
 }
 
 // Analyse the a transformation Matrix and describe the transformation
-std::string Matrix4D::analyse(void) const
+std::string Matrix4D::analyse() const
 {
     const double eps=1.0e-06;
     bool hastranslation = (dMtrx4D[0][3] != 0.0 ||

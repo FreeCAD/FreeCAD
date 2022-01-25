@@ -26,7 +26,7 @@
 
 #ifndef _PreComp_
 # include <iostream>
-# include <assert.h>
+# include <cassert>
 #endif
 
 #include <QAtomicInt>
@@ -64,7 +64,7 @@ void Handled::unref() const
     }
 }
 
-int Handled::getRefCount(void) const
+int Handled::getRefCount() const
 {
     return static_cast<int>(*_lRefCount);
 }

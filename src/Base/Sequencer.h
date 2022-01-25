@@ -385,7 +385,7 @@ inline SequencerBase& Sequencer ()
 class BaseExport ProgressIndicatorPy : public Py::PythonExtension<ProgressIndicatorPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     ProgressIndicatorPy();
     ~ProgressIndicatorPy();

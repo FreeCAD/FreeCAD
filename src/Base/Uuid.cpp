@@ -64,7 +64,7 @@ Uuid::~Uuid()
 //**************************************************************************
 // Get the UUID
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-std::string Uuid::createUuid(void)
+std::string Uuid::createUuid()
 {
     std::string Uuid;
     QString uuid = QUuid::createUuid().toString();
@@ -93,7 +93,7 @@ void Uuid::setValue(const std::string &sString)
     setValue(sString.c_str());
 }
 
-const std::string& Uuid::getValue(void) const
+const std::string& Uuid::getValue() const
 {
     return _uuid;
 }

@@ -24,11 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <assert.h>
+# include <cassert>
 # include <string>
 #endif
 
-#include <stdlib.h>
+#include <cstdlib>
 
 /// FreeCAD #includes sorted by Base,App,Gui......
 #include "Builder3D.h"
@@ -106,7 +106,7 @@ void Builder3D::addPoint(const Vector3f &vec)
  * Ends the point set operations and write the resulting inventor string.
  * @see startPoints()
  */
-void Builder3D::endPoints(void)
+void Builder3D::endPoints()
 {
   result  <<      "] ";
   result  <<     "} ";
@@ -184,7 +184,7 @@ void Builder3D::clear ()
 //**************************************************************************
 // line/arrow handling
 
-void Builder3D::addSingleLine(Vector3f pt1, Vector3f pt2, short lineSize, float color_r,float color_g,float color_b, unsigned short linePattern)
+void Builder3D::addSingleLine(const Vector3f& pt1, const Vector3f& pt2, short lineSize, float color_r,float color_g,float color_b, unsigned short linePattern)
 {
   char lp[20];
   sprintf(lp, "0x%x", linePattern);
@@ -205,7 +205,7 @@ void Builder3D::addSingleLine(Vector3f pt1, Vector3f pt2, short lineSize, float 
          << "} ";
 }
 
-void Builder3D::addSingleArrow(Vector3f pt1, Vector3f pt2, short lineSize, float color_r,float color_g,float color_b, unsigned short /*linePattern*/)
+void Builder3D::addSingleArrow(const Vector3f& pt1, const Vector3f& pt2, short lineSize, float color_r,float color_g,float color_b, unsigned short /*linePattern*/)
 {
     float l = (pt2 - pt1).Length();
     float cl = l / 10.0f;
@@ -245,7 +245,7 @@ void Builder3D::addSingleArrow(Vector3f pt1, Vector3f pt2, short lineSize, float
 //**************************************************************************
 // triangle handling
 
-void Builder3D::addSingleTriangle(Vector3f pt0, Vector3f pt1, Vector3f pt2, bool filled, short lineSize, float color_r, float color_g, float color_b)
+void Builder3D::addSingleTriangle(const Vector3f& pt0, const Vector3f& pt1, const Vector3f& pt2, bool filled, short lineSize, float color_r, float color_g, float color_b)
 {
   std::string fs = "";
   if (filled)
@@ -298,7 +298,7 @@ void Builder3D::addTransformation(const Base::Vector3f& translation, const Base:
  * show more then one representation use saveToFile() instead.
  * @see saveToFile()
  */
-void Builder3D::saveToLog(void)
+void Builder3D::saveToLog()
 {
     result <<   "} ";
     // Note: The string can become very long, so that ConsoleSingelton::Log() will internally

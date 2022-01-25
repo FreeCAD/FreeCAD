@@ -49,7 +49,7 @@ public:
   /*!
    * Initialises to an identity matrix
    */
-  Matrix4D(void);
+  Matrix4D();
 
   /// Construction
   Matrix4D (float a11, float a12, float a13, float a14,
@@ -99,7 +99,7 @@ public:
   /// Compute the determinant of the matrix
   double determinant() const;
   /// Analyse the transformation
-  std::string analyse(void) const;
+  std::string analyse() const;
   /// Outer product (Dyadic product)
   Matrix4D& Outer(const Vector3f& rV1, const Vector3f& rV2);
   Matrix4D& Outer(const Vector3d& rV1, const Vector3d& rV2);
@@ -115,14 +115,14 @@ public:
   /// set the matrix in OpenGL style
   void setGLMatrix  (const double dMtrx[16]);
 
-  unsigned long getMemSpace (void);
+  unsigned long getMemSpace ();
 
   /** @name Manipulation */
   //@{
   /// Makes unity matrix
-  void setToUnity(void);
+  void setToUnity();
   /// Makes a null matrix
-  void nullify(void);
+  void nullify();
   /// moves the coordinatesystem for the x,y,z value
   void move         (float x, float y, float z)
   { move(Vector3f(x,y,z)); }
@@ -162,17 +162,17 @@ public:
   void transform    (const Vector3f& rclVct, const Matrix4D& rclMtrx);
   void transform    (const Vector3d& rclVct, const Matrix4D& rclMtrx);
   /// Matrix is expected to have a 3x3 rotation submatrix.
-  void inverse      (void);
+  void inverse      ();
   /// Matrix is expected to have a 3x3 rotation submatrix.
-  void inverseOrthogonal(void);
+  void inverseOrthogonal();
   /// Arbitrary, non-singular matrix
-  void inverseGauss (void);
-  void transpose    (void);
+  void inverseGauss ();
+  void transpose    ();
   //@}
 
-  void Print        (void) const;
+  void Print        () const;
   /// write the 16 double of the matrix into a string
-  std::string toString(void) const;
+  std::string toString() const;
   /// read the 16 double of the matrix from a string
   void fromString (const std::string &str);
 

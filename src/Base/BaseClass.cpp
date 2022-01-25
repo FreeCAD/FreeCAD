@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <assert.h>
+# include <cassert>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -60,7 +60,7 @@ BaseClass::~BaseClass()
 //**************************************************************************
 // separator for other implementation aspects
 
-void BaseClass::init(void)
+void BaseClass::init()
 {
     assert(BaseClass::classTypeId == Type::badType() && "don't init() twice!");
     /* Make sure superclass gets initialized before subclass. */
@@ -75,12 +75,12 @@ void BaseClass::init(void)
                          BaseClass::create);
 }
 
-Type BaseClass::getClassTypeId(void)
+Type BaseClass::getClassTypeId()
 {
     return BaseClass::classTypeId;
 }
 
-Type BaseClass::getTypeId(void) const
+Type BaseClass::getTypeId() const
 {
     return BaseClass::classTypeId;
 }
@@ -110,7 +110,7 @@ void BaseClass::initSubclass(Base::Type &toInit,const char* ClassName, const cha
  *
  * The default implementation returns 'None'.
  */
-PyObject *BaseClass::getPyObject(void)
+PyObject *BaseClass::getPyObject()
 {
     assert(0);
     Py_Return;

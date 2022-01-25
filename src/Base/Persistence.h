@@ -27,8 +27,6 @@
 // Std. configurations
 
 
-#include <assert.h>
-
 #include "BaseClass.h"
 
 namespace Base
@@ -48,7 +46,7 @@ public:
      * It is not meant to have the exact size, it is more or less an estimation
      * which runs fast! Is it two bytes or a GB?
      */
-    virtual unsigned int getMemSize (void) const = 0;
+    virtual unsigned int getMemSize () const = 0;
     /** This method is used to save properties to an XML document.
      * A good example you'll find in PropertyStandard.cpp, e.g. the vector:
      * \code

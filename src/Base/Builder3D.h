@@ -78,7 +78,7 @@ public:
   /// add a vector to a point set
   void addPoint(const Vector3f &vec);
   /// ends the points set operation
-  void endPoints(void);
+  void endPoints();
   /// add a singular point (without startPoints() & endPoints() )
   void addSinglePoint(float x, float y, float z, short pointSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0);
   /// add a singular point (without startPoints() & endPoints() )
@@ -88,15 +88,15 @@ public:
   /** @name line/direction handling */
   //@{
   /// add a line defined by 2 Vector3D
-  void addSingleLine(Vector3f pt1, Vector3f pt2, short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0, unsigned short linePattern = 0xffff);
+  void addSingleLine(const Vector3f& pt1, const Vector3f& pt2, short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0, unsigned short linePattern = 0xffff);
   /// add a arrow (directed line) by 2 Vector3D. The arrow shows in direction of point 2.
-  void addSingleArrow(Vector3f pt1, Vector3f pt2, short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0, unsigned short linePattern = 0xffff);
+  void addSingleArrow(const Vector3f& pt1, const Vector3f& pt2, short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0, unsigned short linePattern = 0xffff);
   //@}
 
   /** @name triangle handling */
   //@{
   /// add a (filled) triangle defined by 3 vectors
-  void addSingleTriangle(Vector3f pt0, Vector3f pt1, Vector3f pt2, bool filled = true, short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0);
+  void addSingleTriangle(const Vector3f& pt0, const Vector3f& pt1, const Vector3f& pt2, bool filled = true, short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0);
   //@}
 
   /** @name Transformation */
@@ -115,12 +115,12 @@ public:
   //@}
 
   /// clear the string buffer
-  void clear (void);
+  void clear ();
 
   /** @name write the result */
   //@{
   /// sends the result to the log and gui
-  void saveToLog(void);
+  void saveToLog();
   /// save the result to a file (*.iv)
   void saveToFile(const char* FileName);
   //@}

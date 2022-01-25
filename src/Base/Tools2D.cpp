@@ -168,7 +168,7 @@ bool BoundBox2d::Intersect(const Polygon2d &rclPoly) const
 /********************************************************/
 /** LINE2D **********************************************/
 
-BoundBox2d Line2d::CalcBoundBox (void) const
+BoundBox2d Line2d::CalcBoundBox () const
 {
   BoundBox2d clBB;
   clBB.MinX = std::min<double> (clV1.x, clV2.x);
@@ -258,7 +258,7 @@ bool Line2d::IntersectAndContain (const Line2d& rclLine, Vector2d &rclV) const
 /********************************************************/
 /** POLYGON2d ********************************************/
 
-BoundBox2d Polygon2d::CalcBoundBox (void) const
+BoundBox2d Polygon2d::CalcBoundBox () const
 {
   unsigned long i;
   BoundBox2d clBB;

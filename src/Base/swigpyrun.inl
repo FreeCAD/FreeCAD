@@ -23,11 +23,11 @@
 
 int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own)
 {
-    swig_module_info *module = SWIG_GetModule(NULL);
+    swig_module_info *module = SWIG_GetModule(nullptr);
     if (!module)
         return 1;
 
-    swig_type_info * swig_type = 0;
+    swig_type_info * swig_type = nullptr;
     swig_type = SWIG_TypeQuery(TypeName);
     if (!swig_type) {
         std::stringstream str;
@@ -36,7 +36,7 @@ int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int 
     }
     
     *ptr = SWIG_NewPointerObj(obj,swig_type,own);
-    if (*ptr == 0)
+    if (*ptr == nullptr)
         throw Base::RuntimeError("Cannot convert into requested type");
 
     // success
@@ -45,11 +45,11 @@ int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int 
 
 int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags)
 {
-    swig_module_info *module = SWIG_GetModule(NULL);
+    swig_module_info *module = SWIG_GetModule(nullptr);
     if (!module)
         return 1;
 
-    swig_type_info * swig_type = 0;
+    swig_type_info * swig_type = nullptr;
     swig_type = SWIG_TypeQuery(TypeName);
     if (!swig_type)
         throw Base::RuntimeError("Cannot find type information for requested type");
@@ -64,11 +64,11 @@ int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int
 
 void cleanupSWIG_T(const char* TypeName)
 {
-    swig_module_info *swig_module = SWIG_GetModule(NULL);
+    swig_module_info *swig_module = SWIG_GetModule(nullptr);
     if (!swig_module)
         return;
 
-    swig_type_info * swig_type = 0;
+    swig_type_info * swig_type = nullptr;
     swig_type = SWIG_TypeQuery(TypeName);
     if (!swig_type)
         return;
@@ -76,13 +76,13 @@ void cleanupSWIG_T(const char* TypeName)
     PyObject *module, *dict;
     PyObject *modules = PyImport_GetModuleDict();
     module = PyDict_GetItemString(modules, "__builtin__");
-    if (module != NULL && PyModule_Check(module)) {
+    if (module != nullptr && PyModule_Check(module)) {
         dict = PyModule_GetDict(module);
         PyDict_SetItemString(dict, "_", Py_None);
     }
 
     module = PyDict_GetItemString(modules, "__main__");
-    if (module != NULL && PyModule_Check(module)) {
+    if (module != nullptr && PyModule_Check(module)) {
         PyObject* dict = PyModule_GetDict(module);
         if (!dict) return;
 
@@ -91,8 +91,8 @@ void cleanupSWIG_T(const char* TypeName)
         pos = 0;
         while (PyDict_Next(dict, &pos, &key, &value)) {
             if (value != Py_None && PyUnicode_Check(key)) {
-                void* ptr = 0;
-                if (SWIG_ConvertPtr(value, &ptr, 0, 0) == 0)
+                void* ptr = nullptr;
+                if (SWIG_ConvertPtr(value, &ptr, nullptr, 0) == 0)
                     PyDict_SetItem(dict, key, Py_None);
             }
         }

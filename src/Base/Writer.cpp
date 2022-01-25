@@ -49,7 +49,7 @@ using namespace zipios;
 //  Writer: Constructors and Destructor
 // ---------------------------------------------------------------------------
 
-Writer::Writer(void)
+Writer::Writer()
   : indent(0),forceXML(false),fileVersion(1)
 {
     indBuf[0] = '\0';
@@ -94,7 +94,7 @@ void Writer::setForceXML(bool on)
     forceXML = on;
 }
 
-bool Writer::isForceXML(void)
+bool Writer::isForceXML()
 {
     return forceXML;
 }
@@ -215,7 +215,7 @@ const std::vector<std::string>& Writer::getFilenames() const
     return FileNames;
 }
 
-void Writer::incInd(void)
+void Writer::incInd()
 {
     if (indent < 1020) {
         indBuf[indent  ] = ' ';
@@ -227,7 +227,7 @@ void Writer::incInd(void)
     }
 }
 
-void Writer::decInd(void)
+void Writer::decInd()
 {
     if (indent >= 4) {
         indent -= 4;
@@ -264,7 +264,7 @@ ZipWriter::ZipWriter(std::ostream& os)
     ZipStream.setf(ios::fixed,ios::floatfield);
 }
 
-void ZipWriter::writeFiles(void)
+void ZipWriter::writeFiles()
 {
     // use a while loop because it is possible that while
     // processing the files new ones can be added
@@ -303,7 +303,7 @@ bool FileWriter::shouldWrite(const std::string& , const Base::Persistence *) con
     return true;
 }
 
-void FileWriter::writeFiles(void)
+void FileWriter::writeFiles()
 {
     // use a while loop because it is possible that while
     // processing the files new ones can be added

@@ -144,9 +144,9 @@ inline Py::Object pyCallWithKeywords(PyObject *callable, PyObject *args, PyObjec
 class BaseExport SystemExitException : public Exception
 {
 public:
-    SystemExitException(void);
+    SystemExitException();
     virtual ~SystemExitException() throw() {}
-    long getExitCode(void) const { return _exitCode;}
+    long getExitCode() const { return _exitCode;}
 
 protected:
     long _exitCode;
@@ -234,7 +234,7 @@ public:
     PyObject* runMethodObject(PyObject *pobject, const char *method);
     /// runs a python method with arbitrary params
     void runMethod(PyObject *pobject, const char *method,
-                   const char *resfmt=0,   void *cresult=0,
+                   const char *resfmt=nullptr,   void *cresult=nullptr,
                    const char *argfmt="()",   ...  );
     //@}
 
@@ -258,7 +258,7 @@ public:
      * first. Each cleanup function will be called at most once. Since Python's internal finalization will have
      * completed before the cleanup function, no Python APIs should be called by \a func.
      */
-    int cleanup(void (*func)(void));
+    int cleanup(void (*func)());
     /** This calls the registered cleanup functions. @see cleanup() for more details. */
     void finalize();
     /// This shuts down the application.
@@ -272,8 +272,8 @@ public:
     const char* init(int argc,char *argv[]);
     int  runCommandLine(const char *prompt);
     void replaceStdOutput();
-    static InterpreterSingleton &Instance(void);
-    static void Destruct(void);
+    static InterpreterSingleton &Instance();
+    static void Destruct();
     //@}
 
     /** @name external wrapper libs
@@ -297,7 +297,7 @@ public:
     /// unsets a break point to a special line number in the current file
     void dbgUnsetBreakPoint(unsigned int uiLineNumber);
     /// One step further
-    void dbgStep(void);
+    void dbgStep();
     //@}
 
 
@@ -325,7 +325,7 @@ private:
  *  This method is used to gain access to the one and only instance of
  *  the InterpreterSingleton class.
  */
-inline InterpreterSingleton &Interpreter(void)
+inline InterpreterSingleton &Interpreter()
 {
     return InterpreterSingleton::Instance();
 }

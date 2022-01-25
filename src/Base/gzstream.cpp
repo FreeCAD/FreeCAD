@@ -28,7 +28,7 @@
 #include "PreCompiled.h"
 
 #include "gzstream.h"
-#include <assert.h>
+#include <cassert>
 #include <string>
 #include <cstring>  // for memcpy
 
@@ -49,12 +49,12 @@ const int gzstreambuf::bufferSize = BUFFERSIZE;
 gzstreambuf* gzstreambuf::open( const char* name, int open_mode, int comp) 
 {
     if ( is_open())
-        return (gzstreambuf*)0;
+        return (gzstreambuf*)nullptr;
     mode = open_mode;
     // no append nor read/write mode
     if ((mode & std::ios::ate) || (mode & std::ios::app)
         || ((mode & std::ios::in) && (mode & std::ios::out)))
-        return (gzstreambuf*)0;
+        return (gzstreambuf*)nullptr;
     char  fmode[10];
     char* fmodeptr = fmode;
     if ( mode & std::ios::in)
@@ -67,8 +67,8 @@ gzstreambuf* gzstreambuf::open( const char* name, int open_mode, int comp)
     *fmodeptr++ = 'b';
     *fmodeptr = '\0';
     file = gzopen( name, fmode);
-    if (file == 0)
-        return (gzstreambuf*)0;
+    if (file == nullptr)
+        return (gzstreambuf*)nullptr;
     opened = 1;
     return this;
 }
@@ -80,7 +80,7 @@ gzstreambuf * gzstreambuf::close() {
         if ( gzclose( file) == Z_OK)
             return this;
     }
-    return (gzstreambuf*)0;
+    return (gzstreambuf*)nullptr;
 }
 
 int gzstreambuf::underflow() { // used for input buffer only
