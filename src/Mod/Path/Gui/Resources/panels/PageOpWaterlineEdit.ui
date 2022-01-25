@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
+    <width>389</width>
     <height>400</height>
    </rect>
   </property>
@@ -57,22 +57,12 @@
        <widget class="QComboBox" name="boundBoxSelect">
         <property name="font">
          <font>
-          <pointsize>8</pointsize>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the overall boundary for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>Stock</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>BaseBoundBox</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="4" column="3">
@@ -92,22 +82,12 @@
        <widget class="QComboBox" name="layerMode">
         <property name="font">
          <font>
-          <pointsize>8</pointsize>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>Single-pass</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Multi-pass</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="0" column="3">
@@ -115,16 +95,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>OCL Dropcutter</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Experimental</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="11" column="3">
@@ -154,47 +124,12 @@
        <widget class="QComboBox" name="cutPattern">
         <property name="font">
          <font>
-          <pointsize>8</pointsize>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the geometric clearing pattern to use for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>None</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Circular</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>CircularZigZag</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Line</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Offset</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Spiral</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>ZigZag</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="8" column="3">
@@ -244,7 +179,7 @@
        </widget>
       </item>
       <item row="9" column="3">
-       <widget class="Gui::InputField" name="sampleInterval" native="true">
+       <widget class="Gui::InputField" name="sampleInterval">
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the sampling resolution. Smaller values quickly increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
