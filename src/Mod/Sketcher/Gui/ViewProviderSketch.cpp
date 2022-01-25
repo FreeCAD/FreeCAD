@@ -2709,7 +2709,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "  tv.show([ref[0] for ref in ActiveSketch.Support if not ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
                         "if ActiveSketch.ViewObject.ShowLinks:\n"
                         "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
-                        "  tv.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView)\n"
+                        "tv.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView)\n"
                         "tv.hide(ActiveSketch)\n"
                         "del(tv)\n"
                         "del(ActiveSketch)\n"
