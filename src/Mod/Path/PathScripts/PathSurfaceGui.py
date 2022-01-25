@@ -51,7 +51,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.setTitle("3D Surface - " + obj.Label)
         # self.updateVisibility()
         # retrieve property enumerations
-        self.propEnums = PathSurface.ObjectSurface.opPropertyEnumerations(False)
+       # self.propEnums = PathSurface.ObjectSurface.opPropertyEnumerations(False)
+        self.propEnums = PathSurface.ObjectSurface.propertyEnumerations(False)
 
     def getForm(self):
         """getForm() ... returns UI"""
@@ -59,28 +60,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         comboToPropertyMap = [
             ("boundBoxSelect", "BoundBox"),
             ("scanType", "ScanType"),
+            ("cutPattern", "CutPattern"),
+            ("profileEdges", "ProfileEdges"),
             ("layerMode", "LayerMode"),
             ("dropCutterDirSelect", "DropCutterDir"),
         ]
         enumTups = PathSurface.ObjectSurface.propertyEnumerations(dataType="raw")
-        self.populateCombobox(form, enumTups, comboToPropertyMap)
+        PathGui.populateCombobox(form, enumTups, comboToPropertyMap)
 
         return form
-
-    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
-        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
-        Args:
-            form = UI form
-            enumTups = list of (translated_text, data_string) tuples
-            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
-        """
-        # Load appropriate enumerations in each combobox
-        for cb, prop in comboBoxesPropertyMap:
-            box = getattr(form, cb)  # Get the combobox
-            box.clear()  # clear the combobox
-            for text, data in enumTups[prop]:  #  load enumerations
-                box.addItem(text, data)
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's proprties"""
@@ -108,13 +96,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             This type of dynamic combobox population is done for the
             Tool Controller selection.
         """
-        val = self.propEnums["CutPattern"][self.form.cutPattern.currentIndex()]
-        if obj.CutPattern != val:
-            obj.CutPattern = val
+        # val = self.propEnums["CutPattern"][self.form.cutPattern.currentIndex()]
+        # if obj.CutPattern != val:
+        #     obj.CutPattern = val
 
-        val = self.propEnums["ProfileEdges"][self.form.profileEdges.currentIndex()]
-        if obj.ProfileEdges != val:
-            obj.ProfileEdges = val
+        # val = self.propEnums["ProfileEdges"][self.form.profileEdges.currentIndex()]
+        # if obj.ProfileEdges != val:
+        #     obj.ProfileEdges = val
+
+        obj.CutPattern = self.form.cutPattern.currentData()
+        obj.ProfileEdges = self.form.profileEdges.currentData()
 
         if obj.AvoidLastX_Faces != self.form.avoidLastX_Faces.value():
             obj.AvoidLastX_Faces = self.form.avoidLastX_Faces.value()
@@ -169,12 +160,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             and the UI panel QComboBox list.
         The original method is commented out below.
         """
-        idx = self.propEnums["CutPattern"].index(obj.CutPattern)
-        self.form.cutPattern.setCurrentIndex(idx)
-        idx = self.propEnums["ProfileEdges"].index(obj.ProfileEdges)
-        self.form.profileEdges.setCurrentIndex(idx)
-        # self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
-        # self.selectInComboBox(obj.ProfileEdges, self.form.profileEdges)
+        # idx = self.propEnums["CutPattern"].index(obj.CutPattern)
+        # self.form.cutPattern.setCurrentIndex(idx)
+        # idx = self.propEnums["ProfileEdges"].index(obj.ProfileEdges)
+        # self.form.profileEdges.setCurrentIndex(idx)
+        self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
+        self.selectInComboBox(obj.ProfileEdges, self.form.profileEdges)
 
         self.form.avoidLastX_Faces.setValue(obj.AvoidLastX_Faces)
         self.form.boundBoxExtraOffsetX.setText(
@@ -287,7 +278,7 @@ Command = PathOpGui.SetupOperation(
     "Surface",
     PathSurface.Create,
     TaskPanelOpPage,
-    "Path_Surface",
+    "Path_3DSurface",
     QtCore.QT_TRANSLATE_NOOP("Path_Surface", "3D Surface"),
     QtCore.QT_TRANSLATE_NOOP(
         "Path_Surface", "Create a 3D Surface Operation from a model"

@@ -21,19 +21,27 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathWaterline as PathWaterline
+import PathScripts.PathLog as PathLog
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-
-from PySide import QtCore
+import PathScripts.PathWaterline as PathWaterline
 
 __title__ = "Path Waterline Operation UI"
 __author__ = "sliptonic (Brad Collette), russ4262 (Russell Johnson)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Waterline operation page controller and command implementation."
+
+translate = FreeCAD.Qt.translate
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -45,24 +53,33 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getForm(self):
         """getForm() ... returns UI"""
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpWaterlineEdit.ui")
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpWaterlineEdit.ui")
+        comboToPropertyMap = [
+            ("algorithmSelect", "Algorithm"),
+            ("boundBoxSelect", "BoundBox"),
+            ("layerMode", "LayerMode"),
+            ("cutPattern", "CutPattern"),
+        ]
+        enumTups = PathWaterline.ObjectWaterline.propertyEnumerations(dataType="raw")
+        PathGui.populateCombobox(form, enumTups, comboToPropertyMap)
+        return form
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's proprties"""
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
-        if obj.Algorithm != str(self.form.algorithmSelect.currentText()):
-            obj.Algorithm = str(self.form.algorithmSelect.currentText())
+        if obj.Algorithm != str(self.form.algorithmSelect.currentData()):
+            obj.Algorithm = str(self.form.algorithmSelect.currentData())
 
-        if obj.BoundBox != str(self.form.boundBoxSelect.currentText()):
-            obj.BoundBox = str(self.form.boundBoxSelect.currentText())
+        if obj.BoundBox != str(self.form.boundBoxSelect.currentData()):
+            obj.BoundBox = str(self.form.boundBoxSelect.currentData())
 
-        if obj.LayerMode != str(self.form.layerMode.currentText()):
-            obj.LayerMode = str(self.form.layerMode.currentText())
+        if obj.LayerMode != str(self.form.layerMode.currentData()):
+            obj.LayerMode = str(self.form.layerMode.currentData())
 
-        if obj.CutPattern != str(self.form.cutPattern.currentText()):
-            obj.CutPattern = str(self.form.cutPattern.currentText())
+        if obj.CutPattern != str(self.form.cutPattern.currentData()):
+            obj.CutPattern = str(self.form.cutPattern.currentData())
 
         PathGui.updateInputField(
             obj, "BoundaryAdjustment", self.form.boundaryAdjustment
@@ -121,7 +138,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def updateVisibility(self, sentObj=None):
         """updateVisibility(sentObj=None)... Updates visibility of Tasks panel objects."""
-        Algorithm = self.form.algorithmSelect.currentText()
+        Algorithm = self.form.algorithmSelect.currentData()
         self.form.optimizeEnabled.hide()  # Has no independent QLabel object
 
         if Algorithm == "OCL Dropcutter":
@@ -138,7 +155,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.boundaryAdjustment.show()
             self.form.cutPattern_label.show()
             self.form.boundaryAdjustment_label.show()
-            if self.form.cutPattern.currentText() == "None":
+            if self.form.cutPattern.currentData() == "None":
                 self.form.stepOver.hide()
                 self.form.stepOver_label.hide()
             else:
@@ -157,10 +174,8 @@ Command = PathOpGui.SetupOperation(
     PathWaterline.Create,
     TaskPanelOpPage,
     "Path_Waterline",
-    QtCore.QT_TRANSLATE_NOOP("Path_Waterline", "Waterline"),
-    QtCore.QT_TRANSLATE_NOOP(
-        "Path_Waterline", "Create a Waterline Operation from a model"
-    ),
+    QT_TRANSLATE_NOOP("Path_Waterline", "Waterline"),
+    QT_TRANSLATE_NOOP("Path_Waterline", "Create a Waterline Operation from a model"),
     PathWaterline.SetupProperties,
 )
 
