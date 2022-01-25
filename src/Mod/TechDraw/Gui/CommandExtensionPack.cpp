@@ -962,7 +962,7 @@ CmdTechDrawExtensionDrawCosmCircle::CmdTechDrawExtensionDrawCosmCircle()
 - Specify the line attributes (optional)<br>\
 - Select vertex 1 (center point)<br>\
 - Select vertex 2 (radius)<br>\
-- Click this tool";
+- Click this tool");
     sWhatsThis      = "TechDraw_ExtensionDrawCosmCircle";
     sStatusTip      = sMenuText;
     sPixmap         = "TechDraw_ExtensionDrawCosmCircle";
