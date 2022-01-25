@@ -30,7 +30,7 @@ class SearchBox(QtGui.QLineEdit):
     maxVisibleRows = self.maxVisibleRows
     # The following block of code is executed by the lightweight proxy SearchBoxLight
     '''
-    # Call parent cosntructor
+    # Call parent constructor
     super(SearchBoxLight, self).__init__(parent)
     # Connect signals and slots
     self.textChanged.connect(self.filterModel)
