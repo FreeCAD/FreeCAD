@@ -35,7 +35,7 @@
 using namespace Base;
 
 // returns a string which represents the object e.g. when printed in python
-std::string AxisPy::representation(void) const
+std::string AxisPy::representation() const
 {
     AxisPy::PointerType ptr = reinterpret_cast<AxisPy::PointerType>(_pcTwinPointer);
     std::stringstream str;
@@ -86,7 +86,7 @@ PyObject* AxisPy::move(PyObject * args)
 {
     PyObject *vec;
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &vec))
-        return NULL;
+        return nullptr;
     getAxisPtr()->move(static_cast<VectorPy*>(vec)->value());
     Py_Return;
 }
@@ -95,7 +95,7 @@ PyObject* AxisPy::multiply(PyObject * args)
 {
     PyObject *plm;
     if (!PyArg_ParseTuple(args, "O!", &(PlacementPy::Type), &plm))
-        return NULL;
+        return nullptr;
     Axis mult = (*getAxisPtr()) * (*static_cast<PlacementPy*>(plm)->getPlacementPtr());
     return new AxisPy(new Axis(mult));
 }
@@ -103,19 +103,19 @@ PyObject* AxisPy::multiply(PyObject * args)
 PyObject* AxisPy::copy(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     return new AxisPy(new Axis(*getAxisPtr()));
 }
 
 PyObject* AxisPy::reversed(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     Base::Axis a = getAxisPtr()->reversed();
     return new AxisPy(new Axis(a));
 }
 
-Py::Object AxisPy::getBase(void) const
+Py::Object AxisPy::getBase() const
 {
     return Py::Vector(getAxisPtr()->getBase());
 }
@@ -125,7 +125,7 @@ void AxisPy::setBase(Py::Object arg)
     getAxisPtr()->setBase(Py::Vector(arg).toVector());
 }
 
-Py::Object AxisPy::getDirection(void) const
+Py::Object AxisPy::getDirection() const
 {
     return Py::Vector(getAxisPtr()->getDirection());
 }
@@ -137,7 +137,7 @@ void AxisPy::setDirection(Py::Object arg)
 
 PyObject *AxisPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int AxisPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

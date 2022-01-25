@@ -79,7 +79,7 @@ class PyObjectBase;
  *  @remark One big consequence of this specification is that the programmer must know whether the Python interpreter
  *  gets the Python object or not. If the interpreter gets the object then it decrements the counter later on when
  *  the internal variable is freed. In case the interpreter doesn't get this object then the programmer must do the
- *  decrement on their own.
+ *  decrement on his own.
  *
  *  @note To not to undermine this specification the programmer must make sure to get the Python object always via
  *  GetPyObject().
@@ -205,7 +205,7 @@ public:
     }
 
     /// returns the type as PyObject
-    PyObject* getPyObject(void) const {
+    PyObject* getPyObject() const {
         // return (PyObject*) _pHandels;
         // FIXME: Shouldn't we return the pointer's object?. (Werner)
         return const_cast<HandledType*>(_pHandels)->getPyObject();
@@ -214,12 +214,12 @@ public:
     // checking on the state
 
     /// Test if it handels something
-    bool IsValid(void) const {
+    bool IsValid() const {
         return _pHandels!=0;
     }
 
     /// Test if it not handels something
-    bool IsNull(void) const {
+    bool IsNull() const {
         return _pHandels==0;
     }
 

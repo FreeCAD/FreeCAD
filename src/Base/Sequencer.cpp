@@ -70,7 +70,7 @@ namespace Base {
      * all instantiated SequencerBase objects.
      */
     std::vector<SequencerBase*> SequencerP::_instances;
-    SequencerLauncher* SequencerP::_topLauncher = 0;
+    SequencerLauncher* SequencerP::_topLauncher = nullptr;
 #if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
     QRecursiveMutex SequencerP::mutex;
 #else
@@ -188,7 +188,7 @@ bool SequencerBase::isLocked() const
 bool SequencerBase::isRunning() const
 {
     QMutexLocker locker(&SequencerP::mutex);
-    return (SequencerP::_topLauncher != 0);
+    return (SequencerP::_topLauncher != nullptr);
 }
 
 bool SequencerBase::wasCanceled() const
@@ -282,7 +282,7 @@ SequencerLauncher::~SequencerLauncher()
     if (SequencerP::_topLauncher == this)
         SequencerBase::Instance().stop();
     if (SequencerP::_topLauncher == this) {
-        SequencerP::_topLauncher = 0;
+        SequencerP::_topLauncher = nullptr;
     }
 }
 

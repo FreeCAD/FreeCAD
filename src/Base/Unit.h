@@ -27,7 +27,7 @@
 #ifdef _MSC_VER
 #  include <boost/cstdint.hpp>
 #else
-#  include <stdint.h>
+#  include <cstdint>
 #endif
 #include <string>
 #include <QString>
@@ -65,7 +65,7 @@ class BaseExport Unit
 public:
     /// default constructor
     Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,int8_t ThermodynamicTemperature=0,int8_t AmountOfSubstance=0,int8_t LuminousIntensity=0,int8_t Angle=0);
-    Unit(void);
+    Unit();
     Unit(const Unit&);
     explicit Unit(const QString& expr);
     /// Destruction
@@ -84,12 +84,12 @@ public:
     Unit pow(signed char exp)const;
     //@}
     /// get the unit signature
-    const UnitSignature & getSignature(void)const {return Sig;}
-    bool isEmpty(void)const;
+    const UnitSignature & getSignature()const {return Sig;}
+    bool isEmpty()const;
 
-    QString getString(void) const;
+    QString getString() const;
     /// get the type as an string such as "Area", "Length" or "Pressure".
-    QString getTypeString(void) const;
+    QString getTypeString() const;
 
     /** Predefined Unit types. */
     //@{

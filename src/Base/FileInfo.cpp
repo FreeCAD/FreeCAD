@@ -39,7 +39,7 @@
 # elif defined (FC_OS_WIN32)
 # include <direct.h>
 # include <io.h>
-# include <windows.h>
+# include <Windows.h>
 # endif
 #endif
 
@@ -110,7 +110,7 @@ FileInfo::FileInfo (const std::string &_FileName)
     setFile(_FileName.c_str());
 }
 
-const std::string &FileInfo::getTempPath(void)
+const std::string &FileInfo::getTempPath()
 {
     static std::string tempPath;
 
@@ -455,7 +455,7 @@ TimeInfo FileInfo::lastRead() const
     return ti;
 }
 
-bool FileInfo::deleteFile(void) const
+bool FileInfo::deleteFile() const
 {
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
@@ -508,7 +508,7 @@ bool FileInfo::copyTo(const char* NewName) const
 #endif
 }
 
-bool FileInfo::createDirectory(void) const
+bool FileInfo::createDirectory() const
 {
 #if defined (FC_OS_WIN32)
     std::wstring wstr = toStdWString();
@@ -520,7 +520,7 @@ bool FileInfo::createDirectory(void) const
 #endif
 }
 
-bool FileInfo::deleteDirectory(void) const
+bool FileInfo::deleteDirectory() const
 {
     if (isDir() == false ) return false;
 #if defined (FC_OS_WIN32)
@@ -533,7 +533,7 @@ bool FileInfo::deleteDirectory(void) const
 #endif
 }
 
-bool FileInfo::deleteDirectoryRecursive(void) const
+bool FileInfo::deleteDirectoryRecursive() const
 {
     if (isDir() == false ) return false;
     std::vector<Base::FileInfo> List = getDirectoryContent();
@@ -559,7 +559,7 @@ bool FileInfo::deleteDirectoryRecursive(void) const
     return deleteDirectory();
 }
 
-std::vector<Base::FileInfo> FileInfo::getDirectoryContent(void) const
+std::vector<Base::FileInfo> FileInfo::getDirectoryContent() const
 {
     std::vector<Base::FileInfo> List;
 #if defined (FC_OS_WIN32)
@@ -581,14 +581,14 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent(void) const
     _findclose(hFile);
 
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    DIR* dp(0);
-    struct dirent* dentry(0);
-    if ((dp = opendir(FileName.c_str())) == NULL)
+    DIR* dp(nullptr);
+    struct dirent* dentry(nullptr);
+    if ((dp = opendir(FileName.c_str())) == nullptr)
     {
         return List;
     }
 
-    while ((dentry = readdir(dp)) != NULL)
+    while ((dentry = readdir(dp)) != nullptr)
     {
         std::string dir = dentry->d_name;
         if (dir != "." && dir != "..")

@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
-# include <stdlib.h>
+# include <cstdlib>
 #endif
 
 #include "Unit.h"
@@ -144,7 +144,7 @@ Unit Unit::pow(signed char exp) const
     return result;
 }
 
-bool Unit::isEmpty(void)const
+bool Unit::isEmpty()const
 {
     return (this->Sig.Length == 0)
         && (this->Sig.Mass == 0)
@@ -233,7 +233,7 @@ Unit& Unit::operator = (const Unit &New)
     return *this;
 }
 
-QString Unit::getString(void) const
+QString Unit::getString() const
 {
     std::stringstream ret;
 
@@ -424,7 +424,7 @@ QString Unit::getString(void) const
     return QString::fromUtf8(ret.str().c_str());
 }
 
-QString Unit::getTypeString(void) const
+QString Unit::getTypeString() const
 {
     if(*this == Unit::Length                      )       return QString::fromLatin1("Length");
     if(*this == Unit::Area                        )       return QString::fromLatin1("Area");

@@ -59,9 +59,9 @@ public:
       * Here it's theoretically possible that you can change the static factors
       * for certain units (e.g. mi = 1,8km instead of mi=1.6km).
       */
-    virtual void setSchemaUnits(void){}
+    virtual void setSchemaUnits(){}
     /// If you use setSchemaUnits() you also have to impment this method to undo your changes!
-    virtual void resetSchemaUnits(void){}
+    virtual void resetSchemaUnits(){}
 
     /// This method translates the quantity in a string as the user may expect it.
     virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)=0;

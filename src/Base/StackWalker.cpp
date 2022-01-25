@@ -80,7 +80,7 @@
  *
  **********************************************************************/
 #include <PreCompiled.h>
-#include <windows.h>
+#include <Windows.h>
 #include <tchar.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -93,7 +93,7 @@
 // If VC7 and later, then use the shipped 'dbghelp.h'-file
 #pragma pack(push,8)
 #if _MSC_VER >= 1300
-#include <dbghelp.h>
+#include <DbgHelp.h>
 #else
 // inline the important dbghelp.h-declarations...
 typedef enum {

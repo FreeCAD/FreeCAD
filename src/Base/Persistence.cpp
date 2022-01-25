@@ -27,6 +27,7 @@
 #include "PyObjectBase.h"
 
 #ifndef _PreComp_
+#include <cassert>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -45,7 +46,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Base::Persistence,Base::BaseClass)
 //**************************************************************************
 // separator for other implementation aspects
 
-unsigned int Persistence::getMemSize (void) const
+unsigned int Persistence::getMemSize () const
 {
     // you have to implement this method in all descending classes!
     assert(0);

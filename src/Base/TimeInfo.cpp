@@ -58,7 +58,7 @@ TimeInfo::~TimeInfo()
 //**************************************************************************
 // separator for other implementation aspects
 
-void TimeInfo::setCurrent(void)
+void TimeInfo::setCurrent()
 {
 #if defined (FC_OS_BSD) || defined(FC_OS_LINUX) || defined(__MINGW32__)
     struct timeval t;

@@ -41,10 +41,10 @@ using namespace Base;
  * A more elaborate description of the constructor.
  */
 ClassTemplate::ClassTemplate()
-  : enumPtr(0)
+  : enumPtr(nullptr)
   , enumVar(TVal1)
   , publicVar(0)
-  , handler(0)
+  , handler(nullptr)
 {
 }
 

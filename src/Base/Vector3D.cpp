@@ -99,7 +99,7 @@ Vector3<_Precision> Vector3<_Precision>::operator -  (const Vector3<_Precision>&
 }
 
 template <class _Precision>
-Vector3<_Precision> Vector3<_Precision>::operator - (void) const
+Vector3<_Precision> Vector3<_Precision>::operator - () const
 {
     return Vector3(-x, -y, -z);
 }
@@ -259,7 +259,7 @@ _Precision Vector3<_Precision>::DistanceToPlane (const Vector3<_Precision> &rclB
 }
 
 template <class _Precision>
-_Precision Vector3<_Precision>::Length (void) const
+_Precision Vector3<_Precision>::Length () const
 {
     return (_Precision)sqrt ((x * x) + (y * y) + (z * z));
 }
@@ -303,7 +303,7 @@ Vector3<_Precision> Vector3<_Precision>::Perpendicular(const Vector3<_Precision>
 }
 
 template <class _Precision>
-_Precision Vector3<_Precision>::Sqr (void) const
+_Precision Vector3<_Precision>::Sqr () const
 {
     return (_Precision) ((x * x) + (y * y) + (z * z));
 }
@@ -405,7 +405,7 @@ void Vector3<_Precision>::RotateZ (_Precision f)
 }
 
 template <class _Precision>
-Vector3<_Precision> & Vector3<_Precision>::Normalize (void)
+Vector3<_Precision> & Vector3<_Precision>::Normalize ()
 {
     _Precision fLen = Length ();
     if (fLen != (_Precision)0.0 && fLen != (_Precision)1.0) {

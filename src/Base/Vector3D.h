@@ -106,7 +106,7 @@ public:
     /// Vector subtraction
     Vector3 operator -  (const Vector3<_Precision>& rcVct) const;
     /// Negative vector
-    Vector3 operator - (void) const;
+    Vector3 operator - () const;
     /// Vector summation
     Vector3 & operator += (const Vector3<_Precision>& rcVct);
     /// Vector subtraction
@@ -156,11 +156,11 @@ public:
     /** @name Mathematics */
     //@{
     /// Length of the vector.
-    _Precision Length (void) const;
+    _Precision Length () const;
     /// Squared length of the vector.
-    _Precision Sqr (void) const;
+    _Precision Sqr () const;
     /// Set length to 1.
-    Vector3 & Normalize (void);
+    Vector3 & Normalize ();
     /// Checks whether this is the null vector
     bool IsNull() const;
     /// Get angle between both vectors. The returned value lies in the interval [0,pi].

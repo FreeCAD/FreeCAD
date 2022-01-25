@@ -63,6 +63,7 @@ void * _class_::create(void){\
 
 /// define to implement a  subclass of Base::BaseClass
 #define TYPESYSTEM_SOURCE_TEMPLATE_P(_class_) \
+template<> Base::Type _class_::classTypeId = Base::Type::badType();  \
 template<> Base::Type _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 template<> Base::Type _class_::getTypeId(void) const { return _class_::classTypeId; } \
 template<> void * _class_::create(void){\
@@ -104,16 +105,16 @@ namespace Base
 class BaseExport BaseClass
 {
 public:
-  static Type getClassTypeId(void);
-  virtual Type getTypeId(void) const;
+  static Type getClassTypeId();
+  virtual Type getTypeId() const;
   bool isDerivedFrom(const Type type) const {return getTypeId().isDerivedFrom(type);}
 
-  static void init(void);
+  static void init();
 
-  virtual PyObject *getPyObject(void);
+  virtual PyObject *getPyObject();
   virtual void setPyObject(PyObject *);
 
-  static void *create(void){return nullptr;}
+  static void *create(){return nullptr;}
 private:
   static Type classTypeId;
 protected:
@@ -122,6 +123,8 @@ protected:
 public:
   /// Construction
   BaseClass();
+  BaseClass(const BaseClass&) = default;
+  BaseClass& operator=(const BaseClass&) = default;
   /// Destruction
   virtual ~BaseClass();
 
@@ -137,7 +140,7 @@ template<typename T> T * freecad_dynamic_cast(Base::BaseClass * t)
     if (t && t->isDerivedFrom(T::getClassTypeId()))
         return static_cast<T*>(t);
     else
-        return 0;
+        return nullptr;
 }
 
 /**
@@ -150,7 +153,7 @@ template<typename T> const T * freecad_dynamic_cast(const Base::BaseClass * t)
     if (t && t->isDerivedFrom(T::getClassTypeId()))
         return static_cast<const T*>(t);
     else
-        return 0;
+        return nullptr;
 }
 
 

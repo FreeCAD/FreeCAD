@@ -216,7 +216,7 @@ Quantity& Quantity::operator -=(const Quantity &p)
     return *this;
 }
 
-Quantity Quantity::operator -(void) const
+Quantity Quantity::operator -() const
 {
     return Quantity(-(this->_Value),this->_Unit);
 }
@@ -240,24 +240,24 @@ QString Quantity::getUserString(UnitsSchema* schema, double &factor, QString &un
 }
 
 /// true if it has a number without a unit
-bool Quantity::isDimensionless(void)const
+bool Quantity::isDimensionless() const
 {
     return isValid() && _Unit.isEmpty();
 }
 
 // true if it has a number and a valid unit
-bool Quantity::isQuantity(void)const
+bool Quantity::isQuantity() const
 {
     return isValid() && !_Unit.isEmpty();
 }
 
 // true if it has a number with or without a unit
-bool Quantity::isValid(void)const
+bool Quantity::isValid() const
 {
     return !boost::math::isnan(_Value);
 }
 
-void Quantity::setInvalid(void)
+void Quantity::setInvalid()
 {
     _Value = std::numeric_limits<double>::quiet_NaN();
 }
@@ -424,7 +424,7 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     double ret_val;
     char temp[40];
     int i = 0;
-    for (char* c=yytext;*c!='\0';c++){
+    for (char* c=yytext;*c!='\0';c++) {
         // skip group delimiter
         if (*c==grp_delim) continue;
         // check for a dez delimiter other then dot
@@ -459,7 +459,7 @@ namespace QuantityParser {
 #define YYINITDEPTH 20
 // show parser the lexer method
 #define yylex QuantityLexer
-int QuantityLexer(void);
+int QuantityLexer();
 
 // Parser, defined in QuantityParser.y
 #include "QuantityParser.c"

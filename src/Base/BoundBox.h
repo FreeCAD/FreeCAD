@@ -113,7 +113,7 @@ public:
      */
     inline bool IsInBox (const BoundBox2d &rcbb) const;
     /** Checks whether the bounding box is valid. */
-    bool IsValid (void) const;
+    bool IsValid () const;
     //@}
 
     enum OCTANT {OCT_LDB = 0, OCT_RDB, OCT_LUB, OCT_RUB,
@@ -173,12 +173,12 @@ public:
     BoundBox3<_Precision> Transformed(const Matrix4D& mat) const;
 
     /** Returns the center.of the box. */
-    inline Vector3<_Precision> GetCenter (void) const;
+    inline Vector3<_Precision> GetCenter () const;
     /** Compute the diagonal length of this bounding box.
      * @note It's up to the client programmer to make sure that this bounding box is valid.
      */
-    inline _Precision CalcDiagonalLength (void) const;
-    void SetVoid (void);
+    inline _Precision CalcDiagonalLength () const;
+    void SetVoid ();
 
     /** Enlarges the box with factor \a fLen. */
     inline void Enlarge (_Precision fLen);
@@ -186,11 +186,11 @@ public:
     inline void Shrink  (_Precision fLen);
 
     /** Calculates expansion in x-direction. */
-    inline _Precision LengthX (void) const;
+    inline _Precision LengthX () const;
     /** Calculates expansion in y-direction. */
-    inline _Precision LengthY (void) const;
+    inline _Precision LengthY () const;
     /** Calculates expansion in z-direction. */
-    inline _Precision LengthZ (void) const;
+    inline _Precision LengthZ () const;
     /** Moves in x-direction. */
     inline void MoveX (_Precision f);
     /** Moves in y-direction. */
@@ -400,7 +400,7 @@ inline bool BoundBox3<_Precision>::IsInBox (const BoundBox2d &rcBB) const
 }
 
 template <class _Precision>
-inline bool BoundBox3<_Precision>::IsValid (void) const
+inline bool BoundBox3<_Precision>::IsValid () const
 {
     return ((MinX <= MaxX) && (MinY <= MaxY) && (MinZ <= MaxZ));
 }
@@ -894,7 +894,7 @@ inline BoundBox3<_Precision> BoundBox3<_Precision>::Transformed(const Matrix4D& 
 }
 
 template <class _Precision>
-inline Vector3<_Precision> BoundBox3<_Precision>::GetCenter (void) const
+inline Vector3<_Precision> BoundBox3<_Precision>::GetCenter () const
 {
     return Vector3<_Precision>((MaxX + MinX) / 2,
                                (MaxY + MinY) / 2,
@@ -902,7 +902,7 @@ inline Vector3<_Precision> BoundBox3<_Precision>::GetCenter (void) const
 }
 
 template <class _Precision>
-inline _Precision BoundBox3<_Precision>::CalcDiagonalLength (void) const
+inline _Precision BoundBox3<_Precision>::CalcDiagonalLength () const
 {
     return static_cast<_Precision>(sqrt (((MaxX - MinX) * (MaxX - MinX)) +
                                          ((MaxY - MinY) * (MaxY - MinY)) +
@@ -910,7 +910,7 @@ inline _Precision BoundBox3<_Precision>::CalcDiagonalLength (void) const
 }
 
 template <class _Precision>
-inline void BoundBox3<_Precision>::SetVoid (void)
+inline void BoundBox3<_Precision>::SetVoid ()
 {
     MinX = MinY = MinZ =  std::numeric_limits<_Precision>::max();
     MaxX = MaxY = MaxZ = -std::numeric_limits<_Precision>::max();
@@ -931,19 +931,19 @@ inline void BoundBox3<_Precision>::Shrink (_Precision fLen)
 }
 
 template <class _Precision>
-inline _Precision BoundBox3<_Precision>::LengthX (void) const
+inline _Precision BoundBox3<_Precision>::LengthX () const
 {
     return MaxX - MinX;
 }
 
 template <class _Precision>
-inline _Precision BoundBox3<_Precision>::LengthY (void) const
+inline _Precision BoundBox3<_Precision>::LengthY () const
 {
     return MaxY - MinY;
 }
 
 template <class _Precision>
-inline _Precision BoundBox3<_Precision>::LengthZ (void) const
+inline _Precision BoundBox3<_Precision>::LengthZ () const
 {
     return MaxZ - MinZ;
 }

@@ -49,7 +49,7 @@ void* Factory::Produce (const char *sClassName) const
   if (pProd != _mpcProducers.end())
     return pProd->second->Produce();
   else
-    return NULL;
+    return nullptr;
 }
 
 void Factory::AddProducer (const char *sClassName, AbstractProducer *pcProducer)
@@ -76,22 +76,22 @@ std::list<std::string> Factory::CanProduce() const
 
 // ----------------------------------------------------
 
-ScriptFactorySingleton* ScriptFactorySingleton::_pcSingleton = NULL;
+ScriptFactorySingleton* ScriptFactorySingleton::_pcSingleton = nullptr;
 
 
 
-ScriptFactorySingleton& ScriptFactorySingleton::Instance(void)
+ScriptFactorySingleton& ScriptFactorySingleton::Instance()
 {
-  if (_pcSingleton == NULL)
+  if (_pcSingleton == nullptr)
     _pcSingleton = new ScriptFactorySingleton;
   return *_pcSingleton;
 }
 
-void ScriptFactorySingleton::Destruct (void)
+void ScriptFactorySingleton::Destruct ()
 {
-  if (_pcSingleton != 0)
+  if (_pcSingleton != nullptr)
     delete _pcSingleton;
-  _pcSingleton = 0;
+  _pcSingleton = nullptr;
 }
 
 const char* ScriptFactorySingleton::ProduceScript (const char* sScriptName) const

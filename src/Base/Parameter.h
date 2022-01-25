@@ -32,14 +32,6 @@
 #ifndef BASE__PARAMETER_H
 #define BASE__PARAMETER_H
 
-// (re-)defined in pyconfig.h
-#if defined (_POSIX_C_SOURCE)
-#   undef    _POSIX_C_SOURCE
-#endif
-#if defined (_XOPEN_SOURCE)
-#   undef    _XOPEN_SOURCE
-#endif
-
 // Include files
 #include <Python.h>
 
@@ -101,8 +93,6 @@ class ParameterManager;
  */
 class  BaseExport ParameterGrp : public Base::Handled,public Base::Subject <const char*>
 {
-
-
 public:
     /** @name copy and insertation */
     //@{
@@ -123,9 +113,9 @@ public:
     /// get a handle to a sub group or create one
     Base::Reference<ParameterGrp> GetGroup(const char* Name);
     /// get a vector of all sub groups in this group
-    std::vector<Base::Reference<ParameterGrp> > GetGroups(void);
+    std::vector<Base::Reference<ParameterGrp> > GetGroups();
     /// test if this group is empty
-    bool IsEmpty(void) const;
+    bool IsEmpty() const;
     /// test if a special sub group is in this group
     bool HasGroup(const char* Name) const;
     /// type of the handle
@@ -135,7 +125,7 @@ public:
     /// rename a sub group from this group
     bool RenameGrp(const char* OldName, const char* NewName);
     /// clears everything in this group (all types)
-    void Clear(void);
+    void Clear();
     //@}
 
     /** @name methods for bool handling */
@@ -145,9 +135,9 @@ public:
     /// set a bool value
     void SetBool(const char* Name, bool bValue);
     /// get a vector of all bool values in this group
-    std::vector<bool> GetBools(const char * sFilter = NULL) const;
+    std::vector<bool> GetBools(const char * sFilter = nullptr) const;
     /// get a map with all bool values and the keys of this group
-    std::vector<std::pair<std::string,bool> > GetBoolMap(const char * sFilter = NULL) const;
+    std::vector<std::pair<std::string,bool> > GetBoolMap(const char * sFilter = nullptr) const;
     /// remove a bool value from this group
     void RemoveBool(const char* Name);
     //@}
@@ -159,9 +149,9 @@ public:
     /// set a int value
     void SetInt(const char* Name, long lValue);
     /// get a vector of all int values in this group
-    std::vector<long> GetInts(const char * sFilter = NULL) const;
+    std::vector<long> GetInts(const char * sFilter = nullptr) const;
     /// get a map with all int values and the keys of this group
-    std::vector<std::pair<std::string,long> > GetIntMap(const char * sFilter = NULL) const;
+    std::vector<std::pair<std::string,long> > GetIntMap(const char * sFilter = nullptr) const;
     /// remove a int value from this group
     void RemoveInt(const char* Name);
     //@}
@@ -173,9 +163,9 @@ public:
     /// set a uint value
     void SetUnsigned(const char* Name, unsigned long lValue);
     /// get a vector of all uint values in this group
-    std::vector<unsigned long> GetUnsigneds(const char * sFilter = NULL) const;
+    std::vector<unsigned long> GetUnsigneds(const char * sFilter = nullptr) const;
     /// get a map with all uint values and the keys of this group
-    std::vector<std::pair<std::string,unsigned long> > GetUnsignedMap(const char * sFilter = NULL) const;
+    std::vector<std::pair<std::string,unsigned long> > GetUnsignedMap(const char * sFilter = nullptr) const;
     /// remove a uint value from this group
     void RemoveUnsigned(const char* Name);
     //@}
@@ -188,9 +178,9 @@ public:
     /// read float values or give default
     void SetFloat(const char* Name, double dValue);
     /// get a vector of all float values in this group
-    std::vector<double> GetFloats(const char * sFilter = NULL) const;
+    std::vector<double> GetFloats(const char * sFilter = nullptr) const;
     /// get a map with all float values and the keys of this group
-    std::vector<std::pair<std::string,double> > GetFloatMap(const char * sFilter = NULL) const;
+    std::vector<std::pair<std::string,double> > GetFloatMap(const char * sFilter = nullptr) const;
     /// remove a float value from this group
     void RemoveFloat(const char* Name);
     //@}
@@ -201,7 +191,7 @@ public:
     /// set a blob value
     void  SetBlob(const char* Name, void *pValue, long lLength);
     /// read blob values or give default
-    void GetBlob(const char* Name, void * pBuf, long lMaxLength, void* pPreset=NULL) const;
+    void GetBlob(const char* Name, void * pBuf, long lMaxLength, void* pPreset=nullptr) const;
     /// remove a blob value from this group
     void RemoveBlob(const char* Name);
     //@}
@@ -213,7 +203,7 @@ public:
     /// set a string value
     void  SetASCII(const char* Name, const char *sValue);
     /// read a string values
-    std::string GetASCII(const char* Name, const char * pPreset=NULL) const;
+    std::string GetASCII(const char* Name, const char * pPreset=nullptr) const;
     /// remove a string value from this group
     void RemoveASCII(const char* Name);
     /** Return all string elements in this group as a vector of strings
@@ -221,15 +211,15 @@ public:
      *  @param sFilter only strings which name includes sFilter are put in the vector
      *  @return std::vector of std::strings
      */
-    std::vector<std::string> GetASCIIs(const char * sFilter = NULL) const;
+    std::vector<std::string> GetASCIIs(const char * sFilter = nullptr) const;
     /// Same as GetASCIIs() but with key,value map
-    std::vector<std::pair<std::string,std::string> > GetASCIIMap(const char * sFilter = NULL) const;
+    std::vector<std::pair<std::string,std::string> > GetASCIIMap(const char * sFilter = nullptr) const;
     //@}
 
     friend class ParameterManager;
 
     /// returns the name
-    const char* GetGroupName(void) const {
+    const char* GetGroupName() const {
         return _cName.c_str();
     }
 
@@ -239,7 +229,7 @@ public:
 
 protected:
     /// constructor is protected (handle concept)
-    ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *GroupNode=0L,const char* sName=0L);
+    ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *GroupNode=nullptr,const char* sName=nullptr);
     /// destructor is protected (handle concept)
     ~ParameterGrp();
     /// helper function for GetGroup
@@ -254,7 +244,7 @@ protected:
      *  the pointer to that element, otherwise NULL
      *  If the names not given it returns the first occurrence of Type.
      */
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name=0L) const;
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name=nullptr) const;
 
     /** Find an element specified by Type and Name or create it if not found
      *  Search in the parent element Start for the first occurrence of an
@@ -304,15 +294,15 @@ class BaseExport ParameterManager : public ParameterGrp
 public:
     ParameterManager();
     ~ParameterManager();
-    static void Init(void);
-    static void Terminate(void);
+    static void Init();
+    static void Terminate();
 
     int   LoadDocument(const char* sFileName);
     int   LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource&);
     bool  LoadOrCreateDocument(const char* sFileName);
     void  SaveDocument(const char* sFileName) const;
     void  SaveDocument(XERCES_CPP_NAMESPACE_QUALIFIER XMLFormatTarget* pFormatTarget) const;
-    void  CreateDocument(void);
+    void  CreateDocument();
     void  CheckDocument() const;
 
     /** @name Parameter serialization */

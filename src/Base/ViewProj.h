@@ -47,9 +47,9 @@ public:
     /** Convert a 2D point on the projection plane in 3D space */
     virtual Vector3d inverse (const Vector3d &rclPt) const = 0;
     /** Calculate the projection (+ mapping) matrix */
-    virtual Matrix4D getProjectionMatrix (void) const = 0;
+    virtual Matrix4D getProjectionMatrix () const = 0;
     /** Calculate the composed projection matrix */
-    Matrix4D getComposedProjectionMatrix (void) const;
+    Matrix4D getComposedProjectionMatrix () const;
     /** Apply an additional transformation to the input points */
     void setTransform(const Base::Matrix4D&);
     const Base::Matrix4D& getTransform() const {
@@ -81,7 +81,7 @@ public:
     Vector3f inverse (const Vector3f &rclPt) const;
     Vector3d inverse (const Vector3d &rclPt) const;
 
-    Matrix4D getProjectionMatrix (void) const;
+    Matrix4D getProjectionMatrix () const;
 
 protected:
     bool isOrthographic;
@@ -105,7 +105,7 @@ public:
     Vector3f inverse (const Vector3f &rclPt) const;
     Vector3d inverse (const Vector3d &rclPt) const;
 
-    Matrix4D getProjectionMatrix (void) const;
+    Matrix4D getProjectionMatrix () const;
 
 protected:
     Matrix4D _clMtx, _clMtxInv;

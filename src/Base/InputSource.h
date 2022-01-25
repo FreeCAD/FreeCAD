@@ -60,7 +60,7 @@ public :
 #else
   virtual XMLFilePos curPos() const;
   virtual XMLSize_t readBytes( XMLByte* const toFill, const XMLSize_t maxToRead );
-  virtual const XMLCh* getContentType() const {return 0;}
+  virtual const XMLCh* getContentType() const {return nullptr;}
 #endif
 
 private :

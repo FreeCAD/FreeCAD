@@ -26,7 +26,7 @@
 
 
 #ifdef __GNUC__
-# include <stdint.h>
+# include <cstdint>
 #endif
 
 #include <fstream>

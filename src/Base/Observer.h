@@ -27,7 +27,7 @@
 
 // Std. configurations
 
-#include <assert.h>
+#include <cassert>
 #include <set>
 #include <cstring>
 #include <cstdio>
@@ -88,7 +88,7 @@ public:
    * and returns the name of the observer. Needed to use the Get
    * Method of the Subject.
    */
-  virtual const char *Name(void){return 0L;}
+  virtual const char *Name(){return nullptr;}
 };
 
 /** Subject class
@@ -202,7 +202,7 @@ public:
         return *Iter;
     }
 
-    return 0L;
+    return nullptr;
   }
 
   /** Clears the list of all registered observers.

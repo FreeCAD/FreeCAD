@@ -115,12 +115,12 @@ Base::XMLReader::~XMLReader()
     delete parser;
 }
 
-const char* Base::XMLReader::localName(void) const
+const char* Base::XMLReader::localName() const
 {
     return LocalName.c_str();
 }
 
-unsigned int Base::XMLReader::getAttributeCount(void) const
+unsigned int Base::XMLReader::getAttributeCount() const
 {
     return (unsigned int)AttrMap.size();
 }
@@ -190,7 +190,7 @@ bool Base::XMLReader::hasAttribute (const char* AttrName) const
     return AttrMap.find(AttrName) != AttrMap.end();
 }
 
-bool Base::XMLReader::read(void)
+bool Base::XMLReader::read()
 {
     ReadType = None;
 
@@ -287,7 +287,7 @@ void Base::XMLReader::readEndElement(const char* ElementName, int level)
                         || (level>=0 && level!=Level))));
 }
 
-void Base::XMLReader::readCharacters(void)
+void Base::XMLReader::readCharacters()
 {
 }
 
@@ -543,20 +543,20 @@ void Base::XMLReader::setPartialRestore(bool on)
     setStatus(PartialRestoreInObject, on);
 }
 
-void Base::XMLReader::clearPartialRestoreDocumentObject(void)
+void Base::XMLReader::clearPartialRestoreDocumentObject()
 {
     setStatus(PartialRestoreInDocumentObject, false);
     setStatus(PartialRestoreInProperty, false);
     setStatus(PartialRestoreInObject, false);
 }
 
-void Base::XMLReader::clearPartialRestoreProperty(void)
+void Base::XMLReader::clearPartialRestoreProperty()
 {
     setStatus(PartialRestoreInProperty, false);
     setStatus(PartialRestoreInObject, false);
 }
 
-void Base::XMLReader::clearPartialRestoreObject(void)
+void Base::XMLReader::clearPartialRestoreObject()
 {
     setStatus(PartialRestoreInObject, false);
 }

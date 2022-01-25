@@ -39,7 +39,7 @@ class BaseExport Placement
 {
 public:
     /// default constructor
-    Placement(void);
+    Placement();
     Placement(const Placement&);
     Placement(const Base::Matrix4D& matrix);
     Placement(const Vector3d& Pos, const Rotation &Rot);
@@ -53,11 +53,11 @@ public:
     /// Destruction
     ~Placement () {}
 
-    Matrix4D toMatrix(void) const;
+    Matrix4D toMatrix() const;
     void fromMatrix(const Matrix4D& m);
     DualQuat toDualQuaternion() const;
-    const Vector3d& getPosition(void) const {return _pos;}
-    const Rotation& getRotation(void) const {return _rot;}
+    const Vector3d& getPosition() const {return _pos;}
+    const Rotation& getRotation() const {return _rot;}
     void setPosition(const Vector3d& Pos){_pos=Pos;}
     void setRotation(const Rotation& Rot) {_rot = Rot;}
 

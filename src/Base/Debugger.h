@@ -58,7 +58,7 @@ class BaseExport Debugger : public QObject
     Q_OBJECT
 
 public:
-    Debugger(QObject* parent=0);
+    Debugger(QObject* parent=nullptr);
     ~Debugger();
 
     void attach();

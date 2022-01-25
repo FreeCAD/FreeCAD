@@ -50,7 +50,7 @@ public:
 
     /** Methods to get or set rotations. */
     //@{
-    const double * getValue(void) const;
+    const double * getValue() const;
     void getValue(double & q0, double & q1, double & q2, double & q3) const;
     void setValue(const double q0, const double q1, const double q2, const double q3);
     /// If not a null quaternion then \a axis will be normalized
@@ -119,8 +119,8 @@ public:
 
     /** Invert rotations. */
     //@{
-    Rotation & invert(void);
-    Rotation inverse(void) const;
+    Rotation & invert();
+    Rotation inverse() const;
     //@}
 
     /** Operators. */
@@ -142,7 +142,7 @@ public:
 
     /** Specialty constructors */
     static Rotation slerp(const Rotation & rot0, const Rotation & rot1, double t);
-    static Rotation identity(void);
+    static Rotation identity();
 
     /**
      * @brief makeRotationByAxes(xdir, ydir, zdir, priorityOrder): creates a rotation

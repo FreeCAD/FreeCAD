@@ -36,7 +36,7 @@ namespace Base {
  */
 
 /** Returns machine type (low endian, high endian) */
-unsigned short SwapOrder (void);
+unsigned short SwapOrder ();
 
 void SwapVar (char&);
 void SwapVar (unsigned char&);

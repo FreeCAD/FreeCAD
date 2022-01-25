@@ -104,7 +104,7 @@ void Rotation::operator = (const Rotation& rot)
     this->_angle   = rot._angle;
 }
 
-const double * Rotation::getValue(void) const
+const double * Rotation::getValue() const
 {
     return &this->quat[0];
 }
@@ -315,7 +315,7 @@ void Rotation::normalize()
     }
 }
 
-Rotation & Rotation::invert(void)
+Rotation & Rotation::invert()
 {
     this->quat[0] = -this->quat[0];
     this->quat[1] = -this->quat[1];
@@ -328,7 +328,7 @@ Rotation & Rotation::invert(void)
     return *this;
 }
 
-Rotation Rotation::inverse(void) const
+Rotation Rotation::inverse() const
 {
     Rotation rot;
     rot.quat[0] = -this->quat[0];
@@ -366,14 +366,14 @@ Rotation Rotation::operator*(const Rotation & q) const
 
 bool Rotation::operator==(const Rotation & q) const
 {
-     if ((this->quat[0] == q.quat[0] &&
-          this->quat[1] == q.quat[1] &&
-          this->quat[2] == q.quat[2] &&
-          this->quat[3] == q.quat[3]) ||
-         (this->quat[0] == -q.quat[0] &&
-          this->quat[1] == -q.quat[1] &&
-          this->quat[2] == -q.quat[2] &&
-          this->quat[3] == -q.quat[3]))
+    if ((this->quat[0] == q.quat[0] &&
+         this->quat[1] == q.quat[1] &&
+         this->quat[2] == q.quat[2] &&
+         this->quat[3] == q.quat[3]) ||
+        (this->quat[0] == -q.quat[0] &&
+         this->quat[1] == -q.quat[1] &&
+         this->quat[2] == -q.quat[2] &&
+         this->quat[3] == -q.quat[3]))
         return true;
     return false;
 }
@@ -481,7 +481,7 @@ Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
     return Rotation(x, y, z, w);
 }
 
-Rotation Rotation::identity(void)
+Rotation Rotation::identity()
 {
     return Rotation(0.0, 0.0, 0.0, 1.0);
 }

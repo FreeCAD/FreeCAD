@@ -34,7 +34,7 @@ ViewProjMethod::ViewProjMethod()
 /*! Calculate the composed projection matrix which is a product of
  * projection matrix multiplied with input transformation matrix.
  */
-Matrix4D ViewProjMethod::getComposedProjectionMatrix (void) const
+Matrix4D ViewProjMethod::getComposedProjectionMatrix () const
 {
     Matrix4D mat = getProjectionMatrix();
 
@@ -103,7 +103,7 @@ ViewProjMatrix::~ViewProjMatrix()
 {
 }
 
-Matrix4D ViewProjMatrix::getProjectionMatrix (void) const
+Matrix4D ViewProjMatrix::getProjectionMatrix () const
 {
     // Return the same matrix as passed to the constructor
     Matrix4D mat(_clMtx);
@@ -205,7 +205,7 @@ ViewOrthoProjMatrix::~ViewOrthoProjMatrix()
 {
 }
 
-Matrix4D ViewOrthoProjMatrix::getProjectionMatrix (void) const
+Matrix4D ViewOrthoProjMatrix::getProjectionMatrix () const
 {
     return _clMtx;
 }

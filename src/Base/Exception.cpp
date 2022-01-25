@@ -88,7 +88,7 @@ const char* Exception::what() const throw()
     return _sErrMsg.c_str();
 }
 
-void Exception::ReportException (void) const
+void Exception::ReportException () const
 {
     if (!_isReported) {
         const char *msg;

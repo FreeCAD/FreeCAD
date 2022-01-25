@@ -32,7 +32,7 @@
 using namespace Base;
 
 // returns a string which represent the object e.g. when printed in python
-std::string BaseClassPy::representation(void) const
+std::string BaseClassPy::representation() const
 {
     return std::string("<binding object>");
 }
@@ -42,7 +42,7 @@ PyObject*  BaseClassPy::isDerivedFrom(PyObject *args)
 {
     char *name;
     if (!PyArg_ParseTuple(args, "s", &name))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+        return nullptr;                    // NULL triggers exception
 
     Base::Type type = Base::Type::fromName(name);
     bool v = (type != Base::Type::badType() && getBaseClassPtr()->getTypeId().isDerivedFrom(type));
@@ -52,7 +52,7 @@ PyObject*  BaseClassPy::isDerivedFrom(PyObject *args)
 PyObject*  BaseClassPy::getAllDerivedFrom(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                    // NULL triggers exception
+        return nullptr;                    // NULL triggers exception
 
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(getBaseClassPtr()->getTypeId(), ary);
@@ -62,12 +62,12 @@ PyObject*  BaseClassPy::getAllDerivedFrom(PyObject *args)
     return Py::new_reference_to(res);
 }
 
-Py::String BaseClassPy::getTypeId(void) const
+Py::String BaseClassPy::getTypeId() const
 {
     return Py::String(std::string(getBaseClassPtr()->getTypeId().getName()));
 }
 
-Py::String BaseClassPy::getModule(void) const
+Py::String BaseClassPy::getModule() const
 {
     std::string module(getBaseClassPtr()->getTypeId().getName());
     std::string::size_type pos = module.find_first_of("::");
@@ -82,7 +82,7 @@ Py::String BaseClassPy::getModule(void) const
 
 PyObject *BaseClassPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int BaseClassPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
