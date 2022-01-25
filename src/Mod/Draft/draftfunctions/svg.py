@@ -474,11 +474,13 @@ def get_svg(obj,
             plane = direction
 
     stroke = "#000000"
+    tstroke = stroke
     if color and override:
         if "#" in color:
             stroke = color
         else:
             stroke = utils.get_rgb(color)
+        tstroke = stroke
     elif App.GuiUp:
         # find print color
         pc = get_print_color(obj)
@@ -492,9 +494,6 @@ def get_svg(obj,
                 stroke = utils.get_rgb(obj.ViewObject.TextColor)
             if hasattr(obj.ViewObject, "TextColor"):
                 tstroke = utils.get_rgb(obj.ViewObject.TextColor)
-            else:
-                tstroke = stroke
-
 
     lstyle = "none"
     if override:
