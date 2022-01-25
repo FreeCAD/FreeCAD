@@ -20,14 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
-
-# import PathScripts.PathUtils as PathUtils
 import PathScripts.drillableLib as drillableLib
-
-from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -43,9 +40,7 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 if False:
@@ -53,6 +48,7 @@ if False:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 class ObjectOp(PathOp.ObjectOp):
     """Base class for proxy objects of all operations on circular holes."""
@@ -81,7 +77,7 @@ class ObjectOp(PathOp.ObjectOp):
             "App::PropertyStringList",
             "Disabled",
             "Base",
-            QtCore.QT_TRANSLATE_NOOP("Path", "List of disabled features"),
+            QT_TRANSLATE_NOOP("App::Property", "List of disabled features"),
         )
         self.initCircularHoleOperation(obj)
 
