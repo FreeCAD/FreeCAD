@@ -27,22 +27,20 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+__doc__ = "Class and implementation of Path Engrave operation"
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
-
-__doc__ = "Class and implementation of Path Engrave operation"
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
-
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ObjectEngrave(PathEngraveBase.ObjectOp):
@@ -69,8 +67,8 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 "App::PropertyLinkList",
                 "BaseShapes",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathEngrave", "Additional base objects to be engraved"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Additional base objects to be engraved"
                 ),
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
@@ -79,8 +77,8 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 "App::PropertyLink",
                 "BaseObject",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "PathEngrave", "Additional base objects to be engraved"
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Additional base objects to be engraved"
                 ),
             )
         obj.setEditorMode("BaseObject", 2)  # hide
@@ -91,8 +89,8 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "App::PropertyInteger",
             "StartVertex",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "PathEngrave", "The vertex index to start the path from"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The vertex index to start the path from"
             ),
         )
         self.setupAdditionalProperties(obj)

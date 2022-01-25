@@ -22,42 +22,56 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-
-from PySide import QtCore #, QtGui
+import PathScripts.PathPocket as PathPocket
+import PathScripts.PathLog as PathLog
 
 __title__ = "Path Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Base page controller and command implementation for path pocket operations."
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-FeaturePocket   = 0x01
-FeatureFacing   = 0x02
-FeatureOutline  = 0x04
+translate = FreeCAD.Qt.translate
+
+FeaturePocket = 0x01
+FeatureFacing = 0x02
+FeatureOutline = 0x04
+
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Page controller class for pocket operations, supports:
-          FeaturePocket  ... used for pocketing operation
-          FeatureFacing  ... used for face milling operation
-          FeatureOutline ... used for pocket-shape operation
-    '''
+    """Page controller class for pocket operations, supports:
+    FeaturePocket  ... used for pocketing operation
+    FeatureFacing  ... used for face milling operation
+    FeatureOutline ... used for pocket-shape operation
+    """
 
     def pocketFeatures(self):
-        '''pocketFeatures() ... return which features of the UI are supported by the operation.
+        """pocketFeatures() ... return which features of the UI are supported by the operation.
           FeaturePocket  ... used for pocketing operation
           FeatureFacing  ... used for face milling operation
           FeatureOutline ... used for pocket-shape operation
-        Must be overwritten by subclasses'''
-        pass # pylint: disable=unnecessary-pass
+        Must be overwritten by subclasses"""
+        pass  # pylint: disable=unnecessary-pass
 
     def getForm(self):
-        '''getForm() ... returns UI, adapted to the results from pocketFeatures()'''
+        """getForm() ... returns UI, adapted to the results from pocketFeatures()"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
+
+        comboToPropertyMap = [
+            ("cutMode", "CutMode"),
+            ("offsetPattern", "OffsetPattern"),
+        ]
+        enumTups = PathPocket.ObjectPocket.pocketPropertyEnumerations(dataType="raw")
+
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
 
         if not FeatureFacing & self.pocketFeatures():
             form.facingWidget.hide()
@@ -65,7 +79,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if FeaturePocket & self.pocketFeatures():
             form.extraOffset_label.setText(translate("PathPocket", "Pass Extension"))
-            form.extraOffset.setToolTip(translate("PathPocket", "The distance the facing operation will extend beyond the boundary shape."))
+            form.extraOffset.setToolTip(
+                translate(
+                    "PathPocket",
+                    "The distance the facing operation will extend beyond the boundary shape.",
+                )
+            )
 
         if not (FeatureOutline & self.pocketFeatures()):
             form.useOutline.hide()
@@ -75,6 +94,21 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         #     form.minTravel.hide()
 
         return form
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
 
     def updateMinTravel(self, obj, setModel=True):
         if obj.UseStartPoint:
@@ -87,24 +121,24 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.MinTravel = self.form.minTravel.isChecked()
 
     def updateZigZagAngle(self, obj, setModel=True):
-        if obj.OffsetPattern in ['Offset', 'Spiral']:
+        if obj.OffsetPattern in ["Offset", "Spiral"]:
             self.form.zigZagAngle.setEnabled(False)
         else:
             self.form.zigZagAngle.setEnabled(True)
 
         if setModel:
-            PathGui.updateInputField(obj, 'ZigZagAngle', self.form.zigZagAngle)
+            PathGui.updateInputField(obj, "ZigZagAngle", self.form.zigZagAngle)
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
-        if obj.CutMode != str(self.form.cutMode.currentText()):
-            obj.CutMode = str(self.form.cutMode.currentText())
+        """getFields(obj) ... transfers values from UI to obj's proprties"""
+        if obj.CutMode != str(self.form.cutMode.currentData()):
+            obj.CutMode = str(self.form.cutMode.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
-        if obj.OffsetPattern != str(self.form.offsetPattern.currentText()):
-            obj.OffsetPattern = str(self.form.offsetPattern.currentText())
+        if obj.OffsetPattern != str(self.form.offsetPattern.currentData()):
+            obj.OffsetPattern = str(self.form.offsetPattern.currentData())
 
-        PathGui.updateInputField(obj, 'ExtraOffset', self.form.extraOffset)
+        PathGui.updateInputField(obj, "ExtraOffset", self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
         self.updateZigZagAngle(obj)
@@ -119,20 +153,29 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateMinTravel(obj)
 
         if FeatureFacing & self.pocketFeatures():
-            if obj.BoundaryShape != str(self.form.boundaryShape.currentText()):
-                obj.BoundaryShape = str(self.form.boundaryShape.currentText())
+            print(obj.BoundaryShape)
+            print(self.form.boundaryShape.currentText())
+            print(self.form.boundaryShape.currentData())
+            if obj.BoundaryShape != str(self.form.boundaryShape.currentData()):
+                obj.BoundaryShape = str(self.form.boundaryShape.currentData())
             if obj.ClearEdges != self.form.clearEdges.isChecked():
                 obj.ClearEdges = self.form.clearEdges.isChecked()
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         self.form.stepOverPercent.setValue(obj.StepOver)
-        self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.ExtraOffset.Value, FreeCAD.Units.Length).UserString)
+        self.form.extraOffset.setText(
+            FreeCAD.Units.Quantity(
+                obj.ExtraOffset.Value, FreeCAD.Units.Length
+            ).UserString
+        )
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
         if FeatureOutline & self.pocketFeatures():
             self.form.useOutline.setChecked(obj.UseOutline)
 
-        self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
+        self.form.zigZagAngle.setText(
+            FreeCAD.Units.Quantity(obj.ZigZagAngle, FreeCAD.Units.Angle).UserString
+        )
         self.updateZigZagAngle(obj, False)
 
         self.form.minTravel.setChecked(obj.MinTravel)
@@ -148,7 +191,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.clearEdges.setChecked(obj.ClearEdges)
 
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
 
         signals.append(self.form.cutMode.currentIndexChanged)

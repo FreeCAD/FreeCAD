@@ -22,7 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathEngrave as PathEngrave
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
@@ -30,26 +30,35 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore, QtGui
 
+
 __title__ = "Path Engrave Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Engrave operation page controller and command implementation."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+
+translate = FreeCAD.Qt.translate
+
 
 class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
-    '''Enhanced base geometry page to also allow special base objects.'''
+    """Enhanced base geometry page to also allow special base objects."""
 
     def super(self):
         return super(TaskPanelBaseGeometryPage, self)
 
     def selectionSupportedAsBaseGeometry(self, selection, ignoreErrors):
         # allow selection of an entire 2D object, which is generally not the case
-        if len(selection) == 1 and not selection[0].HasSubObjects and selection[0].Object.isDerivedFrom('Part::Part2DObject'):
+        if (
+            len(selection) == 1
+            and not selection[0].HasSubObjects
+            and selection[0].Object.isDerivedFrom("Part::Part2DObject")
+        ):
             return True
         # Let general logic handle all other cases.
         return self.super().selectionSupportedAsBaseGeometry(selection, ignoreErrors)
@@ -61,22 +70,31 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             job = PathUtils.findParentJob(self.obj)
             base = job.Proxy.resourceClone(job, sel.Object)
             if not base:
-                PathLog.notice((translate("Path", "%s is not a Base Model object of the job %s")+"\n") % (sel.Object.Label, job.Label))
+                PathLog.notice(
+                    (
+                        translate("Path", "%s is not a Base Model object of the job %s")
+                        + "\n"
+                    )
+                    % (sel.Object.Label, job.Label)
+                )
                 continue
             if base in shapes:
-                PathLog.notice((translate("Path", "Base shape %s already in the list")+"\n") % (sel.Object.Label))
+                PathLog.notice(
+                    (translate("Path", "Base shape %s already in the list") + "\n")
+                    % (sel.Object.Label)
+                )
                 continue
-            if base.isDerivedFrom('Part::Part2DObject'):
+            if base.isDerivedFrom("Part::Part2DObject"):
                 if sel.HasSubObjects:
                     # selectively add some elements of the drawing to the Base
                     for sub in sel.SubElementNames:
-                        if 'Vertex' in sub:
-                            PathLog.info(translate("Path", "Ignoring vertex"))
+                        if "Vertex" in sub:
+                            PathLog.info("Ignoring vertex")
                         else:
                             self.obj.Proxy.addBase(self.obj, base, sub)
                 else:
                     # when adding an entire shape to BaseShapes we can take its sub shapes out of Base
-                    self.obj.Base = [(p,el) for p,el in self.obj.Base if p != base]
+                    self.obj.Base = [(p, el) for p, el in self.obj.Base if p != base]
                     shapes.append(base)
                     self.obj.BaseShapes = shapes
                 added = True
@@ -106,32 +124,35 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             sub = item.data(self.super().DataObjectSub)
             if not sub:
                 shapes.append(obj)
-        PathLog.debug("Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes))
+        PathLog.debug(
+            "Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes)
+        )
         self.obj.BaseShapes = shapes
         return self.super().updateBase()
 
+
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Page controller class for the Engrave operation.'''
+    """Page controller class for the Engrave operation."""
 
     def getForm(self):
-        '''getForm() ... returns UI'''
+        """getForm() ... returns UI"""
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpEngraveEdit.ui")
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        """getFields(obj) ... transfers values from UI to obj's proprties"""
         if obj.StartVertex != self.form.startVertex.value():
             obj.StartVertex = self.form.startVertex.value()
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         self.form.startVertex.setValue(obj.StartVertex)
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.startVertex.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
@@ -139,15 +160,20 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return signals
 
     def taskPanelBaseGeometryPage(self, obj, features):
-        '''taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries.'''
+        """taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries."""
         return TaskPanelBaseGeometryPage(obj, features)
 
-Command = PathOpGui.SetupOperation('Engrave',
-        PathEngrave.Create,
-        TaskPanelOpPage,
-        'Path_Engrave',
-        QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Engrave"),
-        QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Creates an Engraving Path around a Draft ShapeString"),
-        PathEngrave.SetupProperties)
+
+Command = PathOpGui.SetupOperation(
+    "Engrave",
+    PathEngrave.Create,
+    TaskPanelOpPage,
+    "Path_Engrave",
+    QtCore.QT_TRANSLATE_NOOP("Path_Engrave", "Engrave"),
+    QtCore.QT_TRANSLATE_NOOP(
+        "Path_Engrave", "Creates an Engraving Path around a Draft ShapeString"
+    ),
+    PathEngrave.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathEngraveGui... done\n")

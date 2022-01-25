@@ -26,13 +26,13 @@ import FreeCAD
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
-
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import numpy
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
+
+Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Path Mill Face Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -41,32 +41,87 @@ __doc__ = "Class and implementation of Mill Facing operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ObjectFace(PathPocketBase.ObjectPocket):
-    '''Proxy object for Mill Facing operation.'''
+    """Proxy object for Mill Facing operation."""
+
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+        """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        enums = {
+            "BoundaryShape": [
+                (translate("Path_Pocket", "Boundbox"), "Boundbox"),
+                (translate("Path_Pocket", "Face Region"), "Face Region"),
+                (translate("Path_Pocket", "Perimeter"), "Perimeter"),
+                (translate("Path_Pocket", "Stock"), "Stock"),
+            ],
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
 
     def initPocketOp(self, obj):
-        '''initPocketOp(obj) ... create facing specific properties'''
-        obj.addProperty("App::PropertyEnumeration", "BoundaryShape", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"))
-        obj.addProperty("App::PropertyBool", "ClearEdges", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Clear edges of surface (Only applicable to BoundBox)"))
-        if not hasattr(obj, 'ExcludeRaisedAreas'):
-            obj.addProperty("App::PropertyBool", "ExcludeRaisedAreas", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Exclude milling raised areas inside the face."))
+        PathLog.track()
+        """initPocketOp(obj) ... create facing specific properties"""
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "BoundaryShape",
+            "Face",
+            QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ClearEdges",
+            "Face",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Clear edges of surface (Only applicable to BoundBox)"
+            ),
+        )
+        if not hasattr(obj, "ExcludeRaisedAreas"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ExcludeRaisedAreas",
+                "Face",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Exclude milling raised areas inside the face."
+                ),
+            )
 
-        obj.BoundaryShape = ['Boundbox', 'Face Region', 'Perimeter', 'Stock']
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
 
     def pocketInvertExtraOffset(self):
         return True
 
     def areaOpOnChanged(self, obj, prop):
-        '''areaOpOnChanged(obj, prop) ... facing specific depths calculation.'''
+        """areaOpOnChanged(obj, prop) ... facing specific depths calculation."""
         PathLog.track(prop)
         if prop == "StepOver" and obj.StepOver == 0:
             obj.StepOver = 1
@@ -78,27 +133,27 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                 obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
 
             if len(obj.Base) >= 1:
-                PathLog.debug('processing')
+                PathLog.debug("processing")
                 sublist = []
                 for i in obj.Base:
                     o = i[0]
                     for s in i[1]:
                         sublist.append(o.Shape.getElement(s))
 
-            # If the operation has a geometry identified the Finaldepth
-            # is the top of the bboundbox which includes all features.
-            # Otherwise, top of part.
+                # If the operation has a geometry identified the Finaldepth
+                # is the top of the bboundbox which includes all features.
+                # Otherwise, top of part.
 
                 obj.OpFinalDepth = Part.makeCompound(sublist).BoundBox.ZMax
             elif job:
                 obj.OpFinalDepth = job.Proxy.modelBoundBox(job).ZMax
 
     def areaOpShapes(self, obj):
-        '''areaOpShapes(obj) ... return top face'''
+        """areaOpShapes(obj) ... return top face"""
         # Facing is done either against base objects
         holeShape = None
 
-        PathLog.debug('depthparams: {}'.format([i for i in self.depthparams]))
+        PathLog.debug("depthparams: {}".format([i for i in self.depthparams]))
 
         if obj.Base:
             PathLog.debug("obj.Base: {}".format(obj.Base))
@@ -120,7 +175,9 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                         # Limit to one model base per operation
                         if oneBase[0] is not b[0]:
                             oneBase[1] = False
-                        if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
+                        if numpy.isclose(
+                            abs(shape.normalAt(0, 0).z), 1
+                        ):  # horizontal face
                             # Analyze internal closed wires to determine if raised or a recess
                             for wire in shape.Wires[1:]:
                                 if obj.ExcludeRaisedAreas:
@@ -130,12 +187,18 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                                 else:
                                     holes.append((b[0].Shape, wire))
                     else:
-                        PathLog.warning('The base subobject, "{0}," is not a face. Ignoring "{0}."'.format(sub))
+                        PathLog.warning(
+                            'The base subobject, "{0}," is not a face. Ignoring "{0}."'.format(
+                                sub
+                            )
+                        )
 
             if obj.ExcludeRaisedAreas and len(holes) > 0:
                 for shape, wire in holes:
-                    f = Part.makeFace(wire, 'Part::FaceMakerSimple')
-                    env = PathUtils.getEnvelope(shape, subshape=f, depthparams=self.depthparams)
+                    f = Part.makeFace(wire, "Part::FaceMakerSimple")
+                    env = PathUtils.getEnvelope(
+                        shape, subshape=f, depthparams=self.depthparams
+                    )
                     holeEnvs.append(env)
                     holeShape = Part.makeCompound(holeEnvs)
 
@@ -161,62 +224,98 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         bb.XMax = bb.XMax + offset
         bb.YMax = bb.YMax + offset
 
-        if obj.BoundaryShape == 'Boundbox':
-            bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Vector(0, 0, 1))
+        if obj.BoundaryShape == "Boundbox":
+            bbperim = Part.makeBox(
+                bb.XLength,
+                bb.YLength,
+                1,
+                FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin),
+                FreeCAD.Vector(0, 0, 1),
+            )
             env = PathUtils.getEnvelope(partshape=bbperim, depthparams=self.depthparams)
             if obj.ExcludeRaisedAreas and oneBase[1]:
-                includedFaces = self.getAllIncludedFaces(oneBase[0], env, faceZ=minHeight)
+                includedFaces = self.getAllIncludedFaces(
+                    oneBase[0], env, faceZ=minHeight
+                )
                 if len(includedFaces) > 0:
                     includedShape = Part.makeCompound(includedFaces)
-                    includedEnv = PathUtils.getEnvelope(oneBase[0].Shape, subshape=includedShape, depthparams=self.depthparams)
+                    includedEnv = PathUtils.getEnvelope(
+                        oneBase[0].Shape,
+                        subshape=includedShape,
+                        depthparams=self.depthparams,
+                    )
                     env = env.cut(includedEnv)
-        elif obj.BoundaryShape == 'Stock':
+        elif obj.BoundaryShape == "Stock":
             stock = PathUtils.findParentJob(obj).Stock.Shape
             env = stock
 
             if obj.ExcludeRaisedAreas and oneBase[1]:
-                includedFaces = self.getAllIncludedFaces(oneBase[0], stock, faceZ=minHeight)
+                includedFaces = self.getAllIncludedFaces(
+                    oneBase[0], stock, faceZ=minHeight
+                )
                 if len(includedFaces) > 0:
-                    stockEnv = PathUtils.getEnvelope(partshape=stock, depthparams=self.depthparams)
+                    stockEnv = PathUtils.getEnvelope(
+                        partshape=stock, depthparams=self.depthparams
+                    )
                     includedShape = Part.makeCompound(includedFaces)
-                    includedEnv = PathUtils.getEnvelope(oneBase[0].Shape, subshape=includedShape, depthparams=self.depthparams)
+                    includedEnv = PathUtils.getEnvelope(
+                        oneBase[0].Shape,
+                        subshape=includedShape,
+                        depthparams=self.depthparams,
+                    )
                     env = stockEnv.cut(includedEnv)
-        elif obj.BoundaryShape == 'Perimeter':
+        elif obj.BoundaryShape == "Perimeter":
             if obj.ClearEdges:
                 psZMin = planeshape.BoundBox.ZMin
-                ofstShape = PathUtils.getOffsetArea(planeshape,
-                                                    self.radius * 1.25,
-                                                    plane=planeshape)
-                ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
-                env = PathUtils.getEnvelope(partshape=ofstShape, depthparams=self.depthparams)
+                ofstShape = PathUtils.getOffsetArea(
+                    planeshape, self.radius * 1.25, plane=planeshape
+                )
+                ofstShape.translate(
+                    FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin)
+                )
+                env = PathUtils.getEnvelope(
+                    partshape=ofstShape, depthparams=self.depthparams
+                )
             else:
-                env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
-        elif obj.BoundaryShape == 'Face Region':
+                env = PathUtils.getEnvelope(
+                    partshape=planeshape, depthparams=self.depthparams
+                )
+        elif obj.BoundaryShape == "Face Region":
             baseShape = oneBase[0].Shape
             psZMin = planeshape.BoundBox.ZMin
             ofst = 0.0
             if obj.ClearEdges:
                 ofst = self.tool.Diameter * 0.51
             ofstShape = PathUtils.getOffsetArea(planeshape, ofst, plane=planeshape)
-            ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
+            ofstShape.translate(
+                FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin)
+            )
 
             # Calculate custom depth params for removal shape envelope, with start and final depth buffers
-            custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value + 0.2, obj.FinalDepth.Value - 0.1)  # only an envelope
-            ofstShapeEnv = PathUtils.getEnvelope(partshape=ofstShape, depthparams=custDepthparams)
-            if obj.ExcludeRaisedAreas: 
+            custDepthparams = self._customDepthParams(
+                obj, obj.StartDepth.Value + 0.2, obj.FinalDepth.Value - 0.1
+            )  # only an envelope
+            ofstShapeEnv = PathUtils.getEnvelope(
+                partshape=ofstShape, depthparams=custDepthparams
+            )
+            if obj.ExcludeRaisedAreas:
                 env = ofstShapeEnv.cut(baseShape)
-                env.translate(FreeCAD.Vector(0.0, 0.0, -0.00001))  # lower removal shape into buffer zone
+                env.translate(
+                    FreeCAD.Vector(0.0, 0.0, -0.00001)
+                )  # lower removal shape into buffer zone
             else:
                 env = ofstShapeEnv
 
         if holeShape:
             PathLog.debug("Processing holes and face ...")
-            holeEnv = PathUtils.getEnvelope(partshape=holeShape, depthparams=self.depthparams)
+            holeEnv = PathUtils.getEnvelope(
+                partshape=holeShape, depthparams=self.depthparams
+            )
             newEnv = env.cut(holeEnv)
-            tup = newEnv, False, 'pathMillFace'
+            tup = newEnv, False, "pathMillFace"
         else:
             PathLog.debug("Processing solid face ...")
-            tup = env, False, 'pathMillFace'
+            tup = env, False, "pathMillFace"
 
         self.removalshapes.append(tup)
         obj.removalshape = self.removalshapes[0][0]  # save removal shape
@@ -224,7 +323,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         return self.removalshapes
 
     def areaOpSetDefaultValues(self, obj, job):
-        '''areaOpSetDefaultValues(obj, job) ... initialize mill facing properties'''
+        """areaOpSetDefaultValues(obj, job) ... initialize mill facing properties"""
         obj.StepOver = 50
         obj.ZigZagAngle = 45.0
         obj.ExcludeRaisedAreas = False
@@ -260,8 +359,8 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         return False
 
     def getAllIncludedFaces(self, base, env, faceZ):
-        '''getAllIncludedFaces(base, env, faceZ)...
-        Return all `base` faces extending above `faceZ` whose boundboxes overlap with the `env` boundbox.'''
+        """getAllIncludedFaces(base, env, faceZ)...
+        Return all `base` faces extending above `faceZ` whose boundboxes overlap with the `env` boundbox."""
         included = []
 
         eXMin = env.BoundBox.XMin
@@ -305,7 +404,7 @@ def SetupProperties():
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a Mill Facing operation.'''
+    """Create(name) ... Creates and returns a Mill Facing operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectFace(obj, name, parentJob)

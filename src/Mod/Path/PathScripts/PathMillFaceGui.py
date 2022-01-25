@@ -20,32 +20,79 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import PathScripts.PathLog as PathLog
 import PathScripts.PathMillFace as PathMillFace
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
-
-from PySide import QtCore
+import PathScripts.PathPocketShape as PathPocketShape
+import FreeCADGui
 
 __title__ = "Path Face Mill Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Face Mill operation page controller and command implementation."
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
-    '''Page controller class for the face milling operation.'''
+    """Page controller class for the face milling operation."""
+
+    def getForm(self):
+        PathLog.track()
+        """getForm() ... return UI"""
+
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
+        comboToPropertyMap = [
+            ("cutMode", "CutMode"),
+            ("offsetPattern", "OffsetPattern"),
+            ("boundaryShape", "BoundaryShape"),
+        ]
+
+        enumTups = PathMillFace.ObjectFace.propertyEnumerations(dataType="raw")
+        enumTups.update(
+            PathPocketShape.ObjectPocket.pocketPropertyEnumerations(dataType="raw")
+        )
+
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+        return form
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
 
     def pocketFeatures(self):
-        '''pocketFeatures() ... return FeatureFacing (see PathPocketBaseGui)'''
+        """pocketFeatures() ... return FeatureFacing (see PathPocketBaseGui)"""
         return PathPocketBaseGui.FeatureFacing
 
-Command = PathOpGui.SetupOperation('MillFace',
-        PathMillFace.Create,
-        TaskPanelOpPage,
-        'Path_Face',
-        QtCore.QT_TRANSLATE_NOOP("Path_Face", "Face"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Face", "Create a Facing Operation from a model or face"),
-        PathMillFace.SetupProperties)
+
+Command = PathOpGui.SetupOperation(
+    "MillFace",
+    PathMillFace.Create,
+    TaskPanelOpPage,
+    "Path_Face",
+    QT_TRANSLATE_NOOP("Path_MillFace", "Face"),
+    QT_TRANSLATE_NOOP(
+        "Path_MillFace", "Create a Facing Operation from a model or face"
+    ),
+    PathMillFace.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathMillFaceGui... done\n")
-

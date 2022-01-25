@@ -20,17 +20,17 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
 
-from PySide import QtCore
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
+
+Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Path 3D Pocket Operation"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
@@ -41,42 +41,110 @@ __created__ = "2014"
 __scriptVersion__ = "2e"
 __lastModified__ = "2020-02-13 17:22 CST"
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
-    '''Proxy object for Pocket operation.'''
+    """Proxy object for Pocket operation."""
 
     def pocketOpFeatures(self, obj):
         return PathOp.FeatureNoFinalDepth
 
     def initPocketOp(self, obj):
-        '''initPocketOp(obj) ... setup receiver'''
-        if not hasattr(obj, 'HandleMultipleFeatures'):
-            obj.addProperty('App::PropertyEnumeration', 'HandleMultipleFeatures', 'Pocket', QtCore.QT_TRANSLATE_NOOP('PathPocket', 'Choose how to process multiple Base Geometry features.'))
-        obj.HandleMultipleFeatures = ['Collectively', 'Individually']
-        if not hasattr(obj, 'AdaptivePocketStart'):
-            obj.addProperty('App::PropertyBool', 'AdaptivePocketStart', 'Pocket', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Use adaptive algorithm to eliminate excessive air milling above planar pocket top.'))
-        if not hasattr(obj, 'AdaptivePocketFinish'):
-            obj.addProperty('App::PropertyBool', 'AdaptivePocketFinish', 'Pocket', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Use adaptive algorithm to eliminate excessive air milling below planar pocket bottom.'))
-        if not hasattr(obj, 'ProcessStockArea'):
-            obj.addProperty('App::PropertyBool', 'ProcessStockArea', 'Pocket', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Process the model and stock in an operation with no Base Geometry selected.'))
+        """initPocketOp(obj) ... setup receiver"""
+        if not hasattr(obj, "HandleMultipleFeatures"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "HandleMultipleFeatures",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Choose how to process multiple Base Geometry features.",
+                ),
+            )
+        if not hasattr(obj, "AdaptivePocketStart"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "AdaptivePocketStart",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Use adaptive algorithm to eliminate excessive air milling above planar pocket top.",
+                ),
+            )
+        if not hasattr(obj, "AdaptivePocketFinish"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "AdaptivePocketFinish",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Use adaptive algorithm to eliminate excessive air milling below planar pocket bottom.",
+                ),
+            )
+        if not hasattr(obj, "ProcessStockArea"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ProcessStockArea",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Process the model and stock in an operation with no Base Geometry selected.",
+                ),
+            )
+
+        # populate the property enumerations
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
+
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+        """propertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        enums = {
+            "HandleMultipleFeatures": [
+                (translate("Path_Pocket", "Collectively"), "Collectively"),
+                (translate("Path_Pocket", "Individually"), "Individually"),
+            ],
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
 
     def opOnDocumentRestored(self, obj):
-        '''opOnDocumentRestored(obj) ... adds the properties if they doesn't exist.'''
+        """opOnDocumentRestored(obj) ... adds the properties if they doesn't exist."""
         self.initPocketOp(obj)
 
     def pocketInvertExtraOffset(self):
         return False
 
     def areaOpShapes(self, obj):
-        '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
+        """areaOpShapes(obj) ... return shapes representing the solids to be removed."""
         PathLog.track()
 
         subObjTups = []
@@ -102,34 +170,51 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 if len(Faces) == 0:
                     allSubsFaceType = False
 
-                if allSubsFaceType is True and obj.HandleMultipleFeatures == 'Collectively':
+                if (
+                    allSubsFaceType is True
+                    and obj.HandleMultipleFeatures == "Collectively"
+                ):
                     (fzmin, fzmax) = self.getMinMaxOfFaces(Faces)
                     if obj.FinalDepth.Value < fzmin:
-                        PathLog.warning(translate('PathPocket', 'Final depth set below ZMin of face(s) selected.'))
+                        PathLog.warning(
+                            translate(
+                                "PathPocket",
+                                "Final depth set below ZMin of face(s) selected.",
+                            )
+                        )
 
-                    if obj.AdaptivePocketStart is True or obj.AdaptivePocketFinish is True:
+                    if (
+                        obj.AdaptivePocketStart is True
+                        or obj.AdaptivePocketFinish is True
+                    ):
                         pocketTup = self.calculateAdaptivePocket(obj, base, subObjTups)
                         if pocketTup is not False:
                             obj.removalshape = pocketTup[0]
                             removalshapes.append(pocketTup)  # (shape, isHole, detail)
                     else:
                         shape = Part.makeCompound(Faces)
-                        env = PathUtils.getEnvelope(base[0].Shape, subshape=shape, depthparams=self.depthparams)
+                        env = PathUtils.getEnvelope(
+                            base[0].Shape, subshape=shape, depthparams=self.depthparams
+                        )
                         obj.removalshape = env.cut(base[0].Shape)
                         # obj.removalshape.tessellate(0.1)
-                        removalshapes.append((obj.removalshape, False, '3DPocket'))  # (shape, isHole, detail)
+                        removalshapes.append(
+                            (obj.removalshape, False, "3DPocket")
+                        )  # (shape, isHole, detail)
                 else:
                     for sub in base[1]:
                         if "Face" in sub:
                             shape = Part.makeCompound([getattr(base[0].Shape, sub)])
                         else:
                             edges = [getattr(base[0].Shape, sub) for sub in base[1]]
-                            shape = Part.makeFace(edges, 'Part::FaceMakerSimple')
+                            shape = Part.makeFace(edges, "Part::FaceMakerSimple")
 
-                        env = PathUtils.getEnvelope(base[0].Shape, subshape=shape, depthparams=self.depthparams)
+                        env = PathUtils.getEnvelope(
+                            base[0].Shape, subshape=shape, depthparams=self.depthparams
+                        )
                         obj.removalshape = env.cut(base[0].Shape)
                         # obj.removalshape.tessellate(0.1)
-                        removalshapes.append((obj.removalshape, False, '3DPocket'))
+                        removalshapes.append((obj.removalshape, False, "3DPocket"))
 
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
@@ -137,36 +222,40 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 if obj.ProcessStockArea is True:
                     job = PathUtils.findParentJob(obj)
 
-                    stockEnvShape = PathUtils.getEnvelope(job.Stock.Shape, subshape=None, depthparams=self.depthparams)
+                    stockEnvShape = PathUtils.getEnvelope(
+                        job.Stock.Shape, subshape=None, depthparams=self.depthparams
+                    )
 
                     obj.removalshape = stockEnvShape.cut(base.Shape)
                     # obj.removalshape.tessellate(0.1)
                 else:
-                    env = PathUtils.getEnvelope(base.Shape, subshape=None, depthparams=self.depthparams)
+                    env = PathUtils.getEnvelope(
+                        base.Shape, subshape=None, depthparams=self.depthparams
+                    )
                     obj.removalshape = env.cut(base.Shape)
                     # obj.removalshape.tessellate(0.1)
 
-                removalshapes.append((obj.removalshape, False, '3DPocket'))
+                removalshapes.append((obj.removalshape, False, "3DPocket"))
 
         return removalshapes
 
     def areaOpSetDefaultValues(self, obj, job):
-        '''areaOpSetDefaultValues(obj, job) ... set default values'''
+        """areaOpSetDefaultValues(obj, job) ... set default values"""
         obj.StepOver = 100
         obj.ZigZagAngle = 45
-        obj.HandleMultipleFeatures = 'Collectively'
+        obj.HandleMultipleFeatures = "Collectively"
         obj.AdaptivePocketStart = False
         obj.AdaptivePocketFinish = False
         obj.ProcessStockArea = False
 
     # methods for eliminating air milling with some pockets: adpative start and finish
     def calculateAdaptivePocket(self, obj, base, subObjTups):
-        '''calculateAdaptivePocket(obj, base, subObjTups)
+        """calculateAdaptivePocket(obj, base, subObjTups)
         Orient multiple faces around common facial center of mass.
         Identify edges that are connections for adjacent faces.
         Attempt to separate unconnected edges into top and bottom loops of the pocket.
         Trim the top and bottom of the pocket if available and requested.
-        return: tuple with pocket shape information'''
+        return: tuple with pocket shape information"""
         low = []
         high = []
         removeList = []
@@ -203,23 +292,27 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 highFaceShape = Part.Face(Part.Wire(Part.__sortEdges__(allEdges)))
             except Exception as ee:
                 PathLog.warning(ee)
-                PathLog.error(translate("Path", "A planar adaptive start is unavailable. The non-planar will be attempted."))
+                PathLog.error(
+                    "A planar adaptive start is unavailable. The non-planar will be attempted."
+                )
                 tryNonPlanar = True
             else:
                 makeHighFace = 1
 
             if tryNonPlanar is True:
                 try:
-                    highFaceShape = Part.makeFilledFace(Part.__sortEdges__(allEdges))  # NON-planar face method
+                    highFaceShape = Part.makeFilledFace(
+                        Part.__sortEdges__(allEdges)
+                    )  # NON-planar face method
                 except Exception as eee:
                     PathLog.warning(eee)
-                    PathLog.error(translate("Path", "The non-planar adaptive start is also unavailable.") + "(1)")
+                    PathLog.error("The non-planar adaptive start is also unavailable.")
                     isHighFacePlanar = False
                 else:
                     makeHighFace = 2
 
             if makeHighFace > 0:
-                FreeCAD.ActiveDocument.addObject('Part::Feature', 'topEdgeFace')
+                FreeCAD.ActiveDocument.addObject("Part::Feature", "topEdgeFace")
                 highFace = FreeCAD.ActiveDocument.ActiveObject
                 highFace.Shape = highFaceShape
                 removeList.append(highFace.Name)
@@ -228,9 +321,17 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             if makeHighFace == 2:
                 mx = hzmax + obj.StepDown.Value
                 mn = hzmin - obj.StepDown.Value
-                if highFace.Shape.BoundBox.ZMax > mx or highFace.Shape.BoundBox.ZMin < mn:
-                    PathLog.warning("ZMaxDiff: {};  ZMinDiff: {}".format(highFace.Shape.BoundBox.ZMax - mx, highFace.Shape.BoundBox.ZMin - mn))
-                    PathLog.error(translate("Path", "The non-planar adaptive start is also unavailable.") + "(2)")
+                if (
+                    highFace.Shape.BoundBox.ZMax > mx
+                    or highFace.Shape.BoundBox.ZMin < mn
+                ):
+                    PathLog.warning(
+                        "ZMaxDiff: {};  ZMinDiff: {}".format(
+                            highFace.Shape.BoundBox.ZMax - mx,
+                            highFace.Shape.BoundBox.ZMin - mn,
+                        )
+                    )
+                    PathLog.error("The non-planar adaptive start is also unavailable.")
                     isHighFacePlanar = False
                     makeHighFace = 0
         else:
@@ -252,7 +353,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 PathLog.error("An adaptive finish is unavailable.")
                 isLowFacePlanar = False
             else:
-                FreeCAD.ActiveDocument.addObject('Part::Feature', 'bottomEdgeFace')
+                FreeCAD.ActiveDocument.addObject("Part::Feature", "bottomEdgeFace")
                 lowFace = FreeCAD.ActiveDocument.ActiveObject
                 lowFace.Shape = lowFaceShape
                 removeList.append(lowFace.Name)
@@ -279,9 +380,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             step_down=obj.StepDown.Value,
             z_finish_step=finish_step,
             final_depth=finDep,
-            user_depths=None)
+            user_depths=None,
+        )
         shape = Part.makeCompound(Faces)
-        env = PathUtils.getEnvelope(base[0].Shape, subshape=shape, depthparams=depthparams)
+        env = PathUtils.getEnvelope(
+            base[0].Shape, subshape=shape, depthparams=depthparams
+        )
         cuts.append(env.cut(base[0].Shape))
 
         # Might need to change to .cut(job.Stock.Shape) if pocket has no bottom
@@ -305,8 +409,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 step_down=obj.StepDown.Value,
                 z_finish_step=finish_step,
                 final_depth=finDep1,
-                user_depths=None)
-            envTop = PathUtils.getEnvelope(base[0].Shape, subshape=highFace.Shape, depthparams=depthparams1)
+                user_depths=None,
+            )
+            envTop = PathUtils.getEnvelope(
+                base[0].Shape, subshape=highFace.Shape, depthparams=depthparams1
+            )
             cbi = len(cuts) - 1
             cuts.append(cuts[cbi].cut(envTop))
 
@@ -326,18 +433,20 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 step_down=obj.StepDown.Value,
                 z_finish_step=finish_step,
                 final_depth=finDep2,
-                user_depths=None)
-            envBottom = PathUtils.getEnvelope(base[0].Shape, subshape=lowFace.Shape, depthparams=depthparams2)
+                user_depths=None,
+            )
+            envBottom = PathUtils.getEnvelope(
+                base[0].Shape, subshape=lowFace.Shape, depthparams=depthparams2
+            )
             cbi = len(cuts) - 1
             cuts.append(cuts[cbi].cut(envBottom))
 
         # package pocket details into tuple
-        sdi = len(starts) - 1
-        fdi = len(finals) - 1
         cbi = len(cuts) - 1
-        pocket = (cuts[cbi], False, '3DPocket')
+        pocket = (cuts[cbi], False, "3DPocket")
         if FreeCAD.GuiUp:
             import FreeCADGui
+
             for rn in removeList:
                 FreeCADGui.ActiveDocument.getObject(rn).Visibility = False
 
@@ -347,11 +456,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         return pocket
 
     def orderFacesAroundCenterOfMass(self, subObjTups):
-        '''orderFacesAroundCenterOfMass(subObjTups)
+        """orderFacesAroundCenterOfMass(subObjTups)
         Order list of faces by center of mass in angular order around
         average center of mass for all faces. Positive X-axis is zero degrees.
-        return: subObjTups [ordered/sorted]'''
+        return: subObjTups [ordered/sorted]"""
         import math
+
         newList = []
         vectList = []
         comList = []
@@ -364,7 +474,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             return vectItem[3]
 
         def getFaceIdx(sub):
-            return int(sub.replace('Face', '')) - 1
+            return int(sub.replace("Face", "")) - 1
 
         # get CenterOfMass for each face and add to sumCenterOfMass for average calculation
         for (sub, face) in subObjTups:
@@ -382,22 +492,26 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         # calculate vector (mag, direct) for each face from avgCom
         for (sub, face, com) in comList:
-            adjCom = com.sub(avgCom)  # effectively treats avgCom as origin for each face.
-            mag = math.sqrt(adjCom.x**2 + adjCom.y**2)  # adjCom.Length without Z values
+            adjCom = com.sub(
+                avgCom
+            )  # effectively treats avgCom as origin for each face.
+            mag = math.sqrt(
+                adjCom.x ** 2 + adjCom.y ** 2
+            )  # adjCom.Length without Z values
             drctn = 0.0
             # Determine direction of vector
             if adjCom.x > 0.0:
                 if adjCom.y > 0.0:  # Q1
-                    drctn = math.degrees(math.atan(adjCom.y/adjCom.x))
+                    drctn = math.degrees(math.atan(adjCom.y / adjCom.x))
                 elif adjCom.y < 0.0:
-                    drctn = -math.degrees(math.atan(adjCom.x/adjCom.y)) + 270.0
+                    drctn = -math.degrees(math.atan(adjCom.x / adjCom.y)) + 270.0
                 elif adjCom.y == 0.0:
                     drctn = 0.0
             elif adjCom.x < 0.0:
                 if adjCom.y < 0.0:
-                    drctn = math.degrees(math.atan(adjCom.y/adjCom.x)) + 180.0
+                    drctn = math.degrees(math.atan(adjCom.y / adjCom.x)) + 180.0
                 elif adjCom.y > 0.0:
-                    drctn = -math.degrees(math.atan(adjCom.x/adjCom.y)) + 90.0
+                    drctn = -math.degrees(math.atan(adjCom.x / adjCom.y)) + 90.0
                 elif adjCom.y == 0.0:
                     drctn = 180.0
             elif adjCom.x == 0.0:
@@ -434,8 +548,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         return newList
 
     def findSharedEdges(self, subObjTups):
-        '''findSharedEdges(self, subObjTups)
-        Find connected edges given a group of faces'''
+        """findSharedEdges(self, subObjTups)
+        Find connected edges given a group of faces"""
         checkoutList = []
         searchedList = []
         shared = []
@@ -471,7 +585,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     for ei2 in range(0, len(face2.Edges)):
                         edg2 = face2.Edges[ei2]
                         if edg1.isSame(edg2) is True:
-                            PathLog.debug("{}.Edges[{}] connects at {}.Edges[{}]".format(sub1, ei1, sub2, ei2))
+                            PathLog.debug(
+                                "{}.Edges[{}] connects at {}.Edges[{}]".format(
+                                    sub1, ei1, sub2, ei2
+                                )
+                            )
                             shared.append((sub1, face1, ei1))
                             touching[sub1].append(ei1)
                             touching[sub2].append(ei2)
@@ -486,8 +604,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         return (shared, touchingCleaned)
 
     def identifyUnconnectedEdges(self, subObjTups, touching):
-        '''identifyUnconnectedEdges(subObjTups, touching)
-        Categorize unconnected edges into two groups, if possible: low and high'''
+        """identifyUnconnectedEdges(subObjTups, touching)
+        Categorize unconnected edges into two groups, if possible: low and high"""
         # Identify unconnected edges
         # (should be top edge loop if all faces form loop with bottom face(s) included)
         high = []
@@ -518,7 +636,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     com = FreeCAD.Vector(0, 0, 0)
                     com.add(edg0.CenterOfMass)
                     com.add(edg1.CenterOfMass)
-                    avgCom = FreeCAD.Vector(com.x/2.0, com.y/2.0, com.z/2.0)
+                    avgCom = FreeCAD.Vector(com.x / 2.0, com.y / 2.0, com.z / 2.0)
                     if avgCom.z > face.CenterOfMass.z:
                         high.extend(holding)
                     else:
@@ -534,9 +652,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         return (low, high)
 
     def hasCommonVertex(self, edge1, edge2, show=False):
-        '''findCommonVertexIndexes(edge1, edge2, show=False)
+        """findCommonVertexIndexes(edge1, edge2, show=False)
         Compare vertexes of two edges to identify a common vertex.
-        Returns the vertex index of edge1 to which edge2 is connected'''
+        Returns the vertex index of edge1 to which edge2 is connected"""
         if show is True:
             PathLog.info("New findCommonVertex()... ")
 
@@ -561,9 +679,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         return -1
 
     def groupConnectedEdges(self, holding):
-        '''groupConnectedEdges(self, holding)
+        """groupConnectedEdges(self, holding)
         Take edges and determine which are connected.
-        Group connected chains/loops into: low and high'''
+        Group connected chains/loops into: low and high"""
         holds = []
         grps = []
         searched = []
@@ -607,7 +725,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         while len(holds) > 0:
             if loops > 500:
-                PathLog.error('BREAK --- LOOPS LIMIT of 500 ---')
+                PathLog.error("BREAK --- LOOPS LIMIT of 500 ---")
                 break
             save = False
 
@@ -701,8 +819,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         return (low, high)
 
     def getMinMaxOfFaces(self, Faces):
-        '''getMinMaxOfFaces(Faces)
-        return the zmin and zmax values for given set of faces or edges.'''
+        """getMinMaxOfFaces(Faces)
+        return the zmin and zmax values for given set of faces or edges."""
         zmin = Faces[0].BoundBox.ZMax
         zmax = Faces[0].BoundBox.ZMin
         for f in Faces:
@@ -718,7 +836,7 @@ def SetupProperties():
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a Pocket operation.'''
+    """Create(name) ... Creates and returns a Pocket operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectPocket(obj, name, parentJob)

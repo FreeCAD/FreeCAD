@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from lazy_loader.lazy_loader import LazyLoader
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
@@ -27,24 +28,21 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
 import copy
 
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
-Part = LazyLoader('Part', globals(), 'Part')
-
-from PySide import QtCore
-
 __doc__ = "Base class for all ops in the engrave family."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# lazily loaded modules
+DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
+Part = LazyLoader("Part", globals(), "Part")
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 class ObjectOp(PathOp.ObjectOp):
-    '''Proxy base class for engrave operations.'''
+    """Proxy base class for engrave operations."""
 
     def getZValues(self, obj):
         zValues = []
@@ -62,47 +60,79 @@ class ObjectOp(PathOp.ObjectOp):
         return zValues
 
     def buildpathocc(self, obj, wires, zValues, relZ=False, forward=True, start_idx=0):
-        '''buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands.'''
+        """buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands."""
         PathLog.track(obj.Label, len(wires), zValues)
 
         for wire in wires:
             offset = wire
 
             # reorder the wire
-            if hasattr(obj, 'StartVertex'):
+            if hasattr(obj, "StartVertex"):
                 start_idx = obj.StartVertex
 
             edges = copy.copy(PathOpTools.orientWire(offset, forward).Edges)
-            edges = Part.sortEdges(edges)[0];
+            edges = Part.sortEdges(edges)[0]
 
             last = None
 
             for z in zValues:
                 PathLog.debug(z)
                 if last:
-                    self.appendCommand(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z}), z, relZ, self.vertFeed)
+                    self.appendCommand(
+                        Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                        z,
+                        relZ,
+                        self.vertFeed,
+                    )
 
                 first = True
-                if start_idx > len(edges)-1:
-                    start_idx = len(edges)-1
+                if start_idx > len(edges) - 1:
+                    start_idx = len(edges) - 1
 
                 edges = edges[start_idx:] + edges[:start_idx]
                 for edge in edges:
-                    PathLog.debug("points: {} -> {}".format(edge.Vertexes[0].Point, edge.Vertexes[-1].Point))
-                    PathLog.debug("valueat {} -> {}".format(edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter)))
+                    PathLog.debug(
+                        "points: {} -> {}".format(
+                            edge.Vertexes[0].Point, edge.Vertexes[-1].Point
+                        )
+                    )
+                    PathLog.debug(
+                        "valueat {} -> {}".format(
+                            edge.valueAt(edge.FirstParameter),
+                            edge.valueAt(edge.LastParameter),
+                        )
+                    )
                     if first and (not last or not wire.isClosed()):
-                        PathLog.debug('processing first edge entry')
+                        PathLog.debug("processing first edge entry")
                         # we set the first move to our first point
                         last = edge.Vertexes[0].Point
 
-                        self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-                        self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'F': self.horizRapid}))
-                        self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                        self.appendCommand(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z}), z, relZ, self.vertFeed)
+                        self.commandlist.append(
+                            Path.Command(
+                                "G0",
+                                {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid},
+                            )
+                        )
+                        self.commandlist.append(
+                            Path.Command(
+                                "G0", {"X": last.x, "Y": last.y, "F": self.horizRapid}
+                            )
+                        )
+                        self.commandlist.append(
+                            Path.Command(
+                                "G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}
+                            )
+                        )
+                        self.appendCommand(
+                            Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                            z,
+                            relZ,
+                            self.vertFeed,
+                        )
                     first = False
 
                     if PathGeom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
-                    #if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
+                        # if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
                         for cmd in PathGeom.cmdsForEdge(edge):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[-1].Point
@@ -110,17 +140,21 @@ class ObjectOp(PathOp.ObjectOp):
                         for cmd in PathGeom.cmdsForEdge(edge, True):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[0].Point
-            self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+            self.commandlist.append(
+                Path.Command(
+                    "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
+                )
+            )
 
     def appendCommand(self, cmd, z, relZ, feed):
         params = cmd.Parameters
         if relZ:
-            z = params['Z'] - z
-        params.update({'Z': z, 'F': feed})
+            z = params["Z"] - z
+        params.update({"Z": z, "F": feed})
         self.commandlist.append(Path.Command(cmd.Name, params))
 
     def opSetDefaultValues(self, obj, job):
-        '''opSetDefaultValues(obj) ... set depths for engraving'''
+        """opSetDefaultValues(obj) ... set depths for engraving"""
         if PathOp.FeatureDepths & self.opFeatures(obj):
             if job and len(job.Model.Group) > 0:
                 bb = job.Proxy.modelBoundBox(job)
@@ -128,4 +162,3 @@ class ObjectOp(PathOp.ObjectOp):
                 obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
             else:
                 obj.OpFinalDepth = -0.1
-
