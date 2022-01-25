@@ -1207,11 +1207,9 @@ def getSliceFromEnvelope(env):
 def _prepareModelSTLs(self, JOB, obj, m, ocl):
     """Tessellate model shapes or copy existing meshes into ocl.STLSurf
     objects"""
-    PathLog.debug("_prepareModelSTLs()")
     if self.modelSTLs[m] is True:
         model = JOB.Model.Group[m]
-        if self.modelSTLs[m] is True:
-            self.modelSTLs[m] = _makeSTL(model, obj, ocl, self.modelTypes[m])
+        self.modelSTLs[m] = _makeSTL(model, obj, ocl, self.modelTypes[m])
 
 
 def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
