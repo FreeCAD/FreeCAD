@@ -417,12 +417,12 @@ class ObjectOp(object):
             self.addOpValues(obj, ["tooldia"])
 
         if FeatureCoolant & features:
+            oldvalue = str(obj.CoolantMode) if hasattr(obj, "CoolantMode") else "None"
             if (
                 hasattr(obj, "CoolantMode")
                 and not obj.getTypeIdOfProperty("CoolantMode")
                 == "App::PropertyEnumeration"
             ):
-                oldvalue = str(obj.CoolantMode)
                 obj.removeProperty("CoolantMode")
 
             if not hasattr(obj, "CoolantMode"):

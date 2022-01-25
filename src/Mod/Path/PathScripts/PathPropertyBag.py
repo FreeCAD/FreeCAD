@@ -20,18 +20,24 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
-import PySide
 import re
+import PathScripts.PathLog as PathLog
 
 __title__ = "Generic property container to store some values."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "A generic container for typed properties in arbitrary categories."
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-def translate(context, text, disambig=None):
-    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+
+translate = FreeCAD.Qt.translate
 
 
 SupportedPropertyType = {
@@ -66,8 +72,8 @@ class PropertyBag(object):
             "App::PropertyStringList",
             self.CustomPropertyGroups,
             "Base",
-            PySide.QtCore.QT_TRANSLATE_NOOP(
-                "PathPropertyBag", "List of custom property groups"
+            QT_TRANSLATE_NOOP(
+                "App::Property", "List of custom property groups"
             ),
         )
         self.onDocumentRestored(obj)
