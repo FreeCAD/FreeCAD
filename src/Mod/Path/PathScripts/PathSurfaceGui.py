@@ -20,19 +20,28 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathLog as PathLog
 import PathGui as PGui  # ensure Path/Gui/Resources are loaded
-import PathScripts.PathSurface as PathSurface
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
+import PathScripts.PathSurface as PathSurface
 
-from PySide import QtCore
 
 __title__ = "Path Surface Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Surface operation page controller and command implementation."
+
+translate = FreeCAD.Qt.translate
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -46,21 +55,46 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getForm(self):
         """getForm() ... returns UI"""
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpSurfaceEdit.ui")
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpSurfaceEdit.ui")
+        comboToPropertyMap = [
+            ("boundBoxSelect", "BoundBox"),
+            ("scanType", "ScanType"),
+            ("layerMode", "LayerMode"),
+            ("dropCutterDirSelect", "DropCutterDir"),
+        ]
+        enumTups = PathSurface.ObjectSurface.propertyEnumerations(dataType="raw")
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+
+        return form
+
+    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
+        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+        Args:
+            form = UI form
+            enumTups = list of (translated_text, data_string) tuples
+            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+        """
+        # Load appropriate enumerations in each combobox
+        for cb, prop in comboBoxesPropertyMap:
+            box = getattr(form, cb)  # Get the combobox
+            box.clear()  # clear the combobox
+            for text, data in enumTups[prop]:  #  load enumerations
+                box.addItem(text, data)
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's proprties"""
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
-        if obj.BoundBox != str(self.form.boundBoxSelect.currentText()):
-            obj.BoundBox = str(self.form.boundBoxSelect.currentText())
+        if obj.BoundBox != str(self.form.boundBoxSelect.currentData()):
+            obj.BoundBox = str(self.form.boundBoxSelect.currentData())
 
-        if obj.ScanType != str(self.form.scanType.currentText()):
-            obj.ScanType = str(self.form.scanType.currentText())
+        if obj.ScanType != str(self.form.scanType.currentData()):
+            obj.ScanType = str(self.form.scanType.currentData())
 
-        if obj.LayerMode != str(self.form.layerMode.currentText()):
-            obj.LayerMode = str(self.form.layerMode.currentText())
+        if obj.LayerMode != str(self.form.layerMode.currentData()):
+            obj.LayerMode = str(self.form.layerMode.currentData())
 
         """
         The following method of getting values from the UI form
@@ -92,8 +126,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.boundBoxExtraOffsetY.text()
         ).Value
 
-        if obj.DropCutterDir != str(self.form.dropCutterDirSelect.currentText()):
-            obj.DropCutterDir = str(self.form.dropCutterDirSelect.currentText())
+        if obj.DropCutterDir != str(self.form.dropCutterDirSelect.currentData()):
+            obj.DropCutterDir = str(self.form.dropCutterDirSelect.currentData())
 
         PathGui.updateInputField(obj, "DepthOffset", self.form.depthOffset)
 
@@ -253,7 +287,7 @@ Command = PathOpGui.SetupOperation(
     "Surface",
     PathSurface.Create,
     TaskPanelOpPage,
-    "Path_3DSurface",
+    "Path_Surface",
     QtCore.QT_TRANSLATE_NOOP("Path_Surface", "3D Surface"),
     QtCore.QT_TRANSLATE_NOOP(
         "Path_Surface", "Create a 3D Surface Operation from a model"
