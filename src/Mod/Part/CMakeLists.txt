@@ -35,6 +35,7 @@ set(BasicShapes_Scripts
 if(BUILD_GUI)
     list (APPEND BasicShapes_Scripts
           BasicShapes/ShapeContent.py
+          BasicShapes/SkipGui.py
           BasicShapes/CommandShapes.py
           BasicShapes/ViewProviderShapes.py
           BasicShapes/TaskTube.ui
