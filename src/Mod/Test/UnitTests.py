@@ -128,7 +128,7 @@ class UnitBasicCases(unittest.TestCase):
                         print (" {} : {} : {} : {} : {}".format(q1, q2, t, i, val).encode("utf-8").strip())
                 except Exception as e:
                     s = "{}: {}".format(e, t[0])
-                    print (" ".join(e).encode("utf-8").strip())
+                    print (" ".join(str(e)).encode("utf-8").strip())
 
     def testVoltage(self):
         q1 = FreeCAD.Units.Quantity("1e20 V")
