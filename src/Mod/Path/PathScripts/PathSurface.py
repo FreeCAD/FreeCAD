@@ -44,13 +44,14 @@ except ImportError:
     # import sys
     # sys.exit(msg)
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
 import PathScripts.PathLog as PathLog
-import PathScripts.PathUtils as PathUtils
 import PathScripts.PathOp as PathOp
 import PathScripts.PathSurfaceSupport as PathSurfaceSupport
-import time
+import PathScripts.PathUtils as PathUtils
 import math
+import time
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -60,13 +61,14 @@ Part = LazyLoader("Part", globals(), "Part")
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
 
+translate = FreeCAD.Qt.translate
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class ObjectSurface(PathOp.ObjectOp):
@@ -107,17 +109,14 @@ class ObjectSurface(PathOp.ObjectOp):
                 self.addNewProps.append(nm)
 
         # Set enumeration lists for enumeration properties
-        if len(self.addNewProps) > 0:
-            ENUMS = self.opPropertyEnumerations()
-            for n in ENUMS:
-                if n in self.addNewProps:
-                    setattr(obj, n, ENUMS[n])
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
 
-            if warn:
-                newPropMsg = translate("PathSurface", "New property added to")
-                newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
-                newPropMsg += translate("PathSurface", "Check default value(s).")
-                FreeCAD.Console.PrintWarning(newPropMsg + "\n")
+            # if warn:
+            #     newPropMsg = translate("PathSurface", "New property added to")
+            #     newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
+            #     newPropMsg += translate("PathSurface", "Check default value(s).")
+            #     FreeCAD.Console.PrintWarning(newPropMsg + "\n")
 
         self.propertiesReady = True
 
@@ -129,7 +128,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "ShowTempObjects",
                 "Debug",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Show the temporary path construction objects when module is in DEBUG mode.",
                 ),
@@ -138,7 +137,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyDistance",
                 "AngularDeflection",
                 "Mesh Conversion",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.",
                 ),
@@ -147,7 +146,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyDistance",
                 "LinearDeflection",
                 "Mesh Conversion",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.",
                 ),
@@ -156,7 +155,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyFloat",
                 "CutterTilt",
                 "Rotation",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Stop index(angle) for rotational scan"
                 ),
             ),
@@ -164,7 +163,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "DropCutterDir",
                 "Rotation",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Dropcutter lines are created parallel to this axis.",
                 ),
@@ -173,7 +172,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyVectorDistance",
                 "DropCutterExtraOffset",
                 "Rotation",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Additional offset to the selected bounding box"
                 ),
             ),
@@ -181,7 +180,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "RotationAxis",
                 "Rotation",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "The model will be rotated around this axis."
                 ),
             ),
@@ -189,7 +188,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyFloat",
                 "StartIndex",
                 "Rotation",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Start index(angle) for rotational scan"
                 ),
             ),
@@ -197,7 +196,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyFloat",
                 "StopIndex",
                 "Rotation",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Stop index(angle) for rotational scan"
                 ),
             ),
@@ -205,7 +204,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "ScanType",
                 "Surface",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.",
                 ),
@@ -214,7 +213,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyInteger",
                 "AvoidLastX_Faces",
                 "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Avoid cutting the last 'N' faces in the Base Geometry list of selected faces.",
                 ),
@@ -223,7 +222,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "AvoidLastX_InternalFeatures",
                 "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Do not cut internal features on avoided faces."
                 ),
             ),
@@ -231,7 +230,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyDistance",
                 "BoundaryAdjustment",
                 "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.",
                 ),
@@ -240,7 +239,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "BoundaryEnforcement",
                 "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "If true, the cutter will remain inside the boundaries of the model or selected face(s).",
                 ),
@@ -249,7 +248,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "HandleMultipleFeatures",
                 "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Choose how to process multiple Base Geometry features.",
                 ),
@@ -258,7 +257,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyDistance",
                 "InternalFeaturesAdjustment",
                 "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.",
                 ),
@@ -267,7 +266,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "InternalFeaturesCut",
                 "Selected Geometry Settings",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Cut internal feature areas within a larger selected face.",
                 ),
@@ -276,7 +275,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "BoundBox",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Select the overall boundary for the operation."
                 ),
             ),
@@ -284,7 +283,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "CutMode",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)",
                 ),
@@ -293,7 +292,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "CutPattern",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Set the geometric clearing pattern to use for the operation.",
                 ),
@@ -302,7 +301,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyFloat",
                 "CutPatternAngle",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "The yaw angle used for certain clearing patterns"
                 ),
             ),
@@ -310,7 +309,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "CutPatternReversed",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.",
                 ),
@@ -319,7 +318,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyDistance",
                 "DepthOffset",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Set the Z-axis depth offset from the target surface.",
                 ),
@@ -328,7 +327,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "LayerMode",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Complete the operation in a single pass at depth, or mulitiple passes to final depth.",
                 ),
@@ -337,7 +336,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyVectorDistance",
                 "PatternCenterCustom",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Set the start point for the cut pattern."
                 ),
             ),
@@ -345,7 +344,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "PatternCenterAt",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Choose location of the center point for starting the cut pattern.",
                 ),
@@ -354,7 +353,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyEnumeration",
                 "ProfileEdges",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Profile the edges of the selection."
                 ),
             ),
@@ -362,7 +361,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyDistance",
                 "SampleInterval",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Set the sampling resolution. Smaller values quickly increase processing time.",
                 ),
@@ -371,7 +370,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyFloat",
                 "StepOver",
                 "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Set the stepover percentage, based on the tool's diameter.",
                 ),
@@ -380,7 +379,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "OptimizeLinearPaths",
                 "Optimization",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.",
                 ),
@@ -389,7 +388,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "OptimizeStepOverTransitions",
                 "Optimization",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Enable separate optimization of transitions between, and breaks within, each step over path.",
                 ),
@@ -398,7 +397,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "CircularUseG2G3",
                 "Optimization",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.",
                 ),
@@ -407,7 +406,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyDistance",
                 "GapThreshold",
                 "Optimization",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.",
                 ),
@@ -416,7 +415,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyString",
                 "GapSizes",
                 "Optimization",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Feedback: three smallest gaps identified in the path geometry.",
                 ),
@@ -425,7 +424,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyVectorDistance",
                 "StartPoint",
                 "Start Point",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property",
                     "The custom start point for the path of this operation",
                 ),
@@ -434,38 +433,115 @@ class ObjectSurface(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "UseStartPoint",
                 "Start Point",
-                QtCore.QT_TRANSLATE_NOOP(
+                QT_TRANSLATE_NOOP(
                     "App::Property", "Make True, if specifying a Start Point"
                 ),
             ),
         ]
 
-    def opPropertyEnumerations(self):
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+        """propertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
         # Enumeration lists for App::PropertyEnumeration properties
-        return {
-            "BoundBox": ["BaseBoundBox", "Stock"],
+        enums = {
+            "BoundBox": [
+                (translate("Path_Surface", "Outside"), "Outside"),
+                (translate("Path_Surface", "Inside"), "Inside"),
+            ],  # this is the direction that the profile runs
             "PatternCenterAt": [
-                "CenterOfMass",
-                "CenterOfBoundBox",
-                "XminYmin",
-                "Custom",
-            ],
-            "CutMode": ["Conventional", "Climb"],
+                (translate("Path_Surface", "CenterOfMass"), "CenterOfMass"),
+                (translate("Path_Surface", "CenterOfBoundBox"), "CenterOfBoundBox"),
+                (translate("Path_Surface", "XminYmin"), "XminYmin"),
+                (translate("Path_Surface", "Custom"), "Custom"),
+            ],  # side of profile that cutter is on in relation to direction of profile
+            "CutMode": [
+                (translate("Path_Surface", "Conventional"), "Conventional"),
+                (translate("Path_Surface", "Climb"), "Climb"),
+            ],  # side of profile that cutter is on in relation to direction of profile
             "CutPattern": [
-                "Circular",
-                "CircularZigZag",
-                "Line",
-                "Offset",
-                "Spiral",
-                "ZigZag",
-            ],  # Additional goals ['Offset', 'ZigZagOffset', 'Grid', 'Triangle']
-            "DropCutterDir": ["X", "Y"],
-            "HandleMultipleFeatures": ["Collectively", "Individually"],
-            "LayerMode": ["Single-pass", "Multi-pass"],
-            "ProfileEdges": ["None", "Only", "First", "Last"],
-            "RotationAxis": ["X", "Y"],
-            "ScanType": ["Planar", "Rotational"],
+                (translate("Path_Surface", "Circular"), "Circular"),
+                (translate("Path_Surface", "CircularZigZag"), "CircularZigZag"),
+                (translate("Path_Surface", "Line"), "Line"),
+                (translate("Path_Surface", "Offset"), "Offset"),
+                (translate("Path_Surface", "Spiral"), "Spiral"),
+                (translate("Path_Surface", "ZigZag"), "ZigZag"),
+            ],  # side of profile that cutter is on in relation to direction of profile
+            "DropCutterDir": [
+                (translate("Path_Surface", "X"), "X"),
+                (translate("Path_Surface", "Y"), "Y"),
+            ],  # side of profile that cutter is on in relation to direction of profile
+            "HandleMultipleFeatures": [
+                (translate("Path_Surface", "Collectively"), "Collectively"),
+                (translate("Path_Surface", "Individually"), "Individually"),
+            ],  # side of profile that cutter is on in relation to direction of profile
+            "LayerMode": [
+                (translate("Path_Surface", "Single-pass"), "Single-pass"),
+                (translate("Path_Surface", "Multi-pass"), "Multi-pass"),
+            ],  # side of profile that cutter is on in relation to direction of profile
+            "ProfileEdges": [
+                (translate("Path_Surface", "None"), "None"),
+                (translate("Path_Surface", "Only"), "Only"),
+                (translate("Path_Surface", "First"), "First"),
+                (translate("Path_Surface", "Last"), "Last"),
+            ],  # side of profile that cutter is on in relation to direction of profile
+            "RotationAxis": [
+                (translate("Path_Surface", "X"), "X"),
+                (translate("Path_Surface", "Y"), "Y"),
+            ],  # side of profile that cutter is on in relation to direction of profile
+            "ScanType": [
+                (translate("Path_Surface", "Planar"), "Planar"),
+                (translate("Path_Surface", "Rotational"), "Rotational"),
+            ],  # side of profile that cutter is on in relation to direction of profile
         }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
+
+    # def opPropertyEnumerations(self):
+    #     # Enumeration lists for App::PropertyEnumeration properties
+    #     return {
+    #         "BoundBox": ["BaseBoundBox", "Stock"],
+    #         "PatternCenterAt": [
+    #             "CenterOfMass",
+    #             "CenterOfBoundBox",
+    #             "XminYmin",
+    #             "Custom",
+    #         ],
+    #         "CutMode": ["Conventional", "Climb"],
+    #         "CutPattern": [
+    #             "Circular",
+    #             "CircularZigZag",
+    #             "Line",
+    #             "Offset",
+    #             "Spiral",
+    #             "ZigZag",
+    #         ],  # Additional goals ['Offset', 'ZigZagOffset', 'Grid', 'Triangle']
+    #         "DropCutterDir": ["X", "Y"],
+    #         "HandleMultipleFeatures": ["Collectively", "Individually"],
+    #         "LayerMode": ["Single-pass", "Multi-pass"],
+    #         "ProfileEdges": ["None", "Only", "First", "Last"],
+    #         "RotationAxis": ["X", "Y"],
+    #         "ScanType": ["Planar", "Rotational"],
+    #     }
 
     def opPropertyDefaults(self, obj, job):
         """opPropertyDefaults(obj, job) ... returns a dictionary of default values
@@ -646,32 +722,20 @@ class ObjectSurface(PathOp.ObjectOp):
         # Limit sample interval
         if obj.SampleInterval.Value < 0.0001:
             obj.SampleInterval.Value = 0.0001
-            PathLog.error(
-                translate(
-                    "PathSurface",
-                    "Sample interval limits are 0.001 to 25.4 millimeters.",
-                )
-            )
+            PathLog.error("Sample interval limits are 0.001 to 25.4 millimeters.")
+
         if obj.SampleInterval.Value > 25.4:
             obj.SampleInterval.Value = 25.4
-            PathLog.error(
-                translate(
-                    "PathSurface",
-                    "Sample interval limits are 0.001 to 25.4 millimeters.",
-                )
-            )
+            PathLog.error("Sample interval limits are 0.001 to 25.4 millimeters.")
 
         # Limit cut pattern angle
         if obj.CutPatternAngle < -360.0:
             obj.CutPatternAngle = 0.0
-            PathLog.error(
-                translate("PathSurface", "Cut pattern angle limits are +-360 degrees.")
-            )
+            PathLog.error("Cut pattern angle limits are +-360 degrees.")
+
         if obj.CutPatternAngle >= 360.0:
             obj.CutPatternAngle = 0.0
-            PathLog.error(
-                translate("PathSurface", "Cut pattern angle limits are +- 360 degrees.")
-            )
+            PathLog.error("Cut pattern angle limits are +- 360 degrees.")
 
         # Limit StepOver to natural number percentage
         if obj.StepOver > 100.0:
@@ -682,20 +746,11 @@ class ObjectSurface(PathOp.ObjectOp):
         # Limit AvoidLastX_Faces to zero and positive values
         if obj.AvoidLastX_Faces < 0:
             obj.AvoidLastX_Faces = 0
-            PathLog.error(
-                translate(
-                    "PathSurface",
-                    "AvoidLastX_Faces: Only zero or positive values permitted.",
-                )
-            )
+            PathLog.error("AvoidLastX_Faces: Only zero or positive values permitted.")
+
         if obj.AvoidLastX_Faces > 100:
             obj.AvoidLastX_Faces = 100
-            PathLog.error(
-                translate(
-                    "PathSurface",
-                    "AvoidLastX_Faces: Avoid last X faces count limited to 100.",
-                )
-            )
+            PathLog.error("AvoidLastX_Faces: Avoid last X faces count limited to 100.")
 
     def opUpdateDepths(self, obj):
         if hasattr(obj, "Base") and obj.Base:
