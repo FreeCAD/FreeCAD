@@ -20,10 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
-
-# import PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPropertyBag as PathPropertyBag
@@ -31,19 +30,19 @@ import PathScripts.PathPropertyEditor as PathPropertyEditor
 import PathScripts.PathUtil as PathUtil
 import re
 
-from PySide import QtCore, QtGui
 
 __title__ = "Property Bag Editor"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Task panel editor for a PropertyBag"
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ViewProvider(object):
@@ -248,9 +247,7 @@ class TaskPanel(object):
         # initialized later
         self.model = None
         self.delegate = None
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("PathPropertyBag", "Edit PropertyBag")
-        )
+        FreeCAD.ActiveDocument.openTransaction("Edit PropertyBag")
         Panel.append(self)
 
     def updateData(self, topLeft, bottomRight):
@@ -428,9 +425,7 @@ class TaskPanel(object):
 
 def Create(name="PropertyBag"):
     """Create(name = 'PropertyBag') ... creates a new setup sheet"""
-    FreeCAD.ActiveDocument.openTransaction(
-        translate("PathPropertyBag", "Create PropertyBag")
-    )
+    FreeCAD.ActiveDocument.openTransaction("Create PropertyBag")
     pcont = PathPropertyBag.Create(name)
     PathIconViewProvider.Attach(pcont.ViewObject, name)
     return pcont
@@ -447,9 +442,9 @@ class PropertyBagCreateCommand(object):
 
     def GetResources(self):
         return {
-            "MenuText": translate("PathPropertyBag", "PropertyBag"),
+            "MenuText": translate("Path_PropertyBag", "PropertyBag"),
             "ToolTip": translate(
-                "PathPropertyBag",
+                "Path_PropertyBag",
                 "Creates an object which can be used to store reference properties.",
             ),
         }
