@@ -1011,23 +1011,17 @@ void RecentMacrosAction::resizeList(int size)
 /** Loads all recent files from the preferences. */
 void RecentMacrosAction::restore()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
-    if (hGrp->HasGroup("RecentMacros")) {
-        hGrp = hGrp->GetGroup("RecentMacros");
-        // we want at least 20 items but we do only show the number of files
-        // that is defined in user parameters
-        this->visibleItems = hGrp->GetInt("RecentMacros", this->visibleItems);
-        this->shortcut_count = hGrp->GetInt("ShortcutCount", 3); // number of shortcuts
-        this->shortcut_modifiers = hGrp->GetASCII("ShortcutModifiers","Ctrl+Shift+");
-    }
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                                ->GetGroup("Preferences")->GetGroup("RecentMacros");
 
-    int count = std::max<int>(this->maximumItems, this->visibleItems);
-    for (int i=_group->actions().size(); i<count; i++)
+    for (int i=_group->actions().size(); i<this->maximumItems; i++)
         _group->addAction(QLatin1String(""))->setVisible(false);
+    resizeList(hGrp->GetInt("RecentMacros"));
+
     std::vector<std::string> MRU = hGrp->GetASCIIs("MRU");
     QStringList files;
-    for (std::vector<std::string>::iterator it = MRU.begin(); it!=MRU.end();++it)
-        files.append(QString::fromUtf8(it->c_str()));
+    for (auto& filename: MRU)
+        files.append(QString::fromUtf8(filename.c_str()));
     setFiles(files);
 }
 
