@@ -20,14 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
-import PathScripts.PathGeom as PathGeom
-import math
-from PySide import QtCore
+
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -35,8 +34,6 @@ from lazy_loader.lazy_loader import LazyLoader
 Draft = LazyLoader("Draft", globals(), "Draft")
 Part = LazyLoader("Part", globals(), "Part")
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
 
 __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
@@ -45,13 +42,13 @@ __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "russ4262 (Russell Johnson)"
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ObjectOp(PathOp.ObjectOp):
@@ -99,9 +96,7 @@ class ObjectOp(PathOp.ObjectOp):
             "App::PropertyBool",
             "SplitArcs",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "Split Arcs into discrete segments"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Split Arcs into discrete segments"),
         )
 
         # obj.Proxy = self
@@ -169,9 +164,7 @@ class ObjectOp(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "SplitArcs",
                 "Path",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property", "Split Arcs into discrete segments"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Split Arcs into discrete segments"),
             )
 
         self.areaOpOnDocumentRestored(obj)
