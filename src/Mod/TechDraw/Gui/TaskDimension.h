@@ -60,11 +60,19 @@ private Q_SLOTS:
     void onColorChanged();
     void onFontsizeChanged();
     void onDrawingStyleChanged();
+    void onOverrideToggled();
+    void onDimAngleChanged();
+    void onExtAngleChanged();
+    void onDimUseDefaultClicked();
+    void onDimUseSelectionClicked();
+    void onExtUseDefaultClicked();
+    void onExtUseSelectionClicked();
 
 private:
     std::unique_ptr<Ui_TaskDimension> ui;
     QGIViewDimension *m_parent;
     ViewProviderDimension *m_dimensionVP;
+    std::pair<double, bool> getAngleFromSelection();
 };
 
 class TaskDlgDimension : public Gui::TaskView::TaskDialog

@@ -584,7 +584,7 @@ bool DrawUtil::isBetween(const Base::Vector3d pt, const Base::Vector3d end1, con
 Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
                                      Base::Vector3d p2, Base::Vector3d d2)
 {
-    Base::Vector3d result(0,0,0);
+    Base::Vector3d result(0.0, 0.0, 0.0);
     Base::Vector3d p12(p1.x+d1.x, p1.y+d1.y, 0.0);
     double A1 = d1.y;
     double B1 = -d1.x;
@@ -607,6 +607,34 @@ Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
 
     return result;
 }
+
+Base::Vector2d DrawUtil::Intersect2d(Base::Vector2d p1, Base::Vector2d d1,
+                                     Base::Vector2d p2, Base::Vector2d d2)
+{
+    Base::Vector2d result(0.0, 0.0);
+    Base::Vector2d p12(p1.x+d1.x, p1.y+d1.y);
+    double A1 = d1.y;
+    double B1 = -d1.x;
+    double C1 = A1*p1.x + B1*p1.y;
+
+    Base::Vector2d p22(p2.x+d2.x, p2.y+d2.y);
+    double A2 = d2.y;
+    double B2 = -d2.x;
+    double C2 = A2*p2.x + B2*p2.y;
+
+    double det = A1*B2 - A2*B1;
+    if(det == 0){
+        Base::Console().Message("Lines are parallel\n");
+    }else{
+        double x = (B2*C1 - B1*C2)/det;
+        double y = (A1*C2 - A2*C1)/det;
+        result.x = x;
+        result.y = y;
+    }
+
+    return result;
+}
+
 
 std::string DrawUtil::shapeToString(TopoDS_Shape s)
 {

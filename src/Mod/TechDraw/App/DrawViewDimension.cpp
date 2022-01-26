@@ -131,6 +131,10 @@ DrawViewDimension::DrawViewDimension(void)
     UnderTolerance.setConstraints(&ToleranceConstraint);
     ADD_PROPERTY_TYPE(Inverted, (false), "", App::Prop_Output, "The dimensional value is displayed inverted");
 
+    ADD_PROPERTY_TYPE(AngleOverride,(false), "Override", App::Prop_Output, "User specified angles");
+    ADD_PROPERTY_TYPE(LineAngle,(0.0), "Override", App::Prop_Output, "Dimension line angle");
+    ADD_PROPERTY_TYPE(ExtensionAngle,(0.0), "Override", App::Prop_Output, "Extension line angle");
+
     // hide the DrawView properties that don't apply to Dimensions
     ScaleType.setStatus(App::Property::ReadOnly, true);
     ScaleType.setStatus(App::Property::Hidden, true);

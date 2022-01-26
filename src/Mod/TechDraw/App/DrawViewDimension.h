@@ -110,6 +110,10 @@ public:
     App::PropertyQuantityConstraint OverTolerance;
     App::PropertyQuantityConstraint UnderTolerance;
 
+    App::PropertyBool               AngleOverride;
+    App::PropertyAngle              LineAngle;
+    App::PropertyAngle              ExtensionAngle;
+
     enum RefType{
             invalidRef,
             oneEdge,
