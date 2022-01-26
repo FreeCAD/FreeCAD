@@ -52,6 +52,54 @@ Return 0 is no scale factor, 1 for uniform scaling, -1 for non-uniform scaling.
         <UserDocu>transform(Vector,Matrix) - return the dot product of the two vectors</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="col" Const="true">
+      <Documentation>
+        <UserDocu>
+col(index)
+Return the vector of a column
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setCol">
+      <Documentation>
+        <UserDocu>
+setCol(index, Vector)
+Set the vector of a column
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="row" Const="true">
+      <Documentation>
+        <UserDocu>
+row(index)
+Return the vector of a row
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setRow">
+      <Documentation>
+        <UserDocu>
+setRow(index, Vector)
+Set the vector of a row
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="trace" Const="true">
+      <Documentation>
+        <UserDocu>
+trace()
+Return the trace of the 3x3 sub-matrix as vector
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setTrace">
+      <Documentation>
+        <UserDocu>
+setTrace(Vector)
+Set the trace of the 3x3 sub-matrix
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="rotateX">
       <Documentation>
         <UserDocu>rotateX(float) - rotate around X</UserDocu>
