@@ -60,7 +60,7 @@ MOTION_MODE = "G90"  # G90 only, for absolute moves
 WORK_PLANE = "G17"  # G17 only, XY plane, for vertical milling
 UNITS = "G21"  # G21 only, for metric
 UNIT_FORMAT = "mm"
-UNIT_FEED_FORMAT = "mm/s"
+UNIT_FEED_FORMAT = "mm/min"
 
 # *****************************************************************************
 # * Initial configuration, changeable via command line arguments              *
