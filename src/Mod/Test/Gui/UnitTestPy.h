@@ -35,7 +35,7 @@ class UnitTestDialog;
 class UnitTestDialogPy : public Py::PythonExtension<UnitTestDialogPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     UnitTestDialogPy();
     ~UnitTestDialogPy();
