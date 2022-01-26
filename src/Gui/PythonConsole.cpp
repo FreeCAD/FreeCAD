@@ -488,14 +488,15 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
 {
     Q_UNUSED(rCaller);
     ParameterGrp::handle hPrefGrp = getWindowParameter();
+    ParameterGrp::handle hPrefGen = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
 
-    bool pythonWordWrap = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
-
-    if (pythonWordWrap) {
-      this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-    } else {
-      this->setWordWrapMode(QTextOption::NoWrap);
+    if (strcmp(sReason, "PythonWordWrap") == 0) {
+        bool pythonWordWrap = hPrefGen->GetBool("PythonWordWrap", true);
+        if (pythonWordWrap)
+            setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        else
+            setWordWrapMode(QTextOption::NoWrap);
     }
 
     if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
@@ -511,7 +512,8 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
 #else
         setTabStopDistance(width);
 #endif
-    } else {
+    }
+    else {
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
@@ -522,6 +524,16 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
             color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
             pythonSyntax->setColor(QString::fromLatin1(sReason), color);
         }
+    }
+
+    if (strcmp(sReason, "PythonBlockCursor") == 0 ||
+        strcmp(sReason, "FontSize") == 0 ||
+        strcmp(sReason, "Font") == 0) {
+        bool block = hPrefGen->GetBool("PythonBlockCursor", false);
+        if (block)
+            setCursorWidth(QFontMetrics(font()).averageCharWidth());
+        else
+            setCursorWidth(1);
     }
 }
 
