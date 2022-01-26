@@ -40,7 +40,7 @@ using namespace TestGui;
 
 /* TRANSLATOR TestGui::UnitTestDialog */
 
-UnitTestDialog* UnitTestDialog::_instance=0;
+UnitTestDialog* UnitTestDialog::_instance=nullptr;
 
 /**
  * Creates and returns the one and only instance of this dialog.
@@ -58,9 +58,9 @@ UnitTestDialog* UnitTestDialog::instance()
  */
 void UnitTestDialog::destruct ()
 {
-    if (_instance != 0) {
+    if (_instance != nullptr) {
         UnitTestDialog *pTmp = _instance;
-        _instance = 0;
+        _instance = nullptr;
         delete pTmp;
     }
 }
@@ -70,7 +70,7 @@ void UnitTestDialog::destruct ()
  */
 bool UnitTestDialog::hasInstance()
 {
-    return _instance != 0;
+    return _instance != nullptr;
 }
 
 /**

@@ -57,7 +57,7 @@ private:
     }
     Py::Object setTest(const Py::Tuple& args)
     {
-        char *pstr=0;
+        char *pstr=nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "|s", &pstr))
             throw Py::Exception();
 
@@ -70,7 +70,7 @@ private:
     }
     Py::Object addTest(const Py::Tuple& args)
     {
-        char *pstr=0;
+        char *pstr=nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "|s", &pstr))
             throw Py::Exception();
 
