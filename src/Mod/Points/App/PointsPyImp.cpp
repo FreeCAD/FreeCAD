@@ -36,7 +36,7 @@
 using namespace Points;
 
 // returns a string which represents the object e.g. when printed in python
-std::string PointsPy::representation(void) const
+std::string PointsPy::representation() const
 {
     return std::string("<PointKernel object>");
 }
@@ -50,7 +50,7 @@ PyObject *PointsPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pyt
 // constructor method
 int PointsPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    PyObject *pcObj=0;
+    PyObject *pcObj=nullptr;
     if (!PyArg_ParseTuple(args, "|O", &pcObj))     // convert args: Python->C
         return -1;                             // NULL triggers exception
 
@@ -81,7 +81,7 @@ int PointsPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 PyObject* PointsPy::copy(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     PointKernel* kernel = new PointKernel();
     // assign data
@@ -93,7 +93,7 @@ PyObject* PointsPy::read(PyObject * args)
 {
     const char* Name;
     if (!PyArg_ParseTuple(args, "s",&Name))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         getPointKernelPtr()->load(Name);
@@ -106,7 +106,7 @@ PyObject* PointsPy::write(PyObject * args)
 {
     const char* Name;
     if (!PyArg_ParseTuple(args, "s",&Name))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         getPointKernelPtr()->save(Name);
@@ -118,7 +118,7 @@ PyObject* PointsPy::write(PyObject * args)
 PyObject* PointsPy::writeInventor(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     std::stringstream result;
     Base::InventorBuilder builder(result);
@@ -137,7 +137,7 @@ PyObject* PointsPy::addPoints(PyObject * args)
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O", &obj))
-        return 0;
+        return nullptr;
 
     try {
         Py::Sequence list(obj);
@@ -163,7 +163,7 @@ PyObject* PointsPy::addPoints(PyObject * args)
         PyErr_SetString(Base::BaseExceptionFreeCADError, "either expect\n"
             "-- [Vector,...] \n"
             "-- [(x,y,z),...]");
-        return 0;
+        return nullptr;
     }
 
     Py_Return;
@@ -173,7 +173,7 @@ PyObject* PointsPy::fromSegment(PyObject * args)
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O", &obj))
-        return 0;
+        return nullptr;
 
     try {
         const PointKernel* points = getPointKernelPtr();
@@ -191,14 +191,14 @@ PyObject* PointsPy::fromSegment(PyObject * args)
     }
     catch (const Py::Exception&) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, "expect a list of int");
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject* PointsPy::fromValid(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     try {
         const PointKernel* points = getPointKernelPtr();
@@ -213,16 +213,16 @@ PyObject* PointsPy::fromValid(PyObject * args)
     }
     catch (const Py::Exception&) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, "expect a list of int");
-        return 0;
+        return nullptr;
     }
 }
 
-Py::Long PointsPy::getCountPoints(void) const
+Py::Long PointsPy::getCountPoints() const
 {
     return Py::Long((long)getPointKernelPtr()->size());
 }
 
-Py::List PointsPy::getPoints(void) const
+Py::List PointsPy::getPoints() const
 {
     Py::List PointList;
     const PointKernel* points = getPointKernelPtr();
@@ -234,7 +234,7 @@ Py::List PointsPy::getPoints(void) const
 
 PyObject *PointsPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PointsPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

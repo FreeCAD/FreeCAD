@@ -40,8 +40,8 @@ class PointsExport Structured : public Feature
 
 public:
     /// Constructor
-    Structured(void);
-    virtual ~Structured(void);
+    Structured();
+    virtual ~Structured();
 
     App::PropertyInteger Width; /**< The width of the structured cloud. */
     App::PropertyInteger Height; /**< The height of the structured cloud. */
@@ -49,9 +49,9 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "PointsGui::ViewProviderStructured";
     }
     //@}

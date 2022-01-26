@@ -58,7 +58,7 @@ void PropertyPointKernel::setValue(const PointKernel& m)
     hasSetValue();
 }
 
-const PointKernel& PropertyPointKernel::getValue(void) const 
+const PointKernel& PropertyPointKernel::getValue() const
 {
     return *_cPoints;
 }
@@ -73,7 +73,7 @@ Base::BoundBox3d PropertyPointKernel::getBoundingBox() const
     return _cPoints->getBoundBox();
 }
 
-PyObject *PropertyPointKernel::getPyObject(void)
+PyObject *PropertyPointKernel::getPyObject()
 {
     PointsPy* points = new PointsPy(&*_cPoints);
     points->setConst(); // set immutable
@@ -132,7 +132,7 @@ void PropertyPointKernel::RestoreDocFile(Base::Reader &reader)
     hasSetValue();
 }
 
-App::Property *PropertyPointKernel::Copy(void) const 
+App::Property *PropertyPointKernel::Copy() const
 {
     PropertyPointKernel* prop = new PropertyPointKernel();
     (*prop->_cPoints) = (*this->_cPoints);
@@ -147,7 +147,7 @@ void PropertyPointKernel::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyPointKernel::getMemSize (void) const
+unsigned int PropertyPointKernel::getMemSize () const
 {
     return sizeof(Base::Vector3f) * this->_cPoints->size();
 }

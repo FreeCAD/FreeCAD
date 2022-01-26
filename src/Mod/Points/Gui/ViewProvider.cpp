@@ -247,7 +247,7 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderPoints::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPoints::getDisplayModes() const
 {
     std::vector<std::string> StrList;
     StrList.push_back("Points");
@@ -650,8 +650,8 @@ template class PointsGuiExport ViewProviderPythonFeatureT<PointsGui::ViewProvide
 
 void ViewProviderPointsBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
 {
-    SoCoordinate3 *pcPointsCoord=0;
-    SoPointSet *pcPoints=0;
+    SoCoordinate3 *pcPointsCoord=nullptr;
+    SoPointSet *pcPoints=nullptr;
 
     if (nodes.empty()) {
         pcPointsCoord = new SoCoordinate3();

@@ -115,7 +115,7 @@ private:
 
             App::Document* pcDoc = App::GetApplication().newDocument("Unnamed");
 
-            Points::Feature* pcFeature = 0;
+            Points::Feature* pcFeature = nullptr;
             if (reader->hasProperties()) {
                 // Scattered or structured points?
                 if (reader->isStructured()) {
@@ -234,7 +234,7 @@ private:
                 pcDoc = App::GetApplication().newDocument(DocName);
             }
 
-            Points::Feature* pcFeature = 0;
+            Points::Feature* pcFeature = nullptr;
             if (reader->hasProperties()) {
                 // Scattered or structured points?
                 if (reader->isStructured()) {

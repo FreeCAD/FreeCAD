@@ -980,7 +980,7 @@ void PcdReader::read(const std::string& filename)
         std::vector<char> uncompressed(u);
         if (lzfDecompress(&compressed[0], c, &uncompressed[0], u) == u) {
             DataStreambuf ibuf(uncompressed);
-            std::istream istr(0);
+            std::istream istr(nullptr);
             istr.rdbuf(&ibuf);
             readBinary(true, istr, types, sizes, data);
         }

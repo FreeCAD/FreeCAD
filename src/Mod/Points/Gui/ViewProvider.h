@@ -84,7 +84,7 @@ public:
     /// set the viewing mode
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes() const;
     virtual QIcon getIcon() const;
 
     /// Sets the edit mnode
