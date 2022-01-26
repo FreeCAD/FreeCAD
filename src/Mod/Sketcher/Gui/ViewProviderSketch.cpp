@@ -467,6 +467,11 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
             }
             return false;
         }
+    case SoKeyboardEvent::LEFT_SHIFT:
+        if (Mode < STATUS_SKETCH_UseHandler) {
+            editCoinManager->setConstraintSelectability(!pressed);
+            return true;
+        }
     default:
         {
             if (isInEditMode() && sketchHandler)
