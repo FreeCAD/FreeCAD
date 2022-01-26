@@ -26,10 +26,6 @@
 
 /* QtOpenGL.h.  Generated from QtOpenGL.h.cmake by cmake.  */
 
-#cmakedefine HAVE_QT5_OPENGL
-
-#if defined(HAVE_QT5_OPENGL)
-
 #include <QOpenGLContext>
 #include <QSurfaceFormat>
 #include <QOpenGLWidget>
@@ -42,22 +38,5 @@ typedef QSurfaceFormat QtGLFormat;
 typedef QOpenGLWidget QtGLWidget;
 typedef QOpenGLFramebufferObject QtGLFramebufferObject;
 typedef QOpenGLFramebufferObjectFormat QtGLFramebufferObjectFormat;
-
-#else // HAVE_QT5_OPENGL
-
-#include <QGLContext>
-#include <QGLFormat>
-#include <QGLWidget>
-#include <QGLPixelBuffer>
-#include <QGLFramebufferObject>
-
-typedef QGLContext QtGLContext;
-typedef QGLFormat QtGLFormat;
-typedef QGLWidget QtGLWidget;
-typedef QGLPixelBuffer QtGLPixelBuffer;
-typedef QGLFramebufferObject QtGLFramebufferObject;
-typedef QGLFramebufferObjectFormat QtGLFramebufferObjectFormat;
-
-#endif // HAVE_QT5_OPENGL
 
 #endif //QUARTER_QTOPENGL_H

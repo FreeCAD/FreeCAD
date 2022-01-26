@@ -1634,12 +1634,6 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
     gl->setCallback(setGLWidgetCB, this->getGLWidget());
     root->addChild(gl);
     root->addChild(pcViewProviderRoot);
-
-#if !defined(HAVE_QT5_OPENGL)
-    if (useBackground)
-        root->addChild(cb);
-#endif
-
     root->addChild(foregroundroot);
 
     try {
@@ -1981,7 +1975,6 @@ int View3DInventorViewer::getNumSamples()
 
 GLenum View3DInventorViewer::getInternalTextureFormat() const
 {
-#if defined(HAVE_QT5_OPENGL)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
     std::string format = hGrp->GetASCII("InternalTextureFormat", "Default");
@@ -2020,10 +2013,6 @@ GLenum View3DInventorViewer::getInternalTextureFormat() const
         QOpenGLFramebufferObjectFormat fboFormat;
         return fboFormat.internalTextureFormat();
     }
-#else
-    //return GL_RGBA;
-    return GL_RGB;
-#endif
 }
 
 void View3DInventorViewer::setRenderType(const RenderType type)
@@ -2048,10 +2037,6 @@ void View3DInventorViewer::setRenderType(const RenderType type)
 
             QtGLWidget* gl = static_cast<QtGLWidget*>(this->viewport());
             gl->makeCurrent();
-#if !defined(HAVE_QT5_OPENGL)
-            framebuffer = new QtGLFramebufferObject(width, height, QtGLFramebufferObject::Depth);
-            renderToFramebuffer(framebuffer);
-#else
             QOpenGLFramebufferObjectFormat fboFormat;
             fboFormat.setSamples(getNumSamples());
             fboFormat.setAttachment(QtGLFramebufferObject::Depth);
@@ -2067,7 +2052,6 @@ void View3DInventorViewer::setRenderType(const RenderType type)
                 renderToFramebuffer(fbo);
                 framebuffer = fbo;
             }
-#endif
         }
         break;
     case Image:
@@ -2089,13 +2073,6 @@ QImage View3DInventorViewer::grabFramebuffer()
     gl->makeCurrent();
 
     QImage res;
-#if !defined(HAVE_QT5_OPENGL)
-    int w = gl->width();
-    int h = gl->height();
-    QImage img(QSize(w,h), QImage::Format_RGB32);
-    glReadPixels(0, 0, w, h, GL_BGRA, GL_UNSIGNED_BYTE, img.bits());
-    res = img;
-#else
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
     int width = size[0];
@@ -2127,7 +2104,6 @@ QImage View3DInventorViewer::grabFramebuffer()
         painter.end();
         res = image;
     }
-#endif
 
     return res;
 }
@@ -2320,11 +2296,7 @@ void View3DInventorViewer::renderGLImage()
     glClear(GL_COLOR_BUFFER_BIT);
 
     glRasterPos2f(0,0);
-#if !defined(HAVE_QT5_OPENGL)
-    glDrawPixels(glImage.width(),glImage.height(),GL_RGBA,GL_UNSIGNED_BYTE,glImage.bits());
-#else
     glDrawPixels(glImage.width(),glImage.height(),GL_BGRA,GL_UNSIGNED_BYTE,glImage.bits());
-#endif
 
     printDimension();
     navigation->redraw();

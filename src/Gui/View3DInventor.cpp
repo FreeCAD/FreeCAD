@@ -56,12 +56,10 @@
 # include <Inventor/fields/SoSFString.h>
 # include <Inventor/fields/SoSFColor.h>
 #endif
-# include <QStackedWidget>
+#include <QStackedWidget>
 #include <QtOpenGL.h>
 
-#if defined(HAVE_QT5_OPENGL)
-# include <QWindow>
-#endif
+#include <QWindow>
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -131,9 +129,6 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
 
     if (samples > 1) {
         glformat = true;
-#if !defined(HAVE_QT5_OPENGL)
-        f.setSampleBuffers(true);
-#endif
         f.setSamples(samples);
     }
     else if (samples > 0) {
@@ -948,7 +943,6 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     if (oldmode == newmode)
         return;
 
-#if defined(HAVE_QT5_OPENGL)
     if (newmode == Child) {
         // Fix in two steps:
         // The mdi view got a QWindow when it became a top-level widget and when resetting it to a child widget
@@ -960,11 +954,9 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
         if (winHandle)
             winHandle->destroy();
     }
-#endif
 
     MDIView::setCurrentViewMode(newmode);
 
-#if defined(HAVE_QT5_OPENGL)
     // Internally the QOpenGLWidget switches of the multi-sampling and there is no
     // way to switch it on again. So as a workaround we just re-create a new viewport
     // The method is private but defined as slot to avoid to call it by accident.
@@ -972,7 +964,6 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     //if (index >= 0) {
     //    _viewer->qt_metacall(QMetaObject::InvokeMetaMethod, index, 0);
     //}
-#endif
 
     // This widget becomes the focus proxy of the embedded GL widget if we leave
     // the 'Child' mode. If we reenter 'Child' mode the focus proxy is reset to 0.
@@ -1000,12 +991,10 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
         for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it)
             this->removeAction(*it);
 
-#if defined(HAVE_QT5_OPENGL)
         // Step two
         QMdiSubWindow* mdi = qobject_cast<QMdiSubWindow*>(parentWidget());
         if (mdi && mdi->layout())
             mdi->layout()->invalidate();
-#endif
     }
 }
 
