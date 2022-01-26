@@ -55,7 +55,7 @@ def get_draft_drawing_commands():
             "Draft_Rectangle",
             "Draft_Polygon",
             "Draft_BSpline",
-            ([QT_TRANSLATE_NOOP("Workbench", "Bezier tools")],
+            ([QT_TRANSLATE_NOOP("Workbench", "Bézier tools")],
                 list(bez_group.GetCommands(bez_group))),
             ("Draft_BezierTools", ),
             "Draft_Point",

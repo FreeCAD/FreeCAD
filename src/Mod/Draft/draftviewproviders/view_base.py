@@ -99,21 +99,21 @@ class ViewProviderDraft(object):
     def _set_properties(self, vobj):
         """Set the properties of objects if they don't exist."""
         if not hasattr(vobj, "Pattern"):
-            _tip = "Defines a hatch pattern."
             vobj.addProperty("App::PropertyEnumeration",
                              "Pattern",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
+                             QT_TRANSLATE_NOOP("App::Property",
+                                               "Defines an SVG pattern."))
             patterns = list(utils.svg_patterns().keys())
             patterns.sort()
             vobj.Pattern = ["None"] + patterns
 
         if not hasattr(vobj, "PatternSize"):
-            _tip = "Defines the size of the hatch pattern."
             vobj.addProperty("App::PropertyFloat",
                              "PatternSize",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
+                             QT_TRANSLATE_NOOP("App::Property",
+                                               "Defines the size of the SVG pattern."))
             vobj.PatternSize = utils.get_param("HatchPatternSize", 1)
 
     def __getstate__(self):
@@ -398,8 +398,8 @@ class ViewProviderDraft(object):
             Gui.runCommand("Draft_Edit")
             return True
         else:
-            _wrn = "Please load the Draft Workbench to enable editing this object"
-            App.Console.PrintWarning(QT_TRANSLATE_NOOP("Draft", _wrn))
+            App.Console.PrintWarning(QT_TRANSLATE_NOOP("draft",
+                                                       "Please load the Draft Workbench to enable editing this object"))
             return False
 
     def unsetEdit(self, vobj, mode=0):

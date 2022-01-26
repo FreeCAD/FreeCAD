@@ -691,7 +691,7 @@ class DraftToolBar:
         self.autoGroupButton = self._pushbutton(
             "autoGroup", self.bottomtray,icon=":/icons/button_invalid.svg",
             hide=False, width=120)
-        self.autoGroupButton.setText("None")
+        self.autoGroupButton.setText(translate("draft", "None"))
         self.autoGroupButton.setFlat(True)
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
@@ -2044,7 +2044,7 @@ class DraftToolBar:
     def setAutoGroup(self,value=None):
         if value is None:
             self.autogroup = None
-            self.autoGroupButton.setText("None")
+            self.autoGroupButton.setText(translate("draft", "None"))
             self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_off',
                                                                QtGui.QIcon(':/icons/button_invalid.svg')))
             self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
@@ -2059,7 +2059,7 @@ class DraftToolBar:
                 self.autoGroupButton.setDown(False)
             else:
                 self.autogroup = None
-                self.autoGroupButton.setText("None")
+                self.autoGroupButton.setText(translate("draft", "None"))
                 self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_off',
                                                                    QtGui.QIcon(':/icons/button_invalid.svg')))
                 self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))

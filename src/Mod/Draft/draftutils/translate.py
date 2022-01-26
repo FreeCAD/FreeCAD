@@ -205,48 +205,4 @@ def translate(context, text, utf8_decode=False):
 QT_TRANSLATE_NOOP = QtCore.QT_TRANSLATE_NOOP
 
 
-def _tr(text):
-    """Translate with the context set to Draft. Our own function.
-
-    It uses our own `translate` defined function which internally still
-    uses `QtCore.QCoreApplication.translate`.
-
-    This is normally used inside a function that prints text.
-
-    >>> print(tr("Some text that will be translated"))
-
-    Parameters
-    ----------
-    text : str
-        Any text string.
-
-    Returns
-    -------
-    str
-        Returns the translated string at runtime.
-    """
-    return translate("Draft", text)
-
-
-def _qtr(text):
-    """Translate with the context set to Draft. QtCore function.
-
-    It uses `QtCore.QT_TRANSLATE_NOOP` function to perform translation.
-
-    This is normally used inside a function that prints text.
-
-    >>> print(qtr("Some text that will be translated"))
-
-    Parameters
-    ----------
-    text : str
-        Any text string.
-
-    Returns
-    -------
-    str
-        Returns the translated string at runtime.
-    """
-    return QT_TRANSLATE_NOOP("Draft", text)
-
 ## @}

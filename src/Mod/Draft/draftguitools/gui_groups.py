@@ -235,7 +235,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
 
         # Otherwise it builds a list of layers, with names and icons,
         # including the options "None" and "Add new layer".
-        self.groups = ["None"]
+        self.groups = [translate("draft", "None")]
         gn = [o.Name for o in self.doc.Objects if utils.get_type(o) == "Layer"]
         if params.GetBool("AutogroupAddGroups", False):
             gn.extend(groups.get_group_names())
@@ -389,11 +389,10 @@ class Ui_AddNamedGroup():
 
 
     def accept(self):
-        group = App.activeDocument().addObject("App::DocumentObjectGroup",translate("Gui::Dialog::DlgAddProperty","Group"))
+        group = App.activeDocument().addObject("App::DocumentObjectGroup",translate("draft", "Group"))
         group.Label=self.name.text()
         moveToGroup(group)
         Gui.Control.closeDialog()
-
 
 
 ## @}
