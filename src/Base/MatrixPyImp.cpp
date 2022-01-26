@@ -87,6 +87,42 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
+    PyErr_Clear();
+    PyObject *o1;
+    PyObject *o2;
+    PyObject *o3;
+    PyObject *o4 = nullptr;
+    if (PyArg_ParseTuple(args, "O!O!O!|O!", &(Base::VectorPy::Type), &o1
+                                          , &(Base::VectorPy::Type), &o2
+                                          , &(Base::VectorPy::Type), &o3
+                                          , &(Base::VectorPy::Type), &o4)) {
+        Base::Vector3d v1 = Py::Vector(o1, false).toVector();
+        Base::Vector3d v2 = Py::Vector(o2, false).toVector();
+        Base::Vector3d v3 = Py::Vector(o3, false).toVector();
+        Base::Vector3d v4;
+        if (o4)
+            v4 = Py::Vector(o4, false).toVector();
+        MatrixPy::PointerType ptr = this->getMatrixPtr();
+
+        (*ptr)[0][0] = v1.x;
+        (*ptr)[1][0] = v1.y;
+        (*ptr)[2][0] = v1.z;
+
+        (*ptr)[0][1] = v2.x;
+        (*ptr)[1][1] = v2.y;
+        (*ptr)[2][1] = v2.z;
+
+        (*ptr)[0][2] = v3.x;
+        (*ptr)[1][2] = v3.y;
+        (*ptr)[2][2] = v3.z;
+
+        (*ptr)[0][3] = v4.x;
+        (*ptr)[1][3] = v4.y;
+        (*ptr)[2][3] = v4.z;
+
+        return 0;
+    }
+
     PyErr_SetString(Base::BaseExceptionFreeCADError, "matrix or up to 16 floats expected");
     return -1;
 }
@@ -94,7 +130,7 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 PyObject* MatrixPy::number_add_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(MatrixPy::Type))) {
-        PyErr_SetString(PyExc_NotImplementedError, "");
+        PyErr_SetString(PyExc_TypeError, "First arg must be Matrix");
         return nullptr;
     }
     if (!PyObject_TypeCheck(other, &(MatrixPy::Type))) {
@@ -109,7 +145,7 @@ PyObject* MatrixPy::number_add_handler(PyObject *self, PyObject *other)
 PyObject* MatrixPy::number_subtract_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(MatrixPy::Type))) {
-        PyErr_SetString(PyExc_NotImplementedError, "");
+        PyErr_SetString(PyExc_TypeError, "First arg must be Matrix");
         return nullptr;
     }
     if (!PyObject_TypeCheck(other, &(MatrixPy::Type))) {
@@ -342,6 +378,91 @@ PyObject* MatrixPy::transform(PyObject * args)
     Py_Return;
 }
 
+PyObject* MatrixPy::col(PyObject * args)
+{
+    int index;
+    if (PyArg_ParseTuple(args, "i", &index)) {
+        index = index % 4;
+        Matrix4D* mat = getMatrixPtr();
+        Base::Vector3d v = mat->getCol(index);
+        return Py::new_reference_to(Py::Vector(v));
+    }
+
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "int expected");
+    return nullptr;
+}
+
+PyObject* MatrixPy::setCol(PyObject * args)
+{
+    int index;
+    PyObject* o;
+    if (PyArg_ParseTuple(args, "iO!", &index, &(VectorPy::Type), &o)) {
+        index = index % 4;
+        Base::Vector3d v = Py::Vector(o, false).toVector();
+        Matrix4D* mat = getMatrixPtr();
+        mat->setCol(index, v);
+        Py_Return;
+    }
+
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "int and Vector expected");
+    return nullptr;
+}
+
+PyObject* MatrixPy::row(PyObject * args)
+{
+    int index;
+    if (PyArg_ParseTuple(args, "i", &index)) {
+        index = index % 4;
+        Matrix4D* mat = getMatrixPtr();
+        Base::Vector3d v = mat->getRow(index);
+        return Py::new_reference_to(Py::Vector(v));
+    }
+
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "int expected");
+    return nullptr;
+}
+
+PyObject* MatrixPy::setRow(PyObject * args)
+{
+    int index;
+    PyObject* o;
+    if (PyArg_ParseTuple(args, "iO!", &index, &(VectorPy::Type), &o)) {
+        index = index % 4;
+        Base::Vector3d v = Py::Vector(o, false).toVector();
+        Matrix4D* mat = getMatrixPtr();
+        mat->setRow(index, v);
+        Py_Return;
+    }
+
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "int and Vector expected");
+    return nullptr;
+}
+
+PyObject* MatrixPy::trace(PyObject * args)
+{
+    if (PyArg_ParseTuple(args, "")) {
+        Matrix4D* mat = getMatrixPtr();
+        Base::Vector3d v = mat->trace();
+        return Py::new_reference_to(Py::Vector(v));
+    }
+
+    return nullptr;
+}
+
+PyObject* MatrixPy::setTrace(PyObject * args)
+{
+    PyObject* o;
+    if (PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &o)) {
+        Base::Vector3d v = Py::Vector(o, false).toVector();
+        Matrix4D* mat = getMatrixPtr();
+        mat->setTrace(v);
+        Py_Return;
+    }
+
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "Vector expected");
+    return nullptr;
+}
+
 PyObject* MatrixPy::rotateX(PyObject * args)
 {
     double angle = 0;
@@ -555,8 +676,8 @@ PyObject* MatrixPy::isOrthogonal(PyObject * args)
 
     bool ok = true;
     double mult = trp[0][0];
-    for (int i=0; i<4 && ok; i++) {
-        for (int j=0; j<4 && ok; j++) {
+    for (unsigned short i=0; i<4 && ok; i++) {
+        for (unsigned short j=0; j<4 && ok; j++) {
             if (i != j) {
                 if (fabs(trp[i][j]) > eps) {
                     ok = false;
@@ -622,7 +743,7 @@ Py::Float MatrixPy::getA11() const
 
 void  MatrixPy::setA11(Py::Float arg)
 {
-    (*this->getMatrixPtr())[0][0] = (double)arg;
+    (*this->getMatrixPtr())[0][0] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA12() const
@@ -633,7 +754,7 @@ Py::Float MatrixPy::getA12() const
 
 void  MatrixPy::setA12(Py::Float arg)
 {
-    (*this->getMatrixPtr())[0][1] = (double)arg;
+    (*this->getMatrixPtr())[0][1] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA13() const
@@ -644,7 +765,7 @@ Py::Float MatrixPy::getA13() const
 
 void  MatrixPy::setA13(Py::Float arg)
 {
-    (*this->getMatrixPtr())[0][2] = (double)arg;
+    (*this->getMatrixPtr())[0][2] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA14() const
@@ -655,7 +776,7 @@ Py::Float MatrixPy::getA14() const
 
 void  MatrixPy::setA14(Py::Float arg)
 {
-    (*this->getMatrixPtr())[0][3] = (double)arg;
+    (*this->getMatrixPtr())[0][3] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA21() const
@@ -666,7 +787,7 @@ Py::Float MatrixPy::getA21() const
 
 void  MatrixPy::setA21(Py::Float arg)
 {
-    (*this->getMatrixPtr())[1][0] = (double)arg;
+    (*this->getMatrixPtr())[1][0] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA22() const
@@ -677,7 +798,7 @@ Py::Float MatrixPy::getA22() const
 
 void  MatrixPy::setA22(Py::Float arg)
 {
-    (*this->getMatrixPtr())[1][1] = (double)arg;
+    (*this->getMatrixPtr())[1][1] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA23() const
@@ -688,7 +809,7 @@ Py::Float MatrixPy::getA23() const
 
 void  MatrixPy::setA23(Py::Float arg)
 {
-    (*this->getMatrixPtr())[1][2] = (double)arg;
+    (*this->getMatrixPtr())[1][2] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA24() const
@@ -699,7 +820,7 @@ Py::Float MatrixPy::getA24() const
 
 void  MatrixPy::setA24(Py::Float arg)
 {
-    (*this->getMatrixPtr())[1][3] = (double)arg;
+    (*this->getMatrixPtr())[1][3] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA31() const
@@ -710,7 +831,7 @@ Py::Float MatrixPy::getA31() const
 
 void  MatrixPy::setA31(Py::Float arg)
 {
-    (*this->getMatrixPtr())[2][0] = (double)arg;
+    (*this->getMatrixPtr())[2][0] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA32() const
@@ -721,7 +842,7 @@ Py::Float MatrixPy::getA32() const
 
 void  MatrixPy::setA32(Py::Float arg)
 {
-    (*this->getMatrixPtr())[2][1] = (double)arg;
+    (*this->getMatrixPtr())[2][1] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA33() const
@@ -732,7 +853,7 @@ Py::Float MatrixPy::getA33() const
 
 void  MatrixPy::setA33(Py::Float arg)
 {
-    (*this->getMatrixPtr())[2][2] = (double)arg;
+    (*this->getMatrixPtr())[2][2] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA34() const
@@ -743,7 +864,7 @@ Py::Float MatrixPy::getA34() const
 
 void  MatrixPy::setA34(Py::Float arg)
 {
-    (*this->getMatrixPtr())[2][3] = (double)arg;
+    (*this->getMatrixPtr())[2][3] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA41() const
@@ -754,7 +875,7 @@ Py::Float MatrixPy::getA41() const
 
 void  MatrixPy::setA41(Py::Float arg)
 {
-    (*this->getMatrixPtr())[3][0] = (double)arg;
+    (*this->getMatrixPtr())[3][0] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA42() const
@@ -765,7 +886,7 @@ Py::Float MatrixPy::getA42() const
 
 void  MatrixPy::setA42(Py::Float arg)
 {
-    (*this->getMatrixPtr())[3][1] = (double)arg;
+    (*this->getMatrixPtr())[3][1] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA43() const
@@ -776,7 +897,7 @@ Py::Float MatrixPy::getA43() const
 
 void  MatrixPy::setA43(Py::Float arg)
 {
-    (*this->getMatrixPtr())[3][2] = (double)arg;
+    (*this->getMatrixPtr())[3][2] = static_cast<double>(arg);
 }
 
 Py::Float MatrixPy::getA44() const
@@ -787,7 +908,7 @@ Py::Float MatrixPy::getA44() const
 
 void  MatrixPy::setA44(Py::Float arg)
 {
-    (*this->getMatrixPtr())[3][3] = (double)arg;
+    (*this->getMatrixPtr())[3][3] = static_cast<double>(arg);
 }
 
 Py::Sequence MatrixPy::getA() const
@@ -808,7 +929,7 @@ void MatrixPy::setA(Py::Sequence arg)
 
     int index=0;
     for (Py::Sequence::iterator it = arg.begin(); it != arg.end() && index < 16; ++it) {
-        mat[index++] = (double)Py::Float(*it);
+        mat[index++] = static_cast<double>(Py::Float(*it));
     }
 
     this->getMatrixPtr()->setMatrix(mat);

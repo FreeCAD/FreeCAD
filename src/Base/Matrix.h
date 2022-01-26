@@ -96,6 +96,18 @@ public:
   inline double*   operator [] (unsigned short usNdx);
   /// Index operator
   inline const double*    operator[] (unsigned short usNdx) const;
+  /// Get vector of row
+  inline Vector3d getRow(unsigned short usNdx) const;
+  /// Get vector of column
+  inline Vector3d getCol(unsigned short usNdx) const;
+  /// Get vector of trace
+  inline Vector3d trace() const;
+  /// Set row to vector
+  inline void setRow(unsigned short usNdx, const Vector3d&);
+  /// Set column to vector
+  inline void setCol(unsigned short usNdx, const Vector3d&);
+  /// Set trace to vector
+  inline void setTrace(const Vector3d&);
   /// Compute the determinant of the matrix
   double determinant() const;
   /// Analyse the transformation
@@ -368,6 +380,42 @@ inline double* Matrix4D::operator[] (unsigned short usNdx)
 inline const double* Matrix4D::operator[] (unsigned short usNdx) const
 {
   return dMtrx4D[usNdx];
+}
+
+inline Vector3d Matrix4D::getRow(unsigned short usNdx) const
+{
+    return Vector3d(dMtrx4D[usNdx][0], dMtrx4D[usNdx][1], dMtrx4D[usNdx][2]);
+}
+
+inline Vector3d Matrix4D::getCol(unsigned short usNdx) const
+{
+    return Vector3d(dMtrx4D[0][usNdx], dMtrx4D[1][usNdx], dMtrx4D[2][usNdx]);
+}
+
+inline Vector3d Matrix4D::trace() const
+{
+    return Vector3d(dMtrx4D[0][0], dMtrx4D[1][1], dMtrx4D[2][2]);
+}
+
+inline void Matrix4D::setRow(unsigned short usNdx, const Vector3d& v)
+{
+    dMtrx4D[usNdx][0] = v.x;
+    dMtrx4D[usNdx][1] = v.y;
+    dMtrx4D[usNdx][2] = v.z;
+}
+
+inline void Matrix4D::setCol(unsigned short usNdx, const Vector3d& v)
+{
+    dMtrx4D[0][usNdx] = v.x;
+    dMtrx4D[1][usNdx] = v.y;
+    dMtrx4D[2][usNdx] = v.z;
+}
+
+inline void Matrix4D::setTrace(const Vector3d& v)
+{
+    dMtrx4D[0][0] = v.x;
+    dMtrx4D[1][1] = v.y;
+    dMtrx4D[2][2] = v.z;
 }
 
 } // namespace Base
