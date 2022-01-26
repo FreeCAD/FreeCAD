@@ -47,7 +47,7 @@ class PointsExport PropertyGreyValue : public App::PropertyFloat
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyGreyValue(void)
+    PropertyGreyValue()
     {
     }
     virtual ~PropertyGreyValue()
@@ -64,7 +64,7 @@ public:
     virtual ~PropertyGreyValueList();
     
     virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    virtual int getSize() const;
 
     /** Sets the property 
      */
@@ -80,11 +80,11 @@ public:
     }
     void setValues (const std::vector<float>& values);
     
-    const std::vector<float> &getValues(void) const {
+    const std::vector<float> &getValues() const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     virtual void setPyObject(PyObject *);
     
     virtual void Save (Base::Writer &writer) const;
@@ -93,9 +93,9 @@ public:
     virtual void SaveDocFile (Base::Writer &writer) const;
     virtual void RestoreDocFile(Base::Reader &reader);
     
-    virtual App::Property *Copy(void) const;
+    virtual App::Property *Copy() const;
     virtual void Paste(const App::Property &from);
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize () const;
 
     /** @name Modify */
     //@{
@@ -115,7 +115,7 @@ public:
     ~PropertyNormalList();
 
     virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    virtual int getSize() const;
 
     void setValue(const Base::Vector3f&);
     void setValue(float x, float y, float z);
@@ -130,11 +130,11 @@ public:
 
     void setValues (const std::vector<Base::Vector3f>& values);
 
-    const std::vector<Base::Vector3f> &getValues(void) const {
+    const std::vector<Base::Vector3f> &getValues() const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     virtual void setPyObject(PyObject *);
 
     virtual void Save (Base::Writer &writer) const;
@@ -143,10 +143,10 @@ public:
     virtual void SaveDocFile (Base::Writer &writer) const;
     virtual void RestoreDocFile(Base::Reader &reader);
 
-    virtual App::Property *Copy(void) const;
+    virtual App::Property *Copy() const;
     virtual void Paste(const App::Property &from);
 
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize () const;
 
     /** @name Modify */
     //@{
@@ -187,7 +187,7 @@ public:
     void setSize(int newSize) {
         _lValueList.resize(newSize);
     }
-    int getSize(void) const {
+    int getSize() const {
         return _lValueList.size();
     }
     void setValue(const CurvatureInfo&);
@@ -201,11 +201,11 @@ public:
     void  set1Value (const int idx, const CurvatureInfo& value) {
         _lValueList[idx] = value;
     }
-    const std::vector<CurvatureInfo> &getValues(void) const {
+    const std::vector<CurvatureInfo> &getValues() const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     virtual void setPyObject(PyObject *);
 
     /** @name Save/restore */
@@ -220,10 +220,10 @@ public:
     /** @name Undo/Redo */
     //@{
     /// returns a new copy of the property (mainly for Undo/Redo and transactions)
-    App::Property *Copy(void) const;
+    App::Property *Copy() const;
     /// paste the value from the property (mainly for Undo/Redo and transactions)
     void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const;
     //@}
 
     /** @name Modify */

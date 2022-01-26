@@ -56,7 +56,7 @@ PointKernel::PointKernel(const PointKernel& pts)
 
 }
 
-std::vector<const char*> PointKernel::getElementTypes(void) const
+std::vector<const char*> PointKernel::getElementTypes() const
 {
     std::vector<const char*> temp;
     //temp.push_back("Segment");
@@ -79,7 +79,7 @@ Data::Segment* PointKernel::getSubElement(const char* /*Type*/, unsigned long /*
     //    return 0;
     //}
 
-    return 0;
+    return nullptr;
 }
 
 void PointKernel::transformGeometry(const Base::Matrix4D &rclMat)
@@ -99,7 +99,7 @@ void PointKernel::transformGeometry(const Base::Matrix4D &rclMat)
 #endif
 }
 
-Base::BoundBox3d PointKernel::getBoundBox(void)const
+Base::BoundBox3d PointKernel::getBoundBox()const
 {
     Base::BoundBox3d bnd;
 
@@ -131,12 +131,12 @@ void PointKernel::operator = (const PointKernel& Kernel)
     }
 }
 
-unsigned int PointKernel::getMemSize (void) const
+unsigned int PointKernel::getMemSize () const
 {
     return _Points.size() * sizeof(value_type);
 }
 
-PointKernel::size_type PointKernel::countValid(void) const
+PointKernel::size_type PointKernel::countValid() const
 {
     size_type num = 0;
     for (const_point_iterator it = begin(); it != end(); ++it) {

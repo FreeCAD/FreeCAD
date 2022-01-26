@@ -79,7 +79,7 @@ Structured::~Structured()
 {
 }
 
-App::DocumentObjectExecReturn *Structured::execute(void)
+App::DocumentObjectExecReturn *Structured::execute()
 {
     std::size_t size = Height.getValue() * Width.getValue();
     if (size != Points.getValue().size())

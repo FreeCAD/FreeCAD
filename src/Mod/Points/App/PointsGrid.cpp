@@ -43,8 +43,8 @@ PointsGrid::PointsGrid (const PointKernel &rclM)
   RebuildGrid();
 }
 
-PointsGrid::PointsGrid (void)
-: _pclPoints(NULL),
+PointsGrid::PointsGrid ()
+: _pclPoints(nullptr),
   _ulCtElements(0),
   _ulCtGridsX(POINTS_CT_GRID), _ulCtGridsY(POINTS_CT_GRID), _ulCtGridsZ(POINTS_CT_GRID),
   _fGridLenX(0.0f), _fGridLenY(0.0f), _fGridLenZ(0.0f),
@@ -93,10 +93,10 @@ void PointsGrid::Attach (const PointKernel &rclM)
   RebuildGrid();
 }
 
-void PointsGrid::Clear (void)
+void PointsGrid::Clear ()
 {
   _aulGrid.clear();
-  _pclPoints = NULL;
+  _pclPoints = nullptr;
 }
 
 void PointsGrid::Rebuild (unsigned long ulX, unsigned long ulY, unsigned long ulZ)
@@ -122,9 +122,9 @@ void PointsGrid::Rebuild (int iCtGridPerAxis)
   RebuildGrid();
 }
 
-void PointsGrid::InitGrid (void)
+void PointsGrid::InitGrid ()
 {
-  assert(_pclPoints != NULL);
+  assert(_pclPoints != nullptr);
 
   unsigned long i, j;
 
@@ -645,9 +645,9 @@ void PointsGrid::Validate (const PointKernel &rclPoints)
     RebuildGrid();
 }
 
-void PointsGrid::Validate (void)
+void PointsGrid::Validate ()
 {
-  if (_pclPoints == NULL)
+  if (_pclPoints == nullptr)
     return;
 
   if (_pclPoints->size() != _ulCtElements)
@@ -677,7 +677,7 @@ bool PointsGrid::Verify() const
   return true;
 }
 
-void PointsGrid::RebuildGrid (void)
+void PointsGrid::RebuildGrid ()
 {
   _ulCtElements = _pclPoints->size();
 
@@ -817,8 +817,9 @@ bool PointsGridIterator::NextOnRay (std::vector<unsigned long> &raulElements)
     GridElement pos(_ulX, _ulY, _ulZ); _cSearchPositions.insert(pos);
     raulElements.insert(raulElements.end(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(), _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());
   }
-  else
-    _bValidRay = false;  // Beam escaped
+  else {
+    _bValidRay = false;  // ray exited
+  }
 
   return _bValidRay;
 }

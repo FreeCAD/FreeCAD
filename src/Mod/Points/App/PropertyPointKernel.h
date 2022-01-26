@@ -44,7 +44,7 @@ public:
     /// Sets the points to the property
     void setValue( const PointKernel& m);
     /// get the points (only const possible!)
-    const PointKernel &getValue(void) const;
+    const PointKernel &getValue() const;
     const Data::ComplexGeoData* getComplexData() const;
     //@}
 
@@ -56,17 +56,17 @@ public:
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject(void);
+    PyObject* getPyObject();
     void setPyObject(PyObject *value);
     //@}
 
     /** @name Undo/Redo */
     //@{
     /// returns a new copy of the property (mainly for Undo/Redo and transactions)
-    App::Property *Copy(void) const;
+    App::Property *Copy() const;
     /// paste the value from the property (mainly for Undo/Redo and transactions)
     void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const;
     //@}
 
     /** @name Save/restore */

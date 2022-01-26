@@ -68,7 +68,7 @@ void PropertyGreyValueList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyGreyValueList::getSize(void) const
+int PropertyGreyValueList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -88,7 +88,7 @@ void PropertyGreyValueList::setValues(const std::vector<float>& values)
     hasSetValue();
 }
 
-PyObject *PropertyGreyValueList::getPyObject(void)
+PyObject *PropertyGreyValueList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
     for (int i = 0;i<getSize(); i++)
@@ -175,7 +175,7 @@ void PropertyGreyValueList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-App::Property *PropertyGreyValueList::Copy(void) const
+App::Property *PropertyGreyValueList::Copy() const
 {
     PropertyGreyValueList *p= new PropertyGreyValueList();
     p->_lValueList = _lValueList;
@@ -189,7 +189,7 @@ void PropertyGreyValueList::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyGreyValueList::getMemSize (void) const
+unsigned int PropertyGreyValueList::getMemSize () const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(float));
 }
@@ -238,7 +238,7 @@ void PropertyNormalList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyNormalList::getSize(void) const
+int PropertyNormalList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -266,7 +266,7 @@ void PropertyNormalList::setValues(const std::vector<Base::Vector3f>& values)
     hasSetValue();
 }
 
-PyObject *PropertyNormalList::getPyObject(void)
+PyObject *PropertyNormalList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
 
@@ -349,7 +349,7 @@ void PropertyNormalList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-App::Property *PropertyNormalList::Copy(void) const
+App::Property *PropertyNormalList::Copy() const
 {
     PropertyNormalList *p= new PropertyNormalList();
     p->_lValueList = _lValueList;
@@ -363,7 +363,7 @@ void PropertyNormalList::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyNormalList::getMemSize (void) const
+unsigned int PropertyNormalList::getMemSize () const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
 }
@@ -565,7 +565,7 @@ void PropertyCurvatureList::removeIndices( const std::vector<unsigned long>& uIn
     setValues(remainValue);
 }
 
-PyObject *PropertyCurvatureList::getPyObject(void)
+PyObject *PropertyCurvatureList::getPyObject()
 {
     throw Py::NotImplementedError("Not yet implemented");
 }
@@ -621,7 +621,7 @@ void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-App::Property *PropertyCurvatureList::Copy(void) const 
+App::Property *PropertyCurvatureList::Copy() const
 {
     PropertyCurvatureList* prop = new PropertyCurvatureList();
     prop->_lValueList = this->_lValueList;
@@ -636,7 +636,7 @@ void PropertyCurvatureList::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyCurvatureList::getMemSize (void) const
+unsigned int PropertyCurvatureList::getMemSize () const
 {
     return sizeof(CurvatureInfo) * this->_lValueList.size();
 }

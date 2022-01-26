@@ -38,7 +38,7 @@
 #include <Mod/Points/App/PropertyPointKernel.h>
 
 // use a different name to CreateCommand()
-void CreatePointsCommands(void);
+void CreatePointsCommands();
 
 void loadPointsResource()
 {
@@ -74,7 +74,7 @@ PyMOD_INIT_FUNC(PointsGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     // load dependent module
@@ -83,7 +83,7 @@ PyMOD_INIT_FUNC(PointsGui)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     Base::Console().Log("Loading GUI of Points module... done\n");
