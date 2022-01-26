@@ -82,7 +82,7 @@
 
 namespace bp = boost::placeholders;
 
-DEF_STD_CMD(CmdSandboxDocumentThread);
+DEF_STD_CMD(CmdSandboxDocumentThread)
 
 CmdSandboxDocumentThread::CmdSandboxDocumentThread()
   :Command("Sandbox_Thread")
@@ -109,7 +109,7 @@ void CmdSandboxDocumentThread::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxDocumentTestThread);
+DEF_STD_CMD(CmdSandboxDocumentTestThread)
 
 CmdSandboxDocumentTestThread::CmdSandboxDocumentTestThread()
   :Command("Sandbox_TestThread")
@@ -133,7 +133,7 @@ void CmdSandboxDocumentTestThread::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD_A(CmdSandboxDocumentSaveThread);
+DEF_STD_CMD_A(CmdSandboxDocumentSaveThread)
 
 CmdSandboxDocumentSaveThread::CmdSandboxDocumentSaveThread()
   :Command("Sandbox_SaveThread")
@@ -161,7 +161,7 @@ bool CmdSandboxDocumentSaveThread::isActive()
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxDocThreadWithSeq);
+DEF_STD_CMD(CmdSandboxDocThreadWithSeq)
 
 CmdSandboxDocThreadWithSeq::CmdSandboxDocThreadWithSeq()
   :Command("Sandbox_SeqThread")
@@ -200,7 +200,7 @@ void CmdSandboxDocThreadWithSeq::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxDocThreadBusy);
+DEF_STD_CMD(CmdSandboxDocThreadBusy)
 
 CmdSandboxDocThreadBusy::CmdSandboxDocThreadBusy()
   :Command("Sandbox_BlockThread")
@@ -237,7 +237,7 @@ void CmdSandboxDocThreadBusy::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxDocumentNoThread);
+DEF_STD_CMD(CmdSandboxDocumentNoThread)
 
 CmdSandboxDocumentNoThread::CmdSandboxDocumentNoThread()
   :Command("Sandbox_NoThread")
@@ -268,7 +268,7 @@ void CmdSandboxDocumentNoThread::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxWorkerThread);
+DEF_STD_CMD(CmdSandboxWorkerThread)
 
 CmdSandboxWorkerThread::CmdSandboxWorkerThread()
   :Command("Sandbox_WorkerThread")
@@ -291,7 +291,7 @@ void CmdSandboxWorkerThread::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxPythonLockThread);
+DEF_STD_CMD(CmdSandboxPythonLockThread)
 
 CmdSandboxPythonLockThread::CmdSandboxPythonLockThread()
   :Command("Sandbox_PythonLockThread")
@@ -326,7 +326,7 @@ void CmdSandboxPythonLockThread::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxPythonNolockThread);
+DEF_STD_CMD(CmdSandboxPythonNolockThread)
 
 CmdSandboxPythonNolockThread::CmdSandboxPythonNolockThread()
   :Command("Sandbox_NolockPython")
@@ -358,7 +358,7 @@ void CmdSandboxPythonNolockThread::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxPyQtThread);
+DEF_STD_CMD(CmdSandboxPyQtThread)
 
 CmdSandboxPyQtThread::CmdSandboxPyQtThread()
   :Command("Sandbox_PyQtThread")
@@ -393,7 +393,7 @@ void CmdSandboxPyQtThread::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxPythonThread);
+DEF_STD_CMD(CmdSandboxPythonThread)
 
 CmdSandboxPythonThread::CmdSandboxPythonThread()
   :Command("Sandbox_PythonThread")
@@ -419,7 +419,7 @@ void CmdSandboxPythonThread::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxPythonMainThread);
+DEF_STD_CMD(CmdSandboxPythonMainThread)
 
 CmdSandboxPythonMainThread::CmdSandboxPythonMainThread()
   :Command("Sandbox_PythonMainThread")
@@ -445,7 +445,7 @@ void CmdSandboxPythonMainThread::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxDocThreadWithDialog);
+DEF_STD_CMD(CmdSandboxDocThreadWithDialog)
 
 CmdSandboxDocThreadWithDialog::CmdSandboxDocThreadWithDialog()
   :Command("Sandbox_Dialog")
@@ -472,7 +472,7 @@ void CmdSandboxDocThreadWithDialog::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdSandboxDocThreadWithFileDlg);
+DEF_STD_CMD(CmdSandboxDocThreadWithFileDlg)
 
 CmdSandboxDocThreadWithFileDlg::CmdSandboxDocThreadWithFileDlg()
   :Command("Sandbox_FileDialog")
@@ -917,7 +917,7 @@ bool CmdSandboxMeshTestRef::isActive(void)
 //===========================================================================
 // Std_GrabWidget
 //===========================================================================
-DEF_STD_CMD_A(CmdTestGrabWidget);
+DEF_STD_CMD_A(CmdTestGrabWidget)
 
 CmdTestGrabWidget::CmdTestGrabWidget()
   : Command("Std_GrabWidget")
@@ -949,7 +949,7 @@ bool CmdTestGrabWidget::isActive(void)
 //===========================================================================
 // Std_ImageNode
 //===========================================================================
-DEF_3DV_CMD(CmdTestImageNode);
+DEF_3DV_CMD(CmdTestImageNode)
 
 class RenderArea : public QWidget
 {
@@ -1136,7 +1136,7 @@ void CmdTestImageNode::activated(int)
 //===========================================================================
 // Sandbox_GDIWidget
 //===========================================================================
-DEF_STD_CMD(CmdTestGDIWidget);
+DEF_STD_CMD(CmdTestGDIWidget)
 
 CmdTestGDIWidget::CmdTestGDIWidget()
   : Command("Sandbox_GDIWidget")
@@ -1162,7 +1162,7 @@ void CmdTestGDIWidget::activated(int)
 //===========================================================================
 // Sandbox_RedirectPaint
 //===========================================================================
-DEF_STD_CMD(CmdTestRedirectPaint);
+DEF_STD_CMD(CmdTestRedirectPaint)
 
 CmdTestRedirectPaint::CmdTestRedirectPaint()
   : Command("Sandbox_RedirectPaint")
@@ -1201,7 +1201,7 @@ void CmdTestRedirectPaint::activated(int)
 //===========================================================================
 // Sandbox_CryptographicHash
 //===========================================================================
-DEF_STD_CMD(CmdTestCryptographicHash);
+DEF_STD_CMD(CmdTestCryptographicHash)
 
 CmdTestCryptographicHash::CmdTestCryptographicHash()
   : Command("Sandbox_CryptographicHash")
@@ -1223,7 +1223,7 @@ void CmdTestCryptographicHash::activated(int)
 //===========================================================================
 // Sandbox_WidgetShape
 //===========================================================================
-DEF_3DV_CMD(CmdTestWidgetShape);
+DEF_3DV_CMD(CmdTestWidgetShape)
 
 CmdTestWidgetShape::CmdTestWidgetShape()
   : Command("Sandbox_WidgetShape")
@@ -1246,7 +1246,7 @@ void CmdTestWidgetShape::activated(int)
 
 // -------------------------------------------------------------------------------
 
-DEF_STD_CMD(CmdMengerSponge);
+DEF_STD_CMD(CmdMengerSponge)
 
 CmdMengerSponge::CmdMengerSponge()
   :Command("Sandbox_MengerSponge")
@@ -1415,7 +1415,7 @@ void CmdMengerSponge::activated(int)
     feature->purgeTouched();
 }
 
-DEF_STD_CMD_A(CmdTestGraphicsView);
+DEF_STD_CMD_A(CmdTestGraphicsView)
 
 CmdTestGraphicsView::CmdTestGraphicsView()
   : Command("Std_TestGraphicsView")
@@ -1443,7 +1443,7 @@ bool CmdTestGraphicsView::isActive(void)
 //===========================================================================
 // Std_TestTaskBox
 //===========================================================================
-DEF_STD_CMD(CmdTestTaskBox);
+DEF_STD_CMD(CmdTestTaskBox)
 
 CmdTestTaskBox::CmdTestTaskBox()
   : Command("Std_TestTaskBox")
@@ -1463,7 +1463,7 @@ void CmdTestTaskBox::activated(int)
 }
 
 
-void CreateSandboxCommands(void)
+void CreateSandboxCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdSandboxDocumentThread());
