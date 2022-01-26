@@ -26,12 +26,15 @@
 #include <cmath>
 #endif // #ifndef _PreComp_
 
+# include <QMessageBox>
+
 #include <Base/Console.h>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 
@@ -41,6 +44,8 @@
 
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
@@ -124,7 +129,22 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
         connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
         ui->comboDrawingStyle->setCurrentIndex(dimensionVP->StandardAndStyle.getValue());
         connect(ui->comboDrawingStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(onDrawingStyleChanged()));
-    }  
+    }
+
+    // Lines
+    ui->rbOverride->setChecked(parent->dvDimension->AngleOverride.getValue());
+    connect(ui->rbOverride, SIGNAL(toggled(bool)), this, SLOT(onOverrideToggled()));
+    ui->dsbDimAngle->setValue(parent->dvDimension->LineAngle.getValue());
+    connect(ui->dsbDimAngle, SIGNAL(valueChanged(double)), this, SLOT(onDimAngleChanged()));
+    ui->dsbExtAngle->setValue(parent->dvDimension->ExtensionAngle.getValue());
+    connect(ui->dsbExtAngle, SIGNAL(valueChanged(double)), this, SLOT(onExtAngleChanged()));
+    connect(ui->pbDimUseDefault, SIGNAL(clicked()), this, SLOT(onDimUseDefaultClicked()));
+    connect(ui->pbDimUseSelection, SIGNAL(clicked()), this, SLOT(onDimUseSelectionClicked()));
+    connect(ui->pbExtUseDefault, SIGNAL(clicked()), this, SLOT(onExtUseDefaultClicked()));
+    connect(ui->pbExtUseSelection, SIGNAL(clicked()), this, SLOT(onExtUseSelectionClicked()));
+
+    Gui::Document* doc = m_dimensionVP->getDocument();
+    doc->openCommand("TaskDimension");
 }
 
 TaskDimension::~TaskDimension()
@@ -294,6 +314,104 @@ void TaskDimension::onDrawingStyleChanged()
     recomputeFeature();
 }
 
+void TaskDimension::onOverrideToggled()
+{
+    m_parent->dvDimension->AngleOverride.setValue(ui->rbOverride->isChecked());
+    recomputeFeature();
+
+}
+
+void TaskDimension::onDimAngleChanged()
+{
+    m_parent->dvDimension->LineAngle.setValue(ui->dsbDimAngle->value());
+    recomputeFeature();
+}
+
+void TaskDimension::onExtAngleChanged()
+{
+    m_parent->dvDimension->ExtensionAngle.setValue(ui->dsbExtAngle->value());
+    recomputeFeature();
+}
+
+void TaskDimension::onDimUseDefaultClicked()
+{
+    pointPair points = m_parent->dvDimension->getLinearPoints();
+    //duplicate coordinate conversion logic from QGIViewDimension
+    Base::Vector2d first2(points.first.x, -points.first.y);
+    Base::Vector2d second2(points.second.x, -points.second.y);
+    double lineAngle = (second2 - first2).Angle();
+    ui->dsbDimAngle->setValue(lineAngle * 180.0 / M_PI);
+}
+
+void TaskDimension::onDimUseSelectionClicked()
+{
+    std::pair<double, bool> result = getAngleFromSelection();
+    if (result.second) {
+        ui->dsbDimAngle->setValue(result.first * 180.0 / M_PI);
+    }
+}
+
+void TaskDimension::onExtUseDefaultClicked()
+{
+    pointPair points = m_parent->dvDimension->getLinearPoints();
+    //duplicate coordinate conversion logic from QGIViewDimension
+    Base::Vector2d first2(points.first.x, -points.first.y);
+    Base::Vector2d second2(points.second.x, -points.second.y);
+    Base::Vector2d lineDirection = second2 - first2;
+    Base::Vector2d extensionDirection(-lineDirection.y, lineDirection.x);
+    double extensionAngle = extensionDirection.Angle();
+    ui->dsbExtAngle->setValue(extensionAngle * 180.0 / M_PI);
+}
+void TaskDimension::onExtUseSelectionClicked()
+{
+    std::pair<double, bool> result = getAngleFromSelection();
+    if (result.second) {
+        ui->dsbExtAngle->setValue(result.first * 180.0 / M_PI);
+    }
+}
+
+std::pair<double, bool> TaskDimension::getAngleFromSelection()
+{
+    std::pair<double, bool> result;
+    result.first = 0.0;
+    result.second = true;
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    TechDraw::DrawViewPart * objFeat = 0;
+    std::vector<std::string> SubNames;
+    if (!selection.empty()) {
+        objFeat = static_cast<TechDraw::DrawViewPart*> (selection.front().getObject());
+        SubNames = selection.front().getSubNames();
+        if (SubNames.size() == 2) {             //expecting Vertices
+            std::string geomName0 = DrawUtil::getGeomTypeFromName(SubNames[0]);
+            int geomIndex0 = DrawUtil::getIndexFromName(SubNames[0]);
+            std::string geomName1 = DrawUtil::getGeomTypeFromName(SubNames[1]);
+            int geomIndex1 = DrawUtil::getIndexFromName(SubNames[1]);
+            if ((geomName0 == "Vertex") && (geomName1 == "Vertex"))  {
+                TechDraw::VertexPtr v0 = objFeat->getProjVertexByIndex(geomIndex0);
+                TechDraw::VertexPtr v1 = objFeat->getProjVertexByIndex(geomIndex1);
+                Base::Vector2d v02(v0->point().x, -v0->point().y);
+                Base::Vector2d v12(v1->point().x, -v1->point().y);
+                result.first = (v12 - v02).Angle();
+                return result;
+            }
+        } else if (SubNames.size() == 1) {      //expecting Edge
+            std::string geomName0 = DrawUtil::getGeomTypeFromName(SubNames[0]);
+            int geomIndex0 = DrawUtil::getIndexFromName(SubNames[0]);
+            if (geomName0 == "Edge") {
+                TechDraw::BaseGeomPtr edge = objFeat->getGeomByIndex(geomIndex0);
+                Base::Vector2d v02(edge->getStartPoint().x, -edge->getStartPoint().y);
+                Base::Vector2d v12(edge->getEndPoint().x, -edge->getEndPoint().y);
+                result.first = (v12 - v02).Angle();
+                return result;
+            }
+        }
+    }
+
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+                                               QObject::tr("Select 2 Vertexes or 1 Edge"));
+    result.second = false;
+    return result;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TaskDlgDimension::TaskDlgDimension(QGIViewDimension *parent, ViewProviderDimension *dimensionVP) :
