@@ -63,7 +63,7 @@ void PropertyNormalList::setSize(int newSize)
     _lValueList.resize(newSize);
 }
 
-int PropertyNormalList::getSize(void) const
+int PropertyNormalList::getSize() const
 {
     return static_cast<int>(_lValueList.size());
 }
@@ -91,7 +91,7 @@ void PropertyNormalList::setValues(const std::vector<Base::Vector3f>& values)
     hasSetValue();
 }
 
-PyObject *PropertyNormalList::getPyObject(void)
+PyObject *PropertyNormalList::getPyObject()
 {
     PyObject* list = PyList_New(getSize());
 
@@ -174,7 +174,7 @@ void PropertyNormalList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-App::Property *PropertyNormalList::Copy(void) const
+App::Property *PropertyNormalList::Copy() const
 {
     PropertyNormalList *p= new PropertyNormalList();
     p->_lValueList = _lValueList;
@@ -188,7 +188,7 @@ void PropertyNormalList::Paste(const App::Property &from)
     hasSetValue();
 }
 
-unsigned int PropertyNormalList::getMemSize (void) const
+unsigned int PropertyNormalList::getMemSize () const
 {
     return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
 }
@@ -382,7 +382,7 @@ void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
     setValues(values);
 }
 
-PyObject* PropertyCurvatureList::getPyObject(void)
+PyObject* PropertyCurvatureList::getPyObject()
 {
     Py::List list;
     for (std::vector<CurvatureInfo>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
@@ -410,7 +410,7 @@ void PropertyCurvatureList::setPyObject(PyObject* /*value*/)
     throw Base::AttributeError(std::string("This attribute is read-only"));
 }
 
-App::Property *PropertyCurvatureList::Copy(void) const
+App::Property *PropertyCurvatureList::Copy() const
 {
     PropertyCurvatureList *p= new PropertyCurvatureList();
     p->_lValueList = _lValueList;
@@ -427,7 +427,7 @@ void PropertyCurvatureList::Paste(const App::Property &from)
 // ----------------------------------------------------------------------------
 
 PropertyMeshKernel::PropertyMeshKernel()
-  : _meshObject(new MeshObject()), meshPyObject(0)
+  : _meshObject(new MeshObject()), meshPyObject(nullptr)
 {
     // Note: Normally this property is a member of a document object, i.e. the setValue()
     // method gets called in the constructor of a sublcass of DocumentObject, e.g. Mesh::Feature.
@@ -440,7 +440,7 @@ PropertyMeshKernel::~PropertyMeshKernel()
     if (meshPyObject) {
         // Note: Do not call setInvalid() of the Python binding 
         // because the mesh should still be accessible afterwards.
-        meshPyObject->parentProperty = 0;
+        meshPyObject->parentProperty = nullptr;
         Py_DECREF(meshPyObject);
     }
 }
@@ -483,12 +483,12 @@ void PropertyMeshKernel::swapMesh(MeshCore::MeshKernel& mesh)
     hasSetValue();
 }
 
-const MeshObject& PropertyMeshKernel::getValue(void)const 
+const MeshObject& PropertyMeshKernel::getValue()const 
 {
     return *_meshObject;
 }
 
-const MeshObject* PropertyMeshKernel::getValuePtr(void)const 
+const MeshObject* PropertyMeshKernel::getValuePtr()const 
 {
     return (MeshObject*)_meshObject;
 }
@@ -503,7 +503,7 @@ Base::BoundBox3d PropertyMeshKernel::getBoundingBox() const
     return _meshObject->getBoundBox();
 }
 
-unsigned int PropertyMeshKernel::getMemSize (void) const
+unsigned int PropertyMeshKernel::getMemSize () const
 {
     unsigned int size = 0;
     size += _meshObject->getMemSize();
@@ -538,7 +538,7 @@ void PropertyMeshKernel::setPointIndices(const std::vector<std::pair<PointIndex,
     hasSetValue();
 }
 
-PyObject *PropertyMeshKernel::getPyObject(void)
+PyObject *PropertyMeshKernel::getPyObject()
 {
     if (!meshPyObject) {
         meshPyObject = new MeshPy(&*_meshObject); // Lgtm[cpp/resource-not-released-in-destructor] ** Not destroyed in this class because it is reference-counted and destroyed elsewhere
@@ -624,7 +624,7 @@ void PropertyMeshKernel::RestoreDocFile(Base::Reader &reader)
     hasSetValue();
 }
 
-App::Property *PropertyMeshKernel::Copy(void) const
+App::Property *PropertyMeshKernel::Copy() const
 {
     // Note: Copy the content, do NOT reference the same mesh object
     PropertyMeshKernel *prop = new PropertyMeshKernel();

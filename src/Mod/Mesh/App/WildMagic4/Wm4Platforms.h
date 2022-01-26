@@ -124,7 +124,7 @@ typedef int64_t Integer64;
 //----------------------------------------------------------------------------
 #else
 
-#include <stdint.h>
+#include <cstdint>
 typedef int64_t Integer64;
 
 #endif

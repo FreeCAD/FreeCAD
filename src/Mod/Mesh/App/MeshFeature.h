@@ -57,7 +57,7 @@ class MeshExport Feature : public App::GeoFeature
 
 public:
     /// Constructor
-    Feature(void);
+    Feature();
     virtual ~Feature();
 
     /** @name Properties */
@@ -69,12 +69,12 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute();
     virtual void onChanged(const App::Property* prop);
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "MeshGui::ViewProviderMeshFaceSet";
     }
     virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const {
@@ -82,7 +82,7 @@ public:
     }
 
     /// handles the MeshPy object
-    virtual PyObject* getPyObject(void);
+    virtual PyObject* getPyObject();
 };
 
 typedef App::FeatureCustomT<Feature> FeatureCustom;

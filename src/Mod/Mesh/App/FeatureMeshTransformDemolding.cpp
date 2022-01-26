@@ -42,14 +42,14 @@ using namespace MeshCore;
 PROPERTY_SOURCE(Mesh::TransformDemolding, Mesh::Transform)
 
 
-TransformDemolding::TransformDemolding(void)
+TransformDemolding::TransformDemolding()
 {
-    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Source,(nullptr));
     ADD_PROPERTY(Rotation,(0.0));
     ADD_PROPERTY(Axis,(0.0,0.0,1.0));
 }
 
-App::DocumentObjectExecReturn *TransformDemolding::execute(void)
+App::DocumentObjectExecReturn *TransformDemolding::execute()
 {/*
   Feature *pcFirst  = dynamic_cast<Feature*>(Source.getValue());
   if(!pcFirst || pcFirst->isError())

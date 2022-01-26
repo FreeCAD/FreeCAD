@@ -38,10 +38,10 @@ Delaunay2<Real>::Delaunay2 (int iVertexQuantity, Vector2<Real>* akVertex,
     assert(akVertex);
     m_akVertex = akVertex;
     m_iUniqueVertexQuantity = 0;
-    m_akSVertex = 0;
-    m_pkQuery = 0;
+    m_akSVertex = nullptr;
+    m_pkQuery = nullptr;
     m_iPathLast = -1;
-    m_aiPath = 0;
+    m_aiPath = nullptr;
     m_iLastEdgeV0 = -1;
     m_iLastEdgeV1 = -1;
     m_iLastEdgeOpposite = -1;
@@ -184,7 +184,7 @@ Delaunay2<Real>::Delaunay2 (int iVertexQuantity, Vector2<Real>* akVertex,
         pkTri = *pkTIter;
         kPermute[pkTri] = i++;
     }
-    kPermute[0] = -1;
+    kPermute[nullptr] = -1;
 
     // Put Delaunay triangles into an array (vertices and adjacency info).
     m_iSimplexQuantity = (int)m_kTriangle.size();
@@ -263,7 +263,7 @@ Delaunay1<Real>* Delaunay2<Real>::GetDelaunay1 () const
     assert(m_iDimension == 1);
     if (m_iDimension != 1)
     {
-        return 0;
+        return nullptr;
     }
 
     Real* afProjection = WM4_NEW Real[m_iVertexQuantity];
@@ -287,7 +287,7 @@ bool Delaunay2<Real>::GetHull (int& riEQuantity, int*& raiIndex)
     }
 
     riEQuantity = 0;
-    raiIndex = 0;
+    raiIndex = nullptr;
 
     // Count the number of edges that are not shared by two triangles.
     int i, iAdjQuantity = 3*m_iSimplexQuantity;
@@ -510,7 +510,7 @@ void Delaunay2<Real>::Update (int i)
 
     // Locate and remove the triangles forming the insertion polygon.
     std::stack<DelTriangle<Real>*> kStack;
-    VEManifoldMesh kPolygon(0,DelPolygonEdge<Real>::ECreator);
+    VEManifoldMesh kPolygon(nullptr,DelPolygonEdge<Real>::ECreator);
     kStack.push(pkTri);
     pkTri->OnStack = true;
     int j, iV0, iV1;
@@ -567,7 +567,7 @@ void Delaunay2<Real>::Update (int i)
                         pkEdge = (DelPolygonEdge<Real>*)kPolygon.InsertEdge(
                             iV0,iV1);
                         pkEdge->NullIndex = -1;
-                        pkEdge->Tri = 0;
+                        pkEdge->Tri = nullptr;
                     }
                 }
             }
@@ -661,7 +661,7 @@ DelTriangle<Real>* Delaunay2<Real>::GetContainingTriangle (int i) const
     }
 
     assert(false);
-    return 0;
+    return nullptr;
 }
 //----------------------------------------------------------------------------
 template <class Real>
@@ -700,7 +700,7 @@ void Delaunay2<Real>::RemoveTriangles ()
                 {
                     if (pkAdj->A[k] == pkTri)
                     {
-                        pkAdj->A[k] = 0;
+                        pkAdj->A[k] = nullptr;
                         break;
                     }
                 }
@@ -729,10 +729,10 @@ Delaunay2<Real>::Delaunay2 (const char* acFilename)
     :
     Delaunay<Real>(0,(Real)0.0,false,Query::QT_REAL)
 {
-    m_akVertex = 0;
-    m_akSVertex = 0;
-    m_pkQuery = 0;
-    m_aiPath = 0;
+    m_akVertex = nullptr;
+    m_akSVertex = nullptr;
+    m_pkQuery = nullptr;
+    m_aiPath = nullptr;
     bool bLoaded = Load(acFilename);
     assert(bLoaded);
     (void)bLoaded;  // avoid warning in Release build

@@ -41,13 +41,13 @@ using namespace MeshCore;
 PROPERTY_SOURCE(Mesh::Transform, Mesh::Feature)
 
 
-Transform::Transform(void)
+Transform::Transform()
 {
-  ADD_PROPERTY(Source  ,(0));
+  ADD_PROPERTY(Source  ,(nullptr));
   ADD_PROPERTY(Position,(Matrix4D()));
 }
 
-App::DocumentObjectExecReturn *Transform::execute(void)
+App::DocumentObjectExecReturn *Transform::execute()
 {
 /*
   Feature *pcFirst  = dynamic_cast<Feature*>(Source.getValue());

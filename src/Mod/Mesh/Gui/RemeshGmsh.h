@@ -52,7 +52,7 @@ class MeshGuiExport GmshWidget : public QWidget
     Q_OBJECT
 
 public:
-    GmshWidget(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    GmshWidget(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~GmshWidget();
     void accept();
     void reject();
@@ -90,7 +90,7 @@ class MeshGuiExport RemeshGmsh : public GmshWidget
     Q_OBJECT
 
 public:
-    RemeshGmsh(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    RemeshGmsh(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~RemeshGmsh();
 
 protected:
@@ -118,7 +118,7 @@ public:
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Apply | QDialogButtonBox::Close; }
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return true; }
 
 private:

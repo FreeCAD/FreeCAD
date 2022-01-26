@@ -37,7 +37,7 @@ using namespace Mesh;
 
 
 // returns a string which represent the object e.g. when printed in python
-std::string MeshFeaturePy::representation(void) const
+std::string MeshFeaturePy::representation() const
 {
     std::stringstream str;
     str << getFeaturePtr()->getTypeId().getName() << " object at " << getFeaturePtr();
@@ -58,7 +58,7 @@ PyObject*  MeshFeaturePy::countFacets(PyObject * /*args*/)
 PyObject*  MeshFeaturePy::harmonizeNormals(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         Mesh::MeshObject *mesh = getFeaturePtr()->Mesh.startEditing();
@@ -74,7 +74,7 @@ PyObject*  MeshFeaturePy::smooth(PyObject *args)
     int iter=1;
     float d_max=FLOAT_MAX;
     if (!PyArg_ParseTuple(args, "|if", &iter,&d_max))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         Mesh::Feature* obj = getFeaturePtr();
@@ -89,7 +89,7 @@ PyObject*  MeshFeaturePy::smooth(PyObject *args)
 PyObject*  MeshFeaturePy::removeNonManifolds(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     Mesh::Feature* obj = getFeaturePtr();
     MeshObject* kernel = obj->Mesh.startEditing();
     kernel->removeNonManifolds();
@@ -100,7 +100,7 @@ PyObject*  MeshFeaturePy::removeNonManifolds(PyObject *args)
 PyObject*  MeshFeaturePy::removeNonManifoldPoints(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     Mesh::Feature* obj = getFeaturePtr();
     MeshObject* kernel = obj->Mesh.startEditing();
     kernel->removeNonManifoldPoints();
@@ -111,7 +111,7 @@ PyObject*  MeshFeaturePy::removeNonManifoldPoints(PyObject *args)
 PyObject*  MeshFeaturePy::fixIndices(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         Mesh::Feature* obj = getFeaturePtr();
@@ -127,7 +127,7 @@ PyObject*  MeshFeaturePy::fixDegenerations(PyObject *args)
 {
     float fEpsilon = MeshCore::MeshDefinitions::_fMinPointDistanceP2;
     if (!PyArg_ParseTuple(args, "|f", &fEpsilon))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         Mesh::Feature* obj = getFeaturePtr();
@@ -142,7 +142,7 @@ PyObject*  MeshFeaturePy::fixDegenerations(PyObject *args)
 PyObject*  MeshFeaturePy::removeDuplicatedFacets(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         Mesh::Feature* obj = getFeaturePtr();
@@ -157,7 +157,7 @@ PyObject*  MeshFeaturePy::removeDuplicatedFacets(PyObject *args)
 PyObject*  MeshFeaturePy::removeDuplicatedPoints(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         Mesh::Feature* obj = getFeaturePtr();
@@ -172,7 +172,7 @@ PyObject*  MeshFeaturePy::removeDuplicatedPoints(PyObject *args)
 PyObject*  MeshFeaturePy::fixSelfIntersections(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     try {
         Mesh::Feature* obj = getFeaturePtr();
         MeshObject* kernel = obj->Mesh.startEditing();
@@ -181,7 +181,7 @@ PyObject*  MeshFeaturePy::fixSelfIntersections(PyObject *args)
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
-        return NULL;
+        return nullptr;
     }
     Py_Return;
 }
@@ -189,7 +189,7 @@ PyObject*  MeshFeaturePy::fixSelfIntersections(PyObject *args)
 PyObject*  MeshFeaturePy::removeFoldsOnSurface(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     try {
         Mesh::Feature* obj = getFeaturePtr();
         MeshObject* kernel = obj->Mesh.startEditing();
@@ -198,7 +198,7 @@ PyObject*  MeshFeaturePy::removeFoldsOnSurface(PyObject *args)
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
-        return NULL;
+        return nullptr;
     }
     Py_Return;
 }
@@ -206,7 +206,7 @@ PyObject*  MeshFeaturePy::removeFoldsOnSurface(PyObject *args)
 PyObject*  MeshFeaturePy::removeInvalidPoints(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     try {
         Mesh::Feature* obj = getFeaturePtr();
         MeshObject* kernel = obj->Mesh.startEditing();
@@ -215,14 +215,14 @@ PyObject*  MeshFeaturePy::removeInvalidPoints(PyObject *args)
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
-        return NULL;
+        return nullptr;
     }
     Py_Return;
 }
 
 PyObject *MeshFeaturePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int MeshFeaturePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

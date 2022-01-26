@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <float.h>
+# include <cfloat>
 # include <qcheckbox.h>
 # include <qcombobox.h>
 # include <qmessagebox.h>

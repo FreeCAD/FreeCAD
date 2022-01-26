@@ -89,7 +89,7 @@ private:
 class SoOutputStream : public std::ostream
 {
 public:
-    SoOutputStream(SoOutput* o) : std::ostream(0), buf(o)
+    SoOutputStream(SoOutput* o) : std::ostream(nullptr), buf(o)
     {
         this->rdbuf(&buf);
     }
@@ -153,7 +153,7 @@ private:
 class SoInputStream : public std::istream
 {
 public:
-    SoInputStream(SoInput* o) : std::istream(0), buf(o)
+    SoInputStream(SoInput* o) : std::istream(nullptr), buf(o)
     {
         this->rdbuf(&buf);
     }
@@ -296,7 +296,7 @@ void SoFCMeshObjectElement::initClass()
 void SoFCMeshObjectElement::init(SoState * state)
 {
     inherited::init(state);
-    this->mesh = 0;
+    this->mesh = nullptr;
 }
 
 SoFCMeshObjectElement::~SoFCMeshObjectElement()
@@ -334,11 +334,11 @@ SO_NODE_SOURCE(SoFCMeshPickNode)
 /*!
   Constructor.
 */
-SoFCMeshPickNode::SoFCMeshPickNode(void) : meshGrid(0)
+SoFCMeshPickNode::SoFCMeshPickNode() : meshGrid(nullptr)
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshPickNode);
 
-    SO_NODE_ADD_FIELD(mesh, (0));
+    SO_NODE_ADD_FIELD(mesh, (nullptr));
 }
 
 /*!
@@ -350,7 +350,7 @@ SoFCMeshPickNode::~SoFCMeshPickNode()
 }
 
 // Doc from superclass.
-void SoFCMeshPickNode::initClass(void)
+void SoFCMeshPickNode::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCMeshPickNode, SoNode, "Node");
 }
@@ -406,7 +406,7 @@ SO_NODE_SOURCE(SoFCMeshGridNode)
 /*!
   Constructor.
 */
-SoFCMeshGridNode::SoFCMeshGridNode(void)
+SoFCMeshGridNode::SoFCMeshGridNode()
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshGridNode);
 
@@ -423,7 +423,7 @@ SoFCMeshGridNode::~SoFCMeshGridNode()
 }
 
 // Doc from superclass.
-void SoFCMeshGridNode::initClass(void)
+void SoFCMeshGridNode::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCMeshGridNode, SoNode, "Node");
 }
@@ -493,11 +493,11 @@ SO_NODE_SOURCE(SoFCMeshObjectNode)
 /*!
   Constructor.
 */
-SoFCMeshObjectNode::SoFCMeshObjectNode(void)
+SoFCMeshObjectNode::SoFCMeshObjectNode()
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshObjectNode);
 
-    SO_NODE_ADD_FIELD(mesh, (0));
+    SO_NODE_ADD_FIELD(mesh, (nullptr));
 }
 
 /*!
@@ -508,7 +508,7 @@ SoFCMeshObjectNode::~SoFCMeshObjectNode()
 }
 
 // Doc from superclass.
-void SoFCMeshObjectNode::initClass(void)
+void SoFCMeshObjectNode::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCMeshObjectNode, SoNode, "Node");
 
@@ -592,7 +592,7 @@ void SoFCMeshObjectShape::initClass()
 
 SoFCMeshObjectShape::SoFCMeshObjectShape()
     : renderTriangleLimit(UINT_MAX)
-    , selectBuf(0)
+    , selectBuf(nullptr)
     , updateGLArray(false)
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshObjectShape);
@@ -1051,7 +1051,7 @@ void SoFCMeshObjectShape::stopSelection(SoAction * action, const Mesh::MeshObjec
     }
 
     delete [] selectBuf;
-    selectBuf = 0;
+    selectBuf = nullptr;
     std::sort(hit.begin(),hit.end());
 
     Gui::SoGLSelectAction *doaction = static_cast<Gui::SoGLSelectAction*>(action);
@@ -1295,7 +1295,7 @@ void SoFCMeshSegmentShape::GLRender(SoGLRenderAction *action)
             if (mbind != OVERALL)
                 drawFaces(mesh, &mb, mbind, needNormals, ccw);
             else
-                drawFaces(mesh, 0, mbind, needNormals, ccw);
+                drawFaces(mesh, nullptr, mbind, needNormals, ccw);
         }
         else {
             drawPoints(mesh, needNormals, ccw);

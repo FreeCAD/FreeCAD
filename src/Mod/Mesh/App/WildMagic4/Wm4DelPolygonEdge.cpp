@@ -33,7 +33,7 @@ DelPolygonEdge<Real>::DelPolygonEdge (int iV0, int iV1, int iNullIndex,
 template <class Real>
 VEManifoldMesh::EPtr DelPolygonEdge<Real>::ECreator (int iV0, int iV1)
 {
-    return WM4_NEW DelPolygonEdge<Real>(iV0,iV1,0,0);
+    return WM4_NEW DelPolygonEdge<Real>(iV0,iV1,0,nullptr);
 }
 //----------------------------------------------------------------------------
 

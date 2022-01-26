@@ -48,7 +48,7 @@ public:
         Laplace
     };
 
-    DlgSmoothing(QWidget* parent = 0);
+    DlgSmoothing(QWidget* parent = nullptr);
     ~DlgSmoothing();
     int iterations() const;
     double lambdaStep() const;
@@ -76,7 +76,7 @@ class MeshGuiExport SmoothingDialog : public QDialog
     Q_OBJECT
 
 public:
-    SmoothingDialog(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    SmoothingDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~SmoothingDialog();
 
     int iterations() const
@@ -110,7 +110,7 @@ public:
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return true; }
 
 private:

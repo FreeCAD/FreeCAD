@@ -40,7 +40,7 @@ static bool gs_bInitializedTime = false;
 
 char System::ms_acPath[SYSTEM_MAX_PATH];
 char System::ms_acEnvVar[SYSTEM_MAX_ENVVAR];
-std::vector<std::string>* System::ms_pkDirectories = 0;
+std::vector<std::string>* System::ms_pkDirectories = nullptr;
 char System::WM4_PATH[SYSTEM_MAX_ENVVAR];
 
 //----------------------------------------------------------------------------
@@ -107,11 +107,11 @@ double System::GetTime ()
     if (!gs_bInitializedTime)
     {
         gs_bInitializedTime = true;
-        gettimeofday(&gs_kInitial, 0);
+        gettimeofday(&gs_kInitial, nullptr);
     }
 
     struct timeval kCurrent;
-    gettimeofday(&kCurrent,0);
+    gettimeofday(&kCurrent,nullptr);
     
     struct timeval kDelta;
     timersub(&kCurrent,&gs_kInitial,&kDelta);
@@ -149,7 +149,7 @@ bool System::Load (const char* acFilename, char*& racBuffer, int& riSize)
     if (stat(acFilename,&kStat) != 0)
     {
         // file does not exist
-        racBuffer = 0;
+        racBuffer = nullptr;
         riSize = 0;
         return false;
     }
@@ -158,7 +158,7 @@ bool System::Load (const char* acFilename, char*& racBuffer, int& riSize)
     assert(pkFile);
     if (!pkFile)
     {
-        racBuffer = 0;
+        racBuffer = nullptr;
         riSize = 0;
         return false;
     }
@@ -170,7 +170,7 @@ bool System::Load (const char* acFilename, char*& racBuffer, int& riSize)
     {
         assert(false);
         WM4_DELETE[] racBuffer;
-        racBuffer = 0;
+        racBuffer = nullptr;
         riSize = 0;
         return false;
     }
@@ -627,12 +627,12 @@ const char* System::GetPath (const char* acDirectory, const char* acFilename)
         System::Strcat(ms_acPath,SYSTEM_MAX_PATH,acFilename);
         return ms_acPath;
     }
-    return 0;
+    return nullptr;
 }
 //----------------------------------------------------------------------------
 void System::Initialize ()
 {
-    assert(ms_pkDirectories == 0);
+    assert(ms_pkDirectories == nullptr);
     ms_pkDirectories = WM4_NEW std::vector<std::string>;
 
     const char* acWm4Path = GetEnv("WM4_PATH");
@@ -649,7 +649,7 @@ void System::Initialize ()
 void System::Terminate ()
 {
     WM4_DELETE ms_pkDirectories;
-    ms_pkDirectories = 0;
+    ms_pkDirectories = nullptr;
 }
 //----------------------------------------------------------------------------
 int System::GetDirectoryQuantity ()
@@ -673,7 +673,7 @@ const char* System::GetDirectory (int i)
     {
         return (*ms_pkDirectories)[i].c_str();
     }
-    return 0;
+    return nullptr;
 }
 //----------------------------------------------------------------------------
 bool System::InsertDirectory (const char* acDirectory)
@@ -738,7 +738,7 @@ const char* System::GetPath (const char* acFilename, int eMode)
             (*ms_pkDirectories)[i].c_str(),acFilename);
         if (!acDecorated)
         {
-            return 0;
+            return nullptr;
         }
 
         FILE* pkFile;
@@ -761,7 +761,7 @@ const char* System::GetPath (const char* acFilename, int eMode)
             return acDecorated;
         }
     }
-    return 0;
+    return nullptr;
 }
 //----------------------------------------------------------------------------
 unsigned int System::MakeRGB (unsigned char ucR, unsigned char ucG,
@@ -839,9 +839,9 @@ const char* System::GetEnv (const char* acEnvVarName)
    getenv_s(&uiRequiredSize,ms_acEnvVar,SYSTEM_MAX_ENVVAR,acEnvVarName);
 #else
     char* acEnvVar = getenv(acEnvVarName);
-    if (acEnvVar == 0)
+    if (acEnvVar == nullptr)
     {
-        return 0;
+        return nullptr;
     }
     System::Strcpy(ms_acEnvVar,SYSTEM_MAX_ENVVAR,getenv(acEnvVarName));
 #endif
@@ -865,7 +865,7 @@ void* System::Memcpy (void* pvDst, size_t uiDstSize, const void* pvSrc,
     if (!pvDst || uiDstSize == 0 || !pvSrc || uiSrcSize == 0)
     {
         // Be consistent with the behavior of memcpy_s.
-        return 0;
+        return nullptr;
     }
 
     if (uiSrcSize > uiDstSize)
@@ -873,7 +873,7 @@ void* System::Memcpy (void* pvDst, size_t uiDstSize, const void* pvSrc,
         // The source memory is too large to copy to the destination.  To
         // be consistent with memcpy_s, return null as an indication that the
         // copy failed.
-        return 0;
+        return nullptr;
     }
     memcpy(pvDst,pvSrc,uiSrcSize);
     return pvDst;
@@ -916,7 +916,7 @@ char* System::Strcpy (char* acDst, size_t uiDstSize, const char* acSrc)
     if (!acDst || uiDstSize == 0 || !acSrc)
     {
         // Be consistent with the behavior of strcpy_s.
-        return 0;
+        return nullptr;
     }
 
     size_t uiSrcLen = strlen(acSrc);
@@ -925,7 +925,7 @@ char* System::Strcpy (char* acDst, size_t uiDstSize, const char* acSrc)
         // The source string is too large to copy to the destination.  To
         // be consistent with strcpy_s, return null as an indication that the
         // copy failed.
-        return 0;
+        return nullptr;
     }
     strncpy(acDst,acSrc,uiSrcLen);
     acDst[uiSrcLen] = 0;
@@ -949,7 +949,7 @@ char* System::Strcat (char* acDst, size_t uiDstSize, const char* acSrc)
     if (!acDst || uiDstSize == 0 || !acSrc)
     {
         // Be consistent with the behavior of strcat_s.
-        return 0;
+        return nullptr;
     }
 
     size_t uiSrcLen = strlen(acSrc);
@@ -960,7 +960,7 @@ char* System::Strcat (char* acDst, size_t uiDstSize, const char* acSrc)
         // The source string is too large to append to the destination.  To
         // be consistent with strcat_s, return null as an indication that
         // the concatenation failed.
-        return 0;
+        return nullptr;
     }
     strncat(acDst,acSrc,uiSrcLen);
     acDst[uiSumLen] = 0;
@@ -985,7 +985,7 @@ char* System::Strncpy (char* acDst, size_t uiDstSize, const char* acSrc,
     if (!acDst || uiDstSize == 0 || !acSrc || uiSrcSize == 0)
     {
         // Be consistent with the behavior of strncpy_s.
-        return 0;
+        return nullptr;
     }
 
     if (uiSrcSize + 1 > uiDstSize)
@@ -993,7 +993,7 @@ char* System::Strncpy (char* acDst, size_t uiDstSize, const char* acSrc,
         // The source string is too large to copy to the destination.  To
         // be consistent with strncpy_s, return null as an indication that
         // the copy failed.
-        return 0;
+        return nullptr;
     }
     strncpy(acDst,acSrc,uiSrcSize);
     return acDst;

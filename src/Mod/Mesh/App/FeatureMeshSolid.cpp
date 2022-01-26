@@ -44,7 +44,7 @@ using namespace MeshCore;
 
 PROPERTY_SOURCE(Mesh::Sphere, Mesh::Feature)
 
-Sphere::Sphere(void)
+Sphere::Sphere()
 {
     ADD_PROPERTY(Radius  ,(5.0));
     ADD_PROPERTY(Sampling  ,(50));
@@ -59,7 +59,7 @@ short Sphere::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Sphere::execute(void)
+App::DocumentObjectExecReturn *Sphere::execute()
 {
     std::unique_ptr<MeshObject> mesh(MeshObject::createSphere((float)Radius.getValue(),Sampling.getValue()));
     if (mesh.get()) {
@@ -88,7 +88,7 @@ void Sphere::handleChangedPropertyType(Base::XMLReader &reader, const char *Type
 
 PROPERTY_SOURCE(Mesh::Ellipsoid, Mesh::Feature)
 
-Ellipsoid::Ellipsoid(void)
+Ellipsoid::Ellipsoid()
 {
     ADD_PROPERTY(Radius1  ,(2.0));
     ADD_PROPERTY(Radius2  ,(4.0));
@@ -107,7 +107,7 @@ short Ellipsoid::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Ellipsoid::execute(void)
+App::DocumentObjectExecReturn *Ellipsoid::execute()
 {
     std::unique_ptr<MeshObject> mesh(MeshObject::createEllipsoid((float)Radius1.getValue(),(float)Radius2.getValue(),Sampling.getValue()));
     if (mesh.get()) {
@@ -137,7 +137,7 @@ void Ellipsoid::handleChangedPropertyType(Base::XMLReader &reader, const char *T
 
 PROPERTY_SOURCE(Mesh::Cylinder, Mesh::Feature)
 
-Cylinder::Cylinder(void)
+Cylinder::Cylinder()
 {
     ADD_PROPERTY(Radius  ,(2.0));
     ADD_PROPERTY(Length  ,(10.0));
@@ -161,7 +161,7 @@ short Cylinder::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Cylinder::execute(void)
+App::DocumentObjectExecReturn *Cylinder::execute()
 {
     std::unique_ptr<MeshObject> mesh(MeshObject::createCylinder((float)Radius.getValue(),(float)Length.getValue(),
                                    Closed.getValue(),(float)EdgeLength.getValue(),Sampling.getValue()));
@@ -192,7 +192,7 @@ void Cylinder::handleChangedPropertyType(Base::XMLReader &reader, const char *Ty
 
 PROPERTY_SOURCE(Mesh::Cone, Mesh::Feature)
 
-Cone::Cone(void)
+Cone::Cone()
 {
     ADD_PROPERTY(Radius1  ,(2.0));
     ADD_PROPERTY(Radius2  ,(4.0));
@@ -219,7 +219,7 @@ short Cone::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Cone::execute(void)
+App::DocumentObjectExecReturn *Cone::execute()
 {
     std::unique_ptr<MeshObject> mesh(MeshObject::createCone((float)Radius1.getValue(),(float)Radius2.getValue(),(float)Length.getValue(),
                                    Closed.getValue(),(float)EdgeLength.getValue(),Sampling.getValue()));
@@ -250,7 +250,7 @@ void Cone::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeNa
 
 PROPERTY_SOURCE(Mesh::Torus, Mesh::Feature)
 
-Torus::Torus(void)
+Torus::Torus()
 {
     ADD_PROPERTY(Radius1  ,(10.0));
     ADD_PROPERTY(Radius2  ,(2.0));
@@ -269,7 +269,7 @@ short Torus::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Torus::execute(void)
+App::DocumentObjectExecReturn *Torus::execute()
 {
     std::unique_ptr<MeshObject> mesh(MeshObject::createTorus((float)Radius1.getValue(),(float)Radius2.getValue(),Sampling.getValue()));
     if (mesh.get()) {
@@ -299,7 +299,7 @@ void Torus::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeN
 
 PROPERTY_SOURCE(Mesh::Cube, Mesh::Feature)
 
-Cube::Cube(void)
+Cube::Cube()
 {
     ADD_PROPERTY_TYPE(Length,(10.0f),"Cube",App::Prop_None,"The length of the cube");
     ADD_PROPERTY_TYPE(Width ,(10.0f),"Cube",App::Prop_None,"The width of the cube");
@@ -318,7 +318,7 @@ short Cube::mustExecute() const
     return Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Cube::execute(void)
+App::DocumentObjectExecReturn *Cube::execute()
 {
     std::unique_ptr<MeshObject> mesh(MeshObject::createCube((float)Length.getValue(),(float)Width.getValue(),(float)Height.getValue()));
     if (mesh.get()) {

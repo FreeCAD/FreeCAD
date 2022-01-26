@@ -28,8 +28,8 @@ ConvexHull2<Real>::ConvexHull2 (int iVertexQuantity, Vector2<Real>* akVertex,
 {
     assert(akVertex);
     m_akVertex = akVertex;
-    m_akSVertex = 0;
-    m_pkQuery = 0;
+    m_akSVertex = nullptr;
+    m_pkQuery = nullptr;
 
     Mapper2<Real> kMapper(m_iVertexQuantity,m_akVertex,m_fEpsilon);
     if (kMapper.GetDimension() == 0)
@@ -180,7 +180,7 @@ ConvexHull1<Real>* ConvexHull2<Real>::GetConvexHull1 () const
     assert(m_iDimension == 1);
     if (m_iDimension != 1)
     {
-        return 0;
+        return nullptr;
     }
 
     Real* afProjection = WM4_NEW Real[m_iVertexQuantity];
@@ -198,7 +198,7 @@ template <class Real>
 bool ConvexHull2<Real>::Update (Edge*& rpkHull, int i)
 {
     // Locate an edge visible to the input point (if possible).
-    Edge* pkVisible = 0;
+    Edge* pkVisible = nullptr;
     Edge* pkCurrent = rpkHull;
     do
     {
@@ -277,9 +277,9 @@ ConvexHull2<Real>::ConvexHull2 (const char* acFilename)
     :
     ConvexHull<Real>(0,(Real)0.0,false,Query::QT_REAL)
 {
-    m_akVertex = 0;
-    m_akSVertex = 0;
-    m_pkQuery = 0;
+    m_akVertex = nullptr;
+    m_akSVertex = nullptr;
+    m_pkQuery = nullptr;
     bool bLoaded = Load(acFilename);
     assert(bLoaded);
     (void)bLoaded;  // avoid warning in Release build
@@ -392,8 +392,8 @@ ConvexHull2<Real>::Edge::Edge (int iV0, int iV1)
 {
     V[0] = iV0;
     V[1] = iV1;
-    A[0] = 0;
-    A[1] = 0;
+    A[0] = nullptr;
+    A[1] = nullptr;
     Sign = 0;
     Time = -1;
 }
@@ -424,12 +424,12 @@ void ConvexHull2<Real>::Edge::DeleteSelf ()
 {
     if (A[0])
     {
-        A[0]->A[1] = 0;
+        A[0]->A[1] = nullptr;
     }
 
     if (A[1])
     {
-        A[1]->A[0] = 0;
+        A[1]->A[0] = nullptr;
     }
 
     WM4_DELETE this;

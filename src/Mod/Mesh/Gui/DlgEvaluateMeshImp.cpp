@@ -73,8 +73,8 @@ class DlgEvaluateMeshImp::Private
 {
 public:
     Private()
-        : meshFeature(0)
-        , view(0)
+        : meshFeature(nullptr)
+        , view(nullptr)
         , enableFoldsCheck(false)
         , checkNonManfoldPoints(false)
         , strictlyDegenerated(true)
@@ -213,7 +213,7 @@ void DlgEvaluateMeshImp::slotDeletedObject(const App::DocumentObject& Obj)
     // is it the current mesh object then clear everything
     if (&Obj == d->meshFeature) {
         removeViewProviders();
-        d->meshFeature = 0;
+        d->meshFeature = nullptr;
         d->ui.meshNameButton->setCurrentIndex(0);
         cleanInformation();
         d->self_intersections.clear();
@@ -253,7 +253,7 @@ void DlgEvaluateMeshImp::slotDeletedDocument(const App::Document& Doc)
 
         // try to attach to the active document
         this->detachDocument();
-        d->view = 0;
+        d->view = nullptr;
         on_refreshButton_clicked();
     }
 }
@@ -316,7 +316,7 @@ void DlgEvaluateMeshImp::on_meshNameButton_activated(int i)
 {
     QString item = d->ui.meshNameButton->itemData(i).toString();
 
-    d->meshFeature = 0;
+    d->meshFeature = nullptr;
     std::vector<App::DocumentObject*> objs = getDocument()->getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         if (item == QLatin1String((*it)->getNameInDocument())) {
@@ -1240,7 +1240,7 @@ void DlgEvaluateMeshImp::on_buttonBox_clicked(QAbstractButton* button)
     qApp->translate("QDockWidget", "Evaluate & Repair Mesh");
 #endif
 
-DockEvaluateMeshImp* DockEvaluateMeshImp::_instance=0;
+DockEvaluateMeshImp* DockEvaluateMeshImp::_instance=nullptr;
 
 DockEvaluateMeshImp* DockEvaluateMeshImp::instance()
 {
@@ -1255,16 +1255,16 @@ DockEvaluateMeshImp* DockEvaluateMeshImp::instance()
 
 void DockEvaluateMeshImp::destruct ()
 {
-    if (_instance != 0) {
+    if (_instance != nullptr) {
         DockEvaluateMeshImp *pTmp = _instance;
-        _instance = 0;
+        _instance = nullptr;
         delete pTmp;
     }
 }
 
 bool DockEvaluateMeshImp::hasInstance()
 {
-    return _instance != 0;
+    return _instance != nullptr;
 }
 
 /**
@@ -1296,7 +1296,7 @@ DockEvaluateMeshImp::DockEvaluateMeshImp( QWidget* parent, Qt::WindowFlags fl )
  */
 DockEvaluateMeshImp::~DockEvaluateMeshImp()
 {
-    _instance = 0;
+    _instance = nullptr;
 }
 
 /**

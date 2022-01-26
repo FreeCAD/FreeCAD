@@ -36,7 +36,7 @@
 using namespace Mesh;
 
 // returns a string which represents the object e.g. when printed in python
-std::string MeshPointPy::representation(void) const
+std::string MeshPointPy::representation() const
 {
     MeshPointPy::PointerType ptr = getMeshPointPtr();
     Base::Vector3d vec = *ptr;
@@ -80,9 +80,9 @@ int MeshPointPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 PyObject*  MeshPointPy::unbound(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     getMeshPointPtr()->Index = UINT_MAX;
-    getMeshPointPtr()->Mesh = 0;
+    getMeshPointPtr()->Mesh = nullptr;
     Py_Return;
 }
 
@@ -90,11 +90,11 @@ PyObject*  MeshPointPy::move(PyObject *args)
 {
     if (!getMeshPointPtr()->isBound()) {
         PyErr_SetString(PyExc_RuntimeError, "This object is not bounded to a mesh, so no topological operation is possible!");
-        return 0;
+        return nullptr;
     }
     if (getMeshPointPtr()->Mesh->countPoints() <= getMeshPointPtr()->Index) {
         PyErr_SetString(PyExc_IndexError, "Index out of range");
-        return 0;
+        return nullptr;
     }
 
     double  x=0.0,y=0.0,z=0.0;
@@ -114,7 +114,7 @@ PyObject*  MeshPointPy::move(PyObject *args)
         }
 
         PyErr_SetString(PyExc_TypeError, "Tuple of three floats or Vector expected");
-        return 0;
+        return nullptr;
     }
     while (false);
 
@@ -122,17 +122,17 @@ PyObject*  MeshPointPy::move(PyObject *args)
     Py_Return;
 }
 
-Py::Long MeshPointPy::getIndex(void) const
+Py::Long MeshPointPy::getIndex() const
 {
     return Py::Long((long) getMeshPointPtr()->Index);
 }
 
-Py::Boolean MeshPointPy::getBound(void) const
+Py::Boolean MeshPointPy::getBound() const
 {
     return Py::Boolean(getMeshPointPtr()->Index != UINT_MAX);
 }
 
-Py::Object MeshPointPy::getNormal(void) const
+Py::Object MeshPointPy::getNormal() const
 {
     if (!getMeshPointPtr()->isBound())
         throw Py::RuntimeError("This object is not bound to a mesh, so no topological operation is possible!");
@@ -145,7 +145,7 @@ Py::Object MeshPointPy::getNormal(void) const
     return Py::Object(normal,true);
 }
 
-Py::Object MeshPointPy::getVector(void) const
+Py::Object MeshPointPy::getVector() const
 {
     MeshPointPy::PointerType ptr = static_cast<MeshPointPy::PointerType>(_pcTwinPointer);
 
@@ -154,7 +154,7 @@ Py::Object MeshPointPy::getVector(void) const
     return Py::Object(vec,true);
 }
 
-Py::Float MeshPointPy::getx(void) const
+Py::Float MeshPointPy::getx() const
 {
     MeshPointPy::PointerType ptr = static_cast<MeshPointPy::PointerType>(_pcTwinPointer);
     double x = ptr->x;
@@ -178,7 +178,7 @@ void  MeshPointPy::setx(Py::Float arg)
     }
 }
 
-Py::Float MeshPointPy::gety(void) const
+Py::Float MeshPointPy::gety() const
 {
     MeshPointPy::PointerType ptr = static_cast<MeshPointPy::PointerType>(_pcTwinPointer);
     double y = ptr->y;
@@ -202,7 +202,7 @@ void  MeshPointPy::sety(Py::Float arg)
     }
 }
 
-Py::Float MeshPointPy::getz(void) const
+Py::Float MeshPointPy::getz() const
 {
     MeshPointPy::PointerType ptr = static_cast<MeshPointPy::PointerType>(_pcTwinPointer);
     double z = ptr->z;
@@ -228,7 +228,7 @@ void  MeshPointPy::setz(Py::Float arg)
 
 PyObject *MeshPointPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int MeshPointPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

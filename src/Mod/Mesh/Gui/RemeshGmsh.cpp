@@ -392,7 +392,7 @@ TaskRemeshGmsh::TaskRemeshGmsh(Mesh::Feature* mesh)
 {
     widget = new RemeshGmsh(mesh);
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, 0);
+        QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

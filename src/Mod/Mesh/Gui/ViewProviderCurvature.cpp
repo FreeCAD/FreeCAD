@@ -155,13 +155,13 @@ void ViewProviderMeshCurvature::onChanged(const App::Property* prop)
     ViewProviderDocumentObject::onChanged(prop);
 }
 
-void ViewProviderMeshCurvature::hide(void)
+void ViewProviderMeshCurvature::hide()
 {
     inherited::hide();
     pcColorStyle->style = SoDrawStyle::INVISIBLE;
 }
 
-void ViewProviderMeshCurvature::show(void)
+void ViewProviderMeshCurvature::show()
 {
     inherited::show();
     pcColorStyle->style = SoDrawStyle::FILLED;
@@ -317,14 +317,14 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
     }
 }
 
-SoSeparator* ViewProviderMeshCurvature::getFrontRoot(void) const
+SoSeparator* ViewProviderMeshCurvature::getFrontRoot() const
 {
     return pcColorRoot;
 }
 
 void ViewProviderMeshCurvature::setVertexCurvatureMode(int mode)
 {
-    Mesh::PropertyCurvatureList* pCurvInfo=0;
+    Mesh::PropertyCurvatureList* pCurvInfo=nullptr;
     std::map<std::string,App::Property*> Map;
     pcObject->getPropertyMap(Map);
     for( std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it ) {
@@ -389,7 +389,7 @@ const char* ViewProviderMeshCurvature::getDefaultDisplayMode() const
     return "Absolute curvature";
 }
 
-std::vector<std::string> ViewProviderMeshCurvature::getDisplayModes(void) const
+std::vector<std::string> ViewProviderMeshCurvature::getDisplayModes() const
 {
     std::vector<std::string> StrList = inherited::getDisplayModes();
 
@@ -436,7 +436,7 @@ public:
 
         std::vector<App::DocumentObject*> groups = doc->getObjectsOfType
             (App::DocumentObjectGroup::getClassTypeId());
-        App::DocumentObjectGroup* group = 0;
+        App::DocumentObjectGroup* group = nullptr;
         std::string internalname = "CurvatureGroup";
         for (std::vector<App::DocumentObject*>::iterator it = groups.begin(); it != groups.end(); ++it) {
             if (internalname == (*it)->getNameInDocument()) {
@@ -503,7 +503,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == NULL) {
+            if (point == nullptr) {
                 Base::Console().Message("No facet picked.\n");
                 return;
             }
@@ -541,7 +541,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
     }
     else if (ev->getTypeId().isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         const SoPickedPoint * point = n->getPickedPoint();
-        if (point == NULL)
+        if (point == nullptr)
             return;
         n->setHandled();
 
