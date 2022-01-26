@@ -142,7 +142,7 @@ Gui::DockWindowItems* Workbench::setupDockWindows() const
 // ----------------------------------------------------
 
 
-SO_NODE_SOURCE(SoWidgetShape);
+SO_NODE_SOURCE(SoWidgetShape)
 
 void SoWidgetShape::initClass()
 {
