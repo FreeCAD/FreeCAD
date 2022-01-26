@@ -492,7 +492,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="152"/>
       <source>Out Of Enum Range:</source>
-      <translation type="unfinished">Out Of Enum Range:</translation>
+      <translation>Außerhalb des Bereichs der Aufzählung:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
@@ -2663,7 +2663,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../Command.cpp" line="2013"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>Erstelle eine Regelfläche aus zwei Kanten oder zwei Linienzügen</translation>
+      <translation>Erstelle eine Regelfläche aus zwei Kanten oder zwei Kantenzügen</translation>
     </message>
   </context>
   <context>
@@ -2889,7 +2889,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Part Import Curve Net</source>
-      <translation type="unfinished">Part Import Curve Net</translation>
+      <translation>Teile-Import als Netz-Kurven</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
@@ -3688,7 +3688,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
       <source>Solids will be exported as manifold solid B-Rep object, shells as shell</source>
-      <translation type="unfinished">Solids will be exported as manifold solid B-Rep object, shells as shell</translation>
+      <translation>Köfper werden als mehrfach gefaltetes solides B-Rep Objekt exportiert, Hüllen als Hüllen</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
@@ -3756,7 +3756,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="64"/>
       <source>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>Deaktivieren Sie dieses Kontrollkästchen, um unsichtbare Objekte beim Exportieren zu überspringen. Dies ist nützlich für CAD-Systeme, die das STEP-Styling für Unsichtbarkeit nicht unterstützen.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="67"/>
@@ -3843,8 +3843,7 @@ sie in der Eigenschaft Platzierung zu speichern.</translation>
       <location filename="../../DlgImportExportStep.ui" line="222"/>
       <source>If checked, no Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, no Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>Wenn aktiviert, werden beim Lesen der Datei keine Körper zusammengeführt (langsamer, aber höhere Details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="226"/>
@@ -3854,7 +3853,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="242"/>
       <source>Select this to use App::LinkGroup as group container, or else use App::Part.</source>
-      <translation type="unfinished">Select this to use App::LinkGroup as group container, or else use App::Part.</translation>
+      <translation>Diese Option auswählen, um App::LinkGroup als Gruppenbehälter zu verwenden, oder App::Part verwenden.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="245"/>
@@ -3874,7 +3873,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="274"/>
       <source>Reduce number of objects using Link array</source>
-      <translation type="unfinished">Reduce number of objects using Link array</translation>
+      <translation>Die Anzahl der Objekte mit einem Link-Array reduzieren</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="277"/>
@@ -3884,12 +3883,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="290"/>
       <source>Expand compound shape with multiple solids</source>
-      <translation type="unfinished">Expand compound shape with multiple solids</translation>
+      <translation>Erweitern Sie zusammengesetzte Formen mit mehreren Körpern</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="293"/>
       <source>Expand compound shape</source>
-      <translation type="unfinished">Expand compound shape</translation>
+      <translation>Verbundform erweitern</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="306"/>
@@ -3900,7 +3899,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="322"/>
       <source>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</source>
-      <translation type="unfinished">Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</translation>
+      <translation>Verwenden Sie keinen Instanznamen. Nützlich für eine alte STEP-Datei mit nicht aussagekräftigen automatisch generierten Instanznamen.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="325"/>
@@ -3925,7 +3924,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="370"/>
       <source>Assembly per document in sub-directory</source>
-      <translation type="unfinished">Assembly per document in sub-directory</translation>
+      <translation>Baugruppe pro Dokument im Unter-Verzeichnis</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="375"/>
@@ -3942,9 +3941,9 @@ during file reading (slower but higher details).</translation>
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
-      <translation type="unfinished">This parameter indicates whether parametric curves (curves in parametric space of surface)
-should be written into the STEP file. This parameter can be set to off in order to minimize
-the size of the resulting STEP file.</translation>
+      <translation>Dieser Parameter gibt an, ob parametrische Kurven (Kurven im parametrischen Raum der Oberfläche)
+in die STEP-Datei geschrieben werden sollen. Dieser Parameter kann auf deaktiviert gesetzt werden, um
+die Größe der resultierenden STEP Datei zu minimieren.</translation>
     </message>
   </context>
   <context>
@@ -4876,7 +4875,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="259"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The font size of bounding boxes in the 3D view</translation>
+      <translation>Die Schriftgröße der Begrenzungs-Box in der 3D-Ansicht</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="293"/>
@@ -4884,10 +4883,10 @@ the size of the resulting STEP file.</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">Bottom side of surface will be rendered the same way than top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Die Unterseite der Oberfläche wird auf die gleiche Weise gerendert wie die Oberseite.
+Wenn diese Option nicht aktiviert ist, hängt es von der Option "Farbe der Hintergrundbeleuchtung" ab
+(Voreinstellungen, Abschnitt Anzeige -&gt; 3D-Ansicht); entweder wird die Farbe der Hintergrundbeleuchtung
+oder Schwarz verwendet werden.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="299"/>
@@ -5372,7 +5371,7 @@ Hinweis: Die Positionierung wird im lokalen Koordinatensystem des angehängten O
     <message>
       <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip side of attachment and offset</source>
-      <translation type="unfinished">Flip side of attachment and offset</translation>
+      <translation>Tausche die Seiten der Befestigung und Versatz</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="367"/>
@@ -5437,7 +5436,7 @@ Hinweis: Die Positionierung wird im lokalen Koordinatensystem des angehängten O
     <message>
       <location filename="../../TaskAttacher.cpp" line="750"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
+      <translation>Nicht editierbar, da der Rotationsteil des Befestigungsversatzes durch Ausdrücke gebunden ist.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="816"/>
@@ -5477,8 +5476,8 @@ Hinweis: Die Positionierung wird im lokalen Koordinatensystem des angehängten O
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Skip this settings page and run the geometry check automatically.
 Default: false</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically.
-Default: false</translation>
+      <translation>Überspringe diese Einstellungsseite und führe die Geometrie-Prüfung automatisch aus.
+Standard: falsch</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
@@ -5490,9 +5489,8 @@ Default: false</translation>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always 
 mean the checked object is unusable.  Default: false</source>
-      <translation type="unfinished">Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always 
-mean the checked object is unusable.  Default: false</translation>
+      <translation>Zusätzliche Prüfung Boolescher Operationen, die manchmal Fehler findet, die
+von der Standardprüfung der BRep-Geometrie übersehen werden. Diese Fehler bedeuten nicht immer, dass das geprüfte Objekt unbrauchbar ist. Standardwert: falsch</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1101"/>
@@ -5503,8 +5501,7 @@ mean the checked object is unusable.  Default: false</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
-      <translation type="unfinished">Run the geometry check in a single thread.  This is slower,
-but more stable.  Default: false</translation>
+      <translation>Geometrieprüfung in einem einzigen Thread ausführen. Dies ist langsamer, aber stabiler. Standard: falsch</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
@@ -5525,8 +5522,7 @@ but more stable.  Default: false</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>Erweitern Sie den Inhalt der Form.  Die Änderungen werden wirksam, wenn Sie das nächste Mal das Werkzeug Geometrie prüfen verwenden.  Standard: falsch</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
@@ -5537,8 +5533,8 @@ the check geometry tool.  Default: false</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>Erweiterte Formeninhalte anzeigen. Änderungen werden beim nächsten Mal wirksam, wenn Sie 
+das Prüf-Geometrie-Werkzeug verwenden. Standardwert: falsch</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
@@ -5706,8 +5702,8 @@ Individuelle BOP Checks:</translation>
       <location filename="../../TaskFaceColors.ui" line="97"/>
       <source>When checked, the you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, the you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Wenn aktiviert, können Sie mehrere Flächen auswählen
+indem Sie ein Auswahlrechteck in der 3D-Ansicht aufziehen</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>

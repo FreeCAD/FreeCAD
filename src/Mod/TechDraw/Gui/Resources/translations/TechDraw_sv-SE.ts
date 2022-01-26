@@ -2,6 +2,92 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sv-SE" sourcelanguage="en">
   <context>
+    <name>CopyView</name>
+    <message>
+      <location filename="CommandCopyView.py" line="47"/>
+      <source>Copy View</source>
+      <translation type="unfinished">Copy View</translation>
+    </message>
+    <message>
+      <location filename="CommandCopyView.py" line="50"/>
+      <source>Copy a View to a second Page</source>
+      <translation type="unfinished">Copy a View to a second Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="46"/>
+      <source>Copy View to a second Page</source>
+      <translation type="unfinished">Copy View to a second Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="73"/>
+      <source>Select View to copy from list.</source>
+      <translation type="unfinished">Select View to copy from list.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="74"/>
+      <source>Select View</source>
+      <translation type="unfinished">Select View</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="92"/>
+      <source>Select From Page.</source>
+      <translation type="unfinished">Select From Page.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="112"/>
+      <source>Select Page</source>
+      <translation type="unfinished">Select Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="111"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MoveView</name>
+    <message>
+      <location filename="CommandMoveView.py" line="47"/>
+      <source>Move View</source>
+      <translation type="unfinished">Move View</translation>
+    </message>
+    <message>
+      <location filename="CommandMoveView.py" line="50"/>
+      <source>Move a View to a new Page</source>
+      <translation type="unfinished">Move a View to a new Page</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="47"/>
+      <source>Move View to a different Page</source>
+      <translation type="unfinished">Move View to a different Page</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="74"/>
+      <source>Select View to move from list.</source>
+      <translation type="unfinished">Select View to move from list.</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="75"/>
+      <source>Select View</source>
+      <translation type="unfinished">Select View</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation type="unfinished">Select From Page.</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="113"/>
+      <source>Select Page</source>
+      <translation type="unfinished">Select Page</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
     <name>Cmd2LineCenterLine</name>
     <message>
       <source>Add Centerline between 2 Lines</source>
@@ -12,7 +98,7 @@
     <name>Cmd2PointCenterLine</name>
     <message>
       <source>Add Centerline between 2 Points</source>
-      <translation>Lägg till mittlinje mellan 2 poäng</translation>
+      <translation>Lägg till mittlinje mellan 2 punkter</translation>
     </message>
   </context>
   <context>
@@ -48,7 +134,7 @@
     </message>
     <message>
       <source>Add Centerline between 2 Points</source>
-      <translation>Lägg till mittlinje mellan 2 poäng</translation>
+      <translation>Lägg till mittlinje mellan 2 punkter</translation>
     </message>
   </context>
   <context>
@@ -59,7 +145,7 @@
     </message>
     <message>
       <source>Add Cosmetic Line Through 2 Points</source>
-      <translation>Lägg till kosmetisk linje genom 2 poäng</translation>
+      <translation>Lägg till kosmetisk linje genom 2 punkter</translation>
     </message>
   </context>
   <context>
@@ -292,7 +378,7 @@
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Spara DXF-fil</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>
@@ -318,7 +404,7 @@
     </message>
     <message>
       <source>Draw circle centerlines</source>
-      <translation type="unfinished">Draw circle centerlines</translation>
+      <translation>Rita cirkelns centrumlinjer</translation>
     </message>
     <message>
       <source>Draw circle centerline cross at circles
@@ -454,7 +540,7 @@
     </message>
     <message>
       <source>Hatch a Face using Image File</source>
-      <translation>Snittmarkera en yta med en bildfil</translation>
+      <translation>Skrafferera en yta med en bildfil</translation>
     </message>
   </context>
   <context>
@@ -2811,7 +2897,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Spara DXF-fil</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>
@@ -3454,7 +3540,7 @@ be used instead if the dimension value</translation>
     <name>TechDrawGui::TaskHatch</name>
     <message>
       <source>Apply Hatch to Face</source>
-      <translation>Applicera Hatch till Face</translation>
+      <translation>Applicera skraffering på ytan</translation>
     </message>
     <message>
       <source>Define your pattern</source>

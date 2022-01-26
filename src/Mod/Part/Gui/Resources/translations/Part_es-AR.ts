@@ -155,12 +155,12 @@ Se puede utilizar un 'Filtro Compuesto' para extraer las piezas restantes.</tran
     <message>
       <location filename="CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation>Crear Caño</translation>
+      <translation>Crear un tubo</translation>
     </message>
     <message>
       <location filename="CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation>Crea un caño</translation>
+      <translation>Crea un tubo</translation>
     </message>
   </context>
   <context>
@@ -168,7 +168,7 @@ Se puede utilizar un 'Filtro Compuesto' para extraer las piezas restantes.</tran
     <message>
       <location filename="CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation>Crear Caño</translation>
+      <translation>Crear un tubo</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="57"/>
@@ -732,7 +732,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="328"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
-      <translation>Rosca</translation>
+      <translation>Toroide</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="329"/>
@@ -2009,7 +2009,7 @@ en sus componentes X, Y y Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="89"/>
       <source>Create a cube solid</source>
-      <translation>Crear Cubo</translation>
+      <translation>Crea un cubo sólido</translation>
     </message>
   </context>
   <context>
@@ -2058,7 +2058,7 @@ en sus componentes X, Y y Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1554"/>
       <source>Shape builder...</source>
-      <translation>Constructor de forma...</translation>
+      <translation>Constructor de formas...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1555"/>
@@ -2209,7 +2209,7 @@ en sus componentes X, Y y Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Create a cone solid</source>
-      <translation>Crear Cono</translation>
+      <translation>Crea un cono sólido</translation>
     </message>
   </context>
   <context>
@@ -2265,7 +2265,7 @@ en sus componentes X, Y y Z.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="48"/>
       <source>Create a Cylinder</source>
-      <translation>Crear Cilindro</translation>
+      <translation>Crea un cilindro</translation>
     </message>
   </context>
   <context>
@@ -2337,7 +2337,7 @@ en sus componentes X, Y y Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1323"/>
       <source>Extrude a selected sketch</source>
-      <translation>Extruir croquis seleccionado</translation>
+      <translation>Extruye el croquis seleccionado</translation>
     </message>
   </context>
   <context>
@@ -2649,7 +2649,7 @@ de proyección.</translation>
     <message>
       <location filename="../../Command.cpp" line="1403"/>
       <source>Revolve a selected shape</source>
-      <translation>Revolucionar una forma seleccionada</translation>
+      <translation>Revoluciona una forma seleccionada</translation>
     </message>
   </context>
   <context>
@@ -2739,7 +2739,7 @@ de proyección.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="59"/>
       <source>Create a Cylinder</source>
-      <translation>Crear Cilindro</translation>
+      <translation>Crea un cilindro</translation>
     </message>
   </context>
   <context>
@@ -2759,7 +2759,7 @@ de proyección.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="130"/>
       <source>Create a sphere solid</source>
-      <translation>Crear Esfera</translation>
+      <translation>Crea una esfera sólida</translation>
     </message>
   </context>
   <context>
@@ -2826,12 +2826,12 @@ de proyección.</translation>
       <location filename="../../CommandParametric.cpp" line="222"/>
       <location filename="../../CommandParametric.cpp" line="227"/>
       <source>Torus</source>
-      <translation>Rosca</translation>
+      <translation>Toroide</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="212"/>
       <source>Create a torus solid</source>
-      <translation>Crear rosca</translation>
+      <translation>Crea un toroide sólido</translation>
     </message>
   </context>
   <context>
@@ -3989,7 +3989,7 @@ el tamaño del archivo STEP resultante.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="160"/>
       <source>Height:</source>
-      <translation>Alto:</translation>
+      <translation>Altura:</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="167"/>
@@ -4042,7 +4042,7 @@ el tamaño del archivo STEP resultante.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="121"/>
       <source>Height:</source>
-      <translation>Alto:</translation>
+      <translation>Altura:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="128"/>
@@ -4159,7 +4159,7 @@ el tamaño del archivo STEP resultante.</translation>
       <location filename="../../DlgPrimitives.ui" line="87"/>
       <location filename="../../DlgPrimitives.cpp" line="846"/>
       <source>Torus</source>
-      <translation>Rosca</translation>
+      <translation>Toroide</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
@@ -4238,7 +4238,7 @@ el tamaño del archivo STEP resultante.</translation>
       <location filename="../../DlgPrimitives.ui" line="1419"/>
       <location filename="../../DlgPrimitives.ui" line="1752"/>
       <source>Height:</source>
-      <translation>Alto:</translation>
+      <translation>Altura:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="448"/>
@@ -4375,12 +4375,12 @@ el tamaño del archivo STEP resultante.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1774"/>
       <source>Right-handed</source>
-      <translation>Diestro</translation>
+      <translation>A la derecha</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1779"/>
       <source>Left-handed</source>
-      <translation>Siniestra</translation>
+      <translation>A la izquierda</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1894"/>
@@ -4966,7 +4966,7 @@ se utilizará el vector normal del plano de croquis</translation>
     <message>
       <location filename="../../Location.ui" line="125"/>
       <source>x-component of direction vector</source>
-      <translation>Componente X del vector de dirección</translation>
+      <translation>componente X del vector de dirección</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="147"/>
@@ -5916,7 +5916,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="78"/>
       <source>Height:</source>
-      <translation>Alto:</translation>
+      <translation>Altura:</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="85"/>

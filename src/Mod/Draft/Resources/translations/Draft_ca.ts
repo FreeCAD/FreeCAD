@@ -717,6 +717,11 @@ Aquesta propietat és només de lectura, jau que el nombre depèn dels punts con
       <translation>Àrea d'aquest objecte</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma d'aquest objecte</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -740,11 +745,6 @@ Aquesta propietat és només de lectura, jau que el nombre depèn dels punts con
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation type="unfinished">The pattern rotation used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma d'aquest objecte</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1208,44 +1208,9 @@ beyond the dimension line</source>
       <translation>Escrivint l'estat visible/ocult dels objectes</translation>
     </message>
     <message>
-      <location filename="init_tools.py" line="145"/>
-      <source>Draft creation tools</source>
-      <translation>Eines de creació d'Esbós</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="148"/>
-      <source>Draft annotation tools</source>
-      <translation>Eines d'anotació d'Esbós</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="151"/>
-      <source>Draft modification tools</source>
-      <translation>Eines de modificació d'Esbós</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="107"/>
       <source>Draft utility tools</source>
       <translation>Eines útils per a dibuixar</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="166"/>
-      <source>&amp;Drafting</source>
-      <translation>&amp;Borrador</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="168"/>
-      <source>&amp;Annotation</source>
-      <translation>&amp;Anotació</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="170"/>
-      <source>&amp;Modification</source>
-      <translation>&amp;Modificació</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="172"/>
-      <source>&amp;Utilities</source>
-      <translation>&amp;Utilitats</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="122"/>
@@ -1281,21 +1246,6 @@ beyond the dimension line</source>
       <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Activa o desactiva la restricció al pla de treball</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="48"/>
-      <source>Arc tools</source>
-      <translation>Eines d'arc</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="56"/>
-      <source>Bezier tools</source>
-      <translation>Eines Bézier</translation>
-    </message>
-    <message>
-      <location filename="gui_arrays.py" line="65"/>
-      <source>Array tools</source>
-      <translation>Eines de taules</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="157"/>
@@ -1377,21 +1327,6 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
       <translation>Pendent</translation>
     </message>
     <message>
-      <location filename="gui_circulararray.py" line="66"/>
-      <source>Circular array</source>
-      <translation>Matriu circular</translation>
-    </message>
-    <message>
-      <location filename="gui_circulararray.py" line="68"/>
-      <source>Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
-
-The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation>Crea còpies de l'objecte seleccionat i els disposa radialment, creand diverses capes circulars.
-
-La matriu es pot transformar en ortogonal o polar canviant-ne el tipus.</translation>
-    </message>
-    <message>
       <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
       <translation>Desa l'estil</translation>
@@ -1417,44 +1352,9 @@ La matriu es pot transformar en ortogonal o polar canviant-ne el tipus.</transla
       <translation>Error: no s'ha trobat el mòdul json. Impossible salvar l'estil</translation>
     </message>
     <message>
-      <location filename="gui_polararray.py" line="66"/>
-      <source>Polar array</source>
-      <translation>Matriu polar</translation>
-    </message>
-    <message>
-      <location filename="gui_polararray.py" line="68"/>
-      <source>Creates copies of the selected object, and places the copies in a polar pattern
-defined by a center of rotation and its angle.
-
-The array can be turned into an orthogonal or a circular array by changing its type.</source>
-      <translation>Crea còpies de l'objecte seleccionat, i disposa les còpies en un patró polar definit per n centre i una rotació del seu angle.
-
-La matriu es pot convertir en ortogonal o circular canviant-ne el tipus.</translation>
-    </message>
-    <message>
       <location filename="gui_hatch.py" line="48"/>
       <source>You must choose a base object before using this command</source>
       <translation type="unfinished">You must choose a base object before using this command</translation>
-    </message>
-    <message>
-      <location filename="gui_arrays.py" line="68"/>
-      <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation>Crea diversos tipus de matriu, incloent rectangular, polar, circular, camí i punt</translation>
-    </message>
-    <message>
-      <location filename="gui_orthoarray.py" line="66"/>
-      <source>Array</source>
-      <translation>Matriu, Array</translation>
-    </message>
-    <message>
-      <location filename="gui_orthoarray.py" line="68"/>
-      <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
-
-The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation>Crea còpies de l'objecte seleccionat i les disposa en un patró ortogonal, fent que les còpies segueixin la direcció definida en els eixos X, Y i Z.
-
-La matriu es pot convertir en polar o circular canviant-ne el tipus.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="65"/>
@@ -1480,6 +1380,106 @@ La matriu es pot convertir en polar o circular canviant-ne el tipus.</translatio
       <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>No s'ha definit la direcció de desplaçament. Si us plau, moveu el ratolí a un o altre costat de l'objecte abans per indicar-ne la direcció</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="48"/>
+      <source>Arc tools</source>
+      <translation>Eines d'arc</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="56"/>
+      <source>Bezier tools</source>
+      <translation>Eines Bézier</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="145"/>
+      <source>Draft creation tools</source>
+      <translation>Eines de creació d'Esbós</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="148"/>
+      <source>Draft annotation tools</source>
+      <translation>Eines d'anotació d'Esbós</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="151"/>
+      <source>Draft modification tools</source>
+      <translation>Eines de modificació d'Esbós</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="166"/>
+      <source>&amp;Drafting</source>
+      <translation>&amp;Borrador</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="168"/>
+      <source>&amp;Annotation</source>
+      <translation>&amp;Anotació</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="170"/>
+      <source>&amp;Modification</source>
+      <translation>&amp;Modificació</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="172"/>
+      <source>&amp;Utilities</source>
+      <translation>&amp;Utilitats</translation>
+    </message>
+    <message>
+      <location filename="gui_arrays.py" line="65"/>
+      <source>Array tools</source>
+      <translation>Eines de taules</translation>
+    </message>
+    <message>
+      <location filename="gui_arrays.py" line="68"/>
+      <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
+      <translation>Crea diversos tipus de matriu, incloent rectangular, polar, circular, camí i punt</translation>
+    </message>
+    <message>
+      <location filename="gui_circulararray.py" line="66"/>
+      <source>Circular array</source>
+      <translation>Matriu circular</translation>
+    </message>
+    <message>
+      <location filename="gui_circulararray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in a radial pattern
+creating various circular layers.
+
+The array can be turned into an orthogonal or a polar array by changing its type.</source>
+      <translation>Crea còpies de l'objecte seleccionat i els disposa radialment, creand diverses capes circulars.
+
+La matriu es pot transformar en ortogonal o polar canviant-ne el tipus.</translation>
+    </message>
+    <message>
+      <location filename="gui_polararray.py" line="66"/>
+      <source>Polar array</source>
+      <translation>Matriu polar</translation>
+    </message>
+    <message>
+      <location filename="gui_polararray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in a polar pattern
+defined by a center of rotation and its angle.
+
+The array can be turned into an orthogonal or a circular array by changing its type.</source>
+      <translation>Crea còpies de l'objecte seleccionat, i disposa les còpies en un patró polar definit per n centre i una rotació del seu angle.
+
+La matriu es pot convertir en ortogonal o circular canviant-ne el tipus.</translation>
+    </message>
+    <message>
+      <location filename="gui_orthoarray.py" line="66"/>
+      <source>Array</source>
+      <translation>Matriu, Array</translation>
+    </message>
+    <message>
+      <location filename="gui_orthoarray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
+meaning the copies follow the specified direction in the X, Y, Z axes.
+
+The array can be turned into a polar or a circular array by changing its type.</source>
+      <translation>Crea còpies de l'objecte seleccionat i les disposa en un patró ortogonal, fent que les còpies segueixin la direcció definida en els eixos X, Y i Z.
+
+La matriu es pot convertir en polar o circular canviant-ne el tipus.</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="154"/>
@@ -1518,7 +1518,7 @@ Crea un grup de construcció si aquest no existeix.</translation>
     <message>
       <location filename="gui_groups.py" line="361"/>
       <source>Add a new named group</source>
-      <translation type="unfinished">Add a new named group</translation>
+      <translation>Afegeix un grup amb nom nou</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="365"/>
@@ -1566,6 +1566,11 @@ El primer cop que s'utilitza crea un grup.</translation>
       <source>Annotation styles...</source>
       <translation>Estils de les anotacions...</translation>
     </message>
+    <message>
+      <location filename="gui_annotationstyleeditor.py" line="82"/>
+      <source>Manage or create annotation styles</source>
+      <translation type="unfinished">Manage or create annotation styles</translation>
+    </message>
   </context>
   <context>
     <name>Draft_ApplyStyle</name>
@@ -1609,6 +1614,21 @@ CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
+    <name>Draft_Arc_3Points</name>
+    <message>
+      <location filename="gui_arcs.py" line="487"/>
+      <source>Arc by 3 points</source>
+      <translation>Arc per 3 punts</translation>
+    </message>
+    <message>
+      <location filename="gui_arcs.py" line="490"/>
+      <source>Creates a circular arc by picking 3 points.
+CTRL to snap, SHIFT to constrain.</source>
+      <translation type="unfinished">Creates a circular arc by picking 3 points.
+CTRL to snap, SHIFT to constrain.</translation>
+    </message>
+  </context>
+  <context>
     <name>Draft_Array</name>
     <message>
       <location filename="gui_array_simple.py" line="68"/>
@@ -1625,6 +1645,29 @@ to polar or circular, and its properties can be modified.</source>
 Per defecte crea una matriu ortogonal de 2x2.
 Un cop s'ha creat la matriu, se'n pot canviar el tipus a
 polar o circular, i se'n poden modificar les propietats.</translation>
+    </message>
+    <message>
+      <location filename="gui_orthoarray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
+meaning the copies follow the specified direction in the X, Y, Z axes.
+
+The array can be turned into a polar or a circular array by changing its type.</source>
+      <translation>Crea còpies de l'objecte seleccionat i les disposa en un patró ortogonal, fent que les còpies segueixin la direcció definida en els eixos X, Y i Z.
+
+La matriu es pot convertir en polar o circular canviant-ne el tipus.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_ArrayTools</name>
+    <message>
+      <location filename="gui_arrays.py" line="65"/>
+      <source>Array tools</source>
+      <translation>Eines de taules</translation>
+    </message>
+    <message>
+      <location filename="gui_arrays.py" line="68"/>
+      <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
+      <translation>Crea diversos tipus de matriu, incloent rectangular, polar, circular, camí i punt</translation>
     </message>
   </context>
   <context>
@@ -1694,6 +1737,24 @@ CTRL per ajustar, MAJÚS per restringir.</translation>
 CTRL to snap, ALT to select tangent objects.</source>
       <translation>Crea una circumferència (arc circular sencer).
 CTRL per ajustar, ALT per seleccionar objectes tangents.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_CircularArray</name>
+    <message>
+      <location filename="gui_circulararray.py" line="65"/>
+      <source>Circular array</source>
+      <translation>Matriu circular</translation>
+    </message>
+    <message>
+      <location filename="gui_circulararray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in a radial pattern
+creating various circular layers.
+
+The array can be turned into an orthogonal or a polar array by changing its type.</source>
+      <translation>Crea còpies de l'objecte seleccionat i els disposa radialment, creand diverses capes circulars.
+
+La matriu es pot transformar en ortogonal o polar canviant-ne el tipus.</translation>
     </message>
   </context>
   <context>
@@ -1862,6 +1923,19 @@ Premeu E o bé ALT+botó dret per mostrar un menú contextual en els nodes supor
       <location filename="gui_facebinders.py" line="62"/>
       <source>Creates a facebinder object from selected faces.</source>
       <translation>Crea un objecte Lligacares amb les cares seleccionades.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Fillet</name>
+    <message>
+      <location filename="gui_fillets.py" line="64"/>
+      <source>Fillet</source>
+      <translation>Arrodoniment</translation>
+    </message>
+    <message>
+      <location filename="gui_fillets.py" line="67"/>
+      <source>Creates a fillet between two selected wires or edges.</source>
+      <translation>Crea un cantell entre dos filferros o arestes seleccionades.</translation>
     </message>
   </context>
   <context>
@@ -2160,6 +2234,24 @@ Una 'Matriu d'enllaços de punts' és més eficient quan s'empren moltes còpies
     </message>
   </context>
   <context>
+    <name>Draft_PolarArray</name>
+    <message>
+      <location filename="gui_polararray.py" line="65"/>
+      <source>Polar array</source>
+      <translation>Matriu polar</translation>
+    </message>
+    <message>
+      <location filename="gui_polararray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in a polar pattern
+defined by a center of rotation and its angle.
+
+The array can be turned into an orthogonal or a circular array by changing its type.</source>
+      <translation>Crea còpies de l'objecte seleccionat, i disposa les còpies en un patró polar definit per n centre i una rotació del seu angle.
+
+La matriu es pot convertir en ortogonal o circular canviant-ne el tipus.</translation>
+    </message>
+  </context>
+  <context>
     <name>Draft_Polygon</name>
     <message>
       <location filename="gui_polygons.py" line="57"/>
@@ -2336,19 +2428,6 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
 Si es tria una polilínia, s'aplicarà la transformació de pendent a cada un dels seus segments.
 
 Pendent sempre canviarà el valor de Z, així que aquesta ordre només funciona bé per línies rectes dibuixades sobre el pla XY. Els objectes seleccionats que no són simples línies seran ignorats.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap</name>
-    <message>
-      <location filename="gui_snapper.py" line="1529"/>
-      <source>Toggles Grid On/Off</source>
-      <translation>Conmuta la quadrícula activa/inactiva</translation>
-    </message>
-    <message>
-      <location filename="gui_snapper.py" line="1530"/>
-      <source>Toggle Draft Grid</source>
-      <translation>Commuta la graella d'Esbós</translation>
     </message>
   </context>
   <context>
@@ -2776,6 +2855,61 @@ Aleshores, podeu usar-lo per desar posicions de càmera i estats d'objectes semp
   </context>
   <context>
     <name>Workbench</name>
+    <message>
+      <location filename="InitGui.py" line="104"/>
+      <source>Draft creation tools</source>
+      <translation>Eines de creació d'Esbós</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="107"/>
+      <source>Draft annotation tools</source>
+      <translation>Eines d'anotació d'Esbós</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="110"/>
+      <source>Draft modification tools</source>
+      <translation>Eines de modificació de l'esbós</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="113"/>
+      <source>Draft utility tools</source>
+      <translation>Eines útils per a dibuixar</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="118"/>
+      <source>&amp;Drafting</source>
+      <translation>&amp;Borrador</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="121"/>
+      <source>&amp;Annotation</source>
+      <translation>&amp;Anotació</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="124"/>
+      <source>&amp;Modification</source>
+      <translation>&amp;Modificació</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="127"/>
+      <source>&amp;Utilities</source>
+      <translation>&amp;Utilitats</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="50"/>
+      <source>Arc tools</source>
+      <translation>Eines d'arc</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="58"/>
+      <source>Bezier tools</source>
+      <translation>Eines Bézier</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="89"/>
+      <source>Array tools</source>
+      <translation>Eines de taules</translation>
+    </message>
     <message>
       <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
@@ -4029,14 +4163,29 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>personalitzat</translation>
     </message>
     <message>
+      <location filename="init_draft_statusbar.py" line="140"/>
+      <source>Unable to convert input into a  scale factor</source>
+      <translation type="unfinished">Unable to convert input into a  scale factor</translation>
+    </message>
+    <message>
       <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation>No es pot convertir l'entrada a un factor d'escala</translation>
     </message>
     <message>
+      <location filename="init_draft_statusbar.py" line="155"/>
+      <source>Set custom scale</source>
+      <translation type="unfinished">Set custom scale</translation>
+    </message>
+    <message>
       <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Estableix l'escala personalitzada de l'anotació amb el format x:x, x=x</translation>
+    </message>
+    <message>
+      <location filename="init_draft_statusbar.py" line="214"/>
+      <source>Set the scale used by draft annotation tools</source>
+      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
     </message>
     <message>
       <location filename="utils.py" line="650"/>
@@ -4122,6 +4271,86 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="utils.py" line="1059"/>
       <source>This function will be deprecated. </source>
       <translation type="unfinished">This function will be deprecated. </translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="169"/>
+      <source>Snap Lock</source>
+      <translation type="unfinished">Snap Lock</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="170"/>
+      <source>Snap Endpoint</source>
+      <translation type="unfinished">Snap Endpoint</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="171"/>
+      <source>Snap Midpoint</source>
+      <translation type="unfinished">Snap Midpoint</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="172"/>
+      <source>Snap Center</source>
+      <translation type="unfinished">Snap Center</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="173"/>
+      <source>Snap Angle</source>
+      <translation type="unfinished">Snap Angle</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="174"/>
+      <source>Snap Intersection</source>
+      <translation type="unfinished">Snap Intersection</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="175"/>
+      <source>Snap Perpendicular</source>
+      <translation type="unfinished">Snap Perpendicular</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="176"/>
+      <source>Snap Extension</source>
+      <translation type="unfinished">Snap Extension</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="177"/>
+      <source>Snap Parallel</source>
+      <translation type="unfinished">Snap Parallel</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="178"/>
+      <source>Snap Special</source>
+      <translation type="unfinished">Snap Special</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="179"/>
+      <source>Snap Near</source>
+      <translation type="unfinished">Snap Near</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="180"/>
+      <source>Snap Ortho</source>
+      <translation type="unfinished">Snap Ortho</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="181"/>
+      <source>Snap Grid</source>
+      <translation type="unfinished">Snap Grid</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="182"/>
+      <source>Snap WorkingPlane</source>
+      <translation type="unfinished">Snap WorkingPlane</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="183"/>
+      <source>Snap Dimensions</source>
+      <translation type="unfinished">Snap Dimensions</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="187"/>
+      <source>Toggle Draft Grid</source>
+      <translation>Commuta la graella d'Esbós</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="81"/>
@@ -4752,6 +4981,16 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
       <translation>Trieu una nova distància des del punt de base</translation>
     </message>
     <message>
+      <location filename="gui_snapper.py" line="1543"/>
+      <source>(ON)</source>
+      <translation type="unfinished">(ON)</translation>
+    </message>
+    <message>
+      <location filename="gui_snapper.py" line="1546"/>
+      <source>(OFF)</source>
+      <translation type="unfinished">(OFF)</translation>
+    </message>
+    <message>
       <location filename="gui_shape2dview.py" line="109"/>
       <source>Create 2D view</source>
       <translation>Crea vista 2D</translation>
@@ -5079,7 +5318,7 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
     <message>
       <location filename="gui_groups.py" line="70"/>
       <source>Add new group</source>
-      <translation type="unfinished">Add new group</translation>
+      <translation>Afegeix un grup nou</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="183"/>
@@ -5114,12 +5353,12 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
     <message>
       <location filename="gui_groups.py" line="383"/>
       <source>Add group</source>
-      <translation type="unfinished">Add group</translation>
+      <translation>Afegeix un grup</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="385"/>
       <source>Group name</source>
-      <translation type="unfinished">Group name</translation>
+      <translation>Nom del grup</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="76"/>
@@ -5280,6 +5519,19 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
       <translation>s'ha exportat amb èxit</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Snap</name>
+    <message>
+      <location filename="gui_snapper.py" line="1529"/>
+      <source>Toggles Grid On/Off</source>
+      <translation>Conmuta la quadrícula activa/inactiva</translation>
+    </message>
+    <message>
+      <location filename="gui_snapper.py" line="1530"/>
+      <source>Toggle Draft Grid</source>
+      <translation>Commuta la graella d'Esbós</translation>
     </message>
   </context>
   <context>

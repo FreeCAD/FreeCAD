@@ -592,11 +592,11 @@ kliknete na levo oz. desno tipko in premikate miško gor oz. dol</translation>
     <name>Gui::Dialog::Clipping</name>
     <message>
       <source>Clipping</source>
-      <translation>Zamejitev</translation>
+      <translation>Rezanje</translation>
     </message>
     <message>
       <source>Clipping X</source>
-      <translation>X zamejitev</translation>
+      <translation>Rezanje po X</translation>
     </message>
     <message>
       <source>Flip</source>
@@ -608,15 +608,15 @@ kliknete na levo oz. desno tipko in premikate miško gor oz. dol</translation>
     </message>
     <message>
       <source>Clipping Y</source>
-      <translation>Y zamejitev</translation>
+      <translation>Rezanje po Y</translation>
     </message>
     <message>
       <source>Clipping Z</source>
-      <translation>Z zamejitev</translation>
+      <translation>Rezanje po Z</translation>
     </message>
     <message>
       <source>Clipping custom direction</source>
-      <translation>Smer zamejitve po meri</translation>
+      <translation>Smer prereza po meri</translation>
     </message>
     <message>
       <source>View</source>
@@ -8637,11 +8637,11 @@ Ali želite datoteko shraniti z drugačnim imenom?</translation>
     </message>
     <message>
       <source>Clipping plane</source>
-      <translation>Ravnina obrezovanja</translation>
+      <translation>Prerezna ravnina</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Preklopi ravnino obrezovanja dejavnega pogleda</translation>
+      <translation>Preklopi prerezno ravnino dejavnega pogleda</translation>
     </message>
   </context>
   <context>
@@ -9669,7 +9669,7 @@ Ali želite vseeno nadaljevati?
     </message>
     <message>
       <source>Wireframe</source>
-      <translation>Žični model</translation>
+      <translation>Žični prikaz</translation>
     </message>
     <message>
       <source>Wireframe mode</source>

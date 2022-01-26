@@ -1921,7 +1921,7 @@ if the measured points have moved.</translation>
     <message>
       <location filename="../../Command.cpp" line="2357"/>
       <source>Toggle 3D</source>
-      <translation type="unfinished">Toggle 3D</translation>
+      <translation>Växla 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2358"/>
@@ -2887,7 +2887,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1017"/>
       <source>Import Part</source>
-      <translation type="unfinished">Import Part</translation>
+      <translation>Importera rapportvy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1123"/>
@@ -2917,7 +2917,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1877"/>
       <source>Make Thickness</source>
-      <translation type="unfinished">Make Thickness</translation>
+      <translation>Skapa tjocklek</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2102"/>
@@ -3068,17 +3068,17 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="216"/>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>Runt x-axeln:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="229"/>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>Runt y-axeln:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="242"/>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>Runt z-axeln:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
@@ -4510,7 +4510,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
       <source>Show Edges</source>
-      <translation type="unfinished">Show Edges</translation>
+      <translation>Visa kanter</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
@@ -4957,7 +4957,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="110"/>
       <source>Rotation axis</source>
-      <translation type="unfinished">Rotation axis</translation>
+      <translation>Rotationsaxel</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="118"/>
@@ -5339,17 +5339,17 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="224"/>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>Runt x-axeln:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="237"/>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>Runt y-axeln:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="250"/>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>Runt z-axeln:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="286"/>
@@ -5518,7 +5518,7 @@ but more stable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Log errors</source>
-      <translation type="unfinished">Log errors</translation>
+      <translation>Logga fel</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
@@ -5579,7 +5579,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1157"/>
       <source>  Too small edge</source>
-      <translation type="unfinished">  Too small edge</translation>
+      <translation>  För liten kant</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1158"/>
@@ -5649,12 +5649,12 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1269"/>
       <source>Run check</source>
-      <translation type="unfinished">Run check</translation>
+      <translation>Kör kontroll</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1275"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Resultat</translation>
     </message>
   </context>
   <context>

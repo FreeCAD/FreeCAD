@@ -1672,7 +1672,7 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <name>QObject</name>
     <message>
       <source>Import-Export</source>
-      <translation>Uvozi-Izvozi</translation>
+      <translation>Uvoz - Izvoz</translation>
     </message>
     <message>
       <source>All Mesh Files</source>

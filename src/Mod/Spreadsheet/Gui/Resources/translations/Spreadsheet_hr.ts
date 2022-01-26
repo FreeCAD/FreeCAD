@@ -728,66 +728,66 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Umetni %n red(ova) iznad</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Umetni %n redova iznad</numerusform>
+        <numerusform>Umetanje %n redova iznad</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Umetni %n red(ova) ispod</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Umetni %n redova ispod</numerusform>
+        <numerusform>Umetanje %n redova ispod</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+      <translation>
+        <numerusform>Umetnite %n red koji nije u nizu</numerusform>
+        <numerusform>Umetnite %n redova koji nisu u nizu</numerusform>
+        <numerusform>Umetanje %n redova koji nisu u nizu</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Ukloni red(ove)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Ukloni redove</numerusform>
+        <numerusform>Uklanjanje redova</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>Umetni %n kolonu(e) lijevo</numerusform>
+        <numerusform>Umetni %n kolona lijevo</numerusform>
+        <numerusform>Umetanje %n kolona lijevo</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Umetni %n kolonu(e) desno</numerusform>
+        <numerusform>Umetni %n kolona desno</numerusform>
+        <numerusform>Umetanje %n kolona desno</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+      <translation>
+        <numerusform>Umetnite %n red koji nije u nizu</numerusform>
+        <numerusform>Umetnite %n redova koji nisu u nizu</numerusform>
+        <numerusform>Umetanje %n redova koji nisu u nizu</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Ukloni stupac(ce)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Ukloni kolonu(e)</numerusform>
+        <numerusform>Ukloni kolone</numerusform>
+        <numerusform>Uklanjanje kolona</numerusform>
       </translation>
     </message>
   </context>

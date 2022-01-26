@@ -83,5 +83,6 @@
         <file>translations/Mesh_vi.qm</file>
         <file>translations/Mesh_es-AR.qm</file>
         <file>translations/Mesh_bg.qm</file>
+        <file>translations/Mesh_ka.qm</file>
     </qresource>
 </RCC> 

@@ -435,12 +435,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
       <source>Set tip</source>
-      <translation>Postavljanje vrha</translation>
+      <translation>Postavljanje radne pozicije</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="529"/>
       <source>Move the tip of the body</source>
-      <translation>Premještanje vrha tijela</translation>
+      <translation>Premještanje radne pozicije na tijelu</translation>
     </message>
   </context>
   <context>
@@ -878,7 +878,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="575"/>
       <source>Move tip to selected feature</source>
-      <translation>Premjesti savjet na odabrana svojstva</translation>
+      <translation>Premjesti radnu poziciju na odabrani objekt</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="620"/>
@@ -951,7 +951,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>Objekt se nalazi poslije vrha</translation>
+      <translation>Objekt se nalazi poslije obilježene radne pozicije</translation>
     </message>
   </context>
   <context>
@@ -1787,7 +1787,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="75"/>
       <source>Feature is located after the tip feature</source>
-      <translation>Objekt se nalazi poslije vrha</translation>
+      <translation>Objekt se nalazi poslije obilježene radne pozicije</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="86"/>
@@ -3305,17 +3305,17 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="950"/>
       <source>Move tip</source>
-      <translation type="unfinished">Move tip</translation>
+      <translation>Pomjeri radnu poziciju</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="951"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation type="unfinished">The moved feature appears after the currently set tip.</translation>
+      <translation>Pomjereni objekt pojavljuje se nakon trenutno postavljene radne pozicije</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="952"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation type="unfinished">Do you want the last feature to be the new tip?</translation>
+      <translation>Želite li da posljednji objekt bude nova radna pozicija?</translation>
     </message>
   </context>
   <context>
@@ -3622,7 +3622,7 @@ To može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="565"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Samo čvrsta značajka može biti vrh tijela.</translation>
+      <translation>Samo čvrsto tijelo  može biti radna pozicija jednog tijela.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="680"/>

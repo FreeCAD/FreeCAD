@@ -746,9 +746,9 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation>Stellen Sie dem Eigenschaftsnamen den Gruppennamen in der Form 'Gruppenname' voran, um Konflikte mit einer bestehenden Eigenschaft zu vermeiden.
+      <translation>Dem Eigenschaftsnamen stellt man den Gruppennamen in der Form 'Group_Name' voran, um Konflikte mit einer bestehenden Eigenschaft zu vermeiden.
 In diesem Fall wird das Präfix automatisch gekürzt, wenn es im Eigenschaften-Editor angezeigt wird.
-Die Eigenschaft wird jedoch immer noch in einem Skript mit dem vollen Namen 'obj.Gruppenname' verwendet.
+Die Eigenschaft wird jedoch immer noch in einem Skript mit dem vollen Namen 'obj.Group_Name' verwendet.
 
 Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und wird durch 'obj.Name' aufgerufen.</translation>
     </message>
@@ -7715,7 +7715,7 @@ Möchten Sie die Datei mit einem anderen Namen speichern?</translation>
     </message>
     <message>
       <source>Link actions</source>
-      <translation>Verknüpfungsaktionen</translation>
+      <translation>Verknüpfungen...</translation>
     </message>
   </context>
   <context>

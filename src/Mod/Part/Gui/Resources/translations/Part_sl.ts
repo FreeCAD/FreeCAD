@@ -92,7 +92,7 @@ Za vsako obliko bo ustvarjeno "Sito sestava".</translation>
     <message>
       <location filename="SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
-      <translation>Logična vrednost drobcev</translation>
+      <translation>Logična vrednost razdrobitve</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="197"/>
@@ -101,7 +101,7 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Ustvari predmet "Logična vrednost drobcev" iz enega ali več izbranih predmetov,
+      <translation>Ustvari predmet "Logična vrednost razdrobitve" iz enega ali več izbranih predmetov,
 ali iz oblik znotraj sestava.
 To je seštevek logičnih vrednosti, ki je nato zarezan na presekih izvirnih oblik.
 S "Sitom sestava" lahko izvlečete posamezne rezine.</translation>
@@ -187,7 +187,7 @@ Ostale dele lahko izvelečet s "sitom sestava".</translation>
       <location filename="../../AppPartGui.cpp" line="224"/>
       <location filename="../../AppPartGui.cpp" line="225"/>
       <source>Import-Export</source>
-      <translation>Uvozi-Izvozi</translation>
+      <translation>Uvoz - Izvoz</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="286"/>
@@ -493,7 +493,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="152"/>
       <source>Out Of Enum Range:</source>
-      <translation>Zunaj obsega Enum:</translation>
+      <translation>Zunaj obsega oštevilčenja:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
@@ -1920,7 +1920,7 @@ if the measured points have moved.</source>
     <message>
       <location filename="../../Command.cpp" line="2357"/>
       <source>Toggle 3D</source>
-      <translation>3D stikalo</translation>
+      <translation>Preklopi 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2358"/>
@@ -1960,7 +1960,7 @@ neposredne, pravokotne in kotne.</translation>
     <message>
       <location filename="../../Command.cpp" line="2388"/>
       <source>Toggle Delta</source>
-      <translation>Preklopi delto</translation>
+      <translation>Preklopi razliko</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2389"/>
@@ -4390,7 +4390,7 @@ velikost dobljene datoteke STEP.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1901"/>
       <source>Number of rotations:</source>
-      <translation>Število vrtljajev:</translation>
+      <translation>Število obratov:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1977"/>
@@ -5694,7 +5694,7 @@ Posamezne OLV preverbe:</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
       <source>Click on the faces in the 3D view to select them</source>
-      <translation>Da izberete ploskve, klinite nanje v 3D pogledu</translation>
+      <translation>Da izberete ploskve, kliknite nanje v 3D pogledu</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="39"/>

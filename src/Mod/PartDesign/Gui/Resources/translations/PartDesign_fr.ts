@@ -858,7 +858,7 @@
     <message>
       <location filename="../../Command.cpp" line="2484"/>
       <source>Convert to MultiTransform feature</source>
-      <translation>Créer une fonction de transformation multiple</translation>
+      <translation>Convertir en fonction de transformation multiple</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2575"/>
@@ -888,7 +888,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="738"/>
       <source>Move an object</source>
-      <translation>Déplacer l'objet</translation>
+      <translation>Déplacer un objet</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="887"/>
@@ -1078,7 +1078,7 @@ Veuillez sélectionner un corps à partir du bas, ou créer un nouveau corps.</t
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
       <source>Create new body</source>
-      <translation>Créer un corps</translation>
+      <translation>Créer un nouveau corps</translation>
     </message>
   </context>
   <context>
@@ -1860,7 +1860,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="23"/>
       <source>Status:</source>
-      <translation>Statut:</translation>
+      <translation>État:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="30"/>

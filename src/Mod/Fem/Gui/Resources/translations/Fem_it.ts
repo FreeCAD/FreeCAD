@@ -101,7 +101,7 @@
     <message>
       <location filename="commands.py" line="166"/>
       <source>Constant vacuum permittivity</source>
-      <translation type="unfinished">Constant vacuum permittivity</translation>
+      <translation>Costante dielettrica del vuoto</translation>
     </message>
     <message>
       <location filename="commands.py" line="170"/>
@@ -288,7 +288,7 @@
     <message>
       <location filename="commands.py" line="461"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>Crea un'equazione FEM per le forze elettriche</translation>
     </message>
   </context>
   <context>

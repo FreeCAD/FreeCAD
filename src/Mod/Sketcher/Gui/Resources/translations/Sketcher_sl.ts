@@ -5695,7 +5695,7 @@ za določitev, ali se rešitve prbližujejo ali ne</translation>
 Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
 Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</source>
       <translation>Med pregledovanjem se izračunava QR rang razpredelnica.
-Eigen Dense QR je gosta QR razpredelnica s popolnim obračanje; običajno počasnejše
+Eigen Dense QR je gosta QR razpredelnica s popolnim obračanjem; običajno počasnejše
 Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitrejše</translation>
     </message>
     <message>
