@@ -20,37 +20,30 @@ import FreeCAD as App
 import FreeCADGui as Gui
 
 def getActStr(document):
-    return "App.getDocument(\'" + document.Name + "\').ActiveObject"
+    return f"App.getDocument('{document.Name}').ActiveObject"
 
 def getDocStr(document):
-    return "App.getDocument(\'" + document.Name +"\')"
+    return f"App.getDocument('{document.Name}')"
 
 def getObjStr(document, object):
-    return getDocStr(document) + ".getObject(\'" + object.Name + "\')"
+    return f"{getDocStr(document)}.getObject('{object.Name}')"
 
 def getVisStr(document, objs):
     ret = ""
     for obj in objs:
-        ret += getDocStr(document) + ".getObject(\'" + obj.Name + "\').ViewObject.Visibility = False\n"
+        ret += f"{getDocStr(document)}.getObject('{obj.Name}').ViewObject.Visibility = False\n"
     return ret
 
 def getSetPropListStr(document, propName, objList):
-    ret = getActStr(document) + "." + propName + " = ["
+    ret = f"{getActStr(document)}.{propName} = ["
     for obj in objList:
-        ret += getDocStr(document) + ".getObject(\'" + obj.Name + "\'), "
+        ret += f"{getDocStr(document)}.getObject('{obj.Name}'), "
     ret += "]\n"
     return ret
 
 def getAddObjStr(document, typeId, name):
     ret = getDocStr(document)
-    ret += ".addObject(\'" + typeId + "\', \'" + name + "\')\n"
-    return ret
-
-def getSubListStr(names):
-    ret = "["
-    for name in names:
-        ret += "\'" + name + "\', "
-    ret += "]"
+    ret += f".addObject('{typeId}', '{name}')\n"
     return ret
 
 
@@ -58,17 +51,18 @@ def makeExtrude():
 
     selx = Gui.Selection.getSelectionEx()
     if len(selx) == 0:
-        App.Console.PrintMessage(f"makeExtrude() len(selx) = {len(selx)} (must be > 0 to skip dialog)\n")
+        App.Console.PrintLog(f"makeExtrude() nothing selected, not skipping dialog\n")
         return False
 
     selected = [sel.Object for sel in selx if bool(sel.Object.isDerivedFrom("Part::2DObject") or
+                sel.Object.isDerivedFrom("Part::Face") or
                 sel.Object.isDerivedFrom("Part::FeaturePython") or
                 bool(hasattr(sel.Object,"Shape") and len(sel.Object.Shape.Vertexes) == 1) or
                 sel.Object.isDerivedFrom("Sketcher::SketchObject")) and
                 sel.HasSubObjects == False]
     if len(selected) != 1:
-        App.Console.PrintMessage(f"makeExtrude() len(selected) = {len(selected)} (must be 1 to skip dialog)\n")
-        return False #need exactly 1 profile for Extrude
+        App.Console.PrintLog(f"makeExtrude() need exactly 1 selected profile to skip dialog, not skipping\n")
+        return False
 
     solid = "True"
     base = selected[0]
@@ -77,21 +71,25 @@ def makeExtrude():
             solid = "False"
     else:
         if not bool(hasattr(base,"Shape") and len(base.Shape.Vertexes) == 1):
+            App.Console.PrintLog(f"makeExtrude() no wire in shape and not a vertex (not skip dialog)\n")
             return False #no Wire1
         else:
             solid = "False"
 
     spines = [sel for sel in selx if sel.HasSubObjects]
     if len(spines) != 1:
-        return False #all edges must be from the same object
+        App.Console.PrintLog(f"makeExtrude() all edges not from same object, not skipping dialog\n")
+        return False
 
     spineEdges = spines[0].SubElementNames
     subNames = [name for name in spineEdges if "Edge" in name]
     if len(subNames) != 1:
+        App.Console.PrintLog(f"makeExtrude() only 1 edge supported for DirLink, not skipping dialog\n")
         return False
 
     dirLink = spines[0].Object.getSubObject(subNames[0])
     if dirLink.Curve.TypeId != "Part::GeomLine":
+        App.Console.PrintLog(f"makeExtrude() selected edge must be of TypeId Part::GeomLine, is TypeId = {dirLink.Curve.TypeId}, not skipping dialog\n")
         return False
 
     if solid == "False":
@@ -99,13 +97,14 @@ def makeExtrude():
 
     doc = selected[0].Document
     cmd = getAddObjStr(doc, "Part::Extrusion", "Extrude")
-    cmd += getActStr(doc) + ".Base = " + getObjStr(doc, selected[0]) + "\n"
-    cmd += getActStr(doc) + ".Solid = " + solid + "\n"
-    cmd += getActStr(doc) + ".DirMode = \'Edge\'\n"
-    cmd += getActStr(doc) + ".Reversed = False\n"
-    cmd += getActStr(doc) + ".Symmetric = False\n"
+    actStr = getActStr(doc)
+    cmd += actStr + ".Base = " + getObjStr(doc, selected[0]) + "\n"
+    cmd += actStr + ".Solid = " + solid + "\n"
+    cmd += actStr + ".DirMode = 'Edge'\n"
+    cmd += actStr + ".Reversed = False\n"
+    cmd += actStr + ".Symmetric = False\n"
     cmd += getVisStr(doc, selected)
-    cmd += getActStr(doc) + ".DirLink = (" + getObjStr(doc, spines[0].Object) + ", \'" + subNames[0] + "\')\n"
+    cmd += actStr + ".DirLink = (" + getObjStr(doc, spines[0].Object) + ", '" + subNames[0] + "')\n"
     Gui.doCommand(cmd)
     doc.recompute()
     return True
@@ -114,15 +113,18 @@ def makeExtrude():
 def makeRevolve():
     selx = Gui.Selection.getSelectionEx()
     if len(selx) == 0:
-        return False #nothing selected, False = don't skip Gui
+        App.Console.PrintLog(f"makeRevolve() nothing selected, not skipping dialog\n")
+        return False
 
     selected = [sel.Object for sel in selx if bool(sel.Object.isDerivedFrom("Part::2DObject") or
+                sel.Object.isDerivedFrom("Part::Face") or
                 sel.Object.isDerivedFrom("Part::FeaturePython") or
                 bool(hasattr(sel.Object,"Shape") and len(sel.Object.Shape.Vertexes) == 1) or
                 sel.Object.isDerivedFrom("Sketcher::SketchObject")) and
                 sel.HasSubObjects == False]
     if len(selected) != 1:
-        return False #need exactly 1 profile for Revolve
+        App.Console.PrintLog(f"makeRevolve() only 1 selected profile needed, not skipping dialog\n")
+        return False
 
     solid = "True"
     base = selected[0]
@@ -131,17 +133,20 @@ def makeRevolve():
             solid = "False"
     else:
         if not bool(hasattr(base,"Shape") and len(base.Shape.Vertexes) == 1):
-            return False #no Wire1
+            App.Console.PrintLog(f"makeRevolve() selected object has no wire and not a vertex, not skipping dialog\n")
+            return False
         else:
             solid = "False"
 
     spines = [sel for sel in selx if sel.HasSubObjects]
     if len(spines) != 1:
-        return False #all edges must be from the same objects
+        App.Console.PrintLog(f"makeRevolve() all edges must be from the same object, not skipping dialog\n")
+        return False
 
     spineEdges = spines[0].SubElementNames
     subNames = [name for name in spineEdges if "Edge" in name]
     if len(subNames) != 1:
+        App.Console.PrintLog(f"makeRevolve() only 1 edge may be selected, not skipping dialog\n")
         return False
 
     if solid == "False":
@@ -166,23 +171,28 @@ def makeLoft():
 
     selx = Gui.Selection.getSelectionEx()
     if len(selx) == 0:
-        return False #nothing selected, False = don't skip Gui
+        App.Console.PrintLog(f"makeLoft() nothing selected, not skipping dialog\n")
+        return False
 
     selected = [sel.Object for sel in selx if sel.Object.isDerivedFrom("Part::2DObject") or
+                sel.Object.isDerivedFrom("Part::Face") or
                 sel.Object.isDerivedFrom("Part::FeaturePython") or
                 sel.Object.isDerivedFrom("Sketcher::SketchObject") or
                 bool(hasattr(sel.Object,"Shape") and len(sel.Object.Shape.Vertexes) == 1)]
     if len(selected) < 2:
-        return False #need at least 2 objects for Loft
+        App.Console.PrintLog(f"makeLoft() need at least 2 objects selected, not skipping dialog\n")
+        return False
 
     #filter out sketches with multiple wires
     #should be removed if/when multiple wires are supported for Part::Loft
     filtered = [sel for sel in selected if len(sel.Shape.Wires) < 2]
     if len(filtered) < 2:
+        App.Console.PrintLog(f"makeLoft() need at least 2 objects without multiple wires, not skipping dialog\n")
         return False
 
     if len(filtered) != len(selected):
-        return False #user will not get expected result since some profiles are not supported
+        App.Console.PrintLog(f"makeLoft() some selected objects filtered out, not skipping dialog\n")
+        return False
 
     doc = filtered[0].Document
     cmd = getAddObjStr(doc, "Part::Loft", "Loft")
@@ -200,24 +210,29 @@ def makeSweep():
 
     selx = Gui.Selection.getSelectionEx()
     if len(selx) == 0:
-        return False #nothing selected, False = don't skip Gui
+        App.Console.PrintLog(f"makeSweep() nothing selected, not skipping dialog\n")
+        return False
 
     selected = [sel.Object for sel in selx if bool(sel.Object.isDerivedFrom("Part::2DObject") or
+                sel.Object.isDerivedFrom("Part::Face") or
                 sel.Object.isDerivedFrom("Part::FeaturePython") or
                 bool(hasattr(sel.Object,"Shape") and len(sel.Object.Shape.Vertexes) == 1) or
                 sel.Object.isDerivedFrom("Sketcher::SketchObject")) and
                 sel.HasSubObjects == False]
     if len(selected) < 1:
+        App.Console.PrintLog(f"makeSweep() need at least 1 selected profile, not skipping dialog\n")
         return False #need at least 1 profile for Sweep
 
     #filter out sketches with multiple wires
     #should be removed if/when multiple wires are supported for Part::Sweep
     filtered = [sel for sel in selected if len(sel.Shape.Wires) < 2]
     if len(filtered) < 1:
-        return False #must have at least 1 profile to sweep
+        App.Console.PrintLog(f"makeSweep() profiles may only have 1 wire, not skipping dialog\n")
+        return False
 
     if len(filtered) != len(selected):
-        return False #user will not get expected result since some profiles are not supported
+        App.Console.PrintLog(f"makeSweep() some selected profiles filtered out, not skipping dialog\n")
+        return False
 
     solid = "True"
     base = filtered[0]
@@ -227,11 +242,13 @@ def makeSweep():
 
     spines = [sel for sel in selx if sel.HasSubObjects]
     if len(spines) != 1:
-        return False #all edges must be from the same object
+        App.Console.PrintLog(f"makeSweep() all edges must be from the same object, not skipping dialog\n")
+        return False
 
     spineEdges = spines[0].SubElementNames
     subNames = [name for name in spineEdges if "Edge" in name]
     if len(subNames) == 0:
+        App.Console.PrintLog(f"makeSweep() must have selected at least 1 edge for path, not skipping dialog\n")
         return False
 
     if solid == "False":
@@ -244,7 +261,7 @@ def makeSweep():
     cmd += getActStr(doc) + ".Frenet = False\n"
     cmd += getActStr(doc) + ".Transition = \'Right corner\'\n"
     cmd += getVisStr(doc, filtered)
-    cmd += getActStr(doc) + ".Spine = (" + getObjStr(doc, spines[0].Object) + ", " + getSubListStr(subNames) + ")\n"
+    cmd += getActStr(doc) + ".Spine = (" + getObjStr(doc, spines[0].Object) + ", " + repr(subNames) + ")\n"
     Gui.doCommand(cmd)
     doc.recompute()
     return True
