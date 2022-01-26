@@ -25,9 +25,9 @@ namespace KDTree
     _Base_ptr _M_left;
     _Base_ptr _M_right;
 
-    _Node_base(_Base_ptr const __PARENT = NULL,
-               _Base_ptr const __LEFT = NULL,
-               _Base_ptr const __RIGHT = NULL)
+    _Node_base(_Base_ptr const __PARENT = nullptr,
+               _Base_ptr const __LEFT = nullptr,
+               _Base_ptr const __RIGHT = nullptr)
       : _M_parent(__PARENT), _M_left(__LEFT), _M_right(__RIGHT) {}
 
     static _Base_ptr
@@ -54,9 +54,9 @@ namespace KDTree
       _Val _M_value;
 
       _Node(_Val const& __VALUE = _Val(),
-            _Base_ptr const __PARENT = NULL,
-            _Base_ptr const __LEFT = NULL,
-            _Base_ptr const __RIGHT = NULL)
+            _Base_ptr const __PARENT = nullptr,
+            _Base_ptr const __LEFT = nullptr,
+            _Base_ptr const __RIGHT = nullptr)
         : _Node_base(__PARENT, __LEFT, __RIGHT), _M_value(__VALUE) {}
 
 #ifdef KDTREE_DEFINE_OSTREAM_OPERATORS
@@ -232,7 +232,7 @@ namespace KDTree
     // Swap cur to prev, only prev is a valid node.
     cur = pcur;
     --cur_dim;
-    pcur = NULL;
+    pcur = nullptr;
     // Probe all node's children not visited yet (siblings of the visited nodes).
     const _Node_base* probe = cur;
     const _Node_base* pprobe = probe;

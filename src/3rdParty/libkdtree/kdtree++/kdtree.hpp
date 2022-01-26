@@ -255,7 +255,7 @@ namespace KDTree
         _M_erase_subtree(_M_get_root());
         _M_set_leftmost(&_M_header);
         _M_set_rightmost(&_M_header);
-        _M_set_root(NULL);
+        _M_set_root(nullptr);
         _M_count = 0;
       }
 
@@ -642,8 +642,8 @@ namespace KDTree
       {
         _M_set_leftmost(&_M_header);
         _M_set_rightmost(&_M_header);
-	_M_header._M_parent = NULL;
-        _M_set_root(NULL);
+	_M_header._M_parent = nullptr;
+        _M_set_root(nullptr);
       }
 
       iterator
@@ -1157,9 +1157,9 @@ namespace KDTree
 
       _Link_type
       _M_new_node(const_reference __V, //  = value_type(),
-                  _Base_ptr const __PARENT = NULL,
-                  _Base_ptr const __LEFT = NULL,
-                  _Base_ptr const __RIGHT = NULL)
+                  _Base_ptr const __PARENT = nullptr,
+                  _Base_ptr const __LEFT = nullptr,
+                  _Base_ptr const __RIGHT = nullptr)
       {
          typename _Base::NoLeakAlloc noleak(this);
          _Link_type new_node = noleak.get();
