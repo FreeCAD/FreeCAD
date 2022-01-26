@@ -20,6 +20,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PathScripts import PathUtils
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import PathScripts.PathDressup as PathDressup
@@ -27,8 +29,6 @@ import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import math
 
-from PathScripts import PathUtils
-from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -39,12 +39,14 @@ if FreeCAD.GuiUp:
     import FreeCADGui
 
 
-# Qt translation handling
-def translate(text, context="Path_DressupRampEntry", disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class ObjectDressup:
@@ -54,41 +56,37 @@ class ObjectDressup:
             "App::PropertyLink",
             "Base",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP(
-                "Path_DressupRampEntry", "The base path to modify"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "Angle",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Angle of ramp."),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of ramp."),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "Method",
             "Path",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Ramping Method"),
+            QT_TRANSLATE_NOOP("App::Property", "Ramping Method"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "RampFeedRate",
             "FeedRate",
-            QtCore.QT_TRANSLATE_NOOP(
-                "App::Property", "Which feed rate to use for ramping"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"),
         )
         obj.addProperty(
             "App::PropertySpeed",
             "CustomFeedRate",
             "FeedRate",
-            QtCore.QT_TRANSLATE_NOOP("App::Property", "Custom feed rate"),
+            QT_TRANSLATE_NOOP("App::Property", "Custom feed rate"),
         )
         obj.addProperty(
             "App::PropertyBool",
             "UseStartDepth",
             "StartDepth",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Should the dressup ignore motion commands above DressupStartDepth",
             ),
@@ -97,18 +95,16 @@ class ObjectDressup:
             "App::PropertyDistance",
             "DressupStartDepth",
             "StartDepth",
-            QtCore.QT_TRANSLATE_NOOP(
+            QT_TRANSLATE_NOOP(
                 "App::Property",
                 "The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.",
             ),
         )
-        obj.Method = ["RampMethod1", "RampMethod2", "RampMethod3", "Helix"]
-        obj.RampFeedRate = [
-            "Horizontal Feed Rate",
-            "Vertical Feed Rate",
-            "Ramp Feed Rate",
-            "Custom",
-        ]
+
+        # populate the enumerations
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
+
         obj.Proxy = self
         self.setEditorProperties(obj)
 
@@ -120,6 +116,55 @@ class ObjectDressup:
         self.outedges = None
         self.ignoreAboveEnabled = None
         self.ignoreAbove = None
+
+    @classmethod
+    def propertyEnumerations(self, dataType="data"):
+        """PropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        enums = {
+            "Object": [
+                (translate("Path_DressupRampEntry", "RampMethod1"), "RampMethod1"),
+                (translate("Path_DressupRampEntry", "RampMethod2"), "RampMethod2"),
+                (translate("Path_DressupRampEntry", "RampMethod3"), "RampMethod3"),
+                (translate("Path_DressupRampEntry", "Helix"), "Helix"),
+            ],
+            "RampFeedRate": [
+                (
+                    translate("Path_DressupRampEntry", "Horizontal Feed Rate"),
+                    "Horizontal Feed Rate",
+                ),
+                (
+                    translate("Path_DressupRampEntry", "Vertical Feed Rate"),
+                    "Vertical Feed Rate",
+                ),
+                (
+                    translate("Path_DressupRampEntry", "Ramp Feed Rate"),
+                    "Ramp Feed Rate",
+                ),
+                (translate("Path_DressupRampEntry", "Custom"), "Custom"),
+            ],
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = list()
+        idx = 0 if dataType == "translated" else 1
+
+        PathLog.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        PathLog.debug(data)
+
+        return data
 
     def __getstate__(self):
         return None
@@ -855,10 +900,10 @@ class CommandPathDressupRampEntry:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+            "MenuText": QT_TRANSLATE_NOOP(
                 "Path_DressupRampEntry", "RampEntry Dress-up"
             ),
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupRampEntry",
                 "Creates a Ramp Entry Dress-up object from a selected path",
             ),
@@ -875,18 +920,26 @@ class CommandPathDressupRampEntry:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate("Please select one path object") + "\n")
+            PathLog.error(
+                translate("Path_DressupRampEntry", "Please select one path object")
+                + "\n"
+            )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            PathLog.error(translate("The selected object is not a path") + "\n")
+            PathLog.error(
+                translate("Path_DressupRampEntry", "The selected object is not a path")
+                + "\n"
+            )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            PathLog.error(translate("Please select a Profile object"))
+            PathLog.error(
+                translate("Path_DressupRampEntry", "Please select a Profile object")
+            )
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Create RampEntry Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction("Create RampEntry Dress-up")
         FreeCADGui.addModule("PathScripts.PathDressupRampEntry")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(

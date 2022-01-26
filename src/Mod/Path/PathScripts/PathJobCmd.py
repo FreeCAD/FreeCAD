@@ -20,6 +20,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
@@ -31,33 +33,35 @@ import PathScripts.PathUtil as PathUtil
 import json
 import os
 
-from PySide import QtCore, QtGui
 
+translate = FreeCAD.Qt.translate
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
-
-
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class CommandJobCreate:
-    '''
+    """
     Command used to create a command.
     When activated the command opens a dialog allowing the user to select a base object (has to be a solid)
     and a template to be used for the initial creation.
-    '''
+    """
 
     def __init__(self):
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path_Job',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
-                'Accel': "P, J",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object")}
+        return {
+            "Pixmap": "Path_Job",
+            "MenuText": QT_TRANSLATE_NOOP("Path_Job", "Job"),
+            "Accel": "P, J",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_Job", "Creates a Path Job object"
+            ),
+        }
 
     def IsActive(self):
         return FreeCAD.ActiveDocument is not None
@@ -74,29 +78,35 @@ class CommandJobCreate:
 
     @classmethod
     def Execute(cls, base, template):
-        FreeCADGui.addModule('PathScripts.PathJobGui')
+        FreeCADGui.addModule("PathScripts.PathJobGui")
         if template:
             template = "'%s'" % template
         else:
-            template = 'None'
-        FreeCADGui.doCommand('PathScripts.PathJobGui.Create(%s, %s)' % ([o.Name for o in base], template))
+            template = "None"
+        FreeCADGui.doCommand(
+            "PathScripts.PathJobGui.Create(%s, %s)" % ([o.Name for o in base], template)
+        )
 
 
 class CommandJobTemplateExport:
-    '''
+    """
     Command to export a template of a given job.
     Opens a dialog to select the file to store the template in. If the template is stored in Path's
     file path (see preferences) and named in accordance with job_*.json it will automatically be found
     on Job creation and be available for selection.
-    '''
+    """
 
     def __init__(self):
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path_ExportTemplate',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Exports Path Job as a template to be used for other jobs")}
+        return {
+            "Pixmap": "Path_ExportTemplate",
+            "MenuText": QT_TRANSLATE_NOOP("Path_ExportTemplate", "Export Template"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_ExportTemplate", "Exports Path Job as a template to be used for other jobs"
+            ),
+        }
 
     def GetJob(self):
         # if there's only one Job in the document ...
@@ -109,7 +119,7 @@ class CommandJobTemplateExport:
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) == 1:
             job = sel[0]
-            if hasattr(job, 'Proxy') and isinstance(job.Proxy, PathJob.ObjectJob):
+            if hasattr(job, "Proxy") and isinstance(job.Proxy, PathJob.ObjectJob):
                 return job
         return None
 
@@ -124,15 +134,17 @@ class CommandJobTemplateExport:
 
     @classmethod
     def SaveDialog(cls, job, dialog):
-        foo = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
-                "Path - Job Template",
-                PathPreferences.filePath(),
-                "job_*.json")[0]
+        foo = QtGui.QFileDialog.getSaveFileName(
+            QtGui.QApplication.activeWindow(),
+            "Path - Job Template",
+            PathPreferences.filePath(),
+            "job_*.json",
+        )[0]
         if foo:
-            if not os.path.basename(foo).startswith('job_'):
-                foo = os.path.join(os.path.dirname(foo), 'job_' + os.path.basename(foo))
-            if not foo.endswith('.json'):
-                foo = foo + '.json'
+            if not os.path.basename(foo).startswith("job_"):
+                foo = os.path.join(os.path.dirname(foo), "job_" + os.path.basename(foo))
+            if not foo.endswith(".json"):
+                foo = foo + ".json"
             cls.Execute(job, foo, dialog)
 
     @classmethod
@@ -155,7 +167,11 @@ class CommandJobTemplateExport:
         stockAttrs = None
         if dialog:
             if dialog.includeStock():
-                stockAttrs = PathStock.TemplateAttributes(job.Stock, dialog.includeStockExtent(), dialog.includeStockPlacement())
+                stockAttrs = PathStock.TemplateAttributes(
+                    job.Stock,
+                    dialog.includeStockExtent(),
+                    dialog.includeStockPlacement(),
+                )
         else:
             stockAttrs = PathStock.TemplateAttributes(job.Stock)
         if stockAttrs:
@@ -169,7 +185,8 @@ class CommandJobTemplateExport:
                 dialog.includeSettingCoolant(),
                 dialog.includeSettingOperationHeights(),
                 dialog.includeSettingOperationDepths(),
-                dialog.includeSettingOpsSettings())
+                dialog.includeSettingOpsSettings(),
+            )
         else:
             setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(True, True, True)
         if setupSheetAttrs:
@@ -177,13 +194,13 @@ class CommandJobTemplateExport:
 
         encoded = job.Proxy.setupSheet.encodeTemplateAttributes(attrs)
         # write template
-        with open(PathUtil.toUnicode(path), 'w') as fp:
+        with open(PathUtil.toUnicode(path), "w") as fp:
             json.dump(encoded, fp, sort_keys=True, indent=2)
 
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Job', CommandJobCreate())
-    FreeCADGui.addCommand('Path_ExportTemplate', CommandJobTemplateExport())
+    FreeCADGui.addCommand("Path_Job", CommandJobCreate())
+    FreeCADGui.addCommand("Path_ExportTemplate", CommandJobTemplateExport())
 
 FreeCAD.Console.PrintLog("Loading PathJobCmd... done\n")

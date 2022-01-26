@@ -20,34 +20,36 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import Part
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
-import Part
 import math
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-PathUtils = LazyLoader('PathScripts.PathUtils', globals(), 'PathScripts.PathUtils')
 
-from PySide import QtCore
+PathUtils = LazyLoader("PathScripts.PathUtils", globals(), "PathScripts.PathUtils")
+
 
 __title__ = "Path Features Extensions"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Class and implementation of face extensions features."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
 
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 def endPoints(edgeOrWire):
-    '''endPoints(edgeOrWire) ... return the first and last point of the wire or the edge, assuming the argument is not a closed wire.'''
+    """endPoints(edgeOrWire) ... return the first and last point of the wire or the edge, assuming the argument is not a closed wire."""
     if Part.Wire == type(edgeOrWire):
         # edges = edgeOrWire.Edges
         pts = [e.valueAt(e.FirstParameter) for e in edgeOrWire.Edges]
@@ -69,7 +71,7 @@ def endPoints(edgeOrWire):
 
 
 def includesPoint(p, pts):
-    '''includesPoint(p, pts) ... answer True if the collection of pts includes the point p'''
+    """includesPoint(p, pts) ... answer True if the collection of pts includes the point p"""
     for pt in pts:
         if PathGeom.pointsCoincide(p, pt):
             return True
@@ -78,11 +80,13 @@ def includesPoint(p, pts):
 
 
 def selectOffsetWire(feature, wires):
-    '''selectOffsetWire(feature, wires) ... returns the Wire in wires which is does not intersect with feature'''
+    """selectOffsetWire(feature, wires) ... returns the Wire in wires which is does not intersect with feature"""
     closest = None
     for w in wires:
         dist = feature.distToShape(w)[0]
-        if closest is None or dist > closest[0]:  # pylint: disable=unsubscriptable-object
+        if (
+            closest is None or dist > closest[0]
+        ):  # pylint: disable=unsubscriptable-object
             closest = (dist, w)
 
     if closest is not None:
@@ -92,19 +96,24 @@ def selectOffsetWire(feature, wires):
 
 
 def extendWire(feature, wire, length):
-    '''extendWire(wire, length) ... return a closed Wire which extends wire by length'''
+    """extendWire(wire, length) ... return a closed Wire which extends wire by length"""
     PathLog.track(length)
 
     if not length or length == 0:
         return None
-    
+
     try:
         off2D = wire.makeOffset2D(length)
     except FreeCAD.Base.FreeCADError as ee:
+        PathLog.debug(ee)
         return None
     endPts = endPoints(wire)  # Assumes wire is NOT closed
     if endPts:
-        edges = [e for e in off2D.Edges if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)]
+        edges = [
+            e
+            for e in off2D.Edges
+            if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)
+        ]
         wires = [Part.Wire(e) for e in Part.sortEdges(edges)]
         offset = selectOffsetWire(feature, wires)
         ePts = endPoints(offset)
@@ -127,12 +136,14 @@ def extendWire(feature, wire, length):
 
 
 def createExtension(obj, extObj, extFeature, extSub):
-    return Extension(obj, 
-                     extObj,
-                     extFeature,
-                     extSub,
-                     obj.ExtensionLengthDefault,
-                     Extension.DirectionNormal)
+    return Extension(
+        obj,
+        extObj,
+        extFeature,
+        extSub,
+        obj.ExtensionLengthDefault,
+        Extension.DirectionNormal,
+    )
 
 
 def readObjExtensionFeature(obj):
@@ -142,7 +153,7 @@ def readObjExtensionFeature(obj):
 
     for extObj, features in obj.ExtensionFeature:
         for sub in features:
-            extFeature, extSub = sub.split(':')
+            extFeature, extSub = sub.split(":")
             extensions.append((extObj.Name, extFeature, extSub))
     return extensions
 
@@ -154,7 +165,7 @@ def getExtensions(obj):
 
     for extObj, features in obj.ExtensionFeature:
         for sub in features:
-            extFeature, extSub = sub.split(':')
+            extFeature, extSub = sub.split(":")
             extensions.append(createExtension(obj, extObj, extFeature, extSub))
             i = i + 1
     return extensions
@@ -167,11 +178,14 @@ def setExtensions(obj, extensions):
 
 class Extension(object):
     DirectionNormal = 0
-    DirectionX      = 1
-    DirectionY      = 2
+    DirectionX = 1
+    DirectionY = 2
 
     def __init__(self, op, obj, feature, sub, length, direction):
-        PathLog.debug("Extension(%s, %s, %s, %.2f, %s" % (obj.Label, feature, sub, length, direction))
+        PathLog.debug(
+            "Extension(%s, %s, %s, %.2f, %s"
+            % (obj.Label, feature, sub, length, direction)
+        )
         self.op = op
         self.obj = obj
         self.feature = feature
@@ -197,8 +211,16 @@ class Extension(object):
             off = self.length.Value * direction
             e2.translate(off)
             e2 = PathGeom.flipEdge(e2)
-            e1 = Part.Edge(Part.LineSegment(e0.valueAt(e0.LastParameter), e2.valueAt(e2.FirstParameter)))
-            e3 = Part.Edge(Part.LineSegment(e2.valueAt(e2.LastParameter), e0.valueAt(e0.FirstParameter)))
+            e1 = Part.Edge(
+                Part.LineSegment(
+                    e0.valueAt(e0.LastParameter), e2.valueAt(e2.FirstParameter)
+                )
+            )
+            e3 = Part.Edge(
+                Part.LineSegment(
+                    e2.valueAt(e2.LastParameter), e0.valueAt(e0.FirstParameter)
+                )
+            )
             wire = Part.Wire([e0, e1, e2, e3])
             self.wire = wire
             return wire
@@ -206,8 +228,8 @@ class Extension(object):
         return extendWire(feature, Part.Wire([e0]), self.length.Value)
 
     def _getEdgeNumbers(self):
-        if 'Wire' in self.sub:
-            numbers = [nr for nr in self.sub[5:-1].split(',')]
+        if "Wire" in self.sub:
+            numbers = [nr for nr in self.sub[5:-1].split(",")]
         else:
             numbers = [self.sub[4:]]
 
@@ -235,7 +257,7 @@ class Extension(object):
         e0 = wire.Edges[0]
         midparam = e0.FirstParameter + 0.5 * (e0.LastParameter - e0.FirstParameter)
         tangent = e0.tangentAt(midparam)
-        PathLog.track('tangent', tangent, self.feature, self.sub)
+        PathLog.track("tangent", tangent, self.feature, self.sub)
         normal = tangent.cross(FreeCAD.Vector(0, 0, 1))
         if PathGeom.pointsCoincide(normal, FreeCAD.Vector(0, 0, 0)):
             return None
@@ -243,21 +265,21 @@ class Extension(object):
         return self._getDirectedNormal(e0.valueAt(midparam), normal.normalize())
 
     def getExtensionFaces(self, extensionWire):
-        '''getExtensionFace(extensionWire)...
+        """getExtensionFace(extensionWire)...
         A public helper method to retrieve the requested extension as a face,
         rather than a wire because some extensions require a face shape
         for definition that allows for two wires for boundary definition.
-        '''
+        """
 
         if self.extFaces:
             return self.extFaces
-        
+
         return [Part.Face(extensionWire)]
 
     def getWire(self):
-        '''getWire()... Public method to retrieve the extension area, pertaining to the feature
+        """getWire()... Public method to retrieve the extension area, pertaining to the feature
         and sub element provided at class instantiation, as a closed wire.  If no closed wire
-        is possible, a `None` value is returned.'''
+        is possible, a `None` value is returned."""
 
         if self.sub[:6] == "Avoid_":
             feature = self.obj.Shape.getElement(self.feature)
@@ -281,9 +303,9 @@ class Extension(object):
             return self._getRegularWire()
 
     def _getRegularWire(self):
-        '''_getRegularWire()... Private method to retrieve the extension area, pertaining to the feature
+        """_getRegularWire()... Private method to retrieve the extension area, pertaining to the feature
         and sub element provided at class instantiation, as a closed wire.  If no closed wire
-        is possible, a `None` value is returned.'''
+        is possible, a `None` value is returned."""
         PathLog.track()
 
         length = self.length.Value
@@ -314,11 +336,23 @@ class Extension(object):
 
                 # assuming the offset produces a valid circle - go for it
                 if r > 0:
-                    e3 = Part.makeCircle(r, circle.Center, circle.Axis, edge.FirstParameter * 180 / math.pi, edge.LastParameter * 180 / math.pi)
+                    e3 = Part.makeCircle(
+                        r,
+                        circle.Center,
+                        circle.Axis,
+                        edge.FirstParameter * 180 / math.pi,
+                        edge.LastParameter * 180 / math.pi,
+                    )
                     if endPoints(edge):
                         # need to construct the arc slice
-                        e0 = Part.makeLine(edge.valueAt(edge.FirstParameter), e3.valueAt(e3.FirstParameter))
-                        e2 = Part.makeLine(edge.valueAt(edge.LastParameter), e3.valueAt(e3.LastParameter))
+                        e0 = Part.makeLine(
+                            edge.valueAt(edge.FirstParameter),
+                            e3.valueAt(e3.FirstParameter),
+                        )
+                        e2 = Part.makeLine(
+                            edge.valueAt(edge.LastParameter),
+                            e3.valueAt(e3.LastParameter),
+                        )
                         return Part.Wire([e0, edge, e2, e3])
 
                     extWire = Part.Wire([e3])
@@ -357,8 +391,9 @@ class Extension(object):
             try:
                 off2D = sub.makeOffset2D(length)
             except FreeCAD.Base.FreeCADError as ee:
+                PathLog.debug(ee)
                 return None
-            
+
             if isOutside:
                 self.extFaces = [Part.Face(off2D).cut(featFace)]
             else:
@@ -369,9 +404,9 @@ class Extension(object):
         return extendWire(feature, sub, length)
 
     def _getOutlineWire(self):
-        '''_getOutlineWire()... Private method to retrieve an extended outline extension area,
+        """_getOutlineWire()... Private method to retrieve an extended outline extension area,
         pertaining to the feature and sub element provided at class instantiation, as a closed wire.
-        If no closed wire is possible, a `None` value is returned.'''
+        If no closed wire is possible, a `None` value is returned."""
         PathLog.track()
 
         baseShape = self.obj.Shape
@@ -411,10 +446,10 @@ class Extension(object):
         return None
 
     def _getWaterlineWire(self):
-        '''_getWaterlineWire()... Private method to retrieve a waterline extension area,
+        """_getWaterlineWire()... Private method to retrieve a waterline extension area,
         pertaining to the feature and sub element provided at class instantiation, as a closed wire.
         Only waterline faces touching source face are returned as part of the waterline extension area.
-        If no closed wire is possible, a `None` value is returned.'''
+        If no closed wire is possible, a `None` value is returned."""
         PathLog.track()
 
         msg = translate("PathFeatureExtensions", "Waterline error")
@@ -451,9 +486,9 @@ class Extension(object):
         return None
 
     def _makeCircularExtFace(self, edge, extWire):
-        '''_makeCircularExtensionFace(edge, extWire)...
+        """_makeCircularExtensionFace(edge, extWire)...
         Create proper circular extension face shape. Incoming edge is expected to be a circle.
-        '''
+        """
         # Add original outer wire to cut faces if necessary
         edgeFace = Part.Face(Part.Wire([edge]))
         edgeFace.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - edgeFace.BoundBox.ZMin))
@@ -467,37 +502,58 @@ class Extension(object):
         extensionFace.translate(FreeCAD.Vector(0.0, 0.0, edge.BoundBox.ZMin))
 
         return extensionFace
+
+
 # Eclass
 
 
 def initialize_properties(obj):
     """initialize_properties(obj)... Adds feature properties to object argument"""
-    if not hasattr(obj, 'ExtensionLengthDefault'):
-        obj.addProperty('App::PropertyDistance', 'ExtensionLengthDefault', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Default length of extensions.'))
-    if not hasattr(obj, 'ExtensionFeature'):
-        obj.addProperty('App::PropertyLinkSubListGlobal', 'ExtensionFeature', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of features to extend.'))
-    if not hasattr(obj, 'ExtensionCorners'):
-        obj.addProperty('App::PropertyBool', 'ExtensionCorners', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'When enabled connected extension edges are combined to wires.'))
+    if not hasattr(obj, "ExtensionLengthDefault"):
+        obj.addProperty(
+            "App::PropertyDistance",
+            "ExtensionLengthDefault",
+            "Extension",
+            QT_TRANSLATE_NOOP("App::Property", "Default length of extensions."),
+        )
+    if not hasattr(obj, "ExtensionFeature"):
+        obj.addProperty(
+            "App::PropertyLinkSubListGlobal",
+            "ExtensionFeature",
+            "Extension",
+            QT_TRANSLATE_NOOP("App::Property", "List of features to extend."),
+        )
+    if not hasattr(obj, "ExtensionCorners"):
+        obj.addProperty(
+            "App::PropertyBool",
+            "ExtensionCorners",
+            "Extension",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "When enabled connected extension edges are combined to wires.",
+            ),
+        )
         obj.ExtensionCorners = True
 
-    obj.setEditorMode('ExtensionFeature', 2)
+    obj.setEditorMode("ExtensionFeature", 2)
 
 
 def set_default_property_values(obj, job):
     """set_default_property_values(obj, job) ... set default values for feature properties"""
     obj.ExtensionCorners = True
-    obj.setExpression('ExtensionLengthDefault', 'OpToolDiameter / 2.0')
+    obj.setExpression("ExtensionLengthDefault", "OpToolDiameter / 2.0")
 
 
 def SetupProperties():
     """SetupProperties()... Returns list of feature property names"""
-    setup = ['ExtensionLengthDefault', 'ExtensionFeature',
-             'ExtensionCorners']
+    setup = ["ExtensionLengthDefault", "ExtensionFeature", "ExtensionCorners"]
     return setup
 
 
 # Extend outline face generation function
-def getExtendOutlineFace(base_shape, face, extension, remHoles=False, offset_tolerance=1e-4):
+def getExtendOutlineFace(
+    base_shape, face, extension, remHoles=False, offset_tolerance=1e-4
+):
     """getExtendOutlineFace(obj, base_shape, face, extension, remHoles) ...
     Creates an extended face for the pocket, taking into consideration lateral
     collision with the greater base shape.
@@ -513,11 +569,9 @@ def getExtendOutlineFace(base_shape, face, extension, remHoles=False, offset_tol
     """
 
     # Make offset face per user-specified extension distance so as to allow full clearing of face where possible.
-    offset_face = PathUtils.getOffsetArea(face,
-                                extension,
-                                removeHoles=remHoles,
-                                plane=face,
-                                tolerance=offset_tolerance)
+    offset_face = PathUtils.getOffsetArea(
+        face, extension, removeHoles=remHoles, plane=face, tolerance=offset_tolerance
+    )
     if not offset_face:
         PathLog.error("Failed to offset a selected face.")
         return None
@@ -540,9 +594,11 @@ def getExtendOutlineFace(base_shape, face, extension, remHoles=False, offset_tol
     for f in available.Faces:
         bbx = f.BoundBox
         zNorm = abs(f.normalAt(0.0, 0.0).z)
-        if (PathGeom.isRoughly(zNorm, 1.0) and
-            PathGeom.isRoughly(bbx.ZMax - bbx.ZMin, 0.0) and
-            PathGeom.isRoughly(bbx.ZMin, face.BoundBox.ZMin)):
+        if (
+            PathGeom.isRoughly(zNorm, 1.0)
+            and PathGeom.isRoughly(bbx.ZMax - bbx.ZMin, 0.0)
+            and PathGeom.isRoughly(bbx.ZMin, face.BoundBox.ZMin)
+        ):
             if bbx.ZMin < zmin:
                 bottom_faces.append(f)
 
@@ -560,6 +616,7 @@ def getExtendOutlineFace(base_shape, face, extension, remHoles=False, offset_tol
 
     PathLog.error("No bottom face for extend outline.")
     return None
+
 
 # Waterline extension face generation function
 def getWaterlineFace(base_shape, face):
@@ -580,8 +637,11 @@ def getWaterlineFace(base_shape, face):
         step_down=math.floor(faceHeight - baseBB.ZMin + 2.0),
         z_finish_step=0.0,
         final_depth=baseBB.ZMin,
-        user_depths=None)
-    env = PathUtils.getEnvelope(partshape=base_shape, subshape=None, depthparams=depthparams)
+        user_depths=None,
+    )
+    env = PathUtils.getEnvelope(
+        partshape=base_shape, subshape=None, depthparams=depthparams
+    )
     # Get top face(s) of envelope at face height
     rawList = list()
     for f in env.Faces:
@@ -589,7 +649,9 @@ def getWaterlineFace(base_shape, face):
             rawList.append(f)
     # make compound and extrude downward
     rawComp = Part.makeCompound(rawList)
-    rawCompExtNeg = rawComp.extrude(FreeCAD.Vector(0.0, 0.0, baseBB.ZMin - faceHeight - 1.0))
+    rawCompExtNeg = rawComp.extrude(
+        FreeCAD.Vector(0.0, 0.0, baseBB.ZMin - faceHeight - 1.0)
+    )
     # Cut off bottom of base shape at face height
     topSolid = base_shape.cut(rawCompExtNeg)
 
