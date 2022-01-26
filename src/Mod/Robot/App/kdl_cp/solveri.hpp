@@ -85,7 +85,7 @@ class SolverI
 {
 public:
     enum {
-	/// Converged but degraded solution (e.g. WDLS with psuedo-inverse singular)
+	/// Converged but degraded solution (e.g. WDLS with pseudo-inverse singular)
         E_DEGRADED         = +1,
     //! No error
         E_NOERROR          =  0,

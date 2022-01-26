@@ -34,7 +34,7 @@ __contributors__ = "Schildkroet"
 
 
 class ObjectProfile(PathProfile.ObjectProfile):
-    '''Psuedo class for Profile operation,
+    '''Pseudo class for Profile operation,
     allowing for backward compatibility with pre-existing "Profile Faces" operations.'''
     pass
 # Eclass
