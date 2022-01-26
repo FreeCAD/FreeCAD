@@ -19,7 +19,7 @@
 # include <QTextStream>
 #endif
 
-#include <time.h>
+#include <ctime>
 #if defined(FC_OS_WIN32)
 #include <sys/timeb.h>
 #endif
@@ -187,7 +187,7 @@ void CmdImageScaling::activated(int iMsg)
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #if HAVE_OPENCV2
-DEF_STD_CMD(CmdImageCapturerTest);
+DEF_STD_CMD(CmdImageCapturerTest)
 
 CmdImageCapturerTest::CmdImageCapturerTest()
   : Command("Image_CapturerTest")
@@ -226,7 +226,7 @@ void CmdImageCapturerTest::activated(int iMsg)
 }
 #endif
 
-void CreateImageCommands(void)
+void CreateImageCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 

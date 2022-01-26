@@ -39,7 +39,7 @@ using namespace ImageGui;
 TYPESYSTEM_SOURCE_ABSTRACT(ImageGui::ImageView, Gui::MDIView)
 
 ImageView::ImageView(QWidget* parent)
-  : MDIView(0, parent), _ignoreCloseEvent(false)
+  : MDIView(nullptr, parent), _ignoreCloseEvent(false)
 {
     // Create an OpenGL widget for displaying images
     // Since Qt5 there is a weird behaviour when creating a GLImageBox.
