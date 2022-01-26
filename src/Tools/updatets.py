@@ -154,7 +154,7 @@ def update_translation(entry):
 
     execline = []
     execline.append (f"touch dummy_cpp_file_for_lupdate.cpp") #lupdate requires at least one source file to process the UI files
-    execline.append (f"{QMAKE} -project -o {project_filename}")
+    execline.append (f"{QMAKE} -project -o {project_filename} -r")
     execline.append (f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp")
     execline.append (f"touch {tsBasename}.ts") # In case it didn't get created above
     execline.append (f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}")
