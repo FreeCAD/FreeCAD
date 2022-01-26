@@ -48,7 +48,7 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute(void);
+  App::DocumentObjectExecReturn *execute();
   short mustExecute() const;
   void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
@@ -70,7 +70,7 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute(void);
+  App::DocumentObjectExecReturn *execute();
   short mustExecute() const;
   void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
@@ -94,7 +94,7 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute(void);
+  App::DocumentObjectExecReturn *execute();
   short mustExecute() const;
   void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
@@ -119,7 +119,7 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute(void);
+  App::DocumentObjectExecReturn *execute();
   short mustExecute() const;
   void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
@@ -141,7 +141,7 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute(void);
+  App::DocumentObjectExecReturn *execute();
   short mustExecute() const;
   void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}
@@ -163,7 +163,7 @@ public:
   /** @name methods override Feature */
   //@{
   /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute(void);
+  App::DocumentObjectExecReturn *execute();
   short mustExecute() const;
   void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
   //@}

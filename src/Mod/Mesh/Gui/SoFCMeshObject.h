@@ -48,7 +48,7 @@ class MeshGuiExport SoSFMeshObject : public SoSField {
     SO_SFIELD_HEADER(SoSFMeshObject, Base::Reference<const Mesh::MeshObject>, Base::Reference<const Mesh::MeshObject>);
 
 public:
-    static void initClass(void);
+    static void initClass();
 
 private:
     SoSFMeshObject(const SoSFMeshObject&);
@@ -62,7 +62,7 @@ class MeshGuiExport SoFCMeshObjectElement : public SoReplacedElement {
     SO_ELEMENT_HEADER(SoFCMeshObjectElement);
 
 public:
-    static void initClass(void);
+    static void initClass();
 
     virtual void init(SoState * state);
     static void set(SoState * const state, SoNode * const node, const Mesh::MeshObject * const mesh);
@@ -83,8 +83,8 @@ class MeshGuiExport SoFCMeshPickNode : public SoNode {
     SO_NODE_HEADER(SoFCMeshPickNode);
 
 public:
-    static void initClass(void);
-    SoFCMeshPickNode(void);
+    static void initClass();
+    SoFCMeshPickNode();
     void notify(SoNotList *);
 
     SoSFMeshObject mesh;
@@ -107,8 +107,8 @@ class MeshGuiExport SoFCMeshGridNode : public SoNode {
     SO_NODE_HEADER(SoFCMeshGridNode);
 
 public:
-    static void initClass(void);
-    SoFCMeshGridNode(void);
+    static void initClass();
+    SoFCMeshGridNode();
     void GLRender(SoGLRenderAction * action);
 
     SoSFVec3f minGrid;
@@ -127,8 +127,8 @@ class MeshGuiExport SoFCMeshObjectNode : public SoNode {
     SO_NODE_HEADER(SoFCMeshObjectNode);
 
 public:
-    static void initClass(void);
-    SoFCMeshObjectNode(void);
+    static void initClass();
+    SoFCMeshObjectNode();
 
     SoSFMeshObject mesh;
 

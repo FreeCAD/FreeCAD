@@ -32,7 +32,7 @@
 # else
 # include <GL/gl.h>
 # endif
-# include <float.h>
+# include <cfloat>
 # include <algorithm>
 # include <Inventor/actions/SoCallbackAction.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -48,7 +48,7 @@
 #endif
 
 # include <Inventor/elements/SoCoordinateElement.h>
-# include <float.h>
+# include <cfloat>
 
 #include "SoPolygon.h"
 

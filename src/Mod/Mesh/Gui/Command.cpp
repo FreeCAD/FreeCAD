@@ -282,7 +282,7 @@ void CmdMeshUnion::activated(int)
     }
 }
 
-bool CmdMeshUnion::isActive(void)
+bool CmdMeshUnion::isActive()
 {
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 2;
 }
@@ -353,7 +353,7 @@ void CmdMeshDifference::activated(int)
     }
 }
 
-bool CmdMeshDifference::isActive(void)
+bool CmdMeshDifference::isActive()
 {
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 2;
 }
@@ -424,7 +424,7 @@ void CmdMeshIntersection::activated(int)
     }
 }
 
-bool CmdMeshIntersection::isActive(void)
+bool CmdMeshIntersection::isActive()
 {
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 2;
 }
@@ -475,7 +475,7 @@ void CmdMeshImport::activated(int)
     }
 }
 
-bool CmdMeshImport::isActive(void)
+bool CmdMeshImport::isActive()
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -550,7 +550,7 @@ void CmdMeshExport::activated(int)
     }
 }
 
-bool CmdMeshExport::isActive(void)
+bool CmdMeshExport::isActive()
 {
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
 }
@@ -605,7 +605,7 @@ void CmdMeshFromGeometry::activated(int)
     }
 }
 
-bool CmdMeshFromGeometry::isActive(void)
+bool CmdMeshFromGeometry::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc) return false;
@@ -634,7 +634,7 @@ void CmdMeshFromPartShape::activated(int)
     doCommand(Doc,"import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_Mesher')\n");
 }
 
-bool CmdMeshFromPartShape::isActive(void)
+bool CmdMeshFromPartShape::isActive()
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
@@ -676,7 +676,7 @@ void CmdMeshVertexCurvature::activated(int)
     updateActive();
 }
 
-bool CmdMeshVertexCurvature::isActive(void)
+bool CmdMeshVertexCurvature::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
@@ -713,7 +713,7 @@ void CmdMeshVertexCurvatureInfo::activated(int)
      }
 }
 
-bool CmdMeshVertexCurvatureInfo::isActive(void)
+bool CmdMeshVertexCurvatureInfo::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc || doc->countObjectsOfType(Mesh::Curvature::getClassTypeId()) == 0)
@@ -769,7 +769,7 @@ void CmdMeshPolySegm::activated(int)
     }
 }
 
-bool CmdMeshPolySegm::isActive(void)
+bool CmdMeshPolySegm::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
@@ -869,7 +869,7 @@ void CmdMeshAddFacet::activated(int)
     }
 }
 
-bool CmdMeshAddFacet::isActive(void)
+bool CmdMeshAddFacet::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) != 1)
@@ -930,7 +930,7 @@ void CmdMeshPolyCut::activated(int)
     }
 }
 
-bool CmdMeshPolyCut::isActive(void)
+bool CmdMeshPolyCut::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
@@ -991,7 +991,7 @@ void CmdMeshPolyTrim::activated(int)
     }
 }
 
-bool CmdMeshPolyTrim::isActive(void)
+bool CmdMeshPolyTrim::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
@@ -1055,7 +1055,7 @@ void CmdMeshSectionByPlane::activated(int)
     doCommand(Doc,"import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_SectionByPlane')\n");
 }
 
-bool CmdMeshSectionByPlane::isActive(void)
+bool CmdMeshSectionByPlane::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) != 1)
@@ -1129,7 +1129,7 @@ void CmdMeshPolySplit::activated(int)
     }
 }
 
-bool CmdMeshPolySplit::isActive(void)
+bool CmdMeshPolySplit::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
@@ -1179,7 +1179,7 @@ void CmdMeshEvaluation::activated(int)
     dlg->show();
 }
 
-bool CmdMeshEvaluation::isActive(void)
+bool CmdMeshEvaluation::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
@@ -1215,7 +1215,7 @@ void CmdMeshEvaluateFacet::activated(int)
      }
 }
 
-bool CmdMeshEvaluateFacet::isActive(void)
+bool CmdMeshEvaluateFacet::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
@@ -1256,7 +1256,7 @@ void CmdMeshRemoveComponents::activated(int)
     Gui::Control().showDialog(dlg);
 }
 
-bool CmdMeshRemoveComponents::isActive(void)
+bool CmdMeshRemoveComponents::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     App::Document* doc = getDocument();
@@ -1303,7 +1303,7 @@ void CmdMeshRemeshGmsh::activated(int)
     Gui::Control().showDialog(dlg);
 }
 
-bool CmdMeshRemeshGmsh::isActive(void)
+bool CmdMeshRemeshGmsh::isActive()
 {
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
 }
@@ -1337,7 +1337,7 @@ void CmdMeshRemoveCompByHand::activated(int)
     }
 }
 
-bool CmdMeshRemoveCompByHand::isActive(void)
+bool CmdMeshRemoveCompByHand::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
@@ -1384,7 +1384,7 @@ void CmdMeshEvaluateSolid::activated(int)
     }
 }
 
-bool CmdMeshEvaluateSolid::isActive(void)
+bool CmdMeshEvaluateSolid::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
@@ -1443,7 +1443,7 @@ void CmdMeshSmoothing::activated(int)
 #endif
 }
 
-bool CmdMeshSmoothing::isActive(void)
+bool CmdMeshSmoothing::isActive()
 {
 #if 1
     if (Gui::Control().activeDialog())
@@ -1474,7 +1474,7 @@ void CmdMeshDecimating::activated(int)
     Gui::Control().showDialog(new MeshGui::TaskDecimating());
 }
 
-bool CmdMeshDecimating::isActive(void)
+bool CmdMeshDecimating::isActive()
 {
 #if 1
     if (Gui::Control().activeDialog())
@@ -1512,7 +1512,7 @@ void CmdMeshHarmonizeNormals::activated(int)
     updateActive();
 }
 
-bool CmdMeshHarmonizeNormals::isActive(void)
+bool CmdMeshHarmonizeNormals::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
@@ -1546,7 +1546,7 @@ void CmdMeshFlipNormals::activated(int)
     updateActive();
 }
 
-bool CmdMeshFlipNormals::isActive(void)
+bool CmdMeshFlipNormals::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
@@ -1588,7 +1588,7 @@ void CmdMeshBoundingBox::activated(int)
     }
 }
 
-bool CmdMeshBoundingBox::isActive(void)
+bool CmdMeshBoundingBox::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
@@ -1612,14 +1612,14 @@ CmdMeshBuildRegularSolid::CmdMeshBuildRegularSolid()
 
 void CmdMeshBuildRegularSolid::activated(int)
 {
-    static QPointer<QDialog> dlg = 0;
+    static QPointer<QDialog> dlg = nullptr;
     if (!dlg)
         dlg = new MeshGui::DlgRegularSolidImp(Gui::getMainWindow());
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
 }
 
-bool CmdMeshBuildRegularSolid::isActive(void)
+bool CmdMeshBuildRegularSolid::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     return hasActiveDocument();
@@ -1657,7 +1657,7 @@ void CmdMeshFillupHoles::activated(int)
     updateActive();
 }
 
-bool CmdMeshFillupHoles::isActive(void)
+bool CmdMeshFillupHoles::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
@@ -1692,7 +1692,7 @@ void CmdMeshFillInteractiveHole::activated(int)
      }
 }
 
-bool CmdMeshFillInteractiveHole::isActive(void)
+bool CmdMeshFillInteractiveHole::isActive()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc || doc->countObjectsOfType(Mesh::Feature::getClassTypeId()) == 0)
@@ -1733,7 +1733,7 @@ void CmdMeshSegmentation::activated(int)
     Gui::Control().showDialog(dlg);
 }
 
-bool CmdMeshSegmentation::isActive(void)
+bool CmdMeshSegmentation::isActive()
 {
     if (Gui::Control().activeDialog())
         return false;
@@ -1769,7 +1769,7 @@ void CmdMeshSegmentationBestFit::activated(int)
     Gui::Control().showDialog(dlg);
 }
 
-bool CmdMeshSegmentationBestFit::isActive(void)
+bool CmdMeshSegmentationBestFit::isActive()
 {
     if (Gui::Control().activeDialog())
         return false;
@@ -1815,7 +1815,7 @@ void CmdMeshMerge::activated(int)
     commitCommand();
 }
 
-bool CmdMeshMerge::isActive(void)
+bool CmdMeshMerge::isActive()
 {
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) >= 2;
 }
@@ -1861,7 +1861,7 @@ void CmdMeshSplitComponents::activated(int)
     commitCommand();
 }
 
-bool CmdMeshSplitComponents::isActive(void)
+bool CmdMeshSplitComponents::isActive()
 {
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
 }
@@ -1909,13 +1909,13 @@ void CmdMeshScale::activated(int)
     commitCommand();
 }
 
-bool CmdMeshScale::isActive(void)
+bool CmdMeshScale::isActive()
 {
     return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0;
 }
 
 
-void CreateMeshCommands(void)
+void CreateMeshCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
   //rcCmdMgr.addCommand(new CmdMeshDemolding());

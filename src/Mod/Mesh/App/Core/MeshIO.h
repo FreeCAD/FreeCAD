@@ -92,10 +92,10 @@ class MeshExport MeshInput
 {
 public:
     MeshInput (MeshKernel &rclM)
-        : _rclMesh(rclM), _material(0){}
+        : _rclMesh(rclM), _material(nullptr){}
     MeshInput (MeshKernel &rclM, Material* m)
         : _rclMesh(rclM), _material(m){}
-    virtual ~MeshInput (void) { }
+    virtual ~MeshInput () { }
     const std::vector<std::string>& GetGroupNames() const {
         return _groupNames;
     }
@@ -150,10 +150,10 @@ class MeshExport MeshOutput
 {
 public:
     MeshOutput (const MeshKernel &rclM)
-        : _rclMesh(rclM), _material(0), apply_transform(false){}
+        : _rclMesh(rclM), _material(nullptr), apply_transform(false){}
     MeshOutput (const MeshKernel &rclM, const Material* m)
         : _rclMesh(rclM), _material(m), apply_transform(false){}
-    virtual ~MeshOutput (void) { }
+    virtual ~MeshOutput () { }
     void SetObjectName(const std::string& n)
     { objectName = n; }
     void SetGroups(const std::vector<Group>& g) {

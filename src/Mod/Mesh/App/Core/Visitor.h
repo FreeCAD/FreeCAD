@@ -25,6 +25,7 @@
 #define VISITOR_H
 
 #include "Definitions.h"
+#include <Mod/Mesh/MeshGlobal.h>
 
 namespace MeshCore {
 
@@ -42,9 +43,9 @@ class MeshExport MeshFacetVisitor
 {
 public:
     /// Construction 
-    MeshFacetVisitor(void) { }
+    MeshFacetVisitor() { }
     /// Denstruction 
-    virtual ~MeshFacetVisitor(void) { }
+    virtual ~MeshFacetVisitor() { }
     /** Needs to be implemented in sub-classes.
      * \a rclFacet is the currently visited facet with the index \a ulFInd, \a rclFrom
      * is the last visited facet and \a ulLevel indicates the ring number around the start facet. 
@@ -173,9 +174,9 @@ class MeshExport MeshPointVisitor
 {
 public:
     /// Construction 
-    MeshPointVisitor(void) { }
+    MeshPointVisitor() { }
     /// Denstruction 
-    virtual ~MeshPointVisitor(void) { }
+    virtual ~MeshPointVisitor() { }
     /** Needs to be implemented in sub-classes.
      * \a rclPoint is the currently visited point with the index \a ulPInd, \a rclFrom
      * is the last visited point  and \a ulLevel indicates the ring number around the start point.

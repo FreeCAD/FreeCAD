@@ -93,7 +93,7 @@ QWidget* PropertyMeshKernelItem::createEditor(QWidget* parent, const QObject* re
     Q_UNUSED(parent);
     Q_UNUSED(receiver);
     Q_UNUSED(method);
-    return 0;
+    return nullptr;
 }
 
 void PropertyMeshKernelItem::setEditorData(QWidget *editor, const QVariant& data) const

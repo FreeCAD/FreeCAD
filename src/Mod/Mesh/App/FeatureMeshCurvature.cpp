@@ -43,9 +43,9 @@ using namespace Mesh;
 PROPERTY_SOURCE(Mesh::Curvature, App::DocumentObject)
 
 
-Curvature::Curvature(void)
+Curvature::Curvature()
 {
-    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Source,(nullptr));
     ADD_PROPERTY(CurvInfo, (CurvatureInfo()));
 }
 
@@ -58,7 +58,7 @@ short Curvature::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Curvature::execute(void)
+App::DocumentObjectExecReturn *Curvature::execute()
 {
     Mesh::Feature *pcFeat  = dynamic_cast<Mesh::Feature*>(Source.getValue());
     if(!pcFeat || pcFeat->isError()) {

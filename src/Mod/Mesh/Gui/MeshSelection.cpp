@@ -81,9 +81,9 @@ MeshSelection::MeshSelection()
   , addToSelection(false)
   , addComponent(false)
   , removeComponent(false)
-  , activeCB(0)
-  , selectionCB(0)
-  , ivViewer(0)
+  , activeCB(nullptr)
+  , selectionCB(nullptr)
+  , ivViewer(nullptr)
 {
     setCallback(selectGLCallback);
 }
@@ -163,14 +163,14 @@ Gui::View3DInventorViewer* MeshSelection::getViewer() const
         return ivViewer;
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (!doc) return 0;
+    if (!doc) return nullptr;
     Gui::MDIView* view = doc->getActiveView();
     if (view && view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return viewer;
     }
 
-    return 0;
+    return nullptr;
 }
 
 void MeshSelection::startInteractiveCallback(Gui::View3DInventorViewer* viewer,SoEventCallbackCB *cb)
@@ -188,7 +188,7 @@ void MeshSelection::stopInteractiveCallback(Gui::View3DInventorViewer* viewer)
         return;
     viewer->setEditing(false);
     viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), this->activeCB, this);
-    this->activeCB = 0;
+    this->activeCB = nullptr;
 }
 
 void MeshSelection::prepareFreehandSelection(bool add,SoEventCallbackCB *cb)
@@ -540,7 +540,7 @@ void MeshSelection::pickFaceCallback(void * ud, SoEventCallback * n)
         n->getAction()->setHandled();
         if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == NULL) {
+            if (point == nullptr) {
                 Base::Console().Message("No facet picked.\n");
                 return;
             }

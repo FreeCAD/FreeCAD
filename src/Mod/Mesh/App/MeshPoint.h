@@ -49,11 +49,11 @@ class MeshExport MeshPoint : public Vector3d
 
 public:
     /// simple constructor
-    MeshPoint(const Vector3d& vec = Vector3d(),MeshObject* obj = 0, unsigned int index = UINT_MAX)
+    MeshPoint(const Vector3d& vec = Vector3d(),MeshObject* obj = nullptr, unsigned int index = UINT_MAX)
         :Vector3d(vec),Index(index),Mesh(obj)
     {}
 
-    bool isBound(void) const {return Index != UINT_MAX;}
+    bool isBound() const {return Index != UINT_MAX;}
 
     unsigned int Index;
     Base::Reference<MeshObject> Mesh;

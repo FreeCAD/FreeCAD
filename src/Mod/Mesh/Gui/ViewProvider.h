@@ -97,8 +97,8 @@ public:
     virtual ~ViewProviderExport();
 
     virtual QIcon getIcon() const;
-    SoSeparator* getRoot(void) const {return nullptr;}
-    std::vector<std::string> getDisplayModes(void) const;
+    SoSeparator* getRoot() const {return nullptr;}
+    std::vector<std::string> getDisplayModes() const;
     const char* getDefaultDisplayMode() const;
 };
 
@@ -127,22 +127,22 @@ public:
 
     virtual void attach(App::DocumentObject *);
     virtual void updateData(const App::Property*);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
     Gui::SoFCSelection* getHighlightNode() const { return pcHighlight; }
     virtual QIcon getIcon() const;
     /// Sets the correct display mode
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes() const;
     bool exportToVrml(const char* filename, const MeshCore::Material&, bool binary=false) const;
-    void exportMesh(const char* filename, const char* fmt=0) const;
+    void exportMesh(const char* filename, const char* fmt=nullptr) const;
     void setupContextMenu(QMenu*, QObject*, const char*);
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject();
 
     /** @name Editing */
     //@{
-    bool doubleClicked(void){ return false; }
+    bool doubleClicked(){ return false; }
     bool isFacetSelected(Mesh::FacetIndex facet);
     void selectComponent(Mesh::FacetIndex facet);
     void deselectComponent(Mesh::FacetIndex facet);

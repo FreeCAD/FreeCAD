@@ -59,7 +59,7 @@ public:
     ~PropertyNormalList();
 
     virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    virtual int getSize() const;
 
     void setValue(const Base::Vector3f&);
     void setValue(float x, float y, float z);
@@ -74,11 +74,11 @@ public:
 
     void setValues (const std::vector<Base::Vector3f>& values);
 
-    const std::vector<Base::Vector3f> &getValues(void) const {
+    const std::vector<Base::Vector3f> &getValues() const {
         return _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     virtual void setPyObject(PyObject *);
 
     virtual void Save (Base::Writer &writer) const;
@@ -87,10 +87,10 @@ public:
     virtual void SaveDocFile (Base::Writer &writer) const;
     virtual void RestoreDocFile(Base::Reader &reader);
 
-    virtual App::Property *Copy(void) const;
+    virtual App::Property *Copy() const;
     virtual void Paste(const App::Property &from);
 
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize () const;
 
     void transformGeometry(const Base::Matrix4D &rclMat);
 
@@ -125,8 +125,8 @@ public:
     PropertyCurvatureList();
     ~PropertyCurvatureList();
 
-    void setSize(int newSize){_lValueList.resize(newSize);}   
-    int getSize(void) const {return _lValueList.size();}   
+    void setSize(int newSize){_lValueList.resize(newSize);}
+    int getSize() const {return _lValueList.size();}
     std::vector<float> getCurvature( int tMode) const;
     void setValue(const CurvatureInfo&);
     void setValues(const std::vector<CurvatureInfo>&);
@@ -138,7 +138,7 @@ public:
     void  set1Value (const int idx, const CurvatureInfo& value) {
         _lValueList[idx] = value;
     }
-    const std::vector<CurvatureInfo> &getValues(void) const {
+    const std::vector<CurvatureInfo> &getValues() const {
         return _lValueList;
     }
     void transformGeometry(const Base::Matrix4D &rclMat);
@@ -151,14 +151,14 @@ public:
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject(void);
+    PyObject* getPyObject();
     void setPyObject(PyObject *value);
     //@}
 
-    App::Property *Copy(void) const;
+    App::Property *Copy() const;
     void Paste(const App::Property &from);
 
-    virtual unsigned int getMemSize (void) const{return _lValueList.size() * sizeof(CurvatureInfo);}
+    virtual unsigned int getMemSize () const{return _lValueList.size() * sizeof(CurvatureInfo);}
 
 private:
     std::vector<CurvatureInfo> _lValueList;
@@ -197,9 +197,9 @@ public:
     /** Returns a the attached mesh object by reference. It cannot be modified 
      * from outside.
      */
-    const MeshObject &getValue(void) const;
-    const MeshObject *getValuePtr(void) const;
-    virtual unsigned int getMemSize (void) const;
+    const MeshObject &getValue() const;
+    const MeshObject *getValuePtr() const;
+    virtual unsigned int getMemSize () const;
     //@}
 
     /** @name Getting basic geometric entities */
@@ -224,7 +224,7 @@ public:
      * create a copy. However, the Python wrapper is marked as \a immutable so
      * that the mesh object cannot be modified from outside.
      */
-    PyObject* getPyObject(void);
+    PyObject* getPyObject();
     /** This method copies the content, hence creates an new mesh object 
      * to copy the data. The passed argument can be an instance of the Python
      * wrapper for the mesh object or simply a list of triangles, i.e. a list
@@ -233,7 +233,7 @@ public:
     void setPyObject(PyObject *value);
     //@}
 
-    const char* getEditorName(void) const {
+    const char* getEditorName() const {
         return "MeshGui::PropertyMeshKernelItem";
     }
 
@@ -245,7 +245,7 @@ public:
     void SaveDocFile (Base::Writer &writer) const;
     void RestoreDocFile(Base::Reader &reader);
 
-    App::Property *Copy(void) const;
+    App::Property *Copy() const;
     void Paste(const App::Property &from);
     //@}
 

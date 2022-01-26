@@ -70,7 +70,7 @@ class DlgEvaluateMeshImp : public QDialog, public App::DocumentObserver
     Q_OBJECT
 
 public:
-    DlgEvaluateMeshImp(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgEvaluateMeshImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgEvaluateMeshImp();
 
     void setMesh(Mesh::Feature*);
@@ -148,7 +148,7 @@ class DockEvaluateMeshImp : public DlgEvaluateMeshImp
     Q_OBJECT
 
 protected:
-    DockEvaluateMeshImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
+    DockEvaluateMeshImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
     ~DockEvaluateMeshImp();
     void closeEvent(QCloseEvent* e);
 

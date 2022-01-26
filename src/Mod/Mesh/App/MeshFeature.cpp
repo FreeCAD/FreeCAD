@@ -56,13 +56,13 @@ Feature::~Feature()
 {
 }
 
-App::DocumentObjectExecReturn *Feature::execute(void)
+App::DocumentObjectExecReturn *Feature::execute()
 {
     this->Mesh.touch();
     return App::DocumentObject::StdReturn;
 }
 
-PyObject *Feature::getPyObject(void)
+PyObject *Feature::getPyObject()
 {
     if(PythonObject.is(Py::_None())){
         // ref counter is set to 1
@@ -111,10 +111,10 @@ template class MeshExport FeatureCustomT<Mesh::Feature>;
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Mesh::FeaturePython, Mesh::Feature)
-template<> const char* Mesh::FeaturePython::getViewProviderName(void) const {
+template<> const char* Mesh::FeaturePython::getViewProviderName() const {
     return "MeshGui::ViewProviderPython";
 }
-template<> PyObject* Mesh::FeaturePython::getPyObject(void) {
+template<> PyObject* Mesh::FeaturePython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<Mesh::MeshFeaturePy>(this),true);
