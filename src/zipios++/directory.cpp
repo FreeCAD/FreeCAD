@@ -51,7 +51,7 @@
 struct boost::filesystem::dir_it::representation
 {
 	representation():
-		m_handle(0),
+		m_handle(nullptr),
 		m_refcount(1),
 		m_stat_p(false)
 	{
@@ -77,7 +77,7 @@ struct boost::filesystem::dir_it::representation
 		++m_refcount;
 		return this;
 	}
-	representation *release() { return --m_refcount? 0: this; }
+	representation *release() { return --m_refcount? nullptr: this; }
 
 	representation &operator++()
 	{
@@ -85,13 +85,13 @@ struct boost::filesystem::dir_it::representation
 			{
 				m_stat_p = false;
 				dirent *rc = readdir(m_handle);
-				if (rc != 0)
+				if (rc != nullptr)
 					m_current = rc->d_name;
 				else
 					{
 						m_current = "";
 						closedir(m_handle);
-						m_handle = 0;
+						m_handle = nullptr;
 					}
 			}
 
@@ -100,7 +100,7 @@ struct boost::filesystem::dir_it::representation
 
 	bool operator== (representation const &rep) const
 	{
-		return (m_handle == 0) == (rep.m_handle == 0);
+		return (m_handle == nullptr) == (rep.m_handle == nullptr);
 	}
 
 	std::string const &operator* () { return m_current; }
@@ -183,14 +183,14 @@ namespace boost
 		template <> std::string get<uname>(dir_it const &it)
 			{
 				struct passwd *pw = getpwuid(it.rep->get_stat().st_uid);
-				if (pw == 0)
+				if (pw == nullptr)
 					throw unknown_uid(it.rep->get_stat().st_uid);
 				return pw->pw_name;
 			}
 		template <> void set<uname>(dir_it const &it, std::string name)
 			{
 				struct passwd *pw = getpwnam(name.c_str());
-				if (pw != 0)
+				if (pw != nullptr)
 					it.rep->change_owner(pw->pw_uid);
 				else
 					throw unknown_uname(name);
@@ -201,14 +201,14 @@ namespace boost
 		template <> std::string get<gname>(dir_it const &it)
 			{
 				struct group *grp = getgrgid(it.rep->get_stat().st_gid);
-				if (grp == 0)
+				if (grp == nullptr)
 					throw unknown_gid(it.rep->get_stat().st_gid);
 				return grp->gr_name;
 			}
 		template <> void set<gname>(dir_it const &it, std::string name)
 			{
 				struct group *grp = getgrnam(name.c_str());
-				if (grp != 0)
+				if (grp != nullptr)
 					it.rep->change_group(grp->gr_gid);
 				else
 					throw unknown_gname(name);
