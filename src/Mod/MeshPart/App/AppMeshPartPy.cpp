@@ -575,13 +575,13 @@ private:
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
         }
 
-#if defined (HAVE_NETGEN)
         static char* kwds_fineness[] = {"Shape", "Fineness", "SecondOrder", "Optimize", "AllowQuad", "MinLength", "MaxLength", NULL};
         PyErr_Clear();
         int fineness=0, secondOrder=0, optimize=1, allowquad=0;
         if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!i|iiidd", kwds_fineness,
                                         &(Part::TopoShapePy::Type), &shape, &fineness,
                                         &secondOrder, &optimize, &allowquad, &minLen, &maxLen)) {
+#if defined (HAVE_NETGEN)
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setFineness(fineness);
@@ -590,6 +590,9 @@ private:
             mesher.setQuadAllowed(allowquad != 0);
             mesher.setMinMaxLengths(minLen, maxLen);
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
+#else
+            throw Py::RuntimeError("SMESH was built without NETGEN support");
+#endif
         }
 
         static char* kwds_user[] = {"Shape", "GrowthRate", "SegPerEdge", "SegPerRadius", "SecondOrder",
@@ -600,6 +603,7 @@ private:
                                         &(Part::TopoShapePy::Type), &shape,
                                         &growthRate, &nbSegPerEdge, &nbSegPerRadius,
                                         &secondOrder, &optimize, &allowquad, &minLen, &maxLen)) {
+#if defined (HAVE_NETGEN)
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setGrowthRate(growthRate);
@@ -610,8 +614,10 @@ private:
             mesher.setQuadAllowed(allowquad != 0);
             mesher.setMinMaxLengths(minLen, maxLen);
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
-        }
+#else
+            throw Py::RuntimeError("SMESH was built without NETGEN support");
 #endif
+        }
 
         PyErr_Clear();
         if (PyArg_ParseTuple(args.ptr(), "O!", &(Part::TopoShapePy::Type), &shape)) {
