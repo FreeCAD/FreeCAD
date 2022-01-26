@@ -21,12 +21,12 @@
     <message>
       <location filename="package_details.py" line="108"/>
       <source>installed on</source>
-      <translation type="unfinished">installed on</translation>
+      <translation>geïnstalleerd op</translation>
     </message>
     <message>
       <location filename="package_details.py" line="118"/>
       <source>installed</source>
-      <translation type="unfinished">installed</translation>
+      <translation>geïnstalleerd</translation>
     </message>
     <message>
       <location filename="package_details.py" line="126"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="package_details.py" line="407"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>Installeren</translation>
     </message>
     <message>
       <location filename="package_details.py" line="410"/>
@@ -179,22 +179,22 @@
     <message>
       <location filename="package_list.py" line="372"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Geïnstalleerde versie</translation>
     </message>
     <message>
       <location filename="package_list.py" line="380"/>
       <source>Unknown version</source>
-      <translation type="unfinished">Unknown version</translation>
+      <translation>Onbekende versie</translation>
     </message>
     <message>
       <location filename="package_list.py" line="383"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>Geïnstalleerd op</translation>
     </message>
     <message>
       <location filename="package_list.py" line="394"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Beschikbare versie</translation>
     </message>
     <message>
       <location filename="package_list.py" line="566"/>
@@ -234,7 +234,7 @@
     <message>
       <location filename="package_list.py" line="702"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Niet geïnstalleerd</translation>
     </message>
     <message>
       <location filename="package_list.py" line="582"/>
@@ -245,21 +245,6 @@
       <location filename="package_list.py" line="585"/>
       <source>OK</source>
       <translation>OK</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_metadata.py" line="72"/>
-      <source>Error with encrypted connection</source>
-      <translation type="unfinished">Error with encrypted connection</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_metadata.py" line="135"/>
-      <source>Failed to connect to</source>
-      <translation type="unfinished">Failed to connect to</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_metadata.py" line="220"/>
-      <source>Failed to connect to URL</source>
-      <translation type="unfinished">Failed to connect to URL</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="115"/>
@@ -314,6 +299,11 @@
       <translation type="unfinished">Failed to read metadata from</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="429"/>
+      <source>git fetch failed for {wb.name}</source>
+      <translation type="unfinished">git fetch failed for {wb.name}</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="439"/>
       <source>git pull failed for {wb.name}</source>
       <translation type="unfinished">git pull failed for {wb.name}</translation>
@@ -324,9 +314,29 @@
       <translation type="unfinished">Done locating macros.</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="521"/>
+      <source>This addon is already installed.</source>
+      <translation>Deze addon is al geïnstalleerd.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="533"/>
+      <source>An update is available for this addon.</source>
+      <translation>Er is een update beschikbaar voor deze addon.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="547"/>
+      <source>This addon is marked as obsolete</source>
+      <translation>Deze uitbreiding is gemarkeerd als verouderd</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="551"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>Dit betekent gewoonlijk dat het niet meer onderhouden wordt, en een geavanceerdere uitbreidingen in deze lijst biedt dezelfde functionaliteit.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="559"/>
+      <source>This addon is marked as Python 2 Only</source>
+      <translation>Deze toevoeging is alleen geschikt voor Python 2</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="564"/>
@@ -349,6 +359,16 @@
       <translation type="unfinished">Caching macro code...</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="1403"/>
+      <source>Retrieving package metadata...</source>
+      <translation type="unfinished">Retrieving package metadata...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1405"/>
+      <source>Failed to execute pip. Returned error was:</source>
+      <translation type="unfinished">Failed to execute pip. Returned error was:</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="651"/>
       <source>Retrieving description...</source>
       <translation>Omschrijving ophalen...</translation>
@@ -369,46 +389,6 @@
       <translation>Python Markdown bibliotheek mist.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="521"/>
-      <source>This addon is already installed.</source>
-      <translation>Deze addon is al geïnstalleerd.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="533"/>
-      <source>An update is available for this addon.</source>
-      <translation>Er is een update beschikbaar voor deze addon.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="738"/>
-      <source>Outdated GitPython detected, consider upgrading with pip.</source>
-      <translation>Verouderde GitPython gevonden, overweeg een upgrade met pip.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="547"/>
-      <source>This addon is marked as obsolete</source>
-      <translation>Deze uitbreiding is gemarkeerd als verouderd</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="559"/>
-      <source>This addon is marked as Python 2 Only</source>
-      <translation>Deze toevoeging is alleen geschikt voor Python 2</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Informatie ophalen van git</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Informatie ophalen van wiki</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="700"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>GitPython niet gevonden. Standaard download wordt nu gebruikt.</translation>
@@ -422,6 +402,11 @@
       <location filename="addonmanager_workers.py" line="727"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation>De gebruiker verzocht om een Python 2 werkbank bij te werken die alleen geschikt is voor Python 3 </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="738"/>
+      <source>Outdated GitPython detected, consider upgrading with pip.</source>
+      <translation>Verouderde GitPython gevonden, overweeg een upgrade met pip.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="763"/>
@@ -469,16 +454,6 @@
       <translation>Installeer eerst de ontbrekende componenten.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation type="unfinished">Error updating module </translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation type="unfinished">Please fix manually</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Fout: Kan zip niet vinden vanuit</translation>
@@ -494,14 +469,34 @@
       <translation>Succesvol geïnstalleerd</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1405"/>
-      <source>Failed to execute pip. Returned error was:</source>
-      <translation type="unfinished">Failed to execute pip. Returned error was:</translation>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation type="unfinished">Retrieving macro description...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1403"/>
-      <source>Retrieving package metadata...</source>
-      <translation type="unfinished">Retrieving package metadata...</translation>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Informatie ophalen van git</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Informatie ophalen van wiki</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation type="unfinished">Error updating module </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation type="unfinished">Please fix manually</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1220"/>
+      <source>Error: Unable to locate ZIP from</source>
+      <translation type="unfinished">Error: Unable to locate ZIP from</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="332"/>
@@ -519,6 +514,21 @@
       <translation type="unfinished">Clone directory</translation>
     </message>
     <message>
+      <location filename="addonmanager_metadata.py" line="72"/>
+      <source>Error with encrypted connection</source>
+      <translation type="unfinished">Error with encrypted connection</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="135"/>
+      <source>Failed to connect to</source>
+      <translation type="unfinished">Failed to connect to</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="220"/>
+      <source>Failed to connect to URL</source>
+      <translation type="unfinished">Failed to connect to URL</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="191"/>
       <source>Checking connection</source>
       <translation type="unfinished">Checking connection</translation>
@@ -534,9 +544,19 @@
       <translation type="unfinished">Connection failed</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="240"/>
+      <source>Missing dependency</source>
+      <translation type="unfinished">Missing dependency</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="241"/>
+      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
+      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="324"/>
       <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
+      <translation>Opstarten...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="258"/>
@@ -551,12 +571,12 @@
     <message>
       <location filename="AddonManager.py" line="209"/>
       <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
+      <translation>Nu opnieuw opstarten</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="210"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>Later opnieuw opstarten</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1248"/>
@@ -567,16 +587,6 @@
       <location filename="AddonManager.py" line="659"/>
       <source>Updating cache...</source>
       <translation type="unfinished">Updating cache...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Zoeken naar updates...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="262"/>
-      <source>Apply</source>
-      <translation>Toepassen</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -592,6 +602,16 @@
       <location filename="AddonManager.py" line="204"/>
       <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
       <translation>Je moet FreeCAD opnieuw starten om de wijzigingen door te voeren. Klik Ok om FreeCAD nu opnieuw te starten, of Cancel om dit later te doen.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Zoeken naar updates...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="262"/>
+      <source>Apply</source>
+      <translation>Toepassen</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="534"/>
@@ -641,7 +661,7 @@
     <message>
       <location filename="AddonManager.py" line="577"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Geen updates beschikbaar</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="774"/>
@@ -654,6 +674,11 @@
       <translation type="unfinished">Failed packages:</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation type="unfinished">Too many to list</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="893"/>
       <source>Missing Requirement</source>
       <translation type="unfinished">Missing Requirement</translation>
@@ -662,6 +687,26 @@
       <location filename="AddonManager.py" line="964"/>
       <source>Installing dependencies</source>
       <translation type="unfinished">Installing dependencies</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1061"/>
+      <source>Cannot execute Python</source>
+      <translation type="unfinished">Cannot execute Python</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1081"/>
+      <source>Cannot execute pip</source>
+      <translation type="unfinished">Cannot execute pip</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1102"/>
+      <source>Package installation failed</source>
+      <translation type="unfinished">Package installation failed</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1105"/>
+      <source>See Report View for detailed failure log.</source>
+      <translation type="unfinished">See Report View for detailed failure log.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="703"/>
@@ -681,7 +726,7 @@
     <message>
       <location filename="AddonManager.py" line="1183"/>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Mislukt</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="800"/>
@@ -691,12 +736,22 @@
     <message>
       <location filename="AddonManager.py" line="850"/>
       <source>Installation succeeded</source>
-      <translation type="unfinished">Installation succeeded</translation>
+      <translation>Installatie geslaagd</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="866"/>
       <source>Installation failed</source>
-      <translation type="unfinished">Installation failed</translation>
+      <translation>Installatie mislukt</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1457"/>
+      <source>Confirm remove</source>
+      <translation type="unfinished">Confirm remove</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1460"/>
+      <source>Are you sure you want to uninstall this Addon?</source>
+      <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="504"/>

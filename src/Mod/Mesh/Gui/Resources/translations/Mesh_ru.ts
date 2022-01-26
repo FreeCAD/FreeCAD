@@ -1696,7 +1696,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Inventor V2.1 ASCII</source>
-      <translation type="unfinished">Inventor V2.1 ASCII</translation>
+      <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
@@ -1704,7 +1704,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <source>All Files</source>

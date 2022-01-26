@@ -1465,7 +1465,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Language</source>
-      <translation>Язык (Language)</translation>
+      <translation>Язык интерфейса</translation>
     </message>
     <message>
       <source>Change language:</source>
@@ -4703,8 +4703,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</translation>
+      <translation>Игнорировать зависимости и продолжать работу с объектами, выбранными до открытия этого диалогового окна</translation>
     </message>
   </context>
   <context>
@@ -7057,7 +7056,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
-      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+      <translation>Некоторые документы не удалось сохранить. Вы хотите отменить закрытие?</translation>
     </message>
   </context>
   <context>

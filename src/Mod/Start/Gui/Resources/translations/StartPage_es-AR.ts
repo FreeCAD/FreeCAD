@@ -312,7 +312,7 @@ Al usar ";;" para separar las rutas, puede añadir varias carpetas aquí</transl
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation>Mostrar ayuda en ficha Iniciar documentos</translation>
+      <translation>Muestra sugerencias en la pestaña Documentos de la Pagina de Inicio</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>

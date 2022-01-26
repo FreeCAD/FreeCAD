@@ -1107,7 +1107,7 @@ Por favor, seleccione un cuerpo desde abajo, o cree un nuevo cuerpo.</translatio
       <location filename="../../TaskPrimitiveParameters.ui" line="1254"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1580"/>
       <source>Height:</source>
-      <translation>Alto:</translation>
+      <translation>Altura:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="267"/>
@@ -1271,12 +1271,12 @@ Si es cero, es igual a Radio2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1645"/>
       <source>Right-handed</source>
-      <translation>Diestro</translation>
+      <translation>A la derecha</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1650"/>
       <source>Left-handed</source>
-      <translation>Siniestra</translation>
+      <translation>A la izquierda</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
@@ -1943,7 +1943,7 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="155"/>
       <source>Height:</source>
-      <translation>Alto:</translation>
+      <translation>Altura:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="186"/>
@@ -2370,7 +2370,7 @@ se utilizará el vector normal del plano de croquis</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="115"/>
       <source>x-component of direction vector</source>
-      <translation>Componente X del vector de dirección</translation>
+      <translation>componente X del vector de dirección</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="137"/>

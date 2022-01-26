@@ -8841,7 +8841,7 @@ Would you like to save the file with a different name?</translation>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Redigeringsläge</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>

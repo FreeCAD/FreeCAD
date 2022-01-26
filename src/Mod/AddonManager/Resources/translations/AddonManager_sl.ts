@@ -61,12 +61,12 @@
     <message>
       <location filename="package_details.py" line="240"/>
       <source>WARNING: This addon is obsolete</source>
-      <translation type="unfinished">WARNING: This addon is obsolete</translation>
+      <translation>POZOR: Ta dodatek je zastarel</translation>
     </message>
     <message>
       <location filename="package_details.py" line="250"/>
       <source>WARNING: This addon is Python 2 Only</source>
-      <translation type="unfinished">WARNING: This addon is Python 2 Only</translation>
+      <translation>POZOR: Ta dodatek ne le za Python 2</translation>
     </message>
     <message>
       <location filename="package_details.py" line="312"/>
@@ -151,12 +151,12 @@
     <message>
       <location filename="package_list.py" line="371"/>
       <source>updated</source>
-      <translation type="unfinished">updated</translation>
+      <translation>posodobljeno</translation>
     </message>
     <message>
       <location filename="package_list.py" line="376"/>
       <source>Updated</source>
-      <translation type="unfinished">Updated</translation>
+      <translation>Posodobljeno</translation>
     </message>
     <message>
       <location filename="package_list.py" line="382"/>
@@ -236,7 +236,7 @@
     <message>
       <location filename="package_list.py" line="702"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Ni nameščeno</translation>
     </message>
     <message>
       <location filename="package_list.py" line="582"/>
@@ -249,25 +249,10 @@
       <translation>Potrdi</translation>
     </message>
     <message>
-      <location filename="addonmanager_metadata.py" line="72"/>
-      <source>Error with encrypted connection</source>
-      <translation type="unfinished">Error with encrypted connection</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_metadata.py" line="135"/>
-      <source>Failed to connect to</source>
-      <translation>Spodletelo je povezovanje s</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_metadata.py" line="220"/>
-      <source>Failed to connect to URL</source>
-      <translation type="unfinished">Failed to connect to URL</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="115"/>
       <source>Checking network connection...
 </source>
-      <translation type="unfinished">Checking network connection...
+      <translation>Preverjanje omrežne povezave ...
 </translation>
     </message>
     <message>
@@ -316,9 +301,14 @@
       <translation>Spodletelo branje metapodatkov s</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="429"/>
+      <source>git fetch failed for {wb.name}</source>
+      <translation type="unfinished">git fetch failed for {wb.name}</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="439"/>
       <source>git pull failed for {wb.name}</source>
-      <translation type="unfinished">git pull failed for {wb.name}</translation>
+      <translation>spodletel sprejem git-a za {wb.name}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="514"/>
@@ -326,9 +316,29 @@
       <translation>Odkrivanje makrov končano.</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="521"/>
+      <source>This addon is already installed.</source>
+      <translation>Ta dodatek je že nameščen.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="533"/>
+      <source>An update is available for this addon.</source>
+      <translation>Posodobitev za ta dodatek je na voljo.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="547"/>
+      <source>This addon is marked as obsolete</source>
+      <translation>Ta dodatek je označen kot zastarel</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="551"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>To ponavadi pomeni, da ni več vzdrževan in naprednejši dodatek s tega seznama nudi enake zmožnosti.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="559"/>
+      <source>This addon is marked as Python 2 Only</source>
+      <translation>Ta dodatek je označen, da je le za Python 2</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="564"/>
@@ -338,7 +348,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="608"/>
       <source>An error occurred fetching macros from GitHub</source>
-      <translation type="unfinished">An error occurred fetching macros from GitHub</translation>
+      <translation>Pri pridobivanju makrov z GitHub-a je prišlo do napake</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="665"/>
@@ -348,7 +358,17 @@
     <message>
       <location filename="addonmanager_workers.py" line="697"/>
       <source>Caching macro code...</source>
-      <translation type="unfinished">Caching macro code...</translation>
+      <translation>Pridobivanje kode makra ...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1403"/>
+      <source>Retrieving package metadata...</source>
+      <translation>Pridobivanje metapodatkov paketa ...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1405"/>
+      <source>Failed to execute pip. Returned error was:</source>
+      <translation>Izvršitev "slike v sliki" je spodletela. Vrnjena napaka:</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="651"/>
@@ -371,46 +391,6 @@
       <translation>Knjižnica Python Markdowna manjka.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="521"/>
-      <source>This addon is already installed.</source>
-      <translation>Ta dodatek je že nameščen.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="533"/>
-      <source>An update is available for this addon.</source>
-      <translation>Posodobitev za ta dodatek je na voljo.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="738"/>
-      <source>Outdated GitPython detected, consider upgrading with pip.</source>
-      <translation>Zaznan je zastarel GitPython; razmislite o nadgraditivi s pip-om.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="547"/>
-      <source>This addon is marked as obsolete</source>
-      <translation>Ta dodatek je označen kot zastarel</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="559"/>
-      <source>This addon is marked as Python 2 Only</source>
-      <translation>Ta dodatek je označen, da je le za Python 2</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Pridobivanje opisov makrov ...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Pridobivanje podatkov iz git-a</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Pridobivanje podatkov iz wiki strani</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="700"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>GitPython ni mogoče najti. Namesto tega je običajno prenašanje.</translation>
@@ -424,6 +404,11 @@
       <location filename="addonmanager_workers.py" line="727"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation>Uporabnik je zaprosil posodobitev Python 2 delovnega okolja na okolje, ki se izvaja v Pythonu 3 - </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="738"/>
+      <source>Outdated GitPython detected, consider upgrading with pip.</source>
+      <translation>Zaznan je zastarel GitPython; razmislite o nadgraditivi s pip-om.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="763"/>
@@ -471,16 +456,6 @@
       <translation>Namestite najprej manjkajoče sestavine.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation>Napaka med posodabljanjem modula </translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>Popravite ročno</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Napaka: Ni mogoče najti zipa od</translation>
@@ -496,49 +471,94 @@
       <translation>Uspešno nameščeno</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1405"/>
-      <source>Failed to execute pip. Returned error was:</source>
-      <translation type="unfinished">Failed to execute pip. Returned error was:</translation>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Pridobivanje opisov makrov ...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1403"/>
-      <source>Retrieving package metadata...</source>
-      <translation>Pridobivanje metapodatkov paketa ...</translation>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Pridobivanje podatkov iz git-a</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Pridobivanje podatkov iz wiki strani</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation>Napaka med posodabljanjem modula </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>Popravite ročno</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1220"/>
+      <source>Error: Unable to locate ZIP from</source>
+      <translation type="unfinished">Error: Unable to locate ZIP from</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="332"/>
       <source>Failed to repair missing .git directory</source>
-      <translation type="unfinished">Failed to repair missing .git directory</translation>
+      <translation>Popravljanje manjkajoče .git mape je spodletelo</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="335"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>Spletni naslov skladišča</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="338"/>
       <source>Clone directory</source>
-      <translation type="unfinished">Clone directory</translation>
+      <translation>Podvoji mapo</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="72"/>
+      <source>Error with encrypted connection</source>
+      <translation>Napaka kodirane povezave</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="135"/>
+      <source>Failed to connect to</source>
+      <translation>Spodletelo je povezovanje s</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="220"/>
+      <source>Failed to connect to URL</source>
+      <translation>Spodletelo povezovanje s spletnim naslovom</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="191"/>
       <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <translation>Preverjanje povezave</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="192"/>
       <source>Checking for connection to GitHub...</source>
-      <translation type="unfinished">Checking for connection to GitHub...</translation>
+      <translation>Preverjanje povezave do GitHub-a ...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="213"/>
       <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <translation>Povezovanje spodletelo</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="240"/>
+      <source>Missing dependency</source>
+      <translation type="unfinished">Missing dependency</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="241"/>
+      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
+      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="324"/>
       <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
+      <translation>Pričenjanje ...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="258"/>
@@ -563,22 +583,12 @@
     <message>
       <location filename="AddonManager.py" line="1248"/>
       <source>Refresh local cache</source>
-      <translation type="unfinished">Refresh local cache</translation>
+      <translation>Osveži krajevni predpomnilnik</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="659"/>
       <source>Updating cache...</source>
-      <translation type="unfinished">Updating cache...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Preverjam za posodobitve...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="262"/>
-      <source>Apply</source>
-      <translation>Uveljavi</translation>
+      <translation>Posodabljanje krajevnega predpomnilnika ...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -594,6 +604,16 @@
       <location filename="AddonManager.py" line="204"/>
       <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
       <translation>Za uveljavitev sprememb je potrebno FreeCAD ponovno zaganti. Za takojšen ponovni zagon klinite V redu, če želite ponovno zagnati kasneje, pa kliknite Prekliči.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Preverjam za posodobitve...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="262"/>
+      <source>Apply</source>
+      <translation>Uveljavi</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="534"/>
@@ -656,14 +676,39 @@
       <translation>Spodleteli paketi:</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation type="unfinished">Too many to list</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="893"/>
       <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
+      <translation>Neizpolnjen pogoj</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>
       <source>Installing dependencies</source>
-      <translation type="unfinished">Installing dependencies</translation>
+      <translation>Nameščanje odvisnosti</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1061"/>
+      <source>Cannot execute Python</source>
+      <translation type="unfinished">Cannot execute Python</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1081"/>
+      <source>Cannot execute pip</source>
+      <translation type="unfinished">Cannot execute pip</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1102"/>
+      <source>Package installation failed</source>
+      <translation type="unfinished">Package installation failed</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1105"/>
+      <source>See Report View for detailed failure log.</source>
+      <translation type="unfinished">See Report View for detailed failure log.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="703"/>
@@ -673,17 +718,17 @@
     <message>
       <location filename="AddonManager.py" line="1178"/>
       <source>Succeeded</source>
-      <translation type="unfinished">Succeeded</translation>
+      <translation>Uspelo</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1159"/>
       <source>All packages updates failed:</source>
-      <translation type="unfinished">All packages updates failed:</translation>
+      <translation>Posodobitve vseh paketov spodletele:</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1183"/>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Spodletelo</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="800"/>
@@ -699,6 +744,16 @@
       <location filename="AddonManager.py" line="866"/>
       <source>Installation failed</source>
       <translation>Nameščanje spodletelo</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1457"/>
+      <source>Confirm remove</source>
+      <translation type="unfinished">Confirm remove</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1460"/>
+      <source>Are you sure you want to uninstall this Addon?</source>
+      <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="504"/>

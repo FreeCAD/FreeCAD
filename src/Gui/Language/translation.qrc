@@ -60,5 +60,6 @@
         <file>FreeCAD_vi.qm</file>
         <file>FreeCAD_es-AR.qm</file>
         <file>FreeCAD_bg.qm</file>
+        <file>FreeCAD_ka.qm</file>
     </qresource>
 </RCC> 

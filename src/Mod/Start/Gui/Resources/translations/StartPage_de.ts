@@ -66,7 +66,7 @@
     <message>
       <location filename="TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation>Dieser Abschnitt enthält die Dokumentation für fortgeschrittene Anwender und Personen, die sich für das Schreiben von Python-Skripts interessieren. Dort findet sich auch ein Ablageordner mit Makros, Anweisungen zu deren Installation und deren Verwendung sowie weitere Informationen zum Anpassen von FreeCAD an Ihre speziellen Anforderungen.</translation>
+      <translation>Dieser Abschnitt bündelt die Dokumentation für fortgeschrittene Anwender und Personen, die sich für das Schreiben von Python-Skripten interessieren. Dort findet sich auch ein Ablageordner mit Makros, Anweisungen zu deren Installation und Verwendung sowie weitere Informationen zum Anpassen von FreeCAD an die spezifischen Bedürfnisse des Benutzers.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="55"/>

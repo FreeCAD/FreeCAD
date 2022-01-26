@@ -3404,7 +3404,7 @@ Accepterade kombinationer: två kurvor; en slutpunkt och en kurva; två slutpunk
     <message>
       <location filename="../../EditDatumDialog.cpp" line="115"/>
       <source>Weight:</source>
-      <translation type="unfinished">Weight:</translation>
+      <translation>Vikt:</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="119"/>
@@ -3790,7 +3790,7 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="88"/>
       <source>Creating line</source>
-      <translation type="unfinished">Creating line</translation>
+      <translation>Skapar linje</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="95"/>
@@ -4362,7 +4362,7 @@ Inga begränsningar länkade till slutpunkterna hittades däremot.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="50"/>
       <source>Geometric</source>
-      <translation type="unfinished">Geometric</translation>
+      <translation>Geometrisk</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="55"/>
@@ -4397,7 +4397,7 @@ Inga begränsningar länkade till slutpunkterna hittades däremot.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="85"/>
       <source>Point on Object</source>
-      <translation type="unfinished">Point on Object</translation>
+      <translation>Punkt på objekt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="90"/>
@@ -4497,7 +4497,7 @@ Inga begränsningar länkade till slutpunkterna hittades däremot.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="238"/>
       <source>Hide All</source>
-      <translation type="unfinished">Hide All</translation>
+      <translation>Dölj alla</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="244"/>

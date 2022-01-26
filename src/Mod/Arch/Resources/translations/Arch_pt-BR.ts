@@ -324,6 +324,16 @@
       <translation>Quando for verdadeiro, a cerca será colorida como a postagem e as seções originais.</translation>
     </message>
     <message>
+      <location filename="ArchAxis.py" line="871"/>
+      <source>The axes this system is made of</source>
+      <translation>Os eixos que compõem este sistema</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="873"/>
+      <source>The placement of this axis system</source>
+      <translation>Localização do sistema de coordenadas</translation>
+    </message>
+    <message>
       <location filename="ArchMaterial.py" line="718"/>
       <source>A description for this material</source>
       <translation>Uma descrição para este material</translation>
@@ -1829,16 +1839,6 @@
       <translation>Uma transformação para aplicar em cada rótulo</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="871"/>
-      <source>The axes this system is made of</source>
-      <translation>Os eixos que compõem este sistema</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="873"/>
-      <source>The placement of this axis system</source>
-      <translation>Localização do sistema de coordenadas</translation>
-    </message>
-    <message>
       <location filename="ArchPrecast.py" line="62"/>
       <source>The length of this element</source>
       <translation>O comprimento deste elemento</translation>
@@ -2325,6 +2325,26 @@ Criação de edifício abortada.</translation>
       <location filename="ArchWindowPresets.py" line="504"/>
       <source>Door</source>
       <translation>Porta</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="152"/>
+      <source>Only axes must be selected</source>
+      <translation>Somente eixos devem ser selecionados</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="156"/>
+      <source>Create Axis System</source>
+      <translation>Criar um sistema de eixos</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="161"/>
+      <source>Please select at least one axis</source>
+      <translation>Por favor, selecione pelo menos um eixo</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1119"/>
+      <source>Axis system components</source>
+      <translation>Componentes do sistema de eixos</translation>
     </message>
     <message>
       <location filename="importJSON.py" line="61"/>
@@ -3072,11 +3092,6 @@ Criação de edifício abortada.</translation>
       <translation>Por favor, selecione uma face de base em um objeto estrutural</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="143"/>
-      <source>Arch</source>
-      <translation>Arquitetura</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
       <translation>Ferramentas de estrutura</translation>
@@ -3092,6 +3107,11 @@ Criação de edifício abortada.</translation>
       <translation>Ferramentas de painéis</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="94"/>
+      <source>Rebar tools</source>
+      <translation>Ferramentas de armação</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="99"/>
       <source>Material tools</source>
       <translation>Ferramentas de material</translation>
@@ -3102,24 +3122,14 @@ Criação de edifício abortada.</translation>
       <translation>Ferramentas de tubos</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="94"/>
-      <source>Rebar tools</source>
-      <translation>Ferramentas de armação</translation>
+      <location filename="InitGui.py" line="143"/>
+      <source>Arch</source>
+      <translation>Arquitetura</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="177"/>
       <source>&amp;Arch</source>
       <translation>&amp;Arch</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="193"/>
-      <source>Utilities</source>
-      <translation>Utilitários</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="192"/>
-      <source>&amp;Draft</source>
-      <translation>&amp;Traço</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="181"/>
@@ -3135,6 +3145,96 @@ Criação de edifício abortada.</translation>
       <location filename="InitGui.py" line="189"/>
       <source>Modification</source>
       <translation>Modificação</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="192"/>
+      <source>&amp;Draft</source>
+      <translation>&amp;Traço</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="193"/>
+      <source>Utilities</source>
+      <translation>Utilitários</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="181"/>
+      <source>Create Grid</source>
+      <translation>Criar Grade</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1181"/>
+      <source>Auto height is larger than height</source>
+      <translation>Altura automática é maior que a altura</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1190"/>
+      <source>Total row size is larger than height</source>
+      <translation>O tamanho total das linhas é maior que a altura</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1212"/>
+      <source>Auto width is larger than width</source>
+      <translation>Largura automática é maior que a largura</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1221"/>
+      <source>Total column size is larger than width</source>
+      <translation>O tamanho total das colunas é maior que a largura</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1445"/>
+      <source>Grid</source>
+      <translation>Grade</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1446"/>
+      <source>Total width</source>
+      <translation>Largura total</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1447"/>
+      <source>Total height</source>
+      <translation>Altura total</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1448"/>
+      <source>Add row</source>
+      <translation>Adicionar linha</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1449"/>
+      <source>Del row</source>
+      <translation>Remover linha</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1450"/>
+      <source>Add col</source>
+      <translation>Adicionar coluna</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1451"/>
+      <source>Del col</source>
+      <translation>Remover coluna</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1452"/>
+      <source>Create span</source>
+      <translation>Fundir células</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1453"/>
+      <source>Remove span</source>
+      <translation>Remover fundição</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1454"/>
+      <source>Rows</source>
+      <translation>Linhas</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1454"/>
+      <source>Columns</source>
+      <translation>Colunas</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="83"/>
@@ -3622,26 +3722,6 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
       <translation>Criar eixo</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="152"/>
-      <source>Only axes must be selected</source>
-      <translation>Somente eixos devem ser selecionados</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="156"/>
-      <source>Create Axis System</source>
-      <translation>Criar um sistema de eixos</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="161"/>
-      <source>Please select at least one axis</source>
-      <translation>Por favor, selecione pelo menos um eixo</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="181"/>
-      <source>Create Grid</source>
-      <translation>Criar Grade</translation>
-    </message>
-    <message>
       <location filename="ArchAxis.py" line="851"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Distâncias (mm) e ângulos (graus) entre eixos</translation>
@@ -3665,86 +3745,6 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
       <location filename="ArchAxis.py" line="855"/>
       <source>Label</source>
       <translation>Rótulo</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1119"/>
-      <source>Axis system components</source>
-      <translation>Componentes do sistema de eixos</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1181"/>
-      <source>Auto height is larger than height</source>
-      <translation>Altura automática é maior que a altura</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1190"/>
-      <source>Total row size is larger than height</source>
-      <translation>O tamanho total das linhas é maior que a altura</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1212"/>
-      <source>Auto width is larger than width</source>
-      <translation>Largura automática é maior que a largura</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1221"/>
-      <source>Total column size is larger than width</source>
-      <translation>O tamanho total das colunas é maior que a largura</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1445"/>
-      <source>Grid</source>
-      <translation>Grade</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1446"/>
-      <source>Total width</source>
-      <translation>Largura total</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1447"/>
-      <source>Total height</source>
-      <translation>Altura total</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1448"/>
-      <source>Add row</source>
-      <translation>Adicionar linha</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1449"/>
-      <source>Del row</source>
-      <translation>Remover linha</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1450"/>
-      <source>Add col</source>
-      <translation>Adicionar coluna</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1451"/>
-      <source>Del col</source>
-      <translation>Remover coluna</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1452"/>
-      <source>Create span</source>
-      <translation>Fundir células</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1453"/>
-      <source>Remove span</source>
-      <translation>Remover fundição</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1454"/>
-      <source>Rows</source>
-      <translation>Linhas</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1454"/>
-      <source>Columns</source>
-      <translation>Colunas</translation>
     </message>
     <message>
       <location filename="importDAE.py" line="58"/>
@@ -4166,6 +4166,16 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
   <context>
     <name>Arch_Grid</name>
     <message>
+      <location filename="ArchGrid.py" line="68"/>
+      <source>Grid</source>
+      <translation>Grade</translation>
+    </message>
+    <message>
+      <location filename="ArchGrid.py" line="72"/>
+      <source>Creates a customizable grid object</source>
+      <translation>Cria um objeto Grade customizável</translation>
+    </message>
+    <message>
       <location filename="ArchAxis.py" line="1135"/>
       <source>The number of rows</source>
       <translation>Número de linhas</translation>
@@ -4340,6 +4350,11 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
       <source>Panel Cut</source>
       <translation>Recorte</translation>
     </message>
+    <message>
+      <location filename="ArchPanel.py" line="339"/>
+      <source>Creates 2D views of selected panels</source>
+      <translation>Cria vistas 2D dos painéis selecionados</translation>
+    </message>
   </context>
   <context>
     <name>Arch_Panel_Sheet</name>
@@ -4383,6 +4398,11 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
       <location filename="ArchPipe.py" line="145"/>
       <source>Connector</source>
       <translation>Conector</translation>
+    </message>
+    <message>
+      <location filename="ArchPipe.py" line="149"/>
+      <source>Creates a connector between 2 or 3 selected pipes</source>
+      <translation>Cria um conector entre 2 ou 3 tubos selecionados</translation>
     </message>
   </context>
   <context>
@@ -4430,6 +4450,19 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Cria uma barra de reforço a partir de uma face selecionada de um objeto estrutural</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_RebarTools</name>
+    <message>
+      <location filename="InitGui.py" line="137"/>
+      <source>Rebar tools</source>
+      <translation>Ferramentas de armação</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="142"/>
+      <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
+      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
     </message>
   </context>
   <context>
@@ -4576,6 +4609,19 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
     </message>
   </context>
   <context>
+    <name>Arch_StructuralSystem</name>
+    <message>
+      <location filename="ArchStructure.py" line="233"/>
+      <source>Structural System</source>
+      <translation>Criar sistema estrutural</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="236"/>
+      <source>Create a structural system object from a selected structure and axis</source>
+      <translation>Criar um objeto do sistema estrutural a partir de uma estrutura e eixo selecionados</translation>
+    </message>
+  </context>
+  <context>
     <name>Arch_Structure</name>
     <message>
       <location filename="ArchStructure.py" line="196"/>
@@ -4611,6 +4657,27 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
       <translation>Ferramentas de estrutura</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_StructureTools</name>
+    <message>
+      <location filename="ArchStructure.py" line="1472"/>
+      <source>Structure tools</source>
+      <translation>Ferramentas de estrutura</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_StructuresFromSelection</name>
+    <message>
+      <location filename="ArchStructure.py" line="196"/>
+      <source>Multiple Structures</source>
+      <translation>Múltiplas Estruturas</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="199"/>
+      <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
+      <translation>Crie múltiplos objetos de Estrutura Arquitetura a partir de uma base selecionada, usando cada aresta selecionada como um caminho de extrusão</translation>
     </message>
   </context>
   <context>
@@ -4727,9 +4794,84 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
   <context>
     <name>Workbench</name>
     <message>
+      <location filename="InitGui.py" line="71"/>
+      <source>Structure tools</source>
+      <translation>Ferramentas de estrutura</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="85"/>
+      <source>Axis tools</source>
+      <translation>Ferramentas de eixos</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="91"/>
+      <source>Panel tools</source>
+      <translation>Ferramentas de painéis</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="99"/>
+      <source>Material tools</source>
+      <translation>Ferramentas de material</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="103"/>
+      <source>Pipe tools</source>
+      <translation>Ferramentas de tubos</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="145"/>
+      <source>Rebar tools</source>
+      <translation>Ferramentas de armação</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="112"/>
       <source>Arch tools</source>
       <translation>Ferramentas de arquitetura</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="162"/>
+      <source>Draft creation tools</source>
+      <translation>Ferramentas de criação Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="165"/>
+      <source>Draft annotation tools</source>
+      <translation>Ferramentas de anotação Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="168"/>
+      <source>Draft modification tools</source>
+      <translation>Ferramentas de modificação Draft</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="177"/>
+      <source>&amp;Arch</source>
+      <translation>&amp;Arch</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="193"/>
+      <source>Utilities</source>
+      <translation>Utilitários</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="192"/>
+      <source>&amp;Draft</source>
+      <translation>&amp;Traço</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="181"/>
+      <source>Creation</source>
+      <translation>Criação</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="185"/>
+      <source>Annotation</source>
+      <translation>Anotação</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="189"/>
+      <source>Modification</source>
+      <translation>Modificação</translation>
     </message>
   </context>
   <context>

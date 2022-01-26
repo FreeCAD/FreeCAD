@@ -507,7 +507,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3166"/>
       <source>Constrain vertical distance</source>
-      <translation>Contraindre une distance verticale</translation>
+      <translation>Contraindre la distance verticale</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3167"/>
@@ -1846,7 +1846,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="5657"/>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
       <source>Add radiam constraint</source>
-      <translation>Ajouter une contrainte radiam</translation>
+      <translation>Ajouter une contrainte de rayon</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6025"/>
@@ -1942,12 +1942,12 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="538"/>
       <source>Add sketch box</source>
-      <translation>Ajouter une boîte d’esquisse</translation>
+      <translation>Ajouter une zone d'esquisse</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="575"/>
       <source>Add centered sketch box</source>
-      <translation>Ajouter une boîte d'esquisse centrée</translation>
+      <translation>Ajouter une zone d'esquisse centrée</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>
@@ -2105,7 +2105,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2298"/>
       <source>Remove Axes Alignment</source>
-      <translation>Supprime l'Alignement d'Axes</translation>
+      <translation>Supprimer l'alignement des axes</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
@@ -2499,7 +2499,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="700"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation>Substitution de contrainte d'esquisse</translation>
+      <translation>Substitution de contraintes d'esquisse</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="706"/>
@@ -3763,7 +3763,7 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="34"/>
       <source>Coordinate text</source>
-      <translation>Texte des coordonnées</translation>
+      <translation>Coordonner du texte</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="41"/>
@@ -3780,7 +3780,7 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="88"/>
       <source>Creating line</source>
-      <translation>Création de la ligne</translation>
+      <translation>Création de ligne</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="95"/>
@@ -4491,7 +4491,7 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="244"/>
       <source>Controls visualisation in the 3D view</source>
-      <translation>Contrôle la visualisation dans la vue 3D</translation>
+      <translation>Visualisation des commandes dans la vue 3D</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="247"/>
@@ -4501,7 +4501,7 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="265"/>
       <source>Constraint visualisation tracks filter selection so that filtered out constraints are hidden</source>
-      <translation>La visualisation des contraintes suit la sélection de filtres, de manière à ce que les contraintes filtrées soient cachées</translation>
+      <translation>La visualisation des contraintes suit la sélection du filtre afin que les contraintes filtrées soient masquées</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="268"/>
@@ -5144,7 +5144,7 @@ Les points doivent être placés à une distance de la ligne inférieure à 20% 
     <message>
       <location filename="../../CommandConstraints.cpp" line="5906"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation>Fixer le rayon/diamètre d'un arc ou d'un cercle</translation>
+      <translation>Fixer le rayon/diamètre d'un cercle ou d'un arc</translation>
     </message>
   </context>
   <context>
@@ -5161,7 +5161,7 @@ Les points doivent être placés à une distance de la ligne inférieure à 20% 
     <message>
       <location filename="../../CommandConstraints.cpp" line="5905"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation>Fixer le rayon/diamètre d'un arc ou d'un cercle</translation>
+      <translation>Fixer le rayon/diamètre d'un cercle ou d'un arc</translation>
     </message>
   </context>
   <context>

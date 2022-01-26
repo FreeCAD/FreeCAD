@@ -51,12 +51,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation type="unfinished">If true, only solids will be collected by this object when referenced from other files</translation>
+      <translation>Если Истина, то при обращении к этому объекту из других файлов будут выбираться только твердые тела</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>Карта MaterialName:SolidIndexesList, связывающая названия материалов с индексами твердых тел, которые будут использоваться при ссылке на этот объект из других файлов</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1015"/>
@@ -186,12 +186,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>Поле захвата для вновь созданных объектов, выраженное как [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Включение/выключение поля автогруппировки</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
@@ -201,7 +201,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Поле, используемое при включенном авторазмере</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="192"/>
@@ -322,6 +322,16 @@
       <location filename="ArchFence.py" line="269"/>
       <source>When true, the fence will be colored like the original post and section.</source>
       <translation>Когда значение истинно, ограждение будет окрашено как первоначальная деталь и секция.</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="871"/>
+      <source>The axes this system is made of</source>
+      <translation>Оси, составляющие эту систему</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="873"/>
+      <source>The placement of this axis system</source>
+      <translation>Размещение этой системы осей</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="718"/>
@@ -1276,7 +1286,7 @@
     <message>
       <location filename="ArchReference.py" line="106"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Объединять объекты из одного материала</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="385"/>
@@ -1621,52 +1631,52 @@
     <message>
       <location filename="ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>Расчетная длина пути выдавливания</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Начало смещения вдоль пути выдавливания (положительное: длиннее, отрицательное: короче)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>Начало смещения вдоль пути выдавливания (положительное: длиннее, отрицательное: короче</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Конец смещения вдоль пути выдавливания (положительное: длиннее, отрицательное: короче)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>Конец смещения вдоль пути выдавливания (положительное: длиннее, отрицательное: короче</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="684"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+      <translation>Автоматически выравнивать основание конструкции перпендикулярно оси инструмента</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Смещение по оси X между базовой базой и осью инструмента (используется, только если BasePerpendicularToTool равен True)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Смещение по оси Y между базовой базой и осью инструмента (используется, только если BasePerpendicularToTool равен True)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="690"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Зеркальное отображение базы по оси Y (используется только если BasePerpendicularToTool равен True)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="692"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Вращение базы вокруг оси инструмента (используется только если BasePerpendicularToTool равен True)</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="404"/>
@@ -1827,16 +1837,6 @@
       <location filename="ArchAxis.py" line="345"/>
       <source>A transformation to apply to each label</source>
       <translation>Преобразование, применяемое к каждой метке</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="871"/>
-      <source>The axes this system is made of</source>
-      <translation>Оси, составляющие эту систему</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="873"/>
-      <source>The placement of this axis system</source>
-      <translation>Размещение этой системы осей</translation>
     </message>
     <message>
       <location filename="ArchPrecast.py" line="62"/>
@@ -2305,13 +2305,13 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but Site and Building objects in a Building object.
+      <translation>В объект Building можно поместить все, кроме объектов Site и Building.
 
-Building object is not allowed to accept Site and Building objects.
+Объекту Building не разрешается принимать объекты Site и Building.
 
-Site and Building objects will be removed from the selection.
+Объекты Site и Building будут удалены из выбора.
 
-You can change that in the preferences.</translation>
+Это можно изменить в настройках.</translation>
     </message>
     <message>
       <location filename="ArchBuilding.py" line="246"/>
@@ -2331,6 +2331,26 @@ Building creation aborted.</source>
       <location filename="ArchWindowPresets.py" line="504"/>
       <source>Door</source>
       <translation>Дверь</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="152"/>
+      <source>Only axes must be selected</source>
+      <translation>Должны быть выбраны только оси</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="156"/>
+      <source>Create Axis System</source>
+      <translation>Создать Систему Осей</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="161"/>
+      <source>Please select at least one axis</source>
+      <translation>Пожалуйста, выберите по крайней мере одну ось</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1119"/>
+      <source>Axis system components</source>
+      <translation>Компоненты системы координат</translation>
     </message>
     <message>
       <location filename="importJSON.py" line="61"/>
@@ -3078,14 +3098,9 @@ Building creation aborted.</source>
       <translation>Пожалуйста, выберите базовую грань структурного объекта</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="143"/>
-      <source>Arch</source>
-      <translation>Арх</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Инструменты конструкции</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -3098,6 +3113,11 @@ Building creation aborted.</source>
       <translation>Инструменты панели</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="94"/>
+      <source>Rebar tools</source>
+      <translation>Инструменты арматуры</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="99"/>
       <source>Material tools</source>
       <translation>Инструменты материала</translation>
@@ -3108,24 +3128,14 @@ Building creation aborted.</source>
       <translation>Инструменты трубы</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="94"/>
-      <source>Rebar tools</source>
-      <translation>Инструменты арматуры</translation>
+      <location filename="InitGui.py" line="143"/>
+      <source>Arch</source>
+      <translation>Арх</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="177"/>
       <source>&amp;Arch</source>
       <translation>&amp;Архитектурный</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="193"/>
-      <source>Utilities</source>
-      <translation>Вспомогательные</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="192"/>
-      <source>&amp;Draft</source>
-      <translation>&amp;Черчение</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="181"/>
@@ -3141,6 +3151,96 @@ Building creation aborted.</source>
       <location filename="InitGui.py" line="189"/>
       <source>Modification</source>
       <translation>Модификация</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="192"/>
+      <source>&amp;Draft</source>
+      <translation>&amp;Черчение</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="193"/>
+      <source>Utilities</source>
+      <translation>Вспомогательные</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="181"/>
+      <source>Create Grid</source>
+      <translation>Создать Сетку</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1181"/>
+      <source>Auto height is larger than height</source>
+      <translation>Автоматическая высота больше, чем пользовательская</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1190"/>
+      <source>Total row size is larger than height</source>
+      <translation>Общий размер строки больше высоты</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1212"/>
+      <source>Auto width is larger than width</source>
+      <translation>Автоматическая ширина больше, чем пользовательская</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1221"/>
+      <source>Total column size is larger than width</source>
+      <translation>Общий размер столбца больше высоты</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1445"/>
+      <source>Grid</source>
+      <translation>Сетка</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1446"/>
+      <source>Total width</source>
+      <translation>Общая ширина</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1447"/>
+      <source>Total height</source>
+      <translation>Общая высота</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1448"/>
+      <source>Add row</source>
+      <translation>Добавить строку</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1449"/>
+      <source>Del row</source>
+      <translation>Удалить строку</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1450"/>
+      <source>Add col</source>
+      <translation>Добавить колонку</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1451"/>
+      <source>Del col</source>
+      <translation>Удалить колонку</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1452"/>
+      <source>Create span</source>
+      <translation>Создать промежуток</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1453"/>
+      <source>Remove span</source>
+      <translation>Удалить промежуток</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1454"/>
+      <source>Rows</source>
+      <translation>Строки</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1454"/>
+      <source>Columns</source>
+      <translation>Столбцы</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="83"/>
@@ -3399,17 +3499,17 @@ Floor creation aborted.</source>
 If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
 If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
-      <translation type="unfinished">Parameters of the roof profiles :
-* Angle : slope in degrees relative to the horizontal.
-* Run : horizontal distance between the wall and the ridge.
-* Thickness : thickness of the roof.
-* Overhang : horizontal distance between the eave and the wall.
-* Height : height of the ridge above the base (calculated automatically).
-* IdRel : Id of the relative profile used for automatic calculations.
+      <translation>Параметры профилей крыши :
+* Угол : уклон в градусах относительно горизонтали.
+* Прогон : расстояние по горизонтали между стеной и коньком.
+* Толщина : толщина кровли.
+* Свес : горизонтальное расстояние между карнизом и стеной.
+* Высота : высота конька над основанием (рассчитывается автоматически).
+* IdRel : Id профиля, используемого для автоматических расчетов.
 ---
-If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
-If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
-If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+Если Angle = 0 и Run = 0, то профиль идентичен связанному профилю.
+Если Angle = 0, то угол рассчитывается таким образом, чтобы высота была такой же, как у связанного профиля.
+Если Run = 0, то прогон рассчитывается таким образом, чтобы высота была такой же, как у связанного профиля.</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="1013"/>
@@ -3464,12 +3564,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Создание структур из выделенного</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="222"/>
       <source>Please select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Сначала выберите базовый объект, а затем края, которые будут использоваться в качестве путей выдавливания</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="245"/>
@@ -3479,7 +3579,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Пожалуйста, выберите хотя бы один объект оси</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="345"/>
@@ -3574,7 +3674,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1186"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Инструменты выдавливания</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1325"/>
@@ -3584,7 +3684,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1192"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
-      <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
+      <translation>Выберите объект или края, которые будут использоваться в качестве инструмента (путь выдавливания)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1247"/>
@@ -3639,26 +3739,6 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Создать координатную ось</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="152"/>
-      <source>Only axes must be selected</source>
-      <translation>Должны быть выбраны только оси</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="156"/>
-      <source>Create Axis System</source>
-      <translation>Создать Систему Осей</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="161"/>
-      <source>Please select at least one axis</source>
-      <translation>Пожалуйста, выберите по крайней мере одну ось</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="181"/>
-      <source>Create Grid</source>
-      <translation>Создать Сетку</translation>
-    </message>
-    <message>
       <location filename="ArchAxis.py" line="851"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Расстояния (мм) и углы (градусы) между осями</translation>
@@ -3682,86 +3762,6 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchAxis.py" line="855"/>
       <source>Label</source>
       <translation>Метка</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1119"/>
-      <source>Axis system components</source>
-      <translation>Компоненты системы координат</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1181"/>
-      <source>Auto height is larger than height</source>
-      <translation>Автоматическая высота больше, чем пользовательская</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1190"/>
-      <source>Total row size is larger than height</source>
-      <translation>Общий размер строки больше высоты</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1212"/>
-      <source>Auto width is larger than width</source>
-      <translation>Автоматическая ширина больше, чем пользовательская</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1221"/>
-      <source>Total column size is larger than width</source>
-      <translation>Общий размер столбца больше высоты</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1445"/>
-      <source>Grid</source>
-      <translation>Сетка</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1446"/>
-      <source>Total width</source>
-      <translation>Общая ширина</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1447"/>
-      <source>Total height</source>
-      <translation>Общая высота</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1448"/>
-      <source>Add row</source>
-      <translation>Добавить строку</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1449"/>
-      <source>Del row</source>
-      <translation>Удалить строку</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1450"/>
-      <source>Add col</source>
-      <translation>Добавить колонку</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1451"/>
-      <source>Del col</source>
-      <translation>Удалить колонку</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1452"/>
-      <source>Create span</source>
-      <translation>Создать промежуток</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1453"/>
-      <source>Remove span</source>
-      <translation>Удалить промежуток</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1454"/>
-      <source>Rows</source>
-      <translation>Строки</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1454"/>
-      <source>Columns</source>
-      <translation>Столбцы</translation>
     </message>
     <message>
       <location filename="importDAE.py" line="58"/>
@@ -4183,6 +4183,16 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Grid</name>
     <message>
+      <location filename="ArchGrid.py" line="68"/>
+      <source>Grid</source>
+      <translation>Сетка</translation>
+    </message>
+    <message>
+      <location filename="ArchGrid.py" line="72"/>
+      <source>Creates a customizable grid object</source>
+      <translation>Создаёт настраиваемый объект сетки</translation>
+    </message>
+    <message>
       <location filename="ArchAxis.py" line="1135"/>
       <source>The number of rows</source>
       <translation>Количество строк</translation>
@@ -4357,6 +4367,11 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <source>Panel Cut</source>
       <translation>Нарезка Панелей</translation>
     </message>
+    <message>
+      <location filename="ArchPanel.py" line="339"/>
+      <source>Creates 2D views of selected panels</source>
+      <translation>Создаёт двумерные виды выбранных панелей</translation>
+    </message>
   </context>
   <context>
     <name>Arch_Panel_Sheet</name>
@@ -4400,6 +4415,11 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchPipe.py" line="145"/>
       <source>Connector</source>
       <translation>Соединитель</translation>
+    </message>
+    <message>
+      <location filename="ArchPipe.py" line="149"/>
+      <source>Creates a connector between 2 or 3 selected pipes</source>
+      <translation>Создаёт соединитель между 2-мя или 3-мя выбранными трубами</translation>
     </message>
   </context>
   <context>
@@ -4447,6 +4467,19 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Создаёт арматурный стержень на основе выбранной грани структурного объекта</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_RebarTools</name>
+    <message>
+      <location filename="InitGui.py" line="137"/>
+      <source>Rebar tools</source>
+      <translation>Инструменты арматуры</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="142"/>
+      <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
+      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
     </message>
   </context>
   <context>
@@ -4593,26 +4626,39 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
   </context>
   <context>
-    <name>Arch_Structure</name>
-    <message>
-      <location filename="ArchStructure.py" line="196"/>
-      <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
-    </message>
-    <message>
-      <location filename="ArchStructure.py" line="199"/>
-      <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
-    </message>
+    <name>Arch_StructuralSystem</name>
     <message>
       <location filename="ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Конструктивная система</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>Создание объекта конструктивной системы на основе выбранной структуры и оси</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_Structure</name>
+    <message>
+      <location filename="ArchStructure.py" line="196"/>
+      <source>Multiple Structures</source>
+      <translation>Множество структур</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="199"/>
+      <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
+      <translation>Создание нескольких объектов Arch Structure из выбранного основания, используя каждый выбранный край в качестве пути выдавливания</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="233"/>
+      <source>Structural System</source>
+      <translation>Конструктивная система</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="236"/>
+      <source>Create a structural system object from a selected structure and axis</source>
+      <translation>Создание объекта конструктивной системы на основе выбранной структуры и оси</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="270"/>
@@ -4627,7 +4673,28 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Инструменты конструкции</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_StructureTools</name>
+    <message>
+      <location filename="ArchStructure.py" line="1472"/>
+      <source>Structure tools</source>
+      <translation>Инструменты конструкции</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_StructuresFromSelection</name>
+    <message>
+      <location filename="ArchStructure.py" line="196"/>
+      <source>Multiple Structures</source>
+      <translation>Множество структур</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="199"/>
+      <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
+      <translation>Создание нескольких объектов Arch Structure из выбранного основания, используя каждый выбранный край в качестве пути выдавливания</translation>
     </message>
   </context>
   <context>
@@ -4744,9 +4811,84 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Workbench</name>
     <message>
+      <location filename="InitGui.py" line="71"/>
+      <source>Structure tools</source>
+      <translation>Инструменты конструкции</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="85"/>
+      <source>Axis tools</source>
+      <translation>Инстументы осей</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="91"/>
+      <source>Panel tools</source>
+      <translation>Инструменты панели</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="99"/>
+      <source>Material tools</source>
+      <translation>Инструменты материала</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="103"/>
+      <source>Pipe tools</source>
+      <translation>Инструменты трубы</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="145"/>
+      <source>Rebar tools</source>
+      <translation>Инструменты арматуры</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="112"/>
       <source>Arch tools</source>
       <translation>Архитектурные инструменты</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="162"/>
+      <source>Draft creation tools</source>
+      <translation>Инструменты создания черновиков</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="165"/>
+      <source>Draft annotation tools</source>
+      <translation>Инструменты аннотации черновика</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="168"/>
+      <source>Draft modification tools</source>
+      <translation>Инструменты модификации черновика</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="177"/>
+      <source>&amp;Arch</source>
+      <translation>&amp;Архитектурный</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="193"/>
+      <source>Utilities</source>
+      <translation>Вспомогательные</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="192"/>
+      <source>&amp;Draft</source>
+      <translation>&amp;Черчение</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="181"/>
+      <source>Creation</source>
+      <translation>Создание</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="185"/>
+      <source>Annotation</source>
+      <translation>Заметка</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="189"/>
+      <source>Modification</source>
+      <translation>Модификация</translation>
     </message>
   </context>
   <context>

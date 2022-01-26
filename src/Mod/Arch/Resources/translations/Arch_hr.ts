@@ -189,22 +189,22 @@
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>Okvir za snimanje za novostvorene objekte izražen kao [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Uključuje/isključuje okvir za automatsku grupu</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Automatski postavite veličinu iz sadržaja</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="627"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Margina koja se koristi kada je uključena automatska veličina</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="192"/>
@@ -325,6 +325,16 @@
       <location filename="ArchFence.py" line="269"/>
       <source>When true, the fence will be colored like the original post and section.</source>
       <translation>Kad je istina, ograda će biti obojena poput originalnog stupa i odjeljka.</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="871"/>
+      <source>The axes this system is made of</source>
+      <translation>Ovaj sistem se sastoji od osi</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="873"/>
+      <source>The placement of this axis system</source>
+      <translation>Postavljanje sustava Osi</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="718"/>
@@ -1660,7 +1670,9 @@
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Početni pomak duž puta ekstruzije (pozitivan: produži, negativan: skrati)
+
+</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
@@ -1670,7 +1682,9 @@
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Udaljenost krajnjeg pomaka duž puta ekstruzije (pozitivno: produži, negativno: skrati)
+
+</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
@@ -1861,16 +1875,6 @@
       <location filename="ArchAxis.py" line="345"/>
       <source>A transformation to apply to each label</source>
       <translation>Transformacije primijeniti na svaku oznaku</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="871"/>
-      <source>The axes this system is made of</source>
-      <translation>Ovaj sistem se sastoji od osi</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="873"/>
-      <source>The placement of this axis system</source>
-      <translation>Postavljanje sustava Osi</translation>
     </message>
     <message>
       <location filename="ArchPrecast.py" line="62"/>
@@ -2365,6 +2369,26 @@ Stvaranje zgrade prekinuto.</translation>
       <location filename="ArchWindowPresets.py" line="504"/>
       <source>Door</source>
       <translation>Vrata</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="152"/>
+      <source>Only axes must be selected</source>
+      <translation>Samo osi trebaju biti odabrane</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="156"/>
+      <source>Create Axis System</source>
+      <translation>Stvaranje Osi sustava</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="161"/>
+      <source>Please select at least one axis</source>
+      <translation>Molimo odaberite najmanje jednu os</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1119"/>
+      <source>Axis system components</source>
+      <translation>Komponente sustava Osi</translation>
     </message>
     <message>
       <location filename="importJSON.py" line="61"/>
@@ -3124,11 +3148,6 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Odaberite osnovno lice na strukturni objekt</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="143"/>
-      <source>Arch</source>
-      <translation>Arhitekt</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
       <translation>Alati Konstrukcije</translation>
@@ -3144,6 +3163,11 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Alati Pregrade</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="94"/>
+      <source>Rebar tools</source>
+      <translation>Građevinsko željezo Alat</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="99"/>
       <source>Material tools</source>
       <translation>Alati materijala</translation>
@@ -3154,24 +3178,14 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Alati Cijevi</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="94"/>
-      <source>Rebar tools</source>
-      <translation>Građevinsko željezo Alat</translation>
+      <location filename="InitGui.py" line="143"/>
+      <source>Arch</source>
+      <translation>Arhitekt</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="177"/>
       <source>&amp;Arch</source>
       <translation>&amp;Arhitekt</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="193"/>
-      <source>Utilities</source>
-      <translation>Uslužni programi</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="192"/>
-      <source>&amp;Draft</source>
-      <translation>&amp;Nacrt</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="181"/>
@@ -3187,6 +3201,96 @@ Stvaranje zgrade prekinuto.</translation>
       <location filename="InitGui.py" line="189"/>
       <source>Modification</source>
       <translation>Modifikacija</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="192"/>
+      <source>&amp;Draft</source>
+      <translation>&amp;Nacrt</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="193"/>
+      <source>Utilities</source>
+      <translation>Uslužni programi</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="181"/>
+      <source>Create Grid</source>
+      <translation>Stvaranje rešetke</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1181"/>
+      <source>Auto height is larger than height</source>
+      <translation>Automatska visina je veća od visine</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1190"/>
+      <source>Total row size is larger than height</source>
+      <translation>Ukupna veličina redka je veča od visine</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1212"/>
+      <source>Auto width is larger than width</source>
+      <translation>Auto širina je veća od širine</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1221"/>
+      <source>Total column size is larger than width</source>
+      <translation>Ukupna veličina stupca je veča od širine</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1445"/>
+      <source>Grid</source>
+      <translation>Rešetka</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1446"/>
+      <source>Total width</source>
+      <translation>Ukupna širina</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1447"/>
+      <source>Total height</source>
+      <translation>Ukupna visina</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1448"/>
+      <source>Add row</source>
+      <translation>Dodaj red</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1449"/>
+      <source>Del row</source>
+      <translation>Ukloni red</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1450"/>
+      <source>Add col</source>
+      <translation>Dodaj red</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1451"/>
+      <source>Del col</source>
+      <translation>Ukloni red</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1452"/>
+      <source>Create span</source>
+      <translation>Stvori prostor</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1453"/>
+      <source>Remove span</source>
+      <translation>Ukloni prostor</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1454"/>
+      <source>Rows</source>
+      <translation>Redovi</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1454"/>
+      <source>Columns</source>
+      <translation>Stupci</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="83"/>
@@ -3688,26 +3792,6 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <translation>Stvaranje osi</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="152"/>
-      <source>Only axes must be selected</source>
-      <translation>Samo osi trebaju biti odabrane</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="156"/>
-      <source>Create Axis System</source>
-      <translation>Stvaranje Osi sustava</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="161"/>
-      <source>Please select at least one axis</source>
-      <translation>Molimo odaberite najmanje jednu os</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="181"/>
-      <source>Create Grid</source>
-      <translation>Stvaranje rešetke</translation>
-    </message>
-    <message>
       <location filename="ArchAxis.py" line="851"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Udaljenosti (mm) i kut (stupnjeva) između osi</translation>
@@ -3731,86 +3815,6 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="ArchAxis.py" line="855"/>
       <source>Label</source>
       <translation>Oznaka</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1119"/>
-      <source>Axis system components</source>
-      <translation>Komponente sustava Osi</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1181"/>
-      <source>Auto height is larger than height</source>
-      <translation>Automatska visina je veća od visine</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1190"/>
-      <source>Total row size is larger than height</source>
-      <translation>Ukupna veličina redka je veča od visine</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1212"/>
-      <source>Auto width is larger than width</source>
-      <translation>Auto širina je veća od širine</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1221"/>
-      <source>Total column size is larger than width</source>
-      <translation>Ukupna veličina stupca je veča od širine</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1445"/>
-      <source>Grid</source>
-      <translation>Rešetka</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1446"/>
-      <source>Total width</source>
-      <translation>Ukupna širina</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1447"/>
-      <source>Total height</source>
-      <translation>Ukupna visina</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1448"/>
-      <source>Add row</source>
-      <translation>Dodaj red</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1449"/>
-      <source>Del row</source>
-      <translation>Ukloni red</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1450"/>
-      <source>Add col</source>
-      <translation>Dodaj red</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1451"/>
-      <source>Del col</source>
-      <translation>Ukloni red</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1452"/>
-      <source>Create span</source>
-      <translation>Stvori prostor</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1453"/>
-      <source>Remove span</source>
-      <translation>Ukloni prostor</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1454"/>
-      <source>Rows</source>
-      <translation>Redovi</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1454"/>
-      <source>Columns</source>
-      <translation>Stupci</translation>
     </message>
     <message>
       <location filename="importDAE.py" line="58"/>
@@ -4232,6 +4236,16 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
   <context>
     <name>Arch_Grid</name>
     <message>
+      <location filename="ArchGrid.py" line="68"/>
+      <source>Grid</source>
+      <translation>Rešetka</translation>
+    </message>
+    <message>
+      <location filename="ArchGrid.py" line="72"/>
+      <source>Creates a customizable grid object</source>
+      <translation>Izradi prilagodljiv objekt rešetke</translation>
+    </message>
+    <message>
       <location filename="ArchAxis.py" line="1135"/>
       <source>The number of rows</source>
       <translation>Broj redova</translation>
@@ -4406,6 +4420,11 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <source>Panel Cut</source>
       <translation>Rez Ploča</translation>
     </message>
+    <message>
+      <location filename="ArchPanel.py" line="339"/>
+      <source>Creates 2D views of selected panels</source>
+      <translation>Kreira 2D prikaz odabranih ploča</translation>
+    </message>
   </context>
   <context>
     <name>Arch_Panel_Sheet</name>
@@ -4449,6 +4468,11 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="ArchPipe.py" line="145"/>
       <source>Connector</source>
       <translation>Spajalica</translation>
+    </message>
+    <message>
+      <location filename="ArchPipe.py" line="149"/>
+      <source>Creates a connector between 2 or 3 selected pipes</source>
+      <translation>Stvara poveznik između 2 ili 3 odabrane cijevi</translation>
     </message>
   </context>
   <context>
@@ -4496,6 +4520,19 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Stvara šipku armature na osnovu odabranog lica od strukturnog objekta</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_RebarTools</name>
+    <message>
+      <location filename="InitGui.py" line="137"/>
+      <source>Rebar tools</source>
+      <translation>Građevinsko željezo Alat</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="142"/>
+      <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
+      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
     </message>
   </context>
   <context>
@@ -4642,6 +4679,19 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
     </message>
   </context>
   <context>
+    <name>Arch_StructuralSystem</name>
+    <message>
+      <location filename="ArchStructure.py" line="233"/>
+      <source>Structural System</source>
+      <translation>Konstrukcijski Sustav</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="236"/>
+      <source>Create a structural system object from a selected structure and axis</source>
+      <translation>Izradite objekt konstrukcijskog sustava iz odabrane konstrukcije i osi</translation>
+    </message>
+  </context>
+  <context>
     <name>Arch_Structure</name>
     <message>
       <location filename="ArchStructure.py" line="196"/>
@@ -4677,6 +4727,27 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
       <translation>Alati Konstrukcije</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_StructureTools</name>
+    <message>
+      <location filename="ArchStructure.py" line="1472"/>
+      <source>Structure tools</source>
+      <translation>Alati Konstrukcije</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_StructuresFromSelection</name>
+    <message>
+      <location filename="ArchStructure.py" line="196"/>
+      <source>Multiple Structures</source>
+      <translation>Višestruke Konstrukcije</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="199"/>
+      <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
+      <translation>Izradite više objekata Arhitektonske konstrukcije iz odabranih osnova, koristeći svaki odabrani rub kao put ekstrudiranja</translation>
     </message>
   </context>
   <context>
@@ -4793,9 +4864,84 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
   <context>
     <name>Workbench</name>
     <message>
+      <location filename="InitGui.py" line="71"/>
+      <source>Structure tools</source>
+      <translation>Alati Konstrukcije</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="85"/>
+      <source>Axis tools</source>
+      <translation>Alati Osi</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="91"/>
+      <source>Panel tools</source>
+      <translation>Alati Pregrade</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="99"/>
+      <source>Material tools</source>
+      <translation>Alati materijala</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="103"/>
+      <source>Pipe tools</source>
+      <translation>Alati Cijevi</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="145"/>
+      <source>Rebar tools</source>
+      <translation>Građevinsko željezo Alat</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="112"/>
       <source>Arch tools</source>
       <translation>Arhitekt Alati</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="162"/>
+      <source>Draft creation tools</source>
+      <translation>Alati kreiranja Nacrta</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="165"/>
+      <source>Draft annotation tools</source>
+      <translation>Alati napomena Nacrta</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="168"/>
+      <source>Draft modification tools</source>
+      <translation>Alati izmjena Nacrta</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="177"/>
+      <source>&amp;Arch</source>
+      <translation>&amp;Arhitekt</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="193"/>
+      <source>Utilities</source>
+      <translation>Uslužni programi</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="192"/>
+      <source>&amp;Draft</source>
+      <translation>&amp;Nacrt</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="181"/>
+      <source>Creation</source>
+      <translation>Stvaranje</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="185"/>
+      <source>Annotation</source>
+      <translation>Anotacija</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="189"/>
+      <source>Modification</source>
+      <translation>Modifikacija</translation>
     </message>
   </context>
   <context>

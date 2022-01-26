@@ -878,7 +878,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="575"/>
       <source>Move tip to selected feature</source>
-      <translation>TIP zum gewählten Objekt verschieben</translation>
+      <translation>Arbeitsposition zum gewählten Objekt verschieben</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="620"/>
@@ -951,7 +951,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>Objekt folgt nach Spitze</translation>
+      <translation>Objekt befindet sich hinter der markierten Arbeitsposition</translation>
     </message>
   </context>
   <context>
@@ -997,7 +997,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="125"/>
       <source>High precision:</source>
-      <translation>Hohe Präzision:</translation>
+      <translation>Hohe Genauigkeit:</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="139"/>
@@ -1785,7 +1785,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="75"/>
       <source>Feature is located after the tip feature</source>
-      <translation>Objekt befindet sich nach dem TIP-Objekt</translation>
+      <translation>Objekt befindet sich hinter der markierten Arbeitsposition</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="86"/>
@@ -3301,17 +3301,17 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="950"/>
       <source>Move tip</source>
-      <translation>TIP bewegen</translation>
+      <translation>Arbeitsposition versetzen</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="951"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation>Das bewegte Objekt erscheint nach dem aktuell gesetzten TIP.</translation>
+      <translation>Das bewegte Objekt erscheint hinter der aktuell gesetzten Arbeitsposition.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="952"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation>Soll das letzte Objekt der neue TIP sein?</translation>
+      <translation>Soll das letzte Objekt die neue Arbeitsposition sein?</translation>
     </message>
   </context>
   <context>
@@ -3614,7 +3614,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="565"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Nur eine massives Merkmal kann die Spitze des Körpers sein.</translation>
+      <translation>Nur ein Festkörperobjekt kann als Arbeitsposition eines Körpers festgelegt werden.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="680"/>

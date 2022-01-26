@@ -61,12 +61,12 @@
     <message>
       <location filename="package_details.py" line="240"/>
       <source>WARNING: This addon is obsolete</source>
-      <translation type="unfinished">WARNING: This addon is obsolete</translation>
+      <translation>UYARI: Bu eklenti çok eski</translation>
     </message>
     <message>
       <location filename="package_details.py" line="250"/>
       <source>WARNING: This addon is Python 2 Only</source>
-      <translation type="unfinished">WARNING: This addon is Python 2 Only</translation>
+      <translation>UYARI: Bu eklenti sadece Python 2'de çalışıyor</translation>
     </message>
     <message>
       <location filename="package_details.py" line="312"/>
@@ -149,12 +149,12 @@
     <message>
       <location filename="package_list.py" line="371"/>
       <source>updated</source>
-      <translation type="unfinished">updated</translation>
+      <translation>güncellendi</translation>
     </message>
     <message>
       <location filename="package_list.py" line="376"/>
       <source>Updated</source>
-      <translation type="unfinished">Updated</translation>
+      <translation>Güncellendi</translation>
     </message>
     <message>
       <location filename="package_list.py" line="382"/>
@@ -234,7 +234,7 @@
     <message>
       <location filename="package_list.py" line="702"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Kurulu değil</translation>
     </message>
     <message>
       <location filename="package_list.py" line="582"/>
@@ -247,25 +247,10 @@
       <translation>Tamam</translation>
     </message>
     <message>
-      <location filename="addonmanager_metadata.py" line="72"/>
-      <source>Error with encrypted connection</source>
-      <translation type="unfinished">Error with encrypted connection</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_metadata.py" line="135"/>
-      <source>Failed to connect to</source>
-      <translation>Şuna bağlanılamadı:</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_metadata.py" line="220"/>
-      <source>Failed to connect to URL</source>
-      <translation type="unfinished">Failed to connect to URL</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="115"/>
       <source>Checking network connection...
 </source>
-      <translation type="unfinished">Checking network connection...
+      <translation>Ağ bağlantısı denetleniyor...
 </translation>
     </message>
     <message>
@@ -314,9 +299,14 @@
       <translation>Şuradan meta veri okunamadı:</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="429"/>
+      <source>git fetch failed for {wb.name}</source>
+      <translation type="unfinished">git fetch failed for {wb.name}</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="439"/>
       <source>git pull failed for {wb.name}</source>
-      <translation type="unfinished">git pull failed for {wb.name}</translation>
+      <translation>{wb.name} için git pull işlemi başarısız</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="514"/>
@@ -324,9 +314,29 @@
       <translation>Makrolar yerleştirildi.</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="521"/>
+      <source>This addon is already installed.</source>
+      <translation>Bu eklenti halihazırda yüklüdür.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="533"/>
+      <source>An update is available for this addon.</source>
+      <translation>Bu eklenti için bir güncelleştirme mevcuttur.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="547"/>
+      <source>This addon is marked as obsolete</source>
+      <translation>Bu eklenti eskimiş olarak işaretleniyor</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="551"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
       <translation>Bu ifade genellikle, eklentinin artık sürdürülmediği ve bu listedeki bazı daha gelişmiş eklentilerin aynı işlevselliği sunacağı anlamına gelmektedir.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="559"/>
+      <source>This addon is marked as Python 2 Only</source>
+      <translation>Bu eklenti, Sadece Python 2 olarak işaretleniyor</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="564"/>
@@ -336,7 +346,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="608"/>
       <source>An error occurred fetching macros from GitHub</source>
-      <translation type="unfinished">An error occurred fetching macros from GitHub</translation>
+      <translation>Github'tan makroları getirirken bir hata meydana geldi</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="665"/>
@@ -346,7 +356,17 @@
     <message>
       <location filename="addonmanager_workers.py" line="697"/>
       <source>Caching macro code...</source>
-      <translation type="unfinished">Caching macro code...</translation>
+      <translation>Makro kodu ara belleğe alınıyor...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1403"/>
+      <source>Retrieving package metadata...</source>
+      <translation>Paket meta verisi getiriliyor...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1405"/>
+      <source>Failed to execute pip. Returned error was:</source>
+      <translation>Pip komutu çalıştırma başarısız. Hata verme sebebi:</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="651"/>
@@ -369,46 +389,6 @@
       <translation>Python Markdown kitaplığı eksik.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="521"/>
-      <source>This addon is already installed.</source>
-      <translation>Bu eklenti halihazırda yüklüdür.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="533"/>
-      <source>An update is available for this addon.</source>
-      <translation>Bu eklenti için bir güncelleştirme mevcuttur.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="738"/>
-      <source>Outdated GitPython detected, consider upgrading with pip.</source>
-      <translation>Geçmiş sürüme ait GitPython tespit edildi. Pip ile güncelleştirmeyi değerlendirin.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="547"/>
-      <source>This addon is marked as obsolete</source>
-      <translation>Bu eklenti eskimiş olarak işaretleniyor</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="559"/>
-      <source>This addon is marked as Python 2 Only</source>
-      <translation>Bu eklenti, Sadece Python 2 olarak işaretleniyor</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Makro tanımı getiriliyor...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Git'ten bilgi alınıyor</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Wiki'den bilgi alınıyor</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="700"/>
       <source>GitPython not found. Using standard download instead.</source>
       <translation>GitPython bulunamadı. Standart yüklemeyi kullanmayı deneyin.</translation>
@@ -422,6 +402,11 @@
       <location filename="addonmanager_workers.py" line="727"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
       <translation>Kullanıcı, Python 3 çalıştıran bir sistemde bir Python 2 tezgahını güncellemek istedi - </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="738"/>
+      <source>Outdated GitPython detected, consider upgrading with pip.</source>
+      <translation>Geçmiş sürüme ait GitPython tespit edildi. Pip ile güncelleştirmeyi değerlendirin.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="763"/>
@@ -469,16 +454,6 @@
       <translation>Lüften önce eksik bileşenleri yükleyin.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation>Modül güncelleme hatası </translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>Lütfen elle onarın</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Hata: Posta kodu bulunamıyor</translation>
@@ -494,49 +469,94 @@
       <translation>Başarıyla Yüklendi</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1405"/>
-      <source>Failed to execute pip. Returned error was:</source>
-      <translation type="unfinished">Failed to execute pip. Returned error was:</translation>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Makro tanımı getiriliyor...</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1403"/>
-      <source>Retrieving package metadata...</source>
-      <translation>Paket meta verisi getiriliyor...</translation>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Git'ten bilgi alınıyor</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Wiki'den bilgi alınıyor</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation>Modül güncelleme hatası </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>Lütfen elle onarın</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1220"/>
+      <source>Error: Unable to locate ZIP from</source>
+      <translation type="unfinished">Error: Unable to locate ZIP from</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="332"/>
       <source>Failed to repair missing .git directory</source>
-      <translation type="unfinished">Failed to repair missing .git directory</translation>
+      <translation>Kayıp .git dizinini onarma başarısız</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="335"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>Depo URL'si</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="338"/>
       <source>Clone directory</source>
-      <translation type="unfinished">Clone directory</translation>
+      <translation>Dizini çoğalt</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="72"/>
+      <source>Error with encrypted connection</source>
+      <translation>Şifrelenmiş bağlantı hatası</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="135"/>
+      <source>Failed to connect to</source>
+      <translation>Şuna bağlanılamadı:</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_metadata.py" line="220"/>
+      <source>Failed to connect to URL</source>
+      <translation>URL'ye bağlanılamadı</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="191"/>
       <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <translation>Bağlantı kontrol ediliyor</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="192"/>
       <source>Checking for connection to GitHub...</source>
-      <translation type="unfinished">Checking for connection to GitHub...</translation>
+      <translation>Github bağlantısı kontrol ediliyor...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="213"/>
       <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <translation>Bağlantı başarısız</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="240"/>
+      <source>Missing dependency</source>
+      <translation type="unfinished">Missing dependency</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="241"/>
+      <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
+      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="324"/>
       <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
+      <translation>Başlatılıyor...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="258"/>
@@ -561,22 +581,12 @@
     <message>
       <location filename="AddonManager.py" line="1248"/>
       <source>Refresh local cache</source>
-      <translation type="unfinished">Refresh local cache</translation>
+      <translation>Yerel önbelleği yenile</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="659"/>
       <source>Updating cache...</source>
-      <translation type="unfinished">Updating cache...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Güncellemeler kontrol ediliyor...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="262"/>
-      <source>Apply</source>
-      <translation>Uygula</translation>
+      <translation>Önbellek güncelleniyor...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -592,6 +602,16 @@
       <location filename="AddonManager.py" line="204"/>
       <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
       <translation>Değişikliklerin geçerli olması için FreeCAD&apos;i yeniden başlatmalısınız. FreeCAD&apos;i şimdi yeniden başlatmak için Tamam&apos;a, ya da daha sonra yeniden başlatmak için İptal&apos;e basın.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Güncellemeler kontrol ediliyor...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="262"/>
+      <source>Apply</source>
+      <translation>Uygula</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="534"/>
@@ -654,14 +674,39 @@
       <translation>Başarısız paketler:</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation type="unfinished">Too many to list</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="893"/>
       <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
+      <translation>Eksik Gereklilik</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>
       <source>Installing dependencies</source>
-      <translation type="unfinished">Installing dependencies</translation>
+      <translation>Bağımlılıklar kuruluyor</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1061"/>
+      <source>Cannot execute Python</source>
+      <translation type="unfinished">Cannot execute Python</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1081"/>
+      <source>Cannot execute pip</source>
+      <translation type="unfinished">Cannot execute pip</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1102"/>
+      <source>Package installation failed</source>
+      <translation type="unfinished">Package installation failed</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1105"/>
+      <source>See Report View for detailed failure log.</source>
+      <translation type="unfinished">See Report View for detailed failure log.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="703"/>
@@ -671,17 +716,17 @@
     <message>
       <location filename="AddonManager.py" line="1178"/>
       <source>Succeeded</source>
-      <translation type="unfinished">Succeeded</translation>
+      <translation>Başarılı</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1159"/>
       <source>All packages updates failed:</source>
-      <translation type="unfinished">All packages updates failed:</translation>
+      <translation>Tüm paket güncellemeleri başarısız:</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1183"/>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Başarısız</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="800"/>
@@ -697,6 +742,16 @@
       <location filename="AddonManager.py" line="866"/>
       <source>Installation failed</source>
       <translation>Kurulum Başarısız</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1457"/>
+      <source>Confirm remove</source>
+      <translation type="unfinished">Confirm remove</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1460"/>
+      <source>Are you sure you want to uninstall this Addon?</source>
+      <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="504"/>

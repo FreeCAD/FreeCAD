@@ -324,6 +324,16 @@
       <translation>Če drži, bo ograja pobarvana kot izhodiščni steber in odsek.</translation>
     </message>
     <message>
+      <location filename="ArchAxis.py" line="871"/>
+      <source>The axes this system is made of</source>
+      <translation>Osi iz katerih je sestav narejen</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="873"/>
+      <source>The placement of this axis system</source>
+      <translation>Umestitev sestava osi</translation>
+    </message>
+    <message>
       <location filename="ArchMaterial.py" line="718"/>
       <source>A description for this material</source>
       <translation>Opis materiala</translation>
@@ -1829,16 +1839,6 @@
       <translation>Preoblikovanje uveljaviti na vsaki oznaki</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="871"/>
-      <source>The axes this system is made of</source>
-      <translation>Osi iz katerih je sestav narejen</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="873"/>
-      <source>The placement of this axis system</source>
-      <translation>Umestitev sestava osi</translation>
-    </message>
-    <message>
       <location filename="ArchPrecast.py" line="62"/>
       <source>The length of this element</source>
       <translation>Dolžina priključka</translation>
@@ -2329,6 +2329,26 @@ Building creation aborted.</translation>
       <location filename="ArchWindowPresets.py" line="504"/>
       <source>Door</source>
       <translation>Vrata</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="152"/>
+      <source>Only axes must be selected</source>
+      <translation>Izbrane smejo biti le osi</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="156"/>
+      <source>Create Axis System</source>
+      <translation>Ustvari sestav osi</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="161"/>
+      <source>Please select at least one axis</source>
+      <translation>Izberite vsaj eno os</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1119"/>
+      <source>Axis system components</source>
+      <translation>Sestavine sestava osi</translation>
     </message>
     <message>
       <location filename="importJSON.py" line="61"/>
@@ -3076,11 +3096,6 @@ Building creation aborted.</translation>
       <translation>Izberite izhodiščno ploskev na nosilnem gradniku</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="143"/>
-      <source>Arch</source>
-      <translation>Lok</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
       <translation>Konstrukcijska orodja</translation>
@@ -3096,6 +3111,11 @@ Building creation aborted.</translation>
       <translation>Ploščna orodja</translation>
     </message>
     <message>
+      <location filename="InitGui.py" line="94"/>
+      <source>Rebar tools</source>
+      <translation>Železokrivniki</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="99"/>
       <source>Material tools</source>
       <translation>Orodja snovi</translation>
@@ -3106,24 +3126,14 @@ Building creation aborted.</translation>
       <translation>Cevna orodja</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="94"/>
-      <source>Rebar tools</source>
-      <translation>Železokrivniki</translation>
+      <location filename="InitGui.py" line="143"/>
+      <source>Arch</source>
+      <translation>Lok</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="177"/>
       <source>&amp;Arch</source>
       <translation>&amp;Arhi</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="193"/>
-      <source>Utilities</source>
-      <translation>Pripomočki</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="192"/>
-      <source>&amp;Draft</source>
-      <translation>&amp;Osnutek</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="181"/>
@@ -3139,6 +3149,96 @@ Building creation aborted.</translation>
       <location filename="InitGui.py" line="189"/>
       <source>Modification</source>
       <translation>Preblikovanje</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="192"/>
+      <source>&amp;Draft</source>
+      <translation>&amp;Osnutek</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="193"/>
+      <source>Utilities</source>
+      <translation>Pripomočki</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="181"/>
+      <source>Create Grid</source>
+      <translation>Ustvari mrežo</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1181"/>
+      <source>Auto height is larger than height</source>
+      <translation>Samodejna višina je večja od nastavljene</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1190"/>
+      <source>Total row size is larger than height</source>
+      <translation>Skupna velikost vrstice je večja od višine</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1212"/>
+      <source>Auto width is larger than width</source>
+      <translation>Samodejna širina je večja od nastavljene</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1221"/>
+      <source>Total column size is larger than width</source>
+      <translation>Skupna velikost stolpca presega širino</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1445"/>
+      <source>Grid</source>
+      <translation>Mreža</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1446"/>
+      <source>Total width</source>
+      <translation>Celotna širina</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1447"/>
+      <source>Total height</source>
+      <translation>Celotna višina</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1448"/>
+      <source>Add row</source>
+      <translation>Dodaj vrstico</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1449"/>
+      <source>Del row</source>
+      <translation>Izbriši vrtico</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1450"/>
+      <source>Add col</source>
+      <translation>Dodaj stolpec</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1451"/>
+      <source>Del col</source>
+      <translation>Izbriši stolpec</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1452"/>
+      <source>Create span</source>
+      <translation>Ustvari razpon</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1453"/>
+      <source>Remove span</source>
+      <translation>Odstrani razpon</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1454"/>
+      <source>Rows</source>
+      <translation>Vrstice</translation>
+    </message>
+    <message>
+      <location filename="ArchAxis.py" line="1454"/>
+      <source>Columns</source>
+      <translation>Stolpci</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="83"/>
@@ -3640,26 +3740,6 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Ustvari os</translation>
     </message>
     <message>
-      <location filename="ArchAxis.py" line="152"/>
-      <source>Only axes must be selected</source>
-      <translation>Izbrane smejo biti le osi</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="156"/>
-      <source>Create Axis System</source>
-      <translation>Ustvari sestav osi</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="161"/>
-      <source>Please select at least one axis</source>
-      <translation>Izberite vsaj eno os</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="181"/>
-      <source>Create Grid</source>
-      <translation>Ustvari mrežo</translation>
-    </message>
-    <message>
       <location filename="ArchAxis.py" line="851"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Razdalje (mm) in koti (°) med osmi</translation>
@@ -3683,86 +3763,6 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchAxis.py" line="855"/>
       <source>Label</source>
       <translation>Oznaka</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1119"/>
-      <source>Axis system components</source>
-      <translation>Sestavine sestava osi</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1181"/>
-      <source>Auto height is larger than height</source>
-      <translation>Samodejna višina je večja od nastavljene</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1190"/>
-      <source>Total row size is larger than height</source>
-      <translation>Skupna velikost vrstice je večja od višine</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1212"/>
-      <source>Auto width is larger than width</source>
-      <translation>Samodejna širina je večja od nastavljene</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1221"/>
-      <source>Total column size is larger than width</source>
-      <translation>Skupna velikost stolpca presega širino</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1445"/>
-      <source>Grid</source>
-      <translation>Mreža</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1446"/>
-      <source>Total width</source>
-      <translation>Celotna širina</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1447"/>
-      <source>Total height</source>
-      <translation>Celotna višina</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1448"/>
-      <source>Add row</source>
-      <translation>Dodaj vrstico</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1449"/>
-      <source>Del row</source>
-      <translation>Izbriši vrtico</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1450"/>
-      <source>Add col</source>
-      <translation>Dodaj stolpec</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1451"/>
-      <source>Del col</source>
-      <translation>Izbriši stolpec</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1452"/>
-      <source>Create span</source>
-      <translation>Ustvari razpon</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1453"/>
-      <source>Remove span</source>
-      <translation>Odstrani razpon</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1454"/>
-      <source>Rows</source>
-      <translation>Vrstice</translation>
-    </message>
-    <message>
-      <location filename="ArchAxis.py" line="1454"/>
-      <source>Columns</source>
-      <translation>Stolpci</translation>
     </message>
     <message>
       <location filename="importDAE.py" line="58"/>
@@ -4184,6 +4184,16 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Grid</name>
     <message>
+      <location filename="ArchGrid.py" line="68"/>
+      <source>Grid</source>
+      <translation>Mreža</translation>
+    </message>
+    <message>
+      <location filename="ArchGrid.py" line="72"/>
+      <source>Creates a customizable grid object</source>
+      <translation>Ustvari nastavljivo mrežo</translation>
+    </message>
+    <message>
       <location filename="ArchAxis.py" line="1135"/>
       <source>The number of rows</source>
       <translation>Število vrstic</translation>
@@ -4358,6 +4368,11 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <source>Panel Cut</source>
       <translation>Razrez plošče</translation>
     </message>
+    <message>
+      <location filename="ArchPanel.py" line="339"/>
+      <source>Creates 2D views of selected panels</source>
+      <translation>Ustvari dvorazsežni pogled na izbrane plošče</translation>
+    </message>
   </context>
   <context>
     <name>Arch_Panel_Sheet</name>
@@ -4401,6 +4416,11 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchPipe.py" line="145"/>
       <source>Connector</source>
       <translation>Spojnik</translation>
+    </message>
+    <message>
+      <location filename="ArchPipe.py" line="149"/>
+      <source>Creates a connector between 2 or 3 selected pipes</source>
+      <translation>Ustvari spojnik med 2 ali 3 izbranimi cevmi</translation>
     </message>
   </context>
   <context>
@@ -4448,6 +4468,19 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Iz izbrane ploskve konstrukcije ustvari armaturno palico</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_RebarTools</name>
+    <message>
+      <location filename="InitGui.py" line="137"/>
+      <source>Rebar tools</source>
+      <translation>Železokrivniki</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="142"/>
+      <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
+      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
     </message>
   </context>
   <context>
@@ -4594,6 +4627,19 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
   </context>
   <context>
+    <name>Arch_StructuralSystem</name>
+    <message>
+      <location filename="ArchStructure.py" line="233"/>
+      <source>Structural System</source>
+      <translation>Konstrukcijski sklop</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="236"/>
+      <source>Create a structural system object from a selected structure and axis</source>
+      <translation>Ustvari konstrukcijski sklop iz izbrane konstrukcije in osi</translation>
+    </message>
+  </context>
+  <context>
     <name>Arch_Structure</name>
     <message>
       <location filename="ArchStructure.py" line="196"/>
@@ -4629,6 +4675,27 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
       <translation>Konstrukcijska orodja</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_StructureTools</name>
+    <message>
+      <location filename="ArchStructure.py" line="1472"/>
+      <source>Structure tools</source>
+      <translation>Konstrukcijska orodja</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_StructuresFromSelection</name>
+    <message>
+      <location filename="ArchStructure.py" line="196"/>
+      <source>Multiple Structures</source>
+      <translation>Več konstrukcij</translation>
+    </message>
+    <message>
+      <location filename="ArchStructure.py" line="199"/>
+      <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
+      <translation>Ustvari iz izbrane osnove več konstrukcijskih predmetov arhitekture, pri čemer naj bo vsak izbrani rob pot izrivanja</translation>
     </message>
   </context>
   <context>
@@ -4739,15 +4806,90 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="187"/>
       <source>Import-Export</source>
-      <translation>Uvozi-Izvozi</translation>
+      <translation>Uvoz - Izvoz</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
+      <location filename="InitGui.py" line="71"/>
+      <source>Structure tools</source>
+      <translation>Konstrukcijska orodja</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="85"/>
+      <source>Axis tools</source>
+      <translation>Osna orodja</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="91"/>
+      <source>Panel tools</source>
+      <translation>Ploščna orodja</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="99"/>
+      <source>Material tools</source>
+      <translation>Orodja snovi</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="103"/>
+      <source>Pipe tools</source>
+      <translation>Cevna orodja</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="145"/>
+      <source>Rebar tools</source>
+      <translation>Železokrivniki</translation>
+    </message>
+    <message>
       <location filename="InitGui.py" line="112"/>
       <source>Arch tools</source>
       <translation>Arhitekturna orodja</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="162"/>
+      <source>Draft creation tools</source>
+      <translation>Orodja za ustvarjanje osnutkov</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="165"/>
+      <source>Draft annotation tools</source>
+      <translation>Orodja za opisovanje osnutkov</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="168"/>
+      <source>Draft modification tools</source>
+      <translation>Orodja za preoblikovanje osnutkov</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="177"/>
+      <source>&amp;Arch</source>
+      <translation>&amp;Arhi</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="193"/>
+      <source>Utilities</source>
+      <translation>Pripomočki</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="192"/>
+      <source>&amp;Draft</source>
+      <translation>&amp;Osnutek</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="181"/>
+      <source>Creation</source>
+      <translation>Ustvarjanje</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="185"/>
+      <source>Annotation</source>
+      <translation>Opis</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="189"/>
+      <source>Modification</source>
+      <translation>Preblikovanje</translation>
     </message>
   </context>
   <context>

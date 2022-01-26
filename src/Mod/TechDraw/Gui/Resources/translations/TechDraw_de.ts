@@ -2,6 +2,92 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de" sourcelanguage="en">
   <context>
+    <name>CopyView</name>
+    <message>
+      <location filename="CommandCopyView.py" line="47"/>
+      <source>Copy View</source>
+      <translation type="unfinished">Copy View</translation>
+    </message>
+    <message>
+      <location filename="CommandCopyView.py" line="50"/>
+      <source>Copy a View to a second Page</source>
+      <translation type="unfinished">Copy a View to a second Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="46"/>
+      <source>Copy View to a second Page</source>
+      <translation type="unfinished">Copy View to a second Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="73"/>
+      <source>Select View to copy from list.</source>
+      <translation type="unfinished">Select View to copy from list.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="74"/>
+      <source>Select View</source>
+      <translation type="unfinished">Select View</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="92"/>
+      <source>Select From Page.</source>
+      <translation type="unfinished">Select From Page.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="112"/>
+      <source>Select Page</source>
+      <translation type="unfinished">Select Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="111"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MoveView</name>
+    <message>
+      <location filename="CommandMoveView.py" line="47"/>
+      <source>Move View</source>
+      <translation type="unfinished">Move View</translation>
+    </message>
+    <message>
+      <location filename="CommandMoveView.py" line="50"/>
+      <source>Move a View to a new Page</source>
+      <translation type="unfinished">Move a View to a new Page</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="47"/>
+      <source>Move View to a different Page</source>
+      <translation type="unfinished">Move View to a different Page</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="74"/>
+      <source>Select View to move from list.</source>
+      <translation type="unfinished">Select View to move from list.</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="75"/>
+      <source>Select View</source>
+      <translation type="unfinished">Select View</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation type="unfinished">Select From Page.</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="113"/>
+      <source>Select Page</source>
+      <translation type="unfinished">Select Page</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
     <name>Cmd2LineCenterLine</name>
     <message>
       <source>Add Centerline between 2 Lines</source>
@@ -33,7 +119,7 @@
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Add Centerline between 2 Lines</source>
@@ -44,7 +130,7 @@
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Add Centerline between 2 Points</source>
@@ -55,7 +141,7 @@
     <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Add Cosmetic Line Through 2 Points</source>
@@ -66,7 +152,7 @@
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert 3-Point Angle Dimension</source>
@@ -77,7 +163,7 @@
     <name>CmdTechDrawActiveView</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Active View (3D View)</source>
@@ -88,7 +174,7 @@
     <name>CmdTechDrawAngleDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Angle Dimension</source>
@@ -99,7 +185,7 @@
     <name>CmdTechDrawAnnotation</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Annotation</source>
@@ -110,7 +196,7 @@
     <name>CmdTechDrawArchView</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Arch Workbench Object</source>
@@ -125,7 +211,7 @@
     <name>CmdTechDrawBalloon</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Balloon Annotation</source>
@@ -136,7 +222,7 @@
     <name>CmdTechDrawCenterLineGroup</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Center Line</source>
@@ -151,7 +237,7 @@
     <name>CmdTechDrawClipGroup</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Clip Group</source>
@@ -162,7 +248,7 @@
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Add View to Clip Group</source>
@@ -173,7 +259,7 @@
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Remove View from Clip Group</source>
@@ -184,7 +270,7 @@
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Remove Cosmetic Object</source>
@@ -195,7 +281,7 @@
     <name>CmdTechDrawCosmeticVertex</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Add Cosmetic Vertex</source>
@@ -206,7 +292,7 @@
     <name>CmdTechDrawCosmeticVertexGroup</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Cosmetic Vertex</source>
@@ -221,7 +307,7 @@
     <name>CmdTechDrawDecorateLine</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Change Appearance of Lines</source>
@@ -236,7 +322,7 @@
     <name>CmdTechDrawDetailView</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Detail View</source>
@@ -247,7 +333,7 @@
     <name>CmdTechDrawDiameterDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Diameter Dimension</source>
@@ -258,7 +344,7 @@
     <name>CmdTechDrawDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Dimension</source>
@@ -269,7 +355,7 @@
     <name>CmdTechDrawDraftView</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Draft Workbench Object</source>
@@ -314,7 +400,7 @@
     <name>CmdTechDrawExtensionCircleCenterLines</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Draw circle centerlines</source>
@@ -333,7 +419,7 @@
     <name>CmdTechDrawExtensionThreadBoltBottom</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Cosmetic thread bolt bottom view</source>
@@ -352,7 +438,7 @@
     <name>CmdTechDrawExtensionThreadBoltSide</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Cosmetic thread bolt side view</source>
@@ -371,7 +457,7 @@
     <name>CmdTechDrawExtensionThreadHoleBottom</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Cosmetic thread hole bottom view</source>
@@ -390,7 +476,7 @@
     <name>CmdTechDrawExtensionThreadHoleSide</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Cosmetic thread hole side view</source>
@@ -409,7 +495,7 @@
     <name>CmdTechDrawExtentGroup</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Extent Dimension</source>
@@ -428,7 +514,7 @@
     <name>CmdTechDrawFaceCenterLine</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Add Centerline to Faces</source>
@@ -439,7 +525,7 @@
     <name>CmdTechDrawGeometricHatch</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Apply Geometric Hatch to Face</source>
@@ -450,7 +536,7 @@
     <name>CmdTechDrawHatch</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Hatch a Face using Image File</source>
@@ -461,7 +547,7 @@
     <name>CmdTechDrawHorizontalDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Horizontal Dimension</source>
@@ -472,7 +558,7 @@
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Horizontal Extent Dimension</source>
@@ -483,7 +569,7 @@
     <name>CmdTechDrawImage</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Bitmap Image</source>
@@ -506,7 +592,7 @@
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
@@ -517,7 +603,7 @@
     <name>CmdTechDrawLeaderLine</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Add Leaderline to View</source>
@@ -528,7 +614,7 @@
     <name>CmdTechDrawLengthDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Length Dimension</source>
@@ -539,7 +625,7 @@
     <name>CmdTechDrawLinkDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Link Dimension to 3D Geometry</source>
@@ -550,7 +636,7 @@
     <name>CmdTechDrawMidpoints</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Add Midpoint Vertices</source>
@@ -561,7 +647,7 @@
     <name>CmdTechDrawPageDefault</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Default Page</source>
@@ -572,7 +658,7 @@
     <name>CmdTechDrawPageTemplate</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Page using Template</source>
@@ -591,7 +677,7 @@
     <name>CmdTechDrawProjectionGroup</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Projection Group</source>
@@ -606,7 +692,7 @@
     <name>CmdTechDrawQuadrants</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Add Quadrant Vertices</source>
@@ -617,7 +703,7 @@
     <name>CmdTechDrawRadiusDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Radius Dimension</source>
@@ -628,7 +714,7 @@
     <name>CmdTechDrawRedrawPage</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Redraw Page</source>
@@ -639,7 +725,7 @@
     <name>CmdTechDrawRichTextAnnotation</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Rich Text Annotation</source>
@@ -650,7 +736,7 @@
     <name>CmdTechDrawSectionView</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Section View</source>
@@ -661,7 +747,7 @@
     <name>CmdTechDrawShowAll</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Show/Hide Invisible Edges</source>
@@ -672,7 +758,7 @@
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Spreadsheet View</source>
@@ -687,7 +773,7 @@
     <name>CmdTechDrawSymbol</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert SVG Symbol</source>
@@ -702,7 +788,7 @@
     <name>CmdTechDrawToggleFrame</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Turn View Frames On/Off</source>
@@ -713,7 +799,7 @@
     <name>CmdTechDrawVerticalDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Vertical Dimension</source>
@@ -724,7 +810,7 @@
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert Vertical Extent Dimension</source>
@@ -735,7 +821,7 @@
     <name>CmdTechDrawView</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Insert View</source>
@@ -750,7 +836,7 @@
     <name>CmdTechDrawWeldSymbol</name>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>Add Welding Information to Leaderline</source>
@@ -4131,7 +4217,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     </message>
     <message>
       <source>TechDraw</source>
-      <translation>Technisches Zeichnen</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <source>TechDraw Pages</source>

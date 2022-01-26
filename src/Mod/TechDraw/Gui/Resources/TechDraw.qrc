@@ -209,5 +209,6 @@
         <file>translations/TechDraw_vi.qm</file>
         <file>translations/TechDraw_es-AR.qm</file>
         <file>translations/TechDraw_bg.qm</file>
+        <file>translations/TechDraw_ka.qm</file>
     </qresource>
 </RCC> 

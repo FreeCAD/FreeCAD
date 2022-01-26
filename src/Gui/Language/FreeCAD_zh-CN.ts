@@ -1726,7 +1726,8 @@ This file already exists.</source>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation>%1：已经存在</translation>
+      <translation>'%1'
+ 已存在。</translation>
     </message>
     <message>
       <source>Rename Failed</source>
@@ -2613,7 +2614,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation>对象将以正投影法投射。</translation>
+      <translation>对象将以正交投影方式投影</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
@@ -3716,7 +3717,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Number of decimals:</source>
-      <translation>小数位数︰</translation>
+      <translation>小数位数:</translation>
     </message>
     <message>
       <source>Imperial decimal (in/lb)</source>
@@ -3893,7 +3894,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>as:</source>
-      <translation>如</translation>
+      <translation>如:</translation>
     </message>
     <message>
       <source>=&gt;</source>
@@ -4089,7 +4090,7 @@ The preference system is the one set in the general preferences.</source>
     </message>
     <message>
       <source>Cleanup...</source>
-      <translation>清除</translation>
+      <translation>清理...</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -4856,7 +4857,7 @@ originally selected prior to opening this dialog</translation>
     </message>
     <message>
       <source>Reveals this object and its subelements in the python console.</source>
-      <translation>将此物件及其子元素于python主控台中显示</translation>
+      <translation>在 python 控制台中显示此对象及其子元素。</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
@@ -6122,7 +6123,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
-      <translation>启用或禁用文档重新计算功能？</translation>
+      <translation>启用或禁用文档的重新计算</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
@@ -6742,7 +6743,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Save a copy of the document under new filename...</source>
-      <translation>以新的文件名称保存目前文档的副本</translation>
+      <translation>以新的文件名称保存目前文档的副本...</translation>
     </message>
     <message>
       <source>Frozen views</source>
@@ -9734,7 +9735,7 @@ Do you still want to proceed?</source>
     <name>Std_Revert</name>
     <message>
       <source>This will discard all the changes since last file save.</source>
-      <translation>这将会丢弃自上次保存文档后所有的变更</translation>
+      <translation>这将放弃自上次文件保存以来的所有更改。</translation>
     </message>
     <message>
       <source>Revert document</source>

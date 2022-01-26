@@ -299,11 +299,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Введіть вираз...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Вираз: </translation>
     </message>
   </context>
   <context>
@@ -534,7 +534,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Організації</translation>
     </message>
   </context>
   <context>

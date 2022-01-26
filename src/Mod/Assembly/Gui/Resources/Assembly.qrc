@@ -60,5 +60,6 @@
         <file>translations/Assembly_vi.qm</file>
         <file>translations/Assembly_es-AR.qm</file>
         <file>translations/Assembly_bg.qm</file>
+        <file>translations/Assembly_ka.qm</file>
   </qresource>
 </RCC>

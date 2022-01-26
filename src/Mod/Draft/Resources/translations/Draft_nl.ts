@@ -720,6 +720,11 @@ Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de punten in
       <translation>Het oppervlak van dit object</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>De vorm van dit object</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -743,11 +748,6 @@ Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de punten in
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation type="unfinished">The pattern rotation used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>De vorm van dit object</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -1218,44 +1218,9 @@ buiten de maatlijn</translation>
       <translation>Objecten die worden getoond/verborgen status schrijven</translation>
     </message>
     <message>
-      <location filename="init_tools.py" line="145"/>
-      <source>Draft creation tools</source>
-      <translation>Ontwerpaanmaakgereedschap</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="148"/>
-      <source>Draft annotation tools</source>
-      <translation>Ontwerpannotatiegereedschap</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="151"/>
-      <source>Draft modification tools</source>
-      <translation>Ontwerpwijzigingsgereedschap</translation>
-    </message>
-    <message>
       <location filename="InitGui.py" line="107"/>
       <source>Draft utility tools</source>
       <translation>Concept hulpprogramma's</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="166"/>
-      <source>&amp;Drafting</source>
-      <translation>&amp;Opstellen</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="168"/>
-      <source>&amp;Annotation</source>
-      <translation>Aantekening </translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="170"/>
-      <source>&amp;Modification</source>
-      <translation>&amp;Wijziging</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="172"/>
-      <source>&amp;Utilities</source>
-      <translation>&amp;Hulpmiddelen</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="122"/>
@@ -1291,21 +1256,6 @@ buiten de maatlijn</translation>
       <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Schakelt beperkingen aan naar werkvlak aan/uit</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="48"/>
-      <source>Arc tools</source>
-      <translation>Booggereedschappen</translation>
-    </message>
-    <message>
-      <location filename="init_tools.py" line="56"/>
-      <source>Bezier tools</source>
-      <translation>Bézier-gereedschappen</translation>
-    </message>
-    <message>
-      <location filename="gui_arrays.py" line="65"/>
-      <source>Array tools</source>
-      <translation>Reeks gereedschappen</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="157"/>
@@ -1387,22 +1337,6 @@ vanuit het menu Tools -&gt; Addon Manager</translation>
       <translation>Helling</translation>
     </message>
     <message>
-      <location filename="gui_circulararray.py" line="66"/>
-      <source>Circular array</source>
-      <translation>Cirkelvormig patroon</translation>
-    </message>
-    <message>
-      <location filename="gui_circulararray.py" line="68"/>
-      <source>Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
-
-The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation>Maakt kopieën van het geselecteerde object en plaatst de kopieën in een radiaal patroon
-waarbij verschillende cirkellagen worden gemaakt.
-
-De reeks kan worden omgezet in een orthogonal of een pool reeks door het type te veranderen.</translation>
-    </message>
-    <message>
       <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
       <translation type="unfinished">Save style</translation>
@@ -1410,7 +1344,7 @@ De reeks kan worden omgezet in een orthogonal of een pool reeks door het type te
     <message>
       <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Naam van deze nieuwe stijl:</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="281"/>
@@ -1420,7 +1354,7 @@ De reeks kan worden omgezet in een orthogonal of een pool reeks door het type te
     <message>
       <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>Naam bestaat al. Overschrijven?</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="317"/>
@@ -1428,46 +1362,9 @@ De reeks kan worden omgezet in een orthogonal of een pool reeks door het type te
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
     </message>
     <message>
-      <location filename="gui_polararray.py" line="66"/>
-      <source>Polar array</source>
-      <translation>Polair matrix</translation>
-    </message>
-    <message>
-      <location filename="gui_polararray.py" line="68"/>
-      <source>Creates copies of the selected object, and places the copies in a polar pattern
-defined by a center of rotation and its angle.
-
-The array can be turned into an orthogonal or a circular array by changing its type.</source>
-      <translation>Maakt kopieën van het geselecteerde object en plaatst de kopieën in een polair patroon
-gedefinieerd door een rotatiescherm en de hoek.
-
-De reeks kan worden omgezet in een orthogonaal of een cirkel reeks door het type te veranderen.</translation>
-    </message>
-    <message>
       <location filename="gui_hatch.py" line="48"/>
       <source>You must choose a base object before using this command</source>
       <translation type="unfinished">You must choose a base object before using this command</translation>
-    </message>
-    <message>
-      <location filename="gui_arrays.py" line="68"/>
-      <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation>Maak verschillende soorten reeksen, waaronder rechthoekige, polarisatie, circulaire, pad en punt</translation>
-    </message>
-    <message>
-      <location filename="gui_orthoarray.py" line="66"/>
-      <source>Array</source>
-      <translation>Reeks</translation>
-    </message>
-    <message>
-      <location filename="gui_orthoarray.py" line="68"/>
-      <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
-
-The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation>Maakt kopieën van het geselecteerde object en plaatst de kopieën in een orthogonaal patroon,
-betekent dat de kopieën de opgegeven richting in de X, Y, Z assen volgen.
-
-De reeks kan worden omgezet in een polair of een circulaire reeks door het type te veranderen.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="65"/>
@@ -1493,6 +1390,109 @@ De reeks kan worden omgezet in een polair of een circulaire reeks door het type 
       <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation>Offset richting is niet gedefinieerd. Beweeg de muis aan een van de zijden van het object eerst om een richting aan te geven</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="48"/>
+      <source>Arc tools</source>
+      <translation>Booggereedschappen</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="56"/>
+      <source>Bezier tools</source>
+      <translation>Bézier-gereedschappen</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="145"/>
+      <source>Draft creation tools</source>
+      <translation>Ontwerpaanmaakgereedschap</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="148"/>
+      <source>Draft annotation tools</source>
+      <translation>Ontwerpannotatiegereedschap</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="151"/>
+      <source>Draft modification tools</source>
+      <translation>Ontwerpwijzigingsgereedschap</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="166"/>
+      <source>&amp;Drafting</source>
+      <translation>&amp;Opstellen</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="168"/>
+      <source>&amp;Annotation</source>
+      <translation>Aantekening </translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="170"/>
+      <source>&amp;Modification</source>
+      <translation>&amp;Wijziging</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="172"/>
+      <source>&amp;Utilities</source>
+      <translation>&amp;Hulpmiddelen</translation>
+    </message>
+    <message>
+      <location filename="gui_arrays.py" line="65"/>
+      <source>Array tools</source>
+      <translation>Reeks gereedschappen</translation>
+    </message>
+    <message>
+      <location filename="gui_arrays.py" line="68"/>
+      <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
+      <translation>Maak verschillende soorten reeksen, waaronder rechthoekige, polarisatie, circulaire, pad en punt</translation>
+    </message>
+    <message>
+      <location filename="gui_circulararray.py" line="66"/>
+      <source>Circular array</source>
+      <translation>Cirkelvormig patroon</translation>
+    </message>
+    <message>
+      <location filename="gui_circulararray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in a radial pattern
+creating various circular layers.
+
+The array can be turned into an orthogonal or a polar array by changing its type.</source>
+      <translation>Maakt kopieën van het geselecteerde object en plaatst de kopieën in een radiaal patroon
+waarbij verschillende cirkellagen worden gemaakt.
+
+De reeks kan worden omgezet in een orthogonal of een pool reeks door het type te veranderen.</translation>
+    </message>
+    <message>
+      <location filename="gui_polararray.py" line="66"/>
+      <source>Polar array</source>
+      <translation>Polair matrix</translation>
+    </message>
+    <message>
+      <location filename="gui_polararray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in a polar pattern
+defined by a center of rotation and its angle.
+
+The array can be turned into an orthogonal or a circular array by changing its type.</source>
+      <translation>Maakt kopieën van het geselecteerde object en plaatst de kopieën in een polair patroon
+gedefinieerd door een rotatiescherm en de hoek.
+
+De reeks kan worden omgezet in een orthogonaal of een cirkel reeks door het type te veranderen.</translation>
+    </message>
+    <message>
+      <location filename="gui_orthoarray.py" line="66"/>
+      <source>Array</source>
+      <translation>Reeks</translation>
+    </message>
+    <message>
+      <location filename="gui_orthoarray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
+meaning the copies follow the specified direction in the X, Y, Z axes.
+
+The array can be turned into a polar or a circular array by changing its type.</source>
+      <translation>Maakt kopieën van het geselecteerde object en plaatst de kopieën in een orthogonaal patroon,
+betekent dat de kopieën de opgegeven richting in de X, Y, Z assen volgen.
+
+De reeks kan worden omgezet in een polair of een circulaire reeks door het type te veranderen.</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="154"/>
@@ -1580,6 +1580,11 @@ Maak eerst een groep aan om dit gereedschap te gebruiken.</translation>
       <source>Annotation styles...</source>
       <translation>Annotatie stijlen...</translation>
     </message>
+    <message>
+      <location filename="gui_annotationstyleeditor.py" line="82"/>
+      <source>Manage or create annotation styles</source>
+      <translation type="unfinished">Manage or create annotation styles</translation>
+    </message>
   </context>
   <context>
     <name>Draft_ApplyStyle</name>
@@ -1623,6 +1628,21 @@ CTRL voor vast leggen, SHIFT om te vast te leggen.</translation>
     </message>
   </context>
   <context>
+    <name>Draft_Arc_3Points</name>
+    <message>
+      <location filename="gui_arcs.py" line="487"/>
+      <source>Arc by 3 points</source>
+      <translation>Boog met 3 punten</translation>
+    </message>
+    <message>
+      <location filename="gui_arcs.py" line="490"/>
+      <source>Creates a circular arc by picking 3 points.
+CTRL to snap, SHIFT to constrain.</source>
+      <translation type="unfinished">Creates a circular arc by picking 3 points.
+CTRL to snap, SHIFT to constrain.</translation>
+    </message>
+  </context>
+  <context>
     <name>Draft_Array</name>
     <message>
       <location filename="gui_array_simple.py" line="68"/>
@@ -1639,6 +1659,30 @@ to polar or circular, and its properties can be modified.</source>
 Standaard is het een 2x2 orthogonale reeks.
 Zodra de reeks is gemaakt kan het type worden gewijzigd
 naar polair of cirkel, en de eigenschappen ervan kunnen worden aangepast.</translation>
+    </message>
+    <message>
+      <location filename="gui_orthoarray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
+meaning the copies follow the specified direction in the X, Y, Z axes.
+
+The array can be turned into a polar or a circular array by changing its type.</source>
+      <translation>Maakt kopieën van het geselecteerde object en plaatst de kopieën in een orthogonaal patroon,
+betekent dat de kopieën de opgegeven richting in de X, Y, Z assen volgen.
+
+De reeks kan worden omgezet in een polair of een circulaire reeks door het type te veranderen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_ArrayTools</name>
+    <message>
+      <location filename="gui_arrays.py" line="65"/>
+      <source>Array tools</source>
+      <translation>Reeks gereedschappen</translation>
+    </message>
+    <message>
+      <location filename="gui_arrays.py" line="68"/>
+      <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
+      <translation>Maak verschillende soorten reeksen, waaronder rechthoekige, polarisatie, circulaire, pad en punt</translation>
     </message>
   </context>
   <context>
@@ -1708,6 +1752,25 @@ CTRL om vast te klikken, SHIFT om te beperken.</translation>
 CTRL to snap, ALT to select tangent objects.</source>
       <translation>Maakt een cirkel.
 CTRL om vast te klikken, ALT om tangens objecten te selecteren.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_CircularArray</name>
+    <message>
+      <location filename="gui_circulararray.py" line="65"/>
+      <source>Circular array</source>
+      <translation>Cirkelvormig patroon</translation>
+    </message>
+    <message>
+      <location filename="gui_circulararray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in a radial pattern
+creating various circular layers.
+
+The array can be turned into an orthogonal or a polar array by changing its type.</source>
+      <translation>Maakt kopieën van het geselecteerde object en plaatst de kopieën in een radiaal patroon
+waarbij verschillende cirkellagen worden gemaakt.
+
+De reeks kan worden omgezet in een orthogonal of een pool reeks door het type te veranderen.</translation>
     </message>
   </context>
   <context>
@@ -1882,6 +1945,19 @@ op ondersteunde nodes en op ondersteunde objecten.</translation>
       <location filename="gui_facebinders.py" line="62"/>
       <source>Creates a facebinder object from selected faces.</source>
       <translation>Maakt een vlakbinder object van geselecteerde vlakken.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Fillet</name>
+    <message>
+      <location filename="gui_fillets.py" line="64"/>
+      <source>Fillet</source>
+      <translation>Afronding</translation>
+    </message>
+    <message>
+      <location filename="gui_fillets.py" line="67"/>
+      <source>Creates a fillet between two selected wires or edges.</source>
+      <translation>Maakt een afronding tussen twee geselecteerde draden of randen.</translation>
     </message>
   </context>
   <context>
@@ -2185,6 +2261,25 @@ Een 'Punt linkreeks' is efficiënter bij het verwerken van veel kopieën.</trans
     </message>
   </context>
   <context>
+    <name>Draft_PolarArray</name>
+    <message>
+      <location filename="gui_polararray.py" line="65"/>
+      <source>Polar array</source>
+      <translation>Polair matrix</translation>
+    </message>
+    <message>
+      <location filename="gui_polararray.py" line="68"/>
+      <source>Creates copies of the selected object, and places the copies in a polar pattern
+defined by a center of rotation and its angle.
+
+The array can be turned into an orthogonal or a circular array by changing its type.</source>
+      <translation>Maakt kopieën van het geselecteerde object en plaatst de kopieën in een polair patroon
+gedefinieerd door een rotatiescherm en de hoek.
+
+De reeks kan worden omgezet in een orthogonaal of een cirkel reeks door het type te veranderen.</translation>
+    </message>
+  </context>
+  <context>
     <name>Draft_Polygon</name>
     <message>
       <location filename="gui_polygons.py" line="57"/>
@@ -2362,19 +2457,6 @@ Als een veelhoek is geselecteerd, wordt de richtingstransformatie toegepast op e
 
 De richtingscoëfficiënt zal altijd de Z waarde wijzigen Daarom werkt dit commando alleen goed voor
 rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten die niet uit losse lijnen bestaan, worden genegeerd.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Snap</name>
-    <message>
-      <location filename="gui_snapper.py" line="1529"/>
-      <source>Toggles Grid On/Off</source>
-      <translation>Schakelt raster aan/uit</translation>
-    </message>
-    <message>
-      <location filename="gui_snapper.py" line="1530"/>
-      <source>Toggle Draft Grid</source>
-      <translation>Concept raster in-/uitschakelen</translation>
     </message>
   </context>
   <context>
@@ -2806,6 +2888,61 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
   </context>
   <context>
     <name>Workbench</name>
+    <message>
+      <location filename="InitGui.py" line="104"/>
+      <source>Draft creation tools</source>
+      <translation>Ontwerpaanmaakgereedschap</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="107"/>
+      <source>Draft annotation tools</source>
+      <translation>Ontwerpannotatiegereedschap</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="110"/>
+      <source>Draft modification tools</source>
+      <translation>Ontwerpwijzigingsgereedschap</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="113"/>
+      <source>Draft utility tools</source>
+      <translation>Concept hulpprogramma's</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="118"/>
+      <source>&amp;Drafting</source>
+      <translation>&amp;Opstellen</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="121"/>
+      <source>&amp;Annotation</source>
+      <translation>Aantekening </translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="124"/>
+      <source>&amp;Modification</source>
+      <translation>&amp;Wijziging</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="127"/>
+      <source>&amp;Utilities</source>
+      <translation>&amp;Hulpmiddelen</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="50"/>
+      <source>Arc tools</source>
+      <translation>Booggereedschappen</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="58"/>
+      <source>Bezier tools</source>
+      <translation>Bézier-gereedschappen</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="89"/>
+      <source>Array tools</source>
+      <translation>Reeks gereedschappen</translation>
+    </message>
     <message>
       <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
@@ -3550,7 +3687,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="mirror.py" line="113"/>
       <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
+      <translation>gespiegeld</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="238"/>
@@ -4059,14 +4196,29 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>eigen</translation>
     </message>
     <message>
+      <location filename="init_draft_statusbar.py" line="140"/>
+      <source>Unable to convert input into a  scale factor</source>
+      <translation type="unfinished">Unable to convert input into a  scale factor</translation>
+    </message>
+    <message>
       <location filename="init_draft_statusbar.py" line="141"/>
       <source>Unable to convert input into a scale factor</source>
       <translation>Kan input niet omzetten naar een schaalfactor</translation>
     </message>
     <message>
+      <location filename="init_draft_statusbar.py" line="155"/>
+      <source>Set custom scale</source>
+      <translation type="unfinished">Set custom scale</translation>
+    </message>
+    <message>
       <location filename="init_draft_statusbar.py" line="159"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Aangepaste aantekening schaal in formaat x:x, x=x instellen</translation>
+    </message>
+    <message>
+      <location filename="init_draft_statusbar.py" line="214"/>
+      <source>Set the scale used by draft annotation tools</source>
+      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
     </message>
     <message>
       <location filename="utils.py" line="650"/>
@@ -4152,6 +4304,86 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="utils.py" line="1059"/>
       <source>This function will be deprecated. </source>
       <translation type="unfinished">This function will be deprecated. </translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="169"/>
+      <source>Snap Lock</source>
+      <translation type="unfinished">Snap Lock</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="170"/>
+      <source>Snap Endpoint</source>
+      <translation type="unfinished">Snap Endpoint</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="171"/>
+      <source>Snap Midpoint</source>
+      <translation type="unfinished">Snap Midpoint</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="172"/>
+      <source>Snap Center</source>
+      <translation type="unfinished">Snap Center</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="173"/>
+      <source>Snap Angle</source>
+      <translation type="unfinished">Snap Angle</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="174"/>
+      <source>Snap Intersection</source>
+      <translation type="unfinished">Snap Intersection</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="175"/>
+      <source>Snap Perpendicular</source>
+      <translation type="unfinished">Snap Perpendicular</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="176"/>
+      <source>Snap Extension</source>
+      <translation type="unfinished">Snap Extension</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="177"/>
+      <source>Snap Parallel</source>
+      <translation type="unfinished">Snap Parallel</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="178"/>
+      <source>Snap Special</source>
+      <translation type="unfinished">Snap Special</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="179"/>
+      <source>Snap Near</source>
+      <translation type="unfinished">Snap Near</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="180"/>
+      <source>Snap Ortho</source>
+      <translation type="unfinished">Snap Ortho</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="181"/>
+      <source>Snap Grid</source>
+      <translation type="unfinished">Snap Grid</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="182"/>
+      <source>Snap WorkingPlane</source>
+      <translation type="unfinished">Snap WorkingPlane</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="183"/>
+      <source>Snap Dimensions</source>
+      <translation type="unfinished">Snap Dimensions</translation>
+    </message>
+    <message>
+      <location filename="init_tools.py" line="187"/>
+      <source>Toggle Draft Grid</source>
+      <translation>Concept raster in-/uitschakelen</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="81"/>
@@ -4783,6 +5015,16 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <translation>Kies een nieuwe afstand van het basispunt</translation>
     </message>
     <message>
+      <location filename="gui_snapper.py" line="1543"/>
+      <source>(ON)</source>
+      <translation type="unfinished">(ON)</translation>
+    </message>
+    <message>
+      <location filename="gui_snapper.py" line="1546"/>
+      <source>(OFF)</source>
+      <translation type="unfinished">(OFF)</translation>
+    </message>
+    <message>
       <location filename="gui_shape2dview.py" line="109"/>
       <source>Create 2D view</source>
       <translation>2D-weergave maken</translation>
@@ -5311,6 +5553,19 @@ De eindhoek zal de basishoek plus dit getal zijn.</translation>
       <location filename="importOCA.py" line="492"/>
       <source>successfully exported</source>
       <translation type="unfinished">successfully exported</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Snap</name>
+    <message>
+      <location filename="gui_snapper.py" line="1529"/>
+      <source>Toggles Grid On/Off</source>
+      <translation>Schakelt raster aan/uit</translation>
+    </message>
+    <message>
+      <location filename="gui_snapper.py" line="1530"/>
+      <source>Toggle Draft Grid</source>
+      <translation>Concept raster in-/uitschakelen</translation>
     </message>
   </context>
   <context>

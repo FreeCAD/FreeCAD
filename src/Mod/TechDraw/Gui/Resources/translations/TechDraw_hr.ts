@@ -2,6 +2,92 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hr" sourcelanguage="en">
   <context>
+    <name>CopyView</name>
+    <message>
+      <location filename="CommandCopyView.py" line="47"/>
+      <source>Copy View</source>
+      <translation type="unfinished">Copy View</translation>
+    </message>
+    <message>
+      <location filename="CommandCopyView.py" line="50"/>
+      <source>Copy a View to a second Page</source>
+      <translation type="unfinished">Copy a View to a second Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="46"/>
+      <source>Copy View to a second Page</source>
+      <translation type="unfinished">Copy View to a second Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="73"/>
+      <source>Select View to copy from list.</source>
+      <translation type="unfinished">Select View to copy from list.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="74"/>
+      <source>Select View</source>
+      <translation type="unfinished">Select View</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="92"/>
+      <source>Select From Page.</source>
+      <translation type="unfinished">Select From Page.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="112"/>
+      <source>Select Page</source>
+      <translation type="unfinished">Select Page</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="111"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MoveView</name>
+    <message>
+      <location filename="CommandMoveView.py" line="47"/>
+      <source>Move View</source>
+      <translation type="unfinished">Move View</translation>
+    </message>
+    <message>
+      <location filename="CommandMoveView.py" line="50"/>
+      <source>Move a View to a new Page</source>
+      <translation type="unfinished">Move a View to a new Page</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="47"/>
+      <source>Move View to a different Page</source>
+      <translation type="unfinished">Move View to a different Page</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="74"/>
+      <source>Select View to move from list.</source>
+      <translation type="unfinished">Select View to move from list.</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="75"/>
+      <source>Select View</source>
+      <translation type="unfinished">Select View</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation type="unfinished">Select From Page.</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="113"/>
+      <source>Select Page</source>
+      <translation type="unfinished">Select Page</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
     <name>Cmd2LineCenterLine</name>
     <message>
       <source>Add Centerline between 2 Lines</source>
@@ -1975,14 +2061,15 @@ može smanjiti performanse u složenim modelima.
     <message>
       <source>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Size of selection area around edges
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>Prostor za odabir oko rubnih oznaka
+Svaka jedinica iznosi ca.  0,1 mm širine
+</translation>
     </message>
     <message>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Selection area around center marks
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>Prostor za odabir oko središnjih oznaka
+Svaka jedinica iznosi ca.  0,1 mm širine</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2172,7 +2259,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Line Width Group</source>
-      <translation type="unfinished">Line Width Group</translation>
+      <translation>Grupa Širina linije</translation>
     </message>
     <message>
       <source>Balloon Shape</source>
@@ -2428,13 +2515,13 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Tolerance Text Scale</source>
-      <translation type="unfinished">Tolerance Text Scale</translation>
+      <translation>Dopušteno odstupanje veličine teksta</translation>
     </message>
     <message>
       <source>Tolerance text scale
 Multiplier of &apos;Font Size&apos;</source>
-      <translation type="unfinished">Tolerance text scale
-Multiplier of &apos;Font Size&apos;</translation>
+      <translation>Dopušteno odstupanje veličine teksta
+Množitelj &apos;veličina pisma&apos;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2504,12 +2591,12 @@ za Grupe Prikaza
     <message>
       <source>* this font is also used for dimensions
    Changes have no effect on existing dimensions.</source>
-      <translation type="unfinished">* this font is also used for dimensions
-   Changes have no effect on existing dimensions.</translation>
+      <translation>*ovo se pismo također koristi za dimenzije
+   Promjene nemaju utjecaja na postojeće dimenzije.</translation>
     </message>
     <message>
       <source>Label Font*</source>
-      <translation type="unfinished">Label Font*</translation>
+      <translation>Pismo oznake*</translation>
     </message>
     <message>
       <source>Label Size</source>
@@ -2534,7 +2621,7 @@ za Grupe Prikaza
     </message>
     <message>
       <source>Use first- or third-angle multiview projection convention</source>
-      <translation type="unfinished">Use first- or third-angle multiview projection convention</translation>
+      <translation>Koristite konvenciju za projekciju višestrukog prikaza prvog ili trećeg kuta</translation>
     </message>
     <message>
       <source>First</source>
@@ -2946,7 +3033,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Bubble Shape:</source>
-      <translation type="unfinished">Bubble Shape:</translation>
+      <translation>Oblačići Oblik:</translation>
     </message>
     <message>
       <source>Shape of the balloon bubble</source>
@@ -2986,7 +3073,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Bubble shape scale factor</source>
-      <translation type="unfinished">Bubble shape scale factor</translation>
+      <translation>Oblačići Oblik faktor skaliranja</translation>
     </message>
     <message>
       <source>End Symbol:</source>
@@ -2998,19 +3085,19 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>End Symbol Scale:</source>
-      <translation type="unfinished">End Symbol Scale:</translation>
+      <translation>Skaliranje završnog simbola:</translation>
     </message>
     <message>
       <source>End symbol scale factor</source>
-      <translation type="unfinished">End symbol scale factor</translation>
+      <translation>Faktor skaliranja završnog simbola</translation>
     </message>
     <message>
       <source>Line Visible:</source>
-      <translation type="unfinished">Line Visible:</translation>
+      <translation>Linija obavijesti vidljiva:</translation>
     </message>
     <message>
       <source>Whether the leader line is visible or not</source>
-      <translation type="unfinished">Whether the leader line is visible or not</translation>
+      <translation>Da li je linija obavijesti vidljiva ili ne</translation>
     </message>
     <message>
       <source>False</source>
@@ -3329,27 +3416,27 @@ Prilagođeno: koristi se prilagođeni faktor razmjera</translation>
     </message>
     <message>
       <source>Tolerancing</source>
-      <translation type="unfinished">Tolerancing</translation>
+      <translation>Tolerancija</translation>
     </message>
     <message>
       <source>If theoretical exact (basic) dimension</source>
-      <translation type="unfinished">If theoretical exact (basic) dimension</translation>
+      <translation>Ako je teorijska točna (osnovna) dimenzija</translation>
     </message>
     <message>
       <source>Theoretically Exact</source>
-      <translation type="unfinished">Theoretically Exact</translation>
+      <translation>Teorijski točna</translation>
     </message>
     <message>
       <source>Reverses usual direction of dimension line terminators</source>
-      <translation type="unfinished">Reverses usual direction of dimension line terminators</translation>
+      <translation>Obrće uobičajeni smjer završetaka dimenzijske linije</translation>
     </message>
     <message>
       <source>Equal Tolerance</source>
-      <translation type="unfinished">Equal Tolerance</translation>
+      <translation>Jednaka tolerancija</translation>
     </message>
     <message>
       <source>Overtolerance:</source>
-      <translation type="unfinished">Overtolerance:</translation>
+      <translation>Gornja tolerancija:</translation>
     </message>
     <message>
       <source>Overtolerance value
@@ -3361,7 +3448,7 @@ the negated value for &apos;Under Tolerance&apos;.</translation>
     </message>
     <message>
       <source>Undertolerance:</source>
-      <translation type="unfinished">Undertolerance:</translation>
+      <translation>Donja tolerancija:</translation>
     </message>
     <message>
       <source>Undertolerance value
@@ -3373,11 +3460,11 @@ by negative value of &apos;Over Tolerance&apos;.</translation>
     </message>
     <message>
       <source>Formatting</source>
-      <translation type="unfinished">Formatting</translation>
+      <translation>Formatiranje</translation>
     </message>
     <message>
       <source>Format Specifier:</source>
-      <translation type="unfinished">Format Specifier:</translation>
+      <translation>Specifikator formata:</translation>
     </message>
     <message>
       <source>Text to be displayed</source>
@@ -3391,27 +3478,29 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Arbitrary Text</source>
-      <translation type="unfinished">Arbitrary Text</translation>
+      <translation>Proizvoljan tekst</translation>
     </message>
     <message>
       <source>OverTolerance Format Specifier:</source>
-      <translation type="unfinished">OverTolerance Format Specifier:</translation>
+      <translation>Gornja tolerancija Specifikator formata:</translation>
     </message>
     <message>
       <source>Specifies the overtolerance format in printf() style, or arbitrary text</source>
-      <translation type="unfinished">Specifies the overtolerance format in printf() style, or arbitrary text</translation>
+      <translation>Određuje format gornje tolerancije u stilu printf() ili proizvoljan tekst
+
+</translation>
     </message>
     <message>
       <source>UnderTolerance Format Specifier:</source>
-      <translation type="unfinished">UnderTolerance Format Specifier:</translation>
+      <translation>Donja tolerancija Specifikator formata:</translation>
     </message>
     <message>
       <source>Specifies the undertolerance format in printf() style, or arbitrary text</source>
-      <translation type="unfinished">Specifies the undertolerance format in printf() style, or arbitrary text</translation>
+      <translation>Određuje format donje tolerancije u stilu printf() ili proizvoljan tekst</translation>
     </message>
     <message>
       <source>Arbitrary Tolerance Text</source>
-      <translation type="unfinished">Arbitrary Tolerance Text</translation>
+      <translation>Proizvoljan tekst Tolerancije</translation>
     </message>
     <message>
       <source>Display Style</source>
@@ -3419,7 +3508,7 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Flip Arrowheads</source>
-      <translation type="unfinished">Flip Arrowheads</translation>
+      <translation>Okreni vrhove strelica</translation>
     </message>
     <message>
       <source>Color:</source>
@@ -3427,7 +3516,7 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Color of the dimension</source>
-      <translation type="unfinished">Color of the dimension</translation>
+      <translation>Boja dimenzije</translation>
     </message>
     <message>
       <source>Font Size:</source>

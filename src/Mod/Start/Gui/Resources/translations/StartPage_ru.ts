@@ -116,7 +116,7 @@
     <message>
       <location filename="TranslationTexts.py" line="64"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation>FreeCAD также предоставляет публичный &lt;a href="https://www.freecadweb.org/tracker"&gt;баг трэкер&lt;/a&gt; где любой может сообщить об ошибке и предложить новые функции. Для избежания лишней работы и большей вероятности исправления вашего сообщения об ошибке убедитесь, что вы прочитали &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;руководство правильного сообщения об ошибке&lt;/a&gt; сначала.</translation>
+      <translation>FreeCAD также предоставляет публичный &lt;a href="https://www.freecadweb.org/tracker"&gt;трэкер ошибок&lt;/a&gt;, где любой может сообщить об ошибке и предложить новые функции. Для избежания лишней работы и большей вероятности увидеть скорое решение вашего сообщения об ошибке, убедитесь, что вы прочитали &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;руководство по отправке ошибок&lt;/a&gt; перед публикацией.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="65"/>
