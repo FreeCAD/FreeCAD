@@ -36,7 +36,7 @@ __doc__ = (
 
 
 class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
-    """Psuedo page controller class for Profile operation,
+    """Pseudo page controller class for Profile operation,
     allowing for backward compatibility with pre-existing "Profile Edges" operations."""
 
     pass

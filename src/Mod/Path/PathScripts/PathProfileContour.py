@@ -32,7 +32,7 @@ __doc__ = "Implementation of the Contour operation (depreciated)."
 
 
 class ObjectContour(PathProfile.ObjectProfile):
-    '''Psuedo class for Profile operation,
+    '''Pseudo class for Profile operation,
     allowing for backward compatibility with pre-existing "Contour" operations.'''
     pass
 # Eclass
