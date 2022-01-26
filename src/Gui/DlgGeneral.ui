@@ -582,6 +582,25 @@ horizontal space in Python console</string>
            </property>
           </widget>
          </item>
+         <item row="0" column="1">
+          <widget class="Gui::PrefCheckBox" name="PythonBlockCursor">
+           <property name="toolTip">
+            <string>The cursor shape will be a block</string>
+           </property>
+           <property name="text">
+            <string>Enable block cursor</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>PythonBlockCursor</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>General</cstring>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
@@ -608,6 +627,7 @@ horizontal space in Python console</string>
   <tabstop>RecentFiles</tabstop>
   <tabstop>SplashScreen</tabstop>
   <tabstop>PythonWordWrap</tabstop>
+  <tabstop>PythonBlockCursor</tabstop>
  </tabstops>
  <resources/>
  <connections/>

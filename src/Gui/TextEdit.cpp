@@ -449,7 +449,9 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
 
         QFont font(fontFamily, fontSize);
         setFont(font);
-    } else {
+        lineNumberArea->setFont(font);
+    }
+    else {
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
@@ -475,12 +477,23 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
     }
 
     // Enables/Disables Line number in the Macro Editor from Edit->Preferences->Editor menu.
-    QRect cr = contentsRect();
-    bool show = hPrefGrp->GetBool( "EnableLineNumber", true );
-    if(show) {
-        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
-    } else {
-        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), 0, cr.height()));
+    if (strcmp(sReason, "EnableLineNumber") == 0) {
+        QRect cr = contentsRect();
+        bool show = hPrefGrp->GetBool("EnableLineNumber", true);
+        if(show)
+            lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+        else
+            lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), 0, cr.height()));
+    }
+
+    if (strcmp(sReason, "EnableBlockCursor") == 0 ||
+        strcmp(sReason, "FontSize") == 0 ||
+        strcmp(sReason, "Font") == 0) {
+        bool block = hPrefGrp->GetBool("EnableBlockCursor", false);
+        if (block)
+            setCursorWidth(QFontMetrics(font()).averageCharWidth());
+        else
+            setCursorWidth(1);
     }
 }
 

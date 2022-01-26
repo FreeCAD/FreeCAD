@@ -174,6 +174,7 @@ void DlgSettingsEditorImp::on_colorButton_changed()
 void DlgSettingsEditorImp::saveSettings()
 {
     ui->EnableLineNumber->onSave();
+    ui->EnableBlockCursor->onSave();
     ui->EnableFolding->onSave();
     ui->tabSize->onSave();
     ui->indentSize->onSave();
@@ -194,6 +195,7 @@ void DlgSettingsEditorImp::saveSettings()
 void DlgSettingsEditorImp::loadSettings()
 {
     ui->EnableLineNumber->onRestore();
+    ui->EnableBlockCursor->onRestore();
     ui->EnableFolding->onRestore();
     ui->tabSize->onRestore();
     ui->indentSize->onRestore();
