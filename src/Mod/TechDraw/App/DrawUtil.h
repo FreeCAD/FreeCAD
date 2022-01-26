@@ -109,6 +109,8 @@ class TechDrawExport DrawUtil {
         //! find intersection in 2d for 2 lines in point+direction form
         static Base::Vector3d Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
                                    Base::Vector3d p2, Base::Vector3d d2);
+        static Base::Vector2d Intersect2d(Base::Vector2d p1, Base::Vector2d d1,
+                                   Base::Vector2d p2, Base::Vector2d d2);
         static Base::Vector3d gpPnt2V3(const gp_Pnt gp) { return Base::Vector3d(gp.X(),gp.Y(),gp.Z()); }
         static gp_Pnt         V32gpPnt(const Base::Vector3d v)  { return gp_Pnt(v.x,v.y,v.z); }
         static std::string shapeToString(TopoDS_Shape s);
