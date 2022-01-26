@@ -246,21 +246,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="addonmanager_metadata.py" line="72"/>
-        <source>Error with encrypted connection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_metadata.py" line="135"/>
-        <source>Failed to connect to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_metadata.py" line="220"/>
-        <source>Failed to connect to URL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="addonmanager_workers.py" line="115"/>
         <source>Checking network connection...
 </source>
@@ -312,6 +297,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="addonmanager_workers.py" line="429"/>
+        <source>git fetch failed for {wb.name}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="addonmanager_workers.py" line="439"/>
         <source>git pull failed for {wb.name}</source>
         <translation type="unfinished"></translation>
@@ -322,8 +312,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="addonmanager_workers.py" line="521"/>
+        <source>This addon is already installed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="533"/>
+        <source>An update is available for this addon.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="547"/>
+        <source>This addon is marked as obsolete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="addonmanager_workers.py" line="551"/>
         <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="559"/>
+        <source>This addon is marked as Python 2 Only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -347,6 +357,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="addonmanager_workers.py" line="1403"/>
+        <source>Retrieving package metadata...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="1405"/>
+        <source>Failed to execute pip. Returned error was:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="addonmanager_workers.py" line="651"/>
         <source>Retrieving description...</source>
         <translation type="unfinished"></translation>
@@ -367,46 +387,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="addonmanager_workers.py" line="521"/>
-        <source>This addon is already installed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="533"/>
-        <source>An update is available for this addon.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="738"/>
-        <source>Outdated GitPython detected, consider upgrading with pip.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="547"/>
-        <source>This addon is marked as obsolete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="559"/>
-        <source>This addon is marked as Python 2 Only</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="915"/>
-        <source>Retrieving macro description...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="653"/>
-        <source>Retrieving info from git</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="656"/>
-        <source>Retrieving info from wiki</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="addonmanager_workers.py" line="700"/>
         <source>GitPython not found. Using standard download instead.</source>
         <translation type="unfinished"></translation>
@@ -419,6 +399,11 @@
     <message>
         <location filename="addonmanager_workers.py" line="727"/>
         <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="738"/>
+        <source>Outdated GitPython detected, consider upgrading with pip.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -467,16 +452,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="addonmanager_workers.py" line="1075"/>
-        <source>Error updating module </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="1078"/>
-        <source>Please fix manually</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="addonmanager_workers.py" line="873"/>
         <source>Error: Unable to locate zip from</source>
         <translation type="unfinished"></translation>
@@ -492,13 +467,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="addonmanager_workers.py" line="1405"/>
-        <source>Failed to execute pip. Returned error was:</source>
+        <location filename="addonmanager_workers.py" line="915"/>
+        <source>Retrieving macro description...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="addonmanager_workers.py" line="1403"/>
-        <source>Retrieving package metadata...</source>
+        <location filename="addonmanager_workers.py" line="653"/>
+        <source>Retrieving info from git</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="656"/>
+        <source>Retrieving info from wiki</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="1075"/>
+        <source>Error updating module </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="1078"/>
+        <source>Please fix manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="1220"/>
+        <source>Error: Unable to locate ZIP from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -517,6 +512,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="addonmanager_metadata.py" line="72"/>
+        <source>Error with encrypted connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_metadata.py" line="135"/>
+        <source>Failed to connect to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_metadata.py" line="220"/>
+        <source>Failed to connect to URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="AddonManager.py" line="191"/>
         <source>Checking connection</source>
         <translation type="unfinished"></translation>
@@ -529,6 +539,16 @@
     <message>
         <location filename="AddonManager.py" line="213"/>
         <source>Connection failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="240"/>
+        <source>Missing dependency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="241"/>
+        <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -567,16 +587,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AddonManager.py" line="243"/>
-        <source>Checking for updates...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="AddonManager.py" line="262"/>
-        <source>Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="AddonManager.py" line="86"/>
         <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
         <translation type="unfinished"></translation>
@@ -589,6 +599,16 @@
     <message>
         <location filename="AddonManager.py" line="204"/>
         <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="243"/>
+        <source>Checking for updates...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="262"/>
+        <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -652,6 +672,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="AddonManager.py" line="915"/>
+        <source>Too many to list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="AddonManager.py" line="893"/>
         <source>Missing Requirement</source>
         <translation type="unfinished"></translation>
@@ -659,6 +684,26 @@
     <message>
         <location filename="AddonManager.py" line="964"/>
         <source>Installing dependencies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="1061"/>
+        <source>Cannot execute Python</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="1081"/>
+        <source>Cannot execute pip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="1102"/>
+        <source>Package installation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="1105"/>
+        <source>See Report View for detailed failure log.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -694,6 +739,16 @@
     <message>
         <location filename="AddonManager.py" line="866"/>
         <source>Installation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="1457"/>
+        <source>Confirm remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="1460"/>
+        <source>Are you sure you want to uninstall this Addon?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
