@@ -30,12 +30,10 @@
 # include <exception>
 #endif  //#ifndef _PreComp_
 
-#include <QGraphicsView>
-
 # include <App/DocumentObject.h>
 # include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Type.h>
+# include <Base/Console.h>
+# include <Base/Type.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
 # include <Gui/BitmapFactory.h>
@@ -59,21 +57,16 @@
 # include <Mod/TechDraw/App/DrawPage.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
 # include <Mod/TechDraw/App/Geometry.h>
+# include <Mod/TechDraw/App/DrawViewSection.h>
+# include <Mod/TechDraw/App/DrawViewBalloon.h>
 
-#include <Mod/TechDraw/Gui/QGVPage.h>
-
-
-#include "DrawGuiUtil.h"
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
-#include "TaskLinkDim.h"
+# include "ViewProviderBalloon.h"
+# include "QGVPage.h"
+# include "DrawGuiUtil.h"
+# include "ViewProviderPage.h"
+# include "TaskLinkDim.h"
 
 #include "TaskSelectLineAttributes.h"
-
-/////////////////////////////
-#include <Mod/TechDraw/App/DrawViewSection.h>  // needed
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-/////////////////////////////
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -100,6 +93,7 @@ namespace TechDrawGui {
                    std::vector<Gui::SelectionObject>& selection,
                    TechDraw::DrawViewPart*& objFeat,
                    std::string message);
+    std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat);
 
     //===========================================================================
     // TechDraw_ExtensionHoleCircle
@@ -1653,6 +1647,130 @@ bool CmdTechDrawExtendShortenLineGroup::isActive(void)
 }
 
 //===========================================================================
+// TechDraw_ExtensionAreaAnnotation
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawExtensionAreaAnnotation)
+
+CmdTechDrawExtensionAreaAnnotation::CmdTechDrawExtensionAreaAnnotation()
+  : Command("TechDraw_ExtensionAreaAnnotation")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Calculate the area of selected faces");
+    sToolTipText    = QT_TR_NOOP("Select several faces\n\
+    - click this tool");
+    sWhatsThis      = "TechDraw_ExtensionAreaAnnotation";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_ExtensionAreaAnnotation";
+}
+
+void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
+// calculate the area of selected faces, create output in a balloon
+{
+    Q_UNUSED(iMsg);
+    std::vector<Gui::SelectionObject> selection;
+    TechDraw::DrawViewPart* objFeat;
+    if (!_checkSel(this, selection, objFeat, "TechDraw calculate selected area"))
+        return;
+    double faceArea(0.0), totalArea(0.0), xCenter(0.0), yCenter(0.0);
+    int totalPoints(0);
+    const std::vector<std::string> subNames = selection[0].getSubNames();
+    if (!subNames.empty()) {
+        for (std::string name : subNames) {
+            int idx = TechDraw::DrawUtil::getIndexFromName(name);
+            std::vector<TechDraw::BaseGeomPtr> faceEdges = objFeat->getFaceEdgesByIndex(idx);
+            // We filter arcs, circles etc. which are not allowed.
+            for (TechDraw::BaseGeomPtr geoPtr : faceEdges)
+                if (geoPtr->geomType != TechDraw::GENERIC)
+                    throw Base::TypeError("CmdTechDrawAreaAnnotation - forbidden border element found\n");
+            // We create a list of all points along the boundary of the face.
+            // The edges form a closed polygon, but their start- and endpoints may be interchanged.
+            std::vector<Base::Vector3d> facePoints;
+            TechDraw::GenericPtr firstEdge =
+                    std::static_pointer_cast<TechDraw::Generic>(faceEdges[0]);
+            facePoints.push_back(firstEdge->points.at(0));
+            facePoints.push_back(firstEdge->points.at(1));
+            for (long unsigned int n = 1; n < faceEdges.size() - 1; n++)
+            {
+                TechDraw::GenericPtr nextEdge =
+                        std::static_pointer_cast<TechDraw::Generic>(faceEdges[n]);
+                if ((nextEdge->points.at(0)-facePoints.back()).Length() < 0.01)
+                    facePoints.push_back(nextEdge->points.at(1));
+                else 
+                    facePoints.push_back(nextEdge->points.at(0));
+            }
+            facePoints.push_back(facePoints.front());
+            // We calculate the area, using triangles. Each having one point at (0/0).
+            faceArea = 0.0;
+            xCenter = xCenter + facePoints[0].x;
+            yCenter = yCenter + facePoints[0].y;
+            for (long unsigned int n = 0; n < facePoints.size() - 1; n++)
+            {
+                faceArea = faceArea + facePoints[n].x * facePoints[n+1].y -
+                                      facePoints[n].y * facePoints[n+1].x;
+                xCenter = xCenter + facePoints[n+1].x;
+                yCenter = yCenter + facePoints[n+1].y;
+            }
+            faceArea = abs(faceArea)/2.0;
+            totalArea = totalArea + faceArea;
+            totalPoints = totalPoints + facePoints.size();      
+        }
+    }
+    // if area calculation was successfull, wie start the command
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Calculate Face Area"));
+    // at first we create the balloon
+    std::string balloonName  = _createBalloon(this, objFeat);
+    TechDraw::DrawViewBalloon* balloon = nullptr;
+    balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(this->getDocument()->getObject(balloonName.c_str()));
+    if (!balloon)
+        throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
+    // the balloon has been created successfull
+    // we calculate needed variables
+    double scale = objFeat->getScale();
+    totalArea = totalArea*10*10; // Todo: get factor cm->mm if cm set
+    std::stringstream balloonText;
+    balloonText << " " << totalArea << " cm2 ";
+    xCenter = (xCenter/totalPoints)/scale;
+    yCenter = (yCenter/totalPoints)/scale;
+    // we set the attributes in the data tab's fields 
+    balloon->SourceView.setValue(objFeat);
+    balloon->BubbleShape.setValue("Rectangle");
+    balloon->EndType.setValue("None");
+    balloon->KinkLength.setValue(0.0);
+    balloon->X.setValue(xCenter);
+    balloon->Y.setValue(-yCenter);
+    balloon->OriginX.setValue(xCenter);
+    balloon->OriginY.setValue(-yCenter);
+    balloon->ShapeScale.setValue(0.75);
+    balloon->ScaleType.setValue("Page");
+    balloon->Text.setValue(balloonText.str());
+    // we look for the ballons's view provider
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
+    auto viewProvider = static_cast<ViewProviderBalloon*>(guiDoc->getViewProvider(balloon));
+    if (viewProvider)
+    {
+        // view provider successfull found,
+        // we set the attributes in the view tab's fields
+        viewProvider->Fontsize.setValue(2.0);
+        viewProvider->LineWidth.setValue(0.75);
+        viewProvider->LineVisible.setValue(false);
+        viewProvider->Color.setValue(App::Color(1.0f, 0.0f, 0.0f));
+    }
+    Gui::Command::commitCommand();
+    objFeat->touch(true);
+    Gui::Command::updateActive();
+}
+
+bool CmdTechDrawExtensionAreaAnnotation::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+//===========================================================================
 // internal helper routines
 //===========================================================================
 namespace TechDrawGui {
@@ -1661,6 +1779,23 @@ namespace TechDrawGui {
     {
         static lineAttributes attributes;
         return attributes;
+    }
+
+    std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
+        // create a new balloon, return it's name as string
+    {
+        TechDraw::DrawPage* page = objFeat->findParentPage();
+        page->balloonParent = objFeat;
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
+        ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
+        QGVPage* viewPage = pageVP->getGraphicsView();
+        std::string featName = viewPage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
+        std::string pageName = viewPage->getDrawPage()->getNameInDocument();
+        cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",
+                       featName.c_str());
+        cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", 
+                       pageName.c_str(), featName.c_str());
+        return featName;
     }
 
     bool _checkSel(Gui::Command* cmd,
@@ -1964,4 +2099,5 @@ void CreateTechDrawCommandsExtensions(void)
     rcCmdMgr.addCommand(new CmdTechDrawExtensionThreadBoltSide());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionThreadHoleBottom());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionThreadBoltBottom());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionAreaAnnotation());
 }
