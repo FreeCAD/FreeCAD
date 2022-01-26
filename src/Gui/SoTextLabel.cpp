@@ -377,10 +377,10 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
     QStringList list;
     for (int i=0; i<this->string.getNum(); i++)
         list << QLatin1String(this->string[i].getString());
-#if !defined(HAVE_QT5_OPENGL)
+#if 0 // Old OpenGL API
     window->renderText(nil[0],nil[1],nil[2],list.join(QLatin1String("\n")),font);
 #else
-    //FIXME: HAVE_QT5_OPENGL
+    //FIXME: renderText
 #endif
 
     // Leave 2D screen mode

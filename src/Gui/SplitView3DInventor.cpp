@@ -767,9 +767,6 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
 
     if (samples > 1) {
         glformat = true;
-#if !defined(HAVE_QT5_OPENGL)
-        f.setSampleBuffers(true);
-#endif
         f.setSamples(samples);
     }
     else if (samples > 0) {

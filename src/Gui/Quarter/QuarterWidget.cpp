@@ -66,10 +66,8 @@
 #include <QPaintEvent>
 #include <QResizeEvent>
 
-#if defined(HAVE_QT5_OPENGL)
 #include <QOpenGLDebugMessage>
 #include <QOpenGLDebugLogger>
-#endif
 
 #if COIN_MAJOR_VERSION >= 4
 #include <Inventor/SbByteBuffer.h>
@@ -147,7 +145,6 @@ using namespace SIM::Coin3D::Quarter;
 #endif
 
 //We need to avoid buffer swapping when initializing a QPainter on this widget
-#if defined(HAVE_QT5_OPENGL)
 class CustomGLWidget : public QOpenGLWidget {
 public:
     QSurfaceFormat myFormat;
@@ -247,16 +244,6 @@ public:
         update(); // fixes flickering on some systems
     }
 };
-#else
-class CustomGLWidget : public QGLWidget {
-public:
-    CustomGLWidget(const QGLFormat& fo, QWidget* parent = 0, const QGLWidget* shareWidget = 0, Qt::WindowFlags f = 0)
-     : QGLWidget(fo, parent, shareWidget, f)
-    {
-         setAutoBufferSwap(false);
-    }
-};
-#endif
 
 /*! constructor */
 QuarterWidget::QuarterWidget(const QtGLFormat & format, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
@@ -340,7 +327,6 @@ QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewi
 void
 QuarterWidget::replaceViewport()
 {
-#if defined(HAVE_QT5_OPENGL)
   CustomGLWidget* oldvp = static_cast<CustomGLWidget*>(viewport());
   CustomGLWidget* newvp = new CustomGLWidget(oldvp->myFormat, this);
   PRIVATE(this)->replaceGLWidget(newvp);
@@ -348,7 +334,6 @@ QuarterWidget::replaceViewport()
 
   setAutoFillBackground(false);
   viewport()->setAutoFillBackground(false);
-#endif
 }
 
 void
@@ -884,18 +869,12 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     }
 
     if(!initialized) {
-#if !defined(HAVE_QT5_OPENGL)
-        glEnable(GL_DEPTH_TEST);
-#endif
         this->getSoRenderManager()->reinitialize();
         initialized = true;
     }
 
     getSoRenderManager()->activate();
 
-#if !defined(HAVE_QT5_OPENGL)
-    glEnable(GL_DEPTH_TEST);
-#endif
     glMatrixMode(GL_PROJECTION);
 
     QtGLWidget* w = static_cast<QtGLWidget*>(this->viewport());
@@ -928,12 +907,8 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
 
     assert(w->isValid() && "No valid GL context found!");
 
-#if defined(HAVE_QT5_OPENGL)
     // Causes an OpenGL error on resize
     //glDrawBuffer(w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer ? GL_BACK : GL_FRONT);
-#else
-    glDrawBuffer(w->doubleBuffer() ? GL_BACK : GL_FRONT);
-#endif
 
     w->makeCurrent();
     this->actualRedraw();
@@ -945,13 +920,9 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     inherited::paintEvent(event);
     glPopAttrib();
 
-#if defined(HAVE_QT5_OPENGL)
     // Causes an OpenGL error on resize
     //if (w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer)
     //    w->context()->swapBuffers(w->context()->surface());
-#else
-    if (w->doubleBuffer()) { w->swapBuffers(); }
-#endif
 
     PRIVATE(this)->autoredrawenabled = true;
 

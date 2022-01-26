@@ -45,9 +45,7 @@ Flag::Flag(QWidget* parent)
   : QtGLWidget(parent), coord(0.0f, 0.0f, 0.0f)
 {
     this->setFixedHeight(20);
-#if defined(HAVE_QT5_OPENGL)
     setAutoFillBackground(true);
-#endif
 }
 
 Flag::~Flag()
@@ -57,31 +55,17 @@ Flag::~Flag()
 void Flag::initializeGL()
 {
     const QPalette& p = this->palette();
-#if !defined(HAVE_QT5_OPENGL)
-    qglClearColor(p.color(QPalette::Window));
-#else
     QColor c(p.color(QPalette::Window));
     glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF());
-#endif
 }
 
 void Flag::paintGL()
 {
-#if !defined(HAVE_QT5_OPENGL)
-    const QPalette& p = this->palette();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    qglColor(p.color(QPalette::Text));
-    renderText(10,15,this->text);
-#else
     QOpenGLWidget::paintGL();
-#endif
 }
 
 void Flag::paintEvent(QPaintEvent* e)
 {
-#if !defined(HAVE_QT5_OPENGL)
-    QtGLWidget::paintEvent(e);
-#else
     const QPalette& p = this->palette();
     QColor c(p.color(QPalette::Text));
 
@@ -92,7 +76,6 @@ void Flag::paintEvent(QPaintEvent* e)
     painter.setPen(c);
     painter.drawText(10, 15, this->text);
     painter.end();
-#endif
 }
 
 void Flag::resizeGL(int width, int height)
@@ -125,9 +108,6 @@ void Flag::drawLine (View3DInventorViewer* v, int tox, int toy)
 
     GLPainter p;
     p.begin(v->getGLWidget());
-#if !defined(HAVE_QT5_OPENGL)
-    p.setDrawBuffer(GL_BACK);
-#endif
 
     // the line
     p.setLineWidth(1.0f);
@@ -153,11 +133,9 @@ void Flag::mouseMoveEvent(QMouseEvent *e)
     if (e->buttons() & Qt::LeftButton) {
         move(e->globalPos() - dragPosition);
         e->accept();
-#if defined(HAVE_QT5_OPENGL)
         View3DInventorViewer* viewer = dynamic_cast<View3DInventorViewer*>(parentWidget());
         if (viewer)
             viewer->getSoRenderManager()->scheduleRedraw();
-#endif
     }
 }
 
@@ -371,10 +349,8 @@ void GLFlagWindow::deleteFlags()
                 flag->deleteLater();
             }
         }
-#if defined(HAVE_QT5_OPENGL)
         if (ct > 0)
             _viewer->getSoRenderManager()->scheduleRedraw();
-#endif
     }
 }
 
@@ -395,9 +371,7 @@ void GLFlagWindow::removeFlag(Flag* item)
 {
     if (_flagLayout) {
         _flagLayout->removeWidget(item);
-#if defined(HAVE_QT5_OPENGL)
         _viewer->getSoRenderManager()->scheduleRedraw();
-#endif
     }
 }
 

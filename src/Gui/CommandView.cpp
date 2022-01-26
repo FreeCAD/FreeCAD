@@ -1705,7 +1705,6 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
     MDIView* view = getMainWindow()->activeWindow();
     if (!view) return; // no active view
 
-#if defined(HAVE_QT5_OPENGL)
     // nothing to do when the view is docked and 'Docked' is pressed
     if (iMsg == 0 && view->currentViewMode() == MDIView::Child)
         return;
@@ -1747,23 +1746,6 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
         // destroy the old view
         view->deleteSelf();
     }
-#else
-    if (iMsg==0) {
-        view->setCurrentViewMode(MDIView::Child);
-    }
-    else if (iMsg==1) {
-        if (view->currentViewMode() == MDIView::TopLevel)
-            view->setCurrentViewMode(MDIView::Child);
-        else
-            view->setCurrentViewMode(MDIView::TopLevel);
-    }
-    else if (iMsg==2) {
-        if (view->currentViewMode() == MDIView::FullScreen)
-            view->setCurrentViewMode(MDIView::Child);
-        else
-            view->setCurrentViewMode(MDIView::FullScreen);
-    }
-#endif
 }
 
 bool StdViewDockUndockFullscreen::isActive(void)

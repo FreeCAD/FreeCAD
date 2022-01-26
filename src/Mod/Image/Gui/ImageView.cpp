@@ -41,8 +41,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(ImageGui::ImageView, Gui::MDIView)
 ImageView::ImageView(QWidget* parent)
   : MDIView(0, parent), _ignoreCloseEvent(false)
 {
-  // Create an OpenGL widget for displaying images
-#if QT_VERSION >=0x050000
+    // Create an OpenGL widget for displaying images
     // Since Qt5 there is a weird behaviour when creating a GLImageBox.
     // It works correctly for the first time when creating an image view
     // but only when no 3d view is created. For the second time or if a
@@ -66,14 +65,7 @@ ImageView::ImageView(QWidget* parent)
     // Since Qt5 the class QGLWidget is marked as deprecated and should be
     // replaced by QOpenGLWidget.
 
-#if defined(HAVE_QT5_OPENGL)
   _pGLImageBox = new GLImageBox(this);
-#else
-  _pGLImageBox = new GLImageBox(parent);
-#endif // HAVE_QT5_OPENGL
-#else
-  _pGLImageBox = new GLImageBox(this);
-#endif
   setCentralWidget(_pGLImageBox);
 
   // enable mouse tracking when moving even if no buttons are pressed

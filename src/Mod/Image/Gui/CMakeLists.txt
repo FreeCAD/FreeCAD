@@ -56,24 +56,14 @@ SET(ImageGui_SRCS
     Resources/Image.qrc
     ImageView.cpp
     ImageView.h
+    OpenGLImageBox.cpp
+    OpenGLImageBox.h
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
     Workbench.h
     XpmImages.h
 )
-
-if(FREECAD_USE_QTOPENGL_WIDGET)
-    list(APPEND ImageGui_SRCS
-        OpenGLImageBox.cpp
-        OpenGLImageBox.h
-    )
-else()
-    list(APPEND ImageGui_SRCS
-        GLImageBox.cpp
-        GLImageBox.h
-    )
-endif()
 
 SET(ImageGuiIcon_SVG
     Resources/icons/ImageWorkbench.svg

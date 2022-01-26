@@ -71,10 +71,6 @@ macro(InitializeFreeCADBuildOptions)
     )
 
     if (BUILD_QT5)
-      option(FREECAD_USE_QTOPENGL_WIDGET "Replace QGLWidget with QOpenGLWidget." ON)
-      if (FREECAD_USE_QTOPENGL_WIDGET)
-          set(HAVE_QT5_OPENGL 1 )
-      endif()
       set(FREECAD_USE_QTWEBMODULE "Automatic"  CACHE STRING  "Qt Webkit or Qt WebEngine")
       set_property(CACHE FREECAD_USE_QTWEBMODULE PROPERTY STRINGS
                    "Automatic"
