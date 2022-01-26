@@ -74,7 +74,7 @@ ViewProviderImagePlane::~ViewProviderImagePlane()
 
 void ViewProviderImagePlane::attach(App::DocumentObject *pcObj)
 {
-    ViewProviderDocumentObject::attach(pcObj);
+    ViewProviderGeometryObject::attach(pcObj);
 
     // NOTE: SoFCSelection node has beem removed because it led to
     // problems using the image as a construction plane with the
@@ -114,7 +114,7 @@ void ViewProviderImagePlane::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderImagePlane::getDisplayModes(void) const
+std::vector<std::string> ViewProviderImagePlane::getDisplayModes() const
 {
     std::vector<std::string> StrList;
     StrList.push_back("ImagePlane");

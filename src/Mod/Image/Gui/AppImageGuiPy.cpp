@@ -58,7 +58,7 @@ private:
     Py::Object open(const Py::Tuple& args)
     {
         char* Name;
-        const char* DocName=0;
+        const char* DocName=nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
             throw Py::Exception();
 

@@ -51,13 +51,13 @@ SET(ImageGui_SRCS
     Command.cpp
     ImageOrientationDialog.cpp
     ImageOrientationDialog.h
+    OpenGLImageBox.cpp
+    OpenGLImageBox.h
     ViewProviderImagePlane.cpp
     ViewProviderImagePlane.h
     Resources/Image.qrc
     ImageView.cpp
     ImageView.h
-    OpenGLImageBox.cpp
-    OpenGLImageBox.h
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
