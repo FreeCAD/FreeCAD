@@ -30,7 +30,7 @@ Uninstallation
 * Remove the folder which was cloned during installation:
   * Linux: ~/.FreeCAD/Mod/SearchBar
   * macos: /Users/user_name/Library/Preferences/FreeCAD/Mod/SearchBar
-  * Windows: C:\Users\user_name\AppData\Roaming\FreeCAD\Mod\SearchBar  
+  * Windows: C:\Users\user_name\AppData\Roaming\FreeCAD\Mod\SearchBar
 * Optional: Remove the cache (~30MB) ~/.FreeCAD/Cache_SearchBarMod or equivalent on other platforms
 
 Development
