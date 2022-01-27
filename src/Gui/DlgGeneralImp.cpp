@@ -142,6 +142,7 @@ void DlgGeneralImp::saveSettings()
 
     ui->SubstituteDecimal->onSave();
     ui->RecentFiles->onSave();
+    ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
     ui->PythonWordWrap->onSave();
     ui->PythonBlockCursor->onSave();
@@ -173,6 +174,9 @@ void DlgGeneralImp::saveSettings()
     int pixel = size.toInt();
     hGrp->SetInt("ToolbarIconSize", pixel);
     getMainWindow()->setIconSize(QSize(pixel,pixel));
+
+    int blinkTime = hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0;
+    qApp->setCursorFlashTime(blinkTime);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
     bool treeView=false, propertyView=false, comboView=true;
@@ -208,6 +212,7 @@ void DlgGeneralImp::loadSettings()
 
     ui->SubstituteDecimal->onRestore();
     ui->RecentFiles->onRestore();
+    ui->EnableCursorBlinking->onRestore();
     ui->SplashScreen->onRestore();
     ui->PythonWordWrap->onRestore();
     ui->PythonBlockCursor->onRestore();

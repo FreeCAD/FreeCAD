@@ -2099,6 +2099,10 @@ void Application::runApplication(void)
         mainApp.installEventFilter(filter);
     }
 
+    // set text cursor blinking state
+    int blinkTime = hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0;
+    qApp->setCursorFlashTime(blinkTime);
+
     {
         QWindow window;
         window.setSurfaceType(QWindow::OpenGLSurface);
