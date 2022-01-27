@@ -207,6 +207,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_DecorateLine";
     *draw << "TechDraw_ShowAll";
     *draw << "TechDraw_WeldSymbol";
+    *draw << "Separator";
+    *draw << "TechDraw_ProjectShape";
     return root;
 }
 
@@ -231,6 +233,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_SpreadsheetView";
     *views << "TechDraw_MoveView";
     *views << "TechDraw_CopyView";
+    *views << "TechDraw_ProjectShape";
 
     Gui::ToolBarItem *clips = new Gui::ToolBarItem(root);
     clips->setCommand("TechDraw Clips");
@@ -364,6 +367,8 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_SpreadsheetView";
     *views << "TechDraw_MoveView";
     *views << "TechDraw_CopyView";
+    *views << "TechDraw_ProjectShape";
+
 
     Gui::ToolBarItem *clips = new Gui::ToolBarItem(root);
     clips->setCommand("TechDraw Clips");
